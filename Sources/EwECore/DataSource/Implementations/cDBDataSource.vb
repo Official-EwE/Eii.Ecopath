@@ -3485,8 +3485,8 @@ Namespace DataSources
 
                 If (data IsNot Nothing) Then
                     drow("CodeSAUP") = data.CodeSAUP
-                    drow("CodeSLB") = data.CodeSLB
-                    drow("CodeFB") = data.CodeFB
+                    drow("CodeSLB") = data.CodeSeaLifeBase
+                    drow("CodeFB") = data.CodeFishBase
                     drow("CodeFAO") = data.CodeFAO
                     drow("CodeLCID") = data.CodeLSID
                     drow("CodeAquaMaps") = data.CodeAquaMaps

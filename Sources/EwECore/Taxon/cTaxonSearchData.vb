@@ -46,11 +46,11 @@ Public Class cTaxonSearchData
         Me.CodeAphia = data.TaxonCodeAphia(iTaxon)
         Me.CodeAquaMaps = data.TaxonCodeAquaMaps(iTaxon)
         Me.CodeFAO = data.TaxonCodeFAO(iTaxon)
-        Me.CodeFB = data.TaxonCodeFB(iTaxon)
+        Me.CodeFishBase = data.TaxonCodeFB(iTaxon)
         Me.CodeLSID = data.TaxonCodeLSID(iTaxon)
         Me.CodeOBIS = data.TaxonCodeOBIS(iTaxon)
         Me.CodeSAUP = data.TaxonCodeSAUP(iTaxon)
-        Me.CodeSLB = data.TaxonCodeSLB(iTaxon)
+        Me.CodeSeaLifeBase = data.TaxonCodeSLB(iTaxon)
         Me.Common = data.TaxonName(iTaxon)
         Me.East = data.TaxonEast(iTaxon)
         Me.EcologyType = data.TaxonEcologyType(iTaxon)
@@ -104,11 +104,11 @@ Public Class cTaxonSearchData
     ''' <inheritdocs cref="ITaxonSearchData.CodeSAUP"/>
     Public Property CodeSAUP() As Long Implements ITaxonSearchData.CodeSAUP
 
-    ''' <inheritdocs cref="ITaxonSearchData.CodeFB"/>
-    Public Property CodeFB As Long Implements ITaxonSearchData.CodeFB
+    ''' <inheritdocs cref="ITaxonSearchData.CodeFishBase"/>
+    Public Property CodeFishBase As Long Implements ITaxonSearchData.CodeFishBase
 
-    ''' <inheritdocs cref="ITaxonSearchData.CodeSLB"/>
-    Public Property CodeSLB As Long Implements ITaxonSearchData.CodeSLB
+    ''' <inheritdocs cref="ITaxonSearchData.CodeSeaLifeBase"/>
+    Public Property CodeSeaLifeBase As Long Implements ITaxonSearchData.CodeSeaLifeBase
 
     ''' <inheritdocs cref="ITaxonSearchData.CodeAquaMaps"/>
     Public Property CodeAquaMaps As String Implements ITaxonSearchData.CodeAquaMaps

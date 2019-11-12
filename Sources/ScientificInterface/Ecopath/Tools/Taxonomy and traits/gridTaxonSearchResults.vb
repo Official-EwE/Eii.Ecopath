@@ -51,8 +51,8 @@ Public Class gridTaxonSearchResults
         Order
         [Class]
         'Code
-        CodeFB
-        CodeSLB
+        CodeFishBase
+        CodeSeaLifeBase
         CodeAquaMaps
         CodeOBIS
         CodeAphia
@@ -143,7 +143,7 @@ Public Class gridTaxonSearchResults
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
 
-        Dim iNumCols As Integer = CInt(if(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Class + 1))
+        Dim iNumCols As Integer = CInt(If(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Class + 1))
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
@@ -156,8 +156,8 @@ Public Class gridTaxonSearchResults
         'Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
         If (Me.m_bShowCodes) Then
             'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
-            Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
-            Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
+            Me(0, eColumnTypes.CodeFishBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
+            Me(0, eColumnTypes.CodeSeaLifeBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
             Me(0, eColumnTypes.CodeAquaMaps) = New EwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
             Me(0, eColumnTypes.CodeOBIS) = New EwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
             Me(0, eColumnTypes.CodeAphia) = New EwEColumnHeaderCell(eVarNameFlags.CodeAphia)
@@ -271,8 +271,8 @@ Public Class gridTaxonSearchResults
             Case eColumnTypes.Class : value = result.Class
                 'Case eColumnTypes.Phylum : value = result.Phylum
                 'Case eColumnTypes.Code: value = result.SourceKey
-            Case eColumnTypes.CodeFB : value = result.CodeFB
-            Case eColumnTypes.CodeSLB : value = result.CodeSLB
+            Case eColumnTypes.CodeFishBase : value = result.CodeFishBase
+            Case eColumnTypes.CodeSeaLifeBase : value = result.CodeSeaLifeBase
             Case eColumnTypes.CodeAquaMaps : value = result.CodeAquaMaps
             Case eColumnTypes.CodeOBIS : value = result.CodeOBIS
             Case eColumnTypes.CodeAphia : value = result.CodeAphia
