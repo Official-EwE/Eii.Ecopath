@@ -236,6 +236,16 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
+            ''' Returns whether the cEwEDBWriter ahs been disposed
+            ''' ''' </summary>
+            ''' <returns>True if disposed.</returns>
+            ''' ---------------------------------------------------------------
+            Public Function IsDisposed() As Boolean
+                Return Me.m_bDisposed
+            End Function
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
             ''' Returns an empty row for the given table to populate values into.
             ''' </summary>
             ''' <returns>An empty row</returns>
@@ -711,12 +721,16 @@ Namespace Database
         ''' <summary>The current transaction, if any.</summary>
         Private m_transaction As IDbTransaction = Nothing
 
+        ''' <summary>Cache of DB writers obtained during a transaction for quick DB writing.</summary>
+        Private m_dtWriters As New Dictionary(Of String, cEwEDbWriter)
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Begins a transaction for the current <see cref="GetConnection">Connection</see>.
         ''' </summary>
         ''' <returns>True if successful.</returns>
-        ''' <remarks>19may07: status experimental</remarks>
+        ''' <seealso cref="RollbackTransaction()"/>
+        ''' <seealso cref="CommitTransaction(Boolean)"/>
         ''' -------------------------------------------------------------------
         Public Function BeginTransaction() As Boolean
             If Not (Me.m_transaction Is Nothing) Then Return False
@@ -724,6 +738,7 @@ Namespace Database
                 Me.m_transaction = Me.GetConnection.BeginTransaction()
                 Return True
             Catch ex As Exception
+                cLog.Write(ex)
                 Return False
             End Try
         End Function
@@ -735,10 +750,13 @@ Namespace Database
         ''' <param name="bRollbackOnError">Flag stating whether the transaction needs
         ''' to automatically rollback when the commit process fails.</param>
         ''' <returns>True if the commit operation succeeded.</returns>
+        ''' <seealso cref="BeginTransaction()"/>
+        ''' <seealso cref="RollbackTransaction()"/>
         ''' -------------------------------------------------------------------
         Public Function CommitTransaction(Optional ByVal bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
             Try
+                Me.ReleaseCachedWriters()
                 Me.m_transaction.Commit()
                 Me.m_transaction = Nothing
                 Return True
@@ -746,6 +764,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("cEwEDatabase: Transaction commit failed: {0}", ex.Message)
 #End If
+                cLog.Write(ex)
                 If (bRollbackOnError) Then Me.RollbackTransaction()
             End Try
             Return False
@@ -756,9 +775,12 @@ Namespace Database
         ''' Commits a transaction to the current <see cref="GetConnection">Connection</see>.
         ''' </summary>
         ''' <returns></returns>
+        ''' <seealso cref="BeginTransaction()"/>
+        ''' <seealso cref="CommitTransaction(Boolean)"/>
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try
+                Me.ReleaseCachedWriters()
                 Me.m_transaction.Rollback()
                 Me.m_transaction = Nothing
                 Return True
@@ -766,6 +788,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("cEwEDatabase: Transaction rollback failed: {0}", ex.Message)
 #End If
+                cLog.Write(ex)
                 Return False
             End Try
         End Function
@@ -778,6 +801,21 @@ Namespace Database
         Protected Function Transaction() As IDbTransaction
             Return Me.m_transaction
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method; release the cache of database writers.
+        ''' </summary>
+        ''' <seealso cref="BeginTransaction()"/>
+        ''' <seealso cref="RollbackTransaction()"/>
+        ''' <seealso cref="CommitTransaction(Boolean)"/>
+        ''' -------------------------------------------------------------------
+        Private Sub ReleaseCachedWriters()
+            For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
+                writer.Dispose()
+            Next
+            Me.m_dtWriters.Clear()
+        End Sub
 
 #End Region ' Transaction
 
@@ -803,7 +841,7 @@ Namespace Database
                 End If
                 Return cmd
             Catch ex As Exception
-                Debug.Assert(False, ex.Message)
+                cLog.Write(ex)
                 Return Nothing
             End Try
 
@@ -850,6 +888,7 @@ Namespace Database
             Try
                 reader.Close()
             Catch ex As Exception
+                cLog.Write(ex)
                 Debug.Assert(False, Me.ToString & ".ReleaseReader() Error: " & ex.Message)
                 Return False
             End Try
@@ -865,7 +904,37 @@ Namespace Database
         ''' <param name="strTable">The table to connect the EwEDbWriter to.</param>
         ''' -------------------------------------------------------------------
         Public Overridable Function GetWriter(ByVal strTable As String) As cEwEDbWriter
-            Return New cEwEDbWriter(Me, strTable)
+
+            Dim key As String = strTable.ToLower()
+            Dim writer As cEwEDbWriter = Nothing
+            Dim bIsValid As Boolean = False
+
+            ' When in transaction, try to obtain cached writer
+            If (Me.m_transaction IsNot Nothing) Then
+                If (Me.m_dtWriters.ContainsKey(key)) Then
+                    writer = Me.m_dtWriters(key)
+                End If
+            End If
+
+            ' The writer may have perished due to a rollback 
+            If (writer IsNot Nothing) Then
+                bIsValid = writer.IsConnected()
+            End If
+
+            ' No valid writer? 
+            If (Not bIsValid) Then
+                ' #Ok: create a new one
+                writer = New cEwEDbWriter(Me, strTable)
+            End If
+
+#If DEBUG Then
+            ' When in transaction, keep writers at hand - experimental feature, debug mode only
+            If (Me.m_transaction IsNot Nothing) Then
+                Me.m_dtWriters(key) = writer
+            End If
+#End If
+
+            Return writer
         End Function
 
         ''' -------------------------------------------------------------------
@@ -877,9 +946,21 @@ Namespace Database
         ''' <param name="bSaveChanges">States whether changes should be written (true) or discarded (false).</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ReleaseWriter(ByRef writer As cEwEDbWriter, Optional ByVal bSaveChanges As Boolean = True) As Boolean
-            Dim bSuccess As Boolean = writer.Disconnect(bSaveChanges)
-            writer.Dispose()
+        Public Overridable Function ReleaseWriter(writer As cEwEDbWriter, Optional bSaveChanges As Boolean = True) As Boolean
+
+            Dim bSuccess As Boolean = False
+            ' Not in a transaction?
+            If (Me.m_transaction Is Nothing) Then
+                ' #Yes: simply disconnect and forget
+                bSuccess = writer.Disconnect(bSaveChanges)
+                writer.Dispose()
+            Else
+                If bSaveChanges Then
+                    bSuccess = writer.Commit()
+                Else
+                    writer.Disconnect(False)
+                End If
+            End If
             Return bSuccess
         End Function
 
