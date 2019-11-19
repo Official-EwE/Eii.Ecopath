@@ -1331,7 +1331,8 @@ Namespace Ecospace
             m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, TimeStepData.RunProgress)
+            Dim dt As Date = Me.Core.EcospaceTimestepToAbsoluteTime(m_iTimeStepCur)
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_RUNNING, dt.ToShortDateString()), TimeStepData.RunProgress)
             Me.m_dataTimeStep = TimeStepData
 
             For iRow As Integer = 1 To TimeStepData.inRows
