@@ -342,7 +342,7 @@ Public Class cEwEStatusBar
         If (Me.m_tsStatus Is Nothing) Then Return
 
         ' Truncate progress
-        sProgress = CInt(sProgress * 50) / 50.0!
+        sProgress = CInt(sProgress * 100) / 100.0!
 
         ' Store original text
         Me.m_strLastStatusText = strText
@@ -353,7 +353,7 @@ Public Class cEwEStatusBar
         End If
 
         ' Optimization
-        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) Then
+        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) And (Not Me.m_sLastProgress = cCore.NULL_VALUE) Then
             Return
         End If
 
@@ -365,6 +365,7 @@ Public Class cEwEStatusBar
         If sProgress = 0 Then
             Me.m_tsbProgress.Visible = False
             Me.m_tslStop.Visible = False
+            Me.m_sLastProgress = cCore.NULL_VALUE
         ElseIf sProgress > 0 Then
             Me.m_tsbProgress.Style = ProgressBarStyle.Continuous
             Me.m_tsbProgress.Visible = True
@@ -376,9 +377,9 @@ Public Class cEwEStatusBar
             Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
         End If
 
-        ' Redraw status bar immediately
-        '   This is a known performace killer (issue #937)
-        Me.Invalidate()
+        '' Redraw status bar immediately
+        ''   This is a known performace killer (issue #937)
+        'Me.Invalidate()
 
     End Sub
 

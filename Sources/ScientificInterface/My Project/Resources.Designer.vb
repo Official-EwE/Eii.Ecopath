@@ -4825,7 +4825,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Running Ecospace....
+        '''  Looks up a localized string similar to Running Ecospace {0}....
         '''</summary>
         Public ReadOnly Property STATUS_ECOSPACE_RUNNING() As String
             Get

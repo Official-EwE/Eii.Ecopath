@@ -234,7 +234,8 @@ Description: {2}</value>
     <value>This system does not have the required drivers installed to work with files of this type</value>
   </data>
   <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
-    <value>Running Ecospace...</value>
+    <value>Running Ecospace {0}...</value>
+    <comment>{0}=short date</comment>
   </data>
   <data name="ECOPATH_DELETEGROUP_ERROR" xml:space="preserve">
     <value>Failed to delete group '{0}'</value>
