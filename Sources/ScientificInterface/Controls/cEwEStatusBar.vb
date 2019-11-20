@@ -362,7 +362,7 @@ Public Class cEwEStatusBar
 
         ' Update
         Me.m_tsStatus.Text = strText
-        If sProgress = 0 Then
+        If sProgress = 0 Or sProgress = cCore.NULL_VALUE Then
             Me.m_tsbProgress.Visible = False
             Me.m_tslStop.Visible = False
             Me.m_sLastProgress = cCore.NULL_VALUE
