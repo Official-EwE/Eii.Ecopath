@@ -144,8 +144,8 @@ Public Class frmEwE6
         ''' Toggle between presentation mode and regular mode.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Toggle()
-            Me.Active = Not Me.Active
+        Public Sub TogglePresentationMode()
+            Me.IsPresentationModeActive = Not Me.IsPresentationModeActive
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -153,7 +153,7 @@ Public Class frmEwE6
         ''' Get/set whether presentation mode is active.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Active As Boolean
+        Public Property IsPresentationModeActive As Boolean
             Get
                 Return Me.m_bActive
             End Get
@@ -804,7 +804,7 @@ Public Class frmEwE6
         End If
 
         Dim core As New cCore()
-        Dim sg As New cStyleGuide(core, My.Application.ReleaseMode)
+        Dim sg As New cStyleGuide(core, EwE6ApplicationFramework.ReleaseMode)
         Dim cmdh As New cCommandHandler()
         Dim pm As New cPropertyManager(core, so)
         Dim fps As New cFormSettings()
@@ -867,6 +867,12 @@ Public Class frmEwE6
         Me.Core.SetMessagePumpDelegate(AddressOf Me.OnPumpCoreMessages)
 
     End Sub
+
+    Public ReadOnly Property PluginManager As cPluginManager
+        Get
+            Return Me.m_pluginManager
+        End Get
+    End Property
 
     Private Sub OnPumpCoreMessages()
         Try
@@ -1036,6 +1042,8 @@ Public Class frmEwE6
 
 #Region " Form overrides "
 
+    Public Event OnLoadCompleted(sender As Object, args As EventArgs)
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Overridden to initialize the app launcer form.
@@ -1089,8 +1097,11 @@ Public Class frmEwE6
 
         Me.ResumeLayout()
 
-        ' Remove splash screen and activate UI
-        frmSplash.BuggerOff()
+        Try
+            RaiseEvent OnLoadCompleted(Me, New EventArgs())
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
         Me.Activate()
 
         Me.ValidateSetup()
@@ -1364,9 +1375,6 @@ Public Class frmEwE6
 
     Private Sub LoadPlugins()
 
-        Dim strMessage As String = ""
-        Dim reply As eMessageReply = eMessageReply.OK
-        Dim bNeedReply As Boolean = False
         Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
 
         Try
@@ -3297,7 +3305,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnViewPresentationMode(ByVal cmd As cCommand) Handles m_cmdViewPresentationMode.OnInvoke
 
-        Me.m_presentationmode.Toggle()
+        Me.m_presentationmode.TogglePresentationMode()
 
     End Sub
 
@@ -3307,7 +3315,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnUpdateViewPresentationMode(ByVal cmd As cCommand) _
         Handles m_cmdViewPresentationMode.OnUpdate
-        Me.m_cmdViewPresentationMode.Checked = Me.m_presentationmode.Active
+        Me.m_cmdViewPresentationMode.Checked = Me.m_presentationmode.IsPresentationModeActive
     End Sub
 
     ''' <summary>
