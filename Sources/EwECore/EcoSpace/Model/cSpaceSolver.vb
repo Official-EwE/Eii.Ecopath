@@ -656,7 +656,7 @@ Public Class cSpaceSolver
                         'rate and growth rate averages over space by age in that update routine
                         'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
                         'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
-                        If m_Data.Depth(i, j) > 0 And m_Data.HabCap(ieco)(i, j) > 0.1 Then
+                        If m_Data.Depth(i, j) > 0 Then
                             PopWt = m_Data.Bcell(i, j, nvar2 + isc)
                             TotLossThread(ieco) = TotLossThread(ieco) + loss(ieco) * PopWt
                             TotEatenByThread(ieco) = TotEatenByThread(ieco) + Eatenby(ieco) * PopWt
@@ -844,6 +844,7 @@ Public Class cSpaceSolver
                 aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * VulPred(i)
                 Veff(ia) = m_Data.Vspace(ia) * Ftime(i)
                 ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False, iRow, iCol)  '?not sure this will work right with multiple preds in arenas
+                'Debug.Assert(EatEff(j) = 1)
                 Vdenom(ia) = Vdenom(ia) + aeff(ii) * pred(j) / Hden(j) / EatEff(j)
             Next
 
@@ -935,10 +936,9 @@ Public Class cSpaceSolver
             'End If
             'Make the detritus calculations here:
             Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
-
+            Dim moMult As Single = 1
             For i = 1 To m_Data.NGroups
 
-                'Debug.Assert((i = 46 And iRow = 155 And iCol = 48) = False)
 
                 Eatenby(i) = Eatenby(i) + m_SimData.QBoutside(i) * Biomass(i)
 
@@ -959,7 +959,6 @@ Public Class cSpaceSolver
 
                     ' pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) ' * EatEff(i)
                     pbb(i) = 2 * EatEff(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * Pmult * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
-
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
                     '  Debug.Assert(Not Single.IsNaN((loss(i))))
                     ' Debug.Assert(Not Single.IsNaN((Biomass(i))))
