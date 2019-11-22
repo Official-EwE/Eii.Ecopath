@@ -1544,8 +1544,8 @@ Location: {1}</value>
     <value>Downloading '{0}'</value>
     <comment>{0}=component name</comment>
   </data>
-  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT" xml:space="preserve">
-    <value>Apply forcing (other mortality)</value>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_MORTALITY" xml:space="preserve">
+    <value>Apply environmental responses (mortality)</value>
   </data>
   <data name="LABEL_NAV_ECOSPACE_INPUT_FLEETDYNAMICS" xml:space="preserve">
     <value>Fleet dynamics</value>
@@ -1869,8 +1869,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAPAPPLY" xml:space="preserve">
     <value>Apply foraging responses</value>
   </data>
-  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE" xml:space="preserve">
-    <value>Apply environmental responses</value>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_FORAGING" xml:space="preserve">
+    <value>Apply environmental responses (foraging)</value>
   </data>
   <data name="LABEL_NAV_ECOSIM_INPUT_MEDIATION" xml:space="preserve">
     <value>Mediation</value>

@@ -35,18 +35,20 @@ Module EwE6ApplicationFramework
     Private m_root As String = ""
 
     Private m_pluginfolders() As String = New String() {"", ".\plugins"}
-    Private m_searchedLSA As New HashSet(Of String)
+    Private m_lsa As New Dictionary(Of String, Assembly)
 
 #End Region ' Private vars 
 
     Public Sub Main()
+
+        Threading.Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo("es-ES")
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
 
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
 
-        m_root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase)
+        m_root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
 
         ' Launch Splash window in separate thread
         ' https://stackoverflow.com/questions/32418695/show-splash-screen-during-loading-the-main-form
@@ -106,15 +108,26 @@ Module EwE6ApplicationFramework
 
 #Region " Localization "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Find resource satellite assemblies in the known locations (not the GAK) 
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="args"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function OnResolveAssembly(sender As Object, args As ResolveEventArgs) As Assembly
 
         Dim an As New AssemblyName(args.Name)
-        If (Not an.Name.EndsWith(".resources")) Then
-            Return Nothing
-        End If
+        Dim ass As Assembly = Nothing
+
+        If (Not an.Name.EndsWith(".resources")) Then Return ass
 
         ' Not sure if sat ass is loaded more than once. I presume not, but does not hurt to check
-        If m_searchedLSA.Contains(an.Name) Then Return Nothing
+        Dim key As String = an.Name & "_" & an.CultureInfo.Name
+        If m_lsa.ContainsKey(key) Then
+            Return m_lsa(key)
+        End If
 
         ' Find in possible locations
         Dim fn As String = LocateResourceAssembly(m_root, an)
@@ -123,23 +136,31 @@ Module EwE6ApplicationFramework
             fn = LocateResourceAssembly(Path.Combine(m_root, m_pluginfolders(i)), an)
             i += 1
         End While
-        m_searchedLSA.Add(an.Name)
 
-        If String.IsNullOrWhiteSpace(fn) Then Return Nothing
+        If Not String.IsNullOrWhiteSpace(fn) Then
+            Try
+                ass = Assembly.LoadFile(fn)
+            Catch ex As Exception
+                cLog.Write(ex, "OnResolveAssemlby(" & key & ")")
+            End Try
+        End If
+        m_lsa(key) = ass
 
-        Return Assembly.LoadFile(fn)
+        Return ass
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="folder"></param>
+    ''' <param name="an"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function LocateResourceAssembly(folder As String, an As AssemblyName) As String
         Dim fn As String = Path.Combine(folder, an.CultureInfo.Name, an.Name + ".dll")
         If (File.Exists(fn)) Then Return fn
-        If (an.CultureInfo.Parent IsNot Nothing) Then
-            fn = Path.Combine(folder, an.CultureInfo.Parent.Name, an.Name + ".dll")
-            If (File.Exists(fn)) Then
-                Return fn
-            End If
-        End If
         Return ""
     End Function
 

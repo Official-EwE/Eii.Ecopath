@@ -2562,11 +2562,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Apply environmental responses.
+        '''  Looks up a localized string similar to Apply environmental responses (foraging).
         '''</summary>
-        Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE() As String
+        Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_FORAGING() As String
             Get
-                Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE", resourceCulture)
+                Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_FORAGING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply environmental responses (mortality).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_MORTALITY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_MORTALITY", resourceCulture)
             End Get
         End Property
         
@@ -2621,15 +2630,6 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD() As String
             Get
                 Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Apply forcing (other mortality).
-        '''</summary>
-        Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT() As String
-            Get
-                Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT", resourceCulture)
             End Get
         End Property
         
