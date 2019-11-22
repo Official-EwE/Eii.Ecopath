@@ -579,8 +579,7 @@ Public Class cMessageHistory
                 Dim bChecked As Boolean = False
                 ' Show dialog
 
-                ' Yuck, this should be centralized somehow
-                frmSplash.BuggerOff()
+                EwE6ApplicationFramework.CloseSplash()
 
                 dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text,
                                              mbb, mbi,
@@ -595,8 +594,7 @@ Public Class cMessageHistory
             '' Invoke message box
             'cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
-                ' Yuck, this should be centralized somehow
-                frmSplash.BuggerOff()
+                EwE6ApplicationFramework.CloseSplash()
 
                 dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text, mbb, mbi)
             Catch ex As Exception
@@ -665,8 +663,7 @@ Public Class cMessageHistory
                 ' Sanity check
                 Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
 
-                ' Yuck, this should be centralized somehow
-                frmSplash.BuggerOff()
+                EwE6ApplicationFramework.CloseSplash()
 
                 If (Not Me.m_msh.IsSuppressed(msg.Source, msg.Type)) Then
                     ' #No: Good, prepare to show message

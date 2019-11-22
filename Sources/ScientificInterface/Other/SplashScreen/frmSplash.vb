@@ -31,11 +31,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Friend Class frmSplash
 
-    Private Shared s_splash As frmSplash
-
     Public Sub New()
         Me.InitializeComponent()
-        s_splash = Me
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -53,7 +50,7 @@ Friend Class frmSplash
         Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
         Dim strMask As String = ""
 
-        Select Case My.Application.ReleaseMode
+        Select Case EwE6ApplicationFramework.ReleaseMode
             Case eReleaseMode.Beta
                 strMask = My.Resources.VERSION_BETA
             Case eReleaseMode.Dev
@@ -73,21 +70,5 @@ Friend Class frmSplash
 #End If
 
     End Sub
-
-    Public Shared Sub BuggerOff()
-        If (s_splash Is Nothing) Then Return
-        If (s_splash.InvokeRequired) Then
-            If s_splash.InvokeRequired Then
-                s_splash.Invoke(New MethodInvoker(AddressOf s_splash.Close))
-            Else
-                s_splash.Close()
-            End If
-            s_splash = Nothing
-        End If
-    End Sub
-
-    Public Shared Function IsAlive() As Boolean
-        Return (s_splash IsNot Nothing)
-    End Function
 
 End Class

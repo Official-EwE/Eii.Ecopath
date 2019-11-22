@@ -65,6 +65,7 @@ Namespace My
                 My.Application.SplashScreen = New frmSplash()
             End If
         End Sub
+
     End Class
 
 End Namespace
