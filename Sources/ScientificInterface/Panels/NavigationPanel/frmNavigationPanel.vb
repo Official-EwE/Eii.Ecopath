@@ -248,10 +248,10 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYFFCONS, "ndApplyFFConsumer", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFConsumer), eNodeImages.Input, nodeFolder, "Apply forcing function consumer.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYFFPROD, "ndApplyFFPP", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFPrimaryProducer), eNodeImages.Input, nodeFolder, "Apply forcing function primary.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYFFDET, "ndApplyFFDetritus", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFDetritus), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT, "ndApplyFFOtherMort", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFOtherMort), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE, "ndEcosimEnvironmentalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimFunctionalResponse), eNodeImages.Input, nodeInput) ' ToDo: connect to help
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE, "ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_FORAGING, "ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_MORTALITY, "ndApplyFFOtherMort", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFOtherMort), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_EGGPROD, "ndEP", eCoreExecutionState.EcosimLoaded, GetType(frmEggProduction), eNodeImages.Input, nodeInput, "Egg production.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYEGGPROD, "ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(ApplyEP), eNodeImages.Input, nodeFolder, "Apply egg production.htm")

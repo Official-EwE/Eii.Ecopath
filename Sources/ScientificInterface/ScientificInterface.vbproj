@@ -28,7 +28,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetZone>LocalIntranet</TargetZone>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
@@ -2156,10 +2156,6 @@
     <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
       <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
       <Name>EwEEcospaceSpinupPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\cEwEApplyEnvResponsesPlugin\EwEApplyEnvResponsesPlugin.vbproj">
-      <Project>{6b7a470c-9073-4f53-bfbf-0bd5a3b2bd16}</Project>
-      <Name>EwEApplyEnvResponsesPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
       <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>
