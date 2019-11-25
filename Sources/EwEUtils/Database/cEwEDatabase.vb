@@ -725,8 +725,10 @@ Namespace Database
         ''' <summary>The current transaction, if any.</summary>
         Private m_transaction As IDbTransaction = Nothing
 
+#If USE_WRITERCACHE Then
         ''' <summary>Cache of DB writers obtained during a transaction for quick DB writing.</summary>
         Private m_dtWriters As New Dictionary(Of String, cEwEDbWriter)
+#End If
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -820,8 +822,6 @@ Namespace Database
                     writer.Dispose()
                 Next
                 Me.m_dtWriters.Clear()
-#Else
-            Debug.Assert(Me.m_dtWriters.Count = 0, "Oh no, something is messed up")
 #End If
         End Sub
 
