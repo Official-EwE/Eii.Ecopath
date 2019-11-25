@@ -35,6 +35,9 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' Enable caching of writers to improve database save performance. This should be tested thoroughly before including in a release
+#Const USE_WRITERCACHE = 0
+
 #If VERBOSE Then
 #Const VERBOSE_LEVEL = 4
 #End If
@@ -493,6 +496,7 @@ Namespace Database
 
 #Region " Private vars and constants "
 
+
         ''' <summary>Current database version.</summary>
         Private m_sVersion As Single = 0.0
         ''' <summary>EwE version that produces the current database version.</summary>
@@ -811,10 +815,14 @@ Namespace Database
         ''' <seealso cref="CommitTransaction(Boolean)"/>
         ''' -------------------------------------------------------------------
         Private Sub ReleaseCachedWriters()
-            For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
-                writer.Dispose()
-            Next
-            Me.m_dtWriters.Clear()
+#If USE_WRITERCACHE Then
+                For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
+                    writer.Dispose()
+                Next
+                Me.m_dtWriters.Clear()
+#Else
+            Debug.Assert(Me.m_dtWriters.Count = 0, "Oh no, something is messed up")
+#End If
         End Sub
 
 #End Region ' Transaction
@@ -909,12 +917,14 @@ Namespace Database
             Dim writer As cEwEDbWriter = Nothing
             Dim bIsValid As Boolean = False
 
-            ' When in transaction, try to obtain cached writer
-            If (Me.m_transaction IsNot Nothing) Then
-                If (Me.m_dtWriters.ContainsKey(key)) Then
-                    writer = Me.m_dtWriters(key)
+#If USE_WRITERCACHE Then
+                ' When in transaction, try to obtain cached writer
+                If (Me.m_transaction IsNot Nothing) Then
+                    If (Me.m_dtWriters.ContainsKey(key)) Then
+                        writer = Me.m_dtWriters(key)
+                    End If
                 End If
-            End If
+#End If
 
             ' The writer may have perished due to a rollback 
             If (writer IsNot Nothing) Then
@@ -927,11 +937,11 @@ Namespace Database
                 writer = New cEwEDbWriter(Me, strTable)
             End If
 
-#If DEBUG Then
-            ' When in transaction, keep writers at hand - experimental feature, debug mode only
-            If (Me.m_transaction IsNot Nothing) Then
-                Me.m_dtWriters(key) = writer
-            End If
+#If USE_WRITERCACHE Then
+                ' When in transaction, keep writers at hand - experimental feature, debug mode only
+                If (Me.m_transaction IsNot Nothing) Then
+                    Me.m_dtWriters(key) = writer
+                End If
 #End If
 
             Return writer
