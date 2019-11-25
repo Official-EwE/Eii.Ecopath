@@ -2660,33 +2660,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to export data set(s) to {0}.
-        '''</summary>
-        Public Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_ERROR() As String
-            Get
-                Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_ERROR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to An error occurred while exporting. {0}.
-        '''</summary>
-        Public Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_EXCEPTION() As String
-            Get
-                Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_EXCEPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0} data set(s) successfully exported to {1}. This folder is ready to be transferred to another computer.
-        '''</summary>
-        Public Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_SUCCESS() As String
-            Get
-                Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_SUCCESS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Unable to load plug-in &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_DETAIL() As String
@@ -2737,6 +2710,33 @@ Namespace My.Resources
         Public Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOCK() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_POP_FAILED_LOCK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to save data set(s) to {0}.
+        '''</summary>
+        Public Shared ReadOnly Property SPATIALTEMPORAL_SAVE_ERROR() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_SAVE_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An error occurred while saving external data. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property SPATIALTEMPORAL_SAVE_EXCEPTION() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_SAVE_EXCEPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} data set(s) successfully exported to {1}. This folder is ready to be transferred to another computer.
+        '''</summary>
+        Public Shared ReadOnly Property SPATIALTEMPORAL_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
         

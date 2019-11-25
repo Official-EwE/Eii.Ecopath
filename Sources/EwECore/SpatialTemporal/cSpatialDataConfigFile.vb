@@ -370,11 +370,11 @@ Namespace SpatialData
                 If (bExporting) Then
                     ' Send export status message
                     If bSuccess Then
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath),
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_SAVE_SUCCESS, nExported, strPath),
                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                         msg.Hyperlink = strPath
                     Else
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath),
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_SAVE_ERROR, strPath),
                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
                     End If
                 End If
@@ -382,7 +382,7 @@ Namespace SpatialData
             Catch ex As Exception
                 bSuccess = False
 
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_EXCEPTION, strPath),
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_SAVE_EXCEPTION, ex.Message),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 If (bExporting) Then
                     msg.Importance = eMessageImportance.Critical

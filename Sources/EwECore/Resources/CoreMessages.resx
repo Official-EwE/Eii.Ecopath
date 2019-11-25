@@ -1214,16 +1214,16 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Plug-in {0} sandboxed</value>
     <comment>{0}=plugin module name</comment>
   </data>
-  <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
-    <value>Failed to export data set(s) to {0}</value>
+  <data name="SPATIALTEMPORAL_SAVE_ERROR" xml:space="preserve">
+    <value>Failed to save data set(s) to {0}</value>
     <comment>{0}=folder</comment>
   </data>
-  <data name="SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
+  <data name="SPATIALTEMPORAL_SAVE_SUCCESS" xml:space="preserve">
     <value>{0} data set(s) successfully exported to {1}. This folder is ready to be transferred to another computer</value>
     <comment>{0}=dataset count, {1}=folder</comment>
   </data>
-  <data name="SPATIALTEMPORAL_EXPORT_EXCEPTION" xml:space="preserve">
-    <value>An error occurred while exporting. {0}</value>
+  <data name="SPATIALTEMPORAL_SAVE_EXCEPTION" xml:space="preserve">
+    <value>An error occurred while saving external data. {0}</value>
     <comment>{0}=excepption text</comment>
   </data>
   <data name="SPATIALTEMPORAL_POP_FAILED_LOAD" xml:space="preserve">
