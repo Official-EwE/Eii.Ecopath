@@ -238,7 +238,7 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
 
         If (String.Compare(node.Name, "Configuration") <> 0) Then Return False
 
-        Me.m_cfg = node.InnerText
+        Me.m_cfg = node.InnerXml
 
         Try
             For Each xn In node.ChildNodes
