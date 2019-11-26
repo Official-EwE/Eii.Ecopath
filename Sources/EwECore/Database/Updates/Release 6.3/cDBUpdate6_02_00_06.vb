@@ -91,7 +91,8 @@ Friend Class cDBUpdate6_02_00_06
             ReDim region(nRows, nCols)
 
             ' Read depth map
-            cStringUtils.StringToArray(CStr(readerScenario("DepthMap")), depth, nRows, nCols)
+            Dim map As String = CStr(db.ReadSafe(readerScenario, "DepthMap", ""))
+            cStringUtils.StringToArray(map, depth, nRows, nCols)
 
             ' Read region maps and merge 'em
             readerRegions = db.GetReader(String.Format("SELECT * FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) ORDER BY Sequence", info.iScenarioID))
