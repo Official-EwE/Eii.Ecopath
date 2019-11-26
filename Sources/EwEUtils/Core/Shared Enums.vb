@@ -829,6 +829,10 @@ Namespace Core
         ''' <summary>Monte Carlo diet multiplier</summary>
         mcDietMult
 
+        ''' <summary>Additive predation mortality proportion. Good luck pronouncing that.</summary>
+        ''' <remarks>Added 26 Nov 2019, CW, JB, VC and JS</remarks>
+        AdditivePredMortProp
+
         ''' <summary>Monte Carlo sampled <see cref="Biomass">B</see></summary>
         mcB
         ''' <summary>Monte Carlo sampled <see cref="PBInput">PB</see></summary>

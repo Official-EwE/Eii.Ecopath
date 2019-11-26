@@ -1028,6 +1028,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Add. pred. mort.||Additive pred. mort.|Additive proportion of predation mortality.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ADDITIVEPREDMORTPROP() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ADDITIVEPREDMORTPROP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to AdjustSpace.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ADJUSTSPACE() As String

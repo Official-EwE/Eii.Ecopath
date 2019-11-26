@@ -46,6 +46,7 @@ Namespace Ecosim
             DenDepCatchability
             QBMaxQBO
             SwitchPower
+            AddPredMortProp ' For now, new parameter is added to the end of the list
         End Enum
 
         Public Sub New()
@@ -68,6 +69,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.DenDepCatchability) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
+            Me(0, eColumnTypes.AddPredMortProp) = New EwEColumnHeaderCell(eVarNameFlags.AdditivePredMortProp)
 
             Me.FixedColumns = 2
 
@@ -124,6 +126,7 @@ Namespace Ecosim
                         Me(iRow, eColumnTypes.PredatorFeedingTime) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.QBMaxQBO) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.SwitchPower) = New EwERowHeaderCell()
+                        Me(iRow, eColumnTypes.AddPredMortProp) = New EwERowHeaderCell()
 
                         iStanzaGroupIndexPrev = iStanzaGroup(source.Index)
                         iRow = Me.AddRow
@@ -158,6 +161,7 @@ Namespace Ecosim
             Me(iRow, eColumnTypes.DenDepCatchability) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DenDepCatchability)
             Me(iRow, eColumnTypes.QBMaxQBO) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBMaxQBio)
             Me(iRow, eColumnTypes.SwitchPower) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SwitchingPower)
+            Me(iRow, eColumnTypes.AddPredMortProp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.AdditivePredMortProp)
 
         End Sub
 
