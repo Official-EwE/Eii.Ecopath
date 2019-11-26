@@ -63,18 +63,6 @@ Module EwE6ApplicationFramework
         ' Define new main UI
         m_main = New frmEwE6()
 
-        ' Load plug-ins
-        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
-        Try
-            m_main.PluginManager.LoadPlugins(alDisabledPlugins, m_root, [option]:=SearchOption.TopDirectoryOnly)
-            For Each folder As String In m_pluginfolders
-                m_main.PluginManager.LoadPlugins(alDisabledPlugins, Path.Combine(m_root, folder))
-            Next
-        Catch ex As Exception
-            ' Ouch!
-            cLog.Write(ex)
-        End Try
-
         AddHandler m_main.OnLoadCompleted, AddressOf OnLoadCompleted
         Try
             Application.Run(m_main)
@@ -182,7 +170,21 @@ Module EwE6ApplicationFramework
     End Sub
 
     Private Sub OnLoadCompleted(sender As Object, args As EventArgs)
+
+        ' Load plug-ins now synchronization context is available
+        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
+        Try
+            m_main.PluginManager.LoadPlugins(alDisabledPlugins, m_root, [option]:=SearchOption.TopDirectoryOnly)
+            For Each folder As String In m_pluginfolders
+                m_main.PluginManager.LoadPlugins(alDisabledPlugins, Path.Combine(m_root, folder))
+            Next
+        Catch ex As Exception
+            ' Ouch!
+            cLog.Write(ex)
+        End Try
+
         CloseSplash()
+
     End Sub
 
 #End Region ' Splash screen
