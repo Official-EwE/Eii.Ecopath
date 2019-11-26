@@ -2847,4 +2847,7 @@
   <data name="VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE" xml:space="preserve">
     <value>Abs. C||Contaminant forcing</value>
   </data>
+  <data name="VARIABLE_ADDITIVEPREDMORTPROP" xml:space="preserve">
+    <value>Add. pred. mort.||Additive pred. mort.|Additive proportion of predation mortality</value>
+  </data>
 </root>

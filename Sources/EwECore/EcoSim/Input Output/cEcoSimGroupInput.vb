@@ -155,6 +155,12 @@ Public Class cEcoSimGroupInput
             val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.VulMult, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
             m_values.Add(val.varName, val)
 
+            ' Additive predation mortality proportion. Added 26 Nov 2019, CW, JB, VC and JS
+            val = New cValue(New Single, eVarNameFlags.AdditivePredMortProp, eStatusFlags.Null, eValueTypes.Sng)
+            ' This value is NOT stored in the database for the time being
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -245,6 +251,15 @@ Public Class cEcoSimGroupInput
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.SwitchingPower, value)
+        End Set
+    End Property
+
+    Public Property AdditivePredationMortality As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.AdditivePredMortProp))
+        End Get
+        Set(value As Single)
+            SetVariable(eVarNameFlags.AdditivePredMortProp, value)
         End Set
     End Property
 
@@ -372,6 +387,15 @@ Public Class cEcoSimGroupInput
     '        SetStatus(eVarNameFlags.VulRate, value, iGroup)
     '    End Set
     'End Property
+
+    Public Property AdditivePredationMortalityStatus As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.AdditivePredMortProp)
+        End Get
+        Set(value As eStatusFlags)
+            SetStatus(eVarNameFlags.AdditivePredMortProp, value)
+        End Set
+    End Property
 
 #End Region
 
