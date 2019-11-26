@@ -1424,4 +1424,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="VARIABLE_VALIDATION_FAILED_MUSTBEX" xml:space="preserve">
     <value>{0} must be {1}</value>
   </data>
+  <data name="SPATIALTEMPORAL_RUN_ISSUES" xml:space="preserve">
+    <value>Ecospace experienced problems with external spatial temporal data. See the spatial log file for details</value>
+  </data>
 </root>

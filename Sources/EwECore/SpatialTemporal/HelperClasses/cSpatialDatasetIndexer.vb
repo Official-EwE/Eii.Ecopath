@@ -86,6 +86,8 @@ Namespace SpatialData
                     Me.m_queue.Remove(ds)
                     Me.m_queue.Insert(0, ds)
                 End SyncLock
+            Else
+                Me.Update()
             End If
 
         End Sub
@@ -138,48 +140,8 @@ Namespace SpatialData
                 Return Me.m_bEnabled
             End Get
             Set(value As Boolean)
-
                 Me.m_bEnabled = value
-
-                If (value = True) Then
-                    SyncLock Me.m_sync
-
-                        ' Augment the indexer queue with content from the dataset manager
-                        For Each ds As ISpatialDataSet In Me.m_manSets
-                            If Not Me.m_queue.Contains(ds) Then
-                                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
-                                ' Is not yet fully indexed?
-                                If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
-                                    ' #Yes: add to queue
-                                    ' Do not mess up priority dataset, but process applied datasets quickly
-                                    Dim conn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
-                                    If conn.IsApplied(ds) And (Me.m_queue.Count > 0) Then
-                                        Me.m_queue.Insert(1, ds)
-                                    Else
-                                        Me.m_queue.Add(ds)
-                                    End If
-                                End If
-                            End If
-                        Next
-
-                        ' Clear queued data sets that are no longer there
-                        For i As Integer = 0 To Me.m_queue.Count - 1
-                            If Not m_manSets.Contains(Me.m_queue(i)) Then
-                                Me.m_queue(i) = Nothing
-                            End If
-                        Next
-
-                    End SyncLock
-
-                    If (Me.m_threadIndex Is Nothing) And (Me.m_queue.Count > 0) Then
-                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
-                        Me.m_threadIndex.IsBackground = True
-                        Me.m_threadIndex.Start()
-                    End If
-                Else
-                    Me.m_queue.Clear()
-                    Me.StopRun(500)
-                End If
+                Me.Update()
             End Set
         End Property
 
@@ -207,6 +169,48 @@ Namespace SpatialData
 #End Region ' Public bits
 
 #Region " Internals "
+
+        Private Sub Update()
+            If (Me.Enabled) Then
+                SyncLock Me.m_sync
+
+                    ' Augment the indexer queue with content from the dataset manager
+                    For Each ds As ISpatialDataSet In Me.m_manSets
+                        If Not Me.m_queue.Contains(ds) Then
+                            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
+                            ' Is not yet fully indexed?
+                            If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
+                                ' #Yes: add to queue
+                                ' Do not mess up priority dataset, but process applied datasets quickly
+                                Dim conn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
+                                If conn.IsApplied(ds) And (Me.m_queue.Count > 0) Then
+                                    Me.m_queue.Insert(1, ds)
+                                Else
+                                    Me.m_queue.Add(ds)
+                                End If
+                            End If
+                        End If
+                    Next
+
+                    ' Clear queued data sets that are no longer there
+                    For i As Integer = 0 To Me.m_queue.Count - 1
+                        If Not m_manSets.Contains(Me.m_queue(i)) Then
+                            Me.m_queue(i) = Nothing
+                        End If
+                    Next
+
+                End SyncLock
+
+                If (Me.m_threadIndex Is Nothing) And (Me.m_queue.Count > 0) Then
+                    Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                    Me.m_threadIndex.IsBackground = True
+                    Me.m_threadIndex.Start()
+                End If
+            Else
+                Me.m_queue.Clear()
+                Me.StopRun(500)
+            End If
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
