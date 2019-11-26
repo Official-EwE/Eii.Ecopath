@@ -375,6 +375,16 @@ Public Class cEcosimDatastructures
     Public GroupDetritus() As Single
 
     ''' <summary>
+    '''  PaddP is proportion of predation rate that is additive
+    ''' </summary>
+    Public PaddP() As Single
+
+    Public MoPredBase() As Single
+    Public startEatenOf() As Single
+    Public PhHalf() As Single
+
+
+    ''' <summary>
     ''' Structure to contain all settings that wrap the primitive defining the contents of a forcing or time shape
     ''' </summary>
     ''' <remarks>
@@ -740,6 +750,7 @@ Public Class cEcosimDatastructures
         ReDim PropDiscardMortTime(nGear, nGroups)
 
         ReDim EffortConversionFactor(nGear)
+
 
         ' JS 3May16: make sure there is no overhang from past scenarios
         Me.lstEnviroInputData.Clear()

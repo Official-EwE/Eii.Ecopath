@@ -7361,6 +7361,7 @@ Public Class cCore
             group.QBMaxQBio = m_EcoSimData.CmCo(iGroup)
             group.SwitchingPower = m_EcoSimData.SwitchPower(iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
+            group.AdditivePredationMortality = m_EcoSimData.PaddP(iGroup)
 
             Try
                 For iPred = 1 To nGroups
@@ -7827,6 +7828,8 @@ Public Class cCore
             m_EcoSimData.RiskTime(iGroup) = group.PredEffectFeedingTime
             m_EcoSimData.CmCo(iGroup) = group.QBMaxQBio
             m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
+            m_EcoSimData.PaddP(iGroup) = group.AdditivePredationMortality
+
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
