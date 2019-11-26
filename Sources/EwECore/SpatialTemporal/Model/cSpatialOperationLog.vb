@@ -166,7 +166,11 @@ Namespace SpatialData
                 Me.m_msgCurrent.AddVariable(New cVariableStatus(status, strMsg, Me.m_vn, eDataTypes.External, eCoreComponentType.External, Me.m_iIndex))
             End If
 
-            Me.m_bRunOK = Me.m_bRunOK And (status = eStatusFlags.OK)
+            Me.m_bRunOK = Me.m_bRunOK And Not (status = eStatusFlags.FailedValidation Or status = eStatusFlags.ErrorEncountered Or status = eStatusFlags.MissingParameter)
+
+            If (Me.m_bRunOK = False) Then
+                status = status
+            End If
 
         End Sub
 
@@ -179,6 +183,12 @@ Namespace SpatialData
         Friend Function EndRun() As Boolean
             Return Me.m_bRunOK
         End Function
+
+        Public ReadOnly Property LogFileName As String
+            Get
+                Return Me.m_strLogFileName
+            End Get
+        End Property
 
 #End Region ' Public access
 

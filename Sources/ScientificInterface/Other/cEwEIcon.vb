@@ -47,6 +47,20 @@ Public Class cEwEIcon
     ''' -----------------------------------------------------------------------
     Public Shared Function Current() As Icon
 
+        ' Prepare icon
+        Select Case cDateUtils.GetNextEvent(15)
+            Case cDateUtils.eNextEvent.Easter
+                Return My.Resources.Ecopath3_easter
+            Case cDateUtils.eNextEvent.Xmas
+                Return My.Resources.Ecopath4_hohoho
+            Case cDateUtils.eNextEvent.DagVanDeLiefde
+                Return My.Resources.Ecopath6_joepie
+        End Select
+
+#If BETA = 1 Then
+                Return My.Resources.Ecopath2_beta
+#End If
+
         SyncLock m_syncroot
             If Not cEwEIcon.m_bTried Then
 
@@ -67,20 +81,8 @@ Public Class cEwEIcon
             Return cEwEIcon.m_ico
         End If
 
-        ' Prepare icon
-        Select Case cDateUtils.GetNextEvent(15)
-            Case cDateUtils.eNextEvent.Easter
-                Return My.Resources.Ecopath3_easter
-            Case cDateUtils.eNextEvent.Xmas
-                Return My.Resources.Ecopath4_hohoho
-            Case cDateUtils.eNextEvent.DagVanDeLiefde
-                Return My.Resources.Ecopath6_joepie
-        End Select
-#If BETA = 1 Then
-                Return My.Resources.Ecopath2_beta
-#Else
+        ' Fallback
         Return ScientificInterfaceShared.My.Resources.Ecopath0
-#End If
 
     End Function
 

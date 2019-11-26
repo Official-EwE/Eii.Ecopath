@@ -9228,9 +9228,9 @@ Public Class cCore
 
             ' Did a spatial temporal error occur?
             If Not Me.m_spatialOperationLog.EndRun() Then
-                ' ToDo: globalize this
-                Me.m_publisher.AddMessage(New cFeedbackMessage("Ecospace experienced problems with external spatial temporal data",
-                                                               eCoreComponentType.EcoSpace, eMessageType.DataImport, eMessageImportance.Warning, eMessageReplyStyle.OK))
+                Dim msg As New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_RUN_ISSUES, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Warning)
+                msg.Hyperlink = Me.m_spatialOperationLog.LogFileName
+                Me.m_publisher.AddMessage(msg)
             End If
 
             Me.RemoveEcospaceTimeStepHandler(Me.m_SpaceInterfaceCallBackUI)

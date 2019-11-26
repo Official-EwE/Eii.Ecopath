@@ -2714,6 +2714,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace experienced problems with external spatial temporal data. See the spatial log file for details.
+        '''</summary>
+        Public Shared ReadOnly Property SPATIALTEMPORAL_RUN_ISSUES() As String
+            Get
+                Return ResourceManager.GetString("SPATIALTEMPORAL_RUN_ISSUES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Failed to save data set(s) to {0}.
         '''</summary>
         Public Shared ReadOnly Property SPATIALTEMPORAL_SAVE_ERROR() As String
