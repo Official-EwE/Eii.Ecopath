@@ -69,6 +69,7 @@ Friend Class cDBUpdate6_02_00_06
         Dim depth(,) As Single = Nothing
         Dim regions(,) As Integer = Nothing
         Dim region(,) As Integer = Nothing
+        Dim map As String = ""
         Dim nRows, nCols As Integer
         Dim lRegions As New List(Of cRegionInfo)
         Dim bSuccess As Boolean = True
@@ -91,7 +92,7 @@ Friend Class cDBUpdate6_02_00_06
             ReDim region(nRows, nCols)
 
             ' Read depth map
-            Dim map As String = CStr(db.ReadSafe(readerScenario, "DepthMap", ""))
+            map = CStr(db.ReadSafe(readerScenario, "DepthMap", ""))
             cStringUtils.StringToArray(map, depth, nRows, nCols)
 
             ' Read region maps and merge 'em
@@ -103,7 +104,8 @@ Friend Class cDBUpdate6_02_00_06
 
                 ' Read region map
                 Array.Clear(region, 0, region.Length)
-                cStringUtils.StringToArray(CStr(readerRegions("RegionMap")), region, nRows, nCols)
+                map = CStr(db.ReadSafe(readerRegions, "RegionMap", ""))
+                cStringUtils.StringToArray(map, region, nRows, nCols)
 
                 ' Merge region map into final
                 For iRow As Integer = 1 To nRows
