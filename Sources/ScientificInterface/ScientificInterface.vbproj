@@ -2153,9 +2153,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
-      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
-      <Name>EwEEcospaceSpinupPlugin</Name>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
       <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>
@@ -2235,6 +2235,10 @@
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
       <Project>{e87e552b-c82f-4984-9249-631dac727633}</Project>
+      <Name>EwEValueChainPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
+      <Project>{1e820a5f-bd1a-4ece-9656-6824cf2d537e}</Project>
       <Name>EwEValueChainPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj">

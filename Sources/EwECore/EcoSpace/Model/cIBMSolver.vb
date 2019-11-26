@@ -350,8 +350,10 @@ Public Class cIBMSolver
                 If ia = m_Stanza.MaxAgeSpecies(isp) Then ia1 = iaa 'save array element to be overwritten with new recruits
                 ist = m_Stanza.StanzaNo(isp, ia)
                 ieco = m_Stanza.EcopathCode(isp, ist)
+                'Debug.Assert(ieco <> 1)
                 'loop over packets within this age and update numbers,wt dependent on current cell position
                 For ip = 1 To m_Stanza.Npackets
+
                     i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip))
                     j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
                     Su = Math.Exp(-m_Stanza.Zcell(i, j, ieco) / 12.0#) 'mortality
@@ -383,16 +385,18 @@ Public Class cIBMSolver
             End If
 
             'finally set abundance at youngest age to recruitment rate
-            'WARNING
-            'Youngest age is stored in the ia1 index NOT Age 0 as it is in Ecosim
+            'WARNING Youngest age is stored in the ia1 index NOT Age 0 as it is in Ecosim
             If m_Stanza.BaseEggsStanza(isp) > 0 Then
                 TotRecruits = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
+                TotRecruits = m_ESData.tval(m_Stanza.HatchCode(isp))
             End If
 
             If m_Stanza.HatchCode(isp) = 0 And m_Stanza.BaseEggsStanza(isp) > 0 Then
+                'NO hatchery code 
+                'apply the RecPowerSplit() and scale up to the total habitat area 
                 TotRecruits = TotRecruits * m_Data.ThabArea * (m_Stanza.EggsStanza(isp) / (m_Data.ThabArea * m_Stanza.BaseEggsStanza(isp))) ^ m_Stanza.RecPowerSplit(isp)
             ElseIf m_Stanza.HatchCode(isp) <> 0 And m_Stanza.BaseEggsStanza(isp) > 0 Then
-                'There is a hatchery code
+                'YES there is a hatchery code
                 'so scale the recruits up to the total area without applying the RecPowerSplit()
                 TotRecruits *= m_Data.ThabArea
             End If
