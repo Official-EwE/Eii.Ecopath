@@ -1102,6 +1102,7 @@ Public Class frmEwE6
         Catch ex As Exception
             cLog.Write(ex)
         End Try
+
         Me.Activate()
 
         Me.ValidateSetup()
