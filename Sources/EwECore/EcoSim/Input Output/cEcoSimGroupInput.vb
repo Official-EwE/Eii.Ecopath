@@ -158,7 +158,7 @@ Public Class cEcoSimGroupInput
             ' Additive predation mortality proportion. Added 26 Nov 2019, CW, JB, VC and JS
             val = New cValue(New Single, eVarNameFlags.AdditivePredMortProp, eStatusFlags.Null, eValueTypes.Sng)
             ' This value is NOT stored in the database for the time being
-            val.Stored = False
+            val.Stored = True
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True

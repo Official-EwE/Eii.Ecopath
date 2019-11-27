@@ -1222,6 +1222,8 @@ Public Class cEcosimDatastructures
             MoPred(i) = MoPred(0)
             RiskTime(i) = 0
 
+            PaddP(i) = 1
+
         Next
 
         For iflt As Integer = 1 To Me.nGear

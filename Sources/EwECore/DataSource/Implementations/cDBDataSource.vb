@@ -4340,6 +4340,8 @@ Namespace DataSources
                     ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
                     ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
 
+                    ecosimDS.PaddP(iEcopathGroup) = CSng(reader("AdditivePredMort"))
+
                     mseDS.Blim(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Bbase(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Fopt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup), cCore.NULL_VALUE))
@@ -4361,6 +4363,8 @@ Namespace DataSources
                     mseDS.RstockRatio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RStockRatio", mseDS.RstockRatio(igroup), cCore.NULL_VALUE))
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
                     mseDS.cvRec(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
+
+
 
                     ' Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
@@ -4784,6 +4788,8 @@ Namespace DataSources
                     drow("QmQo") = ecosimDS.QmQo(i)
                     drow("CmCo") = ecosimDS.CmCo(i)
                     drow("SwitchPower") = ecosimDS.SwitchPower(i)
+
+                    drow("AdditivePredMort") = ecosimDS.PaddP(i)
 
                     ' JS 01Jan09: mort shapes unique per scenario
                     If bDuplicating Then

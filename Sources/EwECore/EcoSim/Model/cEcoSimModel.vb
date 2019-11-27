@@ -2872,12 +2872,12 @@ Namespace Ecosim
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
 
-                        'MoMult = StartEatenOf(i) / Biomass(i) * (1 - m_Data.PaddP(i)) / m_Data.MoPredMult(i)
                         If StartEatenOf(i) > 0 Then
                             PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
                         Else
                             PredMult = 1
                         End If
+
                         m_Data.loss(i) = m_Data.Eatenof(i) * PredMult + (m_Data.mo(i) + m_Data.MoPredBase(i) * (1 - PredMult) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
@@ -3554,9 +3554,6 @@ Namespace Ecosim
             'VC 160797
             Dim i As Integer, j As Integer
 
-            m_Data.PaddP(4) = 1
-
-
             For i = 1 To m_EPData.NumGroups
                 StartEatenBy(i) = m_Data.StartBiomass(i) * SimQB(i)
                 EatenByBase(i) = StartEatenBy(i)
@@ -3569,6 +3566,18 @@ Namespace Ecosim
                 Next
                 Mtotal(i) = StartEatenOf(i) / m_Data.StartBiomass(i) + m_Data.mo(i)
 
+            Next i
+
+            CalcBaseAdditiveMort()
+
+        End Sub
+
+
+        Public Sub CalcBaseAdditiveMort()
+            Dim i As Integer
+
+            For i = 1 To m_EPData.NumGroups
+
                 m_Data.MoPredBase(i) = StartEatenOf(i) / m_Data.StartBiomass(i)
                 If m_Data.PhHalf(i) > 0 Then
                     m_Data.PhHalf(i) = 1 / m_Data.PaddP(i) - 1
@@ -3576,12 +3585,9 @@ Namespace Ecosim
                     m_Data.PhHalf(i) = 1
                 End If
 
-            Next
-
+            Next i
 
         End Sub
-
-
 
         Public Sub InitializeDataInfo()
             'initializes arrays used to estimate catchability coefficients
