@@ -336,12 +336,22 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Get a reference to the DataTable for the current writer
+            ''' Get a reference to the DataTable for the current writer.
             ''' </summary>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
             Public Function GetDataTable() As DataTable
                 Return Me.m_dt
+            End Function
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get the table name of the writer.
+            ''' </summary>
+            ''' <returns></returns>
+            ''' ---------------------------------------------------------------
+            Public Function GetTableName() As String
+                Return Me.m_strTable
             End Function
 
             ''' ---------------------------------------------------------------
@@ -808,6 +818,7 @@ Namespace Database
             Return Me.m_transaction
         End Function
 
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper method; release the cache of database writers.
@@ -818,10 +829,10 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Private Sub ReleaseCachedWriters()
 #If USE_WRITERCACHE Then
-                For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
-                    writer.Dispose()
-                Next
-                Me.m_dtWriters.Clear()
+            For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
+                writer.Dispose()
+            Next
+            Me.m_dtWriters.Clear()
 #End If
         End Sub
 
@@ -959,18 +970,23 @@ Namespace Database
         Public Overridable Function ReleaseWriter(writer As cEwEDbWriter, Optional bSaveChanges As Boolean = True) As Boolean
 
             Dim bSuccess As Boolean = False
-            ' Not in a transaction?
-            If (Me.m_transaction Is Nothing) Then
-                ' #Yes: simply disconnect and forget
-                bSuccess = writer.Disconnect(bSaveChanges)
-                writer.Dispose()
-            Else
+
+#If USE_WRITERCACHE Then
+            Dim key As String = writer.GetTableName().ToLower()
+
+            If (Me.m_dtWriters.ContainsKey(key)) Then
                 If bSaveChanges Then
                     bSuccess = writer.Commit()
                 Else
                     writer.Disconnect(False)
+                    ' Remove from cache
+                    Me.m_dtWriters.Remove(key)
                 End If
             End If
+#Else
+            bSuccess = writer.Disconnect(bSaveChanges)
+            writer.Dispose()
+#End If
             Return bSuccess
         End Function
 
