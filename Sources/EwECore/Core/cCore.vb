@@ -14162,6 +14162,10 @@ Public Class cCore
                 Select Case value.varName
                     Case eVarNameFlags.MaxRelPB
                         'see vaSimGetPBMandFtimeMax() in EwE5. Solve this here or in PostVariableValidation?
+
+                    Case eVarNameFlags.AdditivePredMortProp
+                        Me.m_EcoSim.CalcBaseAdditiveMort()
+
                 End Select
 
             Case eDataTypes.EcospaceModelParameter

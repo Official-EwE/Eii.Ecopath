@@ -1175,6 +1175,8 @@ Public Class cEIIXMLDataSource
                 ecosimDS.SwitchPower(iGroup) = CSng(drow("SwitchPower"))
                 ecosimDS.GroupFishRateNoDBID(iGroup) = CInt(drow("FishMortShapeID"))
 
+                ecosimDS.PaddP(iGroup) = CSng(drow("AdditivePredMort"))
+
                 mseDS.Blim(iGroup) = CSng(Me.ReadSafe(drow, "Blim", mseDS.Blim(iGroup), cCore.NULL_VALUE))
                 mseDS.Bbase(iGroup) = CSng(Me.ReadSafe(drow, "Bbase", mseDS.Bbase(iGroup), cCore.NULL_VALUE))
                 mseDS.Fopt(iGroup) = CSng(Me.ReadSafe(drow, "Fopt", mseDS.Fopt(iGroup), cCore.NULL_VALUE))
