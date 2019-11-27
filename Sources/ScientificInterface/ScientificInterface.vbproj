@@ -2153,10 +2153,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
       <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>
       <Name>EwEImportDietsPlugin</Name>
