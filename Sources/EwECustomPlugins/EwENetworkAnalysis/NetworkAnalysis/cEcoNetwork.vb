@@ -41,7 +41,7 @@ Public Class cEcoNetwork
 
     Private Ascend As Single
 
-    Private im() As Single
+    Private ImpDet() As Single
 
     Private CatchSum As Single
     'Private DetIndex As Single 'Proportion of total flow originating from detritus: DetIndex.
@@ -510,14 +510,14 @@ Public Class cEcoNetwork
             Try
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_ULANOW, 0.2)
                 strErr = "Ulanow()"
-                Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
+                Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, ImpDet, m_epdata.Ex, m_epdata.Resp)
 
                 ' JS: Lindeman should not be part of the main ENA run, but should be requested separately. Cycle computations are killers
                 Me.startAbortTimer()
 
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_LINDEMAN, 0.3)
                 strErr = "Lindeman()"
-                Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
+                Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, ImpDet, m_epdata.Ex, m_epdata.Resp) '
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_NA, 0.4)
 
                 Me.stopAbortTimer()
@@ -600,7 +600,7 @@ Public Class cEcoNetwork
             'prepares the buffers.
             ReDim DCNoCyc(m_epdata.NumGroups + 1, m_epdata.NumGroups + 1)
             ReDim CycDC(m_epdata.NumGroups + 1, m_epdata.NumGroups + 1)
-            ReDim im(m_epdata.NumGroups)
+            ReDim ImpDet(m_epdata.NumGroups)
             ReDim LastComp(2 * m_epdata.NumGroups + 1)
             ReDim PredatOn(m_epdata.NumGroups)
             ReDim SumCycDC(m_epdata.NumGroups)
@@ -882,7 +882,9 @@ Public Class cEcoNetwork
             'I also think that the m_epdata.pp(i) shold be multiplied so that only the part of the import
             'which relates to TL I is included. Hence, this is assumed to be proportional to m_epdata.pp.
             'For detritus groups add import:
-            If i > m_epdata.NumLiving Then HNoC(i) = HNoC(i) + im(i)
+            If i > m_epdata.NumLiving Then
+                HNoC(i) = HNoC(i) + im(i)
+            End If
         Next i
 
         For i = 1 To m_epdata.NumGroups
@@ -1892,9 +1894,9 @@ sinverr:
         Dim i As Integer
         For i = 1 To m_epdata.NumGroups
             If i > m_epdata.NumLiving Then
-                im(i) = m_epdata.DtImp(i)
+                ImpDet(i) = m_epdata.DtImp(i)
             Else
-                im(i) = m_epdata.DC(i, 0) * m_epdata.QB(i) * m_epdata.B(i)
+                ImpDet(i) = m_epdata.DC(i, 0) * m_epdata.QB(i) * m_epdata.B(i)
             End If
         Next i
     End Sub
@@ -2146,10 +2148,10 @@ EndOfImp:
         Try
             Dim i As Integer
             For i = 1 To m_epdata.NumLiving
-                im(i) = m_epdata.DC(i, 0) * m_epdata.QB(i) * m_epdata.B(i)
+                ImpDet(i) = m_epdata.DC(i, 0) * m_epdata.QB(i) * m_epdata.B(i)
             Next i
             For i = m_epdata.NumLiving + 1 To m_epdata.NumGroups
-                im(i) = m_epdata.DtImp(i)
+                ImpDet(i) = m_epdata.DtImp(i)
             Next i
         Catch ex As Exception
             cLog.Write(ex)
@@ -2390,9 +2392,9 @@ NextPivot:
 
                 TrPut(i) = PredatOn(i) + m_epdata.Ex(i) + m_epdata.FlowToDet(i) + m_epdata.Resp(i)
                 'vcm_epdata. resp for pp If PP(i) > 0 Then TrPut(i) = TrPut(i) + Im(i)  'For primary prod
-                If m_epdata.PP(i) > 0 Then TrPut(i) = TrPut(i) + im(i) + m_epdata.Resp(i) 'For primary prod
+                If m_epdata.PP(i) > 0 Then TrPut(i) = TrPut(i) + ImpDet(i) + m_epdata.Resp(i) 'For primary prod
                 'vc resp for detr  If i > m_epdata.NumLiving Then TrPut(i) = TrPut(i) + Im(i)     'For detritus
-                If i > m_epdata.NumLiving Then TrPut(i) = TrPut(i) + im(i) + m_epdata.Resp(i) 'For detritus
+                If i > m_epdata.NumLiving Then TrPut(i) = TrPut(i) + ImpDet(i) + m_epdata.Resp(i) 'For detritus
                 ThruPut = CSng(ThruPut + TrPut(i))
             Next i
         Catch ex As Exception
@@ -2780,7 +2782,9 @@ NextPivot:
         Try
             DetFlow = 0
             For i = m_epdata.NumLiving + 1 To m_epdata.NumGroups
-                DetFlow = DetFlow + m_epdata.DtImp(i) '+ det(0, i)
+                If m_epdata.DtImp(i) <> cCore.NULL_VALUE Then
+                    DetFlow = DetFlow + m_epdata.DtImp(i) '+ det(0, i)
+                End If
             Next i
             For i = 1 To m_epdata.NumLiving
                 If m_epdata.PP(i) > 0 Then DetFlow = DetFlow + m_epdata.B(i) * m_epdata.PB(i) * (1 - m_epdata.EE(i)) * m_epdata.PP(i)
@@ -2819,11 +2823,11 @@ NextPivot:
         Try
             For i As Integer = 1 To m_epdata.NumGroups + 3
                 If i <= m_epdata.NumGroups Then
-                    Flow(m_epdata.NumGroups + 1, i) = im(i)    'Amount imported
+                    Flow(m_epdata.NumGroups + 1, i) = ImpDet(i)    'Amount imported
                     Flow(i, m_epdata.NumGroups + 2) = m_epdata.Ex(i)
                     Flow(i, m_epdata.NumGroups + 3) = m_epdata.Resp(i)
                     If i <= m_epdata.NumLiving Then
-                        FlowCyc(m_epdata.NumGroups + 1, i) = im(i)
+                        FlowCyc(m_epdata.NumGroups + 1, i) = ImpDet(i)
                         FlowCyc(i, m_epdata.NumGroups + 2) = m_epdata.Ex(i)
                         FlowCyc(i, m_epdata.NumGroups + 3) = m_epdata.Resp(i)
                     End If
