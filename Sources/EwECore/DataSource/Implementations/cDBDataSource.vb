@@ -2027,6 +2027,9 @@ Namespace DataSources
 
                     ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
+                    'for some reason in some models this can ea
+                    If ecopathDS.DtImp(iGroup) = cCore.NULL_VALUE Then ecopathDS.DtImp(iGroup) = 0.0F
+
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
                     bSucces = False
@@ -4340,7 +4343,7 @@ Namespace DataSources
                     ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
                     ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
 
-                    ecosimDS.PaddP(iEcopathGroup) = CSng(reader("AdditivePredMort"))
+                    ecosimDS.PaddP(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "AdditivePredMort", ecosimDS.PaddP(iEcopathGroup)))
 
                     mseDS.Blim(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Bbase(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
