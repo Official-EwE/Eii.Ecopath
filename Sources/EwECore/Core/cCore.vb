@@ -8950,6 +8950,9 @@ Public Class cCore
         Me.m_Ecospace.SetAllCoastsToPorts(iFleet)
         Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
 
+        Me.m_Ecospace.CalculateCostOfSailing()
+        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost(1))
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -8963,6 +8966,10 @@ Public Class cCore
 
         Me.m_Ecospace.ClearPorts(iFleet)
         Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
+
+        Me.m_Ecospace.CalculateCostOfSailing()
+        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost(1))
+
 
     End Sub
 
@@ -8985,9 +8992,14 @@ Public Class cCore
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub ClearExcludedCells()
+        'Dim ExcBuffer(,) As Boolean = New Boolean(Me.m_EcoSpaceData.InRow + 1, Me.m_EcoSpaceData.InCol + 1) {}
+        'Array.Copy(Me.m_EcoSpaceData.Excluded, ExcBuffer, Me.m_EcoSpaceData.Excluded.Length)
 
         Me.m_Ecospace.ClearExcludedCells()
         Me.onChanged(Me.EcospaceBasemap.LayerExclusion())
+
+        'Array.Copy(ExcBuffer, Me.m_EcoSpaceData.Excluded, Me.m_EcoSpaceData.Excluded.Length)
+        'Me.onChanged(Me.EcospaceBasemap.LayerExclusion())
 
     End Sub
 
