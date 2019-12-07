@@ -7643,15 +7643,21 @@ exitline:
         Dim iStart As Integer = iFleet
         Dim iEnd As Integer = iFleet
 
+
         If iStart <= 0 Then iStart = 0 : iEnd = Me.EcoSpaceData.nFleets
 
         For i = 1 To inRow
             For j = 1 To inCol
                 'Check if there is a neighboring cell which is in water
-                If Me.EcoSpaceData.Depth(i, j) <= 0 Then    'it is a land cell
+                'jb use the DepthInput(i,j) because it still contains the land height (as negitive numbers) and NULL  values(as -9999)
+                'Depth(i,j) has been mangled bythe exclusion layer
+                If Me.EcoSpaceData.DepthInput(i, j) <= 0 And Me.EcoSpaceData.DepthInput(i, j) <> cCore.NULL_VALUE Then    'it is a land cell
+                    'jb -9999 is null not land
+                    'If the user selected this they just want ports on the coastlines not on null cell
+                    'I think!!!
                     For k = i - 1 To i + 1 Step 2
                         For l = j - 1 To j + 1 Step 2
-                            If k > 0 And k <= inRow And l > 0 And l <= inCol And Me.EcoSpaceData.Depth(k, l) > 0 Then
+                            If k > 0 And k <= inRow And l > 0 And l <= inCol And Me.EcoSpaceData.DepthInput(k, l) > 0 Then
                                 For iFleet = iStart To iEnd
                                     EcoSpaceData.Port(iFleet)(i, j) = True
                                 Next iFleet
