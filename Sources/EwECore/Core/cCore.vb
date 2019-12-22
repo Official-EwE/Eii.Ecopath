@@ -8950,8 +8950,8 @@ Public Class cCore
         Me.m_Ecospace.SetAllCoastsToPorts(iFleet)
         Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
 
-        Me.m_Ecospace.CalculateCostOfSailing()
-        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost(1))
+        ' JS: do not automatically calculate sailing cost and overwrite data; that should be done explicitly
+        ' Me.CalcEcospaceCostOfSailing
 
     End Sub
 
@@ -8967,9 +8967,8 @@ Public Class cCore
         Me.m_Ecospace.ClearPorts(iFleet)
         Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
 
-        Me.m_Ecospace.CalculateCostOfSailing()
-        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost(1))
-
+        ' JS: do not automatically calculate sailing cost and overwrite data; that should be done explicitly
+        ' Me.CalcEcospaceCostOfSailing
 
     End Sub
 
