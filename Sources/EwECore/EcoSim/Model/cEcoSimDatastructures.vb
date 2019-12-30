@@ -374,14 +374,33 @@ Public Class cEcosimDatastructures
     ''' </summary>
     Public GroupDetritus() As Single
 
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'Variables for non additive mortality rates
     ''' <summary>
     '''  PaddP is proportion of predation rate that is additive
     ''' </summary>
     Public PaddP() As Single
-
+    ''' <summary>
+    ''' Predation mortality rate at base
+    ''' </summary>
     Public MoPredBase() As Single
-    Public startEatenOf() As Single
+
+    'Public startEatenOf() As Single
+
+    ''' <summary>
+    ''' 1 / PaddP - 1
+    ''' </summary>
     Public PhHalf() As Single
+
+
+
+    Public moTot() As Single
+
+    Public moMax() As Single
+
+    Public Qh() As Single
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
     ''' <summary>
@@ -750,6 +769,8 @@ Public Class cEcosimDatastructures
         ReDim PropDiscardMortTime(nGear, nGroups)
 
         ReDim EffortConversionFactor(nGear)
+
+        ReDim moTot(nGroups)
 
 
         ' JS 3May16: make sure there is no overhang from past scenarios
