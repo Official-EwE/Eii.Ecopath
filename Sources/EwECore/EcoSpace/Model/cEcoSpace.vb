@@ -7586,6 +7586,13 @@ exitline:
                                 If dmin < 10000 Then Exit Do 'have found the best move
                             Loop
                         End If
+
+                        'Bounds Checking
+                        If (Me.EcoSpaceData.ItoUse(isp, ist, i, j) < 1) Then Me.EcoSpaceData.ItoUse(isp, ist, i, j) = 1
+                        If (Me.EcoSpaceData.JtoUse(isp, ist, i, j) < 1) Then Me.EcoSpaceData.JtoUse(isp, ist, i, j) = 1
+                        If (Me.EcoSpaceData.ItoUse(isp, ist, i, j) > EcoSpaceData.InRow) Then Me.EcoSpaceData.ItoUse(isp, ist, i, j) = EcoSpaceData.InRow
+                        If (Me.EcoSpaceData.JtoUse(isp, ist, i, j) > EcoSpaceData.InCol) Then Me.EcoSpaceData.JtoUse(isp, ist, i, j) = EcoSpaceData.InCol
+
                         Debug.Assert(Me.EcoSpaceData.ItoUse(isp, ist, i, j) >= 0 And Me.EcoSpaceData.ItoUse(isp, ist, i, j) <= EcoSpaceData.InRow, "SetNearestOKcellforIBM() set out of bounds cell.")
                         Debug.Assert(Me.EcoSpaceData.JtoUse(isp, ist, i, j) >= 0 And Me.EcoSpaceData.JtoUse(isp, ist, i, j) <= EcoSpaceData.InCol, "SetNearestOKcellforIBM() set out of bounds cell.")
                     Next j 'Map cols
@@ -7650,7 +7657,7 @@ exitline:
             For j = 1 To inCol
                 'Check if there is a neighboring cell which is in water
                 'jb use the DepthInput(i,j) because it still contains the land height (as negitive numbers) and NULL  values(as -9999)
-                'Depth(i,j) has been mangled bythe exclusion layer
+                'Depth(i,j) has been mangled by the exclusion layer
                 If Me.EcoSpaceData.DepthInput(i, j) <= 0 And Me.EcoSpaceData.DepthInput(i, j) <> cCore.NULL_VALUE Then    'it is a land cell
                     'jb -9999 is null not land
                     'If the user selected this they just want ports on the coastlines not on null cell

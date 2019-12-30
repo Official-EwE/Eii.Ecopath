@@ -192,9 +192,8 @@ Public Class cIBMSolver
         Dim i As Integer, j As Integer, Dmove As Single, Nmoves As Integer, isp As Integer
         Dim Mrat As Single, Ipos As Single, Jpos As Single
         Dim aa As Single, bb As Single, cc As Single, dd As Single
-        'DEBUG to stop movement
-        'Exit Sub
         Dim dAllow As Single
+
         Try
             For isp = 1 To m_Stanza.Nsplit
                 For iaa = 0 To m_Stanza.MaxAgeSpecies(isp)
@@ -218,6 +217,7 @@ Public Class cIBMSolver
                                 'System.Console.WriteLine("Moving Stanza " & isp.ToString & " Group " & ist.ToString & " To " & Me.m_Data.ItoUse(isp, ist, i, j).ToString & "," & Me.m_Data.JtoUse(isp, ist, i, j).ToString)
                                 Me.m_Stanza.iPacket(isp, iaa, ip) = Me.m_Data.ItoUse(isp, ist, i, j) + Me.m_rand.NextDouble
                                 Me.m_Stanza.jPacket(isp, iaa, ip) = Me.m_Data.JtoUse(isp, ist, i, j) + Me.m_rand.NextDouble
+                                'Bounds Checking
                                 If Me.m_Stanza.iPacket(isp, iaa, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
                                 If Me.m_Stanza.jPacket(isp, iaa, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
                             End If
@@ -238,8 +238,10 @@ Public Class cIBMSolver
                     If m_Data.HabCap(ieco)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
                         Nmoves = m_Stanza.IBMMovesPerMonth(ieco)
                     Else
-                        Dmove = m_Stanza.IBMdistmove(isp, ia) '* RelMoveBad(ieco)
+                        Dmove = m_Stanza.IBMdistmove(isp, ia)
                         Nmoves = m_Stanza.IBMMovesPerMonth(ieco) * m_Data.RelMoveBad(ieco)
+                        'jb non linear movement speed
+                        'Nmoves = m_Stanza.IBMMovesPerMonth(ieco) * Math.Log(m_Data.HabCap(ieco)(i, j), 0.1) ^ m_Data.RelMoveBad(ieco)
                     End If
                     For imm = 1 To Nmoves
                         'For ip = 1 To m_Stanza.Npackets
@@ -255,14 +257,22 @@ Public Class cIBMSolver
                             If m_Data.IsMigratory(ieco) = False Then
                                 'this changes movement if it's inside the box s.t. it can't get out in one move
                                 Ipos = m_Stanza.iPacket(isp, iaa, ip) - i : Jpos = m_Stanza.jPacket(isp, iaa, ip) - j
-                                If Ipos < 1.0 - dAllow Then aa = Mrat
-                                If Ipos > dAllow Then bb = Mrat
-                                If Jpos < 1.0 - dAllow Then cc = Mrat
-                                If Jpos > dAllow Then dd = Mrat
+                                If Ipos < 1.0 - dAllow Then
+                                    aa = Mrat
+                                End If
+                                If Ipos > dAllow Then
+                                    bb = Mrat
+                                End If
+                                If Jpos < 1.0 - dAllow Then
+                                    cc = Mrat
+                                End If
+                                If Jpos > dAllow Then
+                                    dd = Mrat
+                                End If
                             End If
                             'Nmoves = m_Stanza.IBMMovesPerMonth(ieco)
                         Else
-                            Dmove = m_Stanza.IBMdistmove(isp, ia) '* RelMoveBad(ieco)
+                            Dmove = m_Stanza.IBMdistmove(isp, ia)
                             Nmoves = m_Stanza.IBMMovesPerMonth(ieco) * m_Data.RelMoveBad(ieco)
                         End If
 
@@ -294,6 +304,13 @@ Public Class cIBMSolver
             m_Stanza.jPacket(isp, ia, ip) = m_Stanza.jPacket(isp, ia, ip) - Dmove
         End If
 
+        'Bounds Checking
+        If m_Stanza.iPacket(isp, ia, ip) < 1 Then m_Stanza.iPacket(isp, ia, ip) = 1
+        If m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
+        If m_Stanza.jPacket(isp, ia, ip) < 1 Then m_Stanza.jPacket(isp, ia, ip) = 1
+        If m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Code from EwE5
         'Dim i As Integer = 0
         'Dim j As Integer = 0
@@ -317,11 +334,8 @@ Public Class cIBMSolver
         '        m_Stanza.jPacket(isp, ia, ip) = m_Stanza.jPacket(isp, ia, ip) - Dmove
         '    End If
         'End If
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        If m_Stanza.iPacket(isp, ia, ip) < 1 Then m_Stanza.iPacket(isp, ia, ip) = 1
-        If m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
-        If m_Stanza.jPacket(isp, ia, ip) < 1 Then m_Stanza.jPacket(isp, ia, ip) = 1
-        If m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
 
     End Sub
 
@@ -429,6 +443,14 @@ Public Class cIBMSolver
                         Next
                         If j < m_Data.InCol + 1 Then Exit For 'have found the packet position, exit i loop as well
                     Next
+
+                    'bounds check the nursery cells
+                    If m_Stanza.iPacket(isp, ia1, ip) < 1 Then m_Stanza.iPacket(isp, ia1, ip) = 1
+                    If m_Stanza.iPacket(isp, ia1, ip) > m_Data.InRow Then m_Stanza.iPacket(isp, ia1, ip) = m_Data.InRow
+
+                    If m_Stanza.jPacket(isp, ia1, ip) < 1 Then m_Stanza.iPacket(isp, ia1, ip) = 1
+                    If m_Stanza.jPacket(isp, ia1, ip) > m_Data.InCol Then m_Stanza.jPacket(isp, ia1, ip) = m_Data.InCol
+
                 Next
             Else
                 ''simple model for random distribution of packets over nursery cells for the species
@@ -462,6 +484,14 @@ Public Class cIBMSolver
                             End If
                         Next icheck
                     End If 'Me.m_rand.NextDouble() > Me.m_Data.HabCap(i, j, ieco)
+
+                    'bounds check the nursery cells
+                    If m_Stanza.iPacket(isp, ia1, ip) < 1 Then m_Stanza.iPacket(isp, ia1, ip) = 1
+                    If m_Stanza.iPacket(isp, ia1, ip) > m_Data.InRow Then m_Stanza.iPacket(isp, ia1, ip) = m_Data.InRow
+
+                    If m_Stanza.jPacket(isp, ia1, ip) < 1 Then m_Stanza.jPacket(isp, ia1, ip) = 1
+                    If m_Stanza.jPacket(isp, ia1, ip) > m_Data.InCol Then m_Stanza.jPacket(isp, ia1, ip) = m_Data.InCol
+
                 Next ip
             End If ' m_Stanza.EggAtSpawn(isp)
         End If 'm_Ecosim.ResetPred(ieco) = False
