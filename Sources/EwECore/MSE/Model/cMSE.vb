@@ -1227,7 +1227,10 @@ Namespace MSE
                         '    End If
                         'Next
 
-                        Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, Me.m_esData.PredictSimEffort)
+                        'jb PredictEffort = True flag will stop SetFtimeFromGear(...) from updating to the new regualted effort
+                        'Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, Me.m_esData.PredictSimEffort)
+                        Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, True)
+
 
                     Else 'Me.isTStepRegulated(iTimeStep)
                         'xxxxxxxxxxxxxxx
