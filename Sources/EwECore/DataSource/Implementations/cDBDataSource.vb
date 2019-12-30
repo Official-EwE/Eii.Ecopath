@@ -2027,7 +2027,7 @@ Namespace DataSources
 
                     ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
-                    'for some reason in some models this can ea
+                    'for some reason in some models DtImp can be CORE_NULL -9999
                     If ecopathDS.DtImp(iGroup) = cCore.NULL_VALUE Then ecopathDS.DtImp(iGroup) = 0.0F
 
                 Catch ex As Exception
