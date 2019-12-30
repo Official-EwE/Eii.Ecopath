@@ -67,7 +67,8 @@ Public Class cEcotracerGroupInput
             Me.m_values.Add(val.varName, val)
 
             ' CMetablismRate
-            val = New cValue(New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng)
+            Dim meta As cVariableMetaData = New cVariableMetaData(0.0, 1.0E+20, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng, meta)
             Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
