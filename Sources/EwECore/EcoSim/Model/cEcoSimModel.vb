@@ -339,7 +339,7 @@ Namespace Ecosim
                 RemoveImportFromEcosim()
 
                 Calc_nvar()
-
+                'jb move to after calcmo
                 CalcEatenOfBy()
                 CalcStartEatenOfBy()
 
@@ -349,6 +349,12 @@ Namespace Ecosim
 
                 DefaultMigrationAndToDetritus()
                 CalcMo()
+                CalcBaseAdditiveMort()
+
+
+                'CalcEatenOfBy()
+                'CalcStartEatenOfBy()
+
 
                 InitStanza()
 
@@ -2873,12 +2879,30 @@ Namespace Ecosim
                         End If
 
                         If StartEatenOf(i) > 0 Then
-                            PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
+                            ' PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
+                            m_Data.moTot(i) = m_Data.moMax(i) / (1 + m_Data.Qh(i)) * (m_Data.Eatenof(i) / StartEatenOf(i))
                         Else
-                            PredMult = 1
+                            m_Data.moTot(i) = m_Data.mo(i)
                         End If
 
-                        m_Data.loss(i) = m_Data.Eatenof(i) * PredMult + (m_Data.mo(i) + m_Data.MoPredBase(i) * (1 - PredMult) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        'If i = 7 Then
+                        '    Dim tmploss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        '    Debug.Print(tmploss.ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
+                        'End If
+
+                        ' m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.moTot(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+
+                        If m_Data.Qh(i) <> 0 Then
+                            Dim tmploss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                            Debug.Print(m_Data.loss(i).ToString + ", " + tmploss.ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
+                        End If
+
+
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        '27-Nov-2019 Original loss equation not including non additive mortality
+                        'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
@@ -3568,7 +3592,7 @@ Namespace Ecosim
 
             Next i
 
-            CalcBaseAdditiveMort()
+            'CalcBaseAdditiveMort()
 
         End Sub
 
@@ -3579,10 +3603,21 @@ Namespace Ecosim
             For i = 1 To m_EPData.NumGroups
 
                 m_Data.MoPredBase(i) = StartEatenOf(i) / m_Data.StartBiomass(i)
-                If m_Data.PhHalf(i) > 0 Then
-                    m_Data.PhHalf(i) = 1 / m_Data.PaddP(i) - 1
+
+                If StartEatenOf(i) > 0 And m_Data.mo(i) > 0 Then
+                    m_Data.moMax(i) = m_Data.mo(i) + m_Data.MoPredBase(i) * (1.0F - m_Data.PaddP(i))
+                    '=Mmax/Mo-1
+                    m_Data.Qh(i) = CSng(m_Data.moMax(i) / m_Data.mo(i) - 1.0F)
+
                 Else
-                    m_Data.PhHalf(i) = 1
+                    m_Data.moMax(i) = 1.0E-20
+                    m_Data.Qh(i) = 0
+                End If
+
+                If m_Data.PhHalf(i) > 0 Then
+                    m_Data.PhHalf(i) = 1.0F / m_Data.PaddP(i) - 1.0F
+                Else
+                    m_Data.PhHalf(i) = 1.0F
                 End If
 
             Next i
@@ -3832,6 +3867,8 @@ Namespace Ecosim
             ReDim EatenOfAvg(nGroups)
             ReDim PredAvg(nGroups)
             ReDim fCatch0(nGroups)
+
+
 
         End Sub
 
@@ -4431,6 +4468,9 @@ Namespace Ecosim
             ReDim m_Data.MoPredBase(nGroups)
 
             ReDim m_Data.PhHalf(nGroups)
+            ReDim m_Data.moTot(nGroups)
+            ReDim m_Data.moMax(nGroups)
+            ReDim m_Data.Qh(nGroups)
 
 
             'default from frmOptF.Form_Load()
