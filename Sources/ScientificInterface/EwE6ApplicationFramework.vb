@@ -23,6 +23,10 @@ Option Strict On
 Imports System.IO
 Imports System.Reflection
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore
 
 #End Region ' Imports
 
@@ -36,6 +40,8 @@ Module EwE6ApplicationFramework
 
     Private m_pluginfolders() As String = New String() {"", ".\plugins"}
     Private m_lsa As New Dictionary(Of String, Assembly)
+
+    Private m_bExpirationChecked As Boolean = False
 
 #End Region ' Private vars 
 
@@ -82,12 +88,12 @@ Module EwE6ApplicationFramework
     Public ReadOnly Property ReleaseMode As eReleaseMode
         Get
 #If BETA = 1 Then
-                Return eReleaseMode.Beta
+            Return eReleaseMode.Beta
 #End If
 #If DEBUG Then
             Return eReleaseMode.Dev
 #Else
-                Return eReleaseMode.Release
+            Return eReleaseMode.Release
 #End If
         End Get
     End Property
@@ -188,5 +194,46 @@ Module EwE6ApplicationFramework
     End Sub
 
 #End Region ' Splash screen
+
+#Region " Version formatting "
+
+    Public Function EwEVersion(bIncludeCompileDate As Boolean, bIncludeBitness As Boolean) As String
+
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE,
+                                     My.Resources.GENERIC_CAPTION,
+                                     cCore.Version(bIncludeCompileDate, bIncludeBitness))
+
+    End Function
+
+    Public Function EwERelease() As String
+
+        Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
+        Dim strMask As String = ""
+
+        Select Case EwE6ApplicationFramework.ReleaseMode
+            Case eReleaseMode.Beta
+                strMask = My.Resources.VERSION_BETA
+            Case eReleaseMode.Dev
+                strMask = My.Resources.VERSION_DEVELOPMENT
+            Case eReleaseMode.Release
+                strMask = My.Resources.VERSION_RELEASE
+        End Select
+
+        Return cStringUtils.Localize(strMask, dt.ToShortDateString)
+
+    End Function
+
+    Public Function EwERegistation(uic As cUIContext) As String
+
+        Dim label As String = ""
+        Dim dt As DateTime = uic.RegisteredExpiration
+        If (dt <> Nothing) Then
+            label = cStringUtils.Localize(My.Resources.VERSION_REGISTRATION, uic.RegisteredOwner, dt.ToShortDateString)
+        End If
+        Return label
+
+    End Function
+
+#End Region ' Version formatting
 
 End Module

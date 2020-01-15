@@ -166,7 +166,7 @@
     <value>1</value>
   </data>
   <data name="m_lblEwE.Text" xml:space="preserve">
-    <value>Ecopath with Ecosim v6.6</value>
+    <value>&lt;version&gt;</value>
   </data>
   <data name="m_lblEwE.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -202,7 +202,7 @@
     <value>1</value>
   </data>
   <data name="m_lblReleaseMode.Text" xml:space="preserve">
-    <value>&lt;release mode&gt;</value>
+    <value>&lt;release&gt;</value>
   </data>
   <data name="m_lblReleaseMode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>

@@ -82,10 +82,6 @@ Public Class frmEwE6
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
 
-#If BETA = 1 Then
-    Private m_bExpirationChecked As Boolean = False
-#End If
-
 #Region " Panels "
 
     Private Const cPANEL_REMARKS As String = "remarks"
@@ -893,23 +889,6 @@ Public Class frmEwE6
 
     End Sub
 
-#If BETA = 1 Then
-
-    Public Function IsBetaExpired() As Boolean
-        Return (cDateUtils.StartTime > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore))))
-    End Function
-
-    Private Sub CheckBetaExpired()
-        If (Me.m_bExpirationChecked = False) Then
-            If (Me.IsBetaExpired()) Then
-                Me.AskFeedback(My.Resources.VERSION_EXPIRED, eMessageImportance.Warning, eCoreComponentType.External, strHyperlink:="http://download.ecopath.org")
-            End If
-            Me.m_bExpirationChecked = True
-        End If
-    End Sub
-
-#End If
-
 #End Region ' Initialization
 
 #Region " Validation "
@@ -1203,14 +1182,19 @@ Public Class frmEwE6
                 ' should have triggered proper cleanups
                 cmdh.Clear()
 
-                Me.m_DockPanel.Dispose()
-
                 ' Clean up
                 If (Me.Icon IsNot Nothing) Then
                     Dim ico As Icon = Me.Icon
                     Me.Icon = Nothing
                     ico.Dispose()
                 End If
+
+                Try
+                    ' For good measure, non-critical
+                    Me.m_DockPanel.Dispose()
+                Catch ex As Exception
+
+                End Try
 
             Catch ex As Exception
                 cLog.Write(ex, "frmEwE6.OnFormClosed")
@@ -1565,7 +1549,7 @@ Public Class frmEwE6
         Dim bIsReadOnly As Boolean = False
 
         If (Not String.IsNullOrWhiteSpace(Me.UIContext.RegisteredOwner)) Then
-            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.UIContext.RegisteredOwner))
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, strCaption, EwERegistation(Me.UIContext))
         End If
 
         Me.m_tsModel.Path = Me.SelectedFileName

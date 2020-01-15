@@ -128,7 +128,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Attach(Me.m_uic, Me.m_tvNavigation)
 
         ' Build images list
-        ' EwE 6.6 and newer will no longer distinguish between folder and item nodes
+        ' EwE 6.6 and newer node images will no longer visually distinguish between folders and items
         Me.m_ilTreeIcons.Images.Clear()
         For key As Integer = 0 To [Enum].GetValues(GetType(eNodeImages)).Length - 1
             Dim img As Image = Nothing

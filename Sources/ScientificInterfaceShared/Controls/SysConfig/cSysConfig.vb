@@ -25,6 +25,7 @@ Imports EwEUtils.SystemUtilities
 Imports EwEPlugin
 Imports EwEUtils.Utilities
 Imports System.Text
+Imports CoreResoures = EwECore.My.Resources.CoreDefaults
 
 #End Region ' Imports
 
@@ -34,14 +35,14 @@ Namespace Controls
 
         Public Shared Function OSVersion() As String
             Dim strOS As String = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, My.Computer.Info.OSFullName, My.Computer.Info.OSVersion)
-            Dim strBit As String = If(cSystemUtils.Is64BitOS, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
+            Dim strBit As String = If(cSystemUtils.Is64BitOS, CoreResoures.BITNESS_64, CoreResoures.BITNESS_32)
             Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strOS, strBit)
         End Function
 
         Public Shared Function NETVersion() As String
-            Return String.Format(My.Resources.ABOUT_NET_VERSION,
+            Return String.Format(CoreResoures.NET_VERSION,
                                  System.Environment.Version.ToString(),
-                                 If(cSystemUtils.Is64BitProcess, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
+                                 If(cSystemUtils.Is64BitProcess, CoreResoures.BITNESS_64, CoreResoures.BITNESS_32))
         End Function
 
         Public Shared Function Modules(pm As cPluginManager) As String

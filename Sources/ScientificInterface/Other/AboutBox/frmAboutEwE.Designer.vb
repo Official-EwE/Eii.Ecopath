@@ -49,9 +49,10 @@ Namespace Other
             Me.m_rtbDistribution = New System.Windows.Forms.RichTextBox()
             Me.m_lbVersion = New System.Windows.Forms.Label()
             Me.m_lbTitle = New System.Windows.Forms.Label()
+            Me.m_lbRegistation = New System.Windows.Forms.Label()
             Me.m_lbCopyright = New System.Windows.Forms.Label()
             Me.m_lbLicense = New System.Windows.Forms.Label()
-            Me.m_lblExpiry = New System.Windows.Forms.Label()
+            Me._m_hdrDisclaimer = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpGeneral = New System.Windows.Forms.TabPage()
             Me.m_tpLicense = New System.Windows.Forms.TabPage()
@@ -71,7 +72,7 @@ Namespace Other
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
-            Me.m_lbRegistation = New System.Windows.Forms.Label()
+            Me.m_lblExpiry = New System.Windows.Forms.Label()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
@@ -112,14 +113,15 @@ Namespace Other
             'm_tlpDetails
             '
             resources.ApplyResources(Me.m_tlpDetails, "m_tlpDetails")
-            Me.m_tlpDetails.Controls.Add(Me.m_lbRegistation, 0, 5)
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 7)
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 9)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 9)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 10)
             Me.m_tlpDetails.Controls.Add(Me.m_lbVersion, 0, 1)
             Me.m_tlpDetails.Controls.Add(Me.m_lbTitle, 0, 0)
-            Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 4)
-            Me.m_tlpDetails.Controls.Add(Me.m_lbLicense, 0, 3)
-            Me.m_tlpDetails.Controls.Add(Me.m_lblExpiry, 0, 2)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbRegistation, 0, 2)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 6)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbLicense, 0, 5)
+            Me.m_tlpDetails.Controls.Add(Me._m_hdrDisclaimer, 0, 8)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblExpiry, 0, 3)
             Me.m_tlpDetails.Name = "m_tlpDetails"
             '
             'm_rtbDisclaimer
@@ -146,6 +148,11 @@ Namespace Other
             resources.ApplyResources(Me.m_lbTitle, "m_lbTitle")
             Me.m_lbTitle.Name = "m_lbTitle"
             '
+            'm_lbRegistation
+            '
+            resources.ApplyResources(Me.m_lbRegistation, "m_lbRegistation")
+            Me.m_lbRegistation.Name = "m_lbRegistation"
+            '
             'm_lbCopyright
             '
             resources.ApplyResources(Me.m_lbCopyright, "m_lbCopyright")
@@ -156,11 +163,13 @@ Namespace Other
             resources.ApplyResources(Me.m_lbLicense, "m_lbLicense")
             Me.m_lbLicense.Name = "m_lbLicense"
             '
-            'm_lblExpiry
+            '_m_hdrDisclaimer
             '
-            resources.ApplyResources(Me.m_lblExpiry, "m_lblExpiry")
-            Me.m_lblExpiry.ForeColor = System.Drawing.Color.Red
-            Me.m_lblExpiry.Name = "m_lblExpiry"
+            Me._m_hdrDisclaimer.CanCollapseParent = False
+            Me._m_hdrDisclaimer.CollapsedParentHeight = 0
+            resources.ApplyResources(Me._m_hdrDisclaimer, "_m_hdrDisclaimer")
+            Me._m_hdrDisclaimer.IsCollapsed = False
+            Me._m_hdrDisclaimer.Name = "_m_hdrDisclaimer"
             '
             'm_tcMain
             '
@@ -352,10 +361,11 @@ Namespace Other
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
-            'm_lbRegistation
+            'm_lblExpiry
             '
-            resources.ApplyResources(Me.m_lbRegistation, "m_lbRegistation")
-            Me.m_lbRegistation.Name = "m_lbRegistation"
+            resources.ApplyResources(Me.m_lblExpiry, "m_lblExpiry")
+            Me.m_lblExpiry.ForeColor = System.Drawing.SystemColors.Highlight
+            Me.m_lblExpiry.Name = "m_lblExpiry"
             '
             'frmAboutEwE
             '
@@ -376,6 +386,7 @@ Namespace Other
             Me.m_tlpGeneral.PerformLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpDetails.ResumeLayout(False)
+            Me.m_tlpDetails.PerformLayout()
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tpGeneral.ResumeLayout(False)
             Me.m_tpLicense.ResumeLayout(False)
@@ -420,8 +431,9 @@ Namespace Other
         Private WithEvents m_lbLicense As System.Windows.Forms.Label
         Private WithEvents m_lbTitle As System.Windows.Forms.Label
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
-        Private WithEvents m_lblExpiry As Label
         Private WithEvents m_lbRegistation As Label
+        Private WithEvents _m_hdrDisclaimer As cEwEHeaderLabel
+        Private WithEvents m_lblExpiry As Label
     End Class
 End Namespace
 
