@@ -2206,20 +2206,6 @@
     <value>row {3}, col {4}; lon {0}{2}, lat {1}{2}; value: {5}</value>
     <comment>{0}=lon pos, {1}=lat pos, {2}=map unit, {3}=row, {4}=col, {5}=value</comment>
   </data>
-  <data name="ABOUT_32BIT" xml:space="preserve">
-    <value>32 bit</value>
-  </data>
-  <data name="ABOUT_64BIT" xml:space="preserve">
-    <value>64 bit</value>
-  </data>
-  <data name="ABOUT_NET_VERSION" xml:space="preserve">
-    <value>.NET version {0} ({1})</value>
-    <comment>{0}=framework version, {1}=32 or 64 bit</comment>
-  </data>
-  <data name="ABOUT_OS_VERSION" xml:space="preserve">
-    <value>Operating System {0} ({1})</value>
-    <comment>{0}=OS version, {1}=32 or 64 bit</comment>
-  </data>
   <data name="HEADER_FISHING_EFFORT_MODIFIER" xml:space="preserve">
     <value>Fishing effort modifier</value>
   </data>

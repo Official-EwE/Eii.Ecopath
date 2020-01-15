@@ -57,46 +57,25 @@ Namespace Other
 
             Me.m_bInUpdate = True
 
-            Dim strTitle As String = My.Resources.GENERIC_CAPTION
-            Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
-
             Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
             cmd.AddControl(Me.m_rtbAcknowledgements)
             cmd.AddControl(Me.m_rtbDisclaimer)
             cmd.AddControl(Me.m_rtbDistribution)
             cmd.AddControl(Me.m_rtbLicense)
-            cmd.AddControl(Me.m_lblExpiry, "http://ecopath.org/downloads")
+            cmd.AddControl(Me.m_lblExpiry, If(String.IsNullOrWhiteSpace(Me.m_uic.RegisteredOwner), "http://ecopath.org/downloads", "http://ecopath.org/go-pro"))
 
             ' Format generic page
-            Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, strTitle)
-            Me.m_lbTitle.Text = strTitle
+            Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, My.Resources.GENERIC_CAPTION)
+            Me.m_lbTitle.Text = EwEVersion(True, True)
+            Me.m_lbVersion.Text = EwERelease()
 
-            Dim mode As eReleaseMode = Me.m_uic.StyleGuide.ReleaseMode
-            Select Case mode
-#If BETA = 1 Then
-                Case eReleaseMode.Beta
-                    Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_BETA, cCore.Version(True), strBitApp)
-                    Dim frmEwE As frmEwE6 = DirectCast(Me.m_uic.FormMain, frmEwE6)
-                    Me.m_lblExpiry.Visible = frmEwE.IsBetaExpired()
-                    Me.m_lblExpiry.Text = My.Resources.VERSION_EXPIRED
-#End If
-                Case Else
-                        Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp)
-                        Me.m_lblExpiry.Visible = False
-            End Select
-            Me.m_lbCopyright.Text = cStringUtils.Localize(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
+            Me.m_lbRegistation.Text = EwERegistation(Me.m_uic)
+            Me.m_lbRegistation.Visible = Not String.IsNullOrWhiteSpace(Me.m_lbRegistation.Text)
 
-            If (Not String.IsNullOrWhiteSpace(Me.m_uic.RegisteredOwner)) Then
-                Dim label As String = cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.m_uic.RegisteredOwner)
-                Dim dt As DateTime = Me.m_uic.RegisteredExpiration
-                If (dt <> Nothing) Then
-                    Dim exp As String = cStringUtils.Localize(If(dt < cDateUtils.StartTime, My.Resources.PLUGIN_LICENSE_EXPIRED, My.Resources.PLUGIN_LICENSE_EXPIRATION), dt.ToShortDateString)
-                    label = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, label, exp)
-                End If
-                Me.m_lbRegistation.Text = label
-                Me.m_lbRegistation.Visible = True
-            Else
-                Me.m_lbRegistation.Visible = False
+            Me.m_lbCopyright.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Application.Info.Copyright, My.Application.Info.CompanyName)
+
+            If (Me.m_uic.RegisteredExpiration <> Nothing) Then
+                Me.m_lblExpiry.Visible = Me.m_uic.RegisteredExpiration < cDateUtils.StartTime
             End If
 
             ' Format RTF content pages

@@ -40,6 +40,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -703,21 +704,27 @@ Public Class cCore
     ''' <summary>
     ''' Get the Core assembly version, formatted as a string.
     ''' </summary>
+    ''' <param name="bIncludeBitness">Inlcude 32 or 64 bitness in version string.</param>
+    ''' <param name="bIncludeCompilationDate">Inlcude compilation date in version string.</param>
     ''' -----------------------------------------------------------------------
-    Public Shared ReadOnly Property Version(Optional bIncludeCompilationDate As Boolean = False) As String
+    Public Shared ReadOnly Property Version(Optional bIncludeCompilationDate As Boolean = False, Optional bIncludeBitness As Boolean = False) As String
         Get
             Try
                 Dim ass As System.Reflection.Assembly = System.Reflection.Assembly.GetAssembly(GetType(cCore))
                 Dim an As System.Reflection.AssemblyName = ass.GetName()
+                Dim strVersion As String = cAssemblyUtils.GetVersion(an).ToString
 
                 If bIncludeCompilationDate Then
-                    Return cStringUtils.Localize(My.Resources.CoreDefaults.VERSION_EXT_COMPILED,
-                                                 cAssemblyUtils.GetVersion(an),
-                                                 cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
-                Else
-                    Return cAssemblyUtils.GetVersion(an).ToString
+                    strVersion = cStringUtils.Localize(My.Resources.CoreDefaults.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
                 End If
+
+                If bIncludeBitness Then
+                    strVersion = cStringUtils.Localize("{0} - {1}", strVersion, If(cSystemUtils.Is64BitProcess, My.Resources.CoreDefaults.BITNESS_64, My.Resources.CoreDefaults.BITNESS_32))
+                End If
+
+                Return strVersion
             Catch ex As Exception
+                cLog.Write(ex)
                 Return ""
             End Try
         End Get

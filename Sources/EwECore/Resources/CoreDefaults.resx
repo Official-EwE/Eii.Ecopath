@@ -2847,7 +2847,18 @@
   <data name="VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE" xml:space="preserve">
     <value>Abs. C||Contaminant forcing</value>
   </data>
-  <data name="VARIABLE_ADDITIVEPREDMORTPROP" xml:space="preserve">
-    <value>Add. pred. mort.||Additive pred. mort.|Additive proportion of predation mortality</value>
+  <data name="BITNESS_32" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="BITNESS_64" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
+  <data name="NET_VERSION" xml:space="preserve">
+    <value>.NET version {0} ({1})</value>
+    <comment>{0}=framework version, {1}=32 or 64 bit</comment>
+  </data>
+  <data name="OS_VERSION" xml:space="preserve">
+    <value>Operating System {0} ({1})</value>
+    <comment>{0}=OS version, {1}=32 or 64 bit</comment>
   </data>
 </root>

@@ -72,12 +72,13 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcospaceDefineMPAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineRegions = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDatasets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcospaceDefineImportanceLayers = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuEcospaceImport = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceImportLayers = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuEcospaceExport = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceExportLayers = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tsmiEcospaceAdvanced = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuEcospaceAdvanced = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoadXYRefData = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
@@ -167,7 +168,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiEcospaceDefineImportanceLayers = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -248,7 +248,7 @@ Partial Public Class frmEwE6
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceInputMaps, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceDefineImportanceLayers, m_tssEcospace3, Me.MenuEcospaceImport, Me.MenuEcospaceExport, Me.ToolStripSeparator5, Me.m_tsmiEcospaceAdvanced})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceInputMaps, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceDefineImportanceLayers, m_tssEcospace3, Me.MenuEcospaceImport, Me.MenuEcospaceExport, Me.ToolStripSeparator5, Me.MenuEcospaceAdvanced})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -312,6 +312,11 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsmiEcospaceDatasets, "m_tsmiEcospaceDatasets")
         Me.m_tsmiEcospaceDatasets.Name = "m_tsmiEcospaceDatasets"
         '
+        'm_tsmiEcospaceDefineImportanceLayers
+        '
+        Me.m_tsmiEcospaceDefineImportanceLayers.Name = "m_tsmiEcospaceDefineImportanceLayers"
+        resources.ApplyResources(Me.m_tsmiEcospaceDefineImportanceLayers, "m_tsmiEcospaceDefineImportanceLayers")
+        '
         'MenuEcospaceImport
         '
         Me.MenuEcospaceImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceImportLayers})
@@ -339,11 +344,11 @@ Partial Public Class frmEwE6
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
         resources.ApplyResources(Me.ToolStripSeparator5, "ToolStripSeparator5")
         '
-        'm_tsmiEcospaceAdvanced
+        'MenuEcospaceAdvanced
         '
-        Me.m_tsmiEcospaceAdvanced.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceLoadXYRefData})
-        Me.m_tsmiEcospaceAdvanced.Name = "m_tsmiEcospaceAdvanced"
-        resources.ApplyResources(Me.m_tsmiEcospaceAdvanced, "m_tsmiEcospaceAdvanced")
+        Me.MenuEcospaceAdvanced.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceLoadXYRefData})
+        Me.MenuEcospaceAdvanced.Name = "MenuEcospaceAdvanced"
+        resources.ApplyResources(Me.MenuEcospaceAdvanced, "MenuEcospaceAdvanced")
         '
         'm_tsmiEcospaceLoadXYRefData
         '
@@ -870,11 +875,6 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiEcospaceDefineImportanceLayers
-        '
-        Me.m_tsmiEcospaceDefineImportanceLayers.Name = "m_tsmiEcospaceDefineImportanceLayers"
-        resources.ApplyResources(Me.m_tsmiEcospaceDefineImportanceLayers, "m_tsmiEcospaceDefineImportanceLayers")
-        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -995,7 +995,7 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceInputMaps As ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDefineRegions As ToolStripMenuItem
     Private WithEvents ToolStripSeparator5 As ToolStripSeparator
-    Private WithEvents m_tsmiEcospaceAdvanced As ToolStripMenuItem
+    Private WithEvents MenuEcospaceAdvanced As ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceLoadXYRefData As ToolStripMenuItem
     Private WithEvents m_bgw As System.ComponentModel.BackgroundWorker
     Private WithEvents m_tsbnAutosaveConfig As ToolStripButton

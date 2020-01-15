@@ -20,12 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.ComponentModel
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -44,23 +39,10 @@ Friend Class frmSplash
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Zoom
 
-        Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
-        Dim strVer As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, cCore.Version(False), strBitApp)
+        Me.m_lblEwE.Text = EwEVersion(False, False)
+        Me.ScaleFont(Me.m_lblEwE)
 
-        Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
-        Dim strMask As String = ""
-
-        Select Case EwE6ApplicationFramework.ReleaseMode
-            Case eReleaseMode.Beta
-                strMask = My.Resources.VERSION_BETA
-            Case eReleaseMode.Dev
-                strMask = My.Resources.VERSION_DEVELOPMENT
-            Case eReleaseMode.Release
-                ' ToDo: show pro / free
-                strMask = My.Resources.VERSION_RELEASE
-        End Select
-
-        Me.m_lblReleaseMode.Text = cStringUtils.Localize(strMask, dt.ToShortDateString)
+        Me.m_lblReleaseMode.Text = EwERelease()
 
         Me.CenterToScreen()
 #If DEBUG Then
@@ -68,6 +50,23 @@ Friend Class frmSplash
 #Else
         Me.TopMost = True
 #End If
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+        Me.m_pbIcon.BackgroundImage.Dispose()
+        MyBase.OnFormClosed(e)
+    End Sub
+
+    Private Sub ScaleFont(lab As Label)
+
+        Dim extent As SizeF = TextRenderer.MeasureText(lab.Text, lab.Font)
+
+        Dim hRatio As Single = lab.Height / extent.Height
+        Dim wRatio As Single = lab.Width / extent.Width
+        Dim ratio As Single = If(hRatio < wRatio, hRatio, wRatio)
+        Dim newSize As Single = CSng(Math.Floor(lab.Font.Size * ratio))
+        lab.Font = New Font(lab.Font.FontFamily, newSize, lab.Font.Style)
 
     End Sub
 

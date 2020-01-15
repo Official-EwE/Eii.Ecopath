@@ -283,7 +283,7 @@ Namespace Style
 
 #End Region ' Construction & destruction
 
-#Region " Public Methods "
+#Region " Public access "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -328,10 +328,6 @@ Namespace Style
         Public Function IsVisualStylesEnabled(element As VisualStyleElement) As Boolean
             Return Application.RenderWithVisualStyles And VisualStyleRenderer.IsElementDefined(element)
         End Function
-
-#End Region ' Public methods
-
-#Region " Public access "
 
 #Region " Enums and events "
 

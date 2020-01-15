@@ -65,6 +65,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to 32 bit.
+        '''</summary>
+        Public Shared ReadOnly Property BITNESS_32() As String
+            Get
+                Return ResourceManager.GetString("BITNESS_32", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to 64 bit.
+        '''</summary>
+        Public Shared ReadOnly Property BITNESS_64() As String
+            Get
+                Return ResourceManager.GetString("BITNESS_64", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to All fleets.
         '''</summary>
         Public Shared ReadOnly Property CORE_ALL_FLEETS() As String
@@ -421,6 +439,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property MONTECARLO_WRITER_ONEFILE() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_WRITER_ONEFILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .NET version {0} ({1}).
+        '''</summary>
+        Public Shared ReadOnly Property NET_VERSION() As String
+            Get
+                Return ResourceManager.GetString("NET_VERSION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Operating System {0} ({1}).
+        '''</summary>
+        Public Shared ReadOnly Property OS_VERSION() As String
+            Get
+                Return ResourceManager.GetString("OS_VERSION", resourceCulture)
             End Get
         End Property
         
@@ -1024,15 +1060,6 @@ Namespace My.Resources
         Public Shared ReadOnly Property UNITS_WEIGHT() As String
             Get
                 Return ResourceManager.GetString("UNITS_WEIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Add. pred. mort.||Additive pred. mort.|Additive proportion of predation mortality.
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_ADDITIVEPREDMORTPROP() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_ADDITIVEPREDMORTPROP", resourceCulture)
             End Get
         End Property
         

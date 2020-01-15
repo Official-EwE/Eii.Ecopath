@@ -41,6 +41,9 @@ Imports ScientificInterfaceShared.Controls
 ' Set to non-zero to enable license validation using whichever plug-in we decide to use
 #Const USE_LICENSE = 0
 
+' Set to non-zero to enable evaluation mode
+#Const IS_EVALUATION = 0
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Miscellaneous utilities for working with the DotSpatial libraries.
@@ -593,16 +596,20 @@ Public Class cDotSpatialUtils
             g_lic = New cTreekLic()
             If (g_lic.IsRegistered) Then
                 g_bValid = g_lic.IsLicensed()
-                g_uic.RegisteredOwner = g_lic.Owner
+                g_uic.RegisteredOwner = "registered to " & g_lic.Owner
                 g_uic.RegisteredExpiration = g_lic.Expiry
             End If
 #Else
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
-#If Not DEBUG Then
-            ' Set owner name here
-            g_uic.RegisteredOwner = "Marta Coll"
             g_uic.RegisteredExpiration = cDotSpatialUtils.ExpiryDate(core)
+
+#If IS_EVALUATION Then
+            g_uic.RegisteredOwner = "evaluation"
+#Else
+            ' Set owner name here
+            g_uic.RegisteredOwner = "registered to Villy Christensen"
 #End If
+
 #End If
             g_bValidated = True
         End If
@@ -619,6 +626,9 @@ Public Class cDotSpatialUtils
 #If USE_LICENSE Then
             If (g_lic Is Nothing) Then IsLicensed(core)
             Return g_lic.Expiry
+#ElseIf IS_EVALUATION Then
+            ' Set evaluation expiry date here
+            Return New Date(2020, 4, 1)
 #Else
             Return cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))).AddYears(1)
 #End If
