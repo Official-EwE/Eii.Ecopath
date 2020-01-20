@@ -7953,7 +7953,7 @@ Namespace DataSources
                 Next
 
                 ' Add default 'All' habitat
-                bSucces = bSucces And Me.AddEcospaceHabitat("All", iScenarioID, iIDtmp)
+                bSucces = bSucces And Me.AddEcospaceHabitat("All", iScenarioID, 0, iIDtmp)
 
                 ' Reload scenario definitions
                 bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
@@ -8391,6 +8391,8 @@ Namespace DataSources
                 Implements DataSources.IEcospaceDatasource.AddEcospaceHabitat
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            If (ecopathDS.ActiveEcospaceScenario = -1) Then Return False
+
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 

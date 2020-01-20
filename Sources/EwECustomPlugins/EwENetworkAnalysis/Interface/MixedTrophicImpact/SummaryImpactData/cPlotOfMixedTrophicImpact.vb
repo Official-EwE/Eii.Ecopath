@@ -103,7 +103,7 @@ Public Class cPlotOfMixedTrophicImpact
                     iNumItems += 1
                 End If
             Else
-                If Me.StyleGuide.FleetVisible(i) Then
+                If Me.StyleGuide.FleetVisible(i - NetworkManager.nGroups) Then
                     aIDS(i) = iNumItems
                     iNumItems += 1
                 End If
