@@ -241,6 +241,7 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMAge1Forcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerContaminantForcingAbsolute.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerOtherMortality.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesManager.vb" />
@@ -424,6 +425,7 @@
     <Compile Include="SpatialTemporal\Adapters\cBiomassForcingAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cBiomassRelativeAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cCapacityDataAdapter.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cIBMAge1NumbersForcingAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialScalarNonRestoringDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cForcingAdapterBase.vb" />
     <Compile Include="SpatialTemporal\Adapters\cRelPPDataAdapter.vb" />

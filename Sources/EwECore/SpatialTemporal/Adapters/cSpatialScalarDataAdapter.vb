@@ -87,6 +87,9 @@ Namespace SpatialData
     Public MustInherit Class cSpatialScalarDataAdapterBase
         Inherits cSpatialDataAdapter
 
+
+        Friend iScaleLayerIndex As Integer
+
 #Region " Constructor "
 
         Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
@@ -120,9 +123,9 @@ Namespace SpatialData
         ''' <returns>A <see cref="cDatasetCompatilibity.Compatibility"/> result
         ''' indicating the outcome of the calculation.</returns>
         ''' -------------------------------------------------------------------
-        Public Function CalculateScaleFromEcopathTimePeriod(ByVal iLayerIndex As Integer, _
-                                                            ByVal conn As cSpatialDataConnection, _
-                                                            ByVal iFirstTimeStep As Integer, _
+        Public Function CalculateScaleFromEcopathTimePeriod(ByVal iLayerIndex As Integer,
+                                                            ByVal conn As cSpatialDataConnection,
+                                                            ByVal iFirstTimeStep As Integer,
                                                             ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
             Dim manConn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
@@ -131,6 +134,7 @@ Namespace SpatialData
 
             ' Early bail-out
             If Not Me.IsConnected(iLayerIndex) Then Return result
+            iScaleLayerIndex = iLayerIndex
 
             ' Suspend indexing
             manSets.SuspendIndexing()

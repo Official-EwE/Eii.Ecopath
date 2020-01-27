@@ -219,10 +219,11 @@ Public Class cGridSolver
                 iGrp = threadGroups(ThreadID, i)
 
                 If ByPassIntegrate(iGrp) = False Then
-                    If useExact And isMigratory(iGrp) Then
-                        solveExact(iGrp)
-                    Else
-                        If bUseLocalMemory Then
+                    'If useExact And isMigratory(iGrp) Then
+                    If useExact Then
+                            solveExact(iGrp)
+                        Else
+                            If bUseLocalMemory Then
                             'Copies core memory to local arrays for running on Hungabee
                             'otherwise the same as SolveGrid_SharedMemory
                             SolveGrid_LocalMemory(iGrp)

@@ -2861,4 +2861,7 @@
     <value>Operating System {0} ({1})</value>
     <comment>{0}=OS version, {1}=32 or 64 bit</comment>
   </data>
+  <data name="VARIABLE_LAYERIBMAGE1FORCING" xml:space="preserve">
+    <value>IBM Age 0 Forcing</value>
+  </data>
 </root>

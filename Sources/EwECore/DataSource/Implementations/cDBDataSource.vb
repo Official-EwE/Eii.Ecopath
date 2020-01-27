@@ -10083,7 +10083,7 @@ Namespace DataSources
                 Try
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
-                    Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), iLayerID)
+                    Dim iLayer As Integer = Array.IndexOf(Me.getLayerIDs(var), iLayerID)
                     Dim iConn As Integer = -1
 
                     ' May link to unknown layer
@@ -10155,7 +10155,7 @@ Namespace DataSources
                                     drow = writer.NewRow()
                                     drow("ScenarioID") = iScenarioID
                                     drow("VarName") = cin.GetVarName(adt.VarName)
-                                    iLayerID = ecospaceDS.getLayerID(adt.VarName, i)
+                                    iLayerID = Me.getLayerID(adt.VarName, i)
 
                                     ' ID linkages
                                     Select Case adt.VarName
@@ -10189,6 +10189,11 @@ Namespace DataSources
                                             ' Map id-ed with mpa
                                             iLayerID = idm.GetID(eDataTypes.EcospaceLayerMPA, iLayerID)
 
+                                        Case eVarNameFlags.LayerIBMAge1Forcing
+                                            'beats me....
+                                            'iSequence = i
+                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerMPA, iLayerID)
+
                                     End Select
 
                                     drow("LayerID") = iLayerID
@@ -10218,6 +10223,35 @@ Namespace DataSources
             Return bSucces
 
         End Function
+
+        Private Function getLayerID(varname As eVarNameFlags, iIndex As Integer) As Integer
+            Dim arr As Integer() = Me.getLayerIDs(varname)
+            If ((iIndex < 0) Or (iIndex >= arr.Length)) Then Return cCore.NULL_VALUE
+            Return arr(iIndex)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Obtain a layer DBID for any varname and index.
+        ''' </summary>
+        ''' <param name="varname"></param>
+        ''' <remarks>
+        ''' This method is robust to any type of abuse; non-registered <paramref name="varname">variables</paramref>
+        ''' are dealt with properly.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Private ReadOnly Property getLayerIDs(varname As eVarNameFlags) As Integer()
+            Get
+                If varname = eVarNameFlags.LayerIBMAge1Forcing Then
+                    Return Me.m_core.m_Stanza.StanzaDBID
+                Else
+                    Return Me.m_core.m_EcoSpaceData.getLayerIDs(varname)
+                End If
+
+                Return New Integer() {0, 1}
+            End Get
+
+        End Property
 
 #End Region ' Data adapters
 

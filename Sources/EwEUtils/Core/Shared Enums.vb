@@ -508,6 +508,10 @@ Namespace Core
         LayerBiomassForcing
         ''' <summary>To document</summary>
         LayerBiomassRelativeForcing
+
+        ''' <summary>Number of age 1 individuals for a stanza group. Used to force recruitment numbers of a mulit-stanza group by the IBM Model ONLY.</summary>
+        LayerIBMAge1Forcing
+
         ''' <summary>Ecospace/MPA importance weight of the weight layer</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type</summary>
@@ -2473,6 +2477,12 @@ Namespace Core
         ''' Data belongs to the Ecospace absolute contaminant layer forcing.
         '''</summary>
         EcospaceLayerContaminantForcingAbs = 123
+
+        ''' <summary>
+        ''' Multi stanza Age 1 (recruitment numbers) forcing for the IBM Model ONLY
+        ''' </summary>
+        EcospaceLayerIBMAge1Forcing = 124
+
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

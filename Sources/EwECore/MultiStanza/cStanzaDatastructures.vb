@@ -64,6 +64,7 @@ Public Class cStanzaDatastructures
     ''' <remarks>Populated in <see cref="cEcoSpace.InitPackets"> InitPackets</see></remarks>
     Public Nnursery() As Integer
 
+
     Public Zcell(,,) As Single   'mortality rate by cell and species
     Public MaxAgeSpecies() As Integer
     Public Npackets As Integer  'total # of packets per age
@@ -94,7 +95,10 @@ Public Class cStanzaDatastructures
     Public WageS(,) As Single
     ''' <summary>Base recruitment to age 0 for split species.</summary>
     Public RzeroS() As Single
-    Public SplitAlpha(,) As Single 'growth coefficients by split spp and age (set in initialstate)
+
+    ''' <summary>growth coefficients by split spp and age (set in initialstate)</summary>
+    Public SplitAlpha(,) As Single
+
     Public RscaleSplit() As Single
     Public EggsSplit(,) As Single
     ''' <summary>Life stage start age</summary>
@@ -151,6 +155,12 @@ Public Class cStanzaDatastructures
     ''' </remarks>
     Public SpeciesCode(,) As Integer
 
+
+    Public isForcedIBMRecruits() As Boolean
+    'Public IBMForcedNPackets(,) As Single
+    Public IBMForcedCells()(,) As Single
+
+
 #Region " Private data "
 
     Private m_messages As cMessagePublisher
@@ -197,6 +207,9 @@ Public Class cStanzaDatastructures
         ReDim EggProdIsSeasonal(Nsplit)
         ReDim BABsplit(Nsplit)
         ReDim EggAtSpawn(Nsplit)
+
+        ReDim isForcedIBMRecruits(Nsplit)
+
 
         For i As Integer = 0 To Nsplit : For j As Integer = 0 To MaxStanza : SpawnProp(i, j) = 1.0 : Next : Next
 
