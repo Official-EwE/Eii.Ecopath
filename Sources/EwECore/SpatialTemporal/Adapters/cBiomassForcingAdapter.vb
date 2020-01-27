@@ -75,11 +75,9 @@ Namespace SpatialData
                     'Cells outside the modeled area can/will be -9999
                     'don't scale these 
                     sValueAtT *= conn.Scale
-                    'Temp proof of concept
-                    'ForceIBM(layer, conn, iRow, iCol, sValueAtT)
+                    'Return True
                 End If
             End If
-
 
 
             Me.saveForcedCell(layer.Index, iRow, iCol, sValueAtT)
@@ -89,22 +87,6 @@ Namespace SpatialData
         End Function
 
 
-        Private Sub ForceIBM(ByVal layer As cEcospaceLayer,
-                                             ByVal conn As cSpatialDataConnection,
-                                             ByVal iRow As Integer,
-                                             ByVal iCol As Integer,
-                                             ByVal sValueAtT As Double)
-
-            Dim iSt As Integer = m_core.getStanzaIndexForGroup(layer.Index)
-            For ip As Integer = 1 To Me.m_core.m_Stanza.Npackets
-                If iRow = Math.Truncate(Me.m_core.m_Stanza.iPacket(iSt, 1, ip)) And iCol = Math.Truncate(Me.m_core.m_Stanza.jPacket(iSt, 1, ip)) Then
-                    System.Console.WriteLine(iSt.ToString + " " + sValueAtT.ToString)
-                    m_core.m_Stanza.Wpacket(iSt, 1, ip) = CSng(sValueAtT)
-                End If
-            Next ip
-
-
-        End Sub
 
         Protected Overrides Function NewConnection() As cSpatialDataConnection
             Dim conn As New cSpatialDataConnection()
