@@ -2878,24 +2878,39 @@ Namespace Ecosim
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
 
+
                         If StartEatenOf(i) > 0 Then
-                            ' PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
-                            m_Data.moTot(i) = m_Data.moMax(i) / (1 + m_Data.Qh(i)) * (m_Data.Eatenof(i) / StartEatenOf(i))
+
+                            '    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-
+                            '    'jb org formualtion
+                            '    ' PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
+                            '    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                            '    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            '    ''From Spreadsheet
+                            m_Data.moTot(i) = m_Data.moMax(i) / (1 + m_Data.Qh(i) * (m_Data.Eatenof(i) / StartEatenOf(i)))
+                            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            'jb Alternatively just scale Mo as a proportion of the change in q/q0 and PaddP [proportion of additive mortality]
+                            'Dim MoPredRatio As Single = m_Data.Eatenof(i) / (StartEatenOf(i) + 1.0E-20F)
+                            'If StartEatenOf(i) > 0 And MoPredRatio < 1.0F Then
+
+                            'm_Data.moTot(i) = m_Data.mo(i) + m_Data.MoPredBase(i) * (1 - MoPredRatio) * (1.0F - m_Data.PaddP(i))
+                            'Debug.Assert(Not Single.IsNaN(m_Data.moTot(i)))
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
                         Else
                             m_Data.moTot(i) = m_Data.mo(i)
                         End If
 
-                        'If i = 7 Then
-                        '    Dim tmploss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                        '    Debug.Print(tmploss.ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
-                        'End If
+                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.moTot(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
 
-                        ' m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.moTot(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-
-                        If m_Data.Qh(i) <> 0 Then
-                            Dim tmploss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                            Debug.Print(m_Data.loss(i).ToString + ", " + tmploss.ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
+                        If m_Data.PaddP(i) < 1 Then 'And (MoPredRatio < 0.8) 
+                            Dim orgLoss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                            Debug.Print(m_Data.loss(i).ToString + ", " + orgLoss.ToString + ", " + m_Data.moMax(i).ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
                         End If
 
 
@@ -2908,18 +2923,18 @@ Namespace Ecosim
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
                         '(dB/dt from it is ignored anyway) for split groups, so not worth avoiding doing it for them.
                         If (m_Data.UseVarPQ And m_EPData.vbK(i) > 0) Then
-                            SimGEtemp(i) = m_Data.AssimEff(i) * m_Data.loss(i) / Biomass(i) / (m_Data.loss(i) / Biomass(i) + 3 * m_EPData.vbK(i))
-                        Else
-                            SimGEtemp(i) = m_Data.SimGE(i)
-                        End If
+                                SimGEtemp(i) = m_Data.AssimEff(i) * m_Data.loss(i) / Biomass(i) / (m_Data.loss(i) / Biomass(i) + 3 * m_EPData.vbK(i))
+                            Else
+                                SimGEtemp(i) = m_Data.SimGE(i)
+                            End If
 
-                        deriv(i) = m_EPData.Immig(i) + Biomass(i) * pbb(i) + SimGEtemp(i) * m_Data.Eatenby(i) - m_Data.loss(i)
-                        biomeq(i) = (m_EPData.Immig(i) + m_Data.SimGE(i) * m_Data.Eatenby(i) + pbb(i) * Biomass(i)) / (m_Data.loss(i) / Biomass(i))
-                    Else
-                        'Detritus group
-                        'Flow to detritus from imports and immigration
-                        'jb 3-Oct-2013 added immig
-                        DtImpMult = 1
+                            deriv(i) = m_EPData.Immig(i) + Biomass(i) * pbb(i) + SimGEtemp(i) * m_Data.Eatenby(i) - m_Data.loss(i)
+                            biomeq(i) = (m_EPData.Immig(i) + m_Data.SimGE(i) * m_Data.Eatenby(i) + pbb(i) * Biomass(i)) / (m_Data.loss(i) / Biomass(i))
+                        Else
+                            'Detritus group
+                            'Flow to detritus from imports and immigration
+                            'jb 3-Oct-2013 added immig
+                            DtImpMult = 1
                         ApplyAVmodifiers(iTimeStepIndex, DtImpMult, 0, MoMult, i, i, True)
                         DetInFlow = m_EPData.DtImp(i) * DtImpMult + m_EPData.Immig(i)
 
@@ -3308,6 +3323,7 @@ Namespace Ecosim
                 Next ist
                 m_stanza.SplitAlpha(isp, m_stanza.Age2(isp, m_stanza.Nstanza(isp))) = m_stanza.SplitAlpha(isp, m_stanza.Age2(isp, m_stanza.Nstanza(isp)) - 1)
             Next isp
+
             'initialize splitgroup flux rates among stanzas for ecospace
             For isp = 1 To m_stanza.Nsplit
                 For ist = 2 To m_stanza.Nstanza(isp)
@@ -3315,6 +3331,8 @@ Namespace Ecosim
                 Next ist
             Next isp
 
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Debugging 
             'cLog.WriteMatrixToFile("N At Age EwE6.csv", m_stanza.NageS, "EwE6")
             'cLog.WriteMatrixToFile("W At Age EwE6.csv", m_stanza.WageS, "EwE6")
             'cLog.WriteMatrixToFile("SplitAlpha 6.csv", m_stanza.SplitAlpha, "EwE6")
@@ -3326,6 +3344,7 @@ Namespace Ecosim
             'cLog.WriteArrayToFile("Pred 6.csv", m_Data.pred, "EwE6")
             'cLog.WriteMatrixToFile("NumSplit 6.csv", m_stanza.NumSplit, "EwE6")
             'cLog.WriteMatrixToFile("EggsSplit 6.csv", m_stanza.EggsSplit, "EwE6")
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         End Sub
 
@@ -3602,9 +3621,9 @@ Namespace Ecosim
 
             For i = 1 To m_EPData.NumGroups
 
-                m_Data.MoPredBase(i) = StartEatenOf(i) / m_Data.StartBiomass(i)
 
                 If StartEatenOf(i) > 0 And m_Data.mo(i) > 0 Then
+                    m_Data.MoPredBase(i) = StartEatenOf(i) / m_Data.StartBiomass(i)
                     m_Data.moMax(i) = m_Data.mo(i) + m_Data.MoPredBase(i) * (1.0F - m_Data.PaddP(i))
                     '=Mmax/Mo-1
                     m_Data.Qh(i) = CSng(m_Data.moMax(i) / m_Data.mo(i) - 1.0F)
