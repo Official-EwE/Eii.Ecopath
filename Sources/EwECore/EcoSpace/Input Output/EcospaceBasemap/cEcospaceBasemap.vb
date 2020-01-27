@@ -347,6 +347,14 @@ Public Class cEcospaceBasemap
             Next
             Me.m_dictLayers(eVarNameFlags.LayerM0MultInput) = llayers.ToArray
 
+
+            'Me.m_dictLayers(eVarNameFlags.LayerIBMAge1NumbersForcing) = New cEcospaceLayer() {New cEcospaceLayer(theCore, Me)}
+            llayers.Clear()
+            For i As Integer = 1 To Me.m_core.nStanzas
+                llayers.Add(New cEcospaceLayerIBMAge1Forcing(theCore, Me, i))
+            Next
+            Me.m_dictLayers(eVarNameFlags.LayerIBMAge1Forcing) = llayers.ToArray
+
             'set status flags to default values
             ResetStatusFlags()
 
@@ -884,6 +892,18 @@ Public Class cEcospaceBasemap
     End Property
 
     ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the computed other mortality layer
+    ''' </summary>
+    ''' <param name="iGroup">One-based group index</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerIBMAge1Forcing(iGroup As Integer) As cEcospaceLayerIBMAge1Forcing
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerIBMAge1Forcing)(iGroup - 1), cEcospaceLayerIBMAge1Forcing)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.Layers"/>
     ''' -----------------------------------------------------------------------
     Public Function Layers(Optional varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() _
@@ -979,6 +999,10 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Excluded
             Case eVarNameFlags.LayerM0MultInput
                 Return Me.m_core.m_EcoSpaceData.M0MultInput
+
+            Case eVarNameFlags.LayerIBMAge1Forcing
+                Return Me.m_core.m_EcoSpaceData.Bcell
+
         End Select
         Return Nothing
     End Function

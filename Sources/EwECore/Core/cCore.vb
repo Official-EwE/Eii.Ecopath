@@ -10058,6 +10058,9 @@ Public Class cCore
                 Return False
             End If
 
+            Me.m_Ecospace.UpdateDepthMap()
+            Me.m_Ecospace.CalcHabitatArea()
+
             Me.m_TSData.SetBiomassForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
             Me.m_TSData.SetDiscardForcing(Me.m_EcoSpaceData.IsEcosimDiscardForcingGroup)
 

@@ -2403,6 +2403,8 @@ Public Class cEcoSpace
                 Me.EcoSpaceData.TotalTime = Me.EcoSimData.NumYears
             End If
 
+
+
             Me.EcoSimData.setRelQToT(1, False)
 
             '*******************
@@ -2428,6 +2430,8 @@ Public Class cEcoSpace
 
             'Update the Depth map based on the Exclusion layer
             Me.UpdateDepthMap()
+
+            Me.CalcHabitatArea()
 
             If ContaiminantTracerData.EcoSpaceConSimOn Then
                 EcoSpaceData.RedimConSimVars()
@@ -3897,233 +3901,6 @@ Public Class cEcoSpace
         End If
     End Sub
 
-
-    Sub SetMovementParameters_NoOffset()
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'jb 6-Dec-2016 OK This fixes the issue with the velocity vectors being off set by one cell 
-        'But the model goes unstable after a long run... So not so good ehhh
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-        'sets solvegrid movement arrays based on depth map
-        Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
-        Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
-
-        Me.EcoSpaceData.allocate(Bcw, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
-        Me.EcoSpaceData.allocate(C, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
-        'd movement to right
-        Me.EcoSpaceData.allocate(d, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
-        'e movement to left
-        Me.EcoSpaceData.allocate(e, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
-
-        'Advection vectors Xvel(,) are in cm/sec convert to km/year, same units as the mrate()
-        '[km/year] / [cell length]
-        AdScale = 315.36 / EcoSpaceData.CellLength
-
-        'set depth for the boundary cells to be equal to the depth just inside the model
-        EcoSpaceData.Width(0) = EcoSpaceData.Width(1)
-        'm_Data.Width(m_Data.InRow + 1) = m_Data.Width(m_Data.InRow)
-        For i = 1 To EcoSpaceData.InRow
-            EcoSpaceData.Depth(i, 0) = EcoSpaceData.Depth(i, 1)
-            EcoSpaceData.Depth(i, EcoSpaceData.InCol + 1) = EcoSpaceData.Depth(i, EcoSpaceData.InCol)
-            If EcoSpaceData.Depth(i, 0) > 0 Then
-                EcoSpaceData.Xvel(i, 0) = EcoSpaceData.Xvel(i, 1)
-                EcoSpaceData.Yvel(i, 0) = EcoSpaceData.Yvel(i, 1)
-                For ip = 1 To EcoSpaceData.NGroups
-                    EcoSpaceData.HabCap(ip)(i, 0) = EcoSpaceData.HabCap(ip)(i, 1)
-                Next
-            End If
-            If EcoSpaceData.Depth(i, EcoSpaceData.InCol + 1) > 0 Then
-                EcoSpaceData.Xvel(i, EcoSpaceData.InCol + 1) = EcoSpaceData.Xvel(i, EcoSpaceData.InCol)
-                EcoSpaceData.Yvel(i, EcoSpaceData.InCol + 1) = EcoSpaceData.Yvel(i, EcoSpaceData.InCol)
-                For ip = 1 To EcoSpaceData.NGroups
-                    EcoSpaceData.HabCap(ip)(i, EcoSpaceData.InCol + 1) = EcoSpaceData.HabCap(ip)(i, EcoSpaceData.InCol)
-                Next
-            End If
-        Next
-        For j = 1 To EcoSpaceData.InCol
-            EcoSpaceData.Depth(0, j) = EcoSpaceData.Depth(1, j)
-            EcoSpaceData.Depth(EcoSpaceData.InRow + 1, j) = EcoSpaceData.Depth(EcoSpaceData.InRow, j)
-            If EcoSpaceData.Depth(0, j) > 0 Then
-                EcoSpaceData.Xvel(0, j) = EcoSpaceData.Xvel(1, j)
-                EcoSpaceData.Yvel(0, j) = EcoSpaceData.Yvel(1, j)
-                For ip = 1 To EcoSpaceData.NGroups
-                    EcoSpaceData.HabCap(ip)(0, j) = EcoSpaceData.HabCap(ip)(1, j)
-                Next
-            End If
-            If EcoSpaceData.Depth(EcoSpaceData.InRow + 1, j) > 0 Then
-                EcoSpaceData.Xvel(EcoSpaceData.InRow + 1, j) = EcoSpaceData.Xvel(EcoSpaceData.InRow, j)
-                EcoSpaceData.Yvel(EcoSpaceData.InRow + 1, j) = EcoSpaceData.Yvel(EcoSpaceData.InRow, j)
-                For ip = 1 To EcoSpaceData.NGroups
-                    EcoSpaceData.HabCap(ip)(EcoSpaceData.InRow + 1, j) = EcoSpaceData.HabCap(ip)(EcoSpaceData.InRow, j)
-                Next
-            End If
-        Next
-
-        For i = 0 To EcoSpaceData.InRow
-            For j = 0 To EcoSpaceData.InCol
-                'is this cell water
-                If EcoSpaceData.Depth(i, j) > 0 Then
-                    'Yes we are in a water cell
-                    'check depth on right face of this cell
-                    If EcoSpaceData.Depth(i, j + 1) > 0 Then
-
-                        For ip = 1 To EcoSpaceData.NGroups
-                            If j > 0 And j < EcoSpaceData.InCol + 1 Then
-
-                                If EcoSpaceData.HabCap(ip)(i, j + 1) = EcoSpaceData.HabCap(ip)(i, j) Then
-                                    d(i, j, ip) = EcoSpaceData.Mrate(ip)
-                                    e(i, j + 1, ip) = EcoSpaceData.Mrate(ip)
-                                ElseIf EcoSpaceData.HabCap(ip)(i, j + 1) > EcoSpaceData.HabCap(ip)(i, j) Then
-                                    d(i, j, ip) = EcoSpaceData.Mrate(ip)
-                                    e(i, j + 1, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i, j) / EcoSpaceData.HabCap(ip)(i, j + 1)
-                                Else
-                                    d(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i, j + 1) / EcoSpaceData.HabCap(ip)(i, j)
-                                    e(i, j + 1, ip) = EcoSpaceData.Mrate(ip)
-                                End If
-
-                                'e(i, j + 1, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j + 1) * RelHabMove(i, j + 1, i, j, Me.HabGrad, m_Data.MoveScale, ip)
-                                'd(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i, j + 1, Me.HabGrad, m_Data.MoveScale, ip)
-                                If EcoSpaceData.IsAdvected(ip) Then
-                                    If EcoSpaceData.Xvel(i, j) > 0 Then
-                                        d(i, j, ip) = d(i, j, ip) + EcoSpaceData.Xvel(i, j) * AdScale 'from j to the right
-                                        ' d(i, j, ip) = d(i, j, ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
-                                    Else
-                                        ' e(i, j + 1, ip) = e(i, j + 1, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
-                                        e(i, j, ip) = e(i, j, ip) - EcoSpaceData.Xvel(i, j) * AdScale 'into j from right
-                                    End If
-
-                                End If
-                            Else
-                                'Outside the grid bounds Col=0 or n+1
-                                If EcoSpaceData.IsAdvected(ip) Then
-                                    If EcoSpaceData.Xvel(i, j) > 0 Then
-                                        e(i, j + 1, ip) = EcoSpaceData.Mrate(ip) 'into j from right
-                                        d(i, j, ip) = EcoSpaceData.Mrate(ip) + EcoSpaceData.Xvel(i, j) * AdScale 'from j to the right
-                                    Else
-                                        e(i, j + 1, ip) = EcoSpaceData.Mrate(ip) - EcoSpaceData.Xvel(i, j) * AdScale 'into j from right
-                                        d(i, j, ip) = EcoSpaceData.Mrate(ip) 'from j to the right
-
-                                    End If
-                                Else
-                                    e(i, j + 1, ip) = 0
-                                    d(i, j, ip) = 0
-                                End If
-                            End If
-                            Enomig(i, j + 1, ip) = e(i, j + 1, ip)
-                            dNomig(i, j, ip) = d(i, j, ip)
-                        Next ip
-
-                        'EwE5
-                        ' nvar2 = nvar + 2 * npairs
-                        nvar2 = EcoSpaceData.NGroups
-                        ir = 0
-                        For isp = 1 To StanzaData.Nsplit
-                            For ist = 1 To StanzaData.Nstanza(isp)
-                                ieco = StanzaData.EcopathCode(isp, ist)
-                                ir = ir + 1
-                                e(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
-                                d(i, j, nvar2 + ir) = d(i, j, ieco)
-                                Enomig(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
-                                dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
-                            Next
-                        Next
-                    End If 'm_Data.Depth(i, j + 1) > 0
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'end of col
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Start or rows
-                    'xxxxxxxxxxxxxxxxxxxxxx
-                    'then check depths on bottom face of this cell
-                    If EcoSpaceData.Depth(i + 1, j) > 0 Then
-                        For ip = 1 To EcoSpaceData.NGroups
-                            If i > 0 And i < EcoSpaceData.InRow + 1 Then
-
-                                If EcoSpaceData.HabCap(ip)(i + 1, j) = EcoSpaceData.HabCap(ip)(i, j) Then
-                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
-                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i)
-                                ElseIf EcoSpaceData.HabCap(ip)(i + 1, j) > EcoSpaceData.HabCap(ip)(i, j) Then
-                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
-                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i, j) / EcoSpaceData.HabCap(ip)(i + 1, j) * EcoSpaceData.Width(i) 'RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
-                                Else
-                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i + 1, j) / EcoSpaceData.HabCap(ip)(i, j) * EcoSpaceData.Width(i)
-                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) '* RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
-                                End If
-                                'C(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
-                                'Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
-                                If EcoSpaceData.IsAdvected(ip) Then
-                                    'Debug.Assert(i <> 4)
-                                    'jb 1-Dec-2016 Include cell width scaler in Y velocity movements
-                                    If EcoSpaceData.Yvel(i, j) > 0 Then
-                                        ' Bcw(i + 1, j, ip) = Bcw(i + 1, j, ip) + m_Data.Yvel(i, j) * AdScale * m_Data.Width(i)
-                                        Bcw(i, j, ip) = Bcw(i, j, ip) + EcoSpaceData.Yvel(i, j) * AdScale * EcoSpaceData.Width(i)
-                                    Else
-                                        C(i, j, ip) = C(i, j, ip) - EcoSpaceData.Yvel(i, j) * AdScale * EcoSpaceData.Width(i)
-                                    End If
-
-                                End If
-                            Else
-                                If EcoSpaceData.IsAdvected(ip) Then
-
-                                    If EcoSpaceData.Yvel(i, j) > 0 Then
-                                        C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) 'from row i+1 to i
-                                        Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) + EcoSpaceData.Yvel(i, j) * AdScale ' + AdvectSouth 'from i to i+1
-                                    Else
-                                        C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) - EcoSpaceData.Yvel(i, j) * AdScale 'from row i+1 to i
-                                        Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i)
-                                    End If
-                                Else
-                                    C(i, j, ip) = 0
-                                    Bcw(i + 1, j, ip) = 0
-                                End If
-                            End If
-                            CNomig(i, j, ip) = C(i, j, ip)
-                            BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
-                        Next
-
-                        'EwE5
-                        ' nvar2 = nvar + 2 * npairs
-                        nvar2 = EcoSpaceData.NGroups
-                        ir = 0
-                        For isp = 1 To StanzaData.Nsplit
-                            For ist = 1 To StanzaData.Nstanza(isp)
-                                ieco = StanzaData.EcopathCode(isp, ist)
-                                ir = ir + 1
-                                Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
-                                C(i, j, nvar2 + ir) = C(i, j, ieco)
-                                BcwNomig(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
-                                CNomig(i, j, nvar2 + ir) = C(i, j, ieco)
-                            Next
-                        Next
-                    End If
-                End If
-
-            Next j
-        Next i
-
-        'Me.debugDumpFlowRates(Bcw, Me.m_Data.nLiving + 1, "SetMovementParameters b")
-        'Me.debugDumpFlowRates(C, Me.m_Data.nLiving + 1, "SetMovementParameters c")
-        'Me.debugDumpFlowRates(d, Me.m_Data.nLiving + 1, "SetMovementParameters d")
-        'Me.debugDumpFlowRates(e, Me.m_Data.nLiving + 1, "SetMovementParameters e")
-
-        If ContaiminantTracerData.EcoSpaceConSimOn Then
-            'set movement rates for physical contaminant concentration to
-            'rates for first detritus pool
-            For i = 0 To EcoSpaceData.InRow + 1
-                For j = 0 To EcoSpaceData.InCol + 1
-                    Bcw(i, j, 0) = Bcw(i, j, EcoPathData.NumLiving + 1)
-                    C(i, j, 0) = C(i, j, EcoPathData.NumLiving + 1)
-                    d(i, j, 0) = d(i, j, EcoPathData.NumLiving + 1)
-                    e(i, j, 0) = e(i, j, EcoPathData.NumLiving + 1)
-                    BcwNomig(i, j, 0) = Bcw(i, j, EcoPathData.NumLiving + 1)
-                    CNomig(i, j, 0) = C(i, j, EcoPathData.NumLiving + 1)
-                    dNomig(i, j, 0) = d(i, j, EcoPathData.NumLiving + 1)
-                    Enomig(i, j, 0) = e(i, j, EcoPathData.NumLiving + 1)
-                Next
-            Next
-        End If
-    End Sub
 
     Private Sub debugDumpFlowRates(flowArray(,,) As Single, iGrp As Integer, Optional msg As String = " ")
         Dim tempstr As String
@@ -7422,6 +7199,13 @@ exitline:
         ReDim StanzaData.Wpacket(StanzaData.Nsplit, StanzaData.MaxAgeSplit, StanzaData.Npackets)
         ReDim StanzaData.iPacket(StanzaData.Nsplit, StanzaData.MaxAgeSplit, StanzaData.Npackets)
         ReDim StanzaData.jPacket(StanzaData.Nsplit, StanzaData.MaxAgeSplit, StanzaData.Npackets)
+
+
+        'Initialize data structure for forcing Age 1 IBM Packets
+        StanzaData.IBMForcedCells = New Single(StanzaData.Nsplit)(,) {}
+        For isp = 1 To StanzaData.Nsplit
+            StanzaData.IBMForcedCells(isp) = New Single(EcoSpaceData.InRow, EcoSpaceData.InCol) {}
+        Next isp
 
         Dim cellsPerMonth As Single, Dmove As Single
 

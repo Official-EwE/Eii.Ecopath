@@ -2639,6 +2639,8 @@ Public Class cEcospaceDataStructures
                 Case eVarNameFlags.LayerPort : Return Me.FleetDBID
                 Case eVarNameFlags.LayerSail : Return Me.FleetDBID
                 Case eVarNameFlags.LayerAdvection : Return New Integer() {0, 1, 2}
+
+
             End Select
             Return New Integer() {0, 1}
         End Get
