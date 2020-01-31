@@ -694,6 +694,8 @@ Namespace Core
         EcospaceMinForagingCapacity
         EcospaceAllowHabCapGradCorrections
 
+        MultiStanzaAge0Numbers
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''

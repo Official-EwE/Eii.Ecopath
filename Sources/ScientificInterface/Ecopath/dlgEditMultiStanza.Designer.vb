@@ -61,10 +61,12 @@ Namespace Ecopath
             Me.m_cbEggAtSpawn = New System.Windows.Forms.CheckBox()
             Me.m_hdrEcospace = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrEcosim = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_grid = New ScientificInterface.gridEditMultiStanza()
             Me.m_splitMain = New System.Windows.Forms.SplitContainer()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plControls = New System.Windows.Forms.Panel()
+            Me.m_lbAge0Numbers = New System.Windows.Forms.Label()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_grid = New ScientificInterface.gridEditMultiStanza()
             CType(Me.m_splitMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitMain.Panel1.SuspendLayout()
             Me.m_splitMain.Panel2.SuspendLayout()
@@ -200,6 +202,61 @@ Namespace Ecopath
             Me.m_hdrEcosim.IsCollapsed = False
             Me.m_hdrEcosim.Name = "m_hdrEcosim"
             '
+            'm_splitMain
+            '
+            resources.ApplyResources(Me.m_splitMain, "m_splitMain")
+            Me.m_splitMain.Name = "m_splitMain"
+            '
+            'm_splitMain.Panel1
+            '
+            Me.m_splitMain.Panel1.Controls.Add(Me.TableLayoutPanel1)
+            '
+            'm_splitMain.Panel2
+            '
+            Me.m_splitMain.Panel2.Controls.Add(Me.m_grid)
+            '
+            'TableLayoutPanel1
+            '
+            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.Controls.Add(Me.m_zgc, 1, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plControls, 0, 0)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            '
+            'm_plControls
+            '
+            Me.m_plControls.Controls.Add(Me.m_lbAge0Numbers)
+            Me.m_plControls.Controls.Add(Me.Label1)
+            Me.m_plControls.Controls.Add(Me.m_lblStanzaGroups)
+            Me.m_plControls.Controls.Add(Me.m_cbEggAtSpawn)
+            Me.m_plControls.Controls.Add(Me.m_lblK)
+            Me.m_plControls.Controls.Add(Me.m_hdrEcospace)
+            Me.m_plControls.Controls.Add(Me.m_lblRecPwr)
+            Me.m_plControls.Controls.Add(Me.m_hdrEcosim)
+            Me.m_plControls.Controls.Add(Me.m_lblBAB)
+            Me.m_plControls.Controls.Add(Me.m_cmbFF)
+            Me.m_plControls.Controls.Add(Me.m_lblWmatWinf)
+            Me.m_plControls.Controls.Add(Me.m_cmbStanzaGroups)
+            Me.m_plControls.Controls.Add(Me.m_lblFF)
+            Me.m_plControls.Controls.Add(Me.m_cbFFecun)
+            Me.m_plControls.Controls.Add(Me.m_txtK)
+            Me.m_plControls.Controls.Add(Me.m_txtWmatWinf)
+            Me.m_plControls.Controls.Add(Me.m_txtRecPwr)
+            Me.m_plControls.Controls.Add(Me.m_txtBAB)
+            resources.ApplyResources(Me.m_plControls, "m_plControls")
+            Me.m_plControls.Name = "m_plControls"
+            '
+            'm_lbAge0Numbers
+            '
+            Me.m_lbAge0Numbers.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_lbAge0Numbers.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+            resources.ApplyResources(Me.m_lbAge0Numbers, "m_lbAge0Numbers")
+            Me.m_lbAge0Numbers.Name = "m_lbAge0Numbers"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
@@ -233,47 +290,6 @@ Namespace Ecopath
             Me.m_grid.StanzaGroup = Nothing
             Me.m_grid.TabStop = True
             Me.m_grid.UIContext = Nothing
-            '
-            'm_splitMain
-            '
-            resources.ApplyResources(Me.m_splitMain, "m_splitMain")
-            Me.m_splitMain.Name = "m_splitMain"
-            '
-            'm_splitMain.Panel1
-            '
-            Me.m_splitMain.Panel1.Controls.Add(Me.TableLayoutPanel1)
-            '
-            'm_splitMain.Panel2
-            '
-            Me.m_splitMain.Panel2.Controls.Add(Me.m_grid)
-            '
-            'TableLayoutPanel1
-            '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.m_zgc, 1, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plControls, 0, 0)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-            '
-            'm_plControls
-            '
-            Me.m_plControls.Controls.Add(Me.m_lblStanzaGroups)
-            Me.m_plControls.Controls.Add(Me.m_cbEggAtSpawn)
-            Me.m_plControls.Controls.Add(Me.m_lblK)
-            Me.m_plControls.Controls.Add(Me.m_hdrEcospace)
-            Me.m_plControls.Controls.Add(Me.m_lblRecPwr)
-            Me.m_plControls.Controls.Add(Me.m_hdrEcosim)
-            Me.m_plControls.Controls.Add(Me.m_lblBAB)
-            Me.m_plControls.Controls.Add(Me.m_cmbFF)
-            Me.m_plControls.Controls.Add(Me.m_lblWmatWinf)
-            Me.m_plControls.Controls.Add(Me.m_cmbStanzaGroups)
-            Me.m_plControls.Controls.Add(Me.m_lblFF)
-            Me.m_plControls.Controls.Add(Me.m_cbFFecun)
-            Me.m_plControls.Controls.Add(Me.m_txtK)
-            Me.m_plControls.Controls.Add(Me.m_txtWmatWinf)
-            Me.m_plControls.Controls.Add(Me.m_txtRecPwr)
-            Me.m_plControls.Controls.Add(Me.m_txtBAB)
-            resources.ApplyResources(Me.m_plControls, "m_plControls")
-            Me.m_plControls.Name = "m_plControls"
             '
             'EditMultiStanza
             '
@@ -323,6 +339,8 @@ Namespace Ecopath
         Private WithEvents m_splitMain As SplitContainer
         Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
         Private WithEvents m_plControls As Panel
+        Friend WithEvents m_lbAge0Numbers As Label
+        Friend WithEvents Label1 As Label
     End Class
 
 End Namespace

@@ -46,6 +46,8 @@ Namespace Ecopath
         Private m_zgh As cZedGraphHelper = Nothing
         Private m_groupInitial As cEcoPathGroupInput = Nothing
 
+        Private m_fpAge0Numbers As cEwEFormatProvider = Nothing
+
 #End Region ' Private variables
 
 #Region " Constructors "
@@ -104,6 +106,8 @@ Namespace Ecopath
             Me.m_fpRecPwr = New cEwEFormatProvider(Me.m_uic, Me.m_txtRecPwr, GetType(Single))
             Me.m_fpBab = New cEwEFormatProvider(Me.m_uic, Me.m_txtBAB, GetType(Single))
             Me.m_fpWmatWinf = New cEwEFormatProvider(Me.m_uic, Me.m_txtWmatWinf, GetType(Single))
+
+            Me.m_fpAge0Numbers = New cEwEFormatProvider(Me.m_uic, Me.m_lbAge0Numbers, GetType(Single))
             Me.m_zgh.ShowHoverMenu = False
 
             ' -- Ecosim -- 
@@ -135,6 +139,7 @@ Namespace Ecopath
             Me.m_fpBab.Release()
             Me.m_fpWmatWinf.Release()
             Me.m_fpStanza.Release()
+            Me.m_fpAge0Numbers.Release()
 
             MyBase.OnFormClosed(e)
 
@@ -157,6 +162,9 @@ Namespace Ecopath
             Me.m_grid.CalculateStanzaParameters()
             Me.m_grid.RefreshContent()
             Me.UpdateGraph(m_zgc)
+
+            'because number at age 0 changed
+            Me.UpdateControls()
 
         End Sub
 
@@ -313,6 +321,8 @@ Namespace Ecopath
             Me.m_fpRecPwr.Value = stanza.RecruitmentPower
             Me.m_fpBab.Value = stanza.BiomassAccumulationRate
             Me.m_fpWmatWinf.Value = stanza.WmatWinf
+
+            Me.m_fpAge0Numbers.Value = stanza.Age0Numbers
 
             Dim iSel As Integer = 0
             If bEcosimLoaded Then

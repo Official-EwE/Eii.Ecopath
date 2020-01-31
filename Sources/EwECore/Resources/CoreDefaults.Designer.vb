@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreDefaults
@@ -4291,6 +4291,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_LAYERHABITATCAPACITYINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_LAYERHABITATCAPACITYINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to IBM Age 0 Forcing.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERIBMAGE1FORCING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERIBMAGE1FORCING", resourceCulture)
             End Get
         End Property
         
