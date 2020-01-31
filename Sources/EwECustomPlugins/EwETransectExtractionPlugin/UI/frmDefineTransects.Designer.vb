@@ -157,8 +157,8 @@ Partial Class frmDefineTransects
     Private WithEvents m_toolstrip As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
     Friend WithEvents m_lbxTransects As System.Windows.Forms.ListBox
     Private WithEvents m_btnDeleteTransect As System.Windows.Forms.Button
-    Private WithEvents m_tlpContent As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrCredits As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_pbCEFAS As Windows.Forms.PictureBox
-    Private WithEvents m_pbINSITE As Windows.Forms.PictureBox
+    Private WithEvents m_pbCEFAS As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbINSITE As System.Windows.Forms.PictureBox
 End Class

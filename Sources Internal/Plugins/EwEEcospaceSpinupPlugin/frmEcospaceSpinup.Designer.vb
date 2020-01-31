@@ -140,10 +140,10 @@ Partial Class frmEcospaceSpinup
 
     End Sub
     Private WithEvents m_chkUseSpinup As System.Windows.Forms.CheckBox
-    Private WithEvents m_tbxSpinUpYears As Windows.Forms.TextBox
-    Private WithEvents m_lblSpinUpYears As Windows.Forms.Label
-    Private WithEvents m_tlpContent As Windows.Forms.TableLayoutPanel
-    Private WithEvents m_plControls As Windows.Forms.Panel
-    Private WithEvents m_chkUseBaseBio As Windows.Forms.CheckBox
+    Private WithEvents m_tbxSpinUpYears As System.Windows.Forms.TextBox
+    Private WithEvents m_lblSpinUpYears As System.Windows.Forms.Label
+    Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plControls As System.Windows.Forms.Panel
+    Private WithEvents m_chkUseBaseBio As System.Windows.Forms.CheckBox
     Private WithEvents m_gridSpinUpDif As gridSpinupDiff
 End Class

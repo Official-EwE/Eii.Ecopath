@@ -28,7 +28,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetZone>LocalIntranet</TargetZone>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
@@ -2153,6 +2153,30 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
+      <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
+      <Name>enaRPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
+      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
+      <Name>EwEEcospaceSpinupPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
+      <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
+      <Name>EwEAquamapsEnvDataImporterPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcologicalIndicators\EwEEcologicalIndicatorsPlugin.vbproj">
+      <Project>{ada9f604-2a16-4816-9fe5-31487778902d}</Project>
+      <Name>EwEEcologicalIndicatorsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcoSamplerPlugin\EwEEcoSamplerPlugin.vbproj">
+      <Project>{22ed1c02-0c01-460b-9305-0a6fef0032d9}</Project>
+      <Name>EwEEcoSamplerPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
       <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>
       <Name>EwEImportDietsPlugin</Name>
@@ -2172,18 +2196,6 @@
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
-      <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
-      <Name>EwEAquamapsEnvDataImporterPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcologicalIndicators\EwEEcologicalIndicatorsPlugin.vbproj">
-      <Project>{ada9f604-2a16-4816-9fe5-31487778902d}</Project>
-      <Name>EwEEcologicalIndicatorsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcoSamplerPlugin\EwEEcoSamplerPlugin.vbproj">
-      <Project>{22ed1c02-0c01-460b-9305-0a6fef0032d9}</Project>
-      <Name>EwEEcoSamplerPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcoTrophPlugin.vbproj">
       <Project>{fef1031b-9933-4364-ad29-c4f8b2e68382}</Project>

@@ -22,6 +22,8 @@
 Option Explicit On
 Option Strict On
 
+Imports System.Windows.Forms.Label
+
 Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core

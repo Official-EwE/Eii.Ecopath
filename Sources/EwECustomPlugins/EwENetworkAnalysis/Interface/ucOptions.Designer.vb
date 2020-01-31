@@ -153,6 +153,6 @@ Partial Class ucOptions
     Private WithEvents m_cbAutosaveEcopath As System.Windows.Forms.CheckBox
     Private WithEvents m_cbAutosaveEcosimWoPPR As System.Windows.Forms.CheckBox
     Private WithEvents m_cbAutosaveEcosimWithPPR As System.Windows.Forms.CheckBox
-    Private WithEvents m_cbSkipCyclesPathways As Windows.Forms.CheckBox
-    Private WithEvents m_lblSkipCyclesPathways As Windows.Forms.Label
+    Private WithEvents m_cbSkipCyclesPathways As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblSkipCyclesPathways As System.Windows.Forms.Label
 End Class

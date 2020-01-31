@@ -505,9 +505,9 @@ Namespace SpatialData
         Private WithEvents m_lblLocationSample As System.Windows.Forms.Label
         Friend WithEvents m_nudSpacing As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblSpace2 As System.Windows.Forms.Label
-        Private WithEvents m_cmbFormat As Windows.Forms.ComboBox
-        Friend WithEvents m_colError As Windows.Forms.DataGridViewImageColumn
-        Friend WithEvents m_colFileName As Windows.Forms.DataGridViewTextBoxColumn
+        Private WithEvents m_cmbFormat As System.Windows.Forms.ComboBox
+        Friend WithEvents m_colError As System.Windows.Forms.DataGridViewImageColumn
+        Friend WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
         Friend WithEvents m_colTime As cCalendarColumn
     End Class
 
