@@ -128,12 +128,18 @@
   <data name="m_btnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
+  <data name="m_btnOk.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>5, 5</value>
+  </data>
+  <data name="m_btnOk.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>117, 40</value>
   </data>
   <data name="m_btnOk.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -156,11 +162,17 @@
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
+  <data name="m_btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 3</value>
+    <value>133, 5</value>
+  </data>
+  <data name="m_btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>117, 40</value>
   </data>
   <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -181,13 +193,16 @@
     <value>1</value>
   </data>
   <data name="m_tlpButtons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 281</value>
+    <value>190, 602</value>
+  </data>
+  <data name="m_tlpButtons.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_tlpButtons.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_tlpButtons.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 29</value>
+    <value>256, 51</value>
   </data>
   <data name="m_tlpButtons.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -202,7 +217,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tlpButtons.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>21</value>
   </data>
   <data name="m_tlpButtons.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnOk" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnCancel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -210,11 +225,17 @@
   <data name="m_NumRows.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_NumRows.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_NumRows.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 65</value>
+    <value>21, 114</value>
+  </data>
+  <data name="m_NumRows.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_NumRows.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 13</value>
+    <value>154, 25</value>
   </data>
   <data name="m_NumRows.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -232,16 +253,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_NumRows.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_lblNumCols.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblNumCols.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblNumCols.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 91</value>
+    <value>21, 159</value>
+  </data>
+  <data name="m_lblNumCols.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblNumCols.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 13</value>
+    <value>148, 25</value>
   </data>
   <data name="m_lblNumCols.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -259,64 +286,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblNumCols.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="m_nudRowCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudRowCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 63</value>
-  </data>
-  <data name="m_nudRowCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 20</value>
-  </data>
-  <data name="m_nudRowCount.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.Name" xml:space="preserve">
-    <value>m_nudRowCount</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_nudColCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudColCount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 89</value>
-  </data>
-  <data name="m_nudColCount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 20</value>
-  </data>
-  <data name="m_nudColCount.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.Name" xml:space="preserve">
-    <value>m_nudColCount</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>19</value>
   </data>
   <data name="m_lblCellLength.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblCellLength.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblCellLength.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 205</value>
+    <value>14, 396</value>
+  </data>
+  <data name="m_lblCellLength.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblCellLength.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 13</value>
+    <value>110, 25</value>
   </data>
   <data name="m_lblCellLength.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -334,16 +319,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCellLength.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>22</value>
   </data>
   <data name="m_pbLink.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
   </data>
+  <data name="m_pbLink.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_pbLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>138, 217</value>
+    <value>235, 417</value>
+  </data>
+  <data name="m_pbLink.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>8, 16</value>
+    <value>14, 28</value>
   </data>
   <data name="m_pbLink.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -358,16 +349,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pbLink.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_lblLonTL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblLonTL.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblLonTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 179</value>
+    <value>14, 350</value>
+  </data>
+  <data name="m_lblLonTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblLonTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 13</value>
+    <value>169, 25</value>
   </data>
   <data name="m_lblLonTL.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -385,112 +382,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblLonTL.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_nudCellSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudCellSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 227</value>
-  </data>
-  <data name="m_nudCellSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 20</value>
-  </data>
-  <data name="m_nudCellSize.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.Name" xml:space="preserve">
-    <value>m_nudCellSize</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.ZOrder" xml:space="preserve">
     <value>10</value>
-  </data>
-  <data name="m_nudCellLength.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudCellLength.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 203</value>
-  </data>
-  <data name="m_nudCellLength.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 20</value>
-  </data>
-  <data name="m_nudCellLength.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.Name" xml:space="preserve">
-    <value>m_nudCellLength</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="m_nudLonTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudLonTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 177</value>
-  </data>
-  <data name="m_nudLonTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 20</value>
-  </data>
-  <data name="m_nudLonTL.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.Name" xml:space="preserve">
-    <value>m_nudLonTL</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="m_nudLatTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudLatTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 151</value>
-  </data>
-  <data name="m_nudLatTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 20</value>
-  </data>
-  <data name="m_nudLatTL.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.Name" xml:space="preserve">
-    <value>m_nudLatTL</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.ZOrder" xml:space="preserve">
-    <value>15</value>
   </data>
   <data name="m_lblLatTL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblLatTL.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblLatTL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 154</value>
+    <value>16, 307</value>
+  </data>
+  <data name="m_lblLatTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblLatTL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 13</value>
+    <value>152, 25</value>
   </data>
   <data name="m_lblLatTL.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -508,7 +415,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblLatTL.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="m_lblCellSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -517,10 +424,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCellSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 229</value>
+    <value>14, 438</value>
+  </data>
+  <data name="m_lblCellSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblCellSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
+    <value>92, 25</value>
   </data>
   <data name="m_lblCellSize.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -538,79 +448,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblCellSize.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="m_hdrDimensions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrDimensions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 39</value>
-  </data>
-  <data name="m_hdrDimensions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>283, 18</value>
-  </data>
-  <data name="m_hdrDimensions.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrDimensions.Text" xml:space="preserve">
-    <value>Dimensions</value>
-  </data>
-  <data name="m_hdrDimensions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.Name" xml:space="preserve">
-    <value>m_hdrDimensions</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_hdrSpatialReference.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrSpatialReference.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrSpatialReference.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 126</value>
-  </data>
-  <data name="m_hdrSpatialReference.Size" type="System.Drawing.Size, System.Drawing">
-    <value>283, 18</value>
-  </data>
-  <data name="m_hdrSpatialReference.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_hdrSpatialReference.Text" xml:space="preserve">
-    <value>Spatial reference</value>
-  </data>
-  <data name="m_hdrSpatialReference.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.Name" xml:space="preserve">
-    <value>m_hdrSpatialReference</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>20</value>
   </data>
   <data name="m_cbAssumeSquareCells.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_cbAssumeSquareCells.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_cbAssumeSquareCells.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 253</value>
+    <value>14, 480</value>
+  </data>
+  <data name="m_cbAssumeSquareCells.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_cbAssumeSquareCells.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 17</value>
+    <value>219, 29</value>
   </data>
   <data name="m_cbAssumeSquareCells.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -628,7 +481,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAssumeSquareCells.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_lblUnitLat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -636,11 +489,17 @@
   <data name="m_lblUnitLat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblUnitLat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblUnitLat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 154</value>
+    <value>536, 307</value>
+  </data>
+  <data name="m_lblUnitLat.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblUnitLat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
+    <value>67, 25</value>
   </data>
   <data name="m_lblUnitLat.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -658,7 +517,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblUnitLat.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_lblUnitLon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -670,10 +529,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblUnitLon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 179</value>
+    <value>536, 350</value>
+  </data>
+  <data name="m_lblUnitLon.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblUnitLon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
+    <value>67, 25</value>
   </data>
   <data name="m_lblUnitLon.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -691,7 +553,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblUnitLon.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_lblUnitCellLen.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -703,10 +565,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblUnitCellLen.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 205</value>
+    <value>536, 396</value>
+  </data>
+  <data name="m_lblUnitCellLen.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblUnitCellLen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
+    <value>67, 25</value>
   </data>
   <data name="m_lblUnitCellLen.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -724,7 +589,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblUnitCellLen.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_lblUnitCellSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -736,10 +601,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblUnitCellSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>265, 229</value>
+    <value>536, 438</value>
+  </data>
+  <data name="m_lblUnitCellSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblUnitCellSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
+    <value>67, 25</value>
   </data>
   <data name="m_lblUnitCellSize.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -757,13 +625,43 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblUnitCellSize.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 201</value>
+  </data>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 25</value>
+  </data>
+  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Number of modeled cells:</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <data name="m_tsmiImportFromASCII.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 22</value>
+    <value>269, 34</value>
   </data>
   <data name="m_tsmiImportFromASCII.Text" xml:space="preserve">
     <value>From &amp;ASCII map...</value>
@@ -771,7 +669,7 @@
   <data name="m_tsbnImport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YQUAAAAJcEhZcwAAGdYAABnWARjRyu0AAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
         YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
         0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
         bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
@@ -787,7 +685,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbnImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 22</value>
+    <value>96, 34</value>
   </data>
   <data name="m_tsbnImport.Text" xml:space="preserve">
     <value>Import</value>
@@ -795,8 +693,11 @@
   <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="m_ts.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 2, 0</value>
+  </data>
   <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>307, 25</value>
+    <value>616, 37</value>
   </data>
   <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -805,25 +706,289 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_hdrSpatialReference.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrSpatialReference.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrSpatialReference.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 257</value>
+  </data>
+  <data name="m_hdrSpatialReference.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
+  </data>
+  <data name="m_hdrSpatialReference.Size" type="System.Drawing.Size, System.Drawing">
+    <value>574, 32</value>
+  </data>
+  <data name="m_hdrSpatialReference.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_hdrSpatialReference.Text" xml:space="preserve">
+    <value>Spatial reference</value>
+  </data>
+  <data name="m_hdrSpatialReference.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpatialReference.Name" xml:space="preserve">
+    <value>m_hdrSpatialReference</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpatialReference.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpatialReference.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrSpatialReference.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_hdrDimensions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrDimensions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrDimensions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 68</value>
+  </data>
+  <data name="m_hdrDimensions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
+  </data>
+  <data name="m_hdrDimensions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>574, 32</value>
+  </data>
+  <data name="m_hdrDimensions.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrDimensions.Text" xml:space="preserve">
+    <value>Dimensions</value>
+  </data>
+  <data name="m_hdrDimensions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDimensions.Name" xml:space="preserve">
+    <value>m_hdrDimensions</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDimensions.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDimensions.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrDimensions.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_nudCellSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudCellSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 434</value>
+  </data>
+  <data name="m_nudCellSize.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_nudCellSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 29</value>
+  </data>
+  <data name="m_nudCellSize.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellSize.Name" xml:space="preserve">
+    <value>m_nudCellSize</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellSize.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellSize.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellSize.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_nudCellLength.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudCellLength.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 392</value>
+  </data>
+  <data name="m_nudCellLength.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_nudCellLength.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 29</value>
+  </data>
+  <data name="m_nudCellLength.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellLength.Name" xml:space="preserve">
+    <value>m_nudCellLength</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellLength.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellLength.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudCellLength.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_nudLonTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudLonTL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 347</value>
+  </data>
+  <data name="m_nudLonTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_nudLonTL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 29</value>
+  </data>
+  <data name="m_nudLonTL.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_nudLonTL.Name" xml:space="preserve">
+    <value>m_nudLonTL</value>
+  </data>
+  <data name="&gt;&gt;m_nudLonTL.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudLonTL.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudLonTL.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="m_nudRowCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudRowCount.Location" type="System.Drawing.Point, System.Drawing">
+    <value>262, 110</value>
+  </data>
+  <data name="m_nudRowCount.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_nudRowCount.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 29</value>
+  </data>
+  <data name="m_nudRowCount.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowCount.Name" xml:space="preserve">
+    <value>m_nudRowCount</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowCount.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowCount.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowCount.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="m_nudLatTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudLatTL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>255, 301</value>
+  </data>
+  <data name="m_nudLatTL.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_nudLatTL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 29</value>
+  </data>
+  <data name="m_nudLatTL.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_nudLatTL.Name" xml:space="preserve">
+    <value>m_nudLatTL</value>
+  </data>
+  <data name="&gt;&gt;m_nudLatTL.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudLatTL.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudLatTL.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="m_nudColCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudColCount.Location" type="System.Drawing.Point, System.Drawing">
+    <value>262, 156</value>
+  </data>
+  <data name="m_nudColCount.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_nudColCount.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 29</value>
+  </data>
+  <data name="m_nudColCount.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_nudColCount.Name" xml:space="preserve">
+    <value>m_nudColCount</value>
+  </data>
+  <data name="&gt;&gt;m_nudColCount.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudColCount.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudColCount.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="m_lbNCells.Location" type="System.Drawing.Point, System.Drawing">
+    <value>263, 204</value>
+  </data>
+  <data name="m_lbNCells.Size" type="System.Drawing.Size, System.Drawing">
+    <value>261, 29</value>
+  </data>
+  <data name="m_lbNCells.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="m_lbNCells.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lbNCells.Name" xml:space="preserve">
+    <value>m_lbNCells</value>
+  </data>
+  <data name="&gt;&gt;m_lbNCells.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbNCells.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbNCells.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
+    <value>168, 168</value>
   </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>307, 322</value>
+    <value>616, 674</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

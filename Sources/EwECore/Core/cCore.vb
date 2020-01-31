@@ -10645,6 +10645,8 @@ Public Class cCore
                 .Longitude = m_EcoSpaceData.Lon1
                 .AssumeSquareCells = m_EcoSpaceData.AssumeSquareCells
                 .ProjectionString = m_EcoSpaceData.ProjectionString
+
+                .nCells = m_EcoSpaceData.ThabArea
                 .ResetStatusFlags()
                 .AllowValidation = True
             End With
@@ -14513,6 +14515,8 @@ Public Class cCore
                     ' Exclusion layer changes invalidate all layer stats
                     If (obj.DataType = eDataTypes.EcospaceLayerExclusion) Then
                         Me.m_Ecospace.UpdateDepthMap()
+                        Me.m_Ecospace.CalcHabitatArea()
+                        Me.EcospaceBasemap.nCells = Me.m_EcoSpaceData.ThabArea
                         For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers
                             l.Invalidate()
                         Next
