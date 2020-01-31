@@ -431,7 +431,7 @@ Public Class cIBMSolver
                 'set the nursery cells to the forcing data
                 totForcedRecriuts = Me.ForceNurseryRecruits(isp)
                 BaseRec = m_Stanza.RzeroS(isp) * m_Data.ThabArea * 12 ' {Include the Ecosim Hatchery Forcing function} * m_ESData.tval(m_Stanza.HatchCode(isp))) 
-                System.Console.WriteLine("Total Forced Recruits = " + totForcedRecriuts.ToString + ", Ecopath Base Recruits = " + BaseRec.ToString)
+                Debug.Print("Total Forced Recruits = " + totForcedRecriuts.ToString + ", Ecopath Base Recruits = " + BaseRec.ToString)
 
             End If 'm_Stanza.isForcedIBMRecruits(ist) = True 
 
@@ -488,7 +488,6 @@ Public Class cIBMSolver
                 For ip = 1 To m_Stanza.Npackets
                     'randomly select the nursery cell
                     iNurse = 1 + Me.m_rand.NextDouble() * (m_Stanza.Nnursery(isp) - 1)
-                    lstNursery.Add(iNurse)
                     'randomly select where in the cell to put the packet
                     m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble()
                     m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble()
@@ -510,6 +509,11 @@ Public Class cIBMSolver
                                 End If
                             Next icheck
                         End If 'Me.m_rand.NextDouble() > Me.m_Data.HabCap(i, j, ieco)
+                    Else
+                        'IBM Forced Recruits
+                        'remember the nursery cells
+                        'so we can populate them with the forced values
+                        lstNursery.Add(iNurse)
                     End If ' m_Stanza.isForcedIBMRecruits(isp)
 
                     'bounds check the nursery cells
@@ -550,15 +554,15 @@ Public Class cIBMSolver
     End Sub
 
 
-    Private Function getTotalForcedRecruits(ForcedCells As Single(,)) As Single
-        Dim sumForced As Single
-        For irow As Integer = 1 To Me.m_Data.InRow
-            For icol As Integer = 1 To Me.m_Data.InCol
-                sumForced += ForcedCells(irow, icol)
-            Next icol
-        Next irow
-        Return sumForced
-    End Function
+    'Private Function getTotalForcedRecruits(ForcedCells As Single(,)) As Single
+    '    Dim sumForced As Single
+    '    For irow As Integer = 1 To Me.m_Data.InRow
+    '        For icol As Integer = 1 To Me.m_Data.InCol
+    '            sumForced += ForcedCells(irow, icol)
+    '        Next icol
+    '    Next irow
+    '    Return sumForced
+    'End Function
 
 
     Private Function ForceNurseryRecruits(isp As Integer) As Single

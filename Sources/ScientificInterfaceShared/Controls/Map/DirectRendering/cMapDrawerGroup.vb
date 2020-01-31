@@ -140,7 +140,7 @@ Namespace Controls.Map
 
                 Try
                     ' JS 06Mar18: Made robust to abuse. Toggling to IBM mode after a run messed up the map drawers, who want to draw IBM data that is not there
-                    If isp > -1 And StanzaDS.MaxAgeSpecies IsNot Nothing Then
+                    If isp > -1 Then
                         For iaa As Integer = 0 To StanzaDS.MaxAgeSpecies(isp)
                             Dim ia As Integer = StanzaDS.AgeIndex1(isp) + iaa : If ia > StanzaDS.MaxAgeSpecies(isp) Then ia = ia - StanzaDS.MaxAgeSpecies(isp) - 1
                             Dim ist As Integer = StanzaDS.StanzaNo(isp, ia)

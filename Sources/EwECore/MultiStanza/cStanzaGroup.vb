@@ -113,6 +113,11 @@ Public Class cStanzaGroup
         ' IsFished
         val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
         val.AffectsRunState = False
+
+        m_values.Add(val.varName, val)
+
+        ' Weight maturity over Weight infancy (WmatWinf)
+        val = New cValue(New Single, eVarNameFlags.MultiStanzaAge0Numbers, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -424,6 +429,17 @@ Public Class cStanzaGroup
             Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    Public Property Age0Numbers() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.MultiStanzaAge0Numbers))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.MultiStanzaAge0Numbers, value)
+        End Set
+    End Property
+
 
 #Region "Variable by Stanza iGroup & NStanza"
 
