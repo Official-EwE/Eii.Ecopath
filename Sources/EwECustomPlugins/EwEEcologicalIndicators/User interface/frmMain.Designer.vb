@@ -16,7 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
+Imports System
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -590,12 +590,12 @@ Partial Class frmMain
     Private WithEvents m_tpMCpath As System.Windows.Forms.TabPage
     Private WithEvents m_graphMCpath As ZedGraph.ZedGraphControl
     Private WithEvents m_cbPlotAtEnd As System.Windows.Forms.CheckBox
-    Private WithEvents m_tlpHistSettings As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpHistSettings As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_sliderNoBins As ScientificInterfaceShared.Controls.ucSlider
-    Private WithEvents m_lblHistNoBins As Windows.Forms.Label
-    Private WithEvents m_tbxHistNoBins As Windows.Forms.TextBox
-    Private WithEvents m_cbEcospaceAnnualOnly As Windows.Forms.CheckBox
-    Private WithEvents m_tlpEcospace As Windows.Forms.TableLayoutPanel
-    Friend WithEvents ToolStrip1 As Windows.Forms.ToolStrip
-    Private WithEvents m_tsbnEcospaceSaveImage As Windows.Forms.ToolStripButton
+    Private WithEvents m_lblHistNoBins As System.Windows.Forms.Label
+    Private WithEvents m_tbxHistNoBins As System.Windows.Forms.TextBox
+    Private WithEvents m_cbEcospaceAnnualOnly As System.Windows.Forms.CheckBox
+    Private WithEvents m_tlpEcospace As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
+    Private WithEvents m_tsbnEcospaceSaveImage As System.Windows.Forms.ToolStripButton
 End Class

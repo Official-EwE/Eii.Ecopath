@@ -16,7 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
+Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Forms
 Imports ZedGraph
 
@@ -1168,8 +1168,8 @@ Namespace Ecosim
         Private WithEvents m_tslblMethodDC As ToolStripLabel
         Private WithEvents m_tscmbMethodDC As ToolStripComboBox
         Private WithEvents m_tssepDC As ToolStripSeparator
-        Private WithEvents m_lblERunAvg As Windows.Forms.Label
-        Private WithEvents m_lblERunAvgValue As Windows.Forms.Label
+        Private WithEvents m_lblERunAvg As System.Windows.Forms.Label
+        Private WithEvents m_lblERunAvgValue As System.Windows.Forms.Label
         Private WithEvents m_btnClearAll As Button
         Private WithEvents m_btnSelectAll As Button
     End Class

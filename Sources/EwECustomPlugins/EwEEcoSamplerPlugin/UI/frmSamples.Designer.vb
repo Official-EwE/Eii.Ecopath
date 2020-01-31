@@ -18,6 +18,7 @@
 '
 
 Option Strict On
+
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
@@ -272,5 +273,5 @@ Partial Class frmSamples
     Private WithEvents m_rbStartAtNo As System.Windows.Forms.RadioButton
     Private WithEvents m_rbRandom As System.Windows.Forms.RadioButton
     Private WithEvents m_nudStartAt As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_tsblRecordStatus As Windows.Forms.ToolStripLabel
+    Private WithEvents m_tsblRecordStatus As System.Windows.Forms.ToolStripLabel
 End Class

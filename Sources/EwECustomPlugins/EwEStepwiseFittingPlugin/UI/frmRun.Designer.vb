@@ -488,7 +488,7 @@ Partial Class frmRun
     Private WithEvents m_plSettings As System.Windows.Forms.Panel
     Private WithEvents m_nudK As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNumVars As System.Windows.Forms.Label
-    Private WithEvents m_btnExport As Windows.Forms.Button
-    Private WithEvents m_btnResetFolder As Windows.Forms.Button
-    Private WithEvents m_btnStop As Windows.Forms.Button
+    Private WithEvents m_btnExport As System.Windows.Forms.Button
+    Private WithEvents m_btnResetFolder As System.Windows.Forms.Button
+    Private WithEvents m_btnStop As System.Windows.Forms.Button
 End Class

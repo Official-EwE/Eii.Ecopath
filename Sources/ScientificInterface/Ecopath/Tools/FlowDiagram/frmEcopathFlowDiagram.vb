@@ -292,7 +292,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
 
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+            If cmdFS.Result = System.Windows.Forms.DialogResult.OK Then
                 Try
                     ifData = New cXMLSettings()
                     ifData.LoadFromFile(cmdFS.FileName)
