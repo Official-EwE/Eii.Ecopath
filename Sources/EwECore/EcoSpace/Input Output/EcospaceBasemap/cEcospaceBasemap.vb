@@ -210,6 +210,11 @@ Public Class cEcospaceBasemap
             val.Stored = False
             m_values.Add(val.varName, val)
 
+            ' LayerDepth
+            val = New cValue(0, eVarNameFlags.nCells, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             ' ----------------
             ' Init layers
             ' ----------------
@@ -603,6 +608,17 @@ Public Class cEcospaceBasemap
         If (iCol > Me.InCol) Then Return False
         Return True
     End Function
+
+
+    Public Property nCells() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.nCells))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.nCells, value)
+        End Set
+    End Property
 
 #End Region ' Variables by dot (.) operator
 

@@ -440,6 +440,8 @@ Namespace Core
         InRow
         ''' <summary>Number of columns in the Ecospace basemap</summary>
         InCol
+        ''' <summary>Number of modeled cells</summary>
+        nCells
         ''' <summary>Length of a cell (km)</summary>
         CellLength
         ''' <summary>Size of a cell (in map units)</summary>

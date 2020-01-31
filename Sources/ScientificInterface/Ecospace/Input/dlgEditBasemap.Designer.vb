@@ -46,36 +46,38 @@ Partial Class dlgEditBasemap
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_NumRows = New System.Windows.Forms.Label()
         Me.m_lblNumCols = New System.Windows.Forms.Label()
-        Me.m_nudRowCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_nudColCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_lblCellLength = New System.Windows.Forms.Label()
         Me.m_pbLink = New System.Windows.Forms.PictureBox()
         Me.m_lblLonTL = New System.Windows.Forms.Label()
-        Me.m_nudCellSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_nudCellLength = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_nudLonTL = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_nudLatTL = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_lblLatTL = New System.Windows.Forms.Label()
         Me.m_lblCellSize = New System.Windows.Forms.Label()
-        Me.m_hdrDimensions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrSpatialReference = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_cbAssumeSquareCells = New System.Windows.Forms.CheckBox()
         Me.m_lblUnitLat = New System.Windows.Forms.Label()
         Me.m_lblUnitLon = New System.Windows.Forms.Label()
         Me.m_lblUnitCellLen = New System.Windows.Forms.Label()
         Me.m_lblUnitCellSize = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnImport = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsmiImportFromASCII = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_hdrSpatialReference = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrDimensions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_nudCellSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudCellLength = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudLonTL = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudRowCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudLatTL = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudColCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_lbNCells = New System.Windows.Forms.Label()
         Me.m_tlpButtons.SuspendLayout()
-        CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_ts.SuspendLayout()
         CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_ts.SuspendLayout()
+        CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_tlpButtons
@@ -106,22 +108,6 @@ Partial Class dlgEditBasemap
         resources.ApplyResources(Me.m_lblNumCols, "m_lblNumCols")
         Me.m_lblNumCols.Name = "m_lblNumCols"
         '
-        'm_nudRowCount
-        '
-        resources.ApplyResources(Me.m_nudRowCount, "m_nudRowCount")
-        Me.m_nudRowCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudRowCount.Name = "m_nudRowCount"
-        Me.m_nudRowCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'm_nudColCount
-        '
-        resources.ApplyResources(Me.m_nudColCount, "m_nudColCount")
-        Me.m_nudColCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudColCount.Name = "m_nudColCount"
-        Me.m_nudColCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
         'm_lblCellLength
         '
         resources.ApplyResources(Me.m_lblCellLength, "m_lblCellLength")
@@ -138,38 +124,6 @@ Partial Class dlgEditBasemap
         resources.ApplyResources(Me.m_lblLonTL, "m_lblLonTL")
         Me.m_lblLonTL.Name = "m_lblLonTL"
         '
-        'm_nudCellSize
-        '
-        resources.ApplyResources(Me.m_nudCellSize, "m_nudCellSize")
-        Me.m_nudCellSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.m_nudCellSize.Name = "m_nudCellSize"
-        Me.m_nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'm_nudCellLength
-        '
-        resources.ApplyResources(Me.m_nudCellLength, "m_nudCellLength")
-        Me.m_nudCellLength.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudCellLength.Name = "m_nudCellLength"
-        Me.m_nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'm_nudLonTL
-        '
-        resources.ApplyResources(Me.m_nudLonTL, "m_nudLonTL")
-        Me.m_nudLonTL.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudLonTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudLonTL.Name = "m_nudLonTL"
-        Me.m_nudLonTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'm_nudLatTL
-        '
-        resources.ApplyResources(Me.m_nudLatTL, "m_nudLatTL")
-        Me.m_nudLatTL.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudLatTL.Name = "m_nudLatTL"
-        Me.m_nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
         'm_lblLatTL
         '
         resources.ApplyResources(Me.m_lblLatTL, "m_lblLatTL")
@@ -179,22 +133,6 @@ Partial Class dlgEditBasemap
         '
         resources.ApplyResources(Me.m_lblCellSize, "m_lblCellSize")
         Me.m_lblCellSize.Name = "m_lblCellSize"
-        '
-        'm_hdrDimensions
-        '
-        resources.ApplyResources(Me.m_hdrDimensions, "m_hdrDimensions")
-        Me.m_hdrDimensions.CanCollapseParent = False
-        Me.m_hdrDimensions.CollapsedParentHeight = 0
-        Me.m_hdrDimensions.IsCollapsed = False
-        Me.m_hdrDimensions.Name = "m_hdrDimensions"
-        '
-        'm_hdrSpatialReference
-        '
-        resources.ApplyResources(Me.m_hdrSpatialReference, "m_hdrSpatialReference")
-        Me.m_hdrSpatialReference.CanCollapseParent = False
-        Me.m_hdrSpatialReference.CollapsedParentHeight = 0
-        Me.m_hdrSpatialReference.IsCollapsed = False
-        Me.m_hdrSpatialReference.Name = "m_hdrSpatialReference"
         '
         'm_cbAssumeSquareCells
         '
@@ -222,9 +160,15 @@ Partial Class dlgEditBasemap
         resources.ApplyResources(Me.m_lblUnitCellSize, "m_lblUnitCellSize")
         Me.m_lblUnitCellSize.Name = "m_lblUnitCellSize"
         '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
         'm_ts
         '
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.ImageScalingSize = New System.Drawing.Size(28, 28)
         Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnImport})
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
@@ -242,11 +186,84 @@ Partial Class dlgEditBasemap
         Me.m_tsmiImportFromASCII.Name = "m_tsmiImportFromASCII"
         resources.ApplyResources(Me.m_tsmiImportFromASCII, "m_tsmiImportFromASCII")
         '
+        'm_hdrSpatialReference
+        '
+        resources.ApplyResources(Me.m_hdrSpatialReference, "m_hdrSpatialReference")
+        Me.m_hdrSpatialReference.CanCollapseParent = False
+        Me.m_hdrSpatialReference.CollapsedParentHeight = 0
+        Me.m_hdrSpatialReference.IsCollapsed = False
+        Me.m_hdrSpatialReference.Name = "m_hdrSpatialReference"
+        '
+        'm_hdrDimensions
+        '
+        resources.ApplyResources(Me.m_hdrDimensions, "m_hdrDimensions")
+        Me.m_hdrDimensions.CanCollapseParent = False
+        Me.m_hdrDimensions.CollapsedParentHeight = 0
+        Me.m_hdrDimensions.IsCollapsed = False
+        Me.m_hdrDimensions.Name = "m_hdrDimensions"
+        '
+        'm_nudCellSize
+        '
+        resources.ApplyResources(Me.m_nudCellSize, "m_nudCellSize")
+        Me.m_nudCellSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.m_nudCellSize.Name = "m_nudCellSize"
+        Me.m_nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudCellLength
+        '
+        resources.ApplyResources(Me.m_nudCellLength, "m_nudCellLength")
+        Me.m_nudCellLength.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudCellLength.Name = "m_nudCellLength"
+        Me.m_nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudLonTL
+        '
+        resources.ApplyResources(Me.m_nudLonTL, "m_nudLonTL")
+        Me.m_nudLonTL.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudLonTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudLonTL.Name = "m_nudLonTL"
+        Me.m_nudLonTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudRowCount
+        '
+        resources.ApplyResources(Me.m_nudRowCount, "m_nudRowCount")
+        Me.m_nudRowCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudRowCount.Name = "m_nudRowCount"
+        Me.m_nudRowCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudLatTL
+        '
+        resources.ApplyResources(Me.m_nudLatTL, "m_nudLatTL")
+        Me.m_nudLatTL.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudLatTL.Name = "m_nudLatTL"
+        Me.m_nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_nudColCount
+        '
+        resources.ApplyResources(Me.m_nudColCount, "m_nudColCount")
+        Me.m_nudColCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudColCount.Name = "m_nudColCount"
+        Me.m_nudColCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_lbNCells
+        '
+        Me.m_lbNCells.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lbNCells.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        resources.ApplyResources(Me.m_lbNCells, "m_lbNCells")
+        Me.m_lbNCells.Name = "m_lbNCells"
+        '
         'dlgEditBasemap
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_lbNCells)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_lblUnitCellSize)
         Me.Controls.Add(Me.m_lblUnitCellLen)
@@ -275,15 +292,15 @@ Partial Class dlgEditBasemap
         Me.Name = "dlgEditBasemap"
         Me.ShowInTaskbar = False
         Me.m_tlpButtons.ResumeLayout(False)
-        CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_ts.ResumeLayout(False)
+        Me.m_ts.PerformLayout()
         CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_ts.ResumeLayout(False)
-        Me.m_ts.PerformLayout()
+        CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -314,5 +331,6 @@ Partial Class dlgEditBasemap
     Private WithEvents m_ts As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_tsbnImport As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents m_tsmiImportFromASCII As System.Windows.Forms.ToolStripMenuItem
-
+    Friend WithEvents Label1 As Label
+    Friend WithEvents m_lbNCells As Label
 End Class

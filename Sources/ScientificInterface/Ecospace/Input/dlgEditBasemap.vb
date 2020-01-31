@@ -48,6 +48,8 @@ Public Class dlgEditBasemap
     Private m_fpCellSize As cEwEFormatProvider = Nothing
     Private m_fpSquareCells As cEwEFormatProvider = Nothing
 
+    Private m_fpnCells As cEwEFormatProvider = Nothing
+
     Private m_bInitialized As Boolean = False
     Private m_bInUpdate As Boolean = False
 
@@ -87,6 +89,9 @@ Public Class dlgEditBasemap
         Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellSize, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellSize))
         Me.m_fpCellSize.Value = Me.m_basemap.CellSize
 
+        Me.m_fpnCells = New cEwEFormatProvider(Me.m_uic, m_lbNCells, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.nCells))
+        Me.m_fpnCells.Value = Me.m_basemap.nCells
+
         Me.m_fpSquareCells = New cEwEFormatProvider(Me.m_uic, Me.m_cbAssumeSquareCells, GetType(Boolean))
         Me.m_fpSquareCells.Value = Me.m_basemap.AssumeSquareCells
         AddHandler Me.m_fpSquareCells.OnValueChanged, AddressOf OnAssumeSquareCellsChanged
@@ -108,6 +113,8 @@ Public Class dlgEditBasemap
         Me.m_fpInRow.Release()
         Me.m_fpLat.Release()
         Me.m_fpLon.Release()
+        Me.m_fpnCells.Release()
+
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -183,6 +190,7 @@ Public Class dlgEditBasemap
         Me.m_lblUnitLat.Text = strUnit
         Me.m_lblUnitCellSize.Text = strUnit
         Me.m_lblUnitCellLen.Text = fmt.ToString(eUnitMapRefType.km)
+
 
         Me.m_btnOk.Enabled = True
 
