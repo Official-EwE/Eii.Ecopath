@@ -793,13 +793,13 @@
     <value>9, 472</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>235, 25</value>
+    <value>279, 25</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>Number at age 0 (n/km2):</value>
+    <value>Number at age 0 (n/km2/year):</value>
   </data>
   <data name="&gt;&gt;Label1.Name" xml:space="preserve">
     <value>Label1</value>

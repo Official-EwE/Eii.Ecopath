@@ -11879,7 +11879,7 @@ Public Class cCore
             stanza.FixedFecundity = m_Stanza.FixedFecundity(iStanza)
             stanza.EggAtSpawn = m_Stanza.EggAtSpawn(iStanza)
 
-            stanza.Age0Numbers = m_Stanza.RzeroS(iStanza)
+            stanza.Age0Numbers = m_Stanza.RzeroS(iStanza) * 12
 
             'stanza.VBGF = m_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, m_Stanza.BaseStanza(iStanza)))
 
