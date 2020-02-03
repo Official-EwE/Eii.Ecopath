@@ -528,19 +528,27 @@ Public Class cIBMSolver
 
 
             If m_Stanza.isForcedIBMRecruits(isp) = True Then
-                Dim forcedN As Single
+                'this stanza is forced
+                'populate all the packets in each nursery cell 
+                'with the forcing values in that cell
+                Dim nAge0 As Single
                 Dim irow As Integer, icol As Integer
 
+                'Get the forcing cells
+                'Any relative scaling has already been done
                 Dim ForcedCells(,) As Single = m_Stanza.IBMForcedCells(isp)
 
+                'Loop over each nursery cell and populate the packets in that cell 
+                'with the age 0 forcing numbers
                 For Each inur As Integer In lstNursery
                     irow = m_Stanza.iNursery(isp, inur)
                     icol = m_Stanza.jNursery(isp, inur)
-                    forcedN = ForcedCells(irow, icol)
+                    nAge0 = ForcedCells(irow, icol)
 
+                    'find all the packets of this age in this nursery cell
                     For ip = 1 To m_Stanza.Npackets
                         If Math.Truncate(m_Stanza.iPacket(isp, ia1, ip)) = irow And Math.Truncate(m_Stanza.jPacket(isp, ia1, ip)) = icol Then
-                            m_Stanza.Npacket(isp, ia1, ip) = forcedN '* recScaler 
+                            m_Stanza.Npacket(isp, ia1, ip) = nAge0
                             m_Stanza.Wpacket(isp, ia1, ip) = 0.0000000001
                         End If
                     Next ip
@@ -554,19 +562,10 @@ Public Class cIBMSolver
     End Sub
 
 
-    'Private Function getTotalForcedRecruits(ForcedCells As Single(,)) As Single
-    '    Dim sumForced As Single
-    '    For irow As Integer = 1 To Me.m_Data.InRow
-    '        For icol As Integer = 1 To Me.m_Data.InCol
-    '            sumForced += ForcedCells(irow, icol)
-    '        Next icol
-    '    Next irow
-    '    Return sumForced
-    'End Function
-
-
     Private Function ForceNurseryRecruits(isp As Integer) As Single
-
+        'Set all the cells with age 0 forcing values to Nursery Cells 
+        'These Nursery Cells will later be used to populate the location of the packets (iPacket() and jPacket())
+        'and the age 0 forcing number in nPackets() 
         Dim ForcedCells(,) As Single = m_Stanza.IBMForcedCells(isp)
         Dim Nused As Integer = 0
         Dim sumForced As Single
