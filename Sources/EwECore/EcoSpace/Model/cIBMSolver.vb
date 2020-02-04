@@ -423,15 +423,12 @@ Public Class cIBMSolver
                 TotRecruits *= m_Data.ThabArea
             End If
 
-            Dim totForcedRecriuts As Single
-            Dim BaseRec As Single
             'Are the recruits forced
             If m_Stanza.isForcedIBMRecruits(isp) = True Then
+
                 'Yes recruits are forced 
                 'set the nursery cells to the forcing data
-                totForcedRecriuts = Me.ForceNurseryRecruits(isp)
-                BaseRec = m_Stanza.RzeroS(isp) * m_Data.ThabArea * 12 ' {Include the Ecosim Hatchery Forcing function} * m_ESData.tval(m_Stanza.HatchCode(isp))) 
-                Debug.Print("Total Forced Recruits = " + totForcedRecriuts.ToString + ", Ecopath Base Recruits = " + BaseRec.ToString)
+                Me.ForceNurseryCells(isp)
 
             End If 'm_Stanza.isForcedIBMRecruits(ist) = True 
 
@@ -493,7 +490,8 @@ Public Class cIBMSolver
                     m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble()
 
                     'If the nursery cells are forced 
-                    'Don't try to find better habitat. This just assumes the forcing pattern is correct!
+                    'Don't try to find better habitat. 
+                    'Just assume the forcing pattern is correct!
                     If m_Stanza.isForcedIBMRecruits(isp) = False Then
 
                         'Now randomly move some of the packets again if this is a low quality habitat
@@ -531,29 +529,8 @@ Public Class cIBMSolver
                 'this stanza is forced
                 'populate all the packets in each nursery cell 
                 'with the forcing values in that cell
-                Dim nAge0 As Single
-                Dim irow As Integer, icol As Integer
 
-                'Get the forcing cells
-                'Any relative scaling has already been done
-                Dim ForcedCells(,) As Single = m_Stanza.IBMForcedCells(isp)
-
-                'Loop over each nursery cell and populate the packets in that cell 
-                'with the age 0 forcing numbers
-                For Each inur As Integer In lstNursery
-                    irow = m_Stanza.iNursery(isp, inur)
-                    icol = m_Stanza.jNursery(isp, inur)
-                    nAge0 = ForcedCells(irow, icol)
-
-                    'find all the packets of this age in this nursery cell
-                    For ip = 1 To m_Stanza.Npackets
-                        If Math.Truncate(m_Stanza.iPacket(isp, ia1, ip)) = irow And Math.Truncate(m_Stanza.jPacket(isp, ia1, ip)) = icol Then
-                            m_Stanza.Npacket(isp, ia1, ip) = nAge0
-                            m_Stanza.Wpacket(isp, ia1, ip) = 0.0000000001
-                        End If
-                    Next ip
-
-                Next inur
+                PopulateForcedNurseryCells(isp, ia1, lstNursery)
 
             End If 'm_Stanza.isForcedIBMRecruits(ist) = True 
 
@@ -561,8 +538,56 @@ Public Class cIBMSolver
 
     End Sub
 
+    Private Sub PopulateForcedNurseryCells(isp As Integer, ia1 As Integer, lstNursery As List(Of Integer))
+        'this stanza is forced
+        'populate all the packets in each nursery cell 
+        'with the forcing values in that cell
+        Dim nAge0 As Single
+        Dim irow As Integer, icol As Integer
+        Dim npcks As Integer
+        Dim sumAge0 As Single
+        Dim age0NoScale As Single
 
-    Private Function ForceNurseryRecruits(isp As Integer) As Single
+        'Get the forcing cells
+        'Any relative scaling has already been done
+        Dim ForcedCells(,) As Single = m_Stanza.IBMForcedCells(isp)
+        Dim lstipkt As New List(Of Integer)
+
+        'Loop over each nursery cell and populate the packets in that cell 
+        'with the age 0 forcing numbers
+        For Each inur As Integer In lstNursery
+            irow = m_Stanza.iNursery(isp, inur)
+            icol = m_Stanza.jNursery(isp, inur)
+            nAge0 = ForcedCells(irow, icol)
+            age0NoScale += nAge0
+
+            lstipkt.Clear()
+
+            npcks = 0
+            'find all the packets of this age in this nursery cell
+            For ip As Integer = 1 To m_Stanza.Npackets
+                If Math.Truncate(m_Stanza.iPacket(isp, ia1, ip)) = irow And Math.Truncate(m_Stanza.jPacket(isp, ia1, ip)) = icol Then
+                    'm_Stanza.Npacket(isp, ia1, ip) = nAge0
+                    'm_Stanza.Wpacket(isp, ia1, ip) = 0.0000000001
+                    npcks += 1
+                    lstipkt.Add(ip)
+                End If
+            Next ip
+
+            For Each ipk As Integer In lstipkt
+                m_Stanza.Npacket(isp, ia1, ipk) = nAge0 / npcks
+                m_Stanza.Wpacket(isp, ia1, ipk) = 0.0000000001
+                sumAge0 += nAge0 / npcks
+            Next ipk
+
+        Next inur
+
+        Debug.Print("N Packets = " + m_Stanza.Npackets.ToString + ", N Nursery Packets = " + npcks.ToString)
+
+    End Sub
+
+
+    Private Function ForceNurseryCells(isp As Integer) As Single
         'Set all the cells with age 0 forcing values to Nursery Cells 
         'These Nursery Cells will later be used to populate the location of the packets (iPacket() and jPacket())
         'and the age 0 forcing number in nPackets() 
@@ -583,6 +608,13 @@ Public Class cIBMSolver
         Next irow
 
         m_Stanza.Nnursery(isp) = Nused
+
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''Debugging stuff
+        Dim BaseRec As Single = m_Stanza.RzeroS(isp) * m_Data.ThabArea * 12 ' {Include the Ecosim Hatchery Forcing function} * m_ESData.tval(m_Stanza.HatchCode(isp))) 
+        Debug.Print("Total Forced Recruits = " + sumForced.ToString + ", Ecopath Base Recruits = " + BaseRec.ToString)
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         Return sumForced
 
     End Function
