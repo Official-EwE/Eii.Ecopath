@@ -8418,7 +8418,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             iDBID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioHabitat", 0)) + 1
-            If (iIndex <= 0) Then iIndex = CInt(Me.m_db.GetValue("SELECT COUNT * FROM EcospaceScenarioHabitat", 1))
+            If (iIndex <= 0) Then iIndex = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenarioHabitat", 1))
 
             ' The writer needed here will maintain row sequence for the given scenario only
             writer = Me.m_db.GetWriter("EcospaceScenarioHabitat")
@@ -9522,7 +9522,7 @@ Namespace DataSources
             iDBID = CInt(Me.m_db.GetValue("SELECT MAX(MPAID) FROM EcospaceScenarioMPA", 0)) + 1
             writer = Me.m_db.GetWriter("EcospaceScenarioMPA")
 
-            If (iIndex <= 0) Then iIndex = CInt(Me.m_db.GetValue("SELECT COUNT * FROM EcospaceScenarioMPA", 1))
+            If (iIndex <= 0) Then iIndex = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenarioMPA", 1))
 
             drow = writer.NewRow()
             drow("ScenarioID") = iScenarioID
