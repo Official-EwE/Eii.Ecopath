@@ -48,20 +48,25 @@ Namespace Controls
         ''' <param name="bMultiSelect">Flag stating whether a user is allowed to 
         ''' select multiple files.</param>
         ''' <returns>A file dialog.</returns>
+        ''' <seealso cref="LastOpenedHistory"/>
         ''' -------------------------------------------------------------------
         Public Shared Function OpenFileDialog(ByVal strTitle As String,
                                     ByVal strFileName As String,
                                     ByVal strFilters As String,
-                                    Optional ByVal iDefaultFilter As Integer = 0,
+                                    Optional ByVal iDefaultFilter As Integer = -1,
                                     Optional ByVal strInitialDirectory As String = "",
                                     Optional ByVal bMultiSelect As Boolean = False) As OpenFileDialog
 
             Dim dlg As New OpenFileDialog()
 
+            If (iDefaultFilter = -1) Then
+                iDefaultFilter = IndexOf(m_lOpened.ToArray, strFilters)
+            End If
+
             With dlg
                 .FileName = strFileName
                 .Filter = AddAllFilesEntry(strFilters)
-                .FilterIndex = iDefaultFilter
+                .FilterIndex = Math.Max(0, iDefaultFilter)
                 .CheckPathExists = True
                 .CheckFileExists = True
                 .Multiselect = False
@@ -106,6 +111,11 @@ Namespace Controls
                                     Optional ByVal bOverwritePrompt As Boolean = True) As SaveFileDialog
 
             Dim dlg As New SaveFileDialog()
+
+            If (iDefaultFilter = -1) Then
+                iDefaultFilter = IndexOf(m_lSaved.ToArray, strFilters)
+            End If
+
             With dlg
                 .FileName = strFileName
                 .Filter = strFilters
@@ -206,6 +216,83 @@ Namespace Controls
 
             Return strFilter
 
+        End Function
+
+        Private Shared m_lSaved As New List(Of String)
+        Private Shared m_lOpened As New List(Of String)
+
+        ''' <summary>
+        ''' Get/set persistent last opene history
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared Property LastOpenedHistory As String
+            Get
+                Return CollToString(m_lOpened.ToArray)
+            End Get
+            Set(value As String)
+                m_lSaved.Clear()
+                Dim items As String() = StringToColl(value)
+                If (items IsNot Nothing) Then m_lOpened.AddRange(items)
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' Get/set persistent last saved history
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared Property LastSavedHistory As String
+            Get
+                Return CollToString(m_lSaved.ToArray)
+            End Get
+            Set(value As String)
+                m_lSaved.Clear()
+                Dim items As String() = StringToColl(value)
+                If (items IsNot Nothing) Then m_lSaved.AddRange(items)
+            End Set
+        End Property
+
+        Public Shared WriteOnly Property RecordLastOpened As String
+            Set(file As String)
+                Dim ext As String = System.IO.Path.GetExtension(file).ToLower
+                m_lOpened.Remove(ext)
+                m_lOpened.Add(ext)
+                If m_lOpened.Count > 25 Then m_lOpened.RemoveAt(0)
+            End Set
+        End Property
+
+        Public Shared WriteOnly Property RecordSavedFile As String
+            Set(file As String)
+                Dim ext As String = System.IO.Path.GetExtension(file).ToLower
+                m_lSaved.Remove(ext)
+                m_lSaved.Add(ext)
+                If m_lSaved.Count > 25 Then m_lSaved.RemoveAt(0)
+            End Set
+        End Property
+
+        Private Shared Function CollToString(items As String()) As String
+            Dim sb As New StringBuilder
+            For i As Integer = 0 To items.Length - 1
+                If i > 0 Then sb.Append(";")
+                sb.Append(items(i))
+            Next
+            Return sb.ToString()
+        End Function
+
+        Private Shared Function StringToColl(items As String) As String()
+            Return items.Split({";"c}, StringSplitOptions.RemoveEmptyEntries)
+        End Function
+
+        Private Shared Function IndexOf(history As String(), filters As String) As Integer
+            If (String.IsNullOrWhiteSpace(filters)) Then Return -1
+            Dim bits() As String = filters.Split("|"c)
+            For i As Integer = history.Length - 1 To 0 Step -1
+                For j As Integer = 1 To bits.Length - 1 Step 2
+                    For Each ext As String In bits(j).Split(";"c)
+                        If String.Compare(ext, history(i), True) = 0 Then Return i
+                    Next
+                Next j
+            Next i
+            Return -1
         End Function
 
     End Class
