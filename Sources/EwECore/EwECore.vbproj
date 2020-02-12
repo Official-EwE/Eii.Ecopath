@@ -185,6 +185,7 @@
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_12.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_09.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_08.vb" />
+    <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_02.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_01.vb" />
     <Compile Include="DataSource\IEcopathSampleDataSource.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_25.vb" />
