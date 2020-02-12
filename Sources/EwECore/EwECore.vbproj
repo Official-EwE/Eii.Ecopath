@@ -426,6 +426,7 @@
     <Compile Include="SpatialTemporal\Adapters\cBiomassForcingAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cBiomassRelativeAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cCapacityDataAdapter.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cHabitatDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cIBMAge1NumbersForcingAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialScalarNonRestoringDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cForcingAdapterBase.vb" />

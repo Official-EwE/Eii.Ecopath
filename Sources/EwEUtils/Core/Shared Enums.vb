@@ -2444,7 +2444,7 @@ Namespace Core
         ''' <summary>
         ''' Data belongs to a IEnviroInputMap
         '''</summary>
-        EcospaceMapResponse = 100
+        EcospaceEnviroCapacityResponse = 100
 
         MSEBatchManager = 101
         MSEBatchParameters = 102

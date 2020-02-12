@@ -40,7 +40,7 @@ Namespace SpatialData
 
 #Region " Private vars "
 
-        Private m_spaceData As cEcospaceDataStructures
+        Protected m_spaceData As cEcospaceDataStructures
 
 #End Region ' Private vars
 
@@ -80,7 +80,7 @@ Namespace SpatialData
                                                   ByVal dataExternal As ISpatialRaster,
                                                   ByVal dNoData As Double) As Boolean
 
-            Dim breturnVal As Boolean = MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
+            If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then Return False
 
             'isGroupHabCapChanged(group) tells the habitat capacity model 
             'that the capacity inputs for a group have changed.
@@ -106,11 +106,11 @@ Namespace SpatialData
                 Dim bInvalidate As Boolean = False
                 Select Case Me.VarName
                     Case eVarNameFlags.LayerHabitatCapacityInput
-                        bInvalidate = breturnVal
+                        bInvalidate = True
                     Case eVarNameFlags.LayerHabitat
-                        bInvalidate = breturnVal And ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.Habitat) > 0)
+                        bInvalidate = ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.Habitat) > 0)
                     Case eVarNameFlags.LayerDriver
-                        bInvalidate = breturnVal And ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.EnvResponses) > 0)
+                        bInvalidate = ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.EnvResponses) > 0)
                     Case Else
                         Debug.Assert(False, "Capacity driver encountered unexpected layer type " & Me.VarName.ToString())
                 End Select
@@ -119,8 +119,7 @@ Namespace SpatialData
                     Me.m_spaceData.isCapacityChanged = True
                 End If
             Next
-
-            Return breturnVal
+            Return True
 
         End Function
 

@@ -42,7 +42,7 @@ Public Class cEcospaceEnviroResponseManager
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
         Me.m_coreComponent = eCoreComponentType.EcospaceResponseInteractionManager
-        Me.m_dataType = eDataTypes.EcospaceMapResponse
+        Me.m_dataType = eDataTypes.EcospaceEnviroCapacityResponse
     End Sub
 
 #End Region ' Constructor
