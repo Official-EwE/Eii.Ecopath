@@ -815,7 +815,6 @@ Public Class cEcospaceDataStructures
     'not much
     Private m_ngroups As Integer
     Private m_publisher As cMessagePublisher
-    Private m_bHasCapacityChanged As Boolean
 
 #End Region
 
@@ -833,16 +832,7 @@ Public Class cEcospaceDataStructures
     ''' Have any of the capacity input layers changed
     ''' </summary>
     ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
-    Public Property isCapacityChanged() As Boolean
-
-        Get
-            Return Me.m_bHasCapacityChanged
-        End Get
-        Set(value As Boolean)
-            Me.m_bHasCapacityChanged = value
-        End Set
-
-    End Property
+    Public Property isCapacityChanged() As Boolean = False
 
     ''' <summary>
     ''' Set the isGroupHabCapChanged() flag to True or False for all the groups
@@ -855,7 +845,10 @@ Public Class cEcospaceDataStructures
         Next
     End Sub
 
-
+    '''<summary>
+    ''' Have any of the habitat input layers changed that could affect fishing
+    ''' </summary>
+    Public Property isFishingHabitatChanged() As Boolean = False
 
     ''' <summary>Number of Base Groups (Ecopath) </summary>
     ''' <remarks>This was nvar in EwE5</remarks>

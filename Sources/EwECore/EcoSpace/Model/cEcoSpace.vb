@@ -2534,7 +2534,7 @@ Public Class cEcoSpace
                 EcoSpaceData.IsFishRateSet = True
             End If
 
-            If EcoSpaceData.PredictEffort Then SetEffortParameters(True)
+            If EcoSpaceData.PredictEffort Then SetEffortParameters()
 
             If ContaiminantTracerData.EcoSpaceConSimOn Then
                 'If m_ConTracer Is Nothing Then
@@ -3624,7 +3624,7 @@ Public Class cEcoSpace
     End Sub
 
 
-    Private Sub SetEffortParameters(ByVal ResetTotEffort As Boolean)
+    Private Sub SetEffortParameters()
         'this predicts total effort by gear type over model cells
         'accounting for habitat type restriction of each gear (gearhab(geartype,habitat))
         Dim i As Integer, j As Integer, ig As Integer
@@ -3666,31 +3666,29 @@ Public Class cEcoSpace
                         'constrain percentage of area fished to 1.0
                         If Me.EcoSpaceData.PAreaFished(ig)(i, j) > 1.0 Then Me.EcoSpaceData.PAreaFished(ig)(i, j) = 1.0
 
-                        'sum the weighted total effort
-                        If ResetTotEffort Then
+                        If Not Me.EcoSpaceData.bUseEffortDistThreshold Then
+                            'Fishing is only restricted by the Habitat types
+                            EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
 
-                            If Not Me.EcoSpaceData.bUseEffortDistThreshold Then
-                                'Fishing is only restricted by the Habitat types
+                        Else ' Me.m_Data.bUseEffortDistThreshold  = True
+                            'Fishing is also restricted by sailing cost < effort distribution threshold
+                            If Me.EcoSpaceData.Sail(ig)(i, j) < Me.EcoSpaceData.EffortDistThreshold Then
                                 EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
+                            Else
+                                'Sailing cost > effort distribution threshold
+                                'So this fleet is not fishing in this cell
+                                Me.EcoSpaceData.PAreaFished(ig)(i, j) = 0
+                            End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
 
-                            Else ' Me.m_Data.bUseEffortDistThreshold  = True
-                                'Fishing is also restricted by sailing cost < effort distribution threshold
-                                If Me.EcoSpaceData.Sail(ig)(i, j) < Me.EcoSpaceData.EffortDistThreshold Then
-                                    EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
-                                Else
-                                    'Sailing cost > effort distribution threshold
-                                    'So this fleet is not fishing in this cell
-                                    Me.EcoSpaceData.PAreaFished(ig)(i, j) = 0
-                                End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
-
-                            End If 'Me.m_Data.bUseEffortDistThreshold
-                        End If 'ResetTotEffort
+                        End If 'Me.m_Data.bUseEffortDistThreshold
                     End If 'm_Data.Depth(i, j) > 0
 
                 Next j 'map cols
             Next i 'map rows
 
         Next ig ' fleets
+
+        Me.EcoSpaceData.isFishingHabitatChanged = False
 
     End Sub
 
@@ -4206,7 +4204,12 @@ exitline:
     ''' </summary>
     Sub setIsFished()
 
-        'System.Console.WriteLine("----------------MPA Fished------------------------")
+        'System.Console.WriteLine("----------------setIsFished------------------------")
+
+        If Me.EcoSpaceData.isFishingHabitatChanged And EcoSpaceData.PredictEffort Then
+            ' Re-evaluate PAreaFished and tot effort
+            SetEffortParameters()
+        End If
 
         ' For all cells
         For i As Integer = 1 To Me.EcoSpaceData.InRow
@@ -8074,7 +8077,7 @@ exitline:
                 MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or
                 MapDataType = eDataTypes.EcospaceLayerRelPP Or
                 MapDataType = eDataTypes.CapacityMediation Or
-                MapDataType = eDataTypes.EcospaceMapResponse Or
+                MapDataType = eDataTypes.EcospaceEnviroCapacityResponse Or
                 MapDataType = eDataTypes.EcospaceModelParameter Or
                 MapDataType = eDataTypes.EcospaceGroup Or
                 MapDataType = eDataTypes.EcospaceLayerDriver Or

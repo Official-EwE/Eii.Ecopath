@@ -14593,7 +14593,7 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Sample data is loaded.", eMessageType.DataModified,
                                        eCoreComponentType.EcoPath, eMessageImportance.Maintenance))
 
-                Case eDataTypes.EcospaceMapResponse
+                Case eDataTypes.EcospaceEnviroCapacityResponse
                     If obj.CoreComponent = eCoreComponentType.EcospaceResponseInteractionManager Then
 
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange,
