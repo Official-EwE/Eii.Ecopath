@@ -87,10 +87,8 @@ Namespace DataSources
 
         End Sub
 
-        ' This code added by Visual Basic to correctly implement the disposable pattern.
         Public Sub Dispose() Implements IDisposable.Dispose
-            If Me.IsOpen Then Me.Close()
-            Me.m_db = Nothing
+            Me.Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
 
@@ -363,6 +361,15 @@ Namespace DataSources
 #End Region ' Helper methods
 
 #End Region ' Generic
+
+#Region " Disposal "
+
+        Protected Overridable Sub Dispose(bDispose As Boolean)
+            If Me.IsOpen Then Me.Close()
+            Me.m_db = Nothing
+        End Sub
+
+#End Region ' Disposal
 
 #Region " Change management "
 
@@ -7349,6 +7356,7 @@ Namespace DataSources
                             drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                             drow("ResponseID") = medDS.MediationDBIDs(ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup))
                             drow("DriverID") = ecosimDS.ForcingDBIDs(iShapeDriver)
+                            drow("Target") = CInt(eDataTypes.EcosimEnviroResponseFunctionManager)
                             writer.AddRow(drow)
                         End If
                     Next iGroup
@@ -9972,6 +9980,7 @@ Namespace DataSources
                             drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
                             drow("VarDBID") = If(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
+                            drow("Target") = CInt(eDataTypes.EcospaceEnviroCapacityResponse)
                             writer.AddRow(drow)
                         End If
                     Next iGroup
