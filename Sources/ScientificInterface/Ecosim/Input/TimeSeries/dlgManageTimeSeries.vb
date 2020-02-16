@@ -617,7 +617,7 @@ Public Class dlgManageTimeSeries
         Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
         'Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
-        Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount
+        Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount + 1
 
 
     End Sub
