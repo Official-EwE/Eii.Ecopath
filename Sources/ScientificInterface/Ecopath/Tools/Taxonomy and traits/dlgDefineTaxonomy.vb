@@ -191,7 +191,11 @@ Public Class dlgDefineTaxonomy
         RemoveHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
         RemoveHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
 
+        Me.m_gridGroups.UIContext = Nothing
+        Me.m_gridGroups.Dispose()
+
         MyBase.OnFormClosed(e)
+
     End Sub
 
 #End Region ' Form overrides
