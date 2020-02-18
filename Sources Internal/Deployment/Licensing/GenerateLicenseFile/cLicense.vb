@@ -6,13 +6,13 @@
     Public Property Date_purchased As Date
     Public Property Months As Integer
 
-    Public ReadOnly Property Date_expiry()
+    Public ReadOnly Property Date_expiry() As Date
         Get
             Return Date_purchased.AddMonths(Months)
         End Get
     End Property
 
-    Public ReadOnly Property IsExpired()
+    Public ReadOnly Property IsExpired() As Boolean
         Get
             Return Me.Date_expiry < Date.Now
         End Get
