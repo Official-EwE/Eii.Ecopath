@@ -17,12 +17,20 @@ Public Class cJSDataWriter
 
 #Region " Generic "
 
-    Public Shared Function Write(dt As DataTable, strFile As String, strFilter As String) As Boolean
+    Public Shared Function Write(Of T)(dt As Dictionary(Of String, T), file As String, filter As String) As Boolean
+        Return Write(cDataTableFactory.ToDataTable(dt), file, filter)
+    End Function
+
+    Public Shared Function Write(Of T)(coll As ICollection(Of T), file As String, filter As String) As Boolean
+        Return Write(cDataTableFactory.ToDataTable(coll), file, filter)
+    End Function
+
+    Public Shared Function Write(dt As DataTable, strFile As String, filter As String) As Boolean
         If (String.IsNullOrWhiteSpace(strFile)) Then
             Return WriteClipboard(dt)
         Else
             Select Case Path.GetExtension(strFile).ToLower()
-                Case ".xlsx", ".xlst" : Return SaveExcel(dt, strFile, strFilter)
+                Case ".xlsx", ".xlst" : Return SaveExcel(dt, strFile, filter)
                     'Case ".mdb", ".accdb" : Return LoadAccess(strFile, strFilter)
                 Case ".csv", ".txt" : Return SaveCSV(dt, strFile)
                 Case Else
@@ -84,12 +92,15 @@ Public Class cJSDataWriter
                 For iCol As Integer = 0 To dt.Columns.Count - 1
                     If (bText) Then sb.Append(",")
                     Dim val As Object = dr(iCol)
-                    If dt.Columns(iCol).DataType Is GetType(String) Then
+                    Dim col As DataColumn = dt.Columns(iCol)
+                    If col.DataType Is GetType(String) Then
                         sb.Append(CStr(val))
-                    ElseIf dt.Columns(iCol).DataType Is GetType(Boolean) Then
+                    ElseIf col.DataType Is GetType(Boolean) Then
                         sb.Append(If(CBool(val), "1", "0"))
+                    ElseIf col.DataType.IsPrimitive Then
+                        sb.Append(CStr(val))
                     Else
-                        sb.Append(CStr(CDec(val)))
+                        sb.Append(val.ToString)
                     End If
                     bText = True
                 Next iCol
