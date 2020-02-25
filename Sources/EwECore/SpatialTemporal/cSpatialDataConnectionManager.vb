@@ -169,6 +169,8 @@ Namespace SpatialData
         ''' <param name="adt">The adapter to update. If left empty, all adapters will be updated.</param>
         Public Sub Update(Optional adt As cSpatialDataAdapter = Nothing, Optional ForceUpdate As Boolean = False)
 
+            ' ToDo: only send out notifications if data has changed (or update is forced)
+
             'If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
 
             Dim ds As ISpatialDataSet = Nothing
@@ -212,7 +214,9 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            Me.NotifyCore(eMessageType.DataAddedOrRemoved, ForceUpdate)
+            If (ForceUpdate Or True) Then
+                Me.NotifyCore(eMessageType.DataAddedOrRemoved)
+            End If
 
         End Sub
 
@@ -351,36 +355,42 @@ Namespace SpatialData
             Return Me.m_datasetManager
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Apply changes to a single dataset
+        ''' </summary>
+        ''' <param name="ds"></param>
+        ''' <param name="ForceUpdate">True to force the notification</param>
+        ''' -------------------------------------------------------------------
         Public Sub Update(ByVal ds As ISpatialDataSet, Optional ForceUpdate As Boolean = False)
             Me.m_datasetManager.Compatibility(ds).Invalidate()
-            Me.Update()
             ' Only send out event if this dataset is used in a spat/temp configuration
-            If (Me.IsApplied(ds)) Then
-                Me.NotifyCore(eMessageType.DataModified, ForceUpdate)
+            If (Me.IsApplied(ds) Or ForceUpdate) Then
+                Me.Update()
             End If
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Apply changes to a single converter
+        ''' </summary>
+        ''' <param name="cv"></param>
+        ''' <param name="ForceUpdate">True to force the notification</param>
+        ''' -------------------------------------------------------------------
         Public Sub Update(ByVal cv As ISpatialDataConverter, Optional ForceUpdate As Boolean = False)
-            ' ToDo: implement selective update
-            Me.Update()
             ' ToDo: Only send out event this converter is used in a spat/temp configuration
-            Me.NotifyCore(eMessageType.DataModified, ForceUpdate)
+            Me.Update()
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Notify the core that data has changed. If there are no configured external data connections
-        ''' this notification will be cancelled. To bypass this check and force the notification, set
-        ''' <paramref name="ForceUpdate"/> to True.
+        ''' Notify the core that data has changed.
         ''' </summary>
         ''' <param name="importance"></param>
-        ''' <param name="ForceUpdate">True to force the notification</param>
-        Public Sub NotifyCore(importance As eMessageType, Optional ForceUpdate As Boolean = False)
+        ''' -------------------------------------------------------------------
+        Public Sub NotifyCore(importance As eMessageType)
             Try
-                ' Assume that this has affected currently configured adapters, because 
-                ' this is very likely. This check can be improved.
-                If (Me.NumConnectedAdapters > 0) Or (ForceUpdate = True) Then
-                    Me.m_core.onChanged(Me, importance)
-                End If
+                Me.m_core.onChanged(Me, importance)
             Catch ex As Exception
                 'Ouch
             End Try
@@ -495,8 +505,6 @@ Namespace SpatialData
             If bConnectionsRemoved Then
                 ' Commit changes to underlying data structures
                 Me.Update()
-                ' Explicitly let the core know that data has changed and that the datasource is now dirty
-                Me.NotifyCore(eMessageType.DataModified, True)
             End If
 
         End Sub
