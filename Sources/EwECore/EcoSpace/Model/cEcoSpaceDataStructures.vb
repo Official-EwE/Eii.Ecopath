@@ -846,7 +846,7 @@ Public Class cEcospaceDataStructures
     End Sub
 
     '''<summary>
-    ''' Have any of the habitat input layers changed that could affect fishing
+    ''' Habitat input layers have changed, which could affect fishing
     ''' </summary>
     Public Property isFishingHabitatChanged() As Boolean = False
 
