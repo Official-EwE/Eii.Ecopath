@@ -94,26 +94,11 @@ Namespace Other
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
             Dim cfg As cSpatialDataConfigFile = CType(Me.m_lvDatasets.SelectedItems(0).Tag, cSpatialDataConfigFile)
-            Dim bSuccess As Boolean = False
-            Dim strFileName As String = ""
 
             If (cfg IsNot Nothing) Then
-                strFileName = cfg.FileName
+                Me.SetCurrentConfigFile(cfg.FileName)
+                Me.UpdateConfigFileList()
             End If
-
-            Try
-                Me.UIContext.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
-                Try
-                    bSuccess = man.Load(strFileName, True)
-                Catch ex As Exception
-                    bSuccess = False
-                End Try
-                core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
-            End Try
-            Me.UpdateConfigFileList()
 
         End Sub
 
@@ -134,6 +119,7 @@ Namespace Other
 
             If (cmdFO.Result = DialogResult.OK) Then
                 man.AddConfigFile(cmdFO.FileName)
+                Me.SetCurrentConfigFile(cmdFO.FileName)
                 Me.UpdateConfigFileList()
             End If
 
@@ -169,6 +155,7 @@ Namespace Other
 
             If (cmdFS.Result = DialogResult.OK) Then
                 man.CreateConfigFile(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName), "")
+                Me.SetCurrentConfigFile(cmdFS.FileName)
                 Me.UpdateConfigFileList()
             End If
 
@@ -234,9 +221,12 @@ Namespace Other
                 If Not Me.m_bDragOver Then Return
                 Dim core As cCore = Me.UIContext.Core
                 Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+                Dim last As String = ""
                 For Each strFile As String In CType(e.Data.GetData(DataFormats.FileDrop), String())
                     man.AddConfigFile(strFile)
+                    last = strFile
                 Next
+                Me.SetCurrentConfigFile(last)
                 Me.UpdateConfigFileList()
             Catch ex As Exception
             End Try
@@ -488,6 +478,33 @@ Namespace Other
             Me.m_btnClearCache.Enabled = (cache.GetSize() > 0)
 
         End Sub
+
+        Private Function SetCurrentConfigFile(strFileName As String) As Boolean
+
+            Dim bSuccess As Boolean = False
+
+            If String.IsNullOrWhiteSpace(strFileName) Then Return bSuccess
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
+
+            Try
+
+                Core.SetBatchLock(cCore.eBatchLockType.Restructure)
+                Try
+                    bSuccess = man.Load(strFileName, True)
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+                core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
+                bSuccess = False
+            End Try
+            Return bSuccess
+
+        End Function
 
 #End Region ' Internals
 
