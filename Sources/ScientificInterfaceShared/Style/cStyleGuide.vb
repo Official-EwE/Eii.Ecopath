@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Option Explicit On
 
 Imports System.Collections.Specialized
 Imports System.Drawing.Drawing2D
@@ -667,19 +668,25 @@ Namespace Style
 
         End Function
 
-        Public Function FormatMemory(size As Long) As String
+        ''' <summary>
+        ''' Format a number of bytes
+        ''' </summary>
+        ''' <param name="size">number of bytes to format.</param>
+        ''' <returns></returns>
+        Public Function FormatBytes(size As Long) As String
 
-            Dim astrUnits As String() = New String() {My.Resources.UNIT_BYTE, My.Resources.UNIT_KILOBYTE, My.Resources.UNIT_MEGABYTE, My.Resources.UNIT_TERABYTE}
+            ' http://highscalability.com/blog/2012/9/11/how-big-is-a-petabyte-exabyte-zettabyte-or-a-yottabyte.html
+            Dim astrUnits As String() = New String() {My.Resources.UNIT_BYTE, My.Resources.UNIT_KILOBYTE, My.Resources.UNIT_MEGABYTE, My.Resources.UNIT_TERABYTE, "PB", "EB", "ZB", "YB", "XB", "SB", "DB", "Stupidly much"}
             Dim i As Integer = 0
             Dim dTest As Double = 1024
-            Dim dValue As Double = size
+            Dim dValue As Double = CDbl(size)
 
             While (dValue > dTest) And (i < astrUnits.Length - 1)
                 dValue /= 1024
                 i += 1
             End While
 
-            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(CInt(size)), astrUnits(i))
+            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(dValue), astrUnits(i))
 
         End Function
 

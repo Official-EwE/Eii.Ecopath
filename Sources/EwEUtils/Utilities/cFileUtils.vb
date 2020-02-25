@@ -501,7 +501,7 @@ Namespace Utilities
 
             Try
                 ' Lastly trash directory itself
-                Directory.Delete(strPath)
+                Directory.Delete(strPath, True)
             Catch ex As Exception
                 ' Directory in use?
                 bSucces = False
