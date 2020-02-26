@@ -3829,6 +3829,8 @@ Namespace DataSources
 
             bSucces = Me.m_db.BeginTransaction()
 
+            SaveEcosimScenarioDefinitions()
+
             Try
 
                 writer = Me.m_db.GetWriter("EcosimScenario")
@@ -7762,6 +7764,8 @@ Namespace DataSources
 
             ' Start transaction
             bSucces = Me.m_db.BeginTransaction()
+
+            SaveEcospaceScenarioDefinitions()
 
             Try
                 ' Save scenario

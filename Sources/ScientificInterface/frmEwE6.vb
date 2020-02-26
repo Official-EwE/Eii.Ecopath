@@ -2935,6 +2935,28 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Event handler, called when the scenario dropdowns open. Implemented to
+    ''' update item texts, in case scenario or time series names have changed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnScenarioDropdownOpening(sender As Object, args As Object) _
+        Handles m_tsbEcosim.DropDownOpening, m_tsbEcospace.DropDownOpening, m_tsbEcotracer.DropDownOpening
+
+        If (TypeOf sender Is ToolStripDropDownItem) Then
+            Dim dd As ToolStripDropDownItem = DirectCast(sender, ToolStripDropDownItem)
+            For Each tsi As ToolStripItem In dd.DropDownItems
+                If (tsi.Tag IsNot Nothing) Then
+                    If (TypeOf tsi.Tag Is cCoreInputOutputBase) Then
+                        tsi.Text = DirectCast(tsi.Tag, cCoreInputOutputBase).Name
+                    End If
+                End If
+            Next
+        End If
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Event handler, called when the Exit menu item is selected.
     ''' </summary>
     ''' -----------------------------------------------------------------------
