@@ -137,7 +137,6 @@ Public Class dlgSelectEnvironmentalResponse
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.Visible = False
         Me.m_tslbFilter.Image = SharedResources.FilterHS
 
         ' Get the available shapes that can be applied
@@ -166,7 +165,6 @@ Public Class dlgSelectEnvironmentalResponse
         Me.LoadAppliedShapes()
 
         Me.CenterToScreen()
-        Me.Visible = True
 
     End Sub
 
