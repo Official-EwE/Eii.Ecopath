@@ -174,9 +174,9 @@ Partial Class dlgSelectEnvironmentalResponse
         'm_tstbFilter
         '
         Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
         Me.m_tstbFilter.Name = "m_tstbFilter"
         Me.m_tstbFilter.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
         '
         'm_tslbFilter
         '
@@ -212,6 +212,7 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.Controls.Add(Me.m_tlMain)
+        Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
