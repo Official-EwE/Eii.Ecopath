@@ -478,7 +478,7 @@ Namespace Ecospace.Controls
             For Each adt As cSpatialDataAdapter In lAdt
                 For Each conn As cSpatialDataConnection In adt.Connections()
                     Debug.Assert(conn IsNot Nothing)
-                    If (adt.IsEnabled(conn.iLayer)) Then
+                    If (adt.IsEnabled(conn.iLayer) And conn.IsConfigured) Then
                         dicConn(conn.Dataset) = conn
                     End If
                 Next conn
