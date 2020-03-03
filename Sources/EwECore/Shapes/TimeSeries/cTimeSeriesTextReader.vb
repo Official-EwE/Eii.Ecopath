@@ -376,7 +376,7 @@ Public MustInherit Class cTimeSeriesTextReader
             End If
 
             ' Pool code
-            If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group", "fleet"}) Then
+            If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"pool", "group", "fleet", "target"}) Then
                 Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
