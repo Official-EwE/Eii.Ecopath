@@ -47,9 +47,7 @@ Namespace Ecospace
             DispersalRate
             RelDisp
             RelVul
-#If DEBUG Then
             RelFitnessMove
-#End If
             Advected
             Migrating
             BarrierAvoidance
@@ -75,9 +73,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.DispersalRate) = New EwEColumnHeaderCell(eVarNameFlags.MVel)
             Me(0, eColumnTypes.RelDisp) = New EwEColumnHeaderCell(eVarNameFlags.RelMoveBad)
             Me(0, eColumnTypes.RelVul) = New EwEColumnHeaderCell(eVarNameFlags.RelVulBad)
-#If DEBUG Then
             Me(0, eColumnTypes.RelFitnessMove) = New EwEColumnHeaderCell(eVarNameFlags.KMoveFitness)
-#End If
             Me(0, eColumnTypes.Advected) = New EwEColumnHeaderCell(eVarNameFlags.IsAdvected)
             Me(0, eColumnTypes.Migrating) = New EwEColumnHeaderCell(eVarNameFlags.IsMigratory)
             Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
@@ -107,11 +103,8 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.RelDisp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelMoveBad)
                 ' Rel. vul.to pred. in bad habitat
                 Me(iGroup, eColumnTypes.RelVul) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelVulBad)
-#If DEBUG Then
-
                 ' Rel. movement to cell fitness
                 Me(iGroup, eColumnTypes.RelFitnessMove) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.KMoveFitness)
-#End If
                 'Advected?
                 Me(iGroup, eColumnTypes.Advected) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsAdvected)
                 'Migrating?
