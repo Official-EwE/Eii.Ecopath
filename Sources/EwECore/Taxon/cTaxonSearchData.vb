@@ -38,6 +38,17 @@ Public Class cTaxonSearchData
 
     Public Sub New(strSource As String)
         Me.Source = strSource
+        Me.Phylum = ""
+        Me.Class = ""
+        Me.Family = ""
+        Me.Genus = ""
+        Me.Order = ""
+        Me.Species = ""
+        Me.Common = ""
+        Me.CodeAphia = ""
+        Me.CodeAquaMaps = ""
+        Me.CodeFAO = ""
+        Me.CodeLSID = ""
     End Sub
 
     Public Sub New(iTaxon As Integer, data As cTaxonDataStructures)
@@ -67,7 +78,6 @@ Public Class cTaxonSearchData
         Me.OccurrenceStatus = data.TaxonOccurrenceStatus(iTaxon)
         Me.Order = data.TaxonOrder(iTaxon)
         Me.OrganismType = data.TaxonOrganismType(iTaxon)
-        Me.Phylum = ""
         Me.SourceKey = data.TaxonSourceKey(iTaxon)
         Me.South = data.TaxonSouth(iTaxon)
         Me.Species = data.TaxonSpecies(iTaxon)
@@ -76,6 +86,7 @@ Public Class cTaxonSearchData
         Me.West = data.TaxonWest(iTaxon)
         Me.Winf = data.TaxonWinf(iTaxon)
     End Sub
+
 #End Region ' Constructor
 
 #Region " Properties "
