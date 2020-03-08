@@ -160,7 +160,6 @@ Namespace Controls
             Dim fmt As TextFormatFlags = TextFormatFlags.EndEllipsis Or TextFormatFlags.SingleLine
             Dim bIsURL As Boolean = Me.HasHyperlink(e.Node)
             Dim clrText As Color = SystemColors.ControlText
-            Dim ft As Font = Nothing
             Dim rcItem As Rectangle = e.Bounds
             Dim bShowTime As Boolean = Me.m_bShowTime ' And (TypeOf (e.Node) Is cHyperlinkTreeNode)
 
@@ -192,19 +191,14 @@ Namespace Controls
                     rcItem.X += sz.Width
                 End If
 
-                ft = New Font(Me.Font, FontStyle.Regular)
-                TextRenderer.DrawText(e.Graphics, DirectCast(e.Node, cHyperlinkTreeNode).Time.ToShortTimeString,
-                                      ft, rcTime, clrText, fmt)
-                ft.Dispose()
+                Using ft As New Font(Me.Font, FontStyle.Regular)
+                    TextRenderer.DrawText(e.Graphics, DirectCast(e.Node, cHyperlinkTreeNode).Time.ToShortTimeString, ft, rcTime, clrText, fmt)
+                End Using
             End If
 
-            If bIsURL Then
-                ft = New Font(Me.Font, FontStyle.Underline)
-            Else
-                ft = New Font(Me.Font, FontStyle.Regular)
-            End If
-            TextRenderer.DrawText(e.Graphics, e.Node.Text, ft, rcItem, clrText, fmt)
-            ft.Dispose()
+            Using ft As New Font(Me.Font, If(bIsURL, FontStyle.Underline, FontStyle.Regular))
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, ft, rcItem, clrText, fmt)
+            End Using
 
             '  e.DrawDefault = False
 

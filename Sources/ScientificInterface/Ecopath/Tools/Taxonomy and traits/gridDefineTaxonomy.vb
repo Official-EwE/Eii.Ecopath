@@ -1309,6 +1309,7 @@ Public Class gridDefineTaxonomy
 
         End If
 
+
         ' Update any changed taxa
         Dim dtTaxa As New Dictionary(Of Integer, cTaxon)
         For i As Integer = 1 To Me.Core.nTaxon
@@ -1316,11 +1317,13 @@ Public Class gridDefineTaxonomy
             dtTaxa(CInt(taxon.GetVariable(eVarNameFlags.DBID))) = taxon
         Next
 
+        Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
         For Each ti In Me.m_lTaxonInfo
             If (Not ti.IsNew And Not ti.FlaggedForDeletion) Then
                 ti.ApplyChanges(dtTaxa(ti.TaxonID))
             End If
         Next
+        Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
 
         Return bSuccess
 
