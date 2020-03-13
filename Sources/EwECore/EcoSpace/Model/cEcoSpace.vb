@@ -946,18 +946,18 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                'make sure none of the biomass cells are zero
-                For ip = 1 To EcoSpaceData.nvartot
-                    For i = 1 To EcoSpaceData.InRow
-                        For j = 1 To EcoSpaceData.InCol
-                            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
-                            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
-                                EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                            End If
-                            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                        Next j
-                    Next i
-                Next 'For ip = 1 To m_Data.nvartot
+                ''make sure none of the biomass cells are zero
+                'For ip = 1 To EcoSpaceData.nvartot
+                '    For i = 1 To EcoSpaceData.InRow
+                '        For j = 1 To EcoSpaceData.InCol
+                '            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
+                '            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
+                '                EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                '            End If
+                '            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                '        Next j
+                '    Next i
+                'Next 'For ip = 1 To m_Data.nvartot
 
 
                 EcoSpaceData.PredictEffort = True
@@ -1009,18 +1009,18 @@ Public Class cEcoSpace
                 runSpaceSolverThreads()
                 stpwchSolver.Stop()
 
-                'make sure none of the biomass cells are zero
-                For ip = 1 To EcoSpaceData.nvartot
-                    For i = 1 To EcoSpaceData.InRow
-                        For j = 1 To EcoSpaceData.InCol
-                            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
-                            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
-                                EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                            End If
-                            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                        Next j
-                    Next i
-                Next 'For ip = 1 To m_Data.nvartot
+                ''make sure none of the biomass cells are zero
+                'For ip = 1 To EcoSpaceData.nvartot
+                '    For i = 1 To EcoSpaceData.InRow
+                '        For j = 1 To EcoSpaceData.InCol
+                '            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
+                '            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
+                '                EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                '            End If
+                '            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                '        Next j
+                '    Next i
+                'Next 'For ip = 1 To m_Data.nvartot
 
 
                 'Me.UpdateMultiStanza()
@@ -1043,9 +1043,10 @@ Public Class cEcoSpace
                         For j = 1 To EcoSpaceData.InCol
                             'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
                             If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
-                                EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                                EcoSpaceData.Bcell(i, j, ip) = 1.0E-30
                             End If
-                            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                            'If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
+                            If EcoSpaceData.Bcell(i, j, ip) < 1.0E-30 Then EcoSpaceData.Bcell(i, j, ip) = 1.0E-30
                         Next j
                     Next i
                 Next 'For ip = 1 To m_Data.nvartot
