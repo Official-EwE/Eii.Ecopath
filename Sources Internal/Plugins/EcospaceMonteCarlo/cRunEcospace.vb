@@ -52,6 +52,8 @@ Public Class cRunEcospace
 
     Public Sub SetRunParameters(ByVal parameters As cRunPeriods)
 
+        'Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
+
         Core.EwEModel.FirstYear = parameters.StartYear
         Core.EcospaceModelParameters.TotalTime = parameters.nYears
 
@@ -61,8 +63,13 @@ Public Class cRunEcospace
     End Sub
 
     Public Sub Run()
+        Dim curSearchMode As eSearchModes = Me.Ecospace.SearchData.SearchMode
+        Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
+
         Core.StopEcospace()
         Core.RunEcoSpace(Nothing, False)
+
+        Me.Ecospace.SearchData.SearchMode = curSearchMode
 
     End Sub
 

@@ -125,11 +125,24 @@ Public Class cRunManager
 
     Public Function Run(ByVal TrialNumber As Integer) As Boolean
 
+        Me.configMonteCarlo()
+
         If Not Me.m_isConfig Then
             Return False
         End If
 
         m_TrialNumber = TrialNumber
+
+
+        m_bStop = False
+        m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
+        ' m_curSpaceRun = 1
+        RunType = "Before"
+        m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
+
+
+        ' RunOnThread()
+
         m_waitLock = New ManualResetEvent(True)
 
         m_waitLock.Reset()
@@ -137,6 +150,28 @@ Public Class cRunManager
         runthread.Start()
 
         m_waitLock.WaitOne()
+        Me.m_waitLock.Set()
+
+
+
+
+        If Not Me.m_bStop Then
+            RunType = "After"
+            m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
+            Me.m_RunSpace.Run()
+        End If
+
+        m_waitLock = New ManualResetEvent(True)
+
+        m_waitLock.Reset()
+        runthread = New Thread(AddressOf RunOnThread)
+        runthread.Start()
+
+        m_waitLock.WaitOne()
+        Me.m_waitLock.Set()
+
+
+        ' Me.RunsCompleted()
 
         Return True
 
@@ -147,26 +182,26 @@ Public Class cRunManager
 
         Try
 
-            m_bStop = False
-            m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
-            ' m_curSpaceRun = 1
-            RunType = "Before"
-            m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
+            'm_bStop = False
+            'm_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
+            '' m_curSpaceRun = 1
+            'RunType = "Before"
+            'm_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
             Me.m_RunSpace.Run()
 
-            ' m_curSpaceRun = 2
+            '' m_curSpaceRun = 2
 
-            If Not Me.m_bStop Then
-                RunType = "After"
-                m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
-                Me.m_RunSpace.Run()
-            End If
+            'If Not Me.m_bStop Then
+            '    RunType = "After"
+            '    m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
+            '    Me.m_RunSpace.Run()
+            'End If
 
         Catch ex As Exception
 
         End Try
 
-        Me.RunsCompleted()
+
 
     End Sub
 
@@ -219,7 +254,7 @@ Public Class cRunManager
                 sumB = 0
                 'The Zero index in ResultsByGroup(type,group,year) is Biomass
                 For it As Integer = Me.m_RunSpace.StartOfLastYear To Me.m_RunSpace.StartOfLastYear + Me.m_RunSpace.nTimeStepPerYear
-                    sumB += m_plugin.EcoSpaceData.ResultsByGroup(0, igrp, it)
+                    sumB += m_plugin.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, it)
                 Next it
 
                 'Average of the last year
@@ -306,7 +341,14 @@ Public Class cRunManager
     Public Sub configMonteCarlo()
 
         Dim MC As cMonteCarloManager = Me.core.EcosimMonteCarlo
-        MC.Load()
+
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'jb 13-Mar-2020it's already been loaded by the use
+        'not sure why I'm doing this again
+        'MC.Load()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         'For now set BA to 0 for all groups
         'until we sort out how to deal with the 
         'BA BA/B variation
