@@ -131,11 +131,11 @@ Public Class frmEcospaceMonteCarlo
 
         SFD.OverwritePrompt = False
 
-        If SFD.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If SFD.ShowDialog = System.Windows.Forms.DialogResult.OK Then
             Dim filename As String = SFD.FileName
 
             If File.Exists(filename) Then
-                If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite." + vbCrLf + "No to append new results.", _
+                If MsgBox("Selected output file already exists. Do you want to overwrite it?" + vbCrLf + "Yes to overwrite." + vbCrLf + "No to append new results.",
                     MsgBoxStyle.YesNo, "Ecospace MonteCarlo.") = MsgBoxResult.Yes Then
                     Try
                         File.Delete(filename)

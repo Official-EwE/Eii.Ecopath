@@ -244,7 +244,7 @@ Public Class cEcospaceMonteCarloPluginPoint
             Me.m_MonteCarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
             Me.m_runManager.Init(Me)
 
-            Me.m_runManager.configMonteCarlo()
+            'Me.m_runManager.configMonteCarlo()
 
         Catch ex As Exception
 
@@ -405,7 +405,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasInterface As Boolean = False
 
