@@ -2071,6 +2071,12 @@ Public Class cPluginManager
 
     End Function
 
+    Public Function MonteCarloEcopathModelBalancedThread(MonteCarloThread As Thread, ResetEvent As ManualResetEvent) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IMonteCarloBalancedModelWaitLock), "MonteCarloEcopathModelBalancedWaitLock", New Object() {MonteCarloThread, ResetEvent})
+
+    End Function
+
 #End Region ' Monte Carlo
 
 #Region " GUI "
