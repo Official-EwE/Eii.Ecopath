@@ -60,16 +60,18 @@ Public Class cRunEcospace
         nTimeStepPerYear = CInt(Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
         StartOfLastYear = CInt((Core.EcospaceModelParameters.TotalTime - 1) * nTimeStepPerYear)
 
+        Dim curSearchMode As eSearchModes = Me.Ecospace.SearchData.SearchMode
+        Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
+
     End Sub
 
     Public Sub Run()
-        Dim curSearchMode As eSearchModes = Me.Ecospace.SearchData.SearchMode
-        Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
+
 
         Core.StopEcospace()
         Core.RunEcoSpace(Nothing, False)
 
-        Me.Ecospace.SearchData.SearchMode = curSearchMode
+        '  Me.Ecospace.SearchData.SearchMode = curSearchMode
 
     End Sub
 

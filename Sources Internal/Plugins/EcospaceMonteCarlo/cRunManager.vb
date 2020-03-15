@@ -69,6 +69,8 @@ Public Class cRunManager
 
     Private m_parNames() As String
 
+    Private m_MCThread As Thread
+
     Public Property RunParameters As cRunParameters
 
         Get
@@ -123,6 +125,12 @@ Public Class cRunManager
 
     End Sub
 
+
+    Public Sub setThread(MCThread As Thread, WaitEvent As ManualResetEvent)
+        Me.m_MCThread = MCThread
+        m_waitLock = WaitEvent
+    End Sub
+
     Public Function Run(ByVal TrialNumber As Integer) As Boolean
 
         Me.configMonteCarlo()
@@ -131,44 +139,49 @@ Public Class cRunManager
             Return False
         End If
 
+
         m_TrialNumber = TrialNumber
 
 
-        m_bStop = False
-        m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
-        ' m_curSpaceRun = 1
-        RunType = "Before"
-        m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
+        'm_bStop = False
+        'm_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
+        '' m_curSpaceRun = 1
+        'RunType = "Before"
+        'm_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
+        ' Me.m_RunSpace.Run()
 
 
-        ' RunOnThread()
 
-        m_waitLock = New ManualResetEvent(True)
+        ''m_waitLock = New ManualResetEvent(True)
+        Me.m_waitLock.Reset()
 
-        m_waitLock.Reset()
+        ''m_waitLock.Reset()
         Dim runthread As New Thread(AddressOf RunOnThread)
         runthread.Start()
 
-        m_waitLock.WaitOne()
-        Me.m_waitLock.Set()
+        'If Me.m_MCThread IsNot Nothing Then
+        '    Me.m_MCThread.Join()
+        'End If
+        'm_waitLock.Reset()
+        'm_waitLock.WaitOne()
 
 
 
 
-        If Not Me.m_bStop Then
-            RunType = "After"
-            m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
-            Me.m_RunSpace.Run()
-        End If
+        'If Not Me.m_bStop Then
+        '    RunType = "After"
+        '    m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
+        '    Me.m_RunSpace.Run()
+        'End If
 
-        m_waitLock = New ManualResetEvent(True)
 
-        m_waitLock.Reset()
-        runthread = New Thread(AddressOf RunOnThread)
-        runthread.Start()
 
-        m_waitLock.WaitOne()
-        Me.m_waitLock.Set()
+        'm_waitLock.Reset()
+        'runthread = New Thread(AddressOf RunOnThread)
+        'runthread.Start()
+
+        'm_waitLock.WaitOne()
+        'Me.m_waitLock.Set()
 
 
         ' Me.RunsCompleted()
@@ -182,26 +195,27 @@ Public Class cRunManager
 
         Try
 
-            'm_bStop = False
-            'm_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
-            '' m_curSpaceRun = 1
-            'RunType = "Before"
-            'm_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
+            m_bStop = False
+            m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
+            RunType = "Before"
+            m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
             Me.m_RunSpace.Run()
 
-            '' m_curSpaceRun = 2
+            OnEcospaceRunCompleted()
 
-            'If Not Me.m_bStop Then
-            '    RunType = "After"
-            '    m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
-            '    Me.m_RunSpace.Run()
-            'End If
+            If Not Me.m_bStop Then
+                RunType = "After"
+                m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
+                Me.m_RunSpace.Run()
+            End If
+
+            OnEcospaceRunCompleted()
+
+            Me.m_waitLock.Set()
 
         Catch ex As Exception
 
         End Try
-
-
 
     End Sub
 
@@ -221,6 +235,8 @@ Public Class cRunManager
         End If
 
         Me.SaveRun()
+
+        ''Me.m_waitLock.Set()
 
         ''Completed the second run
         ''let the MonteCarlo go

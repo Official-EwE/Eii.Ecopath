@@ -65,11 +65,11 @@ Public Class cEcospaceMonteCarloPluginPoint
     Implements EwEPlugin.INavigationTreeItemPlugin
     'Plugin points for running Ecospace with the Monte Carlo
     Implements EwEPlugin.IMonteCarloPlugin
-    Implements EwEPlugin.IEcospaceRunCompletedPlugin
     'Not needed
     'Implements EwEPlugin.IEcospaceEndTimestepPlugin
 
     Implements EwEPlugin.ISearchPlugin
+    Implements EwEPlugin.IMonteCarloBalancedModelWaitLock
 
 
 
@@ -94,17 +94,6 @@ Public Class cEcospaceMonteCarloPluginPoint
 #End Region
 
 #Region "Public Methods"
-
-    'Public Sub DoSomething(ByVal Value As Single)
-
-    '    MsgBox("Hi from DoSomething(). Your value = " + Value.ToString, MsgBoxStyle.Information)
-    '    System.Console.WriteLine(Value.ToString)
-
-    'End Sub
-
-    'Public Sub OpenModel(ByVal filename As String)
-    '    Me.m_core.LoadModel(filename)
-    'End Sub
 
 #End Region
 
@@ -142,7 +131,7 @@ Public Class cEcospaceMonteCarloPluginPoint
             m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
             m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
+            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -264,13 +253,6 @@ Public Class cEcospaceMonteCarloPluginPoint
     End Sub
 
 
-    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
-        Try
-            Me.m_runManager.OnEcospaceRunCompleted()
-        Catch ex As Exception
-
-        End Try
-    End Sub
 
     Public Sub SearchInitialized(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchInitialized
 
@@ -519,5 +501,8 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     End Sub
 
+    Public Sub MonteCarloEcopathModelBalancedWaitLock(MonteCarloThread As Thread, WaitEvent As ManualResetEvent) Implements IMonteCarloBalancedModelWaitLock.MonteCarloEcopathModelBalancedWaitLock
+        Me.m_runManager.setThread(MonteCarloThread, WaitEvent)
+    End Sub
 End Class
 
