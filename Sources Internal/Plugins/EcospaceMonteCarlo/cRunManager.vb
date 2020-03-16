@@ -139,52 +139,14 @@ Public Class cRunManager
             Return False
         End If
 
-
         m_TrialNumber = TrialNumber
 
-
-        'm_bStop = False
-        'm_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
-        '' m_curSpaceRun = 1
-        'RunType = "Before"
-        'm_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
-        ' Me.m_RunSpace.Run()
-
-
-
-        ''m_waitLock = New ManualResetEvent(True)
+        'ManualResetEvent created on the MonteCarlo thread and passed 
+        'This will block the calling thread until we call   Me.m_waitLock.Set()
         Me.m_waitLock.Reset()
 
-        ''m_waitLock.Reset()
         Dim runthread As New Thread(AddressOf RunOnThread)
         runthread.Start()
-
-        'If Me.m_MCThread IsNot Nothing Then
-        '    Me.m_MCThread.Join()
-        'End If
-        'm_waitLock.Reset()
-        'm_waitLock.WaitOne()
-
-
-
-
-        'If Not Me.m_bStop Then
-        '    RunType = "After"
-        '    m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
-        '    Me.m_RunSpace.Run()
-        'End If
-
-
-
-        'm_waitLock.Reset()
-        'runthread = New Thread(AddressOf RunOnThread)
-        'runthread.Start()
-
-        'm_waitLock.WaitOne()
-        'Me.m_waitLock.Set()
-
-
-        ' Me.RunsCompleted()
 
         Return True
 
@@ -214,19 +176,11 @@ Public Class cRunManager
             Me.m_waitLock.Set()
 
         Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-    Private Sub RunsCompleted()
-        Try
             Me.m_waitLock.Set()
-        Catch ex As Exception
-
         End Try
 
     End Sub
+
 
     Public Sub OnEcospaceRunCompleted()
 
@@ -235,14 +189,6 @@ Public Class cRunManager
         End If
 
         Me.SaveRun()
-
-        ''Me.m_waitLock.Set()
-
-        ''Completed the second run
-        ''let the MonteCarlo go
-        'If Me.m_curSpaceRun = 2 Then
-        '    Me.m_waitLock.Set()
-        'End If
 
     End Sub
 
@@ -357,13 +303,6 @@ Public Class cRunManager
     Public Sub configMonteCarlo()
 
         Dim MC As cMonteCarloManager = Me.core.EcosimMonteCarlo
-
-
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'jb 13-Mar-2020it's already been loaded by the use
-        'not sure why I'm doing this again
-        'MC.Load()
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'For now set BA to 0 for all groups
         'until we sort out how to deal with the 

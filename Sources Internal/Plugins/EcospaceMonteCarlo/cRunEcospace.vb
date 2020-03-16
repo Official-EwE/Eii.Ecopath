@@ -67,11 +67,8 @@ Public Class cRunEcospace
 
     Public Sub Run()
 
-
         Core.StopEcospace()
         Core.RunEcoSpace(Nothing, False)
-
-        '  Me.Ecospace.SearchData.SearchMode = curSearchMode
 
     End Sub
 
