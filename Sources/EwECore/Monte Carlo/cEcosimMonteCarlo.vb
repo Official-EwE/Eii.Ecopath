@@ -833,12 +833,25 @@ Public Class cEcosimMonteCarlo
     Private Sub BalancedEcopathModel(ByVal iTrial As Integer, ByVal iter As Integer)
         If Me.m_pluginmanager IsNot Nothing Then
             Try
-
+                'Create a Manual reset event in a state that will NOT block 
+                'If a plugin wants to do extensive processing and not block the main thread and UI
+                'it can call WaitEvent.Reset() to put it in a blocked state
+                'Create it's own thread to do the processing 
+                'then once all the processing is done call WaitEvent.Set() to clear it.
+                'This will block this thread and wait for external processing to complete
+                'without deadlocking the UI
                 Dim WaitEvent As ManualResetEvent = New ManualResetEvent(True)
-                Me.m_pluginmanager.MonteCarloEcopathModelBalancedThread(System.Threading.Thread.CurrentThread, WaitEvent)
+                Me.m_pluginmanager.MonteCarloEcopathModelBalancedWaitLock(System.Threading.Thread.CurrentThread, WaitEvent)
 
                 Me.m_pluginmanager.MonteCarloBalancedEcopathModel(iTrial, iter)
 
+                'This is pontentially problematic. 
+                'If a plugin put this into a blocked state and forgets to clear it WaitEvent.Set()
+                'then this will dealock the run.
+                'We could put a time out on this 
+                'that would prevent it from totally blocking if something went really wrong in the plugin,
+                'the problem is we have no idea what a reasonalbe wait time is.
+                'We could add the wait time to the UI but that's not a great solution
                 WaitEvent.WaitOne()
 
             Catch ex As Exception
