@@ -135,7 +135,7 @@ Namespace SpatialData
 
         Public Overrides Function RestoreForcing(SpaceData As cEcospaceDataStructures) As Boolean
             Try
-
+                If m_core.m_Stanza.IBMForcedCells Is Nothing Then Return True
                 For iSt As Integer = 1 To Me.m_core.m_Stanza.Nsplit
                     'm_core.m_Stanza.IBMForcedCells(iSt)
                     System.Array.Clear(m_core.m_Stanza.IBMForcedCells(iSt), 0, m_core.m_Stanza.IBMForcedCells(iSt).Length)
