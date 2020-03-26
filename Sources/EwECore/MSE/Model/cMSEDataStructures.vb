@@ -735,6 +735,11 @@ Namespace MSE
                     Fwc(iFlt, 0) = Fwc(iFlt, 0) + Fweight(iFlt, iGrp) * Me.m_ESData.relQ(iFlt, iGrp)
                     Qest(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
                     QStar(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
+
+                    Me.m_ESData.PropLandedTime(iFlt, iGrp) = m_EPData.PropLanded(iFlt, iGrp)
+                    Me.m_ESData.Propdiscardtime(iFlt, iGrp) = m_EPData.PropDiscard(iFlt, iGrp)
+                    Me.m_ESData.PropDiscardMortTime(iFlt, iGrp) = m_EPData.PropDiscardMort(iFlt, iGrp)
+
                 Next
                 If Wftot(iFlt) > 0 Then Fwc(iFlt, 0) = Fwc(iFlt, 0) / Wftot(iFlt)
                 Fwc(iFlt, 1) = Fwc(iFlt, 0)
