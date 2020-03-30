@@ -34,19 +34,60 @@ Imports EwEUtils.Utilities
 ''' </summary>
 Public Class cEcopathModelFromEcosim
 
+#Region " Private class "
+
+    Private Class cData
+
+        Private m_dic As New Dictionary(Of String, List(Of Single))
+
+        Public Sub New()
+            ' NOP
+        End Sub
+
+        Public Sub Clear()
+            Me.m_dic.Clear()
+        End Sub
+
+        Public WriteOnly Property NextValue(var As String, i1 As Integer, Optional i2 As Integer = 0) As Single
+            Set(value As Single)
+                Dim key As String = Me.Key(var, i1, i2)
+                If Not Me.m_dic.ContainsKey(key) Then
+                    Me.m_dic(key) = New List(Of Single)
+                End If
+                Me.m_dic(key).Add(value)
+            End Set
+        End Property
+
+        Public Function Mean(var As String, i1 As Integer, Optional i2 As Integer = 0) As Single
+            Dim key As String = Me.Key(var, i1, i2)
+            If Not Me.m_dic.ContainsKey(key) Then Return 0
+            Return Me.m_dic(key).Average()
+        End Function
+
+        Public Property BACalcMode As eBACalcTypes
+
+        Private Function Key(var As String, i1 As Integer, i2 As Integer) As String
+            Return var & ":" & CStr(i1) & ":" & CStr(2)
+        End Function
+
+    End Class
+
+#End Region ' Private class
+
 #Region " Private variables "
 
     ''' <summary>The core that holds the source model.</summary>
     Private m_core As cCore = Nothing
-
     ''' <summary>Progress of a run.</summary>
     Private m_msgStatus As cMessage = Nothing
+
+    Private m_data As cData = Nothing
 
 #End Region ' Private variables
 
 #Region " Construction "
 
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         Me.m_core = core
     End Sub
 
@@ -76,6 +117,7 @@ Public Class cEcopathModelFromEcosim
 
         Me.m_msgStatus = New cMessage(My.Resources.CoreMessages.MODELFROMSIM_GENERATED, eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Me.m_msgStatus.Hyperlink = strOutputPath
+
         Return True
 
     End Function
@@ -88,9 +130,115 @@ Public Class cEcopathModelFromEcosim
             End If
             Me.m_msgStatus = Nothing
         End If
+
+        Me.m_data = Nothing
+
         Return True
 
     End Function
+
+    Public Sub InitGeneration(BACalcMode As eBACalcTypes)
+
+        Debug.Assert(Me.m_data Is Nothing)
+
+        Me.m_data = New cData()
+        Me.m_data.BACalcMode = BACalcMode
+
+    End Sub
+
+    Public Sub Record(iTime As Integer)
+
+        If (Me.m_data Is Nothing) Then Return
+        Me.RecordAverages(iTime)
+
+    End Sub
+
+    Public Function EndGeneration(strFileName As String, strModelName As String, iTime As Integer,
+                                  iNumYearsAverage As Integer, WeightPower As Single) As eDatasourceAccessType
+
+    End Function
+
+
+
+    Public Sub LogStatus(strStatus As String, status As eStatusFlags)
+
+        Debug.Assert(Not Me.m_msgStatus Is Nothing)
+
+        Dim vs As New cVariableStatus(status, strStatus, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+        Me.m_msgStatus.AddVariable(vs)
+
+    End Sub
+
+#End Region ' Public access
+
+#Region " Internals "
+
+    Private Sub RecordAverages(itime As Integer)
+
+        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim taxonSrc As cTaxonDataStructures = Me.m_core.m_TaxonData
+        Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
+
+        Dim sArea As Single = Me.m_core.EwEModel.Area
+        Dim simBB() As Single = Me.m_core.m_EcoSim.BB
+
+        ' Capture group data
+        For iGroup As Integer = 1 To Me.m_core.nGroups
+
+            'jb 20-Nov-2012 remove DCPct() and populate the Ecopath variable directly from the Ecosim Variables
+            'this makes it easier to tell what and how the Ecopath value are computed from the current Ecosim run
+            Me.m_data.NextValue("Binput", iGroup) = simBB(iGroup) 'simSrc.DCPct(iGroup, 1)
+            ' Catch(i) = Bi(i) * FishTime(i)
+            Me.m_data.NextValue("fCatch", iGroup) = simBB(iGroup) * simSrc.FishTime(iGroup)
+
+            ' PBi(i) = loss(i) / Bi(i)
+            Me.m_data.NextValue("PBinput", iGroup) = simSrc.loss(iGroup) / simBB(iGroup)
+            ' QBi(i) = DCPct(i, 2) 'the following has been updated: Eatenby(i) / bb(i)
+            Me.m_data.NextValue("QBinput", iGroup) = simSrc.Eatenby(iGroup) / simBB(iGroup) ' simSrc.DCPct(iGroup, 2)
+
+            ' Emigrationi(i) = Emig(i) * Bi(i) '
+            Me.m_data.NextValue("Emigration", iGroup) = pathSrc.Emig(iGroup) * simBB(iGroup)
+            ' BHi(i) = Bi(i) / Area(i)
+            Me.m_data.NextValue("BHinput", iGroup) = simBB(iGroup) / pathSrc.Area(iGroup)
+
+        Next
+
+        For iPred As Integer = 1 To Me.m_core.nGroups
+            For iPrey As Integer = 1 To Me.m_core.nGroups
+                If simSrc.Eatenby(iPred) > 0 Then
+                    'simDCAtT(pred,prey) contains biomass eaten by a predator on a prey populated in derivt()
+                    'Eatenby(pred) is the total biomass eaten by a predator
+                    'DC(pred,prey) is the proportion of diet made up by a prey
+                    'So get the proportion of diet 
+                    Me.m_data.NextValue("DCInput", iPred, iPrey) = simSrc.simDCAtT(iPred, iPrey) / simSrc.Eatenby(iPred)
+                End If
+            Next
+        Next
+
+        'immigration is constant rate and is not changed by ecosim so no need to change
+        For i As Integer = 1 To Me.m_core.nGroups
+            Dim SumEf As Single = 0.0
+            For j As Integer = 1 To pathSrc.NumFleet
+                ' SumEf = SumEf + FishRateGear(j, itime) * FishMGear(j, i)
+                SumEf += simSrc.FishRateGear(j, itime) * simSrc.FishMGear(j, i)
+            Next
+            For j As Integer = 1 To Me.m_core.nFleets
+                Dim Sum As Single = 0
+                Dim Z As Single = pathSrc.Landing(j, i) + pathSrc.Discard(j, i)
+                ' If SumEf > 0 Then Sum = BB(i) * FishTime(i) * FishRateGear(j, iTime) * FishMGear(j, i) / SumEf
+                If SumEf > 0 And Z > 0 Then
+                    Dim BB As Single = simBB(i) 'results.Biomass(i) * simSrc.StartBiomass(i)
+                    Sum = BB * simSrc.FishTime(i) * simSrc.FishRateGear(j, itime) * simSrc.FishMGear(j, i) / SumEf
+                    Me.m_data.NextValue("Landing", j, i) = Sum * pathSrc.Landing(j, i) / Z
+                    Me.m_data.NextValue("Discard", j, i) = Sum * pathSrc.Discard(j, i) / Z
+                Else
+                    Me.m_data.NextValue("Landing", j, i) = 0
+                    Me.m_data.NextValue("Discard", j, i) = 0
+                End If
+            Next j
+        Next i
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -103,12 +251,12 @@ Public Class cEcopathModelFromEcosim
     ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveModel(ByVal strFileName As String,
-                              ByVal strModelName As String,
-                              ByVal iTime As Integer,
-                              ByVal BACalculation As eBACalcTypes,
-                              ByVal iNumYearsAverage As Integer,
-                              ByVal WeightPower As Single) As eDatasourceAccessType
+    Private Function SaveModel(strFileName As String,
+                              strModelName As String,
+                              iTime As Integer,
+                              BACalculation As eBACalcTypes,
+                              iNumYearsAverage As Integer,
+                              WeightPower As Single) As eDatasourceAccessType
 
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
@@ -153,19 +301,6 @@ Public Class cEcopathModelFromEcosim
 
     End Function
 
-    Public Sub LogStatus(strStatus As String, status As eStatusFlags)
-
-        Debug.Assert(Not Me.m_msgStatus Is Nothing)
-
-        Dim vs As New cVariableStatus(status, strStatus, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
-        Me.m_msgStatus.AddVariable(vs)
-
-    End Sub
-
-#End Region ' Public access
-
-#Region " Internals "
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create groups, fleets and stanza configurations in the new Ecopath model.
@@ -173,17 +308,17 @@ Public Class cEcopathModelFromEcosim
     ''' <param name="coreNew">The core that holds the new Ecopath model.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function CreateItems(ByVal coreNew As cCore) As Boolean
+    Private Function CreateItems(coreNew As cCore) As Boolean
 
         Dim bSuccess As Boolean = True
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim taxonSrc As cTaxonDataStructures = Me.m_core.m_TaxonData
 
-        Dim aiGroupID(pathSrc.NumGroups) As Integer
-        Dim aiFleetID(pathSrc.NumFleet) As Integer
-        Dim aiStanzaID(stanzaSrc.Nsplit) As Integer
-        Dim aiTaxonID(taxonSrc.NumTaxon) As Integer
+        Dim GroupDBID(pathSrc.NumGroups) As Integer
+        Dim FleetDBID(pathSrc.NumFleet) As Integer
+        Dim StanzaDBID(stanzaSrc.Nsplit) As Integer
+        Dim TaxonDBID(taxonSrc.NumTaxon) As Integer
 
         If Not coreNew.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
@@ -206,30 +341,30 @@ Public Class cEcopathModelFromEcosim
                 Dim iNew As Integer = iGroup
                 Dim iIDNew As Integer = 0
                 bSuccess = bSuccess And coreNew.AddGroup(pathSrc.GroupName(iGroup), pathSrc.PP(iGroup), pathSrc.vbK(iGroup), iNew, iIDNew)
-                aiGroupID(iGroup) = iIDNew
+                GroupDBID(iGroup) = iIDNew
             Next
 
             For iFleet As Integer = 1 To pathSrc.NumFleet
                 Dim iNew As Integer = iFleet
                 Dim iIDNew As Integer = 0
                 bSuccess = bSuccess And coreNew.AddFleet(pathSrc.FleetName(iFleet), iNew, iIDNew)
-                aiFleetID(iFleet) = iIDNew
+                FleetDBID(iFleet) = iIDNew
             Next
 
             For iStanza As Integer = 1 To Me.m_core.nStanzas
 
                 Dim NStanza As Integer = stanzaSrc.Nstanza(iStanza)
-                Dim aiLifeStageID(NStanza - 1) As Integer
-                Dim aiLifeStageAge(NStanza - 1) As Integer
+                Dim LifeStageDBID(NStanza - 1) As Integer
+                Dim LifeStageAge(NStanza - 1) As Integer
                 Dim iIDNew As Integer = 0
 
                 For iLifeStage As Integer = 1 To NStanza
                     Dim iGroup As Integer = stanzaSrc.EcopathCode(iStanza, iLifeStage)
-                    aiLifeStageID(iLifeStage - 1) = aiGroupID(iGroup)
-                    aiLifeStageAge(iLifeStage - 1) = stanzaSrc.Age1(iStanza, iLifeStage)
+                    LifeStageDBID(iLifeStage - 1) = GroupDBID(iGroup)
+                    LifeStageAge(iLifeStage - 1) = stanzaSrc.Age1(iStanza, iLifeStage)
                 Next
-                bSuccess = bSuccess And coreNew.AppendStanza(stanzaSrc.StanzaName(iStanza), aiLifeStageID, aiLifeStageAge, iIDNew)
-                aiStanzaID(iStanza) = iIDNew
+                bSuccess = bSuccess And coreNew.AppendStanza(stanzaSrc.StanzaName(iStanza), LifeStageDBID, LifeStageAge, iIDNew)
+                StanzaDBID(iStanza) = iIDNew
             Next
 
         Catch ex As Exception
@@ -248,7 +383,7 @@ Public Class cEcopathModelFromEcosim
             Else
                 bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), False, data, taxonSrc.TaxonPropBiomass(iTaxon), taxonSrc.TaxonPropCatch(iTaxon), iIDNew)
             End If
-            aiTaxonID(iTaxon) = iIDNew
+            TaxonDBID(iTaxon) = iIDNew
         Next
         coreNew.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
 
@@ -266,11 +401,11 @@ Public Class cEcopathModelFromEcosim
     ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function PopulateItems(ByVal coreNew As cCore, _
-                                   ByVal iTime As Integer, _
-                                   ByVal BACalculation As eBACalcTypes, _
-                                   ByVal nNumYearsAverage As Integer, _
-                                   ByVal WeightPower As Single) As Boolean
+    Private Function PopulateItems(coreNew As cCore,
+                                   iTime As Integer,
+                                   BACalculation As eBACalcTypes,
+                                   nNumYearsAverage As Integer,
+                                   WeightPower As Single) As Boolean
 
         Debug.Assert(iTime >= cCore.N_MONTHS, Me.ToString & ".PopulateItems(...) iTime must fall after the first year.")
 
@@ -310,16 +445,16 @@ Public Class cEcopathModelFromEcosim
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
         coreNew.StateMonitor.UpdateDataState(coreNew.DataSource)
 
-        ' Copy Ecopath data but do not redim - preserve original data such as DBIDs
+        ' Preserve new database IDs prior to copying Ecopath data over
         Array.Copy(pathDest.GroupDBID, GroupDBIDs, pathDest.GroupDBID.Length)
         Array.Copy(pathDest.FleetDBID, FleetDBIDs, pathDest.FleetDBID.Length)
         Array.Copy(stanzaDest.StanzaDBID, StanzaDBIDs, stanzaDest.StanzaDBID.Length)
         Array.Copy(taxonDest.TaxonDBID, TaxonDBIDs, taxonDest.TaxonDBID.Length)
 
-        ' Copy bulk of data
+        ' Copy data in bulk
         pathSrc.copyTo(pathDest, False)
         stanzaSrc.copyTo(stanzaDest)
-        taxonSrc.copyto(taxonDest)
+        taxonSrc.copyTo(taxonDest)
 
         ' Restore DBIDs
         Array.Copy(GroupDBIDs, pathDest.GroupDBID, pathDest.GroupDBID.Length)
@@ -327,40 +462,27 @@ Public Class cEcopathModelFromEcosim
         Array.Copy(StanzaDBIDs, stanzaDest.StanzaDBID, stanzaDest.StanzaDBID.Length)
         Array.Copy(TaxonDBIDs, taxonDest.TaxonDBID, taxonDest.TaxonDBID.Length)
 
-        ' Clear data that is not going to be copied
+        ' Clear Ecopath data that is not going to be copied
         pathDest.NumEcosimScenarios = 0
         pathDest.NumEcospaceScenarios = 0
         pathDest.NumEcotracerScenarios = 0
         pathDest.NumPedigreeLevels = 0
         pathDest.NumPedigreeVariables = 0
 
-        ' Overwrite bits with Ecosim data at time step 'iTime'
-        Dim sArea As Single = Me.m_core.EwEModel.Area
-
-        Dim simBB() As Single = Me.m_core.m_EcoSim.BB
-
         ' Populate groups
         For iGroup As Integer = 1 To Me.m_core.nGroups
-
-            'jb 20-Nov-2012 remove DCPct() and populate the Ecopath variable directly from the Ecosim Variables
-            'this makes it easier to tell what and how the Ecopath value are computed from the current Ecosim run
-            pathDest.Binput(iGroup) = simBB(iGroup) 'simSrc.DCPct(iGroup, 1)
-            ' Catch(i) = Bi(i) * FishTime(i)
-            pathDest.fCatch(iGroup) = simBB(iGroup) * simSrc.FishTime(iGroup)
-            ' Ex(i) = Catch(i)
-            pathDest.Ex(iGroup) = pathDest.fCatch(iGroup)
-
-            ' PBi(i) = loss(i) / Bi(i)
-            pathDest.PBinput(iGroup) = simSrc.loss(iGroup) / simBB(iGroup)
-            ' QBi(i) = DCPct(i, 2) 'the following has been updated: Eatenby(i) / bb(i)
-            pathDest.QBinput(iGroup) = simSrc.Eatenby(iGroup) / simBB(iGroup) ' simSrc.DCPct(iGroup, 2)
-            ' EEi(i) = -99
+            pathDest.Binput(iGroup) = Me.m_data.Mean("Binput", iGroup)
+            pathDest.fCatch(iGroup) = Me.m_data.Mean("fCatch", iGroup)
+            pathDest.Ex(iGroup) = Me.m_data.Mean("fCatch", iGroup)    ' Ex(i) = Catch(i)
+            pathDest.PBinput(iGroup) = Me.m_data.Mean("PBinput", iGroup)
+            pathDest.QBinput(iGroup) = Me.m_data.Mean("QBinput", iGroup)
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
 
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
             Select Case BACalculation
 
                 Case eBACalcTypes.FromEcosimYearsAverage
+                    Dim simBB() As Single = Me.m_core.m_EcoSim.BB
                     BiomassAtT = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iStartIndex)
                     pathDest.BAInput(iGroup) = (simBB(iGroup) - BiomassAtT) / nNumYearsAverage
                     pathDest.BaBi(iGroup) = 0
@@ -388,6 +510,7 @@ Public Class cEcopathModelFromEcosim
                     'BA is the Annual Accumulation of B 
                     'So get the annual average accumulation (B(t)-B(0))/ number of years
                     'Attributes the annual average change in Biomass to BiomassAccumulation
+                    Dim simBB() As Single = Me.m_core.m_EcoSim.BB
                     pathDest.BAInput(iGroup) = (simBB(iGroup) - pathSrc.B(iGroup)) / nYears
                     pathDest.BaBi(iGroup) = 0
 
@@ -402,50 +525,22 @@ Public Class cEcopathModelFromEcosim
 
             End Select
 
-            ' Emigrationi(i) = Emig(i) * Bi(i) '
-            pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * simBB(iGroup)
-            ' BHi(i) = Bi(i) / Area(i)
-            pathDest.BHinput(iGroup) = simBB(iGroup) / pathSrc.Area(iGroup)
-
+            pathDest.Emigration(iGroup) = Me.m_data.Mean("Emigration", iGroup)
+            pathDest.BHinput(iGroup) = Me.m_data.Mean("BHinput", iGroup)
         Next
 
         For iPred As Integer = 1 To Me.m_core.nGroups
             For iPrey As Integer = 1 To Me.m_core.nGroups
-                'DCi(i, j) = 0        'don't leave any dc leftovers
-                pathDest.DCInput(iPred, iPrey) = 0
-
-                If simSrc.Eatenby(iPred) > 0 Then
-                    'simDCAtT(pred,prey) contains biomass eaten by a predator on a prey populated in derivt()
-                    'Eatenby(pred) is the total biomass eaten by a predator
-                    'DC(pred,prey) is the proportion of diet made up by a prey
-                    'So get the proportion of diet 
-                    pathDest.DCInput(iPred, iPrey) = simSrc.simDCAtT(iPred, iPrey) / simSrc.Eatenby(iPred)
-                End If
-
+                pathDest.DCInput(iPred, iPrey) = Me.m_data.Mean("DCInput", iPred, iPrey)
             Next
         Next
         pathDest.SumDCToOne()
 
         'immigration is constant rate and is not changed by ecosim so no need to change
         For i As Integer = 1 To Me.m_core.nGroups
-            Dim SumEf As Single = 0.0
-            For j As Integer = 1 To pathSrc.NumFleet
-                ' SumEf = SumEf + FishRateGear(j, itime) * FishMGear(j, i)
-                SumEf += simSrc.FishRateGear(j, iTime) * simSrc.FishMGear(j, i)
-            Next
             For j As Integer = 1 To Me.m_core.nFleets
-                Dim Sum As Single = 0
-                Dim Z As Single = pathSrc.Landing(j, i) + pathSrc.Discard(j, i)
-                ' If SumEf > 0 Then Sum = BB(i) * FishTime(i) * FishRateGear(j, iTime) * FishMGear(j, i) / SumEf
-                If SumEf > 0 And Z > 0 Then
-                    Dim BB As Single = simBB(i) 'results.Biomass(i) * simSrc.StartBiomass(i)
-                    Sum = BB * simSrc.FishTime(i) * simSrc.FishRateGear(j, iTime) * simSrc.FishMGear(j, i) / SumEf
-                    pathDest.Landing(j, i) = Sum * pathSrc.Landing(j, i) / Z
-                    pathDest.Discard(j, i) = Sum * pathSrc.Discard(j, i) / Z
-                Else
-                    pathDest.Landing(j, i) = 0
-                    pathDest.Discard(j, i) = 0
-                End If
+                pathDest.Landing(j, i) = Me.m_data.Mean("Landing", j, i)
+                pathDest.Discard(j, i) = Me.m_data.Mean("Discard", j, i)
             Next j
         Next i
 
@@ -465,7 +560,7 @@ Public Class cEcopathModelFromEcosim
     ''' <param name="iStartIndex"></param>
     ''' <param name="nBAtimesteps"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub SetStartEndTimesteps(ByVal iTime As Integer, ByVal BACalculation As eBACalcTypes, ByVal nYearsAverage As Integer, _
+    Private Sub SetStartEndTimesteps(iTime As Integer, BACalculation As eBACalcTypes, nYearsAverage As Integer,
                                     ByRef iStartIndex As Integer, ByRef nBAtimesteps As Integer)
 
         'number of Ecosim time steps per year
@@ -489,7 +584,7 @@ Public Class cEcopathModelFromEcosim
         'Constrain the start and end years
         If (iStartIndex < 1) Then
             Dim vs As cVariableStatus
-            vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_STARTYEAR_ADJ, _
+            vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_STARTYEAR_ADJ,
                                      eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
             Me.m_msgStatus.AddVariable(vs)
             iStartIndex = 1
