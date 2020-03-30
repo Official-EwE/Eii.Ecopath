@@ -95,10 +95,6 @@ Friend Class frmUI
             Me.m_nudNumYears.Maximum = Core.nEcosimYears
             Me.m_nudNumYears.Value = Math.Max(1, Math.Min(Me.m_data.NumYears, Me.m_nudNumYears.Maximum))
 
-            Me.m_nudTimeStep.Minimum = 1
-            Me.m_nudTimeStep.Maximum = CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
-            'Me.m_nudTimeStep.Value = Math.Max(1, Math.Min(Me.m_data.OutputTimeStep, CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)))
-
             Me.m_tbxWeightPower.Text = Me.m_data.WPower.ToString
             Me.m_cmbBACalcType.SelectedItem = Me.m_data.BACalcMode
             Me.m_cmbFormat.SelectedItem = Me.m_data.OutputFormat
@@ -212,8 +208,8 @@ Friend Class frmUI
     End Sub
 
     Private Sub OnInputChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_tbxWeightPower.Validated, m_nudNumYears.Validated, m_nudTimeStep.Validated,
-                m_tbxWeightPower.LostFocus, m_nudNumYears.LostFocus, m_nudTimeStep.LostFocus
+        Handles m_tbxWeightPower.Validated, m_nudNumYears.Validated,
+                m_tbxWeightPower.LostFocus, m_nudNumYears.LostFocus
 
         If (Not Me.m_bReady) Then Return
         Try
@@ -296,7 +292,6 @@ Friend Class frmUI
         Me.m_data.OutputFormat = DirectCast(Me.m_cmbFormat.SelectedItem, eDataSourceTypes)
         Me.m_data.BACalcMode = DirectCast(Me.m_cmbBACalcType.SelectedIndex, cEcopathModelFromEcosim.eBACalcTypes)
         Me.m_data.BAAverageYears = CInt(Me.m_nudNumYears.Value)
-        'Me.m_data.OutputTimeStep = CInt(Me.m_nudTimeStep.Value)
 
         Dim w As Single
         If Single.TryParse(Me.m_tbxWeightPower.Text, w) Then
@@ -325,13 +320,11 @@ Friend Class frmUI
         Me.m_tbxOutputPath.Enabled = Me.m_data.Enabled
         Me.m_btnChoose.Enabled = Me.m_data.Enabled
         Me.m_cmbFormat.Enabled = Me.m_data.Enabled
-        Me.m_nudTimeStep.Enabled = Me.m_data.Enabled
         Me.m_cmbBACalcType.Enabled = Me.m_data.Enabled
         Me.m_nudNumYears.Enabled = Me.m_data.Enabled And bReqNYears
         Me.m_tbxWeightPower.Enabled = Me.m_data.Enabled And bReqWPower
         Me.m_grid.Enabled = Me.m_data.Enabled
 
-        Me.m_nudTimeStep.Maximum = CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
         Me.m_nudNumYears.Maximum = Me.Core.nEcosimYears
 
     End Sub

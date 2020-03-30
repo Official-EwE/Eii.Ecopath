@@ -57,8 +57,6 @@ Partial Class frmUI
         Me.m_lblDWP = New System.Windows.Forms.Label()
         Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tabOutput = New System.Windows.Forms.TabPage()
-        Me.m_nudTimeStep = New System.Windows.Forms.NumericUpDown()
-        Me.m_lblTimeStep = New System.Windows.Forms.Label()
         Me.m_cmbFormat = New System.Windows.Forms.ComboBox()
         Me.m_lblFormat = New System.Windows.Forms.Label()
         Me.m_tabBA = New System.Windows.Forms.TabPage()
@@ -69,7 +67,6 @@ Partial Class frmUI
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcMain.SuspendLayout()
         Me.m_tabOutput.SuspendLayout()
-        CType(Me.m_nudTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tabBA.SuspendLayout()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
@@ -173,8 +170,6 @@ Partial Class frmUI
         '
         'm_tabOutput
         '
-        Me.m_tabOutput.Controls.Add(Me.m_nudTimeStep)
-        Me.m_tabOutput.Controls.Add(Me.m_lblTimeStep)
         Me.m_tabOutput.Controls.Add(Me.m_cmbFormat)
         Me.m_tabOutput.Controls.Add(Me.m_cbEnable)
         Me.m_tabOutput.Controls.Add(Me.m_lblFormat)
@@ -184,19 +179,6 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_tabOutput, "m_tabOutput")
         Me.m_tabOutput.Name = "m_tabOutput"
         Me.m_tabOutput.UseVisualStyleBackColor = True
-        '
-        'm_nudTimeStep
-        '
-        resources.ApplyResources(Me.m_nudTimeStep, "m_nudTimeStep")
-        Me.m_nudTimeStep.Maximum = New Decimal(New Integer() {12, 0, 0, 0})
-        Me.m_nudTimeStep.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudTimeStep.Name = "m_nudTimeStep"
-        Me.m_nudTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'm_lblTimeStep
-        '
-        resources.ApplyResources(Me.m_lblTimeStep, "m_lblTimeStep")
-        Me.m_lblTimeStep.Name = "m_lblTimeStep"
         '
         'm_cmbFormat
         '
@@ -251,7 +233,7 @@ Partial Class frmUI
         'frmUI
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_tcMain)
@@ -262,7 +244,6 @@ Partial Class frmUI
         Me.m_tcMain.ResumeLayout(False)
         Me.m_tabOutput.ResumeLayout(False)
         Me.m_tabOutput.PerformLayout()
-        CType(Me.m_nudTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tabBA.ResumeLayout(False)
         Me.m_tabBA.PerformLayout()
         Me.m_ts.ResumeLayout(False)
@@ -289,7 +270,5 @@ Partial Class frmUI
     Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_tsbnAll As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnNone As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_nudTimeStep As System.Windows.Forms.NumericUpDown
-    Friend WithEvents m_lblTimeStep As System.Windows.Forms.Label
     Friend WithEvents m_tslQuickSelect As System.Windows.Forms.ToolStripLabel
 End Class
