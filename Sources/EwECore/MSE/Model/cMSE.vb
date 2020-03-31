@@ -1359,6 +1359,9 @@ Namespace MSE
                                     If m_esData.FishRateGear(ig, t) > Elim Then
                                         m_esData.FishRateGear(ig, t) = Elim
                                     End If
+
+                                    m_esData.FishRateGear(ig, t) = m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+
                                 End If
                             Next i
 
@@ -1376,7 +1379,6 @@ Namespace MSE
                                         vmax = v
                                         imax = i
                                     End If
-
                                 End If
                             Next i
 
@@ -1385,6 +1387,7 @@ Namespace MSE
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
+                            m_esData.FishRateGear(ig, t) = m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
 
                             For i = 1 To m_data.NGroups
                                 If (m_epdata.Landing(ig, i)) > 0 Then

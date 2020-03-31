@@ -105,7 +105,7 @@ Public Class frmMSEOptions
         Me.m_rbQuotaControls.Tag = eControlTypes.OutputQuota
 
         Me.m_RegMode = eMSERegulationMode.UseRegulations
-        Me.m_ControlType = eControlTypes.InputEffort
+        Me.m_ControlType = eControlTypes.OutputQuota
 
         ' Don't set this in designer
         Me.m_panelEffortControls.Dock = DockStyle.Fill
