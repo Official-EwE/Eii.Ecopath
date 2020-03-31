@@ -130,13 +130,13 @@
     <value>3, 5</value>
   </data>
   <data name="m_cbEnable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 17</value>
+    <value>226, 17</value>
   </data>
   <data name="m_cbEnable.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_cbEnable.Text" xml:space="preserve">
-    <value>Enable model generation</value>
+    <value>Enable model generation (annual average)</value>
   </data>
   <data name="&gt;&gt;m_cbEnable.Name" xml:space="preserve">
     <value>m_cbEnable</value>

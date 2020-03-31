@@ -34,18 +34,12 @@ Imports SourceGrid2
 Friend Class gridUI
     Inherits EwEGrid
 
-#Region " Private vars "
-
     ''' <summary>Grid columns.</summary>
     Private Enum eColumnTypes As Integer
         Year = 0
         Check
         Name
     End Enum
-
-    Private m_data As cData = Nothing
-
-#End Region ' Private vars
 
 #Region " Public bits "
 
@@ -55,13 +49,6 @@ Friend Class gridUI
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Data() As cData
-        Get
-            Return Me.m_data
-        End Get
-        Set(ByVal value As cData)
-            Me.m_data = value
-        End Set
-    End Property
 
 #End Region ' Public bits
 
@@ -92,45 +79,43 @@ Friend Class gridUI
         If (Me.Data Is Nothing) Then Return
 
         Me.RowsCount = 1
-        For i As Integer = 1 To Me.m_data.NumYears
+        For i As Integer = 1 To Me.Data.NumYears
 
             Me.AddRow()
 
-            If Me.m_data.CreateModel(i) Then
+            If Me.Data.CreateModel(i) Then
                 style = cStyleGuide.eStyleFlags.OK
             Else
                 style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
             End If
 
-            Me(i, eColumnTypes.Year) = New EwERowHeaderCell(CStr(Me.m_data.FirstLabelYear + i - 1))
+            Me(i, eColumnTypes.Year) = New EwERowHeaderCell(CStr(Me.Data.FirstLabelYear + i - 1))
 
-            Me(i, eColumnTypes.Check) = New Cells.Real.CheckBox(Me.m_data.CreateModel(i))
+            Me(i, eColumnTypes.Check) = New Cells.Real.CheckBox(Me.Data.CreateModel(i))
             Me(i, eColumnTypes.Check).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(i, eColumnTypes.Name) = New EwECell(Me.m_data.ModelName(i), GetType(String), style)
+            Me(i, eColumnTypes.Name) = New EwECell(Me.Data.ModelName(i), GetType(String), style)
             Me(i, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
 
         Next
 
-        Me.StretchColumnsToFitWidth()
-
     End Sub
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, _
+    Protected Overrides Function OnCellValueChanged(ByVal p As Position,
                                                     ByVal cell As Cells.ICellVirtual) As Boolean
 
         Select Case DirectCast(p.Column, eColumnTypes)
 
             Case eColumnTypes.Check
-                Me.m_data.CreateModel(p.Row) = CBool(Me(p.Row, p.Column).Value)
+                Me.Data.CreateModel(p.Row) = CBool(Me(p.Row, p.Column).Value)
 
                 Dim ewec As EwECell = DirectCast(Me(p.Row, eColumnTypes.Name), EwECell)
-                If Me.m_data.CreateModel(p.Row) Then
+                If Me.Data.CreateModel(p.Row) Then
                     ewec.Style = cStyleGuide.eStyleFlags.OK
                 Else
                     ewec.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
                 End If
-                Me(p.Row, eColumnTypes.Name).Value = Me.m_data.ModelName(p.Row)
+                Me(p.Row, eColumnTypes.Name).Value = Me.Data.ModelName(p.Row)
 
         End Select
 
@@ -139,13 +124,13 @@ Friend Class gridUI
 
     End Function
 
-    Protected Overrides Function OnCellEdited(ByVal p As Position, _
+    Protected Overrides Function OnCellEdited(ByVal p As Position,
                                               ByVal cell As Cells.ICellVirtual) As Boolean
         Try
             Select Case DirectCast(p.Column, eColumnTypes)
 
                 Case eColumnTypes.Name
-                    Me.m_data.ModelName(p.Row) = CStr(Me(p.Row, p.Column).Value)
+                    Me.Data.ModelName(p.Row) = CStr(Me(p.Row, p.Column).Value)
 
             End Select
         Catch ex As Exception
@@ -156,11 +141,6 @@ Friend Class gridUI
         Return MyBase.OnCellEdited(p, cell)
 
     End Function
-
-    Protected Overrides Sub OnResize(e As System.EventArgs)
-        MyBase.OnResize(e)
-        Me.StretchColumnsToFitWidth()
-    End Sub
 
 #End Region ' Grid overrides
 

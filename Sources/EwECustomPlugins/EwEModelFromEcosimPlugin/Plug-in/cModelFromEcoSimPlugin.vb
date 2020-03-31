@@ -313,8 +313,7 @@ Public Class cModelFromEcosimPluginPoint
 
                     Try
 
-                        Select Case Me.m_generator.EndGeneration(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime,
-                                                             Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
+                        Select Case Me.m_generator.EndGeneration(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime, Me.m_data.BAAverageYears, Me.m_data.WPower)
                             Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened, eDatasourceAccessType.Success
                                 Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, iTime, strModelName), eStatusFlags.OK)
                             Case eDatasourceAccessType.Failed_CannotSave

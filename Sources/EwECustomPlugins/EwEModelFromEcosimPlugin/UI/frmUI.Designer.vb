@@ -233,7 +233,7 @@ Partial Class frmUI
         'frmUI
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_tcMain)

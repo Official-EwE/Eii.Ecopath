@@ -138,7 +138,7 @@ Friend Class frmUI
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
-        If (msg.Source = EwEUtils.Core.eCoreComponentType.EcoSim) And _
+        If (msg.Source = EwEUtils.Core.eCoreComponentType.EcoSim) And
            (msg.Type = eMessageType.EcosimNYearsChanged Or msg.Type = eMessageType.DataAddedOrRemoved) Then
             Me.UpdateEcosimRunTime()
         End If
@@ -292,6 +292,7 @@ Friend Class frmUI
         Me.m_data.OutputFormat = DirectCast(Me.m_cmbFormat.SelectedItem, eDataSourceTypes)
         Me.m_data.BACalcMode = DirectCast(Me.m_cmbBACalcType.SelectedIndex, cEcopathModelFromEcosim.eBACalcTypes)
         Me.m_data.BAAverageYears = CInt(Me.m_nudNumYears.Value)
+        'Me.m_data.OutputTimeStep = CInt(Me.m_nudTimeStep.Value)
 
         Dim w As Single
         If Single.TryParse(Me.m_tbxWeightPower.Text, w) Then
