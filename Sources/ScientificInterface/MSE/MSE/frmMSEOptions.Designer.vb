@@ -96,15 +96,15 @@ Partial Class frmMSEOptions
         'm_rbQuotaControls
         '
         resources.ApplyResources(Me.m_rbQuotaControls, "m_rbQuotaControls")
+        Me.m_rbQuotaControls.Checked = True
         Me.m_rbQuotaControls.Name = "m_rbQuotaControls"
+        Me.m_rbQuotaControls.TabStop = True
         Me.m_rbQuotaControls.UseVisualStyleBackColor = True
         '
         'm_rbEffortControls
         '
         resources.ApplyResources(Me.m_rbEffortControls, "m_rbEffortControls")
-        Me.m_rbEffortControls.Checked = True
         Me.m_rbEffortControls.Name = "m_rbEffortControls"
-        Me.m_rbEffortControls.TabStop = True
         Me.m_rbEffortControls.UseVisualStyleBackColor = True
         '
         'm_rbUseRegs
