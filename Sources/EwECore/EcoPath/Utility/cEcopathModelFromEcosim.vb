@@ -156,6 +156,9 @@ Public Class cEcopathModelFromEcosim
     Public Function EndGeneration(strFileName As String, strModelName As String, iTime As Integer,
                                   iNumYearsAverage As Integer, WeightPower As Single) As eDatasourceAccessType
 
+        If (Me.m_data Is Nothing) Then Return eDatasourceAccessType.Failed_CannotSave
+        Return Me.SaveModel(strFileName, strModelName, iTime, Me.m_data.BACalcMode, iNumYearsAverage, WeightPower)
+
     End Function
 
 
