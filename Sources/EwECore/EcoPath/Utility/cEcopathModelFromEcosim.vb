@@ -67,7 +67,7 @@ Public Class cEcopathModelFromEcosim
         Public Property BACalcMode As eBACalcTypes
 
         Private Function Key(var As String, i1 As Integer, i2 As Integer) As String
-            Return var & ":" & CStr(i1) & ":" & CStr(2)
+            Return var & ":" & CStr(i1) & ":" & CStr(i2)
         End Function
 
     End Class
