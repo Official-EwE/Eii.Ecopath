@@ -243,7 +243,6 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <summary>
     ''' The <see cref="eCoreComponentType">EwE core component</see> that this object belongs to
     ''' </summary>
-    ''' <remarks></remarks>
     Protected m_coreComponent As eCoreComponentType = eCoreComponentType.NotSet
 
     ''' <summary>
@@ -386,7 +385,6 @@ Public MustInherit Class cCoreInputOutputBase
             ' NOP
         End Set
     End Property
-
 
 #End Region ' Public Functions/Methods
 
