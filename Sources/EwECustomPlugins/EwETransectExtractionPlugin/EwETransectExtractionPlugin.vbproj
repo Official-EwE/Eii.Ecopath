@@ -190,7 +190,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Sources Internal\Deployment\License\EwE.licenseheader">
+    <None Include="..\..\..\Sources\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="Documentation\Transects.docx" />
