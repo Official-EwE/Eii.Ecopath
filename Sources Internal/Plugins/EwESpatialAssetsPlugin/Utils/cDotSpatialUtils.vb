@@ -35,14 +35,39 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports Microsoft.VisualBasic
 
 #End Region ' Imports
 
-' Set to non-zero to enable license validation using whichever plug-in we decide to use
-#Const USE_LICENSE = 0
+#If Not DEBUG Then
+' The STDF plug-in can be licensed through built-in fields or via a license file
 
-' Set to non-zero to enable evaluation mode
-#Const IS_EVALUATION = 0
+' Set to zero to use internal license information as stored in modLicense.vb
+' Set to non-zero to enable license validation using whichever plug-in we decide to use'
+#Const USE_LICENSE_LIB = 1
+#End If
+
+' When not using Treek's licensing library, license conditions are embedded in this file and 
+' must be changed in the fields below
+#If Not USE_LICENSE_LIB Then
+
+<HideModuleName()>
+Friend Module modLicense
+
+    ' To issue evaluation licenses without a license file, change the two fields below. Evaluation licenses are valid from the compilation date
+    Public Const IsEvaluation As Boolean = False
+    Public Const License_eval_days As Integer = 120
+
+    ' To issue proper licenses without a license file, change the five fields below
+    Public Const Licensee_name As String = "Maciej Tomczak (team)"
+    Public Const License_start_year As Integer = 2020
+    Public Const License_start_month As Integer = 4
+    Public Const License_start_day As Integer = 15
+    Public Const License_years As Integer = 1
+
+End Module
+
+#End If
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -66,6 +91,9 @@ Public Class cDotSpatialUtils
         End Get
         Set(value As cUIContext)
             g_uic = value
+            If (value IsNot Nothing) Then
+                cDotSpatialUtils.UpdateUILicenseState()
+            End If
         End Set
     End Property
 
@@ -589,29 +617,28 @@ Public Class cDotSpatialUtils
     Private Shared g_bValid As Boolean = False
     Private Shared g_lic As cTreekLic = Nothing
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Determines whether the specified core is licensed.
+    ''' </summary>
+    ''' <param name="core">The core.</param>
+    ''' <returns>
+    '''   <c>true</c> if the specified core is licensed; otherwise, <c>false</c>.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
     Public Shared Function IsLicensed(core As cCore) As Boolean
 
         If Not g_bValidated Then
-#If USE_LICENSE Then
+#If USE_LICENSE_LIB Then
             g_lic = New cTreekLic()
             If (g_lic.IsRegistered) Then
                 g_bValid = g_lic.IsLicensed()
-                g_uic.RegisteredOwner = "registered to " & g_lic.Owner
-                g_uic.RegisteredExpiration = g_lic.Expiry
             End If
 #Else
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
-            g_uic.RegisteredExpiration = cDotSpatialUtils.ExpiryDate(core)
-
-#If IS_EVALUATION Then
-            g_uic.RegisteredOwner = "evaluation"
-#Else
-            ' Set owner name here
-            g_uic.RegisteredOwner = "registered to Villy Christensen"
-#End If
-
 #End If
             g_bValidated = True
+            cDotSpatialUtils.UpdateUILicenseState()
         End If
 
         If (g_bValid = False) And (core IsNot Nothing) Then
@@ -621,19 +648,53 @@ Public Class cDotSpatialUtils
         Return g_bValid
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Gets the expiry date of the current license.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Shared ReadOnly Property ExpiryDate(core As cCore) As DateTime
         Get
-#If USE_LICENSE Then
+#If USE_LICENSE_LIB Then
             If (g_lic Is Nothing) Then IsLicensed(core)
             Return g_lic.Expiry
-#ElseIf IS_EVALUATION Then
-            ' Set evaluation expiry date here
-            Return New Date(2020, 4, 1)
 #Else
-            Return cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))).AddYears(1)
+            If (IsEvaluation) Then
+                Return cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))).AddDays(License_eval_days)
+            Else
+                Return New DateTime(License_start_year + License_years, License_start_month, License_start_day)
+            End If
 #End If
         End Get
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate the <see cref="UIContext"/> with license information for display in the GUI.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Shared Sub UpdateUILicenseState()
+
+        If (g_uic IsNot Nothing And g_bValidated) Then
+
+#If USE_LICENSE_LIB Then
+            Debug.Assert(g_lic IsNot Nothing)
+            If (g_bValid) Then
+                g_uic.RegisteredOwner = "registered to " & g_lic.Owner
+                g_uic.RegisteredExpiration = g_lic.Expiry
+            End If
+#Else
+            g_uic.RegisteredExpiration = cDotSpatialUtils.ExpiryDate(g_uic.Core)
+
+            If (IsEvaluation) Then
+                g_uic.RegisteredOwner = My.Resources.LICENSE_EVALUATION
+            Else
+                g_uic.RegisteredOwner = cStringUtils.Localize(My.Resources.LICENSE_REGISTREE, Licensee_name)
+            End If
+#End If
+        End If
+
+    End Sub
 
 #End Region ' License
 

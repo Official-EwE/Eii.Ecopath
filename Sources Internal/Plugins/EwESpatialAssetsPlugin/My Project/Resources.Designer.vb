@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -295,11 +295,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Eval.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_EVAVLUATION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_EVAVLUATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Registered to {0}.
+        '''</summary>
+        Friend ReadOnly Property GENERIC_REGISTRATION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_REGISTRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to evaluation.
+        '''</summary>
+        Friend ReadOnly Property LICENSE_EVALUATION() As String
+            Get
+                Return ResourceManager.GetString("LICENSE_EVALUATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Your license for the spatial temporal data framework has expired. You will have to renew your license to continue..
         '''</summary>
         Friend ReadOnly Property LICENSE_EXPIRED() As String
             Get
                 Return ResourceManager.GetString("LICENSE_EXPIRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to registered to {0}.
+        '''</summary>
+        Friend ReadOnly Property LICENSE_REGISTREE() As String
+            Get
+                Return ResourceManager.GetString("LICENSE_REGISTREE", resourceCulture)
             End Get
         End Property
         

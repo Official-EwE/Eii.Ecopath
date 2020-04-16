@@ -200,8 +200,22 @@
     <value>min {0}, max {1}, mean {2}</value>
     <comment>{0}=min, {1}=max, {2}=mean</comment>
   </data>
+  <data name="GENERIC_EVAVLUATION" xml:space="preserve">
+    <value>Eval</value>
+  </data>
+  <data name="GENERIC_REGISTRATION" xml:space="preserve">
+    <value>Registered to {0}</value>
+    <comment>{0}=name</comment>
+  </data>
+  <data name="LICENSE_EVALUATION" xml:space="preserve">
+    <value>evaluation</value>
+  </data>
   <data name="LICENSE_EXPIRED" xml:space="preserve">
     <value>Your license for the spatial temporal data framework has expired. You will have to renew your license to continue.</value>
+  </data>
+  <data name="LICENSE_REGISTREE" xml:space="preserve">
+    <value>registered to {0}</value>
+    <comment>{0}=name / institute</comment>
   </data>
   <data name="OPERATION_EXTRACTRASTER" xml:space="preserve">
     <value>Extracted raster {0}, {1}</value>

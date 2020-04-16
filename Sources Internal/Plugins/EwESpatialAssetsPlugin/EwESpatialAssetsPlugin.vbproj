@@ -245,7 +245,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Deployment\License\EwE.licenseheader">
+    <None Include="..\..\..\Sources\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="Design\~design~.cd" />
