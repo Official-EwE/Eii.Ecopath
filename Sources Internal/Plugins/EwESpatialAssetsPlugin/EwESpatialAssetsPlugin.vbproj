@@ -588,6 +588,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Includes\TreeksLicensingLibrary2.dll" />
+    <Content Include="Licensing readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Plugins\ResultWriters\" />
