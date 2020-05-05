@@ -54,7 +54,7 @@ Namespace Utilities
             Return doc
         End Function
 
-        Public Shared Function ToSafeName(name As String) As String
+        Public Shared Function XMLNodeName(name As String) As String
 
             Dim sb As New StringBuilder()
             For i As Integer = 0 To name.Length - 1
@@ -72,6 +72,28 @@ Namespace Utilities
             Return name
 
         End Function
+
+        Private Shared INVALD_CHARS As String = """<>" & cStringUtils.vbCr & cStringUtils.vbLf
+
+        Public Shared Function XMLNodeValue(name As String) As String
+
+            Dim sb As New StringBuilder()
+            For i As Integer = 0 To name.Length - 1
+                Dim c As Char = name(i)
+                Dim bUseChar As Boolean = If(i = 0, Char.IsLetter(c), Not INVALD_CHARS.Contains(c))
+                If (bUseChar) Then
+                    sb.Append(c)
+                End If
+            Next i
+            name = sb.ToString()
+
+            If (String.IsNullOrWhiteSpace(name)) Then
+                Return ""
+            End If
+            Return name
+
+        End Function
+
 
     End Class
 
