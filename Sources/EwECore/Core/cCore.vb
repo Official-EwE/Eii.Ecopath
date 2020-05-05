@@ -2671,9 +2671,11 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Flag, stating whether results should be saved with <see cref="DefaultFileHeader">header</see>
-    ''' information.
+    ''' Flag, stating whether results should be saved with default header information.
     ''' </summary>
+    ''' <seealso cref="ExtraFileHeaderFields"/>
+    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer)"/>
+    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer)"/>
     ''' -----------------------------------------------------------------------
     Public Property SaveWithFileHeader As Boolean
         Get
@@ -2696,6 +2698,59 @@ Public Class cCore
         End Set
     End Property
 
+    Private Function GatherHeaderInfo(savetype As eAutosaveTypes,
+                                      Optional iStartYear As Integer = cCore.NULL_VALUE) As Dictionary(Of String, String)
+
+        Dim fields As New Dictionary(Of String, String)
+
+        Select Case savetype
+            Case eAutosaveTypes.NotSet
+                fields("EwEVersion") = cCore.Version(True)
+                fields("Date") = Date.Now.ToString()
+
+            Case eAutosaveTypes.Ecopath
+                fields("ModelName") = Me.EwEModel.Name
+
+            Case eAutosaveTypes.Ecosim
+                fields("EcosimScenario") = Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                fields("TimeSeries") = If(Me.ActiveTimeSeriesDatasetIndex > 0, Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name, "-")
+                If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
+                fields("StartYear") = CStr(iStartYear)
+
+            Case eAutosaveTypes.Ecospace
+                Dim bm As cEcospaceBasemap = Me.m_EcospaceBasemap
+                Dim ld As cEcospaceLayerDepth = bm.LayerDepth
+                fields("EcospaceScenario") = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                fields("MapRows") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow)
+                fields("MapCols") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol)
+                fields("MapCellLength") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength)
+                fields("MapCellSize") = cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize())
+                fields("MapLatitude") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1)
+                fields("MapLongitude") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1)
+                fields("NoActiveCells") = cStringUtils.FormatNumber(ld.NumActiveCells)
+                fields("EcoSpaceTimeStepLength") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep)
+                fields("CoordinateSystemWKT)") = Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")
+
+            Case eAutosaveTypes.Ecotracer
+                fields("EcotracerScenario") = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+
+        End Select
+
+        Return fields
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' A 'fieldname'='fieldvalue' dictionary of extra fields to append to the default 
+    ''' file header.
+    ''' </summary>
+    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer)"/>
+    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer)"/>
+    ''' <seealso cref="SaveWithFileHeader"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ExtraFileHeaderFields As New Dictionary(Of String, String)
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns a default file header for text files for a given 
@@ -2709,6 +2764,9 @@ Public Class cCore
     ''' <param name="iStartYear">Optional start year to include in the header. If 
     ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A text block safe for integration in CSV files.</returns>
+    ''' <seealso cref="SaveWithFileHeader"/>
+    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer)"/>
+    ''' <seealso cref="ExtraFileHeaderFields"/>
     ''' -----------------------------------------------------------------------
     Public Function DefaultFileHeader(savetype As eAutosaveTypes,
                                       Optional iStartYear As Integer = cCore.NULL_VALUE) As String
@@ -2716,44 +2774,52 @@ Public Class cCore
         Dim sb As New StringBuilder()
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
-        sb.AppendLine("EwEVersion," & cStringUtils.ToCSVField(cCore.Version(True)))
-        sb.AppendLine("Date," & cStringUtils.ToCSVField(Date.Now.ToString()))
+        sb.AppendLine(";software")
+        Dim dt As Dictionary(Of String, String) = GatherHeaderInfo(eAutosaveTypes.NotSet, iStartYear)
+        For Each field As String In dt.Keys
+            sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
+        Next
 
         If (savetype > eAutosaveTypes.NotSet) And (sm.HasEcopathLoaded) Then
-            sb.AppendLine("ModelName," & cStringUtils.ToCSVField(Me.EwEModel.Name))
+            sb.AppendLine(";ecopath")
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
+            For Each field As String In dt.Keys
+                sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
+            Next
         End If
 
         If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
-            sb.AppendLine("EcosimScenario," & cStringUtils.ToCSVField(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name))
-            sb.Append("TimeSeries,")
-            If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
-                sb.AppendLine(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
-            Else
-                sb.AppendLine("(none)")
-            End If
-            If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
-            sb.AppendLine("StartYear," & cStringUtils.ToCSVField(iStartYear))
+            sb.AppendLine(";ecosim")
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
+            For Each field As String In dt.Keys
+                sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
+            Next
         End If
 
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
-            Dim bm As cEcospaceBasemap = Me.m_EcospaceBasemap
-            Dim ld As cEcospaceLayerDepth = bm.LayerDepth
-
-            sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
-            sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
-            sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
-            sb.AppendLine("MapCellLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
-            sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize()))
-            sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
-            sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
-            sb.AppendLine("NoActiveCells," & cStringUtils.FormatNumber(ld.NumActiveCells))
-            sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
-            sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")))
+            sb.AppendLine(";ecospace")
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
+            For Each field As String In dt.Keys
+                sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
+            Next
         End If
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
-            sb.AppendLine("EcotracerScenario," & cStringUtils.ToCSVField(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name))
+            sb.AppendLine(";ecotracer")
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
+            For Each field As String In dt.Keys
+                sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
+            Next
         End If
+
+        If (Me.ExtraFileHeaderFields.Count > 0) Then
+            sb.AppendLine(";extra")
+            For Each field As String In Me.ExtraFileHeaderFields.Keys
+                sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(ExtraFileHeaderFields(field)))
+            Next
+        End If
+
+        sb.AppendLine(";end_header")
 
         Return sb.ToString
 
@@ -2772,111 +2838,83 @@ Public Class cCore
     ''' <param name="iStartYear">Optional start year to include in the header. If 
     ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A XML node structure describing the EwE run, safe for integration in XML files.</returns>
+    ''' <seealso cref="SaveWithFileHeader"/>
+    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer)"/>
+    ''' <seealso cref="ExtraFileHeaderFields"/>
     ''' -----------------------------------------------------------------------
     Public Function DefaultFileHeader(doc As XmlDocument,
                                       savetype As eAutosaveTypes,
                                       Optional iStartYear As Integer = cCore.NULL_VALUE) As XmlNode
 
-        Dim xnEwE As XmlNode = doc.CreateElement("EwE")
+        Dim xnHeader As XmlNode = doc.CreateElement("Header")
         Dim xn As XmlNode = Nothing
         Dim xa As XmlAttribute = Nothing
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
+        Dim dt As Dictionary(Of String, String) = GatherHeaderInfo(eAutosaveTypes.NotSet, iStartYear)
         xn = doc.CreateElement("Software")
-        xnEwE.AppendChild(xn)
-
-        xa = doc.CreateAttribute("version")
-        xa.Value = cCore.Version(True)
-        xn.Attributes.Append(xa)
-
-        xa = doc.CreateAttribute("Date")
-        xa.Value = cStringUtils.FormatDate(Date.Now)
-        xn.Attributes.Append(xa)
+        For Each field As String In dt.Keys
+            xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
+            xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+            xn.Attributes.Append(xa)
+        Next
+        xnHeader.AppendChild(xn)
 
         If (sm.HasEcopathLoaded() And savetype > eAutosaveTypes.NotSet) Then
-            ' #Yes: add the model name
-            xn = doc.CreateElement("Model")
-            xnEwE.AppendChild(xn)
-
-            xa = doc.CreateAttribute("Name")
-            xa.Value = Me.EwEModel.Name
-            xn.Attributes.Append(xa)
+            xn = doc.CreateElement("Ecopath")
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
+            For Each field As String In dt.Keys
+                xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
+                xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+                xn.Attributes.Append(xa)
+            Next
+            xnHeader.AppendChild(xn)
         End If
 
         If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
             xn = doc.CreateElement("Ecosim")
-            xnEwE.AppendChild(xn)
-
-            xa = doc.CreateAttribute("Name")
-            xn.Attributes.Append(xa)
-            xa.Value = Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
-
-            xa = doc.CreateAttribute("StartYear")
-            xn.Attributes.Append(xa)
-            If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
-            xa.Value = cStringUtils.FormatNumber(iStartYear)
-
-            ' Append time series name to scenario, if any
-            xa = doc.CreateAttribute("TimeSeries")
-            xn.Attributes.Append(xa)
-            If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
-                xa.Value = Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name
-            Else
-                xa.Value = ""
-            End If
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
+            For Each field As String In dt.Keys
+                xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
+                xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+                xn.Attributes.Append(xa)
+            Next
+            xnHeader.AppendChild(xn)
         End If
 
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
             xn = doc.CreateElement("Ecospace")
-            xnEwE.AppendChild(xn)
-
-            xa = doc.CreateAttribute("Name")
-            xn.Attributes.Append(xa)
-            xa.Value = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
-
-            xa = doc.CreateAttribute("MapRows")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow)
-
-            xa = doc.CreateAttribute("MapCols")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol)
-
-            xa = doc.CreateAttribute("MapCellLength")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength)
-
-            xa = doc.CreateAttribute("MapCellSize")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize())
-
-            xa = doc.CreateAttribute("MapLatitude")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1)
-
-            xa = doc.CreateAttribute("MapLongitude")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1)
-
-            xa = doc.CreateAttribute("EcoSpaceTimeStepLength")
-            xn.Attributes.Append(xa)
-            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep)
-
-            xa = doc.CreateAttribute("CoordinateSystemWKT")
-            xn.Attributes.Append(xa)
-            xa.Value = Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
+            For Each field As String In dt.Keys
+                xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
+                xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+                xn.Attributes.Append(xa)
+            Next
+            xnHeader.AppendChild(xn)
         End If
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
             xn = doc.CreateElement("Ecotracer")
-            xnEwE.AppendChild(xn)
-
-            xa = doc.CreateAttribute("Name")
-            xn.Attributes.Append(xa)
-            xa.Value = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+            dt = GatherHeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
+            For Each field As String In dt.Keys
+                xa = doc.CreateAttribute(cStringUtils.ToCSVField(field))
+                xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+                xn.Attributes.Append(xa)
+            Next
+            xnHeader.AppendChild(xn)
         End If
 
-        Return xnEwE
+        If (Me.ExtraFileHeaderFields.Count > 0) Then
+            xn = doc.CreateElement("Extra")
+            For Each field As String In Me.ExtraFileHeaderFields.Keys
+                xa = doc.CreateAttribute(cStringUtils.ToCSVField(field))
+                xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+                xn.Attributes.Append(xa)
+            Next
+            xnHeader.AppendChild(xn)
+        End If
+
+        Return xnHeader
 
     End Function
 
