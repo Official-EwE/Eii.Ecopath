@@ -2309,11 +2309,7 @@ Namespace Utilities
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared ReadOnly Property vbCr As String
-            Get
-                Return Convert.ToChar(13).ToString
-            End Get
-        End Property
+        Public Shared vbCr As String = Convert.ToChar(13).ToString
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -2324,11 +2320,7 @@ Namespace Utilities
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared ReadOnly Property vbLf As String
-            Get
-                Return Convert.ToChar(10).ToString
-            End Get
-        End Property
+        Public Shared vbLf As String = Convert.ToChar(10).ToString
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -2339,11 +2331,7 @@ Namespace Utilities
         ''' For Mono compliance this definition should be used instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared ReadOnly Property vbCrLf As String
-            Get
-                Return vbCr & vbLf
-            End Get
-        End Property
+        Public Shared vbCrLf As String = vbCr & vbLf
 
         Public Shared ReadOnly Property NewLine As String
             Get
