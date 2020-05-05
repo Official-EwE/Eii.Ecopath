@@ -2698,8 +2698,8 @@ Public Class cCore
         End Set
     End Property
 
-    Private Function GatherHeaderInfo(savetype As eAutosaveTypes,
-                                      Optional iStartYear As Integer = cCore.NULL_VALUE) As Dictionary(Of String, String)
+    Private Function HeaderInfo(savetype As eAutosaveTypes,
+                                Optional iStartYear As Integer = cCore.NULL_VALUE) As Dictionary(Of String, String)
 
         Dim fields As New Dictionary(Of String, String)
 
@@ -2720,6 +2720,8 @@ Public Class cCore
             Case eAutosaveTypes.Ecospace
                 Dim bm As cEcospaceBasemap = Me.m_EcospaceBasemap
                 Dim ld As cEcospaceLayerDepth = bm.LayerDepth
+                Dim man As cSpatialDataConnectionManager = Me.SpatialDataConnectionManager
+
                 fields("EcospaceScenario") = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                 fields("MapRows") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow)
                 fields("MapCols") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol)
@@ -2731,6 +2733,21 @@ Public Class cCore
                 fields("EcoSpaceTimeStepLength") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep)
                 fields("CoordinateSystemWKT)") = Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")
 
+                ' Gather spat temp connections
+                Try
+                    For Each adt As cSpatialDataAdapter In man.Adapters
+                        For Each conn As cSpatialDataConnection In adt.Connections(bEnabledOnly:=True)
+                            If conn.IsConfigured Then
+                                Dim l As cEcospaceLayer = bm.Layer(adt.VarName, conn.iLayer)
+                                If (l IsNot Nothing) Then
+                                    fields(l.Name & "_" & conn.iLayer) = conn.Dataset.CustomName
+                                End If
+                            End If
+                        Next
+                    Next
+                Catch ex As Exception
+                    cLog.Write(ex, "cCore.HeaderInfo-spattemp")
+                End Try
             Case eAutosaveTypes.Ecotracer
                 fields("EcotracerScenario") = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
 
@@ -2775,14 +2792,14 @@ Public Class cCore
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
         sb.AppendLine(";software")
-        Dim dt As Dictionary(Of String, String) = GatherHeaderInfo(eAutosaveTypes.NotSet, iStartYear)
+        Dim dt As Dictionary(Of String, String) = HeaderInfo(eAutosaveTypes.NotSet, iStartYear)
         For Each field As String In dt.Keys
             sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
         Next
 
         If (savetype > eAutosaveTypes.NotSet) And (sm.HasEcopathLoaded) Then
             sb.AppendLine(";ecopath")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
             Next
@@ -2790,7 +2807,7 @@ Public Class cCore
 
         If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
             sb.AppendLine(";ecosim")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
             Next
@@ -2798,7 +2815,7 @@ Public Class cCore
 
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
             sb.AppendLine(";ecospace")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
             Next
@@ -2806,7 +2823,7 @@ Public Class cCore
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
             sb.AppendLine(";ecotracer")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
             Next
@@ -2851,7 +2868,7 @@ Public Class cCore
         Dim xa As XmlAttribute = Nothing
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
-        Dim dt As Dictionary(Of String, String) = GatherHeaderInfo(eAutosaveTypes.NotSet, iStartYear)
+        Dim dt As Dictionary(Of String, String) = HeaderInfo(eAutosaveTypes.NotSet, iStartYear)
         xn = doc.CreateElement("Software")
         For Each field As String In dt.Keys
             xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
@@ -2862,7 +2879,7 @@ Public Class cCore
 
         If (sm.HasEcopathLoaded() And savetype > eAutosaveTypes.NotSet) Then
             xn = doc.CreateElement("Ecopath")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
             For Each field As String In dt.Keys
                 xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
                 xa.Value = cXMLUtils.XMLNodeValue(dt(field))
@@ -2873,7 +2890,7 @@ Public Class cCore
 
         If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
             xn = doc.CreateElement("Ecosim")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
             For Each field As String In dt.Keys
                 xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
                 xa.Value = cXMLUtils.XMLNodeValue(dt(field))
@@ -2884,7 +2901,7 @@ Public Class cCore
 
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
             xn = doc.CreateElement("Ecospace")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
             For Each field As String In dt.Keys
                 xa = doc.CreateAttribute(cXMLUtils.XMLNodeName(field))
                 xa.Value = cXMLUtils.XMLNodeValue(dt(field))
@@ -2895,7 +2912,7 @@ Public Class cCore
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
             xn = doc.CreateElement("Ecotracer")
-            dt = GatherHeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
+            dt = HeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
             For Each field As String In dt.Keys
                 xa = doc.CreateAttribute(cStringUtils.ToCSVField(field))
                 xa.Value = cXMLUtils.XMLNodeValue(dt(field))
