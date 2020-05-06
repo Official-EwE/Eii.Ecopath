@@ -62,6 +62,7 @@ Public Class cRunEcospace
 
         Dim curSearchMode As eSearchModes = Me.Ecospace.SearchData.SearchMode
         Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
+        Me.MonteCarlo.ValidateRespiration = False
 
     End Sub
 
