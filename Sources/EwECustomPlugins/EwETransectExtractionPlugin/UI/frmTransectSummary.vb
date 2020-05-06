@@ -185,7 +185,7 @@ Public Class frmTransectSummary
         If (t IsNot Nothing) Then
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim cells As Point() = t.Cells(bm)
-            If (cells.Count > 0) And (val < t.NumCells) Then
+            If (cells.Count > 0) And (val <= t.NumCells) Then
                 Dim pt As Point = cells(CInt(val))
                 Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, pt.X, pt.Y)
             End If
