@@ -110,7 +110,9 @@ Public Class cTransect
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NumCells As Integer
         Get
-            Return Me.m_cells.Count - 1
+            'jb remove the -1 because 
+            'anywhere NumCells is used it is already -1 from the value
+            Return Me.m_cells.Count ' - 1
         End Get
     End Property
 
