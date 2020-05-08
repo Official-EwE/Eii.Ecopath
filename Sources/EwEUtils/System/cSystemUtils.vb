@@ -316,9 +316,7 @@ Namespace SystemUtilities
         ''' not been evaluated.</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsRDC() As Boolean
-
             Return System.Windows.Forms.SystemInformation.TerminalServerSession
-
         End Function
 
         ''' -------------------------------------------------------------------
@@ -389,6 +387,15 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function IsBatteryPower() As Boolean
             Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the number of logical processors.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ProcessorCount() As Integer
+            Return Environment.ProcessorCount
         End Function
 
         ''' -----------------------------------------------------------------------
