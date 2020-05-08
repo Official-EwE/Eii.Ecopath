@@ -194,19 +194,50 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Cleans up a string of separated file extensions, eliminating duplicates
-        ''' and optionally sorting them.
+        ''' Cleans up a file filter. If no pipe characters ('|') characters are
+        ''' found in the provided filter, the call is forwarded to <see cref="CleanupExtensions(String, Boolean, Char, Boolean)"/>.
         ''' </summary>
-        ''' <param name="strExt">The <paramref name="cSeparator"/>-separated string of extensions to clean.</param>
+        ''' <param name="strFilter">The <paramref name="cSeparator"/>-separated string of extensions to clean.</param>
         ''' <param name="bIgnoreCase">Flag, indicating whether upper/lower case should be ignored.</param>
         ''' <param name="cSeparator">The character that separates extentions.</param>
-        ''' <returns>A merged </returns>
+        ''' <returns>A cleaned-up list of file extensions</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function CleanupExtensions(ByVal strExt As String,
-                                                 Optional ByVal bIgnoreCase As Boolean = True,
-                                                 Optional ByVal cSeparator As Char = ";"c,
-                                                 Optional ByVal bSort As Boolean = True) As String
+        Public Shared Function CleanupFileFilter(strFilter As String,
+                                                 Optional bIgnoreCase As Boolean = True,
+                                                 Optional cSeparator As Char = ";"c,
+                                                 Optional bSort As Boolean = True) As String
 
+            If (strFilter.Contains("|"c)) Then
+                Dim sb As New StringBuilder()
+                Dim bits() As String = strFilter.Split("|"c)
+                For i As Integer = 0 To bits.Length - 1 Step 2
+                    If (i > 0) Then sb.Append("|")
+                    sb.Append(bits(i))
+                    sb.Append("|")
+                    sb.Append(CleanupExtensions(bits(i + 1), bIgnoreCase, cSeparator, bSort))
+                Next
+                Return sb.ToString()
+            Else
+                Return CleanupExtensions(strFilter, bIgnoreCase, cSeparator, bSort)
+            End If
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Cleans up a semi-colon separated list of file extension, removing 
+        ''' duplicate file filters, and optionally sorting them.
+        ''' </summary>
+        ''' <param name="strFilter">The <paramref name="cSeparator"/>-separated 
+        ''' string of extensions to clean.</param>
+        ''' <param name="bIgnoreCase">Flag, indicating whether upper/lower case should be ignored.</param>
+        ''' <param name="cSeparator">The character that separates extentions.</param>
+        ''' <returns>A cleaned-up list of file extensions</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function CleanupExtensions(strExt As String,
+                                                  Optional bIgnoreCase As Boolean = True,
+                                                  Optional cSeparator As Char = ";"c,
+                                                  Optional bSort As Boolean = True) As String
             Dim sb As New StringBuilder()
             Dim lstrBits As New List(Of String)
             Dim lstrFinal As New List(Of String)
@@ -237,7 +268,6 @@ Namespace Utilities
             Return sb.ToString
 
         End Function
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Create a backup copy of a file.
@@ -501,7 +531,7 @@ Namespace Utilities
 
             Try
                 ' Lastly trash directory itself
-                Directory.Delete(strPath, True)
+                Directory.Delete(strPath)
             Catch ex As Exception
                 ' Directory in use?
                 bSucces = False
