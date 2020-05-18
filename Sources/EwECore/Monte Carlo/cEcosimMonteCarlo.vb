@@ -1178,10 +1178,8 @@ Public Class cEcosimMonteCarlo
                     End If
                 End If
 
-                Me.m_ecosim.InitStanza()
-
-                'For debugging
-                'dumpEcopathPars()
+                'Initialize the multi-stanza variables from the perturbated Ecopath parameters 
+                Me.InitMultiStanza()
 
                 'Estimate basic params
                 If Me.m_ecopath.Run() Then
@@ -1240,6 +1238,32 @@ Public Class cEcosimMonteCarlo
         Return Not bEcopathNeedsBalancing
 
     End Function
+
+    Private Sub InitMultiStanza()
+
+        'Initialize the Multi Stanza parameters from the Ecopath parameters perturbated by the Monte Carlo  
+        'cEcosimModel.InitStanza() will populate the Input Ecopath variable NOT the 'working' parameters that are used by the running models to follow
+        'These need to be copied into the working variables
+
+        'Calculate the variables
+        Me.m_ecosim.InitStanza()
+
+        'Update the working variables with the calcualted multi-stanza values 
+        For isp As Integer = 1 To m_stanza.Nsplit
+            Dim ieco As Integer
+            For i As Integer = 1 To m_stanza.Nstanza(isp)
+                'Explicitly copy the multi stanza computed values from the ecopath inputs
+                'into the working values
+                ieco = m_stanza.EcopathCode(isp, i)
+                'Debug.Assert(m_epdata.B(ieco) = m_epdata.Binput(ieco))
+                m_epdata.B(ieco) = m_epdata.Binput(ieco)
+                m_epdata.PB(ieco) = m_epdata.PBinput(ieco)
+                m_epdata.QB(ieco) = m_epdata.QBinput(ieco)
+            Next i
+
+        Next isp
+
+    End Sub
 
     ''' <summary>
     ''' Normalize diets to 1
