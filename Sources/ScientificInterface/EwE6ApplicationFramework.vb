@@ -197,11 +197,20 @@ Module EwE6ApplicationFramework
 
 #Region " Version formatting "
 
-    Public Function EwEVersion(bIncludeCompileDate As Boolean, bIncludeBitness As Boolean) As String
+    Public Function EwEVersion(bIncludeCompileDate As Boolean, bIncludeBitness As Boolean, bIncludeRelease As Boolean) As String
 
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE,
-                                     My.Resources.GENERIC_CAPTION,
-                                     cCore.Version(bIncludeCompileDate, bIncludeBitness))
+        Dim strCaption As String = My.Resources.GENERIC_CAPTION
+        If bIncludeRelease Then
+            Dim strRelease As String = ""
+            Select Case EwE6ApplicationFramework.ReleaseMode
+                Case eReleaseMode.Beta : strRelease = My.Resources.MODE_BETA
+                Case eReleaseMode.Dev : strRelease = My.Resources.MODE_DEBUG
+            End Select
+            If (Not String.IsNullOrEmpty(strRelease)) Then
+                strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, strRelease)
+            End If
+        End If
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strCaption, cCore.Version(bIncludeCompileDate, bIncludeBitness))
 
     End Function
 
@@ -226,10 +235,15 @@ Module EwE6ApplicationFramework
     Public Function EwERegistation(uic As cUIContext) As String
 
         Dim label As String = ""
-        Dim dt As DateTime = uic.RegisteredExpiration
-        If (dt <> Nothing) Then
-            label = cStringUtils.Localize(My.Resources.VERSION_REGISTRATION, uic.RegisteredOwner, dt.ToShortDateString)
-        End If
+
+        Select Case EwE6ApplicationFramework.ReleaseMode
+            Case eReleaseMode.Release
+                Dim dt As DateTime = uic.RegisteredExpiration
+                If (dt <> Nothing) Then
+                    label = cStringUtils.Localize(My.Resources.VERSION_REGISTRATION, uic.RegisteredOwner, dt.ToShortDateString)
+                End If
+        End Select
+
         Return label
 
     End Function

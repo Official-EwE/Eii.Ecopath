@@ -39,7 +39,7 @@ Friend Class frmSplash
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Zoom
 
-        Me.m_lblEwE.Text = EwEVersion(False, False)
+        Me.m_lblEwE.Text = EwEVersion(False, False, True)
         Me.ScaleFont(Me.m_lblEwE)
 
         Me.m_lblReleaseMode.Text = EwERelease()

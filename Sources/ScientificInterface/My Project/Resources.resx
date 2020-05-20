@@ -2133,4 +2133,13 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Pro license {0}, expires {1}</value>
     <comment>{0}=registration, {1}=expiry</comment>
   </data>
+  <data name="MODE_BETA" xml:space="preserve">
+    <value>beta</value>
+  </data>
+  <data name="MODE_DEBUG" xml:space="preserve">
+    <value>debug</value>
+  </data>
+  <data name="MODE_READ_ONLY" xml:space="preserve">
+    <value>read ony</value>
+  </data>
 </root>
