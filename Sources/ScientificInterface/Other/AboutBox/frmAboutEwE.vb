@@ -66,7 +66,7 @@ Namespace Other
 
             ' Format generic page
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, My.Resources.GENERIC_CAPTION)
-            Me.m_lbTitle.Text = EwEVersion(True, True)
+            Me.m_lbTitle.Text = EwEVersion(True, True, False)
             Me.m_lbVersion.Text = EwERelease()
 
             Me.m_lbRegistation.Text = EwERegistation(Me.m_uic)

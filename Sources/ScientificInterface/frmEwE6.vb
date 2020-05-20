@@ -1544,23 +1544,23 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
-        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version.ToString())
+        Dim strCaption As String = EwE6ApplicationFramework.EwEVersion(False, True, True)
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
-        If (Not String.IsNullOrWhiteSpace(Me.UIContext.RegisteredOwner)) Then
-            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, strCaption, EwERegistation(Me.UIContext))
+        Dim strRegistration As String = EwERegistation(Me.UIContext)
+        If (Not String.IsNullOrWhiteSpace(strRegistration)) Then
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, strCaption, strRegistration)
         End If
 
         Me.m_tsModel.Path = Me.SelectedFileName
         If Me.Core.StateMonitor.HasEcopathLoaded Then
+            Dim strModel As String = model.Name
             bIsReadOnly = Me.Core.DataSource.IsReadOnly
-            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
             If (bIsReadOnly) Then
-                ' Explicitly show read-only status in the caption text
-                ' ToDo: Globalize this
-                strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, "(read only)")
+                strModel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strModel, My.Resources.MODE_READ_ONLY)
             End If
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_CAPTION, strCaption, strModel)
         End If
 
         Me.Text = strCaption
