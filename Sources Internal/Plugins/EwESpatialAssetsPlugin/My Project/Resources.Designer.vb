@@ -322,11 +322,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Your license for the spatial temporal data framework has expired. You will have to renew your license to continue..
+        '''  Looks up a localized string similar to License data seems invalid, please re-register EwE.
         '''</summary>
-        Friend ReadOnly Property LICENSE_EXPIRED() As String
+        Friend ReadOnly Property LICENSE_INVALID() As String
             Get
-                Return ResourceManager.GetString("LICENSE_EXPIRED", resourceCulture)
+                Return ResourceManager.GetString("LICENSE_INVALID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The spatial-temporal data framework requires a valid license to continue.
+        '''</summary>
+        Friend ReadOnly Property LICENSE_NONE() As String
+            Get
+                Return ResourceManager.GetString("LICENSE_NONE", resourceCulture)
             End Get
         End Property
         

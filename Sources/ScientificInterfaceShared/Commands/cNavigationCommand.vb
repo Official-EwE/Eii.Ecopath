@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

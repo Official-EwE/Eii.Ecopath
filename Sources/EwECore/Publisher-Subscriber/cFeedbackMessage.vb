@@ -30,15 +30,6 @@ Public Class cFeedbackMessage
     Inherits cMessage
     Implements IFeedbackMessage
 
-#Region " Private bits "
-
-    ''' <summary>Reply to message.</summary>
-    Private m_reply As EwEUtils.Core.eMessageReply = EwEUtils.Core.eMessageReply.CANCEL
-    ''' <summary>Reply style requested for this message.</summary>
-    Private m_replyStyle As EwEUtils.Core.eMessageReplyStyle = EwEUtils.Core.eMessageReplyStyle.OK_CANCEL
-
-#End Region ' Private bits 
-
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
@@ -62,18 +53,18 @@ Public Class cFeedbackMessage
     ''' <param name="msgType"></param>
     ''' <param name="defaultReply"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal msgStr As String, _
-                   ByVal msgSource As eCoreComponentType, _
-                   ByVal msgType As eMessageType, _
-                   ByVal msgImportance As eMessageImportance, _
-                   Optional ByVal replyStyle As eMessageReplyStyle = eMessageReplyStyle.OK_CANCEL, _
-                   Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
-                   Optional ByVal defaultReply As eMessageReply = eMessageReply.CANCEL)
+    Public Sub New(msgStr As String,
+                   msgSource As eCoreComponentType,
+                   msgType As eMessageType,
+                   msgImportance As eMessageImportance,
+                   Optional replyStyle As eMessageReplyStyle = eMessageReplyStyle.OK_CANCEL,
+                   Optional msgDataType As eDataTypes = eDataTypes.NotSet,
+                   Optional defaultReply As eMessageReply = eMessageReply.CANCEL)
 
         MyBase.New(msgStr, msgType, msgSource, msgImportance, msgDataType)
 
-        Me.m_replyStyle = replyStyle
-        Me.m_reply = defaultReply
+        Me.ReplyStyle = replyStyle
+        Me.Reply = defaultReply
 
     End Sub
 
@@ -104,25 +95,18 @@ Public Class cFeedbackMessage
     ''' <inheritdocs cref="IFeedbackMessage.Reply"/>
     ''' -----------------------------------------------------------------------
     Public Property Reply() As EwEUtils.Core.eMessageReply Implements IFeedbackMessage.Reply
-        Get
-            Return Me.m_reply
-        End Get
-        Set(ByVal value As EwEUtils.Core.eMessageReply)
-            Me.m_reply = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IFeedbackMessage.ReplyStyle"/>
     ''' -----------------------------------------------------------------------
     Public Property ReplyStyle() As EwEUtils.Core.eMessageReplyStyle Implements IFeedbackMessage.ReplyStyle
-        Get
-            Return m_replyStyle
-        End Get
-        Set(ByVal value As EwEUtils.Core.eMessageReplyStyle)
-            m_replyStyle = value
-        End Set
-    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the text to display for licensing options.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property HyperlinkOption As String = ""
 
 #End Region ' Property access 
 

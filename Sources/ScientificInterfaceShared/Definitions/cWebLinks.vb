@@ -41,6 +41,7 @@ Public Class cWebLinks
     Private Const g_UsersRSS As String = "https://groups.google.com/forum/feed/eweusers/msgs/rss.xml?num=15"
     Private Const g_Trac As String = "http://sources.ecopath.org/trac/Ecopath/report/1"
     Private Const g_Course As String = "http://www.ecopath.org/courses"
+    Private Const g_GoPro As String = "http://www.ecopath.org/gopro"
     Private Const g_Facebook As String = "http://www.facebook.com/eweconsortium"
     Private Const g_BetaFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
     Private Const g_EcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
@@ -64,6 +65,7 @@ Public Class cWebLinks
         Feedback
         EcoBaseModelInfo
         Access2010
+        GoPro
     End Enum
 
     Public Function GetURL(type As eLinkType) As String
@@ -79,6 +81,7 @@ Public Class cWebLinks
             Case eLinkType.Feedback : Return cWebLinks.g_BetaFeedback
             Case eLinkType.EcoBaseModelInfo : Return cWebLinks.g_EcoBaseModelInfo
             Case eLinkType.Access2010 : Return cWebLinks.g_Access2010
+            Case eLinkType.GoPro : Return cWebLinks.g_GoPro
         End Select
         Return ""
 

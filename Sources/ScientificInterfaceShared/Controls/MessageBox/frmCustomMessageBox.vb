@@ -51,7 +51,7 @@ Namespace Controls
 
 #End Region ' Private vars
 
-        ''' ===================================================================
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor.
         ''' </summary>
@@ -62,12 +62,12 @@ Namespace Controls
         ''' <param name="strCheckboxPrompt">A prompt for a checkbox on the
         ''' message box. The checkbox will only be displayed if this string is 
         ''' not empty.</param>
-        ''' ===================================================================
-        Public Sub New(ByVal strPrompt As String, _
-                       ByVal strCaption As String, _
-                       ByVal mbb As MessageBoxButtons, _
-                       ByVal mbi As MessageBoxIcon, _
-                       Optional ByVal strCheckboxPrompt As String = "")
+        ''' -------------------------------------------------------------------
+        Public Sub New(strPrompt As String,
+                       strCaption As String,
+                       mbb As MessageBoxButtons,
+                       mbi As MessageBoxIcon,
+                       Optional strCheckboxPrompt As String = "")
 
             MyBase.New()
             Me.InitializeComponent()
@@ -174,7 +174,7 @@ Namespace Controls
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             ' > Plink <
             cSoundUtilities.PlaySound(Me.m_mbi)
             ' Let base class do its magic
@@ -192,7 +192,7 @@ Namespace Controls
         ''' Event handler, handles any button click.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnButtonClick(sender As System.Object, e As System.EventArgs) _
             Handles m_btnThree.Click, m_btnTwo.Click, m_btnOne.Click
 
             Dim btn As Button = DirectCast(sender, Button)
@@ -275,7 +275,7 @@ Namespace Controls
             Dim iNumChars As Integer = Me.m_lblPrompt.Text.Length
             Dim iNumLines As Integer = 1
 
-            szfMax = g.MeasureString(Me.m_lblPrompt.Text, ftPrompt, szfMax, _
+            szfMax = g.MeasureString(Me.m_lblPrompt.Text, ftPrompt, szfMax,
                                      StringFormat.GenericDefault, iNumChars, iNumLines)
 
             Me.m_lblPrompt.AutoSize = False
@@ -285,7 +285,7 @@ Namespace Controls
                 Me.m_lblPrompt.Location = New Point(Me.Spacer, Me.Spacer)
             Else
                 If Me.m_lblPrompt.Height < m_pbIcon.Height Then
-                    Me.m_lblPrompt.Location = New Point((Me.Spacer * 2) + Me.m_pbIcon.Width, _
+                    Me.m_lblPrompt.Location = New Point((Me.Spacer * 2) + Me.m_pbIcon.Width,
                                                         CInt((Me.m_pbIcon.Top + (Me.m_pbIcon.Height / 2)) - (Me.m_lblPrompt.Height / 2)))
                 Else
                     Me.m_lblPrompt.Location = New Point((Me.Spacer * 2) + Me.m_pbIcon.Width, Me.Spacer)
@@ -296,7 +296,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub ConfigureButton(ByVal btn As Button, ByVal result As DialogResult)
+        Private Sub ConfigureButton(btn As Button, result As DialogResult)
 
             ' Set text
             Select Case result
@@ -316,7 +316,7 @@ Namespace Controls
             btn.Visible = (result <> DialogResult.None)
 
             Select Case result
-                Case DialogResult.Yes, _
+                Case DialogResult.Yes,
                      DialogResult.OK
                     Me.AcceptButton = btn
                 Case DialogResult.Cancel
@@ -335,7 +335,7 @@ Namespace Controls
 
 #Region " Windows Form Designer generated code "
 
-        Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
                 If Not (components Is Nothing) Then
                     components.Dispose()

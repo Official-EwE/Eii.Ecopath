@@ -27,6 +27,7 @@ Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
+Imports EwELicense
 
 #End Region ' Imports
 
@@ -216,36 +217,29 @@ Module EwE6ApplicationFramework
 
     Public Function EwERelease() As String
 
-        Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
-        Dim strMask As String = ""
-
         Select Case EwE6ApplicationFramework.ReleaseMode
             Case eReleaseMode.Beta
-                strMask = My.Resources.VERSION_BETA
+                Return My.Resources.VERSION_BETA
             Case eReleaseMode.Dev
-                strMask = My.Resources.VERSION_DEVELOPMENT
+                Return My.Resources.VERSION_DEVELOPMENT
             Case eReleaseMode.Release
-                strMask = My.Resources.VERSION_RELEASE
+                ' NOP
         End Select
-
-        Return cStringUtils.Localize(strMask, dt.ToShortDateString)
+        Return My.Resources.VERSION_RELEASE
 
     End Function
 
-    Public Function EwERegistation(uic As cUIContext) As String
-
-        Dim label As String = ""
-
-        Select Case EwE6ApplicationFramework.ReleaseMode
-            Case eReleaseMode.Release
-                Dim dt As DateTime = uic.RegisteredExpiration
-                If (dt <> Nothing) Then
-                    label = cStringUtils.Localize(My.Resources.VERSION_REGISTRATION, uic.RegisteredOwner, dt.ToShortDateString)
-                End If
-        End Select
-
-        Return label
-
+    Public Function EwERegistration(core As cCore) As String
+        Dim lic As cLicense = core.License
+        If (lic.IsRegistered) Then
+            If (lic.IsLicensed) Then
+                Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
+            Else
+                Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
+            End If
+        Else
+            Return My.Resources.REGISTRATION_NONE
+        End If
     End Function
 
 #End Region ' Version formatting

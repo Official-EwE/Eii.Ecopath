@@ -19,7 +19,6 @@
 
 #Region " Imports "
 
-Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

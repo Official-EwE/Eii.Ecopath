@@ -33,6 +33,7 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.Text = My.Resources.GENERIC_CAPTION
         Me.BackgroundImage = My.Resources.splash_01
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
 

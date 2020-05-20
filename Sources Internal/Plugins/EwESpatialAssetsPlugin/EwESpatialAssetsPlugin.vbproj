@@ -146,6 +146,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Topology.dll</HintPath>
     </Reference>
+    <Reference Include="EwELicense, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sources\EwECore\Includes\EwELicense.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -153,9 +157,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TreeksLicensingLibrary2, Version=2.1.6973.5242, Culture=neutral, PublicKeyToken=61021f367f304cc6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Includes\TreeksLicensingLibrary2.dll</HintPath>
+    <Reference Include="TreeksLicensingLibrary2">
+      <HintPath>..\..\..\Sources\EwECore\Includes\TreeksLicensingLibrary2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +168,6 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Licensing\cTreekLic.vb" />
     <Compile Include="Plugins\cLifespanPlugin.vb" />
     <Compile Include="Plugins\Converters\cSpatialDataConverter.vb" />
     <Compile Include="Plugins\Converters\Vector\Area ratio\cAreaRatioConverterPlugin.vb" />
@@ -250,7 +252,6 @@
     </None>
     <None Include="Design\~design~.cd" />
     <None Include="EwESpatialAssetsPlugin.snk" />
-    <None Include="Licensing\treek.chunk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

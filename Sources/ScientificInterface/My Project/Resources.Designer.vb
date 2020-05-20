@@ -3900,7 +3900,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to License expires {0}.
+        '''  Looks up a localized string similar to Plug-in licensed until {0}.
         '''</summary>
         Public ReadOnly Property PLUGIN_LICENSE_EXPIRATION() As String
             Get
@@ -3909,11 +3909,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to License expired on {0}.
+        '''  Looks up a localized string similar to Plug-in is not licensed to run.
         '''</summary>
-        Public ReadOnly Property PLUGIN_LICENSE_EXPIRED() As String
+        Public ReadOnly Property PLUGIN_LICENSE_INVALID() As String
             Get
-                Return ResourceManager.GetString("PLUGIN_LICENSE_EXPIRED", resourceCulture)
+                Return ResourceManager.GetString("PLUGIN_LICENSE_INVALID", resourceCulture)
             End Get
         End Property
         
@@ -4397,6 +4397,33 @@ Namespace My.Resources
         Public ReadOnly Property REGION_DELETE_CONFIRMATION() As String
             Get
                 Return ResourceManager.GetString("REGION_DELETE_CONFIRMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Registered to {0}, expires {1}.
+        '''</summary>
+        Public ReadOnly Property REGISTRATION_ACTIVE() As String
+            Get
+                Return ResourceManager.GetString("REGISTRATION_ACTIVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Registered to {0}, (expired).
+        '''</summary>
+        Public ReadOnly Property REGISTRATION_EXPIRED() As String
+            Get
+                Return ResourceManager.GetString("REGISTRATION_EXPIRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Free version.
+        '''</summary>
+        Public ReadOnly Property REGISTRATION_NONE() As String
+            Get
+                Return ResourceManager.GetString("REGISTRATION_NONE", resourceCulture)
             End Get
         End Property
         
@@ -5547,7 +5574,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Beta release, compiled {0}.
+        '''  Looks up a localized string similar to Beta build.
         '''</summary>
         Public ReadOnly Property VERSION_BETA() As String
             Get
@@ -5556,7 +5583,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Development version, compiled {0}.
+        '''  Looks up a localized string similar to Development build.
         '''</summary>
         Public ReadOnly Property VERSION_DEVELOPMENT() As String
             Get
@@ -5565,7 +5592,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Pro license {0}, expires {1}.
+        '''  Looks up a localized string similar to EwE Pro {0}, expires {1}.
         '''</summary>
         Public ReadOnly Property VERSION_REGISTRATION() As String
             Get
@@ -5574,7 +5601,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Official release, compiled {0}.
+        '''  Looks up a localized string similar to Official release.
         '''</summary>
         Public ReadOnly Property VERSION_RELEASE() As String
             Get

@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Commands
 Imports System.IO
 
 #End Region ' Imports

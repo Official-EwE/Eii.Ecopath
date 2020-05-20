@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.SpatialData
 
 #End Region ' Imports

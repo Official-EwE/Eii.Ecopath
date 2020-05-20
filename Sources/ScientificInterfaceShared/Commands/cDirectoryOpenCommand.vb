@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Commands
-Imports System.Windows.Forms
 
 #End Region ' Imports
 

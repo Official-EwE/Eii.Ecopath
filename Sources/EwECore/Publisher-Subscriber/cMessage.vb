@@ -55,6 +55,7 @@ Public Class cMessage
         Me.Source = eCoreComponentType.NotSet
         Me.Importance = eMessageImportance.Maintenance
         Me.DataType = eDataTypes.NotSet
+        Me.Hyperlink = ""
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -67,16 +68,18 @@ Public Class cMessage
     ''' <param name="msgImportance">The <see cref="Importance"/> of the message.</param>
     ''' <param name="msgDataType">The <see cref="DataType"/> of the message.</param>
     ''' -----------------------------------------------------------------------
-    Sub New(ByVal strMessage As String,
-            ByVal msgType As eMessageType,
-            ByVal msgSource As eCoreComponentType,
-            ByVal msgImportance As eMessageImportance,
-            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+    Sub New(strMessage As String,
+            msgType As eMessageType,
+            msgSource As eCoreComponentType,
+            msgImportance As eMessageImportance,
+            Optional msgDataType As eDataTypes = eDataTypes.NotSet,
+            Optional hyperlink As String = "")
         Me.Message = strMessage
         Me.Type = msgType
         Me.Source = msgSource
         Me.Importance = msgImportance
         Me.DataType = msgDataType
+        Me.Hyperlink = hyperlink
     End Sub
 
 #End Region ' Constructor
@@ -89,7 +92,7 @@ Public Class cMessage
     ''' <param name="Variable"></param>
     ''' <returns></returns>
     ''' <remarks>This is used when the message object is being created to add variables to the message</remarks>
-    Public Function AddVariable(ByVal Variable As cVariableStatus) As Boolean
+    Public Function AddVariable(Variable As cVariableStatus) As Boolean
 
         ' Check for duplicates
         For Each vs As cVariableStatus In Me.m_variables
@@ -108,7 +111,7 @@ Public Class cMessage
     ''' </summary>
     ''' <param name="Variable"></param>
     ''' <returns></returns>
-    Public Function HasVariable(ByVal Variable As cVariableStatus) As Boolean
+    Public Function HasVariable(Variable As cVariableStatus) As Boolean
         For Each vs As cVariableStatus In Me.Variables
             If (ReferenceEquals(vs.Source, Variable.Source)) And
                (vs.Index = Variable.Index) And
@@ -125,7 +128,7 @@ Public Class cMessage
     ''' </summary>
     ''' <param name="varname"></param>
     ''' <returns></returns>
-    Public Function HasVariable(ByVal varname As eVarNameFlags) As Boolean
+    Public Function HasVariable(varname As eVarNameFlags) As Boolean
         For Each vs As cVariableStatus In Me.m_variables
             If (vs.VarName = varname) Then
                 Return True
@@ -183,7 +186,7 @@ Public Class cMessage
     ''' <see cref="cMessage.Type">Type</see> and <see cref="Message">Message</see> have
     ''' equal values, AND neither message contain attached <see cref="Variables">Variables</see>.
     ''' </remarks>
-    Public Overrides Function Equals(ByVal obj As Object) As Boolean
+    Public Overrides Function Equals(obj As Object) As Boolean
         If (TypeOf obj Is cMessage) Then
             Dim msg As cMessage = DirectCast(obj, cMessage)
 

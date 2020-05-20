@@ -72,10 +72,6 @@ Public Class cLifespanPlugin
         Me.m_core = DirectCast(core, cCore)
     End Sub
 
-    Public Sub Validate() Implements ILicensePlugin.Validate
-        cDotSpatialUtils.IsLicensed(Me.m_core)
-    End Sub
-
     Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
         dt = cDotSpatialUtils.ExpiryDate(Me.m_core)
     End Sub

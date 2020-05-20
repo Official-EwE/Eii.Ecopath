@@ -102,6 +102,9 @@
     <Reference Include="EPPlus">
       <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="EwELicense">
+      <HintPath>..\EwECore\Includes\EwELicense.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.GLEE, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f84f738e1fc245c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -131,6 +134,8 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\cEnterLicenseCommand.vb" />
+    <Compile Include="Commands\cClearLicenseCommand.vb" />
     <Compile Include="Commands\cEditHabitatsCommand.vb" />
     <Compile Include="Commands\cEditMPAsCommand.vb" />
     <Compile Include="Commands\cEditImportanceLayersCommand.vb" />

@@ -26,6 +26,7 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
+Imports EwECore
 Imports EwECore.SpatialData
 Imports EwECore.Style
 Imports EwEUtils.Core
@@ -73,7 +74,6 @@ Namespace SpatialData
 #Region " Constructor / destructor "
 
         Public Sub New()
-            If (Not cDotSpatialUtils.IsLicensed(Nothing)) Then Throw New Exception("Plug-in license expired")
             Me.InitializeComponent()
         End Sub
 

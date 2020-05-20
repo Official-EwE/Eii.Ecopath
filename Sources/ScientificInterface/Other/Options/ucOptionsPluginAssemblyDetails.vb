@@ -54,7 +54,7 @@ Public Class ucOptionsPluginAssemblyDetails
         Dim dtStart As DateTime = cDateUtils.StartTime
         Dim dtExp As DateTime = pa.Expiry
         If (dtStart > dtExp) Then
-            Me.m_tbxLicense.Text = cStringUtils.Localize(My.Resources.PLUGIN_LICENSE_EXPIRED, pa.Expiry.ToShortDateString())
+            Me.m_tbxLicense.Text = My.Resources.PLUGIN_LICENSE_INVALID
         Else
             Me.m_tbxLicense.Text = cStringUtils.Localize(My.Resources.PLUGIN_LICENSE_EXPIRATION, pa.Expiry.ToShortDateString())
         End If

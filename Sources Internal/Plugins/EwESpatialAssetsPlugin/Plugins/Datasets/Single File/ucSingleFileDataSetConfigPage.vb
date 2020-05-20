@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
+Imports EwECore
 Imports EwECore.SpatialData
 Imports EwECore.Style
 Imports EwESpatialAssetsPlugin.SpatialData
@@ -38,7 +39,6 @@ Friend Class ucSingleFileDataSetConfigPage
     Private m_dataset As cSingleFileDataSetPlugin = Nothing
 
     Public Sub New()
-        If (Not cDotSpatialUtils.IsLicensed(Nothing)) Then Throw New Exception("Plug-in license expired")
         Me.InitializeComponent()
     End Sub
 

@@ -210,8 +210,11 @@
   <data name="LICENSE_EVALUATION" xml:space="preserve">
     <value>evaluation</value>
   </data>
-  <data name="LICENSE_EXPIRED" xml:space="preserve">
-    <value>Your license for the spatial temporal data framework has expired. You will have to renew your license to continue.</value>
+  <data name="LICENSE_INVALID" xml:space="preserve">
+    <value>License data seems invalid, please re-register EwE</value>
+  </data>
+  <data name="LICENSE_NONE" xml:space="preserve">
+    <value>The spatial-temporal data framework requires a valid license to continue</value>
   </data>
   <data name="LICENSE_REGISTREE" xml:space="preserve">
     <value>registered to {0}</value>

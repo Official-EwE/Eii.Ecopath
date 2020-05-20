@@ -21,8 +21,6 @@
 
 Option Strict On
 Imports EwECore.Ecosim
-Imports ScientificInterfaceShared.Commands
-Imports System.Drawing.Printing
 
 #End Region ' Imports
 
