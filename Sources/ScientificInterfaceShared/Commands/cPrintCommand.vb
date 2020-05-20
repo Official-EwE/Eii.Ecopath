@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
-Imports System.Drawing.Printing
 
 #End Region ' Imports
 

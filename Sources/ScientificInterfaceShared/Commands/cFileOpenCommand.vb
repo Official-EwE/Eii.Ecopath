@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.IO
-Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

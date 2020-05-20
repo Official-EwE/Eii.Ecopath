@@ -358,7 +358,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbCopyright.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 103</value>
+    <value>3, 119</value>
   </data>
   <data name="m_lbCopyright.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -391,7 +391,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbLicense.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 84</value>
+    <value>3, 100</value>
   </data>
   <data name="m_lbLicense.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -439,7 +439,7 @@
     <value>_m_hdrDisclaimer</value>
   </data>
   <data name="&gt;&gt;_m_hdrDisclaimer.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16540.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;_m_hdrDisclaimer.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
@@ -447,38 +447,125 @@
   <data name="&gt;&gt;_m_hdrDisclaimer.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_lblExpiry.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_tlpRegistration.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblExpiry.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_tlpRegistration.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_btnEnterRegistration.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lblExpiry.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  <data name="m_btnEnterRegistration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
-  <data name="m_lblExpiry.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 58</value>
+  <data name="m_btnEnterRegistration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 23</value>
   </data>
-  <data name="m_lblExpiry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>425, 13</value>
+  <data name="m_btnEnterRegistration.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="m_lblExpiry.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnEnterRegistration.Text" xml:space="preserve">
+    <value>Enter registration</value>
+  </data>
+  <data name="&gt;&gt;m_btnEnterRegistration.Name" xml:space="preserve">
+    <value>m_btnEnterRegistration</value>
+  </data>
+  <data name="&gt;&gt;m_btnEnterRegistration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnEnterRegistration.Parent" xml:space="preserve">
+    <value>m_tlpRegistration</value>
+  </data>
+  <data name="&gt;&gt;m_btnEnterRegistration.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btnRemoveRegistration.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnRemoveRegistration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>146, 3</value>
+  </data>
+  <data name="m_btnRemoveRegistration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 23</value>
+  </data>
+  <data name="m_btnRemoveRegistration.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_btnRemoveRegistration.Text" xml:space="preserve">
+    <value>Remove registration</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemoveRegistration.Name" xml:space="preserve">
+    <value>m_btnRemoveRegistration</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemoveRegistration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemoveRegistration.Parent" xml:space="preserve">
+    <value>m_tlpRegistration</value>
+  </data>
+  <data name="&gt;&gt;m_btnRemoveRegistration.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnOrder.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnOrder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>289, 3</value>
+  </data>
+  <data name="m_btnOrder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 23</value>
+  </data>
+  <data name="m_btnOrder.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnOrder.Text" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="&gt;&gt;m_btnOrder.Name" xml:space="preserve">
+    <value>m_btnOrder</value>
+  </data>
+  <data name="&gt;&gt;m_btnOrder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnOrder.Parent" xml:space="preserve">
+    <value>m_tlpRegistration</value>
+  </data>
+  <data name="&gt;&gt;m_btnOrder.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tlpRegistration.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpRegistration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 58</value>
+  </data>
+  <data name="m_tlpRegistration.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpRegistration.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpRegistration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>431, 29</value>
+  </data>
+  <data name="m_tlpRegistration.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="m_lblExpiry.Text" xml:space="preserve">
-    <value>This version has expired, click here to renew</value>
+  <data name="&gt;&gt;m_tlpRegistration.Name" xml:space="preserve">
+    <value>m_tlpRegistration</value>
   </data>
-  <data name="&gt;&gt;m_lblExpiry.Name" xml:space="preserve">
-    <value>m_lblExpiry</value>
+  <data name="&gt;&gt;m_tlpRegistration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblExpiry.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblExpiry.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpRegistration.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
   </data>
-  <data name="&gt;&gt;m_lblExpiry.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpRegistration.ZOrder" xml:space="preserve">
     <value>8</value>
+  </data>
+  <data name="m_tlpRegistration.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnEnterRegistration" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnRemoveRegistration" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_btnOrder" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpDetails.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -511,7 +598,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpDetails.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbDisclaimer" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rtbDistribution" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbTitle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbRegistation" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCopyright" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbLicense" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_m_hdrDisclaimer" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblExpiry" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,10,AutoSize,0,AutoSize,0,Percent,100,Absolute,20,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rtbDisclaimer" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rtbDistribution" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbVersion" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbTitle" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbRegistation" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCopyright" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbLicense" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="_m_hdrDisclaimer" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpRegistration" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,10,AutoSize,0,AutoSize,0,Percent,100,Absolute,20,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpGeneral.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -579,60 +666,6 @@
   <data name="&gt;&gt;m_tpGeneral.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_rtbLicense.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_rtbLicense.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_rtbLicense.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="m_rtbLicense.Size" type="System.Drawing.Size, System.Drawing">
-    <value>584, 320</value>
-  </data>
-  <data name="m_rtbLicense.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_rtbLicense.Text" xml:space="preserve">
-    <value>&lt;loads license.rtf resource&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_rtbLicense.Name" xml:space="preserve">
-    <value>m_rtbLicense</value>
-  </data>
-  <data name="&gt;&gt;m_rtbLicense.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rtbLicense.Parent" xml:space="preserve">
-    <value>m_tpLicense</value>
-  </data>
-  <data name="&gt;&gt;m_rtbLicense.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tpLicense.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="m_tpLicense.Size" type="System.Drawing.Size, System.Drawing">
-    <value>584, 320</value>
-  </data>
-  <data name="m_tpLicense.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_tpLicense.Text" xml:space="preserve">
-    <value>License</value>
-  </data>
-  <data name="&gt;&gt;m_tpLicense.Name" xml:space="preserve">
-    <value>m_tpLicense</value>
-  </data>
-  <data name="&gt;&gt;m_tpLicense.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpLicense.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tpLicense.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_rtbTeam.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -691,7 +724,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tpTeam.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_rtbAcknowledgements.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -751,7 +784,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tpAcknowledgements.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_tlpTechnicalDetails.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -811,7 +844,7 @@
     <value>m_gridTechnical</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Type" xml:space="preserve">
-    <value>ScientificInterface.gridAboutEwE, EwE6, Version=6.6.16540.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridAboutEwE, EwE6, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
@@ -865,7 +898,7 @@
     <value>m_tsTechnical</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16540.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
@@ -925,7 +958,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tpTechnical.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="TableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -982,7 +1015,7 @@
     <value>m_gridDatabase</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDatabase, EwE6, Version=6.6.16540.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDatabase, EwE6, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Parent" xml:space="preserve">
     <value>TableLayoutPanel2</value>
@@ -1042,6 +1075,60 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tpDatabase.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_rtbLicense.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_rtbLicense.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_rtbLicense.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="m_rtbLicense.Size" type="System.Drawing.Size, System.Drawing">
+    <value>584, 320</value>
+  </data>
+  <data name="m_rtbLicense.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_rtbLicense.Text" xml:space="preserve">
+    <value>&lt;loads license.rtf resource&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_rtbLicense.Name" xml:space="preserve">
+    <value>m_rtbLicense</value>
+  </data>
+  <data name="&gt;&gt;m_rtbLicense.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rtbLicense.Parent" xml:space="preserve">
+    <value>m_tpLicense</value>
+  </data>
+  <data name="&gt;&gt;m_rtbLicense.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tpLicense.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tpLicense.Size" type="System.Drawing.Size, System.Drawing">
+    <value>584, 320</value>
+  </data>
+  <data name="m_tpLicense.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_tpLicense.Text" xml:space="preserve">
+    <value>GPL license</value>
+  </data>
+  <data name="&gt;&gt;m_tpLicense.Name" xml:space="preserve">
+    <value>m_tpLicense</value>
+  </data>
+  <data name="&gt;&gt;m_tpLicense.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpLicense.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tpLicense.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">

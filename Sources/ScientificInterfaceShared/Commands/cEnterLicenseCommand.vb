@@ -27,17 +27,17 @@ Namespace Commands
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Command to invoke the 'Edit driver layers" command.
+    ''' Command to invoke the 'Enter license' interface
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cEditDriverLayersCommand
+    Public Class cEnterLicenseCommand
         Inherits cCommand
 
         ''' <summary>Static name for this command.</summary>
-        Public Shared cCOMMAND_NAME As String = "EditInputMaps"
+        Public Shared cCOMMAND_NAME As String = "~enterLicense"
 
         Public Sub New(ByVal cmdh As cCommandHandler)
-            MyBase.new(cmdh, cEditDriverLayersCommand.cCOMMAND_NAME)
+            MyBase.New(cmdh, cEnterLicenseCommand.cCOMMAND_NAME)
         End Sub
 
     End Class

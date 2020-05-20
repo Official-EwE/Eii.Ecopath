@@ -53,10 +53,12 @@ Namespace Other
             Me.m_lbCopyright = New System.Windows.Forms.Label()
             Me.m_lbLicense = New System.Windows.Forms.Label()
             Me._m_hdrDisclaimer = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpRegistration = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_btnEnterRegistration = New System.Windows.Forms.Button()
+            Me.m_btnRemoveRegistration = New System.Windows.Forms.Button()
+            Me.m_btnOrder = New System.Windows.Forms.Button()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpGeneral = New System.Windows.Forms.TabPage()
-            Me.m_tpLicense = New System.Windows.Forms.TabPage()
-            Me.m_rtbLicense = New System.Windows.Forms.RichTextBox()
             Me.m_tpTeam = New System.Windows.Forms.TabPage()
             Me.m_rtbTeam = New System.Windows.Forms.RichTextBox()
             Me.m_tpAcknowledgements = New System.Windows.Forms.TabPage()
@@ -72,13 +74,14 @@ Namespace Other
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
-            Me.m_lblExpiry = New System.Windows.Forms.Label()
+            Me.m_tpLicense = New System.Windows.Forms.TabPage()
+            Me.m_rtbLicense = New System.Windows.Forms.RichTextBox()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
+            Me.m_tlpRegistration.SuspendLayout()
             Me.m_tcMain.SuspendLayout()
             Me.m_tpGeneral.SuspendLayout()
-            Me.m_tpLicense.SuspendLayout()
             Me.m_tpTeam.SuspendLayout()
             Me.m_tpAcknowledgements.SuspendLayout()
             Me.m_tpTechnical.SuspendLayout()
@@ -86,6 +89,7 @@ Namespace Other
             Me.m_tsTechnical.SuspendLayout()
             Me.m_tpDatabase.SuspendLayout()
             Me.TableLayoutPanel2.SuspendLayout()
+            Me.m_tpLicense.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnOK
@@ -121,7 +125,7 @@ Namespace Other
             Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 6)
             Me.m_tlpDetails.Controls.Add(Me.m_lbLicense, 0, 5)
             Me.m_tlpDetails.Controls.Add(Me._m_hdrDisclaimer, 0, 8)
-            Me.m_tlpDetails.Controls.Add(Me.m_lblExpiry, 0, 3)
+            Me.m_tlpDetails.Controls.Add(Me.m_tlpRegistration, 0, 3)
             Me.m_tlpDetails.Name = "m_tlpDetails"
             '
             'm_rtbDisclaimer
@@ -171,15 +175,41 @@ Namespace Other
             Me._m_hdrDisclaimer.IsCollapsed = False
             Me._m_hdrDisclaimer.Name = "_m_hdrDisclaimer"
             '
+            'm_tlpRegistration
+            '
+            resources.ApplyResources(Me.m_tlpRegistration, "m_tlpRegistration")
+            Me.m_tlpRegistration.Controls.Add(Me.m_btnEnterRegistration, 0, 0)
+            Me.m_tlpRegistration.Controls.Add(Me.m_btnRemoveRegistration, 1, 0)
+            Me.m_tlpRegistration.Controls.Add(Me.m_btnOrder, 2, 0)
+            Me.m_tlpRegistration.Name = "m_tlpRegistration"
+            '
+            'm_btnEnterRegistration
+            '
+            resources.ApplyResources(Me.m_btnEnterRegistration, "m_btnEnterRegistration")
+            Me.m_btnEnterRegistration.Name = "m_btnEnterRegistration"
+            Me.m_btnEnterRegistration.UseVisualStyleBackColor = True
+            '
+            'm_btnRemoveRegistration
+            '
+            resources.ApplyResources(Me.m_btnRemoveRegistration, "m_btnRemoveRegistration")
+            Me.m_btnRemoveRegistration.Name = "m_btnRemoveRegistration"
+            Me.m_btnRemoveRegistration.UseVisualStyleBackColor = True
+            '
+            'm_btnOrder
+            '
+            resources.ApplyResources(Me.m_btnOrder, "m_btnOrder")
+            Me.m_btnOrder.Name = "m_btnOrder"
+            Me.m_btnOrder.UseVisualStyleBackColor = True
+            '
             'm_tcMain
             '
             resources.ApplyResources(Me.m_tcMain, "m_tcMain")
             Me.m_tcMain.Controls.Add(Me.m_tpGeneral)
-            Me.m_tcMain.Controls.Add(Me.m_tpLicense)
             Me.m_tcMain.Controls.Add(Me.m_tpTeam)
             Me.m_tcMain.Controls.Add(Me.m_tpAcknowledgements)
             Me.m_tcMain.Controls.Add(Me.m_tpTechnical)
             Me.m_tcMain.Controls.Add(Me.m_tpDatabase)
+            Me.m_tcMain.Controls.Add(Me.m_tpLicense)
             Me.m_tcMain.Name = "m_tcMain"
             Me.m_tcMain.SelectedIndex = 0
             '
@@ -189,22 +219,6 @@ Namespace Other
             resources.ApplyResources(Me.m_tpGeneral, "m_tpGeneral")
             Me.m_tpGeneral.Name = "m_tpGeneral"
             Me.m_tpGeneral.UseVisualStyleBackColor = True
-            '
-            'm_tpLicense
-            '
-            Me.m_tpLicense.Controls.Add(Me.m_rtbLicense)
-            resources.ApplyResources(Me.m_tpLicense, "m_tpLicense")
-            Me.m_tpLicense.Name = "m_tpLicense"
-            Me.m_tpLicense.UseVisualStyleBackColor = True
-            '
-            'm_rtbLicense
-            '
-            Me.m_rtbLicense.BackColor = System.Drawing.SystemColors.Control
-            Me.m_rtbLicense.BorderStyle = System.Windows.Forms.BorderStyle.None
-            Me.m_rtbLicense.Cursor = System.Windows.Forms.Cursors.Default
-            resources.ApplyResources(Me.m_rtbLicense, "m_rtbLicense")
-            Me.m_rtbLicense.Name = "m_rtbLicense"
-            Me.m_rtbLicense.ShortcutsEnabled = False
             '
             'm_tpTeam
             '
@@ -361,11 +375,21 @@ Namespace Other
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
-            'm_lblExpiry
+            'm_tpLicense
             '
-            resources.ApplyResources(Me.m_lblExpiry, "m_lblExpiry")
-            Me.m_lblExpiry.ForeColor = System.Drawing.SystemColors.Highlight
-            Me.m_lblExpiry.Name = "m_lblExpiry"
+            Me.m_tpLicense.Controls.Add(Me.m_rtbLicense)
+            resources.ApplyResources(Me.m_tpLicense, "m_tpLicense")
+            Me.m_tpLicense.Name = "m_tpLicense"
+            Me.m_tpLicense.UseVisualStyleBackColor = True
+            '
+            'm_rtbLicense
+            '
+            Me.m_rtbLicense.BackColor = System.Drawing.SystemColors.Control
+            Me.m_rtbLicense.BorderStyle = System.Windows.Forms.BorderStyle.None
+            Me.m_rtbLicense.Cursor = System.Windows.Forms.Cursors.Default
+            resources.ApplyResources(Me.m_rtbLicense, "m_rtbLicense")
+            Me.m_rtbLicense.Name = "m_rtbLicense"
+            Me.m_rtbLicense.ShortcutsEnabled = False
             '
             'frmAboutEwE
             '
@@ -387,9 +411,9 @@ Namespace Other
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
+            Me.m_tlpRegistration.ResumeLayout(False)
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tpGeneral.ResumeLayout(False)
-            Me.m_tpLicense.ResumeLayout(False)
             Me.m_tpTeam.ResumeLayout(False)
             Me.m_tpAcknowledgements.ResumeLayout(False)
             Me.m_tpTechnical.ResumeLayout(False)
@@ -399,6 +423,7 @@ Namespace Other
             Me.m_tsTechnical.PerformLayout()
             Me.m_tpDatabase.ResumeLayout(False)
             Me.TableLayoutPanel2.ResumeLayout(False)
+            Me.m_tpLicense.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -433,7 +458,10 @@ Namespace Other
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_lbRegistation As Label
         Private WithEvents _m_hdrDisclaimer As cEwEHeaderLabel
-        Private WithEvents m_lblExpiry As Label
+        Private WithEvents m_tlpRegistration As TableLayoutPanel
+        Private WithEvents m_btnEnterRegistration As Button
+        Private WithEvents m_btnRemoveRegistration As Button
+        Private WithEvents m_btnOrder As Button
     End Class
 End Namespace
 

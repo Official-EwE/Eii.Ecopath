@@ -59,10 +59,14 @@ Public Class cPluginAssembly
     Private m_bEnabled As Boolean = True
     ''' <summary>Assembly compatibility state.</summary>
     Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.VersionCompatible
-    ''' <summary>Assembly licensed state.</summary>
+
+    ''' <summary>License checked flag. For UI display purposes only.</summary>
+    Private m_bLicenseChecked As Boolean = False
+    ''' <summary>Assembly licensed state. For UI display purposes only</summary>
     Private m_bLicensed As Boolean = False
-    ''' <summary>Assembly license expiry date.</summary>
+    ''' <summary>Assembly license expiry date. For UI display purposes only</summary>
     Private m_dtExpiry As DateTime = DateTime.MinValue
+
 
 #End Region ' Private parts
 
@@ -114,15 +118,6 @@ Public Class cPluginAssembly
             If Me.m_dictPlugins.ContainsKey(strName) Then
                 Throw New cPluginException(Me, String.Format(My.Resources.PLUGIN_EXCEPTION_DUPLICATE, Me.Filename, strName), Nothing)
             Else
-                If (TypeOf ip Is ILicensePlugin) Then
-                    Dim lp As ILicensePlugin = DirectCast(ip, ILicensePlugin)
-                    Me.m_bLicensed = True
-                    Try
-                        lp.Expiry(Me.m_dtExpiry)
-                    Catch ex As Exception
-
-                    End Try
-                End If
                 Me.m_dictPlugins.Add(strName, ip)
             End If
         End Set
@@ -225,6 +220,7 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsLicensed As Boolean
         Get
+            Me.CheckLicense()
             Return Me.m_bLicensed
         End Get
     End Property
@@ -236,6 +232,7 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Expiry As DateTime
         Get
+            Me.CheckLicense()
             Return Me.m_dtExpiry
         End Get
     End Property
@@ -373,5 +370,29 @@ Public Class cPluginAssembly
     End Function
 
 #End Region ' Overrides
+
+#Region " Internals "
+
+    Private Sub CheckLicense()
+
+        If (Me.m_bLicenseChecked) Then Return
+
+        For Each ip As IPlugin In Me.m_dictPlugins.Values
+            If (TypeOf ip Is ILicensePlugin) Then
+                Dim lp As ILicensePlugin = DirectCast(ip, ILicensePlugin)
+                Me.m_bLicensed = True
+                Try
+                    lp.Expiry(Me.m_dtExpiry)
+                Catch ex As Exception
+                    ' NOP
+                End Try
+            End If
+        Next
+
+        Me.m_bLicenseChecked = True
+
+    End Sub
+
+#End Region ' Internals
 
 End Class

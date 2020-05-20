@@ -168,6 +168,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsmiHelpRegister = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -397,7 +398,7 @@ Partial Public Class frmEwE6
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, m_tssHelp2, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -875,6 +876,11 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
+        'm_tsmiHelpRegister
+        '
+        Me.m_tsmiHelpRegister.Name = "m_tsmiHelpRegister"
+        resources.ApplyResources(Me.m_tsmiHelpRegister, "m_tsmiHelpRegister")
+        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -1004,5 +1010,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsddViewItems As ToolStripSplitButton
     Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
     Private WithEvents m_tsmiEcospaceDefineImportanceLayers As ToolStripMenuItem
+    Private WithEvents m_tsmiHelpRegister As ToolStripMenuItem
 End Class
 

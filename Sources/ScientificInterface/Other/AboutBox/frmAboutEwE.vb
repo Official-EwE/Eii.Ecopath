@@ -62,21 +62,19 @@ Namespace Other
             cmd.AddControl(Me.m_rtbDisclaimer)
             cmd.AddControl(Me.m_rtbDistribution)
             cmd.AddControl(Me.m_rtbLicense)
-            cmd.AddControl(Me.m_lblExpiry, If(String.IsNullOrWhiteSpace(Me.m_uic.RegisteredOwner), "http://ecopath.org/downloads", "http://ecopath.org/go-pro"))
+            'cmd.AddControl(Me.m_lblExpiry, If(String.IsNullOrWhiteSpace(Me.m_uic.RegisteredOwner), "http://ecopath.org/downloads", "http://ecopath.org/go-pro"))
 
             ' Format generic page
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, My.Resources.GENERIC_CAPTION)
             Me.m_lbTitle.Text = EwEVersion(True, True, False)
             Me.m_lbVersion.Text = EwERelease()
 
-            Me.m_lbRegistation.Text = EwERegistation(Me.m_uic)
-            Me.m_lbRegistation.Visible = Not String.IsNullOrWhiteSpace(Me.m_lbRegistation.Text)
 
             Me.m_lbCopyright.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
-            If (Me.m_uic.RegisteredExpiration <> Nothing) Then
-                Me.m_lblExpiry.Visible = Me.m_uic.RegisteredExpiration < cDateUtils.StartTime
-            End If
+            'If (Me.m_uic.RegisteredExpiration <> Nothing) Then
+            '    Me.m_lblExpiry.Visible = Me.m_uic.RegisteredExpiration < cDateUtils.StartTime
+            'End If
 
             ' Format RTF content pages
             Me.m_rtbTeam.Rtf = StyleRTF(My.Resources.team)
@@ -97,8 +95,15 @@ Namespace Other
                 Me.m_tcMain.TabPages.Remove(Me.m_tpDatabase)
             End If
 
+            Me.UpdateLicenseControls()
             Me.m_bInUpdate = False
 
+        End Sub
+
+        Private Sub UpdateLicenseControls()
+            Me.m_lbRegistation.Text = EwERegistration(Me.m_uic.Core)
+            Me.m_lbRegistation.Visible = Not String.IsNullOrWhiteSpace(Me.m_lbRegistation.Text)
+            Me.m_btnRemoveRegistration.Enabled = Me.m_uic.Core.License.IsRegistered
         End Sub
 
         Protected Overrides Sub OnClosed(e As System.EventArgs)
@@ -108,7 +113,6 @@ Namespace Other
             cmd.RemoveControl(Me.m_rtbDisclaimer)
             cmd.RemoveControl(Me.m_rtbDistribution)
             cmd.RemoveControl(Me.m_rtbLicense)
-            cmd.RemoveControl(Me.m_lblExpiry)
 
             Me.m_qehTech.Detach()
             MyBase.OnClosed(e)
@@ -151,6 +155,24 @@ Namespace Other
 
             Return strRTF
         End Function
+
+        Private Sub OnEnterRegistration(sender As Object, e As EventArgs) Handles m_btnEnterRegistration.Click
+
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cEnterLicenseCommand = CType(cmdh.GetCommand(cEnterLicenseCommand.cCOMMAND_NAME), cEnterLicenseCommand)
+            cmd.Invoke()
+            Me.UpdateLicenseControls()
+
+        End Sub
+
+        Private Sub OnRemoveRegistration(sender As Object, e As EventArgs) Handles m_btnRemoveRegistration.Click
+
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cClearLicenseCommand = CType(cmdh.GetCommand(cClearLicenseCommand.cCOMMAND_NAME), cClearLicenseCommand)
+            cmd.Invoke()
+            Me.UpdateLicenseControls()
+
+        End Sub
 
     End Class
 

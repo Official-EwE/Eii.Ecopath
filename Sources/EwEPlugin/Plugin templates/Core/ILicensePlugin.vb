@@ -33,13 +33,6 @@ Public Interface ILicensePlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Plug-in point called when the EwE UI is ready for plug-in validation.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Sub Validate()
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Plug-in point to obtain the expiry date.
     ''' </summary>
     ''' <param name="dt"></param>

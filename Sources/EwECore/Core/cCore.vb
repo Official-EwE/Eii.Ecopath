@@ -41,6 +41,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports EwELicense
 
 #End Region ' Imports
 
@@ -191,6 +192,8 @@ Public Class cCore
 
     Private m_SampleManager As Samples.cEcopathSampleManager = Nothing
     Private m_ArenaManager As cEcosimArenaManager = Nothing
+
+    Private m_license As cLicense = Nothing
 
 #End Region ' Generic variables
 
@@ -2740,7 +2743,7 @@ Public Class cCore
                             If conn.IsConfigured Then
                                 Dim l As cEcospaceLayer = bm.Layer(adt.VarName, conn.iLayer)
                                 If (l IsNot Nothing) Then
-                                    fields(l.Name & "_" & conn.iLayer) = conn.Dataset.CustomName
+                                    fields("Layer " & conn.iLayer & " " & l.Name) = conn.Dataset.CustomName
                                 End If
                             End If
                         Next
@@ -2791,14 +2794,14 @@ Public Class cCore
         Dim sb As New StringBuilder()
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
-        sb.AppendLine(";software")
+        sb.AppendLine(cStringUtils.ToCSVField("<HEADER software/>"))
         Dim dt As Dictionary(Of String, String) = HeaderInfo(eAutosaveTypes.NotSet, iStartYear)
         For Each field As String In dt.Keys
             sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
         Next
 
         If (savetype > eAutosaveTypes.NotSet) And (sm.HasEcopathLoaded) Then
-            sb.AppendLine(";ecopath")
+            sb.AppendLine(cStringUtils.ToCSVField("<HEADER ecopath/>"))
             dt = HeaderInfo(eAutosaveTypes.Ecopath, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
@@ -2806,7 +2809,7 @@ Public Class cCore
         End If
 
         If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
-            sb.AppendLine(";ecosim")
+            sb.AppendLine(cStringUtils.ToCSVField("<HEADER ecosim/>"))
             dt = HeaderInfo(eAutosaveTypes.Ecosim, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
@@ -2814,7 +2817,7 @@ Public Class cCore
         End If
 
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
-            sb.AppendLine(";ecospace")
+            sb.AppendLine(cStringUtils.ToCSVField("<HEADER ecospace/>"))
             dt = HeaderInfo(eAutosaveTypes.Ecospace, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
@@ -2822,7 +2825,7 @@ Public Class cCore
         End If
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
-            sb.AppendLine(";ecotracer")
+            sb.AppendLine(cStringUtils.ToCSVField("<HEADER ecotracer/>"))
             dt = HeaderInfo(eAutosaveTypes.Ecotracer, iStartYear)
             For Each field As String In dt.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(dt(field)))
@@ -2830,13 +2833,13 @@ Public Class cCore
         End If
 
         If (Me.ExtraFileHeaderFields.Count > 0) Then
-            sb.AppendLine(";extra")
+            sb.AppendLine(cStringUtils.ToCSVField("<HEADER extra/>"))
             For Each field As String In Me.ExtraFileHeaderFields.Keys
                 sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(ExtraFileHeaderFields(field)))
             Next
         End If
 
-        sb.AppendLine(";end_header")
+        sb.AppendLine(cStringUtils.ToCSVField("<HEADER end/>"))
 
         Return sb.ToString
 
@@ -15209,16 +15212,17 @@ Public Class cCore
 
 #End Region ' Samples
 
-#Region "Game manager/interface"
+#Region " Game manager/interface "
 
     Public ReadOnly Property GameManager() As cGameServerInterface
         Get
             Return m_gameManager
         End Get
     End Property
-#End Region
 
-#Region "Eco Functions"
+#End Region ' Game manager/interface
+
+#Region " Eco Functions "
 
     Private Sub initEcoFunctions()
         Try
@@ -15238,7 +15242,21 @@ Public Class cCore
         End Get
     End Property
 
-#End Region
+#End Region ' Eco Functions
+
+#Region " License "
+
+    <CLSCompliant(False)>
+    Public ReadOnly Property License As cLicense
+        Get
+            If (Me.m_license Is Nothing) Then
+                Me.m_license = New cLicense()
+            End If
+            Return Me.m_license
+        End Get
+    End Property
+
+#End Region ' License
 
 #Region " Deprecated "
 

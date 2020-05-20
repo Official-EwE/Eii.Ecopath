@@ -78,6 +78,7 @@ Partial Class frmSplash
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmSplash"
         Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.TopMost = True
         Me.TransparencyKey = System.Drawing.Color.Transparent
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).EndInit()

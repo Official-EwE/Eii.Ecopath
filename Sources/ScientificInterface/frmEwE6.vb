@@ -303,6 +303,11 @@ Public Class frmEwE6
 
     Private WithEvents m_cmdEIIXMLExport As cCommand = Nothing
 
+    ' --- Pro --
+
+    Private WithEvents m_cmdClearLicense As cClearLicenseCommand = Nothing
+    Private WithEvents m_cmdEnterLicense As cEnterLicenseCommand = Nothing
+
 #End Region ' Commands
 
     ''' <summary>
@@ -744,6 +749,13 @@ Public Class frmEwE6
         Me.m_cmdEIIXMLExport = New cCommand(cmdh, "EIIXMLExport")
         Me.m_cmdEIIXMLExport.AddControl(Me.m_tsmiEIIXMLExport)
 
+        ' --- Pro ---
+
+        Me.m_cmdClearLicense = New cClearLicenseCommand(cmdh)
+
+        Me.m_cmdEnterLicense = New cEnterLicenseCommand(cmdh)
+        Me.m_cmdEnterLicense.AddControl(Me.m_tsmiHelpRegister)
+
         ' ---
 
         Me.m_tslbReadOnly.Image = SharedResources.ProtectFormHS
@@ -807,7 +819,6 @@ Public Class frmEwE6
         Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 
         Me.UIContext = New cUIContext(core, sg, pm, cmdh, Me, fps, help, so)
-        Me.UIContext.RegisteredOwner = ""
 
         ' Configure state monitor
         Me.Core.StateMonitor.SyncObject = Me
@@ -915,9 +926,6 @@ Public Class frmEwE6
 #If BETA = 1 Then
         Me.CheckBetaExpired()
 #End If
-        If (Me.m_pluginManager IsNot Nothing) Then
-            Me.m_pluginManager.ValidateLifespan()
-        End If
 
         ' Auto-launch plugins
         Me.AutolaunchPlugins()
@@ -1548,7 +1556,7 @@ Public Class frmEwE6
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
-        Dim strRegistration As String = EwERegistation(Me.UIContext)
+        Dim strRegistration As String = EwE6ApplicationFramework.EwERegistration(Me.Core)
         If (Not String.IsNullOrWhiteSpace(strRegistration)) Then
             strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, strCaption, strRegistration)
         End If
@@ -4907,6 +4915,27 @@ Public Class frmEwE6
     End Sub
 
 #End Region ' Plug-in commands
+
+#Region " License commands "
+
+    Private Sub OnEnterLicense(ByVal cmd As cCommand) Handles m_cmdEnterLicense.OnInvoke
+        Dim l As New cWebLinks(Me.Core)
+        If Me.Core.License.ShowRegistrationForm(Me, Me.Text, l.GetURL(cWebLinks.eLinkType.GoPro), SharedResources.Ecopath_install) = DialogResult.OK Then
+            Me.UpdateModelControls()
+        End If
+    End Sub
+
+    Private Sub OnClearLicense(ByVal cmd As cCommand) Handles m_cmdClearLicense.OnInvoke
+        If (Not Me.Core.License.IsRegistered) Then Return
+        Me.Core.License.Unregister()
+        Me.UpdateModelControls()
+    End Sub
+
+    Private Sub OnClearLicenseUpdate(ByVal cmd As cCommand) Handles m_cmdClearLicense.OnUpdate
+        cmd.Enabled = Me.Core.License.IsRegistered()
+    End Sub
+
+#End Region ' License commands
 
 #End Region ' Command handlers 
 

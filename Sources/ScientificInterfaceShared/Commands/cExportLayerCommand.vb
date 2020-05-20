@@ -20,10 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Definitions
 Imports EwECore
 
 #End Region ' Imports
