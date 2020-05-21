@@ -1,11 +1,17 @@
-name,email,entity,date_purchased,months
-Evaluation,ewedevteam@gmail.com,,,4
-Marta Coll,marta.coll@csic.es,PELWEB,2020-1-1,12
-Shawn Booth,shawnrgbooth@gmail.com,,2019-5-3,12
-Maciej Tomczak,maciej.tomczak@su.se,,2019-4-29,12
-Beth Fulton,beth.fulton@csiro.au,lic1,2019-9-17,12
-Beth Fulton,beth.fulton@csiro.au,lic2,2019-9-17,12
-Dr Yun-Ho Kang,ykang001@gist.ac.kr,,10-9-2019,12
-Telmo Morato,2019-9-24,36
-Ching Villaneuava,
-Riikka Punitlla,
+name,email,entity,date_purchased,months,type
+Evaluation,ewedevteam@gmail.com,,,4,
+Shawn Booth,shawnrgbooth@gmail.com,,03/05/2019,12,pers
+Maciej Tomczak,maciej.tomczak@su.se,,29/04/2019,12,pers
+Beth Fulton,beth.fulton@csiro.au,lic1,17/09/2019,12,team
+Beth Fulton,beth.fulton@csiro.au,lic2,17/09/2019,12,team
+Dr Yun-Ho Kang,ykang001@gist.ac.kr,,10/09/2019,12,pers
+Telmo Morato,t.morato@gmail.com,,24/09/2019,36,pers
+Ching Villaneuava,,,,,
+Marta Coll,marta.coll@csic.es,PELWEB,01/01/2020,12,pers
+Riikka Punitlla,Riikka.Puntila-Dodd@ymparisto.fi,lic1,21/01/2020,12,pers
+Riikka Punitlla,Riikka.Puntila-Dodd@ymparisto.fi,lic2,21/01/2020,12,pers
+Riikka Punitlla,Riikka.Puntila-Dodd@ymparisto.fi,lic3,21/01/2020,12,pers
+Maciej Tomczak,maciej.tomczak@su.se,,26/03/2020,12,team
+Gemma Singleton,Gemma.Singleton@jncc.gov.uk,JNCC,30/03/2020,12,pers
+Villy Christensen,,,Invoiced,,pers
+Scott Toews,stoews@hemmera.com,Hemmera,Invoiced,1,team
