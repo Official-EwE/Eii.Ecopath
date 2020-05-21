@@ -151,7 +151,7 @@
     <value>Left, Right</value>
   </data>
   <data name="m_lblEwE.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 20.25pt</value>
+    <value>Microsoft Sans Serif, 15.75pt, style=Bold</value>
   </data>
   <data name="m_lblEwE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
