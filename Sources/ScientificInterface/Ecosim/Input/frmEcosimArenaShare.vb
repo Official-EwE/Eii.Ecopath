@@ -19,4 +19,6 @@
 
 Public Class frmEcosimArenaShare
 
+    ' Nothing happening yet, but this screen may require some specific controls
+
 End Class
