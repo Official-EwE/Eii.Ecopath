@@ -48,6 +48,8 @@ Namespace Ecosim
             Me.m_manager = Me.Core.EcosimArenaManager
             Dim n As Integer = If(ShowPredPreyHeader, 2, 0)
 
+            ' ToDo: globalize this
+
             Me.Redim(1 + Me.m_manager.NumArenas, 1 + n + Me.Core.nGroups)
             If (ShowPredPreyHeader) Then
                 Me(0, 0) = New EwEColumnHeaderCell("")
@@ -67,9 +69,12 @@ Namespace Ecosim
                     Me(k, 2) = New EwERowHeaderCell(fmt.ToString(Core.EcoPathGroupInputs(arena.Pred)))
                 End If
                 For j As Integer = 1 To Me.Core.nLivingGroups
-                    Me(k, n + j) = New PropertyCell(Me.PropertyManager, arena, eVarNameFlags.EcosimArenaShare, Core.EcoPathGroupInputs(j))
+                    Dim cell As New PropertyCell(Me.PropertyManager, arena, eVarNameFlags.EcosimArenaShare, Core.EcoPathGroupInputs(j))
+                    cell.SuppressZero = True
+                    Me(k, n + j) = cell
                 Next
             Next
+
         End Sub
 
         Protected Overrides Sub FillData()

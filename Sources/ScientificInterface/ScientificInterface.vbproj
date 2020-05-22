@@ -1054,6 +1054,9 @@
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\frmEcosimArenaShare.resx">
+      <DependentUpon>frmEcosimArenaShare.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.resx">
       <DependentUpon>frmEcosimFunctionalResponse.vb</DependentUpon>
     </EmbeddedResource>

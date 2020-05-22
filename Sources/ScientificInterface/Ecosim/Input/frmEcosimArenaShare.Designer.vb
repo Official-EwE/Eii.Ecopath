@@ -41,9 +41,15 @@ Partial Class frmEcosimArenaShare
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimArenaShare))
+        Me.SuspendLayout()
+        '
+        'frmEcosimArenaShare
+        '
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
-        Me.Text = "frmEcosimArenaShare"
+        Me.Name = "frmEcosimArenaShare"
+        Me.ResumeLayout(False)
+
     End Sub
 End Class
