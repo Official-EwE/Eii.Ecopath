@@ -4464,12 +4464,10 @@ Namespace DataSources
 
         Private Function LoadEcosimArenas(iScenarioID As Integer) As Boolean
 
-            Return True
-
-#Region " ToDo "
-#If 0 Then
-
 #Region " EwE5 code "
+#If 0 Then
+            Return True
+#Else
             'Sql = "SELECT * from [Ecosim Arena] where modelName='" + lastModel + "' and Scenario='" + SimScenario + "'"
             'Sql = Sql + " ORDER BY [Ecosim Arena].ArenaNo"
             'Set g_Recordset = CCG.ReadOnlyRecords(SQL)
@@ -4502,6 +4500,7 @@ Namespace DataSources
             Dim iPrey As Integer = 0
             Dim iPredShared As Integer = 0
             Dim sPeatArena As Single = 0
+            Dim iArenaNo As Integer = 0
             Dim bSucces As Boolean = True
             Dim ii As Integer = 0
 
@@ -4509,10 +4508,10 @@ Namespace DataSources
             ecosimDS.PeatArenaSetFromDataBase = False
 
             Try
-                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
                 Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0} AND PeatArena > 0)", iScenarioID)))
 
                 If (n > 0) Then
+                    reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0}) ORDER BY Sequence", iScenarioID))
                     ecosimDS.NlinksSet = n
                     ReDim ecosimDS.IlinkSet(n)
                     ReDim ecosimDS.JlinkSet(n)
@@ -4524,24 +4523,24 @@ Namespace DataSources
                         iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
                         iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
                         sPeatArena = CSng(reader("PeatArena"))
+                        iArenaNo = CInt(Me.m_db.ReadSafe(reader, "Sequence", 0))
 
-                        If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0) Then
+                        If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0 And iArenaNo > 0) Then
                             ii += 1
                             ecosimDS.IlinkSet(ii) = iPrey
                             ecosimDS.JlinkSet(ii) = iPred
                             ecosimDS.KlinkSet(ii) = iPredShared
-                            ecosimDS.PeatArena(ii, iPredShared) = sPeatArena
-                            'End If
+                            ecosimDS.PeatArena(iArenaNo, iPredShared) = sPeatArena
                         End If
 
                     End While
+                    Me.m_db.ReleaseReader(reader)
+                    reader = Nothing
 
                     Debug.Assert(ii = n)
                     ecosimDS.PeatArenaSetFromDataBase = True
                 End If
 
-                Me.m_db.ReleaseReader(reader)
-                reader = Nothing
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
@@ -4550,7 +4549,6 @@ Namespace DataSources
 
             Return bSucces
 #End If
-#End Region
 
         End Function
 
@@ -4936,11 +4934,9 @@ Namespace DataSources
 
         Private Function SaveEcosimArenas(idm As cIDMappings) As Boolean
 
-            Return True
-
-#Region " ToDo "
 #If 0 Then
-
+            Return True
+#Else
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = 0
@@ -4982,6 +4978,7 @@ Namespace DataSources
                         If (ecosimDS.PeatArena(iArena, iPredShared) > 0) Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
+                            drow("Sequence") = ecosimDS.ArenaNo(ecosimDS.IlinkSet(i), ecosimDS.JlinkSet(i))
                             drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
                             drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
                             drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
@@ -4999,7 +4996,6 @@ Namespace DataSources
 
             Return bSucces
 #End If
-#End Region
 
         End Function
 
