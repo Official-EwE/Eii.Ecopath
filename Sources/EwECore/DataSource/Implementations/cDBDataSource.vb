@@ -4523,7 +4523,7 @@ Namespace DataSources
                         iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
                         iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
                         sPeatArena = CSng(reader("PeatArena"))
-                        iArenaNo = CInt(Me.m_db.ReadSafe(reader, "Sequence", 0))
+                        iArenaNo = CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
 
                         If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0 And iArenaNo > 0) Then
                             ii += 1
