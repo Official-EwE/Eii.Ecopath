@@ -247,6 +247,7 @@
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\Arenas\cEcosimAreaViewData.vb" />
     <Compile Include="Ecosim\Input\Catchability\frmCatchability.Designer.vb">
       <DependentUpon>frmCatchability.vb</DependentUpon>
     </Compile>
@@ -265,10 +266,10 @@
     <Compile Include="Ecosim\Input\EggProduction\gridApplyEP.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\frmEcosimArenaShare.Designer.vb">
+    <Compile Include="Ecosim\Input\Arenas\frmEcosimArenaShare.Designer.vb">
       <DependentUpon>frmEcosimArenaShare.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\frmEcosimArenaShare.vb">
+    <Compile Include="Ecosim\Input\Arenas\frmEcosimArenaShare.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.Designer.vb">
@@ -280,7 +281,7 @@
     <Compile Include="Ecosim\Input\FunctionalResponses\gridApplyFunctionalResponses.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\gridEcosimArenaShare.vb">
+    <Compile Include="Ecosim\Input\Arenas\gridEcosimArenaShare.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.Designer.vb">
@@ -1054,7 +1055,7 @@
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\frmEcosimArenaShare.resx">
+    <EmbeddedResource Include="Ecosim\Input\Arenas\frmEcosimArenaShare.resx">
       <DependentUpon>frmEcosimArenaShare.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.resx">

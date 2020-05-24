@@ -131,6 +131,30 @@ Public Class cEcosimArenaManager
         End Get
     End Property
 
+    ' Passthrough
+    Public ReadOnly Property IArena(i As Integer) As Integer
+        Get
+            Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Return simdata.Iarena(i)
+        End Get
+    End Property
+
+    ' Passthrough
+    Public ReadOnly Property JArena(i As Integer) As Integer
+        Get
+            Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Return simdata.Jarena(i)
+        End Get
+    End Property
+
+    ' Passthrough
+    Public ReadOnly Property ArenaNo(i As Integer, j As Integer) As Integer
+        Get
+            Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Return simdata.ArenaNo(i, j)
+        End Get
+    End Property
+
 #End Region ' Public access
 
 End Class

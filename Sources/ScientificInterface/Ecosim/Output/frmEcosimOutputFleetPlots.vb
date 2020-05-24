@@ -463,7 +463,8 @@ Namespace Ecosim
                                          ByVal aiGroupIndex() As Integer,
                                          ByVal asValues() As Single)
 
-            l.Populate(aiGroupIndex)
+            l.VisibleGroups = aiGroupIndex
+            l.Populate()
             For i As Integer = 0 To aiGroupIndex.Count - 1
                 l.SortValue(aiGroupIndex(i)) = asValues(i)
             Next

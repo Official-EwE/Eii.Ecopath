@@ -223,7 +223,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_GROUPS, "ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimGroupInput), eNodeImages.Input, nodeInput, "Group info.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_VULNERABILITES, "ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(frmVulnerabilities), eNodeImages.Input, nodeInput, "Vulnerabilities flow control.htm")
         ' ToDo: globalize this!!
-        Me.m_nodecontroller.Add("Shared arenas", "ndSharedArenas", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimArenaShare), eNodeImages.Input, nodeInput, "")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_ARENA, "ndSharedArenas", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimArenaShare), eNodeImages.Input, nodeInput, "")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_TIMESERIES, "ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(frmTimeSeries), eNodeImages.Input, nodeInput, "Time series.htm")
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_MEDIATION, "ndMediation", eCoreExecutionState.EcosimLoaded, GetType(frmMediationFunction), eNodeImages.Input, nodeInput, "Forcing function.htm")

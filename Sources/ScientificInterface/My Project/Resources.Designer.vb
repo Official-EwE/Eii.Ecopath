@@ -500,6 +500,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to A{0}.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_APPLYARENA_HEADER() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_APPLYARENA_HEADER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to F{0}.
         '''</summary>
         Public ReadOnly Property ECOSIM_APPLYFF_FFTYPE_FORCING() As String
@@ -1833,6 +1842,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Diet proportion of {0} in each foraging arena.
+        '''</summary>
+        Public ReadOnly Property HEADER_ECOSIM_ARENA_PREY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSIM_ARENA_PREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fish everywhere.
         '''</summary>
         Public ReadOnly Property HEADER_FISH_EVERYWHERE() As String
@@ -2603,6 +2621,15 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD() As String
             Get
                 Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Shared arenas.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_ARENA() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_ARENA", resourceCulture)
             End Get
         End Property
         

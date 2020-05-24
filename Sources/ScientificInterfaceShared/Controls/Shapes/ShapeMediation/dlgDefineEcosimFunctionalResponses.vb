@@ -87,7 +87,9 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             Me.m_bInUpdate = True
 
             Me.m_lbxGroups.Attach(Me.m_uic)
-            Me.m_lbxGroups.Populate(Me.GetGroupList())
+            Me.m_lbxGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.Manual
+            Me.m_lbxGroups.VisibleGroups = Me.GetGroupList()
+            Me.m_lbxGroups.Populate()
 
             Me.LoadDrivers()
 

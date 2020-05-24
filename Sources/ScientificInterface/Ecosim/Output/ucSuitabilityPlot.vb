@@ -162,7 +162,9 @@ Public Class ucSuitabilityPlot
             group = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
             If group.IsConsumer Then liGroups.Add(group.Index)
         Next
-        Me.m_lbGroups.Populate(liGroups.ToArray())
+        Me.m_lbGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.Manual
+        Me.m_lbGroups.VisibleGroups = liGroups.ToArray()
+        Me.m_lbGroups.Populate()
         Me.m_lbGroups.SelectedIndex = 0
 
     End Sub
