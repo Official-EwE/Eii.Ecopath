@@ -272,6 +272,7 @@ Namespace Controls
         Private m_clrAllGroupsItem As Color = Color.Transparent
         Private m_groupdisplaystyle As eGroupDisplayStyleTypes = eGroupDisplayStyleTypes.DisplayAlways
         Private m_grouptrackingtype As eGroupTrackingType = eGroupTrackingType.AllGroups
+        Private m_visiblegroups As Integer()
 
 #End Region ' Privates
 
@@ -478,6 +479,7 @@ Namespace Controls
             End Get
             Set(ByVal value As String)
                 Me.m_strAllGroupsItem = value
+                Me.Populate()
             End Set
         End Property
 
@@ -486,16 +488,17 @@ Namespace Controls
         ''' Get/set the colour for the 'all groups' item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("The colour for the 'all groups' item"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
-      Public Property AllGroupsItemColor() As Color
+        <Browsable(True),
+         Description("The colour for the 'all groups' item"),
+         Category("EwE6"),
+         DefaultValue(True)>
+        Public Property AllGroupsItemColor() As Color
             Get
                 Return Me.m_clrAllGroupsItem
             End Get
             Set(ByVal value As Color)
                 Me.m_clrAllGroupsItem = value
+                Me.Populate()
             End Set
         End Property
 
@@ -517,6 +520,16 @@ Namespace Controls
                     Me.m_grouptrackingtype = value
                     Me.Populate()
                 End If
+            End Set
+        End Property
+
+        Public Property VisibleGroups As Integer()
+            Get
+                Return Me.m_visiblegroups
+            End Get
+            Set(value As Integer())
+                Me.m_visiblegroups = value
+                Me.Populate()
             End Set
         End Property
 
@@ -731,11 +744,8 @@ Namespace Controls
         ''' <summary>
         ''' Populate the listbox
         ''' </summary>
-        ''' <param name="aiGroups">
-        ''' An optional list of group indexes to populate the listbox with.
-        ''' </param>
         ''' -------------------------------------------------------------------
-        Public Sub Populate(Optional ByVal aiGroups() As Integer = Nothing)
+        Public Sub Populate()
 
             Dim bIncludeGroup As Boolean = False
             Dim iGroupStart As Integer = 1
@@ -743,9 +753,6 @@ Namespace Controls
             Dim bSelected As Boolean = (Me.SelectedIndex > -1)
 
             If (Not Me.IsInitialized()) Then Return
-
-            ' Stop automatic tracking if a manual list is provided
-            If aiGroups IsNot Nothing Then Me.m_grouptrackingtype = eGroupTrackingType.Manual
 
             ' ToDo_JS: Preserve group selection
             Me.SuspendLayout()
@@ -762,7 +769,7 @@ Namespace Controls
             ' Determine #groups to show
             Select Case Me.m_grouptrackingtype
 
-                Case eGroupTrackingType.Manual, _
+                Case eGroupTrackingType.Manual,
                      eGroupTrackingType.AllGroups
                     iGroupStart = 1 : iGroupEnd = Me.m_uic.Core.nGroups
 
@@ -770,7 +777,7 @@ Namespace Controls
                     iGroupStart = 1 : iGroupEnd = Me.m_uic.Core.nLivingGroups
 
                 Case eGroupTrackingType.DetritusGroups
-                    iGroupEnd = Me.m_uic.Core.nLivingGroups + 1 : iGroupEnd = Me.m_uic.Core.nGroups
+                    iGroupStart = Me.m_uic.Core.nLivingGroups + 1 : iGroupEnd = Me.m_uic.Core.nGroups
 
                 Case Else
                     Debug.Assert(False, "inclusion type not supported")
@@ -781,8 +788,8 @@ Namespace Controls
             For i As Integer = iGroupStart To iGroupEnd
 
                 ' Hard list given?
-                If (aiGroups IsNot Nothing) Then
-                    bIncludeGroup = (Array.IndexOf(aiGroups, i) >= 0)
+                If (Me.VisibleGroups IsNot Nothing) And (Me.GroupListTracking = eGroupTrackingType.Manual) Then
+                    bIncludeGroup = (Array.IndexOf(Me.VisibleGroups, i) >= 0)
                 Else
                     Select Case Me.m_groupdisplaystyle
                         Case eGroupDisplayStyleTypes.DisplayAlways
@@ -850,8 +857,15 @@ Namespace Controls
                 If (gi.Source IsNot Nothing) Then
                     ' #Yes: use dimmed colours
                     clrLegend = Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, gi.Source.Index)
+
+                    Dim bShowGroup As Boolean = (gi.SortValue >= Me.SortThreshold)
+                    Select Case Me.m_groupdisplaystyle
+                        Case eGroupDisplayStyleTypes.DisplayAsHidden
+                            bShowGroup = bShowGroup And Me.m_uic.StyleGuide.GroupVisible(gi.Source.Index)
+                    End Select
+
                     ' Allowed to display and colour group?
-                    If Me.m_uic.StyleGuide.GroupVisible(gi.Source.Index) And gi.SortValue >= Me.SortThreshold Then
+                    If bShowGroup Then
                         ' #Yes: display group in full color
                         clrText = e.ForeColor
                     Else

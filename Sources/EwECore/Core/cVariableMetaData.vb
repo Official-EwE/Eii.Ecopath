@@ -337,6 +337,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.PredEffectFeedingTime) = New cVariableMetaData(0, 1, ge, le, 0)
         Me.Metadata(eVarNameFlags.DenDepCatchability) = New cVariableMetaData(1, Single.MaxValue, ge, le, 1) ' QmQo
         Me.Metadata(eVarNameFlags.QBMaxQBio) = New cVariableMetaData(1, Single.MaxValue, ge, lt, 1000)
+        Me.Metadata(eVarNameFlags.EcosimArenaShare) = New cVariableMetaData(0, 1, ge, le, 1)
 
         ' groups out
         Me.Metadata(eVarNameFlags.IsPred) = [Default](eValueTypes.Bool)

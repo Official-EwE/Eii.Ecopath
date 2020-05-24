@@ -2151,4 +2151,15 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="MODE_READ_ONLY" xml:space="preserve">
     <value>read ony</value>
   </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_ARENA" xml:space="preserve">
+    <value>Shared arenas</value>
+  </data>
+  <data name="HEADER_ECOSIM_ARENA_PREY" xml:space="preserve">
+    <value>Diet proportion of {0} in each foraging arena</value>
+    <comment>{0}=prey</comment>
+  </data>
+  <data name="ECOSIM_APPLYARENA_HEADER" xml:space="preserve">
+    <value>A{0}</value>
+    <comment>{0}=arena number</comment>
+  </data>
 </root>
