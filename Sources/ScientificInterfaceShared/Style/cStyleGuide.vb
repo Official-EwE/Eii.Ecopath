@@ -337,6 +337,7 @@ Namespace Style
         ''' Public enumerator stating the visual feedback required for rendering a value.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Flags>
         Public Enum eStyleFlags As Integer
 
             '-----------------------------------------------------------------
@@ -344,38 +345,41 @@ Namespace Style
             '-----------------------------------------------------------------
 
             ''' <summary>All well, value is OK and does not require any kind of formatting.</summary>
-            OK = CInt(eStatusFlags.OK)
+            OK = eStatusFlags.OK
 
             ''' <summary>Flag indicating that Data Validation Failed for a value.</summary>
-            FailedValidation = CInt(eStatusFlags.FailedValidation)
+            FailedValidation = eStatusFlags.FailedValidation
 
             ''' <summary>Flag indicating that a value was Computed, not entered.</summary>
-            ValueComputed = CInt(eStatusFlags.ValueComputed)
+            ValueComputed = eStatusFlags.ValueComputed
 
             ''' <summary>Flag indicating that a value was Computed to an Invalid Result.</summary>
-            InvalidModelResult = CInt(eStatusFlags.InvalidModelResult)
+            InvalidModelResult = eStatusFlags.InvalidModelResult
 
             ''' <summary>Flag indicating that a value is Not Editable, e.g. should not
             ''' be modified by user input.</summary>
             ''' <remarks>This flag is also known as ReadOnly or BlockedForInput (EwE5)</remarks>
-            NotEditable = CInt(eStatusFlags.NotEditable)
+            NotEditable = eStatusFlags.NotEditable
 
             ''' <summary>Flag indicating that an Unknown Error has been encountered regarding this value.</summary>
-            ErrorEncountered = CInt(eStatusFlags.ErrorEncountered)
+            ErrorEncountered = eStatusFlags.ErrorEncountered
 
             ''' <summary>Flag indicating that a value is a Missing Parameter for one of the EwE models.</summary>
-            MissingParameter = CInt(eStatusFlags.MissingParameter)
+            MissingParameter = eStatusFlags.MissingParameter
 
             ''' <summary>
             ''' Flag indicating that the core deemed a value as important for whatever reason. The
             ''' core is not able to communicate such reasons, and highlighting is therefore an
             ''' ad-hoc process on a per-case basis.
             ''' </summary>
-            Checked = CInt(eStatusFlags.CoreHighlight)
+            Checked = eStatusFlags.CoreHighlight
 
             ''' <summary>Flag indicating that a value is Null; its value has not been set or has been
             ''' set to the <see cref="cCore.NULL_VALUE">Core NULL value</see>.</summary>
-            Null = CInt(eStatusFlags.Null)
+            Null = eStatusFlags.Null
+
+            ''' <summary>Flag indicating that a value is stored with EwE model data.</summary>
+            Stored = eStatusFlags.Stored
 
             ''' <summary>Bit-pattern mask to separate core statuses from GUI statuses.</summary>
             CoreStatusFlagsMask = 4095

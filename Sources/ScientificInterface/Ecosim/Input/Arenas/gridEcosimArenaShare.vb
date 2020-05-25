@@ -54,6 +54,8 @@ Namespace Ecosim
             End If
             Me.Redim(n, n)
 
+            Me.FixedColumns = 1
+
         End Sub
 
         Protected Overrides Sub FillData()
@@ -89,6 +91,8 @@ Namespace Ecosim
 
                     ' Somehow property cells cause a kaboom. Need to check
                     Dim cell As New PropertyCell(Me.PropertyManager, arena, eVarNameFlags.EcosimArenaShare, pred)
+                    Debug.Assert(cell.DataModel IsNot Nothing)
+                    Console.WriteLine(cell.DisplayText)
                     cell.SuppressZero = True
                     Me(row, col) = cell
                 Next
