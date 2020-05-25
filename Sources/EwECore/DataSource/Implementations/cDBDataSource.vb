@@ -4971,21 +4971,15 @@ Namespace DataSources
                     Dim iPred As Integer = ecosimDS.JlinkSet(i)
                     Dim iPredShared As Integer = ecosimDS.KlinkSet(i)
 
-                    Console.WriteLine("Pred {0:d2} Prey {0:d2}", iPred, iPrey)
-
-                    If (iPrey > 0) And (iPred > 0) And (iPredShared > 0) Then
-                        Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
-                        If (ecosimDS.PeatArena(iArena, iPredShared) > 0) Then
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("Sequence") = ecosimDS.ArenaNo(ecosimDS.IlinkSet(i), ecosimDS.JlinkSet(i))
-                            drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
-                            drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
-                            drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
-                            drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
-                            writer.AddRow(drow)
-                        End If
-                    End If
+                    Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
+                    drow = writer.NewRow()
+                    drow("ScenarioID") = iScenarioID
+                    drow("Sequence") = ecosimDS.ArenaNo(ecosimDS.IlinkSet(i), ecosimDS.JlinkSet(i))
+                    drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
+                    drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
+                    drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
+                    drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
+                    writer.AddRow(drow)
                 Next
 
                 Me.m_db.ReleaseWriter(writer, True)
