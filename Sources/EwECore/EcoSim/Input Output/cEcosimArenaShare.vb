@@ -36,19 +36,18 @@ Public Class cEcosimArenaShare
 
         Me.m_dataType = eDataTypes.EcosimArenaShare
         Me.m_coreComponent = eCoreComponentType.EcoSim
+        Me.Index = iArena
 
         Me.AllowValidation = False
-
-        Me.Index = iArena
 
         ' There are no arena objects in EwE. But we can fake a very likely unique ID
         Me.Prey = simdata.ilink(iArena)
         Me.Pred = simdata.jlink(iArena)
         Me.DBID = simdata.GroupDBID(Me.Prey) * 10000 + simdata.GroupDBID(Me.Pred)
-        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'arrayed values
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimArenaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -59,24 +58,6 @@ Public Class cEcosimArenaShare
         Get
             Return Me.Index
         End Get
-    End Property
-
-    Public Property ArenaShare(iPred As Integer) As Single
-        Get
-            Return CSng(Me.GetVariable(eVarNameFlags.EcosimArenaShare, iPred))
-        End Get
-        Set(value As Single)
-            Me.SetVariable(eVarNameFlags.EcosimArenaShare, value, iPred)
-        End Set
-    End Property
-
-    Public Property ArenaShareStatus(iPred As Integer) As eStatusFlags
-        Get
-            Return Me.GetStatus(eVarNameFlags.EcosimArenaShare, iPred)
-        End Get
-        Set(value As eStatusFlags)
-            Me.SetStatus(eVarNameFlags.EcosimArenaShare, value, iPred)
-        End Set
     End Property
 
     Public ReadOnly Property Prey As Integer
@@ -95,5 +76,31 @@ Public Class cEcosimArenaShare
             Return n
         End Get
     End Property
+
+#Region " Variable via dot '.' operator "
+
+    Public Property ArenaShare(iPred As Integer) As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimArenaShare, iPred))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimArenaShare, value, iPred)
+        End Set
+    End Property
+
+#End Region ' Variable via dot '.' operator
+
+#Region " Status via dot '.' operator "
+
+    Public Property ArenaShareStatus(iPred As Integer) As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.EcosimArenaShare, iPred)
+        End Get
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcosimArenaShare, value, iPred)
+        End Set
+    End Property
+
+#End Region ' Status via dot '.' operator
 
 End Class
