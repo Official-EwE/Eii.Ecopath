@@ -244,7 +244,7 @@
     <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeSplitGroups.vb" />
     <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathSplitGroup.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimArenaManager.vb" />
-    <Compile Include="EcoSim\Input Output\cEcosimArenaShare.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimArena.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimEnviroInputData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />

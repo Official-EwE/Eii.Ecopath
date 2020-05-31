@@ -7159,6 +7159,7 @@ Public Class cCore
 
         Me.m_EcoSim.Clear()
         Me.m_MonteCarlo.Clear()
+        Me.m_ArenaManager.Clear()
 
         Me.ClearIOList(Me.m_EcoSimGroups)
         Me.ClearIOList(Me.m_EcoSimGroupOutputs)

@@ -101,10 +101,10 @@ Public Class cEIIXMLDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, _
-                         ByVal core As cCore, _
-                         Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
-                         Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType _
+    Public Function Open(strName As String,
+                         core As cCore,
+                         Optional datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet,
+                         Optional bReadOnly As Boolean = False) As eDatasourceAccessType _
                      Implements DataSources.IEwEDataSource.Open
 
         If (String.IsNullOrWhiteSpace(strName)) Then Return eDatasourceAccessType.Failed_UnknownType
@@ -138,7 +138,7 @@ Public Class cEIIXMLDataSource
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
     ''' -------------------------------------------------------------------
-    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
+    Public Function Create(strName As String, strModelName As String, core As cCore) As eDatasourceAccessType _
              Implements IEwEDataSource.Create
         ' Cannot write EII files (yet)
         Return eDatasourceAccessType.Failed_Unknown
@@ -168,7 +168,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <param name="cc">The <see cref="eCoreComponentType">core component</see> that changed.</param>
     ''' -------------------------------------------------------------------
-    Friend Sub SetChanged(ByVal cc As eCoreComponentType) _
+    Friend Sub SetChanged(cc As eCoreComponentType) _
             Implements IEwEDataSource.SetChanged
         ' Take no action
     End Sub
@@ -204,11 +204,11 @@ Public Class cEIIXMLDataSource
         Return Me.m_strFilename
     End Function
 
-    Private Overloads Function CopyEcopathTo(ByVal ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
+    Private Overloads Function CopyEcopathTo(ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
         Return False
     End Function
 
-    Private Overloads Function CopyEcosimTo(ByVal ds As DataSources.IEcosimDatasource) As Boolean Implements DataSources.IEcosimDatasource.CopyTo
+    Private Overloads Function CopyEcosimTo(ds As DataSources.IEcosimDatasource) As Boolean Implements DataSources.IEcosimDatasource.CopyTo
         Return False
     End Function
 
@@ -220,7 +220,7 @@ Public Class cEIIXMLDataSource
         Return True
     End Function
 
-    Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean Implements DataSources.IEwEDataSource.EndTransaction
+    Public Function EndTransaction(bCommit As Boolean) As Boolean Implements DataSources.IEwEDataSource.EndTransaction
         Return True
     End Function
 
@@ -1042,7 +1042,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iScenarioID">Database ID of the scenario to load.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function LoadEcosimScenario(ByVal iScenarioID As Integer) As Boolean _
+    Friend Function LoadEcosimScenario(iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.LoadEcosimScenario
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -1140,7 +1140,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcosimGroups(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcosimGroups(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -1213,7 +1213,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcosimGroupYear(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcosimGroupYear(iScenarioID As Integer) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
@@ -1243,7 +1243,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcosimFleets(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcosimFleets(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -1313,7 +1313,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcosimFleetYear(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcosimFleetYear(iScenarioID As Integer) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
@@ -1344,7 +1344,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcosimQuota(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcosimQuota(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -1481,6 +1481,7 @@ Public Class cEIIXMLDataSource
         End Try
         dt.Clear()
 
+        bSucces = bSucces And Me.LoadEcosimArenas()
         bSucces = bSucces And Me.LoadEcosimVulnerabilities()
         bSucces = bSucces And Me.LoadPredPreyInteractions()
         bSucces = bSucces And Me.LoadLandingInteractions()
@@ -1494,10 +1495,10 @@ Public Class cEIIXMLDataSource
 
 #Region " Shape load helpers "
 
-    Private Function LoadEggShape(ByVal dt As DataTable,
-                                  ByVal iShapeID As Integer,
-                                  ByVal iForcingShape As Integer,
-            Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+    Private Function LoadEggShape(dt As DataTable,
+                                  iShapeID As Integer,
+                                  iForcingShape As Integer,
+            Optional bIsSeasonal As Boolean = False) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
@@ -1540,10 +1541,10 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadTimeShape(ByVal dtTime As DataTable,
-                                   ByVal iShapeID As Integer,
-                                   ByVal iForcingShape As Integer,
-                                   Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+    Private Function LoadTimeShape(dtTime As DataTable,
+                                   iShapeID As Integer,
+                                   iForcingShape As Integer,
+                                   Optional bIsSeasonal As Boolean = False) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
@@ -1585,10 +1586,10 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadMediationShape(ByVal dtMed As DataTable,
-                                        ByVal iShapeID As Integer,
-                                        ByVal iMediationShape As Integer,
-                                        ByVal medData As cMediationDataStructures) As Boolean
+    Private Function LoadMediationShape(dtMed As DataTable,
+                                        iShapeID As Integer,
+                                        iMediationShape As Integer,
+                                        medData As cMediationDataStructures) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
@@ -1623,6 +1624,66 @@ Public Class cEIIXMLDataSource
 
         Catch ex As Exception
             Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimArenas() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim bSucces As Boolean = True
+
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioArena")
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dt.DefaultView.Sort = "Sequence ASC"
+
+        ' Consumption is not calculated yet. Cannot set defaults; just set the flag for later
+        ' Me.m_core.m_EcoSim.DefaultPeatArena()
+        ecosimDS.PeatArenaSetFromDataBase = False
+
+        Try
+            Dim rows As DataRowCollection = dt.DefaultView.ToTable.Rows()
+            'Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0} AND PeatArena > 0)", iScenarioID)))
+            Dim n As Integer = rows.Count
+
+            If (n > 0) Then
+                ecosimDS.NlinksSet = n
+                ReDim ecosimDS.IlinkSet(n)
+                ReDim ecosimDS.JlinkSet(n)
+                ReDim ecosimDS.KlinkSet(n)
+                ReDim ecosimDS.PeatArena(n, Me.m_core.nGroups)
+                Dim ii As Integer = 0
+
+                For iRow As Integer = 0 To rows.Count - 1
+
+                    Dim drow As DataRow = rows(iRow)
+                    Dim iPrey As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PreyID")))
+                    Dim iPred As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredID")))
+                    Dim iPredShared As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredSharedID")))
+                    Dim sPeatArena As Single = CSng(drow("PeatArena"))
+                    Dim iArenaNo As Integer = CInt(drow("Sequence"))
+
+                    If (iPred > -1 And iPrey > -1 And iPredShared > -1 And iArenaNo > 0) Then
+                        ii += 1
+                        ecosimDS.IlinkSet(ii) = iPrey
+                        ecosimDS.JlinkSet(ii) = iPred
+                        ecosimDS.KlinkSet(ii) = iPredShared
+                        ecosimDS.PeatArena(iArenaNo, iPredShared) = sPeatArena
+                    End If
+
+                Next
+
+                Debug.Assert(ii = n)
+                ecosimDS.PeatArenaSetFromDataBase = True
+            End If
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
             bSucces = False
         End Try
 
@@ -1914,9 +1975,9 @@ Public Class cEIIXMLDataSource
         Return bSucces
     End Function
 
-    Private Function LoadFishingRateShape(ByVal dtFishRate As DataTable,
-                                          ByVal iShapeID As Integer,
-                                          ByVal iFishingRateShape As Integer) As Boolean
+    Private Function LoadFishingRateShape(dtFishRate As DataTable,
+                                          iShapeID As Integer,
+                                          iFishingRateShape As Integer) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim strMemo As String = ""
@@ -1955,7 +2016,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDataset">Index of dataset to load.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function LoadTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
+    Public Function LoadTimeSeriesDataset(iDataset As Integer) As Boolean _
          Implements DataSources.IEcosimDatasource.LoadTimeSeriesDataset
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -2111,7 +2172,7 @@ Public Class cEIIXMLDataSource
 
 #Region " Ecospace "
 
-    Public Function LoadEcospaceScenario(ByVal iScenarioID As Integer) As Boolean _
+    Public Function LoadEcospaceScenario(iScenarioID As Integer) As Boolean _
          Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -2226,7 +2287,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iScenarioID">The scenario to load the data for.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadEcospaceMap(dtScenario As DataTable, ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceMap(dtScenario As DataTable, iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim drow As DataRow = Nothing
@@ -2259,7 +2320,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iScenarioID">The scenario to load the data for.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadEcospaceMonthlyMaps(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceMonthlyMaps(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtMaps As DataTable = Me.ReadTable("EcospaceScenarioMonth")
@@ -2286,7 +2347,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceHabitats(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceHabitats(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtHab As DataTable = Me.ReadTable("EcospaceScenarioHabitat")
@@ -2323,7 +2384,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceMPAs(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceMPAs(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtMPA As DataTable = Me.ReadTable("EcospaceScenarioMPA")
@@ -2365,7 +2426,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceGroups(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceGroups(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
@@ -2422,7 +2483,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceGroupHabitats(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceGroupHabitats(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtGH As DataTable = Me.ReadTable("EcospaceScenarioGroupHabitat")
@@ -2463,7 +2524,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceGroupMigration(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceGroupMigration(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtGH As DataTable = Me.ReadTable("EcospaceScenarioGroupMigration")
@@ -2503,7 +2564,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceFleets(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceFleets(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.EcopathDataStructures
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
@@ -2545,7 +2606,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceHabitatFishery(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceHabitatFishery(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioHabitatFishery")
@@ -2574,7 +2635,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceMPAFishery(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceMPAFishery(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioMPAFishery")
@@ -2603,7 +2664,7 @@ Public Class cEIIXMLDataSource
         Return bSucces
     End Function
 
-    Private Function LoadEcospaceWeightLayers(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceWeightLayers(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioWeightLayer")
@@ -2636,7 +2697,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadEcospaceDriverLayers(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadEcospaceDriverLayers(iScenarioID As Integer) As Boolean
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverLayer")
@@ -2669,7 +2730,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadCapacityDrivers(ByVal iScenarioID As Integer) As Boolean
+    Private Function LoadCapacityDrivers(iScenarioID As Integer) As Boolean
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -2832,7 +2893,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function Columns(ByVal db As cEwEDatabase, strTable As String) As String()
+    Private Function Columns(db As cEwEDatabase, strTable As String) As String()
 
         Dim conn As OleDbConnection = DirectCast(db.GetConnection(), OleDbConnection)
         Dim dtTables As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, New String() {Nothing, Nothing, strTable, Nothing})
@@ -2899,7 +2960,7 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function DataType(ByVal OLEDataType As Integer) As Type
+    Private Function DataType(OLEDataType As Integer) As Type
 
         Select Case OLEDataType
             Case 2 : Return GetType(Integer)
@@ -2914,7 +2975,7 @@ Public Class cEIIXMLDataSource
         Return Nothing
     End Function
 
-    Private Function SaveTable(ByVal db As cEwEDatabase, ByVal strTable As String, ByVal doc As XmlDocument) As Boolean
+    Private Function SaveTable(db As cEwEDatabase, strTable As String, doc As XmlDocument) As Boolean
 
         ' Skip system tables and bogus tables
         If (strTable.IndexOf("MSy") = 0) Then Return False
@@ -3009,8 +3070,8 @@ Public Class cEIIXMLDataSource
     ''' core a full data reload is required after a group is created.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single,
-                      ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+    Function AddGroup(strGroupName As String, sPP As Single, sVBK As Single,
+                      iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddGroup
         Return False
     End Function
@@ -3026,7 +3087,7 @@ Public Class cEIIXMLDataSource
     ''' core a full data reload is required after a group is removed.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function RemoveGroup(ByVal iDBID As Integer) As Boolean _
+    Function RemoveGroup(iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveGroup
         Return False
     End Function
@@ -3043,7 +3104,7 @@ Public Class cEIIXMLDataSource
     ''' and there is no real need to implement this for EII datasources.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function MoveGroup(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+    Function MoveGroup(iDBID As Integer, iPosition As Integer) As Boolean _
              Implements IEcopathDataSource.MoveGroup
         Return False
     End Function
@@ -3060,7 +3121,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+    Public Function AddFleet(strFleetName As String, iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddFleet
         Return False
     End Function
@@ -3073,7 +3134,7 @@ Public Class cEIIXMLDataSource
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
     ''' -------------------------------------------------------------------
-    Function RemoveFleet(ByVal iDBID As Integer) As Boolean _
+    Function RemoveFleet(iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveFleet
         Return False
     End Function
@@ -3086,7 +3147,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+    Public Function MoveFleet(iDBID As Integer, iPosition As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.MoveFleet
         Return False
     End Function
@@ -3101,7 +3162,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean _
+    Friend Function AppendStanza(strStanzaName As String, aiGroupID() As Integer, aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AppendStanza
         Return False
     End Function
@@ -3113,7 +3174,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID of the stanza group to remove.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Function RemoveStanza(ByVal iDBID As Integer) As Boolean _
+    Function RemoveStanza(iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveStanza
         Return False
     End Function
@@ -3127,8 +3188,8 @@ Public Class cEIIXMLDataSource
     ''' <param name="iStartAge">Start age of this life stage.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer,
-                                       ByVal iStartAge As Integer) As Boolean _
+    Public Function AddStanzaLifestage(iStanzaDBID As Integer, iGroupDBID As Integer,
+                                       iStartAge As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddStanzaLifestage
         Return False
     End Function
@@ -3141,7 +3202,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iGroupDBID">Group to remove as the life stage.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Public Function RemoveStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer) As Boolean _
+    Public Function RemoveStanzaLifestage(iStanzaDBID As Integer, iGroupDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.RemoveStanzaLifestage
         Return False
     End Function
@@ -3199,7 +3260,7 @@ Public Class cEIIXMLDataSource
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
     ''' -------------------------------------------------------------------
-    Friend Function SaveEcosimScenario(ByVal iDBID As Integer) As Boolean _
+    Friend Function SaveEcosimScenario(iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.SaveEcosimScenario
         Return False
     End Function
@@ -3215,7 +3276,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function AppendEcosimScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String, ByRef iDBID As Integer) As Boolean _
+    Friend Function AppendEcosimScenario(strName As String, strDescription As String, strAuthor As String, strContact As String, ByRef iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.AppendEcosimScenario
         Return False
     End Function
@@ -3227,13 +3288,13 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID of the scenario to remove.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function RemoveEcosimScenario(ByVal iDBID As Integer) As Boolean _
+    Friend Function RemoveEcosimScenario(iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.RemoveEcosimScenario
         Return False
     End Function
 
-    Public Function SaveEcosimScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String,
-     ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean _
+    Public Function SaveEcosimScenarioAs(strScenarioName As String, strDescription As String,
+     strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.SaveEcosimScenarioAs
         Return False
     End Function
@@ -3252,12 +3313,12 @@ Public Class cEIIXMLDataSource
     ''' <param name="functionType">Primitive function type shape was created from.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Function AppendShape(ByVal strShapeName As String,
-                         ByVal shapeType As eDataTypes,
+    Function AppendShape(strShapeName As String,
+                         shapeType As eDataTypes,
                          ByRef iDBID As Integer,
-                         ByVal asData As Single(),
-                         ByVal functionType As Long,
-                         ByVal points As Single()) As Boolean _
+                         asData As Single(),
+                         functionType As Long,
+                         points As Single()) As Boolean _
             Implements IEcosimDatasource.AppendShape
 
         Dim bSuccess As Boolean
@@ -3296,7 +3357,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID of the shape to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Function RemoveShape(ByVal iDBID As Integer) As Boolean _
+    Function RemoveShape(iDBID As Integer) As Boolean _
              Implements IEcosimDatasource.RemoveShape
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -3327,9 +3388,9 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID assigned to the new TS.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeries(ByVal strName As String, ByVal iPool As Integer, ByVal iPoolSec As Integer,
-                                     ByVal timeSeriesType As eTimeSeriesType, ByVal sWeight As Single,
-                                     ByVal asValues() As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AppendTimeSeries(strName As String, iPool As Integer, iPoolSec As Integer,
+                                     timeSeriesType As eTimeSeriesType, sWeight As Single,
+                                     asValues() As Single, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcosimDatasource.AppendTimeSeries
         Return False
     End Function
@@ -3341,7 +3402,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iTimeSeriesID">Database ID of the time series to remove.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function RemoveTimeSeries(ByVal iTimeSeriesID As Integer) As Boolean _
+    Friend Function RemoveTimeSeries(iTimeSeriesID As Integer) As Boolean _
             Implements DataSources.IEcosimDatasource.RemoveTimeSeries
         Return False
     End Function
@@ -3350,9 +3411,9 @@ Public Class cEIIXMLDataSource
     ''' <inheritdocs cref="IEcosimDatasource.AppendTimeSeriesDataset"/>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String,
-                                            ByVal strAuthor As String, ByVal strContact As String,
-                                            ByVal iFirstYear As Integer, ByVal iNumPoints As Integer, ByVal interval As eTSDataSetInterval,
+    Public Function AppendTimeSeriesDataset(strDatasetName As String, strDescription As String,
+                                            strAuthor As String, strContact As String,
+                                            iFirstYear As Integer, iNumPoints As Integer, interval As eTSDataSetInterval,
                                             ByRef iDatasetID As Integer) As Boolean _
         Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
         Return False
@@ -3367,7 +3428,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDataset">Index of the dataset to add time series to.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function ImportTimeSeries(ByVal ts As cTimeSeriesImport, ByVal iDataset As Integer) As Boolean Implements DataSources.IEcosimDatasource.ImportTimeSeries
+    Public Function ImportTimeSeries(ts As cTimeSeriesImport, iDataset As Integer) As Boolean Implements DataSources.IEcosimDatasource.ImportTimeSeries
         Return False
     End Function
 
@@ -3378,7 +3439,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDataset">Index of the dataset to remove.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function RemoveTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
+    Public Function RemoveTimeSeriesDataset(iDataset As Integer) As Boolean _
             Implements DataSources.IEcosimDatasource.RemoveTimeSeriesDataset
         Return False
     End Function
@@ -3463,17 +3524,17 @@ Public Class cEIIXMLDataSource
 
 #Region " Interface Implementations "
 
-    Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
+    Public Function Compact(strTarget As String) As eDatasourceAccessType _
         Implements DataSources.IEwEDataSource.Compact
         Return eDatasourceAccessType.Failed_OSUnsupported
     End Function
 
-    Public Function CanCompact(ByVal strTarget As String) As Boolean _
+    Public Function CanCompact(strTarget As String) As Boolean _
     Implements IEwEDataSource.CanCompact
         Return False
     End Function
 
-    Public Function IsOSSupported(ByVal dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
+    Public Function IsOSSupported(dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
         Implements IEwEDataSource.IsOSSupported
         Return True ' We can do this!
     End Function
@@ -3502,7 +3563,7 @@ Public Class cEIIXMLDataSource
 
 #Region " Helper methods "
 
-    Private Function GetNextValue(ByVal data() As String, ByRef iNextIndex As Integer) As String
+    Private Function GetNextValue(data() As String, ByRef iNextIndex As Integer) As String
         Dim strData As String = ""
         Do While String.IsNullOrWhiteSpace(strData)
             strData = data(iNextIndex)
@@ -3589,10 +3650,10 @@ Public Class cEIIXMLDataSource
     ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
     ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadSafe(ByVal row As DataRow,
-                             ByVal strField As String,
-                             Optional ByVal objValueDefault As Object = Nothing,
-                             Optional ByVal objValueIgnore As Object = CSng(-9999)) As Object
+    Public Function ReadSafe(row As DataRow,
+                             strField As String,
+                             Optional objValueDefault As Object = Nothing,
+                             Optional objValueIgnore As Object = CSng(-9999)) As Object
 
         Dim objResult As Object = Nothing
 
@@ -3655,9 +3716,9 @@ Public Class cEIIXMLDataSource
     ''' Logs a message to the application log.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub LogMessage(ByVal strMessage As String, _
-            Optional ByVal msgType As eMessageType = eMessageType.DataModified, _
-            Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information)
+    Private Sub LogMessage(strMessage As String,
+            Optional msgType As eMessageType = eMessageType.DataModified,
+            Optional msgImportance As eMessageImportance = eMessageImportance.Information)
 
         If (Me.m_core IsNot Nothing) Then
             Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))

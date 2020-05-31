@@ -4465,9 +4465,6 @@ Namespace DataSources
         Private Function LoadEcosimArenas(iScenarioID As Integer) As Boolean
 
 #Region " EwE5 code "
-#If 0 Then
-            Return True
-#Else
             'Sql = "SELECT * from [Ecosim Arena] where modelName='" + lastModel + "' and Scenario='" + SimScenario + "'"
             'Sql = Sql + " ORDER BY [Ecosim Arena].ArenaNo"
             'Set g_Recordset = CCG.ReadOnlyRecords(SQL)
@@ -4504,11 +4501,12 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim ii As Integer = 0
 
-            Me.m_core.m_EcoSim.DefaultPeatArena()
+            ' Consumption is not calculated yet. Cannot set defaults; just set the flag for later
+            ' Me.m_core.m_EcoSim.DefaultPeatArena()
             ecosimDS.PeatArenaSetFromDataBase = False
 
             Try
-                Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0} AND PeatArena > 0)", iScenarioID)))
+                Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID)))
 
                 If (n > 0) Then
                     reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0}) ORDER BY Sequence", iScenarioID))
@@ -4517,6 +4515,7 @@ Namespace DataSources
                     ReDim ecosimDS.JlinkSet(n)
                     ReDim ecosimDS.KlinkSet(n)
                     ReDim ecosimDS.PeatArena(n, Me.m_core.nGroups)
+
                     While reader.Read()
 
                         iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
@@ -4541,14 +4540,12 @@ Namespace DataSources
                     ecosimDS.PeatArenaSetFromDataBase = True
                 End If
 
-
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
                 bSucces = False
             End Try
 
             Return bSucces
-#End If
 
         End Function
 
@@ -4934,9 +4931,6 @@ Namespace DataSources
 
         Private Function SaveEcosimArenas(idm As cIDMappings) As Boolean
 
-#If 0 Then
-            Return True
-#Else
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = 0
@@ -4989,7 +4983,6 @@ Namespace DataSources
             End Try
 
             Return bSucces
-#End If
 
         End Function
 
