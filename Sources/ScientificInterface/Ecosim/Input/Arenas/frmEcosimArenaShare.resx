@@ -207,11 +207,14 @@
   <data name="m_groups.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="m_groups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="m_groups.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 26</value>
   </data>
   <data name="m_groups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 396</value>
+    <value>194, 396</value>
   </data>
   <data name="m_groups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -232,10 +235,10 @@
     <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 26</value>
+    <value>203, 26</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>622, 396</value>
+    <value>594, 396</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -259,7 +262,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_hdrPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 23</value>
+    <value>194, 23</value>
   </data>
   <data name="m_hdrPrey.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -286,10 +289,10 @@
     <value>Fill</value>
   </data>
   <data name="m_hdrArenas.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 0</value>
+    <value>203, 0</value>
   </data>
   <data name="m_hdrArenas.Size" type="System.Drawing.Size, System.Drawing">
-    <value>622, 23</value>
+    <value>594, 23</value>
   </data>
   <data name="m_hdrArenas.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -340,7 +343,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_groups" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrPrey" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrArenas" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,21.5,Percent,78.5" /&gt;&lt;Rows Styles="Absolute,23,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_groups" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrPrey" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrArenas" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,75" /&gt;&lt;Rows Styles="Absolute,23,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
