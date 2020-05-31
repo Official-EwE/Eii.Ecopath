@@ -247,7 +247,6 @@
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\Arenas\cEcosimAreaViewData.vb" />
     <Compile Include="Ecosim\Input\Catchability\frmCatchability.Designer.vb">
       <DependentUpon>frmCatchability.vb</DependentUpon>
     </Compile>

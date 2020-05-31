@@ -25,25 +25,21 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcosimArenaShare
+Public Class cEcosimArena
     Inherits cCoreInputOutputBase
 
-    Public Sub New(core As cCore, iArena As Integer)
+    Public Sub New(core As cCore, iDBID As Integer, iArena As Integer)
         MyBase.New(core)
 
-        Dim val As cValue
-        Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim val As cValue = Nothing
 
         Me.m_dataType = eDataTypes.EcosimArenaShare
         Me.m_coreComponent = eCoreComponentType.EcoSim
-        Me.Index = iArena
 
         Me.AllowValidation = False
 
-        ' There are no arena objects in EwE. But we can fake a very likely unique ID
-        Me.Prey = simdata.ilink(iArena)
-        Me.Pred = simdata.jlink(iArena)
-        Me.DBID = simdata.GroupDBID(Me.Prey) * 10000 + simdata.GroupDBID(Me.Pred)
+        Me.Index = iArena
+        Me.DBID = iDBID
 
         'arrayed values
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimArenaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
@@ -60,22 +56,19 @@ Public Class cEcosimArenaShare
         End Get
     End Property
 
-    Public ReadOnly Property Prey As Integer
+    ''' <summary>
+    ''' One-based prey index.
+    ''' </summary>
+    Public Property Prey As Integer
 
-    Public ReadOnly Property Pred As Integer
+    ''' <summary>
+    ''' One-based pred index.
+    ''' </summary>
+    Public Property Pred As Integer
 
-    Public ReadOnly Property NumArenas As Integer
-        Get
-            Dim pathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim n As Integer = 0
-            For i As Integer = 1 To pathds.NumLiving
-                If (pathds.DCInput(i, Me.Prey) > 0) And (Me.ArenaShare(i) > 0) Then
-                    n += 1
-                End If
-            Next
-            Return n
-        End Get
-    End Property
+    Public Overrides Function ToString() As String
+        Return Me.Index & ": pred " & Me.Pred & ", prey " & Me.Prey
+    End Function
 
 #Region " Variable via dot '.' operator "
 

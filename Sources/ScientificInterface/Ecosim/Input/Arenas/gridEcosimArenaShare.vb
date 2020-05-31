@@ -36,21 +36,36 @@ Namespace Ecosim
     Public Class gridEcosimArenaShare
         Inherits EwEGrid
 
+        Private m_man As cEcosimArenaManager = Nothing
+
         Public Sub New()
         End Sub
 
-        Public Property Data As cEcosimAreaViewData = Nothing
+        Public Overrides Property UIContext As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As cUIContext)
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_man = Nothing
+                End If
+                MyBase.UIContext = value
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_man = value.Core.EcosimArenaManager
+                End If
+            End Set
+        End Property
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
             If (Me.UIContext Is Nothing) Then Return
-            If (Me.Data Is Nothing) Then Return
 
             Dim n As Integer = 0
 
             If (Me.SelectedGroup IsNot Nothing) Then
-                n = Me.Data.GroupArenaNo(Me.SelectedGroup.Index) + 1
+                Dim arenas As cEcosimArena() = Me.m_man.Arenas(Me.SelectedGroup.Index)
+                n = arenas.Count() + 1
             End If
             Me.Redim(n, n)
 
@@ -61,38 +76,34 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
 
             If (Me.UIContext Is Nothing) Then Return
-            If (Me.Data Is Nothing) Then Return
             If (Me.SelectedGroup Is Nothing) Then Return
 
             Dim fmt As New cCoreInterfaceFormatter()
-            Dim man As cEcosimArenaManager = Me.Data.Manager
             Dim iPrey As Integer = Me.SelectedGroup.Index
+            Dim arenas As cEcosimArena() = Me.m_man.Arenas(Me.SelectedGroup.Index)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
 
             For col As Integer = 1 To Me.ColumnsCount - 1
-                Dim iar As Integer = Me.Data.Arena1(iPrey) + col - 1
-                Dim iPred As Integer = man.JArena(iar)
-                Dim pred As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPred)
+                Dim ar As cEcosimArena = arenas(col - 1)
+                Dim iPred As Integer = ar.Pred
+                Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(iPred)
                 Me(0, col) = New PropertyColumnHeaderCell(Me.PropertyManager, pred, eVarNameFlags.Index)
             Next
 
             For row As Integer = 1 To Me.RowsCount - 1
-                Dim i As Integer = man.ArenaNo(iPrey, man.JArena(Me.Data.Arena1(iPrey) + row - 1))
+                Dim ar As cEcosimArena = arenas(row - 1)
+                Dim i As Integer = ar.Index
                 Me(row, 0) = New EwERowHeaderCell(cStringUtils.Localize(My.Resources.ECOSIM_APPLYARENA_HEADER, i))
             Next
 
             For row As Integer = 1 To Me.RowsCount - 1
+                Dim ar As cEcosimArena = arenas(row - 1)
+                Me(row, 0).Tag = ar
                 For col As Integer = 1 To Me.ColumnsCount - 1
-                    Dim iar As Integer = Me.Data.Arena1(iPrey) + row - 1
-                    Dim ipred As Integer = man.JArena(Me.Data.Arena1(iPrey) + col - 1)
-                    Dim arena As cEcosimArenaShare = man.Arena(iar)
-                    Dim pred As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(ipred)
-
-                    ' Somehow property cells cause a kaboom. Need to check
-                    Dim cell As New PropertyCell(Me.PropertyManager, arena, eVarNameFlags.EcosimArenaShare, pred)
-                    Debug.Assert(cell.DataModel IsNot Nothing)
-                    Console.WriteLine(cell.DisplayText)
+                    Dim ar2 As cEcosimArena = arenas(col - 1)
+                    Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(ar2.Pred)
+                    Dim cell As New PropertyCell(Me.PropertyManager, ar, eVarNameFlags.EcosimArenaShare, pred)
                     cell.SuppressZero = True
                     Me(row, col) = cell
                 Next

@@ -115,7 +115,6 @@ Namespace Ecosim
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
-            Me.m_grid.Data = Nothing
             Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False

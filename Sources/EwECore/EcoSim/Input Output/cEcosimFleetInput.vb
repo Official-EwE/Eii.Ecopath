@@ -16,16 +16,16 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
+#End Region ' Imports
+
 Public Class cEcosimFleetInput
     Inherits cCoreInputOutputBase
-
-
-    ' Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
 
     Public Sub New(TheCore As cCore, iFleet As Integer)
         MyBase.New(TheCore)
@@ -170,7 +170,6 @@ Public Class cEcosimFleetInput
 
 #Region " Status via dot '.' operator "
 
-
     Public Property RelQtStatus(ByVal iGroup As Integer, iTimestep As Integer) As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.RelQt, iGroup, iTimestep)
@@ -237,12 +236,5 @@ Public Class cEcosimFleetInput
     End Property
 
 #End Region ' Status via dot '.' operator
-
-
-#Region "Overridden base class methods"
-
-
-
-#End Region
 
 End Class

@@ -16,11 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
-Imports EwECore.Style
+Imports EwEUtils.Core
+
+#End Region ' Imports
 
 ''' <summary>
 ''' Inputs for EcoPath for a single group.

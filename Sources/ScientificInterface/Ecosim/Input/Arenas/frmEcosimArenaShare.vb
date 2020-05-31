@@ -29,12 +29,6 @@ Namespace Ecosim
 
     Public Class frmEcosimArenaShare
 
-#Region " Private vars "
-
-        Private m_data As cEcosimAreaViewData = Nothing
-
-#End Region ' Private vars
-
         Public Sub New()
             Me.InitializeComponent()
             Me.Grid = Me.m_grid
@@ -63,9 +57,8 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_data = New cEcosimAreaViewData(Me.Core)
-            Me.m_grid.Data = Me.m_data
-            Me.m_groups.VisibleGroups = Me.m_data.Groups
+            Dim man As cEcosimArenaManager = Me.Core.EcosimArenaManager
+            Me.m_groups.VisibleGroups = man.Groups(False)
             Me.m_groups.Populate()
 
             ' Go

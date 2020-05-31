@@ -4440,8 +4440,6 @@ Namespace Ecosim
                 Next i
             Next j
 
-
-
         End Sub
 
         Friend Sub redimTime(ByVal nYears As Integer, ByVal DontPreserve As Boolean)
@@ -4989,12 +4987,11 @@ Namespace Ecosim
             Next i
 
             m_Data.NlinksSet = ii
+            ReDim m_Data.PeatArena(m_Data.NlinksSet, nGroups)
+            ReDim m_Data.IlinkSet(m_Data.NlinksSet)
+            ReDim m_Data.JlinkSet(m_Data.NlinksSet)
+            ReDim m_Data.KlinkSet(m_Data.NlinksSet)
 
-            ' JS 13Sep18: Redim already done in cEcosimDataStructures to max no of links
-            'ReDim m_Data.PeatArena(m_Data.NlinksSet, nGroups)
-            'ReDim m_Data.IlinkSet(m_Data.NlinksSet)
-            'ReDim m_Data.JlinkSet(m_Data.NlinksSet)
-            'ReDim m_Data.KlinkSet(m_Data.NlinksSet)
             ii = 0
 
             For i = 1 To nGroups

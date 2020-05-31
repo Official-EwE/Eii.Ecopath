@@ -550,7 +550,7 @@ Namespace Properties
         ''' </summary>
         ''' <param name="dic">The dictionary to clear.</param>
         ''' -------------------------------------------------------------------
-        Private Sub Clear(ByRef dic As Dictionary(Of String, cProperty))
+        Private Sub Clear(dic As Dictionary(Of String, cProperty))
             Try
                 For Each prop As cProperty In dic.Values
                     RaiseEvent OnPropertyRemoved(prop)
