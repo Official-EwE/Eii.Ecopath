@@ -42,7 +42,7 @@ Public Class NGOMEXResultsWriter
         End Get
     End Property
 
-    Public Property Enabled As Boolean Implements IResultsWriter.Enabled
+    Public Overrides Property Enabled As Boolean Implements IResultsWriter.Enabled
         Get
             Return MyBase.Enabled
         End Get
@@ -57,7 +57,7 @@ Public Class NGOMEXResultsWriter
         End Get
     End Property
 
-    Public ReadOnly Property OutputPath As String Implements IResultsWriter.OutputPath
+    Public Overloads ReadOnly Property OutputPath As String Implements IResultsWriter.OutputPath
         Get
             Return m_core.OutputPath
         End Get
@@ -70,7 +70,7 @@ Public Class NGOMEXResultsWriter
     End Property
 
     Public Overrides Sub EndWrite() Implements IResultsWriter.EndWrite
-        'Throw New NotImplementedException()
+
     End Sub
 
     Public Overrides Sub Init(theCore As Object) Implements IResultsWriter.Init
@@ -125,12 +125,10 @@ Public Class NGOMEXResultsWriter
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
 
-        'Throw New NotImplementedException()
     End Sub
 
     Public Overrides Sub StartWrite() Implements IResultsWriter.StartWrite
         MyBase.StartWrite()
-        'Throw New NotImplementedException()
     End Sub
 
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object) Implements IEcospaceResultsWriter.WriteResults
@@ -171,9 +169,6 @@ Public Class NGOMEXResultsWriter
                         End If
                     Catch ex As IOException
                         cLog.Write(ex)
-                        ' Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
-                        'eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
-                        ' Me.m_core.Messages.SendMessage(msg)
                     End Try
                 End If 'cFileUtils.IsDirectoryAvailable()
             Next igrp
