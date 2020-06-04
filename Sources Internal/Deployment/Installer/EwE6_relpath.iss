@@ -1,25 +1,26 @@
 ; Inno Setup install script for Ecopath with Ecosim
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
-#include <idp.iss>
+#include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
-#define Spinup 0
-#define SpatTemp 0
-#define RandomizeMPAs 0
-#define NetworkD3 0
-#define ExcludeDeadCells 0
+#define Compile64Bit 0
+; spinup + spattemp now combined in one flag 'EwEPro'
+#define EwEPro 1
+; RobertsBank features are optional to 'EwEPro'
+#define RobertsBank 0
+#define SAFENET 0
 #define FISHMIP 0
 #define MSPTools 0
-#define SAFENET 0
+#define RandomizeMPAs 0
+#define ExcludeDeadCells 0
 
 #if Compile64Bit == 0
-  #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6"
+  #define MyAppName "Ecopath with Ecosim RBT"
+  #define MyAppVersion "6.6.2 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 64-bit"
+  #define MyAppVersion "6.6.2 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -35,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16474.0
+  VersionInfoVersion=6.6.2.16944
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -55,9 +56,9 @@ AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
-MinVersion=0,5.01sp3
+MinVersion=0,6.0sp2
 DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
-DefaultGroupName={#MyAppName}\{#MyAppVersion}
+DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
 SolidCompression=True
@@ -147,21 +148,23 @@ Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\
 Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
 Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
 Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
+Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
 ; -- Examples --
-#if NetworkD3 == 1
-Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3R.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
-#endif
 #if ExcludeDeadCells == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
-#endif
-; -- Stuff under development --
-#if Spinup == 1
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 #endif
 #if RandomizeMPAs == 1
 Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
 #endif
-#if SpatTemp == 1
+; -- EwEPro --
+#if EwEPro == 1
+; - Roberts Bank only part of PRO
+#if RobertsBank == 1
+Source: "{#DefRoot}{#DefSrc}\RBTDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank   
+#endif
+
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -292,7 +295,6 @@ Source: "{#DefRoot}{#DefSrc}\SafenetUtils.dll"; DestDir: "{app}\Plugins\"; Flags
 Source: "{#DefRoot}{#DefSrc}\EwEMassApplyEnvResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
 Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
 #endif
-
 [Components]
 Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
 Name: "databases"; Description: "Sample EwE models"; Types: full custom
@@ -322,25 +324,27 @@ Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
 Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
 Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
 Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
-#if NetworkD3 == 1
 Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
-#endif#if ExcludeDeadCells == 1
-Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full
-#endif
-#if SpatTemp == 1
-Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
-#endif
-#if Spinup == 1
+#if EwEPro == 1
 Name: "plugin\output\spinup"; Description: "Ecospace spin-up"; Types: full
+Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
+; - Roberts Bank only part of PRO
+#if RobertsBank == 1
+Name: "plugin\robertsbank"; Description: "Roberts Bank utilities"; Types: full custom
 #endif
-#if RandomizeMPAs == 1
-Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
 #endif
+
 #if MSPTools == 1
 Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
 #endif
 #if SAFENET == 1
 Name: "plugin\safenet"; Description: "Safenet utilities"; Types: full custom
+#endif
+#if ExcludeDeadCells == 1
+Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full
+#endif
+#if RandomizeMPAs == 1
+Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
 #endif
 
 [Tasks]
@@ -446,11 +450,11 @@ end;
 
 procedure InitializeWizard();
 begin
-    if not IsDotNetDetected('v4.', 0) then 
+    if not IsDotNetDetected('v4.5', 0) then 
     begin
         // 4.0 full: https://go.microsoft.com/fwlink/?LinkId=181013
         // 4.5 full: https://go.microsoft.com/fwlink/?LinkId=225702
-        idpAddFile('http://go.microsoft.com/fwlink/?LinkId=181013', ExpandConstant('{tmp}\NetFrameworkInstaller.exe'));
+        idpAddFile('http://go.microsoft.com/fwlink/?LinkId=225702', ExpandConstant('{tmp}\NetFrameworkInstaller.exe'));
         idpDownloadAfter(wpReady);
      end
 end;
