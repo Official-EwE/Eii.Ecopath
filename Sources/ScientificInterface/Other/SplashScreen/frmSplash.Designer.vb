@@ -44,7 +44,9 @@ Partial Class frmSplash
         Me.m_pbIcon = New System.Windows.Forms.PictureBox()
         Me.m_lblEwE = New System.Windows.Forms.Label()
         Me.m_lblReleaseMode = New System.Windows.Forms.Label()
+        Me.m_tlpSplash = New System.Windows.Forms.TableLayoutPanel()
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpSplash.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_pbIcon
@@ -66,15 +68,22 @@ Partial Class frmSplash
         Me.m_lblReleaseMode.BackColor = System.Drawing.Color.Transparent
         Me.m_lblReleaseMode.Name = "m_lblReleaseMode"
         '
+        'm_tlpSplash
+        '
+        Me.m_tlpSplash.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.m_tlpSplash, "m_tlpSplash")
+        Me.m_tlpSplash.Controls.Add(Me.m_pbIcon, 0, 1)
+        Me.m_tlpSplash.Controls.Add(Me.m_lblReleaseMode, 0, 3)
+        Me.m_tlpSplash.Controls.Add(Me.m_lblEwE, 0, 2)
+        Me.m_tlpSplash.Name = "m_tlpSplash"
+        '
         'frmSplash
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_lblReleaseMode)
-        Me.Controls.Add(Me.m_lblEwE)
-        Me.Controls.Add(Me.m_pbIcon)
+        Me.Controls.Add(Me.m_tlpSplash)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmSplash"
         Me.ShowIcon = False
@@ -82,6 +91,8 @@ Partial Class frmSplash
         Me.TopMost = True
         Me.TransparencyKey = System.Drawing.Color.Transparent
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpSplash.ResumeLayout(False)
+        Me.m_tlpSplash.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -89,4 +100,5 @@ Partial Class frmSplash
     Private WithEvents m_pbIcon As PictureBox
     Private WithEvents m_lblEwE As Label
     Private WithEvents m_lblReleaseMode As Label
+    Private WithEvents m_tlpSplash As TableLayoutPanel
 End Class

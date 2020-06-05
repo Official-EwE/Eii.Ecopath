@@ -1556,7 +1556,7 @@ Public Class frmEwE6
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
-        Dim strRegistration As String = EwE6ApplicationFramework.EwERegistration(Me.Core)
+        Dim strRegistration As String = EwE6ApplicationFramework.EwERegistration(Me.Core.License)
         If (Not String.IsNullOrWhiteSpace(strRegistration)) Then
             strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, strCaption, strRegistration)
         End If

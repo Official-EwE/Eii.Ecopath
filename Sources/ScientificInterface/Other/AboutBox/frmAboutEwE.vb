@@ -101,7 +101,7 @@ Namespace Other
         End Sub
 
         Private Sub UpdateLicenseControls()
-            Me.m_lbRegistation.Text = EwERegistration(Me.m_uic.Core)
+            Me.m_lbRegistation.Text = EwERegistration(Me.m_uic.Core.License)
             Me.m_lbRegistation.Visible = Not String.IsNullOrWhiteSpace(Me.m_lbRegistation.Text)
             Me.m_btnRemoveRegistration.Enabled = Me.m_uic.Core.License.IsRegistered
         End Sub

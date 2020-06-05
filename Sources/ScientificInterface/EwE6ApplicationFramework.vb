@@ -202,11 +202,7 @@ Module EwE6ApplicationFramework
 
         Dim strCaption As String = My.Resources.GENERIC_CAPTION
         If bIncludeRelease Then
-            Dim strRelease As String = ""
-            Select Case EwE6ApplicationFramework.ReleaseMode
-                Case eReleaseMode.Beta : strRelease = My.Resources.MODE_BETA
-                Case eReleaseMode.Dev : strRelease = My.Resources.MODE_DEBUG
-            End Select
+            Dim strRelease As String = EwERelease()
             If (Not String.IsNullOrEmpty(strRelease)) Then
                 strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, strRelease)
             End If
@@ -229,17 +225,19 @@ Module EwE6ApplicationFramework
 
     End Function
 
-    Public Function EwERegistration(core As cCore) As String
-        Dim lic As cLicense = core.License
-        If (lic.IsRegistered) Then
-            If (lic.IsLicensed) Then
-                Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
-            Else
-                Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
+    Public Function EwERegistration(lic As cLicense) As String
+
+        If (lic IsNot Nothing) Then
+            If (lic.IsRegistered) Then
+                If (lic.IsLicensed) Then
+                    Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
+                Else
+                    Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
+                End If
             End If
-        Else
-            Return My.Resources.REGISTRATION_NONE
         End If
+        Return My.Resources.REGISTRATION_NONE
+
     End Function
 
 #End Region ' Version formatting
