@@ -101,10 +101,12 @@ Public Class cEcosimArenaManager
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Dim ii As Integer = 0
-        For Each share As cEcosimArena In Me.m_arenas
-            For j As Integer = 1 To pathdata.NumLiving
-                If share.ArenaShare(j) > 0 Then ii += 1
-            Next
+        For Each arena As cEcosimArena In Me.m_arenas
+            If (arena IsNot Nothing) Then
+                For j As Integer = 1 To pathdata.NumLiving
+                    If arena.ArenaShare(j) > 0 Then ii += 1
+                Next
+            End If
         Next
 
         If (ii <> simdata.NlinksSet) Then
@@ -118,24 +120,26 @@ Public Class cEcosimArenaManager
         End If
 
         ii = 0
-        For Each share As cEcosimArena In Me.m_arenas
-            For j As Integer = 1 To pathdata.NumLiving
-                Dim prop As Single = share.ArenaShare(j)
-                If (prop > 0) Then
-                    ' Sanity check
-                    Debug.Assert(pathdata.DCInput(share.Pred, share.Prey) > 0)
+        For Each arena As cEcosimArena In Me.m_arenas
+            If (arena IsNot Nothing) Then
+                For j As Integer = 1 To pathdata.NumLiving
+                    Dim prop As Single = arena.ArenaShare(j)
+                    If (prop > 0) Then
+                        ' Sanity check
+                        Debug.Assert(pathdata.DCInput(arena.Pred, arena.Prey) > 0)
 
-                    ii += 1
-                    simdata.IlinkSet(ii) = share.Prey
-                    simdata.JlinkSet(ii) = share.Pred
-                    simdata.KlinkSet(ii) = j
-                    Dim iArena As Integer = simdata.ArenaNo(share.Prey, share.Pred)
-                    simdata.PeatArena(iArena, j) = prop
+                        ii += 1
+                        simdata.IlinkSet(ii) = arena.Prey
+                        simdata.JlinkSet(ii) = arena.Pred
+                        simdata.KlinkSet(ii) = j
+                        Dim iArena As Integer = simdata.ArenaNo(arena.Prey, arena.Pred)
+                        simdata.PeatArena(iArena, j) = prop
 
-                    ' Tampa bay debugging
+                        ' Tampa bay debugging
 
-                End If
-            Next
+                    End If
+                Next
+            End If
         Next
 
     End Sub
