@@ -268,7 +268,7 @@
     <value>m_lblPrompt</value>
   </data>
   <data name="&gt;&gt;m_lblPrompt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.2.16944, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblPrompt.Parent" xml:space="preserve">
     <value>$this</value>

@@ -32,6 +32,8 @@
 ' The USE_LICENSE_LIB flag is ONLY checked in release mode; the STDF will NOT
 ' check the core license in DEBUG mode.
 
+#Const USE_LICENSE_LIB = 1
+
 #If Not DEBUG Then
 #Const USE_LICENSE_LIB = 1
 #End If
@@ -55,8 +57,9 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports Microsoft.VisualBasic
+Imports ScientificInterfaceShared.Commands
 
-#If USE_LICENSE_LIB Then
+#If USE_LICENSE_LIB = 1 Then
 ' Do not remove this reference, it's needed when
 Imports TreeksLicensingLibrary2.EasyIntegration
 #End If
@@ -65,7 +68,7 @@ Imports TreeksLicensingLibrary2.EasyIntegration
 
 ' When not using Treek's licensing library, license conditions are embedded in this file and 
 ' must be changed in the fields below
-#If Not USE_LICENSE_LIB Then
+#If USE_LICENSE_LIB = 0 Then
 
 <HideModuleName()>
 Friend Module modLicense
@@ -631,10 +634,10 @@ Public Class cDotSpatialUtils
         Debug.Assert(core IsNot Nothing)
         Dim bValid As Boolean = False
 
-#If USE_LICENSE_LIB Then
+#If USE_LICENSE_LIB = 1 Then
 
         Try
-            ' Bypass the Core cLicense class that can have been messed with. It's easy to reproduce the required steps here
+            ' Validate if the core license class has not been tampered with
             If Not cDotSpatialUtils.TreekValid(core) Then
                 Dim msg As New cFeedbackMessage(My.Resources.LICENSE_INVALID, eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
                 core.Messages.SendMessage(msg)
@@ -642,28 +645,36 @@ Public Class cDotSpatialUtils
             End If
 
             Dim lic As EwELicense.cLicense = core.License
-            bValid = lic.IsLicensed()
 
-            '' Potential paranoia-fix: bypass the cLicense class that can have been messed with
-            'Dim treekCore As TLLInterface = core.License.Treek
-            'Dim lic As License = treekCore.MyLicense
+            ' ToDo: globalize this
+            cApplicationStatusNotifier.StartProgress(core, "Checking EwE Pro license")
+            Try
+                bValid = lic.IsLicensed()
+            Catch ex As Exception
+                cLog.Write(ex, "cDotSpatialUtils.IsLicensed")
+            End Try
+            cApplicationStatusNotifier.EndProgress(core)
 
-            'If (lic IsNot Nothing) Then
-            '    If (treekCore.OnlineRevocationCheck()) Then
-            '        treekCore.AsyncSilentReactivation()
-            '    End If
-            '    bValid = treekCore.IsLicenseValid()
-            'End If
         Catch ex As Exception
+            cLog.Write(ex, "cDotSpatialUtils.IsLicensed")
             Return False
         End Try
 #Else
         bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
 #End If
         If (bValid = False) Then
-            Dim msg As New cFeedbackMessage(My.Resources.LICENSE_NONE, eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
-            ' msg.Hyperlink = "command:" & ScientificInterfaceShared.Commands.cEnterLicenseCommand.cCOMMAND_NAME
+            Dim msg As New cFeedbackMessage(My.Resources.LICENSE_NONE, eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK_CANCEL)
+
+            ' ToDo: globalize this
+            msg.CustomReplyLabel(eMessageReply.OK) = "Enter license"
+            msg.Hyperlink = "command:" & ScientificInterfaceShared.Commands.cEnterLicenseCommand.cCOMMAND_NAME
             core.Messages.SendMessage(msg)
+
+            If (msg.Reply = eMessageReply.OK) Then
+                Dim cmd As cEnterLicenseCommand = CType(UIContext.CommandHandler.GetCommand(cEnterLicenseCommand.cCOMMAND_NAME), cEnterLicenseCommand)
+                cmd.Invoke()
+            End If
+
         End If
         Return bValid
 
@@ -676,7 +687,7 @@ Public Class cDotSpatialUtils
     ''' -----------------------------------------------------------------------
     Public Shared ReadOnly Property ExpiryDate(core As cCore) As DateTime
         Get
-#If USE_LICENSE_LIB Then
+#If USE_LICENSE_LIB = 1 Then
             If Not cDotSpatialUtils.TreekValid(core) Then Return Date.MinValue
             Return core.License.Expiry
 
@@ -694,7 +705,7 @@ Public Class cDotSpatialUtils
         End Get
     End Property
 
-#If USE_LICENSE_LIB Then
+#If USE_LICENSE_LIB = 1 Then
 
     Private Shared g_treekvalidated As Boolean = False
     Private Shared g_treekvalid As Boolean = False

@@ -43,9 +43,9 @@ Namespace Controls
         ''' <param name="strText">Progress message to show, if any. If left emtpy a generic busy message will be used.</param>
         ''' <param name="sProgress">Optional progress indicator [0, 1] to use.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub StartProgress(ByVal core As cCore, _
-                                        Optional ByVal strText As String = "", _
-                                        Optional ByVal sProgress As Single = 0.0!)
+        Public Shared Sub StartProgress(core As cCore,
+                                        Optional strText As String = "",
+                                        Optional sProgress As Single = 0.0!)
 
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
@@ -66,7 +66,7 @@ Namespace Controls
         ''' <param name="sProgress">A value between 0 and 1 to control a progress
         ''' bar, or -1 to display a continuous progress bar.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub UpdateProgress(ByVal core As cCore, ByVal strText As String, ByVal sProgress As Single)
+        Public Shared Sub UpdateProgress(core As cCore, strText As String, sProgress As Single)
 
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
@@ -81,7 +81,7 @@ Namespace Controls
         ''' End running progress feedback
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Shared Sub EndProgress(ByVal core As cCore)
+        Public Shared Sub EndProgress(core As cCore)
 
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
@@ -97,7 +97,7 @@ Namespace Controls
         ''' is not <see cref="cCoreStateMonitor.IsBusy">busy</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Shared Sub UpdateStatus(ByVal core As cCore, ByVal strText As String)
+        Public Shared Sub UpdateStatus(core As cCore, strText As String)
 
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return

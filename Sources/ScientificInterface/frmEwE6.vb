@@ -418,6 +418,11 @@ Public Class frmEwE6
 
     Private Sub ProcessCommandLine()
 
+        ' ToDo: parse command line parameters for flags
+        ' Add flags:
+        '   /NoPlugins
+        '   /NoSplash
+
         Dim astrCmd As String() = Environment.GetCommandLineArgs
 
         ' Has args?

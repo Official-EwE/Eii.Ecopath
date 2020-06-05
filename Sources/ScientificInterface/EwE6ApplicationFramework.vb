@@ -168,6 +168,10 @@ Module EwE6ApplicationFramework
         CloseSplash()
     End Sub
 
+    Private Sub OnLoadCompleted(sender As Object, args As EventArgs)
+        CloseSplash()
+    End Sub
+
     Public Sub CloseSplash()
         If (m_splash Is Nothing) Then Return
         If (m_splash.Disposing) Or (m_splash.IsDisposed) Then Return
@@ -176,22 +180,12 @@ Module EwE6ApplicationFramework
         m_splash = Nothing
     End Sub
 
-    Private Sub OnLoadCompleted(sender As Object, args As EventArgs)
-
-        ' Load plug-ins now synchronization context is available
-        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
-        Try
-            m_main.PluginManager.LoadPlugins(alDisabledPlugins, m_root, [option]:=SearchOption.TopDirectoryOnly)
-            For Each folder As String In m_pluginfolders
-                m_main.PluginManager.LoadPlugins(alDisabledPlugins, Path.Combine(m_root, folder))
-            Next
-        Catch ex As Exception
-            ' Ouch!
-            cLog.Write(ex)
-        End Try
-
-        CloseSplash()
-
+    ''' <summary>
+    ''' Send a status message to the splash window
+    ''' </summary>
+    ''' <param name="message">The message.</param>
+    Public Sub SplashStatus(message As String)
+        Throw New NotImplementedException("So sorry")
     End Sub
 
 #End Region ' Splash screen

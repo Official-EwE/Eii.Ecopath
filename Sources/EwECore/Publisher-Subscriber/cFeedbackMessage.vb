@@ -30,6 +30,12 @@ Public Class cFeedbackMessage
     Inherits cMessage
     Implements IFeedbackMessage
 
+#Region " Internal vars "
+
+    Private m_customlabels(4) As String
+
+#End Region ' Internal vars
+
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
@@ -107,6 +113,20 @@ Public Class cFeedbackMessage
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property HyperlinkOption As String = ""
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get or set a custom reply label to use when this message is shown in a user interface.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CustomReplyLabel(reply As EwEUtils.Core.eMessageReply) As String
+        Get
+            Return Me.m_customlabels(reply)
+        End Get
+        Set(value As String)
+            Me.m_customlabels(reply) = value
+        End Set
+    End Property
 
 #End Region ' Property access 
 

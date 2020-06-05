@@ -67,7 +67,8 @@ Namespace Controls
                        strCaption As String,
                        mbb As MessageBoxButtons,
                        mbi As MessageBoxIcon,
-                       Optional strCheckboxPrompt As String = "")
+                       strCheckboxPrompt As String,
+                       customtexts As Dictionary(Of DialogResult, String))
 
             MyBase.New()
             Me.InitializeComponent()
@@ -108,29 +109,29 @@ Namespace Controls
             Select Case Me.m_mbb
 
                 Case MessageBoxButtons.AbortRetryIgnore
-                    Me.ConfigureButton(m_btnOne, DialogResult.Abort)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.Retry)
-                    Me.ConfigureButton(m_btnThree, DialogResult.Cancel)
+                    Me.ConfigureButton(m_btnOne, DialogResult.Abort, customtexts)
+                    Me.ConfigureButton(m_btnTwo, DialogResult.Retry, customtexts)
+                    Me.ConfigureButton(m_btnThree, DialogResult.Cancel, customtexts)
 
                 Case MessageBoxButtons.OK
-                    Me.ConfigureButton(m_btnOne, DialogResult.OK)
+                    Me.ConfigureButton(m_btnOne, DialogResult.OK, customtexts)
 
                 Case MessageBoxButtons.OKCancel
-                    Me.ConfigureButton(m_btnOne, DialogResult.OK)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.Cancel)
+                    Me.ConfigureButton(m_btnOne, DialogResult.OK, customtexts)
+                    Me.ConfigureButton(m_btnTwo, DialogResult.Cancel, customtexts)
 
                 Case MessageBoxButtons.RetryCancel
-                    Me.ConfigureButton(m_btnOne, DialogResult.Retry)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.Cancel)
+                    Me.ConfigureButton(m_btnOne, DialogResult.Retry, customtexts)
+                    Me.ConfigureButton(m_btnTwo, DialogResult.Cancel, customtexts)
 
                 Case MessageBoxButtons.YesNo
-                    Me.ConfigureButton(m_btnOne, DialogResult.Yes)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.No)
+                    Me.ConfigureButton(m_btnOne, DialogResult.Yes, customtexts)
+                    Me.ConfigureButton(m_btnTwo, DialogResult.No, customtexts)
 
                 Case MessageBoxButtons.YesNoCancel
-                    Me.ConfigureButton(m_btnOne, DialogResult.Yes)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.No)
-                    Me.ConfigureButton(m_btnThree, DialogResult.Cancel)
+                    Me.ConfigureButton(m_btnOne, DialogResult.Yes, customtexts)
+                    Me.ConfigureButton(m_btnTwo, DialogResult.No, customtexts)
+                    Me.ConfigureButton(m_btnThree, DialogResult.Cancel, customtexts)
 
             End Select
 
@@ -296,19 +297,36 @@ Namespace Controls
 
         End Sub
 
-        Private Sub ConfigureButton(btn As Button, result As DialogResult)
+        Private Sub ConfigureButton(btn As Button, result As DialogResult,
+                                    Optional customtexts As Dictionary(Of DialogResult, String) = Nothing)
 
-            ' Set text
-            Select Case result
-                Case DialogResult.Abort : btn.Text = My.Resources.BUTTON_ABORT
-                Case DialogResult.Cancel : btn.Text = My.Resources.BUTTON_CANCEL
-                Case DialogResult.Ignore : btn.Text = My.Resources.BUTTON_IGNORE
-                Case DialogResult.No : btn.Text = My.Resources.BUTTON_NO
-                Case DialogResult.None : btn.Text = ""
-                Case DialogResult.OK : btn.Text = My.Resources.BUTTON_OK
-                Case DialogResult.Retry : btn.Text = My.Resources.BUTTON_RETRY
-                Case DialogResult.Yes : btn.Text = My.Resources.BUTTON_YES
-            End Select
+            Dim txt As String = ""
+            If (customtexts IsNot Nothing) Then
+                If (customtexts.ContainsKey(result)) Then
+                    txt = customtexts(result)
+                End If
+            End If
+
+            If (String.IsNullOrWhiteSpace(txt)) Then
+                ' Set text
+                Select Case result
+                    Case DialogResult.Abort : btn.Text = My.Resources.BUTTON_ABORT
+                    Case DialogResult.Cancel : btn.Text = My.Resources.BUTTON_CANCEL
+                    Case DialogResult.Ignore : btn.Text = My.Resources.BUTTON_IGNORE
+                    Case DialogResult.No : btn.Text = My.Resources.BUTTON_NO
+                    Case DialogResult.None : btn.Text = ""
+                    Case DialogResult.OK : btn.Text = My.Resources.BUTTON_OK
+                    Case DialogResult.Retry : btn.Text = My.Resources.BUTTON_RETRY
+                    Case DialogResult.Yes : btn.Text = My.Resources.BUTTON_YES
+                End Select
+            Else
+                btn.Text = txt
+            End If
+
+            If (Not String.IsNullOrWhiteSpace(txt)) Then
+                Dim extent As SizeF = TextRenderer.MeasureText(btn.Text, btn.Font)
+                btn.Width = Math.Max(72, CInt(extent.Width) + 24)
+            End If
 
             ' Store tag
             btn.Tag = result
@@ -359,11 +377,11 @@ Namespace Controls
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCustomMessageBox))
-            Me.m_btnOne = New Button()
-            Me.m_btnTwo = New Button()
-            Me.m_btnThree = New Button()
-            Me.m_pbIcon = New PictureBox()
-            Me.m_chkOption = New CheckBox()
+            Me.m_btnOne = New System.Windows.Forms.Button()
+            Me.m_btnTwo = New System.Windows.Forms.Button()
+            Me.m_btnThree = New System.Windows.Forms.Button()
+            Me.m_pbIcon = New System.Windows.Forms.PictureBox()
+            Me.m_chkOption = New System.Windows.Forms.CheckBox()
             Me.m_lblPrompt = New ScientificInterfaceShared.Controls.ucLinkLabel()
             CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -404,7 +422,7 @@ Namespace Controls
             '
             Me.AcceptButton = Me.m_btnOne
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = AutoScaleMode.Dpi
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_chkOption)
             Me.Controls.Add(Me.m_pbIcon)
@@ -412,7 +430,7 @@ Namespace Controls
             Me.Controls.Add(Me.m_btnThree)
             Me.Controls.Add(Me.m_btnTwo)
             Me.Controls.Add(Me.m_btnOne)
-            Me.FormBorderStyle = FormBorderStyle.FixedToolWindow
+            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "frmCustomMessageBox"

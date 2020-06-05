@@ -30,7 +30,18 @@ Friend Class frmSplash
 
     Public Sub New()
         Me.InitializeComponent()
+        Me.Visible = False
     End Sub
+
+    Public Sub UpdateStatus(message As String)
+        If Me.InvokeRequired Then
+            Me.Invoke(New UpdateStatusDelegate(AddressOf UpdateStatus), message)
+        Else
+            Me.m_lblText.Text = message
+        End If
+    End Sub
+
+    Private Delegate Sub UpdateStatusDelegate(message As String)
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -58,7 +69,10 @@ Friend Class frmSplash
         End If
         Me.m_lblReleaseMode.Text = sb.ToString()
 
+        Me.UpdateStatus(My.Resources.STATUS_LOADING)
         Me.CenterToScreen()
+        Me.Visible = True
+
 #If DEBUG Then
         Me.TopMost = False
 #Else
