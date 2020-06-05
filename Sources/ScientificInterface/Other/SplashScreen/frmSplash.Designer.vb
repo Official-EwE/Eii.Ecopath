@@ -45,6 +45,7 @@ Partial Class frmSplash
         Me.m_lblEwE = New System.Windows.Forms.Label()
         Me.m_lblReleaseMode = New System.Windows.Forms.Label()
         Me.m_tlpSplash = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_lblText = New System.Windows.Forms.Label()
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpSplash.SuspendLayout()
         Me.SuspendLayout()
@@ -75,7 +76,13 @@ Partial Class frmSplash
         Me.m_tlpSplash.Controls.Add(Me.m_pbIcon, 0, 1)
         Me.m_tlpSplash.Controls.Add(Me.m_lblReleaseMode, 0, 3)
         Me.m_tlpSplash.Controls.Add(Me.m_lblEwE, 0, 2)
+        Me.m_tlpSplash.Controls.Add(Me.m_lblText, 0, 4)
         Me.m_tlpSplash.Name = "m_tlpSplash"
+        '
+        'm_lblText
+        '
+        resources.ApplyResources(Me.m_lblText, "m_lblText")
+        Me.m_lblText.Name = "m_lblText"
         '
         'frmSplash
         '
@@ -101,4 +108,5 @@ Partial Class frmSplash
     Private WithEvents m_lblEwE As Label
     Private WithEvents m_lblReleaseMode As Label
     Private WithEvents m_tlpSplash As TableLayoutPanel
+    Private WithEvents m_lblText As Label
 End Class

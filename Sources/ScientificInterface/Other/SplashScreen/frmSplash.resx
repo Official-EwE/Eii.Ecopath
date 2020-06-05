@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_pbIcon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 43</value>
+    <value>175, 42</value>
   </data>
   <data name="m_pbIcon.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 100</value>
@@ -160,7 +160,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEwE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 146</value>
+    <value>3, 145</value>
   </data>
   <data name="m_lblEwE.Size" type="System.Drawing.Size, System.Drawing">
     <value>444, 25</value>
@@ -193,16 +193,16 @@
     <value>True</value>
   </data>
   <data name="m_lblReleaseMode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
+    <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
   <data name="m_lblReleaseMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lblReleaseMode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 171</value>
+    <value>3, 170</value>
   </data>
   <data name="m_lblReleaseMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 13</value>
+    <value>444, 16</value>
   </data>
   <data name="m_lblReleaseMode.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -227,6 +227,42 @@
   </data>
   <data name="m_tlpSplash.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="m_lblText.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblText.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblText.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 192</value>
+  </data>
+  <data name="m_lblText.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 6, 3, 6</value>
+  </data>
+  <data name="m_lblText.Size" type="System.Drawing.Size, System.Drawing">
+    <value>444, 27</value>
+  </data>
+  <data name="m_lblText.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblText.Text" xml:space="preserve">
+    <value>&lt;status&gt;</value>
+  </data>
+  <data name="m_lblText.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
+  <data name="&gt;&gt;m_lblText.Name" xml:space="preserve">
+    <value>m_lblText</value>
+  </data>
+  <data name="&gt;&gt;m_lblText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblText.Parent" xml:space="preserve">
+    <value>m_tlpSplash</value>
+  </data>
+  <data name="&gt;&gt;m_lblText.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_tlpSplash.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -256,7 +292,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpSplash.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIcon" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblReleaseMode" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEwE" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,AutoSize,0,AutoSize,0,AutoSize,0,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIcon" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblReleaseMode" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEwE" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblText" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,AutoSize,0,AutoSize,0,AutoSize,0,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

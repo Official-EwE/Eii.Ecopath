@@ -530,6 +530,8 @@ Public Class cMessageHistory
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Question
         Dim dlr As DialogResult = System.Windows.Forms.DialogResult.No
         Dim strMessage As String = ""
+        Dim strCaption As String = My.Resources.GENERIC_CAPTION
+        Dim customlabels As New Dictionary(Of DialogResult, String)
 
         ' Early bail-out
         If (msg Is Nothing) Then Return
@@ -539,12 +541,20 @@ Public Class cMessageHistory
         Select Case msg.ReplyStyle
             Case eMessageReplyStyle.OK_CANCEL
                 mbb = MessageBoxButtons.OKCancel
+                customlabels(DialogResult.OK) = msg.CustomReplyLabel(eMessageReply.OK)
+                customlabels(DialogResult.Cancel) = msg.CustomReplyLabel(eMessageReply.CANCEL)
             Case eMessageReplyStyle.YES_NO
                 mbb = MessageBoxButtons.YesNo
+                customlabels(DialogResult.Yes) = msg.CustomReplyLabel(eMessageReply.YES)
+                customlabels(DialogResult.No) = msg.CustomReplyLabel(eMessageReply.NO)
             Case eMessageReplyStyle.YES_NO_CANCEL
                 mbb = MessageBoxButtons.YesNoCancel
+                customlabels(DialogResult.Yes) = msg.CustomReplyLabel(eMessageReply.YES)
+                customlabels(DialogResult.No) = msg.CustomReplyLabel(eMessageReply.NO)
+                customlabels(DialogResult.Cancel) = msg.CustomReplyLabel(eMessageReply.CANCEL)
             Case eMessageReplyStyle.OK
                 mbb = MessageBoxButtons.OK
+                customlabels(DialogResult.OK) = msg.CustomReplyLabel(eMessageReply.OK)
         End Select
 
         Select Case msg.Importance
@@ -581,9 +591,8 @@ Public Class cMessageHistory
 
                 EwE6ApplicationFramework.CloseSplash()
 
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text,
-                                             mbb, mbi,
-                                             bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, strCaption,
+                                             mbb, mbi, bChecked, My.Resources.PROMPT_MESSAGE_HIDE, customlabels)
                 ' Auto-reply requested?
                 If bChecked Then
                     ' #Yes: store auto-reply
@@ -591,16 +600,14 @@ Public Class cMessageHistory
                 End If
             End If
         Else
-            '' Invoke message box
-            'cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
+            ' Invoke message box
             Try
                 EwE6ApplicationFramework.CloseSplash()
 
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text, mbb, mbi)
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, strCaption, mbb, mbi, customlabels)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
-            'cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 
         ' Translate .NET MessageBox result into reply
@@ -670,9 +677,7 @@ Public Class cMessageHistory
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text,
-                                           mbb, mbi,
-                                           bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
+                    cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text, mbb, mbi, bSuppress, My.Resources.PROMPT_MESSAGE_HIDE, Nothing)
                     ' Set suppressed state in administration
                     Me.m_msh.IsSuppressed(msg.Source, msg.Type) = bSuppress
                 End If
