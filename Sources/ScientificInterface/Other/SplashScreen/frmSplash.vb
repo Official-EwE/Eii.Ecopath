@@ -20,6 +20,8 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Text
+Imports EwELicense
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -43,7 +45,18 @@ Friend Class frmSplash
         Me.m_lblEwE.Text = EwEVersion(False, True, False)
         Me.ScaleFont(Me.m_lblEwE)
 
-        Me.m_lblReleaseMode.Text = EwERelease()
+        Dim sb As New StringBuilder()
+        Dim strRelease As String = EwERelease()
+        Dim strRegistration As String = EwERegistration(New cLicense())
+
+        If (Not String.IsNullOrWhiteSpace(strRelease)) Then
+            sb.Append(strRelease)
+        End If
+        If (Not String.IsNullOrWhiteSpace(strRegistration)) Then
+            If (sb.Length > 0) Then sb.AppendLine()
+            sb.Append(strRegistration)
+        End If
+        Me.m_lblReleaseMode.Text = sb.ToString()
 
         Me.CenterToScreen()
 #If DEBUG Then
