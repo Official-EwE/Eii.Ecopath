@@ -117,6 +117,11 @@ Public Class cEcosimArenaManager
             ReDim simdata.PeatArena(ii, pathdata.NumGroups)
 
             Console.WriteLine("#Arena links changed to " & ii)
+        Else
+            Array.Clear(simdata.IlinkSet, 0, simdata.IlinkSet.Length)
+            Array.Clear(simdata.JlinkSet, 0, simdata.JlinkSet.Length)
+            Array.Clear(simdata.KlinkSet, 0, simdata.KlinkSet.Length)
+            Array.Clear(simdata.PeatArena, 0, simdata.PeatArena.Length)
         End If
 
         ii = 0
