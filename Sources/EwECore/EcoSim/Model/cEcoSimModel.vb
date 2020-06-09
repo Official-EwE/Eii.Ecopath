@@ -4353,7 +4353,7 @@ Namespace Ecosim
                 Next
             Next
 
-            If m_Data.PeatArenaSetFromDataBase = False Then DefaultPeatArena() 'initializes Peat array for old models
+            ComplementPeatArena()
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")
 
@@ -4973,38 +4973,59 @@ Namespace Ecosim
 
         End Sub
 
+        ''' <summary>
+        ''' Provide default arenas where necessary after an Ecosim reload
+        ''' </summary>
+        Friend Sub ComplementPeatArena()
 
-        Sub DefaultPeatArena()
-            'sets default peatarena array for models that have not had multiple predators defined to
-            'eat in any foraging arenas and no peatarena values have yet been stored in database
             Dim i As Integer, j As Integer, ii As Integer
-            ii = 0
 
-            For i = 1 To nGroups
-                For j = 1 To nGroups
-                    If m_Data.Consumption(i, j) > 0 Then ii = ii + 1
-                Next j
-            Next i
+            ' This code complements existing shared arenas with defaults where missing
 
-            m_Data.NlinksSet = ii
-            ReDim m_Data.PeatArena(m_Data.NlinksSet, nGroups)
-            ReDim m_Data.IlinkSet(m_Data.NlinksSet)
-            ReDim m_Data.JlinkSet(m_Data.NlinksSet)
-            ReDim m_Data.KlinkSet(m_Data.NlinksSet)
-
-            ii = 0
-
+            ' v1: don't really want to rely on System.Drawing
+            Dim preds As New List(Of System.Drawing.Point)
             For i = 1 To nGroups
                 For j = 1 To nGroups
                     If m_Data.Consumption(i, j) > 0 Then
-                        ii = ii + 1
-                        m_Data.IlinkSet(ii) = i
-                        m_Data.JlinkSet(ii) = j
-                        m_Data.KlinkSet(ii) = j
-                        m_Data.PeatArena(ii, j) = 1
+                        preds.Add(New System.Drawing.Point(i, j))
                     End If
                 Next j
             Next i
+
+            For ii = 1 To m_Data.NlinksSet
+                Dim pt As New System.Drawing.Point(m_Data.IlinkSet(ii), m_Data.JlinkSet(ii))
+                preds.Remove(pt)
+            Next
+
+            If (preds.Count > 0) Then
+
+                ' Does it matter that links are not sorted?
+
+                ii = m_Data.NlinksSet + preds.Count
+
+                ' Cannot redim preserve on left indices
+                'ReDim Preserve m_Data.PeatArena(ii, nGroups)
+                Dim P2(ii, nGroups) As Single
+                For k As Integer = 1 To m_Data.NlinksSet
+                    For j = 1 To nGroups
+                        P2(k, j) = m_Data.PeatArena(k, j)
+                    Next
+                Next
+                m_Data.PeatArena = P2
+
+                ReDim Preserve m_Data.IlinkSet(ii)
+                ReDim Preserve m_Data.JlinkSet(ii)
+                ReDim Preserve m_Data.KlinkSet(ii)
+
+                For k As Integer = 0 To preds.Count - 1
+                    m_Data.IlinkSet(m_Data.NlinksSet + k + 1) = preds(k).X
+                    m_Data.JlinkSet(m_Data.NlinksSet + k + 1) = preds(k).Y
+                    m_Data.KlinkSet(m_Data.NlinksSet + k + 1) = preds(k).Y
+                    m_Data.PeatArena(m_Data.NlinksSet + k + 1, preds(k).Y) = 1
+                Next
+
+                m_Data.NlinksSet = ii
+            End If
 
         End Sub
 
