@@ -4501,9 +4501,11 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim ii As Integer = 0
 
-            ' Consumption is not calculated yet. Cannot set defaults; just set the flag for later
-            ' Me.m_core.m_EcoSim.DefaultPeatArena()
-            ecosimDS.PeatArenaSetFromDataBase = False
+            ' Strategy:
+            ' - Load database as in EwE5
+            ' - Call on Ecosim to patch the data, add defaults where missing, etc
+
+            ' Groups that have disappeared should no longer be around, no need to account for those
 
             Try
                 Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID)))
@@ -4511,10 +4513,7 @@ Namespace DataSources
                 If (n > 0) Then
                     reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0}) ORDER BY Sequence", iScenarioID))
                     ecosimDS.NlinksSet = n
-                    ReDim ecosimDS.IlinkSet(n)
-                    ReDim ecosimDS.JlinkSet(n)
-                    ReDim ecosimDS.KlinkSet(n)
-                    ReDim ecosimDS.PeatArena(n, Me.m_core.nGroups)
+                    ecosimDS.RedimArenas()
 
                     While reader.Read()
 
@@ -4537,7 +4536,6 @@ Namespace DataSources
                     reader = Nothing
 
                     Debug.Assert(ii = n)
-                    ecosimDS.PeatArenaSetFromDataBase = True
                 End If
 
             Catch ex As Exception

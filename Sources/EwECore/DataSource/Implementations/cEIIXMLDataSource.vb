@@ -1642,10 +1642,6 @@ Public Class cEIIXMLDataSource
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         dt.DefaultView.Sort = "Sequence ASC"
 
-        ' Consumption is not calculated yet. Cannot set defaults; just set the flag for later
-        ' Me.m_core.m_EcoSim.DefaultPeatArena()
-        ecosimDS.PeatArenaSetFromDataBase = False
-
         Try
             Dim rows As DataRowCollection = dt.DefaultView.ToTable.Rows()
             'Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0} AND PeatArena > 0)", iScenarioID)))
@@ -1679,7 +1675,6 @@ Public Class cEIIXMLDataSource
                 Next
 
                 Debug.Assert(ii = n)
-                ecosimDS.PeatArenaSetFromDataBase = True
             End If
 
         Catch ex As Exception

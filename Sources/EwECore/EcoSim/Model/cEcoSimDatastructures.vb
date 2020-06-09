@@ -583,7 +583,6 @@ Public Class cEcosimDatastructures
     Public ArenaLink() As Integer
     Public Qlink() As Single 'total ecopath base consumption by trophic link
     Public NlinksSet As Integer 'note number of arena foraging links set from or to database
-    Public PeatArenaSetFromDataBase As Boolean
     Public BoutFeeding As Boolean 'this needs an interface
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -661,6 +660,13 @@ Public Class cEcosimDatastructures
         'jb added this was in ReadStanza
         '  redimStanza()
 
+    End Sub
+
+    Public Sub RedimArenas()
+        ReDim IlinkSet(NlinksSet)
+        ReDim JlinkSet(NlinksSet)
+        ReDim KlinkSet(NlinksSet)
+        ReDim PeatArena(NlinksSet, nGroups)
     End Sub
 
     Private Sub RedimVariabs2()
@@ -1682,7 +1688,6 @@ Public Class cEcosimDatastructures
             d.ArenaLink = ArenaLink.Clone
             d.Qlink = Qlink.Clone
             d.NlinksSet = NlinksSet
-            d.PeatArenaSetFromDataBase = PeatArenaSetFromDataBase
             d.BoutFeeding = BoutFeeding
             d.RelaSwitch = RelaSwitch.Clone
             d.ToDetritus = ToDetritus.Clone
