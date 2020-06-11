@@ -92,12 +92,13 @@ Public Class cMessage
     ''' <param name="Variable"></param>
     ''' <returns></returns>
     ''' <remarks>This is used when the message object is being created to add variables to the message</remarks>
-    Public Function AddVariable(Variable As cVariableStatus) As Boolean
-
-        ' Check for duplicates
-        For Each vs As cVariableStatus In Me.m_variables
-            If Variable.Equals(vs) Then Return True
-        Next
+    Public Function AddVariable(Variable As cVariableStatus, Optional bForceAdd As Boolean = False) As Boolean
+        If (Not bForceAdd) Then
+            ' Check for duplicates
+            For Each vs As cVariableStatus In Me.m_variables
+                If Variable.Equals(vs) Then Return True
+            Next
+        End If
         Me.m_variables.Add(Variable)
         ' JS 06Sep18: Performance boost for messages with large number of variables. Importance is elevated
         ' the moment a message is added; no longer need to iterate of (potentially long) message lists as before

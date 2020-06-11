@@ -44,28 +44,9 @@ Public Class cEcosimArenaManager
 
     Friend Sub Load()
 
-        Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Me.Clear()
-
-        'For i As Integer = 1 To simdata.inlinks
-        '    Dim share As New cEcosimArena(m_core, i)
-        '    share.AllowValidation = False
-        '    Dim iPred As Integer = share.Pred
-        '    Dim iPrey As Integer = share.Prey
-        '    For j As Integer = 1 To Me.m_core.nLivingGroups
-        '        share.ArenaShare(j) = simdata.PeatArena(i, j)
-        '        If (pathdata.DCInput(j, iPrey) = 0) Then
-        '            share.ArenaShareStatus(j) = eStatusFlags.Null Or eStatusFlags.NotEditable
-        '        Else
-        '            share.ArenaShareStatus(j) = eStatusFlags.OK
-        '            n += 1
-        '        End If
-        '    Next
-        '    share.AllowValidation = True
-        '    Me.m_arenas.Add(share)
-        'Next
 
         ReDim m_arenas(simdata.Narena)
 
@@ -78,6 +59,7 @@ Public Class cEcosimArenaManager
             ' A bit of cleverness here: arenas may be reused, remember? That's the entire fun about sharing arenas
             Dim arena As cEcosimArena = Me.m_arenas(iArena)
             If (arena Is Nothing) Then
+                ' Fake a likely unique arena ID
                 Dim iDBID As Integer = simdata.GroupDBID(iPrey) * 10000 + simdata.GroupDBID(iPred)
                 arena = New cEcosimArena(Me.m_core, iDBID, iArena)
                 arena.Prey = iPrey
@@ -103,19 +85,16 @@ Public Class cEcosimArenaManager
         Dim ii As Integer = 0
         For Each arena As cEcosimArena In Me.m_arenas
             If (arena IsNot Nothing) Then
-                For j As Integer = 1 To pathdata.NumLiving
-                    If arena.ArenaShare(j) > 0 Then ii += 1
+                For j As Integer = 1 To simdata.nGroups
+                    Dim prop As Single = arena.ArenaShare(j)
+                    If prop > 0 Then ii += 1
                 Next
             End If
         Next
 
         If (ii <> simdata.NlinksSet) Then
             simdata.NlinksSet = ii
-            ReDim simdata.IlinkSet(ii)
-            ReDim simdata.JlinkSet(ii)
-            ReDim simdata.KlinkSet(ii)
-            ReDim simdata.PeatArena(ii, pathdata.NumGroups)
-
+            simdata.RedimArenaLinks()
             Console.WriteLine("#Arena links changed to " & ii)
         Else
             Array.Clear(simdata.IlinkSet, 0, simdata.IlinkSet.Length)
@@ -127,9 +106,10 @@ Public Class cEcosimArenaManager
         ii = 0
         For Each arena As cEcosimArena In Me.m_arenas
             If (arena IsNot Nothing) Then
-                For j As Integer = 1 To pathdata.NumLiving
+                For j As Integer = 1 To simdata.nGroups
                     Dim prop As Single = arena.ArenaShare(j)
                     If (prop > 0) Then
+
                         ' Sanity check
                         Debug.Assert(pathdata.DCInput(arena.Pred, arena.Prey) > 0)
 
@@ -140,12 +120,12 @@ Public Class cEcosimArenaManager
                         Dim iArena As Integer = simdata.ArenaNo(arena.Prey, arena.Pred)
                         simdata.PeatArena(iArena, j) = prop
 
-                        ' Tampa bay debugging
-
                     End If
                 Next
             End If
         Next
+
+        simdata.DefaultArenas()
 
     End Sub
 
