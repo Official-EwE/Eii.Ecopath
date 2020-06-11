@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreMessages
@@ -1049,11 +1049,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total predation on prey {0} by predator {1} not accounted for. Ecosim has stopped..
+        '''  Looks up a localized string similar to Ecosim total predation not accounted for one or more groups.
         '''</summary>
         Public Shared ReadOnly Property ECOSIM_RUN_ERROR_MISSINGPREDATION() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_RUN_ERROR_MISSINGPREDATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total predation on prey {0} by predator {1} is {2}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSIM_RUN_ERROR_MISSINGPREDATION_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RUN_ERROR_MISSINGPREDATION_DETAIL", resourceCulture)
             End Get
         End Property
         

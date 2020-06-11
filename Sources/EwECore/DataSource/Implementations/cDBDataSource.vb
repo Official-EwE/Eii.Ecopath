@@ -4464,32 +4464,6 @@ Namespace DataSources
 
         Private Function LoadEcosimArenas(iScenarioID As Integer) As Boolean
 
-#Region " EwE5 code "
-            'Sql = "SELECT * from [Ecosim Arena] where modelName='" + lastModel + "' and Scenario='" + SimScenario + "'"
-            'Sql = Sql + " ORDER BY [Ecosim Arena].ArenaNo"
-            'Set g_Recordset = CCG.ReadOnlyRecords(SQL)
-            'If g_Recordset.RecordCount > 0 Then
-            '    If NlinksSet < g_Recordset.RecordCount Then
-            '        NlinksSet = g_Recordset.RecordCount
-            '        ReDim PeatArena(NlinksSet, NumGroups)
-            '        ReDim IlinkSet(NlinksSet)
-            '        ReDim JlinkSet(NlinksSet)
-            '        ReDim KlinkSet(NlinksSet)
-            '    End If
-            '    g_Recordset.MoveFirst
-            '    ii = 0
-            '    Do While Not g_Recordset.EOF
-            '        ii = ii + 1
-            '        ArenaNo = g_Recordset("ArenaNo").value
-            '        IlinkSet(ii) = g_Recordset("IlinkSet").value
-            '        JlinkSet(ii) = g_Recordset("JlinkSet").value
-            '        KlinkSet(ii) = g_Recordset("KlinkSet").value
-            '        PeatArena(ArenaNo, KlinkSet(ii)) = g_Recordset("PeatArena").value
-            '        g_Recordset.MoveNext
-            '    Loop
-            '    PeatArenaSetFromDataBase = True
-#End Region ' EwE5 code
-
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim reader As IDataReader = Nothing
@@ -4501,19 +4475,31 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim ii As Integer = 0
 
+            ' Get consumption and arenas ready. Joe, need to replumb this. Cannot call Ecosim methods in the datasources, but this magic is not yet available via the datastructures
+            ' Oh, and while we're at it: arenas are now validated in cEcosimModel.DefineArenasAndFlowList on sim init. That check needs to be moved to a pre-Ecosim run check
+
+            Dim sim As Ecosim.cEcoSimModel = Me.m_core.m_EcoSim
+            For i As Integer = 1 To ecosimDS.nGroups
+                ecosimDS.StartBiomass(i) = ecopathDS.B(i)
+            Next i
+            sim.CalcEatenOfBy()
+
+            ecosimDS.NlinksSet = 0
+
             ' Strategy:
             ' - Load database as in EwE5
             ' - Call on Ecosim to patch the data, add defaults where missing, etc
+            ' - Groups that have disappeared should no longer be around, no need to account for those
 
-            ' Groups that have disappeared should no longer be around, no need to account for those
+            ' Abandon EwE5 approach of loading arenas by sequence; instead, grab arena no from pred + prey as initialized by Sim, forced here on line 4483
 
             Try
                 Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID)))
 
                 If (n > 0) Then
-                    reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0}) ORDER BY Sequence", iScenarioID))
+                    reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
                     ecosimDS.NlinksSet = n
-                    ecosimDS.RedimArenas()
+                    ecosimDS.RedimArenaLinks()
 
                     While reader.Read()
 
@@ -4521,7 +4507,9 @@ Namespace DataSources
                         iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
                         iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
                         sPeatArena = CSng(reader("PeatArena"))
-                        iArenaNo = CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
+
+                        ' Grab arena no. as initialized from current set-up
+                        iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
 
                         If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0 And iArenaNo > 0) Then
                             ii += 1
@@ -4943,21 +4931,6 @@ Namespace DataSources
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
                 writer = Me.m_db.GetWriter("EcosimScenarioArena")
 
-#Region " EwE5 code "
-                'For i = 1 To NlinksSet
-                '    g_Recordset.AddNew
-                '    g_Recordset.Fields("modelName").value = lastModel
-                '    g_Recordset.Fields("Scenario").value = SimScenario
-                '    Arena = ArenaNo(IlinkSet(i), JlinkSet(i))
-                '    g_Recordset.Fields("ArenaNo").value = Arena ' = ArenaNo(i, JlinkSet(iii))
-                '    g_Recordset.Fields("IlinkSet").value = IlinkSet(i)
-                '    g_Recordset.Fields("JlinkSet").value = JlinkSet(i)
-                '    g_Recordset.Fields("KlinkSet").value = KlinkSet(i)
-                '    g_Recordset.Fields("PeatArena").value = PeatArena(Arena, KlinkSet(i))
-                '    g_Recordset.Update
-                'Next
-#End Region ' EwE5 code
-
                 For i As Integer = 1 To ecosimDS.NlinksSet
                     Dim iPrey As Integer = ecosimDS.IlinkSet(i)
                     Dim iPred As Integer = ecosimDS.JlinkSet(i)
@@ -4966,7 +4939,6 @@ Namespace DataSources
                     Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
                     drow = writer.NewRow()
                     drow("ScenarioID") = iScenarioID
-                    drow("Sequence") = ecosimDS.ArenaNo(ecosimDS.IlinkSet(i), ecosimDS.JlinkSet(i))
                     drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
                     drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
                     drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))

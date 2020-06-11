@@ -256,17 +256,29 @@ Namespace Properties
             Dim changeFlags As eChangeFlags = 0
             Dim iIndex As Integer = cCore.NULL_VALUE
 
+            If (Me.m_Source IsNot Nothing) Then
+                If (Me.m_Source.Disposed) Then
+                    ' This should not happen
+                    Me.Dispose()
+                    Return
+                End If
+            End If
+
             If (Me.m_SourceSec IsNot Nothing) Then
+                If (Me.m_SourceSec.Disposed) Then
+                    ' This should not happen
+                    Me.Dispose()
+                    Return
+                End If
                 iIndex = Me.m_SourceSec.Index
             End If
+
             If (Me.m_iSecIndex <> cCore.NULL_VALUE) Then
                 iIndex = Me.m_iSecIndex
             End If
             iIndex -= Me.m_iSecIndexOffset
 
             If (Me.m_Source IsNot Nothing) Then
-                ' Bail-out
-                If (Me.m_Source.Disposed) Then Return
 
                 ' Get the variable
                 newValue = m_Source.GetVariable(Me.m_VarName, iIndex)

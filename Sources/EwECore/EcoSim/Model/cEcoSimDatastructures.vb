@@ -662,11 +662,80 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-    Public Sub RedimArenas()
+    ''' <summary>
+    ''' Redims the arenas.
+    ''' </summary>
+    ''' <remarks>
+    ''' Make sure both <see cref="Narena"/> and <see cref="NlinksSet"/> are properly initialized prior to redimensioning arenas
+    ''' </remarks>
+    Public Sub RedimArenaLinks()
+
         ReDim IlinkSet(NlinksSet)
         ReDim JlinkSet(NlinksSet)
         ReDim KlinkSet(NlinksSet)
-        ReDim PeatArena(NlinksSet, nGroups)
+
+        ' JS 11Jun20: I'm pretty sure that this redim is a bug: PeatArena must be redimensioned to the no of available arenas, NOT to the number of links (which can be less)
+        ' - Catch-22: the database loading logic needs to know Narena, but the number is only established after Ecosim has loaded. DB logic needs to fix this
+
+        'ReDim PeatArena(NlinksSet, nGroups)
+        ReDim PeatArena(Narena, nGroups)
+
+    End Sub
+
+    ''' <summary>
+    ''' Create default arenas where necessary, but leaves existing arena data intact.
+    ''' </summary>
+    Friend Sub DefaultArenas()
+
+        Dim i As Integer, j As Integer, ii As Integer
+
+        ' This code complements existing shared arenas with defaults where missing
+
+        ' v1: don't really want to rely on System.Drawing
+        Dim preds As New List(Of System.Drawing.Point)
+        For i = 1 To nGroups
+            For j = 1 To nGroups
+                If Consumption(i, j) > 0 Then
+                    preds.Add(New System.Drawing.Point(i, j))
+                End If
+            Next j
+        Next i
+
+        For ii = 1 To NlinksSet
+            Dim pt As New System.Drawing.Point(IlinkSet(ii), JlinkSet(ii))
+            preds.Remove(pt)
+        Next
+
+        If (preds.Count > 0) Then
+
+            ' Does it matter that links are not sorted?
+
+            ii = NlinksSet + preds.Count
+
+            ' Cannot redim preserve on left indices
+            'ReDim Preserve m_Data.PeatArena(ii, nGroups)
+            Dim P2(ii, nGroups) As Single
+            For k As Integer = 1 To NlinksSet
+                For j = 1 To nGroups
+                    P2(k, j) = PeatArena(k, j)
+                Next
+            Next
+            PeatArena = P2
+
+            ReDim Preserve IlinkSet(ii)
+            ReDim Preserve JlinkSet(ii)
+            ReDim Preserve KlinkSet(ii)
+
+            For k As Integer = 0 To preds.Count - 1
+                IlinkSet(NlinksSet + k + 1) = preds(k).X
+                JlinkSet(NlinksSet + k + 1) = preds(k).Y
+                KlinkSet(NlinksSet + k + 1) = preds(k).Y
+                PeatArena(NlinksSet + k + 1, preds(k).Y) = 1
+            Next
+
+            NlinksSet = ii
+        End If
+
     End Sub
 
     Private Sub RedimVariabs2()

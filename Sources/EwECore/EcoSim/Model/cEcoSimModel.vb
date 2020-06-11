@@ -154,7 +154,7 @@ Namespace Ecosim
         '       CapDepreciate(ig)  capital depreciation rate, default 0.06
         '       CapBaseGrowth(ig) initial capital growth rate (proportional, /year), default 0.2
 
-        Private BaseConsumption(50, 50) As Single
+        'Private BaseConsumption(50, 50) As Single
         'Parameter names changed as follows:
         'In CW's ECOSIM  In ECOPATH
         '==============  ==========
@@ -406,7 +406,7 @@ Namespace Ecosim
 
             Me.A = Nothing 'nGroups, nGroups
             Me.RiskRate = Nothing 'nGroups
-            Me.BaseConsumption = Nothing
+            'Me.BaseConsumption = Nothing
 
             Me.ResetPred = Nothing 'nGroups
             Me.EscalePar = Nothing 'm_EPData.NumFleet
@@ -4353,7 +4353,7 @@ Namespace Ecosim
                 Next
             Next
 
-            ComplementPeatArena()
+            m_Data.DefaultArenas()
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")
 
@@ -4401,7 +4401,8 @@ Namespace Ecosim
         ''' </summary>
         ''' <remarks>Eatenby, Eatenof and Consumption are initialized as a function of StartBiomass QB and DC</remarks>
         Friend Sub CalcEatenOfBy()
-            Dim i As Integer, j As Integer
+
+            Dim i As Integer, j As Integer, K As Integer, ii As Integer
 
             'The Diet Matrix could have changed since the last call to this
             'so count the links before populating them
@@ -4439,6 +4440,29 @@ Namespace Ecosim
                     End If
                 Next i
             Next j
+
+            ' Set arenas here. They do not change anymore
+            ' Set up list of foraging arenas defined by nonzero trophic flows
+            ' First count number of arenas
+            m_Data.Narena = 0
+            For i = 1 To nGroups : For j = 1 To m_EPData.NumLiving
+                    If m_Data.Consumption(i, j) > 0 Then m_Data.Narena = m_Data.Narena + 1
+                Next
+            Next
+            ReDim m_Data.Iarena(m_Data.Narena), m_Data.Jarena(m_Data.Narena), m_Data.ArenaNo(nGroups, nGroups)
+
+            'then assign arenas to linear list
+            ii = 0
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
+                        ii = ii + 1
+                        m_Data.Iarena(ii) = i
+                        m_Data.Jarena(ii) = j
+                        m_Data.ArenaNo(i, j) = ii
+                    End If
+                Next
+            Next
 
         End Sub
 
@@ -4973,86 +4997,30 @@ Namespace Ecosim
 
         End Sub
 
-        ''' <summary>
-        ''' Provide default arenas where necessary after an Ecosim reload
-        ''' </summary>
-        Friend Sub ComplementPeatArena()
-
-            Dim i As Integer, j As Integer, ii As Integer
-
-            ' This code complements existing shared arenas with defaults where missing
-
-            ' v1: don't really want to rely on System.Drawing
-            Dim preds As New List(Of System.Drawing.Point)
-            For i = 1 To nGroups
-                For j = 1 To nGroups
-                    If m_Data.Consumption(i, j) > 0 Then
-                        preds.Add(New System.Drawing.Point(i, j))
-                    End If
-                Next j
-            Next i
-
-            For ii = 1 To m_Data.NlinksSet
-                Dim pt As New System.Drawing.Point(m_Data.IlinkSet(ii), m_Data.JlinkSet(ii))
-                preds.Remove(pt)
-            Next
-
-            If (preds.Count > 0) Then
-
-                ' Does it matter that links are not sorted?
-
-                ii = m_Data.NlinksSet + preds.Count
-
-                ' Cannot redim preserve on left indices
-                'ReDim Preserve m_Data.PeatArena(ii, nGroups)
-                Dim P2(ii, nGroups) As Single
-                For k As Integer = 1 To m_Data.NlinksSet
-                    For j = 1 To nGroups
-                        P2(k, j) = m_Data.PeatArena(k, j)
-                    Next
-                Next
-                m_Data.PeatArena = P2
-
-                ReDim Preserve m_Data.IlinkSet(ii)
-                ReDim Preserve m_Data.JlinkSet(ii)
-                ReDim Preserve m_Data.KlinkSet(ii)
-
-                For k As Integer = 0 To preds.Count - 1
-                    m_Data.IlinkSet(m_Data.NlinksSet + k + 1) = preds(k).X
-                    m_Data.JlinkSet(m_Data.NlinksSet + k + 1) = preds(k).Y
-                    m_Data.KlinkSet(m_Data.NlinksSet + k + 1) = preds(k).Y
-                    m_Data.PeatArena(m_Data.NlinksSet + k + 1, preds(k).Y) = 1
-                Next
-
-                m_Data.NlinksSet = ii
-            End If
-
-        End Sub
-
         Sub DefineArenasAndFlowList()
             ' set up list of foraging arenas defined by nonzero trophic flows
             Dim i As Integer, j As Integer, K As Integer, ii As Integer, iii As Integer
             'IlinkSet(2) = 3: JlinkSet(2) = 1: KlinkSet(2) = 2: PeatArena(2, 1) = 1  'test inputs for accounting
             'first count number of arenas
-            m_Data.Narena = 0
-            For i = 1 To nGroups : For j = 1 To m_EPData.NumLiving
-                    If m_Data.Consumption(i, j) > 0 Then m_Data.Narena = m_Data.Narena + 1
-                Next
-            Next
-            ReDim m_Data.Iarena(m_Data.Narena), m_Data.Jarena(m_Data.Narena), m_Data.ArenaNo(nGroups, nGroups)
+            'm_Data.Narena = 0
+            'For i = 1 To nGroups : For j = 1 To m_EPData.NumLiving
+            '        If m_Data.Consumption(i, j) > 0 Then m_Data.Narena = m_Data.Narena + 1
+            '    Next
+            'Next
+            'ReDim m_Data.Iarena(m_Data.Narena), m_Data.Jarena(m_Data.Narena), m_Data.ArenaNo(nGroups, nGroups)
 
-            'then assign arenas to linear list
-            ii = 0
-            For i = 1 To nGroups
-                For j = 1 To nGroups
-                    If m_Data.Consumption(i, j) > 0 Then
-                        ii = ii + 1
-                        m_Data.Iarena(ii) = i
-                        m_Data.Jarena(ii) = j
-                        m_Data.ArenaNo(i, j) = ii
-                    End If
-                Next
-            Next
+            ''then assign arenas to linear list
+            'ii = 0
+            'For i = 1 To nGroups
+            '    For j = 1 To nGroups
+            '        If m_Data.Consumption(i, j) > 0 Then
+            '            ii = ii + 1
+            '            m_Data.Iarena(ii) = i
+            '            m_Data.Jarena(ii) = j
+            '            m_Data.ArenaNo(i, j) = ii
+            '        End If
+            '    Next
+            'Next
 
             'next check to make sure PeatArena(arena,k) accounts for all i,j consumption rates
             Dim Tcon(,) As Single
@@ -5063,19 +5031,26 @@ Namespace Ecosim
                 Tcon(i, j) = Tcon(i, j) + m_Data.PeatArena(m_Data.ArenaNo(i, m_Data.JlinkSet(iii)), j)
             Next
 
+            ' Validate arena use. This check must move prior to running Ecosim, with the option to abort a run
+            ' Bundle messages
+            Dim msg As New cMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
             For i = 1 To nGroups
                 For j = 1 To nGroups
                     If m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
-                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, m_EPData.GroupName(i), m_EPData.GroupName(j)),
-                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
-                            Me.m_publisher.AddMessage(msg)
+                            Dim vs As New cVariableStatus(eStatusFlags.MissingParameter,
+                                                          cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION_DETAIL, m_EPData.GroupName(i), m_EPData.GroupName(j), Tcon(i, j)),
+                                                          eVarNameFlags.EcosimArenaShare, eDataTypes.EcosimArenaShare, eCoreComponentType.EcoSim, i, j)
+                            msg.AddVariable(vs, True)
                             'assign remaining consumption by j of i to the i,j arena
                             m_Data.PeatArena(m_Data.ArenaNo(i, j), j) = m_Data.PeatArena(m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
                         End If
                     End If
                 Next
             Next
+            If (msg.Variables.Count > 0) Then
+                Me.m_publisher.AddMessage(msg)
+            End If
 
             'next count number of nonzero trophic links
             m_Data.inlinks = 0
@@ -5352,7 +5327,7 @@ Namespace Ecosim
                 '       CapDepreciate(ig)  capital depreciation rate, default 0.06
                 '       CapBaseGrowth(ig) initial capital growth rate (proportional, /year), default 0.2
 
-                d.BaseConsumption = DirectCast(BaseConsumption.Clone, Single(,))
+                'd.BaseConsumption = DirectCast(BaseConsumption.Clone, Single(,))
 
 
                 ' d.XplotLast = XplotLast.Clone
