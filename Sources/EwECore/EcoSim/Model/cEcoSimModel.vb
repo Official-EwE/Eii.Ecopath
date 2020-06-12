@@ -1994,12 +1994,12 @@ Namespace Ecosim
             Dim bsuccess As Boolean
 
             Try
-                Dim msg As String
+                Dim msg As cMessage = checkOKToRun()
                 Me.bStopRunning = False
 
-                If Not checkOKToRun(msg) Then
-                    m_publisher.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered,
-                                            eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
+                ' ToDo: support feedback messages here
+                If (msg IsNot Nothing) Then
+                    m_publisher.AddMessage(msg)
                     m_publisher.sendAllMessages()
                     Return False
                 End If
@@ -2373,44 +2373,65 @@ Namespace Ecosim
         End Sub
 
         ''' <summary>
-        ''' Encapsulate all logic that validates the model before it is run
+        ''' Encapsulate all logic that validates the model before it is run.
         ''' </summary>
-        ''' <returns>
-        ''' True OK to run model
-        ''' False Something failed a validation test
+        ''' <returns >
+        ''' A message to indicate that something is wrong and the run cannot continue, or 
+        ''' nothing if Ecosim is ready to run.
         ''' </returns>
-        ''' <remarks>
-        ''' All tests must post some kind of a warning message
-        ''' </remarks>
-        Private Function checkOKToRun(ByRef msg As String) As Boolean
-            Dim nMissing As Integer
+        Private Function checkOKToRun() As cMessage
 
-            msg = Me.ToString
-
-            If m_EPData Is Nothing Then
-                nMissing += 1
-                msg = msg + Environment.NewLine + "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called."
-                cLog.Write(Me.ToString & "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called.")
+            ' ToDo: localize these
+            If (Me.m_EPData Is Nothing) Then
+                Return New cMessage("Ecosim cannot run. Internal eror: Ecopath data is not initialized",
+                                    eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
             End If
 
-            If m_Data Is Nothing Then
-                nMissing += 1
-                msg = msg + Environment.NewLine + "Model not initialized properly: Ecosim data not initialized."
-                cLog.Write(Me.ToString & "Model not initialized properly: Ecosim data not initialized.")
+            If (Me.m_Data Is Nothing) Then
+                Return New cMessage("Ecosim cannot run. Internal eror:  Ecosim data is not initialized",
+                                    eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
             End If
 
-            If m_search Is Nothing Then
-                nMissing += 1
-                msg = msg + Environment.NewLine + "Model not initialized properly: Ecosim data not initialized."
-                cLog.Write(Me.ToString & "Model not initialized properly: Ecosim data not initialized.")
+            If (Me.m_search Is Nothing) Then
+                Return New cMessage("Ecosim cannot run. Internal eror: Search data is not initialized",
+                                    eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
             End If
 
-            Debug.Assert(nMissing = 0, msg)
-            If nMissing > 0 Then
-                Return False
-            Else
-                Return True
+            'next check to make sure PeatArena(arena,k) accounts for all i,j consumption rates
+            Dim Tcon(,) As Single
+            ReDim Tcon(nGroups, nGroups)
+            For iii As Integer = 1 To m_Data.NlinksSet
+                Dim i As Integer = m_Data.IlinkSet(iii)
+                Dim j As Integer = m_Data.KlinkSet(iii)
+                Tcon(i, j) = Tcon(i, j) + m_Data.PeatArena(m_Data.ArenaNo(i, m_Data.JlinkSet(iii)), j)
+            Next
+
+            ' Validate arena use
+            Dim msg As New cMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            For i As Integer = 1 To nGroups
+                For j As Integer = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
+                        If Tcon(i, j) < 1 Then
+                            Dim vs As New cVariableStatus(eStatusFlags.MissingParameter,
+                                                          cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION_DETAIL, m_EPData.GroupName(i), m_EPData.GroupName(j), Tcon(i, j)),
+                                                          eVarNameFlags.EcosimArenaShare, eDataTypes.EcosimArenaShare, eCoreComponentType.EcoSim, i, j)
+                            msg.AddVariable(vs, True)
+                            'assign remaining consumption by j of i to the i,j arena
+                            m_Data.PeatArena(m_Data.ArenaNo(i, j), j) = m_Data.PeatArena(m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
+                        End If
+                    End If
+                Next
+            Next
+
+            If (msg.Variables.Count > 0) Then
+                Return msg
             End If
+
+            If (Me.m_Data.inlinks < Me.m_Data.Narena) Then
+                Return New cMessage("Arena feeding proportions not set properly", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            End If
+
+            Return Nothing
 
         End Function
 
@@ -3145,7 +3166,7 @@ Namespace Ecosim
             'Switching:
             InitRelaSwitch()
 
-            DefineArenasAndFlowList()
+            DefineFlowList()
             SetArenaVulandSearchRates()
 
         End Sub
@@ -4353,7 +4374,7 @@ Namespace Ecosim
                 Next
             Next
 
-            m_Data.DefaultArenas()
+            m_Data.DefaultSharedArenas()
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")
 
@@ -4997,60 +5018,13 @@ Namespace Ecosim
 
         End Sub
 
-        Sub DefineArenasAndFlowList()
+        Sub DefineFlowList()
+
             ' set up list of foraging arenas defined by nonzero trophic flows
             Dim i As Integer, j As Integer, K As Integer, ii As Integer, iii As Integer
-            'IlinkSet(2) = 3: JlinkSet(2) = 1: KlinkSet(2) = 2: PeatArena(2, 1) = 1  'test inputs for accounting
-            'first count number of arenas
-            'm_Data.Narena = 0
-            'For i = 1 To nGroups : For j = 1 To m_EPData.NumLiving
-            '        If m_Data.Consumption(i, j) > 0 Then m_Data.Narena = m_Data.Narena + 1
-            '    Next
-            'Next
-            'ReDim m_Data.Iarena(m_Data.Narena), m_Data.Jarena(m_Data.Narena), m_Data.ArenaNo(nGroups, nGroups)
 
-            ''then assign arenas to linear list
-            'ii = 0
-            'For i = 1 To nGroups
-            '    For j = 1 To nGroups
-            '        If m_Data.Consumption(i, j) > 0 Then
-            '            ii = ii + 1
-            '            m_Data.Iarena(ii) = i
-            '            m_Data.Jarena(ii) = j
-            '            m_Data.ArenaNo(i, j) = ii
-            '        End If
-            '    Next
-            'Next
 
-            'next check to make sure PeatArena(arena,k) accounts for all i,j consumption rates
-            Dim Tcon(,) As Single
-            ReDim Tcon(nGroups, nGroups)
-            For iii = 1 To m_Data.NlinksSet
-                i = m_Data.IlinkSet(iii)
-                j = m_Data.KlinkSet(iii)
-                Tcon(i, j) = Tcon(i, j) + m_Data.PeatArena(m_Data.ArenaNo(i, m_Data.JlinkSet(iii)), j)
-            Next
-
-            ' Validate arena use. This check must move prior to running Ecosim, with the option to abort a run
-            ' Bundle messages
-            Dim msg As New cMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
-            For i = 1 To nGroups
-                For j = 1 To nGroups
-                    If m_Data.Consumption(i, j) > 0 Then
-                        If Tcon(i, j) < 1 Then
-                            Dim vs As New cVariableStatus(eStatusFlags.MissingParameter,
-                                                          cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION_DETAIL, m_EPData.GroupName(i), m_EPData.GroupName(j), Tcon(i, j)),
-                                                          eVarNameFlags.EcosimArenaShare, eDataTypes.EcosimArenaShare, eCoreComponentType.EcoSim, i, j)
-                            msg.AddVariable(vs, True)
-                            'assign remaining consumption by j of i to the i,j arena
-                            m_Data.PeatArena(m_Data.ArenaNo(i, j), j) = m_Data.PeatArena(m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
-                        End If
-                    End If
-                Next
-            Next
-            If (msg.Variables.Count > 0) Then
-                Me.m_publisher.AddMessage(msg)
-            End If
+            ' JS 12Jun20: moved arena validation to a pre-run Sim check
 
             'next count number of nonzero trophic links
             m_Data.inlinks = 0
@@ -5063,14 +5037,6 @@ Namespace Ecosim
                     m_Data.inlinks = m_Data.inlinks + 1
                 End If
             Next
-
-            If m_Data.inlinks < m_Data.Narena Then
-                ' ToDo: globalize this
-                Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly",
-                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
-                ' ToDo: Handle this properly
-                Stop
-            End If
 
             ReDim m_Data.Qlink(m_Data.inlinks), m_Data.ilink(m_Data.inlinks), m_Data.jlink(m_Data.inlinks), m_Data.ArenaLink(m_Data.inlinks)
             ReDim m_Data.MPred(m_Data.inlinks)

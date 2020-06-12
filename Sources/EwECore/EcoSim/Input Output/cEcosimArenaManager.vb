@@ -125,7 +125,7 @@ Public Class cEcosimArenaManager
             End If
         Next
 
-        simdata.DefaultArenas()
+        simdata.DefaultSharedArenas()
 
     End Sub
 
