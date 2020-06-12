@@ -4476,7 +4476,6 @@ Namespace DataSources
             Dim ii As Integer = 0
 
             ' Get consumption and arenas ready. Joe, need to replumb this. Cannot call Ecosim methods in the datasources, but this magic is not yet available via the datastructures
-            ' Oh, and while we're at it: arenas are now validated in cEcosimModel.DefineArenasAndFlowList on sim init. That check needs to be moved to a pre-Ecosim run check
 
             Dim sim As Ecosim.cEcoSimModel = Me.m_core.m_EcoSim
             For i As Integer = 1 To ecosimDS.nGroups
