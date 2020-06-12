@@ -676,7 +676,6 @@ Public Class cEcosimDatastructures
 
         ' JS 11Jun20: I'm pretty sure that this redim is a bug: PeatArena must be redimensioned to the no of available arenas, NOT to the number of links (which can be less)
         ' - Catch-22: the database loading logic needs to know Narena, but the number is only established after Ecosim has loaded. DB logic needs to fix this
-
         'ReDim PeatArena(NlinksSet, nGroups)
         ReDim PeatArena(Narena, nGroups)
 
@@ -685,7 +684,7 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Create default arenas where necessary, but leaves existing arena data intact.
     ''' </summary>
-    Friend Sub DefaultArenas()
+    Friend Sub DefaultSharedArenas()
 
         Dim i As Integer, j As Integer, ii As Integer
 
