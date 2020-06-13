@@ -64,7 +64,7 @@ Namespace Controls.Map
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal sg As cStyleGuide)
+        Public Sub New(core As cCore, sg As cStyleGuide)
             Me.m_core = core
             Me.m_sg = sg
             Me.AllowedToRun = True
@@ -114,7 +114,7 @@ Namespace Controls.Map
         ''' <param name="item">The <see cref="cCoreInputOutputBase"/> to add.</param>
         ''' <param name="iLocation">The location to show this item at.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub AddItem(ByVal item As cCoreInputOutputBase, ByVal iLocation As Integer)
+        Public Sub AddItem(item As cCoreInputOutputBase, iLocation As Integer)
             Me.AddItem(item.Index, iLocation)
         End Sub
 
@@ -125,7 +125,7 @@ Namespace Controls.Map
         ''' <param name="iIndex">The index of the item to add.</param>
         ''' <param name="iLocation">The location to show this item at.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub AddItem(ByVal iIndex As Integer, ByVal iLocation As Integer)
+        Public Sub AddItem(iIndex As Integer, iLocation As Integer)
             If Not Me.m_lItems.Contains(iIndex) Then
                 Me.m_lItems.Add(iIndex)
                 Me.m_lLocations.Add(iLocation)
@@ -149,7 +149,7 @@ Namespace Controls.Map
 
 #Region " Public access "
 
-        Public Overridable Sub Draw(ByVal obParam As Object)
+        Public Overridable Sub Draw(obParam As Object)
 
             Me.AllowedToRun = False
             Dim args As cMapDrawerArgs = DirectCast(obParam, cMapDrawerArgs)
@@ -183,7 +183,7 @@ Namespace Controls.Map
         ''' <param name="iItem"></param>
         ''' <param name="rcPos"></param>
         ''' <param name="Args"></param>
-        Public Overridable Sub DrawMap(ByVal iItem As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
+        Public Overridable Sub DrawMap(iItem As Integer, rcPos As Rectangle, Args As cMapDrawerArgs)
 
             If (Me.Map Is Nothing) Then Return
 
@@ -244,11 +244,11 @@ Namespace Controls.Map
         ''' <param name="lOrigins">A list to receive the map origins onto <paramref name="rcClient"/>.</param>
         ''' <param name="lMaps">A list to receive the map rectangles onto <paramref name="rcClient"/>.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub CalcMapAreas(ByVal rcClient As Rectangle, ByVal iNumMaps As Integer, _
-                                       ByVal iInRow As Integer, ByVal iInCol As Integer, _
-                                       ByRef iNumHorz As Integer, ByRef iNumVert As Integer, _
-                                       ByVal lOrigins As List(Of PointF), _
-                                       ByVal lMaps As List(Of Rectangle))
+        Public Shared Sub CalcMapAreas(rcClient As Rectangle, iNumMaps As Integer,
+                                       iInRow As Integer, iInCol As Integer,
+                                       ByRef iNumHorz As Integer, ByRef iNumVert As Integer,
+                                       lOrigins As List(Of PointF),
+                                       lMaps As List(Of Rectangle))
 
             lOrigins.Clear()
             lMaps.Clear()
@@ -271,9 +271,9 @@ Namespace Controls.Map
                     Dim iRect As Integer = i * iNumHorz + j
                     If iRect < iNumMaps Then
                         Dim origin As PointF = New PointF((iInCol + 1) * j + 1, i * (iInRow + 1) + 1)
-                        Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
-                                                                CInt(origin.Y * yScale), _
-                                                                CInt(iInCol * xScale), _
+                        Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale),
+                                                                CInt(origin.Y * yScale),
+                                                                CInt(iInCol * xScale),
                                                                 CInt(iInRow * yScale))
                         lOrigins.Add(origin)
                         lMaps.Add(rect)

@@ -229,6 +229,13 @@
     <Compile Include="Ecopath\Tools\Taxonomy and traits\gridDefineTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecopath\Tools\TreeMapDiets\cDietFlowMapRenderer.vb" />
+    <Compile Include="Ecopath\Tools\TreeMapDiets\frmEcopathDietTreeMapDiagram.Designer.vb">
+      <DependentUpon>frmEcopathDietTreeMapDiagram.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecopath\Tools\TreeMapDiets\frmEcopathDietTreeMapDiagram.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyOtherMortShape.Designer.vb">
       <DependentUpon>gridApplyOtherMortShape.vb</DependentUpon>
     </Compile>
@@ -1041,6 +1048,9 @@
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Tools\TreeMapDiets\frmEcopathDietTreeMapDiagram.resx">
+      <DependentUpon>frmEcopathDietTreeMapDiagram.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\dlgApplyGroupShape.resx">
       <DependentUpon>dlgApplyGroupShape.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1138,12 +1148,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Sources Internal\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="EwE.licenseheader" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>
@@ -2167,10 +2175,6 @@
     <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>

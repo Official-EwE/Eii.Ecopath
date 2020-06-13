@@ -204,7 +204,7 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
         ''' <summary>
-        ''' Override the bakcground paint routine to elimate flickering.
+        ''' Override the background paint routine to elimate flickering.
         ''' </summary>
         ''' <param name="pevent"></param>
         Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
