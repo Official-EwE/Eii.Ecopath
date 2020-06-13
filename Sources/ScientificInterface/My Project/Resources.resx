@@ -2162,4 +2162,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>A{0}</value>
     <comment>{0}=arena number</comment>
   </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP" xml:space="preserve">
+    <value>Diet tree map</value>
+  </data>
 </root>

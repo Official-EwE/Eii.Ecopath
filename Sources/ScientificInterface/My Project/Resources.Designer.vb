@@ -2337,6 +2337,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Diet tree map.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Discard mortality.
         '''</summary>
         Public ReadOnly Property LABEL_NAV_ECOPATH_OUTPUT_DISCARDMORT() As String
