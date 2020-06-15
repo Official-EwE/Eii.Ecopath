@@ -2944,18 +2944,18 @@ Namespace Ecosim
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
                         '(dB/dt from it is ignored anyway) for split groups, so not worth avoiding doing it for them.
                         If (m_Data.UseVarPQ And m_EPData.vbK(i) > 0) Then
-                                SimGEtemp(i) = m_Data.AssimEff(i) * m_Data.loss(i) / Biomass(i) / (m_Data.loss(i) / Biomass(i) + 3 * m_EPData.vbK(i))
-                            Else
-                                SimGEtemp(i) = m_Data.SimGE(i)
-                            End If
-
-                            deriv(i) = m_EPData.Immig(i) + Biomass(i) * pbb(i) + SimGEtemp(i) * m_Data.Eatenby(i) - m_Data.loss(i)
-                            biomeq(i) = (m_EPData.Immig(i) + m_Data.SimGE(i) * m_Data.Eatenby(i) + pbb(i) * Biomass(i)) / (m_Data.loss(i) / Biomass(i))
+                            SimGEtemp(i) = m_Data.AssimEff(i) * m_Data.loss(i) / Biomass(i) / (m_Data.loss(i) / Biomass(i) + 3 * m_EPData.vbK(i))
                         Else
-                            'Detritus group
-                            'Flow to detritus from imports and immigration
-                            'jb 3-Oct-2013 added immig
-                            DtImpMult = 1
+                            SimGEtemp(i) = m_Data.SimGE(i)
+                        End If
+
+                        deriv(i) = m_EPData.Immig(i) + Biomass(i) * pbb(i) + SimGEtemp(i) * m_Data.Eatenby(i) - m_Data.loss(i)
+                        biomeq(i) = (m_EPData.Immig(i) + m_Data.SimGE(i) * m_Data.Eatenby(i) + pbb(i) * Biomass(i)) / (m_Data.loss(i) / Biomass(i))
+                    Else
+                        'Detritus group
+                        'Flow to detritus from imports and immigration
+                        'jb 3-Oct-2013 added immig
+                        DtImpMult = 1
                         ApplyAVmodifiers(iTimeStepIndex, DtImpMult, 0, MoMult, i, i, True)
                         DetInFlow = m_EPData.DtImp(i) * DtImpMult + m_EPData.Immig(i)
 
