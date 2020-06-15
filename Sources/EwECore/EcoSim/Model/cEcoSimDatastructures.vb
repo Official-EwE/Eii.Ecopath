@@ -573,6 +573,7 @@ Public Class cEcosimDatastructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'new foraging arena variables
     Public Narena As Integer, Iarena() As Integer, Jarena() As Integer
+    ''' <summary>The arena no (prey, pred)</summary>
     Public ArenaNo(,) As Integer
     Public VulArena() As Single
     Public Alink() As Single
@@ -707,29 +708,19 @@ Public Class cEcosimDatastructures
 
         If (preds.Count > 0) Then
 
-            ' Does it matter that links are not sorted?
-
             ii = NlinksSet + preds.Count
-
-            ' Cannot redim preserve on left indices
-            'ReDim Preserve m_Data.PeatArena(ii, nGroups)
-            Dim P2(ii, nGroups) As Single
-            For k As Integer = 1 To NlinksSet
-                For j = 1 To nGroups
-                    P2(k, j) = PeatArena(k, j)
-                Next
-            Next
-            PeatArena = P2
-
             ReDim Preserve IlinkSet(ii)
             ReDim Preserve JlinkSet(ii)
             ReDim Preserve KlinkSet(ii)
 
             For k As Integer = 0 To preds.Count - 1
-                IlinkSet(NlinksSet + k + 1) = preds(k).X
-                JlinkSet(NlinksSet + k + 1) = preds(k).Y
-                KlinkSet(NlinksSet + k + 1) = preds(k).Y
-                PeatArena(NlinksSet + k + 1, preds(k).Y) = 1
+                Dim iPrey As Integer = preds(k).X
+                Dim iPred As Integer = preds(k).Y
+                IlinkSet(NlinksSet + k + 1) = iPrey
+                JlinkSet(NlinksSet + k + 1) = iPred
+                KlinkSet(NlinksSet + k + 1) = iPred
+                Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
+                PeatArena(iArena, preds(k).Y) = 1
             Next
 
             NlinksSet = ii
