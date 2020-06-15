@@ -4475,13 +4475,8 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim ii As Integer = 0
 
-            ' Get consumption and arenas ready. Joe, need to replumb this. Cannot call Ecosim methods in the datasources, but this magic is not yet available via the datastructures
-
-            Dim sim As Ecosim.cEcoSimModel = Me.m_core.m_EcoSim
-            For i As Integer = 1 To ecosimDS.nGroups
-                ecosimDS.StartBiomass(i) = ecopathDS.B(i)
-            Next i
-            sim.CalcEatenOfBy()
+            ' Get consumption and arenas ready
+            Me.m_core.InitEcosimLinks()
 
             ecosimDS.NlinksSet = 0
 

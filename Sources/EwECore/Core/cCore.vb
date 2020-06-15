@@ -6879,6 +6879,16 @@ Public Class cCore
 
     End Function
 
+    Friend Sub InitEcosimLinks()
+
+        ' ToDo: protect this
+        For i As Integer = 1 To Me.m_EcoPathData.NumGroups
+            Me.m_EcoSimData.StartBiomass(i) = Me.m_EcoPathData.B(i)
+        Next i
+        Me.m_EcoSim.CalcEatenOfBy()
+
+    End Sub
+
     Private Sub EcosimMessageHandler(ByRef Message As cMessage)
         m_publisher.AddMessage(Message)
     End Sub
