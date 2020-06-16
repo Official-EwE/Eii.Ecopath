@@ -77,6 +77,9 @@ Public Class cEcosimArenaManager
 
     End Sub
 
+
+
+
     Friend Sub Update()
 
         Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcoPathData

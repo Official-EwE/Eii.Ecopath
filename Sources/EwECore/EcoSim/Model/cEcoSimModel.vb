@@ -4506,7 +4506,7 @@ Namespace Ecosim
         ''' <remarks>
         ''' In the original code this was called "EcoSimFileOpen()"
         ''' this has been restructured to just set Defaults for the EcoSim model
-        ''' defaults that belong to eEcoSimDatastructures are set in eEcoSimDatastructures.SetDefaultParameters()
+        ''' defaults that belong to eEcoSimDatastructures are set in cEcoSimDatastructures.SetDefaultParameters()
         ''' </remarks>
         Public Sub SetDefaultParameters()
             'read ini file stored defaults here 
@@ -5042,17 +5042,18 @@ Namespace Ecosim
             ReDim m_Data.MPred(m_Data.inlinks)
 
             'then set list variables by feeding link (note must be at least as many links as arenas
-            Dim Il As Integer
-            Il = 0
+            Dim Il As Integer = 0
             For iii = 1 To m_Data.NlinksSet
                 i = m_Data.IlinkSet(iii)
                 ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
                 K = m_Data.KlinkSet(iii)
                 If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+                    Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
                     Il = Il + 1
-                    m_Data.ilink(Il) = i
-                    m_Data.jlink(Il) = K
+                    m_Data.ilink(Il) = i 'Prey for this arena link
+                    m_Data.jlink(Il) = K 'Pred for this arena link
                     m_Data.ArenaLink(Il) = ii
+                    'Consumption(iPrey,iPred), PeatArena(Arena, Pred)
                     m_Data.Qlink(Il) = m_Data.Consumption(i, K) * m_Data.PeatArena(ii, K)
                 End If
             Next
@@ -5073,6 +5074,7 @@ Namespace Ecosim
                 ia = m_Data.ArenaLink(ii)
                 Qarena(ia) = Qarena(ia) + m_Data.Qlink(ii)
             Next
+
             'then set initial vulnerable biomasses (V) by arena
             For ii = 1 To m_Data.Narena
                 i = m_Data.Iarena(ii)
