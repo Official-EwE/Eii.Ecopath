@@ -579,7 +579,7 @@ Public Class cEcosimDatastructures
     Public Alink() As Single
     Public IlinkSet() As Integer 'i index of foraging arena with positive feeding on prey i by predator k
     Public JlinkSet() As Integer 'j index of foraging arena having positive feeding on i by predator k
-    Public KlinkSet() As Integer ' index of predator whose peatarea for arenai,j is stored in list element
+    Public KlinkSet() As Integer ' index of predator whose peatarea for arena i,j is stored in list element
     Public PeatArena(,) As Single 'diet proportions by foraging arena from/to database
     Public ArenaLink() As Integer
     Public Qlink() As Single 'total ecopath base consumption by trophic link
