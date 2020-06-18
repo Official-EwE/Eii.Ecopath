@@ -5041,14 +5041,18 @@ Namespace Ecosim
             ReDim m_Data.Qlink(m_Data.inlinks), m_Data.ilink(m_Data.inlinks), m_Data.jlink(m_Data.inlinks), m_Data.ArenaLink(m_Data.inlinks)
             ReDim m_Data.MPred(m_Data.inlinks)
 
-            'then set list variables by feeding link (note must be at least as many links as arenas
+            'then set list variables by feeding link (note must be at least as many links as arenas)
             Dim Il As Integer = 0
             For iii = 1 To m_Data.NlinksSet
                 i = m_Data.IlinkSet(iii)
                 ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
                 K = m_Data.KlinkSet(iii)
                 If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
-                    Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
+                    'Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
+                    If m_Data.PeatArena(ii, K) <> 1.0F Then
+                        System.Console.WriteLine("Prop, " + m_Data.PeatArena(ii, K).ToString + ", Arena, " + ii.ToString + ", Pred, " + K.ToString)
+                    End If
+
                     Il = Il + 1
                     m_Data.ilink(Il) = i 'Prey for this arena link
                     m_Data.jlink(Il) = K 'Pred for this arena link
