@@ -573,7 +573,8 @@ Public Class cEcosimDatastructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'new foraging arena variables
     Public Narena As Integer, Iarena() As Integer, Jarena() As Integer
-    ''' <summary>The arena no (prey, pred)</summary>
+    ''' <summary>The arena number (prey, pred)</summary>
+    ''' <example> [proportion of consumption by pred in arena] = PeatArena(ArenaNo(iprey,ipred),ipred) </example>
     Public ArenaNo(,) As Integer
     Public VulArena() As Single
     Public Alink() As Single
