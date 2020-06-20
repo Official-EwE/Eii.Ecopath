@@ -26,6 +26,19 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class cDietFlowMapRenderer
 
+    Private Class cElementListSorter
+        Implements IComparer(Of cTreeMapRenderer.cTreeMapElement)
+
+        Public Function Compare(x As cTreeMapRenderer.cTreeMapElement, y As cTreeMapRenderer.cTreeMapElement) As Integer Implements IComparer(Of cTreeMapRenderer.cTreeMapElement).Compare
+            If y Is Nothing Then Return -1
+            If x Is Nothing Then Return 1
+            If (x.Value < y.Value) Then Return 1
+            If (x.Value > y.Value) Then Return -1
+            Return 0
+        End Function
+
+    End Class
+
     Private m_uic As cUIContext
     Private m_lPreds As New List(Of Integer)
 
@@ -36,8 +49,9 @@ Public Class cDietFlowMapRenderer
         For i As Integer = 1 To core.nLivingGroups
             Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
             If grp.IsConsumer Then m_lPreds.Add(i)
-            If Me.m_lPreds.Count = 1 Then Exit For
+            'If Me.m_lPreds.Count = 5 Then Exit For
         Next
+        'm_lPreds.Add(48)
 
     End Sub
 
@@ -61,7 +75,7 @@ Public Class cDietFlowMapRenderer
 
                 For i As Integer = 1 To core.nGroups
                     Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
-                    Dim dc As Single = CInt(pred.DietComp(i) * 100)
+                    Dim dc As Single = CInt(pred.DietComp(i))
                     If dc > 0 Then
                         Dim elm As New cTreeMapRenderer.cTreeMapElement()
                         elm.Label = prey.Name
@@ -70,6 +84,8 @@ Public Class cDietFlowMapRenderer
                         elements.Add(elm)
                     End If
                 Next i
+
+                elements.Sort(New cElementListSorter())
                 renderer.DrawTreemap(elements, g, lRects(j - 1), ft)
             Next
         End Using
@@ -100,7 +116,7 @@ Public Class cDietFlowMapRenderer
             For j As Integer = 0 To iNumHorz - 1
                 Dim iRect As Integer = i * iNumHorz + j
                 If iRect < iNumPlots Then
-                    Dim rect As Rectangle = New Rectangle(CInt(xSize * j + 1), CInt(i * ySize + 1), CInt(xSize), CInt(ySize))
+                    Dim rect As Rectangle = New Rectangle(CInt(xSize * j + 3), CInt(i * ySize + 3), CInt(xSize - 6), CInt(ySize - 6))
                     lRects.Add(rect)
                 End If
             Next

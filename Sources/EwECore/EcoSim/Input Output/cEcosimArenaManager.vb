@@ -26,6 +26,18 @@ Imports EwEUtils.Core
 
 Public Class cEcosimArenaManager
 
+    Private Class cArenaSort
+        Implements IComparer(Of cEcosimArena)
+
+        Public Function Compare(x As cEcosimArena, y As cEcosimArena) As Integer Implements IComparer(Of cEcosimArena).Compare
+            If (x Is Nothing) Then Return -1
+            If (y Is Nothing) Then Return 1
+            If (x.iArena < y.iArena) Then Return -1
+            If (x.iArena > y.iArena) Then Return 1
+            Return 0
+        End Function
+    End Class
+
     ' ISsue arena objects, where DBID is constructed from pred and prey combo
     ' Offers array of pred contributions to arena
     ' As Variable (with varname, datatype, validation). Status = NULL where no predator
@@ -53,7 +65,6 @@ Public Class cEcosimArenaManager
         For i As Integer = 1 To simdata.NlinksSet
             Dim iPrey As Integer = simdata.IlinkSet(i)
             Dim iPred As Integer = simdata.JlinkSet(i)
-            Dim iLink As Integer = simdata.KlinkSet(i)
             Dim iArena As Integer = simdata.ArenaNo(iPrey, iPred)
 
             ' A bit of cleverness here: arenas may be reused, remember? That's the entire fun about sharing arenas
@@ -69,11 +80,14 @@ Public Class cEcosimArenaManager
             End If
 
             arena.AllowValidation = False
-            arena.ArenaShare(iLink) = simdata.PeatArena(iArena, iLink)
-            arena.ArenaShareStatus(iLink) = eStatusFlags.OK
+            Dim iPredShared As Integer = simdata.KlinkSet(i)
+            arena.ArenaShare(iPredShared) = simdata.PeatArena(iArena, iPredShared)
+            arena.ArenaShareStatus(iPredShared) = eStatusFlags.OK
             arena.AllowValidation = True
 
         Next
+
+        Array.Sort(Me.m_arenas, New cArenaSort())
 
     End Sub
 
@@ -107,8 +121,12 @@ Public Class cEcosimArenaManager
         End If
 
         ii = 0
-        For Each arena As cEcosimArena In Me.m_arenas
+        For iArena As Integer = 0 To Me.m_arenas.Count - 1
+            Dim arena As cEcosimArena = Me.m_arenas(iArena)
             If (arena IsNot Nothing) Then
+
+                ' This should not have changed, but does not hurt to check
+                Debug.Assert(simdata.ArenaNo(arena.Prey, arena.Pred) = iArena)
                 For j As Integer = 1 To simdata.nGroups
                     Dim prop As Single = arena.ArenaShare(j)
                     If (prop > 0) Then
@@ -120,7 +138,6 @@ Public Class cEcosimArenaManager
                         simdata.IlinkSet(ii) = arena.Prey
                         simdata.JlinkSet(ii) = arena.Pred
                         simdata.KlinkSet(ii) = j
-                        Dim iArena As Integer = simdata.ArenaNo(arena.Prey, arena.Pred)
                         simdata.PeatArena(iArena, j) = prop
 
                     End If
