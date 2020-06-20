@@ -503,6 +503,7 @@ Namespace DataSources
             ''' in the database.</param>
             ''' -----------------------------------------------------------------------
             Public Sub Add(dt As eDataTypes, iIDOrg As Integer, iIDNew As Integer)
+
                 ' Only add useful mappings, please!
                 If iIDOrg = iIDNew Then Return
 
@@ -4517,7 +4518,6 @@ Namespace DataSources
                     Me.m_db.ReleaseReader(reader)
                     reader = Nothing
 
-                    Debug.Assert(ii = n)
                 End If
 
             Catch ex As Exception
@@ -4933,10 +4933,14 @@ Namespace DataSources
                     Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
                     drow = writer.NewRow()
                     drow("ScenarioID") = iScenarioID
-                    drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
-                    drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
-                    drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
+                    ' JS20Jun20: Oh god, had totally forgotten about this.
+                    '   Ecosim group DBID linked to Ecopath groups. Load as such. See SaveEcosimGroup for explanation
+                    '   Just don't try to explain this to your grandmother
+                    drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
+                    drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPred))
+                    drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredShared))
                     drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
+                    drow("Sequence") = iArena
                     writer.AddRow(drow)
                 Next
 

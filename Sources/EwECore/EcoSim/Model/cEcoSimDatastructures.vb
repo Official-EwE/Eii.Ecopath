@@ -675,10 +675,6 @@ Public Class cEcosimDatastructures
         ReDim IlinkSet(NlinksSet)
         ReDim JlinkSet(NlinksSet)
         ReDim KlinkSet(NlinksSet)
-
-        ' JS 11Jun20: I'm pretty sure that this redim is a bug: PeatArena must be redimensioned to the no of available arenas, NOT to the number of links (which can be less)
-        ' - Catch-22: the database loading logic needs to know Narena, but the number is only established after Ecosim has loaded. DB logic needs to fix this
-        'ReDim PeatArena(NlinksSet, nGroups)
         ReDim PeatArena(Narena, nGroups)
 
     End Sub
@@ -721,7 +717,7 @@ Public Class cEcosimDatastructures
                 JlinkSet(NlinksSet + k + 1) = iPred
                 KlinkSet(NlinksSet + k + 1) = iPred
                 Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
-                PeatArena(iArena, preds(k).Y) = 1
+                PeatArena(iArena, iPred) = 1
             Next
 
             NlinksSet = ii
