@@ -6887,6 +6887,9 @@ Public Class cCore
         Next i
         Me.m_EcoSim.CalcEatenOfBy()
 
+        ' Set default arenas
+        Me.m_EcoSimData.DefaultSharedArenas()
+
     End Sub
 
     Private Sub EcosimMessageHandler(ByRef Message As cMessage)
@@ -14531,6 +14534,10 @@ Public Class cCore
 
                 Case eDataTypes.EcosimEnviroResponseFunctionManager
                     Me.m_publisher.AddMessage(New cMessage("Ecosim environmental responses modified", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, eDataTypes.EcosimEnviroResponseFunctionManager))
+
+                Case eDataTypes.EcosimArenaShare
+                    Me.m_ArenaManager.Load()
+                    Me.m_publisher.AddMessage(New cMessage("Arenas modified", TypeOfChange, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimArenaShare))
 
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 

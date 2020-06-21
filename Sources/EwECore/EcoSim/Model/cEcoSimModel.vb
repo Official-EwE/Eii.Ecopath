@@ -343,7 +343,7 @@ Namespace Ecosim
                 CalcEatenOfBy()
                 CalcStartEatenOfBy()
 
-                SetupSimVariables() 'sets vulrate()
+                SetupSimVariables()  'sets vulrate()
 
                 InitialState() 'uses vulrate() to set A()
 
@@ -4374,7 +4374,10 @@ Namespace Ecosim
                 Next
             Next
 
-            m_Data.DefaultSharedArenas()
+            ' In case an implementing datasource did not do this
+            If Me.m_Data.NlinksSet = 0 Then
+                Me.m_Data.DefaultSharedArenas()
+            End If
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")
 

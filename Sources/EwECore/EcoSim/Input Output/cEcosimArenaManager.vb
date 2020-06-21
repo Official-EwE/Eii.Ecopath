@@ -91,9 +91,6 @@ Public Class cEcosimArenaManager
 
     End Sub
 
-
-
-
     Friend Sub Update()
 
         Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -151,6 +148,32 @@ Public Class cEcosimArenaManager
 
 #Region " Public access "
 
+    ''' <summary>
+    ''' Resets the arenas for a given prey. If Prey is 0 or less, all arenas will be reset.
+    ''' </summary>
+    ''' <param name="iPrey">The i prey.</param>
+    Public Sub ResetArenas(iPrey As Integer)
+
+        Dim min As Integer = If(iPrey < 1, 1, iPrey)
+        Dim max As Integer = If(iPrey < 1, Me.m_core.nGroups, iPrey)
+        Dim obj As cEcosimArena = Nothing
+
+        For Each arena As cEcosimArena In Me.m_arenas
+            If (arena IsNot Nothing) Then
+                If (arena.Prey >= min And arena.Prey <= max) Then
+                    arena.Reset()
+                    If (obj Is Nothing) Then obj = arena
+                End If
+            End If
+        Next
+        Me.Update()
+
+        If (obj IsNot Nothing) Then
+            Me.m_core.onChanged(obj, eMessageType.DataModified)
+        End If
+
+    End Sub
+
     Public ReadOnly Property Arenas(prey As Integer) As cEcosimArena()
         Get
             Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -182,48 +205,6 @@ Public Class cEcosimArenaManager
             Return lGroups.ToArray()
         End Get
     End Property
-
-    'Public ReadOnly Property NumArenas As Integer
-    '    Get
-    '        Return m_arenas.Count
-    '    End Get
-    'End Property
-
-    '''' <summary>
-    '''' 
-    '''' </summary>
-    '''' <param name="iArena">One-based arena index</param>
-    '''' <returns></returns>
-    'Public ReadOnly Property Arena(iArena As Integer) As cEcosimArena
-    '    Get
-    '        If (iArena < 1 Or iArena > Me.NumArenas) Then Return Nothing
-    '        Return Me.m_arenas(iArena - 1)
-    '    End Get
-    'End Property
-
-    '' Passthrough
-    'Public ReadOnly Property IArena(i As Integer) As Integer
-    '    Get
-    '        Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
-    '        Return simdata.Iarena(i)
-    '    End Get
-    'End Property
-
-    '' Passthrough
-    'Public ReadOnly Property JArena(i As Integer) As Integer
-    '    Get
-    '        Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
-    '        Return simdata.Jarena(i)
-    '    End Get
-    'End Property
-
-    '' Passthrough
-    'Public ReadOnly Property ArenaNo(i As Integer, j As Integer) As Integer
-    '    Get
-    '        Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
-    '        Return simdata.ArenaNo(i, j)
-    '    End Get
-    'End Property
 
 #End Region ' Public access
 
