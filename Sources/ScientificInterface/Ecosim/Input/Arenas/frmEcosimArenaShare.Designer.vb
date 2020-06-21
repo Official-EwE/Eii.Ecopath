@@ -48,8 +48,8 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimArenaShare))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnSumToOne = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnReset = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnResetAll = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnResetSelected = New System.Windows.Forms.ToolStripButton()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_groups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_grid = New ScientificInterface.Ecosim.gridEcosimArenaShare()
@@ -62,19 +62,19 @@ Namespace Ecosim
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSumToOne, Me.m_tsbnReset})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnResetSelected, Me.m_tsbnResetAll})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             '
-            'm_tsbnSumToOne
+            'm_tsbnResetAll
             '
-            resources.ApplyResources(Me.m_tsbnSumToOne, "m_tsbnSumToOne")
-            Me.m_tsbnSumToOne.Name = "m_tsbnSumToOne"
+            resources.ApplyResources(Me.m_tsbnResetAll, "m_tsbnResetAll")
+            Me.m_tsbnResetAll.Name = "m_tsbnResetAll"
             '
-            'm_tsbnReset
+            'm_tsbnResetSelected
             '
-            resources.ApplyResources(Me.m_tsbnReset, "m_tsbnReset")
-            Me.m_tsbnReset.Name = "m_tsbnReset"
+            resources.ApplyResources(Me.m_tsbnResetSelected, "m_tsbnResetSelected")
+            Me.m_tsbnResetSelected.Name = "m_tsbnResetSelected"
             '
             'm_tlpContent
             '
@@ -168,13 +168,13 @@ Namespace Ecosim
         End Sub
 
         Private WithEvents m_tsMain As cEwEToolstrip
-        Private WithEvents m_tsbnReset As ToolStripButton
+        Private WithEvents m_tsbnResetSelected As ToolStripButton
         Private WithEvents m_tlpContent As TableLayoutPanel
         Private WithEvents m_groups As cGroupListBox
         Private WithEvents m_grid As gridEcosimArenaShare
         Private WithEvents m_hdrPrey As cEwEHeaderLabel
         Private WithEvents m_hdrArenas As cEwEHeaderLabel
-        Private WithEvents m_tsbnSumToOne As ToolStripButton
+        Private WithEvents m_tsbnResetAll As ToolStripButton
     End Class
 
 End Namespace

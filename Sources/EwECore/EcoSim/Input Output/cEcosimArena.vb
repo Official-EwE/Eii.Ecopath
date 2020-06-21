@@ -66,8 +66,16 @@ Public Class cEcosimArena
     ''' </summary>
     Public Property Pred As Integer
 
+    Public Sub Reset()
+        Me.AllowValidation = False
+        For i As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nLivingGroups)
+            Me.ArenaShare(i) = If(i = Me.Pred, 1, 0)
+        Next
+        Me.AllowValidation = True
+    End Sub
+
     Public Overrides Function ToString() As String
-        Return Me.Index & ": pred " & Me.Pred & ", prey " & Me.Prey
+        Return Me.Index & ": prey " & Me.Prey & ", pred " & Me.Pred
     End Function
 
 #Region " Variable via dot '.' operator "

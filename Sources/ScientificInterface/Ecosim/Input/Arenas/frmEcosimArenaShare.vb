@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -52,8 +53,8 @@ Namespace Ecosim
             MyBase.OnLoad(e)
 
             Me.m_groups.GroupListTracking = cGroupListBox.eGroupTrackingType.Manual
-            Me.m_tsbnSumToOne.Image = SharedResources.CalculatorHS
-            Me.m_tsbnReset.Image = SharedResources.ResetHS
+            Me.m_tsbnResetAll.Image = SharedResources.ResetHS
+            Me.m_tsbnResetSelected.Image = SharedResources.ResetHS
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -79,12 +80,28 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSumPreyArenaToOne(sender As Object, e As EventArgs) Handles m_tsbnSumToOne.Click
-            MessageBox.Show("Not implemented yet")
+        Private Sub OnResetAll(sender As Object, e As EventArgs) Handles m_tsbnResetAll.Click
+
+            ' ToDo: globalize this
+
+            Dim man As cEcosimArenaManager = Me.Core.EcosimArenaManager
+            Dim fmsg As New cFeedbackMessage("This will reset all shared arenas. Are you sure that you want to do this?",
+                                             eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Core.Messages.SendMessage(fmsg)
+            If (fmsg.Reply = eMessageReply.YES) Then
+                man.ResetArenas(0)
+            End If
+
         End Sub
 
-        Private Sub OnResetPreyArena(sender As Object, e As EventArgs) Handles m_tsbnReset.Click
-            MessageBox.Show("Not implemented yet")
+        Private Sub OnResetPrey(sender As Object, e As EventArgs) Handles m_tsbnResetSelected.Click
+
+            Dim man As cEcosimArenaManager = Me.Core.EcosimArenaManager
+            Dim grp As cCoreGroupBase = Me.m_groups.SelectedGroup
+            If (grp IsNot Nothing) Then
+                man.ResetArenas(grp.Index)
+            End If
+
         End Sub
 
     End Class

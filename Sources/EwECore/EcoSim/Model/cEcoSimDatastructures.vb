@@ -680,48 +680,38 @@ Public Class cEcosimDatastructures
     End Sub
 
     ''' <summary>
-    ''' Create default arenas where necessary, but leaves existing arena data intact.
+    ''' Set default shared arenas
     ''' </summary>
     Friend Sub DefaultSharedArenas()
 
-        Dim i As Integer, j As Integer, ii As Integer
-
-        ' This code complements existing shared arenas with defaults where missing
+        Dim iPred As Integer, iPrey As Integer, ii As Integer
 
         ' v1: don't really want to rely on System.Drawing
         Dim preds As New List(Of System.Drawing.Point)
-        For i = 1 To nGroups
-            For j = 1 To nGroups
-                If Consumption(i, j) > 0 Then
-                    preds.Add(New System.Drawing.Point(i, j))
+        For iPred = 1 To nGroups
+            For iPrey = 1 To nGroups
+                If Consumption(iPred, iPrey) > 0 Then
+                    ii += 1
                 End If
-            Next j
-        Next i
+            Next iPrey
+        Next iPred
 
-        For ii = 1 To NlinksSet
-            Dim pt As New System.Drawing.Point(IlinkSet(ii), JlinkSet(ii))
-            preds.Remove(pt)
-        Next
+        NlinksSet = ii
+        RedimArenaLinks()
 
-        If (preds.Count > 0) Then
-
-            ii = NlinksSet + preds.Count
-            ReDim Preserve IlinkSet(ii)
-            ReDim Preserve JlinkSet(ii)
-            ReDim Preserve KlinkSet(ii)
-
-            For k As Integer = 0 To preds.Count - 1
-                Dim iPrey As Integer = preds(k).X
-                Dim iPred As Integer = preds(k).Y
-                IlinkSet(NlinksSet + k + 1) = iPrey
-                JlinkSet(NlinksSet + k + 1) = iPred
-                KlinkSet(NlinksSet + k + 1) = iPred
-                Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
-                PeatArena(iArena, iPred) = 1
+        ii = 0
+        For iPred = 1 To nGroups
+            For iPrey = 1 To nGroups
+                If Consumption(iPred, iPrey) > 0 Then
+                    ii += 1
+                    IlinkSet(ii) = iPrey
+                    JlinkSet(ii) = iPred
+                    KlinkSet(ii) = iPred
+                    Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
+                    PeatArena(iArena, iPred) = 1
+                End If
             Next
-
-            NlinksSet = ii
-        End If
+        Next
 
     End Sub
 
