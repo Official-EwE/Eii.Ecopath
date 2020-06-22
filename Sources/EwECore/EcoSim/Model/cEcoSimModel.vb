@@ -4487,6 +4487,7 @@ Namespace Ecosim
                     End If
                 Next
             Next
+            m_Data.Narena = ii
 
         End Sub
 

@@ -686,15 +686,15 @@ Public Class cEcosimDatastructures
 
         Dim iPred As Integer, iPrey As Integer, ii As Integer
 
-        ' v1: don't really want to rely on System.Drawing
-        Dim preds As New List(Of System.Drawing.Point)
         For iPred = 1 To nGroups
             For iPrey = 1 To nGroups
-                If Consumption(iPred, iPrey) > 0 Then
+                If Consumption(iPrey, iPred) > 0 Then
                     ii += 1
                 End If
             Next iPrey
         Next iPred
+
+        Debug.Assert(ii = Me.Narena)
 
         NlinksSet = ii
         RedimArenaLinks()
@@ -702,12 +702,13 @@ Public Class cEcosimDatastructures
         ii = 0
         For iPred = 1 To nGroups
             For iPrey = 1 To nGroups
-                If Consumption(iPred, iPrey) > 0 Then
+                If Consumption(iPrey, iPred) > 0 Then
                     ii += 1
                     IlinkSet(ii) = iPrey
                     JlinkSet(ii) = iPred
                     KlinkSet(ii) = iPred
                     Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
+                    Debug.Assert(iArena > 0)
                     PeatArena(iArena, iPred) = 1
                 End If
             Next
