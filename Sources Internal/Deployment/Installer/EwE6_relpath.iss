@@ -107,6 +107,8 @@ Source: "{#DefRoot}{#DefSrc}\SourceLibrary.dll"; DestDir: "{app}"; Flags: ignore
 Source: "{#DefRoot}{#DefSrc}\SourceGrid2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterfaceShared.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwE6.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EwELicense.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwENetworkAnalysis.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\na
 Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
 Source: "{#DefRoot}{#DefSrc}\EwEPrebalPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\prebal
@@ -161,7 +163,7 @@ Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins
 ; - Roberts Bank only part of PRO
 #if RobertsBank == 1
 Source: "{#DefRoot}{#DefSrc}\RBTDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank   
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
 #endif
 
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
@@ -179,7 +181,6 @@ Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.dll"; DestDir: "{app}\Plugins\
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 #if Compile64Bit == 0
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -295,6 +296,7 @@ Source: "{#DefRoot}{#DefSrc}\SafenetUtils.dll"; DestDir: "{app}\Plugins\"; Flags
 Source: "{#DefRoot}{#DefSrc}\EwEMassApplyEnvResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
 Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
 #endif
+
 [Components]
 Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
 Name: "databases"; Description: "Sample EwE models"; Types: full custom
