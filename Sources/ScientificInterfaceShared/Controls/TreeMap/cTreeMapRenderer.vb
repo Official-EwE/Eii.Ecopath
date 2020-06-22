@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System.Linq
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -39,8 +40,7 @@ Namespace Controls
     ''' </summary>
     Public Class cTreeMapRenderer
 
-        Public Property MinSliceRatio As Double = 0.35
-        Public Property DrawLabels As Boolean = True
+        Private m_uic As cUIContext = Nothing
 
         Public Class cTreeMapElement
             Public Property Label As String = ""
@@ -48,7 +48,30 @@ Namespace Controls
             Public Property Color As Color
         End Class
 
-        Public Sub DrawTreemap(elements As IEnumerable(Of cTreeMapElement), gfx As Graphics, rect As Rectangle, font As Font)
+        Public Sub New(uic As cUIContext)
+            Me.m_uic = uic
+        End Sub
+
+        Public Property MinSliceRatio As Double = 0.35
+        Public Property DrawLabels As Boolean = True
+        Public Property DrawCaption As Boolean = True
+
+        Public Sub DrawTreemap(elements As IEnumerable(Of cTreeMapElement), caption As String, gfx As Graphics, rect As Rectangle)
+
+            If (Me.m_uic Is Nothing) Then Return
+
+            Dim fmt As New StringFormat()
+            fmt.Alignment = StringAlignment.Center
+            fmt.LineAlignment = StringAlignment.Center
+
+            If (Me.DrawCaption) Then
+                Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
+                    Dim rcCaption As New Rectangle(rect.X, rect.Y, rect.Width, ft.Height + 3)
+                    gfx.DrawString(caption, ft, Brushes.Black, rcCaption, fmt)
+                    rect.Y += rcCaption.Height
+                    rect.Height -= rcCaption.Height
+                End Using
+            End If
 
             If (elements.Count = 0) Then Return
 
@@ -62,12 +85,14 @@ Namespace Controls
                 Using br As New SolidBrush(r.Slice.Elements.First().Color)
                     gfx.FillRectangle(br, rc)
                 End Using
-                gfx.DrawRectangle(Pens.Black, rc)
 
                 If Me.DrawLabels Then
-                    gfx.DrawString(r.Slice.Elements.First().Label, font, Brushes.Black, rc)
+                    Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
+                        gfx.DrawString(r.Slice.Elements.First().Label, ft, Brushes.Black, rc, fmt)
+                    End Using
                 End If
             Next
+            gfx.DrawRectangle(Pens.Black, rect)
 
         End Sub
 
@@ -75,41 +100,48 @@ Namespace Controls
 
         Private Function GetSlice(elements As IEnumerable(Of cTreeMapElement), totalSize As Double, sliceWidth As Double) As cSlice
 
-            If Not elements.Any() Then Return Nothing
-            If elements.Count() = 1 Then Return New cSlice With {
-                .Elements = elements,
-                .Size = totalSize
-            }
-            Dim sliceResult As cSliceResult = GetElementsForSlice(elements, sliceWidth)
-            Return New cSlice With {
-                .Elements = elements,
-                .Size = totalSize,
-                .SubSlices = {GetSlice(sliceResult.Elements, sliceResult.ElementsSize, sliceWidth), GetSlice(sliceResult.RemainingElements, 1 - sliceResult.ElementsSize, sliceWidth)}
-            }
+            Dim slice As cSlice = Nothing
+
+            If (Not elements.Any()) Then Return slice
+
+            If (elements.Count() = 1) Then
+                slice = New cSlice()
+                slice.Elements = elements
+                slice.Size = totalSize
+            Else
+                Dim sliceResult As cSliceResult = GetElementsForSlice(elements, sliceWidth)
+                slice = New cSlice()
+                slice.Elements = elements
+                slice.Size = totalSize
+                slice.SubSlices = {GetSlice(sliceResult.Elements, sliceResult.ElementsSize, sliceWidth),
+                                   GetSlice(sliceResult.RemainingElements, 1 - sliceResult.ElementsSize, sliceWidth)}
+            End If
+            Return slice
 
         End Function
 
         Private Function GetElementsForSlice(elements As IEnumerable(Of cTreeMapElement), sliceWidth As Double) As cSliceResult
+
             Dim elementsInSlice As New List(Of cTreeMapElement)()
             Dim remainingElements As New List(Of cTreeMapElement)()
             Dim current As Double = 0
             Dim total As Single = elements.Sum(Function(x) x.Value)
 
             For Each element As cTreeMapElement In elements
-
                 If current > sliceWidth Then
                     remainingElements.Add(element)
                 Else
                     elementsInSlice.Add(element)
-                    current += element.Value / total
+                    current += (element.Value / total)
                 End If
             Next
 
-            Return New cSliceResult With {
-                .Elements = elementsInSlice,
-                .ElementsSize = current,
-                .RemainingElements = remainingElements
-            }
+            Dim result As New cSliceResult()
+            result.Elements = elementsInSlice
+            result.ElementsSize = current
+            result.RemainingElements = remainingElements
+            Return result
+
         End Function
 
         Private Class cSliceResult
@@ -132,40 +164,47 @@ Namespace Controls
             Public Property Height As Integer
         End Class
 
-        Private Iterator Function GetRectangles(slice As cSlice, width As Integer, height As Integer) As IEnumerable(Of cSliceRectangle)
+        Private Function GetRectangles(slice As cSlice, width As Integer, height As Integer) As IEnumerable(Of cSliceRectangle)
 
-            Dim area As New cSliceRectangle With {
-            .Slice = slice,
-            .Width = width,
-            .Height = height
-        }
-            For Each rect As cSliceRectangle In GetRectangles(area)
-                If rect.X + rect.Width > area.Width Then rect.Width = area.Width - rect.X
-                If rect.Y + rect.Height > area.Height Then rect.Height = area.Height - rect.Y
-                Yield rect
-            Next
+            Dim results As New List(Of cSliceRectangle)
+            Dim area As New cSliceRectangle()
+            area.Slice = slice
+            area.Width = width
+            area.Height = height
+
+            If slice.SubSlices Is Nothing Then
+                results.Add(area)
+            Else
+                For Each rect As cSliceRectangle In Me.GetRectangles(area)
+                    If rect.X + rect.Width > area.Width Then rect.Width = area.Width - rect.X
+                    If rect.Y + rect.Height > area.Height Then rect.Height = area.Height - rect.Y
+                    results.Add(rect)
+                Next
+            End If
+
+            Return results.ToArray()
 
         End Function
 
-        Private Iterator Function GetRectangles(sliceRectangle As cSliceRectangle) As IEnumerable(Of cSliceRectangle)
+        Private Function GetRectangles(sliceRectangle As cSliceRectangle) As IEnumerable(Of cSliceRectangle)
 
             Dim isHorizontalSplit As Boolean = sliceRectangle.Width >= sliceRectangle.Height
             Dim currentPos As Integer = 0
+            Dim results As New List(Of cSliceRectangle)
 
             For Each subSlice As cSlice In sliceRectangle.Slice.SubSlices
-                Dim subRect As New cSliceRectangle With {
-                .Slice = subSlice
-            }
                 Dim rectSize As Integer
+                Dim subRect As New cSliceRectangle()
+                subRect.Slice = subSlice
 
                 If isHorizontalSplit Then
-                    rectSize = CInt(Math.Round(sliceRectangle.Width * subSlice.Size))
+                    rectSize = CInt(Math.Ceiling(sliceRectangle.Width * subSlice.Size))
                     subRect.X = sliceRectangle.X + currentPos
                     subRect.Y = sliceRectangle.Y
                     subRect.Width = rectSize
                     subRect.Height = sliceRectangle.Height
                 Else
-                    rectSize = CInt(Math.Round(sliceRectangle.Height * subSlice.Size))
+                    rectSize = CInt(Math.Ceiling(sliceRectangle.Height * subSlice.Size))
                     subRect.X = sliceRectangle.X
                     subRect.Y = sliceRectangle.Y + currentPos
                     subRect.Width = sliceRectangle.Width
@@ -175,13 +214,12 @@ Namespace Controls
                 currentPos += rectSize
 
                 If subSlice.Elements.Count() > 1 Then
-                    For Each rc As cSliceRectangle In GetRectangles(subRect)
-                        Yield rc
-                    Next
+                    results.AddRange(Me.GetRectangles(subRect))
                 ElseIf subSlice.Elements.Count() = 1 Then
-                    Yield subRect
+                    results.Add(subRect)
                 End If
             Next
+            Return results
 
         End Function
 
