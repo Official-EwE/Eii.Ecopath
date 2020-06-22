@@ -31,7 +31,7 @@ Public Class cEcosimArenaManager
 
         Public Function Compare(x As cEcosimArena, y As cEcosimArena) As Integer Implements IComparer(Of cEcosimArena).Compare
             If (x Is Nothing) Then Return -1
-            If (y Is Nothing) Then Return -1
+            If (y Is Nothing) Then Return 1
             If (x.iArena < y.iArena) Then Return -1
             If (x.iArena > y.iArena) Then Return 1
             Return 0
