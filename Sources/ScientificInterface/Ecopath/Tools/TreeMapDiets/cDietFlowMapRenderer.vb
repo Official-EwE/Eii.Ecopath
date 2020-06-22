@@ -66,29 +66,27 @@ Public Class cDietFlowMapRenderer
         ' For now, draw all living groups
         Me.CalcMapAreas(rc, Me.m_lPreds.Count, lRects)
 
-        Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-            For j As Integer = 1 To Me.m_lPreds.Count
-                Dim renderer As New cTreeMapRenderer()
-                Dim elements As New List(Of cTreeMapRenderer.cTreeMapElement)
-                Dim iPred As Integer = Me.m_lPreds(j - 1)
-                Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
+        For j As Integer = 1 To Me.m_lPreds.Count
+            Dim renderer As New cTreeMapRenderer(Me.m_uic)
+            Dim elements As New List(Of cTreeMapRenderer.cTreeMapElement)
+            Dim iPred As Integer = Me.m_lPreds(j - 1)
+            Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
 
-                For i As Integer = 1 To core.nGroups
-                    Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
-                    Dim dc As Single = CInt(pred.DietComp(i))
-                    If dc > 0 Then
-                        Dim elm As New cTreeMapRenderer.cTreeMapElement()
-                        elm.Label = prey.Name
-                        elm.Color = sg.GroupColor(core, i)
-                        elm.Value = dc
-                        elements.Add(elm)
-                    End If
-                Next i
+            For i As Integer = 1 To core.nGroups
+                Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
+                Dim dc As Single = pred.DietComp(i)
+                If dc > 0 Then
+                    Dim elm As New cTreeMapRenderer.cTreeMapElement()
+                    elm.Label = prey.Name
+                    elm.Color = sg.GroupColor(core, i)
+                    elm.Value = dc
+                    elements.Add(elm)
+                End If
+            Next i
 
-                elements.Sort(New cElementListSorter())
-                renderer.DrawTreemap(elements, g, lRects(j - 1), ft)
-            Next
-        End Using
+            elements.Sort(New cElementListSorter())
+            renderer.DrawTreemap(elements, pred.Name, g, lRects(j - 1))
+        Next
 
     End Sub
 
