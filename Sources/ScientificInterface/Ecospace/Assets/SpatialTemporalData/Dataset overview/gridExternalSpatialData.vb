@@ -35,7 +35,7 @@ Namespace Ecospace
 
     <CLSCompliant(False)>
     Public Class gridExternalSpatialData
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Class cConnectionInfo
             Public Sub New(adt As cSpatialDataAdapter, layer As cEcospaceLayer, Optional iIndex As Integer = 0)
@@ -99,12 +99,12 @@ Namespace Ecospace
 
             Me.Redim(1, Me.m_nBaseCols + cSpatialDataStructures.cMAX_CONN)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_MAP)
-            Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(My.Resources.HEADER_DRIVER_ENABLED)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_MAP)
+            Me(0, eColumnTypes.Enabled) = New cEwEColumnHeaderCell(My.Resources.HEADER_DRIVER_ENABLED)
 
             For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(cStringUtils.Localize(SharedResources.HEADER_SLOT, i))
+                Me(0, Me.m_nBaseCols + i - 1) = New cEwEColumnHeaderCell(cStringUtils.Localize(SharedResources.HEADER_SLOT, i))
             Next
 
             Me.FixedColumns = Me.m_nBaseCols
@@ -122,7 +122,7 @@ Namespace Ecospace
             Dim strAdapter As String = ""
             Dim layer As cEcospaceLayer = Nothing
             Dim layers() As cEcospaceLayer = Nothing
-            Dim hgcGroup As EwEHierarchyGridCell = Nothing
+            Dim hgcGroup As cEwEHierarchyGridCell = Nothing
             Dim iRow As Integer = 0
 
             Dim vizParent As New cVisualizerEwEParentRowHeader()
@@ -145,12 +145,12 @@ Namespace Ecospace
 
                     ' Header row
                     iRow = Me.AddRow()
-                    hgcGroup = New EwEHierarchyGridCell()
+                    hgcGroup = New cEwEHierarchyGridCell()
                     Me(iRow, eColumnTypes.Index) = hgcGroup
-                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(strAdapter)
+                    Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(strAdapter)
                     Me(iRow, eColumnTypes.Name).VisualModel = vizParent
                     For i As Integer = 2 To Me.ColumnsCount - 1
-                        Me(iRow, i) = New EwEColumnHeaderCell("")
+                        Me(iRow, i) = New cEwEColumnHeaderCell("")
                     Next
 
                     ' All layers
@@ -162,11 +162,11 @@ Namespace Ecospace
                         If (bHasConnections Or (Me.m_bOnlyShowConnected = False)) Then
 
                             iRow = Me.AddRow()
-                            Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(layer.Index))
-                            Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(layer.Name)
+                            Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(layer.Index))
+                            Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(layer.Name)
                             Me(iRow, eColumnTypes.Name).VisualModel = vizChild
 
-                            Me(iRow, eColumnTypes.Enabled) = New EwECheckboxCell(adt.IsEnabled(layer.Index))
+                            Me(iRow, eColumnTypes.Enabled) = New cEwECheckboxCell(adt.IsEnabled(layer.Index))
                             Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
 
                             Dim conns As cSpatialDataConnection() = adt.Connections(layer.Index)
@@ -178,7 +178,7 @@ Namespace Ecospace
                                 Else
                                     conn = Nothing
                                 End If
-                                Me(iRow, j + Me.m_nBaseCols) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.OK)
+                                Me(iRow, j + Me.m_nBaseCols) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.OK)
                                 Me(iRow, j + Me.m_nBaseCols).Behaviors.Add(Me.m_bmCell)
                             Next
                             hgcGroup.AddChildRow(iRow)

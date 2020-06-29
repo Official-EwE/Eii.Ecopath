@@ -36,7 +36,7 @@ Imports SourceGrid2
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class gridDefineTaxonomy
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Privates "
 
@@ -579,27 +579,27 @@ Public Class gridDefineTaxonomy
         Me.Redim(1, iNumCols)
 
         ' Group index cell
-        Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
-        Me(0, eColumnTypes.PropB) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropBiomass)
-        Me(0, eColumnTypes.PropC) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropCatch)
-        Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(eVarNameFlags.Phylum)
-        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(eVarNameFlags.Class)
-        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(eVarNameFlags.Order)
-        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(eVarNameFlags.Family)
-        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(eVarNameFlags.Genus)
-        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(eVarNameFlags.Species)
-        Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+        Me(0, eColumnTypes.Hierarchy) = New cEwEColumnHeaderCell()
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
+        Me(0, eColumnTypes.PropB) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonPropBiomass)
+        Me(0, eColumnTypes.PropC) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonPropCatch)
+        Me(0, eColumnTypes.Phylum) = New cEwEColumnHeaderCell(eVarNameFlags.Phylum)
+        Me(0, eColumnTypes.Class) = New cEwEColumnHeaderCell(eVarNameFlags.Class)
+        Me(0, eColumnTypes.Order) = New cEwEColumnHeaderCell(eVarNameFlags.Order)
+        Me(0, eColumnTypes.Family) = New cEwEColumnHeaderCell(eVarNameFlags.Family)
+        Me(0, eColumnTypes.Genus) = New cEwEColumnHeaderCell(eVarNameFlags.Genus)
+        Me(0, eColumnTypes.Species) = New cEwEColumnHeaderCell(eVarNameFlags.Species)
+        Me(0, eColumnTypes.Status) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         If (Me.m_bShowCodes) Then
-            Me(0, eColumnTypes.CodeFishBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
-            Me(0, eColumnTypes.CodeSeaLifeBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
-            Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
-            Me(0, eColumnTypes.CodeAquaMaps) = New EwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
-            Me(0, eColumnTypes.CodeOBIS) = New EwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
-            Me(0, eColumnTypes.CodeAphia) = New EwEColumnHeaderCell(eVarNameFlags.CodeAphia)
-            Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(eVarNameFlags.CodeFAO)
-            Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(eVarNameFlags.CodeLSID)
+            Me(0, eColumnTypes.CodeFishBase) = New cEwEColumnHeaderCell(eVarNameFlags.CodeFB)
+            Me(0, eColumnTypes.CodeSeaLifeBase) = New cEwEColumnHeaderCell(eVarNameFlags.CodeSLB)
+            Me(0, eColumnTypes.CodeSAUP) = New cEwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
+            Me(0, eColumnTypes.CodeAquaMaps) = New cEwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
+            Me(0, eColumnTypes.CodeOBIS) = New cEwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
+            Me(0, eColumnTypes.CodeAphia) = New cEwEColumnHeaderCell(eVarNameFlags.CodeAphia)
+            Me(0, eColumnTypes.CodeFAO) = New cEwEColumnHeaderCell(eVarNameFlags.CodeFAO)
+            Me(0, eColumnTypes.CodeLSID) = New cEwEColumnHeaderCell(eVarNameFlags.CodeLSID)
         End If
 
         Me.FixedColumns = 1
@@ -620,7 +620,7 @@ Public Class gridDefineTaxonomy
         Dim grp As cEcoPathGroupInput = Nothing
         Dim abStanzaHandled(Me.Core.nStanzas) As Boolean
         Dim iRow As Integer = 0
-        Dim hgcParent As EwEHierarchyGridCell = Nothing
+        Dim hgcParent As cEwEHierarchyGridCell = Nothing
         Dim taxon As cTaxon = Nothing
         Dim ti As cTaxonInfo = Nothing
 
@@ -641,13 +641,13 @@ Public Class gridDefineTaxonomy
                     iRow = Me.AddRow()
                     stz = Me.Core.StanzaGroups(grp.iStanza)
 
-                    hgcParent = New EwEHierarchyGridCell()
+                    hgcParent = New cEwEHierarchyGridCell()
                     hgcParent.Tag = stz
 
                     Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stz, eVarNameFlags.Name, Nothing, hgcParent)
+                    Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderParentCell(Me.PropertyManager, stz, eVarNameFlags.Name, Nothing, hgcParent)
                     For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                        Me(iRow, iCol) = New EwERowHeaderCell("")
+                        Me(iRow, iCol) = New cEwERowHeaderCell("")
                     Next
 
                     For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
@@ -663,13 +663,13 @@ Public Class gridDefineTaxonomy
                 ' Add regular group row
                 iRow = Me.AddRow()
 
-                hgcParent = New EwEHierarchyGridCell()
+                hgcParent = New cEwEHierarchyGridCell()
                 hgcParent.Tag = grp
 
                 Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(String.Format(SharedResources.GENERIC_LABEL_INDEXED, grp.Index, grp.Name))
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(String.Format(SharedResources.GENERIC_LABEL_INDEXED, grp.Index, grp.Name))
                 For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                    Me(iRow, iCol) = New EwERowHeaderCell("")
+                    Me(iRow, iCol) = New cEwERowHeaderCell("")
                 Next
 
                 For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
@@ -768,7 +768,7 @@ Public Class gridDefineTaxonomy
 
     Private Function FindParentRow(ByVal iRow As Integer) As Integer
         If iRow < 1 Then Return -1
-        While (iRow > 0) And Not (TypeOf Me(iRow, eColumnTypes.Hierarchy) Is EwEHierarchyGridCell)
+        While (iRow > 0) And Not (TypeOf Me(iRow, eColumnTypes.Hierarchy) Is cEwEHierarchyGridCell)
             iRow -= 1
         End While
         Return iRow
@@ -776,62 +776,62 @@ Public Class gridDefineTaxonomy
 
     Private Function AddTaxonRow(ByVal ti As cTaxonInfo, Optional ByVal iRow As Integer = -1) As Integer
 
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         If iRow = -1 Then
             iRow = Me.FindParentRow(Me.SelectedRow)
         End If
 
-        Dim hgcParent As EwEHierarchyGridCell = DirectCast(Me(iRow, eColumnTypes.Hierarchy), EwEHierarchyGridCell)
+        Dim hgcParent As cEwEHierarchyGridCell = DirectCast(Me(iRow, eColumnTypes.Hierarchy), cEwEHierarchyGridCell)
         iRow += hgcParent.NumChildRows + 1
         Me.Rows.Insert(iRow)
-        Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell()
+        Me(iRow, eColumnTypes.Hierarchy) = New cEwERowHeaderCell()
         Me(iRow, eColumnTypes.Hierarchy).Tag = ti
-        Me(iRow, eColumnTypes.Name) = New EwECell(ti.Common, GetType(String))
+        Me(iRow, eColumnTypes.Name) = New cEwECell(ti.Common, GetType(String))
         Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Species) = New EwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.Taxon)
+        Me(iRow, eColumnTypes.Species) = New cEwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.Taxon)
         Me(iRow, eColumnTypes.Species).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Genus) = New EwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.Taxon)
+        Me(iRow, eColumnTypes.Genus) = New cEwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.Taxon)
         Me(iRow, eColumnTypes.Genus).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Family) = New EwECell(ti.Family, GetType(String))
+        Me(iRow, eColumnTypes.Family) = New cEwECell(ti.Family, GetType(String))
         Me(iRow, eColumnTypes.Family).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Order) = New EwECell(ti.Order, GetType(String))
+        Me(iRow, eColumnTypes.Order) = New cEwECell(ti.Order, GetType(String))
         Me(iRow, eColumnTypes.Order).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Class) = New EwECell(ti.Class, GetType(String))
+        Me(iRow, eColumnTypes.Class) = New cEwECell(ti.Class, GetType(String))
         Me(iRow, eColumnTypes.Class).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Phylum) = New EwECell(ti.Phylum, GetType(String))
+        Me(iRow, eColumnTypes.Phylum) = New cEwECell(ti.Phylum, GetType(String))
         Me(iRow, eColumnTypes.Phylum).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.PropB) = New EwECell(ti.PropB, GetType(Single))
+        Me(iRow, eColumnTypes.PropB) = New cEwECell(ti.PropB, GetType(Single))
         Me(iRow, eColumnTypes.PropB).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.PropC) = New EwECell(ti.PropC, GetType(Single))
+        Me(iRow, eColumnTypes.PropC) = New cEwECell(ti.PropC, GetType(Single))
         Me(iRow, eColumnTypes.PropC).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Status) = New EwEStatusCell(eItemStatusTypes.Original)
+        Me(iRow, eColumnTypes.Status) = New cEwEStatusCell(eItemStatusTypes.Original)
 
         If (Me.m_bShowCodes) Then
 
             ' == CODE cells
             'Me(iRow, eColumnTypes.Code) = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-            cell = New EwECell(ti.CodeFishBase, GetType(Long))
+            cell = New cEwECell(ti.CodeFishBase, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
             Me(iRow, eColumnTypes.CodeFishBase) = cell
 
-            cell = New EwECell(ti.CodeSeaLifeBase, GetType(Long))
+            cell = New cEwECell(ti.CodeSeaLifeBase, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
             Me(iRow, eColumnTypes.CodeSeaLifeBase) = cell
 
-            cell = New EwECell(ti.CodeSAUP, GetType(Long))
+            cell = New cEwECell(ti.CodeSAUP, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
             Me(iRow, eColumnTypes.CodeSAUP) = cell
 
-            cell = New EwECell(ti.CodeOBIS, GetType(Long))
+            cell = New cEwECell(ti.CodeOBIS, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
             Me(iRow, eColumnTypes.CodeOBIS) = cell
 
-            Me(iRow, eColumnTypes.CodeFAO) = New EwECell(ti.CodeFAO, GetType(String))
-            Me(iRow, eColumnTypes.CodeLSID) = New EwECell(ti.CodeLSID, GetType(String))
-            Me(iRow, eColumnTypes.CodeAquaMaps) = New EwECell(ti.CodeAquaMaps, GetType(String))
-            Me(iRow, eColumnTypes.CodeAphia) = New EwECell(ti.CodeAphia, GetType(String))
+            Me(iRow, eColumnTypes.CodeFAO) = New cEwECell(ti.CodeFAO, GetType(String))
+            Me(iRow, eColumnTypes.CodeLSID) = New cEwECell(ti.CodeLSID, GetType(String))
+            Me(iRow, eColumnTypes.CodeAquaMaps) = New cEwECell(ti.CodeAquaMaps, GetType(String))
+            Me(iRow, eColumnTypes.CodeAphia) = New cEwECell(ti.CodeAphia, GetType(String))
 
         End If
 
@@ -844,7 +844,7 @@ Public Class gridDefineTaxonomy
         If iRow <= 0 Then iRow = Me.SelectedRow
         Dim iRowParent As Integer = Me.FindParentRow(iRow)
         If iRowParent >= 1 Then
-            Dim hgcParent As EwEHierarchyGridCell = DirectCast(Me(iRowParent, eColumnTypes.Hierarchy), EwEHierarchyGridCell)
+            Dim hgcParent As cEwEHierarchyGridCell = DirectCast(Me(iRowParent, eColumnTypes.Hierarchy), cEwEHierarchyGridCell)
             hgcParent.RemoveChildRow(iRow)
             Me.Rows.Remove(iRow)
         End If

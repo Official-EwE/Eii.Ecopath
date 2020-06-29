@@ -29,7 +29,7 @@ Imports SourceGrid2.Cells
 
 <CLSCompliant(False)> _
 Public Class gridWeightTS
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Enum eColumnTypes As Integer
         Name = 0
@@ -91,11 +91,11 @@ Public Class gridWeightTS
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        Me(0, eColumnTypes.Type) = New EwEColumnHeaderCell(SharedResources.HEADER_TYPE)
-        Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLE)
-        Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
-        Me(0, eColumnTypes.CV) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Type) = New cEwEColumnHeaderCell(SharedResources.HEADER_TYPE)
+        Me(0, eColumnTypes.Enabled) = New cEwEColumnHeaderCell(SharedResources.HEADER_ENABLE)
+        Me(0, eColumnTypes.Weight) = New cEwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
+        Me(0, eColumnTypes.CV) = New cEwEColumnHeaderCell(SharedResources.HEADER_CV)
 
     End Sub
 
@@ -139,10 +139,10 @@ Public Class gridWeightTS
 
         If Not bCanEnable Then style = cStyleGuide.eStyleFlags.NotEditable
 
-        cell = New EwERowHeaderCell(ts.Name)
+        cell = New cEwERowHeaderCell(ts.Name)
         Me(iRow, eColumnTypes.Name) = cell
 
-        cell = New EwERowHeaderCell(fmt.ToString(ts.TimeSeriesType))
+        cell = New cEwERowHeaderCell(fmt.ToString(ts.TimeSeriesType))
         Me(iRow, eColumnTypes.Type) = cell
 
         cell = New SourceGrid2.Cells.Real.CheckBox(ts.Enabled)
@@ -153,12 +153,12 @@ Public Class gridWeightTS
         '' #1079: only allow weight for reference series
         'If ts.IsReference Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
 
-        cell = New EwECell(ts.WtType, GetType(Single), style)
+        cell = New cEwECell(ts.WtType, GetType(Single), style)
         Me(iRow, eColumnTypes.Weight) = cell
 
-        cell = New EwECell(ts.CV, GetType(Single), style)
+        cell = New cEwECell(ts.CV, GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
-        DirectCast(cell, EwECell).SuppressZero = True
+        DirectCast(cell, cEwECell).SuppressZero = True
         Me(iRow, eColumnTypes.CV) = cell
 
         'If Not ts.IsReference Then
@@ -178,9 +178,9 @@ Public Class gridWeightTS
 
     Protected Sub UpdateRow(iRow As Integer)
 
-        Dim cellCV As EwECell = DirectCast(Me(iRow, eColumnTypes.CV), EwECell)
+        Dim cellCV As cEwECell = DirectCast(Me(iRow, eColumnTypes.CV), cEwECell)
         Dim sCV As Single = CSng(cellCV.GetValue(New SourceGrid2.Position(iRow, eColumnTypes.CV)))
-        Dim cellWeight As EwECell = DirectCast(Me(iRow, eColumnTypes.Weight), EwECell)
+        Dim cellWeight As cEwECell = DirectCast(Me(iRow, eColumnTypes.Weight), cEwECell)
         Dim sWeight As Single = CSng(cellWeight.GetValue(New SourceGrid2.Position(iRow, eColumnTypes.Weight)))
         Dim cellEnable As ICell = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
         Dim ts As cTimeSeries = DirectCast(cellEnable.Tag, cTimeSeries)

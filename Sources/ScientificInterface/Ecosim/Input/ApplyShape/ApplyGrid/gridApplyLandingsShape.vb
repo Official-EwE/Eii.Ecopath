@@ -99,23 +99,23 @@ Namespace Ecosim
             ' Define grid dimensions
             Me.Redim(Core.nLivingGroups + 1, Core.nFleets + 2)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 fleet = Me.Core.EcopathFleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New EwEColumnHeaderCell(fleet.Name)
+                Me(0, 1 + iFleet) = New cEwEColumnHeaderCell(fleet.Name)
                 Me(0, 1 + iFleet).Behaviors.Add(Me.m_bmRowCol)
             Next
 
             For iGroup As Integer = 1 To Core.nLivingGroups
                 group = Core.EcoPathGroupInputs(iGroup)
                 ' # Group name row header cells
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
                 Me(iGroup, 1).Behaviors.Add(Me.m_bmRowCol)
             Next
 
@@ -125,7 +125,7 @@ Namespace Ecosim
 
             Dim ff As cForcingFunction = Nothing
             Dim interaction As cMediatedInteraction = Nothing
-            Dim cellBlocked As EwECell = Nothing
+            Dim cellBlocked As cEwECell = Nothing
             Dim fmt As New cMonetaryTypeFormatter()
             Dim ri As New RegionInfo(CultureInfo.CurrentUICulture.LCID)
             Dim strSymbol As String = fmt.ToString(ri, eDescriptorTypes.Symbol)
@@ -161,7 +161,7 @@ Namespace Ecosim
 
                     Else
                         ' #No: cannot assign FF to this pred/prey combo
-                        cellBlocked = New EwECell(Nothing, GetType(Single))
+                        cellBlocked = New cEwECell(Nothing, GetType(Single))
                         '  Setup default cell
                         cellBlocked.Style = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                         ' Apply cell to the grid

@@ -68,7 +68,7 @@ Public Class cEwEGridShapeThumbnailVisualizer
 
         If (shape Is Nothing) Then Return
 
-        Dim grid As EwEGrid = DirectCast(cell.Grid, EwEGrid)
+        Dim grid As cEwEGrid = DirectCast(cell.Grid, cEwEGrid)
         Dim rcBmp As New Rectangle(0, 0, rcClient.Width, rcClient.Height)
         Dim img As New Bitmap(rcClient.Width, rcClient.Height)
 
@@ -86,7 +86,7 @@ Public Class cEwEGridShapeThumbnailVisualizer
                                                 ByVal e As System.Windows.Forms.PaintEventArgs, _
                                                 ByVal rcClient As System.Drawing.Rectangle, _
                                                 ByVal status As SourceGrid2.DrawCellStatus)
-        Dim grid As EwEGrid = DirectCast(cell.Grid, EwEGrid)
+        Dim grid As cEwEGrid = DirectCast(cell.Grid, cEwEGrid)
         Using br As New SolidBrush(grid.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND))
             e.Graphics.FillRectangle(br, rcClient)
         End Using

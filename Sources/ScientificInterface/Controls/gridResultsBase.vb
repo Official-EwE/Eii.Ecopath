@@ -38,7 +38,7 @@ Namespace Controls
     ''' </summary>
     <CLSCompliant(False)> _
     Public MustInherit Class gridResultsBase
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
@@ -62,19 +62,19 @@ Namespace Controls
         ''' <remarks></remarks>
         Protected Sub InitCells(ByVal iRow As Integer, ByVal astrNames() As String, ByVal aiCalc() As Integer)
 
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
             Dim cnt As Integer = Me.RowsCount - 1
 
             For rowIndex As Integer = (cnt + 1) To cnt + iRow - 1
                 'Insert a new row
                 Me.Rows.Insert(rowIndex)
 
-                Me(rowIndex, 0) = New EwERowHeaderCell(CStr(rowIndex))
-                Me(rowIndex, 1) = New EwERowHeaderCell(astrNames(rowIndex - cnt))
+                Me(rowIndex, 0) = New cEwERowHeaderCell(CStr(rowIndex))
+                Me(rowIndex, 1) = New cEwERowHeaderCell(astrNames(rowIndex - cnt))
 
                 For columnIndex As Integer = 2 To Me.ColumnsCount - 1
 
-                    cell = New EwECell(0.0!, GetType(Single))
+                    cell = New cEwECell(0.0!, GetType(Single))
                     cell.SuppressZero = True
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
@@ -92,12 +92,12 @@ Namespace Controls
 
             'The row for total value
             Me.Rows.Insert(cnt + iRow)
-            Me(Me.RowsCount - 1, 0) = New EwERowHeaderCell("")
-            Me(Me.RowsCount - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTAL)
+            Me(Me.RowsCount - 1, 0) = New cEwERowHeaderCell("")
+            Me(Me.RowsCount - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_TOTAL)
 
             For columnIndex As Integer = 2 To Me.ColumnsCount - 1
 
-                cell = New EwECell(0.0!, GetType(Single))
+                cell = New cEwECell(0.0!, GetType(Single))
                 cell.SuppressZero = True
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
@@ -116,7 +116,7 @@ Namespace Controls
                                    ByVal sValue As Single, ByVal asValueTotal() As Single, _
                                    Optional ByVal styleExtra As cStyleGuide.eStyleFlags = 0)
 
-            Dim cell As EwECell = DirectCast(Me(iRow, iCol), EwECell)
+            Dim cell As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)
 
             If sValue >= 0 Then
                 cell.Value = sValue

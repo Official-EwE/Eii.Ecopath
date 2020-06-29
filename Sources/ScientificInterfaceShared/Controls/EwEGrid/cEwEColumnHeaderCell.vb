@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports EwECore
-
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -35,9 +34,9 @@ Namespace Controls.EwEGrid
     ''' EwEColumnHeader implements a column header with EwE style
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class EwEColumnHeaderCell
-        : Inherits EwEHeaderCell
+    <CLSCompliant(False)>
+    Public Class cEwEColumnHeaderCell
+        Inherits cEwEHeaderCell
 
         Private m_vizDefault As IVisualModel = Nothing
 

@@ -41,7 +41,7 @@ Namespace Ecopath.Output
     ''' =======================================================================
     <CLSCompliant(False)>
     Public Class gridEcopathStatistics
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Byte
             Header = 0
@@ -57,9 +57,9 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
             Me.Redim(1, 3)
-            Me(0, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_PARAMETER)
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
+            Me(0, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_PARAMETER)
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VALUE)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_UNITS)
 
             Me.FixedColumns = 1
             Me.FixedColumnWidths = False
@@ -114,9 +114,9 @@ Namespace Ecopath.Output
             Dim iRow As Integer = Me.AddRow()
             Dim md As cVariableMetaData = source.GetVariableMetadata(vnf)
 
-            Me(iRow, eColumnTypes.Header) = New EwERowHeaderCell(strHeader)
-            Me(iRow, eColumnTypes.Value) = New PropertyCell(Me.PropertyManager, source, vnf)
-            Me(iRow, eColumnTypes.Units) = New EwEUnitCell(md.Units)
+            Me(iRow, eColumnTypes.Header) = New cEwERowHeaderCell(strHeader)
+            Me(iRow, eColumnTypes.Value) = New cPropertyCell(Me.PropertyManager, source, vnf)
+            Me(iRow, eColumnTypes.Units) = New cEwEUnitCell(md.Units)
 
         End Sub
 

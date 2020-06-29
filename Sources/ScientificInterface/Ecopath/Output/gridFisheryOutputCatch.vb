@@ -34,7 +34,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)>
     Public Class gridFisheryOutputCatch
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -52,19 +52,19 @@ Namespace Ecopath.Output
             'Define grid dimensions
             Me.Redim(1, Core.nFleets + 3)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Core.EcopathFleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                      source, eVarNameFlags.Name, Nothing,
                                                                      cUnits.CurrencyOverTime)
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(eVarNameFlags.TotalCatch)
+            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(eVarNameFlags.TotalCatch)
 
             Me.FixedColumns = 2
         End Sub
@@ -101,12 +101,12 @@ Namespace Ecopath.Output
 
         Private Sub FillRows(ByVal iRow As Integer, ByVal iGroup As Integer)
 
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
             Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
             Dim sGroupTotal As Single = 0
 
-            Me(iRow, 0) = New EwERowHeaderCell(CStr(iGroup))
-            Me(iRow, 1) = New EwERowHeaderCell(group.Name)
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(iGroup))
+            Me(iRow, 1) = New cEwERowHeaderCell(group.Name)
 
             ' For each fleet (each column) 
             For iFleet As Integer = 1 To Core.nFleets
@@ -115,14 +115,14 @@ Namespace Ecopath.Output
                 Dim sLanding As Single = fleet.LandingsByGroup(iGroup)
                 Dim sDeadDiscards As Single = fleet.DiscardMortByGroup(iGroup)
 
-                cell = New EwECell(sLanding + sDeadDiscards, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
+                cell = New cEwECell(sLanding + sDeadDiscards, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
                 cell.SuppressZero = True
                 Me(iRow, iFleet + 1) = cell
 
                 sGroupTotal += sLanding + sDeadDiscards
             Next
 
-            Me(iRow, Me.ColumnsCount - 1) = New EwECell(sGroupTotal, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+            Me(iRow, Me.ColumnsCount - 1) = New cEwECell(sGroupTotal, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
         End Sub
 
@@ -131,8 +131,8 @@ Namespace Ecopath.Output
             Dim iRow As Integer = Me.AddRow()
             Dim sTot As Single = 0
 
-            Me(Me.RowsCount - 1, 0) = New EwERowHeaderCell()
-            Me(Me.RowsCount - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
+            Me(Me.RowsCount - 1, 0) = New cEwERowHeaderCell()
+            Me(Me.RowsCount - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
             For iFleet As Integer = 1 To Core.nFleets
 
@@ -142,10 +142,10 @@ Namespace Ecopath.Output
                 For iGroup As Integer = 1 To Core.nGroups
                     sFleetTot += fleet.LandingsByGroup(iGroup) + fleet.DiscardMortByGroup(iGroup)
                 Next
-                Me(Me.RowsCount - 1, iFleet + 1) = New EwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+                Me(Me.RowsCount - 1, iFleet + 1) = New cEwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
                 sTot += sFleetTot
             Next
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New EwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New cEwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
         End Sub
 
@@ -188,8 +188,8 @@ Namespace Ecopath.Output
             Dim propDivTTLXQuantity As cFormulaProperty = Nothing
 
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(eVarNameFlags.TTLX)
+            Me(iRow, 0) = New cEwERowHeaderCell("")
+            Me(iRow, 1) = New cEwERowHeaderCell(eVarNameFlags.TTLX)
 
             alSumQuantityAll.Clear()
             alSumQuantityTTLXAll.Clear()
@@ -240,7 +240,7 @@ Namespace Ecopath.Output
                 propSumQuantityTTLXCol = Me.Formula(opSumQuantityTTLXCol)
                 opDivTTLXQuantity = New cBinaryOperation(cBinaryOperation.eOperatorType.Divide, propSumQuantityTTLXCol, propSumQuantityCol)
                 propDivTTLXQuantity = Me.Formula(opDivTTLXQuantity)
-                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propDivTTLXQuantity)
+                Me(Me.RowsCount - 1, fleetIndex + 1) = New cPropertyCell(propDivTTLXQuantity)
             Next
 
             'Display (sum of all quantity*TTLX) / (sum of all quantity)
@@ -250,7 +250,7 @@ Namespace Ecopath.Output
             propSumQuantityTTLXAll = Me.Formula(opSumQuantityTTLXAll)
             opDivTTLXQuantity = New cBinaryOperation(cBinaryOperation.eOperatorType.Divide, propSumQuantityTTLXAll, propSumQuantityAll)
             propDivTTLXQuantity = Me.Formula(opDivTTLXQuantity)
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propDivTTLXQuantity)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New cPropertyCell(propDivTTLXQuantity)
 
         End Sub
 

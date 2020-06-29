@@ -16,13 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
+
+#End Region ' Imports
 
 Namespace Controls.EwEGrid
 
@@ -32,13 +32,13 @@ Namespace Controls.EwEGrid
     ''' </summary>
     ''' <remarks>
     ''' Cells of this type maintain a list of child rows that can be collapsed
-    ''' or expanded via <see cref="EwEHierarchyGridCell.Expanded">Expanded</see>.
-    ''' Add child rows via <see cref="EwEHierarchyGridCell.AddChildRow">AddChildRow</see>.
+    ''' or expanded via <see cref="cEwEHierarchyGridCell.Expanded">Expanded</see>.
+    ''' Add child rows via <see cref="cEwEHierarchyGridCell.AddChildRow">AddChildRow</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class EwEHierarchyGridCell
-        : Inherits EwECellBase
+    <CLSCompliant(False)>
+    Public Class cEwEHierarchyGridCell
+        Inherits cEwECellBase
 
 #Region " Private vars "
 

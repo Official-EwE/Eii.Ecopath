@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -17,40 +17,46 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
+Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
+
+#End Region ' Imports
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)> _
-    Public Class PropertyCheckboxCell
-        Inherits EwECheckboxCell
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' A standard EwE grid cell for <see cref="cProperty">cProperty</see>-driven values.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    <CLSCompliant(False)>
+    Public Class cPropertyCell
+        Inherits cEwECellBase
         Implements IPropertyCell
 
         ''' <summary>Connected property.</summary>
-        Private m_property As cBooleanProperty = Nothing
-        ''' <summary>Flag to detect recursive updates.</summary>
-        Private m_bInUpdate As Boolean = False
+        Private m_property As cProperty = Nothing
 
 #Region " Construction and destruction "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor. Note that the indicated property should be a <see cref="cBooleanProperty"/>.
+        ''' Constructor
         ''' </summary>
         ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to extract data from.</param>
-        ''' <param name="source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
-        ''' <param name="varName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the source to acces</param>
-        ''' <param name="sourceSec">Optional secundary index to use.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal source As cCoreInputOutputBase, _
-                       ByVal varname As eVarNameFlags, _
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal source As cCoreInputOutputBase,
+                       ByVal varname As eVarNameFlags,
                        Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
-            Me.New(CType(pm.GetProperty(source, varname, sourceSec), cBooleanProperty))
+            Me.New(pm.GetProperty(source, varname, sourceSec))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -59,19 +65,21 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop">The property to assign to the cell.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cBooleanProperty)
+        Public Sub New(ByVal prop As cProperty)
             ' Call baseclass constructor
-            MyBase.New(False)
-
-            Debug.Assert(TypeOf prop Is cBooleanProperty)
-
+            MyBase.New(Nothing, prop.GetValueType())
             ' Store the property
+            ' Set the property
             Me.m_property = prop
-            ' Fire a change notification
-            Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
-            ' Register property
-            AddHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
-
+            ' Valid assignment?
+            If (prop IsNot Nothing) Then
+                ' Configure the cell
+                Me.ConfigureCell(prop.GetVariableMetadata())
+                ' Fire a change notification
+                Me.OnPropertyChanged(prop, cProperty.eChangeFlags.All)
+                ' Register property
+                AddHandler Me.m_property.PropertyChanged, AddressOf Me.OnPropertyChanged
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -98,7 +106,7 @@ Namespace Controls.EwEGrid
         ''' <inheritdocs cref="IPropertyCell.GetProperty"/>
         ''' -------------------------------------------------------------------
         Public Function GetProperty() As cProperty _
-            Implements IPropertyCell.GetProperty
+             Implements IPropertyCell.GetProperty
             Return Me.m_property
         End Function
 
@@ -107,11 +115,11 @@ Namespace Controls.EwEGrid
         ''' Commonly called in response to end edit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub SetValue(ByVal pos As SourceGrid2.Position, ByVal val As Object)
-            ' Intervention
+        Public Overrides Sub SetValue(ByVal p_Position As SourceGrid2.Position, ByVal p_Value As Object)
+            ' Sanity check
             If (Me.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable Then Return
-            ' Continue
-            Me.Value = val
+            ' Apply edited value
+            Me.Value = p_Value
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -125,31 +133,22 @@ Namespace Controls.EwEGrid
                 ' Does property exist?
                 If (Me.m_property IsNot Nothing) Then
                     ' #Yes: return value
-                    Return CBool(Me.m_property.GetValue())
+                    Return Me.m_property.GetValue()
                 End If
                 ' #No: return default
-                Return MyBase.Value
+                Return Nothing
 
             End Get
             Set(ByVal value As Object)
 
-                ' Avoid loops
-                If Me.m_bInUpdate Then Return
-                Me.m_bInUpdate = True
-                Try
-                    MyBase.Value = CBool(value)
-                Catch ex As Exception
-
-                End Try
-                Me.m_bInUpdate = False
-
-                ' Now update property
                 Dim bChanged As Boolean = True
+
                 ' Does property exist?
                 If (Me.m_property IsNot Nothing) Then
                     ' #Yes: update the property. The property will take care of dispatching any changes
                     bChanged = Me.m_property.SetValue(value, TriState.UseDefault)
                 End If
+
                 ' Anything changed?
                 If (bChanged) Then
                     ' #Yes: redraw the cell
@@ -161,6 +160,15 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether the cell style and property style should be joined
+        ''' (True) or whether the cell style overrides the property style if
+        ''' present (False).
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property JoinStyles() As Boolean = False
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Allows to set a custom cell <see cref="cStyleGuide.eStyleFlags">style</see>,
         ''' overriding any style in the attached property.
         ''' </summary>
@@ -168,7 +176,7 @@ Namespace Controls.EwEGrid
         ''' <para>Note that this style will not affect the cProperty. Unlike values, which
         ''' can be modified from both core and GUI, Styles are interpreted core status 
         ''' calculations.</para>
-        ''' <para>To use a custom Style on a per-cell basis, use <see cref="EwECell.Style">EwECell.Style</see></para>
+        ''' <para>To use a custom Style on a per-cell basis, use <see cref="cEwECell.Style">EwECell.Style</see></para>
         ''' <para>To use a custom Style on a system-wide basis for a particular cProperty,
         ''' modify the <see cref="cProperty.SetStyle">Style</see> in the instance of the cProperty.</para>
         ''' </remarks>
@@ -176,8 +184,10 @@ Namespace Controls.EwEGrid
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Dim s As cStyleGuide.eStyleFlags = MyBase.Style
-                If (Me.m_property IsNot Nothing) Then
-                    s = Me.m_property.GetStyle()
+                If Me.JoinStyles Then
+                    s = s Or Me.m_property.GetStyle()
+                Else
+                    If s = 0 Then s = Me.m_property.GetStyle()
                 End If
                 Return s
             End Get
@@ -224,6 +234,22 @@ Namespace Controls.EwEGrid
         End Sub
 
 #End Region ' Updates (property)
+
+#Region " Pedigree "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cEwECellBase.RelativePedigree"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Property RelativePedigree As Single
+            Get
+                Return Me.GetProperty().RelativePedigree
+            End Get
+            Set(value As Single)
+                ' NOP
+            End Set
+        End Property
+
+#End Region ' Pedigree
 
     End Class
 

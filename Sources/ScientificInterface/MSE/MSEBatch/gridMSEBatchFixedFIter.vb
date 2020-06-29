@@ -34,7 +34,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridMSEBatchFixedFIter
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     ' ToDo: Globalize this class 
     ' ToDo: Add XML comments
@@ -66,9 +66,9 @@ Public Class gridMSEBatchFixedFIter
 
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME & "-iteration# ")
-        Me(0, eColumnTypes.FixedF) = New EwEColumnHeaderCell("Fixed F") 'B lim(-)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME & "-iteration# ")
+        Me(0, eColumnTypes.FixedF) = New cEwEColumnHeaderCell("Fixed F") 'B lim(-)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -88,10 +88,10 @@ Public Class gridMSEBatchFixedFIter
 
             Me.AddRow()
 
-            Me(iParIter, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iParIter))
-            Me(iParIter, eColumnTypes.Name) = New EwECell(group.Name & " " & iParIter.ToString, GetType(String), cStyleGuide.eStyleFlags.Names)
+            Me(iParIter, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iParIter))
+            Me(iParIter, eColumnTypes.Name) = New cEwECell(group.Name & " " & iParIter.ToString, GetType(String), cStyleGuide.eStyleFlags.Names)
 
-            Me(iParIter, eColumnTypes.FixedF) = New EwECell(group.FixedFValue(iParIter), GetType(Single))
+            Me(iParIter, eColumnTypes.FixedF) = New cEwECell(group.FixedFValue(iParIter), GetType(Single))
             Me(iParIter, eColumnTypes.FixedF).Behaviors.Add(Me.EwEEditHandler)
 
         Next iParIter

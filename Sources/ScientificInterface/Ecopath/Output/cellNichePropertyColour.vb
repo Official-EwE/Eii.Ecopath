@@ -35,7 +35,7 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class cellNichePropertyColour
-    : Inherits PropertyCell
+    : Inherits cPropertyCell
 
 #Region " Private visualizer "
 

@@ -39,7 +39,7 @@ Namespace Ecospace.Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class gridDefineExternalSpatialData
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private classes "
 
@@ -142,13 +142,13 @@ Namespace Ecospace.Controls
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             ' ToDo_JS: globalize this
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.Applied) = New EwEColumnHeaderCell("Used")
-            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell("Status")
-            Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
-            Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
-            Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.Applied) = New cEwEColumnHeaderCell("Used")
+            Me(0, eColumnTypes.Status) = New cEwEColumnHeaderCell("Status")
+            Me(0, eColumnTypes.DateFrom) = New cEwEColumnHeaderCell(SharedResources.HEADER_FROM)
+            Me(0, eColumnTypes.DateTo) = New cEwEColumnHeaderCell(SharedResources.HEADER_TO)
+            Me(0, eColumnTypes.Description) = New cEwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
             Me(0, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionHdr
 
             Me.Selection.EnableMultiSelection = False
@@ -166,9 +166,9 @@ Namespace Ecospace.Controls
             Dim ds As ISpatialDataSet = Nothing
             Dim iRow As Integer = 0
             Dim iDS As Integer = 1
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
             Dim vnLast As eVarNameFlags = eVarNameFlags.HabitatArea
-            Dim hgc As EwEHierarchyGridCell = Nothing
+            Dim hgc As cEwEHierarchyGridCell = Nothing
             Dim vizParent As New cVisualizerEwEParentRowHeader()
             Dim vizKiddo As New cVisualizerEwEChildRowHeader()
             Dim strVar As String = ""
@@ -188,7 +188,7 @@ Namespace Ecospace.Controls
 
                     ' Create header row
                     iRow = Me.AddRow()
-                    hgc = New EwEHierarchyGridCell()
+                    hgc = New cEwEHierarchyGridCell()
                     Me(iRow, 0) = hgc
 
                     ' ToDo_JS: globalize this
@@ -198,10 +198,10 @@ Namespace Ecospace.Controls
                         strVar = fmt.ToString(vnLast)
                     End If
 
-                    Me(iRow, 1) = New EwEColumnHeaderCell(strVar)
+                    Me(iRow, 1) = New cEwEColumnHeaderCell(strVar)
                     Me(iRow, 1).VisualModel = vizParent
                     For iCol As Integer = 2 To Me.ColumnsCount - 1
-                        Me(iRow, iCol) = New EwEColumnHeaderCell()
+                        Me(iRow, iCol) = New cEwEColumnHeaderCell()
                     Next
 
                 End If
@@ -214,11 +214,11 @@ Namespace Ecospace.Controls
                 If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = Me.StyleGuide.FormatDate(ds.TimeEnd, False)
 
                 iRow = Me.AddRow()
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))
-                Me(iRow, eColumnTypes.Name) = New EwECell(ds.CustomName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iDS))
+                Me(iRow, eColumnTypes.Name) = New cEwECell(ds.CustomName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
-                Me(iRow, eColumnTypes.Applied) = New EwECheckboxCell(Me.m_man.IsApplied(ds), cStyleGuide.eStyleFlags.NotEditable)
-                cell = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Applied) = New cEwECheckboxCell(Me.m_man.IsApplied(ds), cStyleGuide.eStyleFlags.NotEditable)
+                cell = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Select Case comp.Compatibility
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
                         cell.Image = SharedResources.Critical
@@ -228,10 +228,10 @@ Namespace Ecospace.Controls
                         cell.Image = SharedResources.OK
                 End Select
                 Me(iRow, eColumnTypes.Status) = cell
-                Me(iRow, eColumnTypes.Description) = New EwECell(ds.CustomDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Description) = New cEwECell(ds.CustomDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionCell
-                Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateFrom) = New cEwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateTo) = New cEwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me.Rows(iRow).Tag = ds
                 hgc.AddChildRow(iRow)
 

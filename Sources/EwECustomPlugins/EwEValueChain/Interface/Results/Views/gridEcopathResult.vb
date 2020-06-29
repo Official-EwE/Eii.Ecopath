@@ -34,7 +34,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)>
 Public Class gridEcopathResult
-    Inherits EwEGrid
+    Inherits cEwEGrid
     Implements IResultView
 
     Private Enum eColumnTypes As Integer
@@ -103,14 +103,14 @@ Public Class gridEcopathResult
         Me.Redim([Enum].GetValues(GetType(eRowTypes)).Length, 8)
 
         ' Column headers
-        Me(eRowTypes.Header, 0) = New EwEColumnHeaderCell("")
-        Me(eRowTypes.Header, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
-        Me(eRowTypes.Header, 2) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PRODUCER)
-        Me(eRowTypes.Header, 3) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PROCESSING)
-        Me(eRowTypes.Header, 4) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_DISTRIBUTION)
-        Me(eRowTypes.Header, 5) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_WHOLESALER)
-        Me(eRowTypes.Header, 6) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_RETAILER)
-        Me(eRowTypes.Header, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+        Me(eRowTypes.Header, 0) = New cEwEColumnHeaderCell("")
+        Me(eRowTypes.Header, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_UNITS)
+        Me(eRowTypes.Header, 2) = New cEwEColumnHeaderCell(My.Resources.UNIT_TYPE_PRODUCER)
+        Me(eRowTypes.Header, 3) = New cEwEColumnHeaderCell(My.Resources.UNIT_TYPE_PROCESSING)
+        Me(eRowTypes.Header, 4) = New cEwEColumnHeaderCell(My.Resources.UNIT_TYPE_DISTRIBUTION)
+        Me(eRowTypes.Header, 5) = New cEwEColumnHeaderCell(My.Resources.UNIT_TYPE_WHOLESALER)
+        Me(eRowTypes.Header, 6) = New cEwEColumnHeaderCell(My.Resources.UNIT_TYPE_RETAILER)
+        Me(eRowTypes.Header, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
         ' Row headers
         Me(eRowTypes.Production, 0) = CreateRowHeaderCell("Production")
@@ -336,25 +336,25 @@ Public Class gridEcopathResult
     End Sub
 
     Private Function CreateRowHeaderCell(ByVal strLabel As String,
-                                         Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names) As EwECell
-        Dim cell As New EwERowHeaderCell(strLabel)
+                                         Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names) As cEwECell
+        Dim cell As New cEwERowHeaderCell(strLabel)
         cell.Style = style
         Return cell
     End Function
 
     Private Function CreateUnitCell(Optional ByVal strUnit As String = "",
                                     Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names,
-                                    Optional ByVal strUnitMask As String = "{0}") As EwECell
-        Dim cell As New EwEUnitCell(strUnitMask, strUnit)
+                                    Optional ByVal strUnitMask As String = "{0}") As cEwECell
+        Dim cell As New cEwEUnitCell(strUnitMask, strUnit)
         cell.Style = style
         cell.EditableMode = EditableMode.None
         cell.EnableEdit = False
         Return cell
     End Function
 
-    Private Function CreateDataCell(Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
+    Private Function CreateDataCell(Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As cEwECell
 
-        Dim cell As New EwECell(0, GetType(Single))
+        Dim cell As New cEwECell(0, GetType(Single))
 
         ' Prettinize
         cell.Style = style

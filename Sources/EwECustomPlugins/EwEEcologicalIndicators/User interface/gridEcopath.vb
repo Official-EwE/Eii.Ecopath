@@ -32,7 +32,7 @@ Imports ScientificInterfaceShared.Style
 ' ToDo: comment code
 
 Public Class gridEcopath
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private variables "
 
@@ -82,11 +82,11 @@ Public Class gridEcopath
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Indicator")
-        Me(0, eColumnTypes.Value) = New EwEColumnHeaderCell("Value")
-        Me(0, eColumnTypes.Units) = New EwEColumnHeaderCell("Units")
-        Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell("Description")
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell("Indicator")
+        Me(0, eColumnTypes.Value) = New cEwEColumnHeaderCell("Value")
+        Me(0, eColumnTypes.Units) = New cEwEColumnHeaderCell("Units")
+        Me(0, eColumnTypes.Description) = New cEwEColumnHeaderCell("Description")
 
         Me.FixedColumnWidths = True
 
@@ -99,8 +99,8 @@ Public Class gridEcopath
 
         Dim grp As cIndicatorInfoGroup = Nothing
         Dim ind As cIndicatorInfo = Nothing
-        Dim hgcGrp As EwEHierarchyGridCell = Nothing
-        Dim cellValue As EwECell = Nothing
+        Dim hgcGrp As cEwEHierarchyGridCell = Nothing
+        Dim cellValue As cEwECell = Nothing
         Dim iRow As Integer = 0
 
         Try
@@ -112,29 +112,29 @@ Public Class gridEcopath
                 iRow = Me.AddRow()
 
                 ' Create hierarchy cell
-                hgcGrp = New EwEHierarchyGridCell()
+                hgcGrp = New cEwEHierarchyGridCell()
 
                 Me(iRow, eColumnTypes.Index) = hgcGrp
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(grp.Name)
-                Me(iRow, eColumnTypes.Value) = New EwERowHeaderCell("")
-                Me(iRow, eColumnTypes.Units) = New EwERowHeaderCell("")
-                Me(iRow, eColumnTypes.Description) = New EwERowHeaderCell("")
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(grp.Name)
+                Me(iRow, eColumnTypes.Value) = New cEwERowHeaderCell("")
+                Me(iRow, eColumnTypes.Units) = New cEwERowHeaderCell("")
+                Me(iRow, eColumnTypes.Description) = New cEwERowHeaderCell("")
 
                 For iInd As Integer = 0 To grp.NumIndicators - 1
                     ' Get indicator
                     ind = grp.Indicator(iInd)
                     iRow = Me.AddRow()
 
-                    Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iInd + 1))
-                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(ind.Name)
-                    Me(iRow, eColumnTypes.Description) = New EwECell(ind.Description, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iInd + 1))
+                    Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(ind.Name)
+                    Me(iRow, eColumnTypes.Description) = New cEwECell(ind.Description, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Description).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
 
                     ' Value cell is special case: suppresses cCore.NULL_VALUE
-                    cellValue = New EwECell(ind.GetValue(Me.m_indicators), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                    cellValue = New cEwECell(ind.GetValue(Me.m_indicators), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
                     cellValue.SuppressZero(cCore.NULL_VALUE) = True
                     Me(iRow, eColumnTypes.Value) = cellValue
-                    Me(iRow, eColumnTypes.Units) = New EwEUnitCell(ind.Units)
+                    Me(iRow, eColumnTypes.Units) = New cEwEUnitCell(ind.Units)
 
                     hgcGrp.AddChildRow(iRow)
 

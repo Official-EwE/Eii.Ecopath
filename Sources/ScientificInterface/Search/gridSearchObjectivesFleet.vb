@@ -38,7 +38,7 @@ Namespace Ecosim
     ''' =======================================================================
     <CLSCompliant(False)> _
       Public Class gridSearchObjectivesFleet
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_Manager As ISearchObjective
         Private m_bIsMaxByFleetValue As Boolean = False
@@ -76,15 +76,15 @@ Namespace Ecosim
 
             If Not m_bIsMaxByFleetValue Then
                 Me.Redim(1, 3)
-                Me(0, 0) = New EwEColumnHeaderCell("")
-                Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEET)
-                Me(0, 2) = New EwEColumnHeaderCell(My.Resources.FPS_FG_JOBS)
+                Me(0, 0) = New cEwEColumnHeaderCell("")
+                Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEET)
+                Me(0, 2) = New cEwEColumnHeaderCell(My.Resources.FPS_FG_JOBS)
             Else
                 Me.Redim(1, 4)
-                Me(0, 0) = New EwEColumnHeaderCell("")
-                Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEET)
-                Me(0, 2) = New EwEColumnHeaderCell(My.Resources.FPS_FG_JOBS)
-                Me(0, 3) = New EwEColumnHeaderCell(My.Resources.FPS_FG_TP)
+                Me(0, 0) = New cEwEColumnHeaderCell("")
+                Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEET)
+                Me(0, 2) = New cEwEColumnHeaderCell(My.Resources.FPS_FG_JOBS)
+                Me(0, 3) = New cEwEColumnHeaderCell(My.Resources.FPS_FG_TP)
             End If
 
         End Sub
@@ -101,14 +101,14 @@ Namespace Ecosim
                 Me.Rows.Insert(i)
 
                 If Not m_bIsMaxByFleetValue Then
-                    Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                    Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                    Me(i, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
+                    Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                    Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(i, 2) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
                 Else
-                    Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                    Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                    Me(i, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
-                    Me(i, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetTargetProfit)
+                    Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                    Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                    Me(i, 2) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)
+                    Me(i, 3) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetTargetProfit)
                 End If
             Next
 

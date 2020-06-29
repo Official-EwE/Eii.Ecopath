@@ -39,7 +39,7 @@ Namespace Ecospace
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridEcospaceDispersal
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -68,16 +68,16 @@ Namespace Ecospace
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             'Add column headers
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.DispersalRate) = New EwEColumnHeaderCell(eVarNameFlags.MVel)
-            Me(0, eColumnTypes.RelDisp) = New EwEColumnHeaderCell(eVarNameFlags.RelMoveBad)
-            Me(0, eColumnTypes.RelVul) = New EwEColumnHeaderCell(eVarNameFlags.RelVulBad)
-            Me(0, eColumnTypes.RelFitnessMove) = New EwEColumnHeaderCell(eVarNameFlags.KMoveFitness)
-            Me(0, eColumnTypes.Advected) = New EwEColumnHeaderCell(eVarNameFlags.IsAdvected)
-            Me(0, eColumnTypes.Migrating) = New EwEColumnHeaderCell(eVarNameFlags.IsMigratory)
-            Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
-            Me(0, eColumnTypes.InMigMovement) = New EwEColumnHeaderCell(eVarNameFlags.InMigAreaMoveWeight)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.DispersalRate) = New cEwEColumnHeaderCell(eVarNameFlags.MVel)
+            Me(0, eColumnTypes.RelDisp) = New cEwEColumnHeaderCell(eVarNameFlags.RelMoveBad)
+            Me(0, eColumnTypes.RelVul) = New cEwEColumnHeaderCell(eVarNameFlags.RelVulBad)
+            Me(0, eColumnTypes.RelFitnessMove) = New cEwEColumnHeaderCell(eVarNameFlags.KMoveFitness)
+            Me(0, eColumnTypes.Advected) = New cEwEColumnHeaderCell(eVarNameFlags.IsAdvected)
+            Me(0, eColumnTypes.Migrating) = New cEwEColumnHeaderCell(eVarNameFlags.IsMigratory)
+            Me(0, eColumnTypes.BarrierAvoidance) = New cEwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
+            Me(0, eColumnTypes.InMigMovement) = New cEwEColumnHeaderCell(eVarNameFlags.InMigAreaMoveWeight)
 
             Me.FixedColumnWidths = True
 
@@ -86,32 +86,32 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Dim source As cEcospaceGroupInput = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
 
             For iGroup As Integer = 1 To Me.Core.nGroups
                 Me.Rows.Insert(iGroup)
 
                 source = Me.Core.EcospaceGroupInputs(iGroup)
-                Me(iGroup, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 'MVel - Base dispersal rate
-                cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MVel)
+                cell = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MVel)
                 cell.SuppressZero = False
                 Me(iGroup, eColumnTypes.DispersalRate) = cell
                 'Rel dispersal in bad habitat
-                Me(iGroup, eColumnTypes.RelDisp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelMoveBad)
+                Me(iGroup, eColumnTypes.RelDisp) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.RelMoveBad)
                 ' Rel. vul.to pred. in bad habitat
-                Me(iGroup, eColumnTypes.RelVul) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RelVulBad)
+                Me(iGroup, eColumnTypes.RelVul) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.RelVulBad)
                 ' Rel. movement to cell fitness
-                Me(iGroup, eColumnTypes.RelFitnessMove) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.KMoveFitness)
+                Me(iGroup, eColumnTypes.RelFitnessMove) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.KMoveFitness)
                 'Advected?
-                Me(iGroup, eColumnTypes.Advected) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsAdvected)
+                Me(iGroup, eColumnTypes.Advected) = New cPropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsAdvected)
                 'Migrating?
-                Me(iGroup, eColumnTypes.Migrating) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsMigratory)
+                Me(iGroup, eColumnTypes.Migrating) = New cPropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsMigratory)
                 'Barrier avoidance weight
-                Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
-                Me(iGroup, eColumnTypes.InMigMovement) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.InMigAreaMoveWeight)
+                Me(iGroup, eColumnTypes.BarrierAvoidance) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
+                Me(iGroup, eColumnTypes.InMigMovement) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.InMigAreaMoveWeight)
 
             Next
 

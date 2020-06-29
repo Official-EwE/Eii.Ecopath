@@ -38,7 +38,7 @@ Namespace Ecosim
     ''' ===========================================================================
     <CLSCompliant(False)> _
     Public Class gridTargetFishingMortalityPolicy
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -89,11 +89,11 @@ Namespace Ecosim
 
             Me.Redim(1, iNumCols)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_BASE)
-            Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_LIMIT)
-            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell(SharedResources.HEADER_FOPT)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.BBase) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_BASE)
+            Me(0, eColumnTypes.BLim) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_LIMIT)
+            Me(0, eColumnTypes.FOpt) = New cEwEColumnHeaderCell(SharedResources.HEADER_FOPT)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
@@ -112,12 +112,12 @@ Namespace Ecosim
 
                 Me.AddRow()
 
-                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
-                Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
-                Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
+                Me(iGroup, eColumnTypes.BBase) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
+                Me(iGroup, eColumnTypes.BLim) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
+                Me(iGroup, eColumnTypes.FOpt) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
                 Me.Rows(iGroup).Tag = group
 

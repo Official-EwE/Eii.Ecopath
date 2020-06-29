@@ -33,7 +33,7 @@ Imports EwECore.Style
 
 <CLSCompliant(False)> _
 Public Class gridFishingWeights
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Sub New()
     End Sub
@@ -48,12 +48,12 @@ Public Class gridFishingWeights
 
         Me.Redim(1, 2 + Me.Core.nFleets)
 
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, 0) = New cEwEColumnHeaderCell("")
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         For iFleet As Integer = 1 To Me.Core.nFleets
             src = Me.Core.EcopathFleetInputs(iFleet)
-            Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
+            Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                              src, eVarNameFlags.Name, Nothing, cUnits.Currency)
         Next
 
@@ -82,13 +82,13 @@ Public Class gridFishingWeights
                 group = Core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
                     fleet = mse.EcopathFleetInputs(iFleet)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.MSEFleetWeight, group)
+                    Me(iGroup, 1 + iFleet) = New cPropertyCell(Me.PropertyManager, fleet, eVarNameFlags.MSEFleetWeight, group)
                 Next
             Next
 

@@ -33,7 +33,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridFitToTimeSeriesGroup
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_manager As ISearchObjective
 
@@ -62,9 +62,9 @@ Namespace Ecosim
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Group) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
-            Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXFISHINGMORTAILITY)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Group) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+            Me(0, eColumnTypes.FLimit) = New cEwEColumnHeaderCell(SharedResources.HEADER_MAXFISHINGMORTAILITY)
 
         End Sub
 
@@ -79,9 +79,9 @@ Namespace Ecosim
                 source = m_manager.GroupObjectives(i)
 
                 Me.Rows.Insert(i)
-                Me(i, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i))
-                Me(i, eColumnTypes.Group) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                Me(i, eColumnTypes.FLimit) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFishingLimit)
+                Me(i, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i))
+                Me(i, eColumnTypes.Group) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, eColumnTypes.FLimit) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFishingLimit)
             Next
 
         End Sub

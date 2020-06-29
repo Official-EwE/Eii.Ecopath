@@ -33,7 +33,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 #Const ShowPerturbations = 0
 
 Public Class gridSamples
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Enum eColumnTypes As Integer
         Index
@@ -62,18 +62,18 @@ Public Class gridSamples
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
         ' ToDo: globalize this
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Loaded) = New EwEColumnHeaderCell(My.Resources.HEADER_LOADED)
-        Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell("SS")
-        Me(0, eColumnTypes.NumInvalidEE) = New EwEColumnHeaderCell(My.Resources.HEADER_NUM_INVALID_EE)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+        Me(0, eColumnTypes.Loaded) = New cEwEColumnHeaderCell(My.Resources.HEADER_LOADED)
+        Me(0, eColumnTypes.SS) = New cEwEColumnHeaderCell("SS")
+        Me(0, eColumnTypes.NumInvalidEE) = New cEwEColumnHeaderCell(My.Resources.HEADER_NUM_INVALID_EE)
 #If ShowPerturbations Then
         Me(0, eColumnTypes.Perturbed) = New EwEColumnHeaderCell(My.Resources.HEADER_PERTURBED)
 #End If
 #If ShowRatings Then
         Me(0, eColumnTypes.Rating) = New EwEColumnHeaderCell(My.Resources.HEADER_RATING)
 #End If
-        Me(0, eColumnTypes.Date) = New EwEColumnHeaderCell(My.Resources.HEADER_DATE)
-        Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell(My.Resources.HEADER_SYSTEM)
+        Me(0, eColumnTypes.Date) = New cEwEColumnHeaderCell(My.Resources.HEADER_DATE)
+        Me(0, eColumnTypes.Source) = New cEwEColumnHeaderCell(My.Resources.HEADER_SYSTEM)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -95,16 +95,16 @@ Public Class gridSamples
         For i As Integer = 1 To man.nSamples
             Dim iRow As Integer = Me.AddRow()
             Dim s As cEcopathSample = man.Sample(i)
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, s, eVarNameFlags.Index)
-            Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, s, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Loaded) = New cEwECell("", cStyleGuide.eStyleFlags.NotEditable)
 
-            cell = New EwECell(s.SS, cStyleGuide.eStyleFlags.NotEditable)
+            cell = New cEwECell(s.SS, cStyleGuide.eStyleFlags.NotEditable)
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.SS) = cell
 
-            cell = New EwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
+            cell = New cEwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.NumInvalidEE) = cell
 
@@ -119,12 +119,12 @@ Public Class gridSamples
 #If ShowRatings Then
             Me(iRow, eColumnTypes.Rating) = New PropertyCell(Me.PropertyManager, s, eVarNameFlags.SampleRating)
 #End If
-            Me(iRow, eColumnTypes.Date) = New EwECell(s.Generated, cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Date) = New cEwECell(s.Generated, cStyleGuide.eStyleFlags.NotEditable)
 
             strSource = s.Source
             If (String.Compare(strSource, man.MachineName) = 0) Then strSource = My.Resources.VALUE_THISCOMPUTER
 
-            Me(iRow, eColumnTypes.Source) = New EwECell(strSource, cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Source) = New cEwECell(strSource, cStyleGuide.eStyleFlags.NotEditable)
             Me.Sample(iRow) = s
 
             If Not String.IsNullOrWhiteSpace(s.Source) Then

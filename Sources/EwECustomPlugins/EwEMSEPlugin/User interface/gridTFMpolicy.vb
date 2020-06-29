@@ -44,7 +44,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridTargetFishingMortalityPolicy
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -142,17 +142,17 @@ Public Class gridTargetFishingMortalityPolicy
 
         ' Mark: you need display proper units according to the DisplayRelativeValues flag. I did this for the upper b lim to show an example
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.HCR_Type) = New EwEColumnHeaderCell(My.Resources.HEADER_HCR_TYPE)
-        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_LIMIT_LOWER_B_T_KM2, My.Resources.HEADER_LIMIT_LOWER_B_KT))
-        Me(0, eColumnTypes.BStep) = New EwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_STEP_BIOMASS_T_KM2, My.Resources.HEADER_STEP_BIOMASS_KT))
-        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_LIMIT_UPPER_B_T_KM2, My.Resources.HEADER_LIMIT_UPPER_B_KT))
-        Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
-        Me(0, eColumnTypes.MinF) = New EwEColumnHeaderCell(My.Resources.HEADER_F_MORT_MIN)
-        Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell(My.Resources.HEADER_F_MORT_MAX)
-        Me(0, eColumnTypes.Targ_Or_Cons) = New EwEColumnHeaderCell(My.Resources.HEADER_HCR_TARG_OR_CONS)
-        Me(0, eColumnTypes.TimeFrameRuleYears) = New EwEColumnHeaderCell(My.Resources.HEADER_TIMEFRAMERULES)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.BioGroupName) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.HCR_Type) = New cEwEColumnHeaderCell(My.Resources.HEADER_HCR_TYPE)
+        Me(0, eColumnTypes.BLowerLim) = New cEwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_LIMIT_LOWER_B_T_KM2, My.Resources.HEADER_LIMIT_LOWER_B_KT))
+        Me(0, eColumnTypes.BStep) = New cEwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_STEP_BIOMASS_T_KM2, My.Resources.HEADER_STEP_BIOMASS_KT))
+        Me(0, eColumnTypes.BUpperLim) = New cEwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_LIMIT_UPPER_B_T_KM2, My.Resources.HEADER_LIMIT_UPPER_B_KT))
+        Me(0, eColumnTypes.FGroupName) = New cEwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
+        Me(0, eColumnTypes.MinF) = New cEwEColumnHeaderCell(My.Resources.HEADER_F_MORT_MIN)
+        Me(0, eColumnTypes.MaxF) = New cEwEColumnHeaderCell(My.Resources.HEADER_F_MORT_MAX)
+        Me(0, eColumnTypes.Targ_Or_Cons) = New cEwEColumnHeaderCell(My.Resources.HEADER_HCR_TARG_OR_CONS)
+        Me(0, eColumnTypes.TimeFrameRuleYears) = New cEwEColumnHeaderCell(My.Resources.HEADER_TIMEFRAMERULES)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = True
@@ -174,10 +174,10 @@ Public Class gridTargetFishingMortalityPolicy
             iHCR = Me.AddRow()
 
             'Row Index
-            Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
+            Me(iHCR, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iHCR))
 
             'Group Name
-            cell = New EwECell(Rule.GroupB.Name, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            cell = New cEwECell(Rule.GroupB.Name, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(iHCR, eColumnTypes.BioGroupName) = cell
 
             'HCR Type
@@ -187,49 +187,49 @@ Public Class gridTargetFishingMortalityPolicy
             'Dependent on Type change change Bstep
             If Rule.HCR_Type = eHCR_Type.Traditional Then
                 If Rule.BStep = cCore.NULL_VALUE Then
-                    cell = New EwECell(Rule.BStep, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+                    cell = New cEwECell(Rule.BStep, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
                 Else
-                    cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.BStep))
+                    cell = New cEwECell(Units.Convert(Me.m_conversionToDisplay, Rule.BStep))
                 End If
-                DirectCast(cell, EwECell).Style = cStyleGuide.eStyleFlags.NotEditable
+                DirectCast(cell, cEwECell).Style = cStyleGuide.eStyleFlags.NotEditable
             ElseIf Rule.HCR_Type = eHCR_Type.Multilevel Then
-                cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.BStep))
+                cell = New cEwECell(Units.Convert(Me.m_conversionToDisplay, Rule.BStep))
                 'End If
-                DirectCast(cell, EwECell).Style = cStyleGuide.eStyleFlags.OK
+                DirectCast(cell, cEwECell).Style = cStyleGuide.eStyleFlags.OK
             End If
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BStep) = cell
             ' Dependent on type change change MinF
             If Rule.HCR_Type = eHCR_Type.Traditional Then
                 If Rule.MinF = cCore.NULL_VALUE Then
-                    cell = New EwECell(Rule.MinF, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+                    cell = New cEwECell(Rule.MinF, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
                 Else
-                    cell = New EwECell(CDbl(Rule.MinF))
+                    cell = New cEwECell(CDbl(Rule.MinF))
                 End If
-                DirectCast(cell, EwECell).Style = cStyleGuide.eStyleFlags.NotEditable
+                DirectCast(cell, cEwECell).Style = cStyleGuide.eStyleFlags.NotEditable
             ElseIf Rule.HCR_Type = eHCR_Type.Multilevel Then
-                cell = New EwECell(CDbl(Rule.MinF))
-                DirectCast(cell, EwECell).Style = cStyleGuide.eStyleFlags.OK
+                cell = New cEwECell(CDbl(Rule.MinF))
+                DirectCast(cell, cEwECell).Style = cStyleGuide.eStyleFlags.OK
             End If
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MinF) = cell
 
             'Biomass lower limit
-            cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.LowerLimit))
+            cell = New cEwECell(Units.Convert(Me.m_conversionToDisplay, Rule.LowerLimit))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BLowerLim) = cell
 
             'Biomass upper limit
-            cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.UpperLimit))
+            cell = New cEwECell(Units.Convert(Me.m_conversionToDisplay, Rule.UpperLimit))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BUpperLim) = cell
 
             'GroupF Name
-            cell = New EwECell(Rule.GroupF.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            cell = New cEwECell(Rule.GroupF.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(iHCR, eColumnTypes.FGroupName) = cell
 
             'MaxF
-            cell = New EwECell(Rule.MaxF)
+            cell = New cEwECell(Rule.MaxF)
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = cell
 
@@ -239,7 +239,7 @@ Public Class gridTargetFishingMortalityPolicy
             Me(iHCR, eColumnTypes.Targ_Or_Cons) = cell
 
             'Time frame rules number of years
-            cell = New EwECell(Rule.TimeFrameRule.NYears)
+            cell = New cEwECell(Rule.TimeFrameRule.NYears)
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.TimeFrameRuleYears) = cell
 
@@ -260,20 +260,20 @@ Public Class gridTargetFishingMortalityPolicy
                 Dim hcr As HCR_Group = DirectCast(row.Tag, HCR_Group)
                 If ReferenceEquals(hcr.GroupB, curHCR.GroupB) Then
 
-                    DirectCast(row.GetCells(eColumnTypes.BioGroupName), EwECell).Value = hcr.GroupB.Name
-                    DirectCast(row.GetCells(eColumnTypes.FGroupName), EwECell).Value = hcr.GroupF.Name
-                    DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.LowerLimit)
+                    DirectCast(row.GetCells(eColumnTypes.BioGroupName), cEwECell).Value = hcr.GroupB.Name
+                    DirectCast(row.GetCells(eColumnTypes.FGroupName), cEwECell).Value = hcr.GroupF.Name
+                    DirectCast(row.GetCells(eColumnTypes.BLowerLim), cEwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.LowerLimit)
                     If hcr.BStep = cCore.NULL_VALUE Then
-                        DirectCast(row.GetCells(eColumnTypes.BStep), EwECell).Value = cCore.NULL_VALUE
+                        DirectCast(row.GetCells(eColumnTypes.BStep), cEwECell).Value = cCore.NULL_VALUE
                     Else
-                        DirectCast(row.GetCells(eColumnTypes.BStep), EwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.BStep)
+                        DirectCast(row.GetCells(eColumnTypes.BStep), cEwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.BStep)
                     End If
 
-                    DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.UpperLimit)
+                    DirectCast(row.GetCells(eColumnTypes.BUpperLim), cEwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.UpperLimit)
 
-                    DirectCast(row.GetCells(eColumnTypes.MinF), EwECell).Value = CDbl(hcr.MinF)
+                    DirectCast(row.GetCells(eColumnTypes.MinF), cEwECell).Value = CDbl(hcr.MinF)
 
-                    DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
+                    DirectCast(row.GetCells(eColumnTypes.MaxF), cEwECell).Value = hcr.MaxF
 
                     DirectCast(row.GetCells(eColumnTypes.Targ_Or_Cons), ICell).Value = hcr.Targ_Or_Cons
 
@@ -305,15 +305,15 @@ Public Class gridTargetFishingMortalityPolicy
                 Case eColumnTypes.HCR_Type
                     Me.HarvestControlRule.HCR_Type = DirectCast(cell.GetValue(p), eHCR_Type)
                     If Me.HarvestControlRule.HCR_Type = eHCR_Type.Traditional Then
-                        Dim bstepcell As EwECell = DirectCast(Me(p.Row, eColumnTypes.BStep), EwECell)
+                        Dim bstepcell As cEwECell = DirectCast(Me(p.Row, eColumnTypes.BStep), cEwECell)
                         bstepcell.Style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
-                        Dim minfcell As EwECell = DirectCast(Me(p.Row, eColumnTypes.MinF), EwECell)
+                        Dim minfcell As cEwECell = DirectCast(Me(p.Row, eColumnTypes.MinF), cEwECell)
                         minfcell.Style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
                     ElseIf Me.HarvestControlRule.HCR_Type = eHCR_Type.Multilevel Then
-                        Dim bstepcell As EwECell = DirectCast(Me(p.Row, eColumnTypes.BStep), EwECell)
+                        Dim bstepcell As cEwECell = DirectCast(Me(p.Row, eColumnTypes.BStep), cEwECell)
                         bstepcell.Style = cStyleGuide.eStyleFlags.OK
                         If Me.HarvestControlRule.BStep < Me.HarvestControlRule.LowerLimit Then bstepcell.Value = Me.HarvestControlRule.LowerLimit
-                        Dim minfcell As EwECell = DirectCast(Me(p.Row, eColumnTypes.MinF), EwECell)
+                        Dim minfcell As cEwECell = DirectCast(Me(p.Row, eColumnTypes.MinF), cEwECell)
                         minfcell.Style = cStyleGuide.eStyleFlags.OK
                         If Me.HarvestControlRule.MinF < 0 Then minfcell.Value = CDbl(0.0)
                     End If

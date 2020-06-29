@@ -34,7 +34,7 @@ Imports ScientificInterfaceShared.Style
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class gridShapeValue
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -125,7 +125,7 @@ Public Class gridShapeValue
         Get
 
             Dim lValues As New List(Of Single)
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
             If (iNumValues <= 0) Then iNumValues = Me.m_iNumValues
             iNumValues = Math.Min(iNumValues, Me.RowsCount - 1)
@@ -138,7 +138,7 @@ Public Class gridShapeValue
             End If
 
             For iCell As Integer = 1 To iNumValues
-                cell = DirectCast(Me(iCell, 1), EwECell)
+                cell = DirectCast(Me(iCell, 1), cEwECell)
                 lValues.Add(CSng(cell.Value))
             Next
             Return lValues.ToArray
@@ -175,17 +175,17 @@ Public Class gridShapeValue
         Select Case Me.m_displayMode
 
             Case frmShapeValue.eDisplayMode.Index
-                Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_INDEX)
+                Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_INDEX)
 
             Case frmShapeValue.eDisplayMode.Yearly
-                Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_YEAR)
+                Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_YEAR)
 
             Case frmShapeValue.eDisplayMode.Monthly
-                Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_TIME)
+                Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_TIME)
 
         End Select
 
-        Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE)
+        Me(0, 1) = New cEwEColumnHeaderCell(My.Resources.HEADER_VALUE)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -195,7 +195,7 @@ Public Class gridShapeValue
 
     Protected Overrides Sub FillData()
 
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         ' StartIndex used for display purposes only, has no effect on data whatsoever
         Dim iStartIndex As Integer = Me.Core.EcosimFirstYear
         Dim sValue As Single = 0.0!
@@ -221,21 +221,21 @@ Public Class gridShapeValue
 
                 Case frmShapeValue.eDisplayMode.Index
 
-                    cell = New EwECell(CStr(iValue), GetType(String))
+                    cell = New cEwECell(CStr(iValue), GetType(String))
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
-                    cell = New EwECell(sValue, GetType(Single), style)
+                    cell = New cEwECell(sValue, GetType(Single), style)
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     Me(iValue, 1) = cell
 
                 Case frmShapeValue.eDisplayMode.Yearly
 
-                    cell = New EwECell(CStr(iValue + iStartIndex - 1), GetType(String))
+                    cell = New cEwECell(CStr(iValue + iStartIndex - 1), GetType(String))
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
-                    cell = New EwECell(sValue, GetType(Single), style)
+                    cell = New cEwECell(sValue, GetType(Single), style)
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     cell.DataModel.DefaultValue = 0.0!
                     Me(iValue, 1) = cell
@@ -249,11 +249,11 @@ Public Class gridShapeValue
 
                     If iMonth = 1 Then strLabel = CStr(iYear) Else strLabel = d.ToString("MMM")
 
-                    cell = New EwECell(strLabel, GetType(String))
+                    cell = New cEwECell(strLabel, GetType(String))
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
-                    cell = New EwECell(sValue, GetType(Single), style)
+                    cell = New cEwECell(sValue, GetType(Single), style)
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     cell.DataModel.DefaultValue = 0.0!
                     Me(iValue, 1) = cell

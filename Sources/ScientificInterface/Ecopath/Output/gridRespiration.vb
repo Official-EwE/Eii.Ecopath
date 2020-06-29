@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)>
     Public Class gridRespiration
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -45,13 +45,13 @@ Namespace Ecopath.Output
 
             Me.Redim(1, 7)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(eVarNameFlags.Respiration)
-            Me(0, 3) = New EwEColumnHeaderCell(eVarNameFlags.Assimilation)
-            Me(0, 4) = New EwEColumnHeaderCell(eVarNameFlags.RespAssim)
-            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.ProdResp)
-            Me(0, 6) = New EwEColumnHeaderCell(eVarNameFlags.RespBiom)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New cEwEColumnHeaderCell(eVarNameFlags.Respiration)
+            Me(0, 3) = New cEwEColumnHeaderCell(eVarNameFlags.Assimilation)
+            Me(0, 4) = New cEwEColumnHeaderCell(eVarNameFlags.RespAssim)
+            Me(0, 5) = New cEwEColumnHeaderCell(eVarNameFlags.ProdResp)
+            Me(0, 6) = New cEwEColumnHeaderCell(eVarNameFlags.RespBiom)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -62,11 +62,11 @@ Namespace Ecopath.Output
 
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
             Dim group As cEcoPathGroupOutput = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -89,11 +89,11 @@ Namespace Ecopath.Output
 
                         ' Complete row with dummy cells
                         iRow = Me.AddRow()
-                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
                         iStanzaPrev = group.iStanza
                         iRow = Me.AddRow
@@ -110,17 +110,17 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
-            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Respiration)
-            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Assimilation)
-            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RespAssim)
-            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.ProdResp)
-            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.RespBiom)
+            Me(iRow, 2) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.Respiration)
+            Me(iRow, 3) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.Assimilation)
+            Me(iRow, 4) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.RespAssim)
+            Me(iRow, 5) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.ProdResp)
+            Me(iRow, 6) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.RespBiom)
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

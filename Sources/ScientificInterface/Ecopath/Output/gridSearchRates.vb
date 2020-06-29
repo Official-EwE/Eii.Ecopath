@@ -32,7 +32,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridSearchRates
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -48,21 +48,21 @@ Namespace Ecopath.Output
             If (Me.UIContext Is Nothing) Then Return
 
             Me.Redim(core.nGroups + 1, 2)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To core.nGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
                 source = core.EcoPathGroupOutputs(i)
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
-                Me(i, 1) = New EwERowHeaderCell(source.Name)
+                Me(i, 1) = New cEwERowHeaderCell(source.Name)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
 
@@ -76,7 +76,7 @@ Namespace Ecopath.Output
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim prop As cProperty = Nothing
             Dim pm As cPropertyManager = Me.PropertyManager
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
             Dim columnIndex As Integer = 2
 
             Dim visDiagonal As New SourceGrid2.VisualModels.Common
@@ -94,7 +94,7 @@ Namespace Ecopath.Output
                         ' Get the indexed comsumption property by (rowIndex, columnIndex)
                         prop = pm.GetProperty(sourceSec, eVarNameFlags.SearchRate, source)
                         ' Add property to the cell
-                        cell = New PropertyCell(prop)
+                        cell = New cPropertyCell(prop)
 
                         If rowIndex = columnIndex - 1 Then
                             cell.VisualModel = visDiagonal

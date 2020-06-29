@@ -31,7 +31,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)>
 Public Class gridCatchability
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_iSelFleet As Integer = 1
 
@@ -53,25 +53,25 @@ Public Class gridCatchability
         ' ToDo: consider adding only columns for caught groups; this is way too expensive on the UI
         Me.Redim(1, Core.nGroups + 1)
 
-        Me(0, 0) = New EwEColumnHeaderCell(SharedResources.TSDATASETINTERVAL_TIMESTEP)
+        Me(0, 0) = New cEwEColumnHeaderCell(SharedResources.TSDATASETINTERVAL_TIMESTEP)
 
         For columnIndex As Integer = 1 To Core.nGroups
             source = Core.EcoSimGroupInputs(columnIndex)
-            Me(0, columnIndex) = New EwEColumnHeaderCell(source.Name)
+            Me(0, columnIndex) = New cEwEColumnHeaderCell(source.Name)
         Next
 
     End Sub
 
     Protected Overrides Sub FillData()
 
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim source As cEcosimFleetInput
         source = Core.EcosimFleetInputs(Me.m_iSelFleet)
 
         For it As Integer = 1 To Me.Core.nEcosimTimeSteps
             Me.AddRow(it)
 
-            cell = New EwECell(CStr(it), GetType(String))
+            cell = New cEwECell(CStr(it), GetType(String))
             cell.Style = cStyleGuide.eStyleFlags.NotEditable
             Me(it, 0) = cell
 
@@ -85,7 +85,7 @@ Public Class gridCatchability
                     style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
                 End If
 
-                cell = New EwECell(source.RelQt(igrp, it), GetType(Single), style)
+                cell = New cEwECell(source.RelQt(igrp, it), GetType(Single), style)
                 cell.SuppressZero = False
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 ' JS 01Mar18: Not core null?

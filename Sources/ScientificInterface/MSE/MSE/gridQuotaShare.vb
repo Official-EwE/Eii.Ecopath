@@ -37,7 +37,7 @@ Namespace Ecosim
     ''' ===========================================================================
     <CLSCompliant(False)>
     Public Class gridQuotaShare
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -54,16 +54,16 @@ Namespace Ecosim
 
             Me.Redim(1, 2 + Core.nFleets + 1) ' Include sum column
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Core.nFleets
                 src = Core.EcopathFleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                  src, eVarNameFlags.Name, Nothing,
                                                                  cUnits.Currency)
             Next
-            Me(0, 1 + Core.nFleets + 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, 1 + Core.nFleets + 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -87,8 +87,8 @@ Namespace Ecosim
                 group = Core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Clear row sum
                 alPropSum.Clear()
@@ -97,7 +97,7 @@ Namespace Ecosim
                 For iFleet As Integer = 1 To Me.Core.nFleets
                     fleet = Core.MSEManager.EcopathFleetInputs(iFleet)
                     prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.QuotaShare, group)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(prop)
+                    Me(iGroup, 1 + iFleet) = New cPropertyCell(prop)
 
                     ' Add to sum row
                     alPropSum.Add(prop)
@@ -108,7 +108,7 @@ Namespace Ecosim
                 ' Create sum property
                 propSum = Me.Formula(opSum)
                 ' Define sum cell
-                Me(iGroup, 1 + Me.Core.nFleets + 1) = New PropertyCell(propSum)
+                Me(iGroup, 1 + Me.Core.nFleets + 1) = New cPropertyCell(propSum)
 
             Next
 

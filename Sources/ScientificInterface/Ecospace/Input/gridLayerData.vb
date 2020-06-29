@@ -32,7 +32,7 @@ Imports ScientificInterfaceShared
 
 <CLSCompliant(False)>
 Public Class gridLayerData
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Enum eDataModes As Integer
         Value = 0
@@ -95,9 +95,9 @@ Public Class gridLayerData
         data = Me.m_layer.Data
 
         Me.Redim(1, Me.m_basemap.InCol + 1)
-        Me(0, 0) = New EwEColumnHeaderCell("")
+        Me(0, 0) = New cEwEColumnHeaderCell("")
         For iCol As Integer = 1 To Me.m_basemap.InCol
-            Me(0, iCol) = New EwEColumnHeaderCell(CStr(iCol))
+            Me(0, iCol) = New cEwEColumnHeaderCell(CStr(iCol))
         Next
 
         Me.FixedColumns = 1
@@ -140,7 +140,7 @@ Public Class gridLayerData
             ' Add row
             Me.AddRow()
             ' Add row header cell
-            Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
             ' Add row value cells
             For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Prepare cell
@@ -156,7 +156,7 @@ Public Class gridLayerData
                         Debug.Assert(False)
                 End Select
 
-                cell = New EwECell(value, tCell, style)
+                cell = New cEwECell(value, tCell, style)
                 If (Not Me.m_bReadOnly) Then cell.Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, iCol) = cell

@@ -38,7 +38,7 @@ Imports SourceGrid2.Cells
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
    Public Class gridDefinePedigree
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -493,17 +493,17 @@ Imports SourceGrid2.Cells
         Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
         ' Level index cell
-        Me(0, eColumnTypes.LevelIndex) = New EwEColumnHeaderCell()
+        Me(0, eColumnTypes.LevelIndex) = New cEwEColumnHeaderCell()
         ' Level name cell, editable this time
-        Me(0, eColumnTypes.LevelName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.LevelName) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
         ' Color
-        Me(0, eColumnTypes.LevelColor) = New EwEColumnHeaderCell(SharedResources.HEADER_COLOR)
+        Me(0, eColumnTypes.LevelColor) = New cEwEColumnHeaderCell(SharedResources.HEADER_COLOR)
         ' Index value
-        Me(0, eColumnTypes.LevelIndexValue) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEXVALUE)
+        Me(0, eColumnTypes.LevelIndexValue) = New cEwEColumnHeaderCell(SharedResources.HEADER_INDEXVALUE)
         ' Confidence interval
-        Me(0, eColumnTypes.LevelConfidenceInterval) = New EwEColumnHeaderCell(SharedResources.HEADER_CONFIDENCEINTERVAL)
+        Me(0, eColumnTypes.LevelConfidenceInterval) = New cEwEColumnHeaderCell(SharedResources.HEADER_CONFIDENCEINTERVAL)
         ' Status
-        Me(0, eColumnTypes.LevelStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+        Me(0, eColumnTypes.LevelStatus) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
         ' Fix index column only; Level name column cannot be fixed because it must be editable
         Me.FixedColumns = 1
 
@@ -544,13 +544,13 @@ Imports SourceGrid2.Cells
         Dim ri As RowInfo = Nothing
         Dim pos As SourceGrid2.Position = Nothing
         Dim vm As VisualModels.Common = Nothing
-        Dim ewec As EwECell = Nothing
+        Dim ewec As cEwECell = Nothing
 
         ' Create missing rows
         For iRow As Integer = Me.Rows.Count To Me.ActiveConfig.Levels.Count
             Me.AddRow()
 
-            ewec = New EwECell(iRow, GetType(Integer))
+            ewec = New cEwECell(iRow, GetType(Integer))
             ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.LevelIndex) = ewec
 
@@ -562,13 +562,13 @@ Imports SourceGrid2.Cells
             Me(iRow, eColumnTypes.LevelColor).VisualModel = New cEwEGridColorVisualizer()
             Me(iRow, eColumnTypes.LevelColor).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.LevelIndexValue) = New EwECell(0.0!, GetType(Single))
+            Me(iRow, eColumnTypes.LevelIndexValue) = New cEwECell(0.0!, GetType(Single))
             Me(iRow, eColumnTypes.LevelIndexValue).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.LevelConfidenceInterval) = New EwECell(0, GetType(Integer))
+            Me(iRow, eColumnTypes.LevelConfidenceInterval) = New cEwECell(0, GetType(Integer))
             Me(iRow, eColumnTypes.LevelConfidenceInterval).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.LevelStatus) = New EwEStatusCell(eItemStatusTypes.Original)
+            Me(iRow, eColumnTypes.LevelStatus) = New cEwEStatusCell(eItemStatusTypes.Original)
         Next
 
         ' Delete obsolete rows

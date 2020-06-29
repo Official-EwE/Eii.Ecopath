@@ -34,7 +34,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)>
     Public Class gridBasicEstimates
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Enum eColumnTypes As Integer
             Index = 0
@@ -62,19 +62,19 @@ Namespace Ecopath.Output
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(eVarNameFlags.TTLX)
-            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.HabitatArea)
-            Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaOutput)
-            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBOutput)
-            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(eVarNameFlags.EEOutput)
-            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(eVarNameFlags.GEOutput)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumOutput)
-            Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.TL) = New cEwEColumnHeaderCell(eVarNameFlags.TTLX)
+            Me(0, eColumnTypes.Area) = New cEwEColumnHeaderCell(eVarNameFlags.HabitatArea)
+            Me(0, eColumnTypes.BArea) = New cEwEColumnHeaderCell(eVarNameFlags.BiomassAreaOutput)
+            Me(0, eColumnTypes.B) = New cEwEColumnHeaderCell(eVarNameFlags.Biomass)
+            Me(0, eColumnTypes.Z) = New cEwEColumnHeaderCell(eVarNameFlags.Z)
+            Me(0, eColumnTypes.PB) = New cEwEColumnHeaderCell(eVarNameFlags.PBOutput)
+            Me(0, eColumnTypes.QB) = New cEwEColumnHeaderCell(eVarNameFlags.QBOutput)
+            Me(0, eColumnTypes.EE) = New cEwEColumnHeaderCell(eVarNameFlags.EEOutput)
+            Me(0, eColumnTypes.GE) = New cEwEColumnHeaderCell(eVarNameFlags.GEOutput)
+            Me(0, eColumnTypes.BA) = New cEwEColumnHeaderCell(eVarNameFlags.BioAccumOutput)
+            Me(0, eColumnTypes.BArate) = New cEwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -85,11 +85,11 @@ Namespace Ecopath.Output
 
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
             Dim group As cEcoPathGroupOutput = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -112,11 +112,11 @@ Namespace Ecopath.Output
 
                         ' Complete row with dummy cells
                         iRow = Me.AddRow()
-                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
                         iStanzaPrev = group.iStanza
                         iRow = Me.AddRow
@@ -134,41 +134,41 @@ Namespace Ecopath.Output
 
         Private Sub UpdateRow(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal bIsStanza As Boolean = False)
 
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
 
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If bIsStanza Then
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, eColumnTypes.TL) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TTLX)
-            Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.HabitatArea)
-            Me(iRow, eColumnTypes.BArea) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
-            Me(iRow, eColumnTypes.B) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Biomass)
-            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumOutput)
-            Me(iRow, eColumnTypes.BArate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
+            Me(iRow, eColumnTypes.TL) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.TTLX)
+            Me(iRow, eColumnTypes.Area) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.HabitatArea)
+            Me(iRow, eColumnTypes.BArea) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
+            Me(iRow, eColumnTypes.B) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.Biomass)
+            Me(iRow, eColumnTypes.BA) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumOutput)
+            Me(iRow, eColumnTypes.BArate) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
 
             If bIsStanza Then
-                Me(iRow, eColumnTypes.Z) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
+                Me(iRow, eColumnTypes.Z) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
             Else
-                cell = New EwECell("", GetType(String))
+                cell = New cEwECell("", GetType(String))
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.Z) = cell
             End If
 
             If Not bIsStanza Then
-                Me(iRow, eColumnTypes.PB) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
+                Me(iRow, eColumnTypes.PB) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
             Else
-                cell = New EwECell("", GetType(String))
+                cell = New cEwECell("", GetType(String))
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.PB) = cell
             End If
 
-            Me(iRow, eColumnTypes.QB) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBOutput)
-            Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEOutput)
-            Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEOutput)
+            Me(iRow, eColumnTypes.QB) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.QBOutput)
+            Me(iRow, eColumnTypes.EE) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.EEOutput)
+            Me(iRow, eColumnTypes.GE) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.GEOutput)
 
         End Sub
 

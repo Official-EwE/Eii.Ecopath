@@ -35,7 +35,7 @@ Imports SourceGrid2
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class gridAboutEwE
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_bShowEwEComponentsOnly As Boolean = True
 
@@ -72,46 +72,46 @@ Public Class gridAboutEwE
 
         ' -- Core section --
 
-        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_EWE)
-        Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+        Me(iRow, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_EWE)
+        Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
         iRow += 1
         For Each an As AssemblyName In aanCore
-            Me(iRow, 0) = New EwERowHeaderCell(an.Name)
-            Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, 0) = New cEwERowHeaderCell(an.Name)
+            Me(iRow, 1) = New cEwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             ' Next
             iRow += 1
         Next
 
         ' -- Plug-in section
-        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_PLUGINS)
-        Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+        Me(iRow, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_PLUGINS)
+        Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
         iRow += 1
         For Each an As AssemblyName In aanPlugins
-            Me(iRow, 0) = New EwERowHeaderCell(an.Name)
-            Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, 0) = New cEwERowHeaderCell(an.Name)
+            Me(iRow, 1) = New cEwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             iRow += 1
         Next
 
         If Not Me.m_bShowEwEComponentsOnly Then
 
             ' -- Referenced section --
-            Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_REFERENCED)
-            Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+            Me(iRow, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_REFERENCED)
+            Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
             iRow += 1
             For Each an As AssemblyName In aanRef
-                Me(iRow, 0) = New EwERowHeaderCell(an.Name)
-                Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, 0) = New cEwERowHeaderCell(an.Name)
+                Me(iRow, 1) = New cEwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 ' Next
                 iRow += 1
             Next
 
             ' -- Framework section --
-            Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_FRAMEWORK)
-            Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+            Me(iRow, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_FRAMEWORK)
+            Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
             iRow += 1
             For Each an As AssemblyName In aanFramework
-                Me(iRow, 0) = New EwERowHeaderCell(an.Name)
-                Me(iRow, 1) = New EwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, 0) = New cEwERowHeaderCell(an.Name)
+                Me(iRow, 1) = New cEwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 ' Next
                 iRow += 1
             Next

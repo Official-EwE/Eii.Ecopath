@@ -34,7 +34,7 @@ Namespace Controls
 
     <CLSCompliant(False)> _
     Public Class gridImportShapes
-        Inherits EwEGrid.EwEGrid
+        Inherits EwEGrid.cEwEGrid
 
         Private m_defs As cShapeImportData.cFunctionDefinition()
 
@@ -54,10 +54,10 @@ Namespace Controls
 
             Me.Redim(1, 7)
 
-            Me(0, 0) = New EwEColumnHeaderCell(eVarNameFlags.Name)
-            Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_TYPE)
+            Me(0, 0) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
+            Me(0, 1) = New cEwEColumnHeaderCell(My.Resources.HEADER_TYPE)
             For i As Integer = 1 To 5
-                Me(0, 1 + i) = New EwEColumnHeaderCell(cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, My.Resources.HEADER_PARAMETER, CStr(i)))
+                Me(0, 1 + i) = New cEwEColumnHeaderCell(cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, My.Resources.HEADER_PARAMETER, CStr(i)))
             Next
 
             Me.FixedColumnWidths = False
@@ -80,11 +80,11 @@ Namespace Controls
 
             For Each fn As cShapeImportData.cFunctionDefinition In Me.m_defs
                 Dim iRow As Integer = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(fn.Name)
-                Me(iRow, 1) = New EwECell(fmt.ToString(fn.ShapeFunction), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, 0) = New cEwERowHeaderCell(fn.Name)
+                Me(iRow, 1) = New cEwECell(fmt.ToString(fn.ShapeFunction), cStyleGuide.eStyleFlags.NotEditable)
                 For i As Integer = 0 To 4
                     Dim style As cStyleGuide.eStyleFlags = If(fn.ShapeParameters(i) >= 0, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.Null) Or cStyleGuide.eStyleFlags.NotEditable
-                    Me(iRow, 2 + i) = New EwECell(fn.ShapeParameters(i), style)
+                    Me(iRow, 2 + i) = New cEwECell(fn.ShapeParameters(i), style)
                 Next
             Next
 

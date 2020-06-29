@@ -34,7 +34,7 @@ Namespace Ecospace
 
     <CLSCompliant(False)> _
     Public Class gridDefineImportanceMaps
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         ''' <summary>A number representing the row that contains the first Layer</summary>
         Private Const iFIRSTDATAROW As Integer = 1
@@ -285,14 +285,14 @@ Namespace Ecospace
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' Layer index cell
-            Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
+            Me(0, eColumnTypes.LayerIndex) = New cEwEColumnHeaderCell()
             ' Layer name cell, editable this time
-            Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.LayerWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
-            Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.LayerName) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.LayerWeight) = New cEwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
+            Me(0, eColumnTypes.LayerDescription) = New cEwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
 
             ' Layer index cell
-            Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            Me(0, eColumnTypes.LayerStatus) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; Layer name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
@@ -354,13 +354,13 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim ewec As EwECell = Nothing
+            Dim ewec As cEwECell = Nothing
 
             ' Create missing rows
             For iRow As Integer = Me.Rows.Count To Me.m_alLayers.Count
                 Me.AddRow()
 
-                ewec = New EwECell(0, GetType(Integer))
+                ewec = New cEwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
 
@@ -373,7 +373,7 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.LayerWeight) = New Cells.Real.Cell(0.0!, GetType(Single))
                 Me(iRow, eColumnTypes.LayerWeight).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerStatus) = New EwEStatusCell(eItemStatusTypes.Original)
+                Me(iRow, eColumnTypes.LayerStatus) = New cEwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows

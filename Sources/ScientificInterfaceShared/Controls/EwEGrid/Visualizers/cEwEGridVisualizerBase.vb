@@ -299,8 +299,8 @@ Namespace Controls.EwEGrid
 
         Protected ReadOnly Property RelativePedigree(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Single
             Get
-                If (TypeOf cell Is EwECellBase) Then
-                    Return DirectCast(cell, EwECellBase).RelativePedigree
+                If (TypeOf cell Is cEwECellBase) Then
+                    Return DirectCast(cell, cEwECellBase).RelativePedigree
                 End If
                 Return 0
             End Get

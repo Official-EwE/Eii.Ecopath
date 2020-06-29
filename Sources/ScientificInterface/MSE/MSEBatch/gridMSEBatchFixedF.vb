@@ -34,7 +34,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridMSEBatchFixedF
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     ' ToDo: Globalize this class 
     ' ToDo: Add XML comments
@@ -76,14 +76,14 @@ Public Class gridMSEBatchFixedF
             End If
         End If
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Managed via Fishing Mort.")
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.RunType) = New cEwEColumnHeaderCell("Managed via Fishing Mort.")
 
-        Me(0, eColumnTypes.FixedF) = New EwEColumnHeaderCell("Fixed F") 'B lim(-)
-        Me(0, eColumnTypes.FixedFValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.FixedFLow) = New EwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
-        Me(0, eColumnTypes.FixedFUp) = New EwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
+        Me(0, eColumnTypes.FixedF) = New cEwEColumnHeaderCell("Fixed F") 'B lim(-)
+        Me(0, eColumnTypes.FixedFValue) = New cEwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.FixedFLow) = New cEwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
+        Me(0, eColumnTypes.FixedFUp) = New cEwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
 
 
         Me.FixedColumns = 2
@@ -104,21 +104,21 @@ Public Class gridMSEBatchFixedF
             Me.AddRow()
 
             RowStyle = DirectCast(group.GetStatus(eVarNameFlags.MSEFixedF), cStyleGuide.eStyleFlags)
-            Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-            Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+            Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+            Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
             ' ToDo: replace by property style
-            Me(iGroup, eColumnTypes.RunType) = New PropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFManaged)
+            Me(iGroup, eColumnTypes.RunType) = New cPropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFManaged)
             'Me(iGroup, eColumnTypes.RunType) = New EwECheckboxCell(group.isManaged, RowStyle)
             Me(iGroup, eColumnTypes.RunType).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iGroup, eColumnTypes.FixedF) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFixedF)
+            Me(iGroup, eColumnTypes.FixedF) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFixedF)
 
-            Me(iGroup, eColumnTypes.FixedFValue) = New EwECell(group.FixedFValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.FixedFValue) = New cEwECell(group.FixedFValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.FixedFValue).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iGroup, eColumnTypes.FixedFLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFLower)
-            Me(iGroup, eColumnTypes.FixedFUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFUpper)
+            Me(iGroup, eColumnTypes.FixedFLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFLower)
+            Me(iGroup, eColumnTypes.FixedFUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFUpper)
 
 
         Next iGroup

@@ -84,18 +84,18 @@ Public Class gridTimeSeries
         Me.Redim(nPoints + [Enum].GetValues(GetType(eRowType)).Length, nTS + 1)
 
         ' Create row headers
-        Me(eRowType.Header, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEX)
-        Me(eRowType.Thumbnail, 0) = New EwERowHeaderCell(SharedResources.HEADER_IMAGE)
-        Me(eRowType.Name, 0) = New EwERowHeaderCell(SharedResources.HEADER_NAME)
-        Me(eRowType.PoolPrimary, 0) = New EwERowHeaderCell(SharedResources.HEADER_TARGET)
-        Me(eRowType.PoolSecundary, 0) = New EwERowHeaderCell(My.Resources.HEADER_TARGET_SECOND)
-        Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
-        Me(eRowType.Weight, 0) = New EwERowHeaderCell(SharedResources.HEADER_WEIGHT)
-        Me(eRowType.Interval, 0) = New EwERowHeaderCell(My.Resources.HEADER_INTERVAL)
-        Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
+        Me(eRowType.Header, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_INDEX)
+        Me(eRowType.Thumbnail, 0) = New cEwERowHeaderCell(SharedResources.HEADER_IMAGE)
+        Me(eRowType.Name, 0) = New cEwERowHeaderCell(SharedResources.HEADER_NAME)
+        Me(eRowType.PoolPrimary, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TARGET)
+        Me(eRowType.PoolSecundary, 0) = New cEwERowHeaderCell(My.Resources.HEADER_TARGET_SECOND)
+        Me(eRowType.Type, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TYPE)
+        Me(eRowType.Weight, 0) = New cEwERowHeaderCell(SharedResources.HEADER_WEIGHT)
+        Me(eRowType.Interval, 0) = New cEwERowHeaderCell(My.Resources.HEADER_INTERVAL)
+        Me(eRowType.Type, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TYPE)
 
         For i As Integer = 0 To nPoints - 1
-            Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(Me.Label(i))
+            Me(eRowType.FirstTime + i, 0) = New cEwERowHeaderCell(Me.Label(i))
         Next
 
         For i As Integer = 0 To nTS - 1
@@ -103,13 +103,13 @@ Public Class gridTimeSeries
 
             Me.Shape(i + 1) = ts
 
-            Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(ts.Index))
+            Me(eRowType.Header, i + 1) = New cEwEColumnHeaderCell(CStr(ts.Index))
 
-            cell = New EwECell(ts, cStyleGuide.eStyleFlags.NotEditable)
+            cell = New cEwECell(ts, cStyleGuide.eStyleFlags.NotEditable)
             cell.VisualModel = New cVisualModelThumbnail(Me.Handler)
             Me(eRowType.Thumbnail, i + 1) = cell
 
-            cell = New EwECell(ts.Name, GetType(String))
+            cell = New cEwECell(ts.Name, GetType(String))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Name, i + 1) = cell
 
@@ -132,29 +132,29 @@ Public Class gridTimeSeries
             End If
 
             If (selDatTypePrim IsNot Nothing) Then
-                Me(eRowType.PoolPrimary, i + 1) = New EwECell(fmtCore.ToString(selDatTypePrim), cStyleGuide.eStyleFlags.NotEditable)
+                Me(eRowType.PoolPrimary, i + 1) = New cEwECell(fmtCore.ToString(selDatTypePrim), cStyleGuide.eStyleFlags.NotEditable)
             Else
-                Me(eRowType.PoolPrimary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                Me(eRowType.PoolPrimary, i + 1) = New cEwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
             End If
 
             If (selDatTypeSec IsNot Nothing) Then
-                Me(eRowType.PoolSecundary, i + 1) = New EwECell(fmtCore.ToString(selDatTypeSec), cStyleGuide.eStyleFlags.NotEditable)
+                Me(eRowType.PoolSecundary, i + 1) = New cEwECell(fmtCore.ToString(selDatTypeSec), cStyleGuide.eStyleFlags.NotEditable)
             Else
-                Me(eRowType.PoolSecundary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                Me(eRowType.PoolSecundary, i + 1) = New cEwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
             End If
 
-            Me(eRowType.Type, i + 1) = New EwECell(fmtTSType.ToString(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.Type, i + 1) = New cEwECell(fmtTSType.ToString(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
 
-            cell = New EwECell(fmtInterval.ToString(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            cell = New cEwECell(fmtInterval.ToString(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(eRowType.Interval, i + 1) = cell
 
-            cell = New EwECell(ts.WtType, GetType(Single))
+            cell = New cEwECell(ts.WtType, GetType(Single))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Weight, i + 1) = cell
 
             For j As Integer = 0 To nPoints - 1
-                cell = New EwECell(ts.ShapeData(j + 1), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
-                DirectCast(cell, EwECell).SuppressZero = Not ts.SupportsNull()
+                cell = New cEwECell(ts.ShapeData(j + 1), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                DirectCast(cell, cEwECell).SuppressZero = Not ts.SupportsNull()
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
         Next

@@ -44,7 +44,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)>
 Public Class gridStrategiesOverview
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -85,8 +85,8 @@ Public Class gridStrategiesOverview
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.StrategyName) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-        Me(0, eColumnTypes.RunStrategy) = New EwEColumnHeaderCell(My.Resources.HEADER_RUN_YES_NO)
+        Me(0, eColumnTypes.StrategyName) = New cEwEColumnHeaderCell(My.Resources.HEADER_NAME)
+        Me(0, eColumnTypes.RunStrategy) = New cEwEColumnHeaderCell(My.Resources.HEADER_RUN_YES_NO)
         'Me(0, eColumnTypes.LowerLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_LOWER_LIMIT_VALID)
         'Me(0, eColumnTypes.UpperLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_UPPER_LIMIT_VALID)
 
@@ -103,7 +103,7 @@ Public Class gridStrategiesOverview
         If (Me.m_data Is Nothing) Then Return
 
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         Me.RowsCount = 1
 
@@ -114,7 +114,7 @@ Public Class gridStrategiesOverview
             'Me(iRow, eColumnTypes.GroupIndex) = New EwERowHeaderCell(CStr(igroup.Index))
             'Me(iRow, eColumnTypes.GroupName) = New EwERowHeaderCell(CStr(igroup.Name))
 
-            Me(iRow, eColumnTypes.StrategyName) = New EwERowHeaderCell(CStr(Me.m_data(i - 1).Name))
+            Me(iRow, eColumnTypes.StrategyName) = New cEwERowHeaderCell(CStr(Me.m_data(i - 1).Name))
             'Me(iRow, eColumnTypes.StrategyName) = PropertyRowHeaderCell(Me.PropertyManager, fleetMSE, eVarNameFlags.Name)
 
             Me(iRow, eColumnTypes.RunStrategy) = New SourceGrid2.Cells.Real.CheckBox(Me.m_data(i - 1).RunThisStrategy)

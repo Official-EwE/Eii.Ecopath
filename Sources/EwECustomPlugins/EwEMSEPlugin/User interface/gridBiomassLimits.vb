@@ -44,7 +44,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)>
 Public Class gridBiomassLimits
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -86,10 +86,10 @@ Public Class gridBiomassLimits
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.GroupIndex) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP_INDEX)
-        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP_NAME)
-        Me(0, eColumnTypes.LowerLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_LOWER_LIMIT_VALID)
-        Me(0, eColumnTypes.UpperLimit) = New EwEColumnHeaderCell(My.Resources.HEADER_UPPER_LIMIT_VALID)
+        Me(0, eColumnTypes.GroupIndex) = New cEwEColumnHeaderCell(My.Resources.HEADER_GROUP_INDEX)
+        Me(0, eColumnTypes.GroupName) = New cEwEColumnHeaderCell(My.Resources.HEADER_GROUP_NAME)
+        Me(0, eColumnTypes.LowerLimit) = New cEwEColumnHeaderCell(My.Resources.HEADER_LOWER_LIMIT_VALID)
+        Me(0, eColumnTypes.UpperLimit) = New cEwEColumnHeaderCell(My.Resources.HEADER_UPPER_LIMIT_VALID)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -103,7 +103,7 @@ Public Class gridBiomassLimits
         If (Me.m_data Is Nothing) Then Return
 
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         Me.RowsCount = 1
 
@@ -114,8 +114,8 @@ Public Class gridBiomassLimits
             'Me(iRow, eColumnTypes.GroupIndex) = New EwERowHeaderCell(CStr(igroup.Index))
             'Me(iRow, eColumnTypes.GroupName) = New EwERowHeaderCell(CStr(igroup.Name))
 
-            Me(iRow, eColumnTypes.GroupIndex) = New EwERowHeaderCell(CStr(Me.m_data(i - 1).mGroup.Index))
-            Me(iRow, eColumnTypes.GroupName) = New EwERowHeaderCell(CStr(Me.m_data(i - 1).mGroup.Name))
+            Me(iRow, eColumnTypes.GroupIndex) = New cEwERowHeaderCell(CStr(Me.m_data(i - 1).mGroup.Index))
+            Me(iRow, eColumnTypes.GroupName) = New cEwERowHeaderCell(CStr(Me.m_data(i - 1).mGroup.Name))
             Me(iRow, eColumnTypes.LowerLimit) = Me.DataCell(CSng(Me.m_data(i - 1).mLowerLimit))
             Me(iRow, eColumnTypes.UpperLimit) = Me.DataCell(CSng(Me.m_data(i - 1).mUpperLimit))
 
@@ -144,16 +144,16 @@ Public Class gridBiomassLimits
         End Get
     End Property
 
-    Private Function DataCell(dValue As Single) As EwECell
+    Private Function DataCell(dValue As Single) As cEwECell
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         If (dValue = cCore.NULL_VALUE) Then
             style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Single), style)
+        cell = New cEwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 

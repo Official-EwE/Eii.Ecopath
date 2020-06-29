@@ -39,7 +39,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
     Public Class gridEcospaceHabitatDyncamis
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private m_bInUpdate As Boolean = False
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
@@ -89,10 +89,10 @@ Namespace Ecospace
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             'Set header cells #(0,0)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, eColumnTypes.EffPower) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFPOWER)
-            Me(0, eColumnTypes.SEmult) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTEFFMULTI)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.EffPower) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFPOWER)
+            Me(0, eColumnTypes.SEmult) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTEFFMULTI)
 
         End Sub
 
@@ -105,10 +105,10 @@ Namespace Ecospace
                 Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(i)
                 Dim iRow As Integer = Me.AddRow()
 
-                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Index)
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
-                Me(iRow, eColumnTypes.EffPower) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.EffectivePower)
-                Me(iRow, eColumnTypes.SEmult) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.SEmult)
+                Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.EffPower) = New cPropertyCell(Me.PropertyManager, fleet, eVarNameFlags.EffectivePower)
+                Me(iRow, eColumnTypes.SEmult) = New cPropertyCell(Me.PropertyManager, fleet, eVarNameFlags.SEmult)
 
             Next
 
@@ -124,17 +124,17 @@ Namespace Ecospace
 
         Private Sub UpdateEnabledState()
 
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim bEnable As Boolean = (CBool(Me.m_bpEffort.GetValue()) = True)
 
             For iRow As Integer = 1 To Me.RowsCount - 1
-                cell = DirectCast(Me(iRow, eColumnTypes.EffPower), EwECellBase)
+                cell = DirectCast(Me(iRow, eColumnTypes.EffPower), cEwECellBase)
                 If bEnable Then
                     cell.Style = cell.Style And Not eStyleFlags.NotEditable
                 Else
                     cell.Style = cell.Style Or eStyleFlags.NotEditable
                 End If
-                cell = DirectCast(Me(iRow, eColumnTypes.SEmult), EwECellBase)
+                cell = DirectCast(Me(iRow, eColumnTypes.SEmult), cEwECellBase)
                 If bEnable Then
                     cell.Style = cell.Style And Not eStyleFlags.NotEditable
                 Else

@@ -40,7 +40,7 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class ucMediationAssignmentsGrid
-        Inherits EwEGrid.EwEGrid
+        Inherits EwEGrid.cEwEGrid
 
         Private m_bLandings As Boolean = True
 
@@ -108,17 +108,17 @@ Namespace Controls
             End If
 
             Dim fmt As New cCoreInterfaceFormatter()
-            Dim ewec As EwECellBase = Nothing
+            Dim ewec As cEwECellBase = Nothing
             Dim iCol As Integer = 0
             Dim iRow As Integer = Me.AddRow()
 
-            ewec = New EwERowHeaderCell(fmt.ToString(obj))
+            ewec = New cEwERowHeaderCell(fmt.ToString(obj))
             Me(iRow, iCol) = ewec
             iCol += 1
 
             ' Is landings?
             If Me.m_bLandings Then
-                ewec = New EwERowHeaderCell(fmt.ToString(objSec))
+                ewec = New cEwERowHeaderCell(fmt.ToString(objSec))
                 Me(iRow, iCol) = ewec
                 iCol += 1
             End If
@@ -300,13 +300,13 @@ Namespace Controls
             ' Redim columns
             If Me.m_bLandings Then
                 Me.Redim(1, 3)
-                Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_GROUP)
-                Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEET)
-                Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
+                Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_GROUP)
+                Me(0, 1) = New cEwEColumnHeaderCell(My.Resources.HEADER_FLEET)
+                Me(0, 2) = New cEwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
             Else
                 Me.Redim(1, 2)
-                Me(0, 0) = New EwEColumnHeaderCell(My.Resources.HEADER_NAME)
-                Me(0, 1) = New EwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
+                Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_NAME)
+                Me(0, 1) = New cEwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
             End If
 
 

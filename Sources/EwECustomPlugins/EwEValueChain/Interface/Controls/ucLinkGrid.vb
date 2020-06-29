@@ -36,7 +36,7 @@ Imports EwECore
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class ucLinkGrid
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -154,7 +154,7 @@ Public Class ucLinkGrid
             Else
                 strHeader = Me.m_api(iCol - 1).Name
             End If
-            Me(0, iCol) = New EwERowHeaderCell(strHeader)
+            Me(0, iCol) = New cEwERowHeaderCell(strHeader)
         Next iCol
 
         ' Add link rows
@@ -194,7 +194,7 @@ Public Class ucLinkGrid
         Dim cell As Cells.Real.Cell = Nothing
 
         If iCol = 0 Then
-            cell = New EwERowHeaderCell(CStr(iRow))
+            cell = New cEwERowHeaderCell(CStr(iRow))
         Else
             Try
 
@@ -203,7 +203,7 @@ Public Class ucLinkGrid
                     Dim obj As cOOPStorable = DirectCast(pi.GetValue(link, Nothing), cOOPStorable)
                     Dim strLabel As String = ""
                     If (obj IsNot Nothing) Then strLabel = obj.ToString
-                    cell = New EwECell(strLabel, GetType(String), ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable)
+                    cell = New cEwECell(strLabel, GetType(String), ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable)
                 Else
                     cell = New cPropertyInfoCell(link, pi)
                 End If

@@ -40,7 +40,7 @@ Namespace Ecopath.Tools
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
     Friend Class gridPedigree
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Helper classes "
 
@@ -152,9 +152,9 @@ Namespace Ecopath.Tools
                 Dim fmt As StringFormat = Me.StringFormat
 
                 ' Rendering a cell with an associated property?
-                If (TypeOf cell Is EwECellBase) Then
+                If (TypeOf cell Is cEwECellBase) Then
                     ' #Yes: obtain cell style
-                    style = DirectCast(cell, EwECellBase).Style()
+                    style = DirectCast(cell, cEwECellBase).Style()
                     If (sg IsNot Nothing) Then
                         ' Get SG colours for this style
                         sg.GetStyleColors(style, clrFore, clrBack)
@@ -285,8 +285,8 @@ Namespace Ecopath.Tools
 
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_APPLYVALUES)
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
-                If TypeOf cell Is PropertyCell Then
-                    Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                If TypeOf cell Is cPropertyCell Then
+                    Dim pcell As cPropertyCell = DirectCast(cell, cPropertyCell)
                     If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
                         pcell.GetProperty().SetValue(iLevel)
                     End If
@@ -306,8 +306,8 @@ Namespace Ecopath.Tools
                 Dim bValid As Boolean = True
 
                 For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
-                    If TypeOf cell Is PropertyCell Then
-                        Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                    If TypeOf cell Is cPropertyCell Then
+                        Dim pcell As cPropertyCell = DirectCast(cell, cPropertyCell)
                         If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
                             iValue = CInt(pcell.GetProperty().GetValue)
                             If (iValue > 0) Then
@@ -326,7 +326,7 @@ Namespace Ecopath.Tools
 #Region " Grid overrides "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="EwEGrid.InitLayout"/>
+        ''' <inheritdoc cref="cEwEGrid.InitLayout"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub InitLayout()
             If (Me.m_psg Is Nothing) Then Return
@@ -334,7 +334,7 @@ Namespace Ecopath.Tools
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="EwEGrid.InitStyle"/>
+        ''' <inheritdoc cref="cEwEGrid.InitStyle"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
@@ -343,20 +343,20 @@ Namespace Ecopath.Tools
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
             Dim descr As New cVarnameTypeFormatter()
 
             Me.Redim(Me.Core.nGroups + 1, Me.Core.nPedigreeVariables + 2)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                 ' Get variable
                 var = Me.Core.PedigreeVariable(iVariable)
                 ' Create and configure cell
-                cell = New EwEColumnHeaderCell(descr.ToString(var, eDescriptorTypes.Name))
+                cell = New cEwEColumnHeaderCell(descr.ToString(var, eDescriptorTypes.Name))
                 cell.ToolTipText = descr.ToString(var, eDescriptorTypes.Description)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 ' Add it
@@ -365,21 +365,21 @@ Namespace Ecopath.Tools
 
             For iGroup As Integer = 1 To Core.nGroups
                 group = Me.Core.EcoPathGroupInputs(iGroup)
-                Me(iGroup, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
 
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="EwEGrid.FillData"/>
+        ''' <inheritdoc cref="cEwEGrid.FillData"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
             Dim group As cCoreGroupBase = Nothing
             Dim man As cPedigreeManager = Nothing
             Dim prop As cProperty = Nothing
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
             Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
             Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.SelectedVariable)
             Dim varname As eVarNameFlags = eVarNameFlags.NotSet
@@ -399,7 +399,7 @@ Namespace Ecopath.Tools
                     ' Get property
                     prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)
                     ' Prepare cell
-                    cell = New PropertyCell(prop)
+                    cell = New cPropertyCell(prop)
                     ' Add EditHandler to track column selection changes
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     ' Connect special pedigree cell visualizer that handles different display styles
@@ -424,7 +424,7 @@ Namespace Ecopath.Tools
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="EwEGrid.FinishStyle"/>
+        ''' <inheritdoc cref="cEwEGrid.FinishStyle"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
@@ -436,7 +436,7 @@ Namespace Ecopath.Tools
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="EwEGrid.MessageSource"/>
+        ''' <inheritdoc cref="cEwEGrid.MessageSource"/>
         ''' <summary>
         ''' Overridden to track variable changes.
         ''' </summary>
@@ -449,7 +449,7 @@ Namespace Ecopath.Tools
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="EwEGrid.MessageSource"/>
+        ''' <inheritdoc cref="cEwEGrid.MessageSource"/>
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get

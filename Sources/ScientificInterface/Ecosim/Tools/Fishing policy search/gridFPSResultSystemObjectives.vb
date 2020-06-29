@@ -40,7 +40,7 @@ Namespace Ecosim
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class gridFPSResultSystemObjectives
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_iColDynamic As Integer = 0
 
@@ -56,14 +56,14 @@ Namespace Ecosim
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length + _
                         [Enum].GetValues(GetType(eSearchCriteriaResultTypes)).Length)
 
-            Me(0, eColumnTypes.Iteration) = New EwEColumnHeaderCell(SharedResources.HEADER_NUMCALLS)
-            Me(0, eColumnTypes.Total) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+            Me(0, eColumnTypes.Iteration) = New cEwEColumnHeaderCell(SharedResources.HEADER_NUMCALLS)
+            Me(0, eColumnTypes.Total) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.TotalValue) = New EwEColumnHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New EwEColumnHeaderCell(SharedResources.HEADER_SOCIAL)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New EwEColumnHeaderCell(SharedResources.HEADER_MANDATED_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New EwEColumnHeaderCell(SharedResources.HEADER_BIODIVERSITY)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.TotalValue) = New cEwEColumnHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New cEwEColumnHeaderCell(SharedResources.HEADER_SOCIAL)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New cEwEColumnHeaderCell(SharedResources.HEADER_MANDATED_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIODIVERSITY)
 
         End Sub
 
@@ -80,7 +80,7 @@ Namespace Ecosim
             Dim cnt As Integer = Me.RowsCount
 
             Me.Rows.Insert(cnt)
-            Me(cnt, eColumnTypes.Iteration) = New EwERowHeaderCell(CStr(results.nCalls))
+            Me(cnt, eColumnTypes.Iteration) = New cEwERowHeaderCell(CStr(results.nCalls))
             Me(cnt, eColumnTypes.Total) = New Cell(CStr(results.Totals))
 
             For Each result As eSearchCriteriaResultTypes In [Enum].GetValues(GetType(eSearchCriteriaResultTypes))
@@ -120,7 +120,7 @@ Namespace Ecosim
 
             For i As Integer = 0 To colCnt - 1
                 Me.Columns.Insert(Me.m_iColDynamic + i)
-                Me(0, Me.m_iColDynamic + i) = New EwEColumnHeaderCell((i + 1).ToString)
+                Me(0, Me.m_iColDynamic + i) = New cEwEColumnHeaderCell((i + 1).ToString)
             Next
 
         End Sub

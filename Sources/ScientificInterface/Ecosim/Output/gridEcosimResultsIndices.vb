@@ -31,7 +31,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridEcosimResultsIndices
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -44,15 +44,15 @@ Namespace Ecosim
             ' Define column headers
             Me.Redim(Me.Core.nEcosimTimeSteps + 1, 5)
             ' Time step
-            Me(0, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_TIME)
+            Me(0, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_TIME)
             'FIB
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FIB)
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FIB)
             'TL Catch
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TLC)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TLC)
             'Total catch
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
             'Kemptons Q
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_KEMPTONSQ)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_KEMPTONSQ)
 
         End Sub
 
@@ -63,11 +63,11 @@ Namespace Ecosim
             Dim styleVal As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
 
             For iTS As Integer = 1 To Me.Core.nEcosimTimeSteps
-                Me(iTS, 0) = New EwECell(iTS, GetType(Integer), cStyleGuide.eStyleFlags.Names)
-                Me(iTS, 1) = New EwECell(src.FIB(iTS), GetType(Single), styleVal)
-                Me(iTS, 2) = New EwECell(src.TLCatch(iTS), GetType(Single), styleVal)
-                Me(iTS, 3) = New EwECell(src.TotalCatch(iTS), GetType(Single), styleVal)
-                Me(iTS, 4) = New EwECell(src.DiversityIndex(iTS), GetType(Single), styleVal)
+                Me(iTS, 0) = New cEwECell(iTS, GetType(Integer), cStyleGuide.eStyleFlags.Names)
+                Me(iTS, 1) = New cEwECell(src.FIB(iTS), GetType(Single), styleVal)
+                Me(iTS, 2) = New cEwECell(src.TLCatch(iTS), GetType(Single), styleVal)
+                Me(iTS, 3) = New cEwECell(src.TotalCatch(iTS), GetType(Single), styleVal)
+                Me(iTS, 4) = New cEwECell(src.DiversityIndex(iTS), GetType(Single), styleVal)
             Next
 
         End Sub

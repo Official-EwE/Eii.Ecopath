@@ -33,7 +33,7 @@ Namespace Ecospace.Basemap
 
     <CLSCompliant(False)> _
     Public Class gridImportLayerMappings
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -108,9 +108,9 @@ Namespace Ecospace.Basemap
 
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.ColumnParent) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
-            Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
+            Me(0, eColumnTypes.ColumnParent) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.ColumnLayer) = New cEwEColumnHeaderCell(SharedResources.HEADER_LAYER)
+            Me(0, eColumnTypes.ColumnField) = New cEwEColumnHeaderCell(SharedResources.HEADER_FIELD)
 
             Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
             Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
@@ -129,15 +129,15 @@ Namespace Ecospace.Basemap
             Me.RowsCount = 1
 
             Dim layer As cEcospaceLayer = Nothing
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
             Dim cmb As Cells.Real.ComboBox = Nothing
             Dim lfbase As New cLayerFactoryInternal()
-            Dim dtParents As New Dictionary(Of String, EwEHierarchyGridCell)
+            Dim dtParents As New Dictionary(Of String, cEwEHierarchyGridCell)
             Dim strGroup As String = ""
             Dim iRow As Integer = 0
             Dim vizChild As New cVisualizerEwEChildRowHeader()
-            Dim cellParent As EwEHierarchyGridCell = Nothing
-            Dim checkParent As EwECheckboxCell = Nothing
+            Dim cellParent As cEwEHierarchyGridCell = Nothing
+            Dim checkParent As cEwECheckboxCell = Nothing
 
             For iLayer As Integer = 0 To Me.m_aLayers.Length - 1
 
@@ -146,16 +146,16 @@ Namespace Ecospace.Basemap
                 strGroup = lfbase.GetLayerGroup(layer.VarName)
                 If Not dtParents.ContainsKey(strGroup) Then
                     iRow = Me.AddRow()
-                    For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                    For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
                     ' Hierarchy cell
-                    cellParent = New EwEHierarchyGridCell()
+                    cellParent = New cEwEHierarchyGridCell()
                     dtParents(strGroup) = cellParent
                     Me(iRow, eColumnTypes.ColumnParent) = cellParent
 
                     ' Layer group name
-                    Me(iRow, eColumnTypes.ColumnLayer) = New EwERowHeaderCell(strGroup)
-                    Me(iRow, eColumnTypes.ColumnField) = New EwERowHeaderCell("")
+                    Me(iRow, eColumnTypes.ColumnLayer) = New cEwERowHeaderCell(strGroup)
+                    Me(iRow, eColumnTypes.ColumnField) = New cEwERowHeaderCell("")
 
                     ' New row for data
                     iRow = Me.AddRow()
@@ -166,13 +166,13 @@ Namespace Ecospace.Basemap
                 End If
 
                 If (layer.Index <= 0) Then
-                    cell = New EwERowHeaderCell("")
+                    cell = New cEwERowHeaderCell("")
                 Else
-                    cell = New EwERowHeaderCell(CStr(layer.Index))
+                    cell = New cEwERowHeaderCell(CStr(layer.Index))
                 End If
                 Me(iRow, eColumnTypes.ColumnParent) = cell
 
-                cell = New EwERowHeaderCell(layer.Name)
+                cell = New cEwERowHeaderCell(layer.Name)
                 cell.VisualModel = New cVisualizerEwEChildRowHeader
                 Me(iRow, eColumnTypes.ColumnLayer) = cell
 

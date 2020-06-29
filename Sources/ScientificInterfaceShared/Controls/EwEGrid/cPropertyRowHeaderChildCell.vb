@@ -24,8 +24,6 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
 
 #End Region ' Imports 
 
@@ -37,9 +35,9 @@ Namespace Controls.EwEGrid
     ''' as a child cell in a hierarchy.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class PropertyRowHeaderChildCell
-        : Inherits PropertyRowHeaderCell
+    <CLSCompliant(False)>
+    Public Class cPropertyRowHeaderChildCell
+        Inherits cPropertyRowHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
         Private Shared g_visualizer As New cVisualizerEwEChildRowHeader()
@@ -54,9 +52,9 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">An optional secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal Source As cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
                        Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
             Me.New(pm.GetProperty(Source, VarName, SourceSec))
         End Sub

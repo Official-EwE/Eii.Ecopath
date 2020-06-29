@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)>
     Public Class gridFleetFishingMortality
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -52,20 +52,20 @@ Namespace Ecopath.Output
 
             Me.Redim(Core.nLivingGroups + 1, 2 + Core.nFleets)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEET_GROUP)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEET_GROUP)
 
             For iFleet As Integer = 1 To Core.nFleets
                 fleet = Core.EcopathFleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                  fleet, eVarNameFlags.Name, Nothing,
                                                                  cUnits.OverTime)
             Next iFleet
 
             For iGroup = 1 To Core.nLivingGroups
                 group = Core.EcoPathGroupOutputs(iGroup)
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
 
             Me.FixedColumns = 2
@@ -76,7 +76,7 @@ Namespace Ecopath.Output
 
             Dim group As cEcoPathGroupOutput = Nothing
             Dim fleet As cEcopathFleetInput = Nothing
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
             Dim sLandings As Single = 0.0!
             Dim sDiscards As Single = 0.0!
             Dim sBiomass As Single = 0.0!
@@ -95,9 +95,9 @@ Namespace Ecopath.Output
 
                     ' Create cell
                     If sBiomass > 0 Then
-                        cell = New EwECell((sLandings + sDiscards) / sBiomass, GetType(Single), style)
+                        cell = New cEwECell((sLandings + sDiscards) / sBiomass, GetType(Single), style)
                     Else
-                        cell = New EwECell(0.0!, GetType(Single), style Or cStyleGuide.eStyleFlags.Null)
+                        cell = New cEwECell(0.0!, GetType(Single), style Or cStyleGuide.eStyleFlags.Null)
                     End If
 
                     ' Value cells suppress zeroes to increase legibility of the grid

@@ -48,7 +48,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridQuotaShares
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 
 #Region " Internal defs "
@@ -107,21 +107,21 @@ Public Class gridQuotaShares
 
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
-        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNUMBER)
-        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eColumnTypes.QuotaShare) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTASHARE)
+        Me(0, eColumnTypes.GroupNumber) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
+        Me(0, eColumnTypes.GroupName) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.FleetNumber) = New cEwEColumnHeaderCell(My.Resources.HEADER_FLEETNUMBER)
+        Me(0, eColumnTypes.FleetName) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.QuotaShare) = New cEwEColumnHeaderCell(My.Resources.HEADER_QUOTASHARE)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
 
     End Sub
 
-    Private Function DataCell(dValue As Double) As EwECell
+    Private Function DataCell(dValue As Double) As cEwECell
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         ' To Mark: Ok, so when the data is NULL it will always be NULL and cannot be changed?! 
         '          I suspect that you still want users to be able to change the cell value away from
@@ -130,7 +130,7 @@ Public Class gridQuotaShares
             style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Single), style)
+        cell = New cEwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 
@@ -144,7 +144,7 @@ Public Class gridQuotaShares
         Dim core As cCore = Me.UIContext.Core
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim lstShares As List(Of cQuotaShares.QuotaShare) = m_data
 
         'Dim lstOptions As New List(Of cMSE.DistributionType)
@@ -158,11 +158,11 @@ Public Class gridQuotaShares
             iRow = Me.AddRow()
             Dim data As cQuotaShares.QuotaShare = DirectCast(lstShares(i), cQuotaShares.QuotaShare)
 
-            Me(iRow, eColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.mGroupNo))
-            Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.mGroupNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.GroupNumber) = New cEwERowHeaderCell(CStr(data.mGroupNo))
+            Me(iRow, eColumnTypes.GroupName) = New cPropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.mGroupNo), eVarNameFlags.Name)
             ' To Mark: property cells automatically keep track of changing variable values
-            Me(iRow, eColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.mFleetNo))
-            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.mFleetNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.FleetNumber) = New cEwERowHeaderCell(CStr(data.mFleetNo))
+            Me(iRow, eColumnTypes.FleetName) = New cPropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.mFleetNo), eVarNameFlags.Name)
             ' To Mark: property cells automatically keep track of changing variable values
             Me(iRow, eColumnTypes.QuotaShare) = DataCell(data.mShare)
             Me.Rows(iRow).Tag = data

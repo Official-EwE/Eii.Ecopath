@@ -32,7 +32,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridFishingCV
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Sub New()
     End Sub
@@ -41,9 +41,9 @@ Public Class gridFishingCV
 
         MyBase.InitStyle()
         Me.Redim(1, 3)
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_INCREASEQ)
+        Me(0, 0) = New cEwEColumnHeaderCell("")
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_INCREASEQ)
         'Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
 
         Me.FixedColumns = 2
@@ -61,9 +61,9 @@ Public Class gridFishingCV
 
                 Me.Rows.Insert(i)
 
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSEQIncrease)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New cPropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSEQIncrease)
                 ' Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSEFleetCV)
 
             Next

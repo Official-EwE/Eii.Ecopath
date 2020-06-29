@@ -32,7 +32,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridConsumption
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -52,31 +52,31 @@ Namespace Ecopath.Output
             'Set header cells
             Dim iRow As Integer = Me.RowsCount
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To core.nGroups
                 source = core.EcoPathGroupOutputs(i)
                 'Group name row header cell
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New EwERowHeaderCell(source.Name)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(i, 1) = New cEwERowHeaderCell(source.Name)
 
                 If source.PP < 1 Or source.PP = 2 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
             Next
 
             ' Import cell
-            Me(iRow - 2, 0) = New EwERowHeaderCell(CStr(iRow - 2))
-            Me(iRow - 2, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
+            Me(iRow - 2, 0) = New cEwERowHeaderCell(CStr(iRow - 2))
+            Me(iRow - 2, 1) = New cEwERowHeaderCell(SharedResources.HEADER_IMPORT)
 
             ' Sum cell
-            Me(iRow - 1, 0) = New EwERowHeaderCell(CStr(iRow - 1))
-            Me(iRow - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
+            Me(iRow - 1, 0) = New cEwERowHeaderCell(CStr(iRow - 1))
+            Me(iRow - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -93,7 +93,7 @@ Namespace Ecopath.Output
             Dim alPropSumAll As New ArrayList()
             Dim propSum As cFormulaProperty = Nothing
             Dim opSumAll As cMultiOperation = Nothing
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
 
             Dim visDiagonal As New SourceGrid2.VisualModels.Common
             visDiagonal.BackColor = Color.LightGray
@@ -115,7 +115,7 @@ Namespace Ecopath.Output
                         sourceSec = core.EcoPathGroupOutputs(iPrey)
                         ' Get the indexed comsumption property by (rowIndex, columnIndex)
                         prop = pm.GetProperty(sourceSec, eVarNameFlags.Consumption, source)
-                        cell = New PropertyCell(prop)
+                        cell = New cPropertyCell(prop)
 
                         If iPrey = iPred Then
                             cell.VisualModel = visDiagonal
@@ -129,14 +129,14 @@ Namespace Ecopath.Output
 
                     prop = pm.GetProperty(source, eVarNameFlags.ImportedConsumption)
                     ' Get the Comsumption import property
-                    Me(rowCnt - 2, columnIndex) = New PropertyCell(prop)
+                    Me(rowCnt - 2, columnIndex) = New cPropertyCell(prop)
                     alPropSumAll.Add(prop)
 
                     ' Now create the formula property that will calculate the sum of all Consumption props
                     opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alPropSumAll.ToArray())
                     propSum = Me.Formula(opSumAll)
 
-                    Me(rowCnt - 1, columnIndex) = New PropertyCell(propSum)
+                    Me(rowCnt - 1, columnIndex) = New cPropertyCell(propSum)
 
                     columnIndex = columnIndex + 1
 

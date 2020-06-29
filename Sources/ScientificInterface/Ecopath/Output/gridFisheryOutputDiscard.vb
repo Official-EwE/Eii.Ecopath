@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)>
     Public Class gridFisheryOutputDiscard
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -51,19 +51,19 @@ Namespace Ecopath.Output
             'Define grid dimensions
             Me.Redim(1, Core.nFleets + 3)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Core.EcopathFleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                      source, eVarNameFlags.Name, Nothing,
                                                                      cUnits.CurrencyOverTime)
             Next
 
             ' Total column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_DISCARDS)
+            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_DISCARDS)
 
             Me.FixedColumns = 2
         End Sub
@@ -102,15 +102,15 @@ Namespace Ecopath.Output
             Dim sVal As Single = 0
             Dim sTot As Single = 0
 
-            Me(iRow, 0) = New EwERowHeaderCell(CStr(iGroup))
-            Me(iRow, 1) = New EwERowHeaderCell(group.Name)
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(iGroup))
+            Me(iRow, 1) = New cEwERowHeaderCell(group.Name)
 
             ' For each fleet (each column) 
             For iFleet As Integer = 1 To Core.nFleets
                 ' Get the fleet object 
                 fleetOut = Core.EcoPathFleetOutputs(iFleet)
                 sVal = fleetOut.DiscardMortByGroup(iGroup)
-                Dim cell As New EwECell(sVal, cStyleGuide.eStyleFlags.ValueComputed Or cStyleGuide.eStyleFlags.NotEditable)
+                Dim cell As New cEwECell(sVal, cStyleGuide.eStyleFlags.ValueComputed Or cStyleGuide.eStyleFlags.NotEditable)
                 cell.SuppressZero = True
                 ' Set the cell
                 Me(iRow, iFleet + 1) = cell
@@ -119,7 +119,7 @@ Namespace Ecopath.Output
             Next
 
             ' Total column
-            Me(iRow, Me.ColumnsCount - 1) = New EwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+            Me(iRow, Me.ColumnsCount - 1) = New cEwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
         End Sub
 
@@ -129,8 +129,8 @@ Namespace Ecopath.Output
             Dim iRow As Integer = Me.AddRow()
             Dim sTot As Single = 0
 
-            Me(Me.RowsCount - 1, 0) = New EwERowHeaderCell()
-            Me(Me.RowsCount - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_DISCARD_MORT)
+            Me(Me.RowsCount - 1, 0) = New cEwERowHeaderCell()
+            Me(Me.RowsCount - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_DISCARD_MORT)
 
             For iFleet As Integer = 1 To Core.nFleets
                 Dim sFleetTot As Single = 0
@@ -139,10 +139,10 @@ Namespace Ecopath.Output
                 For iGroup As Integer = 1 To Core.nGroups
                     sFleetTot += fleetOut.DiscardMortByGroup(iGroup)
                 Next
-                Me(Me.RowsCount - 1, iFleet + 1) = New EwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+                Me(Me.RowsCount - 1, iFleet + 1) = New cEwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
                 sTot += sFleetTot
             Next
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New EwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New cEwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
         End Sub
 

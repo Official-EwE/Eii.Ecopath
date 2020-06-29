@@ -34,7 +34,7 @@ Imports System.ComponentModel
 
 <CLSCompliant(False)> _
 Public MustInherit Class gridApplyShapeBase
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private vars "
 

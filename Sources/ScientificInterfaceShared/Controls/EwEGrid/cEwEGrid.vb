@@ -28,10 +28,9 @@ Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports EwECore
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
@@ -93,7 +92,7 @@ Namespace Controls.EwEGrid
     ''' </example>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
-    Public MustInherit Class EwEGrid
+    Public MustInherit Class cEwEGrid
         Inherits SourceGrid2.Grid
         Implements IUIElement
 
@@ -101,7 +100,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Behaviour model that invokes key <see cref="EwEGrid">EwEGrid</see>
+        ''' Behaviour model that invokes key <see cref="cEwEGrid">EwEGrid</see>
         ''' methods when specific cell actions are performed.
         ''' </summary>
         ''' <remarks>
@@ -113,7 +112,7 @@ Namespace Controls.EwEGrid
             Implements BehaviorModels.IBehaviorModel
 
             ''' <summary>The attached grid.</summary>
-            Private m_grid As EwEGrid = Nothing
+            Private m_grid As cEwEGrid = Nothing
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -121,7 +120,7 @@ Namespace Controls.EwEGrid
             ''' </summary>
             ''' <param name="grid"></param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal grid As EwEGrid)
+            Public Sub New(ByVal grid As cEwEGrid)
                 Me.m_grid = grid
             End Sub
 
@@ -144,6 +143,9 @@ Namespace Controls.EwEGrid
             ''' -------------------------------------------------------------------
             Public Sub OnClick(ByVal e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnClick
+
+                ' Do not fire when row or col are being resized
+
                 Me.m_grid.OnCellClicked(e.Position, e.Cell)
             End Sub
 
@@ -935,11 +937,11 @@ Namespace Controls.EwEGrid
             For iCol As Integer = 0 To Me.ColumnsCount - 1
                 cell = Me(iRow, iCol)
                 If cell IsNot Nothing Then
-                    If TypeOf (cell) Is EwECellBase Then
+                    If TypeOf (cell) Is cEwECellBase Then
                         ' ..and get rid of it
                         Me(iRow, iCol) = Nothing
                         ' Clear the cell
-                        DirectCast(cell, EwECellBase).Dispose()
+                        DirectCast(cell, cEwECellBase).Dispose()
                     End If
                 End If
             Next
@@ -1178,8 +1180,8 @@ Namespace Controls.EwEGrid
                             If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
                                 cell = Me(iRow, iCol)
                                 If cell IsNot Nothing Then
-                                    If TypeOf cell Is PropertyCell Then
-                                        prop = DirectCast(cell, PropertyCell).GetProperty()
+                                    If TypeOf cell Is cPropertyCell Then
+                                        prop = DirectCast(cell, cPropertyCell).GetProperty()
                                         strValue = CStr(prop.GetValue(False))
                                     Else
                                         Try
@@ -1401,7 +1403,7 @@ Namespace Controls.EwEGrid
                                 Dim c As SourceGrid2.Cells.ICell = Me(p.Row, p.Column)
                                 If (c IsNot Nothing) Then
                                     ' Is property cell, but is not header?
-                                    If (TypeOf c Is IPropertyCell) And Not (TypeOf c Is PropertyHeaderCell) Then
+                                    If (TypeOf c Is IPropertyCell) And Not (TypeOf c Is cPropertyHeaderCell) Then
                                         ' #Yes: add to list of selected cells
                                         Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
                                     End If
@@ -1686,31 +1688,31 @@ Namespace Controls.EwEGrid
             If (styles.Length <> values.Length) Then Return False
 
             Dim iRow As Integer = Me.AddRow()
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
 
             Try
                 For i As Integer = 0 To values.Length - 1
                     If (TypeOf (values(i)) Is cProperty) Then
                         Dim prop As cProperty = DirectCast(values(i), cProperty)
                         If (i < Me.FixedRows) Then
-                            cell = New PropertyRowHeaderCell(prop)
+                            cell = New cPropertyRowHeaderCell(prop)
                         Else
-                            cell = New PropertyCell(prop)
+                            cell = New cPropertyCell(prop)
                             cell.Style = styles(i)
                         End If
                     Else
                         If (i < Me.FixedRows) Then
                             If (values(i) IsNot Nothing) Then
                                 If (TypeOf (values(i)) Is eVarNameFlags) Then
-                                    cell = New EwEColumnHeaderCell(DirectCast(values(i), eVarNameFlags))
+                                    cell = New cEwEColumnHeaderCell(DirectCast(values(i), eVarNameFlags))
                                 Else
-                                    cell = New EwEColumnHeaderCell(CStr(values(i)))
+                                    cell = New cEwEColumnHeaderCell(CStr(values(i)))
                                 End If
                             Else
-                                cell = New EwEColumnHeaderCell("")
+                                cell = New cEwEColumnHeaderCell("")
                             End If
                         Else
-                            cell = New EwECell(values(i), values(i).GetType(), styles(i))
+                            cell = New cEwECell(values(i), values(i).GetType(), styles(i))
                             cell.Behaviors.Add(Me.EwEEditHandler)
                         End If
                     End If

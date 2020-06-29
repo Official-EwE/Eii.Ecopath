@@ -37,7 +37,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridGrowthParameters
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -48,16 +48,16 @@ Namespace Ecopath.Input
             MyBase.InitStyle()
             Me.Redim(1, 10) '9)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_A_IN_LW)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_B_IN_LW)
-            Me(0, 4) = New EwEColumnHeaderCell(eVarNameFlags.LooInput)
-            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.WinfInput)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_K_VBGF)
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TZERO_VBGF)
-            Me(0, 8) = New EwEColumnHeaderCell(eVarNameFlags.TCatchInput)
-            Me(0, 9) = New EwEColumnHeaderCell(eVarNameFlags.TmaxInput)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_A_IN_LW)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_B_IN_LW)
+            Me(0, 4) = New cEwEColumnHeaderCell(eVarNameFlags.LooInput)
+            Me(0, 5) = New cEwEColumnHeaderCell(eVarNameFlags.WinfInput)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_K_VBGF)
+            Me(0, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_TZERO_VBGF)
+            Me(0, 8) = New cEwEColumnHeaderCell(eVarNameFlags.TCatchInput)
+            Me(0, 9) = New cEwEColumnHeaderCell(eVarNameFlags.TmaxInput)
 
             Me.FixedColumns = 2
 
@@ -69,8 +69,8 @@ Namespace Ecopath.Input
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim intStanzaGroupIndex(core.nLivingGroups) As Integer 'Hold the stanza group index
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
+            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
             For i As Integer = 1 To core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
@@ -99,13 +99,13 @@ Namespace Ecopath.Input
                     '#Yes: Group is stanza
                     sg = core.StanzaGroups(intStanzaGroupIndex(group.Index))
                     If Not dtStanzaCells.ContainsKey(sg) Then
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         ' Complete row with dummy cells
-                        For i As Integer = 2 To 9 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For i As Integer = 2 To 9 : Me(iRow, i) = New cEwERowHeaderCell() : Next
                         iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
@@ -122,22 +122,22 @@ Namespace Ecopath.Input
         Private Sub FillInRows(ByVal iRow As Integer, ByVal group As cEcoPathGroupInput, Optional ByVal isIndented As Boolean = False)
 
             ' Get the group name from EcopathInput
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
 
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.AinLWInput)
-            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BinLWInput)
-            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.LooInput)
-            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.WinfInput)
-            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.VBK)
-            Me(iRow, 7) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.t0Input)
-            Me(iRow, 8) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.TCatchInput)
-            Me(iRow, 9) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.TmaxInput)
+            Me(iRow, 2) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.AinLWInput)
+            Me(iRow, 3) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.BinLWInput)
+            Me(iRow, 4) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.LooInput)
+            Me(iRow, 5) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.WinfInput)
+            Me(iRow, 6) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.VBK)
+            Me(iRow, 7) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.t0Input)
+            Me(iRow, 8) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.TCatchInput)
+            Me(iRow, 9) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.TmaxInput)
 
         End Sub
 

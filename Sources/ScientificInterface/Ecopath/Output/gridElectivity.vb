@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridElectivity
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
 #Region " Helper classes "
 
@@ -46,7 +46,7 @@ Namespace Ecopath.Output
         ''' performed when calculating the background colour.</remarks>
         ''' ---------------------------------------------------------------------------
         Public Class ElectivityGridCell
-            : Inherits PropertyCell
+            : Inherits cPropertyCell
 
 #Region " Private visualizer "
 
@@ -149,8 +149,8 @@ Namespace Ecopath.Output
 
             Me.Redim(core.nGroups + 1, 2)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
@@ -158,13 +158,13 @@ Namespace Ecopath.Output
                 ' Column displays mixed consumer/producer groups ( PP < 1)
                 source = core.EcoPathGroupOutputs(i)
                 ' Group index header cell
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
 
@@ -176,7 +176,7 @@ Namespace Ecopath.Output
 
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
             Dim columnIndex As Integer = 2
 
             ' For each column

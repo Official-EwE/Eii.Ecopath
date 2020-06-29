@@ -38,7 +38,7 @@ Namespace Import
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class cImportGrid
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private bits "
 
@@ -114,9 +114,9 @@ Namespace Import
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' Create columns
-            Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_SOURCE)
-            Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell(SharedResources.HEADER_IMPORT)
-            Me(0, eColumnTypes.Target) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_TARGET)
+            Me(0, eColumnTypes.Source) = New cEwEColumnHeaderCell(SharedResources.HEADER_MODEL_SOURCE)
+            Me(0, eColumnTypes.Import) = New cEwEColumnHeaderCell(SharedResources.HEADER_IMPORT)
+            Me(0, eColumnTypes.Target) = New cEwEColumnHeaderCell(SharedResources.HEADER_MODEL_TARGET)
 
             ' Configure columns
             Me.FixedColumns = 1
@@ -135,7 +135,7 @@ Namespace Import
             Dim iRow As Integer = 1
             Dim pos As SourceGrid2.Position = Nothing
             Dim vm As VisualModels.Common = Nothing
-            Dim ewec As EwECell = Nothing
+            Dim ewec As cEwECell = Nothing
 
             ' Clear existing rows
             Me.RowsCount = 1
@@ -144,14 +144,14 @@ Namespace Import
 
                 iRow = Me.AddRow()
 
-                ewec = New EwECell(imp.ModelInfo.Name, GetType(String))
+                ewec = New cEwECell(imp.ModelInfo.Name, GetType(String))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.Source) = ewec
 
                 Me(iRow, eColumnTypes.Import) = New Cells.Real.CheckBox(imp.SelectedForImport)
                 Me(iRow, eColumnTypes.Import).Behaviors.Add(Me.EwEEditHandler)
 
-                ewec = New EwECell("", GetType(String))
+                ewec = New cEwECell("", GetType(String))
                 ewec.Behaviors.Add(Me.EwEEditHandler)
                 Me(iRow, eColumnTypes.Target) = ewec
 
@@ -266,7 +266,7 @@ Namespace Import
         Private Sub UpdateEwE6ModelCell(ByVal iRow As Integer)
 
             Dim settings As cImportWizard.cImportSettings = Me.ImportSettings(iRow)
-            Dim cellEwE As EwECell = DirectCast(Me(iRow, eColumnTypes.Target), EwECell)
+            Dim cellEwE As cEwECell = DirectCast(Me(iRow, eColumnTypes.Target), cEwECell)
 
             ' If a model is selected for import the EwE6 name cell is editable and displays data.
             ' If a model is NOT selected for import the EwE6 name cell is read-only and displays no data.

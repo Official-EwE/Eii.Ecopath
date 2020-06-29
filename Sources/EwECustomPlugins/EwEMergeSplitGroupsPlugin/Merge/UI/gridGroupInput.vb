@@ -34,9 +34,9 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 ''' <summary>
 ''' Grid class that shows how basic input parameters will be merged.
 ''' </summary>
-''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
+''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
 Public Class gridGroupInput
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Enum eColumnTypes As Integer
         Name = 0
@@ -69,12 +69,12 @@ Public Class gridGroupInput
         Me.FixedColumnWidths = False
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_VARIABLE)
-        Me(0, eColumnTypes.Merge) = New EwEColumnHeaderCell(My.Resources.HEADER_MERGE)
-        Me(0, eColumnTypes.Agg1In) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Agg1Out) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Agg2In) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Agg2Out) = New EwEColumnHeaderCell()
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_VARIABLE)
+        Me(0, eColumnTypes.Merge) = New cEwEColumnHeaderCell(My.Resources.HEADER_MERGE)
+        Me(0, eColumnTypes.Agg1In) = New cEwEColumnHeaderCell()
+        Me(0, eColumnTypes.Agg1Out) = New cEwEColumnHeaderCell()
+        Me(0, eColumnTypes.Agg2In) = New cEwEColumnHeaderCell()
+        Me(0, eColumnTypes.Agg2Out) = New cEwEColumnHeaderCell()
 
         Me.UpdateHeader()
 
@@ -115,13 +115,13 @@ Public Class gridGroupInput
     Private Overloads Sub AddRow(var As eVarNameFlags)
 
         Dim iRow As Integer = Me.AddRow()
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         Me.Rows(iRow).Tag = var
 
-        Me(iRow, 0) = New EwERowHeaderCell(Me.m_fmt.ToString(var))
+        Me(iRow, 0) = New cEwERowHeaderCell(Me.m_fmt.ToString(var))
         For i As Integer = 1 To Me.ColumnsCount - 1
-            cell = New EwECell("", eStyleFlags.NotEditable)
+            cell = New cEwECell("", eStyleFlags.NotEditable)
             cell.SuppressZero() = True
             Me(iRow, i) = cell
         Next
@@ -221,7 +221,7 @@ Public Class gridGroupInput
 
     Private Sub UpdateHeaderCell(iCol As Integer, iIndex As Integer, strVal As String)
 
-        Dim c As EwEColumnHeaderCell = DirectCast(Me(0, iCol), EwEColumnHeaderCell)
+        Dim c As cEwEColumnHeaderCell = DirectCast(Me(0, iCol), cEwEColumnHeaderCell)
         If (iIndex > 0) Then
             c.Value = cStringUtils.LocalizeSentence(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, iIndex, strVal)
         Else
@@ -247,7 +247,7 @@ Public Class gridGroupInput
 
     Private Sub UpdateCell(iRow As Integer, iCol As Integer, val As Single, style As eStyleFlags)
 
-        Dim c As EwECell = DirectCast(Me(iRow, iCol), EwECell)
+        Dim c As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)
         c.Value = val
         c.Style = style Or eStyleFlags.NotEditable
 

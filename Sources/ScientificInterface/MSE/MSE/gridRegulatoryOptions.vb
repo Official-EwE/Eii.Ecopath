@@ -38,7 +38,7 @@ Namespace Ecosim
     ''' ===========================================================================
     <CLSCompliant(False)> _
     Public Class gridRegulatoryOptions
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         'WARNING-INFO 8-march-2010
         'MaxEffort and OptionEffort have been removed from the grid because they are not implemented by MSE at this time
@@ -71,14 +71,14 @@ Namespace Ecosim
 
             Me.Redim(1, iNumCols)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
             ' Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXEFFORT, cUnitFormatter.Currency)
-            Me(0, eColumnTypes.OptionNotUsed) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_NOTUSED)
+            Me(0, eColumnTypes.OptionNotUsed) = New cEwEColumnHeaderCell(SharedResources.HEADER_QUOTA_NOTUSED)
             '  Me(0, eColumnTypes.OptionEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_EFFORT)
-            Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_WEAKESTSTOCK)
-            Me(0, eColumnTypes.OptionStrongest) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_STRONGESTSTOCK)
-            Me(0, eColumnTypes.OptionSelective) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_SELECTIVEFISHING)
+            Me(0, eColumnTypes.OptionWeakest) = New cEwEColumnHeaderCell(SharedResources.HEADER_QUOTA_WEAKESTSTOCK)
+            Me(0, eColumnTypes.OptionStrongest) = New cEwEColumnHeaderCell(SharedResources.HEADER_QUOTA_STRONGESTSTOCK)
+            Me(0, eColumnTypes.OptionSelective) = New cEwEColumnHeaderCell(SharedResources.HEADER_QUOTA_SELECTIVEFISHING)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -97,8 +97,8 @@ Namespace Ecosim
 
                 Me.AddRow()
 
-                Me(iFleet, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iFleet))
-                Me(iFleet, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleetMSE, eVarNameFlags.Name)
+                Me(iFleet, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iFleet))
+                Me(iFleet, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, fleetMSE, eVarNameFlags.Name)
 
                 Me(iFleet, eColumnTypes.OptionNotUsed) = New SourceGrid2.Cells.Real.CheckBox(True)
                 Me(iFleet, eColumnTypes.OptionNotUsed).Behaviors.Add(Me.EwEEditHandler)

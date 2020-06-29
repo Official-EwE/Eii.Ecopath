@@ -39,7 +39,7 @@ Imports SourceGrid2
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class gridDefineGroups
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -630,25 +630,25 @@ Public Class gridDefineGroups
         Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
         ' Group index cell
-        Me(0, eColumnTypes.GroupIndex) = New EwEColumnHeaderCell()
+        Me(0, eColumnTypes.GroupIndex) = New cEwEColumnHeaderCell()
         ' Group name cell, editable this time
-        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.GroupName) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         ' PP cells
-        Me(0, eColumnTypes.GroupPPConsumer) = New EwEColumnHeaderCell(SharedResources.HEADER_CONSUMER)
-        Me(0, eColumnTypes.GroupPPProducer) = New EwEColumnHeaderCell(SharedResources.HEADER_PRODUCER)
-        Me(0, eColumnTypes.GroupPPDetritus) = New EwEColumnHeaderCell(SharedResources.HEADER_DETRITUS)
-        Me(0, eColumnTypes.GroupPP) = New EwEColumnHeaderCell(SharedResources.HEADER_PP)
+        Me(0, eColumnTypes.GroupPPConsumer) = New cEwEColumnHeaderCell(SharedResources.HEADER_CONSUMER)
+        Me(0, eColumnTypes.GroupPPProducer) = New cEwEColumnHeaderCell(SharedResources.HEADER_PRODUCER)
+        Me(0, eColumnTypes.GroupPPDetritus) = New cEwEColumnHeaderCell(SharedResources.HEADER_DETRITUS)
+        Me(0, eColumnTypes.GroupPP) = New cEwEColumnHeaderCell(SharedResources.HEADER_PP)
 
         ' Color
-        Me(0, eColumnTypes.GroupColor) = New EwEColumnHeaderCell(SharedResources.HEADER_COLOR)
+        Me(0, eColumnTypes.GroupColor) = New cEwEColumnHeaderCell(SharedResources.HEADER_COLOR)
 
         ' Stanza cells
-        Me(0, eColumnTypes.StanzaName) = New EwEColumnHeaderCell(SharedResources.HEADER_STANZAGROUP_NAME)
-        Me(0, eColumnTypes.StanzaAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STANZA_AGE)
+        Me(0, eColumnTypes.StanzaName) = New cEwEColumnHeaderCell(SharedResources.HEADER_STANZAGROUP_NAME)
+        Me(0, eColumnTypes.StanzaAge) = New cEwEColumnHeaderCell(SharedResources.HEADER_STANZA_AGE)
 
         ' Group index cell
-        Me(0, eColumnTypes.GroupStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+        Me(0, eColumnTypes.GroupStatus) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         ' Fix index column only; group name column cannot be fixed because it must be editable
         Me.FixedColumns = 1
@@ -765,13 +765,13 @@ Public Class gridDefineGroups
         Dim astrStanzaNames As String() = Me.GetStanzaNames()
         Dim cells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim ewec As EwECell = Nothing
+        Dim ewec As cEwECell = Nothing
 
         ' Create missing rows
         For iRow As Integer = Me.Rows.Count To Me.m_lgiGroups.Count
             Me.AddRow()
 
-            ewec = New EwECell(0, GetType(Integer))
+            ewec = New cEwECell(0, GetType(Integer))
             ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.GroupIndex) = ewec
 
@@ -786,7 +786,7 @@ Public Class gridDefineGroups
             Me(iRow, eColumnTypes.GroupPPDetritus) = New Cells.Real.CheckBox(False)
             Me(iRow, eColumnTypes.GroupPPDetritus).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.GroupPP) = New EwECell(0, GetType(Single))
+            Me(iRow, eColumnTypes.GroupPP) = New cEwECell(0, GetType(Single))
             Me(iRow, eColumnTypes.GroupPP).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iRow, eColumnTypes.GroupColor) = New Cells.Real.Cell()
@@ -800,7 +800,7 @@ Public Class gridDefineGroups
             Me(iRow, eColumnTypes.StanzaAge) = New Cells.Real.Cell(0)
             Me(iRow, eColumnTypes.StanzaAge).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.GroupStatus) = New EwEStatusCell(eItemStatusTypes.Original)
+            Me(iRow, eColumnTypes.GroupStatus) = New cEwEStatusCell(eItemStatusTypes.Original)
         Next
 
         ' Delete obsolete rows
@@ -828,7 +828,7 @@ Public Class gridDefineGroups
 
         Dim gi As cGroupInfo = Nothing
         Dim ri As RowInfo = Nothing
-        Dim ewec As EwECell = Nothing
+        Dim ewec As cEwECell = Nothing
         Dim pos As SourceGrid2.Position = Nothing
 
         Me.AllowUpdates = False
@@ -852,7 +852,7 @@ Public Class gridDefineGroups
         pos = New Position(iRow, eColumnTypes.GroupPPDetritus)
         Me(iRow, eColumnTypes.GroupPPDetritus).SetValue(pos, CBool(gi.PP = 2.0))
         pos = New Position(iRow, eColumnTypes.GroupPP)
-        ewec = DirectCast(Me(iRow, eColumnTypes.GroupPP), EwECell)
+        ewec = DirectCast(Me(iRow, eColumnTypes.GroupPP), cEwECell)
         ewec.SetValue(pos, gi.PP)
         If (gi.PP > 1.0!) Then
             ewec.Style = ewec.Style Or cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable

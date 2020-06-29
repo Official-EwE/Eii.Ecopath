@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -49,11 +48,21 @@ Public Class cDietFlowMapRenderer
         For i As Integer = 1 To core.nLivingGroups
             Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
             If grp.IsConsumer Then m_lPreds.Add(i)
-            'If Me.m_lPreds.Count = 5 Then Exit For
         Next
-        'm_lPreds.Add(48)
 
     End Sub
+
+    <Flags>
+    Public Enum eDrawMode As Integer
+        Name = 1
+        Number = 2
+        All = Name Or Number
+    End Enum
+
+    Public Property DrawCaptions As Boolean = True
+    Public Property DrawLabels As Boolean = True
+    Public Property LabelDrawMode As eDrawMode
+    Public Property DrawBorders As Boolean = False
 
     Public Sub Draw(g As Graphics, rc As Rectangle)
 
@@ -62,22 +71,34 @@ Public Class cDietFlowMapRenderer
         Dim lRects As New List(Of Rectangle)
         Dim core As cCore = Me.m_uic.Core
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+        Dim fmt As New cCoreInterfaceFormatter()
 
         ' For now, draw all living groups
         Me.CalcMapAreas(rc, Me.m_lPreds.Count, lRects)
 
         For j As Integer = 1 To Me.m_lPreds.Count
+
             Dim renderer As New cTreeMapRenderer(Me.m_uic)
+            renderer.DrawLabels = Me.DrawLabels
+            renderer.DrawCaption = Me.DrawCaptions
+
             Dim elements As New List(Of cTreeMapRenderer.cTreeMapElement)
             Dim iPred As Integer = Me.m_lPreds(j - 1)
             Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
-
             For i As Integer = 1 To core.nGroups
                 Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
                 Dim dc As Single = pred.DietComp(i)
                 If dc > 0 Then
                     Dim elm As New cTreeMapRenderer.cTreeMapElement()
-                    elm.Label = prey.Name
+                    Select Case Me.LabelDrawMode
+                        Case eDrawMode.Name
+                            elm.Label = prey.Name
+                        Case eDrawMode.Number
+                            elm.Label = CStr(i)
+                        Case eDrawMode.All
+                            elm.Label = fmt.ToString(prey, )
+                    End Select
+
                     elm.Color = sg.GroupColor(core, i)
                     elm.Value = dc
                     elements.Add(elm)

@@ -34,7 +34,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)>
     Public Class gridEcosimArenaShare
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private m_man As cEcosimArenaManager = Nothing
 
@@ -82,19 +82,19 @@ Namespace Ecosim
             Dim iPrey As Integer = Me.SelectedGroup.Index
             Dim arenas As cEcosimArena() = Me.m_man.Arenas(Me.SelectedGroup.Index)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
+            Me(0, 0) = New cEwEColumnHeaderCell("")
 
             For col As Integer = 1 To Me.ColumnsCount - 1
                 Dim ar As cEcosimArena = arenas(col - 1)
                 Dim iPred As Integer = ar.Pred
                 Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(iPred)
-                Me(0, col) = New PropertyColumnHeaderCell(Me.PropertyManager, pred, eVarNameFlags.Index)
+                Me(0, col) = New cPropertyColumnHeaderCell(Me.PropertyManager, pred, eVarNameFlags.Index)
             Next
 
             For row As Integer = 1 To Me.RowsCount - 1
                 Dim ar As cEcosimArena = arenas(row - 1)
                 Dim i As Integer = ar.Index
-                Me(row, 0) = New EwERowHeaderCell(cStringUtils.Localize(My.Resources.ECOSIM_APPLYARENA_HEADER, i))
+                Me(row, 0) = New cEwERowHeaderCell(cStringUtils.Localize(My.Resources.ECOSIM_APPLYARENA_HEADER, i))
             Next
 
             For row As Integer = 1 To Me.RowsCount - 1
@@ -103,7 +103,7 @@ Namespace Ecosim
                 For col As Integer = 1 To Me.ColumnsCount - 1
                     Dim ar2 As cEcosimArena = arenas(col - 1)
                     Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(ar2.Pred)
-                    Dim cell As New PropertyCell(Me.PropertyManager, ar, eVarNameFlags.EcosimArenaShare, pred)
+                    Dim cell As New cPropertyCell(Me.PropertyManager, ar, eVarNameFlags.EcosimArenaShare, pred)
                     cell.SuppressZero = True
                     Me(row, col) = cell
                 Next

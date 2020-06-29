@@ -32,7 +32,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridRiskBounds
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Sub New()
     End Sub
@@ -41,10 +41,10 @@ Public Class gridRiskBounds
 
         MyBase.InitStyle()
         Me.Redim(1, 4)
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
-        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_MSE_LOWERRISK)
-        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_MSE_UPPERRISK)
+        Me(0, 0) = New cEwEColumnHeaderCell("")
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+        Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_MSE_LOWERRISK)
+        Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_MSE_UPPERRISK)
 
     End Sub
 
@@ -57,10 +57,10 @@ Public Class gridRiskBounds
             For igrp As Integer = 1 To Me.Core.nLivingGroups
 
                 Me.Rows.Insert(igrp)
-                Me(igrp, 0) = New EwERowHeaderCell(CStr(igrp))
-                Me(igrp, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.Name)
-                Me(igrp, 2) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.MSELowerRisk)
-                Me(igrp, 3) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.MSEUpperRisk)
+                Me(igrp, 0) = New cEwERowHeaderCell(CStr(igrp))
+                Me(igrp, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.Name)
+                Me(igrp, 2) = New cPropertyCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.MSELowerRisk)
+                Me(igrp, 3) = New cPropertyCell(Me.PropertyManager, mse.GroupInputs(igrp), eVarNameFlags.MSEUpperRisk)
 
             Next
         Catch ex As Exception

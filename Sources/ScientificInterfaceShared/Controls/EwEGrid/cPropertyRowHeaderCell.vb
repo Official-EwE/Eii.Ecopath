@@ -32,21 +32,21 @@ Namespace Controls.EwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Cell class to implement a row header in an <see cref="EwEGrid">EWE grid</see>, 
+    ''' Cell class to implement a row header in an <see cref="cEwEGrid">EWE grid</see>, 
     ''' that dynamically derives its <see cref="Cell.DisplayText">display text</see>
     ''' from the core.
     ''' </summary>
     ''' <remarks>
-    ''' <para>This class inherits from <see cref="PropertyHeaderCell">PropertyHeaderCell</see> 
+    ''' <para>This class inherits from <see cref="cPropertyHeaderCell">PropertyHeaderCell</see> 
     ''' to implement basic, standardized formatting for row header cells. The
     ''' display text of the cell is tracked 'live' using <see cref="cProperty">properties</see>.</para>
     ''' <para>Additionally, the cell offers capabilities to incorporate units
     ''' that are updated whenever the system display units change.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class PropertyRowHeaderCell
-        : Inherits PropertyHeaderCell
+    <CLSCompliant(False)>
+    Public Class cPropertyRowHeaderCell
+        Inherits cPropertyHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
         Private Shared g_visualizer As cEwEGridVisualizerBase

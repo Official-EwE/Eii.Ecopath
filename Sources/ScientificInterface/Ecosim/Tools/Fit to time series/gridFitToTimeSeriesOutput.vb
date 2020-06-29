@@ -32,7 +32,7 @@ Namespace Ecosim
     ''' </summary>
     <CLSCompliant(False)> _
     Public Class gridFitToTimeSeriesOutput
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index
@@ -123,11 +123,11 @@ Namespace Ecosim
 
             Me.Redim(1 + Me.m_lData.Count, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.NoParams) = New EwEColumnHeaderCell(SharedResources.HEADER_NUMPARAMS)
-            Me(0, eColumnTypes.NoAICPoints) = New EwEColumnHeaderCell("Number of AIC data points")
-            Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(SharedResources.HEADER_SS)
-            Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(SharedResources.HEADER_AIC)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.NoParams) = New cEwEColumnHeaderCell(SharedResources.HEADER_NUMPARAMS)
+            Me(0, eColumnTypes.NoAICPoints) = New cEwEColumnHeaderCell("Number of AIC data points")
+            Me(0, eColumnTypes.SS) = New cEwEColumnHeaderCell(SharedResources.HEADER_SS)
+            Me(0, eColumnTypes.AIC) = New cEwEColumnHeaderCell(SharedResources.HEADER_AIC)
 
             Me.FixedColumnWidths = True
             Me.FixedColumns = 1
@@ -137,11 +137,11 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
             For i As Integer = 0 To Me.m_lData.Count - 1
                 Dim out As cOutput = Me.m_lData(i)
-                Me(i + 1, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
-                Me(i + 1, eColumnTypes.NoParams) = New EwECell(out.NumParams, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
-                Me(i + 1, eColumnTypes.NoAICPoints) = New EwECell(Me.m_iNumAICPoints, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
-                Me(i + 1, eColumnTypes.SS) = New EwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
-                Me(i + 1, eColumnTypes.AIC) = New EwECell(out.AIC, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                Me(i + 1, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
+                Me(i + 1, eColumnTypes.NoParams) = New cEwECell(out.NumParams, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
+                Me(i + 1, eColumnTypes.NoAICPoints) = New cEwECell(Me.m_iNumAICPoints, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable)
+                Me(i + 1, eColumnTypes.SS) = New cEwECell(out.SS, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
+                Me(i + 1, eColumnTypes.AIC) = New cEwECell(out.AIC, GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
             Next
         End Sub
 

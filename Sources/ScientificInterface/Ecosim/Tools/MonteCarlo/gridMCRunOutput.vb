@@ -33,7 +33,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridMCRunOutput
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_mcmanager As cMonteCarloManager = Nothing
 
@@ -62,13 +62,13 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Me.Redim(Me.Core.nLivingGroups + 1, 7)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS)
-            Me(0, 3) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, eDescriptorTypes.Abbreviation)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CB)
-            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.EEInput, eDescriptorTypes.Abbreviation)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_ABBR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS)
+            Me(0, 3) = New cEwEColumnHeaderCell(eVarNameFlags.PBOutput, eDescriptorTypes.Abbreviation)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_CB)
+            Me(0, 5) = New cEwEColumnHeaderCell(eVarNameFlags.EEInput, eDescriptorTypes.Abbreviation)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_ABBR)
             'Me(0, 7) = New EwEColumnHeaderCell("Landings")
             'Me(0, 8) = New EwEColumnHeaderCell("Discards")
 
@@ -82,13 +82,13 @@ Namespace Ecosim
 
             For i As Integer = 1 To Me.Core.nLivingGroups
                 mcGrp = m_mcmanager.Groups(i)
-                Me(i, 0) = New EwERowHeaderCell(CStr(mcGrp.Index))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBbf)
-                Me(i, 3) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcPBbf)
-                Me(i, 4) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcQBbf)
-                Me(i, 5) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcEEbf)
-                Me(i, 6) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBAbf)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(mcGrp.Index))
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
+                Me(i, 2) = New cPropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBbf)
+                Me(i, 3) = New cPropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcPBbf)
+                Me(i, 4) = New cPropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcQBbf)
+                Me(i, 5) = New cPropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcEEbf)
+                Me(i, 6) = New cPropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBAbf)
                 'Me(i, 7) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcLandingsbf)
                 'Me(i, 8) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcDiscardsbf)
             Next

@@ -38,7 +38,7 @@ Namespace Ecosim
     ''' =======================================================================
     <CLSCompliant(False)> _
    Public Class gridSearchObjectivesWeight
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -110,14 +110,14 @@ Namespace Ecosim
             ' == Add columns (for details refer to NumCols) ==
 
             ' Standard cols
-            Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_OBJECTIVE) : iCol += 1
+            Me(0, iCol) = New cEwEColumnHeaderCell(SharedResources.HEADER_OBJECTIVE) : iCol += 1
             ' Batch run specific cols
             If Me.m_bIsBatchRun Then
-                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_MINWEIGHT) : iCol += 1
-                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXWEIGHT) : iCol += 1
-                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.GENERIC_LABEL_STEP_SIZE) : iCol += 1
+                Me(0, iCol) = New cEwEColumnHeaderCell(SharedResources.HEADER_MINWEIGHT) : iCol += 1
+                Me(0, iCol) = New cEwEColumnHeaderCell(SharedResources.HEADER_MAXWEIGHT) : iCol += 1
+                Me(0, iCol) = New cEwEColumnHeaderCell(SharedResources.GENERIC_LABEL_STEP_SIZE) : iCol += 1
             Else
-                Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_RELATIVEWEIGHT_ABBR) : iCol += 1
+                Me(0, iCol) = New cEwEColumnHeaderCell(SharedResources.HEADER_RELATIVEWEIGHT_ABBR) : iCol += 1
             End If
 
         End Sub
@@ -135,42 +135,42 @@ Namespace Ecosim
 
             ' Standard rows
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE)
-            Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEconomicWeight)
+            Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE)
+            Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEconomicWeight)
 
             ' MaxPortUtil rows
             If m_bShowMaxPortUtil Then
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_PREDICTIONVARIANCE)
-                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSPredictionVariance)
+                Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_PREDICTIONVARIANCE)
+                Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSPredictionVariance)
 
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_EXISTENCE_VALUE)
-                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSExistenceValue)
+                Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_EXISTENCE_VALUE)
+                Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSExistenceValue)
 
             Else
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
-                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSSocialWeight)
+                Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
+                Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSSocialWeight)
 
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_MANDATED_REBUILDING)
-                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSMandatedRebuildingWeight)
+                Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_MANDATED_REBUILDING)
+                Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSMandatedRebuildingWeight)
 
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE)
-                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEcoSystemWeight)
+                Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE)
+                Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEcoSystemWeight)
             End If
 
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BIODIVERSITY)
-            Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSBiomassDiversityWeight)
+            Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_BIODIVERSITY)
+            Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSBiomassDiversityWeight)
 
             If Me.m_bShowMPAOptParams Then
                 ' HACK
                 iRow = Me.AddRow()
-                Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BOUNDARYWEIGHT)
-                Me(iRow, 1) = New PropertyCell(Me.PropertyManager, _
+                Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_BOUNDARYWEIGHT)
+                Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, _
                                                Me.Core.MPAOptimizationManager.MPAOptimizationParameters, _
                                                eVarNameFlags.MPAOptBoundaryWeight)
             Else

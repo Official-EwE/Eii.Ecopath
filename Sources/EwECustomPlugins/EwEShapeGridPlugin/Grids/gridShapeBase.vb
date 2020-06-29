@@ -35,7 +35,7 @@ Imports ScientificInterfaceShared.Style
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class gridShapeBase
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_bIsSeasonal As Boolean = False
     Private m_lInvalidatedShapes As New List(Of cShapeData)

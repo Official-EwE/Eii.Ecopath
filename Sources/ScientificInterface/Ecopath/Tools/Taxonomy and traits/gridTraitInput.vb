@@ -39,7 +39,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)>
     Public Class gridTaxonInput
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -88,20 +88,20 @@ Namespace Ecopath.Input
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Species)
-            Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell(eVarNameFlags.EcologyType)
-            Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell(eVarNameFlags.OrganismType)
-            Me(0, eColumnTypes.PropBiomass) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropBiomass)
-            Me(0, eColumnTypes.PropCatch) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropCatch)
-            Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell(eVarNameFlags.IUCNConservationStatus)
-            Me(0, eColumnTypes.Exploitation) = New EwEColumnHeaderCell(eVarNameFlags.ExploitationStatus)
-            Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell(eVarNameFlags.OccurrenceStatus)
-            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMeanLength)
-            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMaxLength)
-            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMeanWeight)
-            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMeanLifespan)
-            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell(eVarNameFlags.TaxonVulnerabilityIndex)
+            Me(0, eColumnTypes.Hierarchy) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Species)
+            Me(0, eColumnTypes.Ecology) = New cEwEColumnHeaderCell(eVarNameFlags.EcologyType)
+            Me(0, eColumnTypes.Organism) = New cEwEColumnHeaderCell(eVarNameFlags.OrganismType)
+            Me(0, eColumnTypes.PropBiomass) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonPropBiomass)
+            Me(0, eColumnTypes.PropCatch) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonPropCatch)
+            Me(0, eColumnTypes.Conservation) = New cEwEColumnHeaderCell(eVarNameFlags.IUCNConservationStatus)
+            Me(0, eColumnTypes.Exploitation) = New cEwEColumnHeaderCell(eVarNameFlags.ExploitationStatus)
+            Me(0, eColumnTypes.Occurrence) = New cEwEColumnHeaderCell(eVarNameFlags.OccurrenceStatus)
+            Me(0, eColumnTypes.MeanLen) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonMeanLength)
+            Me(0, eColumnTypes.MaxLen) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonMaxLength)
+            Me(0, eColumnTypes.MeanWeight) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonMeanWeight)
+            Me(0, eColumnTypes.MeanLifeSpan) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonMeanLifespan)
+            Me(0, eColumnTypes.VulIndex) = New cEwEColumnHeaderCell(eVarNameFlags.TaxonVulnerabilityIndex)
 
             Me.FixedColumns = 2
 
@@ -114,7 +114,7 @@ Namespace Ecopath.Input
             Dim stanza As cStanzaGroup = Nothing
             Dim group As cEcoPathGroupInput = Nothing
             Dim taxon As cTaxon = Nothing
-            Dim hgcParent As EwEHierarchyGridCell = Nothing
+            Dim hgcParent As cEwEHierarchyGridCell = Nothing
             Dim iRow As Integer = -1
             Dim abStanzaHandled(Me.Core.nStanzas) As Boolean
 
@@ -130,11 +130,11 @@ Namespace Ecopath.Input
                         stanza = Me.Core.StanzaGroups(group.iStanza)
                         iRow = Me.AddRow()
 
-                        hgcParent = New EwEHierarchyGridCell()
+                        hgcParent = New cEwEHierarchyGridCell()
                         Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, stanza, eVarNameFlags.Name, Nothing, hgcParent)
+                        Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderParentCell(Me.PropertyManager, stanza, eVarNameFlags.Name, Nothing, hgcParent)
                         For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                            Me(iRow, iCol) = New EwERowHeaderCell("")
+                            Me(iRow, iCol) = New cEwERowHeaderCell("")
                         Next
 
                         For iTaxon As Integer = 1 To Me.Core.nTaxon
@@ -150,11 +150,11 @@ Namespace Ecopath.Input
                 Else
                     iRow = Me.AddRow()
 
-                    hgcParent = New EwEHierarchyGridCell()
+                    hgcParent = New cEwEHierarchyGridCell()
                     Me(iRow, eColumnTypes.Hierarchy) = hgcParent
-                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(String.Format(SharedResources.GENERIC_LABEL_INDEXED, group.Index, group.Name))
+                    Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(String.Format(SharedResources.GENERIC_LABEL_INDEXED, group.Index, group.Name))
                     For iCol As Integer = eColumnTypes.Name + 1 To Me.ColumnsCount - 1
-                        Me(iRow, iCol) = New EwERowHeaderCell("")
+                        Me(iRow, iCol) = New cEwERowHeaderCell("")
                     Next
 
                     For iTaxon As Integer = 1 To Me.Core.nTaxon
@@ -218,15 +218,15 @@ Namespace Ecopath.Input
             Return MyBase.OnCellValueChanged(p, cell)
         End Function
 
-        Private Sub AddTaxonRow(ByVal taxon As cTaxon, ByVal iRow As Integer, ByVal hgcParent As EwEHierarchyGridCell)
+        Private Sub AddTaxonRow(ByVal taxon As cTaxon, ByVal iRow As Integer, ByVal hgcParent As cEwEHierarchyGridCell)
 
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim propScName As cScientificNameProperty = New cScientificNameProperty(Me.PropertyManager, taxon)
 
             Me.Rows.Insert(iRow)
-            Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(CStr(taxon.Index))
+            Me(iRow, eColumnTypes.Hierarchy) = New cEwERowHeaderCell(CStr(taxon.Index))
 
-            cell = New PropertyRowHeaderChildCell(propScName)
+            cell = New cPropertyRowHeaderChildCell(propScName)
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Name) = cell
             Me.RegisterLocalProperty(propScName)
@@ -243,31 +243,31 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Exploitation) = New SourceGrid2.Cells.Real.Cell(taxon.ExploitationStatus, Me.m_editorExploitation)
             Me(iRow, eColumnTypes.Exploitation).Behaviors.Add(Me.EwEEditHandler)
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropBiomass)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropBiomass)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.PropBiomass) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropCatch)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropCatch)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.PropCatch) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLength)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLength)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.MeanLen) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMaxLength)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMaxLength)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.MaxLen) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanWeight)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanWeight)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.MeanWeight) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLifespan)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonMeanLifespan)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.MeanLifeSpan) = cell
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonVulnerabilityIndex)
+            cell = New cPropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonVulnerabilityIndex)
             Me(iRow, eColumnTypes.VulIndex) = cell
 
             hgcParent.AddChildRow(iRow)

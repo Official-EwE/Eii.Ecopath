@@ -59,27 +59,27 @@ Namespace Ecosim
 
             ' Define column headers
             Me.Redim(1, 11)
-            Me(0, 0) = New EwEColumnHeaderCell("")
+            Me(0, 0) = New cEwEColumnHeaderCell("")
             'Group name
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             'Biomass (Start)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_START)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_START)
             'Biomass (End)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSEND)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASSEND)
             'Biomass (E/S)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSES)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASSES)
             'Catch (Start)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_START)
+            Me(0, 5) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_START)
             'Catch (End)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_END)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_END)
             'Catch (E/S)
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
+            Me(0, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
             'Value (Start)
-            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUESTART)
+            Me(0, 8) = New cEwEColumnHeaderCell(SharedResources.HEADER_VALUESTART)
             'Value (End)
-            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEEND)
+            Me(0, 9) = New cEwEColumnHeaderCell(SharedResources.HEADER_VALUEEND)
             'Value (E/S)
-            Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEES)
+            Me(0, 10) = New cEwEColumnHeaderCell(SharedResources.HEADER_VALUEES)
 
         End Sub
 

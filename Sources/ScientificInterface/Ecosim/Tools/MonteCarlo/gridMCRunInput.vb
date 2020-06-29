@@ -35,7 +35,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridMCRunInput
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_value As eMCRunDisplayInputValueTypes = 0
         Private m_mcmanager As cMonteCarloManager = Nothing
@@ -78,7 +78,7 @@ Namespace Ecosim
 
             Me.Redim(Me.NumDataRows + 1, headers.Length)
             For i As Integer = 0 To Me.ColumnsCount - 1
-                Me(0, i) = New EwEColumnHeaderCell(headers(i))
+                Me(0, i) = New cEwEColumnHeaderCell(headers(i))
             Next
 
             Me.FixedColumnWidths = False
@@ -122,11 +122,11 @@ Namespace Ecosim
 
             For i As Integer = 1 To Me.RowsCount - 1
                 mcGrp = Me.m_mcmanager.Groups(i)
-                Me(i, 0) = New EwERowHeaderCell(CStr(mcGrp.Index))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(mcGrp.Index))
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
 
                 For j As Integer = 0 To flags.Length - 1
-                    Me(i, 2 + j) = New PropertyCell(Me.PropertyManager, mcGrp, flags(j))
+                    Me(i, 2 + j) = New cPropertyCell(Me.PropertyManager, mcGrp, flags(j))
                 Next
             Next
 
@@ -148,11 +148,11 @@ Namespace Ecosim
                     Dim val As Single = CSng(flt.GetVariable(var, igrp))
 
                     If (val > 0) Then
-                        Me(i, 0) = New EwERowHeaderCell(CStr(mcGrp.Index))
-                        Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
-                        Me(i, 2) = New PropertyRowHeaderCell(Me.PropertyManager, flt, eVarNameFlags.Name)
+                        Me(i, 0) = New cEwERowHeaderCell(CStr(mcGrp.Index))
+                        Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
+                        Me(i, 2) = New cPropertyRowHeaderCell(Me.PropertyManager, flt, eVarNameFlags.Name)
                         For j As Integer = 0 To vars.Length - 1
-                            Me(i, 3 + j) = New PropertyCell(Me.PropertyManager, mcGrp, vars(j), flt)
+                            Me(i, 3 + j) = New cPropertyCell(Me.PropertyManager, mcGrp, vars(j), flt)
                         Next
                         i += 1
                     End If

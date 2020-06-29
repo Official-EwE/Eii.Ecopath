@@ -149,19 +149,19 @@ Namespace Ecosim
             Me.Redim(Core.nGroups + 1, 2)
 
             ' Set header cells  'Prey \Predator '
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim iCol As Integer = 2
 
             For i As Integer = 1 To Core.nGroups
                 source = Core.EcoPathGroupInputs(i)
                 ' # Group name row header cells
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 Me(i, 0).Behaviors.Add(m_bmRowCol)
 
                 ' # Group name row header cells
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, 1).Behaviors.Add(m_bmRowCol)
 
                 If ((Me.m_groupfilter = eGroupFilter.Consumer) And (source.IsConsumer)) Or _
@@ -176,7 +176,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim cellDefault As EwECell = Nothing
+            Dim cellDefault As cEwECell = Nothing
             Dim ff As cForcingFunction = Nothing
             Dim PPI As cMediatedInteraction = Nothing
 
@@ -227,7 +227,7 @@ Namespace Ecosim
 
                     Else
                         ' #No: cannot assign FF to this pred/prey combo
-                        cellDefault = New EwECell(Nothing, GetType(Single))
+                        cellDefault = New cEwECell(Nothing, GetType(Single))
                         '  Setup default cell
                         cellDefault.Style = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                         ' Apply cell to the grid
@@ -300,7 +300,7 @@ Namespace Ecosim
 
         Protected Sub AddColumn(ByVal iCol As Integer, ByVal source As cCoreGroupBase)
             Me.Columns.Insert(iCol)
-            Me(0, iCol) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(0, iCol) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             Me(0, iCol).Behaviors.Add(m_bmRowCol)
             Me.Columns(iCol).Tag = source.Index
         End Sub

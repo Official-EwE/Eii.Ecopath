@@ -33,7 +33,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridVulnerabilities
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private m_bmRowCol As New BehaviorModels.CustomEvents
         Private m_VisDiagonal As New SourceGrid2.VisualModels.Common
@@ -58,24 +58,24 @@ Namespace Ecosim
 
             ' Set header cells
             ' # (0,0)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To Me.Core.nGroups
                 source = Me.Core.EcoPathGroupInputs(i)
                 ' Group index header cell
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 'Me(i, 0).Behaviors.Add(m_bmRowCol)
 
                 ' # Group name row header cells
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 'Me(i, 1).Behaviors.Add(m_bmRowCol)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     'Me(0, columnIndex).Behaviors.Add(m_bmRowCol)
                     columnIndex = columnIndex + 1
                 End If
@@ -89,7 +89,7 @@ Namespace Ecosim
             Dim grpPred As cCoreGroupBase = Nothing
             Dim iCol As Integer = 2
             Dim prop As cProperty = Nothing
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
             Dim pm As cPropertyManager = Me.PropertyManager
 
             ' Populate grid data cells
@@ -103,7 +103,7 @@ Namespace Ecosim
                     If grpPred.PP < 1 Then
 
                         prop = pm.GetProperty(grpPrey, eVarNameFlags.VulMult, grpPred)
-                        cell = New PropertyCell(prop)
+                        cell = New cPropertyCell(prop)
                         cell.SuppressZero = True
 
                         If iPrey = (iCol - 1) Then
