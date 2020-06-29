@@ -41,7 +41,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
     Public Class gridCapacityCalcType
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index
@@ -96,11 +96,11 @@ Namespace Ecospace
             ' Define grid dimensions
             Me.Redim(Core.nGroups + 1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.InputCapacity) = New EwEColumnHeaderCell(eVarNameFlags.LayerHabitatCapacityInput, eDescriptorTypes.Name, False)
-            Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
-            Me(0, eColumnTypes.EnvResponses) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.InputCapacity) = New cEwEColumnHeaderCell(eVarNameFlags.LayerHabitatCapacityInput, eDescriptorTypes.Name, False)
+            Me(0, eColumnTypes.Habitat) = New cEwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
+            Me(0, eColumnTypes.EnvResponses) = New cEwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
 
             Me.m_bInUpdate = True
 
@@ -109,16 +109,16 @@ Namespace Ecospace
                 group = Core.EcospaceGroupInputs(iGroup)
 
                 ' # Group name row header cells
-                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
                 ' # Group name row header cells
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.InputCapacity) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.InputCapacity) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-                Me(iGroup, eColumnTypes.Habitat) = New EwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat)
+                Me(iGroup, eColumnTypes.Habitat) = New cEwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat)
                 Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(EwEEditHandler)
 
-                Me(iGroup, eColumnTypes.EnvResponses) = New EwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
+                Me(iGroup, eColumnTypes.EnvResponses) = New cEwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
                 Me(iGroup, eColumnTypes.EnvResponses).Behaviors.Add(EwEEditHandler)
 
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(group, eVarNameFlags.EcospaceCapCalType)
@@ -221,7 +221,7 @@ Namespace Ecospace
                     img = SharedResources.Database
                 End If
 
-                DirectCast(Me(iGroup, eColumnTypes.InputCapacity), EwECell).Image = img
+                DirectCast(Me(iGroup, eColumnTypes.InputCapacity), cEwECell).Image = img
             Next
             Me.m_bInUpdate = False
             Me.m_bIsCapacityStatusDirty = False

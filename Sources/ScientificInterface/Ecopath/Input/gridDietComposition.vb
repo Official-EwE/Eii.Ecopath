@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridDietComposition
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -60,36 +60,36 @@ Namespace Ecopath.Input
             Dim rowCnt As Integer = Me.RowsCount
             ' Set header cells
             ' # (0,0)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To Core.nGroups
                 source = Core.EcoPathGroupInputs(i)
                 ' Group index header cell
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
                     ' # Group name column header cells
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
             Next
 
             ' # DietImport header cell
-            Me(rowCnt - 3, 0) = New EwERowHeaderCell()
-            Me(rowCnt - 3, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
+            Me(rowCnt - 3, 0) = New cEwERowHeaderCell()
+            Me(rowCnt - 3, 1) = New cEwERowHeaderCell(SharedResources.HEADER_IMPORT)
 
             ' # Sum header cell
-            Me(rowCnt - 2, 0) = New EwERowHeaderCell()
-            Me(rowCnt - 2, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
+            Me(rowCnt - 2, 0) = New cEwERowHeaderCell()
+            Me(rowCnt - 2, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
 
             ' # Sum - 1 header cell
-            Me(rowCnt - 1, 0) = New EwERowHeaderCell()
-            Me(rowCnt - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_1_MINUS_SUM)
+            Me(rowCnt - 1, 0) = New cEwERowHeaderCell()
+            Me(rowCnt - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_1_MINUS_SUM)
 
             Me.FixedColumns = 2
 
@@ -106,7 +106,7 @@ Namespace Ecopath.Input
             Dim opSumAll As cMultiOperation = Nothing
             Dim op1MinusSumAll As cBinaryOperation = Nothing
             Dim alPropSumAll As New ArrayList()
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
 
             Dim visDiagonal As New SourceGrid2.VisualModels.Common
             visDiagonal.BackColor = Color.LightGray
@@ -133,7 +133,7 @@ Namespace Ecopath.Input
                         ' Get the indexed dietcomp property
                         prop = pm.GetProperty(source, eVarNameFlags.DietComp, sourceSec)
                         ' Add property to destined cell
-                        cell = New PropertyCell(prop)
+                        cell = New cPropertyCell(prop)
 
                         ' Fixes issue #845
                         If iRow = source.Index Then
@@ -153,7 +153,7 @@ Namespace Ecopath.Input
                     ' # Get the property
                     prop = pm.GetProperty(source, eVarNameFlags.ImpDiet)
                     ' # Add to cell
-                    Me(nRows - 3, iCol) = New PropertyCell(prop)
+                    Me(nRows - 3, iCol) = New cPropertyCell(prop)
                     ' Add this property to the list of props to sum
                     alPropSumAll.Add(prop)
 
@@ -162,13 +162,13 @@ Namespace Ecopath.Input
                     ' Create Sum property for the SUM row (all the way at the bottom)
                     propSum = Me.Formula(opSumAll)
                     ' Define sum cell
-                    Me(nRows - 2, iCol) = New PropertyCell(propSum)
+                    Me(nRows - 2, iCol) = New cPropertyCell(propSum)
 
                     ' Create 1-Sum property for the SUM row (all the way at the bottom)
                     op1MinusSumAll = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, 1, propSum)
                     prop1MinusSum = Me.Formula(op1MinusSumAll)
                     ' Define sum cell
-                    Me(nRows - 1, iCol) = New PropertyCell(prop1MinusSum)
+                    Me(nRows - 1, iCol) = New cPropertyCell(prop1MinusSum)
 
                     ' Next column
                     iCol += 1

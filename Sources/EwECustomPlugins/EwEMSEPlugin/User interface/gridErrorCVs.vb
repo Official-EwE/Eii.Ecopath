@@ -48,7 +48,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridErrorCVs
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_Assessment As cStockAssessmentModel
 
@@ -124,9 +124,9 @@ Public Class gridErrorCVs
                 errorCaption = "Observation Error"
         End Select
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(colName)
-        Me(0, eColumnTypes.ErrorCol) = New EwEColumnHeaderCell(errorCaption)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(colName)
+        Me(0, eColumnTypes.ErrorCol) = New cEwEColumnHeaderCell(errorCaption)
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
 
@@ -161,11 +161,11 @@ Public Class gridErrorCVs
 
             irow = Me.AddRow()
 
-            Me(iFlt, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iFlt))
-            Cell = New EwECell(Fleet.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            Me(iFlt, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iFlt))
+            Cell = New cEwECell(Fleet.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(irow, eColumnTypes.Name) = Cell
 
-            Cell = New EwECell(Fleet.cvImpError, GetType(Single))
+            Cell = New cEwECell(Fleet.cvImpError, GetType(Single))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(irow, eColumnTypes.ErrorCol) = Cell
 
@@ -188,11 +188,11 @@ Public Class gridErrorCVs
 
             irow = Me.AddRow()
 
-            Me(iGrp, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGrp))
-            Cell = New EwECell(Group.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            Me(iGrp, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGrp))
+            Cell = New cEwECell(Group.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(irow, eColumnTypes.Name) = Cell
 
-            Cell = New EwECell(Group.CVObservationError, GetType(Single))
+            Cell = New cEwECell(Group.CVObservationError, GetType(Single))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(irow, eColumnTypes.ErrorCol) = Cell
 

@@ -21,15 +21,11 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports ScientificInterfaceShared.Commands
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwECore.Style
+Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -37,27 +33,74 @@ Namespace Controls.EwEGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' EwERowHeaderCell implements a Common cell rendered as an EwE name field.
-    ''' EwERowHeaderCells are used in EwE to replace Row headers which values are statically
-    ''' set.
+    ''' PropertyHeaderCell implements a PropertyCell based class for creating 
+    ''' header cells in <see cref="cEwEGrid">EwE grids</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public MustInherit Class EwEHeaderCell
-        : Inherits EwECell
+    <CLSCompliant(False)>
+    Public MustInherit Class cPropertyHeaderCell
+        Inherits cPropertyCell
 
 #Region " Construction "
 
-        Public Sub New(Optional ByVal objValue As Object = Nothing)
-            MyBase.New(objValue, GetType(String))
-            ' Disable edit
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal prop As cProperty)
+            ' Call baseclass constructor
+            MyBase.New(prop)
+            ' Always
             Me.DataModel.EnableEdit = False
-            Me.SetUnits("")
         End Sub
 
-        Public Sub New(ByVal strValue As String, ByVal strUnit As String)
-            Me.New(strValue)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor, instructing the cell to use a unit mask.
+        ''' </summary>
+        ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
+        ''' <param name="strUnit">The unit to substitute into the header cell text.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal prop As cProperty,
+                       ByVal strUnit As String)
+            Me.New(prop)
             Me.SetUnits(strUnit)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to obtain values from.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
+        ''' <param name="SourceSec">An optional secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal Source As cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
+                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec))
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor
+        ''' </summary>
+        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to obtain values from.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
+        ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
+        ''' <param name="strUnit">The unit to substitute into the header cell text.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal Source As cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
+                       ByVal SourceSec As cCoreInputOutputBase,
+                       ByVal strUnit As String)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
 #End Region ' Construction 
@@ -71,10 +114,10 @@ Namespace Controls.EwEGrid
         ''' -----------------------------------------------------------------------
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable Or MyBase.Style)
+                Return (MyBase.Style Or cStyleGuide.eStyleFlags.NotEditable)
             End Get
             Set(ByVal styleNew As cStyleGuide.eStyleFlags)
-                MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.NotEditable)
             End Set
         End Property
 
@@ -82,7 +125,7 @@ Namespace Controls.EwEGrid
 
 #Region " Unit header text "
 
-        Protected m_strUnit As String = ""
+        Protected m_strUnit As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -90,20 +133,11 @@ Namespace Controls.EwEGrid
         ''' its content. These unit strings will be synchronized with 
         ''' <see cref="cStyleGuide.UnitsChanged">cStyleGuide unit changes</see>.
         ''' </summary>
-        ''' <param name="strUnit">The unit to format into the header cell.</param>
+        ''' <param name="strUnit">The <see cref="cUnits">unit string</see> to set.
+        ''' To clear units, simply pass in an empty string.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SetUnits(ByVal strUnit As String)
+        Protected Sub SetUnits(ByVal strUnit As String)
             Me.m_strUnit = strUnit
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Configure the cell to no longer incorporate unit strings into its 
-        ''' text.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub ClearUnitHeader()
-            Me.m_strUnit = ""
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -124,7 +158,7 @@ Namespace Controls.EwEGrid
                 Dim strVal As String = CStr(MyBase.Value)
                 Dim strUnit As String = ""
 
-                If (Me.UIContext IsNot Nothing) Then
+                If (Me.UIContext IsNot Nothing) And (Not String.IsNullOrWhiteSpace(Me.m_strUnit)) Then
                     strUnit = New cUnits(Me.UIContext.Core).ToString(Me.m_strUnit)
                 End If
 

@@ -44,7 +44,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridMaxDecreaseEffort
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -85,9 +85,9 @@ Public Class gridMaxDecreaseEffort
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eColumnTypes.MaxChangeEffort) = New EwEColumnHeaderCell(My.Resources.HEADER_MAX_CHANGE_F)
+        Me(0, eColumnTypes.FleetIndex) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.FleetName) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.MaxChangeEffort) = New cEwEColumnHeaderCell(My.Resources.HEADER_MAX_CHANGE_F)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -100,7 +100,7 @@ Public Class gridMaxDecreaseEffort
         If (Me.m_data Is Nothing) Then Return
 
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         Me.RowsCount = 1
 
@@ -108,8 +108,8 @@ Public Class gridMaxDecreaseEffort
             iRow = Me.AddRow()
 
             Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
-            Me(iRow, eColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(fleet.Index))
-            Me(iRow, eColumnTypes.FleetName) = New EwERowHeaderCell(CStr(fleet.Name))
+            Me(iRow, eColumnTypes.FleetIndex) = New cEwERowHeaderCell(CStr(fleet.Index))
+            Me(iRow, eColumnTypes.FleetName) = New cEwERowHeaderCell(CStr(fleet.Name))
             Me(iRow, eColumnTypes.MaxChangeEffort) = Me.DataCell(Me.m_data.Value(i))
 
             ' No need to use tags here: row number = fleet number
@@ -134,16 +134,16 @@ Public Class gridMaxDecreaseEffort
         End Get
     End Property
 
-    Private Function DataCell(dValue As Single) As EwECell
+    Private Function DataCell(dValue As Single) As cEwECell
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         If (dValue = cCore.NULL_VALUE) Then
             style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Single), style)
+        cell = New cEwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 

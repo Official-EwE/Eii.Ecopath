@@ -32,13 +32,13 @@ Namespace Controls.EwEGrid
     ''' A standard EwE grid cell for static values.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class EwECell
-        : Inherits EwECellBase
+    <CLSCompliant(False)>
+    Public Class cEwECell
+        Inherits cEwECellBase
 
 #Region " Construction "
 
-        Public Sub New(ByVal objVal As Object, ByVal t As Type, _
+        Public Sub New(ByVal objVal As Object, ByVal t As Type,
                        Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
             MyBase.New(objVal, t)
             ' Set value

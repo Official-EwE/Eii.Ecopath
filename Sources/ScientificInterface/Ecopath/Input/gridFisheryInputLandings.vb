@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridFisheryInputLandings
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -58,22 +58,22 @@ Namespace Ecopath.Input
             'Define grid dimensions
             Me.Redim(Core.nGroups + 2, Core.nFleets + 3)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Me.Core.EcopathFleetInputs(fleetIndex)
 
                 md = source.GetVariableMetadata(eVarNameFlags.Landings)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
+                Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
             Next
 
             ' Total column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
             ' Sum row
-            Me(Core.nGroups + 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
+            Me(Core.nGroups + 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -104,7 +104,7 @@ Namespace Ecopath.Input
             Dim propSumAll As cFormulaProperty = Nothing
             Dim propSumCol As cFormulaProperty = Nothing
 
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -130,11 +130,11 @@ Namespace Ecopath.Input
                     ' Switching stanza?
                     If (iStanzaPrev <> group.iStanza) Then
                         ' #Yes: create hierarchy box
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        For j As Integer = 2 To Core.nFleets + 2 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        For j As Integer = 2 To Core.nFleets + 2 : Me(iRow, j) = New cEwERowHeaderCell() : Next
                         iStanzaPrev = group.iStanza
                     End If
                     iRow = Me.AddRow
@@ -145,13 +145,13 @@ Namespace Ecopath.Input
                 ' Set the property to the last cell of the row, which is the sum of the row
                 opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
                 propSumRow = Me.Formula(opSumRow)
-                Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSumRow)
+                Me(iRow, Me.ColumnsCount - 1) = New cPropertyCell(propSumRow)
             Next
 
             ' Sum row
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
+            Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
             For iFleet As Integer = 1 To Core.nFleets
                 fleet = Core.EcopathFleetInputs(iFleet)
                 alSumCol.Clear()
@@ -164,14 +164,14 @@ Namespace Ecopath.Input
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
                 propSumCol = Me.Formula(opSumCol)
                 ' Set the property to the last cell of the column, which is the sum of the column
-                Me(Me.RowsCount - 1, iFleet + 1) = New PropertyCell(propSumCol)
+                Me(Me.RowsCount - 1, iFleet + 1) = New cPropertyCell(propSumCol)
             Next
 
 
             opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
             propSumAll = Me.Formula(opSumAll)
             ' Set the property to the bottom-right cell, which is the sum of all cells
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propSumAll)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New cPropertyCell(propSumAll)
 
         End Sub
 
@@ -181,13 +181,13 @@ Namespace Ecopath.Input
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim prop As cProperty = Nothing
-            Dim propCell As PropertyCell = Nothing
+            Dim propCell As cPropertyCell = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
             ' For each fleet (each column) 
@@ -197,7 +197,7 @@ Namespace Ecopath.Input
                 ' Get the index landing property
                 prop = pm.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 ' Set the property to the cell
-                propCell = New PropertyCell(prop)
+                propCell = New cPropertyCell(prop)
                 ' Configure the cell
                 propCell.SuppressZero = True
                 ' Set the cell

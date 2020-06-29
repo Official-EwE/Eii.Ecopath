@@ -37,7 +37,7 @@ Imports SourceGrid2
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class ucUnitGrid
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Private Class cUnitSorter
         Implements IComparer(Of cUnit)
@@ -152,7 +152,7 @@ Public Class ucUnitGrid
             End If
 
             ' Populate row
-            Me(iRow, 0) = New EwERowHeaderCell(strHeader)
+            Me(iRow, 0) = New cEwERowHeaderCell(strHeader)
 
         Next iRow
 
@@ -181,7 +181,7 @@ Public Class ucUnitGrid
         Dim cell As Cells.Real.Cell = Nothing
 
         If iRow = 0 Then
-            cell = New EwERowHeaderCell(CStr(iCol))
+            cell = New cEwERowHeaderCell(CStr(iCol))
         Else
             cell = New cPropertyInfoCell(unit, Me.m_api(iRow - 1))
         End If

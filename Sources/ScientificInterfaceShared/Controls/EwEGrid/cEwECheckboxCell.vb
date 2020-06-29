@@ -16,16 +16,20 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
+Option Strict On
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports EwECore
 Imports ScientificInterfaceShared.Properties
 
+#End Region ' Imports
+
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)> _
-    Public Class EwECheckboxCell
+    <CLSCompliant(False)>
+    Public Class cEwECheckboxCell
         Inherits SourceGrid2.Cells.Real.CheckBox
         Implements IEwECell
         Implements IDisposable
@@ -36,7 +40,7 @@ Namespace Controls.EwEGrid
         Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
         Private m_uic As cUIContext = Nothing
 
-        Public Sub New(ByVal bChecked As Boolean, _
+        Public Sub New(ByVal bChecked As Boolean,
                        Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
 
             MyBase.New(bChecked)

@@ -32,7 +32,7 @@ Imports SourceGrid2
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Friend Class gridUI
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     ''' <summary>Grid columns.</summary>
     Private Enum eColumnTypes As Integer
@@ -57,9 +57,9 @@ Friend Class gridUI
     Protected Overrides Sub InitStyle()
 
         Me.Redim(1, [Enum].GetNames(GetType(eColumnTypes)).Length)
-        Me(0, eColumnTypes.Year) = New EwEColumnHeaderCell(My.Resources.HEADER_ECOSIM_YEAR)
-        Me(0, eColumnTypes.Check) = New EwEColumnHeaderCell(My.Resources.HEADER_CREATE_MODEL)
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_MODEL_NAME)
+        Me(0, eColumnTypes.Year) = New cEwEColumnHeaderCell(My.Resources.HEADER_ECOSIM_YEAR)
+        Me(0, eColumnTypes.Check) = New cEwEColumnHeaderCell(My.Resources.HEADER_CREATE_MODEL)
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_MODEL_NAME)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -89,12 +89,12 @@ Friend Class gridUI
                 style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
             End If
 
-            Me(i, eColumnTypes.Year) = New EwERowHeaderCell(CStr(Me.Data.FirstLabelYear + i - 1))
+            Me(i, eColumnTypes.Year) = New cEwERowHeaderCell(CStr(Me.Data.FirstLabelYear + i - 1))
 
             Me(i, eColumnTypes.Check) = New Cells.Real.CheckBox(Me.Data.CreateModel(i))
             Me(i, eColumnTypes.Check).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(i, eColumnTypes.Name) = New EwECell(Me.Data.ModelName(i), GetType(String), style)
+            Me(i, eColumnTypes.Name) = New cEwECell(Me.Data.ModelName(i), GetType(String), style)
             Me(i, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
 
         Next
@@ -109,7 +109,7 @@ Friend Class gridUI
             Case eColumnTypes.Check
                 Me.Data.CreateModel(p.Row) = CBool(Me(p.Row, p.Column).Value)
 
-                Dim ewec As EwECell = DirectCast(Me(p.Row, eColumnTypes.Name), EwECell)
+                Dim ewec As cEwECell = DirectCast(Me(p.Row, eColumnTypes.Name), cEwECell)
                 If Me.Data.CreateModel(p.Row) Then
                     ewec.Style = cStyleGuide.eStyleFlags.OK
                 Else

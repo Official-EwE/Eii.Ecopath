@@ -58,11 +58,14 @@ Public Class frmEcopathDietTreeMapDiagram
         If (Me.UIContext Is Nothing) Then Return
 
         Me.m_doodler = New cDietFlowMapRenderer(Me.UIContext)
+        Me.m_pgSettings.SelectedObject = Me.m_doodler
+
+        Me.UpdateControls()
     End Sub
 
     Protected Overrides Sub UpdateControls()
         Me.m_scContent.Panel2Collapsed = Not Me.m_tsmiSettings.Checked
-        Me.m_pgFlowDiagram.Refresh()
+        Me.m_pgSettings.Refresh()
     End Sub
 
 #End Region ' Overrides
@@ -109,12 +112,16 @@ Public Class frmEcopathDietTreeMapDiagram
 
     End Sub
 
+    Private Sub OnOptionsChanged(sender As Object, e As EventArgs) Handles m_pgSettings.PropertyValueChanged
+        Me.m_pbDiagram.Invalidate()
+    End Sub
+
     Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
         Me.m_pbDiagram.Invalidate()
     End Sub
 
     Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiSettings.Click
+            Handles m_tsmiSettings.CheckedChanged
         Me.UpdateControls()
     End Sub
 

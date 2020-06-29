@@ -16,20 +16,17 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
 
@@ -42,7 +39,7 @@ Namespace Controls.EwEGrid
     ''' </summary>
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)>
-    Public MustInherit Class EwECellBase
+    Public MustInherit Class cEwECellBase
         Inherits Cell
         Implements IEwECell
         Implements IDisposable
@@ -61,9 +58,9 @@ Namespace Controls.EwEGrid
                     ' Check if last edit was successful. In EwE, this can be done checking the
                     ' style of a cell: focus is not allowed to progress on a failed validation.
                     If (dm.EditableMode <> SourceGrid2.EditableMode.None) Then
-                        If (TypeOf e.Cell Is EwECellBase) Then
+                        If (TypeOf e.Cell Is cEwECellBase) Then
                             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-                            style = DirectCast(e.Cell, EwECellBase).Style
+                            style = DirectCast(e.Cell, cEwECellBase).Style
                             ' Do not advance if validation failed
                             bAdvance = (style And cStyleGuide.eStyleFlags.FailedValidation) = 0
                         End If
@@ -105,6 +102,24 @@ Namespace Controls.EwEGrid
 
         End Class
 
+        ''' <summary>
+        ''' Helper class to determine if a row or column is being resized.
+        ''' </summary>
+        Private Class cCellResizeBehaviour
+            Inherits SourceGrid2.BehaviorModels.Resize
+
+            Public Sub New(mode As CellResizeMode)
+                MyBase.New(mode)
+            End Sub
+
+            Public ReadOnly Property IsResizing As Boolean
+                Get
+                    Return Me.IsHeightResizing Or Me.IsWidthResizing
+                End Get
+            End Property
+
+        End Class
+
 #End Region ' Private helper class
 
 #Region " Construction and destruction"
@@ -120,9 +135,9 @@ Namespace Controls.EwEGrid
         ''' <summary>If true, the cell will not show numerical '0' values.</summary>
         Private m_bSuppressZero As Boolean = False
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
-        Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
+        Private m_bmCatchEnter As cCatchEnterPressBehaviour = Nothing
         ''' <summary>Behaviour model to catch cell resize events.</summary>
-        Private m_bmResize As BehaviorModels.IBehaviorModel = Nothing
+        Private m_bmResize As cCellResizeBehaviour = Nothing
 
         Public Sub New(ByVal objVal As Object, ByVal t As Type)
             MyBase.New(Nothing, t)
@@ -141,7 +156,7 @@ Namespace Controls.EwEGrid
             Me.Behaviors.Add(Me.m_bmCatchEnter)
 
             ' Only resize width, not height of cells
-            Me.m_bmResize = New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width)
+            Me.m_bmResize = New cCellResizeBehaviour(CellResizeMode.Width)
             Me.Behaviors.Add(Me.m_bmResize)
 
         End Sub
@@ -212,6 +227,12 @@ Namespace Controls.EwEGrid
                 e.Cancel = True
             End If
             MyBase.OnEditStarting(e)
+        End Sub
+
+        Public Overrides Sub OnClick(e As SourceGrid2.PositionEventArgs)
+            ' JS, 29jun20: do not send out an OnClick event when resizing a row or column
+            If Me.IsResizing Then Return
+            MyBase.OnClick(e)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -422,6 +443,24 @@ Namespace Controls.EwEGrid
         Public Overridable Property RelativePedigree As Single
 
 #End Region ' Data (value, style, image, pedigree)
+
+#Region " State "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether a row or column is currently being resized.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property IsResizing As Boolean
+            Get
+                If (Me.m_bmResize IsNot Nothing) Then
+                    Return Me.m_bmResize.IsResizing
+                End If
+                Return False
+            End Get
+        End Property
+
+#End Region ' State
 
 #Region " UIContext connection "
 

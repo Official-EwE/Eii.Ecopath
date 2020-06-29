@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
@@ -33,9 +32,9 @@ Namespace Controls.EwEGrid
     ''' UnitCell implements a cell that shows a dynamic unit string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class EwEUnitCell
-        : Inherits EwECell
+    <CLSCompliant(False)>
+    Public Class cEwEUnitCell
+        Inherits cEwECell
 
         Protected m_strUnit As String = ""
         Protected m_strUnitMask As String = ""

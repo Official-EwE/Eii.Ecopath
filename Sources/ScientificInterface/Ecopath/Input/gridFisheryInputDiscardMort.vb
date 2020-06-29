@@ -36,7 +36,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridFisheryInputDiscardMort
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -53,12 +53,12 @@ Namespace Ecopath.Input
 
             Me.Redim(1, 2 + Core.nFleets)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 src = Core.EcopathFleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name)
+                Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name)
             Next
 
             Me.FixedColumns = 2
@@ -74,7 +74,7 @@ Namespace Ecopath.Input
             Dim fleet As cEcopathFleetInput = Nothing
             Dim iRow As Integer = 0
             Dim iStanzaPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             ' For each group
             For i As Integer = 0 To groups.Count - 1
@@ -85,10 +85,10 @@ Namespace Ecopath.Input
                     If (group.iStanza <> iStanzaPrev) Then
                         ' Create stanza header row
                         iRow = Me.AddRow
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
                         iStanzaPrev = group.iStanza
                     End If
                     ' Add group row as child to stanza
@@ -101,13 +101,13 @@ Namespace Ecopath.Input
                 End If
 
                 ' Fleet name As row header
-                Me(iRow, 0) = New EwERowHeaderCell(CStr(i))
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
                     fleet = Core.EcopathFleetInputs(iFleet)
-                    Me(iRow, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
+                    Me(iRow, 1 + iFleet) = New cPropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
                 Next
             Next
 

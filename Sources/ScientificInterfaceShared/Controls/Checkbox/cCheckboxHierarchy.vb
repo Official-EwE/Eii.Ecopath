@@ -226,7 +226,7 @@ Namespace Controls
             Implements SourceGrid2.BehaviorModels.IBehaviorModel
 
             ''' <summary>Checkbox the link is created for.</summary>
-            Private m_cb As EwECheckboxCell
+            Private m_cb As cEwECheckboxCell
             Private m_pos As SourceGrid2.Position
 
             ''' -------------------------------------------------------------------
@@ -235,10 +235,10 @@ Namespace Controls
             ''' </summary>
             ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
             ''' created for.</param>
-            ''' <param name="cb">The <see cref="EwECheckboxCell"/> to define this link for.</param>
+            ''' <param name="cb">The <see cref="cEwECheckboxCell"/> to define this link for.</param>
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(cb As EwECheckboxCell, hr As cCheckboxHierarchy, parent As cLink)
+            Public Sub New(cb As cEwECheckboxCell, hr As cCheckboxHierarchy, parent As cLink)
                 MyBase.New(hr, parent)
                 Me.m_cb = cb
                 Me.m_cb.Behaviors.Add(Me)
@@ -379,7 +379,7 @@ Namespace Controls
             ''' </summary>
             ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
             ''' created for.</param>
-            ''' <param name="cb">The <see cref="EwECheckboxCell"/> to define this link for.</param>
+            ''' <param name="cb">The <see cref="cEwECheckboxCell"/> to define this link for.</param>
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(cb As DataGridViewCheckBoxCell, hr As cCheckboxHierarchy, parent As cLink)
@@ -580,8 +580,8 @@ Namespace Controls
             Select Case cb.GetType
                 Case GetType(CheckBox)
                     Return New cCheckboxLink(DirectCast(cb, CheckBox), Me, parent)
-                Case GetType(EwECheckboxCell)
-                    Return New cCheckboxCellLink(DirectCast(cb, EwECheckboxCell), Me, parent)
+                Case GetType(cEwECheckboxCell)
+                    Return New cCheckboxCellLink(DirectCast(cb, cEwECheckboxCell), Me, parent)
                 Case GetType(DataGridViewCheckBoxCell)
                     Return New cDataGridViewCheckboxLink(DirectCast(cb, DataGridViewCheckBoxCell), Me, parent)
                 Case Else

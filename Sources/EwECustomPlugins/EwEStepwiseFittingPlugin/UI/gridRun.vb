@@ -34,7 +34,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 #End Region ' Imports
 
 Public Class gridRun
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_manager As cSFPManager = Nothing
 
@@ -87,7 +87,7 @@ Public Class gridRun
 
     Public Sub UpdateRunState()
         For i As Integer = 1 To Me.RowsCount - 1
-            Dim cell As EwECheckboxCell = DirectCast(Me(i, eColumnTypes.Enabled), EwECheckboxCell)
+            Dim cell As cEwECheckboxCell = DirectCast(Me(i, eColumnTypes.Enabled), cEwECheckboxCell)
             cell.Style = If(Me.m_manager.IsRunning, eStyleFlags.NotEditable, eStyleFlags.OK)
         Next
     End Sub
@@ -99,17 +99,17 @@ Public Class gridRun
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED)
-        Me(0, eColumnTypes.K) = New EwEColumnHeaderCell(My.Resources.HEADER_K)
-        Me(0, eColumnTypes.EstimatedV) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMVULS)
-        Me(0, eColumnTypes.SplinePoints) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMSPLINE)
-        Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(My.Resources.HEADER_SS)
-        Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(My.Resources.HEADER_AIC)
-        Me(0, eColumnTypes.AICc) = New EwEColumnHeaderCell(My.Resources.HEADER_AICc)
-        Me(0, eColumnTypes.Elapsed) = New EwEColumnHeaderCell(My.Resources.HEADER_ELAPSED)
-        Me(0, eColumnTypes.State) = New EwEColumnHeaderCell(My.Resources.HEADER_STATE)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Enabled) = New cEwEColumnHeaderCell(SharedResources.HEADER_ENABLED)
+        Me(0, eColumnTypes.K) = New cEwEColumnHeaderCell(My.Resources.HEADER_K)
+        Me(0, eColumnTypes.EstimatedV) = New cEwEColumnHeaderCell(My.Resources.HEADER_NUMVULS)
+        Me(0, eColumnTypes.SplinePoints) = New cEwEColumnHeaderCell(My.Resources.HEADER_NUMSPLINE)
+        Me(0, eColumnTypes.SS) = New cEwEColumnHeaderCell(My.Resources.HEADER_SS)
+        Me(0, eColumnTypes.AIC) = New cEwEColumnHeaderCell(My.Resources.HEADER_AIC)
+        Me(0, eColumnTypes.AICc) = New cEwEColumnHeaderCell(My.Resources.HEADER_AICc)
+        Me(0, eColumnTypes.Elapsed) = New cEwEColumnHeaderCell(My.Resources.HEADER_ELAPSED)
+        Me(0, eColumnTypes.State) = New cEwEColumnHeaderCell(My.Resources.HEADER_STATE)
 
         Me.AllowBlockSelect = False
         Me.FixedColumnWidths = False
@@ -128,39 +128,39 @@ Public Class gridRun
         Dim iRow As Integer = 0
         Dim iterations As ISFPIterations() = Me.m_manager.Iterations
         Dim iteration As ISFPIterations = Nothing
-        Dim cell As EwECellBase = Nothing
+        Dim cell As cEwECellBase = Nothing
 
         For i As Integer = 0 To iterations.Length - 1
 
             iteration = iterations(i)
             iRow = Me.AddRow()
 
-            Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
-            Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(iteration.Name)
+            Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
+            Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(iteration.Name)
 
-            Me(iRow, eColumnTypes.Enabled) = New EwECheckboxCell(False)
+            Me(iRow, eColumnTypes.Enabled) = New cEwECheckboxCell(False)
             Me(iRow, eColumnTypes.Enabled).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.EstimatedV) = New EwECell(cCore.NULL_VALUE, GetType(Integer), eStyleFlags.NotEditable)
-            Me(iRow, eColumnTypes.SplinePoints) = New EwECell(cCore.NULL_VALUE, GetType(Integer), eStyleFlags.NotEditable)
-            Me(iRow, eColumnTypes.K) = New EwECell(cCore.NULL_VALUE, GetType(Integer), eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.EstimatedV) = New cEwECell(cCore.NULL_VALUE, GetType(Integer), eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.SplinePoints) = New cEwECell(cCore.NULL_VALUE, GetType(Integer), eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.K) = New cEwECell(cCore.NULL_VALUE, GetType(Integer), eStyleFlags.NotEditable)
 
-            cell = New EwECell(cCore.NULL_VALUE, GetType(Single), eStyleFlags.NotEditable)
+            cell = New cEwECell(cCore.NULL_VALUE, GetType(Single), eStyleFlags.NotEditable)
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.SS) = cell
 
-            cell = New EwECell(cCore.NULL_VALUE, GetType(Single), eStyleFlags.NotEditable)
+            cell = New cEwECell(cCore.NULL_VALUE, GetType(Single), eStyleFlags.NotEditable)
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.AIC) = cell
 
-            cell = New EwECell(cCore.NULL_VALUE, GetType(Single), eStyleFlags.NotEditable)
+            cell = New cEwECell(cCore.NULL_VALUE, GetType(Single), eStyleFlags.NotEditable)
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.AICc) = cell
 
-            cell = New EwECell(cCore.NULL_VALUE, GetType(String), eStyleFlags.NotEditable)
+            cell = New cEwECell(cCore.NULL_VALUE, GetType(String), eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.Elapsed) = cell
 
-            cell = New EwECell("", GetType(String), eStyleFlags.NotEditable)
+            cell = New cEwECell("", GetType(String), eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.State) = cell
 
             Me.Rows(iRow).Tag = iteration

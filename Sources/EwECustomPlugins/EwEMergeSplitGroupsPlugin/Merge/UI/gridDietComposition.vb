@@ -34,9 +34,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' <summary>
 ''' Grid class that shows how diets will be merged.
 ''' </summary>
-''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
+''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
 Public Class gridDietComposition
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_data As cEcopathMergeGroupsDatastructures = Nothing
     Private m_fmt As cVarnameTypeFormatter
@@ -81,8 +81,8 @@ Public Class gridDietComposition
         Me.FixedColumnWidths = False
         Me.Redim(1, 2)
 
-        Me(0, 0) = New EwEColumnHeaderCell()
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+        Me(0, 0) = New cEwEColumnHeaderCell()
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
         Dim iCol As Integer = 2
         Dim iRow As Integer = 1
@@ -92,8 +92,8 @@ Public Class gridDietComposition
             If (grp1 IsNot Nothing) Then
                 If (i = grp1.Index) Then
                     Me.Rows.Insert(iRow)
-                    Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_MERGE)
-                    Me(iRow, 1) = New EwERowHeaderCell(Me.m_data.GroupName)
+                    Me(iRow, 0) = New cEwERowHeaderCell(My.Resources.HEADER_MERGE)
+                    Me(iRow, 1) = New cEwERowHeaderCell(Me.m_data.GroupName)
                     Me.m_iRowTarget = iRow
                     iRow += 1
                 End If
@@ -101,15 +101,15 @@ Public Class gridDietComposition
 
             source = core.EcoPathGroupInputs(i)
             Me.Rows.Insert(iRow)
-            Me(iRow, 0) = New EwERowHeaderCell(CStr(i))
-            Me(iRow, 1) = New EwERowHeaderCell(source.Name)
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(i))
+            Me(iRow, 1) = New cEwERowHeaderCell(source.Name)
             Me.Rows(iRow).Tag = i
             iRow += 1
 
             If (grp2 IsNot Nothing) Then
                 If (i = grp1.Index And grp1.IsConsumer) Then
                     Me.Columns.Insert(iCol)
-                    Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MERGE)
+                    Me(0, iCol) = New cEwEColumnHeaderCell(My.Resources.HEADER_MERGE)
                     Me.m_iColTarget = iCol
                     iCol += 1
                 End If
@@ -117,15 +117,15 @@ Public Class gridDietComposition
 
             If (source.IsConsumer) Then
                 Me.Columns.Insert(iCol)
-                Me(0, iCol) = New EwEColumnHeaderCell(CStr(i))
+                Me(0, iCol) = New cEwEColumnHeaderCell(CStr(i))
                 Me.Columns(iCol).Tag = i
                 iCol += 1
             End If
         Next
 
         Me.Rows.Insert(iRow)
-        Me(iRow, 0) = New EwEColumnHeaderCell()
-        Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
+        Me(iRow, 0) = New cEwEColumnHeaderCell()
+        Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_IMPORT)
         Me.Rows(iRow).Tag = 0 ' Imports
 
         Me.FixedColumns = 2
@@ -140,7 +140,7 @@ Public Class gridDietComposition
         Dim iPrey As Integer = -1
         Dim val As Single = 0
         Dim style As eStyleFlags
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         'Dim visOut As New SourceGrid2.VisualModels.Common()
         'visOut.BackColor = Color.LightGray
@@ -201,7 +201,7 @@ Public Class gridDietComposition
                 If ((style And eStyleFlags.Null) = eStyleFlags.Null) Then
                     val = 0
                 End If
-                cell = New EwECell(val, style)
+                cell = New cEwECell(val, style)
                 cell.SuppressZero = True
                 Me(iRow, iCol) = cell
 
@@ -212,7 +212,7 @@ Public Class gridDietComposition
 
     Private Sub UpdateCell(iRow As Integer, iCol As Integer, val As Single, style As eStyleFlags)
 
-        Dim c As EwECell = DirectCast(Me(iRow, iCol), EwECell)
+        Dim c As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)
         c.Value = val
         c.Style = style
 

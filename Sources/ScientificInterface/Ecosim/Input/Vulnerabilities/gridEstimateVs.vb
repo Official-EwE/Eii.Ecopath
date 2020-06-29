@@ -33,7 +33,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridEstimateVs
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars and declarations "
 
@@ -101,7 +101,7 @@ Namespace Ecosim
 
         Public Function HasSelectedVulnerabilities() As Boolean
 
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
             For Each col As eColumnTypes In gridEstimateVs.c_vulcols
                 For iRow As Integer = 1 To Me.RowsCount - 1
@@ -166,14 +166,14 @@ Namespace Ecosim
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.PotGrowth) = New EwEColumnHeaderCell(SharedResources.HEADER_POTENTIAL_GROWTH)
-            Me(0, eColumnTypes.FMax) = New EwEColumnHeaderCell(SharedResources.HEADER_FMAX)
-            Me(0, eColumnTypes.PG_VwoFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WO_FT)
-            Me(0, eColumnTypes.FMax_VwoFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WO_FT)
-            Me(0, eColumnTypes.PG_VwithFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WITH_FT)
-            Me(0, eColumnTypes.FMax_VwithFT) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WITH_FT)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.PotGrowth) = New cEwEColumnHeaderCell(SharedResources.HEADER_POTENTIAL_GROWTH)
+            Me(0, eColumnTypes.FMax) = New cEwEColumnHeaderCell(SharedResources.HEADER_FMAX)
+            Me(0, eColumnTypes.PG_VwoFT) = New cEwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WO_FT)
+            Me(0, eColumnTypes.FMax_VwoFT) = New cEwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WO_FT)
+            Me(0, eColumnTypes.PG_VwithFT) = New cEwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WITH_FT)
+            Me(0, eColumnTypes.FMax_VwithFT) = New cEwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_WITH_FT)
 
             Me.FixedColumnWidths = True ' To accomodate long header labels
             Me.Selection.SelectionMode = GridSelectionMode.Cell
@@ -197,23 +197,23 @@ Namespace Ecosim
                 Me.Core.EstimateVulnerabilities(iGroup, sPotGrowth, sFMax, estimates)
 
                 Me.AddRow()
-                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 If sPotGrowth >= 0 Then style = eStyleFlags.OK Else style = eStyleFlags.Null Or eStyleFlags.NotEditable
-                Me(iGroup, eColumnTypes.PotGrowth) = New EwECell(sPotGrowth, GetType(Single), style)
+                Me(iGroup, eColumnTypes.PotGrowth) = New cEwECell(sPotGrowth, GetType(Single), style)
                 Me(iGroup, eColumnTypes.PotGrowth).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iGroup, eColumnTypes.FMax) = New EwECell(sFMax, GetType(Single), eStyleFlags.OK)
+                Me(iGroup, eColumnTypes.FMax) = New cEwECell(sFMax, GetType(Single), eStyleFlags.OK)
                 Me(iGroup, eColumnTypes.FMax).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iGroup, eColumnTypes.PG_VwoFT) = New EwECell(estimates(0), GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.PG_VwoFT) = New cEwECell(estimates(0), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.PG_VwoFT).Behaviors.Add(Me.EwEEditHandler)
-                Me(iGroup, eColumnTypes.FMax_VwoFT) = New EwECell(estimates(1), GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.FMax_VwoFT) = New cEwECell(estimates(1), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.FMax_VwoFT).Behaviors.Add(Me.EwEEditHandler)
-                Me(iGroup, eColumnTypes.PG_VwithFT) = New EwECell(estimates(2), GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.PG_VwithFT) = New cEwECell(estimates(2), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.PG_VwithFT).Behaviors.Add(Me.EwEEditHandler)
-                Me(iGroup, eColumnTypes.FMax_VwithFT) = New EwECell(estimates(3), GetType(Single), eStyleFlags.NotEditable)
+                Me(iGroup, eColumnTypes.FMax_VwithFT) = New cEwECell(estimates(3), GetType(Single), eStyleFlags.NotEditable)
                 Me(iGroup, eColumnTypes.FMax_VwithFT).Behaviors.Add(Me.EwEEditHandler)
 
                 Me.RecalcVulnerabilities(iGroup)
@@ -286,7 +286,7 @@ Namespace Ecosim
 
         Private Sub SetVulCell(ByVal iRow As Integer, ByVal iCol As eColumnTypes, ByVal sValue As Single)
 
-            Dim cell As EwECell = DirectCast(Me(iRow, iCol), EwECell)
+            Dim cell As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)
             Dim style As cStyleGuide.eStyleFlags = cell.Style
 
             ' Adjust style
@@ -316,7 +316,7 @@ Namespace Ecosim
             If Array.IndexOf(gridEstimateVs.c_vulcols, col) = -1 Then Return False
 
             ' Validate incoming column
-            Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)
+            Dim cell As cEwECell = DirectCast(Me(iRow, col), cEwECell)
             Dim bCellChanged As Boolean = False
 
             ' Clear column if cell cannot be selected
@@ -349,7 +349,7 @@ Namespace Ecosim
                 If (iRow < 1) Or (iRow >= Me.RowsCount) Then Return False
                 If (Array.IndexOf(c_vulcols, col) = -1) Then Return False
 
-                Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)
+                Dim cell As cEwECell = DirectCast(Me(iRow, col), cEwECell)
                 Return ((cell.Style And gridEstimateVs.c_styleSelect) = gridEstimateVs.c_styleSelect)
 
             End Get
@@ -358,7 +358,7 @@ Namespace Ecosim
                 If (iRow < 1) Or (iRow >= Me.RowsCount) Then Return
                 If (Array.IndexOf(c_vulcols, col) = -1) Then Return
 
-                Dim cell As EwECell = DirectCast(Me(iRow, col), EwECell)
+                Dim cell As cEwECell = DirectCast(Me(iRow, col), cEwECell)
                 If value Then
                     cell.Style = cell.Style Or gridEstimateVs.c_styleSelect
                 Else

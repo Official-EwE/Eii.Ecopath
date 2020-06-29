@@ -36,7 +36,7 @@ Namespace Ecosim
     ''' </summary>
     <CLSCompliant(False)>
     Public Class gridApplyEP
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -160,9 +160,9 @@ Namespace Ecosim
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_STANZAGROUP_NAME)
-            Me(0, eColumnTypes.Shape) = New EwEColumnHeaderCell(SharedResources.HEADER_SHAPE)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_STANZAGROUP_NAME)
+            Me(0, eColumnTypes.Shape) = New cEwEColumnHeaderCell(SharedResources.HEADER_SHAPE)
 
         End Sub
 
@@ -181,8 +181,8 @@ Namespace Ecosim
                 Me.Rows.Insert(iRow)
                 sg = Me.Core.StanzaGroups(pair.iStanzaGroup)
 
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iRow))
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, sg, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iRow))
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, sg, eVarNameFlags.Name)
 
                 ' Combo box with strings, no text box
                 If pair.ShapeID < 0 Then

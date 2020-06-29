@@ -31,7 +31,7 @@ Namespace Ecospace.Basemap
 
     <CLSCompliant(False)> _
     Public Class gridExportLayerMappings
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -94,10 +94,10 @@ Namespace Ecospace.Basemap
 
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.ColumnParent) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
-            Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
-            Me(0, eColumnTypes.ColumnExport) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
+            Me(0, eColumnTypes.ColumnParent) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.ColumnLayer) = New cEwEColumnHeaderCell(SharedResources.HEADER_LAYER)
+            Me(0, eColumnTypes.ColumnField) = New cEwEColumnHeaderCell(SharedResources.HEADER_FIELD)
+            Me(0, eColumnTypes.ColumnExport) = New cEwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
 
             Me.FixedColumns = 1
             Me.FixedColumnWidths = False
@@ -110,13 +110,13 @@ Namespace Ecospace.Basemap
 
             Me.RowsCount = 1
             Dim lfbase As New cLayerFactoryInternal()
-            Dim dtParents As New Dictionary(Of String, EwEHierarchyGridCell)
+            Dim dtParents As New Dictionary(Of String, cEwEHierarchyGridCell)
             Dim dtHierarchy As New Dictionary(Of String, cCheckboxHierarchy)
             Dim layer As cEcospaceLayer = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
-            Dim cellParent As EwEHierarchyGridCell = Nothing
+            Dim cellParent As cEwEHierarchyGridCell = Nothing
             Dim hrParent As cCheckboxHierarchy = Nothing
-            Dim checkParent As EwECheckboxCell = Nothing
+            Dim checkParent As cEwECheckboxCell = Nothing
             Dim strGroup As String = ""
             Dim iRow As Integer = 0
             Dim vizChild As New cVisualizerEwEChildRowHeader()
@@ -128,18 +128,18 @@ Namespace Ecospace.Basemap
                 strGroup = lfbase.GetLayerGroup(layer.VarName)
                 If Not dtParents.ContainsKey(strGroup) Then
                     iRow = Me.AddRow()
-                    For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                    For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
                     ' Hierarchy cell
-                    cellParent = New EwEHierarchyGridCell()
+                    cellParent = New cEwEHierarchyGridCell()
                     dtParents(strGroup) = cellParent
                     Me(iRow, eColumnTypes.ColumnParent) = cellParent
 
                     ' Layer group name
-                    Me(iRow, eColumnTypes.ColumnLayer) = New EwERowHeaderCell(strGroup)
+                    Me(iRow, eColumnTypes.ColumnLayer) = New cEwERowHeaderCell(strGroup)
 
                     ' Hierarchy check cell
-                    checkParent = New EwECheckboxCell(True)
+                    checkParent = New cEwECheckboxCell(True)
                     Me(iRow, eColumnTypes.ColumnExport) = checkParent
                     hrParent = New cCheckboxHierarchy(checkParent)
                     dtHierarchy(strGroup) = hrParent
@@ -154,22 +154,22 @@ Namespace Ecospace.Basemap
                 End If
 
                 If (layer.Index <= 0) Then
-                    cell = New EwERowHeaderCell("")
+                    cell = New cEwERowHeaderCell("")
                 Else
-                    cell = New EwERowHeaderCell(CStr(layer.Index))
+                    cell = New cEwERowHeaderCell(CStr(layer.Index))
                 End If
                 Me(iRow, eColumnTypes.ColumnParent) = cell
 
-                cell = New EwERowHeaderCell(layer.Name)
+                cell = New cEwERowHeaderCell(layer.Name)
                 cell.VisualModel = New cVisualizerEwEChildRowHeader
                 Me(iRow, eColumnTypes.ColumnLayer) = cell
 
-                cell = New EwECheckboxCell(True)
+                cell = New cEwECheckboxCell(True)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(iRow, eColumnTypes.ColumnExport) = cell
-                hrParent.Add(DirectCast(cell, EwECheckboxCell), Nothing)
+                hrParent.Add(DirectCast(cell, cEwECheckboxCell), Nothing)
 
-                cell = New EwECell(layer.Name, GetType(String))
+                cell = New cEwECell(layer.Name, GetType(String))
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(iRow, eColumnTypes.ColumnField) = cell
 
@@ -208,7 +208,7 @@ Namespace Ecospace.Basemap
                         Else
                             style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
                         End If
-                        DirectCast(Me(p.Row, eColumnTypes.ColumnField), EwECell).Style = style
+                        DirectCast(Me(p.Row, eColumnTypes.ColumnField), cEwECell).Style = style
                         Me(p.Row, eColumnTypes.ColumnField).Invalidate()
                     Catch ex As Exception
 

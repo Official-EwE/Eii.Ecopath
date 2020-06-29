@@ -49,7 +49,7 @@ Namespace Ecosim
         Private m_displayMode As eDisplayModeTypes
 
         ''' <summary>Results grid</summary>
-        Private m_grid As EwEGrid = Nothing
+        Private m_grid As cEwEGrid = Nothing
 
         'format provides 
         Private m_fpStartSum As cEwEFormatProvider = Nothing

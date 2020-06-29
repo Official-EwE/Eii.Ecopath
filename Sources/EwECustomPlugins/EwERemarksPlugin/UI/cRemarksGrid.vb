@@ -31,7 +31,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)> _
 Friend Class cRemarksGrid
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -73,12 +73,12 @@ Friend Class cRemarksGrid
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.SourceIndex) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE)
-        Me(0, eColumnTypes.Parameter) = New EwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
-        Me(0, eColumnTypes.SourceSec) = New EwEColumnHeaderCell(My.Resources.HEADER_SOURCE_SEC)
+        Me(0, eColumnTypes.SourceIndex) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Source) = New cEwEColumnHeaderCell(My.Resources.HEADER_SOURCE)
+        Me(0, eColumnTypes.Parameter) = New cEwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
+        Me(0, eColumnTypes.SourceSec) = New cEwEColumnHeaderCell(My.Resources.HEADER_SOURCE_SEC)
 
-        Me(0, eColumnTypes.Remark) = New EwEColumnHeaderCell(SharedResources.HEADER_REMARK)
+        Me(0, eColumnTypes.Remark) = New cEwEColumnHeaderCell(SharedResources.HEADER_REMARK)
         Me(0, eColumnTypes.Remark).VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleLeft
 
         Me.TrackPropertySelection = False
@@ -100,22 +100,22 @@ Friend Class cRemarksGrid
         For i As Integer = 0 To Me.m_data.Length - 1
 
             Dim prop As cProperty = Me.m_data(i)
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim iRow As Integer = Me.AddRow()
 
-            cell = New EwERowHeaderCell(CStr(prop.Source.Index))
+            cell = New cEwERowHeaderCell(CStr(prop.Source.Index))
             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.SourceIndex) = cell
 
-            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
+            cell = New cPropertyRowHeaderCell(Me.PropertyManager, prop.Source, eVarNameFlags.Name)
             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.Source) = cell
 
-            cell = New EwERowHeaderCell(vfm.ToString(prop.VarName))
+            cell = New cEwERowHeaderCell(vfm.ToString(prop.VarName))
             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.Parameter) = cell
 
-            cell = New PropertyRowHeaderCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
+            cell = New cPropertyRowHeaderCell(Me.PropertyManager, prop.SourceSec, eVarNameFlags.Name)
             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.SourceSec) = cell
 

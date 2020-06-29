@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridDetritusFate
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -58,19 +58,19 @@ Namespace Ecopath.Input
             Me.Redim(Core.nGroups + 1, 4 + Core.nDetritusGroups)
 
             'Header cell (0,0) Source \ fate
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SOURCEFATE)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_SOURCEFATE)
 
             ' Detritus column header cells
             For i As Integer = 1 To Core.nDetritusGroups
                 source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + i)
-                Me(0, i + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, i + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             ' The export header cell
-            Me(0, Core.nDetritusGroups + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
+            Me(0, Core.nDetritusGroups + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
             ' The sum header cell
-            Me(0, Core.nDetritusGroups + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, Core.nDetritusGroups + 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -95,7 +95,7 @@ Namespace Ecopath.Input
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
 
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -117,10 +117,10 @@ Namespace Ecopath.Input
 
                         groupSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
 
-                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
-                        Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                        Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                        Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
                         prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Core.nGroups - Core.nDetritusGroups)
-                        Me(iRow, iCol + 1) = New PropertyCell(prop)
+                        Me(iRow, iCol + 1) = New cPropertyCell(prop)
                         alProp.Add(prop)
                     Next
 
@@ -130,11 +130,11 @@ Namespace Ecopath.Input
                     propExport = Me.Formula(opMinus)
 
                     ' Export column 
-                    Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(propExport)
+                    Me(iRow, Me.ColumnsCount - 2) = New cPropertyCell(propExport)
 
                     ' JS 140606: Use static single property here. Seems overkill where a simple Cell(1.0) would have
                     '            been sufficient, but this way the cell inherits StyleGuide colour and decimals feedback.
-                    Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSum)
+                    Me(iRow, Me.ColumnsCount - 1) = New cPropertyCell(propSum)
 
                 Else ' Group is stanza
 
@@ -142,11 +142,11 @@ Namespace Ecopath.Input
                     ' Entering a new stanza group?
                     If (group.iStanza <> iStanzaPrev) Then
                         iRow = Me.AddRow()
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         'Complete row with dummy cells
-                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
                         iStanzaPrev = group.iStanza
                         iRow = Me.AddRow()
                     Else
@@ -159,10 +159,10 @@ Namespace Ecopath.Input
 
                         groupSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
 
-                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
-                        Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                        Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                        Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
                         prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Core.nGroups - Core.nDetritusGroups)
-                        Me(iRow, iCol + 1) = New PropertyCell(prop)
+                        Me(iRow, iCol + 1) = New cPropertyCell(prop)
                         alProp.Add(prop)
                     Next
 
@@ -172,8 +172,8 @@ Namespace Ecopath.Input
                     propExport = Me.Formula(opMinus)
 
                     ' Export column 
-                    Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(propExport)
-                    Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSum)
+                    Me(iRow, Me.ColumnsCount - 2) = New cPropertyCell(propExport)
+                    Me(iRow, Me.ColumnsCount - 1) = New cPropertyCell(propSum)
                 End If
             Next
 

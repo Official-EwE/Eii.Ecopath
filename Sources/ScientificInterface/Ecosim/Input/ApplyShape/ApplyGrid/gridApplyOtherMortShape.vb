@@ -77,9 +77,9 @@ Namespace Ecosim
             Me.Redim(Core.nLivingGroups + 1, 3)
 
             ' Set header cells
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
-            Me(0, 2) = New EwEColumnHeaderCell(My.Resources.HEADER_FORCINGNUMBER)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+            Me(0, 2) = New cEwEColumnHeaderCell(My.Resources.HEADER_FORCINGNUMBER)
             Me(0, 2).Behaviors.Add(m_bmRowCol)
 
             Dim iCol As Integer = 2
@@ -87,11 +87,11 @@ Namespace Ecosim
             For i As Integer = 1 To Core.nLivingGroups
                 source = Core.EcoPathGroupInputs(i)
                 ' # Group name row header cells
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 Me(i, 0).Behaviors.Add(m_bmRowCol)
 
                 ' # Group name row header cells
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, 1).Behaviors.Add(m_bmRowCol)
 
             Next
@@ -100,7 +100,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim cellDefault As EwECell = Nothing
+            Dim cellDefault As cEwECell = Nothing
             Dim ff As cForcingFunction = Nothing
 
             If (Me.m_interactionManager Is Nothing) Then Return

@@ -37,7 +37,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
        Public Class FisheryInputFleetDefinitionEwEGrid
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -48,13 +48,13 @@ Namespace Ecopath.Input
             MyBase.InitStyle()
             Me.Redim(1, 7)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_FIXEDCOST)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORTRELATEDCOST)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_SAILINGRELATEDCOST)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_PROFIT_PERC)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_PERC)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_FIXEDCOST)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORTRELATEDCOST)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_SAILINGRELATEDCOST)
+            Me(0, 5) = New cEwEColumnHeaderCell(SharedResources.HEADER_PROFIT_PERC)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_PERC)
 
         End Sub
 
@@ -82,23 +82,23 @@ Namespace Ecopath.Input
                 alSumAll.Clear()
 
                 source = Core.EcopathFleetInputs(iRow)
-                Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
+                Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
                 ' Fleet name column
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
                 'Fixed cost column
                 prop = pm.GetProperty(source, eVarNameFlags.FixedCost)
-                Me(iRow, 2) = New PropertyCell(prop)
+                Me(iRow, 2) = New cPropertyCell(prop)
                 alSumAll.Add(prop)
 
                 'Effort related cost
                 prop = pm.GetProperty(source, eVarNameFlags.CPUECost)
-                Me(iRow, 3) = New PropertyCell(prop)
+                Me(iRow, 3) = New cPropertyCell(prop)
                 alSumAll.Add(prop)
 
                 'Sailing related cost
                 prop = pm.GetProperty(source, eVarNameFlags.SailCost)
-                Me(iRow, 4) = New PropertyCell(prop)
+                Me(iRow, 4) = New cPropertyCell(prop)
                 alSumAll.Add(prop)
 
                 ' Get the dynamic profit cell by using MultiOperation and binaryOperation
@@ -107,10 +107,10 @@ Namespace Ecopath.Input
                 opMinus = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, propTotal, propSumAll)
                 propProfit = Me.Formula(opMinus)
 
-                Me(iRow, 5) = New PropertyCell(propProfit)
+                Me(iRow, 5) = New cPropertyCell(propProfit)
 
                 ' Set the constant total 100.0
-                Me(iRow, 6) = New PropertyCell(propTotal)
+                Me(iRow, 6) = New cPropertyCell(propTotal)
             Next
 
         End Sub

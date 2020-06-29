@@ -33,7 +33,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridMPAOptimizations
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Enum eColumnTypes As Byte
         Variable = 0
@@ -45,52 +45,52 @@ Public Class gridMPAOptimizations
 
         If Me.UIContext Is Nothing Then Return
 
-        Dim c As EwECell = Nothing
+        Dim c As cEwECell = Nothing
 
         Me.FixedColumnWidths = False
 
         Me.Redim(9, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Variable) = New EwEColumnHeaderCell(SharedResources.HEADER_INDICATOR)
-        Me(0, eColumnTypes.Value) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE)
+        Me(0, eColumnTypes.Variable) = New cEwEColumnHeaderCell(SharedResources.HEADER_INDICATOR)
+        Me(0, eColumnTypes.Value) = New cEwEColumnHeaderCell(SharedResources.HEADER_VALUE)
 
-        Me(1, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(1, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(1, eColumnTypes.Value) = c
 
-        Me(2, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(2, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(2, eColumnTypes.Value) = c
 
-        Me(3, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_MANDATED_REBUILDING)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(3, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_MANDATED_REBUILDING)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(3, eColumnTypes.Value) = c
 
-        Me(4, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(4, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(4, eColumnTypes.Value) = c
 
-        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_BIODIVERSITY)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(5, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_BIODIVERSITY)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(5, eColumnTypes.Value) = c
 
-        Me(6, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_BOUNDARYWEIGHT)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(6, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_BOUNDARYWEIGHT)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(6, eColumnTypes.Value) = c
 
-        Me(7, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_TOTAL)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(7, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_TOTAL)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(7, eColumnTypes.Value) = c
 
-        Me(8, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_AREA_CLOSED)
-        c = New EwECell(0.0!, GetType(Single))
+        Me(8, eColumnTypes.Variable) = New cEwERowHeaderCell(SharedResources.HEADER_AREA_CLOSED)
+        c = New cEwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(8, eColumnTypes.Value) = c
 

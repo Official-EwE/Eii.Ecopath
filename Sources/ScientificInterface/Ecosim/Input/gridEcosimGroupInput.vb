@@ -33,7 +33,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridEcosimGroupInput
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -59,17 +59,17 @@ Namespace Ecosim
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.MaxRelPB) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXRELPB)
-            Me(0, eColumnTypes.MaxRelFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_MAXRELFEEDINGTIME)
-            Me(0, eColumnTypes.FeedingTimeAdjustRate) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE)
-            Me(0, eColumnTypes.OtherMortFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME)
-            Me(0, eColumnTypes.PredatorFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PREDATORFEEDINGTIME)
-            Me(0, eColumnTypes.DenDepCatchability) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
-            Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
-            Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
-            Me(0, eColumnTypes.AddPredMortProp) = New EwEColumnHeaderCell(eVarNameFlags.AdditivePredMortProp)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.MaxRelPB) = New cEwEColumnHeaderCell(SharedResources.HEADER_MAXRELPB)
+            Me(0, eColumnTypes.MaxRelFeedingTime) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_MAXRELFEEDINGTIME)
+            Me(0, eColumnTypes.FeedingTimeAdjustRate) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE)
+            Me(0, eColumnTypes.OtherMortFeedingTime) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME)
+            Me(0, eColumnTypes.PredatorFeedingTime) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PREDATORFEEDINGTIME)
+            Me(0, eColumnTypes.DenDepCatchability) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
+            Me(0, eColumnTypes.QBMaxQBO) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
+            Me(0, eColumnTypes.SwitchPower) = New cEwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
+            Me(0, eColumnTypes.AddPredMortProp) = New cEwEColumnHeaderCell(eVarNameFlags.AdditivePredMortProp)
 
             Me.FixedColumns = 2
 
@@ -83,8 +83,8 @@ Namespace Ecosim
             Dim iRow As Integer = -1
             Dim iStanzaGroup(core.nLivingGroups) As Integer 'Hold the stanza group index
             Dim iStanzaGroupIndexPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
+            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
             For i As Integer = 1 To core.nLivingGroups : iStanzaGroup(i) = -1 : Next
 
@@ -114,19 +114,19 @@ Namespace Ecosim
                     If iStanzaGroup(source.Index) <> iStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
 
                         iRow = Me.AddRow()
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        Me(iRow, eColumnTypes.DenDepCatchability) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.MaxRelFeedingTime) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.MaxRelPB) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.OtherMortFeedingTime) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.PredatorFeedingTime) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.QBMaxQBO) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.SwitchPower) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.AddPredMortProp) = New EwERowHeaderCell()
+                        Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, eColumnTypes.DenDepCatchability) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.MaxRelFeedingTime) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.MaxRelPB) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.OtherMortFeedingTime) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.PredatorFeedingTime) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.QBMaxQBO) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.SwitchPower) = New cEwERowHeaderCell()
+                        Me(iRow, eColumnTypes.AddPredMortProp) = New cEwERowHeaderCell()
 
                         iStanzaGroupIndexPrev = iStanzaGroup(source.Index)
                         iRow = Me.AddRow
@@ -143,25 +143,25 @@ Namespace Ecosim
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Dim cell As EwECellBase = Nothing
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Dim cell As cEwECellBase = Nothing
+            Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MaxRelPB)
+            cell = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MaxRelPB)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.MaxRelPB) = cell
-            Me(iRow, eColumnTypes.MaxRelFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MaxRelFeedingTime)
-            Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FeedingTimeAdjRate)
-            Me(iRow, eColumnTypes.OtherMortFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortFeedingTime)
-            Me(iRow, eColumnTypes.PredatorFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PredEffectFeedingTime)
-            Me(iRow, eColumnTypes.DenDepCatchability) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DenDepCatchability)
-            Me(iRow, eColumnTypes.QBMaxQBO) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBMaxQBio)
-            Me(iRow, eColumnTypes.SwitchPower) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SwitchingPower)
-            Me(iRow, eColumnTypes.AddPredMortProp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.AdditivePredMortProp)
+            Me(iRow, eColumnTypes.MaxRelFeedingTime) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MaxRelFeedingTime)
+            Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FeedingTimeAdjRate)
+            Me(iRow, eColumnTypes.OtherMortFeedingTime) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortFeedingTime)
+            Me(iRow, eColumnTypes.PredatorFeedingTime) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.PredEffectFeedingTime)
+            Me(iRow, eColumnTypes.DenDepCatchability) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.DenDepCatchability)
+            Me(iRow, eColumnTypes.QBMaxQBO) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.QBMaxQBio)
+            Me(iRow, eColumnTypes.SwitchPower) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.SwitchingPower)
+            Me(iRow, eColumnTypes.AddPredMortProp) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.AdditivePredMortProp)
 
         End Sub
 

@@ -34,7 +34,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridMSEBatchTFMIter
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     ' ToDo: Globalize this class 
     ' ToDo: Add XML comments
@@ -68,11 +68,11 @@ Public Class gridMSEBatchTFMIter
 
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME & "-iteration# ")
-        Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
-        Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
-        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F max.")
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME & "-iteration# ")
+        Me(0, eColumnTypes.BLim) = New cEwEColumnHeaderCell("Biomass limit") 'B lim(-)
+        Me(0, eColumnTypes.BBase) = New cEwEColumnHeaderCell("Biomass base")
+        Me(0, eColumnTypes.FOpt) = New cEwEColumnHeaderCell("F max.")
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -91,17 +91,17 @@ Public Class gridMSEBatchTFMIter
 
             Me.AddRow()
 
-            Me(iParIter, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iParIter))
+            Me(iParIter, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iParIter))
             ' Me(iParIter, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-            Me(iParIter, eColumnTypes.Name) = New EwECell(group.Name & " " & iParIter.ToString, GetType(String), cStyleGuide.eStyleFlags.Names)
+            Me(iParIter, eColumnTypes.Name) = New cEwECell(group.Name & " " & iParIter.ToString, GetType(String), cStyleGuide.eStyleFlags.Names)
 
-            Me(iParIter, eColumnTypes.BLim) = New EwECell(group.BLimValue(iParIter), GetType(Single))
+            Me(iParIter, eColumnTypes.BLim) = New cEwECell(group.BLimValue(iParIter), GetType(Single))
             Me(iParIter, eColumnTypes.BLim).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iParIter, eColumnTypes.BBase) = New EwECell(group.BBaseValue(iParIter), GetType(Single))
+            Me(iParIter, eColumnTypes.BBase) = New cEwECell(group.BBaseValue(iParIter), GetType(Single))
             Me(iParIter, eColumnTypes.BBase).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iParIter, eColumnTypes.FOpt) = New EwECell(group.FMaxValue(iParIter), GetType(Single))
+            Me(iParIter, eColumnTypes.FOpt) = New cEwECell(group.FMaxValue(iParIter), GetType(Single))
             Me(iParIter, eColumnTypes.FOpt).Behaviors.Add(Me.EwEEditHandler)
 
         Next iParIter

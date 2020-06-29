@@ -1933,9 +1933,9 @@ Public Class frmEwE6
             If TypeOf classObject Is DockContent Then
                 ' Is dock content
                 frmNew = DirectCast(classObject, DockContent)
-            ElseIf TypeOf classObject Is EwEGrid Then
+            ElseIf TypeOf classObject Is cEwEGrid Then
                 ' Is a grid
-                Dim grid As EwEGrid = DirectCast(classObject, EwEGrid)
+                Dim grid As cEwEGrid = DirectCast(classObject, cEwEGrid)
                 ' Fill the form with griddibits
                 grid.Dock = DockStyle.Fill
                 frmNew = New frmEwEGrid(grid)

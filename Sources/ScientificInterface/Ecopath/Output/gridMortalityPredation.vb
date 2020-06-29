@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridMortalityPredation
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
 #Region " Helper classes "
 
@@ -47,7 +47,7 @@ Namespace Ecopath.Output
         ''' ---------------------------------------------------------------------------
         <CLSCompliant(False)> _
         Public Class MortalityGridCell
-            : Inherits PropertyCell
+            : Inherits cPropertyCell
 
             ''' <summary>PB value to monitor.</summary>
             Private m_propPB As cSingleProperty = Nothing
@@ -148,20 +148,20 @@ Namespace Ecopath.Output
 
             Dim rowCnt As Integer = Me.RowsCount
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
             For iGroup = 1 To core.nLivingGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
                 source = core.EcoPathGroupOutputs(iGroup)
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 1) = New EwERowHeaderCell(source.Name)
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 1) = New cEwERowHeaderCell(source.Name)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
-                    Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                    Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     columnIndex = columnIndex + 1
                 End If
             Next
@@ -175,7 +175,7 @@ Namespace Ecopath.Output
 
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreGroupBase = Nothing
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
 
             For rowIndex As Integer = 1 To core.nLivingGroups
                 source = core.EcoPathGroupOutputs(rowIndex)

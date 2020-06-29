@@ -32,7 +32,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)>
 Public Class gridEditMultiStanza
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private variables "
 
@@ -89,15 +89,15 @@ Public Class gridEditMultiStanza
         MyBase.InitStyle()
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
-        Me(0, eColumnTypes.LeadingB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING_BIOMASS)
-        Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass)
-        Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation)
-        Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING_CB)
-        Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput)
-        Me(0, eColumnTypes.SpawnProp) = New EwEColumnHeaderCell(eVarNameFlags.SpawnProp)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.StartAge) = New cEwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
+        Me(0, eColumnTypes.LeadingB) = New cEwEColumnHeaderCell(SharedResources.HEADER_LEADING_BIOMASS)
+        Me(0, eColumnTypes.Biomass) = New cEwEColumnHeaderCell(eVarNameFlags.Biomass)
+        Me(0, eColumnTypes.Z) = New cEwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation)
+        Me(0, eColumnTypes.LeadingCB) = New cEwEColumnHeaderCell(SharedResources.HEADER_LEADING_CB)
+        Me(0, eColumnTypes.CBInput) = New cEwEColumnHeaderCell(eVarNameFlags.QBInput)
+        Me(0, eColumnTypes.SpawnProp) = New cEwEColumnHeaderCell(eVarNameFlags.SpawnProp)
 
         Me.FixedColumnWidths = True
 
@@ -108,7 +108,7 @@ Public Class gridEditMultiStanza
         If (Me.UIContext Is Nothing) Then Return
 
         Dim source As cEcoPathGroupInput = Nothing
-        Dim ewec As EwECell = Nothing
+        Dim ewec As cEwECell = Nothing
         Dim iRow As Integer
         Dim bIsEcosimLoaded As Boolean = (Core.ActiveEcosimScenarioIndex > -1)
 
@@ -123,13 +123,13 @@ Public Class gridEditMultiStanza
             iRow = Me.AddRow
 
             'Index
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
 
             'Name
-            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             'Start age
-            ewec = New EwECell(0, GetType(Integer))
+            ewec = New cEwECell(0, GetType(Integer))
             ewec.Value = Me.m_stanzagroup.GetVariable(eVarNameFlags.StartAge, iLifeStage)
             ' First group start age cannot be edited
             If (iLifeStage = 1) Then ewec.Style = cStyleGuide.eStyleFlags.NotEditable
@@ -141,14 +141,14 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.LeadingB).Behaviors.Add(Me.EwEEditHandler)
 
             'Biomass
-            ewec = New EwECell(0, GetType(Single))
+            ewec = New cEwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.Biomass(iLifeStage)
             Me(iRow, eColumnTypes.Biomass) = ewec
             Me(iRow, eColumnTypes.Biomass).Behaviors.Add(Me.EwEEditHandler)
 
             'Total Mortality
-            ewec = New EwECell(0, GetType(Single))
+            ewec = New cEwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.Mortality(iLifeStage)
             Me(iRow, eColumnTypes.Z) = ewec
@@ -159,13 +159,13 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.LeadingCB).Behaviors.Add(Me.EwEEditHandler)
 
             'Consumption/Biomass
-            ewec = New EwECell(0, GetType(Single))
+            ewec = New cEwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.CB(iLifeStage)
             Me(iRow, eColumnTypes.CBInput) = ewec
             Me(iRow, eColumnTypes.CBInput).Behaviors.Add(Me.EwEEditHandler)
 
-            ewec = New EwECell(0, GetType(Single))
+            ewec = New cEwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.SpawnProp(iLifeStage)
             Me(iRow, eColumnTypes.SpawnProp) = ewec
@@ -227,7 +227,7 @@ Public Class gridEditMultiStanza
 
         Me.m_bInUpdate = True
 
-        Dim ewec As EwECell = Nothing
+        Dim ewec As cEwECell = Nothing
         Dim bLeading As Boolean = False
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
@@ -235,7 +235,7 @@ Public Class gridEditMultiStanza
             bLeading = (iRow = iLifeStage)
             If bLeading Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable
             Me(iLifeStage, col).Value = (iRow = iLifeStage)
-            DirectCast(Me(iLifeStage, col + 1), EwECell).Style = style
+            DirectCast(Me(iLifeStage, col + 1), cEwECell).Style = style
         Next
 
         Me.InvalidateCells()

@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridMortalityCoefficients
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -59,16 +59,16 @@ Namespace Ecopath.Output
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.PBZ) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PBZ)
-            Me(0, eColumnTypes.FishMort) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_FISHINGMORTRATE)
-            Me(0, eColumnTypes.PredMort) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PREDMORTRATE, cUnits.OverTime)
-            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_BIOMACCURATE, cUnits.OverTime)
-            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_NETMIGRATE, cUnits.OverTime)
-            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_OTHERMORTRATE, cUnits.OverTime)
-            Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT)
-            Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PROP_NAT_MORT)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.PBZ) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PBZ)
+            Me(0, eColumnTypes.FishMort) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_FISHINGMORTRATE)
+            Me(0, eColumnTypes.PredMort) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PREDMORTRATE, cUnits.OverTime)
+            Me(0, eColumnTypes.BioAccum) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_BIOMACCURATE, cUnits.OverTime)
+            Me(0, eColumnTypes.NetMig) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_NETMIGRATE, cUnits.OverTime)
+            Me(0, eColumnTypes.OtherMort) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_OTHERMORTRATE, cUnits.OverTime)
+            Me(0, eColumnTypes.MortTot) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT)
+            Me(0, eColumnTypes.MortNat) = New cEwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PROP_NAT_MORT)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -79,11 +79,11 @@ Namespace Ecopath.Output
 
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
             Dim group As cEcoPathGroupOutput = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -108,11 +108,11 @@ Namespace Ecopath.Output
 
                             ' Complete row with dummy cells
                             iRow = Me.AddRow()
-                            For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                            For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
-                            hgcStanza = New EwEHierarchyGridCell()
+                            hgcStanza = New cEwEHierarchyGridCell()
                             Me(iRow, eColumnTypes.Index) = hgcStanza
-                            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                            Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
                             iStanzaPrev = group.iStanza
                             iRow = Me.AddRow
@@ -131,29 +131,29 @@ Namespace Ecopath.Output
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cEcoPathGroupOutput, Optional ByVal isIndented As Boolean = False)
 
-            Dim cell As PropertyCell = Nothing
+            Dim cell As cPropertyCell = Nothing
             Dim bMortAlert As Boolean = (source.MortCoOtherMort < 0) And (Not source.IsDetritus)
             Dim bCatchAlert As Boolean = (source.MortCoFishRate > source.PBOutput) And (Not source.IsDetritus)
 
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
-            Me(iRow, eColumnTypes.PBZ) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
-            Me(iRow, eColumnTypes.FishMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoFishRate)
-            Me(iRow, eColumnTypes.PredMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoPredMort)
-            Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
-            Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoNetMig)
-            Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoOtherMort)
+            Me(iRow, eColumnTypes.PBZ) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)
+            Me(iRow, eColumnTypes.FishMort) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoFishRate)
+            Me(iRow, eColumnTypes.PredMort) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoPredMort)
+            Me(iRow, eColumnTypes.BioAccum) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
+            Me(iRow, eColumnTypes.NetMig) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoNetMig)
+            Me(iRow, eColumnTypes.OtherMort) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoOtherMort)
             'Me(iRow, eColumnTypes.Spacer) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-            Me(iRow, eColumnTypes.MortTot) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FishMortTotMort)
-            Me(iRow, eColumnTypes.MortNat) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NatMortPerTotMort)
+            Me(iRow, eColumnTypes.MortTot) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FishMortTotMort)
+            Me(iRow, eColumnTypes.MortNat) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.NatMortPerTotMort)
 
-            Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.Name), EwECellBase), bMortAlert)
-            Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.FishMort), EwECellBase), bMortAlert And bCatchAlert)
-            Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.OtherMort), EwECellBase), bMortAlert)
+            Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.Name), cEwECellBase), bMortAlert)
+            Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.FishMort), cEwECellBase), bMortAlert And bCatchAlert)
+            Me.SetCellAlert(DirectCast(Me(iRow, eColumnTypes.OtherMort), cEwECellBase), bMortAlert)
 
             'Me.SetCellComputed(DirectCast(Me(iRow, eColumnTypes.MortTot), EwECellBase))
             'Me.SetCellComputed(DirectCast(Me(iRow, eColumnTypes.MortNat), EwECellBase))
@@ -174,7 +174,7 @@ Namespace Ecopath.Output
             End Get
         End Property
 
-        Private Sub SetCellAlert(ByVal cell As EwECellBase, ByVal bSetAlert As Boolean)
+        Private Sub SetCellAlert(ByVal cell As cEwECellBase, ByVal bSetAlert As Boolean)
             If bSetAlert Then
                 cell.Style = cell.Style Or cStyleGuide.eStyleFlags.Checked
             Else
@@ -182,7 +182,7 @@ Namespace Ecopath.Output
             End If
         End Sub
 
-        Private Sub SetCellComputed(ByVal cell As EwECellBase)
+        Private Sub SetCellComputed(ByVal cell As cEwECellBase)
             cell.Style = cell.Style Or cStyleGuide.eStyleFlags.ValueComputed
         End Sub
 

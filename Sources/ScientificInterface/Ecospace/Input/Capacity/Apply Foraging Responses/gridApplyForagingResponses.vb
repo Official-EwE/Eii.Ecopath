@@ -67,22 +67,22 @@ Namespace Ecospace
             For iMap As Integer = 1 To mapManager.nEnviroData
 
                 map = mapManager.EnviroData(iMap)
-                Me(0, 1 + iMap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
+                Me(0, 1 + iMap) = New cPropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
                 Me(0, 1 + iMap).Behaviors.Add(Me.m_bmRowCol)
 
             Next iMap
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iGroup As Integer = 1 To Core.nGroups
                 group = Core.EcoPathGroupInputs(iGroup)
                 ' # Group index row header cells
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
                 Me(iGroup, 1).Behaviors.Add(Me.m_bmRowCol)
             Next
 
@@ -107,7 +107,7 @@ Namespace Ecospace
                             strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name)
                         End If
 
-                        Me(igrp, imap + 1) = New EwECell(strLabel, GetType(String))
+                        Me(igrp, imap + 1) = New cEwECell(strLabel, GetType(String))
                         Me(igrp, imap + 1).DataModel = Me.m_editor
                         Me(igrp, imap + 1).Behaviors.Add(Me.m_bmCell)
                     Next
@@ -155,7 +155,7 @@ Namespace Ecospace
 
                 Dim iGrp As Integer = e.Position.Row
                 Dim iDriver As Integer = e.Position.Column - 1
-                Dim cell As EwECell = DirectCast(Me(e.Position.Row, e.Position.Column), EwECell)
+                Dim cell As cEwECell = DirectCast(Me(e.Position.Row, e.Position.Column), cEwECell)
 
                 If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
@@ -223,7 +223,7 @@ Namespace Ecospace
             End If
 
             For iMap As Integer = 1 To mapManager.nEnviroData
-                Dim cell As EwECell = CType(Me(iGroup, 1 + iMap), EwECell)
+                Dim cell As cEwECell = CType(Me(iGroup, 1 + iMap), cEwECell)
                 Dim map As IEnviroInputData = mapManager.EnviroData(iMap)
                 ' Reflect
                 cell.Style = style Or If(map.IsDriverActive, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)

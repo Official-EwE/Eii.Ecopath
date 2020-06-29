@@ -39,7 +39,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
     Public Class gridEcospaceHabitatFishery
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -87,13 +87,13 @@ Namespace Ecospace
             Dim source As cCoreInputOutputBase = Nothing
 
             Me.Redim(1, 3 + Me.Core.nHabitats)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, eColumnTypes.All) = New EwEColumnHeaderCell(My.Resources.HEADER_FISH_EVERYWHERE)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.All) = New cEwEColumnHeaderCell(My.Resources.HEADER_FISH_EVERYWHERE)
 
             For j As Integer = 1 To Me.Core.nHabitats - 1
                 source = Me.Core.EcospaceHabitats(j)
-                Me(0, eColumnTypes.All + j) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, eColumnTypes.All + j) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
             Me.FixedColumnWidths = True
 
@@ -102,15 +102,15 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Dim bEnable As Boolean = (CBool(Me.m_bpEffort.GetValue()) = True)
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
 
             For i As Integer = 1 To Me.Core.nFleets
 
                 Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(i)
                 Dim iRow As Integer = Me.AddRow()
 
-                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Index)
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
                 Me(iRow, eColumnTypes.All) = New Cells.Real.CheckBox(False)
                 Me(iRow, eColumnTypes.All).Behaviors.Add(Me.EwEEditHandler)
 
@@ -123,7 +123,7 @@ Namespace Ecospace
 
                 Else
                     For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
-                        Me(iRow, eColumnTypes.All + iHabitat) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                        Me(iRow, eColumnTypes.All + iHabitat) = New cEwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     Next
 
                 End If

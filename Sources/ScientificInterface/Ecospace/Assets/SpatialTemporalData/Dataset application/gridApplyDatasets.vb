@@ -40,7 +40,7 @@ Namespace Ecospace.Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class gridApplyDatasets
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -117,13 +117,13 @@ Namespace Ecospace.Controls
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
-            Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
-            Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
-            Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
-            Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.DateFrom) = New cEwEColumnHeaderCell(SharedResources.HEADER_FROM)
+            Me(0, eColumnTypes.DateTo) = New cEwEColumnHeaderCell(SharedResources.HEADER_TO)
+            Me(0, eColumnTypes.SpatOverlap) = New cEwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
+            Me(0, eColumnTypes.TempOverlap) = New cEwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
+            Me(0, eColumnTypes.Description) = New cEwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
 
             Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
@@ -138,7 +138,7 @@ Namespace Ecospace.Controls
             Dim vfmt As New cVarnameTypeFormatter()
             Dim conn As cSpatialDataConnection = Nothing
             Dim iRow As Integer = 0
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
             ' Dataset rows
             For i As Integer = 0 To Me.m_lConnections.Count - 1
@@ -152,13 +152,13 @@ Namespace Ecospace.Controls
                 If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
                 If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
 
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
-                Me(iRow, eColumnTypes.Name) = New EwECell(ds.CustomName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                Me(iRow, eColumnTypes.Description) = New EwECell(ds.CustomDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
+                Me(iRow, eColumnTypes.Name) = New cEwECell(ds.CustomName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateFrom) = New cEwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.DateTo) = New cEwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.SpatOverlap) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.TempOverlap) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Description) = New cEwECell(ds.CustomDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
                 Me.ConnectionAtRow(iRow) = conn
 

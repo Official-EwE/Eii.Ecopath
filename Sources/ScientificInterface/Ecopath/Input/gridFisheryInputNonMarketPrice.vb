@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)>
     Public Class gridFisheryInputNonMarketPrice
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -49,10 +49,10 @@ Namespace Ecopath.Input
             MyBase.InitStyle()
             Me.Redim(1, 3)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             ' The header text changed. Is that ok?
-            Me(0, 2) = New EwEColumnHeaderCell(eVarNameFlags.NonMarketValue)
+            Me(0, 2) = New cEwEColumnHeaderCell(eVarNameFlags.NonMarketValue)
 
             Me.FixedColumns = 2
 
@@ -64,8 +64,8 @@ Namespace Ecopath.Input
             Dim group As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim dt As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim dt As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -79,11 +79,11 @@ Namespace Ecopath.Input
                 Else
                     sg = Core.StanzaGroups(group.iStanza)
                     If Not dt.ContainsKey(sg) Then
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        For j As Integer = 2 To 2 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        For j As Integer = 2 To 2 : Me(iRow, j) = New cEwERowHeaderCell() : Next
                         dt(sg) = hgcStanza
                         iRow = Me.AddRow
                     Else
@@ -102,15 +102,15 @@ Namespace Ecopath.Input
                                Optional ByVal isIndented As Boolean = False)
 
             ' Get the group name from EcopathInput
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
 
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.NonMarketValue)
+            Me(iRow, 2) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.NonMarketValue)
 
         End Sub
 

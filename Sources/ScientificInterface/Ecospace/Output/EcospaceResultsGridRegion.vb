@@ -52,21 +52,21 @@ Namespace Ecospace
 
             'Define column header
             Me.Redim(1, 8)
-            Me(0, 0) = New EwEColumnHeaderCell("")
+            Me(0, 0) = New cEwEColumnHeaderCell("")
             'Group name
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             'Biomass (Start)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_START)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_START)
             'Biomass (End)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSEND)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASSEND)
             'Biomass (E/S)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASSES)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASSES)
             'Catch (Start)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_START)
+            Me(0, 5) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_START)
             'Catch (End)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_END)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_END)
             'Catch (E/S)
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
+            Me(0, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
 
             Me.FixedColumnWidths = True
 

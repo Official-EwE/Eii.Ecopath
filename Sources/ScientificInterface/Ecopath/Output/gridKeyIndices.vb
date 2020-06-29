@@ -33,7 +33,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)>
     Public Class gridKeyIndices
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -53,16 +53,16 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
-            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(eVarNameFlags.NetMigration)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
+            Me(0, eColumnTypes.NetMig) = New cEwEColumnHeaderCell(eVarNameFlags.NetMigration)
             'Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, cUnitFormatter.CurrencyOverTime)
-            Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(eVarNameFlags.FlowToDet)
+            Me(0, eColumnTypes.FlowToDet) = New cEwEColumnHeaderCell(eVarNameFlags.FlowToDet)
             'Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, cUnitFormatter.CurrencyOverTime)
-            Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(eVarNameFlags.NetEfficiency)
+            Me(0, eColumnTypes.NetEff) = New cEwEColumnHeaderCell(eVarNameFlags.NetEfficiency)
             'Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
             'Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(SharedResources.HEADER_OMNIVORYINDEX)
-            Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(eVarNameFlags.OmnivoryIndex)
+            Me(0, eColumnTypes.OI) = New cEwEColumnHeaderCell(eVarNameFlags.OmnivoryIndex)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -75,7 +75,7 @@ Namespace Ecopath.Output
             Dim group As cEcoPathGroupOutput = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
             Dim iStanzaPrev As Integer = -1
 
             'Remove existing rows
@@ -100,11 +100,11 @@ Namespace Ecopath.Output
 
                         ' Complete row with dummy cells
                         iRow = Me.AddRow()
-                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
                         iStanzaPrev = group.iStanza
                         iRow = Me.AddRow
@@ -122,17 +122,17 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub UpdateRow(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
-            Me(iRow, eColumnTypes.FlowToDet) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
-            Me(iRow, eColumnTypes.NetEff) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
-            Me(iRow, eColumnTypes.OI) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)
+            Me(iRow, eColumnTypes.NetMig) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
+            Me(iRow, eColumnTypes.FlowToDet) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
+            Me(iRow, eColumnTypes.NetEff) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
+            Me(iRow, eColumnTypes.OI) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType

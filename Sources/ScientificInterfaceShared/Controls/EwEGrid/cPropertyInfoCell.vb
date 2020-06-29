@@ -22,9 +22,7 @@
 Option Strict On
 Imports System.Reflection
 Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -37,7 +35,7 @@ Namespace Controls.EwEGrid
     ''' ===========================================================================
     <CLSCompliant(False)> _
     Public Class cPropertyInfoCell
-        : Inherits EwECell
+        : Inherits cEwECell
 
 #Region " Privates "
 

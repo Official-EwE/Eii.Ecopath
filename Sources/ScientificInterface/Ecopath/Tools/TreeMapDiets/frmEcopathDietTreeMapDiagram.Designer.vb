@@ -28,7 +28,7 @@
         Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
         Me.m_scContent = New System.Windows.Forms.SplitContainer()
         Me.m_pbDiagram = New System.Windows.Forms.PictureBox()
-        Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid()
+        Me.m_pgSettings = New System.Windows.Forms.PropertyGrid()
         Me.m_ts.SuspendLayout()
         CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scContent.Panel1.SuspendLayout()
@@ -82,7 +82,7 @@
         '
         'm_scContent.Panel2
         '
-        Me.m_scContent.Panel2.Controls.Add(Me.m_pgFlowDiagram)
+        Me.m_scContent.Panel2.Controls.Add(Me.m_pgSettings)
         Me.m_scContent.Size = New System.Drawing.Size(800, 425)
         Me.m_scContent.SplitterDistance = 597
         Me.m_scContent.TabIndex = 6
@@ -98,14 +98,14 @@
         Me.m_pbDiagram.TabIndex = 4
         Me.m_pbDiagram.TabStop = False
         '
-        'm_pgFlowDiagram
+        'm_pgSettings
         '
-        Me.m_pgFlowDiagram.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pgFlowDiagram.ImeMode = System.Windows.Forms.ImeMode.Off
-        Me.m_pgFlowDiagram.Location = New System.Drawing.Point(0, 0)
-        Me.m_pgFlowDiagram.Name = "m_pgFlowDiagram"
-        Me.m_pgFlowDiagram.Size = New System.Drawing.Size(199, 425)
-        Me.m_pgFlowDiagram.TabIndex = 1
+        Me.m_pgSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_pgSettings.ImeMode = System.Windows.Forms.ImeMode.Off
+        Me.m_pgSettings.Location = New System.Drawing.Point(0, 0)
+        Me.m_pgSettings.Name = "m_pgSettings"
+        Me.m_pgSettings.Size = New System.Drawing.Size(199, 425)
+        Me.m_pgSettings.TabIndex = 1
         '
         'frmEcopathDietTreeMapDiagram
         '
@@ -134,7 +134,7 @@
     Private WithEvents m_ts As ToolStrip
     Private WithEvents m_scContent As SplitContainer
     Private WithEvents m_pbDiagram As PictureBox
-    Private WithEvents m_pgFlowDiagram As PropertyGrid
+    Private WithEvents m_pgSettings As PropertyGrid
     Private WithEvents m_tsmiSettings As ToolStripButton
     Private WithEvents m_tss1 As ToolStripSeparator
     Private WithEvents m_tsmiSaveToImage As ToolStripButton

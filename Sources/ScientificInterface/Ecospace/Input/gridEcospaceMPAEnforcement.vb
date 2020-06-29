@@ -40,7 +40,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
     Public Class gridEcospaceMPAEnforcement
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -89,19 +89,19 @@ Namespace Ecospace
             Dim source As cCoreInputOutputBase = Nothing
 
             Me.Redim(1 + Core.nFleets, 3 + Me.Core.nMPAs)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, eColumnTypes.All) = New EwEColumnHeaderCell(My.Resources.HEADER_ALL_REGULATIONS_APPLY)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.All) = New cEwEColumnHeaderCell(My.Resources.HEADER_ALL_REGULATIONS_APPLY)
 
             For i As Integer = 1 To Me.Core.nFleets
                 source = Me.Core.EcopathFleetInputs(i)
-                Me(i, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                Me(i, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(i, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(i, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             For i As Integer = 1 To Me.Core.nMPAs
                 source = Me.Core.EcospaceMPAs(i)
-                Me(0, eColumnTypes.All + i) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(0, eColumnTypes.All + i) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             Next
 
         End Sub
@@ -109,7 +109,7 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Dim bEnable As Boolean = (CBool(Me.m_bpEffort.GetValue()) = True)
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
 
             For i As Integer = 1 To Me.Core.nFleets
 
@@ -126,9 +126,9 @@ Namespace Ecospace
 
                     Me.UpdateRow(i)
                 Else
-                    Me(i, eColumnTypes.All) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                    Me(i, eColumnTypes.All) = New cEwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     For iMPA As Integer = 1 To Me.Core.nMPAs
-                        Me(i, eColumnTypes.All + iMPA) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                        Me(i, eColumnTypes.All + iMPA) = New cEwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     Next
                 End If
 

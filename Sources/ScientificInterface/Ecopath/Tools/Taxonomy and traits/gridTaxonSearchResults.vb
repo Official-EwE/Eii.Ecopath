@@ -31,7 +31,7 @@ Imports SourceGrid2
 
 <CLSCompliant(False)> _
 Public Class gridTaxonSearchResults
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -146,24 +146,24 @@ Public Class gridTaxonSearchResults
         Dim iNumCols As Integer = CInt(If(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Class + 1))
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
-        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(eVarNameFlags.Species)
-        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(eVarNameFlags.Genus)
-        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(eVarNameFlags.Family)
-        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(eVarNameFlags.Order)
-        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(eVarNameFlags.Class)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
+        Me(0, eColumnTypes.Species) = New cEwEColumnHeaderCell(eVarNameFlags.Species)
+        Me(0, eColumnTypes.Genus) = New cEwEColumnHeaderCell(eVarNameFlags.Genus)
+        Me(0, eColumnTypes.Family) = New cEwEColumnHeaderCell(eVarNameFlags.Family)
+        Me(0, eColumnTypes.Order) = New cEwEColumnHeaderCell(eVarNameFlags.Order)
+        Me(0, eColumnTypes.Class) = New cEwEColumnHeaderCell(eVarNameFlags.Class)
         'Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
         If (Me.m_bShowCodes) Then
             'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
-            Me(0, eColumnTypes.CodeFishBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
-            Me(0, eColumnTypes.CodeSeaLifeBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
-            Me(0, eColumnTypes.CodeAquaMaps) = New EwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
-            Me(0, eColumnTypes.CodeOBIS) = New EwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
-            Me(0, eColumnTypes.CodeAphia) = New EwEColumnHeaderCell(eVarNameFlags.CodeAphia)
-            Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
-            Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(eVarNameFlags.CodeFAO)
-            Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(eVarNameFlags.CodeLSID)
+            Me(0, eColumnTypes.CodeFishBase) = New cEwEColumnHeaderCell(eVarNameFlags.CodeFB)
+            Me(0, eColumnTypes.CodeSeaLifeBase) = New cEwEColumnHeaderCell(eVarNameFlags.CodeSLB)
+            Me(0, eColumnTypes.CodeAquaMaps) = New cEwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
+            Me(0, eColumnTypes.CodeOBIS) = New cEwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
+            Me(0, eColumnTypes.CodeAphia) = New cEwEColumnHeaderCell(eVarNameFlags.CodeAphia)
+            Me(0, eColumnTypes.CodeSAUP) = New cEwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
+            Me(0, eColumnTypes.CodeFAO) = New cEwEColumnHeaderCell(eVarNameFlags.CodeFAO)
+            Me(0, eColumnTypes.CodeLSID) = New cEwEColumnHeaderCell(eVarNameFlags.CodeLSID)
         End If
 
     End Sub
@@ -258,7 +258,7 @@ Public Class gridTaxonSearchResults
     Private Sub AddCell(ByVal result As ITaxonSearchData, ByVal iRow As Integer, ByVal col As eColumnTypes)
 
         Dim value As Object = Nothing
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         Select Case col
@@ -283,7 +283,7 @@ Public Class gridTaxonSearchResults
 
         If (value Is Nothing) Then value = ""
 
-        cell = New EwECell(value, value.GetType(), style)
+        cell = New cEwECell(value, value.GetType(), style)
         cell.Behaviors.Add(EwEEditHandler)
         cell.SuppressZero(0) = True
         cell.EnableEdit = False
@@ -295,7 +295,7 @@ Public Class gridTaxonSearchResults
     Private Sub UpdateTaxaUsedStatus(Optional iRow As Integer = 0)
 
         Dim ti As ITaxonSearchData = Nothing
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim iRowMin As Integer = 1
         Dim iRowMax As Integer = Me.RowsCount - 1
 
@@ -305,7 +305,7 @@ Public Class gridTaxonSearchResults
 
         For iRow = iRowMin To iRowMax
 
-            cell = DirectCast(Me(iRow, eColumnTypes.Index), EwECell)
+            cell = DirectCast(Me(iRow, eColumnTypes.Index), cEwECell)
             ti = Me.TaxonAtRow(iRow)
 
             If Me.m_dgtIsTaxonUseCallback.Invoke(ti) Then

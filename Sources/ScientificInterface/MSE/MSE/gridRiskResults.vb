@@ -32,7 +32,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridRiskResults
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Enum eGridType As Integer
         Group = 0
@@ -72,43 +72,43 @@ Public Class gridRiskResults
         Me.Redim(1, 16)
 
         If Me.m_type = eGridType.Group Then
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUP)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MEAN)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MIN)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MAX)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_CV)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_STDDEV)
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_PERC_BELOW_REF)
-            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_PERC_ABOVE_REF)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUP)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MEAN)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MIN)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_MAX)
+            Me(0, 5) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_CV)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_STDDEV)
+            Me(0, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_PERC_BELOW_REF)
+            Me(0, 8) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_PERC_ABOVE_REF)
 
-            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MEAN)
-            Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MIN)
-            Me(0, 11) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MAX)
-            Me(0, 12) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_CV)
-            Me(0, 13) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_STDDEV)
-            Me(0, 14) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_BELOW_REF)
-            Me(0, 15) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_ABOVE_REF)
+            Me(0, 9) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_MEAN)
+            Me(0, 10) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_MIN)
+            Me(0, 11) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_MAX)
+            Me(0, 12) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_CV)
+            Me(0, 13) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_STDDEV)
+            Me(0, 14) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_BELOW_REF)
+            Me(0, 15) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_ABOVE_REF)
 
         ElseIf Me.m_type = eGridType.Fleet Then
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MEAN)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MIN)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_MAX)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_CV)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_STDDEV)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_MEAN)
+            Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_MIN)
+            Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_MAX)
+            Me(0, 5) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_CV)
+            Me(0, 6) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_STDDEV)
 
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_BELOW_REF)
-            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_ABOVE_REF)
+            Me(0, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_BELOW_REF)
+            Me(0, 8) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_PERC_ABOVE_REF)
 
-            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MEAN)
-            Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MIN)
-            Me(0, 11) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MAX)
-            Me(0, 12) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_CV)
-            Me(0, 13) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_STDDEV)
-            Me(0, 14) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_PERC_BELOW_REF)
-            Me(0, 15) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_PERC_ABOVE_REF)
+            Me(0, 9) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MEAN)
+            Me(0, 10) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MIN)
+            Me(0, 11) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_MAX)
+            Me(0, 12) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_CV)
+            Me(0, 13) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_STDDEV)
+            Me(0, 14) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_PERC_BELOW_REF)
+            Me(0, 15) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_PERC_ABOVE_REF)
 
         End If
 
@@ -175,21 +175,21 @@ Public Class gridRiskResults
 
     Private Sub InitCells(ByVal iRow As Integer, ByVal aSources As cCoreInputOutputBase())
 
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim cnt As Integer = Me.RowsCount '- 1
 
         For iIndex As Integer = cnt To iRow
             'Insert a new row
             Me.Rows.Insert(iIndex)
 
-            Me(iIndex, 0) = New EwERowHeaderCell(CStr(iIndex))
-            Me(iIndex, 1) = New PropertyRowHeaderCell(Me.PropertyManager, aSources(iIndex - 1), eVarNameFlags.Name)
+            Me(iIndex, 0) = New cEwERowHeaderCell(CStr(iIndex))
+            Me(iIndex, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, aSources(iIndex - 1), eVarNameFlags.Name)
 
             'not the best way to do this 
             'set the Style of the cell base on its column index not its contents
             For columnIndex As Integer = 2 To Me.ColumnsCount - 1
 
-                cell = New EwECell(0.0!, GetType(Single))
+                cell = New cEwECell(0.0!, GetType(Single))
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
 
                 'set the cell to Null if there is no catch or discards for this group

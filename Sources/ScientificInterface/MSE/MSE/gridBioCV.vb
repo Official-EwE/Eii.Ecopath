@@ -32,7 +32,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridBioCV
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Sub New()
         MyBase.New()
@@ -42,9 +42,9 @@ Public Class gridBioCV
         MyBase.InitStyle()
 
         Me.Redim(1, 3)
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
+        Me(0, 0) = New cEwEColumnHeaderCell("")
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CV)
 '
         Me.FixedColumns = 1
 
@@ -60,8 +60,8 @@ Public Class gridBioCV
 
                 Me.AddRow()
 
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.Name)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.Name)
                 '  Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.GroupInputs(i), eVarNameFlags.MSEBioCV)
                 '
             Next

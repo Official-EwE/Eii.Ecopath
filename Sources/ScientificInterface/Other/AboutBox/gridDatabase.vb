@@ -37,7 +37,7 @@ Imports EwECore.DataSources
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class gridDatabase
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Protected Class cDescriptionVisualizer
         Inherits cEwECellVisualizer
@@ -75,17 +75,17 @@ Public Class gridDatabase
         Me.Redim(aHistory.Length + 1, 3)
 
         ' Create header cells
-        Me(iRow, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_VERSION)
-        Me(iRow, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_DATE)
-        Me(iRow, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+        Me(iRow, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
+        Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_DATE)
+        Me(iRow, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
         iRow += 1
 
         ' Add history items
         For iHist As Integer = 0 To aHistory.Length - 1
             item = aHistory(iHist)
-            Me(iRow, 0) = New EwECell(item.Version, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-            Me(iRow, 1) = New EwECell(item.Date.ToShortDateString(), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-            Me(iRow, 2) = New EwECell(item.Comments, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, 0) = New cEwECell(item.Version, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, 1) = New cEwECell(item.Date.ToShortDateString(), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, 2) = New cEwECell(item.Comments, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, 2).VisualModel = Me.m_viz
             ' Next
             iRow += 1

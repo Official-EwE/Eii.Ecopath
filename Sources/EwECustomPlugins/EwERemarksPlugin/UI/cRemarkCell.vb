@@ -34,7 +34,7 @@ Imports SourceGrid2.VisualModels
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Friend Class cRemarkCell
-    Inherits EwECell
+    Inherits cEwECell
 
 #Region " Private vars "
 

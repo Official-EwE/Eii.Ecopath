@@ -47,7 +47,7 @@ Imports SourceGrid2.Cells
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridDistributionParameters
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -151,23 +151,23 @@ Public Class gridDistributionParameters
                 Dim iNumCols As Integer = [Enum].GetValues(GetType(eEcopathColumnTypes)).Length
                 Me.Redim(1, iNumCols)
 
-                Me(0, eEcopathColumnTypes.Index) = New EwEColumnHeaderCell("")
-                Me(0, eEcopathColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-                Me(0, eEcopathColumnTypes.Mean) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN)
-                Me(0, eEcopathColumnTypes.CV) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
-                Me(0, eEcopathColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
-                Me(0, eEcopathColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
+                Me(0, eEcopathColumnTypes.Index) = New cEwEColumnHeaderCell("")
+                Me(0, eEcopathColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+                Me(0, eEcopathColumnTypes.Mean) = New cEwEColumnHeaderCell(SharedResources.HEADER_MEAN)
+                Me(0, eEcopathColumnTypes.CV) = New cEwEColumnHeaderCell(SharedResources.HEADER_CV)
+                Me(0, eEcopathColumnTypes.Lower) = New cEwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
+                Me(0, eEcopathColumnTypes.Upper) = New cEwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
 
             Case frmDistributionParameters.eParameterSet.Ecosim
                 Dim iNumCols As Integer = [Enum].GetValues(GetType(eEcosimColumnTypes)).Length
                 Me.Redim(1, iNumCols)
 
-                Me(0, eEcosimColumnTypes.Index) = New EwEColumnHeaderCell("")
-                Me(0, eEcosimColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-                Me(0, eEcosimColumnTypes.DistrType) = New EwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
-                Me(0, eEcosimColumnTypes.Lower) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
-                Me(0, eEcosimColumnTypes.Upper) = New EwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
-                Me(0, eEcosimColumnTypes.MidPoint) = New EwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
+                Me(0, eEcosimColumnTypes.Index) = New cEwEColumnHeaderCell("")
+                Me(0, eEcosimColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+                Me(0, eEcosimColumnTypes.DistrType) = New cEwEColumnHeaderCell(My.Resources.HEADER_DISTRIBUTIONTYPE)
+                Me(0, eEcosimColumnTypes.Lower) = New cEwEColumnHeaderCell(My.Resources.HEADER_BOUND_LOWER)
+                Me(0, eEcosimColumnTypes.Upper) = New cEwEColumnHeaderCell(My.Resources.HEADER_BOUND_UPPER)
+                Me(0, eEcosimColumnTypes.MidPoint) = New cEwEColumnHeaderCell(My.Resources.HEADER_MIDPOINT)
 
         End Select
 
@@ -182,7 +182,7 @@ Public Class gridDistributionParameters
         If (Me.m_data Is Nothing) Then Return
 
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim comboEditor As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cDistributionTypeFormatter())
 
         Me.RowsCount = 1
@@ -202,8 +202,8 @@ Public Class gridDistributionParameters
                         bUse = (sg.iGroups(sg.LeadingB) = data.GroupNo)
                     End If
 
-                    Me(iRow, eEcopathColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
-                    Me(iRow, eEcopathColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
+                    Me(iRow, eEcopathColumnTypes.Index) = New cEwERowHeaderCell(CStr(data.GroupNo))
+                    Me(iRow, eEcopathColumnTypes.Name) = New cEwERowHeaderCell(CStr(data.GroupName))
 
                     If (bUse) Then
                         Me(iRow, eEcopathColumnTypes.CV) = DataCell(data.CV)
@@ -211,10 +211,10 @@ Public Class gridDistributionParameters
                         Me(iRow, eEcopathColumnTypes.Lower) = DataCell(data.LowerBound)
                         Me(iRow, eEcopathColumnTypes.Upper) = DataCell(data.UpperBound)
                     Else
-                        Me(iRow, eEcopathColumnTypes.CV) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Mean) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Lower) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Upper) = New EwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.CV) = New cEwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Mean) = New cEwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Lower) = New cEwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Upper) = New cEwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
                     End If
 
                     Me.Rows(iRow).Tag = data
@@ -222,8 +222,8 @@ Public Class gridDistributionParameters
                 Case frmDistributionParameters.eParameterSet.Ecosim
                     Dim data As cEcosimDistributionParamsData = DirectCast(Me.m_data(i), cEcosimDistributionParamsData)
 
-                    Me(iRow, eEcosimColumnTypes.Index) = New EwERowHeaderCell(CStr(data.GroupNo))
-                    Me(iRow, eEcosimColumnTypes.Name) = New EwERowHeaderCell(CStr(data.GroupName))
+                    Me(iRow, eEcosimColumnTypes.Index) = New cEwERowHeaderCell(CStr(data.GroupNo))
+                    Me(iRow, eEcosimColumnTypes.Name) = New cEwERowHeaderCell(CStr(data.GroupName))
 
                     Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(data.DistributionType, comboEditor)
                     Me(iRow, eEcosimColumnTypes.DistrType) = cbCell
@@ -264,15 +264,15 @@ Public Class gridDistributionParameters
         End Get
     End Property
 
-    Private Function DataCell(dValue As Double, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
+    Private Function DataCell(dValue As Double, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As cEwECell
 
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         If (dValue = cCore.NULL_VALUE) Then
             style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Single), style)
+        cell = New cEwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 

@@ -44,7 +44,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridDiets
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -91,14 +91,14 @@ Public Class gridDiets
         Dim iNumCols As Integer = nFixedCols + Me.m_data.Core.nGroups
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.PredIndex) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.PredName) = New EwEColumnHeaderCell("Predator")
-        Me(0, eColumnTypes.Multiplier) = New EwEColumnHeaderCell("Multiplier")
-        Me(0, eColumnTypes.Imports) = New EwEColumnHeaderCell(SharedResources.HEADER_IMPORT)
+        Me(0, eColumnTypes.PredIndex) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.PredName) = New cEwEColumnHeaderCell("Predator")
+        Me(0, eColumnTypes.Multiplier) = New cEwEColumnHeaderCell("Multiplier")
+        Me(0, eColumnTypes.Imports) = New cEwEColumnHeaderCell(SharedResources.HEADER_IMPORT)
 
         ' Headers
         For i As Integer = 1 To Me.m_data.Core.nGroups
-            Me(0, i + nFixedCols - 1) = New EwEColumnHeaderCell(CStr(i))
+            Me(0, i + nFixedCols - 1) = New cEwEColumnHeaderCell(CStr(i))
         Next
 
         Me.FixedColumns = 2
@@ -121,8 +121,8 @@ Public Class gridDiets
             Me.Rows(iRow).Tag = i
 
             Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
-            Me(iRow, eColumnTypes.PredIndex) = New EwERowHeaderCell(CStr(grp.Index))
-            Me(iRow, eColumnTypes.PredName) = New EwERowHeaderCell(CStr(grp.Name))
+            Me(iRow, eColumnTypes.PredIndex) = New cEwERowHeaderCell(CStr(grp.Index))
+            Me(iRow, eColumnTypes.PredName) = New cEwERowHeaderCell(CStr(grp.Name))
             Me(iRow, eColumnTypes.Multiplier) = Me.DataCell(Me.m_data.DietPropMultipliers(i - 1))
             Me(iRow, eColumnTypes.Imports) = Me.DataCell(Me.m_data.InteractsImports(i - 1), cStyleGuide.eStyleFlags.NotEditable)
 
@@ -151,15 +151,15 @@ Public Class gridDiets
         End Get
     End Property
 
-    Private Function DataCell(dValue As Double, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As EwECell
+    Private Function DataCell(dValue As Double, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As cEwECell
 
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         If (dValue = cCore.NULL_VALUE) Then
             style = style Or cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Single), style)
+        cell = New cEwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 

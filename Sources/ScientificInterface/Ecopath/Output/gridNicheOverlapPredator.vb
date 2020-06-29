@@ -32,7 +32,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridNicheOverlapPredator
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -53,8 +53,8 @@ Namespace Ecopath.Output
 
             ' Set header cells
             ' # (0,0)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             Dim columnIndex As Integer = 2
             ' For every living groups
@@ -63,10 +63,10 @@ Namespace Ecopath.Output
                 source = core.EcoPathGroupOutputs(i)
                 ' Define column header cell
                 Me.Columns.Insert(columnIndex)
-                Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                 ' Define row header cell
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New EwERowHeaderCell(source.Name)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(i, 1) = New cEwERowHeaderCell(source.Name)
                 columnIndex = columnIndex + 1
             Next
 
@@ -86,12 +86,12 @@ Namespace Ecopath.Output
 
                     If columnIndex <= rowIndex + 1 Then
                         If source.PP() <= 1 Then
-                            Dim cell As PropertyCell = Nothing
+                            Dim cell As cPropertyCell = Nothing
 
                             ' Get the indexed property by (rowIndex, columnIndex)
                             prop = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Hlap, source)
                             ' Add property to the cell
-                            cell = New PropertyCell(prop)
+                            cell = New cPropertyCell(prop)
                             ' Config cell
                             cell.SuppressZero = True
                             ' Place cell into grid

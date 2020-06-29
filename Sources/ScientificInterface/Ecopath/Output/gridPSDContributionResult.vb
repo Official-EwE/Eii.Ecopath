@@ -35,7 +35,7 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridPSDContributionResult
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_frm As Form = Nothing
 
@@ -54,16 +54,16 @@ Namespace Ecopath.Output
             Dim parms As cPSDParameters = Core.ParticleSizeDistributionParameters
             Me.Redim(1, Core.nWeightClasses + 3)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAMEWEIGHT)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAMEWEIGHT)
 
             ' Dynamic column header - weight class
             For wtClassIndex As Integer = 1 To Core.nWeightClasses
-                Me(0, wtClassIndex + 1) = New EwEColumnHeaderCell((parms.FirstWeightClass * 2 ^ (wtClassIndex - 1)).ToString)
+                Me(0, wtClassIndex + 1) = New cEwEColumnHeaderCell((parms.FirstWeightClass * 2 ^ (wtClassIndex - 1)).ToString)
             Next
 
             ' Sum value column
-            Me(0, Core.nWeightClasses + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, Core.nWeightClasses + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -98,15 +98,15 @@ Namespace Ecopath.Output
 
             Dim sValue As Single = 0.0!
             Dim sTotal As Single = 0.0!
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-            Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             ' For each weight class (each column) 
             For wtClassIndex As Integer = 1 To Core.nWeightClasses
                 sValue = CSng(source.GetVariable(eVarNameFlags.PSD, wtClassIndex))
-                cell = New EwECell(sValue, GetType(Single))
+                cell = New cEwECell(sValue, GetType(Single))
                 cell.SuppressZero = True
                 cell.Style = cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, wtClassIndex + 1) = cell
@@ -116,7 +116,7 @@ Namespace Ecopath.Output
             Next
 
             'Display the sum of quantities in a row
-            cell = New EwECell(sTotal, GetType(Single))
+            cell = New cEwECell(sTotal, GetType(Single))
             cell.SuppressZero = True
             cell.Style = cStyleGuide.eStyleFlags.Sum
             Me(iRow, Me.ColumnsCount - 1) = cell
@@ -129,15 +129,15 @@ Namespace Ecopath.Output
             Dim sValue As Single = 0.0!
             Dim sTotal(Core.nWeightClasses) As Single
             Dim sSumTotal As Single = 0.0!
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
             For iWtClass As Integer = 1 To Core.nWeightClasses
                 sTotal(iWtClass) = 0.0!
             Next
 
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(sharedResources.HEADER_SUM)
+            Me(iRow, 0) = New cEwERowHeaderCell("")
+            Me(iRow, 1) = New cEwERowHeaderCell(sharedResources.HEADER_SUM)
             For iGroup As Integer = 1 To Core.nLivingGroups
                 If IsGroupSelected(iGroup) Then
                     source = Core.EcoPathGroupOutputs(iGroup)
@@ -150,7 +150,7 @@ Namespace Ecopath.Output
 
             'Display the sum of values in a column
             For iWtClass As Integer = 1 To Core.nWeightClasses
-                cell = New EwECell(sTotal(iWtClass), GetType(Single))
+                cell = New cEwECell(sTotal(iWtClass), GetType(Single))
                 cell.SuppressZero = True
                 cell.Style = cStyleGuide.eStyleFlags.Sum
                 Me(Me.RowsCount - 1, iWtClass + 1) = cell
@@ -160,7 +160,7 @@ Namespace Ecopath.Output
             For iWtClass As Integer = 1 To Core.nWeightClasses
                 sSumTotal = sSumTotal + sTotal(iWtClass)
             Next
-            cell = New EwECell(sSumTotal, GetType(Single))
+            cell = New cEwECell(sSumTotal, GetType(Single))
             cell.SuppressZero = True
             cell.Style = cStyleGuide.eStyleFlags.Sum
             Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = cell

@@ -48,7 +48,7 @@ Imports ScientificInterfaceShared.Style
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridCEFASRecruitment
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private m_Assessment As cStockAssessmentModel
 
@@ -113,11 +113,11 @@ Public Class gridCEFASRecruitment
 
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell(SharedResources.HEADER_RHALFB0RATIO)
-        Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell(SharedResources.HEADER_FORCASTGAIN)
-        Me(0, eColumnTypes.cvRec) = New EwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.RHalfB) = New cEwEColumnHeaderCell(SharedResources.HEADER_RHALFB0RATIO)
+        Me(0, eColumnTypes.ForcastGain) = New cEwEColumnHeaderCell(SharedResources.HEADER_FORCASTGAIN)
+        Me(0, eColumnTypes.cvRec) = New cEwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -139,21 +139,21 @@ Public Class gridCEFASRecruitment
 
             irow = Me.AddRow()
 
-            Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-            Cell = New EwECell(group.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+            Cell = New cEwECell(group.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
             Me(irow, eColumnTypes.Name) = Cell
 
             If group.isFished Then
 
-                Cell = New EwECell(group.RHalfB0Ratio, GetType(Single))
+                Cell = New cEwECell(group.RHalfB0Ratio, GetType(Single))
                 Cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(irow, eColumnTypes.RHalfB) = Cell
 
-                Cell = New EwECell(group.ForcastGain, GetType(Single))
+                Cell = New cEwECell(group.ForcastGain, GetType(Single))
                 Cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(irow, eColumnTypes.ForcastGain) = Cell
 
-                Cell = New EwECell(group.cvRec, GetType(Single))
+                Cell = New cEwECell(group.cvRec, GetType(Single))
                 Cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(irow, eColumnTypes.cvRec) = Cell
 
@@ -161,13 +161,13 @@ Public Class gridCEFASRecruitment
 
             Else
                 style = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
-                Cell = New EwECell(cCore.NULL_VALUE, GetType(Single), style)
+                Cell = New cEwECell(cCore.NULL_VALUE, GetType(Single), style)
                 Me(irow, eColumnTypes.RHalfB) = Cell
 
-                Cell = New EwECell(cCore.NULL_VALUE, GetType(Single), style)
+                Cell = New cEwECell(cCore.NULL_VALUE, GetType(Single), style)
                 Me(irow, eColumnTypes.ForcastGain) = Cell
 
-                Cell = New EwECell(cCore.NULL_VALUE, GetType(Single), style)
+                Cell = New cEwECell(cCore.NULL_VALUE, GetType(Single), style)
                 Me(irow, eColumnTypes.cvRec) = Cell
 
             End If

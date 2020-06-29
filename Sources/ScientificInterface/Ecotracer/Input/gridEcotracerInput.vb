@@ -31,7 +31,7 @@ Namespace Ecotracer
 
     <CLSCompliant(False)>
     Public Class gridEcotracerInput
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -65,14 +65,14 @@ Namespace Ecotracer
             Dim rowCnt As Integer = Me.RowsCount
             ' Set header cells
             ' # (0,0)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.ConcEnv) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_INITIAL)
-            Me(0, eColumnTypes.ConcImmBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_IN_IMM_B)
-            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE)
-            Me(0, eColumnTypes.PhysicalDecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYSICAL_DECAY_RATE)
-            Me(0, eColumnTypes.AssimProp) = New EwEColumnHeaderCell(SharedResources.HEADER_EXCRETION_RATE)
-            Me(0, eColumnTypes.MetablismRate) = New EwEColumnHeaderCell(SharedResources.HEADER_METABOLISMRATE)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.GroupName) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.ConcEnv) = New cEwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_INITIAL)
+            Me(0, eColumnTypes.ConcImmBiomass) = New cEwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_IN_IMM_B)
+            Me(0, eColumnTypes.DirectAbsorptionRate) = New cEwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE)
+            Me(0, eColumnTypes.PhysicalDecayRate) = New cEwEColumnHeaderCell(SharedResources.HEADER_PHYSICAL_DECAY_RATE)
+            Me(0, eColumnTypes.AssimProp) = New cEwEColumnHeaderCell(SharedResources.HEADER_EXCRETION_RATE)
+            Me(0, eColumnTypes.MetablismRate) = New cEwEColumnHeaderCell(SharedResources.HEADER_METABOLISMRATE)
 
             Me.FixedColumns = 2
 
@@ -93,14 +93,14 @@ Namespace Ecotracer
                 group = core.EcotracerGroupInputs(iGroup)
 
                 iRow = Me.AddRow()
-                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
-                Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                Me(iRow, eColumnTypes.ConcEnv) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CZero)
-                Me(iRow, eColumnTypes.ConcImmBiomass) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CImmig)
-                Me(iRow, eColumnTypes.DirectAbsorptionRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CEnvironment)
-                Me(iRow, eColumnTypes.PhysicalDecayRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CPhysicalDecayRate)
-                Me(iRow, eColumnTypes.AssimProp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CAssimilationProp)
-                Me(iRow, eColumnTypes.MetablismRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CMetablismRate)
+                Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.GroupName) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.ConcEnv) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.CZero)
+                Me(iRow, eColumnTypes.ConcImmBiomass) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.CImmig)
+                Me(iRow, eColumnTypes.DirectAbsorptionRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.CEnvironment)
+                Me(iRow, eColumnTypes.PhysicalDecayRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.CPhysicalDecayRate)
+                Me(iRow, eColumnTypes.AssimProp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.CAssimilationProp)
+                Me(iRow, eColumnTypes.MetablismRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.CMetablismRate)
 
             Next iGroup
 

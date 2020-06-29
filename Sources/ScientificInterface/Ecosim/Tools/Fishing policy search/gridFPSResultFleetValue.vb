@@ -39,7 +39,7 @@ Namespace Ecosim
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
      Public Class gridFPSResultFleetValue
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Private m_FPManager As cFishingPolicyManager
 
@@ -67,13 +67,13 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Me.Redim(Core.nFleets + 1, Core.nFleets + 3)
-            Me(0, 0) = New EwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_INCOME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_PROFIT)
+            Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_INCOME)
+            Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_PROFIT)
 
             For i As Integer = 1 To Core.nFleets
-                Me(i, 0) = New PropertyRowHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
-                Me(0, i + 2) = New PropertyColumnHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(i, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(0, i + 2) = New cPropertyColumnHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
             Next
 
         End Sub

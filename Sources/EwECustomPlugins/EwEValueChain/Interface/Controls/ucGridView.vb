@@ -25,9 +25,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Friend Class ucGridView
 
     Private m_qe As cQuickEditHandler = Nothing
-    Private m_grid As EwEGrid = Nothing
+    Private m_grid As cEwEGrid = Nothing
 
-    Public Sub New(grid As EwEGrid)
+    Public Sub New(grid As cEwEGrid)
         MyBase.New()
         Me.InitializeComponent()
         Me.m_grid = grid

@@ -32,7 +32,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridFleetRefLevels
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
     Public Sub New()
         ' Set text to use in dock panel
@@ -44,12 +44,12 @@ Public Class gridFleetRefLevels
         MyBase.InitStyle()
 
         Me.Redim(1, 6)
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_LOWER)
-        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_UPPER)
-        Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_LOWER)
-        Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORT_UPPER)
+        Me(0, 0) = New cEwEColumnHeaderCell("")
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_LOWER)
+        Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCH_UPPER)
+        Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_LOWER)
+        Me(0, 5) = New cEwEColumnHeaderCell(SharedResources.HEADER_EFFORT_UPPER)
 
         Me.FixedColumns = 1
         Me.FixedColumnWidths = False
@@ -65,12 +65,12 @@ Public Class gridFleetRefLevels
             For i As Integer = 1 To Me.UIContext.Core.nFleets
 
                 Me.Rows.Insert(i)
-                Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetCatchLower)
-                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetCatchUpper)
-                Me(i, 4) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetEffortLower)
-                Me(i, 5) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetEffortUpper)
+                Me(i, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New cPropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetCatchLower)
+                Me(i, 3) = New cPropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetCatchUpper)
+                Me(i, 4) = New cPropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetEffortLower)
+                Me(i, 5) = New cPropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSERefFleetEffortUpper)
 
             Next
 

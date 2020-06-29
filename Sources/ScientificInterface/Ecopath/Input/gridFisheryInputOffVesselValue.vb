@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)>
     Public Class gridFisheryOffVesselValue
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -57,14 +57,14 @@ Namespace Ecopath.Input
 
             Me.Redim(1, Core.nFleets + 1 + 1)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet names
             For fleetIndex As Integer = 1 To core.nFleets
                 source = core.EcopathFleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.OffVesselPrice)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
+                Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
             Next
 
@@ -78,8 +78,8 @@ Namespace Ecopath.Input
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
+            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
             For i As Integer = 1 To Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
 
@@ -106,13 +106,13 @@ Namespace Ecopath.Input
                 Else 'Group is stanza
                     sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
                     If (Not dtStanzaCells.ContainsKey(sg)) Then
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         ' Complete row with dummy cells
-                        For i As Integer = 2 To Core.nFleets + 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For i As Integer = 2 To Core.nFleets + 1 : Me(iRow, i) = New cEwERowHeaderCell() : Next
                         iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
@@ -130,11 +130,11 @@ Namespace Ecopath.Input
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
             ' For each fleet
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -142,7 +142,7 @@ Namespace Ecopath.Input
                 sourceSec = Core.EcopathFleetInputs(fleetIndex)
                 ' The market price is indexed by (fleetIndex, groupIndex)
                 ' Add the dynamic property to the destined cell
-                Me(iRow, fleetIndex + 1) = New PropertyCell(Me.PropertyManager, sourceSec, eVarNameFlags.OffVesselPrice, source)
+                Me(iRow, fleetIndex + 1) = New cPropertyCell(Me.PropertyManager, sourceSec, eVarNameFlags.OffVesselPrice, source)
             Next
         End Sub
 

@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridFisheryInputDiscardFate
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -57,20 +57,20 @@ Namespace Ecopath.Input
             Me.Redim(Core.nFleets + 1, Core.nDetritusGroups + 4)
 
             ' Grid Cell (0, 0) - Fleet name
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
 
             ' Dynamic column header - Detritus groups
             For columnIndex As Integer = 1 To Core.nDetritusGroups
                 source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + columnIndex)
-                Me(0, columnIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, columnIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             ' Export header cell
-            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
+            Me(0, Me.ColumnsCount - 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
 
             ' Sum header cell
-            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, Me.ColumnsCount - 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
         End Sub
 
@@ -98,8 +98,8 @@ Namespace Ecopath.Input
                 ' Clear the arrayList for the sum of new row
                 alSumAll.Clear()
                 ' Fleet name As row header
-                Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 For columnIndex As Integer = 2 To core.nDetritusGroups + 1
                     ' Get the ecopath input
                     sourceSec = Me.Core.EcoPathGroupInputs(columnIndex - 1)
@@ -108,7 +108,7 @@ Namespace Ecopath.Input
                     ' Add prop to the arraylist
                     alSumAll.Add(prop)
                     'assigned it to destined cell
-                    Me(iRow, columnIndex) = New PropertyCell(prop)
+                    Me(iRow, columnIndex) = New cPropertyCell(prop)
                 Next
 
                 ' Get the sum of discard fate of all detritus groups
@@ -121,9 +121,9 @@ Namespace Ecopath.Input
                 ' Get the export property
                 propExport = Me.Formula(opMinus)
 
-                Me(iRow, Me.ColumnsCount - 2) = New PropertyCell(propExport)
+                Me(iRow, Me.ColumnsCount - 2) = New cPropertyCell(propExport)
                 ' The property cell for the sum column, which is not editable and equal to 1
-                Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(sum)
+                Me(iRow, Me.ColumnsCount - 1) = New cPropertyCell(sum)
             Next
 
         End Sub

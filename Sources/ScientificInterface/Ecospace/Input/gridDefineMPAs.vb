@@ -37,7 +37,7 @@ Namespace Ecospace
     ''' </summary>
     <CLSCompliant(False)> _
     Public Class gridEditMPA
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -114,9 +114,9 @@ Namespace Ecospace
             ' Redim columns
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
-            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_MPA)
+            Me(0, eColumnTypes.Status) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; MPA name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
@@ -160,20 +160,20 @@ Namespace Ecospace
         Public Sub UpdateGrid()
 
             Dim item As cItemInfo = Nothing
-            Dim ewec As EwECell = Nothing
+            Dim ewec As cEwECell = Nothing
 
             ' Create missing rows
             For iRow As Integer = Me.Rows.Count To Me.m_engine.Items.Count
                 Me.AddRow()
 
-                ewec = New EwECell(0, GetType(Integer))
+                ewec = New cEwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.Index) = ewec
 
                 Me(iRow, eColumnTypes.Name) = New Cells.Real.Cell("", GetType(String))
                 Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.Status) = New EwEStatusCell(eItemStatusTypes.Original)
+                Me(iRow, eColumnTypes.Status) = New cEwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows

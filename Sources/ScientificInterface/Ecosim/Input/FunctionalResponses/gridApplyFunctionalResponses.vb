@@ -100,22 +100,22 @@ Namespace Ecosim
             For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
 
                 driver = Me.m_driverManager.EnviroData(iDriver)
-                Me(0, 1 + iDriver) = New EwEColumnHeaderCell(driver.Name)
+                Me(0, 1 + iDriver) = New cEwEColumnHeaderCell(driver.Name)
                 Me(0, 1 + iDriver).Behaviors.Add(Me.m_bmRowCol)
 
             Next iDriver
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iGroup As Integer = 1 To Core.nGroups
                 group = Core.EcoPathGroupInputs(iGroup)
                 ' # Group index row header cells
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
                 Me(iGroup, 1).Behaviors.Add(Me.m_bmRowCol)
             Next
 
@@ -126,7 +126,7 @@ Namespace Ecosim
             Try
                 For igrp As Integer = 1 To Core.nGroups
                     For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
-                        Me(igrp, iDriver + 1) = New EwECell("", GetType(String))
+                        Me(igrp, iDriver + 1) = New cEwECell("", GetType(String))
                         Me(igrp, iDriver + 1).DataModel = Me.m_editor
                         Me(igrp, iDriver + 1).Behaviors.Add(Me.m_bmCell)
                     Next
@@ -163,7 +163,7 @@ Namespace Ecosim
 
                 Dim iGrp As Integer = e.Position.Row
                 Dim iDriver As Integer = e.Position.Column - 1
-                Dim cell As EwECell = DirectCast(Me(e.Position.Row, e.Position.Column), EwECell)
+                Dim cell As cEwECell = DirectCast(Me(e.Position.Row, e.Position.Column), cEwECell)
 
                 If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
@@ -227,7 +227,7 @@ Namespace Ecosim
                     Dim strLabel As String = ""
                     Dim ff As cForcingFunction = Nothing
                     Dim driver As IEnviroInputData = Me.m_driverManager.EnviroData(iDriver)
-                    Dim cell As EwECell = CType(Me(igrp, 1 + iDriver), EwECell)
+                    Dim cell As cEwECell = CType(Me(igrp, 1 + iDriver), cEwECell)
 
                     Dim ishp As Integer = driver.ResponseIndexForGroup(igrp)
                     If ishp > 0 Then

@@ -45,7 +45,7 @@ Imports ScientificInterfaceShared.Properties
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridSurviveDistParameters
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -103,13 +103,13 @@ Public Class gridSurviveDistParameters
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNO)
-        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
-        Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        Me(0, eColumnTypes.Alpha) = New EwEColumnHeaderCell(My.Resources.HEADER_ALPHA)
-        Me(0, eColumnTypes.Beta) = New EwEColumnHeaderCell(My.Resources.HEADER_BETA)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.FleetNumber) = New cEwEColumnHeaderCell(My.Resources.HEADER_FLEETNO)
+        Me(0, eColumnTypes.FleetName) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.GroupNumber) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
+        Me(0, eColumnTypes.GroupName) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Alpha) = New cEwEColumnHeaderCell(My.Resources.HEADER_ALPHA)
+        Me(0, eColumnTypes.Beta) = New cEwEColumnHeaderCell(My.Resources.HEADER_BETA)
 
         Me.FixedColumns = 5
         Me.FixedColumnWidths = False
@@ -125,7 +125,7 @@ Public Class gridSurviveDistParameters
         Dim core As cCore = Me.UIContext.Core
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         'Dim lstOptions As New List(Of cMSE.DistributionType)
         'lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
@@ -138,13 +138,13 @@ Public Class gridSurviveDistParameters
             iRow = Me.AddRow()
             Dim data As cSurvivability.cSurvivabilityDistributonParam = DirectCast(Me.m_data(i), cSurvivability.cSurvivabilityDistributonParam)
 
-            Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(data.Index))
-            Me(iRow, eColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNo))
+            Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(data.Index))
+            Me(iRow, eColumnTypes.FleetNumber) = New cEwERowHeaderCell(CStr(data.FleetNo))
             ' To Mark: property cells automatically keep track of changing variable values
-            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.FleetNo), eVarNameFlags.Name)
-            Me(iRow, eColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNo))
+            Me(iRow, eColumnTypes.FleetName) = New cPropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.FleetNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.GroupNumber) = New cEwERowHeaderCell(CStr(data.GroupNo))
             ' To Mark: property cells automatically keep track of changing variable values
-            Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.GroupNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.GroupName) = New cPropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.GroupNo), eVarNameFlags.Name)
             Me(iRow, eColumnTypes.Alpha) = DataCell(data.Alpha)
             Me(iRow, eColumnTypes.Beta) = DataCell(data.Beta)
             Me.Rows(iRow).Tag = data
@@ -179,10 +179,10 @@ Public Class gridSurviveDistParameters
         End Get
     End Property
 
-    Private Function DataCell(dValue As Double) As EwECell
+    Private Function DataCell(dValue As Double) As cEwECell
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
 
         ' To Mark: Ok, so when the data is NULL it will always be NULL and cannot be changed?! 
         '          I suspect that you still want users to be able to change the cell value away from
@@ -191,7 +191,7 @@ Public Class gridSurviveDistParameters
             style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         End If
 
-        cell = New EwECell(CSng(dValue), GetType(Single), style)
+        cell = New cEwECell(CSng(dValue), GetType(Single), style)
         cell.Behaviors.Add(Me.EwEEditHandler)
         Return cell
 

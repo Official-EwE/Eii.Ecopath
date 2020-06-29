@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)>
     Public Class gridFisheryInputDiscards
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -58,19 +58,19 @@ Namespace Ecopath.Input
             'Define grid dimensions
             Me.Redim(1, Me.Core.nFleets + 3)
 
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Me.Core.nFleets
                 source = Core.EcopathFleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.Discards)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
+                Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
             Next
 
             ' Total column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
             Me.FixedColumns = 2
 
@@ -82,11 +82,11 @@ Namespace Ecopath.Input
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
             Dim group As cCoreGroupBase = Nothing
             Dim fleet As cEcopathFleetInput = Nothing
-            Dim cell As EwECellBase = Nothing
+            Dim cell As cEwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             Dim prop As cProperty = Nothing
 
@@ -129,11 +129,11 @@ Namespace Ecopath.Input
                     If group.iStanza <> iStanzaPrev Then
                         ' Fill row with dummy cells. We'll do something fancy here one day
                         iRow = Me.AddRow()
-                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
 
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
-                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
                         iStanzaPrev = group.iStanza
                         iRow = Me.AddRow()
@@ -149,13 +149,13 @@ Namespace Ecopath.Input
                 ' Set the property to the last cell of the row, which is the sum of the row
                 opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
                 propSumRow = Me.Formula(opSumRow)
-                Me(iRow, Me.ColumnsCount - 1) = New PropertyCell(propSumRow)
+                Me(iRow, Me.ColumnsCount - 1) = New cPropertyCell(propSumRow)
             Next
 
             ' Sum row
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
+            Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
             For fleetIndex As Integer = 1 To Core.nFleets
                 fleet = Core.EcopathFleetInputs(fleetIndex)
                 alSumCol.Clear()
@@ -168,7 +168,7 @@ Namespace Ecopath.Input
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
                 propSumCol = Me.Formula(opSumCol)
                 ' Set the property to the last cell of the column, which is the sum of the column
-                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propSumCol)
+                Me(Me.RowsCount - 1, fleetIndex + 1) = New cPropertyCell(propSumCol)
             Next
 
 
@@ -176,7 +176,7 @@ Namespace Ecopath.Input
             propSumAll = Me.Formula(opSumAll)
 
             ' Set the property to the bottom-right cell, which is the sum of all cells
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propSumAll)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New cPropertyCell(propSumAll)
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, _
@@ -184,13 +184,13 @@ Namespace Ecopath.Input
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim prop As cProperty = Nothing
-            Dim propCell As PropertyCell = Nothing
+            Dim propCell As cPropertyCell = Nothing
 
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
             ' For each fleet (each column) 
             For fleetIndex As Integer = 1 To Me.Core.nFleets
@@ -199,7 +199,7 @@ Namespace Ecopath.Input
                 ' Get the index landing property
                 prop = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Discards, source)
 
-                propCell = New PropertyCell(prop)
+                propCell = New cPropertyCell(prop)
                 propCell.SuppressZero = True
                 ' Set the property to the cell
                 Me(iRow, fleetIndex + 1) = propCell

@@ -34,7 +34,7 @@ Imports ScientificInterfaceShared.Style
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
 Public Class gridShapeFunctionParameters
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Enum eColumnTypes As Integer
         Name = 0
@@ -75,9 +75,9 @@ Public Class gridShapeFunctionParameters
 
         Me.Redim(1, 3)
 
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
-        Me(0, eColumnTypes.Value) = New EwEColumnHeaderCell(My.Resources.HEADER_VALUE)
-        Me(0, eColumnTypes.Units) = New EwEColumnHeaderCell(My.Resources.HEADER_UNITS)
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_PARAMETER)
+        Me(0, eColumnTypes.Value) = New cEwEColumnHeaderCell(My.Resources.HEADER_VALUE)
+        Me(0, eColumnTypes.Units) = New cEwEColumnHeaderCell(My.Resources.HEADER_UNITS)
 
         Me.Selection.SelectionMode = SourceGrid2.GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
@@ -92,17 +92,17 @@ Public Class gridShapeFunctionParameters
         If (Me.m_bIsFreehand) Then
             Dim fh As cFreehandShapeFunction = DirectCast(Me.m_shapefunction, cFreehandShapeFunction)
             For iRow As Integer = 1 To Me.RowsCount - 1
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(CStr(iRow))
-                Me(iRow, eColumnTypes.Value) = New EwECell(fh.ShapeData(iRow))
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(CStr(iRow))
+                Me(iRow, eColumnTypes.Value) = New cEwECell(fh.ShapeData(iRow))
                 Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
-                Me(iRow, eColumnTypes.Units) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Units) = New cEwECell("", cStyleGuide.eStyleFlags.NotEditable)
             Next iRow
         Else
             For iRow As Integer = 1 To Me.RowsCount - 1
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(Me.m_shapefunction.ParamName(iRow))
-                Me(iRow, eColumnTypes.Value) = New EwECell(Me.m_shapefunction.ParamValue(iRow), CType(Me.m_shapefunction.ParamStatus(iRow), Style.cStyleGuide.eStyleFlags))
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(Me.m_shapefunction.ParamName(iRow))
+                Me(iRow, eColumnTypes.Value) = New cEwECell(Me.m_shapefunction.ParamValue(iRow), CType(Me.m_shapefunction.ParamStatus(iRow), Style.cStyleGuide.eStyleFlags))
                 Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
-                Me(iRow, eColumnTypes.Units) = New EwECell(Me.m_shapefunction.ParamUnit(iRow), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Units) = New cEwECell(Me.m_shapefunction.ParamUnit(iRow), cStyleGuide.eStyleFlags.NotEditable)
             Next iRow
         End If
 

@@ -32,7 +32,7 @@ Namespace Forms
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' EwEForm that contains an <see cref="EwEGrid">EwEGrid</see>.
+    ''' EwEForm that contains an <see cref="cEwEGrid">EwEGrid</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class frmEwEGrid
@@ -41,7 +41,7 @@ Namespace Forms
 #Region " Variables "
 
         ''' <summary>The grid in this form.</summary>
-        Private m_grid As EwEGrid = Nothing
+        Private m_grid As cEwEGrid = Nothing
         ''' <summary><see cref="QuickEditHandler">Quick Edit Handler</see> for this form.</summary>
         Private m_qeHandler As cQuickEditHandler = Nothing
 
@@ -64,8 +64,8 @@ Namespace Forms
         ''' </summary>
         ''' <param name="grid">Grid to attach to this form.</param>
         ''' -----------------------------------------------------------------------
-        <CLSCompliant(False)> _
-        Public Sub New(ByVal grid As EwEGrid)
+        <CLSCompliant(False)>
+        Public Sub New(ByVal grid As cEwEGrid)
 
             MyBase.New()
 
@@ -97,12 +97,12 @@ Namespace Forms
         ''' Get a reference to the Grid.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <CLSCompliant(False)> _
-        Public Property Grid() As EwEGrid
+        <CLSCompliant(False)>
+        Public Property Grid() As cEwEGrid
             Get
                 Return m_grid
             End Get
-            Set(ByVal grid As EwEGrid)
+            Set(ByVal grid As cEwEGrid)
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Nothing

@@ -35,7 +35,7 @@ Namespace Ecospace
 
     <CLSCompliant(False)> _
     Public Class gridDefineEnvDriverMaps
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         ''' <summary>A number representing the row that contains the first Layer</summary>
         Private Const iFIRSTDATAROW As Integer = 1
@@ -277,14 +277,14 @@ Namespace Ecospace
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' Layer index cell
-            Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-            Me(0, eColumnTypes.LayerUnits) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
-            Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.LayerIsCapacityEnabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
+            Me(0, eColumnTypes.LayerIndex) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.LayerName) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.LayerUnits) = New cEwEColumnHeaderCell(SharedResources.HEADER_UNITS)
+            Me(0, eColumnTypes.LayerDescription) = New cEwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
+            Me(0, eColumnTypes.LayerIsCapacityEnabled) = New cEwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
 
             ' Layer index cell
-            Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            Me(0, eColumnTypes.LayerStatus) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; Layer name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
@@ -357,7 +357,7 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim cells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim ewec As EwECell = Nothing
+            Dim ewec As cEwECell = Nothing
             Dim style As cStyleGuide.eStyleFlags
 
             ' Create missing rows
@@ -372,23 +372,23 @@ Namespace Ecospace
                     style = cStyleGuide.eStyleFlags.NotEditable
                 End If
 
-                ewec = New EwECell(0, GetType(Integer))
+                ewec = New cEwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
 
-                Me(iRow, eColumnTypes.LayerName) = New EwECell("", GetType(String), style)
+                Me(iRow, eColumnTypes.LayerName) = New cEwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerUnits) = New EwECell("", GetType(String), style)
+                Me(iRow, eColumnTypes.LayerUnits) = New cEwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerUnits).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerDescription) = New EwECell("", GetType(String), style)
+                Me(iRow, eColumnTypes.LayerDescription) = New cEwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.LayerIsCapacityEnabled) = New Cells.Real.CheckBox(False)
                 Me(iRow, eColumnTypes.LayerIsCapacityEnabled).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerStatus) = New EwEStatusCell(eItemStatusTypes.Original)
+                Me(iRow, eColumnTypes.LayerStatus) = New cEwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows
@@ -417,7 +417,7 @@ Namespace Ecospace
             Dim li As cLayerInfo = Nothing
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
             Dim pos As SourceGrid2.Position = Nothing
             Dim u As New cUnits(Me.Core)
 

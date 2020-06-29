@@ -38,7 +38,7 @@ Namespace Ecosim
     ''' ===========================================================================
     <CLSCompliant(False)> _
     Public Class gridMSERecruitment
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -96,11 +96,11 @@ Namespace Ecosim
 
             Me.Redim(1, iNumCols)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.RHalfB) = New EwEColumnHeaderCell(SharedResources.HEADER_RHALFB0RATIO)
-            Me(0, eColumnTypes.ForcastGain) = New EwEColumnHeaderCell(SharedResources.HEADER_FORCASTGAIN)
-            Me(0, eColumnTypes.RecruitmentCV) = New EwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.RHalfB) = New cEwEColumnHeaderCell(SharedResources.HEADER_RHALFB0RATIO)
+            Me(0, eColumnTypes.ForcastGain) = New cEwEColumnHeaderCell(SharedResources.HEADER_FORCASTGAIN)
+            Me(0, eColumnTypes.RecruitmentCV) = New cEwEColumnHeaderCell(SharedResources.HEADER_RECRUITMENT_CV)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
@@ -119,12 +119,12 @@ Namespace Ecosim
 
                 Me.AddRow()
 
-                Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.RHalfB) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.RHalfB0Ratio)
-                Me(iGroup, eColumnTypes.ForcastGain) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEForcastGain)
-                Me(iGroup, eColumnTypes.RecruitmentCV) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSERecruitmentCV)
+                Me(iGroup, eColumnTypes.RHalfB) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.RHalfB0Ratio)
+                Me(iGroup, eColumnTypes.ForcastGain) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEForcastGain)
+                Me(iGroup, eColumnTypes.RecruitmentCV) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSERecruitmentCV)
 
                 Me.Rows(iGroup).Tag = group
 

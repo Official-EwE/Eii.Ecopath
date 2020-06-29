@@ -29,9 +29,9 @@ Imports SourceGrid2.VisualModels
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)> _
-    Public Class EwEStatusCell
-        Inherits EwECellBase
+    <CLSCompliant(False)>
+    Public Class cEwEStatusCell
+        Inherits cEwECellBase
 
         Private m_strText As String = ""
 

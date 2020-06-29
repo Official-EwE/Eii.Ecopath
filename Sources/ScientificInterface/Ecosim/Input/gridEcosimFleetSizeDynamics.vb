@@ -32,7 +32,7 @@ Namespace Ecosim
 
     <CLSCompliant(False)> _
     Public Class gridEcosimFleetSizeDynamics
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
@@ -45,12 +45,12 @@ Namespace Ecosim
             Me.Redim(1, 6)
 
             ' Define column header
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(eVarNameFlags.EPower)
-            Me(0, 3) = New EwEColumnHeaderCell(eVarNameFlags.PcapBase)
-            Me(0, 4) = New EwEColumnHeaderCell(eVarNameFlags.CapDepreciate)
-            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.CapBaseGrowth)
+            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, 2) = New cEwEColumnHeaderCell(eVarNameFlags.EPower)
+            Me(0, 3) = New cEwEColumnHeaderCell(eVarNameFlags.PcapBase)
+            Me(0, 4) = New cEwEColumnHeaderCell(eVarNameFlags.CapDepreciate)
+            Me(0, 5) = New cEwEColumnHeaderCell(eVarNameFlags.CapBaseGrowth)
 
         End Sub
 
@@ -61,12 +61,12 @@ Namespace Ecosim
             For iRow As Integer = 1 To core.nFleets
                 source = core.EcosimFleetInputs(iRow)
                 Me.Rows.Insert(iRow)
-                Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EPower)
-                Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PcapBase)
-                Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapDepreciate)
-                Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.CapBaseGrowth)
+                Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
+                Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, 2) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.EPower)
+                Me(iRow, 3) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.PcapBase)
+                Me(iRow, 4) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.CapDepreciate)
+                Me(iRow, 5) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.CapBaseGrowth)
             Next
 
         End Sub

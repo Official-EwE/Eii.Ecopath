@@ -86,17 +86,17 @@ Public Class gridFunctionalResponses
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, SharedResources.STATUS_UPDATING)
 
         ' Create row headers
-        Me(eRowType.Header, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEX)
-        Me(eRowType.Thumbnail, 0) = New EwERowHeaderCell(SharedResources.HEADER_IMAGE)
-        Me(eRowType.Name, 0) = New EwERowHeaderCell(SharedResources.HEADER_NAME)
+        Me(eRowType.Header, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_INDEX)
+        Me(eRowType.Thumbnail, 0) = New cEwERowHeaderCell(SharedResources.HEADER_IMAGE)
+        Me(eRowType.Name, 0) = New cEwERowHeaderCell(SharedResources.HEADER_NAME)
 
-        Me(eRowType.LimLeft, 0) = New EwERowHeaderCell(SharedResources.HEADER_LEFT_LIMIT)
-        Me(eRowType.LimRight, 0) = New EwERowHeaderCell(SharedResources.HEADER_RIGHT_LIMIT)
+        Me(eRowType.LimLeft, 0) = New cEwERowHeaderCell(SharedResources.HEADER_LEFT_LIMIT)
+        Me(eRowType.LimRight, 0) = New cEwERowHeaderCell(SharedResources.HEADER_RIGHT_LIMIT)
         'Me(eRowType.LimMean, 0) = New EwERowHeaderCell(SharedResources.HEADER_MEAN_LIMIT)
 
         ' Create row header cells
         For i As Integer = 0 To iNumPoints - 1
-            cell = New EwERowHeaderCell(CStr(i + 1))
+            cell = New cEwERowHeaderCell(CStr(i + 1))
             Me(eRowType.FirstTime + i, 0) = cell
         Next
 
@@ -107,24 +107,24 @@ Public Class gridFunctionalResponses
             style = If(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
             Me.Shape(i + 1) = env
-            Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))
+            Me(eRowType.Header, i + 1) = New cEwEColumnHeaderCell(CStr(shapes(i).Index))
 
             cell = New SourceGrid2.Cells.Real.Cell
             cell.Value = env
             cell.VisualModel = New cVisualModelThumbnail(Me.Handler)
             Me(eRowType.Thumbnail, i + 1) = cell
 
-            cell = New EwECell(env.Name, GetType(String))
+            cell = New cEwECell(env.Name, GetType(String))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Name, i + 1) = cell
 
             ' JS 10Jun13: added
             ' JS 07Sep14: limits must be editable
-            cell = New EwECell(env.ResponseLeftLimit, GetType(Double))
+            cell = New cEwECell(env.ResponseLeftLimit, GetType(Double))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.LimLeft, i + 1) = cell
 
-            cell = New EwECell(env.ResponseRightLimit, GetType(Double))
+            cell = New cEwECell(env.ResponseRightLimit, GetType(Double))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.LimRight, i + 1) = cell
 
@@ -133,12 +133,12 @@ Public Class gridFunctionalResponses
             'Me(eRowType.LimMean, i + 1) = cell
 
             For j As Integer = 0 To Math.Min(iNumPoints, env.nPoints) - 1
-                cell = New EwECell(env.ShapeData(j + 1), GetType(Single), style)
+                cell = New cEwECell(env.ShapeData(j + 1), GetType(Single), style)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
             For j As Integer = env.nPoints To iNumPoints - 1
-                cell = New EwECell(0, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+                cell = New cEwECell(0, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
         Next

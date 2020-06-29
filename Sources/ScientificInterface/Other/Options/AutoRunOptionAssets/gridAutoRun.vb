@@ -34,7 +34,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' </summary>
 <CLSCompliant(False)>
 Public Class gridAutoRun
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Class cPluginNameSort
         Implements IComparer(Of IPlugin)
@@ -64,18 +64,18 @@ Public Class gridAutoRun
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Plugin) = New EwEColumnHeaderCell(SharedResources.HEADER_PLUGIN)
-        Me(0, eColumnTypes.Ecopath) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOPATH) With {
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Plugin) = New cEwEColumnHeaderCell(SharedResources.HEADER_PLUGIN)
+        Me(0, eColumnTypes.Ecopath) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOPATH) With {
             .Tag = eCoreComponentType.EcoPath
         }
-        Me(0, eColumnTypes.Ecosim) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSIM) With {
+        Me(0, eColumnTypes.Ecosim) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSIM) With {
             .Tag = eCoreComponentType.EcoSim
         }
-        Me(0, eColumnTypes.MonteCarlo) = New EwEColumnHeaderCell(SharedResources.HEADER_MONTECARLO) With {
+        Me(0, eColumnTypes.MonteCarlo) = New cEwEColumnHeaderCell(SharedResources.HEADER_MONTECARLO) With {
             .Tag = eCoreComponentType.EcoSimMonteCarlo
         }
-        Me(0, eColumnTypes.Ecospace) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSPACE) With {
+        Me(0, eColumnTypes.Ecospace) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSPACE) With {
             .Tag = eCoreComponentType.EcoSpace
         }
 
@@ -103,18 +103,18 @@ Public Class gridAutoRun
             For j As Integer = 0 To cols.Length - 1
                 Select Case cols(j)
                     Case eColumnTypes.Index
-                        Me(iRow, j) = New EwERowHeaderCell(CStr(i + 1))
+                        Me(iRow, j) = New cEwERowHeaderCell(CStr(i + 1))
                     Case eColumnTypes.Plugin
-                        Me(iRow, j) = New EwERowHeaderCell(pi.DisplayName) With {
+                        Me(iRow, j) = New cEwERowHeaderCell(pi.DisplayName) With {
                             .Tag = pi
                         }
                     Case Else
                         Dim comp As eCoreComponentType = DirectCast(Me(0, j).Tag, eCoreComponentType)
                         If features.Contains(comp) Then
-                            Me(iRow, j) = New EwECheckboxCell(pi.AutoRun(comp) = True)
+                            Me(iRow, j) = New cEwECheckboxCell(pi.AutoRun(comp) = True)
                             Me(iRow, j).Behaviors.Add(Me.EwEEditHandler)
                         Else
-                            Me(iRow, j) = New EwECell("", styleNA)
+                            Me(iRow, j) = New cEwECell("", styleNA)
                         End If
                 End Select
             Next
@@ -162,8 +162,8 @@ Public Class gridAutoRun
                     Case Else
                         Dim comp As eCoreComponentType = DirectCast(Me(0, j).Tag, eCoreComponentType)
                         If features.Contains(comp) Then
-                            Debug.Assert(TypeOf Me(iRow, j) Is EwECheckboxCell)
-                            pi.AutoRun(comp) = DirectCast(Me(iRow, j), EwECheckboxCell).Checked
+                            Debug.Assert(TypeOf Me(iRow, j) Is cEwECheckboxCell)
+                            pi.AutoRun(comp) = DirectCast(Me(iRow, j), cEwECheckboxCell).Checked
                         End If
                 End Select
             Next
@@ -179,7 +179,7 @@ Public Class gridAutoRun
                     Case eColumnTypes.Index, eColumnTypes.Plugin
                         ' NOP
                     Case Else
-                        If (TypeOf Me(iRow, j) Is EwECheckboxCell) Then
+                        If (TypeOf Me(iRow, j) Is cEwECheckboxCell) Then
                             Me(iRow, j).Value = bCheck
                         End If
                 End Select

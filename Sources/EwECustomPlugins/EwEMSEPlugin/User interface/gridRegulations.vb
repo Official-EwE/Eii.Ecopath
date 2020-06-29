@@ -45,7 +45,7 @@ Imports EwEMSEPlugin.HCR_GroupNS
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class gridRegulations
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Internal defs "
 
@@ -119,9 +119,9 @@ Public Class gridRegulations
         Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
         Me.Redim(1, iNumCols)
 
-        Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-        Me(0, eColumnTypes.Method) = New EwEColumnHeaderCell(SharedResources.HEADER_METHOD)
+        Me(0, eColumnTypes.FleetIndex) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.FleetName) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.Method) = New cEwEColumnHeaderCell(SharedResources.HEADER_METHOD)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -135,7 +135,7 @@ Public Class gridRegulations
         If (Me.m_strategy Is Nothing) Then Return
 
         Dim iRow As Integer = -1
-        Dim cell As EwECell = Nothing
+        Dim cell As cEwECell = Nothing
         Dim core As cCore = Me.Core
         Dim reg As cRegulations = Me.m_strategy.Regulations
         Dim bIsTargeted(Me.Core.nFleets) As Boolean
@@ -163,14 +163,14 @@ Public Class gridRegulations
             iRow = Me.AddRow()
 
             Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
-            Me(iRow, eColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(fleet.Index))
-            Me(iRow, eColumnTypes.FleetName) = New EwERowHeaderCell(CStr(fleet.Name))
+            Me(iRow, eColumnTypes.FleetIndex) = New cEwERowHeaderCell(CStr(fleet.Index))
+            Me(iRow, eColumnTypes.FleetName) = New cEwERowHeaderCell(CStr(fleet.Name))
 
             If (bIsTargeted(i)) Then
                 Me(iRow, eColumnTypes.Method) = New SourceGrid2.Cells.Real.Cell(reg.Method(i), Me.m_editorMethod)
                 Me(iRow, eColumnTypes.Method).Behaviors.Add(Me.EwEEditHandler)
             Else
-                Me(iRow, eColumnTypes.Method) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Method) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
             End If
 
         Next

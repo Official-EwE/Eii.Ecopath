@@ -47,7 +47,7 @@ Namespace Controls.EwEGrid
 #Region " Private variables "
 
         ''' <summary>The grid whose selection is monitored.</summary>
-        Private m_grid As EwEGrid = Nothing
+        Private m_grid As cEwEGrid = Nothing
         ''' <summary>UI context to use.</summary>
         Private m_uic As cUIContext = Nothing
 
@@ -82,7 +82,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' <para>Connect the QuickEditHandler to a <see cref="EwEGrid">EwE grid</see>.
+        ''' <para>Connect the QuickEditHandler to a <see cref="cEwEGrid">EwE grid</see>.
         ''' Call <see cref="Detach">Detach</see> to disconnect a Quick Edit handler
         ''' from a form it was previously attached to.</para>
         ''' <para>A toolstrip is created if not available, and Quick Edit toolstrip 
@@ -90,7 +90,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="ts">The ToolStrip to connect to, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal grid As EwEGrid,
+        Public Sub Attach(ByVal grid As cEwEGrid,
                           ByVal uic As cUIContext,
                           ByVal ts As ToolStrip,
                           Optional ByVal bIsOutputGrid As Boolean = True)
@@ -381,9 +381,9 @@ Namespace Controls.EwEGrid
                                 If cell.DataModel.EnableEdit Then
                                     ' #Yes: explore the variable this cell represents by checking an attached property
                                     ' Is a property cell?
-                                    If TypeOf cell Is PropertyCell Then
+                                    If TypeOf cell Is cPropertyCell Then
                                         ' #Yes: get the property
-                                        Dim p As cProperty = DirectCast(cell, PropertyCell).GetProperty()
+                                        Dim p As cProperty = DirectCast(cell, cPropertyCell).GetProperty()
                                         ' Does this property refer to a variable other than found earlier?
                                         If ((vn <> eVarNameFlags.NotSet) And (p.VarName <> vn)) Then
                                             ' #Yes: this is a mixed selection.
@@ -518,8 +518,8 @@ Namespace Controls.EwEGrid
                     If r.Contains(New SourceGrid2.Position(row, col)) Then
                         Dim cell As SourceGrid2.Cells.ICell = CType(Me.m_grid.GetCell(row, col), SourceGrid2.Cells.ICell)
                         If (cell IsNot Nothing) Then
-                            If TypeOf cell Is PropertyCell Then
-                                Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                            If TypeOf cell Is cPropertyCell Then
+                                Dim pcell As cPropertyCell = DirectCast(cell, cPropertyCell)
                                 If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
                                     pcell.GetProperty().SetValue(newval)
                                 End If

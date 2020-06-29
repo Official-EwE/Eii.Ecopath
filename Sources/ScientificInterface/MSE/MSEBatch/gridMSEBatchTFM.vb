@@ -34,7 +34,7 @@ Imports SourceGrid2.Cells.Real
 
 <CLSCompliant(False)> _
 Public Class gridMSEBatchTFM
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     ' ToDo: Globalize this class 
     ' ToDo: Add XML comments
@@ -84,24 +84,24 @@ Public Class gridMSEBatchTFM
             End If
         End If
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.RunType) = New EwEColumnHeaderCell("Managed via TFM")
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.RunType) = New cEwEColumnHeaderCell("Managed via TFM")
 
-        Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Biomass limit") 'B lim(-)
-        Me(0, eColumnTypes.BLimValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.BLimLow) = New EwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
-        Me(0, eColumnTypes.BLimUp) = New EwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
+        Me(0, eColumnTypes.BLim) = New cEwEColumnHeaderCell("Biomass limit") 'B lim(-)
+        Me(0, eColumnTypes.BLimValue) = New cEwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.BLimLow) = New cEwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
+        Me(0, eColumnTypes.BLimUp) = New cEwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
 
-        Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Biomass base")
-        Me(0, eColumnTypes.BBaseValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.BBaseLow) = New EwEColumnHeaderCell("Lower " & limitStr)
-        Me(0, eColumnTypes.BBaseUp) = New EwEColumnHeaderCell("Upper " & limitStr)
+        Me(0, eColumnTypes.BBase) = New cEwEColumnHeaderCell("Biomass base")
+        Me(0, eColumnTypes.BBaseValue) = New cEwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.BBaseLow) = New cEwEColumnHeaderCell("Lower " & limitStr)
+        Me(0, eColumnTypes.BBaseUp) = New cEwEColumnHeaderCell("Upper " & limitStr)
 
-        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F max.")
-        Me(0, eColumnTypes.FOptValue) = New EwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
-        Me(0, eColumnTypes.FOptLow) = New EwEColumnHeaderCell("Lower " & limitStr)
-        Me(0, eColumnTypes.FOptUp) = New EwEColumnHeaderCell("Upper " & limitStr)
+        Me(0, eColumnTypes.FOpt) = New cEwEColumnHeaderCell("F max.")
+        Me(0, eColumnTypes.FOptValue) = New cEwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
+        Me(0, eColumnTypes.FOptLow) = New cEwEColumnHeaderCell("Lower " & limitStr)
+        Me(0, eColumnTypes.FOptUp) = New cEwEColumnHeaderCell("Upper " & limitStr)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -124,34 +124,34 @@ Public Class gridMSEBatchTFM
             Debug.Assert(iGroup = iRow)
 
             RowStyle = DirectCast(group.GetStatus(eVarNameFlags.MSEBLim), cStyleGuide.eStyleFlags)
-            Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-            Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+            Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+            Me(iGroup, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-            Me(iGroup, eColumnTypes.RunType) = New PropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchTFMManaged)
+            Me(iGroup, eColumnTypes.RunType) = New cPropertyCheckboxCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchTFMManaged)
 
-            Me(iGroup, eColumnTypes.BLimLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
-            Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
+            Me(iGroup, eColumnTypes.BLimLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
+            Me(iGroup, eColumnTypes.BLim) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
 
-            Me(iGroup, eColumnTypes.BLimValue) = New EwECell(group.BLimValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.BLimValue) = New cEwECell(group.BLimValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iGroup, eColumnTypes.BLimUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
+            Me(iGroup, eColumnTypes.BLimUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
 
-            Me(iGroup, eColumnTypes.BBaseLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
-            Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
+            Me(iGroup, eColumnTypes.BBaseLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
+            Me(iGroup, eColumnTypes.BBase) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
 
-            Me(iGroup, eColumnTypes.BBaseValue) = New EwECell(group.BBaseValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.BBaseValue) = New cEwECell(group.BBaseValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iGroup, eColumnTypes.BBaseUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
+            Me(iGroup, eColumnTypes.BBaseUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
 
-            Me(iGroup, eColumnTypes.FOptLow) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
-            Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
+            Me(iGroup, eColumnTypes.FOptLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
+            Me(iGroup, eColumnTypes.FOpt) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
-            Me(iGroup, eColumnTypes.FOptValue) = New EwECell(group.FMaxValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.FOptValue) = New cEwECell(group.FMaxValue(iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iGroup, eColumnTypes.FOptUp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
+            Me(iGroup, eColumnTypes.FOptUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
 
         Next iGroup
 

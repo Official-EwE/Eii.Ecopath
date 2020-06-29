@@ -36,7 +36,7 @@ Imports SourceGrid2.Cells.Real
 ''' <remarks>Color and values for the cells come from the ucCVBlockSelector(parent control)</remarks>
 <CLSCompliant(False)> _
 Public Class gridSelectColorBlock
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
 #Region " Helper class "
 
@@ -199,8 +199,8 @@ Public Class gridSelectColorBlock
         MyBase.InitStyle()
 
         Me.Redim(2, Me.m_parentSelector.NumBlocks + 1)
-        Me(0, 0) = New EwERowHeaderCell(SharedResources.HEADER_CV)
-        Me(1, 0) = New EwERowHeaderCell(SharedResources.HEADER_COLOR)
+        Me(0, 0) = New cEwERowHeaderCell(SharedResources.HEADER_CV)
+        Me(1, 0) = New cEwERowHeaderCell(SharedResources.HEADER_COLOR)
 
         'hide the first row
         ' JB: sourcegrid will explode if you try to edit the first row so hide it and put the cv values in the second row
@@ -232,7 +232,7 @@ Public Class gridSelectColorBlock
         For i As Integer = 1 To Me.m_parentSelector.NumBlocks
 
             ' Top row (row 0) holds CV values
-            cell = New EwECell(cvs(i), cvs(i).GetType)
+            cell = New cEwECell(cvs(i), cvs(i).GetType)
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(0, i) = cell
 

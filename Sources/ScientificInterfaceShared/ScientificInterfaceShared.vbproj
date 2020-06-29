@@ -160,7 +160,7 @@
     <Compile Include="Controls\Diagrams\FlowDiagram\Default\cTreeFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramData.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramRenderer.vb" />
-    <Compile Include="Controls\EwEGrid\EwEStatusCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwEStatusCell.vb" />
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
     <Compile Include="Controls\Label\cEwEUnitLabel.vb">
@@ -305,24 +305,24 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Cursor\cCursorFactory.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyCheckboxCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyCheckboxCell.vb" />
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
     <Compile Include="Controls\EwEGrid\Editors\EwEComboBoxCellEditor.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\EwEGrid\EwECheckboxCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyInfoCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyRowHeaderChildCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyRowHeaderParentCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwEUnitCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyColumnHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyRowHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\PropertyHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwEColumnHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwERowHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwEHeaderCell.vb" />
-    <Compile Include="Controls\EwEGrid\EwECell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwECheckboxCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyInfoCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyRowHeaderChildCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyRowHeaderParentCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwEUnitCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyColumnHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyRowHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\cPropertyHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwEColumnHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwERowHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwEHeaderCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwECell.vb" />
     <Compile Include="Controls\EwEGrid\QuickEdit\EwEGridQuickEditor.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColumnHeaderVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridRowHeaderVisualizer.vb" />
@@ -349,12 +349,12 @@
     </Compile>
     <Compile Include="Controls\FileDialog\cEwEFileDialogHelper.vb" />
     <Compile Include="Controls\Indicator renderers\cArrowIndicator.vb" />
-    <Compile Include="Controls\EwEGrid\EwEGrid.vb">
+    <Compile Include="Controls\EwEGrid\cEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\EwEGrid\EwECellBase.vb" />
+    <Compile Include="Controls\EwEGrid\cEwECellBase.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColorVisualizer.vb" />
-    <Compile Include="Controls\EwEGrid\EwEHierarchyGridCell.vb" />
+    <Compile Include="Controls\EwEGrid\cEwEHierarchyGridCell.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\EwEHierarchyGridVisualizers.vb" />
     <Compile Include="Controls\GlyphSelect\ucGlyph.Designer.vb">
       <DependentUpon>ucGlyph.vb</DependentUpon>

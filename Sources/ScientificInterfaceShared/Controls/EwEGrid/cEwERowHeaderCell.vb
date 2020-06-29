@@ -34,8 +34,8 @@ Namespace Controls.EwEGrid
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class EwERowHeaderCell
-        : Inherits EwEHeaderCell
+    Public Class cEwERowHeaderCell
+        : Inherits cEwEHeaderCell
 
 #Region " Construction "
 

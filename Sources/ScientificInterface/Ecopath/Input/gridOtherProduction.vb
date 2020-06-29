@@ -38,7 +38,7 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)>
     Public Class gridOtherProduction
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -60,13 +60,13 @@ Namespace Ecopath.Input
 
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
-            Me(0, eColumnTypes.Immig) = New EwEColumnHeaderCell(eVarNameFlags.Immig)
-            Me(0, eColumnTypes.Emig) = New EwEColumnHeaderCell(eVarNameFlags.Emig)
-            Me(0, eColumnTypes.EmigRate) = New EwEColumnHeaderCell(eVarNameFlags.EmigRate)
-            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumInput)
-            Me(0, eColumnTypes.BioAccumRate) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
+            Me(0, eColumnTypes.Immig) = New cEwEColumnHeaderCell(eVarNameFlags.Immig)
+            Me(0, eColumnTypes.Emig) = New cEwEColumnHeaderCell(eVarNameFlags.Emig)
+            Me(0, eColumnTypes.EmigRate) = New cEwEColumnHeaderCell(eVarNameFlags.EmigRate)
+            Me(0, eColumnTypes.BioAccum) = New cEwEColumnHeaderCell(eVarNameFlags.BioAccumInput)
+            Me(0, eColumnTypes.BioAccumRate) = New cEwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
 
             Me.FixedColumns = 2
 
@@ -79,7 +79,7 @@ Namespace Ecopath.Input
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
-            Dim hgcStanza As EwEHierarchyGridCell = Nothing
+            Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -94,10 +94,10 @@ Namespace Ecopath.Input
                     If (group.iStanza <> iStanzaPrev) Then
                         ' Create stanza header row
                         iRow = Me.AddRow
-                        hgcStanza = New EwEHierarchyGridCell()
+                        hgcStanza = New cEwEHierarchyGridCell()
                         Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New cEwERowHeaderCell() : Next
                         iStanzaPrev = group.iStanza
                     End If
                     ' Add group row as child to stanza
@@ -109,13 +109,13 @@ Namespace Ecopath.Input
                     iStanzaPrev = -1
                 End If
 
-                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Immig)
-                Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Emig)
-                Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.EmigRate)
-                Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumInput)
-                Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumRate)
+                Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Immig) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.Immig)
+                Me(iRow, eColumnTypes.Emig) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.Emig)
+                Me(iRow, eColumnTypes.EmigRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.EmigRate)
+                Me(iRow, eColumnTypes.BioAccum) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumInput)
+                Me(iRow, eColumnTypes.BioAccumRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumRate)
 
             Next
 

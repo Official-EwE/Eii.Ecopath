@@ -39,7 +39,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class gridMPAs
-        : Inherits EwEGrid
+        : Inherits cEwEGrid
 
         ''' <summary>A number representing the row that contains the first MPA</summary>
         Private Const iFIRSTMPAROW As Integer = 1
@@ -116,14 +116,14 @@ Namespace Ecospace
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' MPA index cell
-            Me(0, eColumnTypes.MPAIndex) = New EwEColumnHeaderCell()
+            Me(0, eColumnTypes.MPAIndex) = New cEwEColumnHeaderCell()
             ' MPA name cell, editable this time
-            Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
-            Me(0, eColumnTypes.MPAAll) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA_CLOSED)
+            Me(0, eColumnTypes.MPAName) = New cEwEColumnHeaderCell(SharedResources.HEADER_MPA)
+            Me(0, eColumnTypes.MPAAll) = New cEwEColumnHeaderCell(SharedResources.HEADER_MPA_CLOSED)
             'Define column header Jan - Dec
             For iCol As Integer = eColumnTypes.MPAJan To eColumnTypes.MPADec
                 Dim d As New Date(1, (iCol - eColumnTypes.MPAJan) + 1, 1)
-                Me(0, iCol) = New EwEColumnHeaderCell(d.ToString("MMM"))
+                Me(0, iCol) = New cEwEColumnHeaderCell(d.ToString("MMM"))
             Next
 
             ' Fix index column only; MPA name column cannot be fixed because it must be editable
@@ -143,7 +143,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim mpa As cEcospaceMPA = Nothing
-            Dim ewec As EwECellBase = Nothing
+            Dim ewec As cEwECellBase = Nothing
             Dim bEnable As Boolean = (CBool(Me.m_bpEffort.GetValue()) = True)
 
             ' Create missing rows
@@ -152,8 +152,8 @@ Namespace Ecospace
                 mpa = Me.Core.EcospaceMPAs(iMPA)
                 Me.AddRow()
 
-                Me(iMPA, eColumnTypes.MPAIndex) = New PropertyRowHeaderCell(Me.PropertyManager, mpa, eVarNameFlags.Index)
-                Me(iMPA, eColumnTypes.MPAName) = New PropertyRowHeaderCell(Me.PropertyManager, mpa, eVarNameFlags.Name)
+                Me(iMPA, eColumnTypes.MPAIndex) = New cPropertyRowHeaderCell(Me.PropertyManager, mpa, eVarNameFlags.Index)
+                Me(iMPA, eColumnTypes.MPAName) = New cPropertyRowHeaderCell(Me.PropertyManager, mpa, eVarNameFlags.Name)
 
                 If (bEnable) Then
                     Me(iMPA, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
@@ -164,10 +164,10 @@ Namespace Ecospace
                         Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
                     Next iMonth
                 Else
-                    Me(iMPA, eColumnTypes.MPAAll) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+                    Me(iMPA, eColumnTypes.MPAAll) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
 
                     For iMonth As Integer = 1 To cCore.N_MONTHS
-                        Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+                        Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                     Next iMonth
                 End If
 

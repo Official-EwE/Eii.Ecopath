@@ -37,7 +37,7 @@ Imports EwEUtils.Core
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
    Public Class gridDefineFleets
-    : Inherits EwEGrid
+    : Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -254,14 +254,14 @@ Imports EwEUtils.Core
         Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
         ' Fleet index cell
-        Me(0, eColumnTypes.FleetIndex) = New EwEColumnHeaderCell()
+        Me(0, eColumnTypes.FleetIndex) = New cEwEColumnHeaderCell()
         ' Fleet name cell, editable this time
-        Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+        Me(0, eColumnTypes.FleetName) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
         ' Color
-        Me(0, eColumnTypes.FleetColor) = New EwEColumnHeaderCell(SharedResources.HEADER_COLOR)
+        Me(0, eColumnTypes.FleetColor) = New cEwEColumnHeaderCell(SharedResources.HEADER_COLOR)
 
         ' Fleet index cell
-        Me(0, eColumnTypes.FleetStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+        Me(0, eColumnTypes.FleetStatus) = New cEwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         ' Fix index column only; Fleet name column cannot be fixed because it must be editable
         Me.FixedColumns = 1
@@ -307,13 +307,13 @@ Imports EwEUtils.Core
         Dim ri As RowInfo = Nothing
         Dim cells() As Cells.ICellVirtual = Nothing
         Dim pos As SourceGrid2.Position = Nothing
-        Dim ewec As EwECell = Nothing
+        Dim ewec As cEwECell = Nothing
 
         ' Create missing rows
         For iRow As Integer = Me.Rows.Count To Me.m_lfiFleets.Count
             Me.AddRow()
 
-            ewec = New EwECell(0, GetType(Integer))
+            ewec = New cEwECell(0, GetType(Integer))
             ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.FleetIndex) = ewec
 
@@ -324,7 +324,7 @@ Imports EwEUtils.Core
             Me(iRow, eColumnTypes.FleetColor).VisualModel = New cEwEGridColorVisualizer()
             Me(iRow, eColumnTypes.FleetColor).Behaviors.Add(Me.EwEEditHandler)
 
-            Me(iRow, eColumnTypes.FleetStatus) = New EwEStatusCell(eItemStatusTypes.Original)
+            Me(iRow, eColumnTypes.FleetStatus) = New cEwEStatusCell(eItemStatusTypes.Original)
         Next
 
         ' Delete obsolete rows

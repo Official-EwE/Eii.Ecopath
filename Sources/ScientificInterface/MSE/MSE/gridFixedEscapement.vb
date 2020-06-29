@@ -31,7 +31,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)> _
 Public Class gridFixedEscapement
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Public Sub New()
         MyBase.new()
@@ -41,11 +41,11 @@ Public Class gridFixedEscapement
         MyBase.InitStyle()
 
         Me.Redim(1, 5)
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_FIXEDESCAPE)
-        Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_FIXEDF)
-        Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_TAC)
+        Me(0, 0) = New cEwEColumnHeaderCell("")
+        Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_FIXEDESCAPE)
+        Me(0, 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_FIXEDF)
+        Me(0, 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_TAC)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -67,13 +67,13 @@ Public Class gridFixedEscapement
             group = Me.Core.EcoPathGroupInputs(iGroup)
             MSEGrp = Me.Core.MSEManager.GroupInputs(iGroup)
 
-            Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
+            Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
 
             'Group name as row header
-            Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, MSEGrp, eVarNameFlags.Name)
-            Me(iGroup, 2) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedEscapement)
-            Me(iGroup, 3) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedF)
-            Me(iGroup, 4) = New PropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSETAC)
+            Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, MSEGrp, eVarNameFlags.Name)
+            Me(iGroup, 2) = New cPropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedEscapement)
+            Me(iGroup, 3) = New cPropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSEFixedF)
+            Me(iGroup, 4) = New cPropertyCell(Me.PropertyManager, MSEGrp, eVarNameFlags.MSETAC)
 
         Next
 
