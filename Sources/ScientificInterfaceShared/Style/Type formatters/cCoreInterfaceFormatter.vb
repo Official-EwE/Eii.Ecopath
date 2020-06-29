@@ -51,6 +51,23 @@ Namespace Style
             Return GetType(ICoreInterface)
         End Function
 
+        ''' <summary>
+        ''' Converts to string.
+        ''' </summary>
+        ''' <param name="value">The value.</param>
+        ''' <param name="descriptor">The descriptor. This flag is interpreted as follows:
+        ''' <list>
+        ''' <item><term><see cref="eDescriptorTypes.Symbol"/></term><description><see cref="ICoreInterface.Index"/></description></item>
+        ''' <item><term><see cref="eDescriptorTypes.Abbreviation"/></term><description><see cref="ICoreInterface.Name"/></description></item>
+        ''' <item><term><see cref="eDescriptorTypes.Name"/></term><description>Concatenatio of <see cref="ICoreInterface.Index"/> and <see cref="ICoreInterface.Name"/></description></item>
+        ''' <item><term><see cref="eDescriptorTypes.Description"/></term><description>Same as 'name'</description></item>
+        ''' </list>
+        ''' </param>
+        ''' <returns>
+        ''' A <see cref="System.String" /> that represents this instance.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        ''' -------------------------------------------------------------------
         Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
@@ -61,7 +78,12 @@ Namespace Style
                 Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
                 ' Only include index in desciptor only if object has a valid index
                 If (obj.Index >= 1) Then
-                    Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
+                    Select Case descriptor
+                        Case eDescriptorTypes.Symbol : Return CStr(obj.Index)
+                        Case eDescriptorTypes.Abbreviation : Return obj.Name
+                        Case Else
+                            Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
+                    End Select
                 End If
                 Return obj.Name
             Catch ex As Exception
