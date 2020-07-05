@@ -32,7 +32,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)>
 Public Class gridSpinupDiff
-    Inherits EwEGrid
+    Inherits cEwEGrid
 
     Private Const cRowHeaders As Integer = 2
     Private m_Plugin As cEcospaceSpinupPlugin
@@ -63,38 +63,38 @@ Public Class gridSpinupDiff
 
         Me.Redim(Me.Core.nGroups + cRowHeaders, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+        Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         'Column headers
-        Dim headercell As EwEColumnHeaderCell
+        Dim headercell As cEwEColumnHeaderCell
 
-        headercell = New EwEColumnHeaderCell("B(0)")
+        headercell = New cEwEColumnHeaderCell("B(0)")
         Me(0, eColumnTypes.B0) = headercell
         ' headercell.ToolTipText = "=sumof(log(B(t)/B(0))^2)"
 
-        headercell = New EwEColumnHeaderCell("B(t)")
+        headercell = New cEwEColumnHeaderCell("B(t)")
         Me(0, eColumnTypes.Bt) = headercell
         ' headercell.ToolTipText = "=(B(t)-B(0))/B(0)"
 
-        Me(0, eColumnTypes.BtRel) = New EwEColumnHeaderCell("B(t)/B(0)")
-        Me(0, eColumnTypes.BtDiff) = New EwEColumnHeaderCell("B(t)/B(t-1)")
+        Me(0, eColumnTypes.BtRel) = New cEwEColumnHeaderCell("B(t)/B(0)")
+        Me(0, eColumnTypes.BtDiff) = New cEwEColumnHeaderCell("B(t)/B(t-1)")
 
         For iGroup As Integer = 0 To Me.Core.nGroups
             Dim iRow As Integer = iGroup + cRowHeaders - 1
             If (iGroup = 0) Then
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell("")
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(SharedResources.GENERIC_VALUE_ALLGROUPS)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell("")
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(SharedResources.GENERIC_VALUE_ALLGROUPS)
             Else
                 Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
+                Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
             End If
 
-            Me(iRow, eColumnTypes.B0) = New EwECell(0.0, GetType(Single))
-            Me(iRow, eColumnTypes.Bt) = New EwECell(0.0, GetType(Single))
-            Me(iRow, eColumnTypes.BtRel) = New EwECell(0.0, GetType(Single))
-            Me(iRow, eColumnTypes.BtDiff) = New EwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.B0) = New cEwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.Bt) = New cEwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.BtRel) = New cEwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.BtDiff) = New cEwECell(0.0, GetType(Single))
         Next
 
         Me.FixedColumns = 1
@@ -123,11 +123,11 @@ Public Class gridSpinupDiff
 
         For iGroup As Integer = 0 To Me.Core.nGroups
             Dim iRow As Integer = iGroup + cRowHeaders - 1
-            DirectCast(Me(iRow, eColumnTypes.B0), EwECell).Value = Me.m_Plugin.BioAtBase(iGroup)
+            DirectCast(Me(iRow, eColumnTypes.B0), cEwECell).Value = Me.m_Plugin.BioAtBase(iGroup)
 
-            DirectCast(Me(iRow, eColumnTypes.Bt), EwECell).Value = Me.m_Plugin.BioAtTime(iGroup)
-            DirectCast(Me(iRow, eColumnTypes.BtRel), EwECell).Value = Me.m_Plugin.BtB0(iGroup)
-            DirectCast(Me(iRow, eColumnTypes.BtDiff), EwECell).Value = Me.m_Plugin.BtBtMinus1(iGroup)
+            DirectCast(Me(iRow, eColumnTypes.Bt), cEwECell).Value = Me.m_Plugin.BioAtTime(iGroup)
+            DirectCast(Me(iRow, eColumnTypes.BtRel), cEwECell).Value = Me.m_Plugin.BtB0(iGroup)
+            DirectCast(Me(iRow, eColumnTypes.BtDiff), cEwECell).Value = Me.m_Plugin.BtBtMinus1(iGroup)
         Next
 
     End Sub
