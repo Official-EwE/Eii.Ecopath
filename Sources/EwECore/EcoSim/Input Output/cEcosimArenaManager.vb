@@ -54,7 +54,7 @@ Public Class cEcosimArenaManager
         Me.m_arenas = Nothing
     End Sub
 
-    Friend Sub Load()
+    Friend Sub Init()
 
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
@@ -81,6 +81,29 @@ Public Class cEcosimArenaManager
                 Me.m_arenas(iArena) = arena
             End If
 
+        Next
+
+        Array.Sort(Me.m_arenas, New cArenaSort())
+
+    End Sub
+
+    ''' <summary>
+    ''' Reloads and rebuilds the arena data structures.
+    ''' </summary>
+    Friend Sub Load()
+
+        Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
+
+        For i As Integer = 1 To simdata.NlinksSet
+            Dim iPrey As Integer = simdata.IlinkSet(i)
+            Dim iPred As Integer = simdata.JlinkSet(i)
+            Dim iArena As Integer = simdata.ArenaNo(iPrey, iPred)
+
+            Debug.Assert(iArena > 0)
+
+            ' A bit of cleverness here: arenas may be reused, remember? That's the entire fun about sharing arenas
+            Dim arena As cEcosimArena = Me.m_arenas(iArena)
+
             arena.AllowValidation = False
             Dim iPredShared As Integer = simdata.KlinkSet(i)
             arena.ArenaShare(iPredShared) = simdata.PeatArena(iArena, iPredShared)
@@ -88,8 +111,6 @@ Public Class cEcosimArenaManager
             arena.AllowValidation = True
 
         Next
-
-        Array.Sort(Me.m_arenas, New cArenaSort())
 
     End Sub
 
