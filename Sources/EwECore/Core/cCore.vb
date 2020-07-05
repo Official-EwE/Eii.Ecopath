@@ -7085,6 +7085,7 @@ Public Class cCore
             m_MediatedInteractionManager.Init()
             m_MediatedInteractionManager.Load()
 
+            m_ArenaManager.Init()
             m_ArenaManager.Load()
 
             InitEcosimGroupOutput()
