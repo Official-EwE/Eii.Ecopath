@@ -26,13 +26,13 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-#End Region
+#End Region ' Imports
 
 Namespace Forms
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' EwEForm that contains an <see cref="cEwEGrid">EwEGrid</see>.
+    ''' <see cref="frmEwE"/> that contains a <see cref="cEwEGrid"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class frmEwEGrid
@@ -65,7 +65,7 @@ Namespace Forms
         ''' <param name="grid">Grid to attach to this form.</param>
         ''' -----------------------------------------------------------------------
         <CLSCompliant(False)>
-        Public Sub New(ByVal grid As cEwEGrid)
+        Public Sub New(grid As cEwEGrid)
 
             MyBase.New()
 
@@ -84,7 +84,7 @@ Namespace Forms
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 MyBase.UIContext = value
                 If (Me.Grid IsNot Nothing) Then
                     Me.Grid.UIContext = value
@@ -102,7 +102,7 @@ Namespace Forms
             Get
                 Return m_grid
             End Get
-            Set(ByVal grid As cEwEGrid)
+            Set(grid As cEwEGrid)
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Nothing
@@ -146,7 +146,7 @@ Namespace Forms
         ''' Overridden to pass the message to the grid.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+        Public Overrides Sub OnCoreMessage(msg As cMessage)
             Me.m_grid.OnCoreMessage(msg)
         End Sub
 
@@ -159,7 +159,7 @@ Namespace Forms
         ''' Event handler; handles the Load event to finalize this form for usage.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -179,7 +179,7 @@ Namespace Forms
         ''' Event handler; handles the Disposed event to clear this form after usage.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Release any quick edit handler
             Me.SetQuickEditHandler(False)
@@ -197,7 +197,7 @@ Namespace Forms
         ''' </summary>
         ''' <param name="rcPrint">The print area. Ignored in this method.</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+        Protected Overrides Function GetPrintContent(rcPrint As Rectangle) As Image
 
             Dim rc As New Rectangle(0, 0, Grid.Width, Grid.Height)
             Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
@@ -216,7 +216,7 @@ Namespace Forms
         ''' Get a reference to the on-board <see cref="cQuickEditHandler">Quick edit handler</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <CLSCompliant(False)> _
+        <CLSCompliant(False)>
         Protected ReadOnly Property QuickEditHandler() As cQuickEditHandler
             Get
                 Return Me.m_qeHandler
@@ -237,7 +237,7 @@ Namespace Forms
         ''' gets destroyed.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Sub SetQuickEditHandler(ByVal bSet As Boolean)
+        Private Sub SetQuickEditHandler(bSet As Boolean)
             If bSet Then
                 If (Me.m_qeHandler Is Nothing) Then
 
@@ -272,7 +272,7 @@ Namespace Forms
 
         End Sub
 
-        Private Function FindToolstripRecursive(ByVal controls As Control.ControlCollection) As ToolStrip
+        Private Function FindToolstripRecursive(controls As Control.ControlCollection) As ToolStrip
             If controls IsNot Nothing Then
                 For Each c As Control In controls
                     If TypeOf c Is ToolStrip Then Return DirectCast(c, ToolStrip)
