@@ -22,17 +22,13 @@
 Option Strict On
 
 Imports System.ComponentModel
-Imports System.Windows.Forms
+Imports System.Drawing.Printing
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
-Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Properties
-Imports System.Xml
-Imports System.Drawing.Printing
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -91,7 +87,7 @@ Namespace Forms
             ''' Private constructor to enforce singleton.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal uic As cUIContext)
+            Public Sub New(uic As cUIContext)
 
                 ' Eek!
                 Debug.Assert(uic IsNot Nothing)
@@ -118,7 +114,7 @@ Namespace Forms
             ''' messages originating from the given <paramref name="messageSource">message source</paramref>.
             ''' </remarks>
             ''' -----------------------------------------------------------------------
-            Public Sub RegisterForm(ByVal form As frmEwE, ByVal messageSource As eCoreComponentType)
+            Public Sub RegisterForm(form As frmEwE, messageSource As eCoreComponentType)
                 Dim lForms As List(Of frmEwE) = Nothing
                 If Me.m_dictSourceToForm.ContainsKey(messageSource) Then
                     lForms = Me.m_dictSourceToForm(messageSource)
@@ -144,7 +140,7 @@ Namespace Forms
             ''' messages originating from the given <paramref name="messageSource">message source</paramref>.
             ''' </remarks>
             ''' -----------------------------------------------------------------------
-            Public Sub UnregisterForm(ByVal form As frmEwE, ByVal messageSource As eCoreComponentType)
+            Public Sub UnregisterForm(form As frmEwE, messageSource As eCoreComponentType)
                 Debug.Assert(Me.m_dictSourceToForm.ContainsKey(messageSource), String.Format("Form not defined for message source {0}", messageSource.ToString()))
                 Me.m_dictSourceToForm(messageSource).Remove(form)
             End Sub
@@ -164,7 +160,7 @@ Namespace Forms
 
             Dim m_dtMessageHanders As New Dictionary(Of eCoreComponentType, cMessageHandler)
 
-            Private Sub ConfigMessageHandler(ByVal src As eCoreComponentType, ByVal bSet As Boolean)
+            Private Sub ConfigMessageHandler(src As eCoreComponentType, bSet As Boolean)
 
                 Dim mh As cMessageHandler = Nothing
 
@@ -192,7 +188,7 @@ Namespace Forms
             ''' </summary>
             ''' <param name="bSet">True to set, False to clear.</param>
             ''' -------------------------------------------------------------------
-            Private Sub ConfigMessageHandlers(ByVal bSet As Boolean)
+            Private Sub ConfigMessageHandlers(bSet As Boolean)
 
                 ' Set up message handlers
                 For Each src As eCoreComponentType In [Enum].GetValues(GetType(eCoreComponentType))
@@ -236,7 +232,7 @@ Namespace Forms
         Private m_uic As cUIContext = Nothing
         ''' <summary>Array of message sources that invalidate the information displayed in a form.</summary>
         Private m_aMessageSources As eCoreComponentType() = Nothing
-         ''' <summary>States whether the form is running. Only valid for forms 
+        ''' <summary>States whether the form is running. Only valid for forms 
         ''' that are flagged as <see cref="IsRunForm"/>.</summary>
         Private m_bIsRunning As Boolean = False
 
@@ -264,7 +260,7 @@ Namespace Forms
         ''' Form load event override, retrieves and applies the original form position.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -300,7 +296,7 @@ Namespace Forms
         ''' Form close event override, stores the final form position.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             If (Me.UIContext IsNot Nothing) Then
 
@@ -335,13 +331,13 @@ Namespace Forms
         ''' settings.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
                 If (frmEwE.s_refresh Is Nothing) Then frmEwE.s_refresh = New cEwEFormRefresh(Me.m_uic)
             End Set
@@ -352,7 +348,7 @@ Namespace Forms
         ''' Get the <see cref="cCore">core</see> that this form connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property Core() As cCore
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -366,7 +362,7 @@ Namespace Forms
         ''' connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -380,7 +376,7 @@ Namespace Forms
         ''' this form can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property PropertyManager() As cPropertyManager
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -394,7 +390,7 @@ Namespace Forms
         ''' this form can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -412,7 +408,7 @@ Namespace Forms
         ''' <see cref="CoreComponents"/> that the form is registered to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overridable Sub OnCoreMessage(ByVal msg As cMessage)
+        Public Overridable Sub OnCoreMessage(msg As cMessage)
             ' NOP
         End Sub
 
@@ -428,7 +424,7 @@ Namespace Forms
         ''' Overridden to prevent active forms reflecting active runs from closing.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
             If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
                 If (Me.UIContext.FormSettings IsNot Nothing) Then
@@ -456,7 +452,7 @@ Namespace Forms
         ''' </summary>
         ''' <param name="ct"></param>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overridable Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             ' NOP
         End Sub
 
@@ -474,7 +470,7 @@ Namespace Forms
         ''' <param name="rcPrint">The print area.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+        Protected Overridable Function GetPrintContent(rcPrint As Rectangle) As Image
             Dim bmp As New Bitmap(Me.ClientRectangle.Width, Me.ClientRectangle.Height, Imaging.PixelFormat.Format32bppArgb)
             bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
             Me.DrawToBitmap(bmp, Me.ClientRectangle)
@@ -523,7 +519,7 @@ Namespace Forms
         ''' <param name="sender"></param>
         ''' <param name="args"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnPrintMe(ByVal sender As Object, ByVal args As PrintPageEventArgs)
+        Private Sub OnPrintMe(sender As Object, args As PrintPageEventArgs)
 
             Try
                 Dim img As Image = Me.GetPrintContent(args.MarginBounds)
@@ -537,9 +533,9 @@ Namespace Forms
                 Dim iY As Integer = Me.m_iPrintPage \ iDX
 
                 ' Check which part of the print area is represented by m_iPrintPage
-                Dim rcPrint As New Rectangle(iX * args.MarginBounds.Width, _
-                                             iY * args.MarginBounds.Height, _
-                                             Math.Min(img.Width - iX * args.MarginBounds.Width, args.MarginBounds.Width), _
+                Dim rcPrint As New Rectangle(iX * args.MarginBounds.Width,
+                                             iY * args.MarginBounds.Height,
+                                             Math.Min(img.Width - iX * args.MarginBounds.Width, args.MarginBounds.Width),
                                              Math.Min(img.Height - iY * args.MarginBounds.Height, args.MarginBounds.Height))
                 ' Draw
                 args.Graphics.DrawImage(img, args.MarginBounds.X, args.MarginBounds.Y, rcPrint, GraphicsUnit.Pixel)
@@ -568,13 +564,13 @@ Namespace Forms
         ''' how these flags are being used.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property CoreComponents() As eCoreComponentType()
             Get
                 Return m_aMessageSources
             End Get
 
-            Set(ByVal value As eCoreComponentType())
+            Set(value As eCoreComponentType())
 
                 ' Detach
                 If Me.m_aMessageSources IsNot Nothing Then
@@ -609,10 +605,10 @@ Namespace Forms
         ''' Get/set whether this form is an input form (true) or output form (false).
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsInputForm(ByVal state As eCoreExecutionState) As Boolean
-            Return (state = eCoreExecutionState.EcopathLoaded) Or _
-                   (state = eCoreExecutionState.EcosimLoaded) Or _
-                   (state = eCoreExecutionState.EcospaceLoaded) Or _
+        Public Shared Function IsInputForm(state As eCoreExecutionState) As Boolean
+            Return (state = eCoreExecutionState.EcopathLoaded) Or
+                   (state = eCoreExecutionState.EcosimLoaded) Or
+                   (state = eCoreExecutionState.EcospaceLoaded) Or
                    (state = eCoreExecutionState.EcotracerLoaded)
         End Function
 
@@ -621,9 +617,9 @@ Namespace Forms
         ''' Get/set whether this form is an input form (true) or output form (false).
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsOutputForm(ByVal state As eCoreExecutionState) As Boolean
-            Return (state = eCoreExecutionState.EcopathCompleted) Or _
-                   (state = eCoreExecutionState.EcosimCompleted) Or _
+        Public Shared Function IsOutputForm(state As eCoreExecutionState) As Boolean
+            Return (state = eCoreExecutionState.EcopathCompleted) Or
+                   (state = eCoreExecutionState.EcosimCompleted) Or
                    (state = eCoreExecutionState.EcospaceCompleted)
         End Function
 
@@ -632,7 +628,7 @@ Namespace Forms
         ''' Flag stating whether a form is used to trigger model runs from.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overridable ReadOnly Property IsRunForm() As Boolean
             Get
                 Return False
@@ -645,12 +641,12 @@ Namespace Forms
         ''' will not close when a run is still active.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Protected Overridable Property IsRunning() As Boolean
             Get
                 Return Me.IsRunForm And Me.m_bIsRunning
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bIsRunning) Then
                     Me.m_bIsRunning = value
                     Me.UpdateControls()

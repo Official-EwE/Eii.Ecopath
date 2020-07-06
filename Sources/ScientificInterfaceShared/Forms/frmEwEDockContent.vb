@@ -111,7 +111,7 @@ Namespace Forms
             Get
                 Return Me.IsHiding()
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 MyBase.DockState = Me.TranslateDockState(MyBase.DockState, value)
             End Set
         End Property
@@ -126,7 +126,7 @@ Namespace Forms
             Get
                 Return MyBase.DockState
             End Get
-            Set(ByVal value As DockState)
+            Set(value As DockState)
                 MyBase.DockState = Me.TranslateDockState(value, Me.IsHiding)
             End Set
         End Property
@@ -137,9 +137,9 @@ Namespace Forms
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function IsHiding() As Boolean
-            Return (Me.DockState = DockState.DockTopAutoHide) Or _
-                   (Me.DockState = DockState.DockBottomAutoHide) Or _
-                   (Me.DockState = DockState.DockLeftAutoHide) Or _
+            Return (Me.DockState = DockState.DockTopAutoHide) Or
+                   (Me.DockState = DockState.DockBottomAutoHide) Or
+                   (Me.DockState = DockState.DockLeftAutoHide) Or
                    (Me.DockState = DockState.DockRightAutoHide)
         End Function
 
@@ -225,7 +225,7 @@ Namespace Forms
 
 #Region " Privates "
 
-        Private Function TranslateDockState(ByVal state As DockState, ByVal bHide As Boolean) As DockState
+        Private Function TranslateDockState(state As DockState, bHide As Boolean) As DockState
             Select Case state
                 Case DockState.DockBottom
                     If bHide Then state = DockState.DockBottomAutoHide
