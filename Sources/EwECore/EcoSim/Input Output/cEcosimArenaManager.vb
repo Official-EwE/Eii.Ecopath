@@ -26,18 +26,6 @@ Imports EwEUtils.Core
 
 Public Class cEcosimArenaManager
 
-    Private Class cArenaSort
-        Implements IComparer(Of cEcosimArena)
-
-        Public Function Compare(x As cEcosimArena, y As cEcosimArena) As Integer Implements IComparer(Of cEcosimArena).Compare
-            If (x Is Nothing) Then Return -1
-            If (y Is Nothing) Then Return 1
-            If (x.iArena < y.iArena) Then Return -1
-            If (x.iArena > y.iArena) Then Return 1
-            Return 0
-        End Function
-    End Class
-
     ' ISsue arena objects, where DBID is constructed from pred and prey combo
     ' Offers array of pred contributions to arena
     ' As Variable (with varname, datatype, validation). Status = NULL where no predator
@@ -82,8 +70,6 @@ Public Class cEcosimArenaManager
             End If
 
         Next
-
-        Array.Sort(Me.m_arenas, New cArenaSort())
 
     End Sub
 
