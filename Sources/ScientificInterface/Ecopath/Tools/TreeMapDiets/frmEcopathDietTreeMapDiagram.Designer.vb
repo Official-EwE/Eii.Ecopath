@@ -1,4 +1,23 @@
-﻿Partial Class frmEcopathDietTreeMapDiagram
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+Partial Class frmEcopathDietTreeMapDiagram
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -22,13 +41,14 @@
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcopathDietTreeMapDiagram))
-        Me.m_ts = New System.Windows.Forms.ToolStrip()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
         Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
         Me.m_scContent = New System.Windows.Forms.SplitContainer()
         Me.m_pbDiagram = New System.Windows.Forms.PictureBox()
         Me.m_pgSettings = New System.Windows.Forms.PropertyGrid()
+        Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
         Me.m_ts.SuspendLayout()
         CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scContent.Panel1.SuspendLayout()
@@ -39,7 +59,8 @@
         '
         'm_ts
         '
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss1, Me.m_tsmiSaveToImage})
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tsmiFont})
         Me.m_ts.Location = New System.Drawing.Point(0, 0)
         Me.m_ts.Name = "m_ts"
         Me.m_ts.Size = New System.Drawing.Size(800, 25)
@@ -100,12 +121,25 @@
         '
         'm_pgSettings
         '
+        Me.m_pgSettings.CommandsVisibleIfAvailable = False
         Me.m_pgSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_pgSettings.HelpVisible = False
         Me.m_pgSettings.ImeMode = System.Windows.Forms.ImeMode.Off
         Me.m_pgSettings.Location = New System.Drawing.Point(0, 0)
         Me.m_pgSettings.Name = "m_pgSettings"
         Me.m_pgSettings.Size = New System.Drawing.Size(199, 425)
         Me.m_pgSettings.TabIndex = 1
+        Me.m_pgSettings.ToolbarVisible = False
+        '
+        'm_tsmiFont
+        '
+        Me.m_tsmiFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsmiFont.Image = CType(resources.GetObject("m_tsmiFont.Image"), System.Drawing.Image)
+        Me.m_tsmiFont.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsmiFont.Name = "m_tsmiFont"
+        Me.m_tsmiFont.Size = New System.Drawing.Size(23, 22)
+        Me.m_tsmiFont.Text = "ToolStripButton1"
+        Me.m_tsmiFont.ToolTipText = "Fonts"
         '
         'frmEcopathDietTreeMapDiagram
         '
@@ -131,11 +165,12 @@
 
     End Sub
 
-    Private WithEvents m_ts As ToolStrip
+    Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_scContent As SplitContainer
     Private WithEvents m_pbDiagram As PictureBox
     Private WithEvents m_pgSettings As PropertyGrid
     Private WithEvents m_tsmiSettings As ToolStripButton
     Private WithEvents m_tss1 As ToolStripSeparator
     Private WithEvents m_tsmiSaveToImage As ToolStripButton
+    Private WithEvents m_tsmiFont As ToolStripButton
 End Class

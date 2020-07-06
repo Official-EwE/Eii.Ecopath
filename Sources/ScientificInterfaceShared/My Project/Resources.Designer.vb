@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -7251,11 +7251,56 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Borders.
+        '''</summary>
+        Public ReadOnly Property LABEL_BORDERS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_BORDERS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Captions.
+        '''</summary>
+        Public ReadOnly Property LABEL_CAPTIONS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_CAPTIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Choose folder....
         '''</summary>
         Public ReadOnly Property LABEL_CHOOSE_FOLDER() As String
             Get
                 Return ResourceManager.GetString("LABEL_CHOOSE_FOLDER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Label content.
+        '''</summary>
+        Public ReadOnly Property LABEL_LABEL_CONTENT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_LABEL_CONTENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Labels.
+        '''</summary>
+        Public ReadOnly Property LABEL_LABELS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_LABELS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Padding.
+        '''</summary>
+        Public ReadOnly Property LABEL_PADDING() As String
+            Get
+                Return ResourceManager.GetString("LABEL_PADDING", resourceCulture)
             End Get
         End Property
         

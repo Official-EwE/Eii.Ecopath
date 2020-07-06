@@ -19,7 +19,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
 Imports EwECore
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -59,10 +61,32 @@ Public Class cDietFlowMapRenderer
         All = Name Or Number
     End Enum
 
+    <Browsable(True),
+        cLocalizedCategory("HEADER_APPEARANCE"),
+        cLocalizedDisplayName("LABEL_CAPTIONS"),
+        DefaultValue(True)>
     Public Property DrawCaptions As Boolean = True
+
+    <Browsable(True),
+        cLocalizedCategory("HEADER_APPEARANCE"),
+        cLocalizedDisplayName("LABEL_LABELS"),
+        DefaultValue(True)>
     Public Property DrawLabels As Boolean = True
+
+    <Browsable(True),
+        cLocalizedCategory("HEADER_APPEARANCE"),
+        cLocalizedDisplayName("LABEL_LABEL_CONTENT"),
+        DefaultValue(eDrawMode.Number)>
     Public Property LabelDrawMode As eDrawMode
+
+    <Browsable(True),
+        cLocalizedCategory("HEADER_APPEARANCE"),
+        cLocalizedDisplayName("LABEL_BORDERS"),
+        DefaultValue(True)>
     Public Property DrawBorders As Boolean = False
+
+    <Browsable(True)>
+    Public Property Padding As Integer = 3
 
     Public Sub Draw(g As Graphics, rc As Rectangle)
 
@@ -73,18 +97,27 @@ Public Class cDietFlowMapRenderer
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
         Dim fmt As New cCoreInterfaceFormatter()
 
-        ' For now, draw all living groups
-        Me.CalcMapAreas(rc, Me.m_lPreds.Count, lRects)
+        Dim lPreds As New List(Of Integer)
+        For i As Integer = 0 To Me.m_lPreds.Count - 1
+            If sg.GroupVisible(Me.m_lPreds(i)) Then
+                lPreds.Add(Me.m_lPreds(i))
+            End If
+        Next
 
-        For j As Integer = 1 To Me.m_lPreds.Count
+        ' For now, draw all living groups
+        Me.CalcMapAreas(rc, lPreds.Count, lRects)
+
+        For j As Integer = 0 To lPreds.Count - 1
 
             Dim renderer As New cTreeMapRenderer(Me.m_uic)
+            renderer.DrawBorders = Me.DrawBorders
             renderer.DrawLabels = Me.DrawLabels
             renderer.DrawCaption = Me.DrawCaptions
 
             Dim elements As New List(Of cTreeMapRenderer.cTreeMapElement)
-            Dim iPred As Integer = Me.m_lPreds(j - 1)
+            Dim iPred As Integer = lPreds(j)
             Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
+
             For i As Integer = 1 To core.nGroups
                 Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
                 Dim dc As Single = pred.DietComp(i)
@@ -96,7 +129,7 @@ Public Class cDietFlowMapRenderer
                         Case eDrawMode.Number
                             elm.Label = CStr(i)
                         Case eDrawMode.All
-                            elm.Label = fmt.ToString(prey, )
+                            elm.Label = fmt.ToString(prey)
                     End Select
 
                     elm.Color = sg.GroupColor(core, i)
@@ -106,7 +139,7 @@ Public Class cDietFlowMapRenderer
             Next i
 
             elements.Sort(New cElementListSorter())
-            renderer.DrawTreemap(elements, pred.Name, g, lRects(j - 1))
+            renderer.DrawTreemap(elements, pred.Name, g, lRects(j))
         Next
 
     End Sub
@@ -135,7 +168,7 @@ Public Class cDietFlowMapRenderer
             For j As Integer = 0 To iNumHorz - 1
                 Dim iRect As Integer = i * iNumHorz + j
                 If iRect < iNumPlots Then
-                    Dim rect As Rectangle = New Rectangle(CInt(xSize * j + 3), CInt(i * ySize + 3), CInt(xSize - 6), CInt(ySize - 6))
+                    Dim rect As Rectangle = New Rectangle(CInt(xSize * j + Me.Padding), CInt(i * ySize + Me.Padding), CInt(xSize - 2 * Me.Padding), CInt(ySize - 2 * Me.Padding))
                     lRects.Add(rect)
                 End If
             Next

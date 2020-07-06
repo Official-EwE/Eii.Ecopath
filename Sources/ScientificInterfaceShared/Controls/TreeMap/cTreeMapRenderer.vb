@@ -53,6 +53,7 @@ Namespace Controls
         End Sub
 
         Public Property MinSliceRatio As Double = 0.35
+        Public Property DrawBorders As Boolean = True
         Public Property DrawLabels As Boolean = True
         Public Property DrawCaption As Boolean = True
 
@@ -86,13 +87,16 @@ Namespace Controls
                     gfx.FillRectangle(br, rc)
                 End Using
 
-                If Me.DrawLabels Then
+                If (Me.DrawLabels) Then
                     Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                         gfx.DrawString(r.Slice.Elements.First().Label, ft, Brushes.Black, rc, fmt)
                     End Using
                 End If
             Next
-            gfx.DrawRectangle(Pens.Black, rect)
+
+            If (Me.DrawBorders) Then
+                gfx.DrawRectangle(Pens.Black, rect)
+            End If
 
         End Sub
 

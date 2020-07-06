@@ -3125,4 +3125,24 @@
   <data name="PROMPT_EMPTY_NAMES" xml:space="preserve">
     <value>Your data contains blank names. This is not allowed.</value>
   </data>
+  <data name="LABEL_BORDERS" xml:space="preserve">
+    <value>Borders</value>
+    <comment>Dynamically loaded; do not remove</comment>
+  </data>
+  <data name="LABEL_CAPTIONS" xml:space="preserve">
+    <value>Captions</value>
+    <comment>Dynamically loaded; do not remove</comment>
+  </data>
+  <data name="LABEL_LABELS" xml:space="preserve">
+    <value>Labels</value>
+    <comment>Dynamically loaded; do not remove</comment>
+  </data>
+  <data name="LABEL_LABEL_CONTENT" xml:space="preserve">
+    <value>Label content</value>
+    <comment>Dynamically loaded; do not remove</comment>
+  </data>
+  <data name="LABEL_PADDING" xml:space="preserve">
+    <value>Padding</value>
+    <comment>Dynamically loaded; do not remove</comment>
+  </data>
 </root>
