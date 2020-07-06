@@ -54,13 +54,42 @@ Public Class frmEcopathDietTreeMapDiagram
 #Region " Overrides "
 
     Protected Overrides Sub OnLoad(e As EventArgs)
+
+        Dim cmdh As cCommandHandler = Me.CommandHandler
+        Dim cmd As cCommand = Nothing
+
         MyBase.OnLoad(e)
+
         If (Me.UIContext Is Nothing) Then Return
 
         Me.m_doodler = New cDietFlowMapRenderer(Me.UIContext)
         Me.m_pgSettings.SelectedObject = Me.m_doodler
 
+        Me.m_tsmiFont.Image = SharedResources.CaseSensitive
+
+        cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
+        If cmd IsNot Nothing Then
+            cmd.AddControl(Me.m_tsmiFont, eApplicationOptionTypes.Fonts)
+        End If
+
         Me.UpdateControls()
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+
+        If (Me.UIContext Is Nothing) Then Return
+
+        Dim cmdh As cCommandHandler = Me.CommandHandler
+        Dim cmd As cCommand = Nothing
+
+        ' Fonts
+        cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
+        If cmd IsNot Nothing Then
+            cmd.RemoveControl(Me.m_tsmiFont)
+        End If
+
+        MyBase.OnFormClosed(e)
+
     End Sub
 
     Protected Overrides Sub UpdateControls()
