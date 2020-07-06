@@ -2407,7 +2407,8 @@ Namespace Ecosim
             Next
 
             ' Validate arena use
-            Dim msg As New cMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            ' Dim msg As New cMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Question)
             For i As Integer = 1 To nGroups
                 For j As Integer = 1 To nGroups
                     If m_Data.Consumption(i, j) > 0 Then
@@ -2424,7 +2425,8 @@ Namespace Ecosim
             Next
 
             If (msg.Variables.Count > 0) Then
-                Return msg
+                m_publisher.SendMessage(msg)
+                Return Nothing
             End If
 
             If (Me.m_Data.inlinks < Me.m_Data.Narena) Then
@@ -4023,6 +4025,13 @@ Namespace Ecosim
                         m_EPData.Binput(ieco) = Bio(i)
                         m_EPData.PBinput(ieco) = Z(i)
                         m_EPData.QBinput(ieco) = cb(i)
+
+                        'Added for external programs that update Ecopath variables
+                        'but don't have access to internal calls that coordinate updating of variables
+                        m_EPData.B(ieco) = Bio(i)
+                        m_EPData.PB(ieco) = Z(i)
+                        m_EPData.QB(ieco) = cb(i)
+
                     Next i
 
                 Next isp
@@ -5056,15 +5065,16 @@ Namespace Ecosim
                     If m_Data.PeatArena(ii, K) <> 1.0F Then
                         System.Console.WriteLine("Prop, " + m_Data.PeatArena(ii, K).ToString + ", Arena, " + ii.ToString + ", Pred, " + K.ToString)
                     End If
-
+                    'Debug.Assert(i <> 8)
                     Il = Il + 1
                     m_Data.ilink(Il) = i 'Prey for this arena link
                     m_Data.jlink(Il) = K 'Pred for this arena link
                     m_Data.ArenaLink(Il) = ii
                     'Consumption(iPrey,iPred), PeatArena(Arena, Pred)
                     m_Data.Qlink(Il) = m_Data.Consumption(i, K) * m_Data.PeatArena(ii, K)
-                End If
-            Next
+                End If 'm_Data.PeatArena(ii, K) > 0 
+            Next iii
+
         End Sub
 
         Sub SetArenaVulandSearchRates()
@@ -5079,14 +5089,17 @@ Namespace Ecosim
             ReDim Qarena(m_Data.Narena), VulBiom(m_Data.Narena)
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii)
+
                 ia = m_Data.ArenaLink(ii)
                 Qarena(ia) = Qarena(ia) + m_Data.Qlink(ii)
+                'Debug.Assert(i <> 8)
             Next
 
             'then set initial vulnerable biomasses (V) by arena
             For ii = 1 To m_Data.Narena
                 i = m_Data.Iarena(ii)
                 j = m_Data.Jarena(ii)
+                'Debug.Assert(i <> 8)
                 If m_Data.VulMult(i, j) > 10000000000.0# Then m_Data.VulMult(i, j) = 10000000000.0#
                 m_Data.VulArena(ii) = CSng((m_Data.VulMult(i, j) + 0.0000000001) * Qarena(ii) / m_Data.StartBiomass(i))
                 If m_Data.VulArena(ii) = 0 Then m_Data.VulArena(ii) = 1
