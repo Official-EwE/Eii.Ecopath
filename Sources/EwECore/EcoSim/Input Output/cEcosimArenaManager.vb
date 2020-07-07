@@ -50,9 +50,10 @@ Public Class cEcosimArenaManager
 
         ReDim m_arenas(simdata.Narena)
 
-        For i As Integer = 1 To simdata.NlinksSet
-            Dim iPrey As Integer = simdata.IlinkSet(i)
-            Dim iPred As Integer = simdata.JlinkSet(i)
+        ' Initialize arenas from all available links, not from only set links!
+        For i As Integer = 1 To simdata.inlinks
+            Dim iPrey As Integer = simdata.ilink(i)
+            Dim iPred As Integer = simdata.jlink(i)
             Dim iArena As Integer = simdata.ArenaNo(iPrey, iPred)
 
             Debug.Assert(iArena > 0)
@@ -118,7 +119,7 @@ Public Class cEcosimArenaManager
         If (ii <> simdata.NlinksSet) Then
             simdata.NlinksSet = ii
             simdata.RedimArenaLinks()
-            Console.WriteLine("#Arena links changed to " & ii)
+            'Console.WriteLine("#Arena links changed to " & ii)
         Else
             Array.Clear(simdata.IlinkSet, 0, simdata.IlinkSet.Length)
             Array.Clear(simdata.JlinkSet, 0, simdata.JlinkSet.Length)
@@ -201,6 +202,8 @@ Public Class cEcosimArenaManager
     ''' </summary>
     Public ReadOnly Property Groups(bEwE5 As Boolean) As Integer()
         Get
+            bEwE5 = True
+
             Dim lGroups As New List(Of Integer)
             Dim n(Me.m_core.nGroups) As Integer
             For Each arena As cEcosimArena In Me.m_arenas
