@@ -3958,7 +3958,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub m_cmdExportTimeSeries_OnUpdate(ByVal cmd As cCommand) _
         Handles m_cmdExportTimeSeries.OnUpdate
-        cmd.Enabled = (Me.Core.ActiveTimeSeriesDatasetIndex > -1)
+        cmd.Enabled = (Me.Core.ActiveTimeSeriesDatasetIndex >= 1)
     End Sub
 
     ''' <summary>
