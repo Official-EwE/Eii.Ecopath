@@ -184,6 +184,8 @@ Namespace SpatialData
 
 #Region " Internals "
 
+        Private Shared s_split As String() = {" "c, cStringUtils.vbTab}
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Read the ASCII header from a text reader.
@@ -224,13 +226,8 @@ Namespace SpatialData
                 ' Be nice
                 If Not String.IsNullOrWhiteSpace(strLine) Then
 
-                    ' Remove all double spaces
-                    While strLine.IndexOf("  ") > 0
-                        strLine = strLine.Replace("  ", " ")
-                    End While
-
-                    ' Split by space
-                    Dim astrBits() As String = strLine.Split(" "c)
+                    ' Split 
+                    Dim astrBits() As String = strLine.Split(s_split, StringSplitOptions.RemoveEmptyEntries)
                     strField = astrBits(0)
                     strValue = astrBits(1)
 
@@ -299,8 +296,8 @@ Namespace SpatialData
 
                 ' Generate raster
                 rs = New Raster(Of Single)(nRows, nCols)
-                rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize), _
-                                                              New PointF(sXLLpos + nCols * sCellSize, sYLLpos), _
+                rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize),
+                                                              New PointF(sXLLpos + nCols * sCellSize, sYLLpos),
                                                               sCellSize, Nothing)
                 rs.NoDataValue = sValueNone
             Else
@@ -312,6 +309,7 @@ Namespace SpatialData
             Return (rs IsNot Nothing)
 
         End Function
+
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -337,26 +335,28 @@ Namespace SpatialData
                 While Not reader.EndOfStream And bDataCorrect
                     ' Read line
                     strLine = reader.ReadLine()
-                    'GDAL .asc writer adds a space to the start of the data rows strip this off
-                    'Then split the string by space
-                    Dim bits As String() = strLine.Trim().Split(" "c)
-                    ' Exact number of columns encountered?
-                    If (bits.Length <> rs.NumColumns) Then
-                        ' #No: do not accept this data
-                        bDataCorrect = False
-                        bColCountError = True
-                    Else
-                        ' #Yes: process row data
-                        For iCol = 0 To rs.NumColumns - 1
-                            bValueError = bValueError Or Not Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
-                            bDataCorrect = bDataCorrect And Not bValueError
-                        Next iCol
-                        iRow += 1
-                    End If
+                    If Not String.IsNullOrWhiteSpace(strLine) Then
+                        'GDAL .asc writer adds a space to the start of the data rows strip this off
+                        'Then split the string by space
+                        Dim bits As String() = strLine.Trim().Split(s_split, StringSplitOptions.RemoveEmptyEntries)
+                        ' Exact number of columns encountered?
+                        If (bits.Length <> rs.NumColumns) Then
+                            ' #No: do not accept this data
+                            bDataCorrect = False
+                            bColCountError = True
+                        Else
+                            ' #Yes: process row data
+                            For iCol = 0 To rs.NumColumns - 1
+                                bValueError = bValueError Or Not Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                                bDataCorrect = bDataCorrect And Not bValueError
+                            Next iCol
+                            iRow += 1
+                        End If
 
-                    If (iRow > rs.NumRows) Then
-                        bRowCountError = True
-                        bDataCorrect = False
+                        If (iRow > rs.NumRows) Then
+                            bRowCountError = True
+                            bDataCorrect = False
+                        End If
                     End If
 
                 End While
