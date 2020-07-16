@@ -114,6 +114,7 @@ Public Class frmStartPanel
         Me.m_tsbnForward.Image = SharedResources.forward
         Me.m_tsbnRefresh.Image = SharedResources.ResetHS
         Me.m_tsbnEcopathSite.Image = SharedResources.Ecopath_32x32
+        Me.m_tsbnEcobase.Image = SharedResources.ecobase
         Me.m_tsbnBugTracker.Image = SharedResources.bug
         Me.m_tsbnBetaFeedback.Image = My.Resources.logo_sm
 
@@ -213,6 +214,14 @@ Public Class frmStartPanel
     Private Sub OnGoHome(sender As System.Object, e As System.EventArgs) Handles m_tsbnEcopathSite.Click
         Try
             Me.Browse(cWebLinks.eLinkType.Home)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+    Private Sub OnVisitEcobase(sender As System.Object, e As System.EventArgs) Handles m_tsbnEcobase.Click
+        Try
+            Me.Browse(cWebLinks.eLinkType.EcoBase)
         Catch ex As Exception
             cLog.Write(ex)
         End Try

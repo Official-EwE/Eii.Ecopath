@@ -54,6 +54,7 @@ Partial Class frmStartPanel
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton()
         Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnEcobase = New System.Windows.Forms.ToolStripButton()
         Me.m_tlp.SuspendLayout()
         Me.m_ts1.SuspendLayout()
         Me.SuspendLayout()
@@ -74,7 +75,7 @@ Partial Class frmStartPanel
         'm_ts1
         '
         Me.m_ts1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnFacebook, Me.m_tsbnBugTracker, Me.m_tsbnBetaFeedback, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_sep2})
+        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnEcobase, Me.m_tsbnFacebook, Me.m_tsbnBugTracker, Me.m_tsbnBetaFeedback, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_sep2})
         resources.ApplyResources(Me.m_ts1, "m_ts1")
         Me.m_ts1.Name = "m_ts1"
         Me.m_ts1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -136,6 +137,12 @@ Partial Class frmStartPanel
         Me.m_sep2.Name = "m_sep2"
         resources.ApplyResources(Me.m_sep2, "m_sep2")
         '
+        'm_tsbnEcobase
+        '
+        Me.m_tsbnEcobase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnEcobase, "m_tsbnEcobase")
+        Me.m_tsbnEcobase.Name = "m_tsbnEcobase"
+        '
         'frmStartPanel
         '
         resources.ApplyResources(Me, "$this")
@@ -167,5 +174,5 @@ Partial Class frmStartPanel
     Private WithEvents m_tsbnBugTracker As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnBetaFeedback As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnFacebook As System.Windows.Forms.ToolStripButton
-
+    Private WithEvents m_tsbnEcobase As ToolStripButton
 End Class

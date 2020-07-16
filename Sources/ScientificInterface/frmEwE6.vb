@@ -3447,7 +3447,7 @@ Public Class frmEwE6
                 End Try
             Else
                 ' #Yes: extract hyperlink bit, and pass it to the desired browser
-                If Not cmd.Checked Then
+                If (Not cmd.Checked) Or (Not String.IsNullOrWhiteSpace(strURL)) Then
                     If panel.IsDisposed() Then
                         panel = New frmStartPanel(Me.UIContext)
                         Me.m_dtPanels(cPANEL_START) = panel
@@ -3640,6 +3640,10 @@ Public Class frmEwE6
 
     Private Sub m_tsmiHelpViewMainSite_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewMainSite.Click
         Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Home)
+    End Sub
+
+    Private Sub m_tsmiHelpViewEcobase_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewEcobase.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.EcoBase)
     End Sub
 
     Private Sub m_tsmiHelpViewFacebook_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewFacebook.Click

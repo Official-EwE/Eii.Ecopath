@@ -90,7 +90,9 @@ Namespace Commands
             Get
                 Dim strURL As String = CStr(Me.Parameter("URL"))
                 If (String.IsNullOrWhiteSpace(strURL)) Then
-                    strURL = decoder.GetURL(DirectCast(Me.Parameter("Weblink"), cWebLinks.eLinkType))
+                    Dim link As Object = Me.Parameter("Weblink")
+                    If (link Is Nothing) Then link = cWebLinks.eLinkType.NotSet
+                    strURL = decoder.GetURL(DirectCast(link, cWebLinks.eLinkType))
                 End If
                 Return strURL
             End Get
