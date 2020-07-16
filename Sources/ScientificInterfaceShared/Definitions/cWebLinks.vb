@@ -44,6 +44,7 @@ Public Class cWebLinks
     Private Const g_GoPro As String = "http://www.ecopath.org/gopro"
     Private Const g_Facebook As String = "http://www.facebook.com/eweconsortium"
     Private Const g_BetaFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
+    Private Const g_EcoBase As String = "http://ecobase.ecopath.org/"
     Private Const g_EcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
     Private Const g_Access2010 As String = "https://www.microsoft.com/en-us/download/details.aspx?id=13255"
 
@@ -63,6 +64,7 @@ Public Class cWebLinks
         Facebook
         Courses
         Feedback
+        EcoBase
         EcoBaseModelInfo
         Access2010
         GoPro
@@ -71,6 +73,7 @@ Public Class cWebLinks
     Public Function GetURL(type As eLinkType) As String
 
         Select Case type
+            Case eLinkType.NotSet : Return Me.EwEHomeURL(False)
             Case eLinkType.PostInstall : Return Me.EwEHomeURL(True)
             Case eLinkType.Start : Return Me.EwEHomeURL(False)
             Case eLinkType.Home : Return cWebLinks.g_Home
@@ -79,6 +82,7 @@ Public Class cWebLinks
             Case eLinkType.Courses : Return cWebLinks.g_Course
             Case eLinkType.Facebook : Return cWebLinks.g_Facebook
             Case eLinkType.Feedback : Return cWebLinks.g_BetaFeedback
+            Case eLinkType.EcoBase : Return cWebLinks.g_EcoBase
             Case eLinkType.EcoBaseModelInfo : Return cWebLinks.g_EcoBaseModelInfo
             Case eLinkType.Access2010 : Return cWebLinks.g_Access2010
             Case eLinkType.GoPro : Return cWebLinks.g_GoPro

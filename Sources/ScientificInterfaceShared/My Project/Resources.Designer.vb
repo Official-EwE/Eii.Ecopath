@@ -1183,12 +1183,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property EcoBase() As System.Drawing.Icon
+        Public ReadOnly Property ecobase() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("EcoBase", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
+                Dim obj As Object = ResourceManager.GetObject("ecobase", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
