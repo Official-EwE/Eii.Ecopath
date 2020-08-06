@@ -155,9 +155,10 @@ Namespace SpatialData
 
             If MyBase.Populate(iTime, dNoData, layer) Then
                 ' Is there external data waiting to be copied to a new timestep?
-                If (Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow) Then
-                    ' #Yes: integrate all non-NULL external data values into this month's advection pattern
-                    For ir As Integer = 0 To Me.m_spaceData.InRow + 1
+                'jb 6-Aug-2020 This prevents the data from ever being loaded
+                'If (Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow) Then
+                ' #Yes: integrate all non-NULL external data values into this month's advection pattern
+                For ir As Integer = 0 To Me.m_spaceData.InRow + 1
                         For ic As Integer = 0 To Me.m_spaceData.InCol + 1
                             If Me.m_lastXData(ir, ic) <> cCore.NULL_VALUE Then
                                 Me.m_spaceData.MonthlyXvel(Me.m_spaceData.MonthNow)(ir, ic) = CSng(Me.m_lastXData(ir, ic))
@@ -167,7 +168,7 @@ Namespace SpatialData
                             End If
                         Next
                     Next
-                End If
+                'End If
             End If
 
         End Function
@@ -184,6 +185,11 @@ Namespace SpatialData
                                              ByVal sValueAtT As Double) As Boolean
 
             Try
+
+                If sValueAtT <> cCore.NULL_VALUE Then
+                    sValueAtT = sValueAtT * conn.Scale
+                End If
+
                 'MonthNow is the current month set Ecospace 1-12
                 'Advection layer are stored by month
                 layer.Cell(iRow, iCol, Me.m_spaceData.MonthNow) = sValueAtT
