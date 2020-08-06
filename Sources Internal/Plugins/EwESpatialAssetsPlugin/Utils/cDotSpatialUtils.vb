@@ -631,6 +631,10 @@ Public Class cDotSpatialUtils
     ''' -----------------------------------------------------------------------
     Public Shared Function IsLicensed(core As cCore) As Boolean
 
+#If DEBUG Then
+        Return True
+#End If
+
         Debug.Assert(core IsNot Nothing)
         Dim bValid As Boolean = False
 
