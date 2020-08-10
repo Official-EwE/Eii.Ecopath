@@ -3,9 +3,9 @@
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 ; spinup + spattemp now combined in one flag 'EwEPro'
-#define EwEPro 1
+#define EwEPro 0
 ; RobertsBank features are optional to 'EwEPro'
 #define RobertsBank 0
 #define SAFENET 0
@@ -15,12 +15,12 @@
 #define ExcludeDeadCells 0
 
 #if Compile64Bit == 0
-  #define MyAppName "Ecopath with Ecosim RBT"
-  #define MyAppVersion "6.6.2 32-bit"
+  #define MyAppName "Ecopath with Ecosim SharedArenas"
+  #define MyAppVersion "6.7.0 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6.2 64-bit"
+  #define MyAppName "Ecopath with Ecosim SharedArenas"
+  #define MyAppVersion "6.7.0 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -36,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.2.16944
+  VersionInfoVersion=6.7.0.17033
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:

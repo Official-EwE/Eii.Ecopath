@@ -131,20 +131,7 @@ Public Class cENARPlugin
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Try
-
-            'Cast the datasource 
-            Dim ModelDataBase As EwECore.DataSources.cDBDataSource
-            ModelDataBase = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
-
-            System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
-
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".LoadModel() Exception " + ex.Message)
-        End Try
-
         Return True
-
     End Function
 
     ''' <summary>
@@ -153,8 +140,6 @@ Public Class cENARPlugin
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        System.Console.WriteLine(Me.ToString + ".SaveModel()")
-
         Return True
     End Function
 
