@@ -66,6 +66,8 @@ Namespace Ecopath.Output
             Me(0, Core.nWeightClasses + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = False
+            Me.IsOutputGrid = True
 
         End Sub
 

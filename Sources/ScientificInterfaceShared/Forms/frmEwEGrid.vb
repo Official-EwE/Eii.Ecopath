@@ -112,7 +112,7 @@ Namespace Forms
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Me.UIContext
-                    Me.m_grid.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.IsRunForm
+                    Me.m_grid.IsOutputGrid = Me.m_grid.IsOutputGrid Or frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.IsRunForm
                 End If
 
             End Set

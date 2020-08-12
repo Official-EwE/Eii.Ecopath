@@ -55,6 +55,8 @@ Namespace Ecopath.Output
             Me(0, 9) = New cEwEColumnHeaderCell(eVarNameFlags.TmaxOutput)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = False
+            Me.IsOutputGrid = True
 
         End Sub
 

@@ -36,7 +36,6 @@ Namespace Ecopath.Output
 
         Public Sub New()
             MyBase.new()
-            Me.FixedColumnWidths = False
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -69,6 +68,8 @@ Namespace Ecopath.Output
                 Me(i, 1) = New cEwERowHeaderCell(source.Name)
                 columnIndex = columnIndex + 1
             Next
+            Me.FixedColumnWidths = False
+            Me.IsOutputGrid = True
 
         End Sub
 

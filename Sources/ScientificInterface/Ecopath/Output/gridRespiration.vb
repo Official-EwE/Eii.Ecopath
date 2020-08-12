@@ -55,6 +55,7 @@ Namespace Ecopath.Output
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
+            Me.IsOutputGrid = True
 
         End Sub
 
