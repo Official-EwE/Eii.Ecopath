@@ -36,7 +36,6 @@ Namespace Ecopath.Output
 
         Public Sub New()
             MyBase.new()
-            Me.FixedColumnWidths = False
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -67,6 +66,8 @@ Namespace Ecopath.Output
                 End If
 
             Next
+            Me.FixedColumnWidths = False
+            Me.IsOutputGrid = True
 
         End Sub
 
