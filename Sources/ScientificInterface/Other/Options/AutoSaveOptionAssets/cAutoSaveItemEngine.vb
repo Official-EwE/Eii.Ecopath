@@ -225,10 +225,8 @@ Namespace Other
 
                 Case eAutosaveTypes.Ecopath
 
-                    ' JS 130109: do not provide a UI for saving Ecopath estimations
-                    '' Add Ecopath estimates node
-                    'ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    'Me.Add(ctrl, parent)
+                    ' Add Ecopath nodes
+                    Me.BuildControlTree(eAutosaveTypes.EcopathResults, cbParent, iIndent, lPlugins)
 
                     ' Add Ecopath plug-ins
                     Me.Add(lPlugins(t), cbParent, iIndent)

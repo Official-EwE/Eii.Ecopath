@@ -5311,6 +5311,12 @@ Public Class cCore
 
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathCompleted()
+
+            ' Write results if needed
+            If Me.Autosave(eAutosaveTypes.EcopathResults) Then
+                Dim writer As New cEcopathResultWriter(Me)
+                writer.WriteResults()
+            End If
         Else
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
             m_publisher.AddMessage(msg)

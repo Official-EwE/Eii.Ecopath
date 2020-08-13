@@ -57,6 +57,51 @@ Public Class cEcopathResultWriter
 
 #Region " Public access "
 
+    Public Function WriteResults(Optional bQuiet As Boolean = False) As Boolean
+
+        If (Not Me.m_core.StateMonitor.HasEcopathRan) Then Return False
+
+        Dim msg As cMessage = Nothing
+        Dim bSucces As Boolean = True
+
+        Dim strPath As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcopathResults)
+
+        ' Try to make sure that the output path is there
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING),
+                               eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+            If (Not bQuiet) Then
+                Me.m_core.Messages.SendMessage(msg)
+            Else
+                cLog.Write(msg)
+            End If
+            Return False
+        End If
+
+        Dim strFile As String = Path.Combine(strPath, "basic_estimates.csv")
+        If Not Me.WriteResults(strFile) Then
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strFile),
+                               eMessageType.DataExport, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            If (Not bQuiet) Then
+                Me.m_core.Messages.SendMessage(msg)
+            Else
+                cLog.Write(msg)
+            End If
+        Else
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_SUCCESS, strFile),
+                               eMessageType.DataExport, eCoreComponentType.EcoPath, eMessageImportance.Information)
+            ' Provide hyperlink to the directory with the files
+            msg.Hyperlink = strPath
+            If (Not bQuiet) Then
+                Me.m_core.Messages.SendMessage(msg)
+            Else
+                cLog.Write(msg)
+            End If
+        End If
+        Return bSucces
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Write Ecopath estimates to a CSV file.
@@ -64,10 +109,7 @@ Public Class cEcopathResultWriter
     ''' <param name="strFN">The target file name.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteCSV(strFN As String) As Boolean
-
-        ' Extracted this logic from the Ecopath datastructures 'Dump' method
-        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN)) Then Return False
+    Private Function WriteResults(strFN As String) As Boolean
 
         Dim sw As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
@@ -85,8 +127,13 @@ Public Class cEcopathResultWriter
                 sw.WriteLine()
             End If
 
-            sw.WriteLine("Group,""Biomass(B)"",""Prod/Biomass(PB)"",""Cons/Biomass(QB)"",""Ecotrophic eff.(EE)"",""Prod/Consum(GE)""")
+            sw.WriteLine("GroupNo,Group,B,PB,QB,EE,GE,FishMort,PredMort,BioAccum,NetMig,OtherMort,NatMort")
             For i As Integer = 1 To Me.m_data.NumGroups
+
+                Dim grp As cEcoPathGroupOutput = Me.m_core.EcoPathGroupOutputs(i)
+
+                sw.Write(i)
+                sw.Write(",")
                 sw.Write(cStringUtils.ToCSVField(Me.m_data.GroupName(i)))
                 sw.Write(",")
                 sw.Write(cStringUtils.FormatSingle(Me.m_data.B(i)))
@@ -98,6 +145,18 @@ Public Class cEcopathResultWriter
                 sw.Write(cStringUtils.FormatSingle(Me.m_data.EE(i)))
                 sw.Write(",")
                 sw.Write(cStringUtils.FormatSingle(Me.m_data.GE(i)))
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(grp.MortCoFishRate)) ' FishMort
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(grp.MortCoPredMort)) ' PredMort
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(grp.BioAccumRatePerYear)) ' BioAccum
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(grp.MortCoNetMig)) ' NetMig
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(grp.MortCoOtherMort)) ' OtherMort
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(grp.NatMortPerTotMort)) ' NatMort
                 sw.WriteLine()
             Next
             sw.Flush()
