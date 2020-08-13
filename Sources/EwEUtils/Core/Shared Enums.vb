@@ -3450,8 +3450,10 @@ Namespace Core
     Public Enum eAutosaveTypes As Integer
         ''' <summary>Hmm</summary>
         NotSet = 0
-        ''' <summary>Ecopath run results</summary>
+        ''' <summary>Ecopath category</summary>
         Ecopath
+        ''' <summary>Ecopath run results</summary>
+        EcopathResults
         ''' <summary>Ecosim category</summary>
         Ecosim
         ''' <summary>Ecosim run results</summary>

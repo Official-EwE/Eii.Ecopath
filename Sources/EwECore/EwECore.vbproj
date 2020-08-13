@@ -591,7 +591,7 @@
     <Compile Include="Taxon\cTaxon.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimOutput.vb" />
-    <Compile Include="EcoSim\Input Output\cEcosimResultWriter.vb" />
+    <Compile Include="EcoSim\Model\cEcosimResultWriter.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetInput.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvection.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />

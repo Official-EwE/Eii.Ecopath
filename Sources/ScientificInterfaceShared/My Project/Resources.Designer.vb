@@ -238,6 +238,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Mass-balance.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOPATHRESULTS() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOPATHRESULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecosim.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOSIM() As String
