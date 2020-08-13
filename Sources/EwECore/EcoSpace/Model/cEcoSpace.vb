@@ -1869,7 +1869,7 @@ Public Class cEcoSpace
 
             stpTotRun.Stop()
             'debugDumpAverageB(44, "After Grid")
-            'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1984,7 +1984,7 @@ Public Class cEcoSpace
             Me.UpdateThreadedResults()
 
             stpTotRun.Stop()
-            'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
+            System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
             'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
             'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
             'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
@@ -5804,11 +5804,11 @@ exitline:
         'find total consumptions of prey type for each arena, added over predators
         ReDim Qarena(EcoSimData.Narena), VulBiom(EcoSimData.Narena)
         For ii = 1 To EcoSimData.inlinks
-            i = EcoSimData.ilink(ii)
             j = EcoSimData.jlink(ii)
             ia = EcoSimData.ArenaLink(ii)
             Qarena(ia) = Qarena(ia) + EcoSimData.Qlink(ii) * EcoSpaceData.BRatio(j)
         Next
+
         'then set initial vulnerable biomasses (V) by arena
         For ii = 1 To EcoSimData.Narena
             i = EcoSimData.Iarena(ii)
@@ -5837,6 +5837,7 @@ exitline:
             'greater than 1.0
             'set nonzero value for vularena to avoid divides by zero if no feeding in it
         Next
+
         'then set predator search rates (a) by trophic link
         Dim Dzero As Single
         For ii = 1 To EcoSimData.inlinks
@@ -5864,6 +5865,22 @@ exitline:
         For i = 1 To EcoSpaceData.NGroups
             Pbar(i) = EcoSimData.pred(i) * EcoSpaceData.ThabArea / EcoSpaceData.TotHabCap(i)
         Next
+
+        'Debug.Assert(False, "Don't leave this in")
+        'For ii = 1 To EcoSimData.inlinks
+        '    ia = EcoSimData.ArenaLink(ii)
+        '    j = EcoSimData.jlink(ii)
+        '    If VulBiom(ia) > 0 Then
+        '        Dzero = EcoSimData.CmCo(j) / (EcoSimData.CmCo(j) - 1)
+        '        EcoSpaceData.Aspace(ii) = Dzero * EcoSimData.Qlink(ii) / (VulBiom(ia) * EcoSimData.pred(j))
+        '    Else
+        '        EcoSpaceData.Aspace(ii) = 0
+        '    End If
+        'Next
+
+
+        'Debug.Assert(False, "Don't leave this in")
+        'Return
 
         'calculate mean BP product over cells for each link
         For ii = 1 To EcoSimData.inlinks

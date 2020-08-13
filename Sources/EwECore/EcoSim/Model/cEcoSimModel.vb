@@ -2407,7 +2407,6 @@ Namespace Ecosim
             Next
 
             ' Validate arena use
-            ' Dim msg As New cMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
             Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Question)
             For i As Integer = 1 To nGroups
                 For j As Integer = 1 To nGroups
@@ -2931,10 +2930,10 @@ Namespace Ecosim
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.moTot(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
                         'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
 
-                        If m_Data.PaddP(i) < 1 Then 'And (MoPredRatio < 0.8) 
-                            Dim orgLoss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                            Debug.Print(m_Data.loss(i).ToString + ", " + orgLoss.ToString + ", " + m_Data.moMax(i).ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
-                        End If
+                        'If m_Data.PaddP(i) < 1 Then 'And (MoPredRatio < 0.8) 
+                        '    Dim orgLoss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        '    Debug.Print(m_Data.loss(i).ToString + ", " + orgLoss.ToString + ", " + m_Data.moMax(i).ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
+                        'End If
 
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -3169,6 +3168,8 @@ Namespace Ecosim
             InitRelaSwitch()
 
             DefineFlowList()
+            'DefaultPeatArena()
+            'DefineArenasAndFlowList()
             SetArenaVulandSearchRates()
 
         End Sub
@@ -4464,8 +4465,15 @@ Namespace Ecosim
             m_Data.jlink = New Integer(m_Data.inlinks) {}
 
             m_Data.inlinks = 0
+
+
             For j = 1 To m_EPData.NumLiving      'all living groups; consumers
                 For i = 1 To nGroups  'prey
+                    '    jb swaped the loading order To match all other per, pred loops
+                    'Debug.Assert(False, "JB CalcEatenOfBy")
+                    'For i = 1 To nGroups     'all living groups; consumers
+                    '    For j = 1 To nGroups  'prey
+
                     If m_Data.Consumption(i, j) > 0 Then
                         m_Data.inlinks = m_Data.inlinks + 1
                         m_Data.ilink(m_Data.inlinks) = i
@@ -5031,6 +5039,129 @@ Namespace Ecosim
 
         End Sub
 
+        Sub DefaultPeatArena()
+            'sets default peatarena array for models that have not had multiple predators defined to
+            'eat in any foraging arenas and no peatarena values have yet been stored in database
+            Dim i As Integer, j As Integer, ii As Integer
+            ii = 0
+
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then ii = ii + 1
+                Next j
+            Next i
+
+            m_Data.NlinksSet = ii
+
+            ' JS 13Sep18: Redim already done in cEcosimDataStructures to max no of links
+            'ReDim m_Data.PeatArena(m_Data.NlinksSet, nGroups)
+            'ReDim m_Data.IlinkSet(m_Data.NlinksSet)
+            'ReDim m_Data.JlinkSet(m_Data.NlinksSet)
+            'ReDim m_Data.KlinkSet(m_Data.NlinksSet)
+            ii = 0
+
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
+                        ii = ii + 1
+                        m_Data.IlinkSet(ii) = i
+                        m_Data.JlinkSet(ii) = j
+                        m_Data.KlinkSet(ii) = j
+                        m_Data.PeatArena(ii, j) = 1
+                    End If
+                Next j
+            Next i
+
+        End Sub
+
+        Sub DefineArenasAndFlowList()
+            ' set up list of foraging arenas defined by nonzero trophic flows
+            Dim i As Integer, j As Integer, K As Integer, ii As Integer, iii As Integer
+            'IlinkSet(2) = 3: JlinkSet(2) = 1: KlinkSet(2) = 2: PeatArena(2, 1) = 1  'test inputs for accounting
+            'first count number of arenas
+            m_Data.Narena = 0
+            For i = 1 To nGroups : For j = 1 To m_EPData.NumLiving
+                    If m_Data.Consumption(i, j) > 0 Then m_Data.Narena = m_Data.Narena + 1
+                Next
+            Next
+            ReDim m_Data.Iarena(m_Data.Narena), m_Data.Jarena(m_Data.Narena), m_Data.ArenaNo(nGroups, nGroups)
+
+            'then assign arenas to linear list
+            ii = 0
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
+                        ii = ii + 1
+                        m_Data.Iarena(ii) = i
+                        m_Data.Jarena(ii) = j
+                        m_Data.ArenaNo(i, j) = ii
+                    End If
+                Next
+            Next
+
+            'next check to make sure PeatArena(arena,k) accounts for all i,j consumption rates
+            Dim Tcon(,) As Single
+            ReDim Tcon(nGroups, nGroups)
+            For iii = 1 To m_Data.NlinksSet
+                i = m_Data.IlinkSet(iii)
+                j = m_Data.KlinkSet(iii)
+                Tcon(i, j) = Tcon(i, j) + m_Data.PeatArena(m_Data.ArenaNo(i, m_Data.JlinkSet(iii)), j)
+            Next
+
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
+                        If Tcon(i, j) < 1 Then
+                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, m_EPData.GroupName(i), m_EPData.GroupName(j)),
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                            Me.m_publisher.AddMessage(msg)
+                            'assign remaining consumption by j of i to the i,j arena
+                            m_Data.PeatArena(m_Data.ArenaNo(i, j), j) = m_Data.PeatArena(m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
+                        End If
+                    End If
+                Next
+            Next
+
+            'next count number of nonzero trophic links
+            m_Data.inlinks = 0
+            For iii = 1 To m_Data.NlinksSet
+                'find arena number for this link
+                i = m_Data.IlinkSet(iii)
+                ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
+                K = m_Data.KlinkSet(iii)
+                If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+                    m_Data.inlinks = m_Data.inlinks + 1
+                End If
+            Next
+
+            If m_Data.inlinks < m_Data.Narena Then
+                ' ToDo: globalize this
+                Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly",
+                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
+                ' ToDo: Handle this properly
+                Stop
+            End If
+
+            ReDim m_Data.Qlink(m_Data.inlinks), m_Data.ilink(m_Data.inlinks), m_Data.jlink(m_Data.inlinks), m_Data.ArenaLink(m_Data.inlinks)
+            ReDim m_Data.MPred(m_Data.inlinks)
+
+            'then set list variables by feeding link (note must be at least as many links as arenas
+            Dim Il As Integer
+            Il = 0
+            For iii = 1 To m_Data.NlinksSet
+                i = m_Data.IlinkSet(iii)
+                ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
+                K = m_Data.KlinkSet(iii)
+                If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+                    Il = Il + 1
+                    m_Data.ilink(Il) = i
+                    m_Data.jlink(Il) = K
+                    m_Data.ArenaLink(Il) = ii
+                    m_Data.Qlink(Il) = m_Data.Consumption(i, K) * m_Data.PeatArena(ii, K)
+                End If
+            Next
+        End Sub
+
         Sub DefineFlowList()
 
             ' set up list of foraging arenas defined by nonzero trophic flows
@@ -5088,11 +5219,10 @@ Namespace Ecosim
             'find total consumptions of prey type for each arena, added over predators
             ReDim Qarena(m_Data.Narena), VulBiom(m_Data.Narena)
             For ii = 1 To m_Data.inlinks
-                i = m_Data.ilink(ii)
+                'i = m_Data.ilink(ii)
 
                 ia = m_Data.ArenaLink(ii)
                 Qarena(ia) = Qarena(ia) + m_Data.Qlink(ii)
-                'Debug.Assert(i <> 8)
             Next
 
             'then set initial vulnerable biomasses (V) by arena
@@ -5115,6 +5245,8 @@ Namespace Ecosim
                 'set nonzero value for vularena to avoid divides by zero if no feeding in it
             Next
             'then set predator search rates (a) by trophic link
+
+            'System.Console.WriteLine("i Prey, j Pred, Prey Name, Pred Name, A, V")
             Dim Dzero As Single
             For ii = 1 To m_Data.inlinks
                 ia = m_Data.ArenaLink(ii)
@@ -5125,7 +5257,12 @@ Namespace Ecosim
                 Else
                     m_Data.Alink(ii) = 0
                 End If
+
+                'System.Console.WriteLine(m_Data.Iarena(m_Data.ArenaLink(ii)).ToString + " , " + m_Data.Jarena(m_Data.ArenaLink(ii)).ToString + ",  " + m_Data.ilink(ii).ToString + " , " + m_Data.jlink(ii).ToString + ",  " + m_EPData.GroupName(m_Data.Iarena(ii)) + ", " + m_EPData.GroupName(j) + ", " + m_Data.Alink(ii).ToString() + ",  " + m_Data.VulArena(ii).ToString())
+
             Next
+
+
         End Sub
 
 
@@ -5606,9 +5743,6 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub SetInlinks()
-            CalcEatenOfBy()
-        End Sub
 
         Friend Function VulBo(ByVal BmaxBo As Single,
                               ByVal iGroup As Integer,
