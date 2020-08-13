@@ -960,8 +960,6 @@ Public Class cSpaceSolver
                     ' pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) ' * EatEff(i)
                     pbb(i) = 2 * EatEff(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * Pmult * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
-                    '  Debug.Assert(Not Single.IsNaN((loss(i))))
-                    ' Debug.Assert(Not Single.IsNaN((Biomass(i))))
 
                     'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                     'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten

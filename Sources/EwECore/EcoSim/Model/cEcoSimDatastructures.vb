@@ -578,13 +578,19 @@ Public Class cEcosimDatastructures
     Public ArenaNo(,) As Integer
     Public VulArena() As Single
     Public Alink() As Single
-    Public IlinkSet() As Integer 'i index of foraging arena with positive feeding on prey i by predator k
-    Public JlinkSet() As Integer 'j index of foraging arena having positive feeding on i by predator k
-    Public KlinkSet() As Integer ' index of predator whose peatarea for arena i,j is stored in list element
-    Public PeatArena(,) As Single 'diet proportions by foraging arena from/to database
+    ''' <summary> i (prey) index of foraging arena with positive feeding on prey i by predator k </summary>
+    Public IlinkSet() As Integer
+    ''' <summary> j (pred) index of foraging arena having positive feeding on i by predator k </summary>
+    Public JlinkSet() As Integer
+    ''' <summary> index of predator whose peatarea for arena i,j is stored in list element </summary>
+    Public KlinkSet() As Integer ' 
+    ''' <summary> diet proportions by foraging arena from/to database </summary>
+    Public PeatArena(,) As Single '
     Public ArenaLink() As Integer
-    Public Qlink() As Single 'total ecopath base consumption by trophic link
-    Public NlinksSet As Integer 'note number of arena foraging links set from or to database
+    ''' <summary> total ecopath base consumption by trophic link </summary>
+    Public Qlink() As Single '
+    ''' <summary> note number of arena foraging links set from or to database </summary>
+    Public NlinksSet As Integer '
     Public BoutFeeding As Boolean 'this needs an interface
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -700,16 +706,16 @@ Public Class cEcosimDatastructures
         RedimArenaLinks()
 
         ii = 0
-        For iPred = 1 To nGroups
-            For iPrey = 1 To nGroups
-                If Consumption(iPrey, iPred) > 0 Then
+        For i As Integer = 1 To nGroups
+            For j As Integer = 1 To nGroups
+                If Consumption(i, j) > 0.0F Then
                     ii += 1
-                    IlinkSet(ii) = iPrey
-                    JlinkSet(ii) = iPred
-                    KlinkSet(ii) = iPred
-                    Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
+                    IlinkSet(ii) = i
+                    JlinkSet(ii) = j
+                    KlinkSet(ii) = j
+                    Dim iArena As Integer = Me.ArenaNo(i, j)
                     Debug.Assert(iArena > 0)
-                    PeatArena(iArena, iPred) = 1
+                    PeatArena(iArena, j) = 1
                 End If
             Next
         Next
@@ -725,9 +731,6 @@ Public Class cEcosimDatastructures
         ReDim pred(nGroups)
         ReDim simDCAtT(nGroups, nGroups)
         ReDim DCPct(nGroups, 3) 'used for B1Round, B2Round, QB, derivt (BA)
-
-        'ReDim rzero(nGroups)
-        'ReDim wzero(nGroups)  'weight at recruitment to juvenile stage
 
     End Sub
 
