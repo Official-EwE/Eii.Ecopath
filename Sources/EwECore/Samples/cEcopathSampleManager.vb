@@ -678,28 +678,55 @@ Namespace Samples
                 ' #Yes: obtain data from Ecopath output vars that Monte Carlo has produced
                 For iGroup As Integer = 1 To epdata.NumGroups
 
-                    s.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), cCore.NULL_VALUE)
-                    s.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), cCore.NULL_VALUE)
-                    s.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), cCore.NULL_VALUE)
-                    s.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), cCore.NULL_VALUE)
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'jb 20-Aug-2020 Original code to just store the perturbated values.
+                    'Changed to save all values even if they were NOT being perturbated by the Monte Carlo (IsVariable(iGroup) = False)
+                    'The new algo stores the complete Ecopath parameters set making it easier (more robust) to restore the model
+                    'Multi Stanza groups set non-leading variables to IsVariable(igroup) = False.
+                    'But these values have actually been varied by the MultiStanza code in response to the perturbated values  
+                    's.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), cCore.NULL_VALUE)
+                    's.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), cCore.NULL_VALUE)
+                    's.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), cCore.NULL_VALUE)
+                    's.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), cCore.NULL_VALUE)
 
-                    If (mc.IsVariable(iGroup, eMCParams.BaBi)) Then
-                        s.BaBi(iGroup) = epdata.BaBi(iGroup)
-                        s.BA(iGroup) = cCore.NULL_VALUE
-                    Else
-                        s.BaBi(iGroup) = cCore.NULL_VALUE
-                        s.BA(iGroup) = epdata.BA(iGroup)
-                    End If
+                    'If (mc.IsVariable(iGroup, eMCParams.BaBi)) Then
+                    '    s.BaBi(iGroup) = epdata.BaBi(iGroup)
+                    '    s.BA(iGroup) = cCore.NULL_VALUE
+                    'Else
+                    '    s.BaBi(iGroup) = cCore.NULL_VALUE
+                    '    s.BA(iGroup) = epdata.BA(iGroup)
+                    'End If
+
+                    'For iFleet As Integer = 1 To epdata.NumFleet
+                    '    s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), cCore.NULL_VALUE)
+                    '    s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), cCore.NULL_VALUE)
+                    'Next
+
+                    'For iPred As Integer = 1 To epdata.NumLiving
+                    '    s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), cCore.NULL_VALUE)
+                    'Next
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                    s.B(iGroup) = If(epdata.Binput(iGroup) <> cCore.NULL_VALUE, epdata.B(iGroup), cCore.NULL_VALUE)
+                    s.PB(iGroup) = If(epdata.PBinput(iGroup) <> cCore.NULL_VALUE, epdata.PB(iGroup), cCore.NULL_VALUE) 'epdata.PB(iGroup)
+                    s.QB(iGroup) = If(epdata.QBinput(iGroup) <> cCore.NULL_VALUE, epdata.QB(iGroup), cCore.NULL_VALUE) ' epdata.QB(iGroup)
+                    s.EE(iGroup) = If(epdata.EEinput(iGroup) <> cCore.NULL_VALUE, epdata.EE(iGroup), cCore.NULL_VALUE) 'epdata.EE(iGroup)
+
+                    'For BA and BaBi don't use cCore.NULL_VALUE to flag it as not set
+                    'so just use the values that come out of the MC
+                    s.BaBi(iGroup) = epdata.BaBi(iGroup)
+                    s.BA(iGroup) = epdata.BAInput(iGroup)
 
                     For iFleet As Integer = 1 To epdata.NumFleet
-                        s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), cCore.NULL_VALUE)
-                        s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), cCore.NULL_VALUE)
-                    Next
+                        s.Landing(iFleet, iGroup) = epdata.Landing(iFleet, iGroup)
+                        s.Discard(iFleet, iGroup) = epdata.Discard(iFleet, iGroup)
+                    Next iFleet
 
                     For iPred As Integer = 1 To epdata.NumLiving
-                        s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), cCore.NULL_VALUE)
-                    Next
-                Next
+                        s.DC(iPred, iGroup) = epdata.DC(iPred, iGroup)
+                    Next iPred
+
+                Next iGroup
 
                 ' Diets
                 For iPred As Integer = 1 To epdata.NumLiving
@@ -708,7 +735,8 @@ Namespace Samples
                     Next
                 Next
 
-            Else
+            Else ' If (mc IsNot Nothing) Then
+
                 ' #No: obtain data from current input vars
                 s.AllowValidation = False
                 s.Name = "<backup>"
