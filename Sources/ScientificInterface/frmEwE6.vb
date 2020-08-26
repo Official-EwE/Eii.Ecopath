@@ -579,7 +579,6 @@ Public Class frmEwE6
 
         'Create and configure 'view start page' command
         Me.m_cmdBrowseURI = New cBrowserCommand(cmdh)
-        Me.m_cmdBrowseURI.AddControl(Me.m_tsmiViewStartPage)
 
         'Create and configure 'view status pane' command
         Me.m_cmdViewStatusPane = New cCommand(cmdh, "ViewStatusPane")
