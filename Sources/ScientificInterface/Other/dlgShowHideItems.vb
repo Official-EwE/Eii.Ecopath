@@ -152,8 +152,9 @@ Namespace Ecosim
 
             Me.m_bInSync = False
 
-            Me.m_cbSyncViaFishing.Checked = My.Settings.SelectionLinkThroughFishing
-            Me.m_cbSyncViaPredation.Checked = My.Settings.SelectionLinkThroughPredation
+            Me.m_cbSyncViaFishing.Checked = My.Settings.SelectionLinkFishing
+            Me.m_cbSyncPredators.Checked = My.Settings.SelectionLinkPredators
+            Me.m_cbSyncPrey.Checked = My.Settings.SelectionLinkPreys
 
             Me.m_il = New ImageList()
             Me.m_il.Images.Add(SharedResources.fish)
@@ -165,8 +166,9 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-            My.Settings.SelectionLinkThroughFishing = Me.m_cbSyncViaFishing.Checked
-            My.Settings.SelectionLinkThroughPredation = Me.m_cbSyncViaPredation.Checked
+            My.Settings.SelectionLinkFishing = Me.m_cbSyncViaFishing.Checked
+            My.Settings.SelectionLinkPredators = Me.m_cbSyncPredators.Checked
+            My.Settings.SelectionLinkPreys = Me.m_cbSyncPrey.Checked
             My.Settings.Save()
             MyBase.OnFormClosed(e)
         End Sub
@@ -677,14 +679,12 @@ Namespace Ecosim
 
         Private Sub SyncPredation(iGroup As Integer)
 
-            If (Not Me.m_cbSyncViaPredation.Checked) Then Return
-
             Dim core As cCore = Me.m_uic.Core
             Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
 
             Me.m_clbGroups.SuspendLayout()
             For iGroupTest As Integer = 1 To core.nGroups
-                If (grp.IsPred(iGroupTest) Or grp.IsPrey(iGroupTest)) Then
+                If ((grp.IsPred(iGroupTest) And Me.m_cbSyncPredators.Checked) Or (grp.IsPrey(iGroupTest) And Me.m_cbSyncPrey.Checked)) Then
                     Me.m_clbGroups.SetItemChecked(iGroupTest - 1, True)
                 End If
             Next

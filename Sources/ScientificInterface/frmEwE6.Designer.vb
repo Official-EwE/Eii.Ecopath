@@ -86,6 +86,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpViewEcobase = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
@@ -118,7 +119,6 @@ Partial Public Class frmEwE6
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_menuMain = New ScientificInterfaceShared.Controls.cEwEMenustrip()
         Me.MenuView = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiViewStartPage = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewNavigation = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewStatus = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewRemarks = New System.Windows.Forms.ToolStripMenuItem()
@@ -169,7 +169,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiHelpViewEcobase = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -423,6 +422,11 @@ Partial Public Class frmEwE6
         Me.m_tsmiHelpViewFacebook.Name = "m_tsmiHelpViewFacebook"
         resources.ApplyResources(Me.m_tsmiHelpViewFacebook, "m_tsmiHelpViewFacebook")
         '
+        'm_tsmiHelpViewEcobase
+        '
+        Me.m_tsmiHelpViewEcobase.Name = "m_tsmiHelpViewEcobase"
+        resources.ApplyResources(Me.m_tsmiHelpViewEcobase, "m_tsmiHelpViewEcobase")
+        '
         'm_tsmiViewLog
         '
         Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
@@ -590,14 +594,9 @@ Partial Public Class frmEwE6
         '
         'MenuView
         '
-        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewStartPage, Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewMenu, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator3, Me.m_tsmiPresentation, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
+        Me.MenuView.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewNavigation, Me.m_tsmiViewStatus, Me.m_tsmiViewRemarks, m_tssView1, Me.m_tsmiViewMenu, Me.m_tsmiViewModelBar, Me.m_tsmiViewStatusBar, Me.ToolStripSeparator3, Me.m_tsmiPresentation, Me.ToolStripSeparator1, Me.m_tsmiViewItems})
         Me.MenuView.Name = "MenuView"
         resources.ApplyResources(Me.MenuView, "MenuView")
-        '
-        'm_tsmiViewStartPage
-        '
-        Me.m_tsmiViewStartPage.Name = "m_tsmiViewStartPage"
-        resources.ApplyResources(Me.m_tsmiViewStartPage, "m_tsmiViewStartPage")
         '
         'm_tsmiViewNavigation
         '
@@ -882,11 +881,6 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiHelpViewEcobase
-        '
-        Me.m_tsmiHelpViewEcobase.Name = "m_tsmiHelpViewEcobase"
-        resources.ApplyResources(Me.m_tsmiHelpViewEcobase, "m_tsmiHelpViewEcobase")
-        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -945,7 +939,6 @@ Partial Public Class frmEwE6
     Private WithEvents MenuView As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewStatusBar As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewRemarks As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiViewStartPage As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewNavigation As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewStatus As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiViewModelBar As System.Windows.Forms.ToolStripMenuItem
