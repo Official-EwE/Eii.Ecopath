@@ -63,7 +63,7 @@ Namespace Ecosim
             Me.m_plFleets = New System.Windows.Forms.Panel()
             Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbSyncViaFishing = New System.Windows.Forms.CheckBox()
-            Me.m_cbSyncViaPredation = New System.Windows.Forms.CheckBox()
+            Me.m_cbSyncPredators = New System.Windows.Forms.CheckBox()
             Me.m_lblSyncSelections = New System.Windows.Forms.Label()
             Me.m_tlpPresets = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
@@ -72,6 +72,7 @@ Namespace Ecosim
             Me.m_cmbPresets = New System.Windows.Forms.ComboBox()
             Me.m_btnRename = New System.Windows.Forms.Button()
             Me.m_lblPresets = New System.Windows.Forms.Label()
+            Me.m_cbSyncPrey = New System.Windows.Forms.CheckBox()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plGroups.SuspendLayout()
             Me.m_plFleets.SuspendLayout()
@@ -227,11 +228,11 @@ Namespace Ecosim
             Me.m_cbSyncViaFishing.Name = "m_cbSyncViaFishing"
             Me.m_cbSyncViaFishing.UseVisualStyleBackColor = True
             '
-            'm_cbSyncViaPredation
+            'm_cbSyncPredators
             '
-            resources.ApplyResources(Me.m_cbSyncViaPredation, "m_cbSyncViaPredation")
-            Me.m_cbSyncViaPredation.Name = "m_cbSyncViaPredation"
-            Me.m_cbSyncViaPredation.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbSyncPredators, "m_cbSyncPredators")
+            Me.m_cbSyncPredators.Name = "m_cbSyncPredators"
+            Me.m_cbSyncPredators.UseVisualStyleBackColor = True
             '
             'm_lblSyncSelections
             '
@@ -284,6 +285,12 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblPresets, "m_lblPresets")
             Me.m_lblPresets.Name = "m_lblPresets"
             '
+            'm_cbSyncPrey
+            '
+            resources.ApplyResources(Me.m_cbSyncPrey, "m_cbSyncPrey")
+            Me.m_cbSyncPrey.Name = "m_cbSyncPrey"
+            Me.m_cbSyncPrey.UseVisualStyleBackColor = True
+            '
             'dlgShowHideItems
             '
             Me.AcceptButton = Me.OK_Button
@@ -294,7 +301,8 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_tlpPresets)
             Me.Controls.Add(Me.m_lblSyncSelections)
             Me.Controls.Add(Me.m_tlpContent)
-            Me.Controls.Add(Me.m_cbSyncViaPredation)
+            Me.Controls.Add(Me.m_cbSyncPrey)
+            Me.Controls.Add(Me.m_cbSyncPredators)
             Me.Controls.Add(Me.m_cbSyncViaFishing)
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.Cancel_Button)
@@ -337,7 +345,7 @@ Namespace Ecosim
         Private WithEvents m_hdrFleets As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_cbSyncViaFishing As CheckBox
-        Private WithEvents m_cbSyncViaPredation As CheckBox
+        Private WithEvents m_cbSyncPredators As CheckBox
         Private WithEvents m_lblSyncSelections As Label
         Private WithEvents m_tlpPresets As TableLayoutPanel
         Private WithEvents m_tbxName As TextBox
@@ -346,6 +354,7 @@ Namespace Ecosim
         Private WithEvents m_cmbPresets As ComboBox
         Private WithEvents m_btnRename As Button
         Private WithEvents m_lblPresets As Label
+        Private WithEvents m_cbSyncPrey As CheckBox
     End Class
 
 End Namespace

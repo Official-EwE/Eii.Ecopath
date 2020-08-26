@@ -14,7 +14,7 @@ Option Explicit On
 
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
- Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0"),  _
+ Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0"),  _
  Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
 Partial Friend NotInheritable Class Settings
     Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -689,12 +689,12 @@ Partial Friend NotInheritable Class Settings
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-    Public Property SelectionLinkThroughFishing() As Boolean
+    Public Property SelectionLinkFishing() As Boolean
         Get
-            Return CType(Me("SelectionLinkThroughFishing"),Boolean)
+            Return CType(Me("SelectionLinkFishing"),Boolean)
         End Get
         Set
-            Me("SelectionLinkThroughFishing") = value
+            Me("SelectionLinkFishing") = value
         End Set
     End Property
     
@@ -1022,12 +1022,12 @@ Partial Friend NotInheritable Class Settings
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-    Public Property SelectionLinkThroughPredation() As Boolean
+    Public Property SelectionLinkPredators() As Boolean
         Get
-            Return CType(Me("SelectionLinkThroughPredation"),Boolean)
+            Return CType(Me("SelectionLinkPredators"),Boolean)
         End Get
         Set
-            Me("SelectionLinkThroughPredation") = value
+            Me("SelectionLinkPredators") = value
         End Set
     End Property
     
@@ -1064,6 +1064,18 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("MapShowLabelIndex") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property SelectionLinkPreys() As Boolean
+        Get
+            Return CType(Me("SelectionLinkPreys"),Boolean)
+        End Get
+        Set
+            Me("SelectionLinkPreys") = value
         End Set
     End Property
 End Class

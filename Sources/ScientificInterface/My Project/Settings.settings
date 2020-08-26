@@ -158,7 +158,7 @@
     <Setting Name="ColorPedigree" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Orange</Value>
     </Setting>
-    <Setting Name="SelectionLinkThroughFishing" Type="System.Boolean" Scope="User">
+    <Setting Name="SelectionLinkFishing" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AutosaveHeaders" Type="System.Boolean" Scope="User">
@@ -245,7 +245,7 @@
     <Setting Name="UseEcospaceSpinup" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="SelectionLinkThroughPredation" Type="System.Boolean" Scope="User">
+    <Setting Name="SelectionLinkPredators" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ShowEffortMortalityInRunSim" Type="System.Boolean" Scope="User">
@@ -255,6 +255,9 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="MapShowLabelIndex" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SelectionLinkPreys" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
