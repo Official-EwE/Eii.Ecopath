@@ -475,9 +475,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Sources Internal\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Include="Class Diagrams\Core Ecopath.cd">
       <SubType>
       </SubType>
@@ -650,6 +647,7 @@
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
     <Compile Include="Taxon\cTaxonDataStructures.vb" />
     <None Include="Database\Import\_importers_.cd" />
+    <None Include="EwE.licenseheader" />
     <None Include="MSE\BatchAnalysis\MSEBatch.cd" />
     <None Include="Database\Compact\_compacters_.cd" />
     <None Include="EwECore.snk" />
