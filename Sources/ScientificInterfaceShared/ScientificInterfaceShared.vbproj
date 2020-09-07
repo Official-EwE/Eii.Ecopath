@@ -718,6 +718,11 @@
     <Compile Include="GeoCode\cMarineRegionsWSDL.vb" />
     <Compile Include="Help\cBugReporter.vb" />
     <Compile Include="Help\cHelp.vb" />
+    <Compile Include="IO\cDataTableConverter.vb" />
+    <Compile Include="IO\cDataTableEnumerable.vb" />
+    <Compile Include="IO\cDataTableEnumerator.vb" />
+    <Compile Include="IO\cGenericDataReader.vb" />
+    <Compile Include="IO\cGenericDataWriter.vb" />
     <Compile Include="modExtensions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -1022,10 +1027,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Sources Internal\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Include="app.config" />
+    <None Include="EwE.licenseheader" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
