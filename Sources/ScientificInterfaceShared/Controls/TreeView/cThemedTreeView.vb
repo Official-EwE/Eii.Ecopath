@@ -40,6 +40,7 @@ Namespace Controls
 
         Public Sub New()
             Me.ShowImages = True
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
 
         ''' -----------------------------------------------------------------------
