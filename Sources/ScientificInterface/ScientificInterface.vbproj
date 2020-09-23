@@ -28,7 +28,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetZone>LocalIntranet</TargetZone>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
@@ -46,6 +46,8 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -770,6 +772,12 @@
     <Compile Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Panels\StartPanel\frmStartPanel.Designer.vb">
+      <DependentUpon>frmStartPanel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\StartPanel\frmStartPanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Search\gridSearchObjectivesFleet.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -893,6 +901,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <DependentUpon>Application.myapp</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Other\AboutBox\gridAboutEwE.vb">
       <SubType>Component</SubType>
@@ -1281,6 +1290,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\RemarkPanel\frmRemarkPanel.resx">
       <DependentUpon>frmRemarkPanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\StartPanel\frmStartPanel.resx">
+      <DependentUpon>frmStartPanel.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\StatusPanel\frmStatusPanel.resx">
       <DependentUpon>frmStatusPanel.vb</DependentUpon>
@@ -2284,7 +2296,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Other\Update\" />
-    <Folder Include="Panels\StartPanel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Toolkit.Forms.UI.Controls.WebView">
+      <Version>6.1.2</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

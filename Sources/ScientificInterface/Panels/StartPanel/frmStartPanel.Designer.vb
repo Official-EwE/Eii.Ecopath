@@ -19,6 +19,7 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Forms
+Imports Microsoft.Web.WebView2
 
 Partial Class frmStartPanel
     Inherits frmEwE
@@ -42,10 +43,10 @@ Partial Class frmStartPanel
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStartPanel))
         Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_browser = New System.Windows.Forms.WebBrowser()
         Me.m_ts1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnStartPage = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnEcopathSite = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnEcobase = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFacebook = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnBugTracker = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnBetaFeedback = New System.Windows.Forms.ToolStripButton()
@@ -54,23 +55,18 @@ Partial Class frmStartPanel
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton()
         Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tsbnEcobase = New System.Windows.Forms.ToolStripButton()
+        Me.m_browser = New Microsoft.Toolkit.Forms.UI.Controls.WebView()
         Me.m_tlp.SuspendLayout()
         Me.m_ts1.SuspendLayout()
+        CType(Me.m_browser, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_tlp
         '
         resources.ApplyResources(Me.m_tlp, "m_tlp")
-        Me.m_tlp.Controls.Add(Me.m_browser, 0, 1)
         Me.m_tlp.Controls.Add(Me.m_ts1, 0, 0)
+        Me.m_tlp.Controls.Add(Me.m_browser, 0, 1)
         Me.m_tlp.Name = "m_tlp"
-        '
-        'm_browser
-        '
-        resources.ApplyResources(Me.m_browser, "m_browser")
-        Me.m_browser.Name = "m_browser"
-        Me.m_browser.ScriptErrorsSuppressed = True
         '
         'm_ts1
         '
@@ -91,6 +87,12 @@ Partial Class frmStartPanel
         Me.m_tsbnEcopathSite.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnEcopathSite, "m_tsbnEcopathSite")
         Me.m_tsbnEcopathSite.Name = "m_tsbnEcopathSite"
+        '
+        'm_tsbnEcobase
+        '
+        Me.m_tsbnEcobase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnEcobase, "m_tsbnEcobase")
+        Me.m_tsbnEcobase.Name = "m_tsbnEcobase"
         '
         'm_tsbnFacebook
         '
@@ -137,11 +139,10 @@ Partial Class frmStartPanel
         Me.m_sep2.Name = "m_sep2"
         resources.ApplyResources(Me.m_sep2, "m_sep2")
         '
-        'm_tsbnEcobase
+        'm_browser
         '
-        Me.m_tsbnEcobase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnEcobase, "m_tsbnEcobase")
-        Me.m_tsbnEcobase.Name = "m_tsbnEcobase"
+        resources.ApplyResources(Me.m_browser, "m_browser")
+        Me.m_browser.Name = "m_browser"
         '
         'frmStartPanel
         '
@@ -157,11 +158,10 @@ Partial Class frmStartPanel
         Me.m_tlp.PerformLayout()
         Me.m_ts1.ResumeLayout(False)
         Me.m_ts1.PerformLayout()
+        CType(Me.m_browser, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-
-    Private WithEvents m_browser As System.Windows.Forms.WebBrowser
     Private WithEvents m_ts1 As cEwEToolstrip
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
@@ -175,4 +175,5 @@ Partial Class frmStartPanel
     Private WithEvents m_tsbnBetaFeedback As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnFacebook As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnEcobase As ToolStripButton
+    Private WithEvents m_browser As Microsoft.Toolkit.Forms.UI.Controls.WebView
 End Class
