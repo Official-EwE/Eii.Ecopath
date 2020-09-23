@@ -118,8 +118,7 @@ Public Class frmStartPanel
         Me.m_tsbnBugTracker.Image = SharedResources.bug
         Me.m_tsbnBetaFeedback.Image = My.Resources.logo_sm
 
-        AddHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
-        AddHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
+        AddHandler Me.m_browser.NavigationCompleted, AddressOf OnUpdateNav
 
         Me.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.HomeHS.GetHicon)
 
@@ -133,8 +132,7 @@ Public Class frmStartPanel
 
         Me.Icon.Dispose()
 
-        RemoveHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
-        RemoveHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
+        RemoveHandler Me.m_browser.NavigationCompleted, AddressOf OnUpdateNav
 
         MyBase.OnFormClosed(e)
 
@@ -244,7 +242,7 @@ Public Class frmStartPanel
     End Sub
 
     Private Sub OnBrowserNavigating(sender As Object, e As System.Windows.Forms.WebBrowserNavigatingEventArgs) _
-        Handles m_browser.Navigating
+
 
         ' Overridden to intercept ewe-ecobase clicks
         Try

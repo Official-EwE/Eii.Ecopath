@@ -14,7 +14,7 @@
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
 
-#if Compile64Bit == 0
+#if Compile64Bit == 1
   #define MyAppName "Ecopath with Ecosim SharedArenas"
   #define MyAppVersion "6.7.0 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
@@ -36,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17033
+  VersionInfoVersion=6.7.0.17090
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -120,6 +120,7 @@ Source: "{#DefRoot}{#DefSrc}\EwEValueChainPlugin.dll"; DestDir: "{app}\Plugins";
 Source: "{#DefRoot}{#DefSrc}\EwEWoRMSPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\worms
 Source: "{#DefRoot}{#DefSrc}\Interop.JRO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Ionic.Zip.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\Microsoft.Toolkit.Forms.UI.Controls.WebView.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Microsoft.GLEE.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Microsoft.Office.Interop.Access.Dao.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwEAquamapsEnvDataImporterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\aquamaps
@@ -452,11 +453,11 @@ end;
 
 procedure InitializeWizard();
 begin
-    if not IsDotNetDetected('v4.5', 0) then 
+    if not IsDotNetDetected('v4.7', 0) then 
     begin
         // 4.0 full: https://go.microsoft.com/fwlink/?LinkId=181013
         // 4.5 full: https://go.microsoft.com/fwlink/?LinkId=225702
-        idpAddFile('http://go.microsoft.com/fwlink/?LinkId=225702', ExpandConstant('{tmp}\NetFrameworkInstaller.exe'));
+        idpAddFile('http://go.microsoft.com/fwlink/?LinkId=863262', ExpandConstant('{tmp}\NetFrameworkInstaller.exe'));
         idpDownloadAfter(wpReady);
      end
 end;
