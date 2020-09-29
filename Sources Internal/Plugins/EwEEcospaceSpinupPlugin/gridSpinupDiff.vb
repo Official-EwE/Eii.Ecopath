@@ -26,6 +26,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
@@ -67,7 +68,8 @@ Public Class gridSpinupDiff
         Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         'Column headers
-        Dim headercell As cEwEColumnHeaderCell
+        Dim headercell As cEwEColumnHeaderCell = Nothing
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
 
         headercell = New cEwEColumnHeaderCell("B(0)")
         Me(0, eColumnTypes.B0) = headercell
@@ -91,10 +93,10 @@ Public Class gridSpinupDiff
                 Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
             End If
 
-            Me(iRow, eColumnTypes.B0) = New cEwECell(0.0, GetType(Single))
-            Me(iRow, eColumnTypes.Bt) = New cEwECell(0.0, GetType(Single))
-            Me(iRow, eColumnTypes.BtRel) = New cEwECell(0.0, GetType(Single))
-            Me(iRow, eColumnTypes.BtDiff) = New cEwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.B0) = New cEwECell(0.0, GetType(Single), style)
+            Me(iRow, eColumnTypes.Bt) = New cEwECell(0.0, GetType(Single), style)
+            Me(iRow, eColumnTypes.BtRel) = New cEwECell(0.0, GetType(Single), style)
+            Me(iRow, eColumnTypes.BtDiff) = New cEwECell(0.0, GetType(Single), style)
         Next
 
         Me.FixedColumns = 1
