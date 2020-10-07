@@ -67,7 +67,9 @@ Namespace Ecosim
                 Dim arenas As cEcosimArena() = Me.m_man.Arenas(Me.SelectedGroup.Index)
                 n = arenas.Count() + 1
             End If
-            Me.Redim(n, n)
+
+            ' Also account for 'sum to one' row
+            Me.Redim(n + 1, n)
 
             Me.FixedColumns = 1
 
@@ -91,22 +93,31 @@ Namespace Ecosim
                 Me(0, col) = New cPropertyColumnHeaderCell(Me.PropertyManager, pred, eVarNameFlags.Index)
             Next
 
-            For row As Integer = 1 To Me.RowsCount - 1
+            For row As Integer = 1 To Me.RowsCount - 2
                 Dim ar As cEcosimArena = arenas(row - 1)
                 Dim i As Integer = ar.Index
                 Me(row, 0) = New cEwERowHeaderCell(cStringUtils.Localize(My.Resources.ECOSIM_APPLYARENA_HEADER, i))
             Next
+            Me(Me.RowsCount - 1, 0) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
 
-            For row As Integer = 1 To Me.RowsCount - 1
-                Dim ar As cEcosimArena = arenas(row - 1)
-                Me(row, 0).Tag = ar
-                For col As Integer = 1 To Me.ColumnsCount - 1
+            For col As Integer = 1 To Me.ColumnsCount - 1
+                Dim props As New List(Of cProperty)
+                For row As Integer = 1 To Me.RowsCount - 2
+                    Dim ar As cEcosimArena = arenas(row - 1)
+                    Me(row, 0).Tag = ar
                     Dim ar2 As cEcosimArena = arenas(col - 1)
                     Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(ar2.Pred)
-                    Dim cell As New cPropertyCell(Me.PropertyManager, ar, eVarNameFlags.EcosimArenaShare, pred)
+                    Dim prop As cProperty = Me.PropertyManager.GetProperty(ar, eVarNameFlags.EcosimArenaShare, pred)
+                    Dim cell As New cPropertyCell(prop)
                     cell.SuppressZero = True
                     Me(row, col) = cell
+
+                    props.Add(prop)
                 Next
+
+                Dim op As New cMultiOperation(cMultiOperation.eOperatorType.Sum, props.ToArray())
+                Dim sum As cFormulaProperty = Me.Formula(op)
+                Me(Me.RowsCount - 1, col) = New cPropertyCell(sum)
             Next
 
             Me.Columns(0).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
