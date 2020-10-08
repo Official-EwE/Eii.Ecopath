@@ -510,6 +510,7 @@ Root: "HKCR"; Subkey: "ewefile\DefaultIcon\"; ValueType: string; ValueData: "{ap
 ; ewefile types
 Root: "HKCR"; Subkey: ".ewemdb\"; ValueType: string; ValueData: "ewefile"; Flags: uninsdeletekey; Tasks: associatefiles
 Root: "HKCR"; Subkey: ".eweaccdb\"; ValueType: string; ValueData: "ewefile"; Flags: uninsdeletekey; Tasks: associatefiles
+Root: "HKCR"; Subkey: ".eweaccdb\ShellNew"; ValueType: string; ValueData: "NullFile"; Flags: uninsdeletekey; Tasks: associatefiles
 Root: "HKCR"; Subkey: ".eiixml\"; ValueType: string; ValueData: "ewefile"; Flags: uninsdeletekey; Tasks: associatefiles
 ; EcoBase URL protocol handler
 Root: "HKCR"; Subkey: "ewe-ecobase\"; ValueType: string; ValueData: "URL:ewe-ecobase"; Flags: uninsdeletekey; Tasks: associatefiles
