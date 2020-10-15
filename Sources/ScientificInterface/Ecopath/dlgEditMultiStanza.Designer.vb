@@ -67,12 +67,16 @@ Namespace Ecopath
             Me.m_lbAge0Numbers = New System.Windows.Forms.Label()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_grid = New ScientificInterface.gridEditMultiStanza()
+            Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plButtons = New System.Windows.Forms.Panel()
             CType(Me.m_splitMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitMain.Panel1.SuspendLayout()
             Me.m_splitMain.Panel2.SuspendLayout()
             Me.m_splitMain.SuspendLayout()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_plControls.SuspendLayout()
+            Me.m_tlpLayout.SuspendLayout()
+            Me.m_plButtons.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnCalculate
@@ -291,16 +295,28 @@ Namespace Ecopath
             Me.m_grid.TabStop = True
             Me.m_grid.UIContext = Nothing
             '
+            'm_tlpLayout
+            '
+            resources.ApplyResources(Me.m_tlpLayout, "m_tlpLayout")
+            Me.m_tlpLayout.Controls.Add(Me.m_plButtons, 0, 1)
+            Me.m_tlpLayout.Controls.Add(Me.m_splitMain, 0, 0)
+            Me.m_tlpLayout.Name = "m_tlpLayout"
+            '
+            'm_plButtons
+            '
+            resources.ApplyResources(Me.m_plButtons, "m_plButtons")
+            Me.m_plButtons.Controls.Add(Me.m_btnCancel)
+            Me.m_plButtons.Controls.Add(Me.m_btnCalculate)
+            Me.m_plButtons.Controls.Add(Me.m_btnOK)
+            Me.m_plButtons.Name = "m_plButtons"
+            '
             'EditMultiStanza
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_splitMain)
-            Me.Controls.Add(Me.m_btnCancel)
-            Me.Controls.Add(Me.m_btnOK)
-            Me.Controls.Add(Me.m_btnCalculate)
+            Me.Controls.Add(Me.m_tlpLayout)
             Me.Name = "EditMultiStanza"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
@@ -312,6 +328,8 @@ Namespace Ecopath
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.m_plControls.ResumeLayout(False)
             Me.m_plControls.PerformLayout()
+            Me.m_tlpLayout.ResumeLayout(False)
+            Me.m_plButtons.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -341,6 +359,8 @@ Namespace Ecopath
         Private WithEvents m_plControls As Panel
         Friend WithEvents m_lbAge0Numbers As Label
         Friend WithEvents Label1 As Label
+        Private WithEvents m_tlpLayout As TableLayoutPanel
+        Private WithEvents m_plButtons As Panel
     End Class
 
 End Namespace

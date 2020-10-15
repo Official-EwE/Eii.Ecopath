@@ -43,7 +43,7 @@ Imports System.Runtime.InteropServices
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("6fbdd00f-0a48-4601-b883-8f21c52c101f")> 
+<Assembly: Guid("6fbdd00f-0a48-4601-b883-8f21c52c101f")>
 
 
 '
@@ -56,5 +56,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.6.4.17120")> 
-<Assembly: AssemblyFileVersion("6.6.4.17120")> 
+<Assembly: AssemblyVersion("6.6.4.17120")>
+<Assembly: AssemblyFileVersion("6.6.4.17120")>
