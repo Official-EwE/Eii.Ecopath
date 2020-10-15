@@ -705,6 +705,13 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set the name to identify a core instance with.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Name As String = ""
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get the Core assembly version, formatted as a string.
     ''' </summary>
     ''' <param name="bIncludeBitness">Inlcude 32 or 64 bitness in version string.</param>
