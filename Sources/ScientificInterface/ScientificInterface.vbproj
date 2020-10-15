@@ -2178,6 +2178,14 @@
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
+      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
+      <Name>EwEEcospaceSpinupPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEOceanVizPlugin\EwEOceanVizPlugin.vbproj">
+      <Project>{07714f10-f973-4c8e-968a-d1a1774604fc}</Project>
+      <Name>EwEOceanVizPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin</Name>

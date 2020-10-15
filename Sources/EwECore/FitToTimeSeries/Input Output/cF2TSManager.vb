@@ -205,11 +205,11 @@ Public Class cF2TSManager
 
     End Sub
 
-    Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, _
-                       ByVal runStartedCallback As RunStartedDelegate, _
-                       ByVal runStepCallback As RunStepDelegate, _
-                       ByVal runStoppedCallback As RunStoppedDelegate, _
-                       ByVal RunModelCallBack As RunModelDelegate)
+    Public Sub Connect(syncObject As System.ComponentModel.ISynchronizeInvoke,
+                        runStartedCallback As RunStartedDelegate,
+                        runStepCallback As RunStepDelegate,
+                        runStoppedCallback As RunStoppedDelegate,
+                        RunModelCallBack As RunModelDelegate)
 
         Debug.Assert(m_runstartedHandler = Nothing, "Manager already connected?")
 
@@ -226,14 +226,6 @@ Public Class cF2TSManager
 
     End Sub
 
-    <Obsolete("Use parameterless Disconnect() instead")> _
-    Public Sub Disconnect(ByVal runStartedCallback As RunStartedDelegate, _
-                          ByVal runStepCallback As RunStepDelegate, _
-                          ByVal runStoppedCallback As RunStoppedDelegate, _
-                          ByVal RunModelCallBack As RunModelDelegate)
-        Me.Disconnect()
-    End Sub
-
     Public Sub Disconnect()
         Me.Clear()
     End Sub
@@ -244,7 +236,7 @@ Public Class cF2TSManager
     ''' Stores the values in the manager back to the underlying data structures.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function Update(ByVal DataType As EwEUtils.Core.eDataTypes) As Boolean Implements SearchObjectives.ISearchObjective.Update
+    Public Function Update(DataType As EwEUtils.Core.eDataTypes) As Boolean Implements SearchObjectives.ISearchObjective.Update
 
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
@@ -310,7 +302,7 @@ Public Class cF2TSManager
     ''' <remarks>
     ''' This code encapsulates working with ecosim inlinks, ilink and jlink variables.
     ''' </remarks>
-    Public Function isPredPrey(ByVal iPred As Integer, ByVal iPrey As Integer) As Boolean
+    Public Function isPredPrey(iPred As Integer, iPrey As Integer) As Boolean
         For i As Integer = 1 To Me.m_ESData.Narena
             If Me.m_ESData.Iarena(i) = iPrey And Me.m_ESData.Jarena(i) = iPred Then Return True
         Next
@@ -327,7 +319,7 @@ Public Class cF2TSManager
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.F2TSVulnerabilitySearch))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.F2TSVulnerabilitySearch, value)
         End Set
     End Property
@@ -336,7 +328,7 @@ Public Class cF2TSManager
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.F2TSCatchAnomaly))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.F2TSCatchAnomaly, value)
         End Set
     End Property
@@ -345,7 +337,7 @@ Public Class cF2TSManager
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.F2TSAnomalySearch))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.F2TSAnomalySearch, value)
         End Set
     End Property
@@ -354,7 +346,7 @@ Public Class cF2TSManager
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.F2TSUseDefaultV))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.F2TSUseDefaultV, value)
         End Set
     End Property
@@ -363,7 +355,7 @@ Public Class cF2TSManager
         Get
             Return CInt(GetVariable(eVarNameFlags.F2TSCatchAnomalySearchShapeNumber))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.F2TSCatchAnomalySearchShapeNumber, value)
         End Set
     End Property
@@ -372,7 +364,7 @@ Public Class cF2TSManager
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.F2TSFirstYear))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.F2TSFirstYear, value)
         End Set
     End Property
@@ -381,7 +373,7 @@ Public Class cF2TSManager
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.F2TSLastYear))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.F2TSLastYear, value)
         End Set
     End Property
@@ -390,7 +382,7 @@ Public Class cF2TSManager
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.F2TSVulnerabilityVariance))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.F2TSVulnerabilityVariance, value)
         End Set
     End Property
@@ -399,7 +391,7 @@ Public Class cF2TSManager
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.F2TSPPVariance))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.F2TSPPVariance, value)
         End Set
     End Property
@@ -408,7 +400,7 @@ Public Class cF2TSManager
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.F2TSNumSplinePoints))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.F2TSNumSplinePoints, value)
         End Set
     End Property
@@ -424,7 +416,7 @@ Public Class cF2TSManager
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.F2TSNAICData))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.F2TSNAICData, value)
         End Set
     End Property
@@ -448,7 +440,7 @@ Public Class cF2TSManager
             Next
             Return a2iVulnerabilityBlocks
         End Get
-        Set(ByVal value(,) As Integer)
+        Set(value(,) As Integer)
             ' Copy pred/prey array into inlinks array
             Dim aiVblockCode(Me.m_ESData.Narena) As Integer
             Dim iLink As Integer = 1
@@ -472,7 +464,7 @@ Public Class cF2TSManager
         Get
             Return m_model.nBlockCodes
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             m_model.nBlockCodes = value
         End Set
     End Property
@@ -535,7 +527,7 @@ Public Class cF2TSManager
     ''' Block the calling thread until the model has finished running
     ''' </summary>
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
-    Public Function Wait(Optional ByVal WaitTimeInMilSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
+    Public Function Wait(Optional WaitTimeInMilSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
         Return Me.m_nonBlockingWait.Wait(WaitTimeInMilSec)
     End Function
 
@@ -556,7 +548,7 @@ Public Class cF2TSManager
         End If
 
         'jb this should never happen but if it does we better tell the interface why this could not be run
-        m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_NO_TS, _
+        m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_NO_TS,
                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
 
         Return False
@@ -567,7 +559,7 @@ Public Class cF2TSManager
     ''' Stops a running F2TS model
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.StopRun
+    Public Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.StopRun
         Dim result As Boolean = True
         Try
             'the model will keep running until it hits the StopRun flag
@@ -610,8 +602,8 @@ Public Class cF2TSManager
     ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunSensitivitySS2VByPredPrey(Optional ByVal bRunSilent As Boolean = False,
-                                                 Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
+    Public Function RunSensitivitySS2VByPredPrey(Optional bRunSilent As Boolean = False,
+                                                 Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
         If Not CanRun() Then Return False
@@ -644,7 +636,7 @@ Public Class cF2TSManager
 
             cLog.Write(ex)
             ' ToDo: globalize this
-            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered, _
+            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered,
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
             '    Me.ReleaseWait()
@@ -667,8 +659,8 @@ Public Class cF2TSManager
     ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunSensitivitySS2VByPredator(Optional ByVal bRunSilent As Boolean = False,
-                                                 Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
+    Public Function RunSensitivitySS2VByPredator(Optional bRunSilent As Boolean = False,
+                                                 Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
         If Not CanRun() Then Return False
@@ -699,7 +691,7 @@ Public Class cF2TSManager
 
             cLog.Write(ex)
             ' ToDo: globalize this
-            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
+            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered,
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
             '    Me.ReleaseWait()
@@ -720,8 +712,8 @@ Public Class cF2TSManager
     ''' the search only runs threaded if a <see cref="System.ComponentModel.ISynchronizeInvoke">sync object</see> has been
     ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
-    Public Function RunSearch(Optional ByVal bRunSilent As Boolean = False, _
-                              Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
+    Public Function RunSearch(Optional bRunSilent As Boolean = False,
+                              Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         Dim iPPYear1 As Integer = 0
         Dim iPPYear2 As Integer = 0
@@ -762,7 +754,7 @@ Public Class cF2TSManager
 
     End Function
 
-    Public Function getAIC(ByVal nPars As Integer, ByVal nData As Integer, ByVal ss As Single) As Single
+    Public Function getAIC(nPars As Integer, nData As Integer, ss As Single) As Single
         Try
             If (Me.m_model.Data Is Nothing) Then Return 0
 
@@ -786,7 +778,7 @@ Public Class cF2TSManager
     End Function
 
 
-    Public Sub setNBlocksFromSensitivity(ByVal nBlocks As Integer)
+    Public Sub setNBlocksFromSensitivity(nBlocks As Integer)
         Me.m_model.setNBlocksFromSensitivity(nBlocks)
     End Sub
 
@@ -820,7 +812,7 @@ Public Class cF2TSManager
             sw = New StreamWriter(strFilename, False)
         Catch ex As Exception
             ' ToDo: globalize this
-            msg = New cMessage(cStringUtils.Localize("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message), _
+            msg = New cMessage(cStringUtils.Localize("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message),
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             Me.m_core.Messages.SendMessage(msg)
             Return False
@@ -848,7 +840,7 @@ Public Class cF2TSManager
         sw.Close()
 
         ' ToDo: globalize this
-        msg = New cMessage(cStringUtils.Localize("Saved sensitivity CSV file {0}.", strFilename), _
+        msg = New cMessage(cStringUtils.Localize("Saved sensitivity CSV file {0}.", strFilename),
                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strFilename)
         Me.m_core.Messages.SendMessage(msg)
@@ -870,7 +862,7 @@ Public Class cF2TSManager
     ''' </summary>
     ''' <param name="runType"></param>
     ''' <remarks>This handler is passed to the model during the contruction of the manager via cF2TSModel.Init()</remarks>
-    Private Sub RunStartedCallback(ByVal runType As eRunType, ByVal nSteps As Integer)
+    Private Sub RunStartedCallback(runType As eRunType, nSteps As Integer)
 
         ' Clear previous results
         Me.m_results = Nothing
@@ -936,7 +928,7 @@ Public Class cF2TSManager
     ''' </summary>
     ''' <param name="runType"></param>
     ''' <remarks>This handler is passed to the model during the contruction of the manager via cF2TSModel.Init()</remarks>
-    Private Sub RunStoppedCallback(ByVal runType As eRunType)
+    Private Sub RunStoppedCallback(runType As eRunType)
 
         Try
             'keep a reference
@@ -970,7 +962,7 @@ Public Class cF2TSManager
 
     End Sub
 
-    Private Sub ThreadSafeRunStopped(ByVal runType As eRunType)
+    Private Sub ThreadSafeRunStopped(runType As eRunType)
 
         Try
             m_core.VulnerabilitiesChanged()
@@ -1006,7 +998,9 @@ Public Class cF2TSManager
 
     End Sub
 
-    Private Sub RunModelCallBack(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalInterationSteps As Integer)
+    Private Sub RunModelCallBack(runType As eRunType, iCurrentIterationStep As Integer, nTotalInterationSteps As Integer)
+
+        If (Me.m_runModelHandler Is Nothing) Then Return
 
         Try
             'System.Console.WriteLine("F2TS: Ecosim called.")
@@ -1033,7 +1027,7 @@ Public Class cF2TSManager
     ''' Delegate handler for Model to add a message to the managers list of messages
     ''' </summary>
     ''' <param name="msg"></param>
-    Private Sub AddMessageCallback(ByVal msg As cMessage)
+    Private Sub AddMessageCallback(msg As cMessage)
         Try
             ' Add the message to the list of messages
             Me.m_lstMessages.Add(msg)
@@ -1047,7 +1041,7 @@ Public Class cF2TSManager
     ''' Delegate handler for Model to add a message to the managers list of messages
     ''' </summary>
     ''' <param name="msg"></param>
-    Private Sub SendMessageCallback(ByVal msg As cMessage)
+    Private Sub SendMessageCallback(msg As cMessage)
         Try
             Dim objs(0) As Object
 
@@ -1073,7 +1067,7 @@ Public Class cF2TSManager
 
     End Sub
 
-    Private Sub SendMessage(ByVal msg As cMessage)
+    Private Sub SendMessage(msg As cMessage)
         Try
             m_core.Messages.SendMessage(msg)
         Catch ex As Exception
@@ -1086,13 +1080,13 @@ Public Class cF2TSManager
 
 #Region "ISearchObjective implementation"
 
-    Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+    Public ReadOnly Property FleetObjectives(iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
         Get
             Return Me.m_searchObjective.FleetObjectives(iFleet)
         End Get
     End Property
 
-    Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+    Public ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
         Get
             Return Me.m_searchObjective.GroupObjectives(iGroup)
         End Get

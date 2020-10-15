@@ -1,9 +1,11 @@
 Dear XXXXXXXXXXXX
 
-Here are the links to download the latest installer for EwE Pro (version 6.6.2.16924):
+Many thanks for your purchase of Ecopath with Ecosim (EwE) Pro license - personal researcher edition. Your efforts greatly help in maintaining and extending the approach.
 
-- 32-bit: https://www.dropbox.com/s/xi84wsz3jtirfqr/EwE6.6.2_16924_pro_32-bit.exe?dl=0
-- 64-bit: https://www.dropbox.com/s/tbbk635iktkrewk/EwE6.6.2_16924_pro_64-bit.exe?dl=0
+Attached please find the license file for your purchase. Please proceed to download the latest installer for EwE Pro (version 6.6.4.17084) here:
+
+- 32-bit: https://www.dropbox.com/s/e8gm0ii0t9j4uq0/EwE6.6.4_17084-32bit_setup-beta.exe?dl=0
+- 64-bit: https://www.dropbox.com/s/35n6ykmrbocd7nx/EwE6.6.4_17084-64bit_setup-beta.exe?dl=0
 
 Installation and activation instructions:
 
@@ -13,9 +15,10 @@ Installation and activation instructions:
 - Run the installer to install EwE;
 - EwE will prompt for a license file when needed. Browse to the license file that you saved earlier, and EwE will be registered.
 
-Please contact us any time for technical assistance at eweusers@gmail.com.
+Attached also find a quick-reference guide for the spatial temporal data framework.
 
 Best wishes,
+
 Jeroen Steenbeek
 EwE development coordinator
 Ecopath International Initiative 

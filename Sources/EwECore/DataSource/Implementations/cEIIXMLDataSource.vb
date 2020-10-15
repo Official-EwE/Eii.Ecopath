@@ -2840,7 +2840,7 @@ Public Class cEIIXMLDataSource
     ''' Save an Ecopath database to a file
     ''' </summary>
     ''' <param name="db"></param>
-    ''' <param name="strFile"></param>
+    ''' <param name="strFile">The file to save to</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveFromDB(db As cEwEDatabase, strFile As String) As Boolean
