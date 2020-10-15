@@ -259,6 +259,8 @@ Namespace Core
         ''' -----------------------------------------------------------------------
         Private Shared Function AcquireWriterLock() As Boolean
             Try
+                If VerboseLevel = eVerboseLevel.Disabled Then Return False
+
                 'Wait 10 seconds for a lock
                 cLog.m_lock.AcquireWriterLock(10000)
                 Return True
