@@ -3713,22 +3713,9 @@ Namespace DataSources
                 ecosimDS.SystemRecovery = CSng(reader("SystemRecovery"))
                 ecosimDS.Discount = CSng(reader("Discount"))
 
-                'ecosimDS.NudgeStart = CSng(reader("NudgeStart"))
-                'ecosimDS.NudgeEnd = CSng(reader("NudgeEnd"))
-                'ecosimDS.NudgeFactor = CSng(reader("NudgeFactor"))
-                'ecosimDS.DoInteg = CSng(reader("DoInteg"))
-                'ecosimDS.chkNudge = CBool(reader("UseNudge"))
-
-                'drow("NMed") = Me.FixValue(reader("NMed"))                        ' DISCONTINUED
-                'drow("NMedPoints") = Me.FixValue(reader("NMedPoints"))            ' DISCONTINUED
-
                 ecosimDS.NutBaseFreeProp = CSng(reader("NutBaseFreeProp"))
                 ecosimDS.NutPBmax = CSng(reader("NutPBmax"))
-
-                'ecosimDS.UseVarPQ = CBool(reader("UseVarPQ"))
-                'VC090403: the var P/Q was being set to true by default, It shouldn't be, this should be done in interface only
                 ecosimDS.UseVarPQ = False
-
                 ecosimDS.ForagingTimeLowerLimit = CSng(Me.m_db.ReadSafe(reader, "ForagingTimeLowerLimit", 0.01))
 
             Catch ex As Exception
@@ -4583,7 +4570,6 @@ Namespace DataSources
                     mseDS.CatchFleetBounds(iFleet).Upper = CSng(Me.m_db.ReadSafe(reader, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper))
                     mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.m_db.ReadSafe(reader, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
                     mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.m_db.ReadSafe(reader, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
-                    'mseDS.MSYEvaluateFleet(iFleet) = (CInt(Me.m_db.ReadSafe(reader, "MSYEvaluateFleet", True)) = 1)
 
                     LoadFishingRateShape(iShapeID, iFleet)
 
