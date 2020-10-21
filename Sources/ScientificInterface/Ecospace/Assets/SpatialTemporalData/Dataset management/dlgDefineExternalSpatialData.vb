@@ -147,6 +147,15 @@ Namespace Ecospace.Controls
 
 #Region " Event handlers "
 
+        Private Sub OnFormatTemplate(sender As Object, e As ListControlConvertEventArgs) _
+            Handles m_cmbTemplates.Format
+
+            If (TypeOf e.ListItem Is ISpatialDataSet) Then
+                e.Value = DirectCast(e.ListItem, ISpatialDataSet).CustomName
+            End If
+
+        End Sub
+
         Private Sub OnCreateDataset(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCreate.Click
 
