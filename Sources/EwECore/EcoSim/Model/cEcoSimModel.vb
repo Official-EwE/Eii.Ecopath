@@ -107,6 +107,9 @@ Namespace Ecosim
         Private m_publisher As New cMessagePublisher
         Private m_Ecofunctions As cEcoFunctions
 
+        Private m_EnviroResponseManager As cEcosimEnviroResponseManager
+        Private m_MortalityResponseManager As cEcosimMortalityResponseManager
+
         ' Private Ntimes As Integer
         Private StepsPerYear As Integer
         Private TimeNow As Integer
@@ -339,7 +342,7 @@ Namespace Ecosim
                 RemoveImportFromEcosim()
 
                 Calc_nvar()
-                'jb move to after calcmo
+
                 CalcEatenOfBy()
                 CalcStartEatenOfBy()
 
@@ -350,10 +353,6 @@ Namespace Ecosim
                 DefaultMigrationAndToDetritus()
                 CalcMo()
                 CalcBaseAdditiveMort()
-
-
-                'CalcEatenOfBy()
-                'CalcStartEatenOfBy()
 
 
                 InitStanza()
@@ -590,6 +589,29 @@ Namespace Ecosim
                 Me.m_pluginManager = pm
             End Set
         End Property
+
+
+        Public Property EcosimEnviroResponseManager() As cEcosimEnviroResponseManager
+            Get
+                Return Me.m_EnviroResponseManager
+            End Get
+            Set(ByVal manager As cEcosimEnviroResponseManager)
+                Me.m_EnviroResponseManager = manager
+            End Set
+        End Property
+
+
+        Public Property EcosimMortalityResponseManager() As cEcosimMortalityResponseManager
+            Get
+                Return Me.m_MortalityResponseManager
+            End Get
+            Set(ByVal manager As cEcosimMortalityResponseManager)
+                Me.m_MortalityResponseManager = manager
+            End Set
+        End Property
+
+
+
 
         Public ReadOnly Property ConTracer() As cContaminantTracer
             Get
@@ -2900,16 +2922,25 @@ Namespace Ecosim
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
 
+                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        ''before merge
+                        'If StartEatenOf(i) > 0 Then
+                        '    PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
+                        'Else
+                        '    PredMult = 1
+                        'End If
+                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
                         If StartEatenOf(i) > 0 Then
 
-                            '    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-
-                            '    'jb org formualtion
-                            '    ' PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
-                            '    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-
+                            'jb org formualtion
+                            ' PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                            '    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            '    ''From Spreadsheet
+                            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            ''From Spreadsheet
                             m_Data.moTot(i) = m_Data.moMax(i) / (1 + m_Data.Qh(i) * (m_Data.Eatenof(i) / StartEatenOf(i)))
                             ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -2927,19 +2958,19 @@ Namespace Ecosim
                             m_Data.moTot(i) = m_Data.mo(i)
                         End If
 
-                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.moTot(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                        'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.moTot(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        '27-Nov-2019 Original loss equation not including non additive mortality
+                        'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
                         'If m_Data.PaddP(i) < 1 Then 'And (MoPredRatio < 0.8) 
                         '    Dim orgLoss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
                         '    Debug.Print(m_Data.loss(i).ToString + ", " + orgLoss.ToString + ", " + m_Data.moMax(i).ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
                         'End If
 
-
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        '27-Nov-2019 Original loss equation not including non additive mortality
-                        'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
@@ -3347,7 +3378,6 @@ Namespace Ecosim
                 Next ist
                 m_stanza.SplitAlpha(isp, m_stanza.Age2(isp, m_stanza.Nstanza(isp))) = m_stanza.SplitAlpha(isp, m_stanza.Age2(isp, m_stanza.Nstanza(isp)) - 1)
             Next isp
-
             'initialize splitgroup flux rates among stanzas for ecospace
             For isp = 1 To m_stanza.Nsplit
                 For ist = 2 To m_stanza.Nstanza(isp)
@@ -3355,8 +3385,6 @@ Namespace Ecosim
                 Next ist
             Next isp
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Debugging 
             'cLog.WriteMatrixToFile("N At Age EwE6.csv", m_stanza.NageS, "EwE6")
             'cLog.WriteMatrixToFile("W At Age EwE6.csv", m_stanza.WageS, "EwE6")
             'cLog.WriteMatrixToFile("SplitAlpha 6.csv", m_stanza.SplitAlpha, "EwE6")
@@ -3368,7 +3396,6 @@ Namespace Ecosim
             'cLog.WriteArrayToFile("Pred 6.csv", m_Data.pred, "EwE6")
             'cLog.WriteMatrixToFile("NumSplit 6.csv", m_stanza.NumSplit, "EwE6")
             'cLog.WriteMatrixToFile("EggsSplit 6.csv", m_stanza.EggsSplit, "EwE6")
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         End Sub
 
@@ -3641,6 +3668,7 @@ Namespace Ecosim
 
 
         Public Sub CalcBaseAdditiveMort()
+
             Dim i As Integer
 
             For i = 1 To m_EPData.NumGroups
@@ -3664,6 +3692,19 @@ Namespace Ecosim
                 End If
 
             Next i
+
+            'Dim i As Integer
+
+            'For i = 1 To m_EPData.NumGroups
+
+            '    m_Data.MoPredBase(i) = StartEatenOf(i) / m_Data.StartBiomass(i)
+            '    If m_Data.PhHalf(i) > 0 Then
+            '        m_Data.PhHalf(i) = 1 / m_Data.PaddP(i) - 1
+            '    Else
+            '        m_Data.PhHalf(i) = 1
+            '    End If
+
+            'Next i
 
         End Sub
 
@@ -3910,8 +3951,6 @@ Namespace Ecosim
             ReDim EatenOfAvg(nGroups)
             ReDim PredAvg(nGroups)
             ReDim fCatch0(nGroups)
-
-
 
         End Sub
 
@@ -4555,14 +4594,10 @@ Namespace Ecosim
             ReDim m_Data.moMax(nGroups)
             ReDim m_Data.Qh(nGroups)
 
-
             'default from frmOptF.Form_Load()
             For igrp As Integer = 1 To nGroups
                 m_search.FLimit(igrp) = 1000
             Next
-
-
-
 
             'ReDim GearIncludeInEquil(m_EPData.NumFleet)
             ''vc What if no fishery? If mEPData.NumGear < 1 Then mEPData.NumGear = 1
@@ -4762,68 +4797,12 @@ Namespace Ecosim
         ''' <param name="i">i Index</param>
         ''' <param name="j">j Index</param>
         ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
-        Public Sub ApplyAVmodifiersXX(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
-            Dim K As Integer, Mult As Single
-
-            Me.ApplyEnvironmentalResponse(A, j, iTime)
-
-            For K = 1 To cMediationDataStructures.MAXFUNCTIONS
-
-                If m_Data.BioMedData.FunctionNumber(i, j, K) <= 0 Then Exit Sub
-
-                If m_Data.BioMedData.IsMedFunction(i, j, K) Then
-                    Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
-                    'Debug.Assert(Mult = 1)
-                Else
-                    If UseTime = True Then
-                        Mult = m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K))
-                    Else
-                        Mult = 1
-                    End If
-                End If
-
-                Select Case m_Data.BioMedData.ApplicationType(i, j, K)
-                    Case eForcingFunctionApplication.SearchRate,
-                         eForcingFunctionApplication.ProductionRate
-                        A = A * Mult
-                    Case eForcingFunctionApplication.Vulnerability
-                        v = v * Mult
-                    Case eForcingFunctionApplication.ArenaArea
-                        A = CSng(A / (Mult + 0.0000000001))
-                    Case eForcingFunctionApplication.VulAndArea
-                        A = CSng(A / (Mult + 0.0000000001))
-                        v = v * Mult
-                    Case eForcingFunctionApplication.Import
-                        A = A * Mult
-                End Select
-
-            Next
-
-        End Sub
-
-        '***********************
-        'THIS FUNCTION IS COPIED IN cSpaceSolver.vb
-        'Changes here will NOT copy over to there
-        '***********************
-        ''' <summary>
-        ''' Apply the multi function forcing or mediation functions to 'a'(searchrate) and 'v'(vulnerability)
-        ''' </summary>
-        ''' <param name="A">SearchRate to modify</param>
-        ''' <param name="v">Vulnerability to modify</param>
-        ''' <param name="i">i Index</param>
-        ''' <param name="j">j Index</param>
-        ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
         Public Sub ApplyAVmodifiers(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByRef Mo As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
             Dim K As Integer, Mult As Single
 
             Me.ApplyEnvironmentalResponse(A, j, iTime)
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'HACK WARNING
-            'For debugging set all the forcing functions to MortOther!!!
-            'TempDebugMortOther(i, j)
-            'HACK
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            Me.ApplyMortalityResponse(Mo, j, iTime)
 
             For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 
@@ -4892,7 +4871,8 @@ Namespace Ecosim
 
         Private Sub ApplyEnvironmentalResponse(ByRef A As Single, iPredIndex As Integer, ByVal iTimeStep As Integer)
 
-            For Each ResponseFunction As IEnviroInputData In Me.m_Data.lstEnviroInputData
+            For iRes As Integer = 1 To Me.EcosimEnviroResponseManager.nInputData  ' As IEnviroInputData In Me.EcosimEnviroResponseManager.InputData
+                Dim ResponseFunction As IEnviroInputData = Me.EcosimEnviroResponseManager.InputData(iRes)
                 If ResponseFunction.IsDriverActive Then
 
                     If ResponseFunction.ResponseIndexForGroup(iPredIndex) > 0 Then
@@ -4901,7 +4881,41 @@ Namespace Ecosim
 
                 End If
 
-            Next ResponseFunction
+            Next iRes
+
+        End Sub
+
+
+        Private Sub ApplyMortalityResponse(ByRef Mo As Single, iPredIndex As Integer, ByVal iTimeStep As Integer)
+            Dim propMort As Single
+
+            Try
+
+                'Get the proportion of total mortality as a function of environmental driver
+                For iRes As Integer = 1 To Me.EcosimMortalityResponseManager.nInputData  ' As IEnviroInputData In Me.EcosimEnviroResponseManager.InputData
+                    Dim ResponseFunction As IEnviroInputData = Me.EcosimMortalityResponseManager.InputData(iRes)
+                    If ResponseFunction.IsDriverActive Then
+
+                        If ResponseFunction.ResponseIndexForGroup(iPredIndex) > 0 Then
+                            propMort += ResponseFunction.ResponseFunction(iPredIndex, iTimeStep)
+                            'Exit For
+                        End If ' map.ResponseIndexForGroup(igrp) > 0
+
+                    End If
+
+                Next iRes
+
+                'convert proportion to instantaneous mortality
+                If propMort >= 1.0 Then propMort = 0.9999F
+                'instantaneous mortality in Ecopath annual units, this should be the same as Ecopath mo units
+                Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort)) * 12
+                'multiplier to scale mo up to the new value
+                Mo = ((lnPropMort + m_Data.mo(iPredIndex)) / m_Data.mo(iPredIndex))
+
+            Catch ex As Exception
+                Mo = 1.0F
+            End Try
+
 
         End Sub
 

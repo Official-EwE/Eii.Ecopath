@@ -2165,4 +2165,17 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP" xml:space="preserve">
     <value>Diet tree map</value>
   </data>
+  <data name="CAPTION_ENVRESPONSE" xml:space="preserve">
+    <value>Define {0} {1} response to {2} for {3}</value>
+    <comment>{0)=sim/space; {1}=response type; {2}=env driver; {3}=group(s)</comment>
+  </data>
+  <data name="GENERIC_ENVRESPONSE_CAPACITY" xml:space="preserve">
+    <value>Foraging capacity</value>
+  </data>
+  <data name="GENERIC_ENVRESPONSE_MORTALITY" xml:space="preserve">
+    <value>Mortality</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_ENVIRONMENTALRESPONSE" xml:space="preserve">
+    <value>Ecospace environmental responses</value>
+  </data>
 </root>

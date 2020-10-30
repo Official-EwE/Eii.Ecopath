@@ -584,8 +584,6 @@ Namespace SpatialData
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerMPA, eCoreCounterTypes.nMPAs))
             Me.AddAdapter(New cAdvectionAdapter(Me.m_core, eVarNameFlags.LayerAdvection, eCoreCounterTypes.nVectorFields))
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerSail, eCoreCounterTypes.nFleets))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerM0MultInput, eCoreCounterTypes.nGroups))
-
 
             Me.AddAdapter(New cIBMAge1NumbersForcingAdapter(Me.m_core, eVarNameFlags.LayerIBMAge1Forcing, eCoreCounterTypes.nStanzas))
 

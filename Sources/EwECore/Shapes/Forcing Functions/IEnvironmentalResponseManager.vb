@@ -44,6 +44,6 @@ Public Interface IEnvironmentalResponseManager
 
     Function onChanged() As Boolean
 
-   
+    Sub UpdateLayer(ByVal layer As cEcospaceLayer)
 
 End Interface

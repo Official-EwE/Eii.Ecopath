@@ -46,15 +46,6 @@ Public Class cSpaceSolver
 
     Public iYear As Integer ' current year
 
-    ' ''' <summary>
-    ' ''' Delegate for posting error messages.
-    ' ''' </summary>
-    ' ''' <remarks>
-    ' ''' All error handling must be done on the same thread. Errors can not be thrown from one thread to another.
-    ' ''' A delegate must be used to cross the thread boundary. EcospaceErrorHandler is a delegate to a sub on the main Ecospace thread.
-    ' ''' </remarks>
-    'Public EcospaceErrorHandler As cEcoSpace.SolverErrorDelegate
-
     Public ThreadID As Integer
 
     'references
@@ -202,7 +193,7 @@ Public Class cSpaceSolver
 
     Private m_bFitnessSet(,) As Boolean
 
-
+    Private m_moLoss() As Single
 
     Public Sub Init()
         'local spatial variables
@@ -263,6 +254,9 @@ Public Class cSpaceSolver
         m_ConTracer.CInitialize()
 
         m_bFitnessSet = New Boolean(m_Data.InRow, m_Data.InCol) {}
+
+        m_moLoss = New Single(m_Data.NGroups) {}
+
         Me.m_stpWatch = New Stopwatch
 
     End Sub
@@ -311,6 +305,13 @@ Public Class cSpaceSolver
             cLog.Write(ex)
         End Try
 
+    End Sub
+
+    Public Sub resetSpinup()
+        'reset the Fitness Calcualted flag
+        'this will force the base relative fitness movement to be re-calculated to the first year after the spinup
+        'See setRelFitnessBase()
+        m_bFitnessSet = New Boolean(m_Data.InRow, m_Data.InCol) {}
     End Sub
 
 
@@ -567,24 +568,25 @@ Public Class cSpaceSolver
                 Me.setRelFitnessBase(i, j)
             End If
 
+            'Debug.Assert(i <> 26 And j <> 26)
             Dim minMovement As Single = 1 / cEcoSpace.MAX_FITNESSMOVEMENT
             'jb now populate the spatial matrixes with the data computed by derivtRed() for this cell across all groups
             For iGrp = 1 To m_Data.NGroups
                 HdenCell(i, j, iGrp) = Hden(iGrp)
 
                 If (m_Data.Kmovefit(iGrp) > 0) And Me.m_bFitnessSet(i, j) Then
-                    'RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) + 1.0E-10F)
                     Dim FCatch As Single = FishTime(iGrp) * BB(iGrp)
+
                     Dim PredFitness As Single = ((m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) - FCatch + 1.0E-10F)) / Me.m_Data.RelFitnessBase(i, j, iGrp)
 
                     If Single.IsNaN(PredFitness) Then PredFitness = 1.0
 
                     If PredFitness < minMovement Then PredFitness = minMovement
                     If PredFitness > cEcoSpace.MAX_FITNESSMOVEMENT Then PredFitness = cEcoSpace.MAX_FITNESSMOVEMENT
-
                     RelFitness(i, j, iGrp) = CSng((1 - cEcoSpace.W_RELAX_FITNESS) * RelFitness(i, j, iGrp) + cEcoSpace.W_RELAX_FITNESS * PredFitness)
+
                 Else
-                        RelFitness(i, j, iGrp) = 1.0
+                    RelFitness(i, j, iGrp) = 1.0
                 End If '
 
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
@@ -593,6 +595,8 @@ Public Class cSpaceSolver
                 'loss(group) units are KM2
                 'TotalLoss sum of loss for the total area of the cell. Not just KM2
                 Me.ResultsByGroup(eSpaceResultsGroups.TotalLoss, iGrp) += loss(iGrp) * CellAreaKM2
+
+                Me.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, iGrp) += m_moLoss(iGrp)
 
             Next
 
@@ -618,6 +622,9 @@ Public Class cSpaceSolver
                 If Cper(i, j, iGrp) < 0.001 * m_SimData.Cbase(iGrp) Then
                     Cper(i, j, iGrp) = 0.001F * m_SimData.Cbase(iGrp)
                 End If
+
+
+                Me.m_Data.MOLoss(iGrp)(i, j) = m_moLoss(iGrp)
 
             Next iGrp
 
@@ -655,7 +662,6 @@ Public Class cSpaceSolver
                         'these arrays are used in the new SpaceSplitUpdate subroutine for predicting mortality
                         'rate and growth rate averages over space by age in that update routine
                         'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
-                        'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
                         If m_Data.Depth(i, j) > 0 Then
                             PopWt = m_Data.Bcell(i, j, nvar2 + isc)
                             TotLossThread(ieco) = TotLossThread(ieco) + loss(ieco) * PopWt
@@ -723,11 +729,13 @@ Public Class cSpaceSolver
 
     End Function
 
+
+
     Private Function SolveCellC(ByVal i As Integer, ByVal j As Integer) As Boolean
         Dim iGrp As Integer
-        Dim PopWt As Single
-        Dim CellAreaKM2 As Single
         Dim TimeStep2c As Single
+        Dim CellAreaKM2 As Single
+        ' Dim PopWt As Single
 
         Try
             'Debug.Assert(Not (i = 1 And j = 1))
@@ -922,7 +930,6 @@ Public Class cSpaceSolver
 
                 'jb 
                 If m_TracerData.EcoSpaceConSimOn = True Then
-                    ' Debug.Assert(False, "Contaminant tracing not implemented in Ecospace")
                     'jb ConKtrophic will need to be local it is the rate of comsumption per unit of prey
                     If Biomass(i) > 0 Then m_ConTracer.ConKtrophic(ii) = eat / Biomass(i) Else m_ConTracer.ConKtrophic(ii) = 0
                 End If
@@ -931,9 +938,6 @@ Public Class cSpaceSolver
 
             Me.CalcTrophicLevel(iRow, iCol, Consumpt, Eatenby)
 
-            'If iRow = 5 And iCol = 92 Then
-            '    Debug.Assert(False)
-            'End If
             'Make the detritus calculations here:
             Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
             Dim moMult As Single = 1
@@ -957,9 +961,12 @@ Public Class cSpaceSolver
                     '(this allows primary production rate to as much as double as nutrient concentrations increase)
                     '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
 
-                    ' pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) ' * EatEff(i)
+                    moMult = Me.getM0Mult(i, iRow, iCol)
+
                     pbb(i) = 2 * EatEff(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * Pmult * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
-                    loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
+                    loss(i) = Eatenof(i) + (m_SimData.mo(i) * moMult * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
+
+                    Me.SaveMOLoss(i, Biomass(i), moMult, iRow, iCol)
 
                     'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                     'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
@@ -1064,6 +1071,56 @@ Public Class cSpaceSolver
             If m_SimData.NoIntegrate(i) >= 0 Then pred(i) = Biomass(i)
             If Single.IsNaN(pred(i)) Then pred(i) = 1.0E-20
         Next
+
+    End Sub
+
+
+    Private Function getM0Mult(igrp As Integer, irow As Integer, icol As Integer) As Single
+        Dim MoMult As Single
+
+        Try
+            If m_SimData.mo(igrp) = 0.0F Then
+                Return 1.0F
+            End If
+
+            'MOProp(igrp)(irow, icol) Proportion of the total population that will experience mortality in this cell/time-step
+            'This is the value calcualted by the response function for this cell/time-step
+            Dim propMort As Single = Me.m_Data.MOProp(igrp)(irow, icol)
+            'cap it at just below 1.0
+            If propMort >= 1.0 Then propMort = 0.9999F
+
+            'instantaneous motality in Ecopath annual units, this should be the same as Ecopath mo units
+            Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort)) * 12
+            'Create a scalar value that will scale mo too the new mortality rate
+            MoMult = ((lnPropMort + m_SimData.mo(igrp)) / m_SimData.mo(igrp))
+
+        Catch ex As Exception
+            MoMult = 1.0F
+        End Try
+
+        Return MoMult
+
+    End Function
+
+    Private Sub SaveMOLoss(igrp As Integer, biomass As Single, MOMult As Single, irow As Integer, icol As Integer)
+
+        Dim propMort As Single = Me.m_Data.MOProp(igrp)(irow, icol)
+        'cap it at just below 1.0
+        If propMort >= 1.0 Then propMort = 0.9999F
+        Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort))
+        ' Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort)) * 12
+        'Dim MoFeedTimeAdjust As Single = (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))
+        'm_moLoss(igrp) = lnPropMort * MoFeedTimeAdjust * biomass
+        m_moLoss(igrp) = lnPropMort * biomass
+
+        '''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        '''For debugging
+        'If propMort > 0.5 And igrp = 2 Then
+        '    Dim moTot As Single = (m_SimData.mo(igrp) * MOMult * (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))) * biomass
+        '    Dim noMoForce As Single = (m_SimData.mo(igrp) * (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))) * biomass
+        '    ' System.Console.WriteLine(m_moLoss(igrp).ToString + ", " + (moTot - noMoForce).ToString + ", " + (m_moLoss(igrp) / (moTot - noMoForce)).ToString)
+        'End If
+        '''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     End Sub
 
@@ -1391,29 +1448,40 @@ Public Class cSpaceSolver
 
     Private Sub setRelFitnessBase(i As Integer, j As Integer)
         Dim relFit As Single
-        If Me.itt > 5 And (Me.m_bFitnessSet(i, j) = False) Then
+
+        If Me.itt < 13 And (Me.m_bFitnessSet(i, j) = False) Then
 
             Dim minMovement As Single = 1 / cEcoSpace.MAX_FITNESSMOVEMENT
             For iGrp As Integer = 1 To m_Data.NGroups
 
-                RelFitness(i, j, iGrp) = 1.0
+                If Me.itt = 1 Then Me.m_Data.RelFitnessBase(i, j, iGrp) = 1.0
 
                 If (m_Data.Kmovefit(iGrp) > 0) Then
+
                     Dim FCatch As Single = FishTime(iGrp) * BB(iGrp)
                     relFit = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) - FCatch + 1.0E-10F)
-
+                    'If i = 1 And j = 1 And iGrp = 1 Then
+                    '    Debug.WriteLine("Base " + relFit.ToString + "," + m_SimData.SimGE(iGrp).ToString + "," + Eatenby(iGrp).ToString + "," + loss(iGrp).ToString + "," + FCatch.ToString)
+                    'End If
                     If Single.IsNaN(relFit) Then relFit = 1.0
-
-                    If relFit < minMovement Then relFit = minMovement
-                    If relFit > cEcoSpace.MAX_FITNESSMOVEMENT Then relFit = cEcoSpace.MAX_FITNESSMOVEMENT
-                    Me.m_Data.RelFitnessBase(i, j, iGrp) = relFit
+                    Me.m_Data.RelFitnessBase(i, j, iGrp) += relFit
                 End If '
 
             Next iGrp
 
-            Me.m_bFitnessSet(i, j) = True
+            If itt = 12 Then
+                'Last time step of the year 
+                'average the RelFitnessBase()
+                For iGrp As Integer = 1 To m_Data.NGroups
+                    If (m_Data.Kmovefit(iGrp) > 0) Then
+                        Me.m_Data.RelFitnessBase(i, j, iGrp) /= 12.0F
+                    End If '
+                    Me.m_bFitnessSet(i, j) = True
+                Next iGrp
 
-        End If 'Me.itt > 5 And (Me.m_bFitnessSet(i, j) = False)
+            End If 'Me.itt > 5 And (Me.m_bFitnessSet(i, j) = False)
+
+        End If 'Me.itt < 13 
 
     End Sub
 

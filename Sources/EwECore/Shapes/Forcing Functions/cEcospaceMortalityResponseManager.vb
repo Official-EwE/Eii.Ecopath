@@ -25,7 +25,7 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcospaceEnviroResponseManager
+Public Class cEcospaceMortalityResponseManager
     Inherits cCoreInputOutputBase
     Implements IEnvironmentalResponseManager
 
@@ -41,8 +41,8 @@ Public Class cEcospaceEnviroResponseManager
 
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
-        Me.m_coreComponent = eCoreComponentType.EcospaceCapacityResponseInteractionManager
-        Me.m_dataType = eDataTypes.EcospaceEnviroCapacityResponse
+        Me.m_coreComponent = eCoreComponentType.EcospaceMortalityResponseInteractionManager
+        Me.m_dataType = eDataTypes.EcospaceEnviroMortalityResponse
     End Sub
 
 #End Region ' Constructor
@@ -82,7 +82,7 @@ Public Class cEcospaceEnviroResponseManager
         Get
 
             For Each envMap As cEnviroInputMap In Me.m_maps
-                If String.Compare(envMap.Layer.getID, layer.getID) = 0 Then
+                If String.Compare(envMap.Layer.GetID, layer.GetID) = 0 Then
                     Return envMap
                 End If
             Next
@@ -115,15 +115,15 @@ Public Class cEcospaceEnviroResponseManager
 
             ' Hard-code the depth map at position 0
             layer = Me.m_core.EcospaceBasemap.LayerDepth()
-            map = New cEnviroInputMap(Me.m_core.CapacityMapInteractionManager, layer)
+            map = New cEnviroInputMap(Me.m_core.MortalityMapInteractionManager, layer)
 
             ' Bad hack: disable updates from the layer
             map.SetManager(Nothing)
             For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
                 ' Depth
-                map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapacityResponseFunctions(0, iGroup)
+                map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.MortalityResposeFunctions(0, iGroup)
             Next
-            map.SetManager(Me.m_core.CapacityMapInteractionManager)
+            map.SetManager(Me.m_core.MortalityMapInteractionManager)
             Me.m_maps.Add(map)
 
             'populate the list of IEnviroInputMap objects that the user will interact with 
@@ -132,13 +132,13 @@ Public Class cEcospaceEnviroResponseManager
                 Try
 
                     layer = Me.m_core.EcospaceBasemap.LayerDriver(iMap)
-                    map = New cEnviroInputMap(Me.m_core.CapacityMapInteractionManager, layer, iMap)
+                    map = New cEnviroInputMap(Me.m_core.MortalityMapInteractionManager, layer, iMap)
                     ' Bad hack: disable updates from the layer
                     map.SetManager(Nothing)
                     For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
-                        map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapacityResponseFunctions(iMap, iGroup)
+                        map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.MortalityResposeFunctions(iMap, iGroup)
                     Next
-                    map.SetManager(Me.m_core.CapacityMapInteractionManager)
+                    map.SetManager(Me)
                     Me.m_maps.Add(map)
 
                 Catch ex As Exception
@@ -148,7 +148,7 @@ Public Class cEcospaceEnviroResponseManager
 
             Next iMap
 
-            Me.m_SpaceData.CapMaps = Me.m_maps.ToArray
+            Me.m_SpaceData.MortalityResponseDrivers = Me.m_maps.ToArray
 
             'update the maps with the newly loaded data
             Me.Update()
@@ -165,12 +165,11 @@ Public Class cEcospaceEnviroResponseManager
 
     Public Function onChanged() As Boolean Implements IEnvironmentalResponseManager.onChanged
 
-
         Try
 
             For iMap As Integer = 1 To Me.m_maps.Count
                 For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
-                    Me.m_SpaceData.CapacityResponseFunctions(iMap - 1, iGroup) = Me.EnviroData(iMap).ResponseIndexForGroup(iGroup)
+                    Me.m_SpaceData.MortalityResposeFunctions(iMap - 1, iGroup) = Me.EnviroData(iMap).ResponseIndexForGroup(iGroup)
                 Next
             Next
 
@@ -208,7 +207,30 @@ Public Class cEcospaceEnviroResponseManager
     End Sub
 
     Public Sub UpdateLayer(layer As cEcospaceLayer) Implements IEnvironmentalResponseManager.UpdateLayer
-        Throw New NotImplementedException()
+
+        Dim map As IEnviroInputData = Me.EnviroData(layer)
+        If Not map Is Nothing Then
+            For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
+                If map.ResponseIndexForGroup(iGroup) > 0 Then
+                    Array.Clear(Me.m_SpaceData.MOProp(iGroup), 0, Me.m_SpaceData.MOProp(iGroup).Length)
+                    Me.SpaceData.MOLayerChanged.Add(layer.Index)
+                End If
+            Next
+        End If
+    End Sub
+
+    Public Sub InitRun()
+        'set all input environmental layers to changed
+        'this will reset all the data
+        Me.SpaceData.MOLayerChanged.Clear()
+        For Each envMap As cEnviroInputMap In Me.m_maps
+            Me.SpaceData.MOLayerChanged.Add(envMap.Layer.Index)
+        Next
+
+        For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
+            Array.Clear(Me.m_SpaceData.MOProp(iGroup), 0, Me.m_SpaceData.MOProp(iGroup).Length)
+        Next
+
     End Sub
 
     Friend ReadOnly Property MediationData() As cMediationDataStructures Implements IEnvironmentalResponseManager.MediationData
@@ -224,6 +246,9 @@ Public Class cEcospaceEnviroResponseManager
     End Property
 
 #End Region ' Friend interfaces
+
+
+
 
     Public ReadOnly Property SimData As cEcosimDatastructures Implements IEnvironmentalResponseManager.SimData
         Get

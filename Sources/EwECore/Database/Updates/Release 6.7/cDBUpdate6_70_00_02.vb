@@ -64,8 +64,6 @@ Friend Class cDBUpdate6_70_00_02
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        ' Target indicates capacity = 1, mortality = 2, etc. Must be part of the PK to allow dual use
-
         Dim bSuccess As Boolean = True
 
         Dim key As String = db.GetPkKeyName("EcosimScenarioCapacityDrivers")
@@ -76,7 +74,7 @@ Friend Class cDBUpdate6_70_00_02
 
         ' Primary keys cannot have null values
         bSuccess = bSuccess And db.Execute("UPDATE EcosimScenarioCapacityDrivers SET Target=" & CInt(eDataTypes.EcosimEnviroResponseFunctionManager))
-        bSuccess = bSuccess And db.Execute("UPDATE EcospaceScenarioCapacityDrivers SET Target=1" & CInt(eDataTypes.EcospaceEnviroCapacityResponse))
+        bSuccess = bSuccess And db.Execute("UPDATE EcospaceScenarioCapacityDrivers SET Target=" & CInt(eDataTypes.EcospaceEnviroCapacityResponse))
 
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioCapacityDrivers ADD PRIMARY KEY (ScenarioID, GroupID, DriverID, ResponseID, Target)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacityDrivers ADD PRIMARY KEY (ScenarioID, VarDBID, GroupID, ShapeID, Target)")

@@ -670,7 +670,7 @@
     <value>Rec. rate||Relative recruitment rate</value>
   </data>
   <data name="VARIABLE_RELMOVEBAD" xml:space="preserve">
-    <value>Rel. disp. in bad hab.||Relative dispersal in bad habitat</value>
+    <value>IBM disp. bad habitat.||IBM dispersal in bad habitat</value>
   </data>
   <data name="VARIABLE_RELVULBAD" xml:space="preserve">
     <value>Rel. vul to pred. in bad hab.|||Relative vulnerability to predation in bad habitat (proportion for primary producers)</value>

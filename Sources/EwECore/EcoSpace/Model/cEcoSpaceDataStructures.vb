@@ -225,6 +225,11 @@ Public Class cEcospaceDataStructures
     Public AMmTr(,,) As Single
     Public Ftr(,,) As Single
 
+    ''' <summary>
+    ''' Total biomass loss due to Mortality Other
+    ''' </summary>
+    Public MOLoss()(,) As Single
+
     Public Blast(,,) As Single
     ''' <summary>Actual depth map as used by Ecospace, computed from <see cref="DepthInput"/> and <see cref="Excluded"/>.</summary>
     Public Depth(,) As Single
@@ -579,12 +584,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Other mortality multiplier by Row,Col,Group
     ''' </summary>
-    Public M0Mult()(,) As Single
-
-    ''' <summary>
-    ''' User-defined other mortality multiplier.
-    ''' </summary>
-    Public M0MultInput()(,) As Single
+    Public MOProp()(,) As Single
 
     ''' <summary> Sum of Capacity across the map cells by group </summary>
     Public TotHabCap() As Single
@@ -607,10 +607,26 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public UseCoreOutputDir As Boolean = True
 
-    Public CapMapFunctions(,) As Integer
+    ''' Array index of the Capacity Response shape/function that gets applied to this driver
+    ''' Stored by Environmental driver index (map), Group index
+    ''' ishape = CapMapFunctions(iEnviroDriver,iGroup)
+    Public CapacityResponseFunctions(,) As Integer
+
+    ''' <summary>
+    ''' Array index of the MO Response shape/function that gets applied to this driver
+    ''' Stored by Environmental driver index (map), Group index
+    ''' ishape = MortalityResposeFunctions(iEnviroDriver,iGroup)
+    ''' </summary>
+    Public MortalityResposeFunctions(,) As Integer
 
     ' Generate for each driver layer + 0 which is depth
     Public CapMaps As IEnviroInputData()
+
+    ''' <summary>
+    ''' Array of IEnviroInputData objects(in this case containing driver layers) that have been applied as MO Mortality Response functions
+    ''' Initialized in cEcospaceMortalityResponseManager.Load()
+    ''' </summary>
+    Public MortalityResponseDrivers As IEnviroInputData()
 
     ''' <summary>
     ''' Capacity calculation type per group
@@ -717,6 +733,15 @@ Public Class cEcospaceDataStructures
     Public UseSpinUp As Boolean
 
     Private m_bInSpinup As Boolean = False
+
+    ''' <summary>
+    ''' List of MO layer indexs that have changed.
+    ''' This will be updated(set to changed) when a layer is loaded by the spatial temporal framework
+    ''' See cCapacityDataAdapter.Adapt
+    ''' </summary>
+    Public MOLayerChanged As List(Of Integer)
+
+    Public RelMoveFitGroup()(,) As Single
 
     ''' <summary>Are we in a Spin-Up period?</summary>   
     Public Property bInSpinUp As Boolean
@@ -1088,10 +1113,6 @@ Public Class cEcospaceDataStructures
             'DefaultBasemapDimensions()
             ReDimMapVars()
 
-            'requires nGroups, calculates nvartot and Nvarsplit
-            ' Debug.Assert(False, "Removed ReDimMapDims from SetDefaults")
-            'ReDimMapDims()
-
             RedimMigratoryVariables()
 
             SetDefaultMeanVelocityMvel()
@@ -1326,7 +1347,9 @@ Public Class cEcospaceDataStructures
             ReDim InMigAreaMovement(NGroups)
 
             ' Allocate room for Depth map
-            ReDim Me.CapMapFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
+            ReDim CapacityResponseFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
+
+            ReDim MortalityResposeFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
 
             ReDim Me.ImportanceLayerDBID(nImportanceLayers)
             ReDim Me.ImportanceLayerName(nImportanceLayers)
@@ -1337,6 +1360,8 @@ Public Class cEcospaceDataStructures
             ReDim Me.EnvironmentalLayerName(nEnvironmentalDriverLayers)
             ReDim Me.EnvironmentalLayerDescription(nEnvironmentalDriverLayers)
             ReDim Me.EnvironmentalLayerUnits(nEnvironmentalDriverLayers)
+
+            Me.MOLayerChanged = New List(Of Integer)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapVars() Error: " & ex.Message)
@@ -1669,13 +1694,13 @@ Public Class cEcospaceDataStructures
     ''' Allocate memory for an array with 3 dimensions
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
-    Friend Sub allocate(ByRef array()(,) As Single, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
+    Friend Sub allocate(ByRef array()(,) As Single, ByVal nGroupsFleets As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
         Dim bCleared As Boolean = True
 
         If array IsNot Nothing Then
-            If array.Length = (d1 + 1) Then
+            If array.Length = (nGroupsFleets + 1) Then
 
-                For i As Integer = 0 To d1
+                For i As Integer = 0 To nGroupsFleets
                     If array(i).Length = (d2 + 1) * (d3 + 1) Then
                         System.Array.Clear(array(i), 0, array(i).Length)
                     Else
@@ -1696,8 +1721,8 @@ Public Class cEcospaceDataStructures
         Erase array
         array = Nothing
 
-        array = New Single(d1)(,) {}
-        For i As Integer = 0 To d1
+        array = New Single(nGroupsFleets)(,) {}
+        For i As Integer = 0 To nGroupsFleets
             array(i) = New Single(d2, d3) {}
         Next
         GC.Collect()
@@ -1933,13 +1958,14 @@ Public Class cEcospaceDataStructures
             Me.allocate(PAreaFished, nFleets, InRow, InCol)
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
 
+            'MOLoss
+            Me.allocate(MOLoss, NGroups, InRow, InCol)
+
             Me.allocate(Me.HabCapInput, NGroups, InRow + 1, InCol + 1)
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To NGroups : HabCapInput(k)(i, j) = 1 : Next : Next : Next
             Me.allocate(Me.HabCap, NGroups, InRow + 1, InCol + 1)
 
-            Me.allocate(Me.M0MultInput, NGroups, InRow + 1, InCol + 1)
-            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To NGroups : M0MultInput(k)(i, j) = 1 : Next : Next : Next
-            Me.allocate(Me.M0Mult, NGroups, InRow + 1, InCol + 1)
+            Me.allocate(Me.MOProp, NGroups, InRow + 1, InCol + 1)
 
             Me.allocate(PHabType, NoHabitats, InRow, InCol)
 

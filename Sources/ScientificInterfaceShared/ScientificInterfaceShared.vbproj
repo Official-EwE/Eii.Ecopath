@@ -949,6 +949,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.resx">
       <DependentUpon>dlgDefineEcospaceForagingResponse.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.resx">
       <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>

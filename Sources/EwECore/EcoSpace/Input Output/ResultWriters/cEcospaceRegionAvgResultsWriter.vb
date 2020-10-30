@@ -54,6 +54,7 @@ Public Class cEcospaceRegionAvgResultsWriter
         [Catch]
         RegionBiomass
         RegionCatch
+        MOTotalLoss
     End Enum
 
 #End Region ' Private classes
@@ -85,8 +86,6 @@ Public Class cEcospaceRegionAvgResultsWriter
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
-
-
         Dim msg As cMessage = Nothing
 
         Try
@@ -162,6 +161,9 @@ Public Class cEcospaceRegionAvgResultsWriter
                 dataSource = New cRegionBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
             Case eDataSourceTypes.RegionCatch
                 dataSource = New cRegionCatchResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+            Case eDataSourceTypes.MOTotalLoss
+                dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+
         End Select
         dataSource.Init(RegionIndex)
         Return dataSource
@@ -175,6 +177,7 @@ Public Class cEcospaceRegionAvgResultsWriter
 
         lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Biomass))
         lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Catch))
+        lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.MOTotalLoss))
 
         For irgn As Integer = 1 To Me.m_core.nRegions
             lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
@@ -248,7 +251,7 @@ Public Class cEcospaceRegionAvgResultsWriter
                     fn = "Ecospace_Annual_Average_"
             End Select
 
-            System.Console.WriteLine(ds.FileNameAbbreviation)
+            'System.Console.WriteLine(ds.FileNameAbbreviation)
 
             Return cFileUtils.ToValidFileName(fn + ds.FilenameIdentifier + ".csv", False)
         End If

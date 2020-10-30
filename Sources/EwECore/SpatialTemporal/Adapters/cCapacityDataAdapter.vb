@@ -82,6 +82,12 @@ Namespace SpatialData
 
             If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then Return False
 
+
+            'Tell the core IEnvironmentalResponseManager(s) that a layer has changed
+            'in this case it allows the Mortality Manager to handle it's internal data
+            Me.m_core.MortalityMapInteractionManager.UpdateLayer(layer)
+
+
             'isGroupHabCapChanged(group) tells the habitat capacity model 
             'that the capacity inputs for a group have changed.
             'This is an optimization so only the groups that have changed will be recomputed

@@ -54,7 +54,7 @@ Public Class cShapeGridEcospaceEnvResponsesPlugin
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "ndSpatialDynamic\ndEcospaceInput\ndHabCap"
+            Return "ndSpatialDynamic\ndEcospaceInput\ndEcospaceEnvironmentalResponse"
         End Get
     End Property
 

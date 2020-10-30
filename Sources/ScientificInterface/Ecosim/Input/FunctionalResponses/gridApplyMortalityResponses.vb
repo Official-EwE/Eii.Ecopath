@@ -39,8 +39,8 @@ Namespace Ecosim
     ''' Grid to apply environmental response functions to Ecosim forcing functions.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
-    Public Class gridApplyEcosimEnvironmentalResponses
+    <CLSCompliant(False)>
+    Public Class gridApplyEcosimMortalityResponses
         Inherits gridApplyShapeBase
 
 #Region " Private vars "
@@ -59,7 +59,7 @@ Namespace Ecosim
             End Get
             Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 If (value IsNot Nothing) Then
-                    Me.m_driverManager = value.Core.EcosimEnviroResponseManager
+                    Me.m_driverManager = value.Core.EcosimMortalityResponseManager
                     Me.m_shapeManager = value.Core.EnviroResponseShapeManager
                 Else
                     Me.m_driverManager = Nothing
@@ -71,14 +71,14 @@ Namespace Ecosim
 
         Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
             Get
-                Return New eCoreComponentType() {eCoreComponentType.EcosimCapacityResponseInteractionManager, eCoreComponentType.ShapesManager}
+                Return New eCoreComponentType() {eCoreComponentType.EcosimMortalityResponseInteractionManager, eCoreComponentType.ShapesManager}
             End Get
         End Property
 
         Public Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
             If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                 Me.RefreshContent()
-            ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimCapacityResponseInteractionManager) Then
+            ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimMortalityResponseInteractionManager) Then
                 For igrp As Integer = 1 To Me.Core.nGroups
                     Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
                 Next

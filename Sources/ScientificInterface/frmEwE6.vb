@@ -1576,7 +1576,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Private Sub PopulateScenarioDropdowns()
 
-        Dim tsmi As ToolStripMenuItem = Nothing
+        Dim tsi As ToolStripMenuItem = Nothing
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
 
         Me.ClearScenarioDropdowns()
@@ -1590,12 +1590,11 @@ Public Class frmEwE6
 
             ' List available Ecosim scenarios.
             For i As Integer = 1 To Me.Core.nEcosimScenarios
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcosimScenarios(i).Name
-                tsmi.Tag = Me.Core.EcosimScenarios(i)
-                tsmi.Checked = (Me.Core.ActiveEcosimScenarioIndex = i)
-                AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
-                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
+                tsi = New ToolStripMenuItem()
+                tsi.Tag = Me.Core.EcosimScenarios(i)
+                tsi.Checked = (Me.Core.ActiveEcosimScenarioIndex = i)
+                AddHandler tsi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+                Me.m_tsbEcosim.DropDownItems.Add(tsi)
             Next
 
             ' List available Ecosim time series datasets
@@ -1607,26 +1606,22 @@ Public Class frmEwE6
                     Me.m_tsbEcosim.DropDownItems.Add(New ToolStripSeparator())
                 End If
 
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED,
-                                          Me.Core.TimeSeriesDataset(i).Name,
-                                          fmt.ToString(Me.Core.TimeSeriesDataset(i).TimeSeriesInterval).ToLower())
-                tsmi.Tag = Me.Core.TimeSeriesDataset(i)
-                tsmi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
+                tsi = New ToolStripMenuItem()
+                tsi.Tag = Me.Core.TimeSeriesDataset(i)
+                tsi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
 
-                AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
-                Me.m_tsbEcosim.DropDownItems.Add(tsmi)
+                AddHandler tsi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+                Me.m_tsbEcosim.DropDownItems.Add(tsi)
 
             Next i
 
             ' List available Ecospace scenarios
             For i As Integer = 1 To Me.Core.nEcospaceScenarios
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcospaceScenarios(i).Name
-                tsmi.Tag = Me.Core.EcospaceScenarios(i)
-                tsmi.Checked = (Me.Core.ActiveEcospaceScenarioIndex = i)
-                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
-                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+                tsi = New ToolStripMenuItem()
+                tsi.Tag = Me.Core.EcospaceScenarios(i)
+                tsi.Checked = (Me.Core.ActiveEcospaceScenarioIndex = i)
+                AddHandler tsi.Click, AddressOf OnLoadEcospaceScenario
+                Me.m_tsbEcospace.DropDownItems.Add(tsi)
             Next
 
             '' List available spatial temporal datasets
@@ -1659,12 +1654,11 @@ Public Class frmEwE6
 
             ' List available Ecotracer scenarios
             For i As Integer = 1 To Me.Core.nEcotracerScenarios
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = Me.Core.EcotracerScenarios(i).Name
-                tsmi.Tag = Me.Core.EcotracerScenarios(i)
-                tsmi.Checked = (Me.Core.ActiveEcotracerScenarioIndex = i)
-                AddHandler tsmi.Click, AddressOf OnLoadEcotracerScenario
-                Me.m_tsbEcotracer.DropDownItems.Add(tsmi)
+                tsi = New ToolStripMenuItem()
+                tsi.Tag = Me.Core.EcotracerScenarios(i)
+                tsi.Checked = (Me.Core.ActiveEcotracerScenarioIndex = i)
+                AddHandler tsi.Click, AddressOf OnLoadEcotracerScenario
+                Me.m_tsbEcotracer.DropDownItems.Add(tsi)
             Next
 
         End If

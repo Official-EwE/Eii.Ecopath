@@ -53,12 +53,6 @@ Public Class dlgSelectEnvironmentalResponse
 
 #Region " Private vars "
 
-    Private Enum eModelType As Integer
-        NotSet = 0
-        Ecosim
-        Ecospace
-    End Enum
-
     Private m_shapeManager As cBaseShapeManager
     Private m_lFFs As New List(Of cEnviroResponseFunction)
     Private m_driver As EwECore.IEnviroInputData
@@ -101,14 +95,36 @@ Public Class dlgSelectEnvironmentalResponse
 
         Me.m_changeshape.UIContext = uic
 
+        Dim strTarget As String = ""
+        Dim modelTypeString As String = ""
         If (TypeOf driverManager Is cEcosimEnviroResponseManager) Then
-            Me.Modeltype = eModelType.Ecosim
+            Me.Modeltype = eCoreComponentType.EcosimCapacityResponseInteractionManager
+            strTarget = My.Resources.GENERIC_ENVRESPONSE_CAPACITY
+            modelTypeString = eCoreComponentType.EcoSim.ToString
+        ElseIf (TypeOf driverManager Is cEcosimMortalityResponseManager) Then
+            Me.Modeltype = eCoreComponentType.EcosimMortalityResponseInteractionManager
+            strTarget = My.Resources.GENERIC_ENVRESPONSE_MORTALITY
+            modelTypeString = eCoreComponentType.EcoSim.ToString
         ElseIf (TypeOf driverManager Is cEcospaceEnviroResponseManager) Then
-            Me.Modeltype = eModelType.Ecospace
+            Me.Modeltype = eCoreComponentType.EcospaceCapacityResponseInteractionManager
+            strTarget = My.Resources.GENERIC_ENVRESPONSE_CAPACITY
+            modelTypeString = eCoreComponentType.EcoSpace.ToString
+        ElseIf (TypeOf driverManager Is cEcospaceMortalityResponseManager) Then
+            Me.Modeltype = eCoreComponentType.EcospaceMortalityResponseInteractionManager
+            strTarget = My.Resources.GENERIC_ENVRESPONSE_MORTALITY
+            modelTypeString = eCoreComponentType.EcoSpace.ToString
         End If
 
+        Dim strGroup As String
+        Select Case selection
+            Case eEnvironmentalResponseSelectionType.DriverGroup
+                strGroup = uic.Core.EcoPathGroupInputs(iSelGroup).Name
+            Case Else
+                strGroup = SharedResources.GENERIC_VALUE_ALLGROUPS
+        End Select
+
         ' Sanity checks
-        Debug.Assert(Me.Modeltype <> eModelType.NotSet)
+        Debug.Assert(Me.Modeltype <> eCoreComponentType.NotSet)
         Debug.Assert(iDriver > 0)
 
         Me.m_seltype = selection
@@ -120,7 +136,13 @@ Public Class dlgSelectEnvironmentalResponse
 
         Debug.Assert(Me.m_driver IsNot Nothing)
 
-        Me.Text = cStringUtils.Localize(Me.Text, Me.m_driver.Name)
+        ' Set caption
+        Me.Text = cStringUtils.Localize(My.Resources.CAPTION_ENVRESPONSE,
+                                        modelTypeString,
+                                        strTarget,
+                                        Me.m_driver.Name,
+                                        strGroup)
+
         Me.m_changeshape.Visible = False
         Me.m_graph.ShowShapeControls = False
 
@@ -356,7 +378,7 @@ Public Class dlgSelectEnvironmentalResponse
         End Set
     End Property
 
-    Private ReadOnly Property Modeltype As eModelType
+    Private ReadOnly Property Modeltype As eCoreComponentType = eCoreComponentType.NotSet
 
     Private Sub GenerateShapeThumbnails(ByVal il As ImageList)
 
@@ -461,9 +483,11 @@ Public Class dlgSelectEnvironmentalResponse
         Try
             If Me.m_seltype = eEnvironmentalResponseSelectionType.DriverGroup Then
                 If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.UIContext.Core.nGroups Then
-                    If (Me.Modeltype = eModelType.Ecospace) Then
+                    If (Me.Modeltype = eCoreComponentType.EcospaceCapacityResponseInteractionManager) Then
+                        'only the Ecopspace Capacity needs to check the Calcualtion type
                         bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
                     Else
+                        'all other model types (Mortality, and EcoSim) can save all times
                         bCanCommit = True
                     End If
                     If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(m_iSelGrp) = iSelResponseShape
@@ -472,9 +496,11 @@ Public Class dlgSelectEnvironmentalResponse
             ElseIf Me.m_seltype = eEnvironmentalResponseSelectionType.Driver Then
                 'Apply the same shape to all the groups of the current map
                 For igrp As Integer = 1 To Me.UIContext.Core.nGroups
-                    If (Me.Modeltype = eModelType.Ecospace) Then
+                    If (Me.Modeltype = eCoreComponentType.EcospaceCapacityResponseInteractionManager) Then
+                        'only the Ecopspace Capacity needs to check the Calcualtion type
                         bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(igrp).CapacityCalculationType)
                     Else
+                        'all other model types (Mortality, and EcoSim) can save all times
                         bCanCommit = True
                     End If
                     If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(igrp) = iSelResponseShape

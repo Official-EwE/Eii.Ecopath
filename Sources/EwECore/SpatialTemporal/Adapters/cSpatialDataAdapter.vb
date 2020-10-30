@@ -271,6 +271,7 @@ Namespace SpatialData
                                             Me.m_core.PluginManager.EcospaceBeginLayerChange(iTime, dt, layer)
                                         End If
 
+
                                         ' Integrate data
                                         Me.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 

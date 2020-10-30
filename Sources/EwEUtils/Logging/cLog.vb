@@ -367,7 +367,7 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
-        Public Shared Sub WriteGroupMapToFile(ByVal strFilename As String, ByVal array(,,) As Single, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteGroupMapToFile(ByVal strFilename As String, ByVal array(,,) As Single, iTimestep As Integer, Optional ByVal strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)
             Dim n2 As Integer = array.GetUpperBound(1)
@@ -384,14 +384,14 @@ Namespace Core
 
                 For igrp = 1 To n3
                     For i = 1 To n1
+                        strm.Write(igrp.ToString + ", " + iTimestep.ToString)
                         For j = 1 To n2
-                            strm.Write(array(i, j, igrp).ToString())
                             strm.Write(",")
+                            strm.Write(array(i, j, igrp).ToString())
                         Next j
                         strm.WriteLine("")
                     Next i
                     strm.WriteLine("")
-                    strm.WriteLine(igrp.ToString)
                 Next igrp
                 strm.Close()
 

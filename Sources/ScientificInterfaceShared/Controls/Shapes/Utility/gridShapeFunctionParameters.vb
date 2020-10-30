@@ -129,6 +129,8 @@ Public Class gridShapeFunctionParameters
                     Me.m_shapefunction.ParamValue(iParam) = sValue
                 End If
                 RaiseEvent OnShapeFunctionChanged()
+
+                Update()
         End Select
 
         Return True

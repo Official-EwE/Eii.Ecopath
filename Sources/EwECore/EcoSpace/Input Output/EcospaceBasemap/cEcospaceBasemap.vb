@@ -201,14 +201,6 @@ Public Class cEcospaceBasemap
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            ' Other mortality
-            val = New cValue(0, eVarNameFlags.LayerM0Mult, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
-            m_values.Add(val.varName, val)
-
-            val = New cValue(0, eVarNameFlags.LayerM0MultInput, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
-            m_values.Add(val.varName, val)
 
             ' LayerDepth
             val = New cValue(0, eVarNameFlags.nCells, eStatusFlags.Null, eValueTypes.Sng)
@@ -337,21 +329,6 @@ Public Class cEcospaceBasemap
 
             '' MLD
             'Me.m_dictLayers(eVarNameFlags.LayerMLD) = New cEcospaceLayer() {New cEcospaceLayerMLD(theCore, Me)}
-
-            ' Other mortality output layer
-            llayers.Clear()
-            For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerOtherMort, eVarNameFlags.LayerM0Mult, i))
-            Next
-            Me.m_dictLayers(eVarNameFlags.LayerM0Mult) = llayers.ToArray
-
-            ' Other mortality input layer
-            llayers.Clear()
-            For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerOtherMortInput, eVarNameFlags.LayerM0MultInput, i))
-            Next
-            Me.m_dictLayers(eVarNameFlags.LayerM0MultInput) = llayers.ToArray
-
 
             'Me.m_dictLayers(eVarNameFlags.LayerIBMAge1NumbersForcing) = New cEcospaceLayer() {New cEcospaceLayer(theCore, Me)}
             llayers.Clear()
@@ -882,37 +859,6 @@ Public Class cEcospaceBasemap
             Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerExclusion)(0), cEcospaceLayerExclusion)
         End Get
     End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the other mortality input layer (prior)
-    ''' </summary>
-    ''' <param name="iGroup">One-based group index</param>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerOtherMortalityInput(iGroup As Integer) As cEcospaceLayerOtherMortality
-        Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerM0MultInput)(iGroup - 1), cEcospaceLayerOtherMortality)
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the computed other mortality layer
-    ''' </summary>
-    ''' <param name="iGroup">One-based group index</param>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerOtherMortality(iGroup As Integer) As cEcospaceLayerOtherMortality
-        Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerM0Mult)(iGroup - 1), cEcospaceLayerOtherMortality)
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the computed other mortality layer
-    ''' </summary>
-    ''' <param name="iGroup">One-based group index</param>
-    ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerIBMAge1Forcing(iGroup As Integer) As cEcospaceLayerIBMAge1Forcing
         Get
             Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerIBMAge1Forcing)(iGroup - 1), cEcospaceLayerIBMAge1Forcing)
@@ -1013,9 +959,6 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Bcell
             Case eVarNameFlags.LayerExclusion
                 Return Me.m_core.m_EcoSpaceData.Excluded
-            Case eVarNameFlags.LayerM0MultInput
-                Return Me.m_core.m_EcoSpaceData.M0MultInput
-
             Case eVarNameFlags.LayerIBMAge1Forcing
                 Return Me.m_core.m_EcoSpaceData.Bcell
 

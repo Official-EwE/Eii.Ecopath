@@ -595,8 +595,8 @@ Namespace Ecospace.Advection
             'jord(k) is which column j to do as k=1, k=2,...,k=n (iteration order)
             'w is SOR overrelaxation parameter-found 1.25 to be good for typical problems
 
-            Dim i As Integer, j As Integer, k As Integer, iter As Integer, iflag As Integer
-            Dim jj As Integer, ic As Long, xx As Integer
+            Dim i As Integer, j As Integer, iter As Integer, iflag As Integer
+            Dim jj As Integer, ic As Long
             Dim alfa(,) As Single, gam(,) As Single, rhs(,) As Single, g() As Single, Xold(,) As Single
 
             ReDim alfa(M, n)

@@ -6871,8 +6871,16 @@ Public Class cCore
 
             Me.m_MediatedInteractionManager = New cMediatedInteractionManager(m_EcoPathData, m_EcoSimData, Me)
             Me.m_FitToTimeSeriesData = New cF2TSDataStructures()
-            ' me.m_FitToTimeSeries = New cF2TSManager(Me)
 
+            'Environmental response managers
+            'Foraging capacity
+            m_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
+            m_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
+            Me.m_EcoSim.EcosimEnviroResponseManager = m_EcosimEnviroResponseManager
+            'Mortality MO
+            m_EcosimMortalityResponseManager = New cEcosimMortalityResponseManager(Me)
+            m_EcosimMortalityResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
+            Me.m_EcoSim.EcosimMortalityResponseManager = m_EcosimMortalityResponseManager
 
             'manager = New cEcosimResponseShapeManager(m_EcoSimData, Me, eDataTypes.EcosimEnviroResponseFunctionManager)
             'Me.m_ShapeManagers.Add(manager.DataType, manager)
@@ -6892,6 +6900,19 @@ Public Class cCore
 
     End Function
 
+    Private Sub EcosimMessageHandler(ByRef Message As cMessage)
+        m_publisher.AddMessage(Message)
+    End Sub
+
+    Private Function InitEcosimScenarios() As Boolean
+        Me.m_EcoSimScenarios.Clear()
+        For i As Integer = 1 To Me.m_EcoPathData.EcosimScenarioName.Length - 1
+            Me.m_EcoSimScenarios.Add(Me.privateEcoSimScenario(i))
+        Next
+        Return True
+    End Function
+
+
     Friend Sub InitEcosimLinks()
 
         ' ToDo: protect this
@@ -6904,18 +6925,6 @@ Public Class cCore
         Me.m_EcoSimData.DefaultSharedArenas()
 
     End Sub
-
-    Private Sub EcosimMessageHandler(ByRef Message As cMessage)
-        m_publisher.AddMessage(Message)
-    End Sub
-
-    Private Function InitEcosimScenarios() As Boolean
-        Me.m_EcoSimScenarios.Clear()
-        For i As Integer = 1 To Me.m_EcoPathData.EcosimScenarioName.Length - 1
-            Me.m_EcoSimScenarios.Add(Me.privateEcoSimScenario(i))
-        Next
-        Return True
-    End Function
 
     ''' <summary>
     ''' Load an <see cref="cEcoSimScenario">Ecosim scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
@@ -7123,6 +7132,7 @@ Public Class cCore
             Next
 
             Me.m_EcosimEnviroResponseManager.Load(Me.ForcingShapeManager)
+            Me.m_EcosimMortalityResponseManager.Load(Me.ForcingShapeManager)
 
             ' Me.m_EcoSim.InitAssessment()
 
@@ -7219,6 +7229,10 @@ Public Class cCore
         ' Set the state monitor can fire events that use the Ecosim and Ecospace data
         Me.m_StateMonitor.SetEcoSimLoaded(False)
         cLog.Write("Ecosim scenario closed")
+
+        Me.m_EcosimEnviroResponseManager.Clear()
+        Me.m_EcosimMortalityResponseManager.Clear()
+
 
         ' Invoke plugin point to allow plug-ins to clean up now Ecosim has gone
         If (Me.PluginManager IsNot Nothing) Then
@@ -7830,6 +7844,14 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property MortalityMapInteractionManager() As cEcospaceMortalityResponseManager
+        Get
+            Return Me.m_mapMortalityManager
+        End Get
+    End Property
+
+
+
     Public ReadOnly Property EcosimArenaManager() As cEcosimArenaManager
         Get
             Return Me.m_ArenaManager
@@ -7841,6 +7863,13 @@ Public Class cCore
             Return Me.m_EcosimEnviroResponseManager
         End Get
     End Property
+
+    Public ReadOnly Property EcosimMortalityResponseManager() As cEcosimMortalityResponseManager
+        Get
+            Return Me.m_EcosimMortalityResponseManager
+        End Get
+    End Property
+
 
 
     Public ReadOnly Property EnviroResponseShapeManager() As cEnviroResponseShapeManager
@@ -8927,8 +8956,10 @@ Public Class cCore
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
     Friend m_mapInteractionManager As cEcospaceEnviroResponseManager
+    Friend m_mapMortalityManager As cEcospaceMortalityResponseManager
 
     Friend m_EcosimEnviroResponseManager As cEcosimEnviroResponseManager
+    Friend m_EcosimMortalityResponseManager As cEcosimMortalityResponseManager
 
     Private m_stpwSpaceTimer As Stopwatch
     Private m_spaceSaveTime As Double
@@ -9009,11 +9040,31 @@ Public Class cCore
         m_mapInteractionManager = New cEcospaceEnviroResponseManager(Me)
         m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
 
-        m_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
+
+        'jb Moved to InitEcosim
+        'm_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
         'jb Use the Ecospace Environmental Response functions for now
         'this means Ecosim will use the same response functions as Ecospace
         'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.EcosimEnvResFunctions)
-        m_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
+        'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
+        'Me.m_EcoSim.EcosimEnviroResponseManager = m_EcosimEnviroResponseManager
+
+
+        'm_EcosimMortalityResponseManager = New cEcosimMortalityResponseManager(Me)
+        'jb Use the Ecospace Environmental Response functions for now
+        'this means Ecosim will use the same response functions as Ecospace
+        'm_EcosimMortalityResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
+        'Me.m_EcoSim.EcosimMortalityResponseManager = m_EcosimMortalityResponseManager
+
+        m_mapMortalityManager = New cEcospaceMortalityResponseManager(Me)
+        m_mapMortalityManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
+
+
+        'm_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
+        ''jb Use the Ecospace Environmental Response functions for now
+        ''this means Ecosim will use the same response functions as Ecospace
+        ''m_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.EcosimEnvResFunctions)
+        'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
 
         Return True
 
@@ -9251,6 +9302,7 @@ Public Class cCore
                             Me.m_Ecospace.isPaused = False
 
                             Me.m_spatialOperationLog.BeginRun()
+                            Me.MortalityMapInteractionManager.InitRun()
 
                             Me.m_stpwSpaceTimer = Stopwatch.StartNew
                             Me.m_spaceSaveTime = 0
@@ -10206,6 +10258,8 @@ Public Class cCore
             SpatialDataConnectionManager.Load()
 
             bSuccess = bSuccess And Me.CapacityMapInteractionManager.Load()
+            bSuccess = bSuccess And Me.MortalityMapInteractionManager.Load()
+
 
             Me.m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
             'For debugging add the RelCin Layer to the Capacity maps
@@ -14477,6 +14531,7 @@ Public Class cCore
 
                             Me.m_EcosimEnviroResponseManager.Load(Me.ForcingShapeManager)
                             Me.m_MediatedInteractionManager.Load()
+                            Me.m_EcosimMortalityResponseManager.Load(Me.ForcingShapeManager)
                         End If
                     End If
 
@@ -14549,9 +14604,12 @@ Public Class cCore
                 Case eDataTypes.EcosimEnviroResponseFunctionManager
                     Me.m_publisher.AddMessage(New cMessage("Ecosim environmental responses modified", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, eDataTypes.EcosimEnviroResponseFunctionManager))
 
+                Case eDataTypes.EcosimMortalityResponseFunctionManager
+                    Me.m_publisher.AddMessage(New cMessage("Ecosim environmental responses modified", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, eDataTypes.EcosimMortalityResponseFunctionManager))
                 Case eDataTypes.EcosimArenaShare
                     Me.m_ArenaManager.Load()
                     Me.m_publisher.AddMessage(New cMessage("Arenas modified", TypeOfChange, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimArenaShare))
+
 
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
@@ -14684,11 +14742,18 @@ Public Class cCore
                                        eCoreComponentType.EcoPath, eMessageImportance.Maintenance))
 
                 Case eDataTypes.EcospaceEnviroCapacityResponse
-                    If obj.CoreComponent = eCoreComponentType.EcospaceResponseInteractionManager Then
-
+                    If obj.CoreComponent = eCoreComponentType.EcospaceCapacityResponseInteractionManager Then
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange,
-                                      eCoreComponentType.EcospaceResponseInteractionManager, eMessageImportance.Maintenance))
+                                      eCoreComponentType.EcospaceCapacityResponseInteractionManager, eMessageImportance.Maintenance))
                     End If
+
+                Case eDataTypes.EcospaceEnviroMortalityResponse
+                    If obj.CoreComponent = eCoreComponentType.EcospaceMortalityResponseInteractionManager Then
+
+                        Me.m_publisher.AddMessage(New cMessage("Mortality map data has changed.", TypeOfChange,
+                                      eCoreComponentType.EcospaceMortalityResponseInteractionManager, eMessageImportance.Maintenance))
+                    End If
+
 
                 Case eDataTypes.EcospaceSpatialDataConnection
                     Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceSpatialDataConnection))
@@ -15251,11 +15316,10 @@ Public Class cCore
             Return m_gameManager
         End Get
     End Property
+#End Region
 
-#End Region ' Game manager/interface
 
 #Region " Eco Functions "
-
     Private Sub initEcoFunctions()
         Try
             Me.m_Functions.Init(Me)
@@ -15274,7 +15338,7 @@ Public Class cCore
         End Get
     End Property
 
-#End Region ' Eco Functions
+#End Region
 
 #Region " License "
 

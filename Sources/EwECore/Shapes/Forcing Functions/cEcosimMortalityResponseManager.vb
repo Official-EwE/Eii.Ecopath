@@ -26,9 +26,9 @@ Imports EwEUtils.Core
 #End Region ' Imports
 
 ''' <summary>
-''' Manager class to handle Ecosim Environmental Response functions
+''' Manager class to handle Ecosim Mortality Response functions
 ''' </summary>
-Public Class cEcosimEnviroResponseManager
+Public Class cEcosimMortalityResponseManager
     Inherits cCoreInputOutputBase
     Implements IEnvironmentalResponseManager
 
@@ -39,16 +39,14 @@ Public Class cEcosimEnviroResponseManager
 
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
-        Me.m_coreComponent = eCoreComponentType.EcosimCapacityResponseInteractionManager
-        Me.m_dataType = eDataTypes.EcosimEnviroResponseFunctionManager
+        Me.m_coreComponent = eCoreComponentType.EcosimMortalityResponseInteractionManager
+        Me.m_dataType = eDataTypes.EcosimMortalityResponseFunctionManager
     End Sub
 
     Friend Sub Init(ByVal EocsimData As cEcosimDatastructures, ByVal MediationData As cMediationDataStructures)
         Me.m_simData = EocsimData
         Me.m_medData = MediationData
-        'Me.m_simData.lstEnviroInputData = New List(Of IEnviroInputData)
-
-        m_lstEnviroData = New List(Of IEnviroInputData)
+        Me.m_lstEnviroData = New List(Of IEnviroInputData)
     End Sub
 
     Public Sub Load(manager As cForcingFunctionShapeManager)
@@ -71,10 +69,10 @@ Public Class cEcosimEnviroResponseManager
                 EnviroData.Init(Me.m_simData.CapEnvResData, Me.m_simData)
                 EnviroData.IsDriverActive = True
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
-                    EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.EnvRespFuncIndex(iEnv, iGroup)
+                    EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.MortalityRespFuncIndex(iEnv, iGroup)
                 Next
-                ' Me.m_simData.lstEnviroInputData.Add(EnviroData)
-                Me.m_lstEnviroData.Add(EnviroData)
+                'Me.m_simData.lstEnviroInputData.Add(EnviroData)
+                m_lstEnviroData.Add(EnviroData)
 
             Catch ex As Exception
                 Debug.Assert(False, "LoadFromCoreData Error: " & ex.Message)
@@ -93,22 +91,15 @@ Public Class cEcosimEnviroResponseManager
         Dim bSuccess As Boolean = True
 
         Try
-            'For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
             For Each env As cEcosimEnviroInputData In Me.m_lstEnviroData
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
-                    'If this is a new application
-                    'check that the response function cover some of the input(forcing) data
-                    Dim bnew As Boolean = (Me.m_simData.EnvRespFuncIndex(env.Index, iGroup) <> env.ResponseIndexForGroup(iGroup)) And (env.ResponseIndexForGroup(iGroup) <> cCore.NULL_VALUE)
-                    If bnew Then
-                        Me.CheckResponseOverlap(env, iGroup)
-                    End If
 
                     'Update the core data
-                    Me.m_simData.EnvRespFuncIndex(env.Index, iGroup) = env.ResponseIndexForGroup(iGroup)
+                    Me.m_simData.MortalityRespFuncIndex(env.Index, iGroup) = env.ResponseIndexForGroup(iGroup)
 
                 Next iGroup
             Next env
-            Me.m_core.onChanged(Me)
+            Me.m_core.onChanged(Me, eMessageType.DataModified)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString + ".OnChanged() Exception: " + ex.Message)
             bSuccess = False
@@ -121,7 +112,6 @@ Public Class cEcosimEnviroResponseManager
     Public ReadOnly Property nInputData() As Integer Implements IEnvironmentalResponseManager.nEnviroData
         Get
             Return Me.m_lstEnviroData.Count
-            'Return Me.m_simData.lstEnviroInputData.Count
         End Get
     End Property
 
@@ -130,7 +120,6 @@ Public Class cEcosimEnviroResponseManager
         Get
             If iDataIndex > 0 And iDataIndex <= Me.nInputData Then
                 Return Me.m_lstEnviroData(iDataIndex - 1)
-                ' Return Me.m_simData.lstEnviroInputData(iDataIndex - 1)
             End If
             Return Nothing
         End Get
@@ -192,7 +181,6 @@ Public Class cEcosimEnviroResponseManager
 
     End Sub
 
-
     Public Overrides Sub Clear()
         MyBase.Clear()
         If Me.m_lstEnviroData IsNot Nothing Then
@@ -202,6 +190,6 @@ Public Class cEcosimEnviroResponseManager
     End Sub
 
     Public Sub UpdateLayer(layer As cEcospaceLayer) Implements IEnvironmentalResponseManager.UpdateLayer
-        'Nope nothing for Ecosim
+        'Nope not for Ecosim
     End Sub
 End Class

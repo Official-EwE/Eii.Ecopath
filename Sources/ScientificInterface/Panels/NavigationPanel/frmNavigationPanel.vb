@@ -249,10 +249,11 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYFFPROD, "ndApplyFFPP", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFPrimaryProducer), eNodeImages.Input, nodeFolder, "Apply forcing function primary.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYFFDET, "ndApplyFFDetritus", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFDetritus), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
-        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE, "ndEcosimEnvironmentalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimFunctionalResponse), eNodeImages.Input, nodeInput) ' ToDo: connect to help
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_FORAGING, "ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_MORTALITY, "ndApplyFFOtherMort", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFOtherMort), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE, "ndEcosimEnvironmentalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimEnvironmentalResponse), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_FORAGING, "ndEcosimForagingResponse", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE_MORTALITY, "ndEosimMortalityResponse", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimMortalityResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
+        'gridApplyEcosimMortalityResponses
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_EGGPROD, "ndEP", eCoreExecutionState.EcosimLoaded, GetType(frmEggProduction), eNodeImages.Input, nodeInput, "Egg production.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYEGGPROD, "ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(ApplyEP), eNodeImages.Input, nodeFolder, "Apply egg production.htm")
 
@@ -291,10 +292,13 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_PARAMS, "ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceParameters), eNodeImages.Input, nodeInput, "Ecospace parameters.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_MAPS, "ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceMap), eNodeImages.Input, nodeInput, "Basemap.htm")
 
-        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABCAP, "ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_ENVIRONMENTALRESPONSE, "ndEcospaceEnvironmentalResponse", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceEnvironmentalResponses), eNodeImages.Input, nodeInput) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABCAPMODEL, "ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABITATPREFS, "ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(gridHabitatPreference), eNodeImages.Input, nodeFolder, "Assign habitats.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABCAPAPPLY, "ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyForagingResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+        Me.m_nodecontroller.Add("Apply mortality response", "ndMortalityApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyMortalityResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
         Me.m_nodecontroller.Add("Computed foraging capacity", "ndHabCapComputed", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceComputedCapacity), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_DISPERSAL, "ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), eNodeImages.Input, nodeInput, "Dispersal.htm")

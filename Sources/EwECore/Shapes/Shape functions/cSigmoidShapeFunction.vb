@@ -63,6 +63,15 @@ Public Class cSigmoidShapeFunction
                 End If
             End If
 
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb Calculate XOpt as a function of Slope(K)
+            '8-Arp-2020 We can't really do this without knowing which variable the user edited
+            'If XOpt = 0.0 Then
+            '    XOpt = 1 / CSng((1 + Math.Exp(-k * xMid)))
+            '    Me.ParamValue(4) = XOpt
+            'End If
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
             Dim dx As Single = (xMax - xZero) / nPoints
             For i As Integer = 1 To nPoints

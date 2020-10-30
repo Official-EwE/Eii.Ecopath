@@ -134,14 +134,13 @@ Public Class cEcoSpace
     'iWindow could be a constant
     Private iWindow As Integer
 
-    'Private HabGrad(,,) As Single
-    ' Private NcellsHab() As Integer
-
     'the analog of habgrad, but for migration, and has a monthly component
     Private MigGrad(,)(,) As Single
 
     Private RelMoveFit(,) As Single 'populated in SetKmove()
     Private RelFitness(,,) As Single
+
+
 
 
     Friend FtimeCell(,,) As Single 'feeding time???
@@ -158,9 +157,6 @@ Public Class cEcoSpace
     Private MigPowj(,) As Single
     Private PrefRowP(,) As Single, PrefColP(,) As Single
 
-    'these are now in the data structure
-    'Private Vspace() As Single 'vulnerabilities set to same values as ecosim during initialization
-    'Private Aspace() As Single 'search rate set to same values as ecosim during initialization
     Private PbSpace() As Single ' P/B from Ecopath
 
     Private der() As Single
@@ -389,15 +385,6 @@ Public Class cEcoSpace
 
     Public Property ContaiminantTracerData() As cContaminantTracerDataStructures
 
-    'jb 16-June-2016 Remove the cEcospaceTimeSeriesDataStructures when implementing Ecosim biomass forcing in EcoSpace
-    'Public Property EcospaceTimeSeriesData() As cEcospaceTimeSeriesDataStructures
-    '    Get
-    '        Return m_refdata
-    '    End Get
-    '    Set(ByVal newValue As cEcospaceTimeSeriesDataStructures)
-    '        m_refdata = newValue
-    '    End Set
-    'End Property
 
     Public Property TimeSeriesData() As cTimeSeriesDataStructures
         Get
@@ -420,19 +407,6 @@ Public Class cEcoSpace
     Public Property SpatialData As cSpatialDataStructures
 
     Public Property AdvectionManager As Ecospace.Advection.cAdvectionManager
-
-    'Public Property StopRun() As Boolean
-    '    Get
-    '        Return m_StopRun
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        m_StopRun = value
-    '        'if EcoSpace is Paused then let run so it can Stop
-    '        If Me.Paused Then
-    '            Me.Paused = False
-    '        End If
-    '    End Set
-    'End Property
 
     Public Property SearchData() As cSearchDatastructures
 
@@ -828,6 +802,10 @@ Public Class cEcoSpace
             Me.ForceBiomassWithEcosimTimeSeries(1)
             ' hack to dump ecotracer C/B to csv file 
 
+
+            'Set b(),c(),d() and e() cell movement parameters based on the migration movement gradient MigGrad()
+            VaryMigMovementParameters(imonth:=1)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -872,7 +850,7 @@ Public Class cEcoSpace
                     'System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
                 End If
 
-                Me.SetOtherMort()
+                Me.setMoMaps()
 
                 'Tell Ecoseed that we are at the start of a timestep
                 Me.EcoseedBeginTimeStep(EcoSpaceData.MonthNow, EcoSpaceData.YearNow, Btime)
@@ -885,26 +863,6 @@ Public Class cEcoSpace
                         EcoSimData.FishRateGear(i, 0) = Fgear(i) 'm_Data.FishRateGear(i, itime)
                     Next
                 End If
-
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'jb 10-Jun-2016 Replace the original Advection Model 
-                ''********************Martell******************
-                ''This is for monthy current vectors.
-                'If m_Data.CurrentForce Then
-                '    For i = 0 To m_Data.InRow + 1
-                '        For j = 0 To m_Data.InCol + 1
-                '            m_Data.Xvel(i, j) = m_Data.Xv(i, j, m_Data.MonthNow)
-                '            m_Data.Yvel(i, j) = m_Data.Yv(i, j, m_Data.MonthNow)
-                '        Next j
-                '    Next i
-
-                '    'ToDo_jb FindSpatial....... velmaker
-                '    'Calculate Upwelling indicies
-                '    CalcAdvection(m_Data.MonthNow)
-                '    SetMovementParameters()
-                'End If
-                'xxxxxxxxxxxxxxxxxxxxxxx
-                'New Advection model
 
                 If Me.EcoSpaceData.isAdvectionActive Then
                     'Update the monthly X and Y velocity vectors
@@ -919,9 +877,11 @@ Public Class cEcoSpace
                     SetMovementParameters()
                 End If
 
-
-                'Set b(),c(),d() and e() cell movement parameters based on the migration movement gradient MigGrad()
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Set b(),c(),d() and e() cell movement parameters 
+                'based on the migration movement gradient MigGrad() and relative fitness movement RelFitness()
                 VaryMigMovementParameters(EcoSpaceData.MonthNow)
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 'HACK ALERT
@@ -945,20 +905,6 @@ Public Class cEcoSpace
                         RelRepStanza(i) = EcoSimData.tval(StanzaData.EggProdShapeSplit(i)) * StanzaData.RscaleSplit(i) / EcoSimData.StartBiomass(StanzaData.EcopathCode(i, StanzaData.Nstanza(i)))
                     End If
                 Next
-
-                ''make sure none of the biomass cells are zero
-                'For ip = 1 To EcoSpaceData.nvartot
-                '    For i = 1 To EcoSpaceData.InRow
-                '        For j = 1 To EcoSpaceData.InCol
-                '            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
-                '            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
-                '                EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                '            End If
-                '            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                '        Next j
-                '    Next i
-                'Next 'For ip = 1 To m_Data.nvartot
-
 
                 EcoSpaceData.PredictEffort = True
                 If EcoSpaceData.PredictEffort Then
@@ -1009,23 +955,6 @@ Public Class cEcoSpace
                 runSpaceSolverThreads()
                 stpwchSolver.Stop()
 
-                ''make sure none of the biomass cells are zero
-                'For ip = 1 To EcoSpaceData.nvartot
-                '    For i = 1 To EcoSpaceData.InRow
-                '        For j = 1 To EcoSpaceData.InCol
-                '            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
-                '            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
-                '                EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                '            End If
-                '            If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                '        Next j
-                '    Next i
-                'Next 'For ip = 1 To m_Data.nvartot
-
-
-                'Me.UpdateMultiStanza()
-
-
                 'now solve the spatial grid
                 stpwchGrid.Start()
                 runGridSolverThreads()
@@ -1036,6 +965,10 @@ Public Class cEcoSpace
 
                 'Debugging discards map dumps discards to console window
                 'Me.m_Data.debugTestDiscardsMaps()
+
+                'Aug-2020 Set rel fitness movement by groups
+                'Not used but kept for reference
+                'setRelFitnessMovement(EcoSpaceData.MonthNow)
 
                 'make sure none of the biomass cells are zero
                 For ip = 1 To EcoSpaceData.nvartot
@@ -1051,60 +984,10 @@ Public Class cEcoSpace
                     Next i
                 Next 'For ip = 1 To m_Data.nvartot
 
-
-                'For ip = 1 To m_Data.nvartot
-                '    '********following will bypass unneeded solvegrid calls when NewMultiStanza=true
-                '    If m_Data.ByPassIntegrate(ip) = False Then
-                '        SolveGrid(ip, AMm, F, m_Data.Bcell, m_Data.Inrow, m_Data.InCol, Tol, jord, m_Data.W)
-                '        SolveGridRow(ip, AMm, F, m_Data.Bcell, m_Data.Inrow, m_Data.InCol, Tol, jord, m_Data.W)
-                '        For i = 1 To m_Data.Inrow : For j = 1 To m_Data.InCol
-                '                If m_Data.Bcell(i, j, ip) < 1.0E-30 Then m_Data.Bcell(i, j, ip) = 1.0E-30
-                '            Next : Next
-                '    End If
-                'Next
-
-
-
                 'update total age structure over space for multistanza groups if new method is used
                 If EcoSpaceData.NewMultiStanza Then
 
                     Me.UpdateMultiStanza()
-
-                    'SpaceSplitUpdate()  'update overall population age structure using total loss, consumption added over grid cells
-                    ''then distribute updated biomasses over the spatial grid
-                    ''The following code (for isp...next isp) is real Rambo shit, really should be put
-                    ''in its own subroutine called 'DistributeMultiStanzaBiomass' so we
-                    ''can improve it later with more complex spatial redistribution
-                    ''rules eg running an IBM to predict movement among cells
-                    'Dim ieco As Integer
-                    'Dim tbio() As Single
-
-
-                    'ReDim tbio(Me.EcoSpaceData.NGroups)
-                    'For isp As Integer = 1 To StanzaData.Nsplit
-                    '    For ist As Integer = 1 To StanzaData.Nstanza(isp)
-                    '        ieco = StanzaData.EcopathCode(isp, ist)
-                    '        '***WARNING**** FOLLOWING CALCULATION WILL FAIL IF ADJUSTSPACEPARS HAS NOT BEEN CALLED
-                    '        'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
-                    '        'SET
-                    '        Tbiom = EcoSpaceData.ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                    '        Tpred = EcoSpaceData.ThabArea * EcoSimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
-
-                    '        'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                    '        'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
-                    '        For i = 1 To EcoSpaceData.InRow
-                    '            For j = 1 To EcoSpaceData.InCol
-                    '                If EcoSpaceData.Depth(i, j) > 0 Then
-                    '                    Wcell = EcoSpaceData.IFDweight(i, j, ieco) / TotIFDweight(ieco)
-                    '                    EcoSpaceData.Bcell(i, j, ieco) = Tbiom * Wcell
-                    '                    ' Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ieco)))
-                    '                    tbio(ieco) = tbio(ieco) + EcoSpaceData.Bcell(i, j, ieco)
-                    '                    EcoSpaceData.PredCell(i, j, ieco) = Tpred * Wcell
-                    '                End If
-                    '            Next j
-                    '        Next i
-                    '    Next ist
-                    'Next isp
 
                 ElseIf EcoSpaceData.UseIBM Then
                     'IBM model
@@ -1249,15 +1132,6 @@ Public Class cEcoSpace
                 SearchData.EcoSpaceSummarizeIndicators(Fgear, runTime, RuntimePB, EcoSpaceData.nWaterCells)
             End If
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'jb Stats now done by EcospaceTimeSeriesManager()
-            'Dim SpaceSS As Single
-            ''If SpDatYear > 0 Then 'there is time series data so calculate SS SpSS
-            'SpaceSS = CalculateSpaceSS()
-            ''End If
-
-            'm_Ecosim.PlotDataInfo(False, m_Data.SS)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             Me.TimeSeriesManager.RunCompleted()
 
@@ -1358,6 +1232,8 @@ Public Class cEcoSpace
                 'Clear out the results that were gathered during the Spin-Up
                 Me.EcoSpaceData.redimTimeStepResults(nEcospaceTimeSteps)
 
+                Me.resetSpaceSolverSpinup()
+
             End If 'Me.iSpinUp <= Me.nSpinUp T
 
         End If 'm_Data.bInSpinUp 
@@ -1440,6 +1316,8 @@ Public Class cEcoSpace
 
     Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
         Try
+
+            Me.EcoSpaceData.MOLayerChanged.Clear()
 
             ' Apply Ecospace datasources
             ' * This will need to become much more sophisticated
@@ -2098,56 +1976,6 @@ Public Class cEcoSpace
 
     End Sub
 
-    Private Sub runContaminantTracerSolveGrid()
-        Dim i As Integer
-        Dim j As Integer
-        Dim iRgn As Integer
-        Dim ip As Integer
-        Dim Wtr As Double
-
-        Me.grdslvConSim.FirstLastGroups(0, EcoPathData.NumGroups)
-        'the grid solver has already been initialized with a reference to the contaminant tracing data
-        'Me.grdslvConSim.Solve(Nothing)
-        Me.grdslvConSim.Solve(Nothing)
-
-        'ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
-
-        'For i = 1 To m_Data.InRow
-        '    For j = 1 To m_Data.InCol
-
-        '        iRgn = m_Data.Region(i, j)
-        '        If iRgn > m_Data.nRegions Then iRgn = 0
-
-        '        For ip = 0 To m_Data.NGroups
-        '            'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
-        '            Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
-        '            'ww i don't think this line should be here
-        '            'm_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
-        '            m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
-
-        '            If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
-
-        '            m_tracerData.TracerConcByRegion(iRgn, ip, itt) = m_tracerData.TracerConcByRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip)
-        '            m_tracerData.TracerCBRegion(iRgn, ip, itt) = m_tracerData.TracerCBRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
-
-        '        Next ip
-
-        '    Next j
-        'Next i
-
-        ''average contamintant results by region
-        'For iRgn = 0 To m_Data.nRegions
-        '    Dim nInRgn As Integer = m_Data.nCellsInRegion(iRgn)
-        '    If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
-
-        '    For igrp As Integer = 0 To m_Data.NGroups
-        '        m_tracerData.TracerConcByRegion(iRgn, igrp, itt) = m_tracerData.TracerConcByRegion(iRgn, igrp, itt) / nInRgn
-        '        m_tracerData.TracerCBRegion(iRgn, igrp, itt) = m_tracerData.TracerCBRegion(iRgn, igrp, itt) / nInRgn
-        '    Next igrp
-        'Next iRgn
-
-
-    End Sub
 
     Private Sub summarizeContaminantTracer()
         Dim i As Integer
@@ -2412,11 +2240,6 @@ Public Class cEcoSpace
             'readAdvectFile()
             '*****************
 
-            'jb Moved default values to InitToDefaults
-            ' m_Data.NewMultiStanza = True
-            '  m_Data.UseIBM = True
-            'm_Data.TimeStep = 1 / 12
-
             If EcoSpaceData.NewMultiStanza Then
                 '    m_Data.IFDPower = 0.5 'this should be available to users in interface, higher values typically cause
                 'instability in spatial allocation (IFD) model for multistanza biomass distributions
@@ -2619,7 +2442,7 @@ Public Class cEcoSpace
 #If DEBUG Then
                 'For Debugging
                 If ip > 0 Then
-                    System.Console.WriteLine(Me.EcoPathData.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.EcoPathData.B(ip)).ToString)
+                    Debug.WriteLine(Me.EcoPathData.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.EcoPathData.B(ip)).ToString)
                 End If
 #End If
             Next ip
@@ -2914,10 +2737,14 @@ Public Class cEcoSpace
 
             'Advection 
             'Clear out the time step Advection and Upwelling vectors
-            'It the Advection model been run these may be populated 
+            'If the Advection model been run these may be populated 
             Array.Clear(Me.EcoSpaceData.UpVel, 0, Me.EcoSpaceData.UpVel.Length)
             Array.Clear(Me.EcoSpaceData.Xvel, 0, Me.EcoSpaceData.UpVel.Length)
             Array.Clear(Me.EcoSpaceData.Yvel, 0, Me.EcoSpaceData.Yvel.Length)
+
+            'Me.SetOtherMort()
+
+            Me.setMoMaps()
 
             'For debugging Effort Zones code
             'sets up some zones with modified effort
@@ -3022,6 +2849,9 @@ Public Class cEcoSpace
             Me.EcoSpaceData.allocate(EcoSpaceData.Ftot, EcoSpaceData.NGroups, EcoSpaceData.InRow, EcoSpaceData.InCol)
 
             Me.EcoSpaceData.allocate(EcoSpaceData.Landings, EcoSpaceData.NGroups, EcoSpaceData.nFleets)
+
+            Me.EcoSpaceData.allocate(EcoSpaceData.RelMoveFitGroup, EcoSpaceData.NGroups, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1)
+
 
             If Me.EcoPathData.isEcospaceModelCoupled Then Me.EcoSpaceData.allocate(EcoSpaceData.GroupDetritus, EcoSpaceData.InRow, EcoSpaceData.InCol, EcoSpaceData.NGroups)
 
@@ -3201,8 +3031,8 @@ Public Class cEcoSpace
         Next
 
         For igrp As Integer = 1 To EcoSpaceData.NGroups
-            For ir As Integer = 1 To EcoSpaceData.InRow
-                For ic As Integer = 1 To EcoSpaceData.InCol
+            For ir As Integer = 0 To EcoSpaceData.InRow + 1
+                For ic As Integer = 0 To EcoSpaceData.InCol + 1
                     RelFitness(ir, ic, igrp) = 1.0
                 Next ic
             Next ir
@@ -3223,7 +3053,7 @@ Public Class cEcoSpace
         ReDim EcoSpaceData.HabAreaProportion(EcoSpaceData.NoHabitats)
         EcoSpaceData.ThabArea = 0
 
-        If EcoSpaceData.NoHabitats = 0 Then Return
+        'If EcoSpaceData.NoHabitats = 0 Then Return
 
         For i = 1 To EcoSpaceData.InRow
             For j = 1 To EcoSpaceData.InCol
@@ -3756,6 +3586,11 @@ Public Class cEcoSpace
                     If EcoSpaceData.Depth(i, j + 1) > 0 Then
 
                         For ip = 1 To EcoSpaceData.NGroups
+
+                            'If ip = 1 And j = EcoSpaceData.InCol And i <> 0 Then
+                            '    Debug.Assert(False)
+                            'End If
+
                             If j > 0 And j < EcoSpaceData.InCol Then
 
                                 If EcoSpaceData.HabCap(ip)(i, j + 1) = EcoSpaceData.HabCap(ip)(i, j) Then
@@ -3819,17 +3654,16 @@ Public Class cEcoSpace
                             If i > 0 And i < EcoSpaceData.InRow Then
 
                                 If EcoSpaceData.HabCap(ip)(i + 1, j) = EcoSpaceData.HabCap(ip)(i, j) Then
-                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
+                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i)
                                     C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i)
                                 ElseIf EcoSpaceData.HabCap(ip)(i + 1, j) > EcoSpaceData.HabCap(ip)(i, j) Then
-                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
-                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i, j) / EcoSpaceData.HabCap(ip)(i + 1, j) * EcoSpaceData.Width(i) 'RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
+                                    Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i)
+                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i, j) / EcoSpaceData.HabCap(ip)(i + 1, j) * EcoSpaceData.Width(i)
                                 Else
                                     Bcw(i + 1, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.HabCap(ip)(i + 1, j) / EcoSpaceData.HabCap(ip)(i, j) * EcoSpaceData.Width(i)
-                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i) '* RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
+                                    C(i, j, ip) = EcoSpaceData.Mrate(ip) * EcoSpaceData.Width(i)
                                 End If
-                                'C(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
-                                'Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
+
                                 If EcoSpaceData.IsAdvected(ip) Then
                                     'jb 1-Dec-2016 Include cell width scaler in Y velocity movements
                                     If EcoSpaceData.Yvel(i, j) > 0 Then
@@ -3912,6 +3746,22 @@ Public Class cEcoSpace
             Debug.Print(tempstr)
             tempstr = ""
         Next
+    End Sub
+
+    Private Sub debugDumpRelMoveFitness(RelMove(,,) As Single, igrp As Integer, Optional msg As String = " ")
+        Dim sb As New Text.StringBuilder
+        ' For igrp As Integer = 1 To EcoSpaceData.NGroups
+        Debug.Print("Relmovement for group = " + igrp.ToString + ", t," + itt.ToString)
+        For i As Integer = 1 To EcoSpaceData.InRow '+ 1
+            For j As Integer = 1 To EcoSpaceData.InCol ' + 1
+                'tempstr = tempstr + Math.Round(RelMove(i, j, igrp), 10).ToString.PadRight(20)
+                sb.Append(Math.Round(RelMove(i, j, igrp), 5).ToString + ", ")
+            Next
+            Debug.Print(sb.ToString)
+            sb.Clear()
+        Next
+
+        '  Next igrp
     End Sub
 
 
@@ -5312,130 +5162,16 @@ exitline:
 
 
 
-
-
-    'Sub VaryMigMovementParameters_HighMRate(ByVal imonth As Integer)
-    '    '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
-    '    'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
-    '    Dim ip As Integer
-    '    Dim i As Integer, j As Integer, AdScale As Single
-    '    Dim nvar2 As Integer, ir As Integer
-    '    Dim Ep As Single
-    '    Dim MaxCh As Single
-    '    Dim FitRatio As Single
-    '    AdScale = 1 '/ (2 * 3.14159 * CellLength)
-    '    MaxCh = 1
-    '    Dim ieco As Integer
-    '    Dim imig As Integer
-    '    Dim nMig As Integer
-    '    Dim MigToEcopath() As Integer
-    '    Dim migGradWeight As Single = 0.05
-
-    '    ReDim MigToEcopath(m_Data.NGroups)
-    '    For i = 1 To m_Data.NGroups
-    '        If m_Data.IsMigratory(i) Then
-    '            nMig = nMig + 1
-    '            MigToEcopath(nMig) = i
-    '        End If
-    '    Next
-
-    '    For imig = 1 To nMig
-    '        ip = MigToEcopath(imig)
-    '        ieco = IecoCode(ip)
-
-    '        'calculate relative emigration rate from each cell as function
-    '        'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
-    '        For i = 0 To m_Data.InRow + 1
-    '            For j = 0 To m_Data.InCol + 1
-    '                If m_Data.FitRespType > 0 Then
-    '                    Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
-    '                    If Ep < -MaxCh Then Ep = -MaxCh
-    '                    If Ep > MaxCh Then Ep = MaxCh
-    '                    Ep = Math.Exp(Ep)
-    '                    RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
-
-    '                Else
-    '                    RelMoveFit(i, j) = 1
-    '                End If
-    '            Next
-    '        Next
-
-    '        For i = 0 To m_Data.InRow
-    '            For j = 0 To m_Data.InCol
-    '                If m_Data.Depth(i, j) > 0 Then
-
-    '                    'check depth on right face of this cell
-    '                    If m_Data.Depth(i, j + 1) > 0 Then
-
-    '                        If m_Data.FitRespType < 2 Then
-    '                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                            d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                        Else
-    '                            FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-    '                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * FitRatio * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                            d(i, j, ip) = dNomig(i, j, ip) / FitRatio * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                        End If
-
-    '                        If j = 0 Or j = m_Data.InCol Then
-    '                            e(i, j + 1, ip) = 0
-    '                            d(i, j, ip) = 0
-    '                        End If
-
-    '                        nvar2 = m_Data.NGroups
-    '                        If ieco > 0 Then
-    '                            ir = IecoCode(ip)
-    '                            e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
-    '                            d(i, j, nvar2 + ir) = d(i, j, ip)
-    '                        End If
-    '                    End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
-
-    '                    'then check depths on bottom face of this cell
-    '                    If m_Data.Depth(i + 1, j) > 0 Then
-    '                        If m_Data.FitRespType < 2 Then
-    '                            C(i, j, ip) = CNomig(i, j, ip) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                            Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                        Else
-    '                            FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
-    '                            C(i, j, ip) = CNomig(i, j, ip) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                            Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-    '                        End If
-
-    '                        If i = 0 Or i = m_Data.InRow Then
-    '                            C(i, j, ip) = 0
-    '                            Bcw(i + 1, j, ip) = 0
-    '                        End If
-
-    '                        If ieco > 0 Then
-    '                            ir = ieco
-    '                            Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
-    '                            C(i, j, nvar2 + ir) = C(i, j, ip)
-    '                        End If
-
-    '                    End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
-
-    '                End If 'If m_Data.Depth(i, j) > 0 Then
-
-    '            Next j
-    '        Next i
-    '    Next imig
-    'End Sub
-
-
     Sub VaryMigMovementParameters(ByVal imonth As Integer)
         '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
         'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
         Dim ip As Integer
         Dim i As Integer, j As Integer, AdScale As Single
         Dim nvar2 As Integer, ir As Integer
-        '  Dim Ep As Single
         Dim MaxCh As Single
-        '   Dim FitRatio As Single
         AdScale = 1 '/ (2 * 3.14159 * CellLength)
         MaxCh = 1
-        Dim ieco As Integer
-        Dim iMove As Integer
         Dim iMig As Integer
-        Dim nMig As Integer
         Dim MigToEcopath() As Integer
         Dim EcopathToMig() As Integer
 
@@ -5452,8 +5188,6 @@ exitline:
             End If
         Next
 
-        'normalizeRelFitness()
-
         For ip = 1 To EcoSpaceData.NGroups
 
             If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
@@ -5463,14 +5197,17 @@ exitline:
                 For i = 0 To EcoSpaceData.InRow + 1
                     For j = 0 To EcoSpaceData.InCol + 1
                         RelMoveFit(i, j) = (EcoSpaceData.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * EcoSpaceData.Kmovefit(ip))
+
+                        'If ((i = 1 And j = 1) Or (i = 2 And j = 2) Or (i = 3 And j = 3)) And ip = 4 Then
+                        '    Debug.WriteLine(j.ToString + ", " + RelMoveFit(i, j).ToString)
+                        'End If
+
                     Next j
                 Next i
 
                 For i = 0 To EcoSpaceData.InRow
                     For j = 0 To EcoSpaceData.InCol
                         If EcoSpaceData.Depth(i, j) > 0 Then
-
-                            'Debug.Assert(Not (i > 0 And j > 0))
 
                             'check depth on right face of this cell
                             'can there be movement to or from the cell to the right for this cell
@@ -5485,10 +5222,15 @@ exitline:
                                     d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(iMig, imonth), EcoSpaceData.MoveScale, iMig, imonth, ip)
 
                                 Else
+                                    'Debug.Assert(RelMoveFit(i, j + 1) = 1)
                                     e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1)
                                     'Movement from this cell into the cell to the right
                                     d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j)
-                                    'System.Console.WriteLine("grp=" & ip.ToString & ", i=" & i.ToString & ", j=" & j.ToString & ", RelFitness=" & RelFitness(i, j + 1, ip).ToString & ", RelMoveFit=" & RelMoveFit(i, j + 1).ToString & ", e=" & e(i, j + 1, ip).ToString)
+
+                                    'If ((i = 1 And j = 1) Or (i = 2 And j = 2) Or (i = 3 And j = 3)) And (ip = 5 And RelMoveFit(i, j) <> 1.0) Then
+                                    '    Debug.WriteLine(j.ToString + ", e, " + e(i, j + 1, ip).ToString)
+                                    'End If
+
                                 End If
 
                                 If j = 0 Or j = EcoSpaceData.InCol Then
@@ -5496,20 +5238,17 @@ exitline:
                                     d(i, j, ip) = 0
                                 End If
 
-                                'nvar2 = EcoSpaceData.NGroups
-                                'If ieco > 0 Then
-                                '    ir = IecoCode(ip)
-                                '    e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
-                                '    d(i, j, nvar2 + ir) = d(i, j, ip)
-                                'End If
-
                                 nvar2 = EcoSpaceData.NGroups
                                 ir = IecoCode(ip)
                                 If ir > 0 Then
-                                    'ir = IecoCode(ip)
                                     e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
                                     d(i, j, nvar2 + ir) = d(i, j, ip)
                                 End If
+
+                                'If i = 1 And j = 1 And ip = 3 Then
+                                '    Debug.WriteLine(RelMoveFit(i, j).ToString + ", " + RelMoveFit(i, j + 1).ToString)
+                                '    Debug.WriteLine(d(i, j, ip).ToString + ", " + e(i, j + 1, ip).ToString)
+                                'End If
 
                             End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
 
@@ -5522,9 +5261,16 @@ exitline:
                                     Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(iMig, imonth), EcoSpaceData.MoveScale, iMig, imonth, ip)
 
                                 Else
-
+                                    'Debug.Assert(RelMoveFit(i, j + 1) = 1)
                                     C(i, j, ip) = CNomig(i, j, ip) * RelMoveFit(i, j)
                                     Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i + 1, j)
+
+
+                                    'If ((i = 1 And j = 1) Or (i = 2 And j = 2) Or (i = 3 And j = 3)) And (ip = 5 And RelMoveFit(i, j) <> 1.0) Then
+                                    '    Debug.WriteLine(j.ToString + ", b, " + BcwNomig(i, j + 1, ip).ToString + ", bcw, " + Bcw(i, j + 1, ip).ToString)
+                                    'End If
+
+
 
                                 End If
 
@@ -5533,15 +5279,9 @@ exitline:
                                     Bcw(i + 1, j, ip) = 0
                                 End If
 
-                                'If ieco > 0 Then
-                                '    ir = ieco
-                                '    Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
-                                '    C(i, j, nvar2 + ir) = C(i, j, ip)
-                                'End If
                                 nvar2 = EcoSpaceData.NGroups
                                 ir = IecoCode(ip)
                                 If ir > 0 Then
-                                    ' ir = ieco
                                     Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
                                     C(i, j, nvar2 + ir) = C(i, j, ip)
                                 End If
@@ -5556,44 +5296,38 @@ exitline:
             End If 'm_Data.IsMigratory(i) Or m_Data.Kmovefit(ip) > 0
         Next ip
 
-        'Me.debugDumpFlowRates(C, 23, "VaryMigMovementParameters c " + imonth.ToString)
+        ' Me.debugDumpRelMoveFitness(RelFitness, 4)
+        ' Me.debugDumpFlowRates(a, 3, "VaryMigMovementParameters c " + imonth.ToString)
         'Me.debugDumpFlowRates(Bcw, 23, "VaryMigMovementParameters b " + imonth.ToString)
 
     End Sub
 
 
-    'Private Sub normalizeRelFitness()
+    Sub setRelFitnessMovement(ByVal imonth As Integer)
+        'NOT USED Store Relative fitness movement inside a cell by group
+        '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
+        'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
+        Dim ip As Integer
+        Dim i As Integer, j As Integer
 
-    '    For ip As Integer = 1 To EcoSpaceData.NGroups
+        For ip = 1 To EcoSpaceData.NGroups
 
-    '        If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
-    '            Dim rfMax As Single = 0
-    '            For i As Integer = 1 To EcoSpaceData.InRow
-    '                For j As Integer = 1 To EcoSpaceData.InCol
-    '                    If EcoSpaceData.Depth(i, j) > 0 Then
-    '                        rfMax = Math.Max(rfMax, RelFitness(i, j, ip))
+            If EcoSpaceData.Kmovefit(ip) > 0 Then
 
-    '                    End If
-    '                Next j
-    '            Next i
+                'calculate relative emigration rate from each cell as function
+                'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
+                For i = 0 To EcoSpaceData.InRow + 1
+                    For j = 0 To EcoSpaceData.InCol + 1
+                        EcoSpaceData.RelMoveFitGroup(ip)(i, j) = (EcoSpaceData.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * EcoSpaceData.Kmovefit(ip))
+                    Next j
+                Next i
+            End If
+        Next ip
 
-    '            If rfMax > 1 Then
-    '                For i As Integer = 1 To EcoSpaceData.InRow
-    '                    For j As Integer = 1 To EcoSpaceData.InCol
-    '                        If EcoSpaceData.Depth(i, j) > 0 Then
-    '                            'RelFitness(i, j, ip) = 1 + Math.Log(RelFitness(i, j, ip))
-    '                            RelFitness(i, j, ip) = (RelFitness(i, j, ip) / rfMax) * 1.1
-    '                        End If
-    '                    Next j
-    '                Next i
+    End Sub
 
-    '                System.Console.WriteLine("Group = " & ip.ToString & " max = " & rfMax.ToString)
-    '            End If
 
-    '        End If
-    '    Next ip
 
-    'End Sub
 
     ''' <summary>
     ''' Calculate the directional flow rate (Bcw,c,d,e) dependant on migratory movement. 
@@ -6187,6 +5921,8 @@ exitline:
 
                     EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.TotalLoss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.TotalLoss, igrp)
 
+                    EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, igrp)
+
                 Next igrp
 
                 For iflt As Integer = 0 To Me.EcoSpaceData.nFleets
@@ -6232,6 +5968,8 @@ exitline:
                 EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, itt) /= EcoSpaceData.nWaterCells
                 EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, itt) /= EcoSpaceData.nWaterCells
                 EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, itt) /= EcoSpaceData.nWaterCells
+
+                EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, igrp, itt) /= EcoSpaceData.nWaterCells
                 'Don't include TotalLoss in the averaging. It's the total loss across the model area, NOT KM2
                 'm_Data.ResultsByGroup(eSpaceResultsGroups.TotalLoss, igrp, itt) /= m_Data.nWaterCells
 
@@ -6569,6 +6307,21 @@ exitline:
         End Try
 
     End Sub
+
+
+
+    Private Sub resetSpaceSolverSpinup()
+        Try
+            For Each solver As cSpaceSolver In Me.m_spaceSolvers
+                solver.resetSpinup()
+                'discount factor was computed in the main time loop
+            Next
+        Catch ex As Exception
+            cLog.Write(ex)
+            Throw New ApplicationException(Me.ToString & ".InitForYear() Error:  " & ex.Message, ex)
+        End Try
+    End Sub
+
 
     ''' <summary>
     ''' Creates a spacesolver object for each thread, and initialises them with references to ecospace variables
@@ -7054,6 +6807,7 @@ exitline:
         Dim i As Integer, j As Integer
 
         If EcoSpaceData.NewMultiStanza Then
+
             SpaceSplitUpdate()  'update overall population age structure using total loss, consumption added over grid cells
             'then distribute updated biomasses over the spatial grid
             'The following code (for isp...next isp) is real Rambo shit, really should be put
@@ -7242,18 +6996,21 @@ exitline:
                 ieco = StanzaData.EcopathCode(isp, ist)
                 cellsPerMonth = EcoSpaceData.Mvel(ieco) / (12 * EcoSpaceData.CellLength)
                 If cellsPerMonth >= 0.5 Then
-                    StanzaData.IBMMovesPerMonth(ieco) = cellsPerMonth / 0.5 '+1
+                    StanzaData.IBMMovesPerMonth(ieco) = cellsPerMonth / 0.5F
                     Dmove = 0.5
                 Else
                     StanzaData.IBMMovesPerMonth(ieco) = 1
                     Dmove = cellsPerMonth / 1
                 End If
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'older code for cell per month
                 'm_Stanza.IBMMovesPerMonth(ieco) = cellsPerMonth / 0.49 + 1
                 'Dmove = cellsPerMonth / m_Stanza.IBMMovesPerMonth(ieco)
-
                 'm_Stanza.IBMMovesPerMonth(ieco) = Int(2 * m_Data.Mvel(ieco) / (12 * m_Data.CellLength) + 1) 'allows movement of roughly 1/2 cellwidth per move
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                isc = isc + 1
+                isc += 1
                 'make up temporary list of suitable cells for this stanza
                 Nused = 0
                 For i = 1 To EcoSpaceData.InRow
@@ -7284,10 +7041,15 @@ exitline:
                     Next
                     For ip = 1 To StanzaData.Npackets
                         'distribute packets uniformly over suitable cells for this stanza, using list set above
-                        i1 = 1 + Me.m_rand.NextDouble() * (Nused - 1)
-                        StanzaData.iPacket(isp, ia, ip) = iList(i1) + Me.m_rand.NextDouble() ' 0.5 '
-                        StanzaData.jPacket(isp, ia, ip) = Jlist(i1) + Me.m_rand.NextDouble() '0.5 '
-                        'DEBUG: reenable following two lines
+
+                        'i1 = 1 + Me.m_rand.NextDouble() * (Nused - 1)
+                        'next random integer in a sequence between 1 and nused
+                        i1 = Me.m_rand.Next(1, Nused)
+                        StanzaData.iPacket(isp, ia, ip) = iList(i1) + Me.m_rand.NextDouble()
+                        StanzaData.jPacket(isp, ia, ip) = Jlist(i1) + Me.m_rand.NextDouble()
+                        'If StanzaData.jPacket(isp, ia, ip) >= 6.0 Then
+                        '    Debug.Assert(False)
+                        'End If
                         EcoSpaceData.Bcell(iList(i1), Jlist(i1), ieco) = EcoSpaceData.Bcell(iList(i1), Jlist(i1), ieco) + StanzaData.Npacket(isp, ia, ip) * StanzaData.Wpacket(isp, ia, ip)
                         EcoSpaceData.PredCell(iList(i1), Jlist(i1), ieco) = EcoSpaceData.PredCell(iList(i1), Jlist(i1), ieco) + StanzaData.Npacket(isp, ia, ip) * StanzaData.WWa(isp, ia)
                     Next
@@ -7753,6 +7515,11 @@ exitline:
 
         Me.SetMovementParameters()
 
+        If Me.EcoSpaceData.UseIBM And Me.EcoSpaceData.MovePacketsAtStanzaEntry Then
+            'Only if running the IBM and Ecospace Parameters Move packets on stanza entry is checked
+            SetNearestOKcellforIBM()
+        End If
+
         'All the map changes have been computed
         Me.EcoSpaceData.isCapacityChanged = False
         'this will clear the individual isGroupHabCapChanged() flags
@@ -8062,23 +7829,6 @@ exitline:
 
     End Function
 
-    Public Sub SetOtherMort()
-
-        For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
-            'Get the baseline M0 multi values from the user input map 
-            'This is done first so the values are just copied in
-            'All others mort drivers act as a multiplier on this baseline 
-            For irow As Integer = 1 To Me.EcoSpaceData.InRow
-                For icol As Integer = 1 To Me.EcoSpaceData.InCol
-                    If Me.EcoSpaceData.Depth(irow, icol) > 0 Then
-                        Me.EcoSpaceData.M0Mult(igrp)(irow, icol) = Me.EcoSpaceData.M0MultInput(igrp)(irow, icol)
-                    End If
-                Next icol
-            Next irow
-        Next igrp
-
-    End Sub
-
     ''' <summary>
     ''' Update the capacity map based on the datatype
     ''' </summary>
@@ -8382,6 +8132,49 @@ exitline:
                 'System.Console.WriteLine()
             End If ' map.isLayerActive
 
+        Next map
+
+        bReturn = True
+
+        Return bReturn
+
+    End Function
+
+
+    Private Function setMoMaps() As Boolean
+        Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
+        Dim map As IEnviroInputData
+        Dim imap As Integer = -1 'zero based index
+        If (Me.EcoSpaceData.MortalityResponseDrivers Is Nothing) Then Return False
+
+
+        For Each map In Me.EcoSpaceData.MortalityResponseDrivers
+            imap += 1
+
+            If Me.EcoSpaceData.MOLayerChanged.Contains(imap) Then
+
+                'Is this layer active
+                If map.IsDriverActive Then
+                    For igrp = 1 To Me.EcoSpaceData.NGroups
+                        'Does this group contain a response function for this map
+                        If map.ResponseIndexForGroup(igrp) > 0 Then
+                            'System.Console.Write(igrp.ToString + ",")
+                            'Yep Layer is Active
+                            'There is a response function
+                            For irow = 1 To Me.EcoSpaceData.InRow
+                                For icol = 1 To Me.EcoSpaceData.InCol
+                                    If Me.EcoSpaceData.Depth(irow, icol) > 0 Then
+
+                                        Me.EcoSpaceData.MOProp(igrp)(irow, icol) += map.ResponseFunction(igrp, irow, icol)
+
+                                    End If
+                                Next icol
+                            Next irow
+                        End If ' map.ResponseIndexForGroup(igrp) > 0
+                    Next igrp
+                    'System.Console.WriteLine()
+                End If ' map.isLayerActive
+            End If 'f Me.EcoSpaceData.m_lstExternalDataLoaded.Contains(imap + 1) Then
         Next map
 
         bReturn = True
@@ -9675,6 +9468,59 @@ exitline:
         'Next
         ''UpCap.Caption = "Upwelling velocities, max=" + Format$(UpMax / CellLength, "###.##") + "km/yr"
     End Sub
+
+
+    
+    'Private Sub runContaminantTracerSolveGrid()
+    '    Dim i As Integer
+    '    Dim j As Integer
+    '    Dim iRgn As Integer
+    '    Dim ip As Integer
+    '    Dim Wtr As Double
+
+    '    Me.grdslvConSim.FirstLastGroups(0, EcoPathData.NumGroups)
+    '    'the grid solver has already been initialized with a reference to the contaminant tracing data
+    '    'Me.grdslvConSim.Solve(Nothing)
+    '    Me.grdslvConSim.Solve(Nothing)
+
+    '    'ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
+
+    '    'For i = 1 To m_Data.InRow
+    '    '    For j = 1 To m_Data.InCol
+
+    '    '        iRgn = m_Data.Region(i, j)
+    '    '        If iRgn > m_Data.nRegions Then iRgn = 0
+
+    '    '        For ip = 0 To m_Data.NGroups
+    '    '            'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
+    '    '            Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
+    '    '            'ww i don't think this line should be here
+    '    '            'm_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
+    '    '            m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
+
+    '    '            If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
+
+    '    '            m_tracerData.TracerConcByRegion(iRgn, ip, itt) = m_tracerData.TracerConcByRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip)
+    '    '            m_tracerData.TracerCBRegion(iRgn, ip, itt) = m_tracerData.TracerCBRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
+
+    '    '        Next ip
+
+    '    '    Next j
+    '    'Next i
+
+    '    ''average contamintant results by region
+    '    'For iRgn = 0 To m_Data.nRegions
+    '    '    Dim nInRgn As Integer = m_Data.nCellsInRegion(iRgn)
+    '    '    If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
+
+    '    '    For igrp As Integer = 0 To m_Data.NGroups
+    '    '        m_tracerData.TracerConcByRegion(iRgn, igrp, itt) = m_tracerData.TracerConcByRegion(iRgn, igrp, itt) / nInRgn
+    '    '        m_tracerData.TracerCBRegion(iRgn, igrp, itt) = m_tracerData.TracerCBRegion(iRgn, igrp, itt) / nInRgn
+    '    '    Next igrp
+    '    'Next iRgn
+
+
+    'End Sub
 
 #End If
 #End Region

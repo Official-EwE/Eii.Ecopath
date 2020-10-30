@@ -120,7 +120,7 @@ Namespace EcospaceTimeSeries
             csvStr.Append(delim)
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.iGroupID))
             csvStr.Append(delim)
-            'Output timestamp format in hard coded
+            'Output timestamp format is hard coded
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.TimeStamp.ToString("yyyy-MM-dd")))
             csvStr.Append(delim)
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.CellValue))
