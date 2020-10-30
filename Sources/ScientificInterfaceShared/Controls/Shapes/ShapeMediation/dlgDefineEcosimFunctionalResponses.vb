@@ -41,9 +41,10 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 #Region " Private variables "
 
     Protected m_uic As cUIContext = Nothing
-    Protected m_manager As IEnvironmentalResponseManager = Nothing
 
     Private m_bInUpdate As Boolean = False
+    Private m_managertype As eCoreComponentType
+    Private m_bInInit As Boolean = True
 
 #End Region ' Private variables
 
@@ -63,7 +64,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         Me.InitializeComponent()
 
         Me.m_uic = uic
-        Me.m_manager = manager
+        Me.m_managertype = eCoreComponentType.EcosimCapacityResponseInteractionManager
 
         Me.m_graph.Init(Me.m_uic)
         Me.m_graph.Shape = shape
@@ -73,8 +74,9 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         Try
             Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().ToString(shape))
         Catch ex As Exception
-            ' Whoah!
+            cLog.Write(ex)
         End Try
+        Me.m_bInInit = False
 
     End Sub
 
@@ -83,9 +85,8 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
         If (Me.m_uic Is Nothing) Then Return
 
+        Me.m_bInUpdate = True
         Try
-            Me.m_bInUpdate = True
-
             Me.m_lbxGroups.Attach(Me.m_uic)
             Me.m_lbxGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.Manual
             Me.m_lbxGroups.VisibleGroups = Me.GetGroupList()
@@ -94,20 +95,12 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             Me.LoadDrivers()
 
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
         Me.m_bInUpdate = False
 
     End Sub
-
-    Protected Function GetGroupList() As Integer()
-        Dim lstGroups As New List(Of Integer)
-        For iGrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
-            lstGroups.Add(iGrp)
-        Next
-        Return lstGroups.ToArray()
-    End Function
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
@@ -129,6 +122,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         Try
             Me.UpdateControls()
         Catch ex As Exception
+            cLog.Write(ex)
         End Try
     End Sub
 
@@ -150,8 +144,12 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
                 driver.ResponseIndexForGroup(Me.m_lbxGroups.GetGroupIndexAt(i)) = shape.Index
             Next
 
+            'remember and re-set the currently selected node 
+            'so the use can just click the add button to add another shape
+            Dim selNodeIndex As Integer = Me.m_tvDrivers.SelectedNode.Index
             'bluntly reload the map tree
             Me.LoadDrivers()
+            Me.m_tvDrivers.SelectedNode = Me.m_tvDrivers.Nodes.Item(selNodeIndex)
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -237,20 +235,30 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Protected Sub LoadDrivers()
+    Private Function GetGroupList() As Integer()
+        Dim lstGroups As New List(Of Integer)
+        For iGrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
+            lstGroups.Add(iGrp)
+        Next
+        Return lstGroups.ToArray()
+    End Function
+
+    Private Sub LoadDrivers()
 
         Dim data As IEnviroInputData = Nothing
         Dim fmt As New cCoreInterfaceFormatter()
         Dim shape As cEnviroResponseFunction = Me.m_graph.Shape
-
+        Dim manager As IEnvironmentalResponseManager
         Debug.Assert(shape IsNot Nothing)
 
         Try
+
             Me.m_tvDrivers.Nodes.Clear()
+            manager = Me.GetManager()
 
-            For iDriver As Integer = 1 To Me.m_manager.nEnviroData
+            For iDriver As Integer = 1 To manager.nEnviroData
 
-                data = Me.m_manager.EnviroData(iDriver)
+                data = manager.EnviroData(iDriver)
                 'Dim ndApply As TreeNode = Me.m_tvMaps.Nodes.Add(fmt.GetDescriptor(DirectCast(map, cEnviroInputMap).Layer))
                 Dim ndApply As TreeNode = Me.m_tvDrivers.Nodes.Add(data.Name)
                 ndApply.Tag = data
@@ -270,9 +278,12 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
                             ndApply.ExpandAll()
                         End If
                     End If
-
                 Next
             Next
+
+            If Me.m_tvDrivers.Nodes.Count > 0 Then
+                Me.m_tvDrivers.SelectedNode = Me.m_tvDrivers.Nodes(0)
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -301,15 +312,56 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             End If
 
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
         Return Nothing
 
     End Function
 
-#End Region ' Private Methods
+    Private Function GetManager() As IEnvironmentalResponseManager
 
+        Try
+
+            Select Case Me.m_managertype
+                'Mortality
+                Case eCoreComponentType.EcosimMortalityResponseInteractionManager
+                    Return Me.m_uic.Core.EcosimMortalityResponseManager
+
+                'Foraging response
+                Case eCoreComponentType.EcosimCapacityResponseInteractionManager
+                    Return Me.m_uic.Core.EcosimEnviroResponseManager
+            End Select
+
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+        Return Nothing
+
+    End Function
+
+    Private Sub OnApplicationTypeChanged(sender As Object, e As EventArgs) Handles m_rbForaging.CheckedChanged
+
+        Dim bLoadUI As Boolean = False
+
+        If Me.m_rbMortality.Checked Then
+            bLoadUI = True
+            Me.m_managertype = eCoreComponentType.EcosimMortalityResponseInteractionManager
+        ElseIf Me.m_rbForaging.Checked Then
+            bLoadUI = True
+            Me.m_managertype = eCoreComponentType.EcosimCapacityResponseInteractionManager
+        End If
+
+        'Not in the init routine
+        'Manager was swapped
+        If Not m_bInInit And bLoadUI Then
+            Me.LoadDrivers()
+        End If
+
+    End Sub
+
+#End Region ' Private Methods
 
 End Class
 

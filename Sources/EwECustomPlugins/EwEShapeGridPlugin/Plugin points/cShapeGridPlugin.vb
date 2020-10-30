@@ -73,7 +73,7 @@ Public MustInherit Class cShapeGridPlugin
     Public ReadOnly Property ControlImage As System.Drawing.Image _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            Return SharedResources.nav_output
+            Return SharedResources.nav_input
         End Get
     End Property
 

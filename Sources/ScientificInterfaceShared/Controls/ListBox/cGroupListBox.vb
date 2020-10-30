@@ -752,6 +752,7 @@ Namespace Controls
             Dim iGroupEnd As Integer = 1
             Dim bSelected As Boolean = (Me.SelectedIndex > -1)
 
+
             If (Not Me.IsInitialized()) Then Return
 
             ' ToDo_JS: Preserve group selection

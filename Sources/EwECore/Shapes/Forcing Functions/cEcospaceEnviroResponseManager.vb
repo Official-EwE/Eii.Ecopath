@@ -41,7 +41,7 @@ Public Class cEcospaceEnviroResponseManager
 
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
-        Me.m_coreComponent = eCoreComponentType.EcospaceResponseInteractionManager
+        Me.m_coreComponent = eCoreComponentType.EcospaceCapacityResponseInteractionManager
         Me.m_dataType = eDataTypes.EcospaceEnviroCapacityResponse
     End Sub
 
@@ -120,7 +120,8 @@ Public Class cEcospaceEnviroResponseManager
             ' Bad hack: disable updates from the layer
             map.SetManager(Nothing)
             For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
-                map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapMapFunctions(0, iGroup)
+                ' Depth
+                map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapacityResponseFunctions(0, iGroup)
             Next
             map.SetManager(Me.m_core.CapacityMapInteractionManager)
             Me.m_maps.Add(map)
@@ -135,7 +136,7 @@ Public Class cEcospaceEnviroResponseManager
                     ' Bad hack: disable updates from the layer
                     map.SetManager(Nothing)
                     For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
-                        map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapMapFunctions(iMap, iGroup)
+                        map.ResponseIndexForGroup(iGroup) = Me.m_SpaceData.CapacityResponseFunctions(iMap, iGroup)
                     Next
                     map.SetManager(Me.m_core.CapacityMapInteractionManager)
                     Me.m_maps.Add(map)
@@ -169,7 +170,7 @@ Public Class cEcospaceEnviroResponseManager
 
             For iMap As Integer = 1 To Me.m_maps.Count
                 For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
-                    Me.m_SpaceData.CapMapFunctions(iMap - 1, iGroup) = Me.EnviroData(iMap).ResponseIndexForGroup(iGroup)
+                    Me.m_SpaceData.CapacityResponseFunctions(iMap - 1, iGroup) = Me.EnviroData(iMap).ResponseIndexForGroup(iGroup)
                 Next
             Next
 
@@ -206,6 +207,10 @@ Public Class cEcospaceEnviroResponseManager
         Me.m_maps.Clear()
     End Sub
 
+    Public Sub UpdateLayer(layer As cEcospaceLayer) Implements IEnvironmentalResponseManager.UpdateLayer
+        Throw New NotImplementedException()
+    End Sub
+
     Friend ReadOnly Property MediationData() As cMediationDataStructures Implements IEnvironmentalResponseManager.MediationData
         Get
             Return Me.m_MedData
@@ -219,9 +224,6 @@ Public Class cEcospaceEnviroResponseManager
     End Property
 
 #End Region ' Friend interfaces
-
-
-
 
     Public ReadOnly Property SimData As cEcosimDatastructures Implements IEnvironmentalResponseManager.SimData
         Get

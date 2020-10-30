@@ -98,6 +98,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Define {0} {1} response to {2} for {3}.
+        '''</summary>
+        Public ReadOnly Property CAPTION_ENVRESPONSE() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_ENVRESPONSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to External data.
         '''</summary>
         Public ReadOnly Property CAPTION_EXTERNAL_DATA() As String
@@ -1536,6 +1545,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Foraging capacity.
+        '''</summary>
+        Public ReadOnly Property GENERIC_ENVRESPONSE_CAPACITY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ENVRESPONSE_CAPACITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mortality.
+        '''</summary>
+        Public ReadOnly Property GENERIC_ENVRESPONSE_MORTALITY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ENVRESPONSE_MORTALITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cannot open file &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property GENERIC_ERROR_FILEOPEN() As String
@@ -2846,6 +2873,15 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_NAV_ECOSPACE_INPUT_DISPERSAL() As String
             Get
                 Return ResourceManager.GetString("LABEL_NAV_ECOSPACE_INPUT_DISPERSAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace environmental responses.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOSPACE_INPUT_ENVIRONMENTALRESPONSE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOSPACE_INPUT_ENVIRONMENTALRESPONSE", resourceCulture)
             End Get
         End Property
         

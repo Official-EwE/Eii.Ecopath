@@ -20,7 +20,7 @@
 Imports ScientificInterfaceShared.Forms
 
 
-Partial Class frmForagingResponse
+Partial Class frmEcospaceEnvironmentalResponses
     Inherits frmEwE
 
     'UserControl overrides dispose to clean up the component list.
@@ -41,7 +41,7 @@ Partial Class frmForagingResponse
     '<System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmForagingResponse))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceEnvironmentalResponses))
         Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel()
         Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
         Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad()
@@ -154,12 +154,14 @@ Partial Class frmForagingResponse
         Me.m_shapeToolBox.Name = "m_shapeToolBox"
         Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
         Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+        Me.m_shapeToolBox.UIContext = Nothing
         Me.m_shapeToolBox.XAxisMaxValue = -9999
         Me.m_shapeToolBox.YAxisMinValue = -9999.0!
         '
         'm_shapeToolboxToolbar
         '
         resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
+        Me.m_shapeToolboxToolbar.Handler = Nothing
         Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
         '
         'm_tlpAssingments
@@ -173,6 +175,9 @@ Partial Class frmForagingResponse
         '
         resources.ApplyResources(Me.m_assignments, "m_assignments")
         Me.m_assignments.Name = "m_assignments"
+        Me.m_assignments.Shape = Nothing
+        Me.m_assignments.Title = ""
+        Me.m_assignments.UIContext = Nothing
         Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
         Me.m_assignments.XAxisLabel = "Assigned driver maps"
         Me.m_assignments.YAxisLabel = "Response"
@@ -181,16 +186,17 @@ Partial Class frmForagingResponse
         '
         resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
         Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-        Me.m_assignmentsToolbar.DefineMediationLabel = "Define foraging response...."
+        Me.m_assignmentsToolbar.DefineMediationLabel = "Define environmental response...."
+        Me.m_assignmentsToolbar.Handler = Nothing
         Me.m_assignmentsToolbar.IsMenuVisible = True
         Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
         '
-        'frmForagingResponse
+        'frmEcospaceEnvironmentalResponses
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_scMain)
-        Me.Name = "frmForagingResponse"
+        Me.Name = "frmEcospaceEnvironmentalResponses"
         Me.TabText = ""
         Me.m_tlpSketchPad.ResumeLayout(False)
         Me.m_scMain.Panel1.ResumeLayout(False)

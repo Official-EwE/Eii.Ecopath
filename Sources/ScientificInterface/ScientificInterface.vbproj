@@ -250,12 +250,6 @@
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyGroupShape.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.Designer.vb">
-      <DependentUpon>frmApplyFFOtherMort.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecosim\Input\Catchability\frmCatchability.Designer.vb">
       <DependentUpon>frmCatchability.vb</DependentUpon>
     </Compile>
@@ -280,16 +274,19 @@
     <Compile Include="Ecosim\Input\Arenas\frmEcosimArenaShare.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.Designer.vb">
-      <DependentUpon>frmEcosimFunctionalResponse.vb</DependentUpon>
+    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimEnvironmentalResponse.Designer.vb">
+      <DependentUpon>frmEcosimEnvironmentalResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.vb">
+    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimEnvironmentalResponse.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FunctionalResponses\gridApplyFunctionalResponses.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Arenas\gridEcosimArenaShare.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\FunctionalResponses\gridApplyMortalityResponses.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.Designer.vb">
@@ -338,6 +335,12 @@
     <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.Designer.vb">
+      <DependentUpon>frmEcospaceEnvironmentalResponses.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.Designer.vb">
       <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
     </Compile>
@@ -372,6 +375,18 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridMPAs.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Mortaility\frmApplyMortalityResponses.Designer.vb">
+      <DependentUpon>frmApplyMortalityResponses.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Mortaility\frmApplyMortalityResponses.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\Mortaility\gridApplyMortalityResponses.Designer.vb">
+      <DependentUpon>gridApplyMortalityResponses.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\Mortaility\gridApplyMortalityResponses.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="EwE6ApplicationFramework.vb" />
@@ -1064,9 +1079,6 @@
       <DependentUpon>dlgApplyGroupShape.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.resx">
-      <DependentUpon>frmApplyFFOtherMort.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\Catchability\frmCatchability.resx">
       <DependentUpon>frmCatchability.vb</DependentUpon>
     </EmbeddedResource>
@@ -1076,8 +1088,8 @@
     <EmbeddedResource Include="Ecosim\Input\Arenas\frmEcosimArenaShare.resx">
       <DependentUpon>frmEcosimArenaShare.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.resx">
-      <DependentUpon>frmEcosimFunctionalResponse.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\FunctionalResponses\frmEcosimEnvironmentalResponse.resx">
+      <DependentUpon>frmEcosimEnvironmentalResponse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.resx">
       <DependentUpon>dlgScaleVs.vb</DependentUpon>
@@ -1098,6 +1110,9 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.resx">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.resx">
+      <DependentUpon>frmEcospaceEnvironmentalResponses.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceComputedCapacity.resx">
       <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
     </EmbeddedResource>
@@ -1109,6 +1124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmMPAs.resx">
       <DependentUpon>frmMPAs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\Mortaility\frmApplyMortalityResponses.resx">
+      <DependentUpon>frmApplyMortalityResponses.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmEwE6.resx">
       <DependentUpon>frmEwE6.vb</DependentUpon>
@@ -1465,9 +1483,6 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.resx">
       <DependentUpon>frmApplyForagingResponses.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.resx">
-      <DependentUpon>frmForagingResponse.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsMainWindow.resx">
       <DependentUpon>ucOptionsMainWindow.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1750,12 +1765,6 @@
     </Compile>
     <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\gridApplyForagingResponses.vb">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.Designer.vb">
-      <DependentUpon>frmForagingResponse.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\cMessageHistory.vb" />
     <Compile Include="Other\Options\ucOptionsMainWindow.Designer.vb">
@@ -2174,6 +2183,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceMOResultsWriter\EcospaceMOResultsWriter.vbproj">
+      <Project>{d34c482e-41b2-439b-9982-c3bd41724b0b}</Project>
+      <Name>EcospaceMOResultsWriter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
@@ -2182,17 +2195,13 @@
       <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
       <Name>EwEEcospaceSpinupPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEOceanVizPlugin\EwEOceanVizPlugin.vbproj">
-      <Project>{07714f10-f973-4c8e-968a-d1a1774604fc}</Project>
-      <Name>EwEOceanVizPlugin</Name>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEDietMatrixToNetworkD3RPlugin\EwEDietMatrixToNetworkD3RPlugin.vbproj">
-      <Project>{e4c0340c-046c-46ae-a854-e64dfc99e003}</Project>
-      <Name>EwEDietMatrixToNetworkD3RPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcologicalIndicators\EwEEcologicalIndicatorsPlugin.vbproj">
       <Project>{ada9f604-2a16-4816-9fe5-31487778902d}</Project>

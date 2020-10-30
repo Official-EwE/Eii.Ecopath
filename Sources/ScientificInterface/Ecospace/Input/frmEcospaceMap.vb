@@ -213,11 +213,6 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerAdvection, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
             Me.AddData(eVarNameFlags.LayerMigration, False)
-
-#If DEBUG Then
-            Me.AddData(eVarNameFlags.LayerM0MultInput, False)
-#End If
-
             Me.AddData(eVarNameFlags.LayerDriver)
             'Me.AddData(eVarNameFlags.LayerImportance)
             Me.AddData(eVarNameFlags.LayerHabitat)
@@ -386,7 +381,6 @@ Namespace Ecospace.Basemap
                     ' Refresh the migration map group
                     Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
                     Me.AddData(eVarNameFlags.LayerMigration, False)
-                    Me.AddData(eVarNameFlags.LayerM0MultInput, False)
                 ElseIf (msg.Type = eMessageType.DataModified) Then
                     ' Refresh only map
                     Me.m_ucBasemap.Invalidate()

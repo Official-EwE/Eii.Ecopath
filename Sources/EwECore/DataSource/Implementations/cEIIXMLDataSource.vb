@@ -2533,8 +2533,6 @@ Public Class cEIIXMLDataSource
 
                 strMap = CStr(Me.ReadSafe(drow, "CapacityMap", ""))
                 cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                strMap = CStr(Me.ReadSafe(drow, "OtherMortMap", ""))
-                cStringUtils.StringToArray(strMap, ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
@@ -2804,19 +2802,32 @@ Public Class cEIIXMLDataSource
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioCapacityDrivers")
         Dim bSucces As Boolean = True
+        Dim ShapeType As Integer
 
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
             Try
+
                 Dim iGroup As Integer = Array.IndexOf(ecospaceDS.GroupDBID, CInt(drow("GroupID")))
                 Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(drow("ShapeID")))
                 Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(drow("VarDBID")))
-                'Dim varName As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
 
-                'If (iGroup > 0) And (iShape > 0) And (varName <> eVarNameFlags.NotSet) Then
                 If (iGroup > 0) And (iShape > 0) Then
+
+                    ShapeType = CInt(drow("Target"))
+
+                    If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
+
+                        ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                        ecospaceDS.CapacityResponseFunctions(Math.Max(0, iMap), iGroup) = iShape
+
+                    ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
+
+                        ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                        ecospaceDS.MortalityResposeFunctions(Math.Max(0, iMap), iGroup) = iShape
+                    End If 'If ShapeType = 
+
                     ' Map pos 0 indicates Depth, any other ID indicates a Driver map
-                    ecospaceDS.CapMapFunctions(Math.Max(0, iMap), iGroup) = iShape
                 End If
             Catch ex As Exception
                 bSucces = False

@@ -341,7 +341,6 @@ Namespace Ecospace.Basemap
                     ' Refresh the migration map group
                     Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
                     Me.AddData(eVarNameFlags.LayerMigration, False)
-                    Me.AddData(eVarNameFlags.LayerM0MultInput, False)
                 ElseIf (msg.Type = eMessageType.DataModified) Then
                     ' Refresh only map
                     Me.m_ucBasemap.Invalidate()

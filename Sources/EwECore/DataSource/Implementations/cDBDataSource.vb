@@ -57,9 +57,9 @@ Namespace DataSources
         Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries,
                                                                      eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo,
                                                                      eCoreComponentType.MediatedInteractionManager, eCoreComponentType.FishingPolicySearch,
-                                                                     eCoreComponentType.MSE, eCoreComponentType.SearchObjective, eCoreComponentType.EcosimResponseInteractionManager}
+                                                                     eCoreComponentType.MSE, eCoreComponentType.SearchObjective, eCoreComponentType.EcosimCapacityResponseInteractionManager}
         ''' <summary>Core components stored with Ecospace.</summary>
-        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization, eCoreComponentType.EcospaceResponseInteractionManager}
+        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization, eCoreComponentType.EcospaceCapacityResponseInteractionManager, eCoreComponentType.EcospaceMortalityResponseInteractionManager}
         ''' <summary>Core components stored with Ecotracer.</summary>
         Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
 
@@ -4340,7 +4340,7 @@ Namespace DataSources
                     ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
                     ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
 
-                    ecosimDS.PaddP(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "AdditivePredMort", ecosimDS.PaddP(iEcopathGroup)))
+                    ecosimDS.PaddP(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "AdditivePredMort", ecosimDS.PaddP(iEcopathGroup), cCore.NULL_VALUE)) 'CSng(reader("AdditivePredMort"))
 
                     mseDS.Blim(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Bbase(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
@@ -7250,6 +7250,7 @@ Namespace DataSources
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
+            Dim ShapeType As Integer
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
             Try
@@ -7258,10 +7259,27 @@ Namespace DataSources
                     Dim iGroup As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("GroupID")))
                     Dim iShapeDriver As Integer = Array.IndexOf(ecosimDS.ForcingDBIDs, CInt(reader("DriverID")))
                     Dim iShapeResponse As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ResponseID")))
+                    'If (iGroup > 0) And (iShapeDriver > 0) And (iShapeResponse > 0) Then
+                    '    ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) = iShapeResponse
+                    'End If
+
+
 
                     If (iGroup > 0) And (iShapeDriver > 0) And (iShapeResponse > 0) Then
-                        ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) = iShapeResponse
-                    End If
+                        ShapeType = CInt(Me.m_db.ReadSafe(reader, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
+
+                        If ShapeType = eDataTypes.EcosimEnviroResponseFunctionManager Then
+
+                            ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                            ecosimDS.EnvRespFuncIndex(Math.Max(0, iShapeDriver), iGroup) = iShapeResponse
+
+                        ElseIf ShapeType = eDataTypes.EcosimMortalityResponseFunctionManager Then
+
+                            ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                            ecosimDS.MortalityRespFuncIndex(Math.Max(0, iShapeDriver), iGroup) = iShapeResponse
+                        End If 'If ShapeType = 
+                    End If 'If (iGroup > 0) And (iShape > 0) Then
+
                 End While
             Catch ex As Exception
                 bSucces = False
@@ -7294,8 +7312,19 @@ Namespace DataSources
                             drow("ScenarioID") = iScenarioID
                             drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                             drow("ResponseID") = medDS.MediationDBIDs(ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup))
+                            'jb Hardwired to EcosimCapacity until we get Mortality Response working
+                            drow("Target") = eDataTypes.EcosimEnviroResponseFunctionManager
                             drow("DriverID") = ecosimDS.ForcingDBIDs(iShapeDriver)
-                            drow("Target") = CInt(eDataTypes.EcosimEnviroResponseFunctionManager)
+                            writer.AddRow(drow)
+                        End If
+
+                        If (ecosimDS.MortalityRespFuncIndex(iShapeDriver, iGroup) > 0) Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
+                            drow("ResponseID") = medDS.MediationDBIDs(ecosimDS.MortalityRespFuncIndex(iShapeDriver, iGroup))
+                            drow("Target") = eDataTypes.EcosimMortalityResponseFunctionManager
+                            drow("DriverID") = ecosimDS.ForcingDBIDs(iShapeDriver)
                             writer.AddRow(drow)
                         End If
                     Next iGroup
@@ -7751,6 +7780,9 @@ Namespace DataSources
             Dim bDuplicating As Boolean = False
             Dim bSucces As Boolean = True
 
+            ' Just to be sure
+            Me.SaveEcospaceScenarioDefinitions()
+
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
             bDuplicating = ((iScenarioID) <> ecopathDS.EcospaceScenarioDBID(iScenario))
 
@@ -7902,7 +7934,7 @@ Namespace DataSources
                 Next
 
                 ' Add default 'All' habitat
-                bSucces = bSucces And Me.AddEcospaceHabitat("All", iScenarioID, 0, iIDtmp)
+                bSucces = bSucces And Me.AddEcospaceHabitat("All", iScenarioID, iIDtmp)
 
                 ' Reload scenario definitions
                 bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
@@ -8487,8 +8519,6 @@ Namespace DataSources
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "CapacityMap", ""))
                     cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                    strMap = CStr(Me.m_db.ReadSafe(reader, "OtherMortMap", ""))
-                    cStringUtils.StringToArray(strMap, ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                 End While
                 Me.m_db.ReleaseReader(reader)
@@ -8657,8 +8687,6 @@ Namespace DataSources
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-
-                    'drow("OtherMortMap") = cStringUtils.ArrayToString(ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -9803,6 +9831,8 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
+            Dim ShapeType As Integer
+
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
             Try
 
@@ -9812,9 +9842,20 @@ Namespace DataSources
                     Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(reader("VarDBID")))
 
                     If (iGroup > 0) And (iShape > 0) Then
-                        ' Map pos 0 indicates Depth, any other ID indicates a Driver map
-                        ecospaceDS.CapMapFunctions(Math.Max(0, iMap), iGroup) = iShape
-                    End If
+                        ShapeType = CInt(Me.m_db.ReadSafe(reader, "Target", CInt(eDataTypes.EcospaceEnviroCapacityResponse)))
+
+                        If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
+
+                            ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                            ecospaceDS.CapacityResponseFunctions(Math.Max(0, iMap), iGroup) = iShape
+
+                        ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
+
+                            ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                            ecospaceDS.MortalityResposeFunctions(Math.Max(0, iMap), iGroup) = iShape
+                        End If 'If ShapeType = 
+                    End If 'If (iGroup > 0) And (iShape > 0) Then
+
                 End While
             Catch ex As Exception
                 bSucces = False
@@ -9914,14 +9955,28 @@ Namespace DataSources
             Try
                 For iMap As Integer = 0 To ecospaceDS.nEnvironmentalDriverLayers
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
-                        If (ecospaceDS.CapMapFunctions(iMap, iGroup) > 0) Then
+                        If (ecospaceDS.CapacityResponseFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()
+                            drow("Target") = eDataTypes.EcospaceEnviroCapacityResponse
+                            drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapacityResponseFunctions(iMap, iGroup))
+
                             drow("ScenarioID") = iScenarioID
                             ' Referenced to Ecospace group DBIDs
                             drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
-                            drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
                             drow("VarDBID") = If(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
                             drow("Target") = CInt(eDataTypes.EcospaceEnviroCapacityResponse)
+                            writer.AddRow(drow)
+                        End If
+
+                        If (ecospaceDS.MortalityResposeFunctions(iMap, iGroup) > 0) Then
+                            drow = writer.NewRow()
+                            drow("Target") = eDataTypes.EcospaceEnviroMortalityResponse
+                            drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.MortalityResposeFunctions(iMap, iGroup))
+
+                            drow("ScenarioID") = iScenarioID
+                            ' Referenced to Ecospace group DBIDs
+                            drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
+                            drow("VarDBID") = If(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
                             writer.AddRow(drow)
                         End If
                     Next iGroup

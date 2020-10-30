@@ -71,14 +71,14 @@ Namespace Ecosim
 
         Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
             Get
-                Return New eCoreComponentType() {eCoreComponentType.EcosimResponseInteractionManager, eCoreComponentType.ShapesManager}
+                Return New eCoreComponentType() {eCoreComponentType.EcosimCapacityResponseInteractionManager, eCoreComponentType.ShapesManager}
             End Get
         End Property
 
         Public Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
             If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                 Me.RefreshContent()
-            ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimResponseInteractionManager) Then
+            ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimCapacityResponseInteractionManager) Then
                 For igrp As Integer = 1 To Me.Core.nGroups
                     Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
                 Next

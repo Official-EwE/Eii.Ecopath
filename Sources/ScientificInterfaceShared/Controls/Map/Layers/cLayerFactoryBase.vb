@@ -128,26 +128,6 @@ Namespace Controls.Map
                         lLayers.Add(layer)
                     End If
 
-                Case eVarNameFlags.LayerM0MultInput
-
-                    If (core.nGroups > 0) Then
-
-                        ad = GetAuxillaryData(core, varName)
-                        vs = ad.VisualStyle
-                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-
-                        renderer = New cLayerRendererValue(uic, vs)
-                        renderer.ScaleMin = 0
-                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
-
-                        ' Reuse identical editor here
-                        editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
-                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerM0MultInput),
-                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, varName)
-
-                        lLayers.Add(layer)
-                    End If
-
                 Case eVarNameFlags.LayerRegion
 
                     ad = GetAuxillaryData(core, varName)
@@ -404,10 +384,6 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerHabitatCapacity
                     Return My.Resources.ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY
-
-                Case eVarNameFlags.LayerM0MultInput
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_M0
-
                 Case eVarNameFlags.LayerMigration
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_MIGRATION
 

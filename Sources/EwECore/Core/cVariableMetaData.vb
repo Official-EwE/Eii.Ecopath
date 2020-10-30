@@ -431,8 +431,6 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacity) = cVariableMetaData.Get(eVarNameFlags.LayerHabitatCapacityInput)
-        Me.Metadata(eVarNameFlags.LayerM0MultInput) = New cVariableMetaData(0, Single.MaxValue, ge, le, 1)
-        Me.Metadata(eVarNameFlags.LayerM0Mult) = cVariableMetaData.Get(eVarNameFlags.LayerM0MultInput)
         Me.Metadata(eVarNameFlags.LayerRegion) = New cVariableMetaData(0, 1000, ge, le, 0, cUnits.Number)
         Me.Metadata(eVarNameFlags.LayerMigration) = New cVariableMetaData(0, 1000, ge, le, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerMPASeed) = New cVariableMetaData(0, Integer.MaxValue, ge, lt, 0)
@@ -450,9 +448,9 @@ Public Class cVariableMetaData
 
         ' group in
         Me.Metadata(eVarNameFlags.MVel) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 300)
-        Me.Metadata(eVarNameFlags.RelMoveBad) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 5, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.RelMoveBad) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 5, cUnits.Multiplier)
         Me.Metadata(eVarNameFlags.RelVulBad) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 2)
-        Me.Metadata(eVarNameFlags.KMoveFitness) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0)
+        Me.Metadata(eVarNameFlags.KMoveFitness) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Multiplier)
         Me.Metadata(eVarNameFlags.IsAdvected) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.IsMigratory) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.BarrierAvoidanceWeight) = New cVariableMetaData(0, 1, ge, le, 0)

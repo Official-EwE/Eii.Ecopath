@@ -149,6 +149,12 @@ Public Class cEcosimDatastructures
     ''' <remarks>EnvRespFuncIndex(1,2) = 10 means that the tenth response function has been applied to the first environmental driver and second group</remarks>
     Public EnvRespFuncIndex(,) As Integer
 
+    ''' <summary>
+    ''' Index of the Mortality Response function that has been applied to this EnviromentalDrive and Group (driver,group)
+    ''' </summary>
+    ''' <remarks>MortalityRespFuncIndex(1,2) = 10 means that the tenth response function has been applied to the first environmental driver and second group</remarks>
+    Public MortalityRespFuncIndex(,) As Integer
+
     'dimensions for nutrient calculation
     Public NutMin As Single
 
@@ -830,7 +836,7 @@ Public Class cEcosimDatastructures
 
 
         ' JS 3May16: make sure there is no overhang from past scenarios
-        Me.lstEnviroInputData.Clear()
+        'Me.lstEnviroInputData.Clear()
 
     End Sub
 
@@ -954,7 +960,7 @@ Public Class cEcosimDatastructures
         Me.zscale = Nothing
         Me.PeatArena = Nothing
 
-        Me.lstEnviroInputData.Clear()
+        'Me.lstEnviroInputData.Clear()
 
     End Sub
 
@@ -1069,6 +1075,7 @@ Public Class cEcosimDatastructures
         Try
             Debug.Assert(NumYears > 0, Me.ToString & ".redimForcingShapes() TotalTime must be set to redim Forcing Shapes.")
             ReDim EnvRespFuncIndex(NumEnvResponseFunctions, nGroups)
+            ReDim MortalityRespFuncIndex(NumEnvResponseFunctions, nGroups)
 
             ReDim zscale(ForcePoints, NumForcingShapes)
             ReDim tval(NumForcingShapes)

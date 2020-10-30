@@ -126,14 +126,17 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>718, 373</value>
+    <value>1256, 653</value>
+  </data>
+  <data name="m_btnOk.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 22</value>
+    <value>166, 38</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnOk.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>11</value>
   </data>
   <data name="m_btnOk.Text" xml:space="preserve">
     <value>OK</value>
@@ -148,22 +151,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_tvDrivers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
   <data name="m_tvDrivers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 51</value>
+    <value>345, 133</value>
   </data>
   <data name="m_tvDrivers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 0, 0</value>
+    <value>5, 5, 0, 0</value>
   </data>
   <data name="m_tvDrivers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 316</value>
+    <value>312, 520</value>
   </data>
   <data name="m_tvDrivers.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_tvDrivers.Name" xml:space="preserve">
     <value>m_tvDrivers</value>
@@ -175,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tvDrivers.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -184,13 +187,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 217</value>
+    <value>294, 380</value>
+  </data>
+  <data name="m_btnRemove.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 23</value>
+    <value>40, 40</value>
   </data>
   <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.Name" xml:space="preserve">
     <value>m_btnRemove</value>
@@ -202,7 +208,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -211,10 +217,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 188</value>
+    <value>294, 329</value>
+  </data>
+  <data name="m_btnAdd.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 23</value>
+    <value>40, 40</value>
   </data>
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -229,7 +238,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_hdrReponse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -238,10 +247,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrReponse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>402, 9</value>
+    <value>704, 16</value>
+  </data>
+  <data name="m_hdrReponse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_hdrReponse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 18</value>
+    <value>719, 32</value>
   </data>
   <data name="m_hdrReponse.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -256,13 +268,13 @@
     <value>m_hdrReponse</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_lbxGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -271,13 +283,13 @@
     <value>False</value>
   </data>
   <data name="m_lbxGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 51</value>
+    <value>21, 133</value>
   </data>
   <data name="m_lbxGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 0</value>
+    <value>0, 5, 5, 0</value>
   </data>
   <data name="m_lbxGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 316</value>
+    <value>260, 520</value>
   </data>
   <data name="m_lbxGroups.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -286,22 +298,25 @@
     <value>m_lbxGroups</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_hdrConfig.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_hdrConfig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 9</value>
+    <value>21, 16</value>
+  </data>
+  <data name="m_hdrConfig.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_hdrConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>365, 18</value>
+    <value>639, 32</value>
   </data>
   <data name="m_hdrConfig.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -316,13 +331,13 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_lblDrivers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -331,16 +346,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblDrivers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>194, 35</value>
+    <value>340, 103</value>
   </data>
   <data name="m_lblDrivers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblDrivers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 13</value>
+    <value>158, 25</value>
   </data>
   <data name="m_lblDrivers.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>5</value>
   </data>
   <data name="m_lblDrivers.Text" xml:space="preserve">
     <value>&amp;Temporal drivers</value>
@@ -355,7 +370,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblDrivers.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_lblGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -364,16 +379,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 35</value>
+    <value>21, 103</value>
   </data>
   <data name="m_lblGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 13</value>
+    <value>76, 25</value>
   </data>
   <data name="m_lblGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>1</value>
   </data>
   <data name="m_lblGroups.Text" xml:space="preserve">
     <value>&amp;Groups</value>
@@ -388,46 +403,112 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>405, 51</value>
+    <value>709, 58</value>
+  </data>
+  <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 10, 10, 10</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>408, 316</value>
+    <value>699, 595</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbForaging.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbForaging.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 58</value>
+  </data>
+  <data name="m_rbForaging.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="m_rbForaging.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 29</value>
+  </data>
+  <data name="m_rbForaging.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_rbForaging.Text" xml:space="preserve">
+    <value>&amp;Foraging</value>
+  </data>
+  <data name="&gt;&gt;m_rbForaging.Name" xml:space="preserve">
+    <value>m_rbForaging</value>
+  </data>
+  <data name="&gt;&gt;m_rbForaging.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbForaging.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbForaging.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbMortality.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbMortality.Location" type="System.Drawing.Point, System.Drawing">
+    <value>171, 58</value>
+  </data>
+  <data name="m_rbMortality.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="m_rbMortality.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 29</value>
+  </data>
+  <data name="m_rbMortality.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_rbMortality.Text" xml:space="preserve">
+    <value>&amp;Other mortality</value>
+  </data>
+  <data name="&gt;&gt;m_rbMortality.Name" xml:space="preserve">
+    <value>m_rbMortality</value>
+  </data>
+  <data name="&gt;&gt;m_rbMortality.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbMortality.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbMortality.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
+    <value>168, 168</value>
   </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>825, 407</value>
+    <value>1444, 712</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>800, 400</value>
+    <value>1377, 633</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

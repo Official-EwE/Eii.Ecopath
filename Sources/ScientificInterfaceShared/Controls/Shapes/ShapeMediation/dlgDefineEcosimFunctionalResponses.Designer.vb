@@ -53,6 +53,8 @@ Partial Class dlgDefineEcosimFunctionalResponses
         Me.m_lblDrivers = New System.Windows.Forms.Label()
         Me.m_lblGroups = New System.Windows.Forms.Label()
         Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
+        Me.m_rbForaging = New System.Windows.Forms.RadioButton()
+        Me.m_rbMortality = New System.Windows.Forms.RadioButton()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -78,7 +80,7 @@ Partial Class dlgDefineEcosimFunctionalResponses
         'm_btnAdd
         '
         resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-        Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.forward
+        Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.AddHS
         Me.m_btnAdd.Name = "m_btnAdd"
         Me.m_btnAdd.UseVisualStyleBackColor = True
         '
@@ -130,12 +132,29 @@ Partial Class dlgDefineEcosimFunctionalResponses
         Me.m_graph.Driver = Nothing
         Me.m_graph.Name = "m_graph"
         Me.m_graph.Shape = Nothing
+        Me.m_graph.ShowShapeControls = True
         Me.m_graph.UIContext = Nothing
+        '
+        'm_rbForaging
+        '
+        resources.ApplyResources(Me.m_rbForaging, "m_rbForaging")
+        Me.m_rbForaging.Checked = True
+        Me.m_rbForaging.Name = "m_rbForaging"
+        Me.m_rbForaging.TabStop = True
+        Me.m_rbForaging.UseVisualStyleBackColor = True
+        '
+        'm_rbMortality
+        '
+        resources.ApplyResources(Me.m_rbMortality, "m_rbMortality")
+        Me.m_rbMortality.Name = "m_rbMortality"
+        Me.m_rbMortality.UseVisualStyleBackColor = True
         '
         'dlgDefineEcosimFunctionalResponses
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.Controls.Add(Me.m_rbMortality)
+        Me.Controls.Add(Me.m_rbForaging)
         Me.Controls.Add(Me.m_graph)
         Me.Controls.Add(Me.m_lblDrivers)
         Me.Controls.Add(Me.m_lblGroups)
@@ -167,5 +186,6 @@ Partial Class dlgDefineEcosimFunctionalResponses
     Private WithEvents m_lblDrivers As Label
     Private WithEvents m_lblGroups As Label
     Private WithEvents m_graph As ucDriverResponseView
-
+    Friend WithEvents m_rbForaging As RadioButton
+    Friend WithEvents m_rbMortality As RadioButton
 End Class

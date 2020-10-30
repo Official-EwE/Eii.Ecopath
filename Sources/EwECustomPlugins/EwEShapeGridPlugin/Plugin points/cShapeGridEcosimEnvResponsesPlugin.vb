@@ -54,7 +54,7 @@ Public Class cShapeGridEcosimEnvResponsesPlugin
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "ndTimeDynamic\ndEcosimInput\ndFunctionalResponse"
+            Return "ndTimeDynamic\ndEcosimInput\ndEcosimEnvironmentalResponse"
         End Get
     End Property
 

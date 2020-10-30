@@ -300,6 +300,38 @@ End Class
 
 #End Region
 
+''' <summary>
+''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for biomass averaged over the total modeled area.
+''' </summary>
+Public Class cMOTotalResultsDataSource
+    Inherits cBiomassResultsDataSource
+    Sub New(Core As cCore, EcospaceData As cEcospaceDataStructures)
+        MyBase.New(Core, EcospaceData)
+    End Sub
+
+    Public Overrides Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+        Return Me.m_spaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.OtherMortalityLoss, OneBasedIndex, TimeIndex)
+    End Function
+
+    Public Overrides ReadOnly Property FilenameIdentifier As String
+        Get
+            Return "OtherMortalityLoss"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property DataDescriptor As String
+        Get
+            Return "Average Other Mortlatiy biomass across modeled area"
+        End Get
+    End Property
+
+    Public Overrides Function FileNameAbbreviation() As String
+        Return "MOFL"
+    End Function
+
+End Class
+
+
 #Region "By Region"
 
 #Region "Biomass by region"

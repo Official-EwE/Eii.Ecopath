@@ -41,10 +41,10 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
 #Region " Private variables "
 
-    Protected m_uic As cUIContext = Nothing
-    Protected m_manager As IEnvironmentalResponseManager = Nothing
-
+    Private m_uic As cUIContext = Nothing
     Private m_bInUpdate As Boolean = False
+    Private m_managertype As eCoreComponentType
+    Private m_bInInit As Boolean = True
 
 #End Region ' Private variables
 
@@ -63,8 +63,8 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
         Me.InitializeComponent()
 
+        Me.m_managertype = eCoreComponentType.EcospaceCapacityResponseInteractionManager
         Me.m_uic = uic
-        Me.m_manager = manager
 
         Me.m_graph.Init(Me.m_uic)
         Me.m_graph.Shape = shape
@@ -74,8 +74,10 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Try
             Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().ToString(shape))
         Catch ex As Exception
-            ' Whoah!
+            cLog.Write(ex)
         End Try
+
+        Me.m_bInInit = False
 
     End Sub
 
@@ -84,33 +86,20 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
         If (Me.m_uic Is Nothing) Then Return
 
-        Try
-            Me.m_bInUpdate = True
+        Me.m_bInUpdate = True
 
+        Try
             Me.m_lbxGroups.Attach(Me.m_uic)
             Me.m_lbxGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.Manual
             Me.m_lbxGroups.VisibleGroups = Me.GetGroupList()
-
             Me.LoadDrivers()
-
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
         Me.m_bInUpdate = False
 
     End Sub
-
-    Protected Function GetGroupList() As Integer()
-        Dim lstGroups As New List(Of Integer)
-        For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
-            Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(iGrp)
-            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
-                lstGroups.Add(iGrp)
-            End If
-        Next
-        Return lstGroups.ToArray()
-    End Function
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
@@ -135,6 +124,20 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         End Try
     End Sub
 
+    Private Sub OnApplicationChanged(sender As Object, e As EventArgs) Handles m_rbForaging.CheckedChanged
+
+        If Me.m_rbForaging.Checked Then
+            Me.m_managertype = eCoreComponentType.EcospaceCapacityResponseInteractionManager
+        Else
+            Me.m_managertype = eCoreComponentType.EcospaceMortalityResponseInteractionManager
+        End If
+
+        Me.m_lbxGroups.Populate()
+        Me.LoadDrivers()
+
+    End Sub
+
+
     ''' <summary>
     ''' Add the selected groups to the currently selected map
     ''' </summary>
@@ -153,8 +156,11 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                 driver.ResponseIndexForGroup(Me.m_lbxGroups.GetGroupIndexAt(i)) = shape.Index
             Next
 
-            'bluntly reload the map tree
+            'remember and re-set the currently selected node 
+            'so the use can just click the add button to add another shape
+            Dim selNodeIndex As Integer = Me.m_tvDrivers.SelectedNode.Index
             Me.LoadDrivers()
+            Me.m_tvDrivers.SelectedNode = Me.m_tvDrivers.Nodes.Item(selNodeIndex)
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -240,20 +246,78 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
     End Sub
 
-    Protected Sub LoadDrivers()
+    Private Function GetManager() As IEnvironmentalResponseManager
+
+        If m_bInInit Then Return Nothing
+
+        Try
+
+            Select Case Me.m_managertype
+                Case eCoreComponentType.EcospaceMortalityResponseInteractionManager
+                    Return Me.m_uic.Core.MortalityMapInteractionManager
+                Case eCoreComponentType.EcospaceCapacityResponseInteractionManager
+                    Return Me.m_uic.Core.CapacityMapInteractionManager
+            End Select
+
+        Catch ex As Exception
+            'swallow it
+        End Try
+
+        Return Nothing
+
+    End Function
+
+    Private Function GetGroupList() As Integer()
+        Dim lstGroups As New List(Of Integer)
+        Dim bCheckCapacity As Boolean
+
+        If Me.m_bInInit Then Return Nothing
+
+        Select Case Me.m_managertype
+            Case eCoreComponentType.EcospaceCapacityResponseInteractionManager
+                bCheckCapacity = True
+            Case eCoreComponentType.EcospaceMortalityResponseInteractionManager
+                bCheckCapacity = False
+        End Select
+
+        Dim bAdd As Boolean
+        For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
+            bAdd = False
+            Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(iGrp)
+            If bCheckCapacity Then
+                If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
+                    bAdd = True
+                End If
+            Else
+                bAdd = True
+            End If
+
+            If bAdd Then
+                lstGroups.Add(iGrp)
+            End If
+
+        Next
+
+
+        Return lstGroups.ToArray()
+    End Function
+
+    Private Sub LoadDrivers()
+
+        If Me.m_bInInit Then Return
 
         Dim map As IEnviroInputData = Nothing
         Dim fmt As New cCoreInterfaceFormatter()
-
+        Dim manager As IEnvironmentalResponseManager = Me.GetManager()
         Dim shape As cEnviroResponseFunction = Me.m_graph.Shape
         Debug.Assert(shape IsNot Nothing)
 
         Try
             Me.m_tvDrivers.Nodes.Clear()
 
-            For imap As Integer = 1 To Me.m_manager.nEnviroData
+            For imap As Integer = 1 To manager.nEnviroData
 
-                map = Me.m_manager.EnviroData(imap)
+                map = manager.EnviroData(imap)
                 Dim ndApply As TreeNode = Me.m_tvDrivers.Nodes.Add(map.Name)
                 ndApply.Tag = map
 
@@ -264,7 +328,9 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                             'Yes this shape is set for this group
                             'add a group node
                             Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(igrp)
-                            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
+                            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Or
+                                Me.m_managertype = eCoreComponentType.EcospaceMortalityResponseInteractionManager Then
+
 
                                 Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.ToString(grp))
                                 ndgrp.Tag = grp
@@ -279,14 +345,18 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                 Next
             Next
 
+            If Me.m_tvDrivers.Nodes.Count > 0 Then
+                Me.m_tvDrivers.SelectedNode = Me.m_tvDrivers.Nodes(0)
+            End If
+
         Catch ex As Exception
             cLog.Write(ex)
-            Debug.Assert(False, Me.ToString & ".LoadDrivers() Exception: " & ex.Message)
         End Try
 
     End Sub
 
     Private Function GetSelectedDriver(ByVal node As TreeNode) As IEnviroInputData
+
         Try
 
             Dim ob As Object = Nothing
@@ -306,12 +376,13 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
             End If
 
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
         Return Nothing
 
     End Function
+
 
 #End Region ' Private Methods
 

@@ -150,11 +150,11 @@ Namespace SpatialData
 
 
         Friend Overrides Sub SaveLayerData()
-            System.Console.WriteLine(Me.ToString + ".SaveLayerData()")
+            'System.Console.WriteLine(Me.ToString + ".SaveLayerData()")
         End Sub
 
         Friend Overrides Sub RestoreLayerData()
-            System.Console.WriteLine(Me.ToString + ".RestoreLayerData()")
+            'System.Console.WriteLine(Me.ToString + ".RestoreLayerData()")
         End Sub
 
     End Class

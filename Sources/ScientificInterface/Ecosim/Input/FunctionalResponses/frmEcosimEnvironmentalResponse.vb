@@ -38,12 +38,12 @@ Imports ScientificInterfaceShared
 ''' <see cref="cEnviroResponseFunction">environmental response shapes</see>.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-Public Class frmForagingResponse
+Public Class frmEcosimEnvironmentalResponse
 
 #Region " Private variables "
 
     ''' <summary>Controller for shape-related GUI components in this form.</summary>
-    Private m_shapeguihandler As cCapacityShapeGUIHandler = Nothing
+    Private m_shapeguihandler As cEnvironmentalResponseShapeGUIHandler = Nothing
 
 #End Region '  Private variables
 
@@ -51,6 +51,8 @@ Public Class frmForagingResponse
 
     Public Sub New()
         Me.InitializeComponent()
+        Me.Text = My.Resources.LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE
+        Me.TabText = Me.Text
     End Sub
 
 #End Region ' Constructors
@@ -77,9 +79,9 @@ Public Class frmForagingResponse
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
         If (Me.UIContext Is Nothing) Then Return
-        Me.m_shapeguihandler = New cCapacityShapeGUIHandler(Me.UIContext)
-        Me.m_shapeguihandler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
-                                    Me.m_sketchPad, Me.m_sketchPadToolbar, _
+        Me.m_shapeguihandler = New cEnvironmentalResponseShapeGUIHandler(Me.UIContext)
+        Me.m_shapeguihandler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar,
+                                    Me.m_sketchPad, Me.m_sketchPadToolbar,
                                     Me.m_assignments, Me.m_assignmentsToolbar)
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
     End Sub
@@ -99,7 +101,7 @@ Public Class frmForagingResponse
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
         If msg.Source = eCoreComponentType.ShapesManager Then
-            If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And _
+            If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And
                  (msg.DataType = eDataTypes.Mediation)) Then
                 Me.m_shapeguihandler.Refresh()
             End If

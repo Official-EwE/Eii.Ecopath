@@ -251,7 +251,6 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMAge1Forcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerContaminantForcingAbsolute.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerOtherMortality.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesManager.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesXYZReader.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesRec.vb" />
@@ -324,7 +323,9 @@
     <Compile Include="Monte Carlo\cMonteCarloThread.vb" />
     <Compile Include="Shapes\Forcing Functions\cBaseShapeManager.vb" />
     <Compile Include="Shapes\Forcing Functions\cEcosimEnviroResponseManager.vb" />
+    <Compile Include="Shapes\Forcing Functions\cEcosimMortalityResponseManager.vb" />
     <Compile Include="Shapes\Forcing Functions\cEcospaceEnviroResponseManager.vb" />
+    <Compile Include="Shapes\Forcing Functions\cEcospaceMortalityResponseManager.vb" />
     <Compile Include="Shapes\Forcing Functions\cEggProductionShapeManager.vb" />
     <Compile Include="Shapes\Forcing Functions\cEnviroResponseFunction.vb" />
     <Compile Include="Shapes\Forcing Functions\cEnviroResponseShapeManager.vb" />

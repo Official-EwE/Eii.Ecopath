@@ -48,7 +48,7 @@ Namespace Ecospace
 
             ' Hook up to core messages
             ' For this form only
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcospaceResponseInteractionManager, eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcospaceCapacityResponseInteractionManager, eCoreComponentType.EcoSpace}
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditInputMaps")
             If (cmd IsNot Nothing) Then
@@ -75,7 +75,7 @@ Namespace Ecospace
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
-            If (msg.Source = eCoreComponentType.EcospaceResponseInteractionManager) Then
+            If (msg.Source = eCoreComponentType.EcospaceCapacityResponseInteractionManager) Then
                 Me.Grid.UpdateContent()
             ElseIf (msg.Source = eCoreComponentType.EcoSpace And msg.DataType = eDataTypes.EcospaceLayerDriver) Then
                 Me.Grid.UpdateContent()

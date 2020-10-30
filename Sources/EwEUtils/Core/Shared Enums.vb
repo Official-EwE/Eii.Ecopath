@@ -520,10 +520,7 @@ Namespace Core
         HabAreaProportion
         ''' <summary>Ecospace excluded cells layer</summary>
         LayerExclusion
-        ''' <summary>Ecospace cell other mortality (entered)</summary>
-        LayerM0MultInput
-        ''' <summary>Ecospace cell other mortality (computed)</summary>
-        LayerM0Mult
+
         ''' <summary>Total Effort multiplier</summary>
         SEmult
         ''' <summary>
@@ -1914,8 +1911,11 @@ Namespace Core
         RelQt
         EcosimArenaShare
 
+        LayerOtherMortLoss
+
         <Obsolete("Use LayerRelativeContaminants instead")>
         LayerRelCin = LayerContaminantRelativeDistribution
+
     End Enum
 
 #End Region ' Variable names
@@ -2487,6 +2487,10 @@ Namespace Core
         ''' </summary>
         EcospaceLayerIBMAge1Forcing = 124
 
+        EcospaceEnviroMortalityResponse = 125
+
+        EcosimMortalityResponseFunctionManager = 126
+
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
@@ -2917,8 +2921,12 @@ Namespace Core
         ''' <summary>The message originated from the MSY module of EwE</summary>
         MSY
 
-        EcospaceResponseInteractionManager
-        EcosimResponseInteractionManager
+        EcospaceCapacityResponseInteractionManager
+        EcosimCapacityResponseInteractionManager
+
+        EcospaceMortalityResponseInteractionManager
+        EcosimMortalityResponseInteractionManager
+
         EcopathSample
 
     End Enum

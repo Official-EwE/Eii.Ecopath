@@ -5210,7 +5210,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Define environmental response to {0}</value>
+    <value>&lt;caption&gt;</value>
   </data>
   <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
     <value>m_tsbnCaseSensitive</value>

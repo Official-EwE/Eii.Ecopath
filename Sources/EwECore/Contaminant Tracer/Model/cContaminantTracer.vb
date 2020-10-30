@@ -73,7 +73,7 @@ Public Class cContaminantTracer
     Public Sub Cupdate(ByVal Biom() As Single)
         Dim i As Integer, istep As Integer, Ceq As Single, Tst As Single, InputMult As Single
         Dim maxT As Single, nstep As Integer, Ttemp As Single, Terr As Single, tempsum As Single
-        Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, ConCtot As Single, Derivcon2() As Single
+        Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, Derivcon2() As Single
 
         ReDim Derivcon(m_EPData.NumGroups), Cintotal(m_EPData.NumGroups), Closs(m_EPData.NumGroups), Derivcon2(m_EPData.NumGroups)
 

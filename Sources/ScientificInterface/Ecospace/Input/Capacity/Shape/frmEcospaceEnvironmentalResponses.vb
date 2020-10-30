@@ -38,12 +38,12 @@ Imports ScientificInterfaceShared
 ''' <see cref="cEnviroResponseFunction">environmental response shapes</see>.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-Public Class frmEcosimFunctionalResponse
+Public Class frmEcospaceEnvironmentalResponses
 
 #Region " Private variables "
 
     ''' <summary>Controller for shape-related GUI components in this form.</summary>
-    Private m_shapeguihandler As cEnvironmentalResponseShapeGUIHandler = Nothing
+    Private m_shapeguihandler As cCapacityShapeGUIHandler = Nothing
 
 #End Region '  Private variables
 
@@ -51,6 +51,8 @@ Public Class frmEcosimFunctionalResponse
 
     Public Sub New()
         Me.InitializeComponent()
+        Me.Text = My.Resources.LABEL_NAV_ECOSPACE_INPUT_ENVIRONMENTALRESPONSE
+        Me.TabText = Me.Text
     End Sub
 
 #End Region ' Constructors
@@ -77,7 +79,7 @@ Public Class frmEcosimFunctionalResponse
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
         If (Me.UIContext Is Nothing) Then Return
-        Me.m_shapeguihandler = New cEnvironmentalResponseShapeGUIHandler(Me.UIContext)
+        Me.m_shapeguihandler = New cCapacityShapeGUIHandler(Me.UIContext)
         Me.m_shapeguihandler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                                     Me.m_sketchPad, Me.m_sketchPadToolbar, _
                                     Me.m_assignments, Me.m_assignmentsToolbar)

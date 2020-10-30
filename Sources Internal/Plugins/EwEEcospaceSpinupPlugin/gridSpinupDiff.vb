@@ -121,7 +121,6 @@ Public Class gridSpinupDiff
 
         If (Me.m_Plugin Is Nothing) Then Return
         If (Me.UIContext Is Nothing) Then Return
-        Return
 
         For iGroup As Integer = 0 To Me.Core.nGroups
             Dim iRow As Integer = iGroup + cRowHeaders - 1

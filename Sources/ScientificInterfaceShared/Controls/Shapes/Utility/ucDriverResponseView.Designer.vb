@@ -50,10 +50,10 @@ Partial Class ucDriverResponseView
         Me.m_lblXMin.AutoSize = True
         Me.m_lblXMin.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lblXMin.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblXMin.Location = New System.Drawing.Point(3, 3)
-        Me.m_lblXMin.Margin = New System.Windows.Forms.Padding(3)
+        Me.m_lblXMin.Location = New System.Drawing.Point(6, 6)
+        Me.m_lblXMin.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.m_lblXMin.Name = "m_lblXMin"
-        Me.m_lblXMin.Size = New System.Drawing.Size(37, 22)
+        Me.m_lblXMin.Size = New System.Drawing.Size(68, 52)
         Me.m_lblXMin.TabIndex = 0
         Me.m_lblXMin.Text = "X m&in:"
         Me.m_lblXMin.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -61,10 +61,10 @@ Partial Class ucDriverResponseView
         'm_tbxXMin
         '
         Me.m_tbxXMin.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tbxXMin.Location = New System.Drawing.Point(43, 5)
-        Me.m_tbxXMin.Margin = New System.Windows.Forms.Padding(0, 5, 0, 0)
+        Me.m_tbxXMin.Location = New System.Drawing.Point(80, 9)
+        Me.m_tbxXMin.Margin = New System.Windows.Forms.Padding(0, 9, 0, 0)
         Me.m_tbxXMin.Name = "m_tbxXMin"
-        Me.m_tbxXMin.Size = New System.Drawing.Size(50, 20)
+        Me.m_tbxXMin.Size = New System.Drawing.Size(88, 29)
         Me.m_tbxXMin.TabIndex = 1
         '
         'm_lblXMax
@@ -72,10 +72,10 @@ Partial Class ucDriverResponseView
         Me.m_lblXMax.AutoSize = True
         Me.m_lblXMax.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lblXMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblXMax.Location = New System.Drawing.Point(116, 3)
-        Me.m_lblXMax.Margin = New System.Windows.Forms.Padding(3)
+        Me.m_lblXMax.Location = New System.Drawing.Point(211, 6)
+        Me.m_lblXMax.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.m_lblXMax.Name = "m_lblXMax"
-        Me.m_lblXMax.Size = New System.Drawing.Size(45, 22)
+        Me.m_lblXMax.Size = New System.Drawing.Size(84, 52)
         Me.m_lblXMax.TabIndex = 2
         Me.m_lblXMax.Text = "X m&ax:  "
         Me.m_lblXMax.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -83,10 +83,10 @@ Partial Class ucDriverResponseView
         'm_tbxXMax
         '
         Me.m_tbxXMax.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tbxXMax.Location = New System.Drawing.Point(164, 5)
-        Me.m_tbxXMax.Margin = New System.Windows.Forms.Padding(0, 5, 0, 0)
+        Me.m_tbxXMax.Location = New System.Drawing.Point(301, 9)
+        Me.m_tbxXMax.Margin = New System.Windows.Forms.Padding(0, 9, 0, 0)
         Me.m_tbxXMax.Name = "m_tbxXMax"
-        Me.m_tbxXMax.Size = New System.Drawing.Size(50, 20)
+        Me.m_tbxXMax.Size = New System.Drawing.Size(88, 29)
         Me.m_tbxXMax.TabIndex = 3
         '
         'm_lblMean
@@ -94,10 +94,10 @@ Partial Class ucDriverResponseView
         Me.m_lblMean.AutoSize = True
         Me.m_lblMean.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lblMean.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblMean.Location = New System.Drawing.Point(3, 31)
-        Me.m_lblMean.Margin = New System.Windows.Forms.Padding(3)
+        Me.m_lblMean.Location = New System.Drawing.Point(6, 70)
+        Me.m_lblMean.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.m_lblMean.Name = "m_lblMean"
-        Me.m_lblMean.Size = New System.Drawing.Size(37, 23)
+        Me.m_lblMean.Size = New System.Drawing.Size(68, 52)
         Me.m_lblMean.TabIndex = 5
         Me.m_lblMean.Text = "Mean:"
         Me.m_lblMean.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -105,20 +105,20 @@ Partial Class ucDriverResponseView
         'm_tbxMean
         '
         Me.m_tbxMean.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tbxMean.Location = New System.Drawing.Point(43, 33)
-        Me.m_tbxMean.Margin = New System.Windows.Forms.Padding(0, 5, 0, 0)
+        Me.m_tbxMean.Location = New System.Drawing.Point(80, 73)
+        Me.m_tbxMean.Margin = New System.Windows.Forms.Padding(0, 9, 0, 0)
         Me.m_tbxMean.Name = "m_tbxMean"
-        Me.m_tbxMean.Size = New System.Drawing.Size(50, 20)
+        Me.m_tbxMean.Size = New System.Drawing.Size(88, 29)
         Me.m_tbxMean.TabIndex = 6
         '
         'm_btnDefaultMinMax
         '
         Me.m_btnDefaultMinMax.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_btnDefaultMinMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnDefaultMinMax.Location = New System.Drawing.Point(267, 3)
-        Me.m_btnDefaultMinMax.Margin = New System.Windows.Forms.Padding(0, 3, 0, 2)
+        Me.m_btnDefaultMinMax.Location = New System.Drawing.Point(490, 6)
+        Me.m_btnDefaultMinMax.Margin = New System.Windows.Forms.Padding(0, 6, 0, 4)
         Me.m_btnDefaultMinMax.Name = "m_btnDefaultMinMax"
-        Me.m_btnDefaultMinMax.Size = New System.Drawing.Size(100, 23)
+        Me.m_btnDefaultMinMax.Size = New System.Drawing.Size(183, 54)
         Me.m_btnDefaultMinMax.TabIndex = 4
         Me.m_btnDefaultMinMax.Text = "&Default X axis"
         Me.m_btnDefaultMinMax.UseVisualStyleBackColor = True
@@ -127,10 +127,10 @@ Partial Class ucDriverResponseView
         '
         Me.m_btnChangeShape.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_btnChangeShape.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnChangeShape.Location = New System.Drawing.Point(267, 31)
-        Me.m_btnChangeShape.Margin = New System.Windows.Forms.Padding(0, 3, 0, 2)
+        Me.m_btnChangeShape.Location = New System.Drawing.Point(490, 70)
+        Me.m_btnChangeShape.Margin = New System.Windows.Forms.Padding(0, 6, 0, 4)
         Me.m_btnChangeShape.Name = "m_btnChangeShape"
-        Me.m_btnChangeShape.Size = New System.Drawing.Size(100, 24)
+        Me.m_btnChangeShape.Size = New System.Drawing.Size(183, 54)
         Me.m_btnChangeShape.TabIndex = 7
         Me.m_btnChangeShape.Text = "&Change shape..."
         Me.m_btnChangeShape.UseVisualStyleBackColor = True
@@ -142,7 +142,7 @@ Partial Class ucDriverResponseView
         Me.m_tlpControls.ColumnCount = 7
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 37.0!))
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
@@ -157,20 +157,20 @@ Partial Class ucDriverResponseView
         Me.m_tlpControls.Controls.Add(Me.m_tbxMean, 1, 1)
         Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
-        Me.m_tlpControls.Margin = New System.Windows.Forms.Padding(0, 0, 0, 3)
+        Me.m_tlpControls.Margin = New System.Windows.Forms.Padding(0, 0, 0, 6)
         Me.m_tlpControls.Name = "m_tlpControls"
         Me.m_tlpControls.RowCount = 2
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpControls.Size = New System.Drawing.Size(367, 57)
+        Me.m_tlpControls.Size = New System.Drawing.Size(673, 128)
         Me.m_tlpControls.TabIndex = 0
         '
         'm_graph
         '
         Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_graph.Location = New System.Drawing.Point(0, 63)
-        Me.m_graph.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
+        Me.m_graph.Location = New System.Drawing.Point(0, 140)
+        Me.m_graph.Margin = New System.Windows.Forms.Padding(0, 6, 0, 0)
         Me.m_graph.Name = "m_graph"
         Me.m_graph.ScrollGrace = 0R
         Me.m_graph.ScrollMaxX = 0R
@@ -179,7 +179,7 @@ Partial Class ucDriverResponseView
         Me.m_graph.ScrollMinX = 0R
         Me.m_graph.ScrollMinY = 0R
         Me.m_graph.ScrollMinY2 = 0R
-        Me.m_graph.Size = New System.Drawing.Size(367, 272)
+        Me.m_graph.Size = New System.Drawing.Size(673, 478)
         Me.m_graph.TabIndex = 1
         '
         'm_tlpBits
@@ -195,16 +195,17 @@ Partial Class ucDriverResponseView
         Me.m_tlpBits.RowCount = 2
         Me.m_tlpBits.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpBits.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpBits.Size = New System.Drawing.Size(367, 335)
+        Me.m_tlpBits.Size = New System.Drawing.Size(673, 618)
         Me.m_tlpBits.TabIndex = 0
         '
         'ucDriverResponseView
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlpBits)
+        Me.Margin = New System.Windows.Forms.Padding(6, 6, 6, 6)
         Me.Name = "ucDriverResponseView"
-        Me.Size = New System.Drawing.Size(367, 335)
+        Me.Size = New System.Drawing.Size(673, 618)
         Me.m_tlpControls.ResumeLayout(False)
         Me.m_tlpControls.PerformLayout()
         Me.m_tlpBits.ResumeLayout(False)

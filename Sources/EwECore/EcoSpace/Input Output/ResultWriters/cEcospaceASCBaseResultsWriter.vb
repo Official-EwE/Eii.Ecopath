@@ -146,6 +146,17 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
         Return ".asc"
     End Function
 
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.Init"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub Init(ByVal theCore As Object) '_ Implements IEcospaceResultsWriter.Init
+        MyBase.Init(theCore)
+
+    End Sub
+
+
 #End Region ' Base writer overrides
 
 #Region " Internals "
@@ -220,7 +231,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' <param name="SpaceTSData">The Ecospace data structures to use for spatial referencing.</param>
     ''' <param name="varname">The variable to write.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIBody(ByVal writer As StreamWriter,
+    Protected Overridable Sub WriteASCIIBody(ByVal writer As StreamWriter,
                                  ByVal SpaceTSData As cEcospaceTimestep,
                                  ByVal iIndex As Integer,
                                  ByVal varname As eVarNameFlags)
