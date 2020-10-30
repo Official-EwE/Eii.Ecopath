@@ -2183,10 +2183,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceMOResultsWriter\EcospaceMOResultsWriter.vbproj">
-      <Project>{d34c482e-41b2-439b-9982-c3bd41724b0b}</Project>
-      <Name>EcospaceMOResultsWriter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
