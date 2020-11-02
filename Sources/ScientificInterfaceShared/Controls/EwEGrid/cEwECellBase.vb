@@ -70,7 +70,8 @@ Namespace Controls.EwEGrid
                     If bAdvance Then
                         ' #Yes: advance to next editable row
                         Dim grid As GridVirtual = e.Grid
-                        Dim iRow As Integer = e.Position.Row
+                        Dim iRowStart As Integer = e.Position.Row
+                        Dim iRow As Integer = iRow
                         Dim p As Position = Nothing
                         Dim cell As ICellVirtual = Nothing
                         Dim bFound As Boolean = (grid.RowsCount <= grid.FixedRows)
@@ -91,11 +92,13 @@ Namespace Controls.EwEGrid
                             If (cell Is Nothing) Then Return
 
                             ' Stop searching if cell is editable OR back at start position
-                            bFound = (iRow = e.Position.Row) Or (cell.DataModel.EnableEdit = True)
+                            bFound = (cell.DataModel.EnableEdit = True) Or (iRowStart = iRow)
                         End While
 
-                        ' Advance focus
-                        grid.SetFocusCell(p)
+                        If (iRowStart <> iRow) Then
+                            ' Advance focus
+                            grid.SetFocusCell(p)
+                        End If
                     End If
                 End If
             End Sub
