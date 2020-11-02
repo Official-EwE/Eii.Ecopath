@@ -3198,9 +3198,15 @@ Namespace Ecosim
             'Switching:
             InitRelaSwitch()
 
-            DefineFlowList()
-            'DefaultPeatArena()
-            'DefineArenasAndFlowList()
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            Debug.Assert(False, "Warning Shared Arenas disabled")
+            'DefineFlowList()
+
+            DefaultPeatArena()
+            DefineArenasAndFlowList()
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
             SetArenaVulandSearchRates()
 
         End Sub
