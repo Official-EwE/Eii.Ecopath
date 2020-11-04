@@ -506,6 +506,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Inflection.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_LOGISTIC_INFLECTION() As String
+            Get
+                Return ResourceManager.GetString("PARAM_LOGISTIC_INFLECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Slope.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_LOGISTIC_SLOPE() As String
+            Get
+                Return ResourceManager.GetString("PARAM_LOGISTIC_SLOPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X max.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_LOGISTIC_XMAX() As String
+            Get
+                Return ResourceManager.GetString("PARAM_LOGISTIC_XMAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X min.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_LOGISTIC_XMIN() As String
+            Get
+                Return ResourceManager.GetString("PARAM_LOGISTIC_XMIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Max..
         '''</summary>
         Public Shared ReadOnly Property PARAM_MAX() As String

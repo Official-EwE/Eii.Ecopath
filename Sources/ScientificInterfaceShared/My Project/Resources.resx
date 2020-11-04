@@ -3148,4 +3148,7 @@
   <data name="AUTOSAVE_ECOPATHRESULTS" xml:space="preserve">
     <value>Mass-balance</value>
   </data>
+  <data name="SHAPEFUNCTION_LOGISTIC_4PARAMS" xml:space="preserve">
+    <value>Logistic 4 Parameters</value>
+  </data>
 </root>

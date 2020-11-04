@@ -2864,4 +2864,16 @@
   <data name="VARIABLE_LAYERIBMAGE1FORCING" xml:space="preserve">
     <value>IBM Age 0 Forcing</value>
   </data>
+  <data name="PARAM_LOGISTIC_INFLECTION" xml:space="preserve">
+    <value>Inflection</value>
+  </data>
+  <data name="PARAM_LOGISTIC_SLOPE" xml:space="preserve">
+    <value>Slope</value>
+  </data>
+  <data name="PARAM_LOGISTIC_XMAX" xml:space="preserve">
+    <value>X max</value>
+  </data>
+  <data name="PARAM_LOGISTIC_XMIN" xml:space="preserve">
+    <value>X min</value>
+  </data>
 </root>

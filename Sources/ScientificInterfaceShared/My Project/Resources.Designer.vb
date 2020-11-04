@@ -8303,6 +8303,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Logistic 4 Parameters.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_LOGISTIC_4PARAMS() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_LOGISTIC_4PARAMS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Normal.
         '''</summary>
         Public ReadOnly Property SHAPEFUNCTION_NORMAL() As String

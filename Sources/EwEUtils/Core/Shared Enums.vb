@@ -3519,6 +3519,7 @@ Namespace Core
         LeftShoulder = 8
         Trapezoid = 9
         Sigmoid = 10
+        Logistic_4Params = 11
     End Enum
 
 #End Region ' Shape resolution
