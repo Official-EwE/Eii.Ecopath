@@ -31,6 +31,10 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+
+
+#Const B_USE_SHARED_ARENA = False
+
 Namespace Ecosim
 
 #Region "Public defintions"
@@ -73,12 +77,7 @@ Namespace Ecosim
         '   when an f time series is applied and the run time is extented.
         '   Values plots for the extention but not landings?? This may be OK...
         '   Intuitively I would have thought either both or neither
-
-
         'xxxxxxxxxxxxxxxxxxxxxxxxx
-
-
-
 
         'ToDo's Discards 1-Nov-2016 Check that discards to detritus are accounted for correctly when driving discard mortality rates
         'ToDo's Discards 1-Nov-2016 Are the discards survivals being account for when there is no landing and all discards survive. See PopulateResults()
@@ -3199,13 +3198,17 @@ Namespace Ecosim
             InitRelaSwitch()
 
 
+#If B_USE_SHARED_ARENA Then
+           DefineFlowList()
+#Else
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             Debug.Assert(False, "Warning Shared Arenas disabled")
-            'DefineFlowList()
-
             DefaultPeatArena()
             DefineArenasAndFlowList()
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+#End If
+
+
 
             SetArenaVulandSearchRates()
 
