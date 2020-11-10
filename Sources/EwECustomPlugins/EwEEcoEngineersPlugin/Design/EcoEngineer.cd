@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EcoEngineersPlugin.cComplexityDataset" Collapsed="true">
+    <Position X="5" Y="2.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gsDBOAAiAgAgIQABiAACBAQCIBAAAAAJoAQAIAIgMA0=</HashCode>
+      <FileName>cComplexityDataset.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="m_lRules" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EcoEngineersPlugin.cComplexityRule" Collapsed="true">
+    <Position X="8.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAgAAAAAACAAAAAAAAAAoAEAAAA=</HashCode>
+      <FileName>cComplexityRule.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcoEngineersPlugin.cSpatialRaster" Collapsed="true">
+    <Position X="3.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAgIEEADSQAhgMEJhAAAAABEAAAAAGAAAAAAAAQAA=</HashCode>
+      <FileName>cSpatialRaster.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EcoEngineersPlugin.ucEcoEngineerConfigUI" Collapsed="true">
+    <Position X="5" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAEEEBsUTAgEAAAQAC0AAACAAFIAABAUgAEBgAAAZA=</HashCode>
+      <FileName>UI\ucEcoEngineerConfigUI.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_shapePreview" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EcoEngineersPlugin.cShapePreview" Collapsed="true">
+    <Position X="8.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\cShapePreview.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
