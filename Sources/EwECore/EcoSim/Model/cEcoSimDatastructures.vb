@@ -720,7 +720,7 @@ Public Class cEcosimDatastructures
         ' Tick off all shared arenas that match a dietary link
         For i As Integer = 1 To Me.NlinksSet
             ' Is link invalid?
-            If (IlinkSet(i) = 0) Or (JlinkSet(i) = 0 Or KlinkSet(i) = 0) Then
+            If (IlinkSet(i) = 0) Or (JlinkSet(i) = 0) Or (KlinkSet(i) = 0) Then
                 ' #Yes: remember bad link, will be removed below
                 lInvalidLinks.Add(i)
             ElseIf pending(IlinkSet(i), JlinkSet(i)) Then
