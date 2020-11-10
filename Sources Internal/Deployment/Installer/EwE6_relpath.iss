@@ -3,9 +3,9 @@
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 ; spinup + spattemp now combined in one flag 'EwEPro'
-#define EwEPro 0
+#define EwEPro 1
 ; RobertsBank features are optional to 'EwEPro'
 #define RobertsBank 0
 #define SAFENET 0
@@ -14,7 +14,7 @@
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
 
-#if Compile64Bit == 1
+#if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim SharedArenas"
   #define MyAppVersion "6.7.0 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
