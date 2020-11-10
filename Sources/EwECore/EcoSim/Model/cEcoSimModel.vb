@@ -4432,10 +4432,8 @@ Namespace Ecosim
                 Next
             Next
 
-            ' In case an implementing datasource did not do this
-            If Me.m_Data.NlinksSet = 0 Then
-                Me.m_Data.DefaultSharedArenas()
-            End If
+            ' Datasource may have missed entries for newly created diet links
+            Me.m_Data.ValidateSharedArenas()
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")
 
@@ -5215,11 +5213,11 @@ Namespace Ecosim
                 ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
                 K = m_Data.KlinkSet(iii)
                 If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
-                    'Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
-                    If m_Data.PeatArena(ii, K) <> 1.0F Then
-                        System.Console.WriteLine("Prop, " + m_Data.PeatArena(ii, K).ToString + ", Arena, " + ii.ToString + ", Pred, " + K.ToString)
-                    End If
-                    'Debug.Assert(i <> 8)
+                    ''Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
+                    'If m_Data.PeatArena(ii, K) <> 1.0F Then
+                    '    Debug.WriteLine("ShArenas: DefineFlowList - Prop: {0}, Arena: {1}, Pred {2}", m_Data.PeatArena(ii, K), ii, K)
+                    'End If
+                    ''Debug.Assert(i <> 8)
                     Il = Il + 1
                     m_Data.ilink(Il) = i 'Prey for this arena link
                     m_Data.jlink(Il) = K 'Pred for this arena link

@@ -692,39 +692,110 @@ Public Class cEcosimDatastructures
     End Sub
 
     ''' <summary>
-    ''' Set default shared arenas
+    ''' Validate and patch up shared arena use.
     ''' </summary>
-    Friend Sub DefaultSharedArenas()
+    ''' <remarks>
+    ''' This stage is needed to ensure that shared arenas, as read by a datasource,
+    ''' are in sync with the consumption links in Ecosim.
+    ''' </remarks>
+    Public Sub ValidateSharedArenas()
 
-        Dim iPred As Integer, iPrey As Integer, ii As Integer
+        ' Indices of ilinksset that refer to an invalid i, j or k
+        Dim iPred, iPrey, iPredShared, nPending As Integer
+        Dim pending(Me.nGroups, Me.nGroups) As Boolean
+        Dim lInvalidLinks As New List(Of Integer)
 
+        ' Count up all the dietary links for which one or more arena links are needed
         For iPred = 1 To nGroups
             For iPrey = 1 To nGroups
-                If Consumption(iPrey, iPred) > 0 Then
-                    ii += 1
+                If (Consumption(iPrey, iPred) > 0.0F) Then
+                    pending(iPrey, iPred) = True
+                    nPending += 1
                 End If
             Next iPrey
         Next iPred
 
-        Debug.Assert(ii = Me.Narena)
+        'Debug.WriteLine("ShArenas: ValidateSharedArenas {0} diets, {1} NLinksSet", nComps, NlinksSet)
 
-        NlinksSet = ii
-        RedimArenaLinks()
+        ' Tick off all shared arenas that match a dietary link
+        For i As Integer = 1 To Me.NlinksSet
+            ' Is link invalid?
+            If (IlinkSet(i) = 0) Or (JlinkSet(i) = 0 Or KlinkSet(i) = 0) Then
+                ' #Yes: remember bad link, will be removed below
+                lInvalidLinks.Add(i)
+            ElseIf pending(IlinkSet(i), JlinkSet(i)) Then
+                ' #No: tick off a good link, all ok
+                pending(IlinkSet(i), JlinkSet(i)) = False
+                nPending -= 1
+            End If
+        Next
 
-        ii = 0
-        For i As Integer = 1 To nGroups
-            For j As Integer = 1 To nGroups
-                If Consumption(i, j) > 0.0F Then
-                    ii += 1
-                    IlinkSet(ii) = i
-                    JlinkSet(ii) = j
-                    KlinkSet(ii) = j
-                    Dim iArena As Integer = Me.ArenaNo(i, j)
-                    Debug.Assert(iArena > 0)
-                    PeatArena(iArena, j) = 1
+        'Debug.WriteLine("ShArenas: ValidateSharedArenas {0} links miss defaults, {1} links are gone", nComps, lInvalidLinks.Count)
+
+        ' Need to resize arena links?
+        If (nPending > 0 Or lInvalidLinks.Count > 0) Then
+            ' Make backup of current link data as set by the datasource. We'll reuse the useful bits
+            Dim iLinksOld As Integer = Me.NlinksSet
+            Dim ilinkcopy As Integer() = Me.IlinkSet
+            Dim jlinkcopy As Integer() = Me.JlinkSet
+            Dim klinkcopy As Integer() = Me.KlinkSet
+            Dim arenacopy As Integer(,) = Me.ArenaNo
+            Dim peatcopy As Single(,) = Me.PeatArena
+            Dim n As Integer = 1
+
+            ' Resize
+            Me.NlinksSet = Me.NlinksSet - lInvalidLinks.Count + nPending
+            Me.RedimArenaLinks()
+
+            ' Step 1: copy useful bits 
+            For i As Integer = 1 To iLinksOld
+                ' Not a bad link?
+                If Not lInvalidLinks.Contains(i) Then
+                    ' #OK: map old arena record to new arena record
+                    iPrey = ilinkcopy(i)
+                    iPred = jlinkcopy(i)
+                    iPredShared = klinkcopy(i)
+                    Dim iArenaTo As Integer = Me.ArenaNo(iPrey, iPred)
+                    Dim iArenaFrom As Integer = arenacopy(iPrey, iPred)
+
+                    Me.IlinkSet(n) = iPrey
+                    Me.JlinkSet(n) = iPred
+                    Me.KlinkSet(n) = iPredShared
+                    Me.PeatArena(iArenaTo, iPredShared) = peatcopy(iArenaFrom, iPredShared)
+                    n += 1
                 End If
             Next
-        Next
+
+            ' Step 2: Complement missing defaults (and yes, this entire routine can be seriously optimized with dictionaries)
+            For iPred = 1 To nGroups
+                For iPrey = 1 To nGroups
+                    ' Is this a diet link that does not yet have an arena link?
+                    If pending(iPrey, iPred) Then
+                        ' #Yes: add a default
+                        Me.IlinkSet(n) = iPrey
+                        Me.JlinkSet(n) = iPred
+                        Me.KlinkSet(n) = iPred
+                        Dim iArenaTo As Integer = Me.ArenaNo(iPrey, iPred)
+                        Me.PeatArena(iArenaTo, iPred) = 1
+
+                        ' Next
+                        n += 1
+
+                        ' Not necessary, but useful for accounting and debugging:
+                        ' - Flag as done
+                        pending(iPrey, iPred) = False
+                        nPending -= 1
+
+                    End If
+                Next iPrey
+            Next iPred
+
+            ' Are you done, Donald? (hey, how about MEGA: Make Ecosystems Great Again?)
+            Debug.Assert(nPending = 0)
+
+            'Debug.WriteLine("ShArenas: ValidateSharedArenas resized to {0} ", NlinksSet)
+
+        End If
 
     End Sub
 
