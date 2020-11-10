@@ -31,8 +31,6 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-
-
 #Const B_USE_SHARED_ARENA = False
 
 Namespace Ecosim
