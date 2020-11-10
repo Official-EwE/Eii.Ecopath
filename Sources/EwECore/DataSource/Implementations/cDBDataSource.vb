@@ -4493,7 +4493,7 @@ Namespace DataSources
                         ' Grab arena no. as initialized from current set-up
                         iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
 
-                        If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0 And iArenaNo > 0) Then
+                        If (iPred > 0 And iPrey > 0 And iPredShared > 0 And sPeatArena > 0 And iArenaNo > 0) Then
                             ii += 1
                             ecosimDS.IlinkSet(ii) = iPrey
                             ecosimDS.JlinkSet(ii) = iPred
