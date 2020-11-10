@@ -71,7 +71,7 @@ Namespace Controls.EwEGrid
                         ' #Yes: advance to next editable row
                         Dim grid As GridVirtual = e.Grid
                         Dim iRowStart As Integer = e.Position.Row
-                        Dim iRow As Integer = iRow
+                        Dim iRow As Integer = iRowStart
                         Dim p As Position = Nothing
                         Dim cell As ICellVirtual = Nothing
                         Dim bFound As Boolean = (grid.RowsCount <= grid.FixedRows)
