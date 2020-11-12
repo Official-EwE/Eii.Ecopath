@@ -145,13 +145,13 @@ Public Class cSigmoidShapeFunction
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
             Select Case iParam
-                Case 1 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMIN'"X min."'My.Resources.CoreDefaults.PARAM_SD_LEFT
-                Case 2 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMAX'"X max."'My.Resources.CoreDefaults.PARAM_SD_WIDTH
-                Case 3 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMID'"X mid point"'My.Resources.CoreDefaults.PARAM_SD_RIGHT
+                Case 1 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMIN'
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMAX'
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMID'
 
-                Case 4 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XOPT'"X opt. (y = 0.998)" 'My.Resources.CoreDefaults.PARAM_MEAN
-                Case 5 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_STEEP'"Steep" 'My.Resources.CoreDefaults.PARAM_MEAN
-                Case 6 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_SCALAR '"Y axis max." ' My.Resources.CoreDefaults.PARAM_MAX
+                Case 4 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XOPT'
+                Case 5 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_STEEP'
+                Case 6 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_SCALAR '
             End Select
             Return MyBase.ParamName(iParam)
         End Get

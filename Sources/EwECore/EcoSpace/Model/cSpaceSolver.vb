@@ -23,9 +23,6 @@ Imports System.Threading
 Imports EwEUtils.Core
 
 
-
-
-
 Public Class cSpaceSolver
 
     ''' <summary>
@@ -421,7 +418,7 @@ Public Class cSpaceSolver
                 'iCell is the linear index of the two dimensional spatial array
                 'iWaterCellIndex(iCell) and jWaterCellIndex(iCell) were populted with the indexes(irow,jcol) of water cells only during initialization
                 'Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
-                SolveCellc(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
+                SolveCellC(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
 
                 'Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
             Next iCell
@@ -827,6 +824,10 @@ Public Class cSpaceSolver
             NutFree = CSng(m_SimData.NutTot * RelProdScaler - NutBiom)
             If NutFree < m_SimData.NutMin Then NutFree = m_SimData.NutMin
 
+            m_Data.RelNutMult(iRow, iCol) = 0.0F
+            Me.SaveRelNutFree(NutFree, iRow, iCol)
+
+
             'jb 29-Apr-2013 removed EcosimData Consumpt
             ''*************
             ''Consumpt is NOT threadsafe
@@ -1102,19 +1103,26 @@ Public Class cSpaceSolver
 
     End Function
 
+    ' SaveRelNutFree
+
+    Private Sub SaveRelNutFree(NutFree As Single, irow As Integer, icol As Integer)
+
+        If m_Data.bSaveRelNutFile Then
+            m_Data.RelNutMult(irow, icol) += 2 * NutFree / (NutFree + m_SimData.NutFreeBase(1))
+        End If
+
+    End Sub
+
     Private Sub SaveMOLoss(igrp As Integer, biomass As Single, MOMult As Single, irow As Integer, icol As Integer)
 
         Dim propMort As Single = Me.m_Data.MOProp(igrp)(irow, icol)
         'cap it at just below 1.0
         If propMort >= 1.0 Then propMort = 0.9999F
         Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort))
-        ' Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort)) * 12
-        'Dim MoFeedTimeAdjust As Single = (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))
-        'm_moLoss(igrp) = lnPropMort * MoFeedTimeAdjust * biomass
         m_moLoss(igrp) = lnPropMort * biomass
 
-        '''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        '''For debugging
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''For debugging
         'If propMort > 0.5 And igrp = 2 Then
         '    Dim moTot As Single = (m_SimData.mo(igrp) * MOMult * (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))) * biomass
         '    Dim noMoForce As Single = (m_SimData.mo(igrp) * (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))) * biomass
