@@ -1747,7 +1747,7 @@ Public Class cEcoSpace
 
             stpTotRun.Stop()
             'debugDumpAverageB(44, "After Grid")
-            System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1862,7 +1862,7 @@ Public Class cEcoSpace
             Me.UpdateThreadedResults()
 
             stpTotRun.Stop()
-            System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
+            'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
             'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
             'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
             'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)

@@ -56,7 +56,8 @@ Public Class cLogisticFourParamsShapeFunction
                 x = (i - 1) * dx
                 Me.m_points(i) = CSng(1.0 + (-1.0 / (1.0 + (x / Inf) ^ Slope)))
 
-                System.Console.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
+                'save to the debug output window so it doesn't show up in the console
+                Debug.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
             Next i
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -107,10 +108,10 @@ Public Class cLogisticFourParamsShapeFunction
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
             Select Case iParam
-                Case 1 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_XMIN' "X min" PARAM_LOGISTIC_XMIN
-                Case 2 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_XMAX 'Return "X max"
-                Case 3 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_INFLECTION'Return "Inflection"
-                Case 4 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_SLOPE 'Return "Slope"
+                Case 1 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_XMIN
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_XMAX
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_INFLECTION
+                Case 4 : Return My.Resources.CoreDefaults.PARAM_LOGISTIC_SLOPE
             End Select
 
             Return MyBase.ParamName(iParam)

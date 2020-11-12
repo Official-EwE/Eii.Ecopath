@@ -31,7 +31,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-#Const B_USE_SHARED_ARENA = False
+#Const B_USE_SHARED_ARENA = True
 
 Namespace Ecosim
 
@@ -2754,6 +2754,9 @@ Namespace Ecosim
                 'Nf = Nt-sum(Bi)
                 m_Data.NutFree = m_Data.NutTot * m_Data.tval(m_Data.NutForceNumber) - m_Data.NutBiom
                 If m_Data.NutFree < m_Data.NutMin Then m_Data.NutFree = m_Data.NutMin
+
+                'For debugging the Relative Nutrient Dumping from Ecospace 
+                'Debug.Print(m_Data.NutBiom.ToString + ", " + m_Data.tval(m_Data.NutForceNumber).ToString + ", " + (2 * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(1))).ToString)
 
                 'ADDED CODE FOR CONTAMINANT
                 'initialize inflow rate to each group, preserving user value of cinflow(0)

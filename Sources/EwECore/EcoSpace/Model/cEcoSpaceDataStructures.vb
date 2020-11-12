@@ -743,6 +743,10 @@ Public Class cEcospaceDataStructures
 
     Public RelMoveFitGroup()(,) As Single
 
+    Public RelNutMult(,) As Single
+
+    Public bSaveRelNutFile As Boolean
+
     ''' <summary>Are we in a Spin-Up period?</summary>   
     Public Property bInSpinUp As Boolean
         Get
@@ -1137,6 +1141,9 @@ Public Class cEcospaceDataStructures
 
             Me.EcospaceAreaOutputDir = ""
             Me.EcospaceMapOutputDir = ""
+
+
+            Me.bSaveRelNutFile = False
 
             Return True
         Catch ex As Exception
@@ -1992,6 +1999,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(Region, InRow + 1, InCol + 1)
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
+
+            Me.allocate(RelNutMult, InRow, InCol)
 
             ' JS 14May16: Only allocate this temporary array when a relPP backup is made
             'Me.allocate(relPP0, InRow + 1, InCol + 1)
