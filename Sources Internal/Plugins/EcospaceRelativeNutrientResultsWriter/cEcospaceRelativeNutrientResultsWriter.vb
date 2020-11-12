@@ -96,9 +96,12 @@ Public Class cEcospaceRelativeNutrientResultsWriter
     End Sub
 
     Public Sub WriteResults(SpaceTimeStepResults As Object) Implements IEcospaceResultsWriter.WriteResults
-        'Throw New NotImplementedException()
+
         Try
 
+            If Not _core.m_EcoSpaceData.bSaveRelNutFile Then
+                Exit Sub
+            End If
 
             Dim t As Integer = DirectCast(SpaceTimeStepResults, cEcospaceTimestep).iTimeStep
             Dim strm As StreamWriter = New StreamWriter(_filename, True)
@@ -117,11 +120,9 @@ Public Class cEcospaceRelativeNutrientResultsWriter
 
         End Try
 
-
     End Sub
 
     Public Sub Init(theCore As Object) Implements IResultsWriter.Init
-        'Throw New NotImplementedException()
 
         Try
             _core = DirectCast(theCore, EwECore.cCore)
@@ -133,6 +134,10 @@ Public Class cEcospaceRelativeNutrientResultsWriter
 
     Public Sub StartWrite() Implements IResultsWriter.StartWrite
         Try
+
+            If Not _core.m_EcoSpaceData.bSaveRelNutFile Then
+                Exit Sub
+            End If
 
             _filename = System.IO.Path.Combine(_core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), "Ecospace_RelativeNutrient.txyz")
             If File.Exists(_filename) Then
