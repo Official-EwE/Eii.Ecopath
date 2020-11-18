@@ -906,7 +906,6 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                EcoSpaceData.PredictEffort = True
                 If EcoSpaceData.PredictEffort Then
 
                     'Sets proportion of discards landed and discarded 
