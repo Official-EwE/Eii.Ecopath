@@ -706,14 +706,14 @@ Public Class cEcosimDatastructures
         Dim lInvalidLinks As New List(Of Integer)
 
         ' Count up all the dietary links for which one or more arena links are needed
-        For iPred = 1 To nGroups
-            For iPrey = 1 To nGroups
+        For iPrey = 1 To nGroups
+            For iPred = 1 To nGroups
                 If (Consumption(iPrey, iPred) > 0.0F) Then
                     pending(iPrey, iPred) = True
                     nPending += 1
                 End If
-            Next iPrey
-        Next iPred
+            Next iPred
+        Next iPrey
 
         'Debug.WriteLine("ShArenas: ValidateSharedArenas {0} diets, {1} NLinksSet", nComps, NlinksSet)
 
@@ -739,7 +739,6 @@ Public Class cEcosimDatastructures
             Dim ilinkcopy As Integer() = Me.IlinkSet
             Dim jlinkcopy As Integer() = Me.JlinkSet
             Dim klinkcopy As Integer() = Me.KlinkSet
-            Dim arenacopy As Integer(,) = Me.ArenaNo
             Dim peatcopy As Single(,) = Me.PeatArena
             Dim n As Integer = 1
 
@@ -755,20 +754,19 @@ Public Class cEcosimDatastructures
                     iPrey = ilinkcopy(i)
                     iPred = jlinkcopy(i)
                     iPredShared = klinkcopy(i)
-                    Dim iArenaTo As Integer = Me.ArenaNo(iPrey, iPred)
-                    Dim iArenaFrom As Integer = arenacopy(iPrey, iPred)
+                    Dim iArena As Integer = Me.ArenaNo(iPrey, iPred)
 
                     Me.IlinkSet(n) = iPrey
                     Me.JlinkSet(n) = iPred
                     Me.KlinkSet(n) = iPredShared
-                    Me.PeatArena(iArenaTo, iPredShared) = peatcopy(iArenaFrom, iPredShared)
+                    Me.PeatArena(iArena, iPredShared) = peatcopy(iArena, iPredShared)
                     n += 1
                 End If
             Next
 
             ' Step 2: Complement missing defaults (and yes, this entire routine can be seriously optimized with dictionaries)
-            For iPred = 1 To nGroups
-                For iPrey = 1 To nGroups
+            For iPrey = 1 To nGroups
+                For iPred = 1 To nGroups
                     ' Is this a diet link that does not yet have an arena link?
                     If pending(iPrey, iPred) Then
                         ' #Yes: add a default
@@ -787,8 +785,8 @@ Public Class cEcosimDatastructures
                         nPending -= 1
 
                     End If
-                Next iPrey
-            Next iPred
+                Next iPred
+            Next iPrey
 
             ' Are you done, Donald? (hey, how about MEGA: Make Ecosystems Great Again?)
             Debug.Assert(nPending = 0)
