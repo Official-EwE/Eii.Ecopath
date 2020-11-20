@@ -48,15 +48,18 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimArenaShare))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnResetAll = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnResetSelected = New System.Windows.Forms.ToolStripButton()
-            Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tsbnResetAll = New System.Windows.Forms.ToolStripButton()
             Me.m_groups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_grid = New ScientificInterface.Ecosim.gridEcosimArenaShare()
             Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrArenas = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_scContent = New System.Windows.Forms.SplitContainer()
             Me.m_tsMain.SuspendLayout()
-            Me.m_tlpContent.SuspendLayout()
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_scContent.Panel1.SuspendLayout()
+            Me.m_scContent.Panel2.SuspendLayout()
+            Me.m_scContent.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
@@ -66,24 +69,15 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             '
-            'm_tsbnResetAll
-            '
-            resources.ApplyResources(Me.m_tsbnResetAll, "m_tsbnResetAll")
-            Me.m_tsbnResetAll.Name = "m_tsbnResetAll"
-            '
             'm_tsbnResetSelected
             '
             resources.ApplyResources(Me.m_tsbnResetSelected, "m_tsbnResetSelected")
             Me.m_tsbnResetSelected.Name = "m_tsbnResetSelected"
             '
-            'm_tlpContent
+            'm_tsbnResetAll
             '
-            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
-            Me.m_tlpContent.Controls.Add(Me.m_groups, 0, 1)
-            Me.m_tlpContent.Controls.Add(Me.m_grid, 1, 1)
-            Me.m_tlpContent.Controls.Add(Me.m_hdrPrey, 0, 0)
-            Me.m_tlpContent.Controls.Add(Me.m_hdrArenas, 1, 0)
-            Me.m_tlpContent.Name = "m_tlpContent"
+            resources.ApplyResources(Me.m_tsbnResetAll, "m_tsbnResetAll")
+            Me.m_tsbnResetAll.Name = "m_tsbnResetAll"
             '
             'm_groups
             '
@@ -151,17 +145,36 @@ Namespace Ecosim
             Me.m_hdrArenas.IsCollapsed = False
             Me.m_hdrArenas.Name = "m_hdrArenas"
             '
+            'm_scContent
+            '
+            resources.ApplyResources(Me.m_scContent, "m_scContent")
+            Me.m_scContent.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
+            Me.m_scContent.Name = "m_scContent"
+            '
+            'm_scContent.Panel1
+            '
+            Me.m_scContent.Panel1.Controls.Add(Me.m_groups)
+            Me.m_scContent.Panel1.Controls.Add(Me.m_hdrPrey)
+            '
+            'm_scContent.Panel2
+            '
+            Me.m_scContent.Panel2.Controls.Add(Me.m_grid)
+            Me.m_scContent.Panel2.Controls.Add(Me.m_hdrArenas)
+            '
             'frmEcosimArenaShare
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_tlpContent)
+            Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmEcosimArenaShare"
             Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
-            Me.m_tlpContent.ResumeLayout(False)
+            Me.m_scContent.Panel1.ResumeLayout(False)
+            Me.m_scContent.Panel2.ResumeLayout(False)
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_scContent.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -169,12 +182,12 @@ Namespace Ecosim
 
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsbnResetSelected As ToolStripButton
-        Private WithEvents m_tlpContent As TableLayoutPanel
         Private WithEvents m_groups As cGroupListBox
         Private WithEvents m_grid As gridEcosimArenaShare
         Private WithEvents m_hdrPrey As cEwEHeaderLabel
         Private WithEvents m_hdrArenas As cEwEHeaderLabel
         Private WithEvents m_tsbnResetAll As ToolStripButton
+        Private WithEvents m_scContent As SplitContainer
     End Class
 
 End Namespace
