@@ -38,31 +38,23 @@ Public Class cEcospaceASCMapMOResultsWriter
         Me.vars = New eVarNameFlags() {eVarNameFlags.LayerOtherMortLoss}
     End Sub
 
-
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
         MyBase.WriteResults(SpaceTimeStepResults)
     End Sub
 
-
-    Public Overrides Sub Init(ByVal theCore As Object)
+    Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
-
         Me.setAllGroupsSelected()
-
     End Sub
-
 
     Public Overrides ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
+            ' ToDo: globalize this
             Return "Other mortality response function loss (ACSII format)"
         End Get
     End Property
 
-
-    Protected Overrides Sub WriteASCIIBody(ByVal writer As StreamWriter,
-                                ByVal SpaceTSData As cEcospaceTimestep,
-                                ByVal iIndex As Integer,
-                                ByVal varname As eVarNameFlags)
+    Protected Overrides Sub WriteASCIIBody(writer As StreamWriter, SpaceTSData As cEcospaceTimestep, iIndex As Integer, varname As eVarNameFlags)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Overrides the base class implementation to get MOLoss() from the core data
@@ -109,8 +101,6 @@ Public Class cEcospaceASCMapMOResultsWriter
 
     End Sub
 
-
-
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "MortalityOtherResultsWriter"
@@ -120,6 +110,7 @@ Public Class cEcospaceASCMapMOResultsWriter
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
+            ' ToDo: localize this
             Return "Mortality due to MO resonse function"
         End Get
     End Property
