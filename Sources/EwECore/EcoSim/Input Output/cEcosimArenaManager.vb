@@ -202,8 +202,6 @@ Public Class cEcosimArenaManager
     ''' </summary>
     Public ReadOnly Property Groups(bEwE5 As Boolean) As Integer()
         Get
-            bEwE5 = True
-
             Dim lGroups As New List(Of Integer)
             Dim n(Me.m_core.nGroups) As Integer
             For Each arena As cEcosimArena In Me.m_arenas
