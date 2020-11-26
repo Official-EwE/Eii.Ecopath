@@ -2400,7 +2400,6 @@ Namespace Ecosim
         ''' </returns>
         Private Function checkOKToRun() As cMessage
 
-            ' ToDo: localize these
             If (Me.m_EPData Is Nothing) Then
                 Return New cMessage("Ecosim cannot run. Internal eror: Ecopath data is not initialized",
                                     eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
@@ -3208,9 +3207,6 @@ Namespace Ecosim
             DefineArenasAndFlowList()
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #End If
-
-
-
             SetArenaVulandSearchRates()
 
         End Sub
@@ -4514,20 +4510,20 @@ Namespace Ecosim
             m_Data.inlinks = 0
 
 
-            For j = 1 To m_EPData.NumLiving      'all living groups; consumers
-                For i = 1 To nGroups  'prey
-                    '    jb swaped the loading order To match all other per, pred loops
-                    'Debug.Assert(False, "JB CalcEatenOfBy")
-                    'For i = 1 To nGroups     'all living groups; consumers
-                    '    For j = 1 To nGroups  'prey
+            'For j = 1 To m_EPData.NumLiving      'all living groups; consumers
+            '    For i = 1 To nGroups  'prey
+            '    jb swaped the loading order To match all other prey, pred loops
+            'Debug.Assert(False, "JB CalcEatenOfBy")
+            For i = 1 To nGroups     'all living groups; consumers
+                        For j = 1 To nGroups  'prey
 
-                    If m_Data.Consumption(i, j) > 0 Then
-                        m_Data.inlinks = m_Data.inlinks + 1
-                        m_Data.ilink(m_Data.inlinks) = i
-                        m_Data.jlink(m_Data.inlinks) = j
-                    End If
-                Next i
-            Next j
+                            If m_Data.Consumption(i, j) > 0 Then
+                                m_Data.inlinks = m_Data.inlinks + 1
+                                m_Data.ilink(m_Data.inlinks) = i
+                                m_Data.jlink(m_Data.inlinks) = j
+                            End If
+                        Next
+            Next
 
             ' Set arenas here. They do not change anymore
             ' Set up list of foraging arenas defined by nonzero trophic flows
@@ -5241,8 +5237,6 @@ Namespace Ecosim
             'find total consumptions of prey type for each arena, added over predators
             ReDim Qarena(m_Data.Narena), VulBiom(m_Data.Narena)
             For ii = 1 To m_Data.inlinks
-                'i = m_Data.ilink(ii)
-
                 ia = m_Data.ArenaLink(ii)
                 Qarena(ia) = Qarena(ia) + m_Data.Qlink(ii)
             Next
