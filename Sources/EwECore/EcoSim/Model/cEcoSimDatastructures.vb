@@ -592,6 +592,7 @@ Public Class cEcosimDatastructures
     Public KlinkSet() As Integer ' 
     ''' <summary> diet proportions by foraging arena from/to database </summary>
     Public PeatArena(,) As Single '
+    ''' <summary> Arena Number for a pred, prey link when PeatArena(ArenaNo(iprey,jpred),jpred)>0. This pred eats from this arena.  </summary>
     Public ArenaLink() As Integer
     ''' <summary> total ecopath base consumption by trophic link </summary>
     Public Qlink() As Single '

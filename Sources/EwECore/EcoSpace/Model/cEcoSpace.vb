@@ -5599,26 +5599,14 @@ exitline:
             Pbar(i) = EcoSimData.pred(i) * EcoSpaceData.ThabArea / EcoSpaceData.TotHabCap(i)
         Next
 
-        'Debug.Assert(False, "Don't leave this in")
-        'For ii = 1 To EcoSimData.inlinks
-        '    ia = EcoSimData.ArenaLink(ii)
-        '    j = EcoSimData.jlink(ii)
-        '    If VulBiom(ia) > 0 Then
-        '        Dzero = EcoSimData.CmCo(j) / (EcoSimData.CmCo(j) - 1)
-        '        EcoSpaceData.Aspace(ii) = Dzero * EcoSimData.Qlink(ii) / (VulBiom(ia) * EcoSimData.pred(j))
-        '    Else
-        '        EcoSpaceData.Aspace(ii) = 0
-        '    End If
-        'Next
-
 
         'Debug.Assert(False, "Don't leave this in")
         'Return
 
-        'calculate mean BP product over cells for each link
         For ii = 1 To EcoSimData.inlinks
             i = EcoSimData.ilink(ii)
             j = EcoSimData.jlink(ii)
+            ' ia = EcoSimData.ArenaLink(ii)
             Atemp(ii) = EcoSpaceData.Aspace(ii) * (EcoSimData.CmCo(j) - 1) / EcoSimData.CmCo(j)  'remove handling time adjustment to start iteration 
             MeanBP(ii) = 0
             For ir = 1 To EcoSpaceData.InRow
@@ -5637,8 +5625,8 @@ exitline:
                 Vden(ia) = 2 * EcoSpaceData.Vspace(ia)
             Next
             For ii = 1 To EcoSimData.inlinks
-                j = EcoSimData.Jarena(ii)
-                i = EcoSimData.Iarena(ii)
+                i = EcoSimData.ilink(ii)
+                j = EcoSimData.jlink(ii)
                 ia = EcoSimData.ArenaNo(i, j)
                 Vden(ia) = Vden(ia) + Atemp(ii) * Pbar(j)
             Next
@@ -5653,7 +5641,7 @@ exitline:
                 j = EcoSimData.jlink(ii)
                 ia = EcoSimData.ArenaNo(i, j)
 
-                Anew = EcoSimData.Qlink(ii) / (Vtemp(ia) * MeanBP(ii))
+                Anew = EcoSimData.Qlink(ia) / (Vtemp(ia) * MeanBP(ii))
                 TotCh = TotCh + Math.Abs(Anew - Atemp(ii))
                 Atemp(ii) = Anew
             Next
@@ -5666,9 +5654,68 @@ exitline:
             EcoSpaceData.Aspace(ii) = Atemp(ii) * EcoSimData.CmCo(j) / (EcoSimData.CmCo(j) - 1)
         Next
 
+#Region "Original Code Changed to fix Shared Arena bug 26-Nov-2020"
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'JB Original Code with Shared Arena bug
+        'calculate mean BP product over cells for each link
+        'For ii = 1 To EcoSimData.inlinks
+        '    i = EcoSimData.ilink(ii)
+        '    j = EcoSimData.jlink(ii)
+        '    Atemp(ii) = EcoSpaceData.Aspace(ii) * (EcoSimData.CmCo(j) - 1) / EcoSimData.CmCo(j)  'remove handling time adjustment to start iteration 
+        '    MeanBP(ii) = 0
+        '    For ir = 1 To EcoSpaceData.InRow
+        '        For ic = 1 To EcoSpaceData.InCol
+        '            MeanBP(ii) = MeanBP(ii) + EcoSpaceData.HabCap(i)(ir, ic) * EcoSpaceData.HabCap(j)(ir, ic)
+        '        Next
+        '    Next
+        '    MeanBP(ii) = (MeanBP(ii) * EcoSimData.StartBiomass(i) * EcoSimData.pred(j) / (EcoSpaceData.TotHabCap(i) * EcoSpaceData.TotHabCap(j))) * EcoSpaceData.ThabArea
+        'Next ii
+
+        'Dim Anew As Single, TotCh As Single
+        ''iterate to improve atemp estimates
+        'For iter = 1 To 5 'spreadsheet tests indicate this should be enough iterations
+        '    'calculate Vtemp ratio of vulnerable to total prey biomass for this iter, recognizing ratio is independent of ir,ic because P's divided by local caps
+        '    For ia = 1 To EcoSimData.Narena
+        '        Vden(ia) = 2 * EcoSpaceData.Vspace(ia)
+        '    Next
+        '    For ii = 1 To EcoSimData.inlinks
+        '        j = EcoSimData.Jarena(ii)
+        '        i = EcoSimData.Iarena(ii)
+        '        ia = EcoSimData.ArenaNo(i, j)
+        '        Vden(ia) = Vden(ia) + Atemp(ii) * Pbar(j)
+        '    Next
+        '    For ia = 1 To EcoSimData.Narena
+        '        Vtemp(ia) = EcoSpaceData.Vspace(ia) / Vden(ia)
+        '    Next
+        '    TotCh = 0
+        '    'now recalculate the a's by link
+        '    For ii = 1 To EcoSimData.inlinks
+
+        '        i = EcoSimData.ilink(ii)
+        '        j = EcoSimData.jlink(ii)
+        '        ia = EcoSimData.ArenaNo(i, j)
+
+        '        Anew = EcoSimData.Qlink(ii) / (Vtemp(ia) * MeanBP(ii))
+        '        TotCh = TotCh + Math.Abs(Anew - Atemp(ii))
+        '        Atemp(ii) = Anew
+        '    Next
+        '    If TotCh < 0.01 * EcoSimData.inlinks Then Exit For
+        'Next iter
+
+        ''finally correct the a's for handling time effects
+        'For ii = 1 To EcoSimData.inlinks
+        '    j = EcoSimData.jlink(ii)
+        '    EcoSpaceData.Aspace(ii) = Atemp(ii) * EcoSimData.CmCo(j) / (EcoSimData.CmCo(j) - 1)
+        'Next
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         '#End If
 
+#End Region
+
     End Sub
+
 
     Private Function estimateMaxTimestep()
         Dim ntc As Integer
