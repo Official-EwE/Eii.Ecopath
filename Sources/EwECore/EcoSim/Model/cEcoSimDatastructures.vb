@@ -724,8 +724,8 @@ Public Class cEcosimDatastructures
             If (IlinkSet(i) = 0) Or (JlinkSet(i) = 0) Or (KlinkSet(i) = 0) Then
                 ' #Yes: remember bad link, will be removed below
                 lInvalidLinks.Add(i)
-            ElseIf pending(IlinkSet(i), JlinkSet(i)) Then
-                ' #No: tick off a good link, all ok
+            ElseIf pending(IlinkSet(i), KlinkSet(i)) Then
+                ' #No: tick off a good link: this pred/prey link has been presented in at least one arena
                 pending(IlinkSet(i), JlinkSet(i)) = False
                 nPending -= 1
             End If
