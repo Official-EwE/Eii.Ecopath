@@ -62,6 +62,9 @@ Public Class cEcospaceLayerDriver
             val = New cValue(New String(desc), eVarNameFlags.UnitEnvDriver, eStatusFlags.OK, eValueTypes.Str, meta)
             m_values.Add(val.varName, val)
 
+            val = New cValue(True, eVarNameFlags.EcospaceCapacityEnabled, eStatusFlags.Null, eValueTypes.Bool)
+            m_values.Add(val.varName, val)
+
             'set status flags to default values
             ResetStatusFlags()
 
@@ -106,21 +109,6 @@ Public Class cEcospaceLayerDriver
         End Set
     End Property
 
-    Public Overrides ReadOnly Property CanDeactivate As Boolean
-        Get
-            Return True
-        End Get
-    End Property
-
-    Public Overrides Property IsActive As Boolean
-        Get
-            Return Me.IsCapacityMapActive()
-        End Get
-        Set(value As Boolean)
-            Me.ActivateCapacityMap(value)
-        End Set
-    End Property
-
 #End Region ' Overrides
 
 #Region " Properties by dot (.) operator "
@@ -143,28 +131,24 @@ Public Class cEcospaceLayerDriver
         End Set
     End Property
 
+    Public Property IsCapacityEnabled As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceCapacityEnabled))
+        End Get
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceCapacityEnabled, value)
+        End Set
+    End Property
+
+    Public Property IsCapacityEnabledStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcospaceCapacityEnabled)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcospaceCapacityEnabled, value)
+        End Set
+    End Property
+
 #End Region ' Properties by dot (.) operator
-
-#Region " Internals "
-
-    Private Function ActivateCapacityMap(bEnable As Boolean) As Boolean
-        Dim manager As IEnvironmentalResponseManager = Me.m_core.CapacityMapInteractionManager
-        Dim map As IEnviroInputData = manager.EnviroData(Me)
-        If (map IsNot Nothing) Then
-            map.IsDriverActive = bEnable
-        End If
-        Return IsCapacityMapActive()
-    End Function
-
-    Private Function IsCapacityMapActive() As Boolean
-        Dim manager As IEnvironmentalResponseManager = Me.m_core.CapacityMapInteractionManager
-        Dim map As IEnviroInputData = manager.EnviroData(Me)
-        If (map IsNot Nothing) Then
-            Return map.IsDriverActive
-        End If
-        Return True
-    End Function
-
-#End Region ' Internals
 
 End Class

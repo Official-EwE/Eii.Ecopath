@@ -30,6 +30,8 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
+    ' ToDo: change indexing from VarName to DataType
+
     ''' <summary>
     ''' Base spatial data adapter for inserting external spatial/temporal raster data into
     ''' Ecospace map data structures.
@@ -62,7 +64,7 @@ Namespace SpatialData
         ''' <param name="cc">The <see cref="eCoreCounterTypes">core counter</see> that states the
         ''' number of layers that this adapter will interface with.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
 
             MyBase.New(core)
 
@@ -129,7 +131,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iLayer">The one-based index of the layer to query.</param>
         ''' -------------------------------------------------------------------
-        Public Function IsConnected(ByVal iLayer As Integer) As Boolean
+        Public Function IsConnected(iLayer As Integer) As Boolean
 
             Dim bConnected As Boolean = False
             For Each conn As cSpatialDataConnection In Me.Connections(iLayer)
@@ -146,7 +148,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iLayer">The one-based index of the layer to query.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Property IsEnabled(ByVal iLayer As Integer) As Boolean
+        Public Overridable Property IsEnabled(iLayer As Integer) As Boolean
             Get
                 Return Me.m_bIsEnabled(iLayer)
             End Get
@@ -176,7 +178,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iLayer">The one-based index of the layer to query.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable ReadOnly Property Status(ByVal iLayer As Integer) As eStatusFlags
+        Public Overridable ReadOnly Property Status(iLayer As Integer) As eStatusFlags
             Get
                 ' This is hack!
                 If (Me.m_varName = eVarNameFlags.LayerDriver) Then
@@ -198,8 +200,8 @@ Namespace SpatialData
         ''' for the implicit <see cref="VarName"/> will be populated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Populate(ByVal iTime As Integer, ByVal dNoData As Double, _
-                                             Optional ByVal layer As cEcospaceLayer = Nothing) As Boolean
+        Public Overridable Function Populate(iTime As Integer, dNoData As Double,
+                                             Optional layer As cEcospaceLayer = Nothing) As Boolean
 
             Dim strMsg As String = ""
             Dim msg As cMessage = Nothing
@@ -219,7 +221,7 @@ Namespace SpatialData
 
             For Each layer In layers
 
-                If layer.IsActive() And Me.IsEnabled(layer.Index) Then
+                If Me.IsEnabled(layer.Index) Then
 
                     For Each conn As cSpatialDataConnection In Me.m_connections(layer.Index)
                         ' Is ready to go?
@@ -252,7 +254,7 @@ Namespace SpatialData
                                         ' The raster returned here MUST have the extent and projection compatible with Ecospace
                                         dataExternal = ds.GetRaster(cv, layer.Name)
                                     Catch ex As Exception
-                                        Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), _
+                                        Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message),
                                                                                    eStatusFlags.MissingParameter)
                                         cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
                                         bSuccess = False
@@ -349,13 +351,13 @@ Namespace SpatialData
         ''' <returns>True if successful.</returns>
         ''' <remarks>Note that this method writes values straight into the underlying data structures!</remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Overridable Function Adapt(ByVal bm As cEcospaceBasemap, _
-                                                    ByVal layer As cEcospaceLayer, _
-                                                    ByVal conn As cSpatialDataConnection, _
-                                                    ByVal iTime As Integer, _
-                                                    ByVal dt As Date, _
-                                                    ByVal dataExternal As ISpatialRaster, _
-                                                    ByVal dNoData As Double) As Boolean
+        Protected Friend Overridable Function Adapt(bm As cEcospaceBasemap,
+                                                     layer As cEcospaceLayer,
+                                                     conn As cSpatialDataConnection,
+                                                     iTime As Integer,
+                                                     dt As Date,
+                                                     dataExternal As ISpatialRaster,
+                                                     dNoData As Double) As Boolean
 
             ' To ensure proper usage by inherited classes
             Debug.Assert(bm IsNot Nothing)
@@ -418,11 +420,11 @@ Namespace SpatialData
         ''' external data.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function SetCell(ByVal layer As cEcospaceLayer, _
-                                               ByVal conn As cSpatialDataConnection, _
-                                               ByVal iRow As Integer, _
-                                               ByVal iCol As Integer, _
-                                               ByVal sCellValueAtT As Double) As Boolean
+        Protected Overridable Function SetCell(layer As cEcospaceLayer,
+                                                conn As cSpatialDataConnection,
+                                                iRow As Integer,
+                                                iCol As Integer,
+                                                sCellValueAtT As Double) As Boolean
             Try
                 layer.Cell(iRow, iCol) = sCellValueAtT
             Catch ex As Exception
@@ -430,7 +432,7 @@ Namespace SpatialData
                 Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"
                 cLog.Write(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sCellValueAtT))
 
-                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sCellValueAtT, ex.Message), _
+                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sCellValueAtT, ex.Message),
                                                            eStatusFlags.MissingParameter)
                 Return False
             End Try
@@ -618,7 +620,7 @@ Namespace SpatialData
             Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), "_debug_")
         End Function
 
-        Protected Function getIntermediateFile(ByVal thePath As String, iTime As Integer) As String
+        Protected Function getIntermediateFile(thePath As String, iTime As Integer) As String
             If Not String.IsNullOrWhiteSpace(Me.IntermediateFileName) Then
                 Return Path.Combine(thePath, cFileUtils.ToValidFileName(Me.IntermediateFileName + "_" + Me.m_core.EcospaceTimestepToAbsoluteTime(iTime).ToShortDateString + ".asc", False))
             End If
@@ -640,7 +642,7 @@ Namespace SpatialData
         ''' all layers specified by <paramref name="iLayer"/> are examined.</param>
         ''' <returns>Configured connections for this adapter.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Connections(Optional iLayer As Integer = -1, _
+        Public Function Connections(Optional iLayer As Integer = -1,
                                     Optional bEnabledOnly As Boolean = False) As cSpatialDataConnection()
 
             Dim iFrom As Integer = iLayer
@@ -661,7 +663,7 @@ Namespace SpatialData
 
         End Function
 
-        Public Function AddConnection(ByVal iLayer As Integer) As cSpatialDataConnection
+        Public Function AddConnection(iLayer As Integer) As cSpatialDataConnection
 
             Dim conn As cSpatialDataConnection = Nothing
             If (Me.m_connections(iLayer).Count < cSpatialDataStructures.cMAX_CONN) Then
@@ -674,7 +676,7 @@ Namespace SpatialData
 
         End Function
 
-        Public Function RemoveConnection(ByVal iLayer As Integer, ByVal conn As cSpatialDataConnection) As Boolean
+        Public Function RemoveConnection(iLayer As Integer, conn As cSpatialDataConnection) As Boolean
 
             Me.m_connections(iLayer).Remove(conn)
             Return True

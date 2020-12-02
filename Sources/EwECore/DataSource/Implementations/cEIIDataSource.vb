@@ -52,11 +52,8 @@ Public Class cEIIDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, _
-                         ByVal core As cCore, _
-                         Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
-                         Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType _
-                     Implements DataSources.IEwEDataSource.Open
+    Public Function Open(strName As String, core As cCore, Optional datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, Optional bReadOnly As Boolean = False) As eDatasourceAccessType _
+        Implements DataSources.IEwEDataSource.Open
 
         If (Not String.IsNullOrEmpty(Me.m_strFilename)) Then Return eDatasourceAccessType.Failed_UnknownType
         If Not File.Exists(strName) Then Return eDatasourceAccessType.Failed_FileNotFound
@@ -74,7 +71,7 @@ Public Class cEIIDataSource
     ''' <returns>True if the datasource is open.</returns>
     ''' -------------------------------------------------------------------
     Public Function IsOpen() As Boolean _
-             Implements IEwEDataSource.IsOpen
+        Implements IEwEDataSource.IsOpen
         Return (Not String.IsNullOrEmpty(Me.m_strFilename))
     End Function
 
@@ -89,8 +86,8 @@ Public Class cEIIDataSource
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
     ''' -------------------------------------------------------------------
-    Public Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType _
-             Implements IEwEDataSource.Create
+    Public Function Create(strName As String, strModelName As String, core As cCore) As eDatasourceAccessType _
+        Implements IEwEDataSource.Create
         ' Cannot write EII files (yet)
         Return eDatasourceAccessType.Failed_Unknown
     End Function
@@ -102,7 +99,7 @@ Public Class cEIIDataSource
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function Close() As Boolean _
-         Implements IEwEDataSource.Close
+        Implements IEwEDataSource.Close
 
         Me.m_strFilename = ""
         Me.m_core = Nothing
@@ -117,8 +114,8 @@ Public Class cEIIDataSource
     ''' </summary>
     ''' <param name="cc">The <see cref="eCoreComponentType">core component</see> that changed.</param>
     ''' -------------------------------------------------------------------
-    Friend Sub SetChanged(ByVal cc As eCoreComponentType) _
-            Implements IEwEDataSource.SetChanged
+    Friend Sub SetChanged(cc As eCoreComponentType) _
+        Implements IEwEDataSource.SetChanged
         ' Take no action
     End Sub
 
@@ -138,7 +135,8 @@ Public Class cEIIDataSource
     ''' Get the name of the EII file that this datasource operates on.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Connection() As Object Implements DataSources.IEwEDataSource.Connection
+    Public ReadOnly Property Connection() As Object _
+        Implements DataSources.IEwEDataSource.Connection
         Get
             Return Me.m_strFilename
         End Get
@@ -149,23 +147,28 @@ Public Class cEIIDataSource
     ''' Get the name of the EII file that this datasource operates on.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Overrides Function ToString() As String Implements IEwEDataSource.ToString
+    Public Overrides Function ToString() As String _
+        Implements IEwEDataSource.ToString
         Return Me.m_strFilename
     End Function
 
-    Private Overloads Function CopyEcopathTo(ByVal ds As DataSources.IEcopathDataSource) As Boolean Implements DataSources.IEcopathDataSource.CopyTo
+    Private Overloads Function CopyEcopathTo(ds As DataSources.IEcopathDataSource) As Boolean _
+        Implements DataSources.IEcopathDataSource.CopyTo
         Return False
     End Function
 
-    Public Function Version() As Single Implements IEwEDataSource.Version
+    Public Function Version() As Single _
+        Implements IEwEDataSource.Version
         Return -1.0!
     End Function
 
-    Public Function BeginTransaction() As Boolean Implements DataSources.IEwEDataSource.BeginTransaction
+    Public Function BeginTransaction() As Boolean _
+        Implements DataSources.IEwEDataSource.BeginTransaction
         Return True
     End Function
 
-    Public Function EndTransaction(ByVal bCommit As Boolean) As Boolean Implements DataSources.IEwEDataSource.EndTransaction
+    Public Function EndTransaction(bCommit As Boolean) As Boolean _
+        Implements DataSources.IEwEDataSource.EndTransaction
         Return True
     End Function
 
@@ -596,8 +599,8 @@ Public Class cEIIDataSource
     ''' core a full data reload is required after a group is created.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
-                      ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+    Function AddGroup(strGroupName As String, sPP As Single, sVBK As Single,
+                       iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddGroup
         Return False
     End Function
@@ -613,7 +616,7 @@ Public Class cEIIDataSource
     ''' core a full data reload is required after a group is removed.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function RemoveGroup(ByVal iDBID As Integer) As Boolean _
+    Function RemoveGroup(iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveGroup
         Return False
     End Function
@@ -630,7 +633,7 @@ Public Class cEIIDataSource
     ''' and there is no real need to implement this for EII datasources.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function MoveGroup(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+    Function MoveGroup(iDBID As Integer, iPosition As Integer) As Boolean _
              Implements IEcopathDataSource.MoveGroup
         Return False
     End Function
@@ -647,7 +650,7 @@ Public Class cEIIDataSource
     ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
+    Public Function AddFleet(strFleetName As String, iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddFleet
         Return False
     End Function
@@ -660,7 +663,7 @@ Public Class cEIIDataSource
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
     ''' -------------------------------------------------------------------
-    Function RemoveFleet(ByVal iDBID As Integer) As Boolean _
+    Function RemoveFleet(iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveFleet
         Return False
     End Function
@@ -673,7 +676,7 @@ Public Class cEIIDataSource
     ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
+    Public Function MoveFleet(iDBID As Integer, iPosition As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.MoveFleet
         Return False
     End Function
@@ -682,16 +685,16 @@ Public Class cEIIDataSource
 
 #Region " Pedigree "
 
-    Public Function AddPedigreeLevel(ByVal iPosition As Integer, ByVal strName As String, ByVal iColor As Integer, ByVal strDescription As String, ByVal varName As eVarNameFlags, ByVal sIndexValue As Single, ByVal sConfidence As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AddPedigreeLevel(iPosition As Integer, strName As String, iColor As Integer, strDescription As String, varName As eVarNameFlags, sIndexValue As Single, sConfidence As Single, ByRef iDBID As Integer) As Boolean _
      Implements DataSources.IEcopathDataSource.AddPedigreeLevel
         Return False
     End Function
 
-    Public Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
+    Public Function MovePedigreeLevel(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
         Return False
     End Function
 
-    Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
+    Public Function RemovePedigreeLevel(iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
         Return False
     End Function
 
@@ -704,7 +707,7 @@ Public Class cEIIDataSource
         Return False
     End Function
 
-    Public Function RemoveTaxon(ByVal iTaxonID As Integer) As Boolean _
+    Public Function RemoveTaxon(iTaxonID As Integer) As Boolean _
         Implements DataSources.IEcopathDataSource.RemoveTaxon
         Return False
     End Function
@@ -763,7 +766,7 @@ Public Class cEIIDataSource
     ''' </summary>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Friend Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean _
+    Friend Function AppendStanza(strStanzaName As String, aiGroupID() As Integer, aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AppendStanza
         Return False
     End Function
@@ -775,7 +778,7 @@ Public Class cEIIDataSource
     ''' <param name="iDBID">Database ID of the stanza group to remove.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Function RemoveStanza(ByVal iDBID As Integer) As Boolean _
+    Function RemoveStanza(iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveStanza
         Return False
     End Function
@@ -789,8 +792,8 @@ Public Class cEIIDataSource
     ''' <param name="iStartAge">Start age of this life stage.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer,
-                                       ByVal iStartAge As Integer) As Boolean _
+    Public Function AddStanzaLifestage(iStanzaDBID As Integer, iGroupDBID As Integer,
+                                        iStartAge As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddStanzaLifestage
         Return False
     End Function
@@ -803,7 +806,7 @@ Public Class cEIIDataSource
     ''' <param name="iGroupDBID">Group to remove as the life stage.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Public Function RemoveStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer) As Boolean _
+    Public Function RemoveStanzaLifestage(iStanzaDBID As Integer, iGroupDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.RemoveStanzaLifestage
         Return False
     End Function
@@ -812,17 +815,17 @@ Public Class cEIIDataSource
 
 #Region " Interface Implementations "
 
-    Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
+    Public Function Compact(strTarget As String) As eDatasourceAccessType _
         Implements DataSources.IEwEDataSource.Compact
         Return eDatasourceAccessType.Failed_OSUnsupported
     End Function
 
-    Public Function CanCompact(ByVal strTarget As String) As Boolean _
+    Public Function CanCompact(strTarget As String) As Boolean _
     Implements IEwEDataSource.CanCompact
         Return False
     End Function
 
-    Public Function IsOSSupported(ByVal dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
+    Public Function IsOSSupported(dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
         Implements IEwEDataSource.IsOSSupported
         Return True ' We can do this!
     End Function
@@ -851,7 +854,7 @@ Public Class cEIIDataSource
 
 #Region " Helper methods "
 
-    Private Function GetNextValue(ByVal data() As String, ByRef iNextIndex As Integer) As String
+    Private Function GetNextValue(data() As String, ByRef iNextIndex As Integer) As String
         Dim strData As String = ""
         Do While String.IsNullOrWhiteSpace(strData)
             strData = data(iNextIndex)

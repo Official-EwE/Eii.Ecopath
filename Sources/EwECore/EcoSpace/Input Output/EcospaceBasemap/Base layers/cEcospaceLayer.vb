@@ -311,25 +311,6 @@ Public MustInherit Class cEcospaceLayer
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get whether this layer can be <see cref="IsActive">deactivated</see>.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overridable ReadOnly Property CanDeactivate As Boolean
-        Get
-            Return False
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set if the layer is active. This can have different meanings for
-    ''' different layers
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overridable Property IsActive() As Boolean = True
-
 #End Region ' Cell manipulation
 
 #Region " Reset "

@@ -121,7 +121,7 @@ Public Interface IEnviroInputData
     ''' <param name="theManager"></param>
     Sub SetManager(ByVal theManager As IEnvironmentalResponseManager)
 
-    Property IsDriverActive As Boolean
+    Property IsCapacityEnabled As Boolean
 
     ReadOnly Property Name As String
 

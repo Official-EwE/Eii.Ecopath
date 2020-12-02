@@ -39,7 +39,7 @@ Public Class cEcospaceEnviroResponseManager
 
 #Region " Constructor "
 
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         MyBase.New(core)
         Me.m_coreComponent = eCoreComponentType.EcospaceCapacityResponseInteractionManager
         Me.m_dataType = eDataTypes.EcospaceEnviroCapacityResponse
@@ -66,10 +66,10 @@ Public Class cEcospaceEnviroResponseManager
     ''' </summary>
     ''' <param name="MapIndex">The one-based index of the map to return.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnviroData(ByVal MapIndex As Integer) As IEnviroInputData _
+    Public ReadOnly Property EnviroData(MapIndex As Integer) As IEnviroInputData _
         Implements IEnvironmentalResponseManager.EnviroData
         Get
-            If MapIndex > 0 And MapIndex <= Me.m_maps.Count Then
+            If MapIndex >= 0 And MapIndex <= Me.m_maps.Count Then
                 Return Me.m_maps(MapIndex - 1)
             End If
             Return Nothing
@@ -77,12 +77,12 @@ Public Class cEcospaceEnviroResponseManager
 
     End Property
 
-    Public ReadOnly Property EnviroData(ByVal layer As cEcospaceLayer) As IEnviroInputData _
+    Public ReadOnly Property EnviroData(layer As cEcospaceLayer) As IEnviroInputData _
         Implements IEnvironmentalResponseManager.EnviroData
         Get
 
             For Each envMap As cEnviroInputMap In Me.m_maps
-                If String.Compare(envMap.Layer.getID, layer.getID) = 0 Then
+                If String.Compare(envMap.Layer.GetID, layer.GetID) = 0 Then
                     Return envMap
                 End If
             Next
@@ -96,7 +96,7 @@ Public Class cEcospaceEnviroResponseManager
 
 #Region " Friend interfaces "
 
-    Friend Sub Init(ByVal spaceData As cEcospaceDataStructures, ByVal MediationData As cMediationDataStructures)
+    Friend Sub Init(spaceData As cEcospaceDataStructures, MediationData As cMediationDataStructures)
         Me.m_SpaceData = spaceData
         Me.m_MedData = MediationData
         Me.m_maps = New List(Of IEnviroInputData)
@@ -116,7 +116,6 @@ Public Class cEcospaceEnviroResponseManager
             ' Hard-code the depth map at position 0
             layer = Me.m_core.EcospaceBasemap.LayerDepth()
             map = New cEnviroInputMap(Me.m_core.CapacityMapInteractionManager, layer)
-
             ' Bad hack: disable updates from the layer
             map.SetManager(Nothing)
             For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
@@ -163,17 +162,20 @@ Public Class cEcospaceEnviroResponseManager
 
     End Function
 
+    Friend Sub InitRun()
+        For iMap As Integer = 0 To Me.m_maps.Count - 1
+            Dim map As IEnviroInputData = Me.m_maps(iMap)
+            map.IsCapacityEnabled = Not Me.m_SpaceData.EnvironmentalLayerCapacityDisabled(iMap)
+        Next
+    End Sub
+
     Public Function onChanged() As Boolean Implements IEnvironmentalResponseManager.onChanged
-
-
         Try
-
             For iMap As Integer = 1 To Me.m_maps.Count
                 For iGroup As Integer = 1 To Me.m_SpaceData.NGroups
                     Me.m_SpaceData.CapacityResponseFunctions(iMap - 1, iGroup) = Me.EnviroData(iMap).ResponseIndexForGroup(iGroup)
                 Next
             Next
-
             If Me.AllowValidation Then
                 Me.m_core.onChanged(Me, eMessageType.DataModified)
             End If

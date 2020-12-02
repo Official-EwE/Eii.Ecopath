@@ -27,6 +27,8 @@ Imports EwEUtils.SpatialData
 
 Namespace SpatialData
 
+    ' ToDo: change storage from VarName to DataType
+
     ''' <summary>
     ''' 
     ''' </summary>

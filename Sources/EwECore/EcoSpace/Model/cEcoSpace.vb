@@ -8150,7 +8150,7 @@ exitline:
             'System.Console.WriteLine(map.Layer.Name + ", " + map.isLayerActive.ToString)
 
             'Is this layer active
-            If map.IsDriverActive Then
+            If map.IsCapacityEnabled Then
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.EcoSpaceData.NGroups
                     'Has the habitat for this group changed
@@ -8200,7 +8200,7 @@ exitline:
             If Me.EcoSpaceData.MOLayerChanged.Contains(imap) Then
 
                 'Is this layer active
-                If map.IsDriverActive Then
+                If map.IsCapacityEnabled Then
                     For igrp = 1 To Me.EcoSpaceData.NGroups
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then

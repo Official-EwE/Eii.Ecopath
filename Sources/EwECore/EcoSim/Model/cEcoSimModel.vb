@@ -4877,7 +4877,7 @@ Namespace Ecosim
 
             For iRes As Integer = 1 To Me.EcosimEnviroResponseManager.nInputData  ' As IEnviroInputData In Me.EcosimEnviroResponseManager.InputData
                 Dim ResponseFunction As IEnviroInputData = Me.EcosimEnviroResponseManager.InputData(iRes)
-                If ResponseFunction.IsDriverActive Then
+                If ResponseFunction.IsCapacityEnabled Then
 
                     If ResponseFunction.ResponseIndexForGroup(iPredIndex) > 0 Then
                         A *= ResponseFunction.ResponseFunction(iPredIndex, iTimeStep)
@@ -4898,7 +4898,7 @@ Namespace Ecosim
                 'Get the proportion of total mortality as a function of environmental driver
                 For iRes As Integer = 1 To Me.EcosimMortalityResponseManager.nInputData  ' As IEnviroInputData In Me.EcosimEnviroResponseManager.InputData
                     Dim ResponseFunction As IEnviroInputData = Me.EcosimMortalityResponseManager.InputData(iRes)
-                    If ResponseFunction.IsDriverActive Then
+                    If ResponseFunction.IsCapacityEnabled Then
 
                         If ResponseFunction.ResponseIndexForGroup(iPredIndex) > 0 Then
                             propMort += ResponseFunction.ResponseFunction(iPredIndex, iTimeStep)

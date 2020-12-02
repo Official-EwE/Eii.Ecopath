@@ -609,6 +609,12 @@ Namespace Core
         EcospaceFleetProfit
         ''' <summary>Ecospace yearly average jobs [value of catch] * [jobs]</summary>
         EcospaceFleetJobs
+
+        EcospaceSpinupEnabled
+        EcospaceSpinupYears
+        EcospaceCapacityEnabled
+
+
         ''' <summary>Number of fish in a monthly stanza age group</summary>
         StanzaNumberAtAge
         ''' <summary>Weight of individual fish in a monthly stanza age group</summary>
