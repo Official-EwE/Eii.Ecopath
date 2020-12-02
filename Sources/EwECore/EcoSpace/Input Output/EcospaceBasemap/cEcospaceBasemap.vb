@@ -38,7 +38,7 @@ Public Class cEcospaceBasemap
     Implements IEcospaceLayerManager
 
     ''' <summary>The layers maintained in a basemap.</summary>
-    Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer())
+    Private m_layers As New Dictionary(Of eVarNameFlags, cEcospaceLayer())
 
 #Region " Constructor "
 
@@ -214,21 +214,21 @@ Public Class cEcospaceBasemap
             Dim llayers As New List(Of cEcospaceLayer)
 
             ' Depth layer
-            Me.m_dictLayers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, 1)}
+            Me.m_layers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, 1)}
 
             ' Habitats
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NoHabitats - 1
                 llayers.Add(New cEcospaceLayerHabitat(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerHabitat) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerHabitat) = llayers.ToArray
 
             ' Habitat capacity input layer
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
                 llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacityInput, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacityInput) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerHabitatCapacityInput) = llayers.ToArray
 
             ' Habitat capacity output layer
             llayers.Clear()
@@ -236,96 +236,96 @@ Public Class cEcospaceBasemap
                 ' Hmm, does settings the datatype 'properly' screw up things?
                 llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacity, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacity) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerHabitatCapacity) = llayers.ToArray
 
             ' Biomass Forcing
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
                 llayers.Add(New cEcospaceLayerBiomassForcing(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerBiomassForcing) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerBiomassForcing) = llayers.ToArray
 
             ' Relative Biomass Forcing
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
                 llayers.Add(New cEcospaceLayerBiomassRelativeForcing(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerBiomassRelativeForcing) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerBiomassRelativeForcing) = llayers.ToArray
 
             ' MPA layer
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.MPAno
                 llayers.Add(New cEcospaceLayerMPA(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerMPA) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerMPA) = llayers.ToArray
 
             ' Region layer
-            Me.m_dictLayers(eVarNameFlags.LayerRegion) = New cEcospaceLayer() {New cEcospaceLayerRegion(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerRegion) = New cEcospaceLayer() {New cEcospaceLayerRegion(theCore, Me)}
 
             ' RelPP layer
-            Me.m_dictLayers(eVarNameFlags.LayerRelPP) = New cEcospaceLayer() {New cEcospaceLayerRelPP(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerRelPP) = New cEcospaceLayer() {New cEcospaceLayerRelPP(theCore, Me)}
 
             ' Relative contaminant forcing layer (RelCin)
-            Me.m_dictLayers(eVarNameFlags.LayerContaminantRelativeDistribution) = New cEcospaceLayer() {New cEcospaceLayerContaminantRelativeDistribution(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerContaminantRelativeDistribution) = New cEcospaceLayer() {New cEcospaceLayerContaminantRelativeDistribution(theCore, Me)}
 
             ' Absolute contaminant forcing layer
-            Me.m_dictLayers(eVarNameFlags.LayerContaminantForcingAbsolute) = New cEcospaceLayer() {New cEcospaceLayerContaminantForcingAbsolute(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerContaminantForcingAbsolute) = New cEcospaceLayer() {New cEcospaceLayerContaminantForcingAbsolute(theCore, Me)}
 
             ' MPA Seed
-            Me.m_dictLayers(eVarNameFlags.LayerMPASeed) = New cEcospaceLayer() {New cEcospaceLayerMPASeed(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerMPASeed) = New cEcospaceLayer() {New cEcospaceLayerMPASeed(theCore, Me)}
 
             ' Importance
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.nImportanceLayers
                 llayers.Add(New cEcospaceLayerImportance(Me.m_core, ecospaceDS.ImportanceLayerDBID(i), Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerImportance) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerImportance) = llayers.ToArray()
 
             ' Driver
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.nEnvironmentalDriverLayers
                 llayers.Add(New cEcospaceLayerDriver(Me.m_core, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerDriver) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerDriver) = llayers.ToArray()
 
             ' Exclusion
-            Me.m_dictLayers(eVarNameFlags.LayerExclusion) = New cEcospaceLayer() {New cEcospaceLayerExclusion(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerExclusion) = New cEcospaceLayer() {New cEcospaceLayerExclusion(theCore, Me)}
 
             ' Migration
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
                 llayers.Add(New cEcospaceLayerMigration(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerMigration) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerMigration) = llayers.ToArray()
 
             ' Port
             llayers.Clear()
             For i As Integer = 0 To ecospaceDS.nFleets
                 llayers.Add(New cEcospaceLayerPort(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerPort) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerPort) = llayers.ToArray()
 
             ' Sailing cost
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.nFleets
                 llayers.Add(New cEcospaceLayerSail(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerSail) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerSail) = llayers.ToArray()
 
             ' Advection
             llayers.Clear()
             llayers.Add(New cEcospaceLayerAdvection(theCore, Me, 1))
             llayers.Add(New cEcospaceLayerAdvection(theCore, Me, 2))
-            Me.m_dictLayers(eVarNameFlags.LayerAdvection) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerAdvection) = llayers.ToArray()
 
             ' Wind
             llayers.Clear()
             llayers.Add(New cEcospaceLayerWind(theCore, Me, 1))
             llayers.Add(New cEcospaceLayerWind(theCore, Me, 2))
-            Me.m_dictLayers(eVarNameFlags.LayerWind) = llayers.ToArray()
+            Me.m_layers(eVarNameFlags.LayerWind) = llayers.ToArray()
 
             ' Upwelling
-            Me.m_dictLayers(eVarNameFlags.LayerUpwelling) = New cEcospaceLayer() {New cEcospaceLayerUpwelling(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerUpwelling) = New cEcospaceLayer() {New cEcospaceLayerUpwelling(theCore, Me)}
 
             '' MLD
             'Me.m_dictLayers(eVarNameFlags.LayerMLD) = New cEcospaceLayer() {New cEcospaceLayerMLD(theCore, Me)}
@@ -335,7 +335,7 @@ Public Class cEcospaceBasemap
             For i As Integer = 1 To Me.m_core.nStanzas
                 llayers.Add(New cEcospaceLayerIBMAge1Forcing(theCore, Me, i))
             Next
-            Me.m_dictLayers(eVarNameFlags.LayerIBMAge1Forcing) = llayers.ToArray
+            Me.m_layers(eVarNameFlags.LayerIBMAge1Forcing) = llayers.ToArray
 
             'set status flags to default values
             ResetStatusFlags()
@@ -610,7 +610,7 @@ Public Class cEcospaceBasemap
     Public ReadOnly Property LayerImportance(index As Integer) As cEcospaceLayerImportance
         Get
             Try
-                Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerImportance)(index - 1), cEcospaceLayerImportance)
+                Return DirectCast(Me.m_layers(eVarNameFlags.LayerImportance)(index - 1), cEcospaceLayerImportance)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access importance layer of index:" & index & ". Error: " & ex.Message)
                 ' ToDo: globalize this
@@ -629,7 +629,7 @@ Public Class cEcospaceBasemap
     Public ReadOnly Property LayerDriver(index As Integer) As cEcospaceLayerDriver
         Get
             Try
-                Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDriver)(index - 1), cEcospaceLayerDriver)
+                Return DirectCast(Me.m_layers(eVarNameFlags.LayerDriver)(index - 1), cEcospaceLayerDriver)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access driver layer of index:" & index & ". Error: " & ex.Message)
                 ' ToDo: globalize this
@@ -646,7 +646,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerDepth() As cEcospaceLayerDepth
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDepth)(0), cEcospaceLayerDepth)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerDepth)(0), cEcospaceLayerDepth)
         End Get
     End Property
 
@@ -660,7 +660,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerPort(iFleet As Integer) As cEcospaceLayerPort
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerPort)(iFleet), cEcospaceLayerPort)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerPort)(iFleet), cEcospaceLayerPort)
         End Get
     End Property
 
@@ -672,7 +672,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerSailingCost(iFleet As Integer) As cEcospaceLayerSail
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerSail)(iFleet - 1), cEcospaceLayerSail)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerSail)(iFleet - 1), cEcospaceLayerSail)
         End Get
     End Property
 
@@ -689,7 +689,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitat(iHabitat As Integer) As cEcospaceLayerHabitat
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitat)(iHabitat - 1), cEcospaceLayerHabitat)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerHabitat)(iHabitat - 1), cEcospaceLayerHabitat)
         End Get
     End Property
 
@@ -701,7 +701,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitatCapacityInput(iGroup As Integer) As cEcospaceLayerHabitatCapacity
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacityInput)(iGroup - 1), cEcospaceLayerHabitatCapacity)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerHabitatCapacityInput)(iGroup - 1), cEcospaceLayerHabitatCapacity)
         End Get
     End Property
 
@@ -713,7 +713,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitatCapacity(iGroup As Integer) As cEcospaceLayerHabitatCapacity
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacity)(iGroup - 1), cEcospaceLayerHabitatCapacity)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerHabitatCapacity)(iGroup - 1), cEcospaceLayerHabitatCapacity)
         End Get
     End Property
 
@@ -729,7 +729,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerMPA(iMPA As Integer) As cEcospaceLayerMPA
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMPA)(iMPA - 1), cEcospaceLayerMPA)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerMPA)(iMPA - 1), cEcospaceLayerMPA)
         End Get
     End Property
 
@@ -745,7 +745,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerRegion() As cEcospaceLayerRegion
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerRegion)(0), cEcospaceLayerRegion)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerRegion)(0), cEcospaceLayerRegion)
         End Get
     End Property
 
@@ -756,7 +756,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerRelPP() As cEcospaceLayerRelPP
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerRelPP)(0), cEcospaceLayerRelPP)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerRelPP)(0), cEcospaceLayerRelPP)
         End Get
     End Property
 
@@ -800,7 +800,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerUpwelling() As cEcospaceLayerSingle
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerUpwelling)(0), cEcospaceLayerSingle)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerUpwelling)(0), cEcospaceLayerSingle)
         End Get
     End Property
 
@@ -812,7 +812,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerMigration(iGroup As Integer) As cEcospaceLayerMigration
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMigration)(iGroup - 1), cEcospaceLayerMigration)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerMigration)(iGroup - 1), cEcospaceLayerMigration)
         End Get
     End Property
 
@@ -823,7 +823,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerRelCin() As cEcospaceLayerContaminantRelativeDistribution
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerContaminantRelativeDistribution)(0), cEcospaceLayerContaminantRelativeDistribution)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerContaminantRelativeDistribution)(0), cEcospaceLayerContaminantRelativeDistribution)
         End Get
     End Property
 
@@ -834,7 +834,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerContaminantForcingAbsolute() As cEcospaceLayerContaminantForcingAbsolute
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerContaminantForcingAbsolute)(0), cEcospaceLayerContaminantForcingAbsolute)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerContaminantForcingAbsolute)(0), cEcospaceLayerContaminantForcingAbsolute)
         End Get
     End Property
 
@@ -845,7 +845,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerMPASeed() As cEcospaceLayerMPASeed
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMPASeed)(0), cEcospaceLayerMPASeed)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerMPASeed)(0), cEcospaceLayerMPASeed)
         End Get
     End Property
 
@@ -856,12 +856,12 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerExclusion() As cEcospaceLayerExclusion
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerExclusion)(0), cEcospaceLayerExclusion)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerExclusion)(0), cEcospaceLayerExclusion)
         End Get
     End Property
     Public ReadOnly Property LayerIBMAge1Forcing(iGroup As Integer) As cEcospaceLayerIBMAge1Forcing
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerIBMAge1Forcing)(iGroup - 1), cEcospaceLayerIBMAge1Forcing)
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerIBMAge1Forcing)(iGroup - 1), cEcospaceLayerIBMAge1Forcing)
         End Get
     End Property
 
@@ -874,22 +874,22 @@ Public Class cEcospaceBasemap
         Select Case varName
             Case eVarNameFlags.NotSet
                 Dim l As New List(Of cEcospaceLayer)
-                For Each vn As eVarNameFlags In Me.m_dictLayers.Keys
+                For Each vn As eVarNameFlags In Me.m_layers.Keys
                     Select Case vn
                         Case eVarNameFlags.LayerMigration
-                            Dim tmp As cEcospaceLayer() = Me.m_dictLayers(vn)
+                            Dim tmp As cEcospaceLayer() = Me.m_layers(vn)
                             For i As Integer = 1 To Me.m_core.nGroups
                                 If Me.m_core.EcospaceGroupInputs(i).IsMigratory Then
                                     l.Add(tmp(i - 1))
                                 End If
                             Next
                         Case Else
-                            l.AddRange(Me.m_dictLayers(vn))
+                            l.AddRange(Me.m_layers(vn))
                     End Select
                 Next
                 Return l.ToArray
             Case Else
-                Return Me.m_dictLayers(varName)
+                Return Me.m_layers(varName)
         End Select
 
     End Function

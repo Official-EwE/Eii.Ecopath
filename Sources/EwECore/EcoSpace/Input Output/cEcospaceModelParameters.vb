@@ -94,6 +94,15 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            'Spinup
+            val = New cValue(New Boolean, eVarNameFlags.EcospaceSpinupEnabled, eStatusFlags.Null, eValueTypes.Bool)
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            val = New cValue(1, eVarNameFlags.EcospaceSpinupYears, eStatusFlags.Null, eValueTypes.Sng)
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             ' Multi threading vars
 
@@ -449,7 +458,6 @@ Public Class cEcospaceModelParameters
         End Set
     End Property
 
-
     Public Property MaxNumberOfIterations() As Integer
         Get
             Return CInt(GetVariable(eVarNameFlags.MaxIterations))
@@ -474,6 +482,42 @@ Public Class cEcospaceModelParameters
         End Get
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.ConSimOnEcoSpace, value)
+        End Set
+    End Property
+
+    Public Property SpinupEnabled() As Boolean
+        Get
+            Return CType(GetVariable(eVarNameFlags.EcospaceSpinupEnabled), Boolean)
+        End Get
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceSpinupEnabled, value)
+        End Set
+    End Property
+
+    Public Property SpinupEnabledStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcospaceSpinupEnabled)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcospaceSpinupEnabled, value)
+        End Set
+    End Property
+
+    Public Property SpinupYears() As Single
+        Get
+            Return CType(GetVariable(eVarNameFlags.EcospaceSpinupYears), Single)
+        End Get
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcospaceSpinupYears, value)
+        End Set
+    End Property
+
+    Public Property SpinupYearsStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcospaceSpinupYears)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcospaceSpinupYears, value)
         End Set
     End Property
 

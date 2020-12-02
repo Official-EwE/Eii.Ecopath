@@ -4364,8 +4364,6 @@ Namespace DataSources
                     mseDS.RHalfB0Ratio(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RHalfB0Ratio", mseDS.RHalfB0Ratio(igroup), cCore.NULL_VALUE))
                     mseDS.cvRec(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "RecruitmentCV", mseDS.cvRec(iEcopathGroup), cCore.NULL_VALUE))
 
-
-
                     ' Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
                 Catch ex As Exception
@@ -7259,23 +7257,13 @@ Namespace DataSources
                     Dim iGroup As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("GroupID")))
                     Dim iShapeDriver As Integer = Array.IndexOf(ecosimDS.ForcingDBIDs, CInt(reader("DriverID")))
                     Dim iShapeResponse As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ResponseID")))
-                    'If (iGroup > 0) And (iShapeDriver > 0) And (iShapeResponse > 0) Then
-                    '    ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) = iShapeResponse
-                    'End If
-
-
 
                     If (iGroup > 0) And (iShapeDriver > 0) And (iShapeResponse > 0) Then
                         ShapeType = CInt(Me.m_db.ReadSafe(reader, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
 
                         If ShapeType = eDataTypes.EcosimEnviroResponseFunctionManager Then
-
-                            ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                             ecosimDS.EnvRespFuncIndex(Math.Max(0, iShapeDriver), iGroup) = iShapeResponse
-
                         ElseIf ShapeType = eDataTypes.EcosimMortalityResponseFunctionManager Then
-
-                            ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                             ecosimDS.MortalityRespFuncIndex(Math.Max(0, iShapeDriver), iGroup) = iShapeResponse
                         End If 'If ShapeType = 
                     End If 'If (iGroup > 0) And (iShape > 0) Then
@@ -7597,6 +7585,8 @@ Namespace DataSources
                 ecospaceDS.PredictEffort = (CInt(Me.m_db.ReadSafe(reader, "PredictEffort", True)) <> 0)
                 ecospaceDS.AssumeSquareCells = (CInt(Me.m_db.ReadSafe(reader, "AssumeSquareCells", True)) <> 0)
                 ecospaceDS.ProjectionString = CStr(Me.m_db.ReadSafe(reader, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
+                ecospaceDS.UseSpinUp = (CInt(Me.m_db.ReadSafe(reader, "UseSpinup", 0)) <> 0)
+                ecospaceDS.SpinUpYears = CInt(Me.m_db.ReadSafe(reader, "SpinupYears", 10))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7802,6 +7792,8 @@ Namespace DataSources
                 drow("PredictEffort") = ecospaceDS.PredictEffort
                 drow("AssumeSquareCells") = ecospaceDS.AssumeSquareCells
                 drow("CoordinateSystemWKT") = ecospaceDS.ProjectionString
+                drow("UseSpinup") = If(ecospaceDS.UseSpinUp, 1, 0)
+                drow("SpinupYears") = ecospaceDS.SpinUpYears
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
@@ -7972,6 +7964,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMigration WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
@@ -9793,8 +9786,6 @@ Namespace DataSources
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim readerLayer As IDataReader = Nothing
             Dim bSucces As Boolean = True
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
             Dim iLayer As Integer = 0
 
             Try
@@ -9819,7 +9810,7 @@ Namespace DataSources
                 readerLayer = Nothing
             End Try
 
-            Return bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID)
+            Return bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID) And LoadEcospaceDisbledDriverLayers(iScenarioID)
 
         End Function
 
@@ -9861,6 +9852,32 @@ Namespace DataSources
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
+
+            Return bSucces
+
+        End Function
+
+        Private Function LoadEcospaceDisbledDriverLayers(iScenarioID As Integer) As Boolean
+
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim readerLayer As IDataReader = Nothing
+            Dim bSucces As Boolean = True
+
+            Try
+                readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
+                While readerLayer.Read()
+                    Dim iLayerID As Integer = CInt(readerLayer("LayerID"))
+                    Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
+                    If (iLayer >= 0) Then
+                        ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
+                    End If
+                End While
+            Catch ex As Exception
+                bSucces = False
+            Finally
+                Me.m_db.ReleaseReader(readerLayer)
+                readerLayer = Nothing
+            End Try
 
             Return bSucces
 
@@ -9935,7 +9952,7 @@ Namespace DataSources
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
             writer = Nothing
 
-            Return bSucces And SaveEcospaceCapacityDrivers(idm)
+            Return bSucces And Me.SaveEcospaceCapacityDrivers(idm) And Me.SaveEcospaceDisbledDriverLayers(idm)
 
         End Function
 
@@ -9981,6 +9998,44 @@ Namespace DataSources
                         End If
                     Next iGroup
                 Next iMap
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+
+            Return bSucces
+
+        End Function
+
+        Private Function SaveEcospaceDisbledDriverLayers(idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim bSucces As Boolean = True
+
+            ' Clear
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
+            writer = Me.m_db.GetWriter("EcospaceScenarioDriverDisabled")
+
+            Try
+                ' iMap = 0 indicates the depth layer
+                For iMap As Integer = 0 To ecospaceDS.nEnvironmentalDriverLayers
+                    If (ecospaceDS.EnvironmentalLayerCapacityDisabled(iMap)) Then
+                        Dim drow As DataRow = writer.NewRow()
+                        Dim iLayerID As Integer = 0
+                        If (iMap > 0) Then
+                            ' Make sure that depth map has ID 0
+                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap))
+                        End If
+                        drow("ScenarioID") = iScenarioID
+                        drow("LayerID") = iLayerID
+                        writer.AddRow(drow)
+                    End If
+
+                Next
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -10041,6 +10096,7 @@ Namespace DataSources
                 ' Cascading delete any data assignments
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) AND (LayerID={1}) AND (VarName='{2}')",
                                               iScenarioID, iDBID, cin.GetVarName(eVarNameFlags.LayerDriver)))
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iDBID))
                 ' Delete the layer
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iDBID))
             Catch ex As Exception
@@ -10086,6 +10142,9 @@ Namespace DataSources
 
             While (reader.Read())
                 Try
+                    ' JS 23Nov20: Sh!t, this should have been stored by eDatatype, not eVarname! 
+                    '             Numerical values of datatypes are fixed, varnames can change.
+                    '             This requires a structural change in the ext data fw, even the spat temp data FW 
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
                     Dim iLayer As Integer = Array.IndexOf(Me.getLayerIDs(var), iLayerID)

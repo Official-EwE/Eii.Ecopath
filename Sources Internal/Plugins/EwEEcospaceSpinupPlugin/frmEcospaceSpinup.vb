@@ -27,6 +27,7 @@ Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Properties
 Imports System.Windows.Forms
 
 #End Region ' Imports
@@ -40,6 +41,7 @@ Public Class frmEcospaceSpinup
 
     Private m_plugin As cEcospaceSpinupPlugin = Nothing
     Private m_bInitializing As Boolean = False
+    Private WithEvents m_fpSpinupEnabled As cEwEFormatProvider = Nothing
     Private WithEvents m_fpSpinupYears As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
@@ -60,8 +62,11 @@ Public Class frmEcospaceSpinup
 
         Me.m_bInitializing = True
 
-        Dim mdYears As New cVariableMetaData(1, 999, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, cUnits.Year)
-        Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinUpYears, GetType(Integer), mdYears)
+        Dim pm As cPropertyManager = Me.PropertyManager
+        Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+
+        Me.m_fpSpinupEnabled = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseSpinup, parms, eVarNameFlags.EcospaceSpinupEnabled)
+        Me.m_fpSpinupYears = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxSpinUpYears, parms, eVarNameFlags.EcospaceSpinupYears)
 
         AddHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
         'AddHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
@@ -79,6 +84,7 @@ Public Class frmEcospaceSpinup
         'RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
         'RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
 
+        Me.m_fpSpinupEnabled.Release()
         Me.m_fpSpinupYears.Release()
 
         Me.m_gridSpinUpDif.UIContext = Nothing
@@ -105,8 +111,6 @@ Public Class frmEcospaceSpinup
 
         Me.m_bInitializing = True
         Try
-            Me.m_chkUseSpinup.Checked = Me.m_plugin.UseSpinUp
-            Me.m_fpSpinupYears.Value = Me.m_plugin.SpinUpYears
             Me.m_chkUseBaseBio.Checked = Me.m_plugin.UseSpinUpBaseBio
         Catch ex As Exception
             cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
@@ -143,36 +147,12 @@ Public Class frmEcospaceSpinup
     '    ' NOP
     'End Sub
 
-    Private Sub OnUseSpinupChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_chkUseSpinup.CheckedChanged
-
-        If (Me.m_bInitializing) Then Return
-        Try
-            Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
-        Catch ex As Exception
-            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
-        End Try
-
-    End Sub
-
     Private Sub OnUseBaseBiohanged(sender As System.Object, e As System.EventArgs) _
         Handles m_chkUseBaseBio.CheckedChanged
 
         If (Me.m_bInitializing) Then Return
         Try
             Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
-        Catch ex As Exception
-            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
-        End Try
-
-    End Sub
-
-    Private Sub OnSpinupYearsChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_fpSpinupYears.OnValueChanged
-
-        If (Me.m_bInitializing) Then Return
-        Try
-            Me.m_plugin.SpinUpYears = CInt(Me.m_fpSpinupYears.Value)
         Catch ex As Exception
             cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
         End Try

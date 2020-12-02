@@ -84,10 +84,11 @@ Namespace Ecospace
             ''' Layer currently active in the EwE model.</param>
             ''' <param name="bEditable">States if the layer can be edited.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayer, Optional bEditable As Boolean = True)
+            Public Sub New(Layer As cEcospaceLayer, bIsCapacityEnabled As Boolean, bEditable As Boolean)
                 Debug.Assert(Layer IsNot Nothing)
                 Me.Layer = Layer
                 Me.Name = Layer.Name
+                Me.WasCapacityEnabled = bIsCapacityEnabled
                 If (TypeOf Layer Is cEcospaceLayerDriver) Then
                     Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
                     Me.Units = DirectCast(Layer, cEcospaceLayerDriver).Units
@@ -99,7 +100,7 @@ Namespace Ecospace
                     Me.Units = cVariableMetaData.Get(Layer.VarName).Units
                 End If
                 Me.Status = eItemStatusTypes.Original
-                Me.IsCapacityEnabled = True
+                Me.IsCapacityEnabled = bIsCapacityEnabled
                 Me.IsEditable = bEditable
                 Me.LayerID = Layer.DBID
             End Sub
@@ -110,7 +111,7 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal strUnits As String)
+            Public Sub New(strName As String, strDescription As String, strUnits As String)
                 Me.Layer = Nothing
                 Me.Name = strName
                 Me.Description = strDescription
@@ -175,13 +176,21 @@ Namespace Ecospace
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
                 If (TypeOf Layer Is cEcospaceLayerDriver) Then
-                    If (DirectCast(Layer, cEcospaceLayerDriver).Units <> Me.Units) Then
+                    If (String.Compare(DirectCast(Layer, cEcospaceLayerDriver).Units, Me.Units, False) <> 0) Then
                         Return True
                     End If
                 End If
                 Return (Me.Layer.Name <> Me.Name) Or
-                       (Me.Layer.Description <> Me.Description)
+                       (Me.Layer.Description <> Me.Description) Or
+                       (Me.WasCapacityEnabled <> Me.IsCapacityEnabled)
             End Function
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Internal flag for change management.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Private ReadOnly WasCapacityEnabled As Boolean = False
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -205,7 +214,7 @@ Namespace Ecospace
                 Get
                     Return (Me.Status = eItemStatusTypes.Removed)
                 End Get
-                Set(ByVal bDelete As Boolean)
+                Set(bDelete As Boolean)
                     If (Me.Layer IsNot Nothing) Then
                         If bDelete Then
                             Me.Status = eItemStatusTypes.Removed
@@ -251,9 +260,7 @@ Namespace Ecospace
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
-
             MyBase.New()
-
         End Sub
 
 #Region " Grid interaction "
@@ -312,19 +319,15 @@ Namespace Ecospace
             Dim layer As cEcospaceLayerDriver = Nothing
             Dim li As cLayerInfo = Nothing
 
-            ' Populate local administration from a snapshot of the live data
-
-            Dim depth As cEcospaceLayer = Me.Core.EcospaceBasemap.LayerDepth
+            Dim depth As cEcospaceLayerDepth = Me.Core.EcospaceBasemap.LayerDepth
             'Depth layer cannot be deleted
-            li = New cLayerInfo(depth, bEditable:=False)
-            li.IsCapacityEnabled = depth.IsActive
+            li = New cLayerInfo(depth, depth.IsCapacityEnabled, False)
             Me.m_alLayers.Add(li)
 
-            ' Make snapshot of Layer configuration
+            ' Populate local administration from a snapshot of the live data
             For iLayer As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                 layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
-                li = New cLayerInfo(layer)
-                li.IsCapacityEnabled = layer.IsActive
+                li = New cLayerInfo(layer, layer.IsCapacityEnabled, True)
                 Me.m_alLayers.Add(li)
             Next
 
@@ -412,7 +415,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow">The index of the row to refresh.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateRow(ByVal iRow As Integer)
+        Private Sub UpdateRow(iRow As Integer)
 
             Dim li As cLayerInfo = Nothing
             Dim ri As RowInfo = Nothing
@@ -468,7 +471,7 @@ Namespace Ecospace
         ''' just edited for text and combo box controls. *sigh*
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If Not Me.AllowUpdates Then Return True
 
@@ -521,7 +524,7 @@ Namespace Ecospace
 
         End Function
 
-        Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
             If Not Me.AllowUpdates Then Return True
 
@@ -546,7 +549,7 @@ Namespace Ecospace
         ''' Cell click handler, called in response to clicking button-like cells.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        Protected Overrides Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
 
             Select Case DirectCast(p.Column, eColumnTypes)
             End Select
@@ -613,12 +616,12 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsLayerRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsLayerRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
         End Function
 
-        Public Function CanRemoveRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanRemoveRow(Optional iRow As Integer = -1) As Boolean
             If (iRow <= 0) Then iRow = Me.SelectedRow()
             If (iRow <= 0) Then Return False
             Return Me.m_alLayers(iRow - 1).IsEditable
@@ -627,7 +630,7 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether the layer on a row is flagged for deletion.
         ''' </summary>
-        Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             If Not IsLayerRow(iRow) Then Return False
 
@@ -674,7 +677,7 @@ Namespace Ecospace
             Me.CreateLayer(Me.RowsCount)
         End Sub
 
-        Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
+        Public Sub MoveRowUp(Optional iRow As Integer = -1)
             Dim bMoveSelection As Boolean = (iRow = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow()
@@ -686,7 +689,7 @@ Namespace Ecospace
             End If
         End Sub
 
-        Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanMoveRowUp(Optional iRow As Integer = -1) As Boolean
 
             If iRow = -1 Then iRow = Me.SelectedRow()
             If iRow < (iFIRSTDATAROW + 1) Then Return False
@@ -698,7 +701,7 @@ Namespace Ecospace
 
         End Function
 
-        Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
+        Public Sub MoveRowDown(Optional iRow As Integer = -1)
             Dim bMoveSelection As Boolean = (iRow = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow()
@@ -710,7 +713,7 @@ Namespace Ecospace
             End If
         End Sub
 
-        Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanMoveRowDown(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             If iRow < iFIRSTDATAROW Then Return False
             If (Me.RowsCount <= (iFIRSTDATAROW + 1)) Then Return False
@@ -720,7 +723,7 @@ Namespace Ecospace
             Return li1.IsEditable And li2.IsEditable
         End Function
 
-        Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+        Private Sub MoveRow(iFromRow As Integer, iToRow As Integer)
 
             Dim objTemp As cLayerInfo = Nothing
             Dim iStep As Integer = 1
@@ -746,6 +749,7 @@ Namespace Ecospace
             Next iGroup
 
         End Sub
+
 #End Region ' Row manipulation 
 
 #Region " Admin "
@@ -765,7 +769,7 @@ Namespace Ecospace
             Get
                 Return (Me.m_iUpdateLock = 0)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value Then
                     Me.m_iUpdateLock += 1
                 Else
@@ -776,7 +780,7 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal li As cLayerInfo)
+        Private Overloads Sub SelectRow(li As cLayerInfo)
             For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
                 If ReferenceEquals(Me.m_alLayers(iLayer), li) Then
                     Me.SelectRow(iLayer + iFIRSTDATAROW)
@@ -939,8 +943,8 @@ Namespace Ecospace
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Update) Then Return False
 
+                Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
                 Try
-
                     ' For each local layer admin unit
                     'Skip the Depth layer in the first index
                     'It's not in the EcospaceBasemap.LayerDriver(iLayTest) list
@@ -952,7 +956,7 @@ Namespace Ecospace
                         ' For every core layer instance (and yes, this array is one-based)
                         For iLayTest As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                             ' Get core layer instance
-                            Dim layTest As cEcospaceLayerDriver = Me.Core.EcospaceBasemap.LayerDriver(iLayTest)
+                            Dim layTest As cEcospaceLayerDriver = bm.LayerDriver(iLayTest)
                             ' Is this 'our' layer?
                             If (layTest.DBID = li.LayerID) Then
                                 ' Has it changed?
@@ -960,19 +964,24 @@ Namespace Ecospace
                                     layTest.Name = li.Name
                                     layTest.Description = li.Description
                                     layTest.Units = li.Units
+                                    layTest.IsCapacityEnabled = li.IsCapacityEnabled
                                 End If
-                                ' Set enabled state
-                                layTest.IsActive = li.IsCapacityEnabled
-                                Core.onChanged(layTest, eMessageType.DataModified)
                                 bFound = True
                             End If
                         Next
+
                         ' All went well?
                         If Not bFound Then
                             ' #No?! Uh oh...
-                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.getID)
+                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.GetID)
                         End If
                     Next
+
+                    ' Also update enabled state on the depth layer
+                    If Me.m_alLayers(0).IsChanged Then
+                        bm.LayerDepth.IsCapacityEnabled = Me.m_alLayers(0).IsCapacityEnabled
+                    End If
+
                 Catch ex As Exception
 
                 End Try

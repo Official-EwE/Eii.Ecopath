@@ -483,13 +483,13 @@ Public Class cEcospaceSpinupPlugin
 
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "Ecobio@globaloceanmodeling.com"
+            Return "ewedevtea@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Run Ecospace with a Spin-Up period."
+            Return "Run Ecospace with a spin-up (or burn-in) period."
         End Get
     End Property
 

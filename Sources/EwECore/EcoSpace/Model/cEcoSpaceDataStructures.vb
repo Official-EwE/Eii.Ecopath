@@ -329,6 +329,9 @@ Public Class cEcospaceDataStructures
     Public EnvironmentalLayerUnits() As String
     ''' <summary>Environmental layer data (layer)(row, col)</summary>
     Public EnvironmentalLayerMap()(,) As Single
+    ''' <summary>Environmental layer capacity disabled flag (layer)</summary>
+    Public EnvironmentalLayerCapacityDisabled() As Boolean
+    ''' <summary>Depth layer capacity disabled flag (layer)</summary>
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Capacity calculation customization flags
@@ -1367,6 +1370,7 @@ Public Class cEcospaceDataStructures
             ReDim Me.EnvironmentalLayerName(nEnvironmentalDriverLayers)
             ReDim Me.EnvironmentalLayerDescription(nEnvironmentalDriverLayers)
             ReDim Me.EnvironmentalLayerUnits(nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerCapacityDisabled(nEnvironmentalDriverLayers)
 
             Me.MOLayerChanged = New List(Of Integer)
 

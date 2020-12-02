@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -31,8 +32,13 @@ Public Class cEcospaceLayerDepth
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerDepth, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
+
+        Dim val As New cValue(True, eVarNameFlags.EcospaceCapacityEnabled, eStatusFlags.Null, eValueTypes.Bool)
+        m_values.Add(val.varName, val)
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -105,10 +111,22 @@ Public Class cEcospaceLayerDepth
         Return My.Resources.CoreDefaults.CORE_DEFAULT_DEPTH
     End Function
 
-    Public Overrides ReadOnly Property CanDeactivate As Boolean
+    Public Property IsCapacityEnabled As Boolean
         Get
-            Return True
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceCapacityEnabled))
         End Get
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceCapacityEnabled, value)
+        End Set
+    End Property
+
+    Public Property IsCapacityEnabledStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcospaceCapacityEnabled)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcospaceCapacityEnabled, value)
+        End Set
     End Property
 
 End Class

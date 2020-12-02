@@ -2791,7 +2791,7 @@ Public Class cEIIXMLDataSource
         Next
         dt.Clear()
 
-        Return bSucces And Me.LoadCapacityDrivers(iScenarioID)
+        Return bSucces And Me.LoadCapacityDrivers(iScenarioID) And Me.LoadEcospaceDisbledDriverLayers(iScenarioID)
 
     End Function
 
@@ -2813,21 +2813,14 @@ Public Class cEIIXMLDataSource
                 Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(drow("VarDBID")))
 
                 If (iGroup > 0) And (iShape > 0) Then
-
                     ShapeType = CInt(drow("Target"))
-
                     If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
-
                         ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                         ecospaceDS.CapacityResponseFunctions(Math.Max(0, iMap), iGroup) = iShape
-
                     ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
-
                         ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                         ecospaceDS.MortalityResposeFunctions(Math.Max(0, iMap), iGroup) = iShape
                     End If 'If ShapeType = 
-
-                    ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                 End If
             Catch ex As Exception
                 bSucces = False
@@ -2839,6 +2832,29 @@ Public Class cEIIXMLDataSource
 
     End Function
 
+    Private Function LoadEcospaceDisbledDriverLayers(iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverDisabled")
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                Dim iLayerID As Integer = CInt(drow("LayerID"))
+                Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
+                If (iLayer >= 0) Then
+                    ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
+                End If
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+
+        Return bSucces
+
+    End Function
     Private Function LoadEcospaceDataConnections(iScenarioID As Integer) As Boolean
 
         Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData

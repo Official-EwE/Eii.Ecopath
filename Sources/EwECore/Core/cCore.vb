@@ -9303,7 +9303,7 @@ Public Class cCore
 
                             Me.m_spatialOperationLog.BeginRun()
                             Me.MortalityMapInteractionManager.InitRun()
-
+                            Me.CapacityMapInteractionManager.InitRun()
                             Me.m_stpwSpaceTimer = Stopwatch.StartNew
                             Me.m_spaceSaveTime = 0
 
@@ -10623,6 +10623,9 @@ Public Class cCore
             m_EcospaceModelParams.AllowHabCapGradientCorrections = Me.m_EcoSpaceData.AllowHabCapGradientCorrections
             m_EcospaceModelParams.MinForagingCapacity = Me.m_EcoSpaceData.MinHabCap
 
+            m_EcospaceModelParams.SpinupEnabled = Me.m_EcoSpaceData.UseSpinUp
+            m_EcospaceModelParams.SpinupYears = Me.m_EcoSpaceData.SpinUpYears
+
             m_EcospaceModelParams.EcospaceAreaOutputDir = Me.m_EcoSpaceData.EcospaceAreaOutputDir
             m_EcospaceModelParams.EcospaceMapOutputDir = Me.m_EcoSpaceData.EcospaceMapOutputDir
 
@@ -10683,6 +10686,8 @@ Public Class cCore
         m_Stanza.NPacketsMultiplier = m_EcospaceModelParams.PacketsMultiplier
 
         m_tracerData.EcoSpaceConSimOn = m_EcospaceModelParams.ContaminantTracing
+        m_EcoSpaceData.UseSpinUp = m_EcospaceModelParams.SpinupEnabled
+        m_EcoSpaceData.SpinUpYears = m_EcospaceModelParams.SpinupYears
 
         m_EcoSpaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
         m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
@@ -10792,6 +10797,7 @@ Public Class cCore
             End With
 
             ' Load layers that do not get initialized by the basemap
+            Me.LoadEcospaceDepthLayer()
             Me.LoadEcospaceImportanceLayers()
             Me.LoadEcospaceDriverLayers()
             Return True
@@ -10803,12 +10809,19 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcospaceImportanceLayers() As Boolean
+    Private Sub LoadEcospaceDepthLayer()
+
+        Dim dest As cEcospaceLayerDepth = Me.m_EcospaceBasemap.LayerDepth
+        dest.AllowValidation = False
+        dest.IsCapacityEnabled = Not Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(0)
+        dest.AllowValidation = True
+
+    End Sub
+
+    Private Sub LoadEcospaceImportanceLayers()
 
         Dim dest As cEcospaceLayerImportance = Nothing
-
         For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
-
             dest = Me.m_EcospaceBasemap.LayerImportance(i)
             dest.AllowValidation = False
             dest.Index = i
@@ -10816,26 +10829,25 @@ Public Class cCore
             dest.Name = Me.m_EcoSpaceData.ImportanceLayerName(i)
             dest.Description = Me.m_EcoSpaceData.ImportanceLayerDescription(i)
             dest.AllowValidation = True
-
         Next i
-    End Function
 
-    Private Function LoadEcospaceDriverLayers() As Boolean
+    End Sub
+
+    Private Sub LoadEcospaceDriverLayers()
 
         Dim dest As cEcospaceLayerDriver = Nothing
-
         For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalDriverLayers
-
             dest = Me.m_EcospaceBasemap.LayerDriver(i)
             dest.AllowValidation = False
             dest.Index = i
             dest.Name = Me.m_EcoSpaceData.EnvironmentalLayerName(i)
             dest.Description = Me.m_EcoSpaceData.EnvironmentalLayerDescription(i)
             dest.Units = Me.m_EcoSpaceData.EnvironmentalLayerUnits(i)
+            dest.IsCapacityEnabled = Not Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(i)
             dest.AllowValidation = True
-
         Next i
-    End Function
+
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -10860,6 +10872,7 @@ Public Class cCore
             Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
             Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude
 
+            Me.UpdateEcospaceDepthLayer()
             Me.UpdateEcospaceImportanceLayers()
             Me.UpdateEcospaceDriverLayers()
 
@@ -10869,6 +10882,10 @@ Public Class cCore
 
         Return bSucces
     End Function
+
+    Private Sub UpdateEcospaceDepthLayer()
+        Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(0) = Not Me.m_EcospaceBasemap.LayerDepth.IsCapacityEnabled
+    End Sub
 
     Private Sub UpdateEcospaceImportanceLayers()
 
@@ -10891,6 +10908,7 @@ Public Class cCore
             Me.m_EcoSpaceData.EnvironmentalLayerName(i) = src.Name
             Me.m_EcoSpaceData.EnvironmentalLayerDescription(i) = src.Description
             Me.m_EcoSpaceData.EnvironmentalLayerUnits(i) = src.Units
+            Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(i) = Not src.IsCapacityEnabled
         Next i
 
     End Sub
@@ -13518,6 +13536,9 @@ Public Class cCore
                     'Something in the MSE Batch interface has changed
                     'Update all the underlying core data
                     Me.MSEBatchManager.Update(dtAffected, value.varName)
+
+                Case eDataTypes.EcospaceLayerDepth
+                    If bValidatedOk Then Me.UpdateEcospaceDepthLayer()
 
                 Case eDataTypes.EcospaceLayerDriver
                     If bValidatedOk Then Me.UpdateEcospaceDriverLayers()

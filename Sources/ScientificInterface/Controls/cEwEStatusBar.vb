@@ -176,6 +176,7 @@ Public Class cEwEStatusBar
         Dim core As cCore = Me.m_uic.Core
         If (core Is Nothing) Then Return
 
+        Dim sm As cCoreStateMonitor = core.StateMonitor
         Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing
         Dim tsds As cTimeSeriesDataset = Nothing
@@ -200,7 +201,7 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecosim
             ' -------
-            If Me.m_uic.Core.ActiveEcosimScenarioIndex >= 0 Then
+            If (sm.HasEcosimLoaded()) Then
                 simScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
 
                 If core.ActiveTimeSeriesDatasetIndex > 0 Then
@@ -226,7 +227,7 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecospace
             ' -------
-            If (core.ActiveEcospaceScenarioIndex >= 0) Then
+            If (sm.HasEcospaceLoaded()) Then
                 spaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
                 strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP,
                                            spaceScenario.Name,
@@ -259,7 +260,7 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecotracer
             ' -------
-            If (core.ActiveEcotracerScenarioIndex >= 0) Then
+            If (sm.HasEcotracerLoaded()) Then
                 tracerScenario = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex)
                 strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP,
                                            cStringUtils.vbNewline,

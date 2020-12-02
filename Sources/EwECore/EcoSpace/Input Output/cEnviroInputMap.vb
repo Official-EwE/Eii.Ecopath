@@ -52,12 +52,12 @@ Public Class cEnviroInputMap
 
 #Region "Construction Initialization"
 
-    Friend Sub New(ByVal theManager As IEnvironmentalResponseManager, ByVal source As cEcospaceLayer)
+    Friend Sub New(theManager As IEnvironmentalResponseManager, source As cEcospaceLayer)
         Me.New(theManager, source, cCore.NULL_VALUE)
     End Sub
 
 
-    Friend Sub New(ByVal theManager As IEnvironmentalResponseManager, ByVal source As cEcospaceLayer, ByVal iLayerIndex As Integer)
+    Friend Sub New(theManager As IEnvironmentalResponseManager, source As cEcospaceLayer, iLayerIndex As Integer)
 
         Me.m_source = source
         Me.m_iLayerIndex = iLayerIndex
@@ -70,7 +70,7 @@ Public Class cEnviroInputMap
     End Sub
 
     ''' <inheritdocs cref="IEnviroInputData.Init"/>
-    Friend Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean _
+    Friend Function Init(EnviroMediationData As cMediationDataStructures, SpaceData As cEcospaceDataStructures) As Boolean _
         Implements IEnviroInputData.Init
 
         Me.m_MedData = EnviroMediationData
@@ -93,7 +93,7 @@ Public Class cEnviroInputMap
     End Function
 
     ''' <inheritdocs cref="IEnviroInputData.setManager"/>
-    Friend Sub setManager(ByVal theManager As IEnvironmentalResponseManager) _
+    Friend Sub setManager(theManager As IEnvironmentalResponseManager) _
         Implements IEnviroInputData.SetManager
         Me.m_manager = theManager
     End Sub
@@ -221,7 +221,7 @@ Public Class cEnviroInputMap
     ''' <param name="iMapRow">Row of the input map</param>
     ''' <param name="iMapCol">Col of the input map</param>
     ''' <returns>Y = F(x)</returns>
-    Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single _
+    Public Function ResponseFunction(igrp As Integer, iMapRow As Integer, iMapCol As Integer) As Single _
         Implements IEnviroInputData.ResponseFunction
 
         Dim iShp As Integer = 0
@@ -261,13 +261,13 @@ Public Class cEnviroInputMap
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
-    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer _
+    Public Property ResponseIndexForGroup(GrpIndex As Integer, Optional bUpdateMaps As Boolean = True) As Integer _
         Implements IEnviroInputData.ResponseIndexForGroup
         Get
             Return Me.m_GrpToShape(GrpIndex)
         End Get
 
-        Set(ByVal ResponseShapeIndex As Integer)
+        Set(ResponseShapeIndex As Integer)
             If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
                 'Response index(shape index) of -9999 NULL_VALUE means there is no response set for this Map/Group
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
@@ -325,8 +325,8 @@ Public Class cEnviroInputMap
 
 #End Region
 
-    Public Property IsDriverActive As Boolean = True _
-        Implements IEnviroInputData.IsDriverActive
+    Public Property IsCapacityEnabled As Boolean = True _
+        Implements IEnviroInputData.IsCapacityEnabled
 
     Public ReadOnly Property Start As Single Implements IEnviroInputData.Start
         Get

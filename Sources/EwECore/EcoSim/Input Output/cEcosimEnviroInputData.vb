@@ -279,8 +279,8 @@ Public Class cEcosimEnviroInputData
 
 #End Region
 
-    Public Property IsDriverActive As Boolean = True _
-        Implements IEnviroInputData.IsDriverActive
+    Public Property IsCapacityEnabled As Boolean = True _
+        Implements IEnviroInputData.IsCapacityEnabled
 
     Public ReadOnly Property Start As Single Implements IEnviroInputData.Start
         Get
