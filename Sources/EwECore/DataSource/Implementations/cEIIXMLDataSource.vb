@@ -57,39 +57,43 @@ Public Class cEIIXMLDataSource
     Private Shared s_dtExcludedDBEntries As New Dictionary(Of String, String())
 
     Public Sub New()
-        s_dtExcludedDBEntries("EcopathGroup") = New String() {"PoolColor"}
-        s_dtExcludedDBEntries("EcopathFleet") = New String() {"PoolColor"}
-        ' s_dtExcludedDBEntries("Auxillary") = New String() {}
-        s_dtExcludedDBEntries("Quote") = New String() {}
-        s_dtExcludedDBEntries("UpdateLog") = New String() {}
-        s_dtExcludedDBEntries("Pedigree") = New String() {}
-        s_dtExcludedDBEntries("EcopathGroupPedigree") = New String() {}
-        s_dtExcludedDBEntries("Taxon") = New String() {}
-        s_dtExcludedDBEntries("EcopathGroupTaxon") = New String() {}
-        s_dtExcludedDBEntries("EcopathStanzaTaxon") = New String() {}
 
-        ' Exclude value chain
-        s_dtExcludedDBEntries("cUnit") = New String() {}
-        s_dtExcludedDBEntries("cConsumerUnitDefault") = New String() {}
-        s_dtExcludedDBEntries("cConsumerUnit") = New String() {}
-        s_dtExcludedDBEntries("cDistributionUnit") = New String() {}
-        s_dtExcludedDBEntries("cDistributionUnitDefault") = New String() {}
-        s_dtExcludedDBEntries("cEconomicUnit") = New String() {}
-        s_dtExcludedDBEntries("cFlowDiagram") = New String() {}
-        s_dtExcludedDBEntries("cFlowPosition") = New String() {}
-        s_dtExcludedDBEntries("cLink") = New String() {}
-        s_dtExcludedDBEntries("cLinkDefault") = New String() {}
-        s_dtExcludedDBEntries("cLinkLandings") = New String() {}
-        s_dtExcludedDBEntries("cOOPStorable") = New String() {}
-        s_dtExcludedDBEntries("cParameters") = New String() {}
-        s_dtExcludedDBEntries("cProcessingUnit") = New String() {}
-        s_dtExcludedDBEntries("cProcessingUnitDefault") = New String() {}
-        s_dtExcludedDBEntries("cProducerUnit") = New String() {}
-        s_dtExcludedDBEntries("cProducerUnitDefault") = New String() {}
-        s_dtExcludedDBEntries("cRetailerUnit") = New String() {}
-        s_dtExcludedDBEntries("cRetailerUnitDefault") = New String() {}
-        s_dtExcludedDBEntries("cWholesalerUnit") = New String() {}
-        s_dtExcludedDBEntries("cWholesalerUnitDefault") = New String() {}
+        ' JS 02 Dec 2020: do not exclude any db entries for now; EIIXML must be a fully functional data source
+
+        's_dtExcludedDBEntries("EcopathGroup") = New String() {"PoolColor"}
+        's_dtExcludedDBEntries("EcopathFleet") = New String() {"PoolColor"}
+        '' s_dtExcludedDBEntries("Auxillary") = New String() {}
+        's_dtExcludedDBEntries("Quote") = New String() {}
+        's_dtExcludedDBEntries("UpdateLog") = New String() {}
+        's_dtExcludedDBEntries("Pedigree") = New String() {}
+        's_dtExcludedDBEntries("EcopathGroupPedigree") = New String() {}
+        's_dtExcludedDBEntries("Taxon") = New String() {}
+        's_dtExcludedDBEntries("EcopathGroupTaxon") = New String() {}
+        's_dtExcludedDBEntries("EcopathStanzaTaxon") = New String() {}
+
+        '' Exclude value chain
+        's_dtExcludedDBEntries("cUnit") = New String() {}
+        's_dtExcludedDBEntries("cConsumerUnitDefault") = New String() {}
+        's_dtExcludedDBEntries("cConsumerUnit") = New String() {}
+        's_dtExcludedDBEntries("cDistributionUnit") = New String() {}
+        's_dtExcludedDBEntries("cDistributionUnitDefault") = New String() {}
+        's_dtExcludedDBEntries("cEconomicUnit") = New String() {}
+        's_dtExcludedDBEntries("cFlowDiagram") = New String() {}
+        's_dtExcludedDBEntries("cFlowPosition") = New String() {}
+        's_dtExcludedDBEntries("cLink") = New String() {}
+        's_dtExcludedDBEntries("cLinkDefault") = New String() {}
+        's_dtExcludedDBEntries("cLinkLandings") = New String() {}
+        's_dtExcludedDBEntries("cOOPStorable") = New String() {}
+        's_dtExcludedDBEntries("cParameters") = New String() {}
+        's_dtExcludedDBEntries("cProcessingUnit") = New String() {}
+        's_dtExcludedDBEntries("cProcessingUnitDefault") = New String() {}
+        's_dtExcludedDBEntries("cProducerUnit") = New String() {}
+        's_dtExcludedDBEntries("cProducerUnitDefault") = New String() {}
+        's_dtExcludedDBEntries("cRetailerUnit") = New String() {}
+        's_dtExcludedDBEntries("cRetailerUnitDefault") = New String() {}
+        's_dtExcludedDBEntries("cWholesalerUnit") = New String() {}
+        's_dtExcludedDBEntries("cWholesalerUnitDefault") = New String() {}
+
     End Sub
 
 #Region " Generic "
@@ -2296,6 +2300,8 @@ Public Class cEIIXMLDataSource
             ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
             ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)
             ecospaceDS.Tol = CSng(Me.ReadSafe(drow, "Tolerance", 0.01!))
+            ecospaceDS.UseSpinUp = CBool(Me.ReadSafe(drow, "UseSpinup", False))
+            ecospaceDS.SpinUpYears = CInt(Me.ReadSafe(drow, "SpinupYears", 10))
 
             stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))
 
@@ -2338,6 +2344,7 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceDisabledCapacityDrivers(iScenarioID)
         'bSucces = bSucces And Me.LoadAuxillaryData()
 
         dtScenario.Clear()
@@ -2759,6 +2766,21 @@ Public Class cEIIXMLDataSource
         dt.Clear()
 
         Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceDisabledCapacityDrivers(iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverDisabled")
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Dim iLayerID As Integer = CInt(drow("LayerID"))
+            Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
+            If (iLayer >= 0) Then
+                ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
+            End If
+        Next
 
     End Function
 
