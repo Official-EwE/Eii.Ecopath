@@ -5599,14 +5599,9 @@ exitline:
             Pbar(i) = EcoSimData.pred(i) * EcoSpaceData.ThabArea / EcoSpaceData.TotHabCap(i)
         Next
 
-
-        'Debug.Assert(False, "Don't leave this in")
-        'Return
-
         For ii = 1 To EcoSimData.inlinks
             i = EcoSimData.ilink(ii)
             j = EcoSimData.jlink(ii)
-            ' ia = EcoSimData.ArenaLink(ii)
             Atemp(ii) = EcoSpaceData.Aspace(ii) * (EcoSimData.CmCo(j) - 1) / EcoSimData.CmCo(j)  'remove handling time adjustment to start iteration 
             MeanBP(ii) = 0
             For ir = 1 To EcoSpaceData.InRow
