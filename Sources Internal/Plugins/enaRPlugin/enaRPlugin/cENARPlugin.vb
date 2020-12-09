@@ -148,8 +148,6 @@ Public Class cENARPlugin
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
-        System.Console.WriteLine(Me.ToString + ".CloseModel()")
-
         Try
             'A user has closed the database
             'Clear out the old data so that we are 
@@ -175,28 +173,16 @@ Public Class cENARPlugin
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
-
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
-        Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
-
     End Sub
 
     Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
-        System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
-
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
-        Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcosimInitialized() Failed to get EcosimDataStructures.")
-
     End Sub
 
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
-        System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
-
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
-        Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
-
         Me.DisableEnaR()
-
     End Sub
 
 #End Region

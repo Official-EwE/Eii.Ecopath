@@ -63,45 +63,13 @@ Public Class cEcospaceSpinupPlugin
     Private m_uic As cUIContext = Nothing
     Private m_form As frmEcospaceSpinup = Nothing
 
-    Private m_bUseSpinUp As Boolean = False
     Private m_bUseSpinUpBase As Boolean = False
-    Private m_nSpinUpYears As Integer = 10
 
 #End Region
 
 #Region " Public Methods and properties "
 
-    Public Property SpinUpYears As Integer
-        Get
-            Return Me.m_nSpinUpYears
-        End Get
-        Set(value As Integer)
-            Try
-                Me.m_nSpinUpYears = Math.Max(0, Math.Min(100, value))
-                If Me.HasMainForm() Then
-                    Me.m_form.SettingsChanged()
-                End If
-            Catch ex As Exception
-                Me.LogMessage(ex)
-            End Try
-        End Set
-    End Property
-
-    Public Property UseSpinUp As Boolean
-        Get
-            Return Me.m_bUseSpinUp
-        End Get
-        Set(value As Boolean)
-            Try
-                Me.m_bUseSpinUp = value
-                If Me.HasMainForm() Then
-                    Me.m_form.SettingsChanged()
-                End If
-            Catch ex As Exception
-                Me.LogMessage(ex)
-            End Try
-        End Set
-    End Property
+    ' ToDo: move this field to datasource too, and make persistent
 
     Public Property UseSpinUpBaseBio As Boolean
         Get
@@ -186,8 +154,6 @@ Public Class cEcospaceSpinupPlugin
 
         Try
             ' This is the correct moment to tell Ecospace to start using the SpinUp period
-            Me.EcoSpaceData.UseSpinUp = Me.UseSpinUp
-            Me.EcoSpaceData.SpinUpYears = Me.SpinUpYears
             Me.EcoSpaceData.UseSpinUpBase = Me.UseSpinUpBaseBio
 
         Catch ex As Exception
@@ -354,10 +320,16 @@ Public Class cEcospaceSpinupPlugin
 
     Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
         Get
-            Return Me.UseSpinUp
+            Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
+            If Not sm.HasEcospaceLoaded Then Return False
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            Return parms.SpinupEnabled
         End Get
         Set(value As Boolean)
-            Me.UseSpinUp = value
+            Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
+            If Not sm.HasEcospaceLoaded Then Return
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            parms.SpinupEnabled = value
         End Set
     End Property
 

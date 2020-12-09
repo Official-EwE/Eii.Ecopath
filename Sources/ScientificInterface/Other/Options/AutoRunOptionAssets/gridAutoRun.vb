@@ -19,6 +19,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
@@ -44,6 +45,8 @@ Public Class gridAutoRun
         End Function
     End Class
 
+    Private m_IsComponentLoaded As New Dictionary(Of eCoreComponentType, Boolean)
+
     Private Enum eColumnTypes As Integer
         Index
         Plugin
@@ -62,6 +65,8 @@ Public Class gridAutoRun
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
+        Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
+
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
         Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
@@ -78,6 +83,11 @@ Public Class gridAutoRun
         Me(0, eColumnTypes.Ecospace) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSPACE) With {
             .Tag = eCoreComponentType.EcoSpace
         }
+
+        Me.m_IsComponentLoaded(eCoreComponentType.EcoPath) = sm.HasEcopathLoaded
+        Me.m_IsComponentLoaded(eCoreComponentType.EcoSim) = sm.HasEcosimLoaded
+        Me.m_IsComponentLoaded(eCoreComponentType.EcoSimMonteCarlo) = sm.HasEcosimLoaded
+        Me.m_IsComponentLoaded(eCoreComponentType.EcoSpace) = sm.HasEcospaceLoaded
 
     End Sub
 
@@ -110,7 +120,7 @@ Public Class gridAutoRun
                         }
                     Case Else
                         Dim comp As eCoreComponentType = DirectCast(Me(0, j).Tag, eCoreComponentType)
-                        If features.Contains(comp) Then
+                        If features.Contains(comp) And Me.m_IsComponentLoaded(comp) Then
                             Me(iRow, j) = New cEwECheckboxCell(pi.AutoRun(comp) = True)
                             Me(iRow, j).Behaviors.Add(Me.EwEEditHandler)
                         Else
@@ -161,7 +171,7 @@ Public Class gridAutoRun
                         ' NOP
                     Case Else
                         Dim comp As eCoreComponentType = DirectCast(Me(0, j).Tag, eCoreComponentType)
-                        If features.Contains(comp) Then
+                        If features.Contains(comp) And Me.m_IsComponentLoaded(comp) Then
                             Debug.Assert(TypeOf Me(iRow, j) Is cEwECheckboxCell)
                             pi.AutoRun(comp) = DirectCast(Me(iRow, j), cEwECheckboxCell).Checked
                         End If
