@@ -7811,9 +7811,7 @@ Namespace DataSources
                 drow("UseEffortDistrThreshold") = If(ecospaceDS.bUseEffortDistThreshold, 1, 0)
                 drow("EffortDistrThreshold") = ecospaceDS.EffortDistThreshold
 
-                If Me.Version >= 6.01 Then
-                    drow("Tolerance") = ecospaceDS.Tol
-                End If
+                drow("Tolerance") = ecospaceDS.Tol
                 ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
