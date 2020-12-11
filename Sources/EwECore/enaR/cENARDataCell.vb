@@ -55,8 +55,10 @@ Public Class cENACellData
         Try
 
             Me.iTimeStep = iTime
-            Array.Copy(Biomass, Me.ENARData.b, nGroups)
-            Array.Copy(consumpt, Me.ENARData.Consumpt, nGroups)
+			
+            ' JS 11dec20: fixed bug where last array items weren't copied over, resulting in missing B for the last (detritus) group in EnaR SCOR files
+            Array.Copy(Biomass, Me.ENARData.b, nGroups + 1)
+            Array.Copy(consumpt, Me.ENARData.Consumpt, nGroups + 1)
 
             For igrp As Integer = 1 To nGroups
 
