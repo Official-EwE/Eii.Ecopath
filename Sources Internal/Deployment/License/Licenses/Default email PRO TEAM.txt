@@ -4,8 +4,8 @@ Many thanks for your purchase of Ecopath with Ecosim (EwE) Pro license - team ed
 
 Attached please find the license file for your purchase. Please proceed to download the latest installer for EwE Pro (version 6.6.4.17084) here:
 
-- 32-bit: https://www.dropbox.com/s/e8gm0ii0t9j4uq0/EwE6.6.4_17084-32bit_setup-beta.exe?dl=0
-- 64-bit: https://www.dropbox.com/s/35n6ykmrbocd7nx/EwE6.6.4_17084-64bit_setup-beta.exe?dl=0
+- 32-bit: https://www.dropbox.com/s/ntnioarlcbcboad/EwE6.6.5_17207-32bit-pro.exe?dl=0
+- 64-bit: https://www.dropbox.com/s/oa0mwy3v9qv8vc3/EwE6.6.5_17207-64bit-pro.exe?dl=0
 
 Installation and activation instructions:
 
