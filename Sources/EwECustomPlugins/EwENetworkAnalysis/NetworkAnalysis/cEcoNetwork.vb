@@ -3515,8 +3515,8 @@ NextPivot:
 
         Dim i As Integer, j As Integer, ii As Integer
         Dim Biom As Single
-        Dim PProd As Single
-        Dim Production As Single
+        Dim TotPProd As Single
+        Dim TotProd As Single
         Dim fCatch As Single
         Dim BEmig As Single
         Dim SimCatch() As Single
@@ -3547,8 +3547,8 @@ NextPivot:
 
             'VC: here using a localvariable called PProd, not same as in Ecopath
             Biom = 0
-            PProd = 0  ' Calculated primary production
-            Production = 0
+            TotPProd = 0  ' Calculated primary production
+            TotProd = 0
             fCatch = 0
 
             For i = 1 To m_epdata.NumLiving
@@ -3566,20 +3566,45 @@ NextPivot:
                 If m_epdata.PP(i) < 1 Then 'only for consumers
                     If m_epdata.GE(i) > 0 Then SimQB(i) = SimPB(i) / m_epdata.GE(i)
                     SimIm(i) = m_epdata.DC(i, 0) * SimQB(i)
-                    SimResp(i) = BB(i) * (SimQB(i) - SimPB(i) - m_epdata.GS(i))
+
+                    'jb 4-Jan-2021 Calculation of Respiration changed to match Ecopath 
+                    'Ecosim model that runs flat should have the same NA outputs as Ecopath
+                    'This fixes a bug that caused Ecosim Network Analysis outputs to be different from Ecopath values 
+                    'Bug Reported by Georgi Daskalov 
+                    'SimResp(i) = BB(i) * (SimQB(i) - SimPB(i) - m_epdata.GS(i))
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    ''Respiration in Ecopath
+                    Dim Prod As Single
+                    Dim Consump As Single
+                    Dim UnAssimConsump As Single
+                    'Ecopath Prod = m_epdata.B(i) * m_epdata.PB(i)
+                    Prod = BB(i) * SimPB(i)
+
+                    'Ecopath Consump = m_epdata.B(i) * m_epdata.QB(i)
+                    Consump = BB(i) * SimQB(i)
+
+                    'Ecopath UnAssimConsump = GS(i) * Consump
+                    UnAssimConsump = m_epdata.GS(i) * Consump
+
+                    SimResp(i) = Consump - Prod - UnAssimConsump
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                 End If
                 SimEx(i) = SimCatch(i)
 
-                fCatch = fCatch + SimEx(i)
-                Biom = Biom + BB(i)
-                Production = Production + BB(i) * SimPB(i)
-                If m_epdata.PP(i) > 0 Then PProd = PProd + SimPB(i) * BB(i) * m_epdata.PP(i)
+                fCatch += SimEx(i)
+                Biom += BB(i)
+                TotProd += BB(i) * SimPB(i)
+                If m_epdata.PP(i) > 0 Then TotPProd += SimPB(i) * BB(i) * m_epdata.PP(i)
             Next
+
             For i = m_epdata.NumLiving + 1 To m_epdata.NumGroups
                 SimB(i) = BB(i)
                 If m_esdata.ToDetritus(i - m_epdata.NumLiving) > 0 Then SimEE(i) = m_esdata.loss(i) / m_esdata.ToDetritus(i - m_epdata.NumLiving)
                 'Emig and Imig removed from below, zero for detritus
                 SimEx(i) = (m_esdata.ToDetritus(i - m_epdata.NumLiving) - m_epdata.BA(i) - m_esdata.Eatenof(i)) / BB(i)
+                SimEx(i) = (m_esdata.ToDetritus(i - m_epdata.NumLiving) - m_epdata.BA(i) - m_esdata.Eatenof(i)) ' / BB(i)
             Next i
 
             For ii = 1 To m_esdata.inlinks
@@ -3590,8 +3615,9 @@ NextPivot:
                 If m_esdata.Eatenby(j) > 0 Then SDiet(j, i) = m_esdata.Consumpt(i, j) / m_esdata.Eatenby(j)
             Next
 
+            'jb SimEx and SimResp are dirrerent then the Ecopath versions calcualted from the same inputs
             Ulanow(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
-            Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
+            Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, Me.m_epdata.Resp)
 
             If PPRon Then
                 ' DoWhat = "Ecosim PPR"
@@ -3670,13 +3696,14 @@ NextPivot:
             PathLength(Round) = TruPut / (SumEx + SumResp)
             Export(Round) = SumEx
             Resp(Round) = SumResp
-            PrimaryProd(Round) = PProd
-            Prod(Round) = Production
+            PrimaryProd(Round) = TotPProd
+            Prod(Round) = TotProd
             Biomass(Round) = Biom
             CatchEcosim(Round) = fCatch
             PropFlowDet(Round) = DetIndex
-            Ascendency(Round) = (AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
-            AMI(Round) = Ascendency(Round) / Throughput(Round)
+
+            Ascendency(Round) = Ascp '(AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
+            AMI(Round) = Ascp / Throughput(Round) 'Ascendency(Round) / Throughput(Round)
             Entropy(Round) = CapacityEcosim(Round) / Throughput(Round)
 
             TotTransferEfficiency(Round) = 0
