@@ -681,9 +681,7 @@ Namespace Ecopath
                 'See CalcGS_Det_FlowToDet() and CalcFateOfDetritus()
                 'DetEaten(i) is amount eaten of the group by all consumers
                 Surplus = m_Data.InputToDet(i) - m_Data.DetEaten(i) - m_Data.fCatch(i)
-                'jb Add detritus fate from this group to BA (biomass accumulation)
-                'js add to computed BA, not BA input
-                ' m_Data.BA(i) = Surplus * m_Data.DF(i, i - m_Data.NumLiving)
+                'jb Add detritus fate from this group to BA (biomass accumulation) not BA input
                 m_Data.BA(i) += Surplus * m_Data.DF(i, i - m_Data.NumLiving)
             Next i
 
