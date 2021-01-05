@@ -3604,7 +3604,7 @@ NextPivot:
                 If m_esdata.ToDetritus(i - m_epdata.NumLiving) > 0 Then SimEE(i) = m_esdata.loss(i) / m_esdata.ToDetritus(i - m_epdata.NumLiving)
                 'Emig and Imig removed from below, zero for detritus
                 SimEx(i) = (m_esdata.ToDetritus(i - m_epdata.NumLiving) - m_epdata.BA(i) - m_esdata.Eatenof(i)) / BB(i)
-                SimEx(i) = (m_esdata.ToDetritus(i - m_epdata.NumLiving) - m_epdata.BA(i) - m_esdata.Eatenof(i)) ' / BB(i)
+                'SimEx(i) = (m_esdata.ToDetritus(i - m_epdata.NumLiving) - m_epdata.BA(i) - m_esdata.Eatenof(i)) ' / BB(i)
             Next i
 
             For ii = 1 To m_esdata.inlinks
@@ -3615,9 +3615,14 @@ NextPivot:
                 If m_esdata.Eatenby(j) > 0 Then SDiet(j, i) = m_esdata.Consumpt(i, j) / m_esdata.Eatenby(j)
             Next
 
-            'jb SimEx and SimResp are dirrerent then the Ecopath versions calcualted from the same inputs
+            ''jb SimEx and SimResp are dirrerent then the Ecopath versions calcualted from the same inputs
             Ulanow(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
-            Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, Me.m_epdata.Resp)
+            Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
+
+            'With Ecopath variables
+            'Ulanow(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, m_epdata.Ex, m_epdata.Resp)
+            'Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, m_epdata.Ex, m_epdata.Resp)
+
 
             If PPRon Then
                 ' DoWhat = "Ecosim PPR"
@@ -3702,8 +3707,8 @@ NextPivot:
             CatchEcosim(Round) = fCatch
             PropFlowDet(Round) = DetIndex
 
-            Ascendency(Round) = Ascp '(AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
-            AMI(Round) = Ascp / Throughput(Round) 'Ascendency(Round) / Throughput(Round)
+            Ascendency(Round) = (AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
+            AMI(Round) = Ascendency(Round) / Throughput(Round)
             Entropy(Round) = CapacityEcosim(Round) / Throughput(Round)
 
             TotTransferEfficiency(Round) = 0
