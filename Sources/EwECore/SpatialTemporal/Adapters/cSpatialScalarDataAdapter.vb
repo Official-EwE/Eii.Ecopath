@@ -114,6 +114,16 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' States if this adapter can scale to a base value.
+        ''' </summary>
+        ''' <seealso cref="CalculateScalar(Double, Double)"/>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function CanCalculateScalar() As Boolean
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Calculate the average of a dataset for a year, starting at a given
         ''' Ecospace time step.
         ''' </summary>
@@ -134,6 +144,8 @@ Namespace SpatialData
 
             ' Early bail-out
             If Not Me.IsConnected(iLayerIndex) Then Return result
+            If Not Me.CanCalculateScalar() Then Return result
+
             iScaleLayerIndex = iLayerIndex
 
             ' Suspend indexing
@@ -227,13 +239,16 @@ Namespace SpatialData
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculates a scale value base on the sum and number of cells over the time period.
+        ''' Calculates a scale value based on the sum and number of cells over the time period.
         ''' </summary>
         ''' <param name="SumOverPeriod">Sum of values over the time period.</param>
         ''' <param name="nMapCells">Total number of cells included in the sum.</param>
         ''' <returns> (1 / mean)</returns>
         ''' <remarks>Default scalar for relative adapters. Return the mean scalar as a multiplier.</remarks>
+        ''' <seealso cref="CanCalculateScalar()"/>
+        ''' -------------------------------------------------------------------
         Public Overridable Function CalculateScalar(SumOverPeriod As Double, nMapCells As Double) As Double
             Try
                 'This is the default value for a relative scalar that is used as multiplier 
