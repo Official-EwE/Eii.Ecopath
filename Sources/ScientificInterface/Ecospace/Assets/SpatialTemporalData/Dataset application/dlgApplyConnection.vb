@@ -91,7 +91,7 @@ Namespace Ecospace.Controls
 
             Me.m_adt = adt
             Me.m_iLayer = layer.Index
-            Me.m_bIsScaling = (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase)
+            Me.m_bIsScaling = TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase
 
             Me.Text = cStringUtils.Localize(Me.Text, layer.Name)
 
@@ -590,9 +590,7 @@ Namespace Ecospace.Controls
 #Region " Internals "
 
         Private Sub RefreshDatasetList()
-
-
-
+            ' Huh?
         End Sub
 
         Private Sub UpdateControls()
@@ -607,6 +605,7 @@ Namespace Ecospace.Controls
             Dim bIsConfigured As Boolean = False
             Dim bNeedsConverter As Boolean = False
             Dim bNeedsScaling As Boolean = False
+            Dim bCanCalculateScalar As Boolean = False
             Dim bCanAddDS As Boolean = False
             Dim bCanRemoveDS As Boolean = False
             Dim comp As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.NotSet
@@ -618,6 +617,9 @@ Namespace Ecospace.Controls
                         bHasIncompatible = True
                     End If
                 Next
+                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                    bCanCalculateScalar = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase).CanCalculateScalar
+                End If
             End If
             Me.m_tsbnShowIncompatibleConnections.Visible = bHasIncompatible
 
@@ -668,7 +670,7 @@ Namespace Ecospace.Controls
             Me.m_plScalarAdapter.Enabled = bHasConnectionSelected And bNeedsScaling
             Me.m_plScalarAdapter.Visible = bNeedsScaling
 
-            If bNeedsScaling And bIsConfigured Then
+            If bNeedsScaling And bIsConfigured And bCanCalculateScalar Then
                 ' Allow calc of scaling even if spatial compatibility has not been assessed yet, for indexing may have been turned off
                 Me.m_btnCalculate.Enabled = True
             Else

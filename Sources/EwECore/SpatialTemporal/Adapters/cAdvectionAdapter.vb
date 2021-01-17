@@ -111,6 +111,19 @@ Namespace SpatialData
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States that this adapter cannot scale to a base value, as there is
+        ''' no base velocity to scale to.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <seealso cref="CalculateScalar(Double, Double)" />
+        ''' -------------------------------------------------------------------
+        Public Overrides Function CanCalculateScalar() As Boolean
+            Return False
+        End Function
+
+
         ''' <summary>
         ''' About to receive advection data. Overridden to remember the last received advection pattern.
         ''' </summary>
@@ -214,7 +227,6 @@ Namespace SpatialData
             End Try
 
             Return True
-
 
         End Function
 

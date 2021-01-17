@@ -3,11 +3,11 @@
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 ; spinup + spattemp now combined in one flag 'EwEPro'
 #define EwEPro 1
 ; RobertsBank features are optional to 'EwEPro'
-#define RobertsBank 0
+#define RobertsBank 1
 #define SAFENET 0
 #define FISHMIP 0
 #define MSPTools 0
@@ -36,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17120
+  VersionInfoVersion=6.7.0.17220
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -163,7 +163,7 @@ Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins
 #if EwEPro == 1
 ; - Roberts Bank only part of PRO
 #if RobertsBank == 1
-Source: "{#DefRoot}{#DefSrc}\RBTDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
 #endif
 
