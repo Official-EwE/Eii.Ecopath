@@ -5317,7 +5317,7 @@ Public Class cCore
             If m_EcoPath.RunState = Ecopath.eEcopathRunState.ValidEE Then isModelBalanced = True
 
             ' Update core state monitor
-            Me.m_StateMonitor.SetEcopathCompleted()
+            Me.m_StateMonitor.SetEcopathCompleted(isModelBalanced)
 
             ' Write results if needed
             If Me.Autosave(eAutosaveTypes.EcopathResults) Then

@@ -148,6 +148,24 @@ Public Class cNetworkManager
 
 #Region " Main Network Analysis "
 
+    Public Function CanRunEcopath() As Boolean
+
+        If (Me.m_econetwork Is Nothing) Then Return False
+        If (Me.m_core Is Nothing) Then Return False
+        If (Me.m_corestatemonitor Is Nothing) Then Return False
+
+        If (Me.m_runstate = eRunState.CoreNotReady) Then Return False
+
+        If (Me.m_corestatemonitor.HasEcopathRan) Then Return False
+        Return Me.m_corestatemonitor.HasEcopathBalanced
+
+    End Function
+
+    Public Function CanRunEcosim() As Boolean
+        If Not Me.CanRunEcopath Then Return False
+        Return Me.m_corestatemonitor.HasEcosimRan
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Run the Main Network Analysis routines - if necessary
@@ -166,8 +184,7 @@ Public Class cNetworkManager
 
         Debug.Assert(Me.m_econetwork IsNot Nothing)
 
-        ' Core not ready? Abort and wait for the world to improve
-        If Me.m_runstate = eRunState.CoreNotReady Then Return False
+        If Not Me.CanRunEcopath Then Return False
 
         ' Optimization
         If Me.IsMainNetworkRun = True Then Return True

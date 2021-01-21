@@ -206,7 +206,7 @@ Public Class cEwENetworkAnalysisPlugin
     Private m_bRunWithPathOld As Boolean = False
 
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
-
+        Me.m_manager.EcopathData = DirectCast(EcopathDataAsObject, EwECore.cEcopathDataStructures)
         If (Me.Autosave(eAutosaveType.Ecopath)) Then
             Me.m_bRunWithPathOld = Me.Manager.RunWithEcopath
             Me.Manager.RunWithEcopath = True
