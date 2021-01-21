@@ -387,7 +387,14 @@ Public Class frmNetworkAnalysis
         ' Make sure main network has ran
         ' Fixes bug 937
         If (page <> eNetworkAnalysisPageTypes.Credits) Then
-            Me.m_networkmanager.RunMainNetwork()
+            If (page <> eNetworkAnalysisPageTypes.Credits) Then
+                ' Prevent ENA from running on an imbalanced model
+                Dim bSuccess As Boolean = False
+                If Me.m_networkmanager.CanRunEcopath Then
+                    bSuccess = Me.m_networkmanager.RunMainNetwork()
+                End If
+                If bSuccess = False Then page = eNetworkAnalysisPageTypes.Credits
+            End If
         End If
 
         Select Case page

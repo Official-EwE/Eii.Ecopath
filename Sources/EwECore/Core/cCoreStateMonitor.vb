@@ -21,10 +21,9 @@
 
 Option Strict On
 
+Imports System.ComponentModel
 Imports EwECore.DataSources
 Imports EwEUtils.Core
-Imports System.ComponentModel
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -43,7 +42,7 @@ Imports EwEUtils.SystemUtilities
 '''        AddHandler sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChange
 '''     End Sub
 ''' 
-'''     Private Sub OnCoreExecutionStateChange(ByVal core As cCore, ByVal iState As eCoreExecutionState)
+'''     Private Sub OnCoreExecutionStateChange(core As cCore, iState As eCoreExecutionState)
 '''        ' Handle core state changes
 '''        Console.WriteLine("State tracker: core {0} state has changed to {1}", core, iState)
 '''     End Sub
@@ -101,6 +100,9 @@ Public Class cCoreStateMonitor
     ''' <summary>Pending core state invalidations, kept at bay while core was running</summary>
     Private m_ccPending As New List(Of eCoreComponentType)
 
+    ''' <summary>Flag indicating whether the Ecopath last balanced successfully.</summary>
+    Private m_bEcopathBalanced As Boolean = False
+
 #End Region ' Private members
 
     ''' -----------------------------------------------------------------------
@@ -109,7 +111,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="core">The <see cref="cCore">Core</see> that is monitored.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef core As cCore)
+    Public Sub New(core As cCore)
         Debug.Assert(core IsNot Nothing)
         Me.m_core = core
     End Sub
@@ -121,7 +123,7 @@ Public Class cCoreStateMonitor
     ''' <param name="statemonitor">A reference to the EwE <see cref="cCore">Core</see> which
     ''' execution state changed.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub CoreExecutionStateDelegate(ByVal statemonitor As cCoreStateMonitor)
+    Public Delegate Sub CoreExecutionStateDelegate(statemonitor As cCoreStateMonitor)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -129,7 +131,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Custom Event CoreExecutionStateEvent As CoreExecutionStateDelegate
-        AddHandler(ByVal handler As CoreExecutionStateDelegate)
+        AddHandler(handler As CoreExecutionStateDelegate)
             Me.m_executionStateHandlers.Add(handler)
             Try
                 If m_sync IsNot Nothing Then
@@ -142,11 +144,11 @@ Public Class cCoreStateMonitor
             End Try
         End AddHandler
 
-        RemoveHandler(ByVal handler As CoreExecutionStateDelegate)
+        RemoveHandler(handler As CoreExecutionStateDelegate)
             Me.m_executionStateHandlers.Remove(handler)
         End RemoveHandler
 
-        RaiseEvent(ByVal statemonitor As cCoreStateMonitor)
+        RaiseEvent(statemonitor As cCoreStateMonitor)
             '27-Aug-09 Make a temp array of handlers and use that to broadcast the events
             'handlers can be removed in response to an event this violates the m_executionStateHandlers collection
             'A better way to handle this would be to block the adding and removing of handlers while events are being broadcast (Semaphore)
@@ -180,7 +182,7 @@ Public Class cCoreStateMonitor
     ''' <summary>Delegate, invoked to broadcast a core data state change event.</summary>
     ''' <param name="coreStateMonitor">THe monitor sending the event.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub CoreDataStateDelegate(ByVal coreStateMonitor As cCoreStateMonitor)
+    Public Delegate Sub CoreDataStateDelegate(coreStateMonitor As cCoreStateMonitor)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -188,7 +190,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Custom Event CoreDataStateEvent As CoreDataStateDelegate
-        AddHandler(ByVal handler As CoreDataStateDelegate)
+        AddHandler(handler As CoreDataStateDelegate)
             Me.m_dataStateHandlers.Add(handler)
             If m_sync IsNot Nothing Then
                 Me.m_sync.Invoke(handler, New Object() {Me})
@@ -197,11 +199,11 @@ Public Class cCoreStateMonitor
             End If
         End AddHandler
 
-        RemoveHandler(ByVal handler As CoreDataStateDelegate)
+        RemoveHandler(handler As CoreDataStateDelegate)
             Me.m_dataStateHandlers.Remove(handler)
         End RemoveHandler
 
-        RaiseEvent(ByVal coreStateMonitor As cCoreStateMonitor)
+        RaiseEvent(coreStateMonitor As cCoreStateMonitor)
             For Each h As CoreDataStateDelegate In Me.m_dataStateHandlers
                 If m_sync IsNot Nothing Then
                     Me.m_sync.Invoke(h, New Object() {Me})
@@ -231,11 +233,11 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Private Sub CalcExecutionState(ByVal iEcopathState As eCoreExecutionState,
-            ByVal iEcosimState As eCoreExecutionState,
-            ByVal iEcospaceState As eCoreExecutionState,
-            ByVal iEcotracerState As eCoreExecutionState,
-            Optional ByVal tsForceUpdate As TriState = TriState.UseDefault)
+    Private Sub CalcExecutionState(iEcopathState As eCoreExecutionState,
+            iEcosimState As eCoreExecutionState,
+            iEcospaceState As eCoreExecutionState,
+            iEcotracerState As eCoreExecutionState,
+            Optional tsForceUpdate As TriState = TriState.UseDefault)
 
         Dim iState As eCoreExecutionState = eCoreExecutionState.Idle
         Dim bEcopathStateChange As Boolean = False
@@ -294,13 +296,13 @@ Public Class cCoreStateMonitor
     ''' broadcasted when the data state of either Ecopath or Ecosim changes.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateDataState(ByVal bDatasourceModified As Boolean,
-            ByVal bEcopathModified As Boolean,
-            ByVal bEcosimModified As Boolean,
-            ByVal bEcospaceModified As Boolean,
-            ByVal bEcotracerModified As Boolean,
-            ByVal bPluginModified As Boolean,
-            Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
+    Private Sub UpdateDataState(bDatasourceModified As Boolean,
+            bEcopathModified As Boolean,
+            bEcosimModified As Boolean,
+            bEcospaceModified As Boolean,
+            bEcotracerModified As Boolean,
+            bPluginModified As Boolean,
+            Optional tsSendUpdate As TriState = TriState.UseDefault)
 
         Dim bChange As Boolean = (bDatasourceModified <> Me.m_bDatasourceModified) Or
            (bEcopathModified <> Me.m_bEcopathModified) Or
@@ -334,7 +336,7 @@ Public Class cCoreStateMonitor
         Get
             Return Me.m_sync
         End Get
-        Set(ByVal value As ISynchronizeInvoke)
+        Set(value As ISynchronizeInvoke)
             Me.m_sync = value
         End Set
     End Property
@@ -345,8 +347,8 @@ Public Class cCoreStateMonitor
 
 #Region " Data "
 
-    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource,
-                               Optional ByVal tsSendUpdate As EwEUtils.Core.TriState = TriState.UseDefault)
+    Friend Sub UpdateDataState(ds As IEwEDataSource,
+                               Optional tsSendUpdate As EwEUtils.Core.TriState = TriState.UseDefault)
 
         Dim bDatasourceModified As Boolean = False
         Dim bEcopathModified As Boolean = False
@@ -383,8 +385,8 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="cc">The core component that changed.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType,
-                                    Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
+    Friend Sub UpdateExecutionState(cc As eCoreComponentType,
+                                    Optional tsSendUpdate As TriState = TriState.UseDefault)
 
         If Not Me.m_ccPending.Contains(cc) Then Me.m_ccPending.Add(cc)
         If Me.IsBusy Then Return
@@ -460,8 +462,8 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcopathLoaded(ByVal bHasModel As Boolean,
-                                Optional ByVal tsForceUpdate As TriState = TriState.UseDefault)
+    Friend Sub SetEcopathLoaded(bHasModel As Boolean,
+                                Optional tsForceUpdate As TriState = TriState.UseDefault)
         ' Update execution state
         If bHasModel Then
             ' Switch to ecopath loaded. All other model states must be reset to either idle or loaded
@@ -510,10 +512,13 @@ Public Class cCoreStateMonitor
     ''' State change entry point; to be called when an Ecopath model has
     ''' completed its parameter estimation.
     ''' </summary>
+    ''' <param name="bEcopathBalanced">Flag, states whether Ecopath balanced.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcopathCompleted()
+    Friend Sub SetEcopathCompleted(bEcopathBalanced As Boolean)
         ' Check for invalid state transitions
         If (Me.m_iEcopathState <> eCoreExecutionState.EcopathRunning) Then Return
+        ' Remember this
+        Me.m_bEcopathBalanced = bEcopathBalanced
         ' Update execution state
         Me.CalcExecutionState(eCoreExecutionState.EcopathCompleted,
                 DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState),
@@ -553,9 +558,9 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcoSimLoaded(ByVal bHasScenario As Boolean,
-                               Optional ByVal tsForceUpdate As TriState = TriState.UseDefault,
-                               Optional ByVal bResetDataState As Boolean = True)
+    Friend Sub SetEcoSimLoaded(bHasScenario As Boolean,
+                               Optional tsForceUpdate As TriState = TriState.UseDefault,
+                               Optional bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             ' Switch to ecosim loaded state. Space and Tracer states must be reset to either idle or loaded
@@ -608,7 +613,7 @@ Public Class cCoreStateMonitor
     ''' completed its timesteps.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcosimCompleted(ByVal bEcotracerOn As Boolean)
+    Friend Sub SetEcosimCompleted(bEcotracerOn As Boolean)
         ' Check for invalid state transitions
         If (Me.m_iEcosimState <> eCoreExecutionState.EcosimRunning) Then Return
 
@@ -638,9 +643,9 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcospaceLoaded(ByVal bHasScenario As Boolean,
-                                 Optional ByVal tsForceUpdate As TriState = TriState.UseDefault,
-                                Optional ByVal bResetDataState As Boolean = True)
+    Friend Sub SetEcospaceLoaded(bHasScenario As Boolean,
+                                 Optional tsForceUpdate As TriState = TriState.UseDefault,
+                                Optional bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             ' Switch to ecospace loaded state. Tracer state must be reset to either idle or loaded
@@ -690,7 +695,7 @@ Public Class cCoreStateMonitor
     ''' completed its timesteps.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcospaceCompleted(ByVal bEcotracerOn As Boolean)
+    Friend Sub SetEcospaceCompleted(bEcotracerOn As Boolean)
         ' Check for invalid state transitions
         If (Me.m_iEcospaceState <> eCoreExecutionState.EcospaceRunning) Then Return
         Me.m_iEcotracerResultState = If(bEcotracerOn, eEcotracerRunState.Ecospace, eEcotracerRunState.None)
@@ -717,9 +722,9 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcotracerLoaded(ByVal bHasScenario As Boolean,
-                                  Optional ByVal tsForceUpdate As TriState = TriState.UseDefault,
-                                  Optional ByVal bResetDataState As Boolean = True)
+    Friend Sub SetEcotracerLoaded(bHasScenario As Boolean,
+                                  Optional tsForceUpdate As TriState = TriState.UseDefault,
+                                  Optional bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, eCoreExecutionState.EcotracerLoaded, tsForceUpdate)
@@ -745,7 +750,7 @@ Public Class cCoreStateMonitor
     ''' <param name="searchmode"><see cref="eSearchModes">Search mode state flag</see>.</param>
     ''' <remarks>Use this with care!!</remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub SetIsSearching(ByVal searchmode As eSearchModes)
+    Public Sub SetIsSearching(searchmode As eSearchModes)
         If (Me.m_searchmode <> searchmode) Then
             Me.m_searchmode = searchmode
             RaiseEvent CoreExecutionStateEvent(Me)
@@ -758,7 +763,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="bIsBatchLocked">State flag to set</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetIsBatchLocked(ByVal bIsBatchLocked As Boolean)
+    Friend Sub SetIsBatchLocked(bIsBatchLocked As Boolean)
         Me.m_bIsBatchLocked = bIsBatchLocked
     End Sub
 
@@ -843,6 +848,18 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function HasEcopathRan() As Boolean
         Return Me.m_iEcopathState = eCoreExecutionState.EcopathCompleted
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' If an Ecopath model has completed succesfully, returns the last reported
+    ''' balanced state.
+    ''' </summary>
+    ''' <seealso cref="HasEcopathRan()"/>
+    ''' -----------------------------------------------------------------------
+    Public Function HasEcopathBalanced() As Boolean
+        If HasEcopathBalanced Then Return Me.m_bEcopathBalanced
+        Return False
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -1002,7 +1019,7 @@ Public Class cCoreStateMonitor
     ''' Wow, that's a lot of talking for a one-line function implementation...
     ''' </note_to_self>
     ''' -----------------------------------------------------------------------
-    Public Function IsExecutionStateSuperceded(ByVal iState As eCoreExecutionState) As Boolean
+    Public Function IsExecutionStateSuperceded(iState As eCoreExecutionState) As Boolean
         ' Exception for Ecotracer load state since it does not fit the incremental state tree well;
         ' If Ecospace is loaded, the ecotracer loaded state is assumed true, ugh...
         If iState = eCoreExecutionState.EcotracerLoaded Then Return Me.HasEcotracerLoaded()
@@ -1117,7 +1134,7 @@ Public Class cCoreStateMonitor
 
     Private m_bRequiresEcosimFullInit As Boolean = False
 
-    Friend Sub RegisterModification(ByVal component As eCoreComponentType)
+    Friend Sub RegisterModification(component As eCoreComponentType)
         If component = eCoreComponentType.EcoPath Then Me.m_bRequiresEcosimFullInit = True
     End Sub
 
