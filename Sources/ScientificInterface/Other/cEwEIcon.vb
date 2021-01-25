@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Utilities
 Imports System.Threading
 
@@ -46,6 +47,14 @@ Public Class cEwEIcon
     ''' <returns>The current icon for EwE, catered to important events.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function Current() As Icon
+
+        Dim ass As System.Reflection.Assembly = System.Reflection.Assembly.GetAssembly(GetType(cCore))
+        Dim an As System.Reflection.AssemblyName = ass.GetName()
+        Dim strVersion As String = cAssemblyUtils.GetVersion(an).ToString
+
+        If strVersion.StartsWith("6.6.6") Then
+            Return My.Resources.Ecopath666
+        End If
 
         ' Prepare icon
         Select Case cDateUtils.GetNextEvent(15)
