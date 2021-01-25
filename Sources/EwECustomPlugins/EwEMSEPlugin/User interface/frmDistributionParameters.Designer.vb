@@ -28,8 +28,7 @@ Imports ScientificInterfaceShared.Controls
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmDistributionParameters
-    Inherits frmEwE
-
+    Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
@@ -62,7 +61,11 @@ Partial Class frmDistributionParameters
         Me.m_tscmPathOrSim = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tslVariable = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmParamName = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plButtons = New System.Windows.Forms.Panel()
         Me.m_tsMain.SuspendLayout()
+        Me.m_tlpMain.SuspendLayout()
+        Me.m_plButtons.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnCancel
@@ -98,6 +101,7 @@ Partial Class frmDistributionParameters
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = False
         Me.m_grid.Mode = EwEMSEPlugin.frmDistributionParameters.eParameterSet.Ecopath
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -113,11 +117,10 @@ Partial Class frmDistributionParameters
         '
         'm_tsMain
         '
-        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslModel, Me.m_tscmPathOrSim, Me.m_tslVariable, Me.m_tscmParamName})
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
-        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tslModel
         '
@@ -143,17 +146,29 @@ Partial Class frmDistributionParameters
         Me.m_tscmParamName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
         resources.ApplyResources(Me.m_tscmParamName, "m_tscmParamName")
         '
+        'm_tlpMain
+        '
+        resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
+        Me.m_tlpMain.Controls.Add(Me.m_tsMain, 1, 1)
+        Me.m_tlpMain.Controls.Add(Me.m_grid, 1, 2)
+        Me.m_tlpMain.Controls.Add(Me.m_plButtons, 1, 3)
+        Me.m_tlpMain.Name = "m_tlpMain"
+        '
+        'm_plButtons
+        '
+        Me.m_plButtons.Controls.Add(Me.m_btnCancel)
+        Me.m_plButtons.Controls.Add(Me.m_btnSave)
+        resources.ApplyResources(Me.m_plButtons, "m_plButtons")
+        Me.m_plButtons.Name = "m_plButtons"
+        '
         'frmDistributionParameters
         '
         Me.AcceptButton = Me.m_btnSave
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_tsMain)
-        Me.Controls.Add(Me.m_grid)
-        Me.Controls.Add(Me.m_btnSave)
-        Me.Controls.Add(Me.m_btnCancel)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Controls.Add(Me.m_tlpMain)
+        Me.DoubleBuffered = True
         Me.MinimizeBox = False
         Me.Name = "frmDistributionParameters"
         Me.ShowIcon = False
@@ -161,6 +176,9 @@ Partial Class frmDistributionParameters
         Me.TabText = ""
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
+        Me.m_tlpMain.ResumeLayout(False)
+        Me.m_tlpMain.PerformLayout()
+        Me.m_plButtons.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -173,5 +191,6 @@ Partial Class frmDistributionParameters
     Private WithEvents m_tscmParamName As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tslModel As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tslVariable As System.Windows.Forms.ToolStripLabel
-
+    Friend WithEvents m_tlpMain As TableLayoutPanel
+    Friend WithEvents m_plButtons As Panel
 End Class

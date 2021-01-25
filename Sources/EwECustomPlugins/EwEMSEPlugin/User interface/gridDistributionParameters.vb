@@ -280,6 +280,9 @@ Public Class gridDistributionParameters
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
+        ' Could be closing down
+        If (Me.RowsCount <= 1) Then Return False
+
         Select Case Me.Mode
 
             Case frmDistributionParameters.eParameterSet.Ecopath

@@ -34,7 +34,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 #End Region ' Imports
 
 Public Class frmDistributionParameters
-    Implements IDisposable
 
     Private m_ecopathdist As cEcopathDistributionParams = Nothing
     Private m_ecosimdist As cEcosimDistributionParams = Nothing
@@ -72,6 +71,7 @@ Public Class frmDistributionParameters
         Me.m_grid.UIContext = uic
         Me.UIContext = uic
         Me.m_plugin = Plugin
+        Me.Grid = Me.m_grid
 
         For i As Integer = 1 To Me.Core.nGroups
             If Me.Core.EcoPathGroupInputs(i).IsProducer Then nPPers += 1

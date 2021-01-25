@@ -509,6 +509,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Public ReadOnly Property Ecopath666() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath666", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to A{0}.
         '''</summary>
         Public ReadOnly Property ECOSIM_APPLYARENA_HEADER() As String

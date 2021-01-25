@@ -23,11 +23,10 @@ Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwECore
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
@@ -41,7 +40,7 @@ Namespace Controls.EwEGrid
     ''' all currently selected EwE variables can be modified. Conditions apply.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class cQuickEditHandler
 
 #Region " Private variables "
@@ -55,8 +54,6 @@ Namespace Controls.EwEGrid
         Private m_ts As ToolStrip = Nothing
         ''' <summary>The value control that is managed by this handler.</summary>
         Private m_ctrlValue As ToolStripItem = Nothing
-        ''' <summary>The edit box label that is managed by this handler.</summary>
-        Private m_lblSet As ToolStripLabel = Nothing
         ''' <summary>Set button that is managed by this handler.</summary>
         Private m_btnSet As ToolStripButton = Nothing
         ''' <summary>Flag stating whether handler is attached.</summary>
@@ -82,7 +79,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' <para>Connect the QuickEditHandler to a <see cref="cEwEGrid">EwE grid</see>.
+        ''' <para>Connect the QuickEditHandler to a <see cref="EwEGrid">EwE grid</see>.
         ''' Call <see cref="Detach">Detach</see> to disconnect a Quick Edit handler
         ''' from a form it was previously attached to.</para>
         ''' <para>A toolstrip is created if not available, and Quick Edit toolstrip 
@@ -114,9 +111,6 @@ Namespace Controls.EwEGrid
             Me.m_ts.GripStyle = ToolStripGripStyle.Hidden
 
             Me.m_sep = New ToolStripSeparator()
-
-            ' Create quick edit label
-            Me.m_lblSet = New ToolStripLabel(cStyleGuide.ToControlLabel(My.Resources.LABEL_SET))
 
             ' Create quick edit control
             Me.SetEditControl(eControlType.TextBox)
@@ -152,14 +146,12 @@ Namespace Controls.EwEGrid
             Me.m_sep.Alignment = align
             Me.m_ts.Items.Add(Me.m_sep)
 
-            Me.m_lblSet.Alignment = align
-            Me.m_ts.Items.Add(Me.m_lblSet)
-
-            Me.m_ctrlValue.Alignment = align
-            Me.m_ts.Items.Add(Me.m_ctrlValue)
-
             Me.m_btnSet.Alignment = align
             Me.m_ts.Items.Add(Me.m_btnSet)
+
+            Me.m_ctrlValue.Alignment = align
+            Me.m_ctrlValue.Overflow = ToolStripItemOverflow.Always
+            Me.m_ts.Items.Add(Me.m_ctrlValue)
 
             Me.m_iValuePos = Me.m_ts.Items.IndexOf(Me.m_ctrlValue)
 
@@ -185,7 +177,6 @@ Namespace Controls.EwEGrid
             If Not m_bAttached Then Return
 
             Me.m_ts.Items.Remove(Me.m_ctrlValue)
-            Me.m_ts.Items.Remove(Me.m_lblSet)
 
             If Me.m_btnImport IsNot Nothing Then
                 RemoveHandler Me.m_btnImport.Click, AddressOf OnImportGrid
@@ -328,7 +319,17 @@ Namespace Controls.EwEGrid
 
 #Region " Grid events "
 
+        Private m_bUpdatePending As Boolean = False
+
+        ' Buffer consecutive update requests to prevent flashing controls
         Private Sub OnGridSelectionChanged()
+            Me.m_bUpdatePending = True
+            Me.m_grid.BeginInvoke(New MethodInvoker(AddressOf DoUpdateControls))
+        End Sub
+
+        Private Sub DoUpdateControls()
+            If Not Me.m_bUpdatePending Then Return
+            Me.m_bUpdatePending = False
             Me.UpdateControls()
         End Sub
 
@@ -428,12 +429,6 @@ Namespace Controls.EwEGrid
                 Else
                     Me.SetEditControl(eControlType.TextBox)
                 End If
-            End If
-
-            ' Enable set label if the grid has editable cells that represent only one type of variable.
-            If Me.m_lblSet IsNot Nothing Then
-                Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection
-                Me.m_lblSet.Visible = bIsInputGrid And bHasEditableCells
             End If
 
             ' Enable edit control if the grid has editable cells that represent only one type of variable.
@@ -615,12 +610,12 @@ Namespace Controls.EwEGrid
             If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return bSuccess
 
             Try
-                fs = New FileStream(cmdOF.FileName, _
-                                    FileMode.Open, _
-                                    FileAccess.Read, _
+                fs = New FileStream(cmdOF.FileName,
+                                    FileMode.Open,
+                                    FileAccess.Read,
                                     FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
             Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message),
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
                 bSuccess = False
             End Try
@@ -641,7 +636,7 @@ Namespace Controls.EwEGrid
                 sr.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName),
                     eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
 
@@ -671,7 +666,7 @@ Namespace Controls.EwEGrid
                 fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
             Catch ex As Exception
                 ' Woops!
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message),
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
 
@@ -681,7 +676,7 @@ Namespace Controls.EwEGrid
                 sw.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdSF.FileName)
             End If

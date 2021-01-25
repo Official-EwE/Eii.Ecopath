@@ -2178,4 +2178,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="LABEL_NAV_ECOSPACE_INPUT_ENVIRONMENTALRESPONSE" xml:space="preserve">
     <value>Ecospace environmental responses</value>
   </data>
+  <data name="Ecopath666" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecopath666.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
