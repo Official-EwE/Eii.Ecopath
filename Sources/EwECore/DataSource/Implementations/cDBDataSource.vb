@@ -7924,7 +7924,7 @@ Namespace DataSources
                 Next
 
                 ' Add default 'All' habitat
-                bSucces = bSucces And Me.AddEcospaceHabitat("All", iScenarioID, iIDtmp)
+                bSucces = bSucces And Me.AddEcospaceHabitat("All", iScenarioID, 1, iIDtmp)
 
                 ' Reload scenario definitions
                 bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
