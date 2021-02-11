@@ -72,7 +72,7 @@ Public Class cPluginPoint
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements IGUIPlugin.OnControlClick
         Try
-            Me.m_uic.FormMain.BeginInvoke(New MethodInvoker(AddressOf LaunchUI))
+            Me.m_uic.FormMain.BeginInvoke(New MethodInvoker(AddressOf Me.LaunchUI))
         Catch ex As Exception
             ' Oof
         End Try

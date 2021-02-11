@@ -48,7 +48,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
+    Public Sub New(MonteCarlo As cEcosimMonteCarlo, theCore As cCore)
 
         Me.MC = MonteCarlo
         Me.Core = theCore
@@ -79,7 +79,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     ''' <summary>
     ''' Save data to file.
     ''' </summary>
-    Public Sub Save(ByVal iTrial As Integer) Implements IMonteCarloResultsWriter.Save
+    Public Sub Save(iTrial As Integer) Implements IMonteCarloResultsWriter.Save
 
         If Not Me.IsSaving() Then Return
 
@@ -212,9 +212,9 @@ Public Class cMonteCarloResultsWriterMultipleFiles
         Select Case par
             Case eMCParams.Landings, eMCParams.Discards
                 sw.WriteLine("group,fleet,{0}_cv,{0}_lower,{0}_upper", par.ToString.ToLower)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-                    For iFleet As Integer = 1 To Core.nFleets
+                    For iFleet As Integer = 1 To Me.Core.nFleets
                         Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
                             sw.Write("{0},{1}", iGroup, iFleet)
@@ -230,13 +230,13 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
             Case eMCParams.Diets
                 sw.WriteLine("predator,{0}_multiplier", par.ToString.ToLower)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     sw.Write("{0},{1}", iGroup, Me.MC.CVpar(par, iGroup))
                 Next
 
             Case Else
                 sw.WriteLine("group,{0}_cv,{0}_lower,{0}_upper", par.ToString.ToLower)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     sw.Write("{0}", iGroup)
                     sw.WriteLine(",{0},{1},{2}", Me.MC.CVpar(par, iGroup), Me.MC.ParLimit(0, par, iGroup), Me.MC.ParLimit(1, par, iGroup))
                 Next
@@ -249,9 +249,9 @@ Public Class cMonteCarloResultsWriterMultipleFiles
         Select Case par
             Case eMCParams.Landings, eMCParams.Discards
                 sw.WriteLine("group,fleet,{0}", par.ToString.ToLower)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-                    For iFleet As Integer = 1 To Core.nFleets
+                    For iFleet As Integer = 1 To Me.Core.nFleets
                         Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
                             sw.Write("{0},{1}", group.Index, fleet.Index, cStringUtils.ToCSVField(fleet.Name))
@@ -274,7 +274,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                     sw.Write("," & group.Index)
                 Next
                 sw.WriteLine()
-                For iPred As Integer = 1 To Core.nGroups
+                For iPred As Integer = 1 To Me.Core.nGroups
                     sw.Write("{0}", iPred)
                     For iPrey As Integer = 1 To Me.Core.nGroups
                         Dim val As Single = Me.Core.m_EcoPathData.DC(iPred, iPrey)
@@ -285,7 +285,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
             Case Else
                 sw.WriteLine("group,{0}", par.ToString)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     Dim group As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
                     sw.Write("{0}", iGroup)
                     Dim val As Single = 0

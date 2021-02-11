@@ -54,7 +54,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
         End Sub
 
@@ -101,7 +101,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.Value"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Value(ByVal iIndex As Integer) As Single _
+        Public ReadOnly Property Value(iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -139,7 +139,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ItemName(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemName(ByVal iIndex As Integer) As String _
+        Public ReadOnly Property ItemName(iIndex As Integer) As String _
                 Implements IFlowDiagramData.ItemName
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -152,7 +152,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ItemColor(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemColor(ByVal iIndex As Integer) As Color _
+        Public ReadOnly Property ItemColor(iIndex As Integer) As Color _
                 Implements IFlowDiagramData.ItemColor
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -166,7 +166,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsItemVisible(ByVal iIndex As Integer) As Boolean _
+        Public ReadOnly Property IsItemVisible(iIndex As Integer) As Boolean _
                 Implements IFlowDiagramData.IsItemVisible
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -180,7 +180,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValue"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
+        Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -191,7 +191,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iPred -= c.nGroups
                 If (iPrey <= c.nGroups) Then
                     Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(iPred)
-                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / (m_catch_all(iPred) + 1.0E-20F)
+                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / (Me.m_catch_all(iPred) + 1.0E-20F)
                 End If
                 Return 0
             End Get
@@ -200,7 +200,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.TrophicLevel"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single _
+        Public ReadOnly Property TrophicLevel(iIndex As Integer) As Single _
                 Implements IFlowDiagramData.TrophicLevel
             Get
                 Dim c As cCore = Me.UIContext.Core

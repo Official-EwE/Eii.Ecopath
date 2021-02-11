@@ -60,7 +60,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.WriteResults"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+    Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
         Try
 
@@ -73,7 +73,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
             End If
 
             'Varnames are implemented by derived class
-            For Each varname As eVarNameFlags In vars
+            For Each varname As eVarNameFlags In Me.vars
 
                 'NMaps(Number of maps) = NLiving by default but can be Overriden by derived class
                 For iGrp As Integer = 0 To Me.NMaps
@@ -120,10 +120,10 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
         Return Me.m_core.m_EcoPathData.NumLiving
     End Function
 
-    Protected Overridable Function GetFileName(ByVal varname As eVarNameFlags,
-                                                    ByVal iGrp As Integer,
-                                                    ByVal strExt As String,
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Protected Overridable Function GetFileName(varname As eVarNameFlags,
+                                                    iGrp As Integer,
+                                                    strExt As String,
+                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
         Return MyBase.GetGroupFileName(varname, iGrp, strExt, iModelTimeStep)
     End Function
 
@@ -145,17 +145,6 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     Protected Overrides Function FileExtension() As String
         Return ".asc"
     End Function
-
-
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IEcospaceResultsWriter.Init"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Sub Init(ByVal theCore As Object) '_ Implements IEcospaceResultsWriter.Init
-        MyBase.Init(theCore)
-
-    End Sub
-
 
 #End Region ' Base writer overrides
 
@@ -193,8 +182,8 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' <param name="igrp"></param>
     ''' <param name="varName"></param>
     ''' -----------------------------------------------------------------------
-    Protected Sub SaveASCFile(ByVal strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep,
-                              ByVal igrp As Integer, ByVal varName As eVarNameFlags)
+    Protected Sub SaveASCFile(strm As StreamWriter, SpaceTSData As cEcospaceTimestep,
+                              igrp As Integer, varName As eVarNameFlags)
         Try
             Me.WriteASCIIHeader(strm)
             Me.WriteASCIIBody(strm, SpaceTSData, igrp, varName)
@@ -209,7 +198,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' </summary>
     ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
+    Protected Sub WriteASCIIHeader(writer As StreamWriter)
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
@@ -231,10 +220,10 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' <param name="SpaceTSData">The Ecospace data structures to use for spatial referencing.</param>
     ''' <param name="varname">The variable to write.</param>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Sub WriteASCIIBody(ByVal writer As StreamWriter,
-                                 ByVal SpaceTSData As cEcospaceTimestep,
-                                 ByVal iIndex As Integer,
-                                 ByVal varname As eVarNameFlags)
+    Protected Sub WriteASCIIBody(writer As StreamWriter,
+                                 SpaceTSData As cEcospaceTimestep,
+                                 iIndex As Integer,
+                                 varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
         Dim value As Double = 0

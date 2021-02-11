@@ -41,15 +41,15 @@ Public Class cVisualModelThumbnail
 
     Private m_handler As cShapeGUIHandler = Nothing
 
-    Public Sub New(ByVal handler As cShapeGUIHandler)
+    Public Sub New(handler As cShapeGUIHandler)
         Me.m_handler = handler
     End Sub
 
-    Protected Overrides Sub DrawCell_ImageAndText(ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                                                  ByVal pos As SourceGrid2.Position, _
-                                                  ByVal e As System.Windows.Forms.PaintEventArgs, _
-                                                  ByVal rcClient As System.Drawing.Rectangle, _
-                                                  ByVal status As SourceGrid2.DrawCellStatus)
+    Protected Overrides Sub DrawCell_ImageAndText(cell As SourceGrid2.Cells.ICellVirtual, _
+                                                  pos As SourceGrid2.Position, _
+                                                  e As System.Windows.Forms.PaintEventArgs, _
+                                                  rcClient As System.Drawing.Rectangle, _
+                                                  status As SourceGrid2.DrawCellStatus)
 
         Dim shape As cShapeData = DirectCast(cell.GetValue(pos), cShapeData)
         Dim grid As cEwEGrid = DirectCast(cell.Grid, cEwEGrid)
@@ -67,11 +67,11 @@ Public Class cVisualModelThumbnail
 
     End Sub
 
-    Protected Overrides Sub DrawCell_Background(ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                                                ByVal pos As SourceGrid2.Position, _
-                                                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                                                ByVal rcClient As System.Drawing.Rectangle, _
-                                                ByVal status As SourceGrid2.DrawCellStatus)
+    Protected Overrides Sub DrawCell_Background(cell As SourceGrid2.Cells.ICellVirtual, _
+                                                pos As SourceGrid2.Position, _
+                                                e As System.Windows.Forms.PaintEventArgs, _
+                                                rcClient As System.Drawing.Rectangle, _
+                                                status As SourceGrid2.DrawCellStatus)
 
         Dim grid As cEwEGrid = DirectCast(cell.Grid, cEwEGrid)
         Using br As New SolidBrush(grid.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND))

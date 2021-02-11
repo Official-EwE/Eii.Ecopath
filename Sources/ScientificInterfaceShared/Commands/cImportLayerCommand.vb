@@ -51,14 +51,14 @@ Namespace Commands
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~importLayer"
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.new(cmdh, cImportLayerCommand.cCOMMAND_NAME)
         End Sub
 
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, strFile As String)
+        Public Overloads Sub Invoke(alayers() As cEcospaceLayer, strFile As String)
 
             Dim fmt As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default
             Select Case Path.GetExtension(strFile).ToLower
@@ -79,7 +79,7 @@ Namespace Commands
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, format As eNativeLayerFileFormatTypes)
+        Public Overloads Sub Invoke(alayers() As cEcospaceLayer, format As eNativeLayerFileFormatTypes)
             Me.m_alayers = alayers
             Me.m_format = format
             Me.m_file = ""

@@ -41,7 +41,7 @@ Namespace Controls.Map.Layers
             Me.New(GetType(ucLayerEditorGroup))
         End Sub
 
-        Public Sub New(ByVal t As Type)
+        Public Sub New(t As Type)
             MyBase.New(t)
             Me.CellValue = 1
         End Sub
@@ -63,7 +63,7 @@ Namespace Controls.Map.Layers
                 Dim layerCore As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
                 Return layerCore.iLayer
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Dim layerCore As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
                 ' Will Group index change?
                 If (value <> layerCore.iLayer) Then

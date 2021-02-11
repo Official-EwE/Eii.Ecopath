@@ -57,9 +57,9 @@ Namespace Ecosim
             ''' <param name="iNumParams"></param>
             ''' <param name="sSS"></param>
             ''' <param name="sAIC"></param>
-            Public Sub New(ByVal iNumParams As Integer, _
-                           ByVal sSS As Single, _
-                           ByVal sAIC As Single)
+            Public Sub New(iNumParams As Integer, _
+                           sSS As Single, _
+                           sAIC As Single)
                 Me.m_iNumParams = iNumParams
                 Me.m_sSS = sSS
                 Me.m_sAIC = sAIC
@@ -81,7 +81,7 @@ Namespace Ecosim
                 Get
                     Return Me.m_sAIC
                 End Get
-                Set(ByVal value As Single)
+                Set(value As Single)
                     Me.m_sAIC = value
                 End Set
             End Property
@@ -97,9 +97,9 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 If (Me.UIContext IsNot Nothing) Then
-                    RemoveHandler Me.m_propAIC.PropertyChanged, AddressOf OnAICNumPointsChanged
+                    RemoveHandler Me.m_propAIC.PropertyChanged, AddressOf Me.OnAICNumPointsChanged
                     Me.m_propAIC = Nothing
                     Me.m_man = Nothing
                 End If
@@ -109,7 +109,7 @@ Namespace Ecosim
                 If (Me.UIContext IsNot Nothing) Then
                     Me.m_man = Me.UIContext.Core.EcosimFitToTimeSeries
                     Me.m_propAIC = Me.UIContext.PropertyManager.GetProperty(Me.m_man, EwEUtils.Core.eVarNameFlags.F2TSNAICData)
-                    AddHandler Me.m_propAIC.PropertyChanged, AddressOf OnAICNumPointsChanged
+                    AddHandler Me.m_propAIC.PropertyChanged, AddressOf Me.OnAICNumPointsChanged
                     ' Kick
                     Me.OnAICNumPointsChanged(Me.m_propAIC, cProperty.eChangeFlags.Value)
                 End If
@@ -151,7 +151,7 @@ Namespace Ecosim
         ''' <param name="iNumParams"></param>
         ''' <param name="sSS"></param>
         ''' <remarks></remarks>
-        Public Sub AddFitToTimeSeriesOutput(ByVal iNumParams As Integer, ByVal sSS As Single)
+        Public Sub AddFitToTimeSeriesOutput(iNumParams As Integer, sSS As Single)
             Me.m_lData.Add(New cOutput(iNumParams, sSS, Me.m_man.getAIC(iNumParams, Me.m_iNumAICPoints, sSS)))
             Me.RefreshContent()
         End Sub
@@ -165,7 +165,7 @@ Namespace Ecosim
             Get
                 Return Me.m_iNumAICPoints
             End Get
-            Set(ByVal iNumAICPoints As Integer)
+            Set(iNumAICPoints As Integer)
 
                 If iNumAICPoints = Me.m_iNumAICPoints Then Return
                 Me.m_iNumAICPoints = iNumAICPoints
@@ -177,7 +177,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Private Sub OnAICNumPointsChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Private Sub OnAICNumPointsChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
             If ((changeFlags And cProperty.eChangeFlags.Value) > 0) Then
                 Me.NumAICPoints = CInt(Me.m_propAIC.GetValue)
             End If

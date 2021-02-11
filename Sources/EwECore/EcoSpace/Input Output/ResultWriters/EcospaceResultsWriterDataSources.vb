@@ -71,7 +71,7 @@ Public MustInherit Class cEcospaceResultsWriterDataSourceBase
     ''' <summary>
     ''' Init the data source
     ''' </summary>
-    MustOverride Sub Init(Optional ByVal OptionalIndex As Integer = 0)
+    MustOverride Sub Init(Optional OptionalIndex As Integer = 0)
 
     ''' <summary>
     ''' Return the result for this index and time step
@@ -123,7 +123,7 @@ Public Class cBiomassResultsDataSource
         Return Me.m_spaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, OneBasedIndex, TimeIndex)
     End Function
 
-    Public Overrides Sub Init(Optional ByVal OptionalIndex As Integer = 0)
+    Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
 
     End Sub
 
@@ -222,9 +222,9 @@ Public Class cCatchResultsDataSource
     End Function
 
 
-    Public Overrides Sub Init(Optional ByVal OptionalIndex As Integer = 0)
+    Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
 
-        m_lstCatch = New List(Of cCatch)
+        Me.m_lstCatch = New List(Of cCatch)
         Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cCoreGroupBase = Nothing
 
@@ -234,7 +234,7 @@ Public Class cCatchResultsDataSource
                 group = Me.m_core.EcoPathGroupInputs(iGroup)
                 If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then
                     'Save the Fleet and group indexes
-                    m_lstCatch.Add(New cCatch(fleet, group))
+                    Me.m_lstCatch.Add(New cCatch(fleet, group))
                 End If
             Next iGroup
         Next iFleet
@@ -380,12 +380,12 @@ Public Class cRegionBiomassResultsDataSource
     End Function
 
 
-    Public Overrides Sub Init(Optional ByVal OptionalIndex As Integer = 0)
+    Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
 
-        m_iRegionIndex = OptionalIndex
-        m_lstRegions = New List(Of cRegion)
+        Me.m_iRegionIndex = OptionalIndex
+        Me.m_lstRegions = New List(Of cRegion)
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            m_lstRegions.Add(New cRegion(Me.m_core.EcoPathGroupInputs(iGroup), OptionalIndex))
+            Me.m_lstRegions.Add(New cRegion(Me.m_core.EcoPathGroupInputs(iGroup), OptionalIndex))
         Next iGroup
 
     End Sub
@@ -503,10 +503,10 @@ Public Class cRegionCatchResultsDataSource
     End Function
 
 
-    Public Overrides Sub Init(Optional ByVal OptionalIndex As Integer = 0)
+    Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
 
-        m_iRegionIndex = OptionalIndex
-        m_lstRegions = New List(Of cRegion)
+        Me.m_iRegionIndex = OptionalIndex
+        Me.m_lstRegions = New List(Of cRegion)
 
         Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cCoreGroupBase = Nothing
@@ -517,7 +517,7 @@ Public Class cRegionCatchResultsDataSource
                 group = Me.m_core.EcoPathGroupInputs(iGroup)
                 If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then
                     'Save the Fleet and group indexes
-                    m_lstRegions.Add(New cRegion(fleet, group, m_iRegionIndex))
+                    Me.m_lstRegions.Add(New cRegion(fleet, group, Me.m_iRegionIndex))
                 End If
             Next iGroup
         Next iFleet

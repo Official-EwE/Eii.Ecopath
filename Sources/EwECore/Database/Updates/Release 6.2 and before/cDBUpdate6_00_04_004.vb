@@ -81,7 +81,7 @@ Friend Class cDBUpdate6_00_04_0004
         End Get
     End Property
 
-    Private Function FixRelPP(ByVal db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Private Function FixRelPP(db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         ' Query to count # of non-zero cells in the basemap
         Dim strQueryCheck As String = "SELECT COUNT(*) FROM EcospaceScenarioBasemap WHERE RelPP<>0 AND ScenarioID={0}"
@@ -115,7 +115,7 @@ Friend Class cDBUpdate6_00_04_0004
         Public TimeUnit As eUnitTimeType
         Public TimeCustom As String
 
-        Public Sub New(ByVal id As Integer, ByVal cut As eUnitCurrencyType, ByVal strCurr As String, ByVal utt As eUnitTimeType, ByVal strTime As String)
+        Public Sub New(id As Integer, cut As eUnitCurrencyType, strCurr As String, utt As eUnitTimeType, strTime As String)
             Me.ModelID = id
             Me.CurrencyUnit = cut
             Me.CurrencyCustom = strCurr
@@ -125,7 +125,7 @@ Friend Class cDBUpdate6_00_04_0004
 
     End Structure
 
-    Private Function FixUnits(ByVal db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Private Function FixUnits(db As EwEUtils.Database.cEwEDatabase) As Boolean
 
         Dim strSQL As String = ""
         Dim lMappings As New List(Of cUnitMapping)

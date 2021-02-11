@@ -748,7 +748,7 @@ Public Class cVariableMetaData
     ''' <param name="bValueDefault">Default value to assign to variable when in error.</param>
     ''' <remarks>Booleans do not have min or max values.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub New(units As String, Optional ByVal bValueDefault As Boolean = False)
+    Public Sub New(units As String, Optional bValueDefault As Boolean = False)
         Me.NullValue = bValueDefault
         Me.m_vartype = eValueTypes.Bool
         Me.Min = Math.Min(CSng(True), CSng(False))
@@ -763,7 +763,7 @@ Public Class cVariableMetaData
     ''' <param name="bValueDefault">Default value to assign to variable when in error.</param>
     ''' <remarks>Booleans do not have min or max values.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub New(Optional ByVal bValueDefault As Boolean = False)
+    Public Sub New(Optional bValueDefault As Boolean = False)
         Me.New(cUnits.TrueFalse, bValueDefault)
     End Sub
 
@@ -776,7 +776,7 @@ Public Class cVariableMetaData
     ''' Default value to assign to variable when in error.</param>
     ''' <remarks>Strings do not have min or max values.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal iLength As Integer, Optional ByVal strValueDefault As String = "")
+    Public Sub New(iLength As Integer, Optional strValueDefault As String = "")
         Me.Length = iLength
         Me.NullValue = strValueDefault
         Me.m_vartype = eValueTypes.Str
@@ -797,10 +797,10 @@ Public Class cVariableMetaData
     ''' <param name="sValueDefault">Default value to assign to variable when in error.</param>
     ''' <param name="units">Units of the value.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal sMin As Single, ByVal sMax As Single,
-                   ByVal operatorMin As cOperatorBase, ByVal operatorMax As cOperatorBase,
-                   Optional ByVal sValueDefault As Single = 0.0!,
-                   Optional ByVal units As String = "")
+    Public Sub New(sMin As Single, sMax As Single,
+                   operatorMin As cOperatorBase, operatorMax As cOperatorBase,
+                   Optional sValueDefault As Single = 0.0!,
+                   Optional units As String = "")
         Me.Min = sMin
         Me.Max = sMax
         Me.MinOperator = operatorMin
@@ -820,7 +820,7 @@ Public Class cVariableMetaData
     ''' </summary>
     ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Public Shared Function [Get](ByVal varname As eVarNameFlags) As cVariableMetaData
+    Public Shared Function [Get](varname As eVarNameFlags) As cVariableMetaData
         Return GetInstance().Metadata(varname)
     End Function
 
@@ -836,8 +836,8 @@ Public Class cVariableMetaData
     ''' </remarks>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function [Default](ByVal vartype As eValueTypes,
-                                     Optional ByVal units As String = "") As cVariableMetaData
+    Public Shared Function [Default](vartype As eValueTypes,
+                                     Optional units As String = "") As cVariableMetaData
 
         Dim md As cVariableMetaData = Nothing
 
@@ -870,7 +870,7 @@ Public Class cVariableMetaData
 
 #Region "Operators"
 
-    Friend Sub Attach(ByVal value As cValue)
+    Friend Sub Attach(value As cValue)
 
         Me.m_vartype = value.varType
 

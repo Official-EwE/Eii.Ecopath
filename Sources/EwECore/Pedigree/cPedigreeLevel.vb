@@ -43,7 +43,7 @@ Public Class cPedigreeLevel
     Private m_manager As cPedigreeManager = Nothing
     Private m_iSequence As Integer = 0
 
-    Friend Sub New(ByVal core As cCore, ByVal manager As cPedigreeManager, ByVal iDBID As Integer)
+    Friend Sub New(core As cCore, manager As cPedigreeManager, iDBID As Integer)
         MyBase.New(core)
 
         Dim val As cValue
@@ -61,32 +61,32 @@ Public Class cPedigreeLevel
 
         'VarName
         meta = New cVariableMetaData(0, [Enum].GetValues(GetType(eVarNameFlags)).Length, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.VariableName, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.VariableName, eStatusFlags.Null, eValueTypes.Int, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        Me.m_values.Add(val.varName, val)
 
         'IndexValue
         meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.IndexValue, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.IndexValue, eStatusFlags.Null, eValueTypes.Sng, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        Me.m_values.Add(val.varName, val)
 
         'ConfidenceInterval
         meta = New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.ConfidenceInterval, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.ConfidenceInterval, eStatusFlags.Null, eValueTypes.Sng, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        Me.m_values.Add(val.varName, val)
 
         ' Description
         meta = New cVariableMetaData(60000)
-        val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
-                            meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
+                            meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        Me.m_values.Add(val.varName, val)
 
         'PoolColor
         meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        Me.m_values.Add(val.varName, val)
 
         'Estimated flag
-        val = New cValue(New Boolean, eVarNameFlags.Estimated, eStatusFlags.Null, eValueTypes.Bool)
+        val = New cValue(core, New Boolean, eVarNameFlags.Estimated, eStatusFlags.Null, eValueTypes.Bool)
         Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -103,7 +103,7 @@ Public Class cPedigreeLevel
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.VariableName), eVarNameFlags)
         End Get
-        Set(ByVal value As eVarNameFlags)
+        Set(value As eVarNameFlags)
             Me.SetVariable(eVarNameFlags.VariableName, value)
         End Set
     End Property
@@ -122,7 +122,7 @@ Public Class cPedigreeLevel
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.IndexValue))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.IndexValue, value)
         End Set
     End Property
@@ -137,7 +137,7 @@ Public Class cPedigreeLevel
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.ConfidenceInterval))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.ConfidenceInterval, value)
         End Set
     End Property
@@ -151,7 +151,7 @@ Public Class cPedigreeLevel
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Description))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Description, value)
         End Set
     End Property
@@ -165,7 +165,7 @@ Public Class cPedigreeLevel
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.PoolColor, value)
         End Set
     End Property
@@ -183,7 +183,7 @@ Public Class cPedigreeLevel
         Get
             Return Me.m_iSequence
         End Get
-        Friend Set(ByVal value As Integer)
+        Friend Set(value As Integer)
             Me.m_iSequence = value
         End Set
     End Property
@@ -197,7 +197,7 @@ Public Class cPedigreeLevel
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.Estimated))
         End Get
-        Friend Set(ByVal value As Boolean)
+        Friend Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.Estimated, value)
         End Set
     End Property

@@ -67,7 +67,7 @@ Public Class ucOptions
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing And Me.components IsNot Nothing Then
                 Me.m_cbh.Dispose()
@@ -140,7 +140,7 @@ Public Class ucOptions
         If (Me.m_man Is Nothing) Then Return IOptionsPage.eApplyResultType.Success
 
         Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000 * 60)
-        Me.m_man.UseAbortTimer = m_cbUseTimeout.Checked
+        Me.m_man.UseAbortTimer = Me.m_cbUseTimeout.Checked
         Me.m_man.SkipCyclesPathways = Me.m_cbSkipCyclesPathways.Checked
 
         My.Settings.AutosaveEcosimWoPPR = Me.m_cbAutosaveEcosimWoPPR.Checked

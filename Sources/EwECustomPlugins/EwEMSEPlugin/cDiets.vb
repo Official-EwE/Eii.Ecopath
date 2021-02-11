@@ -55,11 +55,11 @@ Public Class cDiets
     Public Sub New(MSE As cMSE, core As EwECore.cCore)
         Me.m_core = core
         Me.m_MSE = MSE
-        ReDim m_meanProportions(m_core.nLivingGroups - 1, m_core.nGroups - 1)
-        ReDim m_dietPropMultipliers(m_core.nLivingGroups - 1)
-        ReDim m_interacts(m_core.nLivingGroups - 1, m_core.nGroups - 1)
-        ReDim m_meanProportions_imports(m_core.nLivingGroups - 1)
-        ReDim m_interacts_imports(m_core.nLivingGroups - 1)
+        ReDim Me.m_meanProportions(Me.m_core.nLivingGroups - 1, Me.m_core.nGroups - 1)
+        ReDim Me.m_dietPropMultipliers(Me.m_core.nLivingGroups - 1)
+        ReDim Me.m_interacts(Me.m_core.nLivingGroups - 1, Me.m_core.nGroups - 1)
+        ReDim Me.m_meanProportions_imports(Me.m_core.nLivingGroups - 1)
+        ReDim Me.m_interacts_imports(Me.m_core.nLivingGroups - 1)
         Me.Defaults()
     End Sub
 
@@ -120,14 +120,14 @@ Public Class cDiets
         Dim mean As Single = 0
 
         ' Set proper defaults in-memory
-        For iPred As Integer = 1 To m_core.nLivingGroups
-            mean = m_core.EcoPathGroupInputs(iPred).ImpDiet
+        For iPred As Integer = 1 To Me.m_core.nLivingGroups
+            mean = Me.m_core.EcoPathGroupInputs(iPred).ImpDiet
             Me.m_meanProportions_imports(iPred - 1) = mean
             'Me.m_meanProportions(iPred - 1, 0) = mean
             'Me.m_interacts(iPred - 1, 0) = IF(mean > 0, 1, 0)
             Me.m_interacts_imports(iPred - 1) = If(mean > 0, 1, 0)
-            For iPrey As Integer = 1 To m_core.nGroups
-                mean = m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
+            For iPrey As Integer = 1 To Me.m_core.nGroups
+                mean = Me.m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
                 Me.m_meanProportions(iPred - 1, iPrey - 1) = mean
                 Me.m_interacts(iPred - 1, iPrey - 1) = If(mean > 0, 1, 0)
             Next
@@ -155,7 +155,7 @@ Public Class cDiets
             Try
                 Do While Not csv.EndOfStream
                     If csv.ReadNextRecord() Then
-                        m_dietPropMultipliers(cStringUtils.ConvertToInteger(csv(0)) - 1) = cStringUtils.ConvertToInteger(csv(2))
+                        Me.m_dietPropMultipliers(cStringUtils.ConvertToInteger(csv(0)) - 1) = cStringUtils.ConvertToInteger(csv(2))
                     End If
                 Loop
             Catch ex As Exception
@@ -178,10 +178,10 @@ Public Class cDiets
         writer = cMSEUtils.GetWriter(strFilename, False)
         If (writer IsNot Nothing) Then
             writer.WriteLine("PredatorIndexNumber,PredatorIndexName,Multiplier")
-            For iPred As Integer = 1 To m_core.nLivingGroups
+            For iPred As Integer = 1 To Me.m_core.nLivingGroups
                 writer.WriteLine("{0},{1},{2}", _
                                  cStringUtils.ToCSVField(iPred), _
-                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iPred).Name), _
+                                 cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPred).Name), _
                                  cStringUtils.ToCSVField(Me.DietPropMultipliers(iPred - 1)))
             Next
         Else

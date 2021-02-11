@@ -48,11 +48,11 @@ Namespace Utilities
         ''' <param name="strNamespace">The namespace to obtain the resource from.</param>
         ''' <returns>True if successful</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function SaveResourceToFile(ByVal strResourceName As String, _
-                                                  ByVal strFileName As String, _
-                                                  Optional ByVal bOverwrite As Boolean = False, _
-                                                  Optional ByVal ass As Assembly = Nothing, _
-                                                  Optional ByVal strNamespace As String = "") As Boolean
+        Public Shared Function SaveResourceToFile(strResourceName As String, _
+                                                  strFileName As String, _
+                                                  Optional bOverwrite As Boolean = False, _
+                                                  Optional ass As Assembly = Nothing, _
+                                                  Optional strNamespace As String = "") As Boolean
 
             Dim sResource As Stream = Nothing
             Dim sFile As FileStream = Nothing
@@ -119,7 +119,7 @@ Namespace Utilities
         ''' <returns>An <see cref="Icon">Icon</see>, or Nothing if the icon
         ''' could not be found.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetMessageBoxIcon(ByVal mbi As MessageBoxIcon) As Icon
+        Public Shared Function GetMessageBoxIcon(mbi As MessageBoxIcon) As Icon
 
             Dim objIcon As Icon = Nothing
 
@@ -159,10 +159,10 @@ Namespace Utilities
         ''' <param name="culture">The culture info, if any.</param>
         ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Shared Function LoadString(ByVal strName As String, _
-                                   ByVal typeAssembly As Type, _
-                                   Optional ByVal strNamespace As String = "", _
-                                   Optional ByVal culture As CultureInfo = Nothing) As String
+        Shared Function LoadString(strName As String, _
+                                   typeAssembly As Type, _
+                                   Optional strNamespace As String = "", _
+                                   Optional culture As CultureInfo = Nothing) As String
 
             Dim ass As Assembly = Assembly.GetAssembly(typeAssembly)
             Return LoadString(strName, ass, strNamespace, culture)
@@ -189,10 +189,10 @@ Namespace Utilities
         ''' instead.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function LoadString(ByVal strName As String,
-                                          Optional ByVal ass As Assembly = Nothing,
-                                          Optional ByVal strNamespace As String = "",
-                                          Optional ByVal culture As CultureInfo = Nothing) As String
+        Public Shared Function LoadString(strName As String,
+                                          Optional ass As Assembly = Nothing,
+                                          Optional strNamespace As String = "",
+                                          Optional culture As CultureInfo = Nothing) As String
 
             Dim rm As ResourceManager = Nothing
             Dim strRes As String = ""
@@ -214,8 +214,8 @@ Namespace Utilities
         ''' <param name="culture">The culture info, if any.</param>
         ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
         ''' -------------------------------------------------------------------     
-        Public Shared Function LoadString(ByVal strName As String, rm As ResourceManager,
-                                          Optional ByVal culture As CultureInfo = Nothing) As String
+        Public Shared Function LoadString(strName As String, rm As ResourceManager,
+                                          Optional culture As CultureInfo = Nothing) As String
             Dim strRes As String = ""
             If (culture Is Nothing) Then culture = Threading.Thread.CurrentThread.CurrentUICulture
             Try
@@ -240,9 +240,9 @@ Namespace Utilities
         ''' current loaded culture is used.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetResources(Optional ByVal ass As Assembly = Nothing, _
-                                            Optional ByVal strNamespace As String = "", _
-                                            Optional ByVal culture As CultureInfo = Nothing) As Dictionary(Of String, Object)
+        Public Shared Function GetResources(Optional ass As Assembly = Nothing, _
+                                            Optional strNamespace As String = "", _
+                                            Optional culture As CultureInfo = Nothing) As Dictionary(Of String, Object)
 
             Dim dic As New Dictionary(Of String, Object)
             Dim e As System.Collections.IDictionaryEnumerator = Nothing

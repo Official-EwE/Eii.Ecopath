@@ -44,7 +44,7 @@ Namespace Data
         ''' <param name="data">The <see cref="IPluginData">data</see> that is being 
         ''' broadcasted.</param>
         ''' -----------------------------------------------------------------------
-        Function ReceiveData(ByVal strDataName As String, ByVal data As IPluginData) As Boolean
+        Function ReceiveData(strDataName As String, data As IPluginData) As Boolean
 
     End Interface
 

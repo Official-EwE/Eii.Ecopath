@@ -69,10 +69,10 @@ Public Class cMCGraphWrapper
     ''' <param name="settings"><see cref="cIndicatorSettings"/> defined centrally in the plug-in.</param>
     ''' <param name="indicators">List of (hopefully computed) MC indicators.</param>
     ''' -------------------------------------------------------------------
-    Public Shadows Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, _
-                                ByVal zgc As ZedGraph.ZedGraphControl, _
-                                ByVal settings As cIndicatorSettings, _
-                                ByVal indicators As List(Of List(Of cMCIndicators)))
+    Public Shadows Sub Attach(uic As ScientificInterfaceShared.Controls.cUIContext, _
+                                zgc As ZedGraph.ZedGraphControl, _
+                                settings As cIndicatorSettings, _
+                                indicators As List(Of List(Of cMCIndicators)))
         MyBase.Attach(uic, zgc, 1)
         ' Store important bits
         Me.m_settings = settings

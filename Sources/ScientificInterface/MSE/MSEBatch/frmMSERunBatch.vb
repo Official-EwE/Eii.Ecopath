@@ -37,15 +37,15 @@ Public Class frmMSERunBatch
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
 
-        m_BatchManager = Me.UIContext.Core.MSEBatchManager
-        m_MSE = Me.UIContext.Core.MSEManager
-        m_zgh = New cZedGraphHelper()
-        m_zgh.Attach(Me.UIContext, Me.m_ZedGraph)
+        Me.m_BatchManager = Me.UIContext.Core.MSEBatchManager
+        Me.m_MSE = Me.UIContext.Core.MSEManager
+        Me.m_zgh = New cZedGraphHelper()
+        Me.m_zgh.Attach(Me.UIContext, Me.m_ZedGraph)
 
         Me.m_BatchManager.onMessageDelegate = AddressOf Me.onMSEBatchMessage
 
@@ -69,7 +69,7 @@ Public Class frmMSERunBatch
 
     End Sub
 
-    Private Sub onProgress(ByVal ProgressEnum As EwECore.MSEBatchManager.eMSEBatchProgress)
+    Private Sub onProgress(ProgressEnum As EwECore.MSEBatchManager.eMSEBatchProgress)
 
         Try
 
@@ -98,7 +98,7 @@ Public Class frmMSERunBatch
 
     End Sub
 
-    Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
+    Private Sub plotMean(StatsData As cMSEStats, ipane As Integer)
         Dim x As Double, dx As Double
         Dim ppl As PointPairList = Nothing
         Dim li As LineItem = Nothing

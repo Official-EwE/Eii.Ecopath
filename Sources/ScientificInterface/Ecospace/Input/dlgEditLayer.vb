@@ -76,9 +76,9 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="layer"></param>
         ''' <param name="edittype"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
+        Public Sub New(uic As cUIContext,
                        ByRef layer As cDisplayLayerRaster,
-                       ByVal edittype As eLayerEditTypes)
+                       edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
 
@@ -112,7 +112,7 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Me.m_grid.DataName = Me.m_layerOriginal.Name
@@ -162,25 +162,25 @@ Namespace Ecospace.Basemap.Layers
             Me.DrawPreview()
 
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
-                AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
+                AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf Me.OnVisualStyleChanged
             End If
-            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
-            AddHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
+            AddHandler Me.m_fpName.OnValueChanged, AddressOf Me.OnPropChanged
+            AddHandler Me.m_fpUnits.OnValueChanged, AddressOf Me.OnPropChanged
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
-                RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
+                RemoveHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf Me.OnVisualStyleChanged
             End If
 
             Me.m_qehGrid.Detach()
             Me.m_qehGrid = Nothing
             Me.m_grid.UIContext = Nothing
 
-            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
-            RemoveHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
+            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf Me.OnPropChanged
+            RemoveHandler Me.m_fpUnits.OnValueChanged, AddressOf Me.OnPropChanged
 
             Me.m_fpName.Release()
             Me.m_fpWeight.Release()
@@ -199,7 +199,7 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Local events "
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
             If Not Me.ApplyChanges() Then Return
@@ -208,7 +208,7 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles Cancel_Button.Click
 
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -216,14 +216,14 @@ Namespace Ecospace.Basemap.Layers
 
         End Sub
 
-        Private Sub OnApply(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnApply(sender As Object, e As System.EventArgs) _
             Handles Apply_Button.Click
 
             Me.ApplyChanges()
 
         End Sub
 
-        Private Sub OnVisualStyleChanged(ByVal sender As ucEditVisualStyle)
+        Private Sub OnVisualStyleChanged(sender As ucEditVisualStyle)
 
             ' Update work layer Visual Style
             Me.m_ucEditVisualStyle.Apply(Me.m_layerWork.Renderer.VisualStyle)
@@ -499,7 +499,7 @@ Namespace Ecospace.Basemap.Layers
             e.DrawBackground()
 
             If (e.Index >= 0) Then
-                Dim item As cDisplayLayerRaster = CType(m_cmbCopyStyleFrom.Items(e.Index), cDisplayLayerRaster)
+                Dim item As cDisplayLayerRaster = CType(Me.m_cmbCopyStyleFrom.Items(e.Index), cDisplayLayerRaster)
                 If (item IsNot Nothing) Then
                     ' ToDo: add R2L support
                     Dim rc As New Rectangle(2, e.Bounds.Top, e.Bounds.Width - 30, e.Bounds.Height)

@@ -43,13 +43,13 @@ Namespace PreyToPredator
         End Function
 
 
-        Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                         ByVal datagrid As DataGridView,
-                                         ByVal graph As ZedGraphControl,
-                                         ByVal plot As ucPlot,
-                                         ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                         ByVal uic As cUIContext) As Boolean
+        Public Overrides Function Attach(manager As cNetworkManager,
+                                         datagrid As DataGridView,
+                                         graph As ZedGraphControl,
+                                         plot As ucPlot,
+                                         toolstrip As ToolStrip,
+                                         info As Control,
+                                         uic As cUIContext) As Boolean
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
 
             Me.Grid.Visible = bSucces
@@ -62,61 +62,61 @@ Namespace PreyToPredator
 
         Public Overrides Sub DisplayData()
 
-            Grid.ColumnCount = 2
+            Me.Grid.ColumnCount = 2
 
-            SetGridColumnPropertyDefault(Grid)
+            SetGridColumnPropertyDefault(Me.Grid)
 
-            Grid.Columns(0).Frozen = True
-            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+            Me.Grid.Columns(0).Frozen = True
+            Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
 
-            Grid.Columns(1).Width = 660
-            Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+            Me.Grid.Columns(1).Width = 660
+            Me.Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
         End Sub
-        Public Overrides Sub UpdateData(ByVal iSel1 As Integer, ByVal iSel2 As Integer)
+        Public Overrides Sub UpdateData(iSel1 As Integer, iSel2 As Integer)
 
             Dim astrRowContent() As String
 
-            Grid.RowHeadersVisible = False
+            Me.Grid.RowHeadersVisible = False
 
-            ReDim astrRowContent(Grid.Columns.Count)
+            ReDim astrRowContent(Me.Grid.Columns.Count)
             Me.NetworkManager.FindPathwaysFromPrey(iSel1)
             If Me.NetworkManager.PathWays.Count > 0 Then
-                Grid.RowCount = Me.NetworkManager.PathWays.Count + 1
-                Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-                Grid.Rows(0).Frozen = True
-                Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+                Me.Grid.RowCount = Me.NetworkManager.PathWays.Count + 1
+                Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+                Me.Grid.Rows(0).Frozen = True
+                Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
                 astrRowContent(0) = My.Resources.COL_HDR_PATH_NUM
                 astrRowContent(1) = My.Resources.COL_HDR_PATH
-                Grid.Rows(0).SetValues(astrRowContent)
-                Grid.Rows(0).Visible = True
+                Me.Grid.Rows(0).SetValues(astrRowContent)
+                Me.Grid.Rows(0).Visible = True
 
                 For intPathwayIndex As Integer = 0 To Me.NetworkManager.PathWays.Count - 1
                     astrRowContent(0) = CStr(intPathwayIndex + 1)
                     astrRowContent(1) = CStr(Me.NetworkManager.PathWays.Item(intPathwayIndex))
-                    Grid.Rows(intPathwayIndex + 1).SetValues(astrRowContent)
-                    Grid.Rows(intPathwayIndex + 1).Visible = True
+                    Me.Grid.Rows(intPathwayIndex + 1).SetValues(astrRowContent)
+                    Me.Grid.Rows(intPathwayIndex + 1).Visible = True
                 Next
             Else
-                Grid.RowCount = 2
-                Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-                Grid.Rows(0).Frozen = True
-                Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+                Me.Grid.RowCount = 2
+                Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+                Me.Grid.Rows(0).Frozen = True
+                Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
                 astrRowContent(0) = My.Resources.COL_HDR_PATH_NUM
                 astrRowContent(1) = My.Resources.COL_HDR_PATH
-                Grid.Rows(0).SetValues(astrRowContent)
-                Grid.Rows(0).Visible = True
+                Me.Grid.Rows(0).SetValues(astrRowContent)
+                Me.Grid.Rows(0).Visible = True
 
                 astrRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
                 astrRowContent(1) = ""
-                Grid.Rows(1).SetValues(astrRowContent)
-                Grid.Rows(1).Visible = True
+                Me.Grid.Rows(1).SetValues(astrRowContent)
+                Me.Grid.Rows(1).Visible = True
             End If
-            Grid.ClearSelection()
+            Me.Grid.ClearSelection()
         End Sub
 
     End Class

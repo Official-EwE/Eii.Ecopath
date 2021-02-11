@@ -47,17 +47,17 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             Try
                 If bDisposing Then
                     If (Me.m_fpValue IsNot Nothing) Then
-                        RemoveHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
+                        RemoveHandler Me.m_fpValue.OnValueChanged, AddressOf Me.OnValueChanged
                         Me.m_fpValue.Release()
                         Me.m_fpValue = Nothing
                     End If
 
-                    If components IsNot Nothing Then
-                        components.Dispose()
+                    If Me.components IsNot Nothing Then
+                        Me.components.Dispose()
                     End If
                 End If
             Finally
@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub Initialize(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub Initialize(editor As cLayerEditorRaster)
             MyBase.Initialize(editor)
 
             Dim edt As cLayerEditorRaster = Me.Editor
@@ -112,7 +112,7 @@ Namespace Controls.Map.Layers
                 Me.m_nudValue.Increment = CDec((md.Max - md.Min) / 100)
             End If
 
-            AddHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
+            AddHandler Me.m_fpValue.OnValueChanged, AddressOf Me.OnValueChanged
 
         End Sub
 
@@ -122,16 +122,16 @@ Namespace Controls.Map.Layers
             End Get
             Set(value As cUIContext)
                 If (Me.UIContext IsNot Nothing) Then
-                    RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
                 MyBase.UIContext = value
                 If (Me.UIContext IsNot Nothing) Then
-                    AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
             End Set
         End Property
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             ' Sanity check
@@ -189,7 +189,7 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -202,22 +202,22 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnValueChanged(sender As Object, e As System.EventArgs)
             Me.Editor.CellValue = Me.m_fpValue.Value
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(cf As cStyleGuide.eChangeType)
             If ((cf And cStyleGuide.eChangeType.NumberFormatting) > 0) Then
                 Me.UpdateContent(Me.Editor)
             End If
         End Sub
 
-        Private Sub OnSmooth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSmooth(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSmooth.Click
             Me.Editor.Smooth()
         End Sub
 
-        Private Sub OnResetLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnResetLayer(sender As System.Object, e As System.EventArgs) _
             Handles m_btnReset.Click
             Me.Editor.Reset()
         End Sub
@@ -231,7 +231,7 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Protected Sub EditLayer(ByVal edittype As eLayerEditTypes)
+        Protected Sub EditLayer(edittype As eLayerEditTypes)
             Try
                 Dim cmd As cEditLayerCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                 cmd.Invoke(Me.Layer, Nothing, edittype)

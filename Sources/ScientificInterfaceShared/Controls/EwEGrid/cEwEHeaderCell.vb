@@ -41,14 +41,14 @@ Namespace Controls.EwEGrid
 
 #Region " Construction "
 
-        Public Sub New(Optional ByVal objValue As Object = Nothing)
+        Public Sub New(Optional objValue As Object = Nothing)
             MyBase.New(objValue, GetType(String))
             ' Disable edit
             Me.DataModel.EnableEdit = False
             Me.SetUnits("")
         End Sub
 
-        Public Sub New(ByVal strValue As String, ByVal strUnit As String)
+        Public Sub New(strValue As String, strUnit As String)
             Me.New(strValue)
             Me.SetUnits(strUnit)
         End Sub
@@ -66,7 +66,7 @@ Namespace Controls.EwEGrid
             Get
                 Return (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable Or MyBase.Style)
             End Get
-            Set(ByVal styleNew As cStyleGuide.eStyleFlags)
+            Set(styleNew As cStyleGuide.eStyleFlags)
                 MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
             End Set
         End Property
@@ -85,7 +85,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="strUnit">The unit to format into the header cell.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SetUnits(ByVal strUnit As String)
+        Public Sub SetUnits(strUnit As String)
             Me.m_strUnit = strUnit
         End Sub
 
@@ -126,7 +126,7 @@ Namespace Controls.EwEGrid
                 If (strVal.Contains("{0}")) Then Return cStringUtils.Localize(strVal, strUnit)
                 Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strVal, strUnit)
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 If (TypeOf value Is String) Then
                     Dim strValue As String = CStr(value)
                     If strValue.IndexOf("|"c) > -1 Then

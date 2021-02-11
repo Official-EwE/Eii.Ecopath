@@ -17,32 +17,6 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: cEcotracerModelParameters.vb,v $
-' Revision 1.2  2009/01/16 18:30:25  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.5  2008/05/29 22:22:46  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.4  2008/01/08 11:29:04  jeroens
-' Woops
-'
-' Revision 1.3  2008/01/06 11:00:46  jeroens
-' * Inflow and outflow locked for input
-'
-' Revision 1.2  2007/12/05 03:48:45  jeroens
-' * Added forcing no support
-'
-' Revision 1.1  2007/11/26 02:06:48  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
@@ -64,39 +38,39 @@ Public Class cEcotracerModelParameters
 
         Try
 
-            m_dataType = eDataTypes.EcotracerModelParameters
-            m_coreComponent = eCoreComponentType.Ecotracer
+            Me.m_dataType = eDataTypes.EcotracerModelParameters
+            Me.m_coreComponent = eCoreComponentType.Ecotracer
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' CZero
-            val = New cValue(New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(theCore, New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' CInflow
-            val = New cValue(New Single, eVarNameFlags.CInflow, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(theCore, New Single, eVarNameFlags.CInflow, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' COutflow
-            val = New cValue(New Single, eVarNameFlags.COutflow, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(theCore, New Single, eVarNameFlags.COutflow, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' CDecay
-            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(theCore, New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'ConForceNumber
-            val = New cValue(New Integer, eVarNameFlags.ConForceNumber, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(theCore, New Integer, eVarNameFlags.ConForceNumber, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'Max number of time steps
-            val = New cValue(New Integer, eVarNameFlags.ConMaxTimeSteps, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(theCore, New Integer, eVarNameFlags.ConMaxTimeSteps, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -127,41 +101,41 @@ Public Class cEcotracerModelParameters
 
     Public Property CZero() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.CZero))
+            Return CSng(Me.GetVariable(eVarNameFlags.CZero))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CZero, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CZero, value)
         End Set
     End Property
 
     Public Property CInflow() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.CInflow))
+            Return CSng(Me.GetVariable(eVarNameFlags.CInflow))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CInflow, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CInflow, value)
         End Set
     End Property
 
     Public Property COutflow() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.COutflow))
+            Return CSng(Me.GetVariable(eVarNameFlags.COutflow))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.COutflow, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.COutflow, value)
         End Set
     End Property
 
     Public Property CDecay() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.CPhysicalDecayRate))
+            Return CSng(Me.GetVariable(eVarNameFlags.CPhysicalDecayRate))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CPhysicalDecayRate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
     End Property
 
@@ -170,10 +144,10 @@ Public Class cEcotracerModelParameters
     ''' </summary>
     Public Property ConForceNumber() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.ConForceNumber))
+            Return CInt(Me.GetVariable(eVarNameFlags.ConForceNumber))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.ConForceNumber, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.ConForceNumber, value)
         End Set
     End Property
 
@@ -182,10 +156,10 @@ Public Class cEcotracerModelParameters
 
     Public Property MaxTimeSteps() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.ConMaxTimeSteps))
+            Return CInt(Me.GetVariable(eVarNameFlags.ConMaxTimeSteps))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.ConMaxTimeSteps, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.ConMaxTimeSteps, value)
         End Set
     End Property
 
@@ -196,11 +170,11 @@ Public Class cEcotracerModelParameters
     Public Property CZeroStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CZero)
+            Return Me.GetStatus(eVarNameFlags.CZero)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CZero, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CZero, value)
         End Set
 
     End Property
@@ -208,11 +182,11 @@ Public Class cEcotracerModelParameters
     Public Property CInflowStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CInflow)
+            Return Me.GetStatus(eVarNameFlags.CInflow)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CInflow, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CInflow, value)
         End Set
 
     End Property
@@ -220,11 +194,11 @@ Public Class cEcotracerModelParameters
     Public Property COutflowStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.COutflow)
+            Return Me.GetStatus(eVarNameFlags.COutflow)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.COutflow, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.COutflow, value)
         End Set
 
     End Property
@@ -232,11 +206,11 @@ Public Class cEcotracerModelParameters
     Public Property CDecayStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CPhysicalDecayRate)
+            Return Me.GetStatus(eVarNameFlags.CPhysicalDecayRate)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
 
     End Property
@@ -244,11 +218,11 @@ Public Class cEcotracerModelParameters
     Public Property MaxTimeStepsStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.ConMaxTimeSteps)
+            Return Me.GetStatus(eVarNameFlags.ConMaxTimeSteps)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.ConMaxTimeSteps, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.ConMaxTimeSteps, value)
         End Set
 
     End Property

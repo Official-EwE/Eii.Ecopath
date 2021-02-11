@@ -59,7 +59,7 @@ Public Class cTransectVectorEditor
         Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
         Dim data As cTransectDatastructures = td.Data
 
-        If Not TransectAt(e.Location, map, Me.m_transectEdit, Me.m_transectEditMode) Then
+        If Not Me.TransectAt(e.Location, map, Me.m_transectEdit, Me.m_transectEditMode) Then
 
             ' Create a new transect frin existung transect names
             Dim lNames As New List(Of String)
@@ -145,7 +145,7 @@ Public Class cTransectVectorEditor
         Dim editmode As eEditModeType = eEditModeType.NotSet
         Dim ptMap As PointF = map.PointToColRowExact(ptMouse)
 
-        If TransectAt(ptMouse, map, t, editmode) Then
+        If Me.TransectAt(ptMouse, map, t, editmode) Then
             Return Cursors.Hand
         End If
         Return Cursors.Default
@@ -163,13 +163,13 @@ Public Class cTransectVectorEditor
         For Each t In data.Transects
 
             ptStart = map.LonLatToPoint(t.Start)
-            If IsNear(ptStart, ptMouse, sDist) Then
+            If Me.IsNear(ptStart, ptMouse, sDist) Then
                 editMode = eEditModeType.Start
                 Return True
             End If
 
             ptEnd = map.LonLatToPoint(t.End)
-            If IsNear(ptEnd, ptMouse, sDist) Then
+            If Me.IsNear(ptEnd, ptMouse, sDist) Then
                 editMode = eEditModeType.End
                 Return True
             End If

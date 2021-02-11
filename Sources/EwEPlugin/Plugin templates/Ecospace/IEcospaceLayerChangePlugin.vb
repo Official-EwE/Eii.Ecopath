@@ -34,7 +34,7 @@ Public Interface IEcospaceLayerChangePlugin
     ''' <param name="iTime">Cumulative time step.</param>
     ''' <param name="dt">Absolute time for the time step.</param>
     ''' <param name="layer">The Ecospace basemap layer that is about to receive data.</param>
-    Sub EcospaceBeginLayerChange(ByVal iTime As Integer, dt As Date, layer As Object)
+    Sub EcospaceBeginLayerChange(iTime As Integer, dt As Date, layer As Object)
 
     ''' <summary>
     ''' An Ecospace layer has just received data through the spatial-temporal
@@ -44,6 +44,6 @@ Public Interface IEcospaceLayerChangePlugin
     ''' <param name="iTime">Cumulative time step.</param>
     ''' <param name="dt">Absolute time for the time step.</param>
     ''' <param name="layer">The Ecospace basemap layer that received data.</param>
-    Sub EcospaceEndLayerChange(ByVal iTime As Integer, dt As Date, layer As Object)
+    Sub EcospaceEndLayerChange(iTime As Integer, dt As Date, layer As Object)
 
 End Interface

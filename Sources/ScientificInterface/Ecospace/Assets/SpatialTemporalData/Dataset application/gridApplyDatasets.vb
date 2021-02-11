@@ -101,7 +101,7 @@ Namespace Ecospace.Controls
                     Me.m_man = Me.UIContext.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
 
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "gridDatasets"
@@ -188,7 +188,7 @@ Namespace Ecospace.Controls
             Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
             Dim ds As ISpatialDataSet = conn.Dataset
             Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
-            Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
+            Dim iNumTS As Integer = Math.Max(Me.Core.nEcospaceTimeSteps, 1)
             Dim strVal As String = ""
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
 
@@ -255,7 +255,7 @@ Namespace Ecospace.Controls
             End Get
             Set(value As cSpatialDataConnection)
                 For iRow As Integer = 1 To Me.RowsCount
-                    If (ReferenceEquals(value, ConnectionAtRow(iRow))) Then
+                    If (ReferenceEquals(value, Me.ConnectionAtRow(iRow))) Then
                         Me.SelectRow(iRow)
                         Return
                     End If
@@ -264,7 +264,7 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Private Property ConnectionAtRow(ByVal iRow As Integer) As cSpatialDataConnection
+        Private Property ConnectionAtRow(iRow As Integer) As cSpatialDataConnection
             Get
                 If (iRow < 1) Then Return Nothing
                 Return DirectCast(Me.Rows(iRow).Tag, cSpatialDataConnection)

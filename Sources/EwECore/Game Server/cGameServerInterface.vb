@@ -33,79 +33,79 @@ Public Class cGameServerInterface
     Private m_dctCoreData As Dictionary(Of EwEUtils.Core.eDataTypes, GetCoreIOObjectDelegate)
 
     Public Sub New(ByRef theCore As cCore)
-        m_core = theCore
+        Me.m_core = theCore
     End Sub
 
     Public Delegate Function GetCoreIOObjectDelegate() As cCoreInputOutputBase
 
     Friend Sub Init()
 
-        m_dctCoreListData = New Dictionary(Of EwEUtils.Core.eDataTypes, cCoreInputOutputList(Of EwECore.cCoreInputOutputBase))
-        m_dctCoreData = New Dictionary(Of EwEUtils.Core.eDataTypes, GetCoreIOObjectDelegate)
+        Me.m_dctCoreListData = New Dictionary(Of EwEUtils.Core.eDataTypes, cCoreInputOutputList(Of EwECore.cCoreInputOutputBase))
+        Me.m_dctCoreData = New Dictionary(Of EwEUtils.Core.eDataTypes, GetCoreIOObjectDelegate)
         'ecopath
-        m_dctCoreListData.Add(eDataTypes.EcoPathGroupInput, m_core.m_EcoPathInputs)
-        m_dctCoreListData.Add(eDataTypes.EcoPathGroupOutput, m_core.m_EcoPathOutputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcoPathGroupInput, Me.m_core.m_EcoPathInputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcoPathGroupOutput, Me.m_core.m_EcoPathOutputs)
 
-        m_dctCoreListData.Add(eDataTypes.FleetInput, m_core.m_EcopathFleetsInput)
+        Me.m_dctCoreListData.Add(eDataTypes.FleetInput, Me.m_core.m_EcopathFleetsInput)
 
         'ecosim
-        m_dctCoreListData.Add(eDataTypes.EcoSimGroupOutput, m_core.m_EcoSimGroupOutputs)
-        m_dctCoreListData.Add(eDataTypes.EcosimFleetOutput, m_core.m_EcosimFleetOutputs)
-        m_dctCoreListData.Add(eDataTypes.EcoSimScenario, m_core.m_EcoSimScenarios)
-        m_dctCoreListData.Add(eDataTypes.MSEFleetInput, m_core.MSEManager.EcopathFleetInputs)
-        m_dctCoreListData.Add(eDataTypes.EcoSimGroupInput, m_core.m_EcoSimGroups)
+        Me.m_dctCoreListData.Add(eDataTypes.EcoSimGroupOutput, Me.m_core.m_EcoSimGroupOutputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcosimFleetOutput, Me.m_core.m_EcosimFleetOutputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcoSimScenario, Me.m_core.m_EcoSimScenarios)
+        Me.m_dctCoreListData.Add(eDataTypes.MSEFleetInput, Me.m_core.MSEManager.EcopathFleetInputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcoSimGroupInput, Me.m_core.m_EcoSimGroups)
 
         'EcoSpace
-        m_dctCoreListData.Add(eDataTypes.EcospaceRegionResults, m_core.m_EcospaceRegionSummaries)
-        m_dctCoreListData.Add(eDataTypes.EcospaceGroupOuput, m_core.m_EcospaceGroupOuputs)
-        m_dctCoreListData.Add(eDataTypes.EcospaceFleetOuput, m_core.m_EcospaceFleetOutputs)
-        m_dctCoreListData.Add(eDataTypes.EcospaceMPA, m_core.m_EcospaceMPAs)
-        m_dctCoreListData.Add(eDataTypes.EcospaceHabitat, m_core.m_EcospaceHabitats)
+        Me.m_dctCoreListData.Add(eDataTypes.EcospaceRegionResults, Me.m_core.m_EcospaceRegionSummaries)
+        Me.m_dctCoreListData.Add(eDataTypes.EcospaceGroupOuput, Me.m_core.m_EcospaceGroupOuputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcospaceFleetOuput, Me.m_core.m_EcospaceFleetOutputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcospaceMPA, Me.m_core.m_EcospaceMPAs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcospaceHabitat, Me.m_core.m_EcospaceHabitats)
 
         'MSE 
-        m_dctCoreListData.Add(eDataTypes.MSEGroupOutputs, Me.m_core.MSEManager.GroupOutputs)
-        m_dctCoreListData.Add(eDataTypes.MSEBiomassStats, Me.m_core.MSEManager.BiomassStats)
+        Me.m_dctCoreListData.Add(eDataTypes.MSEGroupOutputs, Me.m_core.MSEManager.GroupOutputs)
+        Me.m_dctCoreListData.Add(eDataTypes.MSEBiomassStats, Me.m_core.MSEManager.BiomassStats)
 
-        m_dctCoreListData.Add(eDataTypes.MSEGroupInput, Me.m_core.MSEManager.GroupInputs)
+        Me.m_dctCoreListData.Add(eDataTypes.MSEGroupInput, Me.m_core.MSEManager.GroupInputs)
 
-        m_dctCoreData.Add(eDataTypes.MSEOutput, New GetCoreIOObjectDelegate(AddressOf Me.m_core.MSEManager.Output))
-        m_dctCoreData.Add(eDataTypes.EcosimOutput, New GetCoreIOObjectDelegate(AddressOf Me.m_core.EcosimOutputs))
+        Me.m_dctCoreData.Add(eDataTypes.MSEOutput, New GetCoreIOObjectDelegate(AddressOf Me.m_core.MSEManager.Output))
+        Me.m_dctCoreData.Add(eDataTypes.EcosimOutput, New GetCoreIOObjectDelegate(AddressOf Me.m_core.EcosimOutputs))
 
     End Sub
 
-    Public ReadOnly Property CoreDataList(ByVal DataType As EwEUtils.Core.eDataTypes) As cCoreInputOutputList(Of EwECore.cCoreInputOutputBase)
+    Public ReadOnly Property CoreDataList(DataType As EwEUtils.Core.eDataTypes) As cCoreInputOutputList(Of EwECore.cCoreInputOutputBase)
         Get
             Dim data As cCoreInputOutputList(Of EwECore.cCoreInputOutputBase)
             If Me.m_dctCoreListData.ContainsKey(DataType) Then
-                data = m_dctCoreListData.Item(DataType)
+                data = Me.m_dctCoreListData.Item(DataType)
             End If
             Return data
         End Get
     End Property
 
-    Public ReadOnly Property CoreData(ByVal DataType As EwEUtils.Core.eDataTypes) As EwECore.cCoreInputOutputBase
+    Public ReadOnly Property CoreData(DataType As EwEUtils.Core.eDataTypes) As EwECore.cCoreInputOutputBase
         Get
             Dim data As EwECore.cCoreInputOutputBase
             If Me.m_dctCoreData.ContainsKey(DataType) Then
-                data = m_dctCoreData.Item(DataType).Invoke
+                data = Me.m_dctCoreData.Item(DataType).Invoke
             End If
             Debug.Assert(data IsNot Nothing, Me.ToString & ".CoreData( " & DataType.ToString & " ) not found in core data!")
             Return data
         End Get
     End Property
 
-    Public ReadOnly Property CoreData(ByVal DataType As EwEUtils.Core.eDataTypes, ByVal Index As Integer) As EwECore.cCoreInputOutputBase
+    Public ReadOnly Property CoreData(DataType As EwEUtils.Core.eDataTypes, Index As Integer) As EwECore.cCoreInputOutputBase
         Get
             Dim data As EwECore.cCoreInputOutputBase
             If Me.m_dctCoreListData.ContainsKey(DataType) Then
-                data = m_dctCoreListData.Item(DataType).Item(Index)
+                data = Me.m_dctCoreListData.Item(DataType).Item(Index)
             End If
             Debug.Assert(data IsNot Nothing, Me.ToString & ".CoreData( " & DataType.ToString & ", " & Index.ToString & " ) not found in core data!")
             Return data
         End Get
     End Property
 
-    Public Function ContainKey(ByVal DataType As EwEUtils.Core.eDataTypes) As Boolean
+    Public Function ContainKey(DataType As EwEUtils.Core.eDataTypes) As Boolean
 
         If Me.m_dctCoreListData.ContainsKey(DataType) Or Me.m_dctCoreData.ContainsKey(DataType) Then
             Return True

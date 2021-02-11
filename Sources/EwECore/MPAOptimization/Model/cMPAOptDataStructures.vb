@@ -65,15 +65,15 @@ Public Class cMPAOptDataStructures
 
     Public Sub New()
 
-        SearchType = eMPAOptimizationModels.RandomSearch
+        Me.SearchType = eMPAOptimizationModels.RandomSearch
 
-        nIterations = 100
-        stepSize = 10
-        MaxArea = 20
-        MinArea = 20
-        iMPAtoUse = 1
+        Me.nIterations = 100
+        Me.stepSize = 10
+        Me.MaxArea = 20
+        Me.MinArea = 20
+        Me.iMPAtoUse = 1
 
-        m_cells = New List(Of cMPACell)
+        Me.m_cells = New List(Of cMPACell)
 
     End Sub
 
@@ -82,35 +82,35 @@ Public Class cMPAOptDataStructures
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        CurRow = 0
-        CurCol = 0
-        bestrow = 0
-        bestcol = 0
+        Me.CurRow = 0
+        Me.CurCol = 0
+        Me.bestrow = 0
+        Me.bestcol = 0
 
-        objFuncEconomicValue = 0
-        objFuncMandatedValue = 0
-        objFuncSocialValue = 0
-        objFuncEcologicalValue = 0
-        objFuncAreaBorder = 0
-        objFuncBiodiversity = 0
-        objFuncTotal = 0
-
-    End Sub
-
-    Public Sub setObjectiveValues(ByVal SearchData As cSearchDatastructures)
+        Me.objFuncEconomicValue = 0
+        Me.objFuncMandatedValue = 0
+        Me.objFuncSocialValue = 0
+        Me.objFuncEcologicalValue = 0
+        Me.objFuncAreaBorder = 0
+        Me.objFuncBiodiversity = 0
+        Me.objFuncTotal = 0
 
     End Sub
 
-    Public Sub AddCell(ByVal Row As Integer, ByVal col As Integer, ByVal iMPA As Integer)
-        m_cells.Add(New cMPACell(Row, col, iMPA))
+    Public Sub setObjectiveValues(SearchData As cSearchDatastructures)
+
+    End Sub
+
+    Public Sub AddCell(Row As Integer, col As Integer, iMPA As Integer)
+        Me.m_cells.Add(New cMPACell(Row, col, iMPA))
     End Sub
 
     Public Sub ClearCells()
-        m_cells.Clear()
+        Me.m_cells.Clear()
     End Sub
 
     Public Function Cells() As List(Of cMPACell)
-        Return m_cells
+        Return Me.m_cells
     End Function
 
     Public ReadOnly Property MinRunLength() As Integer
@@ -132,10 +132,10 @@ Public Class cMPACell
     Public Col As Integer
     Public iMPA As Integer
 
-    Public Sub New(ByVal theRow As Integer, ByVal theCol As Integer, ByVal theMPAIndex As Integer)
-        Row = theRow
-        Col = theCol
-        iMPA = theMPAIndex
+    Public Sub New(theRow As Integer, theCol As Integer, theMPAIndex As Integer)
+        Me.Row = theRow
+        Me.Col = theCol
+        Me.iMPA = theMPAIndex
     End Sub
 
 End Class

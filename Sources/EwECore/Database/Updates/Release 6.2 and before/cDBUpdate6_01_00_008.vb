@@ -70,7 +70,7 @@ Friend Class cDBUpdate6_01_00_008
 
     End Function
 
-    Private Function AddStanza(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddStanza(db As cEwEDatabase) As Boolean
 
         Return db.Execute("ALTER TABLE Stanza ADD COLUMN LeadingLifeStage LONG")
 

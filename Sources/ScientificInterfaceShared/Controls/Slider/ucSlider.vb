@@ -52,12 +52,12 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iIndex">Optional index for the knob to access.</param>
         ''' -------------------------------------------------------------------
-        Public Property Value(Optional ByVal iIndex As Integer = 0) As Integer
+        Public Property Value(Optional iIndex As Integer = 0) As Integer
             Get
                 If (iIndex < 0 Or iIndex >= Me.NumKnobs) Then Return cCore.NULL_VALUE
                 Return Me.m_aValues(iIndex)
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (iIndex < 0 Or iIndex >= Me.NumKnobs) Then Return
                 value = Math.Max(Me.Minimum, Math.Min(value, Me.Maximum))
                 If (value <> Me.m_aValues(iIndex)) Then
@@ -81,7 +81,7 @@ Namespace Controls
             Get
                 Return Me.m_iValueMin
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iValueMin = Math.Min(Me.Maximum - 1, value)
                 Me.Value = Me.Value
             End Set
@@ -96,7 +96,7 @@ Namespace Controls
             Get
                 Return Me.m_iValueMax
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iValueMax = Math.Max(Me.Minimum + 1, value)
                 Me.Value = Me.Value
             End Set
@@ -112,7 +112,7 @@ Namespace Controls
             Get
                 Return Me.m_aValues.Length
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 ReDim Preserve Me.m_aValues(Math.Max(1, value) - 1)
                 Me.CurrentKnob = Math.Min(Me.m_iKnobCurr, Me.m_aValues.Length - 1)
                 Me.Invalidate()
@@ -134,7 +134,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iKnob">Index of the knob to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Remove(ByVal iKnob As Integer)
+        Public Sub Remove(iKnob As Integer)
             For i As Integer = 1 To Me.NumKnobs - 1
                 If (i > iKnob) Then
                     Me.m_aValues(i - 1) = Me.m_aValues(i)
@@ -152,7 +152,7 @@ Namespace Controls
             Get
                 Return Me.m_iKnobCurr
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iKnobCurr = Math.Max(0, Math.Min(Me.NumKnobs - 1, value))
                 Me.Invalidate()
             End Set
@@ -165,7 +165,7 @@ Namespace Controls
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Public Event ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Public Event ValueChanged(sender As Object, e As System.EventArgs)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -174,29 +174,29 @@ Namespace Controls
         ''' <param name="sender"></param>
         ''' <param name="e">Args informing which knob was selected.</param>
         ''' -------------------------------------------------------------------
-        Public Event CurrentKnobChanged(ByVal sender As Object, ByVal e As SliderKnobChangedEventArgs)
+        Public Event CurrentKnobChanged(sender As Object, e As SliderKnobChangedEventArgs)
 
 #End Region ' Public interfaces
 
 #Region " Events "
 
-        Protected Overrides Sub OnGotFocus(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnGotFocus(e As System.EventArgs)
             Me.Invalidate()
             MyBase.OnGotFocus(e)
         End Sub
 
-        Protected Overrides Sub OnKeyDown(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Protected Overrides Sub OnKeyDown(e As System.Windows.Forms.KeyEventArgs)
             If e.KeyCode = Keys.Left Then Me.Value(Me.m_iKnobCurr) -= 1 : e.Handled = True : e.SuppressKeyPress = True
             If e.KeyCode = Keys.Right Then Me.Value(Me.m_iKnobCurr) += 1 : e.Handled = True : e.SuppressKeyPress = True
             MyBase.OnKeyDown(e)
         End Sub
 
-        Protected Overrides Sub OnLostFocus(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLostFocus(e As System.EventArgs)
             Me.Invalidate()
             MyBase.OnLostFocus(e)
         End Sub
 
-        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseDown(e)
             Me.Capture = True
 
@@ -225,18 +225,18 @@ Namespace Controls
 
         End Sub
 
-        Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseMove(e)
             If (Me.Capture = False) Then Return
             Me.Value(Me.m_iKnobCurr) = Me.GetValueAtPoint(e.Location)
         End Sub
 
-        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseUp(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseUp(e)
             Me.Capture = False
         End Sub
 
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
 
             ' Draw background
@@ -248,12 +248,12 @@ Namespace Controls
             Dim pen As Pen
 
             ' Draw track
-            e.Graphics.DrawLine(SystemPens.ControlDark, CInt(Me.Margin.Left + cKNOBSIZE / 2), 9, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 9)
+            e.Graphics.DrawLine(SystemPens.ControlDark, CInt(Me.Margin.Left + Me.cKNOBSIZE / 2), 9, CInt(Me.Width - Me.Margin.Right - Me.cKNOBSIZE / 2), 9)
             If Me.Enabled Then pen = SystemPens.ControlDarkDark Else pen = SystemPens.Control
-            e.Graphics.DrawLine(pen, CInt(Me.Margin.Left + cKNOBSIZE / 2), 10, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 10)
+            e.Graphics.DrawLine(pen, CInt(Me.Margin.Left + Me.cKNOBSIZE / 2), 10, CInt(Me.Width - Me.Margin.Right - Me.cKNOBSIZE / 2), 10)
             If Me.Enabled Then pen = SystemPens.ControlLight Else pen = SystemPens.Control
-            e.Graphics.DrawLine(pen, CInt(Me.Margin.Left + cKNOBSIZE / 2), 11, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 11)
-            e.Graphics.DrawLine(SystemPens.ControlLightLight, CInt(Me.Margin.Left + cKNOBSIZE / 2), 12, CInt(Me.Width - Me.Margin.Right - cKNOBSIZE / 2), 12)
+            e.Graphics.DrawLine(pen, CInt(Me.Margin.Left + Me.cKNOBSIZE / 2), 11, CInt(Me.Width - Me.Margin.Right - Me.cKNOBSIZE / 2), 11)
+            e.Graphics.DrawLine(SystemPens.ControlLightLight, CInt(Me.Margin.Left + Me.cKNOBSIZE / 2), 12, CInt(Me.Width - Me.Margin.Right - Me.cKNOBSIZE / 2), 12)
 
             ' Draw knobs
             ' - Make sure current knob is positioned at the end of the list
@@ -275,9 +275,9 @@ Namespace Controls
                 ' 0     4
                 aptKnobOutline(0) = New Point(iX0, 14)
                 aptKnobOutline(1) = New Point(iX0, 8)
-                aptKnobOutline(2) = New Point(iX0 + CInt(cKNOBSIZE / 2), CInt(8 - cKNOBSIZE / 2))
-                aptKnobOutline(3) = New Point(iX0 + cKNOBSIZE, 8)
-                aptKnobOutline(4) = New Point(iX0 + cKNOBSIZE, 14)
+                aptKnobOutline(2) = New Point(iX0 + CInt(Me.cKNOBSIZE / 2), CInt(8 - Me.cKNOBSIZE / 2))
+                aptKnobOutline(3) = New Point(iX0 + Me.cKNOBSIZE, 8)
+                aptKnobOutline(4) = New Point(iX0 + Me.cKNOBSIZE, 14)
                 aptKnobOutline(5) = aptKnobOutline(0)
 
                 ' - Body
@@ -310,7 +310,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
             Me.Invalidate()
             MyBase.OnSizeChanged(e)
         End Sub
@@ -326,7 +326,7 @@ Namespace Controls
         ''' <param name="keyData">The key to validate.</param>
         ''' <returns>True if the given key should be considered an input key.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function IsInputKey(ByVal keyData As System.Windows.Forms.Keys) As Boolean
+        Protected Overrides Function IsInputKey(keyData As System.Windows.Forms.Keys) As Boolean
             Select Case keyData
                 Case Keys.Left, Keys.Right, Keys.Up, Keys.Down
                     Return True
@@ -335,11 +335,11 @@ Namespace Controls
         End Function
 
         Protected Function RenderScale() As Single
-            Return CSng((Me.Maximum - Me.Minimum) / Math.Max(1, Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right))
+            Return CSng((Me.Maximum - Me.Minimum) / Math.Max(1, Me.Width - Me.cKNOBSIZE - Me.Margin.Left - Me.Margin.Right))
         End Function
 
-        Private Function GetValueAtPoint(ByVal ptMouse As Point) As Integer
-            Dim sMouseX As Single = CSng(Math.Max(0, Math.Min(Me.Width - cKNOBSIZE - Me.Margin.Left - Me.Margin.Right, ptMouse.X - cKNOBSIZE / 2)))
+        Private Function GetValueAtPoint(ptMouse As Point) As Integer
+            Dim sMouseX As Single = CSng(Math.Max(0, Math.Min(Me.Width - Me.cKNOBSIZE - Me.Margin.Left - Me.Margin.Right, ptMouse.X - Me.cKNOBSIZE / 2)))
             Dim iValue As Integer = Me.Minimum + CInt(sMouseX * Me.RenderScale())
             Return iValue
         End Function
@@ -351,7 +351,7 @@ Namespace Controls
         Inherits EventArgs
 
         Private m_iKnob As Integer
-        Public Sub New(ByVal iKnob As Integer)
+        Public Sub New(iKnob As Integer)
             Me.m_iKnob = iKnob
         End Sub
         ReadOnly Property Knob As Integer

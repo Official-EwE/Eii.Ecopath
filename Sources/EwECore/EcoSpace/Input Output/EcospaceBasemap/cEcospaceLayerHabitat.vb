@@ -31,17 +31,17 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceLayerHabitat
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerHabitat, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerHabitat
     End Sub
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then Return data(Me.Index)(iRow, iCol) Else Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             Dim s As Single = Convert.ToSingle(value)
             If Me.ValidateCellValue(value) Then

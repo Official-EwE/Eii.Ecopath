@@ -40,7 +40,7 @@ Public Class cEcospaceLayerMigration
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+    Public Sub New(ByRef theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerMigration, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerMigration
         Me.m_ccSecundaryIndex = eCoreCounterTypes.nMonths
@@ -50,13 +50,13 @@ Public Class cEcospaceLayerMigration
 
 #Region " Cell interaction "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer,
-                                   Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer,
+                                   Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
             Return DirectCast(Me.Data, Single(,)(,))(Me.Index, iIndexSec)(iRow, iCol)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
             DirectCast(Me.Data, Single(,)(,))(Me.Index, iIndexSec)(iRow, iCol) = CSng(value)
         End Set

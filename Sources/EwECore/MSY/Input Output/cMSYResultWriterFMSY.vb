@@ -52,9 +52,9 @@ Namespace MSY
         ''' <param name="result"></param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteCSV(ByVal strPath As String, _
-                                 ByVal ass As eMSYAssessmentTypes, _
-                                 ByVal result As cFMSYResults) As Boolean
+        Public Function WriteCSV(strPath As String, _
+                                 ass As eMSYAssessmentTypes, _
+                                 result As cFMSYResults) As Boolean
 
             If (result Is Nothing) Then Return False
 

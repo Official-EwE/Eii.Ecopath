@@ -70,7 +70,7 @@ Friend Class cDBUpdate6_00_06_004
         Return Me.FixEcospaceFleetMap(db) And Me.AddGroupDigits(db)
     End Function
 
-    Private Function AddGroupDigits(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddGroupDigits(db As cEwEDatabase) As Boolean
         Return db.Execute("ALTER TABLE EcopathModel ADD COLUMN GroupDigits INTEGER")
     End Function
 
@@ -80,7 +80,7 @@ Friend Class cDBUpdate6_00_06_004
         Private m_nCols As Integer
         Private m_dtFleetPorts As New Dictionary(Of Integer, List(Of Integer))
 
-        Public Sub New(ByVal nRows As Integer, ByVal nCols As Integer)
+        Public Sub New(nRows As Integer, nCols As Integer)
             Me.m_nRows = nRows
             Me.m_nCols = nCols
         End Sub
@@ -97,7 +97,7 @@ Friend Class cDBUpdate6_00_06_004
             End Get
         End Property
 
-        Public Sub SetPort(ByVal iFleetID As Integer, ByVal strPort As String)
+        Public Sub SetPort(iFleetID As Integer, strPort As String)
 
             Dim astrPorts As String() = strPort.Split(" "c)
             Dim lPorts As New List(Of Integer)
@@ -106,10 +106,10 @@ Friend Class cDBUpdate6_00_06_004
                     lPorts.Add(i)
                 End If
             Next
-            m_dtFleetPorts(iFleetID) = lPorts
+            Me.m_dtFleetPorts(iFleetID) = lPorts
         End Sub
 
-        Public ReadOnly Property HasPort(ByVal iFleetID As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        Public ReadOnly Property HasPort(iFleetID As Integer, iRow As Integer, iCol As Integer) As Boolean
             Get
                 Dim iCell As Integer = (iCol - 1) + ((iRow - 1) * Me.m_nCols)
                 Dim lPorts As List(Of Integer) = Me.m_dtFleetPorts(iFleetID)
@@ -127,7 +127,7 @@ Friend Class cDBUpdate6_00_06_004
 
     End Class
 
-    Private Function FixEcospaceFleetMap(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixEcospaceFleetMap(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim sfm As cScenarioFleetMap = Nothing

@@ -63,12 +63,12 @@ Namespace Controls
             ''' <param name="clrLine">Node line colour.</param>
             ''' <param name="clrFill">Node fill colour.</param>
             '''--------------------------------------------------------------------
-            Public Sub DrawNode(ByVal g As Graphics, _
-                                ByVal ptf As PointF, _
-                                ByVal nodetype As eFDNodeTypes, _
-                                ByVal iSize As Integer, _
-                                ByVal clrLine As Color, _
-                                ByVal clrFill As Color)
+            Public Sub DrawNode(g As Graphics, _
+                                ptf As PointF, _
+                                nodetype As eFDNodeTypes, _
+                                iSize As Integer, _
+                                clrLine As Color, _
+                                clrFill As Color)
 
                 Using br As New SolidBrush(clrFill)
                     Using p As New Pen(clrLine)
@@ -97,11 +97,11 @@ Namespace Controls
             ''' <param name="clrFont"></param>
             ''' <param name="strText">Formatted label text to draw.</param>
             '''--------------------------------------------------------------------
-            Public Sub DrawLabel(ByVal g As Graphics, _
-                                 ByVal ptf As PointF, _
-                                 ByVal font As Font, _
-                                 ByVal clrFont As Color, _
-                                 ByVal strText As String)
+            Public Sub DrawLabel(g As Graphics, _
+                                 ptf As PointF, _
+                                 font As Font, _
+                                 clrFont As Color, _
+                                 strText As String)
 
                 Using br As New SolidBrush(clrFont)
                     g.DrawString(strText, font, br, ptf, cTreeFlowDiagramRenderer.g_fmt)
@@ -109,10 +109,10 @@ Namespace Controls
 
             End Sub
 
-            Friend Function CalcLabelSize(ByVal g As Graphics, _
-                                          ByVal font As Font, _
-                                          ByVal strText As String, _
-                                          ByVal fmt As StringFormat) As SizeF
+            Friend Function CalcLabelSize(g As Graphics, _
+                                          font As Font, _
+                                          strText As String, _
+                                          fmt As StringFormat) As SizeF
                 Return g.MeasureString(strText, font, 6000, fmt)
             End Function
 
@@ -127,12 +127,12 @@ Namespace Controls
 
 #Region " Rendering "
 
-            Public Sub DrawConnection(ByVal g As Graphics, _
-                                      ByVal ptFrom As PointF, _
-                                      ByVal ptTo As PointF, _
-                                      ByVal clrLine As Color, _
-                                      ByVal sWidth As Single, _
-                                      ByVal connectiontype As eFDConnectionType)
+            Public Sub DrawConnection(g As Graphics, _
+                                      ptFrom As PointF, _
+                                      ptTo As PointF, _
+                                      clrLine As Color, _
+                                      sWidth As Single, _
+                                      connectiontype As eFDConnectionType)
 
                 Dim pn As New Pen(clrLine, sWidth)
 
@@ -155,7 +155,7 @@ Namespace Controls
 
             End Sub
 
-            Private Sub DrawArc(ByVal g As Graphics, ByVal pn As Pen, ByVal location1 As PointF, ByVal location2 As PointF)
+            Private Sub DrawArc(g As Graphics, pn As Pen, location1 As PointF, location2 As PointF)
 
                 Dim sAngleSweep As Single = 90.0!
                 Dim sAngleStart As Single = 0.0!
@@ -226,11 +226,11 @@ Namespace Controls
 
 #End Region ' Privates
 
-        Public Event OnChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Public Event OnChanged(sender As cTreeFlowDiagramRenderer)
 
 #Region " Constructor "
 
-        Public Sub New(ByVal data As IFlowDiagramData)
+        Public Sub New(data As IFlowDiagramData)
 
             Debug.Assert(data IsNot Nothing)
 
@@ -263,7 +263,7 @@ Namespace Controls
 
 #Region " Drawing "
 
-        Friend Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle) _
+        Friend Sub DrawBackground(g As Graphics, rc As Rectangle) _
             Implements IFlowDiagramRenderer.DrawBackground
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
@@ -275,9 +275,9 @@ Namespace Controls
 
             Using brText As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
                 Using font As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
-                    For i As Integer = 1 To m_iNumTrophicLevels - 1
+                    For i As Integer = 1 To Me.m_iNumTrophicLevels - 1
                         If (Me.m_bShowTrophicLevels) Then
-                            g.DrawString((m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
+                            g.DrawString((Me.m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
                         End If
                         g.DrawLine(Pens.LightGray, 20, i * iUnitHeight, rc.Width - 20, i * iUnitHeight)
                     Next i
@@ -286,7 +286,7 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawTitle(ByVal g As Graphics, ByVal rc As Rectangle) _
+        Friend Sub DrawTitle(g As Graphics, rc As Rectangle) _
             Implements IFlowDiagramRenderer.DrawTitle
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
@@ -303,10 +303,10 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawNode(ByVal g As Graphics,
-                            ByVal rc As Rectangle,
-                            ByVal iNode As Integer,
-                            ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
+        Friend Sub DrawNode(g As Graphics,
+                            rc As Rectangle,
+                            iNode As Integer,
+                            highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawNode
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
@@ -365,11 +365,11 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawConnection(ByVal g As Graphics,
-                                  ByVal rc As Rectangle,
-                                  ByVal iPred As Integer,
-                                  ByVal iPrey As Integer,
-                                  ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
+        Friend Sub DrawConnection(g As Graphics,
+                                  rc As Rectangle,
+                                  iPred As Integer,
+                                  iPrey As Integer,
+                                  highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawConnection
 
             Dim clrLine As Color = Me.m_clrLine
@@ -415,7 +415,7 @@ Namespace Controls
                                         Me.LineConnectionType)
         End Sub
 
-        Friend Sub DrawLegend(ByVal g As Graphics, ByVal ptTopLeft As Point) _
+        Friend Sub DrawLegend(g As Graphics, ptTopLeft As Point) _
             Implements IFlowDiagramRenderer.DrawLegend
 
             Dim tsShowLegend As TriState = Me.ShowLegend
@@ -475,14 +475,14 @@ Namespace Controls
 
 #Region " SetPosition "
 
-        Public Sub MoveNode(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer) _
+        Public Sub MoveNode(rc As Rectangle, ptNew As PointF, iNode As Integer) _
             Implements IFlowDiagramRenderer.MoveNode
 
             Me.NodeLocation(iNode, rc) = ptNew
 
         End Sub
 
-        Public Sub MoveLabel(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer) _
+        Public Sub MoveLabel(rc As Rectangle, ptNew As PointF, iNode As Integer) _
             Implements IFlowDiagramRenderer.MoveLabel
 
             Me.LabelLocation(iNode, rc) = ptNew
@@ -535,7 +535,7 @@ Namespace Controls
             Get
                 Return Me.m_data.Title
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If (value <> Me.m_data.Title) Then
                     Me.m_data.Title = value
                     Me.Update()
@@ -552,7 +552,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowTitle
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bShowTitle) Then
                     Me.m_bShowTitle = value
                     Me.Update()
@@ -568,7 +568,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowTrophicLevels
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bShowTrophicLevels) Then
                     Me.m_bShowTrophicLevels = value
                     Me.Update()
@@ -584,7 +584,7 @@ Namespace Controls
             Get
                 Return Me.m_iNumTrophicLevels - 1
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If ((value + 1) <> Me.m_iNumTrophicLevels) Then
                     Me.m_iNumTrophicLevels = value + 1
                     Me.Update()
@@ -601,7 +601,7 @@ Namespace Controls
             Get
                 Return Me.m_colorusagetype
             End Get
-            Set(ByVal value As eFDColorUsageTypes)
+            Set(value As eFDColorUsageTypes)
                 If (value <> Me.m_colorusagetype) Then
                     Me.m_colorusagetype = value
                     Me.Update()
@@ -617,7 +617,7 @@ Namespace Controls
             Get
                 Return Me.m_tsShowLegend
             End Get
-            Set(ByVal value As TriState)
+            Set(value As TriState)
                 If (value <> Me.m_tsShowLegend) Then
                     Me.m_tsShowLegend = value
                     Me.Update()
@@ -633,7 +633,7 @@ Namespace Controls
             Get
                 Return Me.m_clrNode
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 If (value <> Me.m_clrNode) Then
                     Me.m_clrNode = value
                     Me.Update()
@@ -649,7 +649,7 @@ Namespace Controls
             Get
                 Return Me.m_bAutoNodeSize
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bAutoNodeSize) Then
                     Me.m_bAutoNodeSize = value
                     Me.Update()
@@ -665,7 +665,7 @@ Namespace Controls
             Get
                 Return Me.m_iNodeSize
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (value <> Me.m_iNodeSize) Then
                     Me.m_iNodeSize = value
                     Me.Update()
@@ -681,7 +681,7 @@ Namespace Controls
             Get
                 Return Me.m_nodescaletype
             End Get
-            Set(ByVal value As eFDNodeScaleType)
+            Set(value As eFDNodeScaleType)
                 If (value <> Me.m_nodescaletype) Then
                     Me.m_nodescaletype = value
                     Me.Update()
@@ -697,7 +697,7 @@ Namespace Controls
             Get
                 Return Me.m_nodetype
             End Get
-            Set(ByVal value As eFDNodeTypes)
+            Set(value As eFDNodeTypes)
                 If (value <> Me.m_nodetype) Then
                     Me.m_nodetype = value
                     Me.Update()
@@ -713,7 +713,7 @@ Namespace Controls
             Get
                 Return Me.m_bAutoLineWidth
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bAutoLineWidth) Then
                     Me.m_bAutoLineWidth = value
                     Me.Update()
@@ -729,7 +729,7 @@ Namespace Controls
             Get
                 Return Me.m_sLineWidth
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 If (value <> Me.m_sLineWidth) Then
                     Me.m_sLineWidth = value
                     Me.Update()
@@ -744,7 +744,7 @@ Namespace Controls
             Get
                 Return Me.m_clrLine
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 If (value <> Me.m_clrLine) Then
                     Me.m_clrLine = value
                     Me.Update()
@@ -760,7 +760,7 @@ Namespace Controls
             Get
                 Return Me.m_connectiontype
             End Get
-            Set(ByVal value As eFDConnectionType)
+            Set(value As eFDConnectionType)
                 If (value <> Me.m_connectiontype) Then
                     Me.m_connectiontype = value
                     Me.Update()
@@ -776,7 +776,7 @@ Namespace Controls
             Get
                 Return Me.m_bIsNodeDrawValue
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bIsNodeDrawValue) Then
                     Me.m_bIsNodeDrawValue = value
                     Me.Update()
@@ -792,7 +792,7 @@ Namespace Controls
             Get
                 Return Me.m_bIsDrawLabel
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bIsDrawLabel) Then
                     Me.m_bIsDrawLabel = value
                     Me.Update()
@@ -809,7 +809,7 @@ Namespace Controls
             Get
                 Return Me.m_nodeshowtype
             End Get
-            Set(ByVal value As eFDShowHiddenType)
+            Set(value As eFDShowHiddenType)
                 If (value <> Me.m_nodeshowtype) Then
                     Me.m_nodeshowtype = value
                     Me.Update()
@@ -827,7 +827,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="settings">The <see cref="cXMLSettings">settings</see> to save to.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Save(ByVal settings As cXMLSettings) As Boolean
+        Public Overridable Function Save(settings As cXMLSettings) As Boolean
 
             Try
 
@@ -861,7 +861,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="settings">The <see cref="cXMLSettings">settings</see> to load from.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Load(ByVal settings As cXMLSettings) As Boolean
+        Public Overridable Function Load(settings As cXMLSettings) As Boolean
 
             Dim bSuccess As Boolean = True
 
@@ -907,7 +907,7 @@ Namespace Controls
             Me.Update()
         End Sub
 
-        Public Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF _
+        Public Property NodeLocation(i As Integer, rc As Rectangle) As PointF _
             Implements IFlowDiagramRenderer.NodeLocation
             Get
                 Dim pt As PointF
@@ -915,27 +915,27 @@ Namespace Controls
                 pt.Y = (Me.m_iNumTrophicLevels - Me.m_data.TrophicLevel(i)) * CInt(rc.Height / Me.m_iNumTrophicLevels)
                 Return pt
             End Get
-            Set(ByVal value As PointF)
+            Set(value As PointF)
                 Dim angVal As Single = CSng((value.X - 20) / (rc.Width - 40) * 360)
                 Me.m_sAngle(i) = Math.Max(0.0!, Math.Min(360.0!, angVal))
             End Set
         End Property
 
-        Public Property LabelLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF _
+        Public Property LabelLocation(i As Integer, rc As Rectangle) As PointF _
             Implements IFlowDiagramRenderer.LabelLocation
             Get
                 Dim ptfNode As PointF = Me.NodeLocation(i, rc)
                 Return New PointF(ptfNode.X + Me.m_asLabelOffsetX(i), ptfNode.Y + Me.m_asLabelOffsetY(i))
             End Get
-            Set(ByVal value As PointF)
+            Set(value As PointF)
                 Dim ptfNode As PointF = Me.NodeLocation(i, rc)
                 Me.m_asLabelOffsetX(i) = value.X - ptfNode.X
                 Me.m_asLabelOffsetY(i) = value.Y - ptfNode.Y
             End Set
         End Property
 
-        Public Function IsNodeAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF,
-                                      ByVal i As Integer, ByVal sValue As Single) As Boolean _
+        Public Function IsNodeAtPoint(rc As Rectangle, ptfTest As PointF,
+                                      i As Integer, sValue As Single) As Boolean _
             Implements IFlowDiagramRenderer.IsNodeAtPoint
 
             Dim ptfNodeLocation As PointF = Me.NodeLocation(i, rc)
@@ -949,12 +949,12 @@ Namespace Controls
 
         End Function
 
-        Public Function IsLabelAtPoint(ByVal rc As Rectangle,
-                                       ByVal ptfTest As PointF,
-                                       ByVal i As Integer,
-                                       ByVal strLabel As String,
-                                       ByVal g As Graphics,
-                                       ByVal font As Font) As Boolean _
+        Public Function IsLabelAtPoint(rc As Rectangle,
+                                       ptfTest As PointF,
+                                       i As Integer,
+                                       strLabel As String,
+                                       g As Graphics,
+                                       font As Font) As Boolean _
             Implements IFlowDiagramRenderer.IsLabelAtPoint
 
             Dim ptfLabelLocation As PointF = Me.LabelLocation(i, rc)
@@ -1013,7 +1013,7 @@ Namespace Controls
 
         End Function
 
-        Public Function FormatLabelText(ByVal iGroup As Integer) As String _
+        Public Function FormatLabelText(iGroup As Integer) As String _
             Implements IFlowDiagramRenderer.FormatLabelText
 
             Dim sb As New StringBuilder()
@@ -1041,7 +1041,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private ReadOnly Property CalcNodeSize(ByVal sValue As Single, ByVal sValueMax As Single) As Integer
+        Private ReadOnly Property CalcNodeSize(sValue As Single, sValueMax As Single) As Integer
             Get
                 Dim iSize As Integer = Me.m_iNodeSize
 
@@ -1079,7 +1079,7 @@ Namespace Controls
         ''' <param name="sValue">Value represented by the line.</param>
         ''' <param name="sValueMax">Max value represented by all lines.</param>
         ''' -------------------------------------------------------------------
-        Private ReadOnly Property CalcLineWidth(ByVal sValue As Single, ByVal sValueMax As Single) As Integer
+        Private ReadOnly Property CalcLineWidth(sValue As Single, sValueMax As Single) As Integer
             Get
                 Dim sLineSize As Single = Me.m_sLineWidth
 

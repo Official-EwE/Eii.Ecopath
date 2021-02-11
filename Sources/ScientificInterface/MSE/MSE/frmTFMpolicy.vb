@@ -64,7 +64,7 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If Me.UIContext Is Nothing Then Return
@@ -78,13 +78,13 @@ Namespace Ecosim
             Me.m_zgh.AllowEdit = True
 
             Me.m_grid.UIContext = Me.UIContext
-            If (Core.nGroups > 0) Then
+            If (Me.Core.nGroups > 0) Then
                 Me.m_grid.Group = Me.Core.MSEManager.GroupInputs(1)
             End If
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If Me.m_zgh IsNot Nothing Then
                 Me.Group = Nothing
@@ -101,12 +101,12 @@ Namespace Ecosim
             Me.Group = Me.m_grid.Group
         End Sub
 
-        Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
+        Private Sub HandlePropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
             ' A relevant property has changed: redraw the graph
             Me.Redraw()
         End Sub
 
-        Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDefaultTFM.Click
+        Private Sub tsbDefaultTFM_Click(sender As System.Object, e As System.EventArgs) Handles tsbDefaultTFM.Click
             Try
                 Me.UIContext.Core.SetDefaultTFM()
             Catch ex As Exception
@@ -127,15 +127,15 @@ Namespace Ecosim
             Get
                 Return Me.m_group
             End Get
-            Set(ByVal value As cMSEGroupInput)
+            Set(value As cMSEGroupInput)
 
                 Dim pm As cPropertyManager = Me.PropertyManager
 
                 ' Unregister
                 If (Me.m_group IsNot Nothing) Then
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf Me.HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf Me.HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf Me.HandlePropertyChanged
                 End If
 
                 ' Update
@@ -143,9 +143,9 @@ Namespace Ecosim
 
                 ' Register
                 If (Me.m_group IsNot Nothing) Then
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf Me.HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf Me.HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf Me.HandlePropertyChanged
                 End If
 
                 ' Ledlaw the glaph
@@ -215,7 +215,7 @@ Namespace Ecosim
 
 #Region " Dragging "
 
-        Private Function HandleGraphMouseDownEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+        Private Function HandleGraphMouseDownEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
                 Handles m_graph.MouseDownEvent
 
             Dim pane As GraphPane = sender.GraphPane
@@ -237,7 +237,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Function m_graph_MouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+        Private Function m_graph_MouseMoveEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
             Handles m_graph.MouseMoveEvent
 
             Dim pane As GraphPane = sender.GraphPane
@@ -260,7 +260,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Function HandleGraphMouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+        Private Function HandleGraphMouseMoveEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
                 Handles m_graph.MouseMoveEvent
 
             Dim pane As GraphPane = sender.GraphPane
@@ -288,7 +288,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Function HandleGraphMouseUpEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+        Private Function HandleGraphMouseUpEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
                 Handles m_graph.MouseUpEvent
 
             Me.m_dragtype = eDragType.None

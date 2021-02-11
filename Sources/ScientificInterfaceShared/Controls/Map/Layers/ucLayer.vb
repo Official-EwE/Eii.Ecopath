@@ -63,7 +63,7 @@ Namespace Controls.Map
 
 #Region " Constructor / destructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal l As cDisplayLayer)
+        Public Sub New(uic As cUIContext, l As cDisplayLayer)
 
             Me.InitializeComponent()
 
@@ -78,35 +78,35 @@ Namespace Controls.Map
             Me.m_uic = uic
             Me.m_layer = l
 
-            AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+            AddHandler Me.m_layer.LayerChanged, AddressOf Me.OnLayerChanged
 
             ' Kick off
             Me.OnLayerChanged(l, cDisplayLayer.eChangeFlags.Descriptive)
 
             Dim p As cProperty = Me.m_layer.GetNameProperty()
             If (p IsNot Nothing) Then
-                AddHandler p.PropertyChanged, AddressOf OnLayerPropertyChanged
-                OnLayerPropertyChanged(p, cProperty.eChangeFlags.All)
+                AddHandler p.PropertyChanged, AddressOf Me.OnLayerPropertyChanged
+                Me.OnLayerPropertyChanged(p, cProperty.eChangeFlags.All)
             End If
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
 
                 ' Remove from event handler
-                RemoveHandler m_layer.LayerChanged, AddressOf OnLayerChanged
+                RemoveHandler Me.m_layer.LayerChanged, AddressOf Me.OnLayerChanged
 
                 Dim p As cProperty = Me.m_layer.GetNameProperty()
                 If (p IsNot Nothing) Then
-                    RemoveHandler p.PropertyChanged, AddressOf OnLayerPropertyChanged
+                    RemoveHandler p.PropertyChanged, AddressOf Me.OnLayerPropertyChanged
                 End If
 
                 Me.LayerGroup = Nothing
                 Me.m_layer = Nothing
 
-                If components IsNot Nothing Then
-                    components.Dispose()
+                If Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             End If
             MyBase.Dispose(disposing)
@@ -128,7 +128,7 @@ Namespace Controls.Map
 
 #Region " Events "
 
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
 
             If Me.m_uic Is Nothing Then Return
@@ -227,7 +227,7 @@ Namespace Controls.Map
             Dim flag As cDisplayLayer.eChangeFlags = 0
 
             ' Select layer first
-            If Not m_layer.IsSelected Then
+            If Not Me.m_layer.IsSelected Then
                 Me.m_layer.IsSelected = True
                 flag = flag Or cDisplayLayer.eChangeFlags.Selected
             End If
@@ -274,7 +274,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub ucLayer_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
+        Private Sub ucLayer_MouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
             ' Determine hit area
             Select Case Me.GetArea(e.Location)
                 Case eAreaTypes.Preview, eAreaTypes.Visible ', eAreaTypes.Editable 
@@ -289,7 +289,7 @@ Namespace Controls.Map
         ''' <summary>
         ''' Start hovering
         ''' </summary>
-        Private Sub ucLayer_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseEnter
+        Private Sub ucLayer_MouseEnter(sender As Object, e As System.EventArgs) Handles Me.MouseEnter
             Me.m_bHovering = True
             Me.Invalidate()
         End Sub
@@ -297,7 +297,7 @@ Namespace Controls.Map
         ''' <summary>
         ''' Stop hovering
         ''' </summary>
-        Private Sub ucLayer_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseLeave
+        Private Sub ucLayer_MouseLeave(sender As Object, e As System.EventArgs) Handles Me.MouseLeave
             Me.m_bHovering = False
             Me.m_bDragDrop = False
             Me.Invalidate()
@@ -351,7 +351,7 @@ Namespace Controls.Map
 
 #Region " Internal implementation "
 
-        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateType As cDisplayLayer.eChangeFlags)
+        Private Sub OnLayerChanged(l As cDisplayLayer, updateType As cDisplayLayer.eChangeFlags)
 
             If (updateType = cDisplayLayer.eChangeFlags.Map) Then
                 Me.Invalidate()
@@ -373,7 +373,7 @@ Namespace Controls.Map
             cToolTipShared.GetInstance().SetToolTip(Me, cStringUtils.ToTooltip(prop.GetRemark))
         End Sub
 
-        Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
+        Public Sub EditLayer(edittype As eLayerEditTypes)
             If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
                 Try
                     Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
@@ -416,7 +416,7 @@ Namespace Controls.Map
             Preview
         End Enum
 
-        Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcEditable As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcPreview As Rectangle)
+        Private Sub GetRectangles(rcControl As Rectangle, ByRef rcEditable As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcPreview As Rectangle)
 
             Dim iAvgPad As Integer = 3
 
@@ -466,7 +466,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Function GetArea(ByVal pt As Point) As eAreaTypes
+        Private Function GetArea(pt As Point) As eAreaTypes
             Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.Height)
             Dim rcEditable As Rectangle = Nothing
             Dim rcVisible As Rectangle = Nothing

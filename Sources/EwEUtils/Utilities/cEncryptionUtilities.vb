@@ -34,13 +34,13 @@ Namespace Utilities
     ''' -----------------------------------------------------------------------
     Public Class cEncryptionUtilities
 
-        Public Shared Function MD5(ByVal strToHash As String) As String
+        Public Shared Function MD5(strToHash As String) As String
 
             Return cEncryptionUtilities.MD5(System.Text.Encoding.ASCII.GetBytes(strToHash))
 
         End Function
 
-        Public Shared Function MD5(ByVal data As Byte()) As String
+        Public Shared Function MD5(data As Byte()) As String
 
             If (data Is Nothing) Then Return ""
 

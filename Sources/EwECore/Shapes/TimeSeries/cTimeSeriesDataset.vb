@@ -35,7 +35,7 @@ Public Class cTimeSeriesDataset
 
 #Region " Constructor "
 
-    Public Sub New(ByVal core As cCore, ByVal nTimeSeries As Integer)
+    Public Sub New(core As cCore, nTimeSeries As Integer)
         MyBase.New(core)
 
         Dim val As cValue
@@ -47,26 +47,26 @@ Public Class cTimeSeriesDataset
             Me.m_iNumTimeSeries = nTimeSeries
 
             ' Definition changes do not affect the running state of the model
-            m_coreComponent = eCoreComponentType.DataSource
+            Me.m_coreComponent = eCoreComponentType.DataSource
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Description
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             ' Author
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             ' Contact
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -85,7 +85,7 @@ Public Class cTimeSeriesDataset
     ''' All variables non-editable (for now, 11feb08)
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         Me.AllowValidation = False
         For Each vs As cValue In Me.m_values.Values
             vs.ValidationStatus = eStatusFlags.OK Or eStatusFlags.NotEditable
@@ -100,31 +100,31 @@ Public Class cTimeSeriesDataset
 
     Public Property Description() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Description))
+            Return CStr(Me.GetVariable(eVarNameFlags.Description))
         End Get
 
-        Friend Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Description, str)
+        Friend Set(str As String)
+            Me.SetVariable(eVarNameFlags.Description, str)
         End Set
     End Property
 
     Public Property Author() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Author))
+            Return CStr(Me.GetVariable(eVarNameFlags.Author))
         End Get
 
-        Friend Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Author, str)
+        Friend Set(str As String)
+            Me.SetVariable(eVarNameFlags.Author, str)
         End Set
     End Property
 
     Public Property Contact() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Contact))
+            Return CStr(Me.GetVariable(eVarNameFlags.Contact))
         End Get
 
-        Friend Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Contact, str)
+        Friend Set(str As String)
+            Me.SetVariable(eVarNameFlags.Contact, str)
         End Set
     End Property
 
@@ -187,11 +187,11 @@ Public Class cTimeSeriesDataset
     Public Property DescriptionStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Description)
+            Return Me.GetStatus(eVarNameFlags.Description)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Description, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Description, value)
         End Set
 
     End Property
@@ -199,11 +199,11 @@ Public Class cTimeSeriesDataset
     Public Property AuthorStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Author)
+            Return Me.GetStatus(eVarNameFlags.Author)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Author, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Author, value)
         End Set
 
     End Property
@@ -211,11 +211,11 @@ Public Class cTimeSeriesDataset
     Public Property ContactStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Description)
+            Return Me.GetStatus(eVarNameFlags.Description)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Description, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Description, value)
         End Set
 
     End Property
@@ -275,7 +275,7 @@ Public Class cTimeSeriesDataset
 
 #Region " List interfaces "
 
-    Friend Sub Add(ByVal item As cTimeSeries) Implements System.Collections.Generic.ICollection(Of cTimeSeries).Add
+    Friend Sub Add(item As cTimeSeries) Implements System.Collections.Generic.ICollection(Of cTimeSeries).Add
         Me.m_lTimeSeries.Add(item)
     End Sub
 
@@ -284,11 +284,11 @@ Public Class cTimeSeriesDataset
         Me.m_lTimeSeries.Clear()
     End Sub
 
-    Public Function Contains(ByVal item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Contains
+    Public Function Contains(item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Contains
         Return Me.m_lTimeSeries.Contains(item)
     End Function
 
-    Public Sub CopyTo(ByVal array() As cTimeSeries, ByVal arrayIndex As Integer) Implements System.Collections.Generic.ICollection(Of cTimeSeries).CopyTo
+    Public Sub CopyTo(array() As cTimeSeries, arrayIndex As Integer) Implements System.Collections.Generic.ICollection(Of cTimeSeries).CopyTo
         Me.m_lTimeSeries.CopyTo(array, arrayIndex)
     End Sub
 
@@ -304,7 +304,7 @@ Public Class cTimeSeriesDataset
         End Get
     End Property
 
-    Private Function Remove(ByVal item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Remove
+    Private Function Remove(item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Remove
         ' Nope
         Debug.Assert(False, "Deliberately not implemented; datasets can only be populated from the core")
     End Function
@@ -317,11 +317,11 @@ Public Class cTimeSeriesDataset
         Return Me.m_lTimeSeries.GetEnumerator()
     End Function
 
-    Public Function IndexOf(ByVal item As cTimeSeries) As Integer Implements System.Collections.Generic.IList(Of cTimeSeries).IndexOf
+    Public Function IndexOf(item As cTimeSeries) As Integer Implements System.Collections.Generic.IList(Of cTimeSeries).IndexOf
         Return Me.m_lTimeSeries.IndexOf(item)
     End Function
 
-    Friend Sub Insert(ByVal index As Integer, ByVal item As cTimeSeries) Implements System.Collections.Generic.IList(Of cTimeSeries).Insert
+    Friend Sub Insert(index As Integer, item As cTimeSeries) Implements System.Collections.Generic.IList(Of cTimeSeries).Insert
         ' Nope
     End Sub
 
@@ -329,17 +329,17 @@ Public Class cTimeSeriesDataset
     ''' Get a time series from the dataset.
     ''' </summary>
     ''' <param name="index">Zero-based index of the time series to access.</param>
-    Default Public Property Item(ByVal index As Integer) As cTimeSeries Implements System.Collections.Generic.IList(Of cTimeSeries).Item
+    Default Public Property Item(index As Integer) As cTimeSeries Implements System.Collections.Generic.IList(Of cTimeSeries).Item
         Get
             Return Me.m_lTimeSeries.Item(index)
         End Get
-        Friend Set(ByVal value As cTimeSeries)
+        Friend Set(value As cTimeSeries)
             ' Nope
             Debug.Assert(False, "Deliberately not implemented; datasets can only be populated from the core")
         End Set
     End Property
 
-    Private Sub RemoveAt(ByVal index As Integer) Implements System.Collections.Generic.IList(Of cTimeSeries).RemoveAt
+    Private Sub RemoveAt(index As Integer) Implements System.Collections.Generic.IList(Of cTimeSeries).RemoveAt
         ' Nope
         Debug.Assert(False, "Deliberately not implemented; datasets can only be populated from the core")
     End Sub

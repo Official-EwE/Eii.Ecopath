@@ -36,14 +36,14 @@ Public Class ucConfig
     ''' <summary>Plug-in to configure.</summary>
     Private m_plugin As cWoRMSPluginPoint = Nothing
 
-    Public Sub New(ByVal plugin As cWoRMSPluginPoint)
+    Public Sub New(plugin As cWoRMSPluginPoint)
         MyBase.New()
         Me.m_plugin = plugin
         Me.Text = My.Resources.ENGINE_NAME
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -58,10 +58,10 @@ Public Class ucConfig
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)

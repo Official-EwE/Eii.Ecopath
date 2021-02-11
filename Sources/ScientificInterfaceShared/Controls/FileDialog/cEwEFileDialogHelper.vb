@@ -50,12 +50,12 @@ Namespace Controls
         ''' <returns>A file dialog.</returns>
         ''' <seealso cref="LastOpenedHistory"/>
         ''' -------------------------------------------------------------------
-        Public Shared Function OpenFileDialog(ByVal strTitle As String,
-                                    ByVal strFileName As String,
-                                    ByVal strFilters As String,
-                                    Optional ByVal iDefaultFilter As Integer = -1,
-                                    Optional ByVal strInitialDirectory As String = "",
-                                    Optional ByVal bMultiSelect As Boolean = False) As OpenFileDialog
+        Public Shared Function OpenFileDialog(strTitle As String,
+                                    strFileName As String,
+                                    strFilters As String,
+                                    Optional iDefaultFilter As Integer = -1,
+                                    Optional strInitialDirectory As String = "",
+                                    Optional bMultiSelect As Boolean = False) As OpenFileDialog
 
             Dim dlg As New OpenFileDialog()
 
@@ -103,12 +103,12 @@ Namespace Controls
         ''' <param name="strInitialDirectory">Default directory to set in the dialog.</param>
         ''' <returns>A file dialog.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function SaveFileDialog(ByVal strTitle As String,
-                                    ByVal strFileName As String,
-                                    ByVal strFilters As String,
-                                    Optional ByVal iDefaultFilter As Integer = 0,
-                                    Optional ByVal strInitialDirectory As String = "",
-                                    Optional ByVal bOverwritePrompt As Boolean = True) As SaveFileDialog
+        Public Shared Function SaveFileDialog(strTitle As String,
+                                    strFileName As String,
+                                    strFilters As String,
+                                    Optional iDefaultFilter As Integer = 0,
+                                    Optional strInitialDirectory As String = "",
+                                    Optional bOverwritePrompt As Boolean = True) As SaveFileDialog
 
             Dim dlg As New SaveFileDialog()
 
@@ -153,8 +153,8 @@ Namespace Controls
         ''' dialog for.</param>
         ''' <returns>A file dialog.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FolderBrowserDialog(ByVal strDescription As String,
-                                                   ByVal strInitialDirectory As String) As FolderBrowserDialog
+        Public Shared Function FolderBrowserDialog(strDescription As String,
+                                                   strInitialDirectory As String) As FolderBrowserDialog
 
             Dim dlg As New FolderBrowserDialog()
 
@@ -184,7 +184,7 @@ Namespace Controls
         ''' - the filter list does not already contain a "*.*" item.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function AddAllFilesEntry(ByVal strFilter As String) As String
+        Public Shared Function AddAllFilesEntry(strFilter As String) As String
 
             Dim bits As String() = strFilter.ToLower.Split("|"c)
             Dim lFilters As New List(Of String)

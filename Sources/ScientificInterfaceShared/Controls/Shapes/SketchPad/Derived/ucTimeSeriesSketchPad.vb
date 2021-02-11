@@ -58,7 +58,7 @@ Namespace Controls
         ''' <param name="iWidth">Width of the X axis for the labels.</param>
         ''' <param name="sScale">Label placement scale factor along the X axis.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub GetXAxisLabels(ByVal iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
+        Protected Overrides Sub GetXAxisLabels(iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
 
             Dim iDS As Integer = Me.UIContext.Core.ActiveTimeSeriesDatasetIndex
             Dim ds As cTimeSeriesDataset = Nothing

@@ -55,7 +55,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.UIContext = uic
             Me.InitializeComponent()
@@ -65,10 +65,10 @@ Namespace Other
             Me.m_fpEast = New cEwEFormatProvider(Me.UIContext, Me.m_nudEast, GetType(Single))
             Me.m_fpWest = New cEwEFormatProvider(Me.UIContext, Me.m_nudWest, GetType(Single))
 
-            AddHandler Me.m_fpNorth.OnValueChanged, AddressOf OnExtentChanged
-            AddHandler Me.m_fpSouth.OnValueChanged, AddressOf OnExtentChanged
-            AddHandler Me.m_fpEast.OnValueChanged, AddressOf OnExtentChanged
-            AddHandler Me.m_fpWest.OnValueChanged, AddressOf OnExtentChanged
+            AddHandler Me.m_fpNorth.OnValueChanged, AddressOf Me.OnExtentChanged
+            AddHandler Me.m_fpSouth.OnValueChanged, AddressOf Me.OnExtentChanged
+            AddHandler Me.m_fpEast.OnValueChanged, AddressOf Me.OnExtentChanged
+            AddHandler Me.m_fpWest.OnValueChanged, AddressOf Me.OnExtentChanged
 
             Me.m_layerBack = New cDisplayLayerImage(Me.UIContext, My.Resources.urf)
             Me.m_layerBack.ImageTL = New PointF(-180, 90)
@@ -87,7 +87,7 @@ Namespace Other
         ''' Control's load event which gets called every time the control gets loaded. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.UpdateControls()
             Me.UpdatePreviewImage()
@@ -96,10 +96,10 @@ Namespace Other
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
 
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
 
             Me.m_layerBack.Dispose()
@@ -108,10 +108,10 @@ Namespace Other
             Me.m_layerPreview.Dispose()
             Me.m_layerPreview = Nothing
 
-            RemoveHandler Me.m_fpNorth.OnValueChanged, AddressOf OnExtentChanged
-            RemoveHandler Me.m_fpSouth.OnValueChanged, AddressOf OnExtentChanged
-            RemoveHandler Me.m_fpEast.OnValueChanged, AddressOf OnExtentChanged
-            RemoveHandler Me.m_fpWest.OnValueChanged, AddressOf OnExtentChanged
+            RemoveHandler Me.m_fpNorth.OnValueChanged, AddressOf Me.OnExtentChanged
+            RemoveHandler Me.m_fpSouth.OnValueChanged, AddressOf Me.OnExtentChanged
+            RemoveHandler Me.m_fpEast.OnValueChanged, AddressOf Me.OnExtentChanged
+            RemoveHandler Me.m_fpWest.OnValueChanged, AddressOf Me.OnExtentChanged
 
             Me.m_fpNorth.Release()
             Me.m_fpNorth = Nothing

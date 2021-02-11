@@ -50,7 +50,7 @@ Namespace Utilities
         ''' preserved. If False, an path information is stripped off.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToValidFileName(ByVal strText As String, ByVal bProtectPath As Boolean) As String
+        Public Shared Function ToValidFileName(strText As String, bProtectPath As Boolean) As String
 
             Dim strPath As String = ""
             Dim strFile As String = ""
@@ -114,7 +114,7 @@ Namespace Utilities
         ''' <param name="strText">Text to convert into a file extension.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToValidFileExt(ByVal strText As String, strDefault As String) As String
+        Public Shared Function ToValidFileExt(strText As String, strDefault As String) As String
 
             If (String.IsNullOrWhiteSpace(strText)) Then strText = strDefault
             If (String.IsNullOrWhiteSpace(strText)) Then Return ""
@@ -133,9 +133,9 @@ Namespace Utilities
         ''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
         ''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindFile(ByVal strFile As String,
-                                        ByVal strPath As String,
-                                        Optional ByVal bRecursive As Boolean = False) As String
+        Public Shared Function FindFile(strFile As String,
+                                        strPath As String,
+                                        Optional bRecursive As Boolean = False) As String
 
             Dim strFullPath As String = Path.Combine(strPath, strFile)
             Dim fsec As FileSecurity = Nothing
@@ -284,9 +284,9 @@ Namespace Utilities
         ''' created that looks like '[original name].[original ext].[short date]'.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function CreateBackup(ByVal strSrc As String,
+        Public Shared Function CreateBackup(strSrc As String,
                                             ByRef strDest As String,
-                                            Optional ByVal attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
+                                            Optional attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
 
             If String.IsNullOrWhiteSpace(strDest) Then
                 strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
@@ -336,7 +336,7 @@ Namespace Utilities
         ''' when your application shuts down.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function MakeTempFile(Optional ByVal strExt As String = "") As String
+        Public Shared Function MakeTempFile(Optional strExt As String = "") As String
 
             ' TODO: Check if file is writeable!!!
 
@@ -375,7 +375,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="strTempFile"></param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub PurgeTempFile(ByVal strTempFile As String)
+        Public Shared Sub PurgeTempFile(strTempFile As String)
             Try
                 If File.Exists(strTempFile) Then File.Delete(strTempFile)
                 cFileUtils.g_tempfiles.Remove(strTempFile)
@@ -428,8 +428,8 @@ Namespace Utilities
         ''' should be created if it does not exist yet.</param>
         ''' <returns>True if the directory is available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String,
-                                                    Optional ByVal bCreate As Boolean = False) As Boolean
+        Public Shared Function IsDirectoryAvailable(strDirectory As String,
+                                                    Optional bCreate As Boolean = False) As Boolean
 
             ' Test if already exists as a file
             If File.Exists(strDirectory) Then Return False
@@ -455,7 +455,7 @@ Namespace Utilities
         ''' <param name="strDirectory">The directory to check.</param>
         ''' <returns>True if the indicated directory does not have any files in it/</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsDirectoryEmpty(ByVal strDirectory As String) As Boolean
+        Public Shared Function IsDirectoryEmpty(strDirectory As String) As Boolean
             Return Not Directory.EnumerateFileSystemEntries(strDirectory).Any()
         End Function
 
@@ -467,7 +467,7 @@ Namespace Utilities
         ''' <param name="strAbs">The absolute path to translate.</param>
         ''' <returns>A path relative to <paramref name="strRoot"/></returns>
         ''' -----------------------------------------------------------------------
-        Shared Function RelativePath(ByVal strRoot As String, ByVal strAbs As String) As String
+        Shared Function RelativePath(strRoot As String, strAbs As String) As String
 
             Dim astrRoot As String() = NormalizePath(strRoot).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
             Dim astrAbs As String() = NormalizePath(strAbs).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
@@ -605,7 +605,7 @@ Namespace Utilities
         ''' After http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function NormalizePath(ByVal strPath As String) As String
+        Public Shared Function NormalizePath(strPath As String) As String
 
             ' Sanity checks
             If (String.IsNullOrWhiteSpace(strPath)) Then Return String.Empty
@@ -631,8 +631,8 @@ Namespace Utilities
         ''' http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Shadows Function Equals(ByVal strPath1 As String,
-                                              ByVal strPath2 As String,
+        Public Shared Shadows Function Equals(strPath1 As String,
+                                              strPath2 As String,
                                               Optional bIgnoreCase As Boolean = True) As Boolean
             Return String.Compare(NormalizePath(strPath1), NormalizePath(strPath2), bIgnoreCase) = 0
         End Function

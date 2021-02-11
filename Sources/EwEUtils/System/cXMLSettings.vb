@@ -73,7 +73,7 @@ Namespace SystemUtilities
         ''' <param name="strFileName">Name of the file to open. A ".xml" extension
         ''' is assumed if none is provide.</param>
         ''' -------------------------------------------------------------------
-        Public Sub LoadFromFile(ByVal strFileName As String)
+        Public Sub LoadFromFile(strFileName As String)
 
             ' Add extension to file name if missing
             If String.IsNullOrWhiteSpace(Path.GetExtension(strFileName)) Then
@@ -117,9 +117,9 @@ Namespace SystemUtilities
         ''' empty.</param>
         ''' <param name="value">The  value to write.</param>
         ''' -------------------------------------------------------------------
-        Public Sub WriteSetting(Of T)(ByVal strSection As String,
-                               ByVal strKey As String,
-                               ByVal value As T)
+        Public Sub WriteSetting(Of T)(strSection As String,
+                               strKey As String,
+                               value As T)
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrWhiteSpace(strSection))
@@ -189,9 +189,9 @@ Namespace SystemUtilities
         ''' <param name="defaultValue">Default value to return if the indicated
         ''' key could not be found in the indicated section.</param>
         ''' -------------------------------------------------------------------
-        Public Function ReadSetting(Of T)(ByVal strSection As String,
-                                    ByVal strKey As String,
-                                    ByVal defaultValue As T) As T
+        Public Function ReadSetting(Of T)(strSection As String,
+                                    strKey As String,
+                                    defaultValue As T) As T
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrWhiteSpace(strSection))

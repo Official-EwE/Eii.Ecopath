@@ -51,12 +51,12 @@ Public Class gridCatchability
         Dim source As cCoreInputOutputBase = Nothing
 
         ' ToDo: consider adding only columns for caught groups; this is way too expensive on the UI
-        Me.Redim(1, Core.nGroups + 1)
+        Me.Redim(1, Me.Core.nGroups + 1)
 
         Me(0, 0) = New cEwEColumnHeaderCell(SharedResources.TSDATASETINTERVAL_TIMESTEP)
 
-        For columnIndex As Integer = 1 To Core.nGroups
-            source = Core.EcoSimGroupInputs(columnIndex)
+        For columnIndex As Integer = 1 To Me.Core.nGroups
+            source = Me.Core.EcoSimGroupInputs(columnIndex)
             Me(0, columnIndex) = New cEwEColumnHeaderCell(source.Name)
         Next
 
@@ -66,7 +66,7 @@ Public Class gridCatchability
 
         Dim cell As cEwECell = Nothing
         Dim source As cEcosimFleetInput
-        source = Core.EcosimFleetInputs(Me.m_iSelFleet)
+        source = Me.Core.EcosimFleetInputs(Me.m_iSelFleet)
 
         For it As Integer = 1 To Me.Core.nEcosimTimeSteps
             Me.AddRow(it)
@@ -76,7 +76,7 @@ Public Class gridCatchability
             Me(it, 0) = cell
 
             '    Me.SetCell(it, 0, New EwECell(it, GetType(Integer)))
-            For igrp As Integer = 1 To Core.nGroups
+            For igrp As Integer = 1 To Me.Core.nGroups
                 Dim style As cStyleGuide.eStyleFlags
                 If source.RelQtStatus(igrp, it) = (eStatusFlags.OK Or eStatusFlags.Stored) Then
                     style = cStyleGuide.eStyleFlags.OK
@@ -117,18 +117,18 @@ Public Class gridCatchability
         Set(value As Integer)
             If Me.UIContext Is Nothing Then Return
             If (value <> Me.m_iSelFleet) Then
-                m_iSelFleet = value
+                Me.m_iSelFleet = value
                 Me.RefreshContent()
             End If
         End Set
     End Property
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
         MyBase.OnCellValueChanged(p, cell)
         Try
 
             Dim source As cEcosimFleetInput
-            source = Core.EcosimFleetInputs(Me.m_iSelFleet)
+            source = Me.Core.EcosimFleetInputs(Me.m_iSelFleet)
             Dim igrp As Integer = p.Column
             Dim it As Integer = p.Row
             source.RelQt(igrp, it) = CSng(cell.GetValue(p))

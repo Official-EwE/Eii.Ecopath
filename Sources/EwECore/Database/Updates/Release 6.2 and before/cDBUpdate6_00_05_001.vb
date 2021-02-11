@@ -76,7 +76,7 @@ Friend Class cDBUpdate6_00_05_001
 
     End Function
 
-    Private Function UpdatePedigree(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdatePedigree(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -123,7 +123,7 @@ Friend Class cDBUpdate6_00_05_001
 
     End Function
 
-    Private Function AddPSD(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddPSD(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -160,7 +160,7 @@ Friend Class cDBUpdate6_00_05_001
 
     End Function
 
-    Private Function CleanupGroupInfo(ByVal db As cEwEDatabase) As Boolean
+    Private Function CleanupGroupInfo(db As cEwEDatabase) As Boolean
         ' Not crucial
         db.Execute("ALTER TABLE EcopathGroup DROP COLUMN AdultGroup")
         Return True

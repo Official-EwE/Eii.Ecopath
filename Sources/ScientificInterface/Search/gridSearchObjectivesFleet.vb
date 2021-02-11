@@ -53,7 +53,7 @@ Namespace Ecosim
             Get
                 Return Me.m_Manager
             End Get
-            Set(ByVal value As ISearchObjective)
+            Set(value As ISearchObjective)
                 Me.m_Manager = value
                 Me.RefreshContent()
             End Set
@@ -61,10 +61,10 @@ Namespace Ecosim
 
         Public Property IsMaximizeByFleetValue() As Boolean
             Get
-                Return m_bIsMaxByFleetValue
+                Return Me.m_bIsMaxByFleetValue
             End Get
-            Set(ByVal value As Boolean)
-                m_bIsMaxByFleetValue = value
+            Set(value As Boolean)
+                Me.m_bIsMaxByFleetValue = value
                 Me.RefreshContent()
             End Set
         End Property
@@ -74,7 +74,7 @@ Namespace Ecosim
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            If Not m_bIsMaxByFleetValue Then
+            If Not Me.m_bIsMaxByFleetValue Then
                 Me.Redim(1, 3)
                 Me(0, 0) = New cEwEColumnHeaderCell("")
                 Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEET)
@@ -100,7 +100,7 @@ Namespace Ecosim
                 source = Me.m_Manager.FleetObjectives(i)
                 Me.Rows.Insert(i)
 
-                If Not m_bIsMaxByFleetValue Then
+                If Not Me.m_bIsMaxByFleetValue Then
                     Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                     Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                     Me(i, 2) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFleetJobCatchValue)

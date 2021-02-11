@@ -164,7 +164,7 @@ Namespace Ecospace.Controls
             Me.m_fpScale = New cEwEFormatProvider(Me.UIContext, Me.m_tbxScale, GetType(Single))
 
             If (Me.m_bIsScaling) Then
-                AddHandler Me.m_fpScale.OnValueChanged, AddressOf OnScaleChanged
+                AddHandler Me.m_fpScale.OnValueChanged, AddressOf Me.OnScaleChanged
                 Me.m_fpScale.Style = cStyleGuide.eStyleFlags.OK
             Else
                 Me.m_fpScale.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
@@ -173,7 +173,7 @@ Namespace Ecospace.Controls
             Me.m_cbEnabled.Checked = Me.m_adt.IsEnabled(Me.m_iLayer)
 
             ' Start listening to grid events
-            AddHandler Me.m_gridConnections.OnSelectionChanged, AddressOf OnSelectDS
+            AddHandler Me.m_gridConnections.OnSelectionChanged, AddressOf Me.OnSelectDS
 
             ' ToDo: globalize this
             cToolTipShared.GetInstance().SetToolTip(Me.m_btnAdd, "Connect")
@@ -199,21 +199,21 @@ Namespace Ecospace.Controls
             End If
 
             If (Me.m_bIsScaling) Then
-                RemoveHandler Me.m_fpScale.OnValueChanged, AddressOf OnScaleChanged
+                RemoveHandler Me.m_fpScale.OnValueChanged, AddressOf Me.OnScaleChanged
             End If
             Me.m_fpScale.Release()
 
-            RemoveHandler Me.m_gridConnections.OnSelectionChanged, AddressOf OnSelectDS
+            RemoveHandler Me.m_gridConnections.OnSelectionChanged, AddressOf Me.OnSelectDS
             Me.UIContext = Nothing
             MyBase.OnFormClosed(e)
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
-                    components = Nothing
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
+                    Me.components = Nothing
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -438,7 +438,7 @@ Namespace Ecospace.Controls
             Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
 
             Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection()
-            Dim iLayer As Integer = m_iLayer
+            Dim iLayer As Integer = Me.m_iLayer
 
             If (Me.m_bInUpdate) Then Return
             If (conn Is Nothing) Then Return
@@ -517,7 +517,7 @@ Namespace Ecospace.Controls
                 Dim msg As cMessage = Nothing
 
                 ' Perform calculation
-                Select Case ssda.CalculateScaleFromEcopathTimePeriod(m_iLayer, conn, iStartTimeStep, dScale)
+                Select Case ssda.CalculateScaleFromEcopathTimePeriod(Me.m_iLayer, conn, iStartTimeStep, dScale)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
                         msg = New cMessage(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX,
@@ -595,7 +595,7 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateControls()
 
-            Dim iLayer As Integer = m_iLayer
+            Dim iLayer As Integer = Me.m_iLayer
             Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection()
             Dim bHasConnectionSelected As Boolean = (conn IsNot Nothing)
             Dim ds As ISpatialDataSet = Nothing

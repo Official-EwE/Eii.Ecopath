@@ -31,7 +31,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerContaminantRelativeDistribution
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerContaminantRelativeDistribution, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerContaminantRelativeDistribution
     End Sub

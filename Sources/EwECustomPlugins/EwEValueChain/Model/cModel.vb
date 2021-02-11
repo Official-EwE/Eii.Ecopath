@@ -63,7 +63,7 @@ Public Class cModel
         Get
             Return Me.m_bManualRunMode
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bManualRunMode = value
         End Set
     End Property
@@ -76,7 +76,7 @@ Public Class cModel
     ''' <param name="results">Results to plunder.</param>
     ''' <returns>True if successful</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEquilibrium(ByVal data As cData, ByVal results As cResults) As Boolean
+    Public Function RunEquilibrium(data As cData, results As cResults) As Boolean
 
         Dim sMin As Single = Math.Min(data.Parameters.EquilibriumEffortMin, data.Parameters.EquilibriumEffortMax)
         Dim sMax As Single = Math.Max(data.Parameters.EquilibriumEffortMin, data.Parameters.EquilibriumEffortMax)
@@ -135,7 +135,7 @@ Public Class cModel
     ''' </summary>
     ''' <param name="data">The data to preserve effort shapes from.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub PreserveFishingEffort(ByVal data As cData)
+    Private Sub PreserveFishingEffort(data As cData)
 
         Dim Manager As cFishingEffortShapeManger = data.Core.FishingEffortShapeManager
         Dim Shape As cShapeData = Nothing
@@ -158,7 +158,7 @@ Public Class cModel
     ''' </summary>
     ''' <param name="data">The data to restore fishing effort to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub RestoreFishingEffort(ByVal data As cData)
+    Private Sub RestoreFishingEffort(data As cData)
 
         Dim Manager As cFishingEffortShapeManger = data.Core.FishingEffortShapeManager
         Dim Shape As cShapeData = Nothing
@@ -192,7 +192,7 @@ Public Class cModel
     ''' <param name="Val">The value to set effort to.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SetFishingEffort(ByVal data As cData, ByVal Fleet As Integer, ByVal Val As Single) As Boolean
+    Private Function SetFishingEffort(data As cData, Fleet As Integer, Val As Single) As Boolean
 
         Try
             Dim Manager As cFishingEffortShapeManger = data.Core.FishingEffortShapeManager
@@ -234,11 +234,11 @@ Public Class cModel
     ''' <param name="iTimeStep">1 when running Ecopath.</param>
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
-    Public Function RunTimeStep(ByVal data As cData, _
-                        ByVal result As cResults, _
-                        ByVal iTimeStep As Integer, _
-                        Optional ByVal ecosimResults As cEcoSimResults = Nothing, _
-                        Optional ByVal ecosimDS As cEcosimDatastructures = Nothing) As Boolean
+    Public Function RunTimeStep(data As cData, _
+                        result As cResults, _
+                        iTimeStep As Integer, _
+                        Optional ecosimResults As cEcoSimResults = Nothing, _
+                        Optional ecosimDS As cEcosimDatastructures = Nothing) As Boolean
 
         Dim bAllowedToRun As Boolean = False
         Dim iBaseYear As Integer = 0
@@ -304,11 +304,11 @@ Public Class cModel
     ''' <param name="iTimeStep">1 when running Ecopath.</param>
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
-    Private Function RunFullModel(ByVal data As cData, _
-                        ByVal result As cResults, _
-                        ByVal iTimeStep As Integer, _
-                        ByVal ecosimResults As cEcoSimResults, _
-                        ByVal ecosimDS As cEcosimDatastructures) As Boolean
+    Private Function RunFullModel(data As cData, _
+                        result As cResults, _
+                        iTimeStep As Integer, _
+                        ecosimResults As cEcoSimResults, _
+                        ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
         Dim iFleet As Integer = 0
@@ -353,11 +353,11 @@ Public Class cModel
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
     ''' <returns></returns>
-    Public Function RunTimeStepByFleet(ByVal data As cData, _
-                                       ByVal result As cResults, _
-                                       ByVal iTimeStep As Integer, _
-                                       ByVal ecosimResults As cEcoSimResults, _
-                                       ByVal ecosimDS As cEcosimDatastructures) As Boolean
+    Public Function RunTimeStepByFleet(data As cData, _
+                                       result As cResults, _
+                                       iTimeStep As Integer, _
+                                       ecosimResults As cEcoSimResults, _
+                                       ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
         Dim iFleetSrc As Integer = 0 ' Fleet that is the landings source for a given producer unit
@@ -415,11 +415,11 @@ Public Class cModel
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
     ''' <returns></returns>
-    Public Function RunTimeStepByLanding(ByVal data As cData, _
-                                         ByVal result As cResults, _
-                                         ByVal iTimeStep As Integer, _
-                                         ByVal ecosimResults As cEcoSimResults, _
-                                         ByVal ecosimDS As cEcosimDatastructures) As Boolean
+    Public Function RunTimeStepByLanding(data As cData, _
+                                         result As cResults, _
+                                         iTimeStep As Integer, _
+                                         ecosimResults As cEcoSimResults, _
+                                         ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim grpRun As cEcoPathGroupInput = Nothing
         Dim flt As cEcopathFleetInput = Nothing
@@ -475,10 +475,10 @@ Public Class cModel
 
 #Region " Helpers "
 
-    Private Function GetLandings(ByVal core As cCore, _
-                                 ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer, _
-                                 ByVal ecosimresults As cEcoSimResults, _
-                                 ByVal ecosimDS As cEcosimDatastructures) As Single
+    Private Function GetLandings(core As cCore, _
+                                 iFleet As Integer, iGroup As Integer, iTimeStep As Integer, _
+                                 ecosimresults As cEcoSimResults, _
+                                 ecosimDS As cEcosimDatastructures) As Single
 
         Dim model As cEwEModel = core.EwEModel
         Dim sArea As Single = model.Area
@@ -500,10 +500,10 @@ Public Class cModel
 
     End Function
 
-    Private Function GetLandingValue(ByVal core As cCore, _
-                                     ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer, _
-                                     ByVal ecosimresults As cEcoSimResults, _
-                                     ByVal ecosimDS As cEcosimDatastructures) As Single
+    Private Function GetLandingValue(core As cCore, _
+                                     iFleet As Integer, iGroup As Integer, iTimeStep As Integer, _
+                                     ecosimresults As cEcoSimResults, _
+                                     ecosimDS As cEcosimDatastructures) As Single
 
         Dim model As cEwEModel = core.EwEModel
         Dim sArea As Single = model.Area
@@ -526,8 +526,8 @@ Public Class cModel
 
     End Function
 
-    Friend Sub SaveResults(ByVal data As cData,
-                           ByVal result As cResults)
+    Friend Sub SaveResults(data As cData,
+                           result As cResults)
 
         Try
 
@@ -572,7 +572,7 @@ Public Class cModel
 #Region " Equations "
 
 
-    Public Sub Equations(ByVal TH As Integer)
+    Public Sub Equations(TH As Integer)
         '*----------------------------------
         '*Equations
         '*----------------------------------
@@ -599,96 +599,96 @@ Public Class cModel
 
     End Sub
 
-    Private Sub EtProfit(ByVal TH As Integer)
+    Private Sub EtProfit(TH As Integer)
         'TPROFIT = E = TSALES - TCOSTS
 
     End Sub
-    Private Sub EtSales(ByVal TH As Integer)
+    Private Sub EtSales(TH As Integer)
         '        TSALES =E= SUM((SPEC,STIME),PRICE1(SPEC,STIME)*OUTPUT1(SPEC,STIME))
 
     End Sub
 
-    Private Sub EtCosts(ByVal TH As Integer)
+    Private Sub EtCosts(TH As Integer)
         '        TCOSTS =E= SUM((USES,STIME),INPUT1(USES,STIME))
 
     End Sub
 
-    Private Sub EProfit(ByVal TH As Integer)
+    Private Sub EProfit(TH As Integer)
         '        PROFIT(STIME) =E= SALES(STIME) - COSTS(STIME)
 
     End Sub
 
-    Private Sub EProfitT(ByVal PORT As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal TH As Integer)
+    Private Sub EProfitT(PORT As Integer, TECH As Integer, SCAL As Integer, TH As Integer)
         '        PROFITT(PORT,TECH,SCAL,STIME) =E= OUTPUT2(PORT,TECH,SCAL,STIME) - INPUT2(PORT,TECH,SCAL,STIME)
 
     End Sub
 
-    Private Sub EProfitTD(ByVal PORT As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal TH As Integer)
+    Private Sub EProfitTD(PORT As Integer, TECH As Integer, SCAL As Integer, TH As Integer)
         '        PROFITTD(PORT,TECH,SCAL,STIME) =E= PROFITT(PORT,TECH,SCAL,STIME)/(EFFORT(PORT,TECH,SCAL,STIME)+1)
 
     End Sub
 
-    Private Sub ESales(ByVal TH As Integer)
+    Private Sub ESales(TH As Integer)
         '        SALES(STIME) =E= SUM(SPEC,PRICE1(SPEC,STIME)*OUTPUT1(SPEC,STIME))
 
     End Sub
 
-    Private Sub ECosts(ByVal TH As Integer)
+    Private Sub ECosts(TH As Integer)
         'ECOSTS(STIME) ..
         '        COSTS(STIME) = E = SUM(Uses, INPUT1(Uses, STIME))
 
     End Sub
 
-    Private Sub EOutput1(ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EOutput1(SPEC As Integer, TH As Integer)
         'EOUTPUT1(SPEC,STIME)$(ord(STIME) LE 15) .. 
         '        OUTPUT1(SPEC,STIME) =E= SUM((PORT,TECH,SCAL),MT(PORT,TECH,SCAL,SPEC,STIME)*EFFORT(PORT,TECH,SCAL,STIME))
 
     End Sub
 
-    Private Sub EOutput2(ByVal PORT As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal TH As Integer)
+    Private Sub EOutput2(PORT As Integer, TECH As Integer, SCAL As Integer, TH As Integer)
         'EOUTPUT2(PORT,TECH,SCAL,STIME)$(ord(STIME) LE 15) .. 
         '        OUTPUT2(PORT, TECH, SCAL, STIME) = E = SUM(Spec, PRICE1(Spec, STIME) * MT(PORT, TECH, SCAL, Spec, STIME) * EFFORT(PORT, TECH, SCAL, STIME))
 
     End Sub
 
-    Private Sub EOutput3(ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EOutput3(SPEC As Integer, TH As Integer)
         'EOUTPUT3(SPEC,STIME)$(ord(STIME) LE 15) .. 
         '        OUTPUT3(SPEC,STIME) =E= SUM((PORT,TECH,SCAL),MT(PORT,TECH,SCAL,SPEC,STIME)*FFLEET(TECH,SCAL,STIME))
 
     End Sub
 
-    Private Sub EExploit(ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EExploit(SPEC As Integer, TH As Integer)
         'EEXPLOIT(SPEC,STIME)$(ord(STIME) LE 15) ..
         '*        SUM((PORT,TECH,SCAL),MT(PORT,TECH,SCAL,SPEC,STIME)*STOCK(SPEC,STIME)) =G= OUTPUT1(SPEC,STIME)
         '        0.5*STOCK(SPEC,STIME) =G= OUTPUT1(SPEC,STIME)+OUTPUT3(SPEC,STIME)
 
     End Sub
 
-    Private Sub EMinStock(ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EMinStock(SPEC As Integer, TH As Integer)
         'EMINSTOCK(SPEC,STIME)$(ord(STIME) LE 15) ..
         '        STOCK(SPEC,STIME) =G= 0.05*BIOMASS(SPEC,"2000")
 
     End Sub
 
-    Private Sub EInput1(ByVal USES As Integer, ByVal TH As Integer)
+    Private Sub EInput1(USES As Integer, TH As Integer)
         'EINPUT1(USES,STIME)$(ord(STIME) LE 15) .. 
         '        INPUT1(USES,STIME) =E= SUM((PORT,TECH,SCAL),PRICE2(USES,TECH,SCAL,STIME)*UT(USES,PORT,TECH,SCAL,STIME)*EFFORT(PORT,TECH,SCAL,STIME))
 
     End Sub
 
-    Private Sub EInput2(ByVal PORT As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal TH As Integer)
+    Private Sub EInput2(PORT As Integer, TECH As Integer, SCAL As Integer, TH As Integer)
         'EINPUT2(PORT,TECH,SCAL,STIME)$(ord(STIME) LE 15) .. 
         '        INPUT2(PORT, TECH, SCAL, STIME) = E = SUM(Uses, PRICE2(Uses, TECH, SCAL, STIME) * UT(Uses, PORT, TECH, SCAL, STIME) * EFFORT(PORT, TECH, SCAL, STIME))
 
     End Sub
 
-    Private Sub EInput3(ByVal USES As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal TH As Integer)
+    Private Sub EInput3(USES As Integer, TECH As Integer, SCAL As Integer, TH As Integer)
         'EINPUT3(USES,TECH,SCAL,STIME)$(ord(STIME) LE 15) .. 
         '        INPUT3(USES, TECH, SCAL, STIME) = E = SUM(Port, PRICE2(USES, TECH, SCAL, STIME) * UT(USES, Port, TECH, SCAL, STIME) * EFFORT(Port, TECH, SCAL, STIME))
 
     End Sub
 
-    Private Sub EStock(ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EStock(SPEC As Integer, TH As Integer)
         'ESTOCK(SPEC,STIME)$(ord(STIME) LE 15) ..
         '        STOCK(SPEC,STIME) =E= (BIOMASS(SPEC,"2000")$(ord(STIME) EQ 1)
         '                              +GROWTH(SPEC,STIME)*(STOCK(SPEC,STIME-1)-OUTPUT1(SPEC,STIME-1)-OUTPUT3(SPEC,STIME-1))$(ord(STIME) GE 2)
@@ -697,13 +697,13 @@ Public Class cModel
 
     End Sub
 
-    Private Sub EGrowth(ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EGrowth(SPEC As Integer, TH As Integer)
         'EGROWTH(SPEC,STIME)$(ord(STIME) LE 15) ..
         '       GROWTH(SPEC, STIME) = E = 1.25
 
     End Sub
 
-    Private Sub EMT(ByVal PORT As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal SPEC As Integer, ByVal TH As Integer)
+    Private Sub EMT(PORT As Integer, TECH As Integer, SCAL As Integer, SPEC As Integer, TH As Integer)
         'EMT(PORT,TECH,SCAL,SPEC,STIME)$(ord(STIME) LE 15) .. 
         '        MT(PORT,TECH,SCAL,SPEC,STIME) =E= MT2000(PORT,TECH,SCAL,SPEC)$(ord(STIME) EQ 1)+(MT2000(PORT,TECH,SCAL,SPEC)*(STOCK(SPEC,STIME)/STOCK(SPEC,"2001")))$(ord(STIME) GE 2)
         '*        MT(PORT,TECH,SCAL,SPEC,STIME) =E= MT2000(PORT,TECH,SCAL,SPEC)$(ord(STIME) EQ 1)+(MT(PORT,TECH,SCAL,SPEC,STIME-1)*(STOCK(SPEC,STIME)/STOCK(SPEC,STIME-1)))$(ord(STIME) GE 2)
@@ -711,7 +711,7 @@ Public Class cModel
 
     End Sub
 
-    Private Sub EUT(ByVal USES As Integer, ByVal PORT As Integer, ByVal TECH As Integer, ByVal SCAL As Integer, ByVal TH As Integer)
+    Private Sub EUT(USES As Integer, PORT As Integer, TECH As Integer, SCAL As Integer, TH As Integer)
         'EUT(USES,PORT,TECH,SCAL,STIME)$(ord(STIME) LE 15) .. 
         '        UT(USES, PORT, TECH, SCAL, STIME) = E = UT2000(USES, PORT, TECH, SCAL)
 

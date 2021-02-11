@@ -120,7 +120,7 @@ Namespace Controls.EwEGrid
             ''' </summary>
             ''' <param name="grid"></param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal grid As cEwEGrid)
+            Public Sub New(grid As cEwEGrid)
                 Me.m_grid = grid
             End Sub
 
@@ -141,7 +141,7 @@ Namespace Controls.EwEGrid
             ''' Event that is fired when a cell is clicked.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnClick(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnClick(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnClick
 
                 ' Do not fire when row or col are being resized
@@ -154,7 +154,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnContextMenuPopUp(ByVal e As SourceGrid2.PositionContextMenuEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnContextMenuPopUp
+            Public Sub OnContextMenuPopUp(e As SourceGrid2.PositionContextMenuEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnContextMenuPopUp
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -162,7 +162,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnDoubleClick(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnDoubleClick(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnDoubleClick
                 Me.m_grid.OnCellDoubleClicked(e.Position, e.Cell)
             End Sub
@@ -172,7 +172,7 @@ Namespace Controls.EwEGrid
             ''' Event that is fired when a cell showing a text box has been edited.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnEditEnded(ByVal e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditEnded
+            Public Sub OnEditEnded(e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditEnded
                 e.Cancel = Not Me.m_grid.OnCellEdited(e.Position, e.Cell)
             End Sub
 
@@ -181,7 +181,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnEditStarting(ByVal e As SourceGrid2.PositionCancelEventArgs) _
+            Public Sub OnEditStarting(e As SourceGrid2.PositionCancelEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditStarting
                 ' NOP
             End Sub
@@ -191,7 +191,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusEntered(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnFocusEntered(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntered
                 ' NOP
             End Sub
@@ -201,7 +201,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusEntering(ByVal e As SourceGrid2.PositionCancelEventArgs) _
+            Public Sub OnFocusEntering(e As SourceGrid2.PositionCancelEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntering
                 ' NOP
             End Sub
@@ -211,7 +211,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusLeaving(ByVal e As SourceGrid2.PositionCancelEventArgs) _
+            Public Sub OnFocusLeaving(e As SourceGrid2.PositionCancelEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeaving
                 ' NOP
             End Sub
@@ -221,7 +221,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnFocusLeft(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnFocusLeft(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeft
                 ' NOP
             End Sub
@@ -231,7 +231,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnKeyDown(ByVal e As SourceGrid2.PositionKeyEventArgs) _
+            Public Sub OnKeyDown(e As SourceGrid2.PositionKeyEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyDown
                 ' NOP
             End Sub
@@ -241,7 +241,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnKeyPress(ByVal e As SourceGrid2.PositionKeyPressEventArgs) _
+            Public Sub OnKeyPress(e As SourceGrid2.PositionKeyPressEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyPress
                 ' NOP
             End Sub
@@ -251,7 +251,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnKeyUp(ByVal e As SourceGrid2.PositionKeyEventArgs) _
+            Public Sub OnKeyUp(e As SourceGrid2.PositionKeyEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyUp
                 ' NOP
             End Sub
@@ -261,7 +261,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseDown(ByVal e As SourceGrid2.PositionMouseEventArgs) _
+            Public Sub OnMouseDown(e As SourceGrid2.PositionMouseEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseDown
                 ' NOP
             End Sub
@@ -271,7 +271,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseEnter(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnMouseEnter(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseEnter
                 ' NOP
             End Sub
@@ -281,7 +281,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseLeave(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnMouseLeave(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseLeave
                 ' NOP
             End Sub
@@ -291,7 +291,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseMove(ByVal e As SourceGrid2.PositionMouseEventArgs) _
+            Public Sub OnMouseMove(e As SourceGrid2.PositionMouseEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseMove
                 ' NOP
             End Sub
@@ -301,7 +301,7 @@ Namespace Controls.EwEGrid
             ''' 
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnMouseUp(ByVal e As SourceGrid2.PositionMouseEventArgs) _
+            Public Sub OnMouseUp(e As SourceGrid2.PositionMouseEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseUp
                 ' NOP
             End Sub
@@ -312,7 +312,7 @@ Namespace Controls.EwEGrid
             ''' check box or a combo box.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub OnValueChanged(ByVal e As SourceGrid2.PositionEventArgs) _
+            Public Sub OnValueChanged(e As SourceGrid2.PositionEventArgs) _
                 Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnValueChanged
                 Me.m_grid.OnCellValueChanged(e.Position, e.Cell)
             End Sub
@@ -364,22 +364,22 @@ Namespace Controls.EwEGrid
         Public Sub New()
             MyBase.New()
 
-            Me.m_pehTLCell = New SourceGrid2.PositionEventHandler(AddressOf OnSelectEntireGrid)
-            AddHandler m_ceCellClick.Click, Me.m_pehTLCell
-            Me.m_pehRowHeader = New SourceGrid2.PositionEventHandler(AddressOf OnSelectRow)
-            AddHandler m_ceRowSelect.Click, Me.m_pehRowHeader
-            Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf OnSelectColumn)
-            AddHandler m_ceColSelect.Click, Me.m_pehColHeader
+            Me.m_pehTLCell = New SourceGrid2.PositionEventHandler(AddressOf Me.OnSelectEntireGrid)
+            AddHandler Me.m_ceCellClick.Click, Me.m_pehTLCell
+            Me.m_pehRowHeader = New SourceGrid2.PositionEventHandler(AddressOf Me.OnSelectRow)
+            AddHandler Me.m_ceRowSelect.Click, Me.m_pehRowHeader
+            Me.m_pehColHeader = New SourceGrid2.PositionEventHandler(AddressOf Me.OnSelectColumn)
+            AddHandler Me.m_ceColSelect.Click, Me.m_pehColHeader
 
-            AddHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
-            AddHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
-            AddHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
-            AddHandler Me.Selection.ClearCells, AddressOf OnClearCells
-            AddHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+            AddHandler Me.Selection.ClipboardCopy, AddressOf Me.OnClipboardCopy
+            AddHandler Me.Selection.ClipboardCut, AddressOf Me.OnClipboardCut
+            AddHandler Me.Selection.ClipboardPaste, AddressOf Me.OnClipboardPaste
+            AddHandler Me.Selection.ClearCells, AddressOf Me.OnClearCells
+            AddHandler Me.Selection.SelectionChange, AddressOf Me.OnSelectionChange
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
 
             ' JS 13Dec10: Memory leaks were discovered on tooltips. Perhaps explicitly 
             '             deactivating the grid tooltip will fix this. If not we have a 
@@ -388,18 +388,18 @@ Namespace Controls.EwEGrid
 
             If (Me.m_pehTLCell IsNot Nothing) Then
 
-                RemoveHandler m_ceCellClick.Click, Me.m_pehTLCell
+                RemoveHandler Me.m_ceCellClick.Click, Me.m_pehTLCell
                 Me.m_pehTLCell = Nothing
-                RemoveHandler m_ceRowSelect.Click, Me.m_pehRowHeader
+                RemoveHandler Me.m_ceRowSelect.Click, Me.m_pehRowHeader
                 Me.m_pehRowHeader = Nothing
-                RemoveHandler m_ceColSelect.Click, Me.m_pehColHeader
+                RemoveHandler Me.m_ceColSelect.Click, Me.m_pehColHeader
                 Me.m_pehColHeader = Nothing
 
-                RemoveHandler Me.Selection.ClipboardCopy, AddressOf OnClipboardCopy
-                RemoveHandler Me.Selection.ClipboardCut, AddressOf OnClipboardCut
-                RemoveHandler Me.Selection.ClipboardPaste, AddressOf OnClipboardPaste
-                RemoveHandler Me.Selection.ClearCells, AddressOf OnClearCells
-                RemoveHandler Me.Selection.SelectionChange, AddressOf OnSelectionChange
+                RemoveHandler Me.Selection.ClipboardCopy, AddressOf Me.OnClipboardCopy
+                RemoveHandler Me.Selection.ClipboardCut, AddressOf Me.OnClipboardCut
+                RemoveHandler Me.Selection.ClipboardPaste, AddressOf Me.OnClipboardPaste
+                RemoveHandler Me.Selection.ClearCells, AddressOf Me.OnClearCells
+                RemoveHandler Me.Selection.SelectionChange, AddressOf Me.OnSelectionChange
 
                 Me.TrackPropertySelection = False
 
@@ -438,7 +438,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
 
                 Try
                     ' Clean-up
@@ -716,7 +716,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overridable Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
             Return True
         End Function
 
@@ -733,7 +733,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overridable Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
             Return True
         End Function
 
@@ -749,7 +749,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        Protected Overridable Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
             ' NOP
         End Sub
 
@@ -765,7 +765,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        Protected Overridable Sub OnCellDoubleClicked(p As Position, cell As Cells.ICellVirtual)
             ' NOP
         End Sub
 
@@ -794,9 +794,9 @@ Namespace Controls.EwEGrid
         <Browsable(False)>
         Public Property FixedColumnWidths(iWidth As Integer) As Boolean
             Get
-                Return m_bFixedColumnWidths
+                Return Me.m_bFixedColumnWidths
             End Get
-            Set(ByVal bFixedColumnWidths As Boolean)
+            Set(bFixedColumnWidths As Boolean)
                 'If (m_bFixedColumnWidths = bFixedColumnWidths) Then Return
 
                 Me.m_bFixedColumnWidths = bFixedColumnWidths
@@ -843,10 +843,10 @@ Namespace Controls.EwEGrid
         ''' <param name="iColFrom">Start column for resizing.</param>
         ''' <param name="iColTo">End column for resizing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SizeColumnsEqually(Optional ByVal iColFrom As Integer = 0,
-                                      Optional ByVal iColTo As Integer = 10000,
-                                      Optional ByVal iMinWidth As Integer = 10,
-                                      Optional ByVal iMaxWidth As Integer = 10000)
+        Public Sub SizeColumnsEqually(Optional iColFrom As Integer = 0,
+                                      Optional iColTo As Integer = 10000,
+                                      Optional iMinWidth As Integer = 10,
+                                      Optional iMaxWidth As Integer = 10000)
 
             Dim iWidth As Integer = iMinWidth
             For i As Integer = Math.Max(0, iColFrom) To Math.Min(Me.ColumnsCount - 1, iColTo)
@@ -933,7 +933,7 @@ Namespace Controls.EwEGrid
         ''' Properly releases all EwE cells in a row.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub ClearRow(ByVal iRow As Integer)
+        Protected Overridable Sub ClearRow(iRow As Integer)
             Dim cell As SourceGrid2.Cells.ICell = Nothing
             For iCol As Integer = 0 To Me.ColumnsCount - 1
                 cell = Me(iRow, iCol)
@@ -955,7 +955,7 @@ Namespace Controls.EwEGrid
         ''' <param name="iRowIndex"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Function AddRow(Optional ByVal iRowIndex As Integer = -1) As Integer
+        Protected Function AddRow(Optional iRowIndex As Integer = -1) As Integer
             If (-1 = iRowIndex) Then iRowIndex = Me.Rows.Count
             Me.Rows.Insert(iRowIndex)
             Return iRowIndex
@@ -1007,7 +1007,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(False)>
-        Protected Function Formula(ByVal exp As cExpression) As cFormulaProperty
+        Protected Function Formula(exp As cExpression) As cFormulaProperty
             Dim fp As New cFormulaProperty(exp)
             Me.RegisterLocalProperty(fp)
             Return fp
@@ -1021,7 +1021,7 @@ Namespace Controls.EwEGrid
         ''' <param name="prop">The property to register.</param>
         ''' -------------------------------------------------------------------
         <Browsable(False)>
-        Protected Sub RegisterLocalProperty(ByVal prop As cProperty)
+        Protected Sub RegisterLocalProperty(prop As cProperty)
             If Me.m_lpropLocal Is Nothing Then
                 Me.m_lpropLocal = New List(Of cProperty)
             End If
@@ -1073,7 +1073,7 @@ Namespace Controls.EwEGrid
 
         ' ToDo_JS 05aug07: fix [SHIFT]+key nav selection logic to select a range, not just select a cell
 
-        Protected Overridable Sub OnSelectEntireGrid(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overridable Sub OnSelectEntireGrid(sender As Object, e As SourceGrid2.PositionEventArgs)
 
             If Not Me.AllowBlockSelect Then Return
 
@@ -1083,7 +1083,7 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-        Protected Overridable Sub OnSelectRow(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overridable Sub OnSelectRow(sender As Object, e As SourceGrid2.PositionEventArgs)
 
             If Not Me.AllowBlockSelect Then Return
 
@@ -1092,15 +1092,15 @@ Namespace Controls.EwEGrid
             Dim iLastRow As Integer = e.Position.Row
 
             If ((Control.ModifierKeys And Keys.Shift) = Keys.Shift) Then
-                iFirstRow = Math.Min(Selection.GetRange.Start.Row, iFirstRow)
-                iLastRow = Math.Min(Selection.GetRange.End.Row, iLastRow)
+                iFirstRow = Math.Min(Me.Selection.GetRange.Start.Row, iFirstRow)
+                iLastRow = Math.Min(Me.Selection.GetRange.End.Row, iLastRow)
             End If
 
             Me.Selection.AddRange(New Range(iFirstRow, 0, iLastRow, Me.ColumnsCount - 1))
 
         End Sub
 
-        Protected Overridable Sub OnSelectColumn(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overridable Sub OnSelectColumn(sender As Object, e As SourceGrid2.PositionEventArgs)
 
             If Not Me.AllowBlockSelect Then Return
 
@@ -1109,8 +1109,8 @@ Namespace Controls.EwEGrid
             Dim iLastCol As Integer = e.Position.Column
 
             If ((Control.ModifierKeys And Keys.Shift) = Keys.Shift) Then
-                iFirstCol = Math.Min(Selection.GetRange.Start.Column, iFirstCol)
-                iLastCol = Math.Min(Selection.GetRange.End.Column, iLastCol)
+                iFirstCol = Math.Min(Me.Selection.GetRange.Start.Column, iFirstCol)
+                iLastCol = Math.Min(Me.Selection.GetRange.End.Column, iLastCol)
             End If
 
             Me.Selection.AddRange(New Range(0, iFirstCol, Me.RowsCount - 1, iLastCol))
@@ -1121,7 +1121,7 @@ Namespace Controls.EwEGrid
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnClearCells(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnClearCells(sender As Object, e As System.EventArgs)
 
             Dim cell As SourceGrid2.Cells.ICell = Nothing
 
@@ -1141,7 +1141,7 @@ Namespace Controls.EwEGrid
         ''' style-masked values in the clipboard text.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnClipboardCopy(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnClipboardCopy(sender As Object, e As System.EventArgs)
 
             Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
@@ -1224,7 +1224,7 @@ Namespace Controls.EwEGrid
         ''' Clipboard cut.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnClipboardCut(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnClipboardCut(sender As Object, e As System.EventArgs)
 
             Me.OnClipboardCopy(sender, e)
             Me.OnClearCells(sender, e)
@@ -1236,7 +1236,7 @@ Namespace Controls.EwEGrid
         ''' Clipboard paste
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnClipboardPaste(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnClipboardPaste(sender As Object, e As System.EventArgs)
 
             Dim dtObj As IDataObject = Clipboard.GetDataObject()
 
@@ -1386,7 +1386,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cPropertySelectionCommand">property select command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
+        Private Sub OnSelectionChange(sender As Object, e As SourceGrid2.SelectionChangeEventArgs)
 
             If Me.TrackPropertySelection Then
 
@@ -1438,7 +1438,7 @@ Namespace Controls.EwEGrid
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Function SelectedProperties() As cProperty()
-            Return m_lpropertySelected.ToArray()
+            Return Me.m_lpropertySelected.ToArray()
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1511,7 +1511,7 @@ Namespace Controls.EwEGrid
         ''' selections. An assertion may occur otherwise.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub SelectRow(ByVal iRow As Integer, Optional bAddToSelection As Boolean = False)
+        Public Sub SelectRow(iRow As Integer, Optional bAddToSelection As Boolean = False)
 
             ' Clear current selection
             If (Me.Selection IsNot Nothing And Not bAddToSelection) Then
@@ -1540,7 +1540,7 @@ Namespace Controls.EwEGrid
         ''' values encountered in the stream reader to the proper cell value types. 
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function ReadContent(ByVal sr As StreamReader) As Boolean
+        Public Function ReadContent(sr As StreamReader) As Boolean
 
             Dim strLine As String = ""
             Dim values As String()
@@ -1619,7 +1619,7 @@ Namespace Controls.EwEGrid
         ''' write grid values to.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteContent(ByVal sw As StreamWriter) As Boolean
+        Public Function WriteContent(sw As StreamWriter) As Boolean
 
             Dim cell As ICell = Nothing
             Dim cellValue As Object = Nothing
@@ -1671,7 +1671,7 @@ Namespace Controls.EwEGrid
         ''' StyleGuide change event handler; makes sure cells are redrawn.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overridable Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
             Me.Invalidate(True)
         End Sub
 

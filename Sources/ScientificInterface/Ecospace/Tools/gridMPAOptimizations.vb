@@ -100,10 +100,10 @@ Public Class gridMPAOptimizations
 
     End Sub
 
-    Public Sub LogResult(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
-        ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
-        ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single, _
-        ByVal sTotalWeighted As Single, ByVal sPercClosed As Single)
+    Public Sub LogResult(sEconomicValue As Single, sSocialValue As Single, _
+        sMandatedValue As Single, sEcologicalValue As Single, _
+        sBiomassDiversityValue As Single, sBoundaryWeightValue As Single, _
+        sTotalWeighted As Single, sPercClosed As Single)
 
         Me(1, eColumnTypes.Value).Value = sEconomicValue
         Me(2, eColumnTypes.Value).Value = sSocialValue

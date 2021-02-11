@@ -79,7 +79,7 @@ Namespace Controls
             Return New eDataTypes() {eDataTypes.PriceMediation}
         End Function
 
-        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+        Public Overrides Sub OnShapeSelected(shape() As EwECore.cShapeData)
             MyBase.OnShapeSelected(shape)
             If (Me.MediationAssignments IsNot Nothing) Then
                 Dim strTitle As String = ""

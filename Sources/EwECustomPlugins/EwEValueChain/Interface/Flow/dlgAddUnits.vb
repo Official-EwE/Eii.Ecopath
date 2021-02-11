@@ -42,7 +42,7 @@ Public Class dlgAddUnits
 
         Private m_unit As cUnit = Nothing
 
-        Public Sub New(ByVal unit As cUnit)
+        Public Sub New(unit As cUnit)
             Me.m_unit = unit
         End Sub
 
@@ -71,7 +71,7 @@ Public Class dlgAddUnits
 
 #Region " Construction / destruction "
 
-    Public Sub New(ByVal data As cData, ByVal diagram As cFlowDiagram)
+    Public Sub New(data As cData, diagram As cFlowDiagram)
         Me.InitializeComponent()
         Me.m_data = data
         Me.m_diagram = diagram
@@ -81,7 +81,7 @@ Public Class dlgAddUnits
 
 #Region " Control events "
 
-    Private Sub dlgSelectUnits_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub dlgSelectUnits_Load(sender As Object, e As System.EventArgs) _
         Handles Me.Load
 
         Dim unit As cUnit = Nothing
@@ -110,21 +110,21 @@ Public Class dlgAddUnits
 
     End Sub
 
-    Private Sub OnSelectAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectAll(sender As System.Object, e As System.EventArgs) _
         Handles m_btnAll.Click
         For iItem As Integer = 0 To Me.m_clbUnits.Items.Count - 1
             Me.m_clbUnits.SetItemChecked(iItem, True)
         Next
     End Sub
 
-    Private Sub OnSelectNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectNone(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelNone.Click
         For iItem As Integer = 0 To Me.m_clbUnits.Items.Count - 1
             Me.m_clbUnits.SetItemChecked(iItem, False)
         Next
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles OK_BUTTON.Click
 
         Dim unit As cUnit = Nothing
@@ -144,7 +144,7 @@ Public Class dlgAddUnits
         Me.Close()
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles CANCEL_BUTTON.Click
         Me.DialogResult = DialogResult.Cancel
         Me.Close()

@@ -44,7 +44,7 @@ Public Class cMonteCarloThread
 
     Private threadID As Integer
 
-    'Public Sub New(ByVal trID As Integer)
+    'Public Sub New(trID As Integer)
     '    threadID = trID
     'End Sub
 
@@ -55,15 +55,15 @@ Public Class cMonteCarloThread
         EE = 4
         BA = 5
     End Enum
-    Public Sub New(ByVal trid As Integer)
+    Public Sub New(trid As Integer)
         threadID = trid
     End Sub
-    Public Sub init(ByVal ng As Integer, ByVal nl As Integer)
+    Public Sub init(ng As Integer, nl As Integer)
         ngroups = ng
         nLivingGroups = nl
     End Sub
 
-    Public Sub run(ByVal obParam As Object)
+    Public Sub run(obParam As Object)
         Try
             signalState.Reset()
             BalanceEcopathWithNewPars(pmean, CVpar, iter) '**********
@@ -75,8 +75,8 @@ Public Class cMonteCarloThread
         End Try
     End Sub
 
-    Private Function BalanceEcopathWithNewPars(ByVal ParCurVal(,) As Single, ByVal CVpar(,) As Single, ByRef iter As Integer) As Boolean
-        'EwE5 StartEcosimWithNewPars(ByVal Pstartup(,) As Single, ByVal CVpar(,) As Single, ByVal iter As Long)
+    Private Function BalanceEcopathWithNewPars(ParCurVal(,) As Single, CVpar(,) As Single, ByRef iter As Integer) As Boolean
+        'EwE5 StartEcosimWithNewPars(Pstartup(,) As Single, CVpar(,) As Single, iter As Long)
         Dim igrp As Integer
         Dim bEcopathNeedsBalancing As Boolean
 
@@ -144,7 +144,7 @@ Public Class cMonteCarloThread
 
     End Function
 
-    Private Function ChooseFeasiblePar(ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single) As Single
+    Private Function ChooseFeasiblePar(xbar As Single, CV As Single, ParMin As Single, ParMax As Single) As Single
         Dim X As Single, ict As Integer
         '  Static Answer As Object
 
@@ -175,7 +175,7 @@ Public Class cMonteCarloThread
         RandomNormal = X
     End Function
 
-    Private Function ChooseFeasibleBA(ByVal Biomass As Single, ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single) As Single
+    Private Function ChooseFeasibleBA(Biomass As Single, xbar As Single, CV As Single, ParMin As Single, ParMax As Single) As Single
         Dim X As Single, ict As Integer
         Do
             X = xbar + Biomass * (CV * RandomNormal())

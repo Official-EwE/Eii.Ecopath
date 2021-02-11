@@ -114,16 +114,16 @@ Public Class cBetapdfShapeFunction
 
 #Region " Calculations "
 
-    Private Function betaPDF(ByVal a As Single, ByVal b As Single, ByVal x As Single) As Single
+    Private Function betaPDF(a As Single, b As Single, x As Single) As Single
         'Beta Distribution pdf from Wikipedia
         'http://en.wikipedia.org/wiki/Beta_distribution
-        Return CSng((x ^ (a - 1) * (1 - x) ^ (b - 1)) / beta(a, b))
+        Return CSng((x ^ (a - 1) * (1 - x) ^ (b - 1)) / Me.beta(a, b))
     End Function
 
-    Private Function beta(ByVal a As Single, ByVal b As Single) As Single
+    Private Function beta(a As Single, b As Single) As Single
         'Beta function from Wikipedia
         'http://en.wikipedia.org/wiki/Beta_function
-        Return CSng(Gamma(a) * Gamma(b) / Gamma(a + b))
+        Return CSng(Me.Gamma(a) * Me.Gamma(b) / Me.Gamma(a + b))
     End Function
 
     ''' -------------------------------------------------------------------
@@ -132,7 +132,7 @@ Public Class cBetapdfShapeFunction
     ''' </summary>
     ''' <param name="xx"></param>
     ''' -------------------------------------------------------------------
-    Private Function Gamma(ByVal xx As Double) As Double
+    Private Function Gamma(xx As Double) As Double
         'HACK gammln(x) returns the log n gamma used by Numeric Recipies in C betai(a,b,x) 
         'we need gamma for beta(x) so remove the log
         Return Math.Exp(Me.gammln(xx))
@@ -145,7 +145,7 @@ Public Class cBetapdfShapeFunction
     ''' <param name="xx"></param>
     ''' <returns></returns>
     ''' -------------------------------------------------------------------
-    Private Function gammln(ByVal xx As Double) As Double
+    Private Function gammln(xx As Double) As Double
         'from NRC-2
         Dim x As Double, y As Double, tmp As Double, ser As Double
         Dim cof() As Double = {76.180091729471457, -86.505320329416776, _

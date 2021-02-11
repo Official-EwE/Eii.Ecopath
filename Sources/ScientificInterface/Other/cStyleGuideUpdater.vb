@@ -51,7 +51,7 @@ Friend Class cStyleGuideUpdater
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
 
         ' Sanity check
         Debug.Assert(uic IsNot Nothing)
@@ -59,8 +59,8 @@ Friend Class cStyleGuideUpdater
         Me.m_uic = uic
         Me.m_sm = Me.m_uic.Core.StateMonitor
 
-        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
-        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf Me.OnCoreStateEvent
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
 
     End Sub
 
@@ -68,8 +68,8 @@ Friend Class cStyleGuideUpdater
 
         If (Me.m_uic IsNot Nothing) Then
 
-            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf Me.OnCoreStateEvent
 
             Me.m_uic = Nothing
             Me.m_sm = Nothing
@@ -79,7 +79,7 @@ Friend Class cStyleGuideUpdater
 
 #Region " Private vars "
 
-    Private Sub OnCoreStateEvent(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreStateEvent(csm As cCoreStateMonitor)
         If Me.m_bIsEcopathLoaded <> csm.HasEcopathLoaded Then
             Me.m_bIsEcopathLoaded = csm.HasEcopathLoaded
             Me.Update()
@@ -107,28 +107,28 @@ Friend Class cStyleGuideUpdater
 
         If Me.m_bIsEcopathLoaded Then
 
-            Me.m_propGroupDigits = pm.GetProperty(Core.EwEModel, eVarNameFlags.GroupDigits)
-            Me.m_propNumDigits = pm.GetProperty(Core.EwEModel, eVarNameFlags.NumDigits)
-            AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
-            AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
+            Me.m_propGroupDigits = pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.GroupDigits)
+            Me.m_propNumDigits = pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.NumDigits)
+            AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
+            AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
 
-            Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
-            Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
-            AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
-            AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
+            Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
+            Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
+            AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
+            AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
 
-            Me.m_propUnitTime = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
-            Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
-            AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
-            AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
+            Me.m_propUnitTime = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
+            Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
+            AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf Me.OnTimeUnitChanged
+            AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf Me.OnTimeUnitChanged
 
-            Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
-            AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
+            Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
+            AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf Me.OnMonetaryUnitChanged
 
-            Me.OnCurrencyUnitChanged(m_propUnitCurrency, cProperty.eChangeFlags.All)
-            Me.OnTimeUnitChanged(m_propUnitTime, cProperty.eChangeFlags.All)
-            Me.OnMonetaryUnitChanged(m_propUnitMonetary, cProperty.eChangeFlags.All)
-            Me.OnNumberFormatChanged(m_propNumDigits, cProperty.eChangeFlags.All)
+            Me.OnCurrencyUnitChanged(Me.m_propUnitCurrency, cProperty.eChangeFlags.All)
+            Me.OnTimeUnitChanged(Me.m_propUnitTime, cProperty.eChangeFlags.All)
+            Me.OnMonetaryUnitChanged(Me.m_propUnitMonetary, cProperty.eChangeFlags.All)
+            Me.OnNumberFormatChanged(Me.m_propNumDigits, cProperty.eChangeFlags.All)
 
             ' Load item visibility settings from model
             Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
@@ -136,22 +136,22 @@ Friend Class cStyleGuideUpdater
 
         Else
 
-            RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
-            RemoveHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
+            RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
+            RemoveHandler Me.m_propGroupDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
             Me.m_propNumDigits = Nothing
             Me.m_propGroupDigits = Nothing
 
-            RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
-            RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
+            RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
+            RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
             Me.m_propUnitCurrency = Nothing
             Me.m_propUnitCurrencyText = Nothing
 
-            RemoveHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
-            RemoveHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
+            RemoveHandler Me.m_propUnitTime.PropertyChanged, AddressOf Me.OnTimeUnitChanged
+            RemoveHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf Me.OnTimeUnitChanged
             Me.m_propUnitTime = Nothing
             Me.m_propUnitTimeText = Nothing
 
-            RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
+            RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf Me.OnMonetaryUnitChanged
             Me.m_propUnitMonetary = Nothing
 
         End If
@@ -160,7 +160,7 @@ Friend Class cStyleGuideUpdater
 
     End Sub
 
-    Private Sub OnCurrencyUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnCurrencyUnitChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         With Me.StyleGuide
             .SuspendEvents()
             .CurrencyUnit = DirectCast(Me.m_propUnitCurrency.GetValue(), eUnitCurrencyType)
@@ -169,7 +169,7 @@ Friend Class cStyleGuideUpdater
         End With
     End Sub
 
-    Private Sub OnTimeUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnTimeUnitChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         With Me.StyleGuide
             .SuspendEvents()
             .TimeUnit = DirectCast(Me.m_propUnitTime.GetValue(), eUnitTimeType)
@@ -178,7 +178,7 @@ Friend Class cStyleGuideUpdater
         End With
     End Sub
 
-    Private Sub OnMonetaryUnitChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnMonetaryUnitChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         With Me.StyleGuide
             .SuspendEvents()
             .MonetaryUnit = DirectCast(Me.m_propUnitMonetary.GetValue(), String)
@@ -186,7 +186,7 @@ Friend Class cStyleGuideUpdater
         End With
     End Sub
 
-    Private Sub OnNumberFormatChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnNumberFormatChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         With Me.StyleGuide
             .SuspendEvents()
             .NumDigits = CInt(Me.m_propNumDigits.GetValue())
@@ -195,7 +195,7 @@ Friend Class cStyleGuideUpdater
         End With
     End Sub
 
-    Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
+    Private Sub OnStyleGuideChanged(cf As cStyleGuide.eChangeType)
 
         If ((cf And (cStyleGuide.eChangeType.GroupVisibility Or cStyleGuide.eChangeType.FleetVisibility)) > 0) Then
 
@@ -330,7 +330,7 @@ Friend Class cStyleGuideUpdater
 
     End Sub
 
-    Private Sub StringToFontSetting(ByVal strSetting As String, ByVal ft As cStyleGuide.eApplicationFontType)
+    Private Sub StringToFontSetting(strSetting As String, ft As cStyleGuide.eApplicationFontType)
 
         Dim astrBits As String() = strSetting.Split(","c)
         If astrBits.Length >= 1 Then
@@ -356,7 +356,7 @@ Friend Class cStyleGuideUpdater
         End If
     End Sub
 
-    Private Function FontSettingToString(ByVal ft As cStyleGuide.eApplicationFontType) As String
+    Private Function FontSettingToString(ft As cStyleGuide.eApplicationFontType) As String
 
         Dim sb As New StringBuilder()
         sb.Append(Me.StyleGuide.FontFamilyName(ft))

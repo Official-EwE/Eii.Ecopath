@@ -167,7 +167,7 @@ Public Class cStanzaDatastructures
 
 #End Region ' Private data
 
-    Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
+    Public Sub New(CoreMessagePublisher As cMessagePublisher)
         Me.m_messages = CoreMessagePublisher
     End Sub
 
@@ -176,47 +176,47 @@ Public Class cStanzaDatastructures
     ''' </summary>
     Public Sub redimStanza()
 
-        ReDim StanzaDBID(Nsplit)
+        ReDim Me.StanzaDBID(Me.Nsplit)
 
-        ReDim RecPowerSplit(Nsplit)
-        ReDim Nstanza(Nsplit) 'number of stanzas by split species (set in ecopath)
-        ReDim BaseStanza(Nsplit) 'holds stanzano for which info is entered
-        ReDim BaseStanzaCB(Nsplit)
-        ReDim EcopathCode(Nsplit, MaxStanza) 'ecopath group# by split species, stanza (set in ecopath)
-        ReDim StanzaName(Nsplit)
-        ReDim Age1(Nsplit, MaxStanza) 'first month of age by species, stanza (set in ecopath)
-        ReDim Age2(Nsplit, MaxStanza) 'last month of age by spp, stanza (set in ecopath)
-        ReDim Stanza_Z(Nsplit, MaxStanza) 'mortality
-        ReDim Stanza_Bio(Nsplit, MaxStanza) 'mortality
-        ReDim Stanza_CB(Nsplit, MaxStanza) 'mortality
-        ReDim SpawnProp(Nsplit, MaxStanza)
-        ReDim RzeroS(Nsplit) 'base recruitment to age 0 for split species
+        ReDim Me.RecPowerSplit(Me.Nsplit)
+        ReDim Me.Nstanza(Me.Nsplit) 'number of stanzas by split species (set in ecopath)
+        ReDim Me.BaseStanza(Me.Nsplit) 'holds stanzano for which info is entered
+        ReDim Me.BaseStanzaCB(Me.Nsplit)
+        ReDim Me.EcopathCode(Me.Nsplit, Me.MaxStanza) 'ecopath group# by split species, stanza (set in ecopath)
+        ReDim Me.StanzaName(Me.Nsplit)
+        ReDim Me.Age1(Me.Nsplit, Me.MaxStanza) 'first month of age by species, stanza (set in ecopath)
+        ReDim Me.Age2(Me.Nsplit, Me.MaxStanza) 'last month of age by spp, stanza (set in ecopath)
+        ReDim Me.Stanza_Z(Me.Nsplit, Me.MaxStanza) 'mortality
+        ReDim Me.Stanza_Bio(Me.Nsplit, Me.MaxStanza) 'mortality
+        ReDim Me.Stanza_CB(Me.Nsplit, Me.MaxStanza) 'mortality
+        ReDim Me.SpawnProp(Me.Nsplit, Me.MaxStanza)
+        ReDim Me.RzeroS(Me.Nsplit) 'base recruitment to age 0 for split species
         'redim PredS() 'effective predator abund for split species (set in ecosim splitpred)
-        ReDim SplitAlpha(Nsplit, MaxAgeSplit) 'growth coefficients by split spp and age (set in initialstate)
-        ReDim vBM(Nsplit)  'metabolic parameter 1-3*K by split species (set in ecopath)
+        ReDim Me.SplitAlpha(Me.Nsplit, Me.MaxAgeSplit) 'growth coefficients by split spp and age (set in initialstate)
+        ReDim Me.vBM(Me.Nsplit)  'metabolic parameter 1-3*K by split species (set in ecopath)
         ' ReDim vBMann(Nsplit)
-        ReDim WWa(Nsplit, MaxAgeSplit)
-        ReDim SplitNo(Nsplit, MaxAgeSplit)
-        ReDim SplitWage(Nsplit, MaxAgeSplit)
-        ReDim HatchCode(Nsplit)
-        ReDim WmatWinf(Nsplit)
-        ReDim EggsStanza(Nsplit)
-        ReDim FixedFecundity(Nsplit)
-        ReDim BaseEggsStanza(Nsplit)
-        ReDim EggProdShapeSplit(Nsplit)
-        ReDim EggProdIsSeasonal(Nsplit)
-        ReDim BABsplit(Nsplit)
-        ReDim EggAtSpawn(Nsplit)
+        ReDim Me.WWa(Me.Nsplit, Me.MaxAgeSplit)
+        ReDim Me.SplitNo(Me.Nsplit, Me.MaxAgeSplit)
+        ReDim Me.SplitWage(Me.Nsplit, Me.MaxAgeSplit)
+        ReDim Me.HatchCode(Me.Nsplit)
+        ReDim Me.WmatWinf(Me.Nsplit)
+        ReDim Me.EggsStanza(Me.Nsplit)
+        ReDim Me.FixedFecundity(Me.Nsplit)
+        ReDim Me.BaseEggsStanza(Me.Nsplit)
+        ReDim Me.EggProdShapeSplit(Me.Nsplit)
+        ReDim Me.EggProdIsSeasonal(Me.Nsplit)
+        ReDim Me.BABsplit(Me.Nsplit)
+        ReDim Me.EggAtSpawn(Me.Nsplit)
 
-        ReDim isForcedIBMRecruits(Nsplit)
+        ReDim Me.isForcedIBMRecruits(Me.Nsplit)
 
 
-        For i As Integer = 0 To Nsplit : For j As Integer = 0 To MaxStanza : SpawnProp(i, j) = 1.0 : Next : Next
+        For i As Integer = 0 To Me.Nsplit : For j As Integer = 0 To Me.MaxStanza : Me.SpawnProp(i, j) = 1.0 : Next : Next
 
         'variables by nGroups
-        ReDim SpeciesCode(nGroups, 2) '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
+        ReDim Me.SpeciesCode(Me.nGroups, 2) '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
 
-        ReDim WmatWinf(Nsplit)
+        ReDim Me.WmatWinf(Me.Nsplit)
 
     End Sub
 
@@ -271,16 +271,16 @@ Public Class cStanzaDatastructures
 
     Public Sub copyTo(ByRef d As cStanzaDatastructures)
         Try
-            d.MaxStanza = MaxStanza
-            d.Nsplit = Nsplit
-            d.nGroups = nGroups
-            d.MaxAgeSplit = MaxAgeSplit
+            d.MaxStanza = Me.MaxStanza
+            d.Nsplit = Me.Nsplit
+            d.nGroups = Me.nGroups
+            d.MaxAgeSplit = Me.MaxAgeSplit
 
             d.redimStanza()
 
-            NPacketsMultiplier = d.NPacketsMultiplier
-            EggAtSpawn = d.EggAtSpawn
-            Npackets = d.Npackets
+            Me.NPacketsMultiplier = d.NPacketsMultiplier
+            Me.EggAtSpawn = d.EggAtSpawn
+            Me.Npackets = d.Npackets
 
             'EggCell.CopyTo(d.EggCell, 0)
             'AgeIndex1.CopyTo(d.AgeIndex1, 0)
@@ -297,42 +297,42 @@ Public Class cStanzaDatastructures
             'Zcell.CopyTo(d.Zcell, 0)
 
             'MaxAgeSpecies.CopyTo(d.MaxAgeSpecies, 0)
-            StanzaDBID.CopyTo(d.StanzaDBID, 0)
+            Me.StanzaDBID.CopyTo(d.StanzaDBID, 0)
 
-            BaseStanza.CopyTo(d.BaseStanza, 0)
-            BaseStanzaCB.CopyTo(d.BaseStanzaCB, 0)
-            BABsplit.CopyTo(d.BABsplit, 0)
+            Me.BaseStanza.CopyTo(d.BaseStanza, 0)
+            Me.BaseStanzaCB.CopyTo(d.BaseStanzaCB, 0)
+            Me.BABsplit.CopyTo(d.BABsplit, 0)
 
-            Nstanza.CopyTo(d.Nstanza, 0)
-            d.EcopathCode = EcopathCode.Clone
-            d.NumSplit = NumSplit.Clone
-            d.SplitRflow = SplitRflow.Clone
-            d.NageS = NageS.Clone
-            d.WageS = WageS.Clone
+            Me.Nstanza.CopyTo(d.Nstanza, 0)
+            d.EcopathCode = Me.EcopathCode.Clone
+            d.NumSplit = Me.NumSplit.Clone
+            d.SplitRflow = Me.SplitRflow.Clone
+            d.NageS = Me.NageS.Clone
+            d.WageS = Me.WageS.Clone
             'RzeroS.CopyTo(d.RzeroS, 0)
-            d.SplitAlpha = SplitAlpha.Clone
-            d.RscaleSplit = RscaleSplit.Clone
-            d.EggsSplit = EggsSplit.Clone
-            d.Age1 = Age1.Clone
-            d.Age2 = Age2.Clone
-            d.SplitNo = SplitNo.Clone
-            d.SplitWage = SplitWage.Clone
-            d.WWa = WWa.Clone
-            d.StanzaName = StanzaName.Clone
-            d.Stanza_Z = Stanza_Z.Clone
-            d.Stanza_Bio = Stanza_Bio.Clone
-            d.Stanza_CB = Stanza_CB.Clone
-            d.EggsStanza = EggsStanza.Clone
+            d.SplitAlpha = Me.SplitAlpha.Clone
+            d.RscaleSplit = Me.RscaleSplit.Clone
+            d.EggsSplit = Me.EggsSplit.Clone
+            d.Age1 = Me.Age1.Clone
+            d.Age2 = Me.Age2.Clone
+            d.SplitNo = Me.SplitNo.Clone
+            d.SplitWage = Me.SplitWage.Clone
+            d.WWa = Me.WWa.Clone
+            d.StanzaName = Me.StanzaName.Clone
+            d.Stanza_Z = Me.Stanza_Z.Clone
+            d.Stanza_Bio = Me.Stanza_Bio.Clone
+            d.Stanza_CB = Me.Stanza_CB.Clone
+            d.EggsStanza = Me.EggsStanza.Clone
 
 
-            d.FixedFecundity = FixedFecundity.Clone
-            d.BaseEggsStanza = BaseEggsStanza.Clone
-            d.RecPowerSplit = RecPowerSplit.Clone
-            d.vBM = vBM.Clone
-            d.HatchCode = HatchCode.Clone
-            d.EggProdShapeSplit = EggProdShapeSplit.Clone
-            d.EggProdIsSeasonal = EggProdIsSeasonal.Clone
-            d.SpeciesCode = SpeciesCode.Clone
+            d.FixedFecundity = Me.FixedFecundity.Clone
+            d.BaseEggsStanza = Me.BaseEggsStanza.Clone
+            d.RecPowerSplit = Me.RecPowerSplit.Clone
+            d.vBM = Me.vBM.Clone
+            d.HatchCode = Me.HatchCode.Clone
+            d.EggProdShapeSplit = Me.EggProdShapeSplit.Clone
+            d.EggProdIsSeasonal = Me.EggProdIsSeasonal.Clone
+            d.SpeciesCode = Me.SpeciesCode.Clone
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -347,10 +347,10 @@ Public Class cStanzaDatastructures
         Dim i As Integer = 0
 
         ' Fix leading B and CB if out of range
-        For iStanza As Integer = 1 To Nsplit
+        For iStanza As Integer = 1 To Me.Nsplit
 
             ' Assess B
-            i = Math.Max(1, Math.Min(Nstanza(iStanza), Me.BaseStanza(iStanza)))
+            i = Math.Max(1, Math.Min(Me.Nstanza(iStanza), Me.BaseStanza(iStanza)))
             If (i <> Me.BaseStanza(iStanza)) Then
                 Me.BaseStanza(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter,
@@ -360,7 +360,7 @@ Public Class cStanzaDatastructures
             End If
 
             ' Assess CB
-            i = Math.Max(1, Math.Min(Nstanza(iStanza), Me.BaseStanzaCB(iStanza)))
+            i = Math.Max(1, Math.Min(Me.Nstanza(iStanza), Me.BaseStanzaCB(iStanza)))
             If (i <> Me.BaseStanzaCB(iStanza)) Then
                 Me.BaseStanzaCB(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter,

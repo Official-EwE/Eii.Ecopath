@@ -26,6 +26,6 @@ Public Interface IMSEBatch
     ''' <param name="MSEBatchManager">Instance of cMSEBatchManager as an object.</param>
     ''' <param name="MSEBatchManagerDataStrucures">Instance of cMSEBatchManagerDataStructures as an object.</param>
     ''' <remarks></remarks>
-    Sub MSEBatchInitialized(ByVal MSEBatchManager As Object, ByVal MSEBatchManagerDataStrucures As Object)
+    Sub MSEBatchInitialized(MSEBatchManager As Object, MSEBatchManagerDataStrucures As Object)
 
 End Interface

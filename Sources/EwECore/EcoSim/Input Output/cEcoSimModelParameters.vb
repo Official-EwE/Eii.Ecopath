@@ -38,113 +38,113 @@ Public Class cEcoSimModelParameters
 
 #Region " Constructor "
 
-    Public Sub New(ByRef m_core As cCore)
-        MyBase.New(m_core)
+    Public Sub New(core As cCore)
+        MyBase.New(core)
 
         Try
             'no data validation at this time
             Me.AllowValidation = False
-            m_coreComponent = eCoreComponentType.EcoSim
-            m_dataType = eDataTypes.EcoSimModelParameter
+            Me.m_coreComponent = eCoreComponentType.EcoSim
+            Me.m_dataType = eDataTypes.EcoSimModelParameter
 
             Dim val As cValue
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'StepSize
-            val = New cValue(New Single, eVarNameFlags.StepSize, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.StepSize, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Discount
-            val = New cValue(New Single, eVarNameFlags.Discount, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.Discount, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'EquilibriumStepSize
-            val = New cValue(New Single, eVarNameFlags.EquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.EquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'EquilMaxFishingRate
-            val = New cValue(New Single, eVarNameFlags.EquilMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.EquilMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'NumStepAvg
-            val = New cValue(New Single, eVarNameFlags.NumStepAvg, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.NumStepAvg, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'NutBaseFreeProp
-            val = New cValue(New Single, eVarNameFlags.NutBaseFreeProp, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.NutBaseFreeProp, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'NutPBMax
-            val = New cValue(New Single, eVarNameFlags.NutPBMax, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.NutPBMax, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'SystemRecovery
-            val = New cValue(New Single, eVarNameFlags.SystemRecovery, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.SystemRecovery, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'ForagingTimeLowerLimit
-            val = New cValue(New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'boolean
             'NudgeChecked
-            val = New cValue(New Boolean, eVarNameFlags.NudgeChecked, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.NudgeChecked, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             'UseVarPQ
-            val = New cValue(New Boolean, eVarNameFlags.UseVarPQ, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.UseVarPQ, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'BiomassOn
-            val = New cValue(New Boolean, eVarNameFlags.BiomassOn, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.BiomassOn, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ''integers
             'NutForceFunctionNumber
-            val = New cValue(New Integer, eVarNameFlags.NutForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.NutForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'EcoSimNYears max 1000 year?!
-            val = New cValue(New Integer, eVarNameFlags.EcoSimNYears, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.EcoSimNYears, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'start summary
-            val = New cValue(New Single, eVarNameFlags.EcosimSumStart, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.EcosimSumStart, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'end summary
-            val = New cValue(New Single, eVarNameFlags.EcosimSumEnd, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.EcosimSumEnd, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'summary num time steps
-            val = New cValue(New Integer, eVarNameFlags.EcosimSumNTimeSteps, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.EcosimSumNTimeSteps, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'Contaminant tracing
-            val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSim, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.ConSimOnEcoSim, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'PredictEffort
-            val = New cValue(New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'end summary
-            val = New cValue(New Single, eVarNameFlags.EcosimSORWt, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.EcosimSORWt, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = True
             val.AffectsRunState = True
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             '  Me.AllowValidation = True
 
@@ -162,7 +162,7 @@ Public Class cEcoSimModelParameters
 
 #Region "Mustoverride Method implementation for this class"
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
         MyBase.ResetStatusFlags(bForceReset)
 
@@ -241,11 +241,11 @@ Public Class cEcoSimModelParameters
     Public Property NumberYears() As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcoSimNYears))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcoSimNYears))
         End Get
 
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcoSimNYears, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcoSimNYears, value)
         End Set
 
     End Property
@@ -253,11 +253,11 @@ Public Class cEcoSimModelParameters
     Public Property BiomassOn() As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.BiomassOn))
+            Return CBool(Me.GetVariable(eVarNameFlags.BiomassOn))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.BiomassOn, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.BiomassOn, value)
         End Set
 
     End Property
@@ -265,11 +265,11 @@ Public Class cEcoSimModelParameters
     Public Property Discount() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.Discount))
+            Return CSng(Me.GetVariable(eVarNameFlags.Discount))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Discount, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Discount, value)
         End Set
 
     End Property
@@ -277,11 +277,11 @@ Public Class cEcoSimModelParameters
     Public Property EquilibriumStepSize() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EquilibriumStepSize))
+            Return CSng(Me.GetVariable(eVarNameFlags.EquilibriumStepSize))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EquilibriumStepSize, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EquilibriumStepSize, value)
         End Set
 
     End Property
@@ -289,11 +289,11 @@ Public Class cEcoSimModelParameters
     Public Property EquilMaxFishingRate() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EquilMaxFishingRate))
+            Return CSng(Me.GetVariable(eVarNameFlags.EquilMaxFishingRate))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EquilMaxFishingRate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EquilMaxFishingRate, value)
         End Set
 
     End Property
@@ -301,11 +301,11 @@ Public Class cEcoSimModelParameters
     Public Property NudgeChecked() As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.NudgeChecked))
+            Return CBool(Me.GetVariable(eVarNameFlags.NudgeChecked))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.NudgeChecked, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.NudgeChecked, value)
         End Set
 
     End Property
@@ -316,7 +316,7 @@ Public Class cEcoSimModelParameters
     '        Return CSng(GetVariable(eVarNameFlags.NumStepAvg))
     '    End Get
 
-    '    Set(ByVal value As Single)
+    '    Set(value As Single)
     '        SetVariable(eVarNameFlags.NumStepAvg, value)
     '    End Set
 
@@ -325,11 +325,11 @@ Public Class cEcoSimModelParameters
     Public Property NutBaseFreeProp() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.NutBaseFreeProp))
+            Return CSng(Me.GetVariable(eVarNameFlags.NutBaseFreeProp))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.NutBaseFreeProp, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.NutBaseFreeProp, value)
         End Set
 
     End Property
@@ -337,11 +337,11 @@ Public Class cEcoSimModelParameters
     Public Property NutForceFunctionNumber() As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.NutForceFunctionNumber))
+            Return CInt(Me.GetVariable(eVarNameFlags.NutForceFunctionNumber))
         End Get
 
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.NutForceFunctionNumber, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.NutForceFunctionNumber, value)
         End Set
 
     End Property
@@ -349,11 +349,11 @@ Public Class cEcoSimModelParameters
     Public Property NutPBMax() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.NutPBMax))
+            Return CSng(Me.GetVariable(eVarNameFlags.NutPBMax))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.NutPBMax, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.NutPBMax, value)
         End Set
 
     End Property
@@ -361,11 +361,11 @@ Public Class cEcoSimModelParameters
     Public Property StepSize() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.StepSize))
+            Return CSng(Me.GetVariable(eVarNameFlags.StepSize))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StepSize, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.StepSize, value)
         End Set
 
     End Property
@@ -373,11 +373,11 @@ Public Class cEcoSimModelParameters
     Public Property SystemRecovery() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.SystemRecovery))
+            Return CSng(Me.GetVariable(eVarNameFlags.SystemRecovery))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SystemRecovery, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.SystemRecovery, value)
         End Set
 
     End Property
@@ -385,11 +385,11 @@ Public Class cEcoSimModelParameters
     Public Property UseVarPQ() As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.UseVarPQ))
+            Return CBool(Me.GetVariable(eVarNameFlags.UseVarPQ))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.UseVarPQ, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.UseVarPQ, value)
         End Set
 
     End Property
@@ -406,7 +406,7 @@ Public Class cEcoSimModelParameters
             Return CSng(Me.GetVariable(eVarNameFlags.ForagingTimeLowerLimit))
         End Get
         Set(value As Single)
-            SetVariable(eVarNameFlags.ForagingTimeLowerLimit, value)
+            Me.SetVariable(eVarNameFlags.ForagingTimeLowerLimit, value)
         End Set
     End Property
 
@@ -419,11 +419,11 @@ Public Class cEcoSimModelParameters
     Public Property StartSummaryTime() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimSumStart))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimSumStart))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimSumStart, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimSumStart, value)
         End Set
 
     End Property
@@ -436,11 +436,11 @@ Public Class cEcoSimModelParameters
     Public Property EndSummaryTime() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimSumEnd))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimSumEnd))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimSumEnd, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimSumEnd, value)
         End Set
 
     End Property
@@ -453,11 +453,11 @@ Public Class cEcoSimModelParameters
     Public Property NumberSummaryTimeSteps() As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcosimSumNTimeSteps))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcosimSumNTimeSteps))
         End Get
 
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcosimSumNTimeSteps, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcosimSumNTimeSteps, value)
         End Set
 
     End Property
@@ -465,11 +465,11 @@ Public Class cEcoSimModelParameters
     Public Property ContaminantTracing() As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.ConSimOnEcoSim))
+            Return CBool(Me.GetVariable(eVarNameFlags.ConSimOnEcoSim))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.ConSimOnEcoSim, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.ConSimOnEcoSim, value)
         End Set
 
     End Property
@@ -477,11 +477,11 @@ Public Class cEcoSimModelParameters
     Public Property PredictEffort() As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.PredictEffort))
+            Return CBool(Me.GetVariable(eVarNameFlags.PredictEffort))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.PredictEffort, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.PredictEffort, value)
         End Set
 
     End Property
@@ -492,7 +492,7 @@ Public Class cEcoSimModelParameters
     '        Return CBool(GetVariable(eVarNameFlags.RegFeedBack))
     '    End Get
 
-    '    Set(ByVal value As Boolean)
+    '    Set(value As Boolean)
     '        SetVariable(eVarNameFlags.RegFeedBack, value)
     '    End Set
 
@@ -501,11 +501,11 @@ Public Class cEcoSimModelParameters
     Public Property SORWt() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimSORWt))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimSORWt))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimSORWt, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimSORWt, value)
         End Set
 
     End Property
@@ -517,11 +517,11 @@ Public Class cEcoSimModelParameters
     Public Property BiomassOnStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.BiomassOn)
+            Return Me.getStatus(eVarNameFlags.BiomassOn)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BiomassOn, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.BiomassOn, value)
         End Set
 
     End Property
@@ -529,11 +529,11 @@ Public Class cEcoSimModelParameters
     Public Property ContaminantTracingStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.ConSimOnEcoSim)
+            Return Me.GetStatus(eVarNameFlags.ConSimOnEcoSim)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.ConSimOnEcoSim, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.ConSimOnEcoSim, value)
         End Set
 
     End Property
@@ -542,11 +542,11 @@ Public Class cEcoSimModelParameters
     Public Property PredictEffortStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.PredictEffort)
+            Return Me.GetStatus(eVarNameFlags.PredictEffort)
         End Get
 
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.PredictEffort, value)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.PredictEffort, value)
         End Set
 
     End Property
@@ -556,11 +556,11 @@ Public Class cEcoSimModelParameters
     Public Property DiscountStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.Discount)
+            Return Me.getStatus(eVarNameFlags.Discount)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Discount, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Discount, value)
         End Set
 
     End Property
@@ -568,11 +568,11 @@ Public Class cEcoSimModelParameters
     Public Property EquilibriumStepSizeStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.EquilibriumStepSize)
+            Return Me.getStatus(eVarNameFlags.EquilibriumStepSize)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EquilibriumStepSize, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EquilibriumStepSize, value)
         End Set
 
     End Property
@@ -580,11 +580,11 @@ Public Class cEcoSimModelParameters
     Public Property EquilMaxFishingRateStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.EquilMaxFishingRate)
+            Return Me.getStatus(eVarNameFlags.EquilMaxFishingRate)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EquilMaxFishingRate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EquilMaxFishingRate, value)
         End Set
 
     End Property
@@ -592,11 +592,11 @@ Public Class cEcoSimModelParameters
     Public Property NudgeCheckStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NudgeChecked)
+            Return Me.getStatus(eVarNameFlags.NudgeChecked)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NudgeChecked, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NudgeChecked, value)
         End Set
 
     End Property
@@ -604,11 +604,11 @@ Public Class cEcoSimModelParameters
     Public Property NumberYearStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.EcoSimNYears)
+            Return Me.getStatus(eVarNameFlags.EcoSimNYears)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcoSimNYears, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcoSimNYears, value)
         End Set
 
     End Property
@@ -616,11 +616,11 @@ Public Class cEcoSimModelParameters
     Public Property NumStepAvgStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NumStepAvg)
+            Return Me.getStatus(eVarNameFlags.NumStepAvg)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NumStepAvg, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NumStepAvg, value)
         End Set
 
     End Property
@@ -628,11 +628,11 @@ Public Class cEcoSimModelParameters
     Public Property NutFreeBasePropStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NutBaseFreeProp)
+            Return Me.getStatus(eVarNameFlags.NutBaseFreeProp)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NutBaseFreeProp, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NutBaseFreeProp, value)
         End Set
 
     End Property
@@ -640,11 +640,11 @@ Public Class cEcoSimModelParameters
     Public Property NutForceFunctionNumberStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NutForceFunctionNumber)
+            Return Me.getStatus(eVarNameFlags.NutForceFunctionNumber)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NutForceFunctionNumber, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NutForceFunctionNumber, value)
         End Set
 
     End Property
@@ -652,11 +652,11 @@ Public Class cEcoSimModelParameters
     Public Property NutPBMaxStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.NutPBMax)
+            Return Me.GetStatus(eVarNameFlags.NutPBMax)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NutPBMax, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NutPBMax, value)
         End Set
 
     End Property
@@ -664,11 +664,11 @@ Public Class cEcoSimModelParameters
     Public Property StepSizeStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.StepSize)
+            Return Me.getStatus(eVarNameFlags.StepSize)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.StepSize, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.StepSize, value)
         End Set
 
     End Property
@@ -676,11 +676,11 @@ Public Class cEcoSimModelParameters
     Public Property SystemRecoveryStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.SystemRecovery)
+            Return Me.getStatus(eVarNameFlags.SystemRecovery)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.SystemRecovery, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.SystemRecovery, value)
         End Set
 
     End Property
@@ -688,11 +688,11 @@ Public Class cEcoSimModelParameters
     Public Property UseVarPQStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.UseVarPQ)
+            Return Me.getStatus(eVarNameFlags.UseVarPQ)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.UseVarPQ, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.UseVarPQ, value)
         End Set
 
     End Property
@@ -700,11 +700,11 @@ Public Class cEcoSimModelParameters
     Public Property SORWtStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.EcosimSORWt)
+            Return Me.GetStatus(eVarNameFlags.EcosimSORWt)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcosimSORWt, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcosimSORWt, value)
         End Set
 
     End Property

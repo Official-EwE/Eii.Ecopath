@@ -50,20 +50,20 @@ Namespace Ecopath.Output
             Dim fleet As cEcopathFleetInput = Nothing
             Dim iGroup As Integer = 0
 
-            Me.Redim(Core.nLivingGroups + 1, 2 + Core.nFleets)
+            Me.Redim(Me.Core.nLivingGroups + 1, 2 + Me.Core.nFleets)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEET_GROUP)
 
-            For iFleet As Integer = 1 To Core.nFleets
-                fleet = Core.EcopathFleetInputs(iFleet)
+            For iFleet As Integer = 1 To Me.Core.nFleets
+                fleet = Me.Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                  fleet, eVarNameFlags.Name, Nothing,
                                                                  cUnits.OverTime)
             Next iFleet
 
-            For iGroup = 1 To Core.nLivingGroups
-                group = Core.EcoPathGroupOutputs(iGroup)
+            For iGroup = 1 To Me.Core.nLivingGroups
+                group = Me.Core.EcoPathGroupOutputs(iGroup)
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
@@ -82,11 +82,11 @@ Namespace Ecopath.Output
             Dim sBiomass As Single = 0.0!
             Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
                 ' Get fleet
-                fleet = Core.EcopathFleetInputs(iFleet)
-                For iGroup As Integer = 1 To Core.nLivingGroups
-                    group = Core.EcoPathGroupOutputs(iGroup)
+                fleet = Me.Core.EcopathFleetInputs(iFleet)
+                For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                    group = Me.Core.EcoPathGroupOutputs(iGroup)
                     ' Get values 
                     sLandings = fleet.Landings(iGroup)
                     'Only discards the suffer mortality

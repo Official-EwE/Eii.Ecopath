@@ -45,7 +45,7 @@ Namespace FitToTimeSeries
     ''' A call the Ecosim has been made
     ''' </summary>
     ''' <remarks>RunState() will contain the run type. Results() will contain the results of the last iteration.  </remarks>
-    Public Delegate Sub RunModelDelegate(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalInterationSteps As Integer)
+    Public Delegate Sub RunModelDelegate(runType As eRunType, iCurrentIterationStep As Integer, nTotalInterationSteps As Integer)
 
 
     ''' <summary>
@@ -53,19 +53,19 @@ Namespace FitToTimeSeries
     ''' </summary>
     ''' <param name="runType">Type of run</param>
     ''' <param name="nSteps">Number of steps in this run if known at the start time otherwise zero</param>
-    Public Delegate Sub RunStartedDelegate(ByVal runType As eRunType, ByVal nSteps As Integer)
+    Public Delegate Sub RunStartedDelegate(runType As eRunType, nSteps As Integer)
 
     ''' <summary>
     ''' A search run has stopped
     ''' </summary>
     ''' <param name="runType">Type of run</param>
-    Public Delegate Sub RunStoppedDelegate(ByVal runType As eRunType)
+    Public Delegate Sub RunStoppedDelegate(runType As eRunType)
 
     ''' <summary>
     ''' A message being sent out by the search
     ''' </summary>
     ''' <param name="msg"></param>
-    Public Delegate Sub RunMessageDelegate(ByVal msg As cMessage)
+    Public Delegate Sub RunMessageDelegate(msg As cMessage)
 
     Public Class cF2TSModel
 
@@ -148,14 +148,14 @@ Namespace FitToTimeSeries
 
 #Region "Construction and Initialization"
 
-        Friend Sub New(ByVal core As cCore, _
+        Friend Sub New(core As cCore, _
                             ByRef EcoSim As EwECore.Ecosim.cEcoSimModel, _
-                            ByRef EcoPathData As cEcopathDataStructures, ByVal EcosimData As cEcosimDatastructures)
+                            ByRef EcoPathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
             Me.m_core = core
             Me.m_ecosim = EcoSim
             Me.m_epdata = EcoPathData
             Me.m_esdata = EcosimData
-            m_lastRunSens = eSensType.NotRun
+            Me.m_lastRunSens = eSensType.NotRun
         End Sub
 
         ''' <summary>
@@ -165,12 +165,12 @@ Namespace FitToTimeSeries
         ''' <param name="runstepHandler"></param>
         ''' <param name="runstoppedHandler"></param>
         Public Sub Init( _
-                ByVal runstartedHandler As RunStartedDelegate, _
-                ByVal runstepHandler As RunStepDelegate, _
-                ByVal runstoppedHandler As RunStoppedDelegate, _
-                ByVal AddMessageHandler As RunMessageDelegate, _
-                ByVal RunModelHandler As RunModelDelegate, _
-                ByVal SendMessageHandler As RunMessageDelegate)
+                runstartedHandler As RunStartedDelegate, _
+                runstepHandler As RunStepDelegate, _
+                runstoppedHandler As RunStoppedDelegate, _
+                AddMessageHandler As RunMessageDelegate, _
+                RunModelHandler As RunModelDelegate, _
+                SendMessageHandler As RunMessageDelegate)
 
 
             ' Safety check
@@ -182,9 +182,9 @@ Namespace FitToTimeSeries
             Me.m_AddMessageHandler = AddMessageHandler
             Me.m_SendMessageHandler = SendMessageHandler
 
-            m_runModelHandler = RunModelHandler
-            m_lastRunSens = eSensType.NotRun
-            m_lstSSResults = New List(Of cSensitivityToVulResults)
+            Me.m_runModelHandler = RunModelHandler
+            Me.m_lastRunSens = eSensType.NotRun
+            Me.m_lstSSResults = New List(Of cSensitivityToVulResults)
 
         End Sub
 
@@ -237,21 +237,21 @@ Namespace FitToTimeSeries
             'Dim tmpval, tempEmp, timeMan, tempEco As Double
             Dim Smax As Single, SSBase As Single, sss As Single
 
-            Dim esData As cEcosimDatastructures = m_core.m_EcoSimData
-            Dim ecosim As cEcoSimModel = m_core.m_EcoSim
+            Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim ecosim As cEcoSimModel = Me.m_core.m_EcoSim
 
             ReDim Ssen(esData.inlinks)
 
-            m_lstSSResults.Clear()
+            Me.m_lstSSResults.Clear()
 
             Try
 
                 ' ToDo: add sanity checks; check if threading set up ok, not running, etc
                 Me.RunState = eRunType.SensitivitySS2VByPredPrey
 
-                InitForRun(Me.RunState)
-                m_lastRunSens = eSensType.PredPreyCell
-                Dim senResults As cSensitivityToVulResults = DirectCast(m_results, cSensitivityToVulResults)
+                Me.InitForRun(Me.RunState)
+                Me.m_lastRunSens = eSensType.PredPreyCell
+                Dim senResults As cSensitivityToVulResults = DirectCast(Me.m_results, cSensitivityToVulResults)
 
                 Me.m_runstartedHandler(Me.RunState, esData.Narena)
 
@@ -263,10 +263,10 @@ Namespace FitToTimeSeries
                 'logic from frmSearch.Command3_Click()
                 For ii As Integer = 1 To esData.Narena
 
-                    i = esData.Iarena(ii) : j = esData.Jarena(ii)
-                    Vo = esData.VulMult(i, j)
+                    Me.i = esData.Iarena(ii) : Me.j = esData.Jarena(ii)
+                    Vo = esData.VulMult(Me.i, Me.j)
 
-                    esData.VulMult(i, j) = esData.VulMult(i, j) * VUL_MULT
+                    esData.VulMult(Me.i, Me.j) = esData.VulMult(Me.i, Me.j) * VUL_MULT
                     ecosim.RunModelValue(esData.NumYears, Nothing, 0)
 
                     sss = Math.Abs(esData.SS - SSBase)
@@ -275,15 +275,15 @@ Namespace FitToTimeSeries
                     If sss > Smax Then Smax = sss
 
                     'set vulnerability back to its original value
-                    esData.VulMult(i, j) = Vo
+                    esData.VulMult(Me.i, Me.j) = Vo
 
                     'set values for interface
-                    senResults.iPred = j
-                    senResults.iPrey = i
+                    senResults.iPred = Me.j
+                    senResults.iPrey = Me.i
                     senResults.SSen = sss
                     senResults.SSMax = Smax
 
-                    m_lstSSResults.Add(New cSensitivityToVulResults(eRunType.SensitivitySS2VByPredPrey, j, i, sss, Smax))
+                    Me.m_lstSSResults.Add(New cSensitivityToVulResults(eRunType.SensitivitySS2VByPredPrey, Me.j, Me.i, sss, Smax))
 
                     Me.m_runstepHandler()
 
@@ -293,14 +293,14 @@ Namespace FitToTimeSeries
 
             Catch ex As Threading.ThreadAbortException
 
-                AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ABORTED, _
+                Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ABORTED, _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
 
             Catch ex As Exception
 
-                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
@@ -332,34 +332,34 @@ Namespace FitToTimeSeries
             Dim Smax As Single, SSBase As Single, sss As Single
             Dim ipred As Integer, iprey As Integer
 
-            If m_core.m_TSData.NdatType = 0 Then
+            If Me.m_core.m_TSData.NdatType = 0 Then
                 Exit Sub
             End If
 
-            Dim epData As cEcopathDataStructures = m_core.m_EcoPathData
-            Dim esData As cEcosimDatastructures = m_core.m_EcoSimData
-            Dim ecosim As cEcoSimModel = m_core.m_EcoSim
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim ecosim As cEcoSimModel = Me.m_core.m_EcoSim
 
-            Dim nGroups As Integer = m_core.nGroups
-            Dim nLiving As Integer = m_core.nLivingGroups
+            Dim nGroups As Integer = Me.m_core.nGroups
+            Dim nLiving As Integer = Me.m_core.nLivingGroups
 
-            ReDim PSen(nLiving)
+            ReDim Me.PSen(nLiving)
 
-            m_lstSSResults.Clear()
+            Me.m_lstSSResults.Clear()
 
             Try
                 'init 
                 Me.RunState = eRunType.SensitivitySS2VByPredator
-                InitForRun(Me.RunState)
-                m_lastRunSens = eSensType.PredColumn
+                Me.InitForRun(Me.RunState)
+                Me.m_lastRunSens = eSensType.PredColumn
 
                 'cast the results into the correct type of object
-                Dim senResults As cSensitivityToVulResults = DirectCast(m_results, cSensitivityToVulResults)
+                Dim senResults As cSensitivityToVulResults = DirectCast(Me.m_results, cSensitivityToVulResults)
 
                 'tell the interface the run is starting
                 Me.m_runstartedHandler(Me.RunState, nLiving)
 
-                initEcosimForSearchIteration()
+                Me.initEcosimForSearchIteration()
 
                 ecosim.RunModelValue(esData.NumYears, Nothing, 0)
                 SSBase = esData.SS
@@ -389,9 +389,9 @@ Namespace FitToTimeSeries
 
                         senResults.SSen = sss
                         senResults.SSMax = Smax
-                        PSen(ipred) = sss
+                        Me.PSen(ipred) = sss
 
-                        m_lstSSResults.Add(New cSensitivityToVulResults(eRunType.SensitivitySS2VByPredator, ipred, 0, sss, Smax))
+                        Me.m_lstSSResults.Add(New cSensitivityToVulResults(eRunType.SensitivitySS2VByPredator, ipred, 0, sss, Smax))
 
                         Me.m_runstepHandler()
 
@@ -410,7 +410,7 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
                 ' Woops
-                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
@@ -425,7 +425,7 @@ Namespace FitToTimeSeries
         End Sub
 
 
-        Public Sub setNBlocksFromSensitivity(ByVal nBlocks As Integer)
+        Public Sub setNBlocksFromSensitivity(nBlocks As Integer)
             Dim n As Integer
             Dim icell As Integer, ipred As Integer, iprey As Integer
             Dim ssObj As cSensitivityToVulResults
@@ -434,7 +434,7 @@ Namespace FitToTimeSeries
 
             If Me.m_lastRunSens = eSensType.NotRun Then
 
-                AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_SENSITIVITY_SETBLOCKS, _
+                Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_SENSITIVITY_SETBLOCKS, _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Warning))
@@ -446,10 +446,10 @@ Namespace FitToTimeSeries
 
                 'sort the sensitivities biggest to smallest
                 'see cSensitivityToVulResults.CompareTo()
-                m_lstSSResults.Sort()
+                Me.m_lstSSResults.Sort()
 
                 'clear out the old data
-                Array.Clear(VblockCode, 0, VblockCode.Length)
+                Array.Clear(Me.VblockCode, 0, Me.VblockCode.Length)
 
 
                 'now update the VblockCode() with the sorted sensitivities
@@ -459,20 +459,20 @@ Namespace FitToTimeSeries
 
                         'nBlocks is the user set number of blocks
                         'm_lstSSResults.Count is the actual number of pred/columns found by the sensitivity search
-                        n = CInt(if(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
+                        n = CInt(if(Me.m_lstSSResults.Count > nBlocks, nBlocks, Me.m_lstSSResults.Count))
 
                         icell = 0
-                        For Each ssObj In m_lstSSResults
+                        For Each ssObj In Me.m_lstSSResults
                             icell = icell + 1
                             If icell > n Then Exit For
 
                             'convert the pred / prey indexes to an nLinks index
-                            For ii As Integer = 1 To m_esdata.inlinks
+                            For ii As Integer = 1 To Me.m_esdata.inlinks
                                 'all the prey of this predator
-                                ipred = m_esdata.jlink(ii)
+                                ipred = Me.m_esdata.jlink(ii)
                                 If ssObj.iPred = ipred Then
                                     'Debug.Assert(VblockCode(ii) = 0)
-                                    VblockCode(ii) = icell
+                                    Me.VblockCode(ii) = icell
                                 End If
                             Next ii
 
@@ -480,17 +480,17 @@ Namespace FitToTimeSeries
 
                     Case eSensType.PredPreyCell
 
-                        n = CInt(if(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
+                        n = CInt(if(Me.m_lstSSResults.Count > nBlocks, nBlocks, Me.m_lstSSResults.Count))
                         icell = 0
-                        For Each ssObj In m_lstSSResults
+                        For Each ssObj In Me.m_lstSSResults
                             icell = icell + 1
                             If icell > n Then Exit For
 
                             'convert the pred / prey indexes to an nLinks index
-                            For ii As Integer = 1 To m_esdata.inlinks
-                                iprey = m_esdata.ilink(ii) : ipred = m_esdata.jlink(ii)
+                            For ii As Integer = 1 To Me.m_esdata.inlinks
+                                iprey = Me.m_esdata.ilink(ii) : ipred = Me.m_esdata.jlink(ii)
                                 If ssObj.iPred = ipred And ssObj.iPrey = iprey Then
-                                    VblockCode(ii) = icell
+                                    Me.VblockCode(ii) = icell
                                 End If
                             Next ii
 
@@ -520,26 +520,26 @@ Namespace FitToTimeSeries
 
             Try
 
-                If m_core.m_TSData.NdatType = 0 Then
+                If Me.m_core.m_TSData.NdatType = 0 Then
                     'no time series data loaded
                     Exit Sub
                 End If
 
                 '.. add init model logic here
                 Dim failed As Integer
-                InitForRun(eRunType.Search)
+                Me.InitForRun(eRunType.Search)
 
                 ' Start run
                 Me.RunState = eRunType.Search
                 Me.m_runstartedHandler(Me.RunState, nSteps)
 
-                DoEstimation(failed)
+                Me.DoEstimation(failed)
 
             Catch ex As Threading.ThreadAbortException
                 ' Done
 
             Catch ex As Exception
-                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Critical))
@@ -574,16 +574,16 @@ Namespace FitToTimeSeries
 
             Try
 
-                Me.setAIC(m_data.nAICPars, m_data.nAICData, m_esdata.SS)
+                Me.setAIC(Me.m_data.nAICPars, Me.m_data.nAICData, Me.m_esdata.SS)
 
-                DirectCast(m_results, cSearchResults).IterSS = m_esdata.SS
-                DirectCast(m_results, cSearchResults).AIC = Me.m_data.AIC
-                DirectCast(m_results, cSearchResults).nAICPars = Me.m_data.nAICPars
+                DirectCast(Me.m_results, cSearchResults).IterSS = Me.m_esdata.SS
+                DirectCast(Me.m_results, cSearchResults).AIC = Me.m_data.AIC
+                DirectCast(Me.m_results, cSearchResults).nAICPars = Me.m_data.nAICPars
 
-                m_results.iStep = m_estIter
+                Me.m_results.iStep = Me.m_estIter
 
-                If m_runstepHandler IsNot Nothing Then
-                    m_runstepHandler()
+                If Me.m_runstepHandler IsNot Nothing Then
+                    Me.m_runstepHandler()
                 End If
             Catch ex As Exception
                 cLog.Write(ex)
@@ -592,17 +592,17 @@ Namespace FitToTimeSeries
 
         End Sub
 
-        Private Sub SendMessage(ByVal msg As cMessage)
+        Private Sub SendMessage(msg As cMessage)
             Try
-                m_SendMessageHandler(msg)
+                Me.m_SendMessageHandler(msg)
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
         End Sub
 
-        Private Sub AddMessage(ByVal msg As cMessage)
+        Private Sub AddMessage(msg As cMessage)
             Try
-                m_AddMessageHandler(msg)
+                Me.m_AddMessageHandler(msg)
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
@@ -612,46 +612,46 @@ Namespace FitToTimeSeries
 
 #Region " Model Logic "
 
-        Private Sub InitForRun(ByVal runType As eRunType)
+        Private Sub InitForRun(runType As eRunType)
 
             Try
 
                 'get the core data for this run
-                m_esdata = m_core.m_EcoSimData
-                m_tsData = m_core.m_TSData
-                m_data = m_core.m_FitToTimeSeriesData
+                Me.m_esdata = Me.m_core.m_EcoSimData
+                Me.m_tsData = Me.m_core.m_TSData
+                Me.m_data = Me.m_core.m_FitToTimeSeriesData
 
-                m_lastRunSens = eSensType.NotRun
+                Me.m_lastRunSens = eSensType.NotRun
 
                 'for convenience set local variables to values set by interface
                 'these variables can not be changed by the interface during a run so this should be Ok
-                AnomalySearch = m_data.bAnomalySearch
-                Numspline = m_data.nNumSplinePoints
-                PPyear1 = m_data.FirstYear
-                PPyear2 = m_data.LastYear
-                ForceNo = m_data.iCatchAnomalySearchShapeNumber
+                Me.AnomalySearch = Me.m_data.bAnomalySearch
+                Me.Numspline = Me.m_data.nNumSplinePoints
+                Me.PPyear1 = Me.m_data.FirstYear
+                Me.PPyear2 = Me.m_data.LastYear
+                Me.ForceNo = Me.m_data.iCatchAnomalySearchShapeNumber
 
-                If m_data.bVulnerabilitySearch Then
-                    pvVul = m_data.VulnerabilityVariance
+                If Me.m_data.bVulnerabilitySearch Then
+                    Me.pvVul = Me.m_data.VulnerabilityVariance
                 Else
                     'this will turn off the Vulnerability search by setting pv(maxpars) to zero for all vulnerability parameter
                     'this variable can not be varied so it is not searched see DoEstimation
-                    pvVul = 0
+                    Me.pvVul = 0
                 End If
 
                 'make sure the fit to timeseries search is turned on
-                StopRun = False
+                Me.StopRun = False
 
                 'Init Ecosim
 
                 'make sure the fishing policy search is turned off
-                m_core.m_SearchData.SearchMode = eSearchModes.FitToTimeSeries
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.FitToTimeSeries
                 'No timestep ouput
-                m_core.m_EcoSimData.bTimestepOutput = False
+                Me.m_core.m_EcoSimData.bTimestepOutput = False
 
                 'make sure ecosim does not call the interface 
                 'setting bTimestepOutput = False should have had the same effect
-                m_core.m_EcoSim.TimeStepDelegate = Nothing
+                Me.m_core.m_EcoSim.TimeStepDelegate = Nothing
 
                 ' Set V to default before initialization of Ecosim so it uses the new V's
                 If Me.m_data.UseDefaultV Then
@@ -659,39 +659,39 @@ Namespace FitToTimeSeries
                 End If
 
                 'Now Init Ecosim
-                initEcosimForSearchIteration()
+                Me.initEcosimForSearchIteration()
 
-                TotalTime = m_esdata.NumYears
+                Me.TotalTime = Me.m_esdata.NumYears
 
-                If nBlockCodes = 0 Then nBlockCodes = m_esdata.inlinks
-                ReDim VBlock(nBlockCodes)
-                ReDim IsBlockEstimated(nBlockCodes)
+                If Me.nBlockCodes = 0 Then Me.nBlockCodes = Me.m_esdata.inlinks
+                ReDim Me.VBlock(Me.nBlockCodes)
+                ReDim Me.IsBlockEstimated(Me.nBlockCodes)
 
                 'VblockCode() should have been set by an interface
                 'however if this is run from a plugin then it is possible for VblockCode() to be null
-                If VblockCode Is Nothing Then
-                    ReDim VblockCode(m_esdata.inlinks)
+                If Me.VblockCode Is Nothing Then
+                    ReDim Me.VblockCode(Me.m_esdata.inlinks)
                 End If
 
                 'Clear out all selected codes > then the max number of blocks
-                Dim n As Integer = VBlock.Length - 1
-                For i As Integer = 1 To m_esdata.inlinks
-                    If VblockCode(i) > n Then VblockCode(i) = 0
+                Dim n As Integer = Me.VBlock.Length - 1
+                For i As Integer = 1 To Me.m_esdata.inlinks
+                    If Me.VblockCode(i) > n Then Me.VblockCode(i) = 0
                 Next i
 
                 'create the results object for this type of run
-                m_results = cF2TSResultsFactory.Create(runType)
+                Me.m_results = cF2TSResultsFactory.Create(runType)
 
                 'VBlock() and VblockCode(inLinks) should have been set by the interface
-                SetVblock(m_esdata)
+                Me.SetVblock(Me.m_esdata)
 
                 'get Base SS from ecosim 
-                m_ecosim.RunModelValue(TotalTime, Nothing, 0)
+                Me.m_ecosim.RunModelValue(Me.TotalTime, Nothing, 0)
 
                 Me.updateAICNPars()
 
                 'set the baseSS in the results object that was calculated above by ecosim
-                DirectCast(m_results, cF2TSResults).BaseSS = m_esdata.SS
+                DirectCast(Me.m_results, cF2TSResults).BaseSS = Me.m_esdata.SS
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -713,8 +713,8 @@ Namespace FitToTimeSeries
             Me.m_data.nAICPars = 0
 
             If Me.m_data.bVulnerabilitySearch Then
-                For i As Integer = 1 To IsBlockEstimated.Length - 1
-                    If IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
+                For i As Integer = 1 To Me.IsBlockEstimated.Length - 1
+                    If Me.IsBlockEstimated(i) Then Me.m_data.nAICPars += 1
                 Next i
             End If
 
@@ -737,7 +737,7 @@ Namespace FitToTimeSeries
         ''' <summary>
         ''' Populate cF2TSDataStructures.AIC value
         ''' </summary>
-        Public Sub setAIC(ByVal nPars As Single, ByVal nData As Single, ByVal SS As Single)
+        Public Sub setAIC(nPars As Single, nData As Single, SS As Single)
 
             If (Me.m_data Is Nothing) Then Return
 
@@ -756,7 +756,7 @@ Namespace FitToTimeSeries
             If nData > 0 Then
                 Me.m_data.AIC = 2.0F * nPars + nData * CSng(Math.Log(SS / nData))
                 If nData - nPars > 1 Then
-                    m_data.AIC += 2 * nPars * (nPars + 1) / (nData - nPars - 1)
+                    Me.m_data.AIC += 2 * nPars * (nPars + 1) / (nData - nPars - 1)
                 End If
             End If
 
@@ -768,7 +768,7 @@ Namespace FitToTimeSeries
         ''' <remarks>In EwE5 this is called PrepareSimSpace()</remarks>
         Private Sub initEcosimForSearchIteration()
 
-            m_ecosim.Init(True)
+            Me.m_ecosim.Init(True)
 
             'm_ecosim.Set_pbm_pbbiomass()
             'm_ecosim.RedimForSearchRun()
@@ -797,31 +797,31 @@ Namespace FitToTimeSeries
                 'On Local Error GoTo fitfailed
                 Failed = 0
 
-                MaxObs = m_tsData.Iobs
+                MaxObs = Me.m_tsData.Iobs
 
-                MaxPars = m_esdata.NumYears + VBlock.GetUpperBound(0)    '15
-                If VBlock.GetUpperBound(0) + PPyear2 - PPyear1 > MaxPars Then
-                    MaxPars = VBlock.GetUpperBound(0) + PPyear2 - PPyear1
+                Me.MaxPars = Me.m_esdata.NumYears + Me.VBlock.GetUpperBound(0)    '15
+                If Me.VBlock.GetUpperBound(0) + Me.PPyear2 - Me.PPyear1 > Me.MaxPars Then
+                    Me.MaxPars = Me.VBlock.GetUpperBound(0) + Me.PPyear2 - Me.PPyear1
                 End If
-                ReDim Se(MaxPars, MaxObs), Sold(MaxPars), Xy(MaxPars)
-                ReDim Ybase(MaxObs), St(MaxPars) ', Wt(MaxObs)
-                ReDim Ipn(MaxPars), amat(MaxPars, MaxPars)
-                ReDim Vi(MaxPars, MaxPars), Cl(MaxPars, MaxPars)
-                ReDim cy(MaxPars)
-                ReDim Penter(MaxPars), Po(MaxPars), pv(MaxPars), P(MaxPars), paramname(MaxPars)
+                ReDim Me.Se(Me.MaxPars, MaxObs), Me.Sold(Me.MaxPars), Me.Xy(Me.MaxPars)
+                ReDim Me.Ybase(MaxObs), Me.St(Me.MaxPars) ', Wt(MaxObs)
+                ReDim Me.Ipn(Me.MaxPars), Me.amat(Me.MaxPars, Me.MaxPars)
+                ReDim Me.Vi(Me.MaxPars, Me.MaxPars), Me.Cl(Me.MaxPars, Me.MaxPars)
+                ReDim Me.cy(Me.MaxPars)
+                ReDim Me.Penter(Me.MaxPars), Me.Po(Me.MaxPars), Me.pv(Me.MaxPars), Me.P(Me.MaxPars), Me.paramname(Me.MaxPars)
 
-                Nobs = m_tsData.Iobs
-                SetPfromPars(Po)
+                Me.Nobs = Me.m_tsData.Iobs
+                Me.SetPfromPars(Me.Po)
 
                 'set the parameter variance 
-                If AnomalySearch Then
-                    If Numspline < 2 Then
-                        For i = PPyear1 To PPyear2
-                            pv(i) = m_data.PPVariance
+                If Me.AnomalySearch Then
+                    If Me.Numspline < 2 Then
+                        For Me.i = Me.PPyear1 To Me.PPyear2
+                            Me.pv(Me.i) = Me.m_data.PPVariance
                         Next
                     Else
-                        For i = 1 To Numspline
-                            pv(i) = m_data.PPVariance
+                        For Me.i = 1 To Me.Numspline
+                            Me.pv(Me.i) = Me.m_data.PPVariance
                         Next
                     End If
                 End If
@@ -829,11 +829,11 @@ Namespace FitToTimeSeries
                 'if vulnerability variance = 0 then these parameters will not be counted in 'n' see below
                 'this means the vulnerability parameters will not be included in the search
                 'InitForRun() decides if pvVul is set or not based on the bVulnerabilitySearch flag
-                For i = 1 To IsBlockEstimated.GetUpperBound(0)   '15
-                    If IsBlockEstimated(i) Then
-                        pv(TotalTime + i) = pvVul 'pvVul was set in IntForRun
+                For Me.i = 1 To Me.IsBlockEstimated.GetUpperBound(0)   '15
+                    If Me.IsBlockEstimated(Me.i) Then
+                        Me.pv(Me.TotalTime + Me.i) = Me.pvVul 'pvVul was set in IntForRun
                     Else
-                        pv(TotalTime + i) = 0
+                        Me.pv(Me.TotalTime + Me.i) = 0
                     End If
                 Next
 
@@ -843,21 +843,21 @@ Namespace FitToTimeSeries
                 'ipn() points to the index in P() to get the parameter from e.g. parameter = P(Ipn(i))
                 'n is counted from pv(MaxPars) (parameter variance)
                 'This decides what parameters are searched if pv(iparameter) is zero the parameter is not used
-                ip = 0
-                n = MaxPars
-                For i = 1 To MaxPars
-                    If pv(i) > 0 Then
-                        ip = ip + 1
-                        Ipn(ip) = i
+                Me.ip = 0
+                Me.n = Me.MaxPars
+                For Me.i = 1 To Me.MaxPars
+                    If Me.pv(Me.i) > 0 Then
+                        Me.ip = Me.ip + 1
+                        Me.Ipn(Me.ip) = Me.i
                     Else
-                        n = n - 1
+                        Me.n = Me.n - 1
                     End If
                 Next
 
-                If n = 0 Then
+                If Me.n = 0 Then
                     'message
 
-                    AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_INTERACTIONS, _
+                    Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_INTERACTIONS, _
                                             eMessageType.ErrorEncountered, _
                                             eCoreComponentType.EcoSimFitToTimeSeries, _
                                             eMessageImportance.Warning))
@@ -865,38 +865,38 @@ Namespace FitToTimeSeries
                 End If
 
                 'REM set some initial conditions for iteration counters
-                rmax = 1
-                Jit = 0
-                ic = 0
-                SO = 1.0E+30
-                Rmin = 0.1
-                dinc = 0.0001
-                m_estIter = 0
+                Me.rmax = 1
+                Me.Jit = 0
+                Me.ic = 0
+                Me.SO = 1.0E+30
+                Me.Rmin = 0.1
+                Me.dinc = 0.0001
+                Me.m_estIter = 0
                 EvalCount = 0
-                For i = 1 To MaxObs
-                    m_tsData.Wt(i) = 1
+                For Me.i = 1 To MaxObs
+                    Me.m_tsData.Wt(Me.i) = 1
                 Next
 
-                For i = 1 To MaxPars
-                    P(i) = Po(i)
+                For Me.i = 1 To Me.MaxPars
+                    Me.P(Me.i) = Me.Po(Me.i)
                 Next
 
-                DF = Nobs - n
-                If DF < 1 Then DF = 1
+                Me.DF = Me.Nobs - Me.n
+                If Me.DF < 1 Then Me.DF = 1
 
                 '190:            ' Print "ITERATION BEGINS; HIT ANY KEY ONCE IF NECESSARY TO INTERRUPT"
                 '200 GoSub 290: GoSub 550: Rem compute sensitivities and newton correction step for this parameter combination
 200:
-                sub290()
-                sub550()
+                Me.sub290()
+                Me.sub550()
 
-                m_estIter = m_estIter + 1
-                searchIterationStep()
+                Me.m_estIter = Me.m_estIter + 1
+                Me.searchIterationStep()
 
-                If StopRun = True Then Exit Sub
-                If m_estIter > 500 Then GoTo 250
+                If Me.StopRun = True Then Exit Sub
+                If Me.m_estIter > 500 Then GoTo 250
 
-                If StopIndex > 0 Then
+                If Me.StopIndex > 0 Then
                     fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_ITERATIONS, _
                                                  eCoreComponentType.EcoSimFitToTimeSeries, _
                                                  eMessageType.Any, _
@@ -905,14 +905,14 @@ Namespace FitToTimeSeries
                     fbmsg.Reply = eMessageReply.NO
 
                     If (Not Me.m_data.RunSilent) Then
-                        SendMessage(fbmsg)
+                        Me.SendMessage(fbmsg)
                     End If
                     If fbmsg.Reply = eMessageReply.NO Then GoTo 250
                     '  If MsgBox("MORE ITERATIONS (y/n)?", MsgBoxStyle.YesNo) = vbNo Then GoTo 250
                 End If
 
-                For i = 1 To n
-                    If Math.Abs(St(i) / (P(Ipn(i)) + dinc)) > 0.001 Then GoTo 220 REM seek correction step if newton step is still large
+                For Me.i = 1 To Me.n
+                    If Math.Abs(Me.St(Me.i) / (Me.P(Me.Ipn(Me.i)) + Me.dinc)) > 0.001 Then GoTo 220 REM seek correction step if newton step is still large
                 Next
 
                 GoTo 250
@@ -923,24 +923,24 @@ Namespace FitToTimeSeries
                 'If Math.Abs(St(i) / (P(Ipn(i)) + dinc)) > 0.001
                 'would cause it to go back to 220 and back to sub700, etc.
                 'Discussed this with Carl
-220:            If m_estIter = 1 Or Math.Abs(Grad) > 0.00000000001 Then
-                    sub700()
+220:            If Me.m_estIter = 1 Or Math.Abs(Me.Grad) > 0.00000000001 Then
+                    Me.sub700()
                 Else 'no difference anymore so continue with 
                     GoTo 250
                 End If
 
 240:
-                If Rr2 >= Rmin Then
-                    sub900()
+                If Me.Rr2 >= Me.Rmin Then
+                    Me.sub900()
                     GoTo 200 REM start another nonlinear iteration if key has not been hit or convergence found
                 End If
 
 250:
-                sub300()
-                sub900()
-                MatInv(n, amat, det)
+                Me.sub300()
+                Me.sub900()
+                Me.MatInv(Me.n, Me.amat, det)
 
-                searchIterationStep()
+                Me.searchIterationStep()
 
                 fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED, _
                                                  eCoreComponentType.EcoSimFitToTimeSeries, _
@@ -950,7 +950,7 @@ Namespace FitToTimeSeries
                 fbmsg.Reply = eMessageReply.NO
 
                 If (Not Me.m_data.RunSilent) Then
-                    SendMessage(fbmsg)
+                    Me.SendMessage(fbmsg)
                 End If
 
                 If fbmsg.Reply = eMessageReply.YES Then GoTo 220
@@ -961,7 +961,7 @@ Namespace FitToTimeSeries
 
                 'MsgBox "Estimates apparently converged"
                 '  frmSearch.Res.Visible = False
-                StopIndex = 0
+                Me.StopIndex = 0
 
                 Exit Sub
 
@@ -970,7 +970,7 @@ Namespace FitToTimeSeries
                 'the most likey case is the form has been closed and that aborted the thread
                 'anyway clean up
                 Failed = 1
-                SetParsFromP(Po)
+                Me.SetParsFromP(Me.Po)
 
                 Me.m_runstoppedHandler(Me.RunState)
                 Me.RunState = eRunType.Idle
@@ -980,13 +980,13 @@ Namespace FitToTimeSeries
                 cLog.Write(ex)
 
                 Failed = 1
-                SetParsFromP(Po)
+                Me.SetParsFromP(Me.Po)
                 Debug.Assert(False, ex.Message)
 
                 Me.m_runstoppedHandler(Me.RunState)
                 Me.RunState = eRunType.Idle
 
-                AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
                                         eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSimFitToTimeSeries, _
                                         eMessageImportance.Warning))
@@ -1131,52 +1131,52 @@ Namespace FitToTimeSeries
         Sub SetVblock(ByRef esData As cEcosimDatastructures)
             Dim i As Integer, j As Integer, ii As Integer
             Dim iBlock As Integer
-            For i = 1 To IsBlockEstimated.GetUpperBound(0)
-                IsBlockEstimated(i) = False
+            For i = 1 To Me.IsBlockEstimated.GetUpperBound(0)
+                Me.IsBlockEstimated(i) = False
             Next
 
             For ii = 1 To esData.inlinks
                 i = esData.ilink(ii)
                 j = esData.jlink(ii)
-                iBlock = VblockCode(ii)
-                If iBlock > 0 And iBlock < VBlock.Length Then
-                    VBlock(iBlock) = esData.VulMult(i, j)
-                    IsBlockEstimated(iBlock) = True
+                iBlock = Me.VblockCode(ii)
+                If iBlock > 0 And iBlock < Me.VBlock.Length Then
+                    Me.VBlock(iBlock) = esData.VulMult(i, j)
+                    Me.IsBlockEstimated(iBlock) = True
                 End If
             Next
 
         End Sub
 
-        Private Sub SetPfromPars(ByVal Par() As Single)
+        Private Sub SetPfromPars(Par() As Single)
             'sets Par array to parameters from the model
             Dim i As Integer, i1 As Integer, i2 As Integer, im As Integer, Pvl As Single
-            If AnomalySearch = True Then
-                If Numspline < 2 Then
-                    For i = 1 To m_esdata.NumYears
-                        Par(i) = CSng(Math.Log(m_esdata.zscale(1 + 12 * (i - 1), ForceNo) + 1.0E-20))   'Added 1E-20 per cjw email to vc 26sep00
+            If Me.AnomalySearch = True Then
+                If Me.Numspline < 2 Then
+                    For i = 1 To Me.m_esdata.NumYears
+                        Par(i) = CSng(Math.Log(Me.m_esdata.zscale(1 + 12 * (i - 1), Me.ForceNo) + 1.0E-20))   'Added 1E-20 per cjw email to vc 26sep00
                     Next
                 Else
-                    ReDim Xspline(Numspline)
-                    i1 = 12 * (PPyear1 - 1) + 1
-                    i2 = 12 * PPyear2
-                    For i = 1 To Numspline
-                        im = CInt(i1 + (i2 - i1) * (i - 1) / (Numspline - 1))
-                        Xspline(i) = im
-                        Par(i) = CSng(Math.Log(m_esdata.zscale(im, ForceNo) + 1.0E-20))
+                    ReDim Me.Xspline(Me.Numspline)
+                    i1 = 12 * (Me.PPyear1 - 1) + 1
+                    i2 = 12 * Me.PPyear2
+                    For i = 1 To Me.Numspline
+                        im = CInt(i1 + (i2 - i1) * (i - 1) / (Me.Numspline - 1))
+                        Me.Xspline(i) = im
+                        Par(i) = CSng(Math.Log(Me.m_esdata.zscale(im, Me.ForceNo) + 1.0E-20))
                     Next
                 End If
             End If
             'Par(TotalTime + 1) = VulMultAll
-            For i = 1 To VBlock.GetUpperBound(0)  '15
-                If IsBlockEstimated(i) = True And VBlock(i) > 0 Then
-                    Pvl = CSng(VBlock(i) - 1.0)
+            For i = 1 To Me.VBlock.GetUpperBound(0)  '15
+                If Me.IsBlockEstimated(i) = True And Me.VBlock(i) > 0 Then
+                    Pvl = CSng(Me.VBlock(i) - 1.0)
                     If Pvl < 0.000001 Then Pvl = 0.000001
-                    Par(m_esdata.NumYears + i) = CSng(Math.Log(Pvl))
+                    Par(Me.m_esdata.NumYears + i) = CSng(Math.Log(Pvl))
                 End If
             Next
         End Sub
 
-        Sub MatInv(ByVal n As Integer, ByVal amat(,) As Single, ByVal det As Single)
+        Sub MatInv(n As Integer, amat(,) As Single, det As Single)
             Dim i As Integer, i1 As Integer, i2 As Integer
             ' inverts matrix A of order N; used to estimate parameter covariance matrix
             For i = 1 To n
@@ -1204,46 +1204,46 @@ Namespace FitToTimeSeries
         Private Sub sub290()
             '290:    REM routine to calculate sensitivity matrix SE(k,j) of all observations j to all parameters P(k), j=1 to ni+naux and k=1 to n, 
             'by incrementing each parameter slightly and redoing simulation
-            If StopRun = True Then Exit Sub
+            If Me.StopRun = True Then Exit Sub
 
             Dim sumDYDX As Single, sumBase As Single ', sumY As Single
             '     GoSub 300: 
 
-            sub300()
+            Me.sub300()
 
-            Sbase = Ss
-            For j = 1 To Nobs
-                Ybase(j) = m_tsData.Yhat(j)
+            Me.Sbase = Me.Ss
+            For Me.j = 1 To Me.Nobs
+                Me.Ybase(Me.j) = Me.m_tsData.Yhat(Me.j)
             Next
-            Va = Ss / DF
-            var = Va
-            Vmax = CSng(Math.Exp(-0.5 * Ss / Va))
-            Vc = CSng(0.05 * Vmax)
-            Vp = 0 'If Np > 0 Then Vp = Sp / Np
-            For kkkk = 1 To n
-                ip = Ipn(kkkk)
-                Dp = dinc * P(ip)
-                If Dp = 0 Then Dp = dinc
-                P(ip) = P(ip) + Dp
+            Me.Va = Me.Ss / Me.DF
+            Me.var = Me.Va
+            Me.Vmax = CSng(Math.Exp(-0.5 * Me.Ss / Me.Va))
+            Me.Vc = CSng(0.05 * Me.Vmax)
+            Me.Vp = 0 'If Np > 0 Then Vp = Sp / Np
+            For Me.kkkk = 1 To Me.n
+                Me.ip = Me.Ipn(Me.kkkk)
+                Me.Dp = Me.dinc * Me.P(Me.ip)
+                If Me.Dp = 0 Then Me.Dp = Me.dinc
+                Me.P(Me.ip) = Me.P(Me.ip) + Me.Dp
 
                 'call the model
-                sub300()
+                Me.sub300()
 
                 'tell the interface that Ecosim has been called
-                Me.modelCalled(kkkk, n)
+                Me.modelCalled(Me.kkkk, Me.n)
 
-                For j = 1 To Nobs
-                    Se(kkkk, j) = (m_tsData.Yhat(j) - Ybase(j)) / Dp
-                    sumDYDX = sumDYDX + Math.Abs(Se(kkkk, j))
+                For Me.j = 1 To Me.Nobs
+                    Me.Se(Me.kkkk, Me.j) = (Me.m_tsData.Yhat(Me.j) - Me.Ybase(Me.j)) / Me.Dp
+                    sumDYDX = sumDYDX + Math.Abs(Me.Se(Me.kkkk, Me.j))
                     'sumY = sumY + (m_tsData.Yhat(j) - Ybase(j))
-                    sumBase = sumBase + (Ybase(j))
+                    sumBase = sumBase + (Me.Ybase(Me.j))
                 Next
 
                 'System.Console.WriteLine("Var = " & kkkk.ToString & ", Sum SS = " & sumDYDX.ToString & ", Sum Y = " & sumY.ToString & ", sum base = " & sumBase.ToString)
 
-                P(ip) = P(ip) - Dp
+                Me.P(Me.ip) = Me.P(Me.ip) - Me.Dp
                 '    DoEvents()
-                If StopRun = True Then Exit Sub
+                If Me.StopRun = True Then Exit Sub
             Next
 
             Return
@@ -1263,10 +1263,10 @@ Namespace FitToTimeSeries
 
             '******set model parameters from current P estimation vector
             '**** put model to predict yhat's, er's, and add up SS here
-            SetParsFromP(P)
-            m_ecosim.RunModelValue(TotalTime, Nothing, 0)
+            Me.SetParsFromP(Me.P)
+            Me.m_ecosim.RunModelValue(Me.TotalTime, Nothing, 0)
 
-            Ss = m_esdata.SS
+            Me.Ss = Me.m_esdata.SS
             'System.Console.WriteLine("SS = " + Ss.ToString)
 
             'For Iobs = 1 To Nobs
@@ -1282,79 +1282,79 @@ Namespace FitToTimeSeries
             '550:    REM routine to solves (X'X)(st)=X'(er) by Cholesky decompostion, 
             'using X=SE sensitivity matrix augmented by prior variances and er=fitting error vector; 
             'output is newton parameter correction step vector st(1...n)
-            For i = 1 To n
-                Sold(i) = St(i)
-                ip = Ipn(i)
-                Xy(i) = (P(ip) - Po(ip)) * Va / pv(ip)
+            For Me.i = 1 To Me.n
+                Me.Sold(Me.i) = Me.St(Me.i)
+                Me.ip = Me.Ipn(Me.i)
+                Me.Xy(Me.i) = (Me.P(Me.ip) - Me.Po(Me.ip)) * Me.Va / Me.pv(Me.ip)
             Next
 
-            For i = 1 To n
+            For Me.i = 1 To Me.n
 
-                Su = 0
-                For K = 1 To Nobs
-                    Su = Su + m_tsData.Wt(K) * Se(i, K) * m_tsData.Erpred(K)
-                Next K
+                Me.Su = 0
+                For Me.K = 1 To Me.Nobs
+                    Me.Su = Me.Su + Me.m_tsData.Wt(Me.K) * Me.Se(Me.i, Me.K) * Me.m_tsData.Erpred(Me.K)
+                Next Me.K
 
-                Xy(i) = Su + Xy(i)
-                For j = 1 To i
-                    Su = 0 : For K = 1 To Nobs
-                        Su = Su + m_tsData.Wt(K) * Se(i, K) * Se(j, K)
-                    Next K
-                    amat(i, j) = Su
-                    amat(j, i) = Su
-                Next j
-            Next i
+                Me.Xy(Me.i) = Me.Su + Me.Xy(Me.i)
+                For Me.j = 1 To Me.i
+                    Me.Su = 0 : For Me.K = 1 To Me.Nobs
+                        Me.Su = Me.Su + Me.m_tsData.Wt(Me.K) * Me.Se(Me.i, Me.K) * Me.Se(Me.j, Me.K)
+                    Next Me.K
+                    Me.amat(Me.i, Me.j) = Me.Su
+                    Me.amat(Me.j, Me.i) = Me.Su
+                Next Me.j
+            Next Me.i
 
-            For i = 1 To n
-                amat(i, i) = amat(i, i) + Va / pv(Ipn(i))
-            Next i
+            For Me.i = 1 To Me.n
+                Me.amat(Me.i, Me.i) = Me.amat(Me.i, Me.i) + Me.Va / Me.pv(Me.Ipn(Me.i))
+            Next Me.i
 
-            For i = 1 To n
-                For j = 1 To n
-                    Vi(i, j) = amat(i, j)
-                Next j
-            Next i
+            For Me.i = 1 To Me.n
+                For Me.j = 1 To Me.n
+                    Me.Vi(Me.i, Me.j) = Me.amat(Me.i, Me.j)
+                Next Me.j
+            Next Me.i
 
-            Cl(1, 1) = CSng(Math.Sqrt(amat(1, 1)))
-            For i = 2 To n
-                Cl(i, 1) = amat(i, 1) / Cl(1, 1)
+            Me.Cl(1, 1) = CSng(Math.Sqrt(Me.amat(1, 1)))
+            For Me.i = 2 To Me.n
+                Me.Cl(Me.i, 1) = Me.amat(Me.i, 1) / Me.Cl(1, 1)
             Next
 
-            For i = 2 To n
-                If i = 2 Then GoTo 641
+            For Me.i = 2 To Me.n
+                If Me.i = 2 Then GoTo 641
 
-                For j = 2 To i - 1
-                    Ct = 0
-                    For K = 1 To j - 1
-                        Ct = Ct + Cl(i, K) * Cl(j, K)
+                For Me.j = 2 To Me.i - 1
+                    Me.Ct = 0
+                    For Me.K = 1 To Me.j - 1
+                        Me.Ct = Me.Ct + Me.Cl(Me.i, Me.K) * Me.Cl(Me.j, Me.K)
                     Next
-                    Cl(i, j) = (amat(i, j) - Ct) / Cl(j, j)
+                    Me.Cl(Me.i, Me.j) = (Me.amat(Me.i, Me.j) - Me.Ct) / Me.Cl(Me.j, Me.j)
                 Next
-641:            Ct = 0
-                For K = 1 To i - 1
-                    Ct = CSng(Ct + Cl(i, K) ^ 2)
+641:            Me.Ct = 0
+                For Me.K = 1 To Me.i - 1
+                    Me.Ct = CSng(Me.Ct + Me.Cl(Me.i, Me.K) ^ 2)
                 Next
-                Cl(i, i) = CSng(Math.Sqrt(amat(i, i) - Ct))
+                Me.Cl(Me.i, Me.i) = CSng(Math.Sqrt(Me.amat(Me.i, Me.i) - Me.Ct))
             Next
 
-            cy(1) = Xy(1) / Cl(1, 1)
+            Me.cy(1) = Me.Xy(1) / Me.Cl(1, 1)
 
-            For i = 2 To n
-                Ct = 0
-                For j = 1 To i - 1
-                    Ct = Ct + Cl(i, j) * cy(j)
+            For Me.i = 2 To Me.n
+                Me.Ct = 0
+                For Me.j = 1 To Me.i - 1
+                    Me.Ct = Me.Ct + Me.Cl(Me.i, Me.j) * Me.cy(Me.j)
                 Next
-                cy(i) = (Xy(i) - Ct) / Cl(i, i)
+                Me.cy(Me.i) = (Me.Xy(Me.i) - Me.Ct) / Me.Cl(Me.i, Me.i)
             Next
 
-            St(n) = cy(n) / Cl(n, n)
-            If n = 1 Then GoTo 650
-            For i = n - 1 To 1 Step -1
-                Ct = 0
-                For j = n To i + 1 Step -1
-                    Ct = Ct + St(j) * Cl(j, i)
+            Me.St(Me.n) = Me.cy(Me.n) / Me.Cl(Me.n, Me.n)
+            If Me.n = 1 Then GoTo 650
+            For Me.i = Me.n - 1 To 1 Step -1
+                Me.Ct = 0
+                For Me.j = Me.n To Me.i + 1 Step -1
+                    Me.Ct = Me.Ct + Me.St(Me.j) * Me.Cl(Me.j, Me.i)
                 Next
-                St(i) = (cy(i) - Ct) / Cl(i, i)
+                Me.St(Me.i) = (Me.cy(Me.i) - Me.Ct) / Me.Cl(Me.i, Me.i)
             Next
 650:        Return
 
@@ -1363,7 +1363,7 @@ Namespace FitToTimeSeries
 
         Private Sub sub900()
             '900:    REM save parameter estimates
-            SetParsFromP(P)
+            Me.SetParsFromP(Me.P)
             'frmSearch.Res.Print iter; ":"; Ss
 
             'RegVar = SS / Df
@@ -1373,97 +1373,97 @@ Namespace FitToTimeSeries
 
         Private Sub sub700()
 700:        REM routine to find an acceptable step length (fraction of st) if possible, and applies it to the parameter vector P (this algorithm from p. in Bard, 1974)
-            If StopRun = True Then Exit Sub
-            Rr2 = 1
-            Grad = 0
+            If Me.StopRun = True Then Exit Sub
+            Me.Rr2 = 1
+            Me.Grad = 0
 
-            For i = 1 To n
-                Grad = Grad - St(i) * Xy(i)
+            For Me.i = 1 To Me.n
+                Me.Grad = Me.Grad - Me.St(Me.i) * Me.Xy(Me.i)
             Next
-            Rs = CSng(rmax / 2 ^ Jit)
+            Me.Rs = CSng(Me.rmax / 2 ^ Me.Jit)
 
-            If Math.Abs(Grad) < 0.00000000001 Then Return
+            If Math.Abs(Me.Grad) < 0.00000000001 Then Return
 
-            For i = 1 To n
-                ip = Ipn(i)
-                P(ip) = P(ip) + Rs * St(i)
+            For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i)
+                Me.P(Me.ip) = Me.P(Me.ip) + Me.Rs * Me.St(Me.i)
             Next
-            If StopRun = True Then Exit Sub
+            If Me.StopRun = True Then Exit Sub
             ' GoSub 300: 
-            sub300()
-            Stry = Ss
-            Rbet = Grad * Rs * Rs / (2 * (Grad * Rs + Sbase - Stry))
-            If Stry >= Sbase Then GoTo 750
+            Me.sub300()
+            Me.Stry = Me.Ss
+            Me.Rbet = Me.Grad * Me.Rs * Me.Rs / (2 * (Me.Grad * Me.Rs + Me.Sbase - Me.Stry))
+            If Me.Stry >= Me.Sbase Then GoTo 750
 
-            Jit = CInt(Jit / 2)
-            If Rbet < 0 Then Rbet = 2 * Rs
-            Rnew = Rbet
-            If Rnew > rmax Then Rnew = rmax
+            Me.Jit = CInt(Me.Jit / 2)
+            If Me.Rbet < 0 Then Me.Rbet = 2 * Me.Rs
+            Me.Rnew = Me.Rbet
+            If Me.Rnew > Me.rmax Then Me.Rnew = Me.rmax
 
-            If StopRun = True Then Exit Sub
+            If Me.StopRun = True Then Exit Sub
 
-            Rdel = Rnew - Rs
-            For i = 1 To n
-                ip = Ipn(i) : P(ip) = P(ip) + Rdel * St(i)
+            Me.Rdel = Me.Rnew - Me.Rs
+            For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i) : Me.P(Me.ip) = Me.P(Me.ip) + Me.Rdel * Me.St(Me.i)
             Next
 
             'GoSub 300
-            sub300()
+            Me.sub300()
 
-            Snew = Ss
-            If Snew < Stry Then GoTo 795
-            For i = 1 To n
-                ip = Ipn(i)
-                P(ip) = P(ip) - Rdel * St(i)
+            Me.Snew = Me.Ss
+            If Me.Snew < Me.Stry Then GoTo 795
+            For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i)
+                Me.P(Me.ip) = Me.P(Me.ip) - Me.Rdel * Me.St(Me.i)
             Next
 
             GoTo 795
 
-750:        Rnew = Rs
-            For i = 1 To n
-                ip = Ipn(i)
-                P(ip) = P(ip) - Rs * St(i)
+750:        Me.Rnew = Me.Rs
+            For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i)
+                Me.P(Me.ip) = Me.P(Me.ip) - Me.Rs * Me.St(Me.i)
             Next
 
-755:        Rr2 = CSng(0.75 * Rnew)
-            If Rr2 > Rbet Then Rr2 = Rbet
+755:        Me.Rr2 = CSng(0.75 * Me.Rnew)
+            If Me.Rr2 > Me.Rbet Then Me.Rr2 = Me.Rbet
 
-            If StopIndex = 1 Then Return
-            If StopRun = True Then Exit Sub
-            If Rr2 < 0.25 * Rnew Then Rr2 = CSng(0.25 * Rnew)
-            If Rr2 < Rmin Then
-                For i = 1 To n
-                    ip = Ipn(i)
-                    P(ip) = P(ip) - Rs * St(i)
+            If Me.StopIndex = 1 Then Return
+            If Me.StopRun = True Then Exit Sub
+            If Me.Rr2 < 0.25 * Me.Rnew Then Me.Rr2 = CSng(0.25 * Me.Rnew)
+            If Me.Rr2 < Me.Rmin Then
+                For Me.i = 1 To Me.n
+                    Me.ip = Me.Ipn(Me.i)
+                    Me.P(Me.ip) = Me.P(Me.ip) - Me.Rs * Me.St(Me.i)
                 Next
                 ' Print "cannot find improved estimates": Return
             End If
-            For i = 1 To n
-                ip = Ipn(i)
-                P(ip) = P(ip) + Rr2 * St(i)
+            For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i)
+                Me.P(Me.ip) = Me.P(Me.ip) + Me.Rr2 * Me.St(Me.i)
             Next
 
             ' GoSub 300
-            sub300()
+            Me.sub300()
 
-            Ss2 = Ss
-            Jit = Jit + 1
-            If Ss2 < Sbase Then GoTo 795
-            Den = 2 * (Grad * Rnew + Sbase - Ss2)
-            If Den < 0.000000000000001 Then GoTo 798
+            Me.Ss2 = Me.Ss
+            Me.Jit = Me.Jit + 1
+            If Me.Ss2 < Me.Sbase Then GoTo 795
+            Me.Den = 2 * (Me.Grad * Me.Rnew + Me.Sbase - Me.Ss2)
+            If Me.Den < 0.000000000000001 Then GoTo 798
 
-            Rnew = Rr2
-            Rs = Grad * Rnew * Rnew / Den
+            Me.Rnew = Me.Rr2
+            Me.Rs = Me.Grad * Me.Rnew * Me.Rnew / Me.Den
 
-            For i = 1 To n
-                ip = Ipn(i)
-                P(ip) = P(ip) - Rr2 * St(i)
+            For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i)
+                Me.P(Me.ip) = Me.P(Me.ip) - Me.Rr2 * Me.St(Me.i)
             Next
             GoTo 755
 
-798:        For i = 1 To n
-                ip = Ipn(i)
-                P(ip) = P(ip) - Rr2 * St(i)
+798:        For Me.i = 1 To Me.n
+                Me.ip = Me.Ipn(Me.i)
+                Me.P(Me.ip) = Me.P(Me.ip) - Me.Rr2 * Me.St(Me.i)
             Next
             '041202VC: we were having trouble at Galveston workshop, where SS would be different on frmSearch
             'and on return to ecosim. Carl's solution: place a runmodelfast call here
@@ -1476,7 +1476,7 @@ Namespace FitToTimeSeries
 
         End Sub
 
-        Sub SetParsFromP(ByVal Par() As Single)
+        Sub SetParsFromP(Par() As Single)
             '        'puts parameter values back into model arrays after altered by estimation
             'On Local Error Resume Next
 
@@ -1484,56 +1484,56 @@ Namespace FitToTimeSeries
 
                 Dim i As Integer, j As Integer, epar As Single, ii As Integer, Yspline() As Single, y2() As Single, Xs As Single, Ys As Single
                 Dim PBar As Single
-                If AnomalySearch = True Then
-                    If Numspline < 2 Then
+                If Me.AnomalySearch = True Then
+                    If Me.Numspline < 2 Then
                         ' No Spline points
                         PBar = 0
-                        For i = 1 To TotalTime : PBar = PBar + Par(i) : Next
-                        PBar = PBar / TotalTime
-                        For i = 1 To TotalTime
+                        For i = 1 To Me.TotalTime : PBar = PBar + Par(i) : Next
+                        PBar = PBar / Me.TotalTime
+                        For i = 1 To Me.TotalTime
                             epar = CSng(Math.Exp(Par(i) - PBar))
                             For j = 1 To 12
-                                m_esdata.zscale(12 * (i - 1) + j, ForceNo) = epar
+                                Me.m_esdata.zscale(12 * (i - 1) + j, Me.ForceNo) = epar
                             Next
                         Next
                     Else
                         ' Spline the new parameters into the anomaly shape
-                        ReDim Yspline(Numspline), y2(Numspline)
+                        ReDim Yspline(Me.Numspline), y2(Me.Numspline)
                         PBar = 0
-                        For i = 1 To Numspline : PBar = PBar + Par(i) : Next
-                        PBar = PBar / Numspline
+                        For i = 1 To Me.Numspline : PBar = PBar + Par(i) : Next
+                        PBar = PBar / Me.Numspline
                         'Dim Scheck As Single
-                        For i = 1 To Numspline : Yspline(i) = CSng(Math.Exp(Par(i) - PBar)) : Next
+                        For i = 1 To Me.Numspline : Yspline(i) = CSng(Math.Exp(Par(i) - PBar)) : Next
                         'Scheck = Scheck / Numspline: Debug.Print Scheck, Pbar
-                        SPLINE(Xspline, Yspline, Numspline, 0.0#, 0.0#, y2)
-                        For i = 12 * (PPyear1 - 1) + 1 To 12 * PPyear2
+                        Me.SPLINE(Me.Xspline, Yspline, Me.Numspline, 0.0#, 0.0#, y2)
+                        For i = 12 * (Me.PPyear1 - 1) + 1 To 12 * Me.PPyear2
                             Xs = i
-                            SPLINT(Xspline, Yspline, y2, Numspline, Xs, Ys)
-                            m_esdata.zscale(i, ForceNo) = Ys
+                            Me.SPLINT(Me.Xspline, Yspline, y2, Me.Numspline, Xs, Ys)
+                            Me.m_esdata.zscale(i, Me.ForceNo) = Ys
                         Next
                         Erase Yspline, y2
                     End If
                 End If
 
-                For i = 1 To VBlock.GetUpperBound(0) '15
-                    If IsBlockEstimated(i) = True Then
-                        If Par(TotalTime + i) < 34.538 Then
-                            VBlock(i) = 1 + CSng(Math.Exp(Par(TotalTime + i)))
+                For i = 1 To Me.VBlock.GetUpperBound(0) '15
+                    If Me.IsBlockEstimated(i) = True Then
+                        If Par(Me.TotalTime + i) < 34.538 Then
+                            Me.VBlock(i) = 1 + CSng(Math.Exp(Par(Me.TotalTime + i)))
                         Else
-                            VBlock(i) = 1 + CSng(Math.Exp(34.538))
+                            Me.VBlock(i) = 1 + CSng(Math.Exp(34.538))
                         End If
                     End If
                 Next
 
-                initEcosimForSearchIteration()
+                Me.initEcosimForSearchIteration()
 
-                For ii = 1 To m_esdata.Narena
+                For ii = 1 To Me.m_esdata.Narena
                     'i = ilink(ii): j = jlink(ii)
-                    i = m_esdata.Iarena(ii) : j = m_esdata.Jarena(ii)
-                    If VblockCode(ii) > 0 Then
-                        m_esdata.VulMult(i, j) = VBlock(VblockCode(ii))
+                    i = Me.m_esdata.Iarena(ii) : j = Me.m_esdata.Jarena(ii)
+                    If Me.VblockCode(ii) > 0 Then
+                        Me.m_esdata.VulMult(i, j) = Me.VBlock(Me.VblockCode(ii))
                         ' m_esdata.VulMult(i, j) = 2
-                        m_ecosim.setvulratecell(i, j, m_esdata.VulMult(i, j))
+                        Me.m_ecosim.setvulratecell(i, j, Me.m_esdata.VulMult(i, j))
                         '****REMOVED BY CJW SEPT 2001; UNSAFE HERE******
                         ' MakeAMatrixCell i, j
                     End If
@@ -1547,7 +1547,7 @@ Namespace FitToTimeSeries
         End Sub
 
 
-        Sub SPLINE(ByVal X() As Single, ByVal Y() As Single, ByVal n As Integer, ByVal yp1 As Single, ByVal ypn As Single, ByVal y2() As Single)
+        Sub SPLINE(X() As Single, Y() As Single, n As Integer, yp1 As Single, ypn As Single, y2() As Single)
             Dim U() As Single, i As Integer, Sig As Single, P As Single, Dum1 As Single, Dum2 As Single
             Dim Qn As Single, Un As Single, K As Integer
             ReDim U(n)
@@ -1580,7 +1580,7 @@ Namespace FitToTimeSeries
             Next K
             Erase U
         End Sub
-        Sub SPLINT(ByVal Xa() As Single, ByVal Ya() As Single, ByVal Y2A() As Single, ByVal n As Integer, ByVal X As Single, ByRef Y As Single)
+        Sub SPLINT(Xa() As Single, Ya() As Single, Y2A() As Single, n As Integer, X As Single, ByRef Y As Single)
             Dim Klo As Integer, Khi As Integer, K As Integer, H As Single, A As Single
             Dim B As Single
             'cubic spline calculation of spline value Y at point X, using reference arrays and results
@@ -1603,7 +1603,7 @@ Namespace FitToTimeSeries
             Y = CSng(Y + ((A ^ 3 - A) * Y2A(Klo) + (B ^ 3 - B) * Y2A(Khi)) * (H ^ 2) / 6.0)
         End Sub
 
-        Private Sub modelCalled(ByVal i As Integer, ByVal n As Integer)
+        Private Sub modelCalled(i As Integer, n As Integer)
 
             Try
                 Me.m_runModelHandler(Me.RunState, i, n)

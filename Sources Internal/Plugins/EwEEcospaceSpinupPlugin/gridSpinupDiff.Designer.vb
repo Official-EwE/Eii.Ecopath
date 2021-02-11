@@ -20,7 +20,7 @@
 
 Partial Class gridSpinupDiff
 
-    Public Sub New(ByVal container As System.ComponentModel.IContainer)
+    Public Sub New(container As System.ComponentModel.IContainer)
         MyClass.New()
 
         'Required for Windows.Forms Class Composition Designer support
@@ -30,7 +30,7 @@ Partial Class gridSpinupDiff
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()

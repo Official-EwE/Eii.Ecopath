@@ -114,10 +114,10 @@ Public Class gridMSEBatchTFM
         Dim RowStyle As cStyleGuide.eStyleFlags
         Dim iRow As Integer
 
-        For iGroup As Integer = 1 To Core.nLivingGroups
+        For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
             'Get the group info
-            group = Core.MSEBatchManager.TFMGroups(iGroup)
+            group = Me.Core.MSEBatchManager.TFMGroups(iGroup)
 
             iRow = Me.AddRow()
 
@@ -132,7 +132,7 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.BLimLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimLower)
             Me(iGroup, eColumnTypes.BLim) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
 
-            Me(iGroup, eColumnTypes.BLimValue) = New cEwECell(group.BLimValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.BLimValue) = New cEwECell(group.BLimValue(Me.iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.BLimValue).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BLimUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBLimUpper)
@@ -140,7 +140,7 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.BBaseLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseLower)
             Me(iGroup, eColumnTypes.BBase) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
 
-            Me(iGroup, eColumnTypes.BBaseValue) = New cEwECell(group.BBaseValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.BBaseValue) = New cEwECell(group.BBaseValue(Me.iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.BBaseValue).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.BBaseUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMBBaseUpper)
@@ -148,7 +148,7 @@ Public Class gridMSEBatchTFM
             Me(iGroup, eColumnTypes.FOptLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptLower)
             Me(iGroup, eColumnTypes.FOpt) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
-            Me(iGroup, eColumnTypes.FOptValue) = New cEwECell(group.FMaxValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.FOptValue) = New cEwECell(group.FMaxValue(Me.iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.FOptValue).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.FOptUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSETFMFOptUpper)
@@ -171,7 +171,7 @@ Public Class gridMSEBatchTFM
 
     Public Property iCurIter As Integer
         Get
-            Return m_iter
+            Return Me.m_iter
         End Get
 
         Set(value As Integer)
@@ -202,7 +202,7 @@ Public Class gridMSEBatchTFM
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
         Dim iGrp As Integer
         Dim ColType As eColumnTypes
 
@@ -214,11 +214,11 @@ Public Class gridMSEBatchTFM
 
             Select Case ColType
                 Case eColumnTypes.BBaseValue
-                    Core.MSEBatchManager.TFMGroups(iGrp).BBaseValue(Me.iCurIter) = CSng(val)
+                    Me.Core.MSEBatchManager.TFMGroups(iGrp).BBaseValue(Me.iCurIter) = CSng(val)
                 Case eColumnTypes.BLimValue
-                    Core.MSEBatchManager.TFMGroups(iGrp).BLimValue(Me.iCurIter) = CSng(val)
+                    Me.Core.MSEBatchManager.TFMGroups(iGrp).BLimValue(Me.iCurIter) = CSng(val)
                 Case eColumnTypes.FOptValue
-                    Core.MSEBatchManager.TFMGroups(iGrp).FMaxValue(Me.iCurIter) = CSng(val)
+                    Me.Core.MSEBatchManager.TFMGroups(iGrp).FMaxValue(Me.iCurIter) = CSng(val)
             End Select
 
         Catch ex As Exception

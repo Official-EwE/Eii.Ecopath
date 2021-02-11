@@ -38,7 +38,7 @@ Public Interface IEcosimPlugin
     ''' <remarks>This plugin point is non-exclusive; each implementation 
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub LoadEcosimScenario(ByVal dataSource As Object)
+    Sub LoadEcosimScenario(dataSource As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -50,7 +50,7 @@ Public Interface IEcosimPlugin
     ''' <remarks>This plugin point is non-exclusive; each implementation 
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub SaveEcosimScenario(ByVal dataSource As Object)
+    Sub SaveEcosimScenario(dataSource As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -42,11 +42,11 @@ Namespace Controls
         ''' <summary>Draw the background of the flow diagram. Here trophic level lines etc. should be rendered.</summary>
         ''' <param name="g"></param>
         ''' <param name="rc"></param>
-        Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
-        Sub DrawTitle(ByVal g As Graphics, ByVal rc As Rectangle)
-        Sub DrawNode(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iGroup As Integer, ByVal highlight As eFDHighlightType)
-        Sub DrawConnection(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iPred As Integer, ByVal iPrey As Integer, ByVal highlight As eFDHighlightType)
-        Sub DrawLegend(ByVal g As Graphics, ByVal ptTopLeft As Point)
+        Sub DrawBackground(g As Graphics, rc As Rectangle)
+        Sub DrawTitle(g As Graphics, rc As Rectangle)
+        Sub DrawNode(g As Graphics, rc As Rectangle, iGroup As Integer, highlight As eFDHighlightType)
+        Sub DrawConnection(g As Graphics, rc As Rectangle, iPred As Integer, iPrey As Integer, highlight As eFDHighlightType)
+        Sub DrawLegend(g As Graphics, ptTopLeft As Point)
 
         Function RenderFont() As Font
         Function TextColor() As Color
@@ -54,14 +54,14 @@ Namespace Controls
         Function OutLinkColor() As Color
         Function HighlightColor() As Color
         Function FormatLabelText(iGroup As Integer) As String
-        Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF
-        Property LabelLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF
+        Property NodeLocation(i As Integer, rc As Rectangle) As PointF
+        Property LabelLocation(i As Integer, rc As Rectangle) As PointF
         Property ShowHiddenNodes As eFDShowHiddenType
 
-        Sub MoveNode(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer)
-        Sub MoveLabel(ByVal rc As Rectangle, ByVal ptNew As PointF, ByVal iNode As Integer)
-        Function IsNodeAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF, ByVal i As Integer, ByVal sValue As Single) As Boolean
-        Function IsLabelAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF, ByVal i As Integer, ByVal strLabel As String, ByVal g As Graphics, ByVal font As Font) As Boolean
+        Sub MoveNode(rc As Rectangle, ptNew As PointF, iNode As Integer)
+        Sub MoveLabel(rc As Rectangle, ptNew As PointF, iNode As Integer)
+        Function IsNodeAtPoint(rc As Rectangle, ptfTest As PointF, i As Integer, sValue As Single) As Boolean
+        Function IsLabelAtPoint(rc As Rectangle, ptfTest As PointF, i As Integer, strLabel As String, g As Graphics, font As Font) As Boolean
 
     End Interface
 

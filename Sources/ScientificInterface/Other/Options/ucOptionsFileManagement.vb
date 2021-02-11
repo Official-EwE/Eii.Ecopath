@@ -52,7 +52,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
             Me.InitializeComponent()
 
@@ -72,9 +72,9 @@ Namespace Other
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+        Protected Overrides Sub Dispose(disposing As Boolean)
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
                 Me.m_autosaveoptions.Dispose()
             End If
             MyBase.Dispose(disposing)
@@ -100,7 +100,7 @@ Namespace Other
 
 #Region " Event handlers "
 
-        Private Sub OnOutputFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
+        Private Sub OnOutputFieldPicked(sender As ScientificInterfaceShared.Controls.ucFieldPicker, value As Object) _
             Handles m_fieldpickOutput.OnFieldPicked
 
             Me.InsertText(Me.m_tbOutputMask, "{" & value.ToString & "}")
@@ -108,7 +108,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnOutputDirectoryPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
+        Private Sub OnOutputDirectoryPicked(sender As ScientificInterfaceShared.Controls.ucFieldPicker, strDirectory As String) _
             Handles m_fieldpickOutput.OnDirectoryPicked
 
             Me.m_tbOutputMask.SelectionStart = 0
@@ -118,7 +118,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnBackupFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
+        Private Sub OnBackupFieldPicked(sender As ScientificInterfaceShared.Controls.ucFieldPicker, value As Object) _
             Handles m_fieldpickBackup.OnFieldPicked
 
             Me.InsertText(Me.m_tbBackupMask, "{" & value.ToString & "}")
@@ -126,7 +126,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnBackupDirectoryPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
+        Private Sub OnBackupDirectoryPicked(sender As ScientificInterfaceShared.Controls.ucFieldPicker, strDirectory As String) _
             Handles m_fieldpickBackup.OnDirectoryPicked
 
             Me.m_tbBackupMask.SelectionStart = 0
@@ -136,7 +136,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnMaskChanged(sender As Object, e As System.EventArgs) _
             Handles m_tbBackupMask.TextChanged, m_tbOutputMask.TextChanged
 
             Me.UpdateControls()
@@ -172,13 +172,13 @@ Namespace Other
 
         End Sub
 
-        Private Sub UpdateSample(ByVal tbx As TextBox, ByVal strMask As String, btn As Button, bIsFile As Boolean)
+        Private Sub UpdateSample(tbx As TextBox, strMask As String, btn As Button, bIsFile As Boolean)
 
             Dim strSample As String = ""
             Dim strPath As String = ""
 
             If Not cPathUtility.ResolvePath(strMask, Me.UIContext.Core, strSample) Then
-                cPathUtility.ResolvePath(strMask, "{model}", m_strDocDir, ".eweaccdb", m_strVersion, strSample)
+                cPathUtility.ResolvePath(strMask, "{model}", Me.m_strDocDir, ".eweaccdb", Me.m_strVersion, strSample)
             End If
 
             If (String.IsNullOrWhiteSpace(strSample)) Then Return
@@ -195,7 +195,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub InsertText(ByVal tb As TextBox, ByVal strText As String)
+        Private Sub InsertText(tb As TextBox, strText As String)
             Dim strSrc As String = tb.Text
             Dim strDest As String
             Dim iSelStart As Integer = tb.SelectionStart
@@ -215,7 +215,7 @@ Namespace Other
             tb.SelectionLength = 0
         End Sub
 
-        Private Sub ReplaceText(ByVal tb As TextBox, ByVal strText As String)
+        Private Sub ReplaceText(tb As TextBox, strText As String)
             tb.Text = strText
         End Sub
 

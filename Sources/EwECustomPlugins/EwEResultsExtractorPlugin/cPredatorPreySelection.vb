@@ -39,10 +39,10 @@ Public Class cPredatorPreySelection
     ''' <remarks>
     ''' JS 01Mar11: Core must be provided as a parameter.
     ''' </remarks>
-    Public Sub New(ByRef Predator As String, ByVal Core As cCore)
+    Public Sub New(ByRef Predator As String, Core As cCore)
         Me.m_core = Core
-        m_Predator = Predator
-        m_Prey = New List(Of String)
+        Me.m_Predator = Predator
+        Me.m_Prey = New List(Of String)
     End Sub
 
 #End Region
@@ -51,19 +51,19 @@ Public Class cPredatorPreySelection
 
     Public Property PredatorName() As String
         Get
-            Return m_Predator
+            Return Me.m_Predator
         End Get
-        Set(ByVal value As String)
-            m_Predator = value
+        Set(value As String)
+            Me.m_Predator = value
         End Set
     End Property
 
-    Public Property PreyName(ByVal i As Integer) As String
+    Public Property PreyName(i As Integer) As String
         Get
-            Return m_Prey(i)
+            Return Me.m_Prey(i)
         End Get
-        Set(ByVal value As String)
-            m_Prey(i) = value
+        Set(value As String)
+            Me.m_Prey(i) = value
         End Set
     End Property
 
@@ -71,12 +71,12 @@ Public Class cPredatorPreySelection
 
 #Region "Subroutines"
 
-    Public Sub AddPrey(ByVal PreyName As String)
-        m_Prey.Add(PreyName)
+    Public Sub AddPrey(PreyName As String)
+        Me.m_Prey.Add(PreyName)
     End Sub
 
-    Public Sub RemovePrey(ByVal i As Integer)
-        m_Prey.RemoveAt(i)
+    Public Sub RemovePrey(i As Integer)
+        Me.m_Prey.RemoveAt(i)
     End Sub
 
 #End Region
@@ -84,23 +84,23 @@ Public Class cPredatorPreySelection
 #Region "Functions"
 
     Public Function CountPrey() As Integer
-        Return m_Prey.Count
+        Return Me.m_Prey.Count
     End Function
 
     Public Function GetIndexPredatorForEcoSim() As Integer
         Dim PredIndexEcosim As Integer = 1
 
-        While m_core.EcoSimGroupOutputs(PredIndexEcosim).Name <> m_Predator
+        While Me.m_core.EcoSimGroupOutputs(PredIndexEcosim).Name <> Me.m_Predator
             PredIndexEcosim += 1
         End While
         Return PredIndexEcosim
 
     End Function
 
-    Public Function GetIndexPreyForEcoSim(ByVal i As Integer) As Integer
+    Public Function GetIndexPreyForEcoSim(i As Integer) As Integer
         Dim PreyIndexEcosim As Integer = 1
 
-        While m_core.EcoSimGroupOutputs(PreyIndexEcosim).Name <> m_Prey(i)
+        While Me.m_core.EcoSimGroupOutputs(PreyIndexEcosim).Name <> Me.m_Prey(i)
             PreyIndexEcosim += 1
         End While
         Return PreyIndexEcosim

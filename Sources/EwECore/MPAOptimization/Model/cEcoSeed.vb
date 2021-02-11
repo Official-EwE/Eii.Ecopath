@@ -70,7 +70,7 @@ Namespace EcoSeed
                 ' Check seeds
                 For ir As Integer = 1 To Me.m_SpaceData.InRow
                     For ic As Integer = 1 To Me.m_SpaceData.InCol
-                        If m_data.MPASeed(ir, ic) > 0 Then
+                        If Me.m_data.MPASeed(ir, ic) > 0 Then
                             Return True
                         End If
                     Next ic
@@ -86,7 +86,7 @@ Namespace EcoSeed
                         'End If
 
                         For impa As Integer = 1 To Me.m_SpaceData.MPAno
-                            If m_SpaceData.MPA(impa)(ir, ic) > 0 Then
+                            If Me.m_SpaceData.MPA(impa)(ir, ic) > 0 Then
                                 Return True
                             End If
                         Next
@@ -104,7 +104,7 @@ Namespace EcoSeed
 
         Public Sub New()
             MyBase.New()
-            m_OutputFilename = "MPA_Ecoseed_output.csv"
+            Me.m_OutputFilename = "MPA_Ecoseed_output.csv"
         End Sub
 
         'Public Overrides Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef EcoSeedData As cMPAOptDataStructures) As Boolean 'Implements IMPASearchModel.Init
@@ -173,42 +173,42 @@ Namespace EcoSeed
             Dim writer As StreamWriter = Nothing
 
             Try
-                Debug.Assert(m_data IsNot Nothing, "Ecoseed: data not initialized")
-                Debug.Assert(m_EcoSpace IsNot Nothing, "Ecoseed: Ecospace not initialized")
+                Debug.Assert(Me.m_data IsNot Nothing, "Ecoseed: data not initialized")
+                Debug.Assert(Me.m_EcoSpace IsNot Nothing, "Ecoseed: Ecospace not initialized")
 
-                m_search = m_EcoSpace.SearchData
+                Me.m_search = Me.m_EcoSpace.SearchData
 
                 Me.initForRun()
                 Me.InitIsMPA()
 
-                m_data.SeedBlockSize2 = 1
+                Me.m_data.SeedBlockSize2 = 1
 
                 'ToDo_jb SideStep EwE5 there is no explict cast of SideStep to int figure out if it is rounded or truncated
-                SideStep = CInt(Math.Sqrt(m_data.SeedBlockSize2))
+                Me.SideStep = CInt(Math.Sqrt(Me.m_data.SeedBlockSize2))
 
-                SeedSumMax = Single.MinValue
-                TotalSearchMax = Single.MinValue
-                m_data.bestrow = -1
-                m_data.bestcol = -1
-                RedimSeedVariables()
+                Me.SeedSumMax = Single.MinValue
+                Me.TotalSearchMax = Single.MinValue
+                Me.m_data.bestrow = -1
+                Me.m_data.bestcol = -1
+                Me.RedimSeedVariables()
 
-                m_search.SearchMode = eSearchModes.SpatialOpt
-                m_search.setMinSearchBlocks()
+                Me.m_search.SearchMode = eSearchModes.SpatialOpt
+                Me.m_search.setMinSearchBlocks()
 
-                getBaseValues()
+                Me.getBaseValues()
                 System.Console.WriteLine("------------Ecoseed----------------")
 
                 If Me.m_bAutosaveResults And Not String.IsNullOrWhiteSpace(Me.m_strOutputPath) Then
                     If cFileUtils.IsDirectoryAvailable(Me.m_strOutputPath, True) Then
                         Try
-                            writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, m_OutputFilename))
+                            writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, Me.m_OutputFilename))
                         Catch ex As Exception
 
                         End Try
                     End If
                 End If
                 Try
-                    WriteOutputFileHeader(writer)
+                    Me.WriteOutputFileHeader(writer)
                 Catch ex As Exception
 
                 End Try
@@ -220,57 +220,57 @@ Namespace EcoSeed
                 Do While NotAllCellsAreMPAs
 
                     'check if all cells are MPAs
-                    NotAllCellsAreMPAs = CellsNotMPA()
+                    NotAllCellsAreMPAs = Me.CellsNotMPA()
                     If NotAllCellsAreMPAs = False Then
-                        EcoSeedOn = False
+                        Me.EcoSeedOn = False
                     Else
-                        EcoSeedOn = True
-                        ReDim TestedSeed(m_SpaceData.InRow, m_SpaceData.InCol)
+                        Me.EcoSeedOn = True
+                        ReDim Me.TestedSeed(Me.m_SpaceData.InRow, Me.m_SpaceData.InCol)
                     End If
 
                     'Loop over all the Seed cells and find the one with the highest weighted value
-                    Do While EcoSeedOn
-                        If m_data.StopRun Then Exit Do
+                    Do While Me.EcoSeedOn
+                        If Me.m_data.StopRun Then Exit Do
 
                         'Set the next seed cell to be a MPA cell:
                         'SelectNextSeedCell will set EcoSeedOn 
                         '   True if there is a valid cell to test
                         '   False if all the cells have been evaluated and it is time to set the next batch of SeedCells
-                        SelectNextSeedCell()
+                        Me.SelectNextSeedCell()
 
-                        If EcoSeedOn Then
+                        If Me.EcoSeedOn Then
 
-                            fireOnIteration()
-                            m_EcoSpace.Run()
-                            If m_data.StopRun Then Exit Do
+                            Me.fireOnIteration()
+                            Me.m_EcoSpace.Run()
+                            If Me.m_data.StopRun Then Exit Do
 
-                            CurSum = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_search.totval / TotValBase +
-                                m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase +
-                                m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase +
-                                m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase +
-                                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.DiversityIndex / DiversityBase
+                            CurSum = 0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_search.totval / Me.TotValBase +
+                                Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.Employ / Me.EmployBase +
+                                Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.manvalue / Me.ManValueBase +
+                                Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.ecovalue / Me.EcoValueBase +
+                                Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_search.DiversityIndex / Me.DiversityBase
 
                             'Calculate boundary length/area ratio
-                            AreaBordary = CalculateAreaOverBondaryLength()
-                            CurSum = CurSum + AreaBordary * m_data.BoundaryWeight
+                            AreaBordary = Me.CalculateAreaOverBondaryLength()
+                            CurSum = CurSum + AreaBordary * Me.m_data.BoundaryWeight
 
-                            m_data.objFuncEcologicalValue = m_search.ecovalue / EcoValueBase
-                            m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
-                            m_data.objFuncSocialValue = m_search.Employ / EmployBase
-                            m_data.objFuncEconomicValue = m_search.totval / TotValBase
-                            m_data.objFuncBiodiversity = m_search.DiversityIndex / DiversityBase
-                            m_data.objFuncAreaBorder = AreaBordary / AreaBoundBase
-                            m_data.objFuncTotal = (m_search.WeightedTotal + AreaBordary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
+                            Me.m_data.objFuncEcologicalValue = Me.m_search.ecovalue / Me.EcoValueBase
+                            Me.m_data.objFuncMandatedValue = Me.m_search.manvalue / Me.ManValueBase
+                            Me.m_data.objFuncSocialValue = Me.m_search.Employ / Me.EmployBase
+                            Me.m_data.objFuncEconomicValue = Me.m_search.totval / Me.TotValBase
+                            Me.m_data.objFuncBiodiversity = Me.m_search.DiversityIndex / Me.DiversityBase
+                            Me.m_data.objFuncAreaBorder = AreaBordary / Me.AreaBoundBase
+                            Me.m_data.objFuncTotal = (Me.m_search.WeightedTotal + AreaBordary * Me.m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
-                            If CurSum > SeedSumMax Then
+                            If CurSum > Me.SeedSumMax Then
 
-                                m_data.bestrow = m_data.CurRow
-                                m_data.bestcol = m_data.CurCol
+                                Me.m_data.bestrow = Me.m_data.CurRow
+                                Me.m_data.bestcol = Me.m_data.CurCol
 
-                                SeedSumMax = CurSum
+                                Me.SeedSumMax = CurSum
 
-                                If SeedSumMax > TotalSearchMax Then
-                                    TotalSearchMax = SeedSumMax
+                                If Me.SeedSumMax > Me.TotalSearchMax Then
+                                    Me.TotalSearchMax = Me.SeedSumMax
                                     'new highest score across all the model runs
                                     Me.setRunState(cMPAOptManager.eRunStates.NewBestResultFound)
                                 End If
@@ -279,23 +279,23 @@ Namespace EcoSeed
                             End If
 
                             'turn the current MPA cell off SelectNextSeedCell() will set the next cell
-                            clearCurrentMPATestCells()
+                            Me.clearCurrentMPATestCells()
                             Me.m_nIters += 1
 
                         Else
                             'EcoSeedOn = False
-                            SelectNewMPAcell()
+                            Me.SelectNewMPAcell()
                         End If
 
                     Loop ' Do While EcoSeedOn
-                    If m_data.StopRun Then Exit Do
+                    If Me.m_data.StopRun Then Exit Do
 
                     'All the current seed cells have been tested for the highest weighted value
                     'Add the best row col to the MPA configuration
                     'Select the next set of seed cells to test
-                    If m_data.bestrow > 0 And m_data.bestcol > 0 Then
+                    If Me.m_data.bestrow > 0 And Me.m_data.bestcol > 0 Then
 
-                        StoreObjectiveFunctionResults(writer)
+                        Me.StoreObjectiveFunctionResults(writer)
 
                         'Tell the delegate that a new best cell has been selected. 
                         'this needs to be synchronous because the best row/col are set back to -1 (not selected) right after
@@ -304,26 +304,26 @@ Namespace EcoSeed
 
                         'set the MPA cell to the selected Seed cell
                         'm_SpaceData.MPA(m_data.bestrow, m_data.bestcol) = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
-                        Dim iMPA As Integer = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
-                        m_SpaceData.MPA(iMPA)(m_data.bestrow, m_data.bestcol) = iMPA
-                        m_data.MPASeed(m_data.bestrow, m_data.bestcol) = 0
+                        Dim iMPA As Integer = Me.m_data.MPASeed(Me.m_data.bestrow, Me.m_data.bestcol)
+                        Me.m_SpaceData.MPA(iMPA)(Me.m_data.bestrow, Me.m_data.bestcol) = iMPA
+                        Me.m_data.MPASeed(Me.m_data.bestrow, Me.m_data.bestcol) = 0
 
-                        SeedSumMax = Single.MinValue
-                        m_data.bestrow = -1
-                        m_data.bestcol = -1
+                        Me.SeedSumMax = Single.MinValue
+                        Me.m_data.bestrow = -1
+                        Me.m_data.bestcol = -1
 
                         Me.InitIsMPA()
                         Me.SetSeedCellsAdjacentToMPAs()
 
                     Else
-                        EcoSeedOn = False
+                        Me.EcoSeedOn = False
                     End If
 
                 Loop ' Do While NotAllCellsAreMPAs
 
-                fireOnIteration()
-                m_EcoSpace.SearchData.SearchMode = eSearchModes.NotInSearch
-                cleanUp()
+                Me.fireOnIteration()
+                Me.m_EcoSpace.SearchData.SearchMode = eSearchModes.NotInSearch
+                Me.cleanUp()
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -353,34 +353,34 @@ Namespace EcoSeed
 
             'EcoSeedOn controls the evaluation loop in RunSeed()
             'it tells the loop that we have found the next seed cell/block
-            EcoSeedOn = False
+            Me.EcoSeedOn = False
 
-            For ir = 1 To m_SpaceData.InRow
-                For ic = 1 To m_SpaceData.InCol
+            For ir = 1 To Me.m_SpaceData.InRow
+                For ic = 1 To Me.m_SpaceData.InCol
 
-                    If m_data.MPASeed(ir, ic) > 0 And TestedSeed(ir, ic) = False Then 'Found one
+                    If Me.m_data.MPASeed(ir, ic) > 0 And Me.TestedSeed(ir, ic) = False Then 'Found one
 
                         'EcoSeedOn controls the evaluation loop in RunSeed()
-                        EcoSeedOn = True
+                        Me.EcoSeedOn = True
 
-                        m_data.CurRow = SideStep * ((ir - 1) \ SideStep) + 1
-                        m_data.CurCol = SideStep * ((ic - 1) \ SideStep) + 1
+                        Me.m_data.CurRow = Me.SideStep * ((ir - 1) \ Me.SideStep) + 1
+                        Me.m_data.CurCol = Me.SideStep * ((ic - 1) \ Me.SideStep) + 1
 
-                        For i = m_data.CurRow To m_data.CurRow + SideStep - 1
-                            For j = m_data.CurCol To m_data.CurCol + SideStep - 1
-                                If i >= 0 And i <= m_SpaceData.InRow And j >= 0 And j <= m_SpaceData.InCol Then
+                        For i = Me.m_data.CurRow To Me.m_data.CurRow + Me.SideStep - 1
+                            For j = Me.m_data.CurCol To Me.m_data.CurCol + Me.SideStep - 1
+                                If i >= 0 And i <= Me.m_SpaceData.InRow And j >= 0 And j <= Me.m_SpaceData.InCol Then
                                     'has to split the next in two as i or j may exceed dimensioning
                                     If Me.m_SpaceData.Depth(ir, ic) > 0 Then
-                                        TestedSeed(i, j) = True
+                                        Me.TestedSeed(i, j) = True
 
                                         ' m_data.MPASeed(i, j) make sure MPASeed() is set to an MPA index for this row and col
-                                        Debug.Assert(m_data.MPASeed(i, j) <> 0, "Ecoseed MPASeed() not set correctly.")
+                                        Debug.Assert(Me.m_data.MPASeed(i, j) <> 0, "Ecoseed MPASeed() not set correctly.")
 
                                         'set the MPA's to use the MPASeed for this row col
                                         'MPASeed(row,col) was set in SetSeedCellsAdjacentToMPAs()
                                         'MPA() will need to be cleared at the end of this iteration
                                         'm_SpaceData.MPA(i, j) = m_data.MPASeed(ir, ic)
-                                        m_SpaceData.MPA(m_data.MPASeed(ir, ic))(i, j) = m_data.MPASeed(ir, ic)
+                                        Me.m_SpaceData.MPA(Me.m_data.MPASeed(ir, ic))(i, j) = Me.m_data.MPASeed(ir, ic)
 
                                     End If ' If m_esData.Depth(i, j) > 0 Then
                                 End If ' If i >= 0 And i <= m_esData.Inrow And j >= 0 And j <= m_esData.InCol Then
@@ -490,14 +490,14 @@ Namespace EcoSeed
         Private Sub clearCurrentMPATestCells()
             Dim ir As Integer, ic As Integer
 
-            For ir = m_data.CurRow To m_data.CurRow + SideStep - 1
-                For ic = m_data.CurCol To m_data.CurCol + SideStep - 1
+            For ir = Me.m_data.CurRow To Me.m_data.CurRow + Me.SideStep - 1
+                For ic = Me.m_data.CurCol To Me.m_data.CurCol + Me.SideStep - 1
 
-                    If ir <= m_SpaceData.InRow And ic <= m_SpaceData.InCol Then
+                    If ir <= Me.m_SpaceData.InRow And ic <= Me.m_SpaceData.InCol Then
 
-                        If m_data.MPASeed(ir, ic) > 0 Then
+                        If Me.m_data.MPASeed(ir, ic) > 0 Then
                             'm_SpaceData.MPA(ir, ic) = 0
-                            m_SpaceData.MPA(m_data.MPASeed(ir, ic))(ir, ic) = 0
+                            Me.m_SpaceData.MPA(Me.m_data.MPASeed(ir, ic))(ir, ic) = 0
                         End If
 
                     End If ' If ir <= m_esData.Inrow And ic <= m_esData.InCol Then
@@ -524,13 +524,13 @@ Namespace EcoSeed
 
             ' MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
 
-            EcoSeedOn = False
+            Me.EcoSeedOn = False
             'villy: this next section only allows 'adjacent' cells to become seed cells _
             '- time saver ordered by daniel AB02242000
-            SetSeedCellsAdjacentToMPAs() 's
+            Me.SetSeedCellsAdjacentToMPAs() 's
 
             'Clear out the TestSeed() matrix
-            Me.TestedSeed = New Boolean(m_SpaceData.InRow, m_SpaceData.InCol) {}
+            Me.TestedSeed = New Boolean(Me.m_SpaceData.InRow, Me.m_SpaceData.InCol) {}
 
         End Sub
 
@@ -539,8 +539,8 @@ Namespace EcoSeed
             Dim ico As Integer
             Dim iTemp As Integer
 
-            For iro = 1 To m_SpaceData.InRow
-                For ico = 1 To m_SpaceData.InCol
+            For iro = 1 To Me.m_SpaceData.InRow
+                For ico = 1 To Me.m_SpaceData.InCol
                     If Me.IsMPA(iro, ico) And Me.m_SpaceData.Depth(iro, ico) > 0 Then
                         'get the MPA index of the current row col
                         'this index will be used to set the neighbouring cells
@@ -548,16 +548,16 @@ Namespace EcoSeed
 
                         'find the first mpa in this cell
                         For impa As Integer = 1 To Me.m_SpaceData.MPAno
-                            If m_SpaceData.MPA(impa)(iro, ico) > 0 Then
-                                iTemp = m_SpaceData.MPA(impa)(iro, ico)
+                            If Me.m_SpaceData.MPA(impa)(iro, ico) > 0 Then
+                                iTemp = Me.m_SpaceData.MPA(impa)(iro, ico)
                                 Exit For
                             End If
                         Next
 
-                        If Not Me.IsMPA(iro - 1, ico) And Me.m_SpaceData.Depth(iro - 1, ico) > 0 Then m_data.MPASeed(iro - 1, ico) = iTemp 'cell above is m_esdata.m_data.MPASeed
-                        If Not Me.IsMPA(iro + 1, ico) And Me.m_SpaceData.Depth(iro + 1, ico) > 0 Then m_data.MPASeed(iro + 1, ico) = iTemp 'cell below is m_esdata.m_data.MPASeed
-                        If Not Me.IsMPA(iro, ico - 1) And Me.m_SpaceData.Depth(iro, ico - 1) > 0 Then m_data.MPASeed(iro, ico - 1) = iTemp 'cell left is m_esdata.m_data.MPASeed
-                        If Not Me.IsMPA(iro, ico + 1) And Me.m_SpaceData.Depth(iro, ico + 1) > 0 Then m_data.MPASeed(iro, ico + 1) = iTemp 'cell right is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro - 1, ico) And Me.m_SpaceData.Depth(iro - 1, ico) > 0 Then Me.m_data.MPASeed(iro - 1, ico) = iTemp 'cell above is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro + 1, ico) And Me.m_SpaceData.Depth(iro + 1, ico) > 0 Then Me.m_data.MPASeed(iro + 1, ico) = iTemp 'cell below is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro, ico - 1) And Me.m_SpaceData.Depth(iro, ico - 1) > 0 Then Me.m_data.MPASeed(iro, ico - 1) = iTemp 'cell left is m_esdata.m_data.MPASeed
+                        If Not Me.IsMPA(iro, ico + 1) And Me.m_SpaceData.Depth(iro, ico + 1) > 0 Then Me.m_data.MPASeed(iro, ico + 1) = iTemp 'cell right is m_esdata.m_data.MPASeed
 
                     End If ' If m_esData.MPA(iro, ico) > 0 Then
                 Next ico
@@ -715,21 +715,21 @@ Namespace EcoSeed
         Private Overloads Sub cleanUp()
             MyBase.cleanUp()
 
-            Erase MPARow
-            Erase MPACol
-            Erase EffortMPA
-            Erase MPAcount
+            Erase Me.MPARow
+            Erase Me.MPACol
+            Erase Me.EffortMPA
+            Erase Me.MPAcount
 
         End Sub
 
         Private Overloads Sub RedimSeedVariables()
             MyBase.RedimSeedVariables()
 
-            Dim nvartot As Integer = m_SpaceData.NGroups + 2
+            Dim nvartot As Integer = Me.m_SpaceData.NGroups + 2
 
-            ReDim MPAcount(m_SpaceData.InRow * m_SpaceData.InCol + 1)
-            ReDim MPARow(m_SpaceData.InRow * m_SpaceData.InCol + 1)
-            ReDim MPACol(m_SpaceData.InRow * m_SpaceData.InCol + 1)
+            ReDim Me.MPAcount(Me.m_SpaceData.InRow * Me.m_SpaceData.InCol + 1)
+            ReDim Me.MPARow(Me.m_SpaceData.InRow * Me.m_SpaceData.InCol + 1)
+            ReDim Me.MPACol(Me.m_SpaceData.InRow * Me.m_SpaceData.InCol + 1)
 
         End Sub
 #End Region
@@ -741,7 +741,7 @@ Namespace EcoSeed
 
 #If 0 Then
 
-        Public Sub KeepOrReloadCellValues(ByVal biomass() As Single)
+        Public Sub KeepOrReloadCellValues(biomass() As Single)
             Dim i As Integer, j As Integer, ip As Integer
             'these are not being kept properly ab02182000
             'TimesCalled is reinitialized for each timestep

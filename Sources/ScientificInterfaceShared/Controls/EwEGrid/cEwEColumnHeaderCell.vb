@@ -42,7 +42,7 @@ Namespace Controls.EwEGrid
 
 #Region " Construction / destruction "
 
-        Public Sub New(Optional ByVal strValue As String = "")
+        Public Sub New(Optional strValue As String = "")
             MyBase.New(strValue)
             Me.VisualModel = New cEwEGridColumnHeaderVisualizer()
             Me.m_vizDefault = Me.VisualModel
@@ -51,7 +51,7 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' 
         ''' </summary>
-        Public Sub New(ByVal strValue As String, ByVal strUnits As String)
+        Public Sub New(strValue As String, strUnits As String)
             Me.New(strValue)
             Me.SetUnits(strUnits)
         End Sub
@@ -60,11 +60,11 @@ Namespace Controls.EwEGrid
         ''' Create a header cell with automated name and units.
         ''' </summary>
         ''' <param name="varname"></param>
-        Public Sub New(ByVal varname As eVarNameFlags)
+        Public Sub New(varname As eVarNameFlags)
             Me.New(varname, eDescriptorTypes.Name)
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, Optional bShowUnits As Boolean = True)
+        Public Sub New(varname As eVarNameFlags, detail As eDescriptorTypes, Optional bShowUnits As Boolean = True)
             Me.New(New cVarnameTypeFormatter().ToString(varname, detail) & "|" & New cVarnameTypeFormatter().ToString(varname, eDescriptorTypes.Description))
             If (bShowUnits) Then
                 Dim md As cVariableMetaData = cVariableMetaData.Get(varname)

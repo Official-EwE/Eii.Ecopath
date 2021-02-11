@@ -71,32 +71,32 @@ Namespace Controls
 #Region " Doomed interfaces "
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window)
+        Public Overloads Sub Show(text As String, wnd As IWin32Window)
             Debug.Assert(False)
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal iTimeout As Integer)
+        Public Overloads Sub Show(text As String, wnd As IWin32Window, iTimeout As Integer)
             Debug.Assert(False)
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As System.Drawing.Point)
+        Public Overloads Sub Show(text As String, wnd As IWin32Window, pt As System.Drawing.Point)
             Debug.Assert(False)
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal pt As System.Drawing.Point, ByVal iTimeout As Integer)
+        Public Overloads Sub Show(text As String, wnd As IWin32Window, pt As System.Drawing.Point, iTimeout As Integer)
             Debug.Assert(False)
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal x As Integer, ByVal y As Integer)
+        Public Overloads Sub Show(text As String, wnd As IWin32Window, x As Integer, y As Integer)
             Debug.Assert(False)
         End Sub
 
         <Obsolete("Please use ToolTip.SetToolTip instead")> _
-        Public Overloads Sub Show(ByVal text As String, ByVal wnd As IWin32Window, ByVal x As Integer, ByVal y As Integer, ByVal iTimeout As Integer)
+        Public Overloads Sub Show(text As String, wnd As IWin32Window, x As Integer, y As Integer, iTimeout As Integer)
             Debug.Assert(False)
         End Sub
 

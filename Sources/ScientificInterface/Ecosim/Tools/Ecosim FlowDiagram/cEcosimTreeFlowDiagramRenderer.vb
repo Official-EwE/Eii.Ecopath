@@ -45,7 +45,7 @@ Namespace Ecosim
 
 #Region " Constructor "
 
-        Public Sub New(ByVal data As IFlowDiagramData)
+        Public Sub New(data As IFlowDiagramData)
             MyBase.New(data)
         End Sub
 
@@ -53,8 +53,8 @@ Namespace Ecosim
 
 #Region " Properties "
 
-        Public Event OnBiomassLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
-        Public Event OnFlowRateLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Public Event OnBiomassLegendChanged(sender As cTreeFlowDiagramRenderer)
+        Public Event OnFlowRateLegendChanged(sender As cTreeFlowDiagramRenderer)
 
         <Browsable(True),
             Category("Appearance"),
@@ -64,7 +64,7 @@ Namespace Ecosim
             Get
                 Return Me.m_tsShowBiomassLegend
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_tsShowBiomassLegend) Then
                     Me.m_tsShowBiomassLegend = value
                     RaiseEvent OnBiomassLegendChanged(Me)
@@ -81,7 +81,7 @@ Namespace Ecosim
             Get
                 Return Me.m_tsShowFlowRateLegend
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_tsShowFlowRateLegend) Then
                     Me.m_tsShowFlowRateLegend = value
                     RaiseEvent OnFlowRateLegendChanged(Me)

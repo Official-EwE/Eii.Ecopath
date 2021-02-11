@@ -71,7 +71,7 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="astrFields">An optional array of field names.</param>
     ''' -------------------------------------------------------------------
     Public Sub New(core As cCore, _
-                   Optional ByVal astrFields() As String = Nothing)
+                   Optional astrFields() As String = Nothing)
 
         Debug.Assert(core IsNot Nothing)
         Debug.Assert(core.EcospaceBasemap IsNot Nothing)
@@ -124,8 +124,8 @@ Public Class cEcospaceImportExportXYData
     ''' values are separated by commas.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadXYFields(ByVal strFile As String, _
-                                 Optional ByVal separator As Char = ","c) As Boolean
+    Public Function ReadXYFields(strFile As String, _
+                                 Optional separator As Char = ","c) As Boolean
 
         Dim tr As TextReader = Nothing
         Dim strLine As String = ""
@@ -170,10 +170,10 @@ Public Class cEcospaceImportExportXYData
     ''' values are separated by commas.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadXYFile(ByVal strFile As String, _
-                               ByVal strRowField As String, _
-                               ByVal strColField As String, _
-                               Optional ByVal separator As Char = ","c) As Boolean
+    Public Function ReadXYFile(strFile As String, _
+                               strRowField As String, _
+                               strColField As String, _
+                               Optional separator As Char = ","c) As Boolean
 
         If Me.m_astrFields.Length = 0 Then
             If Not Me.ReadXYFields(strFile) Then Return False
@@ -235,9 +235,9 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="bWaterCellsOnly">If true, only water cell data is written to the file.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function WriteXYFile(ByVal strFile As String, _
-                                ByVal strColField As String, _
-                                ByVal strRowField As String, _
+    Public Function WriteXYFile(strFile As String, _
+                                strColField As String, _
+                                strRowField As String, _
                                 Optional bWaterCellsOnly As Boolean = True) As Boolean
 
         If (Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
@@ -320,7 +320,7 @@ Public Class cEcospaceImportExportXYData
         Get
             Return Me.m_astrFields
         End Get
-        Set(ByVal value As String())
+        Set(value As String())
 
             If (value Is Nothing) Then
                 Me.m_bRowColImplicit = True
@@ -360,13 +360,13 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="iCol">One-based column index to access a value for.</param>
     ''' <param name="strField">Optional field to access a value for.</param>
     ''' -------------------------------------------------------------------
-    Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal strField As String = "") As Object _
+    Public Property Value(iRow As Integer, iCol As Integer, Optional strField As String = "") As Object _
         Implements IEcospaceImportExport.Value
 
         Get
             Return Me.Value(Me.Seq(iRow, iCol), strField)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Me.Value(Me.Seq(iRow, iCol), strField) = value
         End Set
     End Property
@@ -379,14 +379,14 @@ Public Class cEcospaceImportExportXYData
     ''' a value for.</param>
     ''' <param name="strField">Optional field to access a value for.</param>
     ''' -------------------------------------------------------------------
-    Public Property Value(ByVal iCell As Integer, Optional ByVal strField As String = "") As Object
+    Public Property Value(iCell As Integer, Optional strField As String = "") As Object
         Get
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
             Return Me.m_buffer(strField)(iCell)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             If String.IsNullOrWhiteSpace(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
@@ -402,7 +402,7 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="iCol">One-based column index to get a cell for.</param>
     ''' <returns>A one-based sequence number for a cell.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Seq(ByVal iRow As Integer, ByVal iCol As Integer) As Integer
+    Public Function Seq(iRow As Integer, iCol As Integer) As Integer
         If (Me.m_bm Is Nothing) Then Return 0
         'Zero base Cell
         Return (iRow - 1) * Me.m_bm.InCol + (iCol - 1)
@@ -432,7 +432,7 @@ Public Class cEcospaceImportExportXYData
     ''' -------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceImportExport.ToRaster"/>.
     ''' -------------------------------------------------------------------
-    Public Function ToRaster(Optional ByVal strField As String = "") As ISpatialRaster _
+    Public Function ToRaster(Optional strField As String = "") As ISpatialRaster _
         Implements IEcospaceImportExport.ToRaster
         Return New cEcospaceImportExportRaster(Me, strField)
     End Function

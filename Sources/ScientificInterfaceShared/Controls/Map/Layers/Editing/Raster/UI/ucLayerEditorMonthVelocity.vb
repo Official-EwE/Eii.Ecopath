@@ -60,7 +60,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_cmbMonth.Enabled = Me.IsAttached
@@ -76,7 +76,7 @@ Namespace Controls.Map.Layers
             Get
                 Return DirectCast(MyBase.Editor, cLayerEditorVelocity)
             End Get
-            Set(ByVal editor As cLayerEditorVelocity)
+            Set(editor As cLayerEditorVelocity)
                 ' Sanity check
                 Debug.Assert(TypeOf editor Is cLayerEditorVelocity, "ucLayerEditorGroup connected to wrong editor class")
                 ' Configure editor
@@ -91,7 +91,7 @@ Namespace Controls.Map.Layers
                 If (Not Me.IsAttached) Then Return cCore.NULL_VALUE
                 Return Me.Editor.Month
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (Me.IsAttached) Then
                     If (Me.Editor.Month <> value) Then
                         Me.Editor.Month = value

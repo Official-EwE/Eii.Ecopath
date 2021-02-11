@@ -259,13 +259,13 @@ Public Class cEIIDataSource
         Dim quotes() As Char = {CChar(""""), CChar(" ")}
         Dim eiiStrm As System.IO.StreamReader
 
-        If Not File.Exists(m_strFilename) Then
+        If Not File.Exists(Me.m_strFilename) Then
             cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
             Return False
         End If
 
         Try
-            eiiStrm = New System.IO.StreamReader(m_strFilename)
+            eiiStrm = New System.IO.StreamReader(Me.m_strFilename)
         Catch ex As Exception
             cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strFilename & "' Error:" + ex.Message())
             Return False
@@ -273,7 +273,7 @@ Public Class cEIIDataSource
 
         'fake model data
         ecopathDS.ModelDBID = 1
-        ecopathDS.ModelName = Path.GetFileName(m_strFilename)
+        ecopathDS.ModelName = Path.GetFileName(Me.m_strFilename)
         ecopathDS.ModelNumDigits = 3
         ecopathDS.ModelDescription = "Model read from EII file " & Me.m_strFilename
 
@@ -719,7 +719,7 @@ Public Class cEIIDataSource
 #Region " Stanza "
 
     Private Function LoadStanza() As Boolean
-        Dim m_stanzaData As cStanzaDatastructures = m_core.m_Stanza
+        Dim m_stanzaData As cStanzaDatastructures = Me.m_core.m_Stanza
 
         ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         ''HACK WARNING

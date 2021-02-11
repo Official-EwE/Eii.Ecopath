@@ -50,13 +50,13 @@ Public Class cKeystonenessTable
         Return My.Resources.PAGE_KEYSTONENESS
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                     ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                     info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -65,7 +65,7 @@ Public Class cKeystonenessTable
     Public Overrides Sub DisplayData()
         Dim astrRowContent() As String
 
-        SetUpGridColumn()
+        Me.SetUpGridColumn()
 
         'Set up grid rows
         Me.Grid.RowHeadersVisible = False
@@ -75,7 +75,7 @@ Public Class cKeystonenessTable
         Me.Grid.Rows(0).Frozen = True
         Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim astrRowContent(Grid.Columns.Count)
+        ReDim astrRowContent(Me.Grid.Columns.Count)
         astrRowContent(eColumnTypes.Index) = ""
         astrRowContent(eColumnTypes.Name) = My.Resources.COL_HDR_GRP_NAME
         astrRowContent(eColumnTypes.KS1) = My.Resources.COL_HDR_KEYSTONEINDEX1

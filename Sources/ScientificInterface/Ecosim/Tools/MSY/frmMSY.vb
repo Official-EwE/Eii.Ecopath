@@ -137,7 +137,7 @@ Namespace Ecosim
             Me.UpdateControls()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSY, eCoreComponentType.Core}
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             Me.UpdateControls()
 
@@ -147,7 +147,7 @@ Namespace Ecosim
 
             If (Me.UIContext IsNot Nothing) Then
 
-                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
                 Me.m_fpNumTrialYears.Release()
                 Me.m_fpMaxRelF.Release()
@@ -203,7 +203,7 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectTarget(sender As System.Object, e As System.EventArgs) _
             Handles m_rbFleet.CheckedChanged, m_rbGroup.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -292,7 +292,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub OnMSYRunStateChanged(ByVal RunState As eMSYRunStates)
+        Private Sub OnMSYRunStateChanged(RunState As eMSYRunStates)
 
             If (Me.m_results Is Nothing) Then Return
 
@@ -563,12 +563,12 @@ Namespace Ecosim
         ''' <param name="style"></param>
         ''' <returns>A list of <see cref="LineItem"/> isntances.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetLines(ByVal strTarget As String,
-                                  ByVal results As cMSYFResult(),
-                                  ByVal optimum As cMSYOptimum,
-                                  ByVal strPostfix As String,
-                                  ByVal style As Drawing2D.DashStyle,
-                                  ByVal bSolidSymbol As Boolean) As LineItem()
+        Private Function GetLines(strTarget As String,
+                                  results As cMSYFResult(),
+                                  optimum As cMSYOptimum,
+                                  strPostfix As String,
+                                  style As Drawing2D.DashStyle,
+                                  bSolidSymbol As Boolean) As LineItem()
 
             Dim base As cMSYFResult = Me.m_manager.BaseLineResults()
             Dim lli As New List(Of LineItem)
@@ -705,7 +705,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Function GetLabel(ByVal strLabel As String, ByVal strPostfix As String) As String
+        Private Function GetLabel(strLabel As String, strPostfix As String) As String
             If String.IsNullOrWhiteSpace(strPostfix) Then Return strLabel
             Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strLabel, strPostfix)
         End Function

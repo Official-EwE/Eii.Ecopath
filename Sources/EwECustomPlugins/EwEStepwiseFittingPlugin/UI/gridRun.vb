@@ -37,6 +37,7 @@ Public Class gridRun
     Inherits cEwEGrid
 
     Private m_manager As cSFPManager = Nothing
+    Private m_bInUpdate As Boolean = False
 
     ''' <summary>
     ''' Enumerated type, defining the columns to display in this grid
@@ -56,9 +57,10 @@ Public Class gridRun
         AICc
         State
         Elapsed
+        Completed
     End Enum
 
-    Public Sub Initialize(ByVal manager As cSFPManager)
+    Public Sub Initialize(manager As cSFPManager)
         Me.m_manager = manager
         Me.RefreshContent()
     End Sub
@@ -69,7 +71,7 @@ Public Class gridRun
     Public Sub UpdateContent()
 
         For iRow As Integer = 1 To Me.RowsCount - 1
-            Me.UpdateIterationRow(iRow)
+            Me.UpdateRowState(iRow)
         Next
 
         ' Re-fire selection event
@@ -77,18 +79,17 @@ Public Class gridRun
 
     End Sub
 
-    Friend ReadOnly Property SelectedIteration As ISFPIterations
+    Friend ReadOnly Property SelectedIteration As ISFPIteration
         Get
             Dim iRow As Integer = Me.SelectedRow
             If (iRow < 1) Then Return Nothing
-            Return CType(Me.Rows(iRow).Tag, ISFPIterations)
+            Return CType(Me.Rows(iRow).Tag, ISFPIteration)
         End Get
     End Property
 
     Public Sub UpdateRunState()
         For i As Integer = 1 To Me.RowsCount - 1
-            Dim cell As cEwECheckboxCell = DirectCast(Me(i, eColumnTypes.Enabled), cEwECheckboxCell)
-            cell.Style = If(Me.m_manager.IsRunning, eStyleFlags.NotEditable, eStyleFlags.OK)
+            Me.UpdateRowState(i)
         Next
     End Sub
 
@@ -108,8 +109,9 @@ Public Class gridRun
         Me(0, eColumnTypes.SS) = New cEwEColumnHeaderCell(My.Resources.HEADER_SS)
         Me(0, eColumnTypes.AIC) = New cEwEColumnHeaderCell(My.Resources.HEADER_AIC)
         Me(0, eColumnTypes.AICc) = New cEwEColumnHeaderCell(My.Resources.HEADER_AICc)
-        Me(0, eColumnTypes.Elapsed) = New cEwEColumnHeaderCell(My.Resources.HEADER_ELAPSED)
         Me(0, eColumnTypes.State) = New cEwEColumnHeaderCell(My.Resources.HEADER_STATE)
+        Me(0, eColumnTypes.Elapsed) = New cEwEColumnHeaderCell(My.Resources.HEADER_ELAPSED)
+        Me(0, eColumnTypes.Completed) = New cEwEColumnHeaderCell("Completed")
 
         Me.AllowBlockSelect = False
         Me.FixedColumnWidths = False
@@ -126,8 +128,8 @@ Public Class gridRun
         Me.RowsCount = 1
 
         Dim iRow As Integer = 0
-        Dim iterations As ISFPIterations() = Me.m_manager.Iterations
-        Dim iteration As ISFPIterations = Nothing
+        Dim iterations As ISFPIteration() = Me.m_manager.Iterations
+        Dim iteration As ISFPIteration = Nothing
         Dim cell As cEwECellBase = Nothing
 
         For i As Integer = 0 To iterations.Length - 1
@@ -157,27 +159,34 @@ Public Class gridRun
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.AICc) = cell
 
-            cell = New cEwECell(cCore.NULL_VALUE, GetType(String), eStyleFlags.NotEditable)
+            cell = New cEwECell("", GetType(String), eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.Elapsed) = cell
+
+            cell = New cEwECell("", GetType(String), eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Completed) = cell
 
             cell = New cEwECell("", GetType(String), eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.State) = cell
 
             Me.Rows(iRow).Tag = iteration
 
-            Me.UpdateIterationRow(iRow)
+            Me.UpdateRowState(iRow)
         Next
 
     End Sub
 
-    Private Sub UpdateIterationRow(iRow As Integer)
+    Private Sub UpdateRowState(iRow As Integer)
 
-        Dim iteration As ISFPIterations = CType(Me.Rows(iRow).Tag, ISFPIterations)
+        Dim iteration As ISFPIteration = CType(Me.Rows(iRow).Tag, ISFPIteration)
         Dim style As eStyleFlags = 0
+        Dim bIsRunning As Boolean = Me.m_manager.IsRunning
+
+        Me.m_bInUpdate = True
 
         If (iteration.IsBestFit) Then style = eStyleFlags.Checked
+        If bIsRunning Then style = style Or eStyleFlags.NotEditable
 
-        Me(iRow, eColumnTypes.Enabled).Value = iteration.Enabled
+        Me(iRow, eColumnTypes.Enabled).Value = iteration.Enabled And Not bIsRunning
         DirectCast(Me(iRow, eColumnTypes.Enabled), IEwECell).Style = style
 
         Me(iRow, eColumnTypes.K).Value = iteration.K
@@ -201,17 +210,24 @@ Public Class gridRun
         Me(iRow, eColumnTypes.Elapsed).Value = If(iteration.Elapsed.Milliseconds = 0, "", iteration.Elapsed.ToString())
         DirectCast(Me(iRow, eColumnTypes.Elapsed), IEwECell).Style = style Or eStyleFlags.NotEditable
 
+        Me(iRow, eColumnTypes.Completed).Value = If(iteration.RunState < ISFPIteration.eRunState.Completed, "", iteration.Completed.ToString())
+        DirectCast(Me(iRow, eColumnTypes.Elapsed), IEwECell).Style = style Or eStyleFlags.NotEditable
+
         Me(iRow, eColumnTypes.State).Value = Me.State(iteration)
         DirectCast(Me(iRow, eColumnTypes.State), IEwECell).Style = style Or eStyleFlags.NotEditable
+
+        Me.m_bInUpdate = False
 
     End Sub
 
     Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
+        If (Me.m_bInUpdate) Then Return True
+
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.Enabled
 
-                Dim iteration As ISFPIterations = CType(Me.Rows(p.Row).Tag, ISFPIterations)
+                Dim iteration As ISFPIteration = CType(Me.Rows(p.Row).Tag, ISFPIteration)
                 iteration.Enabled = CBool(cell.GetValue(p))
 
                 ' Cheat!
@@ -222,17 +238,21 @@ Public Class gridRun
 
     End Function
 
-    Friend Function State(iteration As ISFPIterations) As String
+    Friend Function State(iteration As ISFPIteration) As String
 
         Select Case iteration.RunState
-            Case ISFPIterations.eRunState.Idle
+            Case ISFPIteration.eRunState.Idle
                 Return ""
-            Case ISFPIterations.eRunState.Completed
-                Return My.Resources.STATE_OK
-            Case ISFPIterations.eRunState.Error
-                Return My.Resources.STATE_ERROR
-            Case ISFPIterations.eRunState.Running
-                Return My.Resources.STATE_RUNNING
+            Case ISFPIteration.eRunState.Initializing
+                Return My.Resources.STATE_ITERATION_INITIALIZING
+            Case ISFPIteration.eRunState.Completed
+                Return My.Resources.STATE_ITERATION_OK
+            Case ISFPIteration.eRunState.Error
+                Return My.Resources.STATE_ITERATION_ERROR
+            Case ISFPIteration.eRunState.Running
+                Return My.Resources.STATE_ITERATION_RUNNING
+            Case ISFPIteration.eRunState.Stopping
+                Return My.Resources.STATE_ITERATION_STOPPING
         End Select
         Return "?"
 

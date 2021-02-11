@@ -66,7 +66,7 @@ Namespace Controls.Wizard
         ''' </summary>
         ''' <param name="wizard">The wizard to attach.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal wizard As cWizard) _
+        Public Sub Attach(wizard As cWizard) _
               Implements IWizardNavigation.Attach
             Me.m_wizard = wizard
             Me.UpdateNavigation()
@@ -120,17 +120,17 @@ Namespace Controls.Wizard
 
 #Region " Control events "
 
-        Private Sub OnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnBack_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnBack.Click
             Me.m_wizard.NavigateBack()
         End Sub
 
-        Private Sub OnNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnNext_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNext.Click
             Me.m_wizard.NavigateNext()
         End Sub
 
-        Private Sub OnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClose.Click
 
             Dim bCanFinish As Boolean = False

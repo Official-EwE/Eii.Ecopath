@@ -44,7 +44,7 @@ Namespace DataSources
         ''' <param name="ds">The datasource to copy data to.</param>
         ''' <returns>True if sucessful.</returns>
         ''' -------------------------------------------------------------------
-        Overloads Function CopyTo(ByVal ds As IEcopathSampleDataSource) As Boolean
+        Overloads Function CopyTo(ds As IEcopathSampleDataSource) As Boolean
 
 #End Region ' Generic
 

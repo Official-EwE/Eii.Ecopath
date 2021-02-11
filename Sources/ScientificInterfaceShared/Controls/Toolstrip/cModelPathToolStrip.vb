@@ -75,7 +75,7 @@ Namespace Controls
         ''' <param name="sender">Sender of the event.</param>
         ''' <param name="e">Event parameters.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnPathAreaClicked(ByVal sender As Object, ByVal e As EventArgs)
+        Public Event OnPathAreaClicked(sender As Object, e As EventArgs)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -86,7 +86,7 @@ Namespace Controls
             Get
                 Return Me.m_strPath
             End Get
-            Set(ByVal strPath As String)
+            Set(strPath As String)
                 Me.m_strPath = strPath
                 Me.ResetText()
             End Set
@@ -101,7 +101,7 @@ Namespace Controls
         ''' Overridden to send a path area click event.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnMouseClick(ByVal e As MouseEventArgs)
+        Protected Overrides Sub OnMouseClick(e As MouseEventArgs)
             MyBase.OnMouseClick(e)
             If Me.IsLabelHover() Then
                 RaiseEvent OnPathAreaClicked(Me, New EventArgs())
@@ -113,7 +113,7 @@ Namespace Controls
         ''' Overridden to track label mouse hover.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnMouseMove(ByVal mea As MouseEventArgs)
+        Protected Overrides Sub OnMouseMove(mea As MouseEventArgs)
             MyBase.OnMouseMove(mea)
             ' Detect if mouse is over label
             Dim bLabelHover As Boolean = Me.m_rcLabel.Contains(Me.PointToClient(MousePosition))
@@ -127,7 +127,7 @@ Namespace Controls
         ''' Overridden to turn off mouse hover feedback.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnMouseLeave(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
             MyBase.OnMouseLeave(e)
             Me.IsLabelHover = False
         End Sub
@@ -140,7 +140,7 @@ Namespace Controls
         ''' This will recalculate the label text and placement if necessary.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
             MyBase.OnPaint(e)
             Dim br As Brush = Nothing
 
@@ -163,7 +163,7 @@ Namespace Controls
         ''' recalculated next time it will be rendered.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnResize(e As System.EventArgs)
             MyBase.OnResize(e)
             Me.ResetText()
         End Sub
@@ -174,7 +174,7 @@ Namespace Controls
         ''' text to be recalculated next time it will be rendered.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnControlAdded(ByVal e As ControlEventArgs)
+        Protected Overrides Sub OnControlAdded(e As ControlEventArgs)
             MyBase.OnControlAdded(e)
             Me.ResetText()
         End Sub
@@ -185,7 +185,7 @@ Namespace Controls
         ''' text to be recalculated next time it will be rendered.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnControlremoved(ByVal e As ControlEventArgs)
+        Protected Overrides Sub OnControlremoved(e As ControlEventArgs)
             MyBase.OnControlAdded(e)
             Me.ResetText()
         End Sub
@@ -263,7 +263,7 @@ Namespace Controls
             Get
                 Return Me.m_bLabelHover
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 ' Optimization
                 If (value = Me.m_bLabelHover) Then Return
                 ' Update flag

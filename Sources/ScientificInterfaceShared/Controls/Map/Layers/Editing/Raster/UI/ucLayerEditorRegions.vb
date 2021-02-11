@@ -40,7 +40,7 @@ Namespace Controls.Map.Layers
 
             Me.UpdateContent(Me.Editor)
 
-            Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageType.DataValidation, Me.UIContext.SyncObject)
+            Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageType.DataValidation, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
             Me.m_mhSpace.Name = "ucLayerEditorRegions"
@@ -48,10 +48,10 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                     Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhSpace)
                     Me.m_mhSpace.Dispose()
                     Me.m_mhSpace = Nothing

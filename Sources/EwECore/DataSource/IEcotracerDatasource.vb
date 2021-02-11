@@ -57,7 +57,7 @@ Namespace DataSources
         ''' <remarks>An implementing class should ensure that this load will cascade to
         ''' load all information pertaining to a scenario.</remarks>
         ''' -------------------------------------------------------------------
-        Function LoadEcotracerScenario(ByVal iScenarioID As Integer) As Boolean
+        Function LoadEcotracerScenario(iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -69,7 +69,7 @@ Namespace DataSources
         ''' under its own database ID.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SaveEcotracerScenario(ByVal iScenarioID As Integer) As Boolean
+        Function SaveEcotracerScenario(iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -82,8 +82,8 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID assigned to the new scenario.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendEcotracerScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
-                ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean
+        Function AppendEcotracerScenario(strScenarioName As String, strDescription As String, _
+                strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -92,7 +92,7 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID of the scenario to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcotracerScenario(ByVal iScenarioID As Integer) As Boolean
+        Function RemoveEcotracerScenario(iScenarioID As Integer) As Boolean
 
 #End Region ' Ecotracer scenarios 
 

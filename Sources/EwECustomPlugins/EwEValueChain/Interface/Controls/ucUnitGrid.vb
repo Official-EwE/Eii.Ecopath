@@ -63,9 +63,9 @@ Public Class ucUnitGrid
     ''' <param name="data"></param>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal data As cData, _
-                   ByVal unitType As cUnitFactory.eUnitType)
+    Public Sub New(uic As cUIContext, _
+                   data As cData, _
+                   unitType As cUnitFactory.eUnitType)
 
         Me.m_data = data
         Me.m_unitType = unitType
@@ -88,7 +88,7 @@ Public Class ucUnitGrid
 
 #Region " Events "
 
-    Private Sub OnDisposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub OnDisposed(sender As Object, e As System.EventArgs) Handles Me.Disposed
         Me.m_lUnits = Nothing
     End Sub
 
@@ -171,13 +171,13 @@ Public Class ucUnitGrid
     ''' <param name="unit"></param>
     ''' <param name="iCol"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddUnit(ByVal unit As cUnit, ByVal iCol As Integer)
+    Private Sub AddUnit(unit As cUnit, iCol As Integer)
         For iRow As Integer = 0 To Me.RowsCount - 1
             Me.AddCell(unit, iRow, iCol)
         Next
     End Sub
 
-    Protected Sub AddCell(ByVal unit As cUnit, ByVal iRow As Integer, ByVal iCol As Integer)
+    Protected Sub AddCell(unit As cUnit, iRow As Integer, iCol As Integer)
         Dim cell As Cells.Real.Cell = Nothing
 
         If iRow = 0 Then

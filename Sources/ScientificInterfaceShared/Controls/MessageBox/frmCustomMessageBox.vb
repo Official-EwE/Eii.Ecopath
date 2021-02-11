@@ -102,36 +102,36 @@ Namespace Controls
             End If
 
             ' Config buttons
-            Me.ConfigureButton(m_btnThree, DialogResult.None)
-            Me.ConfigureButton(m_btnTwo, DialogResult.None)
-            Me.ConfigureButton(m_btnOne, DialogResult.None)
+            Me.ConfigureButton(Me.m_btnThree, DialogResult.None)
+            Me.ConfigureButton(Me.m_btnTwo, DialogResult.None)
+            Me.ConfigureButton(Me.m_btnOne, DialogResult.None)
 
             Select Case Me.m_mbb
 
                 Case MessageBoxButtons.AbortRetryIgnore
-                    Me.ConfigureButton(m_btnOne, DialogResult.Abort, customtexts)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.Retry, customtexts)
-                    Me.ConfigureButton(m_btnThree, DialogResult.Cancel, customtexts)
+                    Me.ConfigureButton(Me.m_btnOne, DialogResult.Abort, customtexts)
+                    Me.ConfigureButton(Me.m_btnTwo, DialogResult.Retry, customtexts)
+                    Me.ConfigureButton(Me.m_btnThree, DialogResult.Cancel, customtexts)
 
                 Case MessageBoxButtons.OK
-                    Me.ConfigureButton(m_btnOne, DialogResult.OK, customtexts)
+                    Me.ConfigureButton(Me.m_btnOne, DialogResult.OK, customtexts)
 
                 Case MessageBoxButtons.OKCancel
-                    Me.ConfigureButton(m_btnOne, DialogResult.OK, customtexts)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.Cancel, customtexts)
+                    Me.ConfigureButton(Me.m_btnOne, DialogResult.OK, customtexts)
+                    Me.ConfigureButton(Me.m_btnTwo, DialogResult.Cancel, customtexts)
 
                 Case MessageBoxButtons.RetryCancel
-                    Me.ConfigureButton(m_btnOne, DialogResult.Retry, customtexts)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.Cancel, customtexts)
+                    Me.ConfigureButton(Me.m_btnOne, DialogResult.Retry, customtexts)
+                    Me.ConfigureButton(Me.m_btnTwo, DialogResult.Cancel, customtexts)
 
                 Case MessageBoxButtons.YesNo
-                    Me.ConfigureButton(m_btnOne, DialogResult.Yes, customtexts)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.No, customtexts)
+                    Me.ConfigureButton(Me.m_btnOne, DialogResult.Yes, customtexts)
+                    Me.ConfigureButton(Me.m_btnTwo, DialogResult.No, customtexts)
 
                 Case MessageBoxButtons.YesNoCancel
-                    Me.ConfigureButton(m_btnOne, DialogResult.Yes, customtexts)
-                    Me.ConfigureButton(m_btnTwo, DialogResult.No, customtexts)
-                    Me.ConfigureButton(m_btnThree, DialogResult.Cancel, customtexts)
+                    Me.ConfigureButton(Me.m_btnOne, DialogResult.Yes, customtexts)
+                    Me.ConfigureButton(Me.m_btnTwo, DialogResult.No, customtexts)
+                    Me.ConfigureButton(Me.m_btnThree, DialogResult.Cancel, customtexts)
 
             End Select
 
@@ -230,11 +230,11 @@ Namespace Controls
 
             ' Calc dimensions of picbox + label area
             If (Me.m_pbIcon.Image Is Nothing) Then
-                iFormWidth = Me.Spacer * 2 + m_lblPrompt.Width
-                iFormHeight = Me.Spacer * 2 + m_lblPrompt.Height
+                iFormWidth = Me.Spacer * 2 + Me.m_lblPrompt.Width
+                iFormHeight = Me.Spacer * 2 + Me.m_lblPrompt.Height
             Else
-                iFormWidth = Me.Spacer * 3 + m_lblPrompt.Width + m_pbIcon.Width
-                iFormHeight = Me.Spacer * 2 + Math.Max(m_lblPrompt.Height, m_pbIcon.Height)
+                iFormWidth = Me.Spacer * 3 + Me.m_lblPrompt.Width + Me.m_pbIcon.Width
+                iFormHeight = Me.Spacer * 2 + Math.Max(Me.m_lblPrompt.Height, Me.m_pbIcon.Height)
             End If
 
             ' Position checkbox
@@ -246,22 +246,22 @@ Namespace Controls
 
             ' Consider buttons total width
             iButtonsWidth = Me.Spacer
-            If (CInt(m_btnOne.Tag) > DialogResult.None) Then iButtonsWidth += m_btnOne.Width + Me.Spacer
-            If (CInt(m_btnTwo.Tag) > DialogResult.None) Then iButtonsWidth += m_btnTwo.Width + Me.Spacer
-            If (CInt(m_btnThree.Tag) > DialogResult.None) Then iButtonsWidth += m_btnThree.Width + Me.Spacer
+            If (CInt(Me.m_btnOne.Tag) > DialogResult.None) Then iButtonsWidth += Me.m_btnOne.Width + Me.Spacer
+            If (CInt(Me.m_btnTwo.Tag) > DialogResult.None) Then iButtonsWidth += Me.m_btnTwo.Width + Me.Spacer
+            If (CInt(Me.m_btnThree.Tag) > DialogResult.None) Then iButtonsWidth += Me.m_btnThree.Width + Me.Spacer
 
             ' Calc final form width
             iFormWidth = Math.Max(iFormWidth, iButtonsWidth)
 
             iTmp = Me.Spacer + CInt((iFormWidth - iButtonsWidth) / 2)
-            m_btnOne.Location = New Point(iTmp, iFormHeight)
-            iTmp += m_btnOne.Width + Me.Spacer
-            m_btnTwo.Location = New Point(iTmp, iFormHeight)
-            iTmp += m_btnTwo.Width + Me.Spacer
-            m_btnThree.Location = New Point(iTmp, iFormHeight)
+            Me.m_btnOne.Location = New Point(iTmp, iFormHeight)
+            iTmp += Me.m_btnOne.Width + Me.Spacer
+            Me.m_btnTwo.Location = New Point(iTmp, iFormHeight)
+            iTmp += Me.m_btnTwo.Width + Me.Spacer
+            Me.m_btnThree.Location = New Point(iTmp, iFormHeight)
 
             ' Resize form
-            iFormHeight += m_btnThree.Height + Me.Spacer
+            iFormHeight += Me.m_btnThree.Height + Me.Spacer
             Me.Size = New Size(iFormWidth + dx, iFormHeight + dy)
 
         End Sub
@@ -285,7 +285,7 @@ Namespace Controls
             If (Me.m_pbIcon.Image Is Nothing) Then
                 Me.m_lblPrompt.Location = New Point(Me.Spacer, Me.Spacer)
             Else
-                If Me.m_lblPrompt.Height < m_pbIcon.Height Then
+                If Me.m_lblPrompt.Height < Me.m_pbIcon.Height Then
                     Me.m_lblPrompt.Location = New Point((Me.Spacer * 2) + Me.m_pbIcon.Width,
                                                         CInt((Me.m_pbIcon.Top + (Me.m_pbIcon.Height / 2)) - (Me.m_lblPrompt.Height / 2)))
                 Else
@@ -355,8 +355,8 @@ Namespace Controls
 
         Protected Overloads Overrides Sub Dispose(disposing As Boolean)
             If disposing Then
-                If Not (components Is Nothing) Then
-                    components.Dispose()
+                If Not (Me.components Is Nothing) Then
+                    Me.components.Dispose()
                 End If
             End If
             MyBase.Dispose(disposing)

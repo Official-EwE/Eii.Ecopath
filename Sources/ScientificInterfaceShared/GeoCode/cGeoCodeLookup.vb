@@ -25,9 +25,9 @@ Namespace GeoCode
     ''' </summary>
     Public Class cGeoCodeLocation
 
-        Friend Sub New(ByVal strDescription As String,
-                       ByVal sEast As Single, ByVal sNorth As Single,
-                       ByVal sWest As Single, ByVal sSouth As Single)
+        Friend Sub New(strDescription As String,
+                       sEast As Single, sNorth As Single,
+                       sWest As Single, sSouth As Single)
             Me.Description = strDescription
             Me.North = sNorth
             Me.West = sWest
@@ -74,7 +74,7 @@ Namespace GeoCode
     Public Interface IGeoCodeLookup
 
         Property Term() As String
-        Function FindPlaces(ByVal strTerm As String) As cGeoCodeLocation()
+        Function FindPlaces(strTerm As String) As cGeoCodeLocation()
 
     End Interface
 

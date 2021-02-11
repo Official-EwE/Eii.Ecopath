@@ -56,7 +56,7 @@ Namespace Core
         ''' to get values for rows and variables.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddVariable(ByVal key As Object, ByRef iVar As Integer) As Boolean
+        Function AddVariable(key As Object, ByRef iVar As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -70,7 +70,7 @@ Namespace Core
         ''' to get values for rows and variables.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddRow(ByVal key As Object, ByRef iRow As Integer) As Boolean
+        Function AddRow(key As Object, ByRef iRow As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -82,7 +82,7 @@ Namespace Core
         ''' <param name="dMax">Upper bound for the variable, or <see cref="Double.NegativeInfinity"/> 
         ''' if no upper bound applies.</param>
         ''' -------------------------------------------------------------------
-        Sub SetBounds(ByVal iVar As Integer, ByVal dMin As Double, ByVal dMax As Double)
+        Sub SetBounds(iVar As Integer, dMin As Double, dMax As Double)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -92,7 +92,7 @@ Namespace Core
         ''' <param name="iVar">Variable key to set the coefficient for.</param>
         ''' <param name="dVal">Coefficient to set for row and variable.</param>
         ''' -------------------------------------------------------------------
-        Sub SetCoefficient(ByVal iRow As Integer, ByVal iVar As Integer, ByVal dVal As Double)
+        Sub SetCoefficient(iRow As Integer, iVar As Integer, dVal As Double)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -106,7 +106,7 @@ Namespace Core
         ''' may not accept priorities.</remarks>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddGoal(ByVal iRow As Integer, ByVal iPriority As Integer, ByVal bMinimize As Boolean) As Boolean
+        Function AddGoal(iRow As Integer, iPriority As Integer, bMinimize As Boolean) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -114,7 +114,7 @@ Namespace Core
         ''' </summary>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function Solve(ByVal iTimeStepIndex As Integer) As Core.eSolverReturnValues
+        Function Solve(iTimeStepIndex As Integer) As Core.eSolverReturnValues
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -124,10 +124,10 @@ Namespace Core
         ''' optimized value for.</param>
         ''' <returns>The computed optimized value for the row or variable.</returns>
         ''' -------------------------------------------------------------------
-        Function GetValue(ByVal iItem As Integer) As Double
+        Function GetValue(iItem As Integer) As Double
 
 
-        Function GetDualValue(ByVal iItem As Integer) As Double
+        Function GetDualValue(iItem As Integer) As Double
 
         ''' -------------------------------------------------------------------
         ''' <summary>

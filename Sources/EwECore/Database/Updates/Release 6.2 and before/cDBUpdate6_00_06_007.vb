@@ -69,7 +69,7 @@ Friend Class cDBUpdate6_00_06_007
         Return Me.AddEcosimQuotaFields(db)
     End Function
 
-    Private Function AddEcosimQuotaFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcosimQuotaFields(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

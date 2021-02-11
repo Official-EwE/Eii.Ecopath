@@ -27,8 +27,8 @@ Imports EwEUtils.Core
 Public Class cEcosimFleetInput
     Inherits cCoreInputOutputBase
 
-    Public Sub New(TheCore As cCore, iFleet As Integer)
-        MyBase.New(TheCore)
+    Public Sub New(core As cCore, iFleet As Integer)
+        MyBase.New(core)
 
         Dim val As cValue
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -43,38 +43,38 @@ Public Class cEcosimFleetInput
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'EPower
-        val = New cValue(New Single, eVarNameFlags.EPower, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.EPower, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'PcapBase
-        val = New cValue(New Single, eVarNameFlags.PcapBase, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.PcapBase, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'CapDepreciate
-        val = New cValue(New Single, eVarNameFlags.CapDepreciate, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.CapDepreciate, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'CapBaseGrowth
-        val = New cValue(New Single, eVarNameFlags.CapBaseGrowth, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.CapBaseGrowth, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' FleetEffortConversion
-        val = New cValue(New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
 
-        val = New cValueArrayTripleIndex(eValueTypes.SingleArray, eVarNameFlags.RelQt, eStatusFlags.Null,
-                                         eCoreCounterTypes.nGroups, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.EcosimFleetInput)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayTripleIndex(core, eValueTypes.SingleArray, eVarNameFlags.RelQt, eStatusFlags.Null,
+                                         eCoreCounterTypes.nGroups, eCoreCounterTypes.nEcosimTimeSteps, Me.Index, eDataTypes.EcosimFleetInput)
+        Me.m_values.Add(val.varName, val)
 
 
 
         ''arrayed values
         ''RelQ at T
-        'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.RelQ, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        'val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.RelQ, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
         'm_values.Add(val.varName, val)
 
-        AllowValidation = True
+        Me.AllowValidation = True
 
     End Sub
 
@@ -86,11 +86,11 @@ Public Class cEcosimFleetInput
     Public Property EPower() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EPower))
+            Return CSng(Me.GetVariable(eVarNameFlags.EPower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EPower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EPower, value)
         End Set
 
     End Property
@@ -101,11 +101,11 @@ Public Class cEcosimFleetInput
     Public Property CapDepreciateRate() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.CapDepreciate))
+            Return CSng(Me.GetVariable(eVarNameFlags.CapDepreciate))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CapDepreciate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CapDepreciate, value)
         End Set
 
     End Property
@@ -116,11 +116,11 @@ Public Class cEcosimFleetInput
     Public Property PcapBase() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.PcapBase))
+            Return CSng(Me.GetVariable(eVarNameFlags.PcapBase))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PcapBase, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.PcapBase, value)
         End Set
 
     End Property
@@ -131,11 +131,11 @@ Public Class cEcosimFleetInput
     Public Property CapBaseGrowth() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.CapBaseGrowth))
+            Return CSng(Me.GetVariable(eVarNameFlags.CapBaseGrowth))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CapBaseGrowth, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CapBaseGrowth, value)
         End Set
 
     End Property
@@ -149,20 +149,20 @@ Public Class cEcosimFleetInput
     ''' <remarks></remarks>
     Public Property EffortConversionFactor() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.FleetEffortConversion))
+            Return CSng(Me.GetVariable(eVarNameFlags.FleetEffortConversion))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.FleetEffortConversion, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.FleetEffortConversion, value)
         End Set
     End Property
 
 
-    Public Property RelQt(ByVal iGroup As Integer, iTimestep As Integer) As Single
+    Public Property RelQt(iGroup As Integer, iTimestep As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.RelQt, iGroup, iTimestep))
+            Return CSng(Me.GetVariable(eVarNameFlags.RelQt, iGroup, iTimestep))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.RelQt, value, iGroup, iTimestep)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.RelQt, value, iGroup, iTimestep)
         End Set
     End Property
 
@@ -170,12 +170,12 @@ Public Class cEcosimFleetInput
 
 #Region " Status via dot '.' operator "
 
-    Public Property RelQtStatus(ByVal iGroup As Integer, iTimestep As Integer) As eStatusFlags
+    Public Property RelQtStatus(iGroup As Integer, iTimestep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.RelQt, iGroup, iTimestep)
+            Return Me.GetStatus(eVarNameFlags.RelQt, iGroup, iTimestep)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.RelQt, value, iGroup, iTimestep)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.RelQt, value, iGroup, iTimestep)
         End Set
     End Property
 
@@ -183,11 +183,11 @@ Public Class cEcosimFleetInput
     Public Property CapBaseGrowthStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CapBaseGrowth)
+            Return Me.GetStatus(eVarNameFlags.CapBaseGrowth)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CapBaseGrowth, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CapBaseGrowth, value)
         End Set
 
     End Property
@@ -195,11 +195,11 @@ Public Class cEcosimFleetInput
     Public Property CapDepreciateRateStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CapDepreciate)
+            Return Me.GetStatus(eVarNameFlags.CapDepreciate)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CapDepreciate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CapDepreciate, value)
         End Set
 
     End Property
@@ -207,31 +207,31 @@ Public Class cEcosimFleetInput
     Public Property PcapBaseStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.PcapBase)
+            Return Me.GetStatus(eVarNameFlags.PcapBase)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.PcapBase, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.PcapBase, value)
         End Set
 
     End Property
 
     Public Property EPowerStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EPower)
+            Return Me.GetStatus(eVarNameFlags.EPower)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EPower, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EPower, value)
         End Set
     End Property
 
     Public Property EffortConversionFactorStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.FleetEffortConversion)
+            Return Me.GetStatus(eVarNameFlags.FleetEffortConversion)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.FleetEffortConversion, value)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.FleetEffortConversion, value)
         End Set
     End Property
 

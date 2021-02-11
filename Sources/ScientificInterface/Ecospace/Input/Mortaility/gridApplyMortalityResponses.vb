@@ -57,12 +57,12 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
-            Dim mapManager As IEnvironmentalResponseManager = Core.MortalityMapInteractionManager
+            Dim mapManager As IEnvironmentalResponseManager = Me.Core.MortalityMapInteractionManager
             Dim map As IEnviroInputData = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, mapManager.nEnviroData + 2)
+            Me.Redim(Me.Core.nGroups + 1, mapManager.nEnviroData + 2)
 
             For iMap As Integer = 1 To mapManager.nEnviroData
 
@@ -75,8 +75,8 @@ Namespace Ecospace
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
-            For iGroup As Integer = 1 To Core.nGroups
-                group = Core.EcoPathGroupInputs(iGroup)
+            For iGroup As Integer = 1 To Me.Core.nGroups
+                group = Me.Core.EcoPathGroupInputs(iGroup)
                 ' # Group index row header cells
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
@@ -91,12 +91,12 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Try
-                Dim Manager As IEnvironmentalResponseManager = Core.MortalityMapInteractionManager
+                Dim Manager As IEnvironmentalResponseManager = Me.Core.MortalityMapInteractionManager
                 Dim ShapeManager As cEnviroResponseShapeManager = Me.Core.EnviroResponseShapeManager
                 Dim ff As cForcingFunction
                 Dim strLabel As String
 
-                For igrp As Integer = 1 To Core.nGroups
+                For igrp As Integer = 1 To Me.Core.nGroups
                     Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(igrp)
                     For imap As Integer = 1 To Manager.nEnviroData
                         Dim map As IEnviroInputData = Manager.EnviroData(imap)
@@ -114,7 +114,7 @@ Namespace Ecospace
 
                     Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
                     Me.m_lProps.Add(prop)
-                    AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+                    AddHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
 
                     Me.UpdateRow(grp)
 
@@ -127,7 +127,7 @@ Namespace Ecospace
 
         Protected Overrides Sub ClearData()
             For Each prop As cProperty In Me.m_lProps
-                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+                RemoveHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
             Next
             MyBase.ClearData()
         End Sub
@@ -194,8 +194,8 @@ Namespace Ecospace
         Private Sub ShowSelectionDialog(ByVal SelectionType As eEnvironmentalResponseSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
             If (iDriver = 0) Then Return
             Try
-                Dim MapManager As IEnvironmentalResponseManager = Core.MortalityMapInteractionManager
-                Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
+                Dim MapManager As IEnvironmentalResponseManager = Me.Core.MortalityMapInteractionManager
+                Dim ShapeManager As cBaseShapeManager = Me.Core.EnviroResponseShapeManager
 
                 Dim dlg As New dlgSelectEnvironmentalResponse(Me.UIContext, ShapeManager, MapManager, iDriver, iGrp, SelectionType)
                 dlg.ShowDialog()
@@ -214,7 +214,7 @@ Namespace Ecospace
 
             Dim iGroup As Integer = grp.Index
             Dim style As cStyleGuide.eStyleFlags
-            Dim mapManager As IEnvironmentalResponseManager = Core.MortalityMapInteractionManager
+            Dim mapManager As IEnvironmentalResponseManager = Me.Core.MortalityMapInteractionManager
 
             style = cStyleGuide.eStyleFlags.OK
 

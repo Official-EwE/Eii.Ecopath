@@ -44,7 +44,7 @@ Public Class frmBiomassLimits
 
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext)
+    Public Sub Init(uic As cUIContext)
 
         'Me.m_data = New cBiomassLimits(Me.m_mse)
         'Me.m_data.Load()
@@ -59,7 +59,7 @@ Public Class frmBiomassLimits
         Me.m_grid.Init(Me.m_mse.BiomassLimits)
         Me.m_data = New cBiomassLimits(Me.m_mse)
         Me.m_data.Load()
-        Me.UpdateGrid(m_data, My.Resources.HEADER_BIOMASS_LIMITS)
+        Me.UpdateGrid(Me.m_data, My.Resources.HEADER_BIOMASS_LIMITS)
 
         'Me.m_grid.Init(Me.m_mse, )
         'Me.m_quotashares = New cQuotaShares(Me.m_mse, uic.Core)
@@ -75,7 +75,7 @@ Public Class frmBiomassLimits
         Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
-        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        AddHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
 
         Me.m_bIsDirty = False
         Me.UpdateControls()
@@ -117,7 +117,7 @@ Public Class frmBiomassLimits
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.QuickEditHandler.Detach()
-        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
         Me.m_grid.UIContext = Nothing
 
         MyBase.OnFormClosed(e)
@@ -138,7 +138,7 @@ Public Class frmBiomassLimits
 
     End Sub
 
-    'Private Sub OutputMessageNotSum1(ByVal Groups_Not_Summing_to_1 As List(Of Integer))
+    'Private Sub OutputMessageNotSum1(Groups_Not_Summing_to_1 As List(Of Integer))
 
     '    Dim strGroupsNotSum1 As String
 
@@ -166,7 +166,7 @@ Public Class frmBiomassLimits
     Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
 
         Dim lstrSubMessages As New List(Of String)
-        Dim strFolder As String = cMSEUtils.MSEFolder(m_mse.DataPath, cMSEUtils.eMSEPaths.BiomassLimits)
+        Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.BiomassLimits)
         'Dim Groups_Not_Summing_to_1 As New List(Of Integer)
 
         'If Not QuotaSharesSumTo1(Groups_Not_Summing_to_1) Then
@@ -178,11 +178,11 @@ Public Class frmBiomassLimits
 
         'Saves all the parameters to csv when user clicks to save
         'If m_quotashares.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "QuotaShares.csv"))
-        If m_data.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "BiomassLimits.csv"))
+        If Me.m_data.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "BiomassLimits.csv"))
 
         Me.m_bIsDirty = False
 
-        m_mse.InformUser(String.Format(My.Resources.STATUS_SAVED_BIOMASSLIMITS, My.Resources.CAPTION, strFolder),
+        Me.m_mse.InformUser(String.Format(My.Resources.STATUS_SAVED_BIOMASSLIMITS, My.Resources.CAPTION, strFolder),
                                  eMessageImportance.Information, strFolder, lstrSubMessages.ToArray())
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -216,10 +216,10 @@ Public Class frmBiomassLimits
     Private Sub OnGridEdited()
 
         Me.m_bIsDirty = True
-        Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
+        Me.Invoke(New MethodInvoker(AddressOf Me.UpdateControls))
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
     Handles m_btnCancel.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel

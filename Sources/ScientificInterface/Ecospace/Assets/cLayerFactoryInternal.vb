@@ -57,9 +57,9 @@ Namespace Ecospace.Basemap.Layers
         ''' Ecospace basemap.</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
-        Public Overloads Function GetLayers(ByVal uic As cUIContext, _
-                                            ByVal varName As eVarNameFlags, _
-                                            Optional ByVal layerData As cEcospaceLayer = Nothing) As cDisplayLayerRaster()
+        Public Overloads Function GetLayers(uic As cUIContext, _
+                                            varName As eVarNameFlags, _
+                                            Optional layerData As cEcospaceLayer = Nothing) As cDisplayLayerRaster()
 
             Dim lLayers As New List(Of cDisplayLayerRaster)
 
@@ -147,7 +147,7 @@ Namespace Ecospace.Basemap.Layers
                     For iLayer As Integer = 1 To core.nImportanceLayers
 
                         Dim src As cEcospaceLayerImportance = core.EcospaceBasemap.LayerImportance(iLayer)
-                        ad = GetAuxillaryData(core, varName, iLayer)
+                        ad = Me.GetAuxillaryData(core, varName, iLayer)
 
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -174,7 +174,7 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cLayerFactoryBase.GetLayerGroup"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetLayerGroup(ByVal varName As eVarNameFlags) As String
+        Public Overrides Function GetLayerGroup(varName As eVarNameFlags) As String
 
             Dim strGroup As String = ""
             Select Case varName

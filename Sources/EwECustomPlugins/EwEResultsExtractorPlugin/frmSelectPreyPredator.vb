@@ -24,15 +24,15 @@ Public Class frmSelectPreyPredator
 
     Public Event FormExited()
 
-    Public Sub New(ByVal i As cSelectionData, ByRef p As cCore)
+    Public Sub New(i As cSelectionData, ByRef p As cCore)
         MyBase.New(i, p)
-        InitializeComponent()
+        Me.InitializeComponent()
 
         Me.Show()
 
     End Sub
 
-    Public Overrides Sub PopulateAttachedList(ByVal Prey As String)
+    Public Overrides Sub PopulateAttachedList(Prey As String)
         Dim PreyIndex As Integer
 
         'Clear the list
@@ -46,15 +46,15 @@ Public Class frmSelectPreyPredator
 
             ' Find the index number to refer to selected predator
             PreyIndex = 1
-            Do While Core.EcoSimGroupOutputs(PreyIndex).Name IsNot Prey
+            Do While Me.Core.EcoSimGroupOutputs(PreyIndex).Name IsNot Prey
                 PreyIndex += 1
             Loop
 
             'Check which functional groups are prey to given predator and add to prey chklist
             With Me.chklstAttached.Items
-                For i As Integer = 1 To Core.nGroups
-                    If Core.EcoPathGroupInputs(i).IsPrey(PreyIndex) Then
-                        .Add(Core.EcoSimGroupOutputs(i).Name)
+                For i As Integer = 1 To Me.Core.nGroups
+                    If Me.Core.EcoPathGroupInputs(i).IsPrey(PreyIndex) Then
+                        .Add(Me.Core.EcoSimGroupOutputs(i).Name)
                     End If
                 Next
             End With
@@ -63,7 +63,7 @@ Public Class frmSelectPreyPredator
 
     End Sub
 
-    Private Sub frmSelectPreyPredator_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub frmSelectPreyPredator_Disposed(sender As Object, e As System.EventArgs) Handles Me.Disposed
         If frmResults.FireChecked = False Then
             frmResults.NextAction()
         End If

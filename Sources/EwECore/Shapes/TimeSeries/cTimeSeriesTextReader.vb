@@ -87,7 +87,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' </summary>
         ''' <param name="iColumnCount">The number of columns found in the time series text.</param>
         ''' -----------------------------------------------------------------------
-        Friend Sub New(ByVal iColumnCount As Integer)
+        Friend Sub New(iColumnCount As Integer)
             Me.m_iColumnCount = iColumnCount
         End Sub
 
@@ -98,7 +98,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <param name="strLine">The original line of text, as read from the time series text.</param>
         ''' <param name="astrValues">The line of text, as split by the requested delimiter.</param>
         ''' -----------------------------------------------------------------------
-        Friend Sub AddRow(ByVal strLine As String, ByVal astrValues() As String)
+        Friend Sub AddRow(strLine As String, astrValues() As String)
             If String.IsNullOrEmpty(strLine) Then Return
             Me.m_rows.Add(strLine)
             Me.m_rowvalues.Add(astrValues)
@@ -133,7 +133,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' value is 1-based.</param>
         ''' <returns>An original row of text, as read from the time series text.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function Row(ByVal iRow As Integer) As String
+        Public Function Row(iRow As Integer) As String
             If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then Return Me.m_rows(iRow - 1)
             Return ""
         End Function
@@ -147,7 +147,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <value></value>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Property RowError(ByVal iRow As Integer) As String
+        Public Property RowError(iRow As Integer) As String
             Get
                 If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then Return Me.m_rowerrors(iRow - 1)
                 Return ""
@@ -167,7 +167,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' value is 1-based.</param>
         ''' <returns>A (col, row) value as distilled from the time series text.</returns>
         ''' -----------------------------------------------------------------------
-        Public Property Value(ByVal iColumn As Integer, ByVal iRow As Integer) As String
+        Public Property Value(iColumn As Integer, iRow As Integer) As String
             Get
                 If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then
                     Dim values As String() = Me.m_rowvalues(iRow - 1)
@@ -177,7 +177,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 End If
                 Return ("")
             End Get
-            Friend Set(ByVal value As String)
+            Friend Set(value As String)
                 If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then
                     Dim astrValues As String() = Me.m_rowvalues(iRow - 1)
                     If (iColumn > 0 And iColumn <= astrValues.Length) Then
@@ -211,7 +211,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="core">A reference to the <see cref="cCore">Core</see> that
     ''' this reader belongs to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         Me.m_core = core
     End Sub
 
@@ -233,9 +233,9 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' </param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Read(ByVal strDelimiter As String, _
-                                     ByVal strDecimalSeparator As String, _
-                                     ByVal interval As eTSDataSetInterval) As Boolean
+    Public Overridable Function Read(strDelimiter As String, _
+                                     strDecimalSeparator As String, _
+                                     interval As eTSDataSetInterval) As Boolean
 
         ' Reset reader to clear any previous read results.
         Me.Reset()
@@ -278,7 +278,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <returns>A TextReader if the connection could be made, or
     ''' Nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function ReleaseReader(ByVal reader As TextReader) As Boolean
+    Public MustOverride Function ReleaseReader(reader As TextReader) As Boolean
 
 #Region " Internals "
 
@@ -344,7 +344,7 @@ Public MustInherit Class cTimeSeriesTextReader
             ' Is this the weight line?
             ' 060613VC: There may be a Weight for each time series from now on
             If cStringUtils.BeginsWith(astrCols(0), "weight") Then
-                If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+                If Not Me.ValidateLine(Me.m_tsPreview.ColumnCount, astrCols) Then
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTVALUEMISSING, iLineNumber)
                     bSucces = False
                 End If
@@ -357,7 +357,7 @@ Public MustInherit Class cTimeSeriesTextReader
             End If
 
             If cStringUtils.BeginsWith(astrCols(0), "cv") Then
-                If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+                If Not Me.ValidateLine(Me.m_tsPreview.ColumnCount, astrCols) Then
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_CVVALUEMISSING, iLineNumber)
                     bSucces = False
                 End If
@@ -380,7 +380,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLLINEMISSING, astrCols(0)), iLineNumber)
                 bSucces = False
             End If
-            If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+            If Not Me.ValidateLine(Me.m_tsPreview.ColumnCount, astrCols) Then
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLVALUEMISSING, iLineNumber)
                 bSucces = False
             End If
@@ -404,7 +404,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 bSucces = False
             End If
 
-            If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+            If Not Me.ValidateLine(Me.m_tsPreview.ColumnCount, astrCols) Then
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEVALUEMISSING, iLineNumber)
                 bSucces = False
             End If
@@ -446,7 +446,7 @@ Public MustInherit Class cTimeSeriesTextReader
                         End If
                         Me.m_iNumPoints += 1
 
-                        If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+                        If Not Me.ValidateLine(Me.m_tsPreview.ColumnCount, astrCols) Then
                             Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUEMISSING, iYear), iLineNumber)
                             bSucces = False
                         End If
@@ -485,7 +485,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
         Dim tr As TextReader = Me.GetReader()
         Dim ts As cTimeSeriesImport = Nothing
-        Dim iNumSeries As Integer = m_tsPreview.ColumnCount - 1
+        Dim iNumSeries As Integer = Me.m_tsPreview.ColumnCount - 1
         Dim strLine As String = ""
         Dim iLineNumber As Integer = 0
         Dim cols() As String
@@ -699,7 +699,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="astrCols">The columns in the line of text.</param>
     ''' <returns>True if the number of columns validated succesfully.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ValidateLine(ByVal iNumCols As Integer, ByVal astrCols() As String) As Boolean
+    Private Function ValidateLine(iNumCols As Integer, astrCols() As String) As Boolean
         Return iNumCols >= astrCols.Length
     End Function
 
@@ -712,7 +712,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' is be incremented when a line of text is read succesfully.</param>
     ''' <returns>True when a line of text is read succesfully</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ReadLine(ByVal tr As TextReader, ByRef iLineNumber As Integer) As String
+    Private Function ReadLine(tr As TextReader, ByRef iLineNumber As Integer) As String
         Dim strLine As String = ""
 
         If tr.Peek() = -1 Then Return strLine
@@ -733,7 +733,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="strLine">The line to split.</param>
     ''' <returns>An array of strings.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SplitLine(ByVal strLine As String) As String()
+    Private Function SplitLine(strLine As String) As String()
         Dim astrBits As String() = cStringUtils.SplitQualified(strLine, Me.m_strDelimiter)
         ' Trim spaces
         For iBit As Integer = 0 To astrBits.Length - 1
@@ -752,8 +752,8 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> if the line number
     ''' is irrelevant.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub ReportError(ByVal strError As String, _
-                            Optional ByVal iLineNumber As Integer = cCore.NULL_VALUE)
+    Private Sub ReportError(strError As String, _
+                            Optional iLineNumber As Integer = cCore.NULL_VALUE)
 
         ' Flag line error if possible
         If iLineNumber <> cCore.NULL_VALUE Then
@@ -780,7 +780,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' if the conversion failed.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Private Function ToTimeSeriesType(ByVal strTimeSeries As String) As eTimeSeriesType
+    Private Function ToTimeSeriesType(strTimeSeries As String) As eTimeSeriesType
 
         strTimeSeries = strTimeSeries.Trim
 
@@ -817,7 +817,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' </remarks>
     ''' <param name="item">Item NOT to add :P</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Add(ByVal item As cTimeSeriesImport) _
+    Public Sub Add(item As cTimeSeriesImport) _
             Implements System.Collections.Generic.ICollection(Of cTimeSeriesImport).Add
         ' Read-only
     End Sub
@@ -842,7 +842,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="item">The Item to locate in the collection</param>
     ''' <returns>True if the item was found.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Contains(ByVal item As cTimeSeriesImport) As Boolean _
+    Public Function Contains(item As cTimeSeriesImport) As Boolean _
             Implements System.Collections.Generic.ICollection(Of cTimeSeriesImport).Contains
         Return Me.m_ts.Contains(item)
     End Function
@@ -854,7 +854,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="array">The array to copy to.</param>
     ''' <param name="arrayIndex">The index to start the copy process at.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub CopyTo(ByVal array() As cTimeSeriesImport, ByVal arrayIndex As Integer) Implements _
+    Public Sub CopyTo(array() As cTimeSeriesImport, arrayIndex As Integer) Implements _
             System.Collections.Generic.ICollection(Of cTimeSeriesImport).CopyTo
         Me.m_ts.CopyTo(array, arrayIndex)
     End Sub
@@ -897,7 +897,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <param name="item">Item NOT to remove.</param>
     ''' <returns>Always false.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Remove(ByVal item As cTimeSeriesImport) As Boolean _
+    Public Function Remove(item As cTimeSeriesImport) As Boolean _
             Implements System.Collections.Generic.ICollection(Of cTimeSeriesImport).Remove
         ' Read only
     End Function
@@ -966,7 +966,7 @@ Public MustInherit Class cTimeSeriesTextReader
         Get
             Return Me.m_iFirstYear
         End Get
-        Friend Set(ByVal iStartYear As Integer)
+        Friend Set(iStartYear As Integer)
             Me.m_iFirstYear = iStartYear
         End Set
     End Property

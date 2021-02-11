@@ -50,7 +50,7 @@ Namespace Style
             Return GetType(eUnitAreaType)
         End Function
 
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim unit As eUnitAreaType = DirectCast(value, eUnitAreaType)

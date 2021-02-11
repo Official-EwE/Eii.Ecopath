@@ -71,12 +71,12 @@ Public Class gridErrorCVs
     Public Sub New()
         MyBase.new()
 
-        m_CurSelectedDataType = frmEditAssessmentError.eErrorDataType.GroupObervationError
+        Me.m_CurSelectedDataType = frmEditAssessmentError.eErrorDataType.GroupObervationError
 
     End Sub
 
-    Public Sub Init(ByVal StockAssessmentModel As cStockAssessmentModel)
-        m_Assessment = StockAssessmentModel
+    Public Sub Init(StockAssessmentModel As cStockAssessmentModel)
+        Me.m_Assessment = StockAssessmentModel
     End Sub
 
 #End Region ' Constructor
@@ -139,9 +139,9 @@ Public Class gridErrorCVs
         Select Case Me.m_CurSelectedDataType
 
             Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
-                FillFleetData()
+                Me.FillFleetData()
             Case frmEditAssessmentError.eErrorDataType.GroupObervationError
-                FillGroupData()
+                Me.FillGroupData()
 
         End Select
 
@@ -154,7 +154,7 @@ Public Class gridErrorCVs
         Dim irow As Integer
 
         'For each Fleet
-        For iFlt As Integer = 1 To Core.nFleets
+        For iFlt As Integer = 1 To Me.Core.nFleets
 
             'Fleet parameter object for this row/fleet
             Fleet = Me.m_Assessment.FleetParameter(iFlt)
@@ -181,7 +181,7 @@ Public Class gridErrorCVs
         Dim irow As Integer
 
         'For each group
-        For iGrp As Integer = 1 To Core.nLivingGroups
+        For iGrp As Integer = 1 To Me.Core.nLivingGroups
 
             'Group parameter object for this row/group
             Group = Me.m_Assessment.Parameter(iGrp)
@@ -213,7 +213,7 @@ Public Class gridErrorCVs
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
         Dim bEdited As Boolean
-        If Rows(p.Row).Tag Is Nothing Then
+        If Me.Rows(p.Row).Tag Is Nothing Then
             'No Group in this row
             Return True
         End If
@@ -235,7 +235,7 @@ Public Class gridErrorCVs
 
                         'Fleet implementation error
                         Case frmEditAssessmentError.eErrorDataType.FleetImplementationError
-                            Dim param As cStockAssessmentFleetParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentFleetParameters)
+                            Dim param As cStockAssessmentFleetParameters = DirectCast(Me.Rows(p.Row).Tag, cStockAssessmentFleetParameters)
                             If param.cvImpError <> newValue Then
                                 param.cvImpError = newValue
                                 bEdited = True
@@ -244,7 +244,7 @@ Public Class gridErrorCVs
                             'Group observation error
                         Case frmEditAssessmentError.eErrorDataType.GroupObervationError
 
-                            Dim param As cStockAssessmentParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters)
+                            Dim param As cStockAssessmentParameters = DirectCast(Me.Rows(p.Row).Tag, cStockAssessmentParameters)
                             If param.CVObservationError <> newValue Then
                                 param.CVObservationError = newValue
                                 bEdited = True

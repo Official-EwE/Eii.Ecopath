@@ -48,7 +48,7 @@ Namespace Import
         ''' <param name="uic">UI context to connect to.</param>
         ''' <param name="strSource">Source of to the database to import.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal strSource As String)
+        Public Sub New(uic As cUIContext, strSource As String)
 
             Me.InitializeComponent()
             Me.m_wizard = New cImportWizard(uic, strSource, Me, Me.m_plWizardContent, Me.m_navigator)

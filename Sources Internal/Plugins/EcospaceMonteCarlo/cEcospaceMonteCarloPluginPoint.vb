@@ -107,7 +107,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
     Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
-            m_core = DirectCast(CoreAsObject, cCore)
+            Me.m_core = DirectCast(CoreAsObject, cCore)
 
             Me.m_runManager = New cRunManager()
 
@@ -127,11 +127,11 @@ Public Class cEcospaceMonteCarloPluginPoint
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
-            m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
+            Me.m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
+            Me.m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            Me.m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
+            Debug.Assert((Me.m_EcoPath IsNot Nothing) And (Me.m_EcoSim IsNot Nothing) And (Me.m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -392,7 +392,7 @@ Public Class cEcospaceMonteCarloPluginPoint
         Dim bHasInterface As Boolean = False
 
         ' Initialized ok?
-        If m_uic IsNot Nothing Then
+        If Me.m_uic IsNot Nothing Then
 
             ' Test if form still exists. This is a two-step test: the interface needs to be defined, and has not been closed previously.
             If Me.m_form IsNot Nothing Then
@@ -408,7 +408,7 @@ Public Class cEcospaceMonteCarloPluginPoint
                 Me.m_form = New frmEcospaceMonteCarlo()
                 Me.m_form.Init(Me)
                 ' Pass on the UI context to the form
-                Me.m_form.UIContext = m_uic
+                Me.m_form.UIContext = Me.m_uic
 
             End If
 

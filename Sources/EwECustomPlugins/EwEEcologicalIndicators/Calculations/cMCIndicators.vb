@@ -52,14 +52,14 @@ Public Class cMCIndicators
     ''' <param name="iIter">The Monte Carlo iteration to calculate the indicators for.</param>
     ''' <param name="iTime">The Ecosim time to calculate the indicators for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore,
-                    ByVal ecopathDS As cEcopathDataStructures,
-                    ByVal ecosimDS As cEcosimDatastructures,
-                    ByVal iIter As Integer,
-                    ByVal iTime As Integer,
-                    ByVal stanzaDS As cStanzaDatastructures,
-                    ByVal taxonDS As cTaxonDataStructures,
-                    ByVal lookup As cTaxonAnalysis)
+    Public Sub New(core As cCore,
+                    ecopathDS As cEcopathDataStructures,
+                    ecosimDS As cEcosimDatastructures,
+                    iIter As Integer,
+                    iTime As Integer,
+                    stanzaDS As cStanzaDatastructures,
+                    taxonDS As cTaxonDataStructures,
+                    lookup As cTaxonAnalysis)
 
         MyBase.New(core, ecopathDS, ecosimDS, iTime, stanzaDS, taxonDS, lookup)
         Me.m_iIteration = iIter

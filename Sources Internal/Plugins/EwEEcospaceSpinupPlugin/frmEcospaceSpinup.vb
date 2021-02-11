@@ -78,7 +78,7 @@ Public Class frmEcospaceSpinup
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
         RemoveHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
         'RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
@@ -123,7 +123,7 @@ Public Class frmEcospaceSpinup
 
 #Region " Public access "
 
-    Friend Sub Init(ByVal plugin As cEcospaceSpinupPlugin)
+    Friend Sub Init(plugin As cEcospaceSpinupPlugin)
         Me.m_plugin = plugin
     End Sub
 

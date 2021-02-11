@@ -38,10 +38,10 @@ Namespace Ecospace
 
         Public Property SelRegionIndex() As Integer
             Get
-                Return m_SelRegionIndex
+                Return Me.m_SelRegionIndex
             End Get
-            Set(ByVal value As Integer)
-                m_SelRegionIndex = value
+            Set(value As Integer)
+                Me.m_SelRegionIndex = value
                 Me.UpdateData()
             End Set
         End Property
@@ -117,10 +117,10 @@ Namespace Ecospace
                     Dim gBS As Single = source.BiomassStart(groupIndex)
                     Dim gBE As Single = source.BiomassEnd(groupIndex)
 
-                    SetCellValue(groupIndex, 2, gBS, totalValue)
-                    SetCellValue(groupIndex, 3, gBE, totalValue)
+                    Me.SetCellValue(groupIndex, 2, gBS, totalValue)
+                    Me.SetCellValue(groupIndex, 3, gBE, totalValue)
                     If gBS > 0 And gBE > 0 Then
-                        SetCellValue(groupIndex, 4, CSng(gBE / gBS), totalValue)
+                        Me.SetCellValue(groupIndex, 4, CSng(gBE / gBS), totalValue)
                     End If
 
                     'sum of catch by group
@@ -129,10 +129,10 @@ Namespace Ecospace
                         sCatch += source.CatchFleetGroupStart(iflt, groupIndex)
                         eCatch += source.CatchFleetGroupEnd(iflt, groupIndex)
                     Next iflt
-                    SetCellValue(groupIndex, 5, sCatch)
-                    SetCellValue(groupIndex, 6, eCatch)
+                    Me.SetCellValue(groupIndex, 5, sCatch)
+                    Me.SetCellValue(groupIndex, 6, eCatch)
                     If sCatch > 0 And eCatch > 0 Then
-                        SetCellValue(groupIndex, 7, CSng(eCatch / sCatch))
+                        Me.SetCellValue(groupIndex, 7, CSng(eCatch / sCatch))
                     End If
 
                 Next groupIndex
@@ -157,11 +157,11 @@ Namespace Ecospace
                     Next
 
                     rowIndex = cntGroups + fleetIndex
-                    SetCellValue(rowIndex, 5, sum1, totalValue)
-                    SetCellValue(rowIndex, 6, sum2, totalValue)
+                    Me.SetCellValue(rowIndex, 5, sum1, totalValue)
+                    Me.SetCellValue(rowIndex, 6, sum2, totalValue)
 
                     If sum1 > 0 And sum2 > 0 Then
-                        SetCellValue(rowIndex, 7, CSng(sum2 / sum1), totalValue)
+                        Me.SetCellValue(rowIndex, 7, CSng(sum2 / sum1), totalValue)
                     End If
                 Next
 

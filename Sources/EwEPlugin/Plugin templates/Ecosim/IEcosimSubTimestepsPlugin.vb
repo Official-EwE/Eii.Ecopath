@@ -47,7 +47,7 @@ Public Interface IEcosimSubTimestepsPlugin
     ''' or set any of the Core's Ecosim output objects e.g. cCore.EcosimGroupOutputs will not be update to the values of the new sub timestep. 
     ''' Only values used in the calculation of the sub timestep will be updated(the EcosimDatastructures argument).
     ''' </remarks>
-    Sub EcosimSubTimeStepBegin(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object)
+    Sub EcosimSubTimeStepBegin(ByRef BiomassAtTimestep() As Single, TimeInYears As Single, DeltaT As Single, SubTimestepIndex As Integer, EcosimDatastructures As Object)
 
     ''' <summary>
     ''' Plugin point called at the end of each sub timestep by Ecosim
@@ -64,6 +64,6 @@ Public Interface IEcosimSubTimestepsPlugin
     ''' or set any of the Core's Ecosim output objects e.g. cCore.EcosimGroupOutputs will not be update to the values of the new sub timestep. 
     ''' Only values used in the calculation of the sub timestep will be updated(the EcosimDatastructures argument).
     ''' </remarks>
-    Sub EcosimSubTimeStepEnd(ByRef BiomassAtTimestep() As Single, ByVal TimeInYears As Single, ByVal DeltaT As Single, ByVal SubTimestepIndex As Integer, ByVal EcosimDatastructures As Object)
+    Sub EcosimSubTimeStepEnd(ByRef BiomassAtTimestep() As Single, TimeInYears As Single, DeltaT As Single, SubTimestepIndex As Integer, EcosimDatastructures As Object)
 
 End Interface

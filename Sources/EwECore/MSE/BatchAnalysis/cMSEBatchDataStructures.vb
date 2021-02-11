@@ -169,13 +169,13 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-        Public Sub redimForcing(ByVal nForcingFunctions As Integer)
-            nForcing = nForcingFunctions
-            If nForcing = 0 Then nForcing = 1
+        Public Sub redimForcing(nForcingFunctions As Integer)
+            Me.nForcing = nForcingFunctions
+            If Me.nForcing = 0 Then Me.nForcing = 1
 
-            ReDim ForcingGroup(nForcing)
-            ReDim ForcingIndexes(nForcing)
-            ReDim ForcingNames(nForcing)
+            ReDim Me.ForcingGroup(Me.nForcing)
+            ReDim Me.ForcingIndexes(Me.nForcing)
+            ReDim Me.ForcingNames(Me.nForcing)
 
         End Sub
 
@@ -186,60 +186,60 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-        Public Sub redimTFM(ByVal nTFM As Integer, ByVal nGroups As Integer)
+        Public Sub redimTFM(nTFM As Integer, nGroups As Integer)
             Me.nTFM = nTFM
             If nTFM = 0 Then nTFM = 1
 
-            ReDim tfmBlim(Me.nTFM, nGroups)
-            ReDim tfmBbase(Me.nTFM, nGroups)
-            ReDim tfmFmax(Me.nTFM, nGroups)
-            ReDim tfmFmin(Me.nTFM, nGroups)
+            ReDim Me.tfmBlim(Me.nTFM, nGroups)
+            ReDim Me.tfmBbase(Me.nTFM, nGroups)
+            ReDim Me.tfmFmax(Me.nTFM, nGroups)
+            ReDim Me.tfmFmin(Me.nTFM, nGroups)
 
-            ReDim TFMDBIDs(nGroups)
+            ReDim Me.TFMDBIDs(nGroups)
 
             ' Temporary fix: set group dbids to bogus values; needs to be configured from Datasource
             For i As Integer = 1 To nGroups
-                TFMDBIDs(i) = i
+                Me.TFMDBIDs(i) = i
             Next
 
-            ReDim BlimLower(nGroups)
-            ReDim BlimUpper(nGroups)
+            ReDim Me.BlimLower(nGroups)
+            ReDim Me.BlimUpper(nGroups)
 
-            ReDim BBaseLower(nGroups)
-            ReDim BBaseUpper(nGroups)
+            ReDim Me.BBaseLower(nGroups)
+            ReDim Me.BBaseUpper(nGroups)
 
-            ReDim FOptLower(nGroups)
-            ReDim FOptUpper(nGroups)
+            ReDim Me.FOptLower(nGroups)
+            ReDim Me.FOptUpper(nGroups)
 
             '    Me.setDefaultTFM()
 
         End Sub
 
-        Public Sub redimFixedF(ByVal nFIters As Integer, ByVal nGroups As Integer)
+        Public Sub redimFixedF(nFIters As Integer, nGroups As Integer)
             Me.nFixedF = nFIters
-            If nFixedF = 0 Then nFixedF = 1
+            If Me.nFixedF = 0 Then Me.nFixedF = 1
 
-            ReDim FixedF(nFixedF, nGroups)
-            ReDim FixedFLower(nGroups)
-            ReDim FixedFUpper(nGroups)
+            ReDim Me.FixedF(Me.nFixedF, nGroups)
+            ReDim Me.FixedFLower(nGroups)
+            ReDim Me.FixedFUpper(nGroups)
 
         End Sub
 
-        Public Sub redimTAC(ByVal nTACIters As Integer, ByVal nGroups As Integer)
+        Public Sub redimTAC(nTACIters As Integer, nGroups As Integer)
             Me.nTAC = nTACIters
-            If nTAC = 0 Then nTAC = 1
+            If Me.nTAC = 0 Then Me.nTAC = 1
 
-            ReDim TAC(nTAC, nGroups)
-            ReDim TACLower(nGroups)
-            ReDim TACUpper(nGroups)
+            ReDim Me.TAC(Me.nTAC, nGroups)
+            ReDim Me.TACLower(nGroups)
+            ReDim Me.TACUpper(nGroups)
 
         End Sub
 
-        Public Sub redimControlTypes(ByVal nTypes As Integer, ByVal nFleets As Integer)
-            nControlTypes = nTypes
-            If nControlTypes = 0 Then nControlTypes = 1
+        Public Sub redimControlTypes(nTypes As Integer, nFleets As Integer)
+            Me.nControlTypes = nTypes
+            If Me.nControlTypes = 0 Then Me.nControlTypes = 1
 
-            ReDim ControlType(nControlTypes, nFleets)
+            ReDim Me.ControlType(Me.nControlTypes, nFleets)
 
         End Sub
 
@@ -255,22 +255,22 @@ Namespace MSEBatchManager
             Dim defautlUp As Single = 1.0
             For igrp As Integer = 1 To Me.nGroups
 
-                GroupRunType(igrp) = eMSEBatchRunTypes.TFM
+                Me.GroupRunType(igrp) = eMSEBatchRunTypes.TFM
 
-                BlimLower(igrp) = defautlLL
-                BlimUpper(igrp) = defautlUp
+                Me.BlimLower(igrp) = defautlLL
+                Me.BlimUpper(igrp) = defautlUp
 
-                BBaseLower(igrp) = defautlLL
-                BBaseUpper(igrp) = defautlUp
+                Me.BBaseLower(igrp) = defautlLL
+                Me.BBaseUpper(igrp) = defautlUp
 
-                FOptLower(igrp) = defautlLL
-                FOptUpper(igrp) = defautlUp
+                Me.FOptLower(igrp) = defautlLL
+                Me.FOptUpper(igrp) = defautlUp
 
-                FixedFLower(igrp) = defautlLL
-                FixedFUpper(igrp) = defautlUp
+                Me.FixedFLower(igrp) = defautlLL
+                Me.FixedFUpper(igrp) = defautlUp
 
-                TACLower(igrp) = defautlLL
-                TACUpper(igrp) = defautlUp
+                Me.TACLower(igrp) = defautlLL
+                Me.TACUpper(igrp) = defautlUp
 
             Next
         End Sub
@@ -293,7 +293,7 @@ Namespace MSEBatchManager
             Me.m_nGroups = MSEdata.NGroups
             Me.m_nFleets = MSEdata.nFleets
 
-            ReDim GroupRunType(MSEdata.NGroups)
+            ReDim Me.GroupRunType(MSEdata.NGroups)
 
             Me.redimForcing(1)
             Me.redimControlTypes(1, MSEdata.nFleets)
@@ -311,23 +311,23 @@ Namespace MSEBatchManager
         ''' </summary>
         ''' <param name="MSEdata"></param>
         ''' <remarks></remarks>
-        Public Sub StoreMSEState(ByVal MSEdata As EwECore.MSE.cMSEDataStructures)
-            ReDim m_orgBlim(Me.nGroups)
-            ReDim m_orgBbase(Me.nGroups)
-            ReDim m_orgFmax(Me.nGroups)
-            ReDim m_orgFmin(Me.nGroups)
+        Public Sub StoreMSEState(MSEdata As EwECore.MSE.cMSEDataStructures)
+            ReDim Me.m_orgBlim(Me.nGroups)
+            ReDim Me.m_orgBbase(Me.nGroups)
+            ReDim Me.m_orgFmax(Me.nGroups)
+            ReDim Me.m_orgFmin(Me.nGroups)
 
-            ReDim m_orgFixedF(Me.nGroups)
-            ReDim m_orgTAC(Me.nGroups)
+            ReDim Me.m_orgFixedF(Me.nGroups)
+            ReDim Me.m_orgTAC(Me.nGroups)
 
             For igrp As Integer = 1 To Me.nGroups
-                m_orgBlim(igrp) = MSEdata.Blim(igrp)
-                m_orgBbase(igrp) = MSEdata.Bbase(igrp)
-                m_orgFmax(igrp) = MSEdata.Fopt(igrp)
-                m_orgFmin(igrp) = MSEdata.Fmin(igrp)
+                Me.m_orgBlim(igrp) = MSEdata.Blim(igrp)
+                Me.m_orgBbase(igrp) = MSEdata.Bbase(igrp)
+                Me.m_orgFmax(igrp) = MSEdata.Fopt(igrp)
+                Me.m_orgFmin(igrp) = MSEdata.Fmin(igrp)
 
-                m_orgFixedF(igrp) = MSEdata.FixedF(igrp)
-                m_orgTAC(igrp) = MSEdata.TAC(igrp)
+                Me.m_orgFixedF(igrp) = MSEdata.FixedF(igrp)
+                Me.m_orgTAC(igrp) = MSEdata.TAC(igrp)
             Next
 
         End Sub
@@ -337,17 +337,17 @@ Namespace MSEBatchManager
         ''' </summary>
         ''' <param name="MSEdata"></param>
         ''' <remarks></remarks>
-        Public Sub ReStoreMSEState(ByVal MSEdata As EwECore.MSE.cMSEDataStructures)
+        Public Sub ReStoreMSEState(MSEdata As EwECore.MSE.cMSEDataStructures)
             Try
 
                 For igrp As Integer = 1 To Me.nGroups
-                    MSEdata.Blim(igrp) = m_orgBlim(igrp)
-                    MSEdata.Bbase(igrp) = m_orgBbase(igrp)
-                    MSEdata.Fopt(igrp) = m_orgFmax(igrp)
-                    MSEdata.Fmin(igrp) = m_orgFmin(igrp)
+                    MSEdata.Blim(igrp) = Me.m_orgBlim(igrp)
+                    MSEdata.Bbase(igrp) = Me.m_orgBbase(igrp)
+                    MSEdata.Fopt(igrp) = Me.m_orgFmax(igrp)
+                    MSEdata.Fmin(igrp) = Me.m_orgFmin(igrp)
 
-                    MSEdata.FixedF(igrp) = m_orgFixedF(igrp)
-                    MSEdata.TAC(igrp) = m_orgTAC(igrp)
+                    MSEdata.FixedF(igrp) = Me.m_orgFixedF(igrp)
+                    MSEdata.TAC(igrp) = Me.m_orgTAC(igrp)
                 Next
 
             Catch ex As Exception

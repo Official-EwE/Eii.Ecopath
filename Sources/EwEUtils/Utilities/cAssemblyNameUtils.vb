@@ -55,7 +55,7 @@ Namespace Utilities
         Private Class AssemblyNameComparer
             Implements IComparer(Of AssemblyName)
 
-            Public Function Compare(ByVal x As System.Reflection.AssemblyName, ByVal y As System.Reflection.AssemblyName) As Integer _
+            Public Function Compare(x As System.Reflection.AssemblyName, y As System.Reflection.AssemblyName) As Integer _
                 Implements System.Collections.Generic.IComparer(Of System.Reflection.AssemblyName).Compare
 
                 Dim i As Integer = String.Compare(x.Name, y.Name)
@@ -126,7 +126,7 @@ Namespace Utilities
         ''' the name for.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetName(ByVal an As AssemblyName) As String
+        Public Shared Function GetName(an As AssemblyName) As String
             If (an Is Nothing) Then Return String.Empty
             Return an.Name
         End Function
@@ -139,7 +139,7 @@ Namespace Utilities
         ''' the public key token for.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetToken(ByVal an As AssemblyName) As String
+        Public Shared Function GetToken(an As AssemblyName) As String
             If (an Is Nothing) Then Return String.Empty
             Return cStringUtils.ToHexString(an.GetPublicKeyToken())
         End Function
@@ -154,7 +154,7 @@ Namespace Utilities
         ''' <see cref="Assembly.GetExecutingAssembly">executing assembly</see> is returned.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetVersion(Optional ByVal an As AssemblyName = Nothing) As Version
+        Public Shared Function GetVersion(Optional an As AssemblyName = Nothing) As Version
             If (an Is Nothing) Then
                 an = ExecutingAssembly.GetName
             End If
@@ -168,7 +168,7 @@ Namespace Utilities
         ''' </summary>
         ''' <value>The compile date.</value>
         ''' -----------------------------------------------------------------------
-        Public Shared ReadOnly Property GetCompileDate(Optional ByVal ass As Assembly = Nothing) As System.DateTime
+        Public Shared ReadOnly Property GetCompileDate(Optional ass As Assembly = Nothing) As System.DateTime
             Get
 
                 Dim strFile As String = ""
@@ -188,7 +188,7 @@ Namespace Utilities
         ''' <param name="tclass">The class to return the defining assembly name for.</param>
         ''' <returns>An AssemblyName, or nothing if the class type could not be resolved.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetAssemblyName(ByVal tclass As Type) As AssemblyName
+        Public Shared Function GetAssemblyName(tclass As Type) As AssemblyName
 
             If (tclass Is Nothing) Then Return Nothing
             Dim ass As Assembly = Assembly.GetAssembly(tclass)
@@ -262,7 +262,7 @@ Namespace Utilities
         ''' The array of assembly names will be sorted by name.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetSummary(ByVal entry As Assembly,
+        Private Shared Function GetSummary(entry As Assembly,
                                            Optional flags As eSummaryFlags = eSummaryFlags.EwECore Or eSummaryFlags.EwEExtended) As AssemblyName()
 
             ' List to hold collected summary data
@@ -545,7 +545,7 @@ Namespace Utilities
         ''' This code does not use 
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Shared Function CompareNames(ByVal an1 As AssemblyName, ByVal an2 As AssemblyName) As Boolean
+        Private Shared Function CompareNames(an1 As AssemblyName, an2 As AssemblyName) As Boolean
             If (an1 Is Nothing) Or (an2 Is Nothing) Then Return False
             Return (String.Compare(an1.FullName, an2.FullName, True) = 0)
         End Function

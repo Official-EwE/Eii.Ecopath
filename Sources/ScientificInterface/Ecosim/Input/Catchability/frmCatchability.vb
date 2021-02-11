@@ -56,18 +56,18 @@ Namespace Ecosim
             MyBase.OnLoad(e)
 
             For iflt As Integer = 1 To Me.Core.nFleets
-                m_tscbFleets.Items.Add(Core.EcosimFleetInputs(iflt).Name)
+                Me.m_tscbFleets.Items.Add(Me.Core.EcosimFleetInputs(iflt).Name)
             Next
-            m_tscbFleets.SelectedIndex = 0
+            Me.m_tscbFleets.SelectedIndex = 0
 
         End Sub
 
         Private Sub m_tscbFleets_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_tscbFleets.SelectedIndexChanged
-            Me.m_grdCatchability.SelectedFleetIndex = m_tscbFleets.SelectedIndex + 1
+            Me.m_grdCatchability.SelectedFleetIndex = Me.m_tscbFleets.SelectedIndex + 1
         End Sub
 
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+        Public Overrides Sub OnCoreMessage(msg As cMessage)
             MyBase.OnCoreMessage(msg)
             If msg.HasVariable(eVarNameFlags.EcoSimNYears) Then
                 Me.m_grdCatchability.RefreshContent()

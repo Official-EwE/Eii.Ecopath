@@ -42,10 +42,10 @@ Namespace Controls
 
 #End Region ' Privates
 
-        Public Sub New(ByVal parent As ucEditHatch)
+        Public Sub New(parent As ucEditHatch)
 
             ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             Me.m_parent = parent
 
@@ -58,7 +58,7 @@ Namespace Controls
             Get
                 Return Me.m_hbsSelected
             End Get
-            Set(ByVal value As HatchStyle)
+            Set(value As HatchStyle)
 
                 If value <> Me.m_hbsSelected Then
                     Me.m_dtBrushes(Me.m_hbsSelected).Selected = False
@@ -71,7 +71,7 @@ Namespace Controls
             End Set
         End Property
 
-        Public Sub Colours(ByVal clrFore As Color, ByVal clrBack As Color)
+        Public Sub Colours(clrFore As Color, clrBack As Color)
             For Each uc As ucHatch In Me.m_dtBrushes.Values
                 uc.Colours(clrFore, clrBack)
             Next
@@ -93,23 +93,23 @@ Namespace Controls
                     Me.flpItems.Controls.Add(uc)
                     Me.m_dtBrushes.Add(hbs, uc)
 
-                    AddHandler uc.Click, AddressOf OnHatchClick
-                    AddHandler uc.DoubleClick, AddressOf OnHatchDoubleClick
+                    AddHandler uc.Click, AddressOf Me.OnHatchClick
+                    AddHandler uc.DoubleClick, AddressOf Me.OnHatchDoubleClick
                 End If
             Next
 
             Me.ResumeLayout()
         End Sub
 
-        Private Sub ucHatchSelect_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub ucHatchSelect_Disposed(sender As Object, e As System.EventArgs) Handles Me.Disposed
 
             ' Clean-up
             For Each ctrl As Control In Me.flpItems.Controls
                 If TypeOf ctrl Is ucHatch Then
                     Dim uc As ucHatch = DirectCast(ctrl, ucHatch)
 
-                    RemoveHandler uc.Click, AddressOf OnHatchClick
-                    RemoveHandler uc.DoubleClick, AddressOf OnHatchDoubleClick
+                    RemoveHandler uc.Click, AddressOf Me.OnHatchClick
+                    RemoveHandler uc.DoubleClick, AddressOf Me.OnHatchDoubleClick
                 End If
             Next
             Me.flpItems.Controls.Clear()
@@ -120,12 +120,12 @@ Namespace Controls
 
 #Region " Internal implementation "
 
-        Private Sub OnHatchClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnHatchClick(sender As Object, e As EventArgs)
             Debug.Assert(TypeOf sender Is ucHatch)
             Me.SelectedHatchStyle = DirectCast(sender, ucHatch).HatchStyle
         End Sub
 
-        Private Sub OnHatchDoubleClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnHatchDoubleClick(sender As Object, e As EventArgs)
             Me.m_parent.HideDropdown()
         End Sub
 

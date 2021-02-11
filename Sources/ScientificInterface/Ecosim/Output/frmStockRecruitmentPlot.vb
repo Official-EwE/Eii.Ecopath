@@ -51,7 +51,7 @@ Namespace Ecosim
             Private m_sStock As Single
             Private m_sRecruitment As Single
 
-            Public Sub New(ByVal sStock As Single, ByVal sRecruitment As Single)
+            Public Sub New(sStock As Single, sRecruitment As Single)
                 Me.m_sStock = sStock
                 Me.m_sRecruitment = sRecruitment
             End Sub
@@ -86,7 +86,7 @@ Namespace Ecosim
             Private m_bIsVisible As Boolean = False
             Private m_bIsDefault As Boolean = False
 
-            Public Sub New(ByVal sg As cStanzaGroup, ByVal grpStart As cCoreGroupBase, ByVal grpEnd As cCoreGroupBase)
+            Public Sub New(sg As cStanzaGroup, grpStart As cCoreGroupBase, grpEnd As cCoreGroupBase)
                 Me.m_sg = sg
                 Me.m_grpStart = grpStart
                 Me.m_grpEnd = grpEnd
@@ -120,7 +120,7 @@ Namespace Ecosim
                 Get
                     Return Me.m_bIsVisible
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     Me.m_bIsVisible = value
                 End Set
             End Property
@@ -129,7 +129,7 @@ Namespace Ecosim
                 Get
                     Return Me.m_bIsDefault
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     Me.m_bIsDefault = value
                 End Set
             End Property
@@ -168,7 +168,7 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -190,23 +190,23 @@ Namespace Ecosim
             If (m_SyncObj Is Nothing) Then m_SyncObj = New System.Threading.SynchronizationContext()
 
             ' Start listening for core messages
-            Me.m_mhEcosim = New cMessageHandler(AddressOf EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, m_SyncObj)
+            Me.m_mhEcosim = New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, m_SyncObj)
 #If DEBUG Then
             Me.m_mhEcosim.Name = "frmStockRecruitment.Ecosim"
 #End If
             Me.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
-            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
             Me.m_mhEcosim = Nothing
             Me.m_zgh.Detach()
 
-            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             MyBase.OnFormClosed(e)
 
@@ -221,17 +221,17 @@ Namespace Ecosim
             End Get
         End Property
 
-        Private Sub btnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub btnRun_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRun.Click
 
             Try
 
-                If Not IsRunning Then
+                If Not Me.IsRunning Then
 
-                    For i As Integer = 0 To m_SRResults.Count - 1
-                        m_SRResults(i).Data.Clear()
+                    For i As Integer = 0 To Me.m_SRResults.Count - 1
+                        Me.m_SRResults(i).Data.Clear()
                     Next
-                    Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
+                    Me.Core.RunEcoSim(AddressOf Me.TimeStepFromEcoSim_handler)
                 Else
                     Me.Core.StopEcoSim()
                 End If
@@ -242,7 +242,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
+        Private Sub TimeStepFromEcoSim_handler(iTime As Long, results As cEcoSimResults)
 
             If results.hasSRData Then
                 Try
@@ -254,7 +254,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+        Private Sub OnCoreExecutionStateChanged(csm As cCoreStateMonitor)
 
             ' Check whether ecosim is running
             Dim bEcosimRunning As Boolean = (csm.IsEcosimRunning)
@@ -274,7 +274,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(change As cStyleGuide.eChangeType)
             If (change And cStyleGuide.eChangeType.Colours) > 0 Then
                 ' Add the curves again
                 Me.AddCurves()
@@ -286,7 +286,7 @@ Namespace Ecosim
             Try
                 Select Case msg.Type
                     Case eMessageType.EcosimRunCompleted
-                        If Not m_SRResults Is Nothing Then
+                        If Not Me.m_SRResults Is Nothing Then
                             Me.AddCurves()
                         End If
                 End Select
@@ -297,7 +297,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub tvGroups_AfterSelect(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
+        Private Sub tvGroups_AfterSelect(sender As System.Object, e As TreeViewEventArgs) _
             Handles m_tvGroups.AfterSelect
 
             Try
@@ -323,7 +323,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Function zgSRPlot_MouseDownEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As MouseEventArgs) As System.Boolean _
+        Private Function zgSRPlot_MouseDownEvent(sender As ZedGraph.ZedGraphControl, e As MouseEventArgs) As System.Boolean _
             Handles m_plot.MouseDownEvent
 
             Try
@@ -338,10 +338,10 @@ Namespace Ecosim
 
                     pane.ReverseTransform(ptMouse, x, y)
                     item = pane.AddCurve("", New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
-                    m_lblPt.Text = cStringUtils.Localize(My.Resources.ECOSIM_SR_SLOPELABEL, _
+                    Me.m_lblPt.Text = cStringUtils.Localize(My.Resources.ECOSIM_SR_SLOPELABEL, _
                                                sg.FormatNumber(CSng(x)), sg.FormatNumber(CSng(y)), _
                                                sg.FormatNumber(CSng(y / x)))
-                    RemoveSlopeCurve(item)
+                    Me.RemoveSlopeCurve(item)
                 End If
 
             Catch ex As Exception
@@ -351,7 +351,7 @@ Namespace Ecosim
             Return False
         End Function
 
-        Private Function zgSRPlot_MouseMoveEvent(ByVal sender As ZedGraph.ZedGraphControl, ByVal e As MouseEventArgs) As System.Boolean _
+        Private Function zgSRPlot_MouseMoveEvent(sender As ZedGraph.ZedGraphControl, e As MouseEventArgs) As System.Boolean _
             Handles m_plot.MouseMoveEvent
 
             Try
@@ -360,8 +360,8 @@ Namespace Ecosim
                 Dim pane As GraphPane = Me.m_plot.MasterPane.FindChartRect(mousePt)
 
                 If pane Is Nothing Then
-                    m_lblPt.Text = String.Empty
-                    RemoveSlopeCurve(Nothing)
+                    Me.m_lblPt.Text = String.Empty
+                    Me.RemoveSlopeCurve(Nothing)
                 End If
 
             Catch ex As Exception
@@ -385,13 +385,13 @@ Namespace Ecosim
             Dim iGroup As Integer = 0
             Dim srl As cSRLine = Nothing
 
-            m_tvGroups.BeginUpdate()
-            m_tvGroups.Nodes.Clear()
+            Me.m_tvGroups.BeginUpdate()
+            Me.m_tvGroups.Nodes.Clear()
 
-            m_SRResults.Clear()
+            Me.m_SRResults.Clear()
 
             If Me.Core.nStanzas > 0 Then
-                m_tvGroups.Nodes.Add(SharedResources.HEADER_SHOWALL)
+                Me.m_tvGroups.Nodes.Add(SharedResources.HEADER_SHOWALL)
 
                 'Stanza group index is Zero-based.
                 For i As Integer = 0 To Me.Core.nStanzas - 1
@@ -400,7 +400,7 @@ Namespace Ecosim
                     ' Add stanza node
                     node = New TreeNode(stanza.Name)
                     node.Tag = stanza
-                    m_tvGroups.Nodes(0).Nodes.Add(node)
+                    Me.m_tvGroups.Nodes(0).Nodes.Add(node)
 
                     ' Add subnodes for life stages
                     iGroupLast = stanza.iGroups(stanza.nLifeStages)
@@ -417,24 +417,24 @@ Namespace Ecosim
 
                         node = New TreeNode(srl.Title)
                         node.Tag = srl
-                        m_tvGroups.Nodes(0).Nodes(i).Nodes.Add(node) ' Wow, here's to having some good faith....
+                        Me.m_tvGroups.Nodes(0).Nodes(i).Nodes.Add(node) ' Wow, here's to having some good faith....
 
-                        m_SRResults.Add(srl)
+                        Me.m_SRResults.Add(srl)
 
                     Next
                 Next
-                m_btnRun.Enabled = True
+                Me.m_btnRun.Enabled = True
             Else
-                m_tvGroups.Nodes.Add(My.Resources.SR_PLOT_NO_STANZA_GROUP)
-                m_btnRun.Enabled = False
+                Me.m_tvGroups.Nodes.Add(My.Resources.SR_PLOT_NO_STANZA_GROUP)
+                Me.m_btnRun.Enabled = False
             End If
 
-            m_tvGroups.EndUpdate()
-            m_tvGroups.ExpandAll()
+            Me.m_tvGroups.EndUpdate()
+            Me.m_tvGroups.ExpandAll()
 
         End Sub
 
-        Private Sub BuildSRData(ByVal results As cEcoSimResults)
+        Private Sub BuildSRData(results As cEcoSimResults)
 
             Dim stanza As cStanzaGroup = Nothing
             Dim group As cEcoPathGroupInput = Nothing
@@ -446,7 +446,7 @@ Namespace Ecosim
                     group = Me.Core.EcoPathGroupInputs(stanza.iGroups(j))
                     If results.hasSRData(i, j) Then
                         tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
-                        For k As Integer = 0 To m_SRResults.Count - 1
+                        For k As Integer = 0 To Me.m_SRResults.Count - 1
                             If (ReferenceEquals(stanza, Me.m_SRResults(k).StanzaGroup)) And _
                                (ReferenceEquals(group, Me.m_SRResults(k).GroupStart)) Then
                                 Me.m_SRResults(k).Data.Add(tmpSR)
@@ -475,12 +475,12 @@ Namespace Ecosim
             Dim srl As cSRLine = Nothing
             Dim srd As cSRData = Nothing
 
-            For i As Integer = 0 To m_SRResults.Count - 1
+            For i As Integer = 0 To Me.m_SRResults.Count - 1
 
                 srl = Me.m_SRResults(i)
                 ppl = New PointPairList()
 
-                For j As Integer = 0 To m_SRResults(i).Data.Count - 1
+                For j As Integer = 0 To Me.m_SRResults(i).Data.Count - 1
                     srd = srl.Data(j)
                     ppl.Add(srd.Stock, srd.Recruitment)
                 Next
@@ -504,12 +504,12 @@ Namespace Ecosim
         ''' <param name="strTitleX"></param>
         ''' <param name="strTitleY"></param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateCurves(ByVal strTitleX As String, ByVal strTitleY As String)
+        Private Sub UpdateCurves(strTitleX As String, strTitleY As String)
 
             Dim line As cSRLine = Nothing
             Dim curve As CurveItem = Nothing
 
-            For i As Integer = 0 To m_SRResults.Count - 1
+            For i As Integer = 0 To Me.m_SRResults.Count - 1
                 line = Me.m_SRResults(i)
                 curve = Me.m_plot.GraphPane.CurveList(line.Title)
 
@@ -527,27 +527,27 @@ Namespace Ecosim
         End Sub
 
         Private Sub ShowDefault()
-            For i As Integer = 0 To m_SRResults.Count - 1
+            For i As Integer = 0 To Me.m_SRResults.Count - 1
                 Dim srl As cSRLine = Me.m_SRResults(i)
                 srl.IsVisible = srl.IsDefault
             Next
             Me.UpdateCurves("", "")
         End Sub
 
-        Private Sub ShowStanza(ByVal stanzaGroup As cStanzaGroup)
-            For i As Integer = 0 To m_SRResults.Count - 1
+        Private Sub ShowStanza(stanzaGroup As cStanzaGroup)
+            For i As Integer = 0 To Me.m_SRResults.Count - 1
                 Dim srl As cSRLine = Me.m_SRResults(i)
-                srl.IsVisible = ReferenceEquals(m_SRResults(i).StanzaGroup, stanzaGroup)
+                srl.IsVisible = ReferenceEquals(Me.m_SRResults(i).StanzaGroup, stanzaGroup)
             Next
             Me.UpdateCurves("", "")
         End Sub
 
-        Private Sub ShowSingleGroup(ByVal srlShow As cSRLine)
+        Private Sub ShowSingleGroup(srlShow As cSRLine)
             Dim strTitleX As String = ""
             Dim strTitleY As String = ""
             Dim srl As cSRLine = Nothing
 
-            For i As Integer = 0 To m_SRResults.Count - 1
+            For i As Integer = 0 To Me.m_SRResults.Count - 1
                 srl = Me.m_SRResults(i)
                 If ReferenceEquals(srlShow, srl) Then
                     srl.IsVisible = True
@@ -560,9 +560,9 @@ Namespace Ecosim
             Me.UpdateCurves(strTitleX, strTitleY)
         End Sub
 
-        Private Sub RemoveSlopeCurve(ByVal item As CurveItem)
+        Private Sub RemoveSlopeCurve(item As CurveItem)
 
-            If Not m_curveSlope Is Nothing Then
+            If Not Me.m_curveSlope Is Nothing Then
                 Me.m_plot.GraphPane.CurveList.Remove(Me.m_curveSlope)
             End If
             Me.m_curveSlope = item

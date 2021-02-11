@@ -50,7 +50,7 @@ Namespace Controls
 
         Public Sub New()
             ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
@@ -66,7 +66,7 @@ Namespace Controls
         ''' Event that this control throws whenever the selection changes.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Event OnSelectionChanged(ByVal sender As ucGlyphSelect, ByVal e As EventArgs)
+        Public Event OnSelectionChanged(sender As ucGlyphSelect, e As EventArgs)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -77,7 +77,7 @@ Namespace Controls
             Get
                 Return Me.GetImageAt(Me.SelectedIndex)
             End Get
-            Set(ByVal value As Image)
+            Set(value As Image)
                 Me.SelectedIndex = Me.GetImageIndex(value)
             End Set
         End Property
@@ -91,7 +91,7 @@ Namespace Controls
             Get
                 Return Me.m_iSelectedIndex
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Dim uc As ucGlyph = Nothing
 
                 If (value = Me.m_iSelectedIndex) Then Return
@@ -121,7 +121,7 @@ Namespace Controls
         ''' <returns>True if this image is valid and was not already added, 
         ''' False otherwise.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function AddImage(ByVal img As Image) As Boolean
+        Public Function AddImage(img As Image) As Boolean
 
             Dim uc As ucGlyph = Nothing
             Dim abtHash As Byte() = Nothing
@@ -137,7 +137,7 @@ Namespace Controls
             Me.m_labtImageHashCodes.Add(abtHash)
             Me.m_flpGlyphs.Controls.Add(uc)
 
-            AddHandler uc.Click, AddressOf OnGlyphSelect
+            AddHandler uc.Click, AddressOf Me.OnGlyphSelect
 
             Return True
         End Function
@@ -149,7 +149,7 @@ Namespace Controls
         ''' <param name="img">The image to remove.</param>
         ''' <returns>True if the image was succesfully removed.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function RemoveImage(ByVal img As Image) As Boolean
+        Public Function RemoveImage(img As Image) As Boolean
 
             Dim iIndex As Integer = -1
             Dim abtHash As Byte() = Nothing
@@ -163,7 +163,7 @@ Namespace Controls
             If (iIndex = -1) Then Return False
 
             uc = Me.GetGlyphControlAt(iIndex)
-            RemoveHandler uc.Click, AddressOf OnGlyphSelect
+            RemoveHandler uc.Click, AddressOf Me.OnGlyphSelect
             uc = Nothing
 
             Me.m_flpGlyphs.Controls.RemoveAt(iIndex)
@@ -185,7 +185,7 @@ Namespace Controls
         ''' <returns>A value equal to or greater than 0 representing the image
         ''' index, or -1 if the image was not found.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function GetImageIndex(ByVal img As Image) As Integer
+        Public Function GetImageIndex(img As Image) As Integer
             ' Sanity check
             If (img Is Nothing) Then Return -1
             ' Get the real thing
@@ -211,7 +211,7 @@ Namespace Controls
             Get
                 Return Me.m_szGlyphSize
             End Get
-            Set(ByVal value As Size)
+            Set(value As Size)
                 ' Store
                 Me.m_szGlyphSize = value
                 ' Resize existing glyphs
@@ -236,7 +236,7 @@ Namespace Controls
             Get
                 Return Me.m_szMaxImageSize
             End Get
-            Set(ByVal value As Size)
+            Set(value As Size)
                 Me.m_szMaxImageSize = value
             End Set
         End Property
@@ -245,13 +245,13 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub ucGlyphSelect_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub ucGlyphSelect_Disposed(sender As Object, e As System.EventArgs) Handles Me.Disposed
             ' Detatch dangling event handlers
             ' This is not the correct way; the panel may be cleared while control instances may still be kept alive
             ' by the very dangling event handlers that we're trying to release. Instead, a second administration
             ' should keep track of control instances from which handlers are freed. Not important enough right now!
             For Each uc As Panel In Me.m_flpGlyphs.Controls
-                RemoveHandler DirectCast(uc, ucGlyph).Click, AddressOf OnGlyphSelect
+                RemoveHandler DirectCast(uc, ucGlyph).Click, AddressOf Me.OnGlyphSelect
             Next
             Me.m_labtImageHashCodes.Clear()
         End Sub
@@ -261,7 +261,7 @@ Namespace Controls
         ''' Glyph selection state change event handler.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnGlyphSelect(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnGlyphSelect(sender As Object, e As EventArgs)
             Debug.Assert(TypeOf sender Is ucGlyph)
             Me.SelectedImage = DirectCast(sender, ucGlyph).Image
         End Sub
@@ -270,14 +270,14 @@ Namespace Controls
 
 #Region " Internal implementation "
 
-        Private Function GetImageAt(ByVal iIndex As Integer) As Image
+        Private Function GetImageAt(iIndex As Integer) As Image
             If (Not Me.IsValidImageIndex(iIndex)) Then
                 Return Nothing
             End If
             Return Me.GetGlyphControlAt(iIndex).Image
         End Function
 
-        Private Function GetGlyphControlAt(ByVal iIndex As Integer) As ucGlyph
+        Private Function GetGlyphControlAt(iIndex As Integer) As ucGlyph
             If (Not Me.IsValidImageIndex(iIndex)) Then
                 Return Nothing
             End If
@@ -292,7 +292,7 @@ Namespace Controls
         ''' <param name="img">The image to validate.</param>
         ''' <returns>True if valid, False otherwise.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function IsValidImage(ByVal img As Image) As Boolean
+        Private Function IsValidImage(img As Image) As Boolean
             If (img Is Nothing) Then Return False
             If (img.Width > Me.m_szMaxImageSize.Width) Then Return False
             If (img.Height > Me.m_szMaxImageSize.Height) Then Return False
@@ -307,7 +307,7 @@ Namespace Controls
         ''' <param name="iIndex">The index to validate.</param>
         ''' <returns>True if valid, False otherwise.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function IsValidImageIndex(ByVal iIndex As Integer) As Boolean
+        Private Function IsValidImageIndex(iIndex As Integer) As Boolean
             Return ((iIndex >= 0) And (iIndex < Me.GetImageCount()))
         End Function
 
@@ -320,7 +320,7 @@ Namespace Controls
         ''' <returns>A value equal to or greater than 0 representing the hash code 
         ''' index, or -1 if the image hash code was not found.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function GetHashCodeIndex(ByVal abtHash As Byte()) As Integer
+        Private Function GetHashCodeIndex(abtHash As Byte()) As Integer
             Dim iIndex As Integer = 0
             For iIndex = 0 To Me.GetImageCount() - 1
                 If Me.EqualsHashCodes(abtHash, Me.m_labtImageHashCodes(iIndex)) Then Return iIndex
@@ -336,7 +336,7 @@ Namespace Controls
         ''' <param name="abt2">Second hash code to compare. Cannot be NULL.</param>
         ''' <returns>True if the hash codes are equal in length and content, false otherwise.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function EqualsHashCodes(ByVal abt1 As Byte(), ByVal abt2 As Byte()) As Boolean
+        Private Function EqualsHashCodes(abt1 As Byte(), abt2 As Byte()) As Boolean
 
             ' Sanity checks
             Debug.Assert(abt1 IsNot Nothing)
@@ -366,7 +366,7 @@ Namespace Controls
         ''' <param name="img">The image to build a hash code for.</param>
         ''' <returns>A hash code.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function GetImageHashCode(ByVal img As Image) As Byte()
+        Private Function GetImageHashCode(img As Image) As Byte()
 
             Dim bmp As Bitmap = New Bitmap(img)
             Dim shaM As New SHA256Managed()

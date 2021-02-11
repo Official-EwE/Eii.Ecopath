@@ -119,7 +119,7 @@ Public Class cEcotracerResultWriter
     ''' <returns>The writer, or nothing if an error occurred.</returns>
     ''' <remarks>Close the writer with <see cref="CloseWriter"/>.</remarks>
     ''' -------------------------------------------------------------------
-    Protected Function OpenWriter(ByVal strFile As String) As StreamWriter
+    Protected Function OpenWriter(strFile As String) As StreamWriter
 
         Dim sw As StreamWriter = Nothing
 
@@ -170,7 +170,7 @@ Public Class cEcotracerResultWriter
     ''' Write CSV header information.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Protected Sub WriteHeader(ByVal sw As StreamWriter, ByVal bSpace As Boolean, Optional iRegion As Integer = 0)
+    Protected Sub WriteHeader(sw As StreamWriter, bSpace As Boolean, Optional iRegion As Integer = 0)
 
         sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecotracer))
 
@@ -185,7 +185,7 @@ Public Class cEcotracerResultWriter
 
     End Sub
 
-    Protected Sub WriteBody(ByVal sw As StreamWriter, Optional iRegion As Integer = 0)
+    Protected Sub WriteBody(sw As StreamWriter, Optional iRegion As Integer = 0)
 
         Dim pathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
@@ -217,7 +217,7 @@ Public Class cEcotracerResultWriter
     ''' <param name="strPath">Output file name.</param>
     ''' <param name="strReason">Reason of failure, most likely the text obtained from an exception.</param>
     ''' -------------------------------------------------------------------
-    Protected Sub SendErrorMessage(ByVal strPath As String, ByVal strReason As String)
+    Protected Sub SendErrorMessage(strPath As String, strReason As String)
         Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_FAILED, strPath, strReason), _
                                            eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         Me.m_core.Messages.SendMessage(msg)
@@ -229,7 +229,7 @@ Public Class cEcotracerResultWriter
     ''' </summary>
     ''' <param name="strPath">Output file name.</param>
     ''' -------------------------------------------------------------------
-    Protected Function SendSuccessMessage(ByVal strPath As String) As cMessage
+    Protected Function SendSuccessMessage(strPath As String) As cMessage
         Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_SUCCESS, strPath), _
                                            eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strPath)

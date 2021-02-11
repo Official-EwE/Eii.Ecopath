@@ -59,7 +59,7 @@ Namespace Ecopath
         ''' </summary>
         ''' <param name="core">The <see cref="cCore"/> to operate on.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(core As cCore)
             Me.m_core = core
             Me.m_data = New cEcopathMergeGroupsDatastructures()
             Me.m_data.Init(core.m_EcoPathData, core.m_Stanza)
@@ -272,7 +272,7 @@ Namespace Ecopath
 
             Me.m_data.Binput = ecopathds.B(agg1) + ecopathds.B(agg2)
             Me.m_data.Area = (ecopathds.Area(agg1) + ecopathds.Area(agg2)) / 2
-            Me.m_data.BHinput = (ecopathds.BH(agg1) + ecopathds.BH(agg2)) / m_data.Area
+            Me.m_data.BHinput = (ecopathds.BH(agg1) + ecopathds.BH(agg2)) / Me.m_data.Area
 
             ' Need to determine estimation?
             If (bCalcEstimate) Then
@@ -283,10 +283,10 @@ Namespace Ecopath
             End If
 
             Select Case Me.m_data.Estimate
-                Case eEstimate.Biomass : m_data.Binput = cCore.NULL_VALUE
-                Case eEstimate.PB : m_data.PBinput = cCore.NULL_VALUE
-                Case eEstimate.QB : m_data.QBinput = cCore.NULL_VALUE
-                Case eEstimate.EE : m_data.EEinput = cCore.NULL_VALUE
+                Case eEstimate.Biomass : Me.m_data.Binput = cCore.NULL_VALUE
+                Case eEstimate.PB : Me.m_data.PBinput = cCore.NULL_VALUE
+                Case eEstimate.QB : Me.m_data.QBinput = cCore.NULL_VALUE
+                Case eEstimate.EE : Me.m_data.EEinput = cCore.NULL_VALUE
             End Select
 
             ' Stanza

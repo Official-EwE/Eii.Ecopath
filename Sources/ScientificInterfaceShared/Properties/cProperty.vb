@@ -39,7 +39,7 @@ Namespace Properties
     ''' <param name="changeFlags">A bit flag pattern that indicates which aspects of the property changed</param>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)>
-    Public Delegate Sub PropertyChangeEventHandler(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+    Public Delegate Sub PropertyChangeEventHandler(prop As cProperty, changeFlags As cProperty.eChangeFlags)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -117,10 +117,10 @@ Namespace Properties
         ''' object is used to correctly access the underlying array.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As EwECore.cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       Optional ByVal SourceSec As EwECore.cCoreInputOutputBase = Nothing,
-                       Optional ByVal iSecIndexOffset As Integer = 0)
+        Public Sub New(Source As EwECore.cCoreInputOutputBase,
+                       VarName As eVarNameFlags,
+                       Optional SourceSec As EwECore.cCoreInputOutputBase = Nothing,
+                       Optional iSecIndexOffset As Integer = 0)
 
             Me.m_key = New cValueID(Source, VarName, SourceSec)
 
@@ -136,13 +136,13 @@ Namespace Properties
 #End If
         End Sub
 
-        Protected Friend Overridable Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Friend Overridable Sub Dispose(bDisposing As Boolean)
             Me.m_Source = Nothing
             Me.m_SourceSec = Nothing
         End Sub
 
         Protected Friend Sub Dispose() Implements IDisposable.Dispose
-            If Not Me.m_bDisposed Then Dispose(True)
+            If Not Me.m_bDisposed Then Me.Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
 
@@ -233,7 +233,7 @@ Namespace Properties
             Get
                 Return Me.m_pm
             End Get
-            Protected Friend Set(ByVal pm As cPropertyManager)
+            Protected Friend Set(pm As cPropertyManager)
                 Me.m_pm = pm
             End Set
         End Property
@@ -281,7 +281,7 @@ Namespace Properties
             If (Me.m_Source IsNot Nothing) Then
 
                 ' Get the variable
-                newValue = m_Source.GetVariable(Me.m_VarName, iIndex)
+                newValue = Me.m_Source.GetVariable(Me.m_VarName, iIndex)
 
                 ' Did this entail a change?
                 If Not Me.IsValue(newValue) Then
@@ -292,7 +292,7 @@ Namespace Properties
                 End If
 
                 ' Get the core status
-                coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
+                coreStatus = Me.m_Source.GetStatus(Me.m_VarName, iIndex)
 
                 ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
                 guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or
@@ -345,7 +345,7 @@ Namespace Properties
         ''' <param name="bHonourNull">Flag stating whether NULL status flags 
         ''' should return a NULL value.</param>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Property Value(Optional ByVal bHonourNull As Boolean = True) As Object
+        Protected MustOverride Property Value(Optional bHonourNull As Boolean = True) As Object
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -355,7 +355,7 @@ Namespace Properties
         ''' should return a NULL value.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function GetValue(Optional ByVal bHonourNull As Boolean = True) As Object
+        Public Function GetValue(Optional bHonourNull As Boolean = True) As Object
             Return Me.Value(bHonourNull)
         End Function
 
@@ -387,8 +387,8 @@ Namespace Properties
         ''' to be sent.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Function SetValue(ByVal newValue As Object,
-                    Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
+        Public Overridable Function SetValue(newValue As Object,
+                    Optional notify As TriState = TriState.UseDefault) As Boolean
 
             Dim vs As cVariableStatus = Nothing
             Dim changeFlags As eChangeFlags = 0
@@ -409,10 +409,10 @@ Namespace Properties
 
                 'jb 16/mar/06 setVariable() now returns boolean so get the Style object from CurrentStyle
                 ' Set new value
-                m_Source.SetVariable(Me.m_VarName, newValue, iIndex)
+                Me.m_Source.SetVariable(Me.m_VarName, newValue, iIndex)
 
                 ' Get the status of this operation
-                vs = m_Source.ValidationStatus
+                vs = Me.m_Source.ValidationStatus
 
                 ' Did the core accept this value?
                 If ((vs.Status And eStatusFlags.FailedValidation) = 0) Then
@@ -428,7 +428,7 @@ Namespace Properties
                         changeFlags = eChangeFlags.CoreStatus
                     End If
                     ' Fetch value corrected by the Core
-                    newValue = m_Source.GetVariable(Me.m_VarName, iIndex)
+                    newValue = Me.m_Source.GetVariable(Me.m_VarName, iIndex)
                 End If
 
             End If
@@ -459,7 +459,7 @@ Namespace Properties
         ''' <param name="value">Value to compare</param>
         ''' <returns>True if the values are considered equal</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function IsValue(ByVal value As Object) As Boolean
+        Public MustOverride Function IsValue(value As Object) As Boolean
 
         Public Overridable Function GetVariableMetadata() As cVariableMetaData
             ' Santiy checks
@@ -523,9 +523,9 @@ Namespace Properties
         ''' <remarks>Be aware that Style flags set here are not passed down to the Core. Core status bits are exclusively
         ''' managed by the core itself. Rather, this method allows </remarks>
         ''' -------------------------------------------------------------------
-        Public Function SetStyle(ByVal newStyle As cStyleGuide.eStyleFlags,
-                    Optional ByVal notify As TriState = TriState.False,
-                    Optional ByVal BitSetMode As eBitSetMode = eBitSetMode.All) As Boolean
+        Public Function SetStyle(newStyle As cStyleGuide.eStyleFlags,
+                    Optional notify As TriState = TriState.False,
+                    Optional BitSetMode As eBitSetMode = eBitSetMode.All) As Boolean
 
             ' Change flag
             Dim bChanged As Boolean = False
@@ -564,7 +564,7 @@ Namespace Properties
         ''' <param name="Style">Style to compare</param>
         ''' <returns>True if the Stylees are considered equal</returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function IsStyle(ByVal Style As cStyleGuide.eStyleFlags) As Boolean
+        Protected MustOverride Function IsStyle(Style As cStyleGuide.eStyleFlags) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -579,7 +579,7 @@ Namespace Properties
         ''' </list>
         ''' </param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub UpdateRemarksStyle(Optional ByVal notify As TriState = TriState.False)
+        Protected Overridable Sub UpdateRemarksStyle(Optional notify As TriState = TriState.False)
 
             Dim nRemarksStyle As eBitSetMode = eBitSetMode.BitwiseOff
 
@@ -609,7 +609,7 @@ Namespace Properties
         ''' </param>
         ''' <returns>True when Remarks have changed, False otherwise.</returns>
         ''' -------------------------------------------------------------------
-        Public Function SetRemark(ByVal strRemark As String, Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
+        Public Function SetRemark(strRemark As String, Optional notify As TriState = TriState.UseDefault) As Boolean
 
             Dim bChanged As Boolean = False
 
@@ -670,7 +670,7 @@ Namespace Properties
                 If Me.Source Is Nothing Then Return ""
                 Return Me.Source.Remark(Me.VarName, Me.SourceSec)
             End Get
-            Set(ByVal strRemark As String)
+            Set(strRemark As String)
                 If Me.Source Is Nothing Then Return
                 Me.Source.Remark(Me.VarName, Me.SourceSec) = strRemark
             End Set
@@ -765,7 +765,7 @@ Namespace Properties
         ''' </summary>
         ''' <param name="changeFlags">Flags that indicate which aspect of the property has changed</param>
         ''' -------------------------------------------------------------------
-        Public Sub FireChangeNotification(Optional ByVal changeFlags As eChangeFlags = eChangeFlags.All)
+        Public Sub FireChangeNotification(Optional changeFlags As eChangeFlags = eChangeFlags.All)
             RaiseEvent PropertyChanged(Me, changeFlags)
         End Sub
 

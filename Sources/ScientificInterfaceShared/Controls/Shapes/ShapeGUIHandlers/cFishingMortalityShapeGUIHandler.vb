@@ -43,7 +43,7 @@ Namespace Controls
             MyBase.New(uic)
         End Sub
 
-        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Select Case cmd
 

@@ -41,13 +41,13 @@ Public Class cCyclingAndPathLen
         Return "Cycles and pathways length"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                         info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -56,31 +56,31 @@ Public Class cCyclingAndPathLen
     Public Overrides Sub DisplayData()
         Dim strRowContent() As String
 
-        SetUpGridColumn()
+        Me.SetUpGridColumn()
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = 8
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = 8
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(Grid.Columns.Count)
+        ReDim strRowContent(Me.Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_PARAM
         strRowContent(1) = My.Resources.COL_HDR_VALUE
         strRowContent(2) = My.Resources.COL_HDR_UNIT
-        Grid.Rows(0).SetValues(strRowContent)
-        Grid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(strRowContent)
+        Me.Grid.Rows(0).Visible = True
 
         'SetCellText(Grid, 1, 1, "Throughput cycled (excluding detritus)")
         'SetCellValue(Grid, 2, 1, Format(Tc, "0.00"))
         'SetCellText(Grid, 3, 1, GetUnits(2, 2))
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_LIV
-        strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputCycledLiving)
+        strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputCycledLiving)
         strRowContent(2) = My.Resources.STR_T_KM2_YR
-        Grid.Rows(1).SetValues(strRowContent)
-        Grid.Rows(1).Visible = True
+        Me.Grid.Rows(1).SetValues(strRowContent)
+        Me.Grid.Rows(1).Visible = True
 
         'g_Recordset.Fields("TrputCyclExlDet").value = Tc
         'SetCellText(Grid, 1, 2, "Predatory cycling index")
@@ -88,40 +88,40 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 2, "% of throughput w/o detritus")
         'g_Recordset.Fields("PredatorCyclingIndex").value = 100 * Tc / TCyc
         strRowContent(0) = My.Resources.ROW_HDR_PRED_CYC_INDX
-        If Math.Abs(NetworkManager.ThroughputCycledPredatory) > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * NetworkManager.ThroughputCycledLiving / _
-                NetworkManager.ThroughputCycledPredatory)
+        If Math.Abs(Me.NetworkManager.ThroughputCycledPredatory) > 0.0 Then
+            strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * Me.NetworkManager.ThroughputCycledLiving / _
+                Me.NetworkManager.ThroughputCycledPredatory)
         Else
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_PCT_THROUGHPUT_LIV
-        Grid.Rows(2).SetValues(strRowContent)
-        Grid.Rows(2).Visible = True
+        Me.Grid.Rows(2).SetValues(strRowContent)
+        Me.Grid.Rows(2).Visible = True
 
         'SetCellText(Grid, 1, 3, "Throughput cycled (including detritus)")
         'SetCellValue(Grid, 2, 3, if(Abs(TcD) > 0, Format(TcD, "0.00"), ""))  'Format(100 * Tc / TcD, "0.00"), "")
         'SetCellText(Grid, 3, 3, GetUnits(2, 2))
         'g_Recordset.Fields("TrputCyclInclDet").value = TcD
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_TOTAL
-        If Math.Abs(NetworkManager.ThroughputCycledAll) > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputCycledAll)
+        If Math.Abs(Me.NetworkManager.ThroughputCycledAll) > 0.0 Then
+            strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputCycledAll)
         Else
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_T_KM2_YR
-        Grid.Rows(3).SetValues(strRowContent)
-        Grid.Rows(3).Visible = True
+        Me.Grid.Rows(3).SetValues(strRowContent)
+        Me.Grid.Rows(3).Visible = True
 
         'SetCellText(Grid, 1, 4, "Finn's cycling index")
         'SetCellValue(Grid, 2, 4, Format(100 * TcD / TruPut, "0.00"))
         'SetCellText(Grid, 3, 4, "% of total throughput")
         'g_Recordset.Fields("FinnCyclingIndex").value = 100 * TcD / TruPut
         strRowContent(0) = My.Resources.ROW_HDR_FINN_CYC_INDX
-        strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * NetworkManager.ThroughputCycledAll / _
-            NetworkManager.ThroughputTotal)
+        strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * Me.NetworkManager.ThroughputCycledAll / _
+            Me.NetworkManager.ThroughputTotal)
         strRowContent(2) = My.Resources.STR_PCT_TOTAL_THROUGHPUT
-        Grid.Rows(4).SetValues(strRowContent)
-        Grid.Rows(4).Visible = True
+        Me.Grid.Rows(4).SetValues(strRowContent)
+        Me.Grid.Rows(4).Visible = True
 
         'Mean path length is truput/(export+respiration)
         'SetCellText(Grid, 1, 5, "Finn's mean path length")
@@ -132,15 +132,15 @@ Public Class cCyclingAndPathLen
         'End If
         'SetCellText(Grid, 3, 5, "-")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_MEAN_PATH_LEN
-        If NetworkManager.ThroughputExport + NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.ThroughputTotal / _
-                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp))
+        If Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp > 0.0 Then
+            strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputTotal / _
+                (Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_NONE
-        Grid.Rows(5).SetValues(strRowContent)
-        Grid.Rows(5).Visible = True
+        Me.Grid.Rows(5).SetValues(strRowContent)
+        Me.Grid.Rows(5).Visible = True
 
         'SetCellText(Grid, 1, 6, "Finn's straight-through path length")
         'If (SumEx - Ex(NumGroups) + SumResp) > 0 Then
@@ -150,17 +150,17 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 6, "without detritus")
         'g_Recordset.Update()
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
-        If NetworkManager.ThroughputExport - NetworkManager.ThroughputExportByGroup(NetworkManager.nGroups) + _
-            NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber((NetworkManager.ThroughputCycledPredatory - NetworkManager.ThroughputCycledLiving) / _
-                (NetworkManager.ThroughputExport - NetworkManager.ThroughputExportByGroup(NetworkManager.nGroups) + _
-                NetworkManager.ThroughputResp))
+        If Me.NetworkManager.ThroughputExport - Me.NetworkManager.ThroughputExportByGroup(Me.NetworkManager.nGroups) + _
+            Me.NetworkManager.ThroughputResp > 0.0 Then
+            strRowContent(1) = Me.StyleGuide.FormatNumber((Me.NetworkManager.ThroughputCycledPredatory - Me.NetworkManager.ThroughputCycledLiving) / _
+                (Me.NetworkManager.ThroughputExport - Me.NetworkManager.ThroughputExportByGroup(Me.NetworkManager.nGroups) + _
+                Me.NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_WO_DET
-        Grid.Rows(6).SetValues(strRowContent)
-        Grid.Rows(6).Visible = True
+        Me.Grid.Rows(6).SetValues(strRowContent)
+        Me.Grid.Rows(6).Visible = True
 
         'SetCellText(Grid, 1, 7, "Finn's straight-through path length") '7
         'If SumEx + SumResp > 0 Then
@@ -168,33 +168,33 @@ Public Class cCyclingAndPathLen
         'End If
         'SetCellText(Grid, 3, 7, "with detritus")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
-        If NetworkManager.ThroughputExport + NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber((NetworkManager.ThroughputTotal - NetworkManager.ThroughputCycledAll) / _
-                (NetworkManager.ThroughputExport + NetworkManager.ThroughputResp))
+        If Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp > 0.0 Then
+            strRowContent(1) = Me.StyleGuide.FormatNumber((Me.NetworkManager.ThroughputTotal - Me.NetworkManager.ThroughputCycledAll) / _
+                (Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
         End If
         strRowContent(2) = My.Resources.STR_W_DET
-        Grid.Rows(7).SetValues(strRowContent)
-        Grid.Rows(7).Visible = True
+        Me.Grid.Rows(7).SetValues(strRowContent)
+        Me.Grid.Rows(7).Visible = True
 
-        Grid.ClearSelection()
+        Me.Grid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn()
 
-        Grid.ReadOnly = True
-        Grid.ColumnCount = 3
+        Me.Grid.ReadOnly = True
+        Me.Grid.ColumnCount = 3
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).Frozen = True
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(0).Width = 220
-        Grid.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Width = 220
+        Me.Grid.Columns(0).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
-        Grid.Columns(2).Width = 165
-        Grid.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Me.Grid.Columns(2).Width = 165
+        Me.Grid.Columns(2).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
     End Sub
 

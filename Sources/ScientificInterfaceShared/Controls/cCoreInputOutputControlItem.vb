@@ -51,7 +51,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="obj">The object to wrap.</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal obj As cCoreInputOutputBase)
+        Public Sub New(obj As cCoreInputOutputBase)
             MyBase.New("?")
             Me.m_source = obj
             Me.m_strLabel = ""
@@ -64,7 +64,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strLabel">The label to show for a null-object.</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal strLabel As String)
+        Public Sub New(strLabel As String)
             MyBase.New("?")
             Me.m_source = Nothing
             Me.m_strLabel = strLabel
@@ -77,7 +77,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="obj">The object to wrap.</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal obj As cCoreInputOutputBase, ByVal children() As TreeNode)
+        Public Sub New(obj As cCoreInputOutputBase, children() As TreeNode)
             MyBase.New("?", children)
             Me.m_source = obj
             Me.m_strLabel = ""
@@ -90,7 +90,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strLabel">The label to show for a null-object.</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal strLabel As String, ByVal children() As TreeNode)
+        Public Sub New(strLabel As String, children() As TreeNode)
             MyBase.New("?", children)
             Me.m_source = Nothing
             Me.m_strLabel = strLabel

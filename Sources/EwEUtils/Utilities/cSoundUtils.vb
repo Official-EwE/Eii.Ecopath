@@ -81,7 +81,7 @@ Namespace Utilities
 
 #Region " Public access "
 
-        Public Shared Sub PlaySound(ByVal icon As MessageBoxIcon)
+        Public Shared Sub PlaySound(icon As MessageBoxIcon)
 
             Dim strFileName As String = ""
 
@@ -107,7 +107,7 @@ Namespace Utilities
 
         End Sub
 
-        Public Shared Sub PlaySound(ByVal strFileName As String)
+        Public Shared Sub PlaySound(strFileName As String)
 
             If String.IsNullOrWhiteSpace(strFileName) Then Return
             Try
@@ -118,7 +118,7 @@ Namespace Utilities
 
         End Sub
 
-        Public Shared Sub PlaySound(ByVal stream As Stream)
+        Public Shared Sub PlaySound(stream As Stream)
 
             Try
                 My.Computer.Audio.Play(stream, AudioPlayMode.Background)

@@ -22,7 +22,7 @@ Namespace Ecospace
     Partial Class gridCapacityCalcType
 
         <System.Diagnostics.DebuggerNonUserCode()>
-        Public Sub New(ByVal container As System.ComponentModel.IContainer)
+        Public Sub New(container As System.ComponentModel.IContainer)
             MyClass.New()
 
             'Required for Windows.Forms Class Composition Designer support
@@ -43,7 +43,7 @@ Namespace Ecospace
 
         'Component overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
                     components.Dispose()

@@ -34,14 +34,14 @@ Public Class cMediationShapeManager
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
-        Init()
+        Me.Init()
 
     End Sub
 
 
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
-            Return m_medData.NMedPoints
+            Return Me.m_medData.NMedPoints
         End Get
     End Property
 
@@ -57,17 +57,17 @@ Public Class cMediationShapeManager
         Dim dbID As Integer
         Dim medFunct As cMediationFunction
 
-        If m_core.AddShape(strName, m_DataType, dbID, points, shapeType, shapeParams) Then
+        If Me.m_core.AddShape(strName, Me.m_DataType, dbID, points, shapeType, shapeParams) Then
 
             'create a new shape that is hooked up to the underlying ecosim data
-            medFunct = New cMediationFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
-            medFunct.ID = m_shapes.Count
+            medFunct = New cMediationFunction(Me.m_SimData, Me, Me.m_medData, dbID, Me.m_DataType)
+            medFunct.ID = Me.m_shapes.Count
             medFunct.Load()
 
             'Add the new shape to the list 
             MyBase.Add(medFunct)
 
-            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+            Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
 
             Return medFunct
 
@@ -80,19 +80,19 @@ Public Class cMediationShapeManager
     Friend Overrides Function Init() As Boolean
         Dim medFunct As cMediationFunction
 
-        m_medData = Me.m_SimData.BioMedData
+        Me.m_medData = Me.m_SimData.BioMedData
 
         'clear out any existing data
-        m_shapes.Clear()
+        Me.m_shapes.Clear()
 
-        For imed As Integer = 1 To m_medData.MediationShapes
+        For imed As Integer = 1 To Me.m_medData.MediationShapes
             'All mediation shapes from the core will have an object 
             'A mediation function may have a shape but not have any Mediating Groups or weights (MedIsUsed(iMed) = False) 
             'Mediation function objects load there own group and weight data from the ecosim data via the Load() method
-            medFunct = New cMediationFunction(m_SimData, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
-            medFunct.ID = m_shapes.Count
+            medFunct = New cMediationFunction(Me.m_SimData, Me, Me.m_medData, Me.m_medData.MediationDBIDs(imed), Me.m_DataType)
+            medFunct.ID = Me.m_shapes.Count
             medFunct.Load()
-            m_shapes.Add(medFunct)
+            Me.m_shapes.Add(medFunct)
 
         Next imed
         Me.Load()

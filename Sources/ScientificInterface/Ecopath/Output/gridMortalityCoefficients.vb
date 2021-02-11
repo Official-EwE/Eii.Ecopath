@@ -100,11 +100,11 @@ Namespace Ecopath.Output
                     If Not group.IsMultiStanza Then
 
                         iRow = Me.AddRow
-                        FillInRows(iRow, group)
+                        Me.FillInRows(iRow, group)
 
                     Else
                         ' Group is stanza
-                        sg = Core.StanzaGroups(group.iStanza)
+                        sg = Me.Core.StanzaGroups(group.iStanza)
                         If group.iStanza <> iStanzaPrev Then
 
                             ' Complete row with dummy cells
@@ -123,14 +123,14 @@ Namespace Ecopath.Output
 
                         'Display group info
                         hgcStanza.AddChildRow(iRow)
-                        FillInRows(iRow, group, True)
+                        Me.FillInRows(iRow, group, True)
                     End If
                 End If
             Next i
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cEcoPathGroupOutput, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cEcoPathGroupOutput, Optional isIndented As Boolean = False)
 
             Dim cell As cPropertyCell = Nothing
             Dim bMortAlert As Boolean = (source.MortCoOtherMort < 0) And (Not source.IsDetritus)
@@ -175,7 +175,7 @@ Namespace Ecopath.Output
             End Get
         End Property
 
-        Private Sub SetCellAlert(ByVal cell As cEwECellBase, ByVal bSetAlert As Boolean)
+        Private Sub SetCellAlert(cell As cEwECellBase, bSetAlert As Boolean)
             If bSetAlert Then
                 cell.Style = cell.Style Or cStyleGuide.eStyleFlags.Checked
             Else
@@ -183,7 +183,7 @@ Namespace Ecopath.Output
             End If
         End Sub
 
-        Private Sub SetCellComputed(ByVal cell As cEwECellBase)
+        Private Sub SetCellComputed(cell As cEwECellBase)
             cell.Style = cell.Style Or cStyleGuide.eStyleFlags.ValueComputed
         End Sub
 

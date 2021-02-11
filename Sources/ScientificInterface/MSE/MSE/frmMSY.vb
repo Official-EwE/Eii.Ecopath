@@ -42,7 +42,7 @@ Public Class frmMSY
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_mse = Me.UIContext.Core.MSEManager
@@ -50,20 +50,20 @@ Public Class frmMSY
 
     End Sub
 
-    Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRunMSY.Click
 
         cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MSE_INITIALIZING, -1)
         Try
 
             ' Hard-wire run state parameters...for now
-            Me.m_mse.ModelParameters.MSYEvaluateValue = m_rbValue.Checked
+            Me.m_mse.ModelParameters.MSYEvaluateValue = Me.m_rbValue.Checked
             Me.m_mse.ModelParameters.MSYRunSilent = False
             Me.m_mse.ModelParameters.MSYStartTimeIndex = 2
 
             'get the number of fleets for the progress updates
-            m_nFleets = Me.UIContext.Core.nFleets
-            ReDim MSY(Me.UIContext.Core.nFleets)
+            Me.m_nFleets = Me.UIContext.Core.nFleets
+            ReDim Me.MSY(Me.UIContext.Core.nFleets)
             Me.UpdateControls(True)
 
             'connect and disconnect every time we run the MSY
@@ -79,7 +79,7 @@ Public Class frmMSY
 
     End Sub
 
-    Private Shadows Sub UpdateControls(ByVal bRunning As Boolean)
+    Private Shadows Sub UpdateControls(bRunning As Boolean)
 
         If bRunning Then
             Me.m_btnRunMSY.Enabled = False
@@ -91,22 +91,22 @@ Public Class frmMSY
             Dim sb As New StringBuilder()
             sb.AppendLine(cStringUtils.Localize(My.Resources.MSE_ITERATION_HEADER, cStringUtils.vbTab))
             For i As Integer = 1 To Me.UIContext.Core.nFleets
-                sb.AppendLine(cStringUtils.Localize(My.Resources.MSE_ITERATION_LINE, cStringUtils.vbTab, i, Me.StyleGuide.FormatNumber(MSY(i))))
+                sb.AppendLine(cStringUtils.Localize(My.Resources.MSE_ITERATION_LINE, cStringUtils.vbTab, i, Me.StyleGuide.FormatNumber(Me.MSY(i))))
             Next
             Me.txtMSYresults.Text = sb.ToString
         End If
 
     End Sub
 
-    Private Sub OnMSYProgress(ByVal MSYProgress As MSE.cMSYProgressArgs)
+    Private Sub OnMSYProgress(MSYProgress As MSE.cMSYProgressArgs)
 
         Try
-            Me.m_lbFleet.Text = cStringUtils.Localize(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets)
+            Me.m_lbFleet.Text = cStringUtils.Localize(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, Me.m_nFleets)
             Me.m_lblIter.Text = cStringUtils.Localize(SharedResources.GENERIC_VALUE_ITERATION, MSYProgress.Iteration)
             Me.m_lblEffort.Text = cStringUtils.Localize(My.Resources.MSE_EFFORT_VALUE, Me.StyleGuide.FormatNumber(MSYProgress.CurrentEffort))
-            If MSYProgress.CurrentEffort > 0 Then MSY(MSYProgress.FleetIndex) = MSYProgress.CurrentEffort
+            If MSYProgress.CurrentEffort > 0 Then Me.MSY(MSYProgress.FleetIndex) = MSYProgress.CurrentEffort
 
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets), CSng(MSYProgress.FleetIndex / m_nFleets))
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, Me.m_nFleets), CSng(MSYProgress.FleetIndex / Me.m_nFleets))
 
             'the DoEvents can be removed once the MSY is running on a thread 
             Application.DoEvents()
@@ -116,17 +116,17 @@ Public Class frmMSY
 
     End Sub
 
-    Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnStop(sender As System.Object, e As System.EventArgs) _
         Handles m_btnStop.Click
         Me.m_mse.StopRun(0)
     End Sub
 
-    Private Sub btFleetTradeoffs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub btFleetTradeoffs_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnFleetTradeoffs.Click
 
         Try
             'get the number of fleets for the progress updates
-            m_nFleets = Me.UIContext.Core.nFleets
+            Me.m_nFleets = Me.UIContext.Core.nFleets
 
             'connect and disconnect every time we run the MSY
             Me.m_mse.Connect(Nothing, AddressOf Me.OnMSYProgress)

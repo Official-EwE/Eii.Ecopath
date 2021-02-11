@@ -31,7 +31,7 @@ Public Interface IMSEInitialized
     ''' <param name="MSEDataStructure">MSE data structures</param>
     ''' <param name="EcosimDatastructures">Ecosim data structures</param>
     ''' <remarks></remarks>
-    Sub MSEInitialized(ByVal MSEModel As Object, ByVal MSEDataStructure As Object, ByVal EcosimDatastructures As Object)
+    Sub MSEInitialized(MSEModel As Object, MSEDataStructure As Object, EcosimDatastructures As Object)
 
 End Interface
 

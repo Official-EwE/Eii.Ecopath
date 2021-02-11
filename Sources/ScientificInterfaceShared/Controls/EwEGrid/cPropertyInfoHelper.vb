@@ -42,7 +42,7 @@ Namespace Controls.EwEGrid
         ''' <param name="t">The runtime type to obtain the properties for.</param>
         ''' <returns>A sorted array of PropertyInfo instances.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetAllowedProperties(ByVal t As Type) As PropertyInfo()
+        Public Shared Function GetAllowedProperties(t As Type) As PropertyInfo()
 
             ' ToDo: perform sanity checks here if no converter defined
 

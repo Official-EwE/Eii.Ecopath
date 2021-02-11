@@ -36,22 +36,22 @@ Imports EwEUtils.Core
 Public Class cVariableStatus
 
     Sub New()
-        VarName = eVarNameFlags.NotSet
-        DataType = eDataTypes.NotSet
-        Status = eStatusFlags.Null
-        Message = ""
-        Source = eCoreComponentType.NotSet
-        Index = cCore.NULL_VALUE
-        iArrayIndex = cCore.NULL_VALUE
-        CoreDataObject = Nothing
-        CoreDataObjectSecundary = Nothing
+        Me.VarName = eVarNameFlags.NotSet
+        Me.DataType = eDataTypes.NotSet
+        Me.Status = eStatusFlags.Null
+        Me.Message = ""
+        Me.Source = eCoreComponentType.NotSet
+        Me.Index = cCore.NULL_VALUE
+        Me.iArrayIndex = cCore.NULL_VALUE
+        Me.CoreDataObject = Nothing
+        Me.CoreDataObjectSecundary = Nothing
     End Sub
 
     ''' <summary>
     ''' Copy constructor
     ''' </summary>
     ''' <param name="SourceStatusObject">cVariableStatus instance to copy</param>
-    Sub New(ByVal SourceStatusObject As cVariableStatus)
+    Sub New(SourceStatusObject As cVariableStatus)
 
         Debug.Assert(Not SourceStatusObject Is Nothing, Me.ToString & ".New(cVariableStatus) Null cVariableStatus passed in.")
 
@@ -77,13 +77,13 @@ Public Class cVariableStatus
     ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component</see> that sent this variable belongs to.</param>
     ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component </paramref> that this variable belongs to.</param>
     ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ByVal StatusFlag As eStatusFlags, _
-            ByVal MessageStr As String, _
-            ByVal VarName As eVarNameFlags, _
-            ByVal TypeOfData As eDataTypes, _
-            ByVal MessageSource As eCoreComponentType, _
-            ByVal iIndex As Integer, _
-            Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
+    Sub New(StatusFlag As eStatusFlags, _
+            MessageStr As String, _
+            VarName As eVarNameFlags, _
+            TypeOfData As eDataTypes, _
+            MessageSource As eCoreComponentType, _
+            iIndex As Integer, _
+            Optional iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
@@ -108,14 +108,14 @@ Public Class cVariableStatus
     ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component</see> that sent this variable belongs to.</param>
     ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component </paramref> that this variable belongs to.</param>
     ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ByVal ParentCoreDataObject As ICoreInterface, _
-            ByVal StatusFlag As eStatusFlags, _
-            ByVal MessageStr As String, _
-            ByVal VarName As eVarNameFlags, _
-            ByVal TypeOfData As eDataTypes, _
-            ByVal MessageSource As eCoreComponentType, _
-            ByVal iIndex As Integer, _
-            Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
+    Sub New(ParentCoreDataObject As ICoreInterface, _
+            StatusFlag As eStatusFlags, _
+            MessageStr As String, _
+            VarName As eVarNameFlags, _
+            TypeOfData As eDataTypes, _
+            MessageSource As eCoreComponentType, _
+            iIndex As Integer, _
+            Optional iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
@@ -136,9 +136,9 @@ Public Class cVariableStatus
     ''' <param name="MessageStr">Message to accompany this variable status.</param>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> that this status applies to.</param>
     ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ByVal ParentCoreDataObject As ICoreInterface, _
-            ByVal StatusFlag As eStatusFlags, ByVal MessageStr As String, ByVal VarName As eVarNameFlags, _
-            Optional ByVal iArrayIndex As Integer = cCore.NULL_VALUE)
+    Sub New(ParentCoreDataObject As ICoreInterface, _
+            StatusFlag As eStatusFlags, MessageStr As String, VarName As eVarNameFlags, _
+            Optional iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
@@ -156,7 +156,7 @@ Public Class cVariableStatus
     ''' </summary>
     ''' <param name="ValueObject">cValue object to copy</param>
     ''' <remarks></remarks>
-    Public Sub Copy(ByVal ValueObject As EwECore.ValueWrapper.cValue)
+    Public Sub Copy(ValueObject As EwECore.ValueWrapper.cValue)
 
         Me.VarName = ValueObject.varName
         Me.Status = ValueObject.ValidationStatus
@@ -165,7 +165,7 @@ Public Class cVariableStatus
 
     End Sub
 
-    Public Overrides Function Equals(ByVal obj As Object) As Boolean
+    Public Overrides Function Equals(obj As Object) As Boolean
         If Not TypeOf (obj) Is cVariableStatus Then Return False
 
         Dim vsCompare As cVariableStatus = DirectCast(obj, cVariableStatus)

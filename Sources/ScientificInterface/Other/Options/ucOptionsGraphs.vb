@@ -54,10 +54,10 @@ Namespace Other
             Private m_fontstyle As FontStyle = FontStyle.Regular
             Private m_fontsize As Single = 8.25
 
-            Public Sub New(ByVal strText As String,
-                           ByVal ft As cStyleGuide.eApplicationFontType,
-                           ByVal sg As cStyleGuide,
-                           ByVal bDefault As Boolean)
+            Public Sub New(strText As String,
+                           ft As cStyleGuide.eApplicationFontType,
+                           sg As cStyleGuide,
+                           bDefault As Boolean)
 
                 Dim astrBits As String() = strText.Split("|"c)
                 Me.m_strName = astrBits(0)
@@ -104,7 +104,7 @@ Namespace Other
                 Get
                     Return Me.m_fontfamilyname
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     Me.m_fontfamilyname = value
                 End Set
             End Property
@@ -113,7 +113,7 @@ Namespace Other
                 Get
                     Return Me.m_fontstyle
                 End Get
-                Set(ByVal value As FontStyle)
+                Set(value As FontStyle)
                     Me.m_fontstyle = value
                 End Set
             End Property
@@ -122,7 +122,7 @@ Namespace Other
                 Get
                     Return Me.m_fontsize
                 End Get
-                Set(ByVal value As Single)
+                Set(value As Single)
                     Me.m_fontsize = value
                 End Set
             End Property
@@ -132,7 +132,7 @@ Namespace Other
         Private Class cFontFamilyItem
             Private m_family As FontFamily = Nothing
 
-            Public Sub New(ByVal family As FontFamily)
+            Public Sub New(family As FontFamily)
                 Me.m_family = family
             End Sub
 
@@ -159,7 +159,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.InitializeComponent()
             Me.UIContext = uic
@@ -179,7 +179,7 @@ Namespace Other
         ''' Init me!
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -199,7 +199,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub lbItems_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub lbItems_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
                 Handles m_lbFontTypes.SelectedIndexChanged
 
             If Me.m_lbFontTypes.SelectedIndex <> -1 Then
@@ -216,7 +216,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub m_cbFontFamily_DrawItem(ByVal sender As Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
+        Private Sub m_cbFontFamily_DrawItem(sender As Object, e As System.Windows.Forms.DrawItemEventArgs) _
             Handles m_cbFontFamily.DrawItem
 
             e.DrawBackground()
@@ -241,7 +241,7 @@ Namespace Other
         ''' Event handler to set the new color for an item. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cbFontFamily_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_cbFontFamily_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbFontFamily.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
@@ -254,7 +254,7 @@ Namespace Other
         ''' Event handler to set the new color for an item. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cbFontStyle_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_cbFontStyle_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbFontStyle.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
@@ -262,7 +262,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub m_nudFontSize_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_nudFontSize_ValueChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudFontSize.ValueChanged
 
             ' Hackerdihack - NUD controls send events from InitializeComponent
@@ -369,7 +369,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub AddFontTypeItem(ByVal strText As String, ByVal ft As cStyleGuide.eApplicationFontType, bDefault As Boolean)
+        Private Sub AddFontTypeItem(strText As String, ft As cStyleGuide.eApplicationFontType, bDefault As Boolean)
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.UIContext.StyleGuide, bDefault))
         End Sub
@@ -378,7 +378,7 @@ Namespace Other
             Get
                 Return DirectCast(Me.m_lbFontTypes.SelectedItem, cFontTypeItem)
             End Get
-            Set(ByVal value As cFontTypeItem)
+            Set(value As cFontTypeItem)
                 Me.m_lbFontTypes.SelectedItem = value
             End Set
         End Property
@@ -407,7 +407,7 @@ Namespace Other
                 If ffi Is Nothing Then Return ""
                 Return ffi.Family.Name
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
 
                 'If String.Compare(value, Me.SelectedFontFamilyName, True) = 0 Then Return
 
@@ -465,11 +465,11 @@ Namespace Other
                 If Me.m_cbFontStyle.SelectedItem Is Nothing Then Return FontStyle.Strikeout
                 Return DirectCast(Me.m_cbFontStyle.SelectedItem, FontStyle)
             End Get
-            Set(ByVal value As FontStyle)
+            Set(value As FontStyle)
 
                 Dim fti As cFontTypeItem = Me.SelectedFontType
 
-                For i As Integer = 0 To m_cbFontStyle.Items.Count - 1
+                For i As Integer = 0 To Me.m_cbFontStyle.Items.Count - 1
                     If (DirectCast(Me.m_cbFontStyle.Items(i), FontStyle) = value) Then
                         Me.m_cbFontStyle.SelectedIndex = i
                         Exit For
@@ -486,7 +486,7 @@ Namespace Other
             Get
                 Return Convert.ToSingle(Me.m_nudFontSize.Value)
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
 
                 Dim fti As cFontTypeItem = Me.SelectedFontType
 

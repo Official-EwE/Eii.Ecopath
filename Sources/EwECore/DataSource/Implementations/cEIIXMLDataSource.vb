@@ -435,8 +435,8 @@ Public Class cEIIXMLDataSource
                 ecopathDS.Ex(iGroup) = CSng(row("Export"))
                 ecopathDS.fCatch(iGroup) = CSng(row("Catch"))
                 ecopathDS.DCInput(iGroup, 0) = CSng(row("ImpVar"))
-                ecopathDS.GroupIsFish(iGroup) = ParseBoolean(CStr(row("GroupIsFish")))
-                ecopathDS.GroupIsInvert(iGroup) = ParseBoolean(CStr(row("GroupIsInvert")))
+                ecopathDS.GroupIsFish(iGroup) = Me.ParseBoolean(CStr(row("GroupIsFish")))
+                ecopathDS.GroupIsInvert(iGroup) = Me.ParseBoolean(CStr(row("GroupIsInvert")))
                 ecopathDS.Shadow(iGroup) = CSng(row("NonMarketValue"))
                 ecopathDS.Resp(iGroup) = CSng(row("Respiration"))
                 ecopathDS.Immig(iGroup) = CSng(row("Immigration"))
@@ -612,8 +612,8 @@ Public Class cEIIXMLDataSource
                 stanzaDS.BABsplit(iStanza) = CSng(row("BabSplit"))
                 stanzaDS.WmatWinf(iStanza) = CSng(row("WMatWinf"))
                 ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
-                stanzaDS.FixedFecundity(iStanza) = ParseBoolean(CStr(row("FixedFecundity")))
-                stanzaDS.EggAtSpawn(iStanza) = ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", True)))
+                stanzaDS.FixedFecundity(iStanza) = Me.ParseBoolean(CStr(row("FixedFecundity")))
+                stanzaDS.EggAtSpawn(iStanza) = Me.ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", True)))
 
                 ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                 ' JS 23nov10: Hah, three and a half years later these values are stored again
@@ -681,9 +681,9 @@ Public Class cEIIXMLDataSource
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathFleetInfo() As Boolean
 
-        Dim bSucces As Boolean = LoadEcopathFleets()
-        bSucces = bSucces And LoadEcopathCatch()
-        bSucces = bSucces And LoadEcopathDiscardFate()
+        Dim bSucces As Boolean = Me.LoadEcopathFleets()
+        bSucces = bSucces And Me.LoadEcopathCatch()
+        bSucces = bSucces And Me.LoadEcopathDiscardFate()
 
         Return bSucces
 
@@ -702,7 +702,7 @@ Public Class cEIIXMLDataSource
         Dim iFleet As Integer = 1
         Dim bSucces As Boolean = True
 
-        ecopathDS.NoGearData = Not IsFishing()
+        ecopathDS.NoGearData = Not Me.IsFishing()
         ecopathDS.NumFleet = dtFleets.Rows.Count()
 
         If Not ecopathDS.RedimFleetVariables(True) Then Return False
@@ -1360,7 +1360,7 @@ Public Class cEIIXMLDataSource
             If iShapeID > -1 Then
                 ' JS 10Aug07: Don't fail in case FishRateShape is missing. Only those present are loaded, only those loaded are saved.
                 '             Since these shapes do not need to be present we can be somewhat forgiving in this particular case.
-                If Not LoadFishingRateShape(dtFishMort, iShapeID, iFleet) Then
+                If Not Me.LoadFishingRateShape(dtFishMort, iShapeID, iFleet) Then
                     Me.LogMessage(cStringUtils.Localize("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
                 End If
             End If
@@ -2801,7 +2801,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerDBID(iLayer) = CInt(drow("LayerID"))
                 ecospaceDS.EnvironmentalLayerName(iLayer) = CStr(drow("LayerName"))
                 ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(drow("LayerDescription"))
-                ecospaceDS.EnvironmentalLayerUnits(iLayer) = CStr(ReadSafe(drow, "LayerUnits", ""))
+                ecospaceDS.EnvironmentalLayerUnits(iLayer) = CStr(Me.ReadSafe(drow, "LayerUnits", ""))
 
                 Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer),
@@ -3046,7 +3046,7 @@ Public Class cEIIXMLDataSource
 
         If Convert.IsDBNull(data) Then Return ""
 
-        If (TypeOf data Is String) Then
+        If (TypeOf data Is String) Or (TypeOf data Is Date) Then
             Dim strData As String = CStr(data)
             ' is XML?
             If (strData.IndexOf("<"c) > -1) Then

@@ -37,7 +37,7 @@ Namespace Ecosim
             Me.InitializeComponent()
         End Sub
 
-        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnReset(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnReset.Click
             Me.Core.ResetMSEGroupRefLevels()
         End Sub

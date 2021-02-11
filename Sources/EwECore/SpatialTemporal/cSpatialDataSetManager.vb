@@ -100,14 +100,14 @@ Namespace SpatialData
 
             Me.m_indexer = New cSpatialDatasetIndexer(core, Me)
 
-            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
         End Sub
 
         Public Sub Dispose() _
             Implements IDisposable.Dispose
 
-            RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             Me.IndexDataset = Nothing
 
@@ -381,7 +381,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Add"/>
         ''' -------------------------------------------------------------------
-        Public Sub Add(ByVal item As ISpatialDataSet) _
+        Public Sub Add(item As ISpatialDataSet) _
             Implements ICollection(Of ISpatialDataSet).Add
             Me.m_lAvailable.Add(item)
             ' Assign ID if necessary
@@ -404,7 +404,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Contains"/>
         ''' -------------------------------------------------------------------
-        Public Function Contains(ByVal item As ISpatialDataSet) As Boolean _
+        Public Function Contains(item As ISpatialDataSet) As Boolean _
             Implements ICollection(Of ISpatialDataSet).Contains
             If (item Is Nothing) Then Return False
             Return Me.m_lAvailable.Contains(item)
@@ -413,7 +413,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).CopyTo"/>
         ''' -------------------------------------------------------------------
-        Public Sub CopyTo(ByVal array() As ISpatialDataSet, ByVal arrayIndex As Integer) _
+        Public Sub CopyTo(array() As ISpatialDataSet, arrayIndex As Integer) _
             Implements ICollection(Of ISpatialDataSet).CopyTo
             Me.m_lAvailable.CopyTo(array, arrayIndex)
         End Sub
@@ -441,7 +441,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Remove"/>
         ''' -------------------------------------------------------------------
-        Public Function Remove(ByVal item As ISpatialDataSet) As Boolean _
+        Public Function Remove(item As ISpatialDataSet) As Boolean _
             Implements ICollection(Of ISpatialDataSet).Remove
             If (item Is Nothing) Then Return False
             Dim bOK As Boolean = Me.m_lAvailable.Remove(item)
@@ -460,7 +460,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).GetEnumerator"/>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveAt(ByVal index As Integer) _
+        Public Sub RemoveAt(index As Integer) _
             Implements IList(Of ISpatialDataSet).RemoveAt
             Me.Remove(Me.m_lAvailable(index))
         End Sub
@@ -481,7 +481,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).GetEnumerator"/>
         ''' -------------------------------------------------------------------
-        Public Function IndexOf(ByVal item As ISpatialDataSet) As Integer _
+        Public Function IndexOf(item As ISpatialDataSet) As Integer _
              Implements IList(Of ISpatialDataSet).IndexOf
             Return Me.m_lAvailable.IndexOf(item)
         End Function
@@ -489,7 +489,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).GetEnumerator"/>
         ''' -------------------------------------------------------------------
-        Private Sub InaccessibleInsert(ByVal index As Integer, ByVal item As ISpatialDataSet) _
+        Private Sub InaccessibleInsert(index As Integer, item As ISpatialDataSet) _
             Implements IList(Of ISpatialDataSet).Insert
             Me.m_lAvailable.Insert(index, item)
         End Sub
@@ -497,17 +497,17 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).GetEnumerator"/>
         ''' -------------------------------------------------------------------
-        Default Public Property Item(ByVal index As Integer) As ISpatialDataSet _
+        Default Public Property Item(index As Integer) As ISpatialDataSet _
             Implements IList(Of ISpatialDataSet).Item
             Get
                 Return Me.m_lAvailable.Item(index)
             End Get
-            Protected Set(ByVal value As ISpatialDataSet)
+            Protected Set(value As ISpatialDataSet)
                 Me.m_lAvailable.Item(index) = value
             End Set
         End Property
 
-        Public Function Find(ByVal guidDS As Guid) As ISpatialDataSet
+        Public Function Find(guidDS As Guid) As ISpatialDataSet
 
             If Guid.Equals(guidDS, Guid.Empty) Then
                 Console.WriteLine("Cannot search for an unknown dataset")
@@ -520,7 +520,7 @@ Namespace SpatialData
             Return Nothing
         End Function
 
-        Public Function Find(ByVal strName As String) As ISpatialDataSet
+        Public Function Find(strName As String) As ISpatialDataSet
 
             If String.IsNullOrWhiteSpace(strName) Then
                 Console.WriteLine("Cannot search for an unknown dataset")
@@ -570,7 +570,7 @@ Namespace SpatialData
 
 #Region " Config files "
 
-        Public Event OnConfigurationChanged(ByVal sender As cSpatialDataSetManager)
+        Public Event OnConfigurationChanged(sender As cSpatialDataSetManager)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -619,9 +619,9 @@ Namespace SpatialData
         ''' </remarks>
         ''' <returns>The created dataset, or nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Function CreateConfigFile(ByVal strFile As String,
-                                         ByVal strName As String,
-                                         ByVal strDescription As String) As cSpatialDataConfigFile
+        Public Function CreateConfigFile(strFile As String,
+                                         strName As String,
+                                         strDescription As String) As cSpatialDataConfigFile
 
             Dim cfg As cSpatialDataConfigFile = Nothing
 
@@ -645,7 +645,7 @@ Namespace SpatialData
 
         End Function
 
-        Public Function AddConfigFile(ByVal strFile As String) As cSpatialDataConfigFile
+        Public Function AddConfigFile(strFile As String) As cSpatialDataConfigFile
 
             ' Abort on missing info
             If (String.IsNullOrWhiteSpace(strFile)) Then Return Nothing
@@ -732,7 +732,7 @@ Namespace SpatialData
         ''' Create a converter from provided configuration info.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend ReadOnly Property CreateConverter(ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataConverter
+        Friend ReadOnly Property CreateConverter(cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataConverter
             Get
                 If (String.IsNullOrWhiteSpace(cfg.ConverterTypeName)) Then Return Nothing
 
@@ -768,8 +768,8 @@ Namespace SpatialData
         ''' Store a dataset into provided configuration info.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Function UpdateDataset(ByVal ds As ISpatialDataSet,
-                                      ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
+        Friend Function UpdateDataset(ds As ISpatialDataSet,
+                                      cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
 
             If (ds Is Nothing) Then
                 cfg.DatasetTypeName = ""
@@ -782,8 +782,8 @@ Namespace SpatialData
 
         End Function
 
-        Friend Function UpdateConverter(ByVal cv As ISpatialDataConverter,
-                                        ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
+        Friend Function UpdateConverter(cv As ISpatialDataConverter,
+                                        cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
 
             If (cv Is Nothing) Then
                 cfg.ConverterTypeName = ""
@@ -818,7 +818,7 @@ Namespace SpatialData
         ' ''' Event handler, invoked when the watched folder has changed.
         ' ''' </summary>
         ' ''' -------------------------------------------------------------------
-        'Private Sub OnConfigFileChanged(ByVal sender As Object, ByVal args As FileSystemEventArgs)
+        'Private Sub OnConfigFileChanged(sender As Object, args As FileSystemEventArgs)
 
         '    If Path.Equals(args.FullPath, cSpatialDataSetManager.DefaultConfigFile()) Then
         '        ' Lock up list

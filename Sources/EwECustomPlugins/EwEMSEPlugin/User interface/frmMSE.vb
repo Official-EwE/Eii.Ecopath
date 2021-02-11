@@ -91,32 +91,32 @@ Public Class frmMSE
         ' -- Set up control interactions --
 
         ' Connect area UI control to live Ecopath data
-        Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, m_tbxArea, Me.Core.EwEModel, eVarNameFlags.Area)
+        Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxArea, Me.Core.EwEModel, eVarNameFlags.Area)
         ' Area can be made editable from here by not setting the format provider style:
         'Me.m_fpArea.Style = cStyleGuide.eStyleFlags.NotEditable
 
         Me.m_fpNModelsToRun = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNModels2Run, GetType(Integer))
         Me.m_fpNModelsToRun.Value = Me.MSE.NModels2Run
-        AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
+        AddHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf Me.OnNModels2RunChanged
 
         Me.m_fpNTrials = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNTrials, GetType(Integer), New cVariableMetaData(0, Me.MSE.NumModelsAvailable, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpNTrials.Value = Me.MSE.NModels
-        AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
+        AddHandler Me.m_fpNTrials.OnValueChanged, AddressOf Me.OnNTrialsChanged
 
-        Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, m_tbxNYearsProject, GetType(Integer))
+        Me.m_fpNYearsToProject = New cEwEFormatProvider(Me.UIContext, Me.m_tbxNYearsProject, GetType(Integer))
         Me.m_fpNYearsToProject.Value = Me.MSE.NYearsProject
-        AddHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
+        AddHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf Me.OnNYearsToProjectChanged
 
         Me.m_fpMassBalanceTol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTolerance, GetType(Single), New cVariableMetaData(0, 0.1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpMassBalanceTol.Value = Me.MSE.MassBalanceTol
-        AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+        AddHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf Me.OnMassBalanceTolChanged
 
         Me.m_fpMaxAttempts = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxAttempts, GetType(Integer), New cVariableMetaData(1, 1000000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         Me.m_fpMaxAttempts.Value = Me.MSE.NMaxAttempts
-        AddHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
+        AddHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf Me.OnMaxAttemptsChanged
 
         Me.m_fpMaxTime = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMaxTime, GetType(Single), New cVariableMetaData(0.08, 48, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
-        AddHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
+        AddHandler Me.m_fpMaxTime.OnValueChanged, AddressOf Me.OnMaxTimeChanged
 
         Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
@@ -127,7 +127,7 @@ Public Class frmMSE
         Me.m_bInUpdate = False
 
         Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
-        AddHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
+        AddHandler mon.OnInvalidated, AddressOf Me.OnMSEStateChanged
 
         ' Show/hide debug buttons
 #If DEBUG Then
@@ -156,26 +156,26 @@ Public Class frmMSE
 
             Me.m_fpArea.Release()
 
-            RemoveHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf OnNModels2RunChanged
+            RemoveHandler Me.m_fpNModelsToRun.OnValueChanged, AddressOf Me.OnNModels2RunChanged
             Me.m_fpNModelsToRun.Release()
 
-            RemoveHandler Me.m_fpNTrials.OnValueChanged, AddressOf OnNTrialsChanged
+            RemoveHandler Me.m_fpNTrials.OnValueChanged, AddressOf Me.OnNTrialsChanged
             Me.m_fpNTrials.Release()
 
-            RemoveHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf OnNYearsToProjectChanged
+            RemoveHandler Me.m_fpNYearsToProject.OnValueChanged, AddressOf Me.OnNYearsToProjectChanged
             Me.m_fpNYearsToProject.Release()
 
-            RemoveHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf OnMassBalanceTolChanged
+            RemoveHandler Me.m_fpMassBalanceTol.OnValueChanged, AddressOf Me.OnMassBalanceTolChanged
             Me.m_fpMassBalanceTol.Release()
 
-            RemoveHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf OnMaxAttemptsChanged
+            RemoveHandler Me.m_fpMaxAttempts.OnValueChanged, AddressOf Me.OnMaxAttemptsChanged
             Me.m_fpMaxAttempts.Release()
 
-            RemoveHandler Me.m_fpMaxTime.OnValueChanged, AddressOf OnMaxTimeChanged
+            RemoveHandler Me.m_fpMaxTime.OnValueChanged, AddressOf Me.OnMaxTimeChanged
             Me.m_fpMaxTime.Release()
 
             Dim mon As cMSEStateMonitor = Me.m_plugin.Monitor
-            RemoveHandler mon.OnInvalidated, AddressOf OnMSEStateChanged
+            RemoveHandler mon.OnInvalidated, AddressOf Me.OnMSEStateChanged
 
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
@@ -298,7 +298,7 @@ Public Class frmMSE
 
 #Region " Control events "
 
-    Private Sub OnRunCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRunCreateModels(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRunCreateModels.Click
 
         If (Me.m_plugin Is Nothing) Then Return
@@ -312,7 +312,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub OnStopCreateModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnStopCreateModels(sender As System.Object, e As System.EventArgs) _
         Handles m_btnStopCreateModels.Click
 
         If (Me.m_plugin Is Nothing) Then Return
@@ -356,7 +356,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRun.Click
         Try
             Me.MSE.WriteAllResults = Me.m_rbWriteAlways.Checked
@@ -367,7 +367,7 @@ Public Class frmMSE
         End Try
     End Sub
 
-    Private Sub OnSelectDataPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectDataPath(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChangePath.Click
 
         Me.m_bInUpdate = True
@@ -389,7 +389,7 @@ Public Class frmMSE
         If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
 
         Try
-            Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
+            Dim frmSurvivabilities As New frmEditSurvivabilities(Me.MSE)
             frmSurvivabilities.Init(Me.UIContext)
             If frmSurvivabilities.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 Me.MSE.Survivability.Load()
@@ -406,7 +406,7 @@ Public Class frmMSE
 
         If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
         Try
-            Dim frmDiets As New frmEditDiets(MSE)
+            Dim frmDiets As New frmEditDiets(Me.MSE)
             frmDiets.Init(Me.UIContext)
             If frmDiets.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 Me.MSE.Diets.Load()
@@ -452,7 +452,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub OnReviewDistParams(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnReviewDistParams(sender As System.Object, e As System.EventArgs) _
         Handles m_btnEditBasicInputs.Click
 
         Try
@@ -533,7 +533,7 @@ Public Class frmMSE
     Private Sub OnGenerateSampleSurvivabilities(sender As System.Object, e As System.EventArgs) Handles m_btnSampleSurvivabilities.Click
 
         Try
-            MSE.GenerateSurvivabilities()
+            Me.MSE.GenerateSurvivabilities()
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnGenerateSampleSurvivabilities")
         End Try
@@ -611,8 +611,8 @@ Public Class frmMSE
     ''' in idle time.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnMSEStateChanged(ByVal man As cMSEStateMonitor)
-        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+    Private Sub OnMSEStateChanged(man As cMSEStateMonitor)
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
     End Sub
 
 #End Region ' Plug-in callback

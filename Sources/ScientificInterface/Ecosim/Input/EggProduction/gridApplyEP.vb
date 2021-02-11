@@ -62,7 +62,7 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 If (value IsNot Nothing) Then
                     Me.m_EPManager = value.Core.EggProdShapeManager
                 End If
@@ -95,9 +95,9 @@ Namespace Ecosim
                 '            sourcegrid will thus allow cancellation of edit operations on an empty value. Sheesh...
                 '            There must be a better way to do this!
                 astrShapeNames.Add(" ")
-                If m_EPManager.Count > 0 Then
+                If Me.m_EPManager.Count > 0 Then
 
-                    For Each shapeFunc As cForcingFunction In m_EPManager
+                    For Each shapeFunc As cForcingFunction In Me.m_EPManager
                         Dim tmpStr As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, (shapeFunc.ID + 1), shapeFunc.Name)
                         astrShapeNames.Add(tmpStr)
                     Next
@@ -109,7 +109,7 @@ Namespace Ecosim
 
         End Function
 
-        Public Sub SelectShapeName(ByVal strName As String)
+        Public Sub SelectShapeName(strName As String)
 
             Dim r As Range = Me.Selection.GetRange()
             Dim iRow As Integer = 1
@@ -122,7 +122,7 @@ Namespace Ecosim
 
             ' Resolve shape index
             For iShapeTest As Integer = 0 To Me.m_astrShapes.Length - 1
-                If m_astrShapes(iShapeTest) = strName Then iShape = iShapeTest - 1 : Exit For
+                If Me.m_astrShapes(iShapeTest) = strName Then iShape = iShapeTest - 1 : Exit For
             Next
 
             Try
@@ -175,9 +175,9 @@ Namespace Ecosim
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = 1
 
-            m_astrShapes = GetEPShapeNames()
+            Me.m_astrShapes = Me.GetEPShapeNames()
 
-            For Each pair In m_EPManager.GroupShapeList
+            For Each pair In Me.m_EPManager.GroupShapeList
                 Me.Rows.Insert(iRow)
                 sg = Me.Core.StanzaGroups(pair.iStanzaGroup)
 
@@ -186,10 +186,10 @@ Namespace Ecosim
 
                 ' Combo box with strings, no text box
                 If pair.ShapeID < 0 Then
-                    cmb = New Cells.Real.ComboBox(m_astrShapes(0), GetType(String), m_astrShapes, True)
+                    cmb = New Cells.Real.ComboBox(Me.m_astrShapes(0), GetType(String), Me.m_astrShapes, True)
                 Else
                     ' JS bug 293: shape names are 1-based
-                    cmb = New Cells.Real.ComboBox(m_astrShapes(pair.ShapeID + 1), GetType(String), m_astrShapes, True)
+                    cmb = New Cells.Real.ComboBox(Me.m_astrShapes(pair.ShapeID + 1), GetType(String), Me.m_astrShapes, True)
                 End If
                 cmb.DataModel.AllowStringConversion = False
                 cmb.EditableMode = EditableMode.SingleClick
@@ -211,7 +211,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             Dim iRow As Integer = p.Row
             Dim iCol As Integer = p.Column
@@ -242,7 +242,7 @@ Namespace Ecosim
             ' Cell value not empty?
             If Not String.IsNullOrEmpty(strValue) Then
                 ' #Yes: find shape
-                For Each shapeFunc As cForcingFunction In m_EPManager
+                For Each shapeFunc As cForcingFunction In Me.m_EPManager
                     Dim tmpStr As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, (shapeFunc.ID + 1), shapeFunc.Name)
                     If tmpStr = strValue Then
                         ' Shape manager needs position in list, not shape index!

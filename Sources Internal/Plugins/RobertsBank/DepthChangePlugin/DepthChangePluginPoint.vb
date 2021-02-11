@@ -77,7 +77,7 @@ Public Class cDepthChangePluginPoint
 #Region " Private stuff "
 
     Private Sub InitSpatialData()
-        m_SpatialDataLoader = New cSpatialDataLoader(Me)
+        Me.m_SpatialDataLoader = New cSpatialDataLoader(Me)
     End Sub
 
 #End Region ' Private stuff
@@ -96,7 +96,7 @@ Public Class cDepthChangePluginPoint
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
     Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
-            m_core = DirectCast(CoreAsObject, cCore)
+            Me.m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Initialize() Exception " + ex.Message)
         End Try
@@ -113,11 +113,11 @@ Public Class cDepthChangePluginPoint
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
-            m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
+            Me.m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
+            Me.m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            Me.m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
+            Debug.Assert((Me.m_EcoPath IsNot Nothing) And (Me.m_EcoSim IsNot Nothing) And (Me.m_EcoSpace IsNot Nothing), _
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
             'Only Initialize once
@@ -317,7 +317,7 @@ Public Class cDepthChangePluginPoint
         Dim bHasInterface As Boolean = False
 
         ' Initialized ok?
-        If m_uic IsNot Nothing Then
+        If Me.m_uic IsNot Nothing Then
 
             ' Test if form still exists. This is a two-step test: the interface needs to be defined, and has not been closed previously.
             If Me.m_form IsNot Nothing Then
@@ -332,7 +332,7 @@ Public Class cDepthChangePluginPoint
                 ' Create the EwE form-derived user interface for this plug-in
                 Me.m_form = New frmEwEPlugin(Me)
                 ' Pass on the UI context to the form
-                Me.m_form.UIContext = m_uic
+                Me.m_form.UIContext = Me.m_uic
 
             End If
 

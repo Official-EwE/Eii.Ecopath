@@ -33,7 +33,7 @@ Public Interface IPlugin
     ''' </summary>
     ''' <param name="core">The core this plugin is initialized for.</param>
     ''' -----------------------------------------------------------------------
-    Sub Initialize(ByVal core As Object)
+    Sub Initialize(core As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

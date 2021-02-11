@@ -46,21 +46,21 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Shadows Function ConfigurePane(ByVal strTitle As String, _
-                                              ByVal bShowLegend As Boolean, _
-                                              Optional ByVal legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
-                                              Optional ByVal iPane As Integer = 1) As ZedGraph.GraphPane
+        Public Shadows Function ConfigurePane(strTitle As String, _
+                                              bShowLegend As Boolean, _
+                                              Optional legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
+                                              Optional iPane As Integer = 1) As ZedGraph.GraphPane
 
             Return Me.ConfigurePane(strTitle, "", "", bShowLegend, legendPos, iPane)
 
         End Function
 
-        Public Shadows Function ConfigurePane(ByVal strTitle As String, _
-                                              ByVal strXAxisLabel As String, _
-                                              ByVal strYAxisLabel As String, _
-                                              ByVal bShowLegend As Boolean, _
-                                              Optional ByVal legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
-                                              Optional ByVal iPane As Integer = 1) As ZedGraph.GraphPane
+        Public Shadows Function ConfigurePane(strTitle As String, _
+                                              strXAxisLabel As String, _
+                                              strYAxisLabel As String, _
+                                              bShowLegend As Boolean, _
+                                              Optional legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
+                                              Optional iPane As Integer = 1) As ZedGraph.GraphPane
 
             Dim gp As GraphPane = MyBase.ConfigurePane(strTitle, strXAxisLabel, strYAxisLabel, bShowLegend, legendPos, iPane)
 
@@ -87,7 +87,7 @@ Namespace Controls
 
         End Function
 
-        Public Overridable Sub ClearScaleCircles(Optional ByVal iPane As Integer = -1)
+        Public Overridable Sub ClearScaleCircles(Optional iPane As Integer = -1)
 
             ' Render the simulated polar decorations:
             Dim gp As GraphPane = Me.GetPane(iPane)
@@ -98,7 +98,7 @@ Namespace Controls
 
         End Sub
 
-        Public Overridable Sub SetScaleCircles(Optional ByVal iPane As Integer = -1)
+        Public Overridable Sub SetScaleCircles(Optional iPane As Integer = -1)
 
             ' Render the simulated polar decorations:
             ' Use secundary axis pair to render the kite center
@@ -154,8 +154,8 @@ Namespace Controls
 
         End Sub
 
-        Public Shadows Function CreateLineItem(ByVal iGroup As Integer, _
-                                               ByVal asValues() As Single) As LineItem
+        Public Shadows Function CreateLineItem(iGroup As Integer, _
+                                               asValues() As Single) As LineItem
 
             Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
             Return Me.CreateLineItem(group.Name, Me.StyleGuide.GroupColor(Me.Core, group.Index), asValues)
@@ -170,9 +170,9 @@ Namespace Controls
         ''' <param name="clr"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shadows Function CreateLineItem(ByVal strName As String, _
-                                               ByVal clr As Color, _
-                                               ByVal asValues() As Single) As LineItem
+        Public Shadows Function CreateLineItem(strName As String, _
+                                               clr As Color, _
+                                               asValues() As Single) As LineItem
 
             Dim rpl As New RadarPointList()
             For i As Integer = 0 To asValues.Length - 1
@@ -182,13 +182,13 @@ Namespace Controls
 
         End Function
 
-        Public Shadows Sub PlotLines(ByVal lines() As ZedGraph.LineItem, Optional ByVal iPane As Integer = 1)
+        Public Shadows Sub PlotLines(lines() As ZedGraph.LineItem, Optional iPane As Integer = 1)
             Me.ClearScaleCircles(iPane)
             MyBase.PlotLines(lines, iPane, True, True, True)
             Me.SetScaleCircles(iPane)
         End Sub
 
-        Public Overrides Sub RescaleAndRedraw(Optional ByVal iPane As Integer = -1)
+        Public Overrides Sub RescaleAndRedraw(Optional iPane As Integer = -1)
             MyBase.RescaleAndRedraw(iPane)
         End Sub
 
@@ -202,7 +202,7 @@ Namespace Controls
         ''' <param name="liOffset"></param>
         ''' <param name="lTarget"></param>
         ''' <remarks></remarks>
-        Protected Overrides Sub SumLines(ByVal liOffset As ZedGraph.LineItem, ByVal lTarget As ZedGraph.LineItem)
+        Protected Overrides Sub SumLines(liOffset As ZedGraph.LineItem, lTarget As ZedGraph.LineItem)
 
         End Sub
 

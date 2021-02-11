@@ -36,21 +36,21 @@ Public Class cMediatingFleet
     ''' <param name="iFleet">Index to the EcoPath/EcoSim fleet.</param>
     ''' <param name="theWeight">Weight that is applied to this fleet [0-1]</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal iFleet As Integer, ByVal theWeight As Single)
+    Public Sub New(iFleet As Integer, theWeight As Single)
 
-        iFleetIndex = iFleet
+        Me.iFleetIndex = iFleet
         'weight does not have to one or zero it can be any value it 
-        Weight = theWeight
+        Me.Weight = theWeight
 
     End Sub
 
     Public Sub New()
-        iFleetIndex = 0
-        Weight = 0
+        Me.iFleetIndex = 0
+        Me.Weight = 0
     End Sub
 
     Public Overrides Function ToString() As String
-        Return "Fleet Index=" & iFleetIndex.ToString & " Weight=" & Weight.ToString
+        Return "Fleet Index=" & Me.iFleetIndex.ToString & " Weight=" & Me.Weight.ToString
     End Function
 
 End Class

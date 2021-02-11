@@ -50,14 +50,14 @@ Public Class cMessagePublisher
     ''' At this time there is no checking to see if there already is a message handler for this message
     ''' So if you define two message handler for the same message they will both get called
     ''' </remarks>
-    Public Function AddMessageHandler(ByVal MessageHandler As cMessageHandler) As Boolean
+    Public Function AddMessageHandler(MessageHandler As cMessageHandler) As Boolean
 
         ' Pre
         Debug.Assert(MessageHandler IsNot Nothing)
 
         Try
             Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
-            m_handlers.Add(MessageHandler)
+            Me.m_handlers.Add(MessageHandler)
 
             Return True
         Catch ex As Exception
@@ -78,13 +78,13 @@ Public Class cMessagePublisher
     ''' <remarks>
     ''' <see cref="cMessage.Equals">Duplicate messages</see> are not added.
     ''' </remarks>
-    Public Function AddMessage(ByVal msg As cMessage) As Boolean
+    Public Function AddMessage(msg As cMessage) As Boolean
 
         Try
             ' Is this message not a duplicate?
             If (Not Me.MergeDuplicateMessageVariables(msg)) Then
                 ' Queue the message
-                m_msglist.Add(msg)
+                Me.m_msglist.Add(msg)
             Else
                 ' Ignore the message
                 ' Console.WriteLine("Ignoring duplicate message")
@@ -110,15 +110,15 @@ Public Class cMessagePublisher
         '             particular message handles decide to add or remove new messages, or if handlers get
         '             terminated in response to a message. A less error-prone solution is to send 
         '             messages from a temporary copy of the messages list... :(
-        Dim msgs() As cMessage = m_msglist.ToArray()
+        Dim msgs() As cMessage = Me.m_msglist.ToArray()
 
         Try
             ' Clear the list
-            m_msglist.Clear()
+            Me.m_msglist.Clear()
 
             ' Send all messages
             For i As Integer = 0 To msgs.Length - 1
-                SendMessage(msgs(i))
+                Me.SendMessage(msgs(i))
             Next
 
             ' Done
@@ -146,7 +146,7 @@ Public Class cMessagePublisher
     ''' Locked messages will be sent the moment this lock is <see cref="RemoveMessageLock">cleared</see>.</para>
     ''' <para>Note that <see cref="cFeedbackMessage">Feedback messages</see> are allowed to pass the lock at any time.</para>
     ''' </remarks>
-    Public Function SendMessage(ByVal Message As cMessage, Optional ByVal bPassLock As Boolean = False) As Boolean
+    Public Function SendMessage(Message As cMessage, Optional bPassLock As Boolean = False) As Boolean
         Dim handler As cMessageHandler
         Dim bMessageHandled As Boolean
 
@@ -231,13 +231,13 @@ Public Class cMessagePublisher
     ''' So it will remove All of the message handlers that use this delegate.
     ''' This calls cMessageHandler.Equals().
     ''' </remarks>
-    Public Function RemoveMessageHandler(ByVal MessageHandler As cMessageHandler) As Boolean
+    Public Function RemoveMessageHandler(MessageHandler As cMessageHandler) As Boolean
 
         ' Pre
         Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
 
         Try
-            Return m_handlers.Remove(MessageHandler)
+            Return Me.m_handlers.Remove(MessageHandler)
         Catch ex As Exception
             Return False
         End Try
@@ -302,7 +302,7 @@ Public Class cMessagePublisher
     ''' <returns>
     ''' True if the queue contains a duplicate of the test message, False otherwise.
     ''' </returns>
-    Private Function MergeDuplicateMessageVariables(ByVal msg As cMessage) As Boolean
+    Private Function MergeDuplicateMessageVariables(msg As cMessage) As Boolean
 
         ' Check if similar message not already in the list
         For Each msgQueued As cMessage In Me.m_msglist

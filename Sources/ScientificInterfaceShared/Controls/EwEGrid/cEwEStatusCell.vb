@@ -89,7 +89,7 @@ Namespace Controls.EwEGrid
             MyBase.SetValue(pos, value)
 
             Dim status As eItemStatusTypes = eItemStatusTypes.Invalid
-            Dim vm As IVisualModel = DefaultVisualOriginal
+            Dim vm As IVisualModel = Me.DefaultVisualOriginal
             Dim strText As String = ""
 
             If (TypeOf value Is eItemStatusTypes) Then
@@ -100,10 +100,10 @@ Namespace Controls.EwEGrid
                     ' NOP
                 Case eItemStatusTypes.Added
                     strText = My.Resources.GENERIC_VALUE_CREATE_PENDING
-                    vm = DefaultVisualAdd
+                    vm = Me.DefaultVisualAdd
                 Case eItemStatusTypes.Removed
                     strText = My.Resources.GENERIC_VALUE_DELETE_PENDING
-                    vm = DefaultVisualRemove
+                    vm = Me.DefaultVisualRemove
                 Case eItemStatusTypes.Invalid
                     ' NOP
             End Select

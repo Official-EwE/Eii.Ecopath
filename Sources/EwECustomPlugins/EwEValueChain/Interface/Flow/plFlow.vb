@@ -131,8 +131,8 @@ Public Class plFlow
         [ReadOnly]
     End Enum
 
-    Public Event EditModeChanged(ByVal sender As plFlow, ByVal mode As eEditMode)
-    Public Event ZoomChanged(ByVal sender As plFlow, ByVal sZoom As Single)
+    Public Event EditModeChanged(sender As plFlow, mode As eEditMode)
+    Public Event ZoomChanged(sender As plFlow, sZoom As Single)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -144,12 +144,12 @@ Public Class plFlow
         Me.AutoScroll = True
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         If (disposing) Then
             Me.ClearFlow()
 
             If Me.m_uic IsNot Nothing Then
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleguideChanged
             End If
 
             Me.m_crsDeleteGeneric.Dispose()
@@ -181,7 +181,7 @@ Public Class plFlow
         Get
             Return Me.m_sScale
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             If (value = Me.m_sScale) Then Return
             Me.m_sScale = value
             For Each uc As plUnitControl In Me.m_dtControls.Values
@@ -192,7 +192,7 @@ Public Class plFlow
         End Set
     End Property
 
-    Public Sub Zoom(ByVal bZoomIn As Boolean)
+    Public Sub Zoom(bZoomIn As Boolean)
         Dim i As Integer = -1
         Dim levels As Single() = Me.ZoomLevels
         For j As Integer = 0 To levels.Length - 1
@@ -220,7 +220,7 @@ Public Class plFlow
         Get
             Return Me.m_itemFilter
         End Get
-        Set(ByVal value As cCoreInputOutputBase)
+        Set(value As cCoreInputOutputBase)
             Me.m_itemFilter = value
             Me.m_unitFilter = Nothing
         End Set
@@ -233,7 +233,7 @@ Public Class plFlow
         Get
             Return Me.m_unitFilter
         End Get
-        Set(ByVal value As cUnit)
+        Set(value As cUnit)
             Me.m_unitFilter = value
             Me.m_itemFilter = Nothing
         End Set
@@ -249,10 +249,10 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="fd">The <see cref="cFlowDiagram">data</see> to connect the flow to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Init(ByVal uic As cUIContext, _
-                    ByVal data As cData, _
-                    ByVal fd As cFlowDiagram, _
-                    ByVal sel As ucSelector2)
+    Public Sub Init(uic As cUIContext, _
+                    data As cData, _
+                    fd As cFlowDiagram, _
+                    sel As ucSelector2)
 
         If (Not Me.m_data Is Nothing) Then
             ' Init only once!
@@ -270,7 +270,7 @@ Public Class plFlow
         Me.m_uic = uic
 
         If Me.m_uic IsNot Nothing Then
-            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleguideChanged
         End If
 
         ' Load the layout of the flow (this will re-position created units to their saved positions)
@@ -290,7 +290,7 @@ Public Class plFlow
         Get
             Return Me.m_editMode
         End Get
-        Set(ByVal value As eEditMode)
+        Set(value As eEditMode)
             If Me.m_editMode <> value Then
                 Me.m_editMode = value
                 Me.Selection = Nothing
@@ -438,7 +438,7 @@ Public Class plFlow
         Get
             Return Me.m_bShowGrid
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If value <> Me.m_bShowGrid Then
                 Me.m_bShowGrid = value
                 Me.Refresh()
@@ -560,7 +560,7 @@ Public Class plFlow
     ''' Event handler, processes mouse clicks to operate on UnitConnectors.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnMouseClick(ByVal e As System.Windows.Forms.MouseEventArgs)
+    Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
         Me.ProcessConnectorClick(e.Location)
     End Sub
 
@@ -569,8 +569,8 @@ Public Class plFlow
     ''' Event handler, processes mouse movement to provide cursor feedback.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
-        Dim lw As LinkWrapper = ConnectorFromPoint(e.Location)
+    Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
+        Dim lw As LinkWrapper = Me.ConnectorFromPoint(e.Location)
 
         Select Case Me.m_editMode
 
@@ -594,7 +594,7 @@ Public Class plFlow
         End Select
     End Sub
 
-    Protected Overrides Sub OnMouseHover(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnMouseHover(e As System.EventArgs)
         Me.Focus()
     End Sub
 
@@ -611,7 +611,7 @@ Public Class plFlow
     ''' Paint the panel and all unit connectors
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+    Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
 
         e.Graphics.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAliasGridFit
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias
@@ -668,10 +668,10 @@ Public Class plFlow
                     'Me.m_uic.StyleGuide.GetStyleColors(c.Style, clrFore, clrBack)
                 End If
 
-                PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Width, c.External)
+                Me.PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Width, c.External)
 
                 ' Paint detection link on detection bitmap with a fixed width to make the link better clickable
-                PaintLink(g, ctrlSource.Center, ptT, c.Color, 2)
+                Me.PaintLink(g, ctrlSource.Center, ptT, c.Color, 2)
 
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -685,13 +685,13 @@ Public Class plFlow
         MyBase.OnScroll(se)
     End Sub
 
-    Protected Overrides Sub OnResize(ByVal eventargs As System.EventArgs)
+    Protected Overrides Sub OnResize(eventargs As System.EventArgs)
         MyBase.OnResize(eventargs)
         ' When panel is resized, the link detection bitmap needs to be resized accordingly
         Me.CreateClickDetectionBitmap()
     End Sub
 
-    Private Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType)
+    Private Sub OnStyleguideChanged(changeFlags As cStyleGuide.eChangeType)
         If ((changeFlags And cStyleGuide.eChangeType.Colours) > 0) Then
             Me.Invalidate(True)
         End If
@@ -706,14 +706,14 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="obj"></param>
-    Public Event SelectionChanged(ByVal sender As plFlow, ByVal obj As Object)
+    Public Event SelectionChanged(sender As plFlow, obj As Object)
 
     Public Property Selection() As Object
         Get
             Return Me.m_selection
         End Get
 
-        Private Set(ByVal value As Object)
+        Private Set(value As Object)
             ' Optimization
             If ReferenceEquals(Me.m_selection, value) Then Return
 
@@ -806,7 +806,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Function CreateUnit(ByVal unitType As cUnitFactory.eUnitType) As cUnit
+    Public Function CreateUnit(unitType As cUnitFactory.eUnitType) As cUnit
 
         Dim unit As cUnit = Nothing
         Dim lstrNames As New List(Of String)
@@ -863,7 +863,7 @@ Public Class plFlow
     ''' <param name="unit">The unit to add.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddUnit(ByVal unit As cUnit, Optional ByVal bSelect As Boolean = False) As plUnitControl
+    Public Function AddUnit(unit As cUnit, Optional bSelect As Boolean = False) As plUnitControl
 
         Dim fp As cFlowPosition = Nothing
 
@@ -906,7 +906,7 @@ Public Class plFlow
         Me.m_iNumControls += 1
 
         ' Start listening for unit changes
-        AddHandler fp.Unit.OnChanged, AddressOf OnElementChanged
+        AddHandler fp.Unit.OnChanged, AddressOf Me.OnElementChanged
 
         Return uc
 
@@ -918,12 +918,12 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="unit"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub RemoveUnit(ByVal unit As cUnit)
+    Public Sub RemoveUnit(unit As cUnit)
 
         Dim uc As plUnitControl = Me.m_dtControls(unit)
 
         ' Detach event handlers
-        RemoveHandler unit.OnChanged, AddressOf OnElementChanged
+        RemoveHandler unit.OnChanged, AddressOf Me.OnElementChanged
 
         ' Remove all source links
         For i As Integer = 0 To unit.LinkInCount - 1
@@ -957,7 +957,7 @@ Public Class plFlow
     ''' <param name="unit"></param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function DeleteUnit(ByVal unit As cUnit, ByVal fp As cFlowPosition) As Boolean
+    Public Function DeleteUnit(unit As cUnit, fp As cFlowPosition) As Boolean
 
         If Me.m_data.Parameters.DeletePrompt Then
 
@@ -972,7 +972,7 @@ Public Class plFlow
 
     End Function
 
-    Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
+    Public Function ConvertUnit(unit As cUnit, convertTo As cUnitFactory.eUnitType) As Boolean
 
         Dim fmt As New cUnitTypeFormatter()
         Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.ToString(unit.UnitType), fmt.ToString(convertTo)), _
@@ -1036,14 +1036,14 @@ Public Class plFlow
     ''' <param name="bRefresh"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddLink(ByVal link As cLink, Optional ByVal bRefresh As Boolean = True) As LinkWrapper
+    Public Function AddLink(link As cLink, Optional bRefresh As Boolean = True) As LinkWrapper
 
         ' Sanity checks
         If (link Is Nothing) Then Return Nothing
         If (Not Me.m_dtControls.ContainsKey(link.Source)) Then Return Nothing
         If (Not Me.m_dtControls.ContainsKey(link.Target)) Then Return Nothing
 
-        AddHandler link.OnChanged, AddressOf OnElementChanged
+        AddHandler link.OnChanged, AddressOf Me.OnElementChanged
 
         Dim w As LinkWrapper = Me.FindLinkWrapper(link)
         If w Is Nothing Then
@@ -1064,9 +1064,9 @@ Public Class plFlow
     ''' <param name="link"></param>
     ''' <remarks></remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub RemoveLink(ByVal link As cLink)
+    Public Sub RemoveLink(link As cLink)
         If link Is Nothing Then Return
-        RemoveHandler link.OnChanged, AddressOf OnElementChanged
+        RemoveHandler link.OnChanged, AddressOf Me.OnElementChanged
 
         ' Clear selection if neccesary
         If ReferenceEquals(Me.m_selection, link) Then Me.m_selection = Nothing
@@ -1089,7 +1089,7 @@ Public Class plFlow
     ''' <param name="link"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function DeleteLink(ByVal link As cLink) As Boolean
+    Public Function DeleteLink(link As cLink) As Boolean
 
         If Me.m_data.Parameters.DeletePrompt Then
 
@@ -1113,7 +1113,7 @@ Public Class plFlow
 
 #Region " Units "
 
-    Public Sub OnUnitMouseDown(ByVal uc As plUnitControl)
+    Public Sub OnUnitMouseDown(uc As plUnitControl)
 
         Select Case Me.EditMode
 
@@ -1171,7 +1171,7 @@ Public Class plFlow
 
     End Sub
 
-    Public Sub OnUnitMouseHover(ByVal uc As plUnitControl, ByVal bHover As Boolean)
+    Public Sub OnUnitMouseHover(uc As plUnitControl, bHover As Boolean)
 
         Select Case Me.EditMode
 
@@ -1216,7 +1216,7 @@ Public Class plFlow
     ''' <param name="pt">The location of the pixel to return the color for.</param>
     ''' <returns>The color of the indicated pixel in the detection bitmap.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ColorAtPoint(ByVal pt As Point) As Color
+    Private Function ColorAtPoint(pt As Point) As Color
         Try
             Return Me.m_bmpClickDetection.GetPixel(pt.X, pt.Y)
         Catch ex As Exception
@@ -1231,7 +1231,7 @@ Public Class plFlow
     ''' <param name="clr">The color to test.</param>
     ''' <returns>True if the color could be used for a line</returns>
     ''' -----------------------------------------------------------------------
-    Private Function IsLineColor(ByVal clr As Color) As Boolean
+    Private Function IsLineColor(clr As Color) As Boolean
         Return clr.R <> 255 Or clr.G <> 255 Or clr.B <> 255
     End Function
 
@@ -1242,8 +1242,8 @@ Public Class plFlow
     ''' <param name="clr">The color to find the unit connector for.</param>
     ''' <returns>A unit connector instance, or nothing if this connector could not be found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ConnectorFromColor(ByVal clr As Color) As LinkWrapper
-        If IsLineColor(clr) Then
+    Private Function ConnectorFromColor(clr As Color) As LinkWrapper
+        If Me.IsLineColor(clr) Then
             For Each uc As LinkWrapper In Me.m_lDiagramLinks
                 If uc.Color = clr Then
                     Return uc
@@ -1260,7 +1260,7 @@ Public Class plFlow
     ''' <param name="pt">The location to test.</param>
     ''' <returns>A unit connector instance, or nothing if this connector could not be found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ConnectorFromPoint(ByVal pt As Point) As LinkWrapper
+    Private Function ConnectorFromPoint(pt As Point) As LinkWrapper
         Return Me.ConnectorFromColor(Me.ColorAtPoint(pt))
     End Function
 
@@ -1271,7 +1271,7 @@ Public Class plFlow
     ''' <param name="pt">The location to test.</param>
     ''' <returns>True if there is a unit connector at (or very near to) this location.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function HasConnectorUnderCursor(ByVal pt As Point) As Boolean
+    Private Function HasConnectorUnderCursor(pt As Point) As Boolean
         Dim conn As LinkWrapper = Me.ConnectorFromPoint(pt)
         Return (conn IsNot Nothing)
     End Function
@@ -1282,7 +1282,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="pt">The location that was clicked.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub ProcessConnectorClick(ByVal pt As Point)
+    Private Sub ProcessConnectorClick(pt As Point)
 
         Dim w As LinkWrapper = Me.ConnectorFromColor(Me.ColorAtPoint(pt))
         If (w IsNot Nothing) Then
@@ -1306,7 +1306,7 @@ Public Class plFlow
 
     End Sub
 
-    Private Function FindLinkWrapper(ByVal link As cLink) As LinkWrapper
+    Private Function FindLinkWrapper(link As cLink) As LinkWrapper
         For Each w As LinkWrapper In Me.m_lDiagramLinks
             If w.HasLink(link) Then Return w
         Next
@@ -1317,7 +1317,7 @@ Public Class plFlow
 
 #Region " Drag/drop "
 
-    Private Sub StartUnitDrag(ByVal uc As plUnitControl)
+    Private Sub StartUnitDrag(uc As plUnitControl)
         Dim ptMouse As Point = Cursor.Position
         Dim ptControl As Point = uc.Location
 
@@ -1326,20 +1326,20 @@ Public Class plFlow
             Me.m_ucDrag.BringToFront()
             Me.m_ptMouseOffset = New Point(ptMouse.X - ptControl.X, ptMouse.Y - ptControl.Y)
 
-            AddHandler Me.m_ucDrag.MouseMove, AddressOf TrackMouseMove
-            AddHandler Me.m_ucDrag.MouseUp, AddressOf TrackMouseUp
+            AddHandler Me.m_ucDrag.MouseMove, AddressOf Me.TrackMouseMove
+            AddHandler Me.m_ucDrag.MouseUp, AddressOf Me.TrackMouseUp
         End If
     End Sub
 
     Private Sub EndUnitDrag()
         If (Me.m_ucDrag IsNot Nothing) Then
-            RemoveHandler Me.m_ucDrag.MouseMove, AddressOf TrackMouseMove
-            RemoveHandler Me.m_ucDrag.MouseUp, AddressOf TrackMouseUp
+            RemoveHandler Me.m_ucDrag.MouseMove, AddressOf Me.TrackMouseMove
+            RemoveHandler Me.m_ucDrag.MouseUp, AddressOf Me.TrackMouseUp
         End If
         Me.m_ucDrag = Nothing
     End Sub
 
-    Private Sub TrackMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    Private Sub TrackMouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs)
 
         Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), _
                                       CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
@@ -1361,7 +1361,7 @@ Public Class plFlow
         Me.Refresh()
     End Sub
 
-    Private Sub TrackMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    Private Sub TrackMouseUp(sender As Object, e As System.Windows.Forms.MouseEventArgs)
         Me.EndUnitDrag()
     End Sub
 
@@ -1377,7 +1377,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="obj">The item that changed.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnElementChanged(ByVal obj As cEwEDatabase.cOOPStorable)
+    Private Sub OnElementChanged(obj As cEwEDatabase.cOOPStorable)
         Me.Invalidate()
     End Sub
 
@@ -1391,7 +1391,7 @@ Public Class plFlow
     ''' <param name="unitTo"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function FindIntersect(ByVal ptFrom As Point, ByVal ptTo As Point, ByVal unitTo As plUnitControl) As Point
+    Private Function FindIntersect(ptFrom As Point, ptTo As Point, unitTo As plUnitControl) As Point
         If (unitTo Is Nothing) Then Return ptTo
 
         'The slope of the line is s = (Ay - By)/(Ax - Bx).
@@ -1446,10 +1446,10 @@ Public Class plFlow
     ''' <param name="bExternal">Flag stating whether this link represents an 
     ''' 'External' connection.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub PaintLink(ByVal g As Graphics, _
-                          ByVal ptStart As Point, ByVal ptEnd As Point, _
-                          ByVal clr As Color, ByVal sWeight As Single, _
-                          Optional ByVal bExternal As Boolean = False)
+    Private Sub PaintLink(g As Graphics, _
+                          ptStart As Point, ptEnd As Point, _
+                          clr As Color, sWeight As Single, _
+                          Optional bExternal As Boolean = False)
 
         Dim p As Pen = Nothing
         Dim ptStartScaled As New Point(CInt(ptStart.X), CInt(ptStart.Y))
@@ -1495,7 +1495,7 @@ Public Class plFlow
     ''' JS 11mar09: method not used, painting still handled by cUnitControl
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub PaintUnit(ByVal g As Graphics, ByVal pt As Point, ByVal unit As cUnit, ByVal bSelected As Boolean, ByVal bHover As Boolean)
+    Private Sub PaintUnit(g As Graphics, pt As Point, unit As cUnit, bSelected As Boolean, bHover As Boolean)
 
         Dim rc As Rectangle = Me.ClientRectangle
         rc.Width -= 1
@@ -1526,7 +1526,7 @@ Public Class plFlow
     ''' <param name="dy"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function Angle(ByVal dx As Integer, ByVal dy As Integer) As Single
+    Private Function Angle(dx As Integer, dy As Integer) As Single
 
         Dim sHalfPI As Single = CSng(Math.PI / 2)
         Dim sAngle As Single = 0

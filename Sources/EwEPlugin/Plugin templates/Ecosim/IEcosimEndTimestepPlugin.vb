@@ -27,7 +27,7 @@ Option Strict On
 Public Interface IEcosimEndTimestepPlugin
     Inherits IPlugin
 
-    Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object)
+    Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object)
 
 End Interface
 

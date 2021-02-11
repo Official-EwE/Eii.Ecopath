@@ -76,8 +76,8 @@ Public Class gridSurviveDistParameters
 #Region " Public access "
 
     Public Sub Init(Plugin As cMSE, Survivability As cSurvivability)
-        mMSEPlugin = Plugin
-        m_data = Survivability.ListofSurvDistParams
+        Me.mMSEPlugin = Plugin
+        Me.m_data = Survivability.ListofSurvDistParams
     End Sub
 
     Public Property Data As List(Of cSurvivability.cSurvivabilityDistributonParam)
@@ -145,8 +145,8 @@ Public Class gridSurviveDistParameters
             Me(iRow, eColumnTypes.GroupNumber) = New cEwERowHeaderCell(CStr(data.GroupNo))
             ' To Mark: property cells automatically keep track of changing variable values
             Me(iRow, eColumnTypes.GroupName) = New cPropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.GroupNo), eVarNameFlags.Name)
-            Me(iRow, eColumnTypes.Alpha) = DataCell(data.Alpha)
-            Me(iRow, eColumnTypes.Beta) = DataCell(data.Beta)
+            Me(iRow, eColumnTypes.Alpha) = Me.DataCell(data.Alpha)
+            Me(iRow, eColumnTypes.Beta) = Me.DataCell(data.Beta)
             Me.Rows(iRow).Tag = data
         Next
 
@@ -220,7 +220,7 @@ Public Class gridSurviveDistParameters
 
         ' To Mark: I've added a 'lazy notification' to be fired after the entire celll edit bit has completed.
         'Me.RaiseDataChangeEvent()
-        Me.BeginInvoke(New MethodInvoker(AddressOf RaiseDataChangeEvent))
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.RaiseDataChangeEvent))
 
         Return True
 

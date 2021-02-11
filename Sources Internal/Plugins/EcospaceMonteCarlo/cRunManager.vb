@@ -29,8 +29,8 @@ Public Class cRunPeriods
     Public nYears As Integer
 
     Public Sub New(Start As Integer, NumberOfYears As Integer)
-        StartYear = Start
-        nYears = NumberOfYears
+        Me.StartYear = Start
+        Me.nYears = NumberOfYears
     End Sub
 End Class
 
@@ -43,8 +43,8 @@ Public Class cRunParameters
     Public AfterRun As cRunPeriods
 
     Public Sub New()
-        BeforeRun = New cRunPeriods(1995, 10)
-        AfterRun = New cRunPeriods(2015, 15)
+        Me.BeforeRun = New cRunPeriods(1995, 10)
+        Me.AfterRun = New cRunPeriods(2015, 15)
     End Sub
 
 End Class
@@ -84,7 +84,7 @@ Public Class cRunManager
     Public Sub StopRun()
         Me.m_plugin.MonteCarlo.StopTrial = True
         Me.m_plugin.EcoSpace.m_StopRun = True
-        m_bStop = True
+        Me.m_bStop = True
     End Sub
 
     Public Sub isConfigured()
@@ -116,19 +116,19 @@ Public Class cRunManager
 
     Public Sub Init(thePlugin As cEcospaceMonteCarloPluginPoint)
         Me.m_plugin = thePlugin
-        core = Me.m_plugin.Core
+        Me.core = Me.m_plugin.Core
         Me.m_RunSpace = New cRunEcospace
 
-        m_plugin.MonteCarlo.maxEcopathTries = 1000000
+        Me.m_plugin.MonteCarlo.maxEcopathTries = 1000000
 
-        m_parNames = New String() {"Biomass", "P/B", "Q/B", "EE", "BA"}
+        Me.m_parNames = New String() {"Biomass", "P/B", "Q/B", "EE", "BA"}
 
     End Sub
 
 
     Public Sub setThread(MCThread As Thread, WaitEvent As ManualResetEvent)
         Me.m_MCThread = MCThread
-        m_waitLock = WaitEvent
+        Me.m_waitLock = WaitEvent
     End Sub
 
     Public Function Run(ByVal TrialNumber As Integer) As Boolean
@@ -139,13 +139,13 @@ Public Class cRunManager
             Return False
         End If
 
-        m_TrialNumber = TrialNumber
+        Me.m_TrialNumber = TrialNumber
 
         'ManualResetEvent created on the MonteCarlo thread and passed 
         'This will block the calling thread until we call   Me.m_waitLock.Set()
         Me.m_waitLock.Reset()
 
-        Dim runthread As New Thread(AddressOf RunOnThread)
+        Dim runthread As New Thread(AddressOf Me.RunOnThread)
         runthread.Start()
 
         Return True
@@ -157,21 +157,21 @@ Public Class cRunManager
 
         Try
 
-            m_bStop = False
-            m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
-            RunType = "Before"
-            m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
+            Me.m_bStop = False
+            Me.m_RunSpace.Init(Me.m_plugin.Core, Me.m_plugin.MonteCarlo, Me.m_plugin.EcoSpace)
+            Me.RunType = "Before"
+            Me.m_RunSpace.SetRunParameters(Me.RunParameters.BeforeRun)
             Me.m_RunSpace.Run()
 
-            OnEcospaceRunCompleted()
+            Me.OnEcospaceRunCompleted()
 
             If Not Me.m_bStop Then
-                RunType = "After"
-                m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
+                Me.RunType = "After"
+                Me.m_RunSpace.SetRunParameters(Me.RunParameters.AfterRun)
                 Me.m_RunSpace.Run()
             End If
 
-            OnEcospaceRunCompleted()
+            Me.OnEcospaceRunCompleted()
 
             Me.m_waitLock.Set()
 
@@ -194,8 +194,8 @@ Public Class cRunManager
 
 
     Private Sub SaveRun()
-        writeResults()
-        writeEcopathPars()
+        Me.writeResults()
+        Me.writeEcopathPars()
     End Sub
 
     Private Sub writeResults()
@@ -211,12 +211,12 @@ Public Class cRunManager
             Dim filename As String = Path.GetFileName(Me.RunParameters.OutputFileName)
 
             Dim sumB As Single
-            strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + RunType)
-            For igrp As Integer = 1 To m_plugin.Core.nGroups
+            strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + Me.RunType)
+            For igrp As Integer = 1 To Me.m_plugin.Core.nGroups
                 sumB = 0
                 'The Zero index in ResultsByGroup(type,group,year) is Biomass
                 For it As Integer = Me.m_RunSpace.StartOfLastYear To Me.m_RunSpace.StartOfLastYear + Me.m_RunSpace.nTimeStepPerYear
-                    sumB += m_plugin.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, it)
+                    sumB += Me.m_plugin.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, it)
                 Next it
 
                 'Average of the last year
@@ -251,7 +251,7 @@ Public Class cRunManager
             'Only save complete runs
             If Me.m_bStop Then Return
 
-            If String.Compare(RunType, "After", True) = 0 Then
+            If String.Compare(Me.RunType, "After", True) = 0 Then
                 'Only do this for the before run
                 'Parameters will be the same for both runs
                 Return
@@ -269,7 +269,7 @@ Public Class cRunManager
 
             For ipar As Integer = 0 To 4
                 strm.Write(filename + ", " + Me.m_TrialNumber.ToString + ", " + Me.m_parNames(ipar))
-                For igrp As Integer = 1 To m_plugin.Core.nGroups
+                For igrp As Integer = 1 To Me.m_plugin.Core.nGroups
                     Dim value As Single
                     Select Case ipar
                         Case 0
@@ -307,7 +307,7 @@ Public Class cRunManager
         'For now set BA to 0 for all groups
         'until we sort out how to deal with the 
         'BA BA/B variation
-        For igrp As Integer = 1 To core.nGroups
+        For igrp As Integer = 1 To Me.core.nGroups
             MC.Groups(igrp).BAcv = 0.0
         Next
 

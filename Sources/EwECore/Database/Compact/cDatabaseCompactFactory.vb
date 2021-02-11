@@ -44,7 +44,7 @@ Namespace Database
         ''' <returns>An instance of a <see cref="IDatabaseCompact">database compact engine</see>,
         ''' or Null / Nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Shared Function GetDatabaseCompact(ByVal strFileName As String) As IDatabaseCompact
+        Shared Function GetDatabaseCompact(strFileName As String) As IDatabaseCompact
 
             Select Case cDataSourceFactory.GetSupportedType(strFileName)
                 Case eDataSourceTypes.Access2003

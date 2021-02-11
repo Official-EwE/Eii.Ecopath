@@ -86,12 +86,12 @@ Public Class dlgHarvestControlRule
         MyBase.OnLoad(e)
 
         If (Me.m_HCR Is Nothing) Then
-            Me.m_HCR = New HCR_Group(m_Plugin.Core, m_Plugin)
+            Me.m_HCR = New HCR_Group(Me.m_Plugin.Core, Me.m_Plugin)
         End If
 
         For igrp As Integer = 1 To Me.Core.nGroups
-            If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
+            If Me.Core.EcoPathGroupInputs(igrp).IsFished Then
+                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbBiomassGroups.Items.Add(grp)
                 If (ReferenceEquals(grp, Me.m_HCR.GroupB)) Then
                     Me.m_cmbBiomassGroups.SelectedIndex = i
@@ -100,8 +100,8 @@ Public Class dlgHarvestControlRule
         Next
 
         For igrp As Integer = 1 To Me.Core.nGroups
-            If Core.EcoPathGroupInputs(igrp).IsFished Then
-                Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
+            If Me.Core.EcoPathGroupInputs(igrp).IsFished Then
+                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbFMortGroups.Items.Add(grp)
                 If (ReferenceEquals(grp, Me.m_HCR.GroupF)) Then
                     Me.m_cmbFMortGroups.SelectedIndex = i
@@ -119,7 +119,7 @@ Public Class dlgHarvestControlRule
 
     End Sub
 
-    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosing(e As FormClosingEventArgs)
         'If not a valid rule stop the form from closing to let the user correct the rule
         e.Cancel = Not Me.m_bIsValid
         MyBase.OnFormClosing(e)
@@ -131,7 +131,7 @@ Public Class dlgHarvestControlRule
 #Region " Control event handlers "
 
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles OK_Button.Click
 
         ' Think positive
@@ -159,7 +159,7 @@ Public Class dlgHarvestControlRule
 
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.m_bIsValid = True
@@ -178,7 +178,7 @@ Public Class dlgHarvestControlRule
         If Not Me.m_bInitialized Then Return
 
         Try
-            UpdateHCR()
+            Me.UpdateHCR()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -206,7 +206,7 @@ Public Class dlgHarvestControlRule
         Dim sVal As Single = 0
 
         ' Group Biomass
-        Me.m_HCR.GroupB = DirectCast(m_cmbBiomassGroups.SelectedItem, cEcoPathGroupInput)
+        Me.m_HCR.GroupB = DirectCast(Me.m_cmbBiomassGroups.SelectedItem, cEcoPathGroupInput)
 
         If (Me.m_HCR.GroupB IsNot Nothing) Then
             grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HCR.GroupB.Index)
@@ -219,7 +219,7 @@ Public Class dlgHarvestControlRule
         Me.m_HCR.UpperLimit = CSng(sVal * 0.4)
 
         ' Fishing Mort
-        Me.m_HCR.GroupF = DirectCast(m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)
+        Me.m_HCR.GroupF = DirectCast(Me.m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)
         If (Me.m_HCR.GroupF IsNot Nothing) Then
             grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HCR.GroupF.Index)
             Me.m_HCR.MaxF = grpOut.MortCoFishRate
@@ -227,7 +227,7 @@ Public Class dlgHarvestControlRule
             Me.m_HCR.MaxF = 0
         End If
 
-        Me.m_HCR.Targ_Or_Cons = CType(m_cmbTarg_Or_Cons.SelectedItem, cHCRTypeItem).Function
+        Me.m_HCR.Targ_Or_Cons = CType(Me.m_cmbTarg_Or_Cons.SelectedItem, cHCRTypeItem).Function
 
         Me.m_HCR.TimeFrameRule.NYears = 0
 

@@ -56,8 +56,8 @@ Public Class gridShapeValue
     ''' <param name="bSuppressZeroes">States whether the grid will hide (True)
     ''' or show (False) zeroes.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Clear(ByVal iNumValues As Integer, _
-                     ByVal bSuppressZeroes As Boolean)
+    Public Sub Clear(iNumValues As Integer, _
+                     bSuppressZeroes As Boolean)
 
         Me.m_iNumValues = iNumValues
         Me.m_bSuppressZeroes = bSuppressZeroes
@@ -75,9 +75,9 @@ Public Class gridShapeValue
     ''' <param name="displayMode">Mode that indicates how to format label
     ''' values.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub SetValues(ByVal shape As cShapeData, _
-                         ByVal iNumValues As Integer, _
-                         ByVal displayMode As frmShapeValue.eDisplayMode)
+    Public Sub SetValues(shape As cShapeData, _
+                         iNumValues As Integer, _
+                         displayMode As frmShapeValue.eDisplayMode)
 
         If (TypeOf shape Is cTimeSeries) Then
             Me.m_bSuppressZeroes = Not DirectCast(shape, cTimeSeries).SupportsNull()
@@ -102,7 +102,7 @@ Public Class gridShapeValue
     ''' specified, values will be applied to the shape currently connected to
     ''' the grid.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ApplyValues(Optional ByVal shape As cShapeData = Nothing)
+    Public Sub ApplyValues(Optional shape As cShapeData = Nothing)
 
         Dim iNumValues As Integer = Me.m_iNumValues
         If (shape Is Nothing) Then shape = Me.m_shape
@@ -121,7 +121,7 @@ Public Class gridShapeValue
     ''' Values returned are in the same format as <see cref="cShapeData.ShapeData">the shape data</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Values(Optional ByVal iNumValues As Integer = -1) As Single()
+    Public ReadOnly Property Values(Optional iNumValues As Integer = -1) As Single()
         Get
 
             Dim lValues As New List(Of Single)

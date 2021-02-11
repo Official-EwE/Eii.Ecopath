@@ -39,26 +39,26 @@ Public Class frmMSEBatchTFM
         Get
             Return MyBase.UIContext
         End Get
-        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
             MyBase.UIContext = value
             Me.grdGroups.UIContext = Me.UIContext
             Me.grdIters.UIContext = Me.UIContext
         End Set
     End Property
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
 
-        m_BatchManager = Me.UIContext.Core.MSEBatchManager
+        Me.m_BatchManager = Me.UIContext.Core.MSEBatchManager
 
         Me.txNTFM.Text = Me.m_BatchManager.Parameters.nTFMIteration.ToString
 
         Me.rbCalcTypePercent.Tag = eMSEBatchIterCalcTypes.Percent
         Me.rbCalcTypeValue.Tag = eMSEBatchIterCalcTypes.UpperLowerValues
 
-        UpdateControls()
+        Me.UpdateControls()
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.EcoSim}
 
@@ -99,7 +99,7 @@ Public Class frmMSEBatchTFM
     End Sub
 
 
-    Private Sub OnIterCalcTypeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnIterCalcTypeChanged(sender As System.Object, e As System.EventArgs) _
           Handles rbCalcTypePercent.CheckedChanged, rbCalcTypeValue.CheckedChanged
 
         Try
@@ -145,7 +145,7 @@ Public Class frmMSEBatchTFM
     End Sub
 
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+    Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         Dim brefresh As Boolean
         Select Case msg.Source
 

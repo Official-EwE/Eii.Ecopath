@@ -60,10 +60,10 @@ Public Class ucSuitabilityPlot
         Get
             Return Me.m_uic
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
 
             If Me.m_uic IsNot Nothing Then
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 If Me.m_zgh IsNot Nothing Then
                     Me.m_zgh.Detach()
                     Me.m_zgh = Nothing
@@ -74,7 +74,7 @@ Public Class ucSuitabilityPlot
             Me.m_uic = value
 
             If Me.m_uic IsNot Nothing Then
-                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 Me.m_zgh = New cZedGraphHelper()
                 Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
 
@@ -93,14 +93,14 @@ Public Class ucSuitabilityPlot
 
 #Region " Events "
 
-    Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+    Private Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
         Try
             Me.UpdateGraph()
         Catch ex As Exception
         End Try
     End Sub
 
-    Private Sub OnPlotSuitability(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnPlotSuitability(sender As System.Object, e As System.EventArgs) _
         Handles m_rbSuitability.CheckedChanged
         Try
             Me.PlotType = ePlotTypes.Suitability
@@ -109,7 +109,7 @@ Public Class ucSuitabilityPlot
         End Try
     End Sub
 
-    Private Sub OnPlotFunctionalResponse(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnPlotFunctionalResponse(sender As System.Object, e As System.EventArgs) _
         Handles m_rbFunctionalResponse.CheckedChanged
         Try
             Me.PlotType = ePlotTypes.FunctionalResponse
@@ -118,7 +118,7 @@ Public Class ucSuitabilityPlot
         End Try
     End Sub
 
-    Private Sub OnPlotElectivity(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnPlotElectivity(sender As System.Object, e As System.EventArgs) _
         Handles m_rbElectivity.CheckedChanged
         Try
             Me.PlotType = ePlotTypes.Electivity
@@ -127,7 +127,7 @@ Public Class ucSuitabilityPlot
         End Try
     End Sub
 
-    Private Sub OnSelectPredator(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectPredator(sender As System.Object, e As System.EventArgs) _
         Handles m_lbGroups.SelectedIndexChanged
         Try
             Me.UpdateGraph()
@@ -143,7 +143,7 @@ Public Class ucSuitabilityPlot
         Get
             Return Me.m_plottype
         End Get
-        Set(ByVal value As ePlotTypes)
+        Set(value As ePlotTypes)
             Me.m_plottype = value
         End Set
     End Property

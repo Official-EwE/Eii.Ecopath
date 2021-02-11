@@ -82,9 +82,9 @@ Namespace Ecosim
 
             Me.m_iNumVisibleFleets = 0
 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
                 If Me.StyleGuide.FleetVisible(iFleet) Then
-                    lName.Add(Core.EcosimFleetInputs(iFleet).Name)
+                    lName.Add(Me.Core.EcosimFleetInputs(iFleet).Name)
                     Me.m_iNumVisibleFleets += 1
                 End If
             Next
@@ -106,36 +106,36 @@ Namespace Ecosim
             Dim totalValue(0 To 11) As Single
             Me.InitTotalArray(totalValue)
 
-            For iFleet As Integer = 1 To core.nFleets
+            For iFleet As Integer = 1 To Me.core.nFleets
 
                 'Only display selected groups
                 If Me.StyleGuide.FleetVisible(iFleet) Then
 
                     iRow += 1
-                    source = Core.EcosimFleetOutput(iFleet)
+                    source = Me.Core.EcosimFleetOutput(iFleet)
 
-                    If source.CatchStart > 0 Then SetCellValue(iRow, 2, source.CatchStart, totalValue)
-                    If source.CatchEnd > 0 Then SetCellValue(iRow, 3, source.CatchEnd, totalValue)
+                    If source.CatchStart > 0 Then Me.SetCellValue(iRow, 2, source.CatchStart, totalValue)
+                    If source.CatchEnd > 0 Then Me.SetCellValue(iRow, 3, source.CatchEnd, totalValue)
 
                     If source.CatchStart > 0 And source.CatchEnd > 0 Then
-                        SetCellValue(iRow, 4, CSng(source.CatchEnd / source.CatchStart), totalValue)
+                        Me.SetCellValue(iRow, 4, CSng(source.CatchEnd / source.CatchStart), totalValue)
                     End If
 
-                    If source.ValueStart > 0 Then SetCellValue(iRow, 5, source.ValueStart, totalValue)
-                    If source.ValueEnd > 0 Then SetCellValue(iRow, 6, source.ValueEnd, totalValue)
+                    If source.ValueStart > 0 Then Me.SetCellValue(iRow, 5, source.ValueStart, totalValue)
+                    If source.ValueEnd > 0 Then Me.SetCellValue(iRow, 6, source.ValueEnd, totalValue)
 
                     If source.ValueStart > 0 And source.ValueEnd > 0 Then
-                        SetCellValue(iRow, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
+                        Me.SetCellValue(iRow, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
                     End If
 
-                    If source.CostStart > 0 Then SetCellValue(iRow, 8, source.CostStart, totalValue, styleCost)
-                    If source.CostEnd > 0 Then SetCellValue(iRow, 9, source.CostEnd, totalValue, styleCost)
+                    If source.CostStart > 0 Then Me.SetCellValue(iRow, 8, source.CostStart, totalValue, styleCost)
+                    If source.CostEnd > 0 Then Me.SetCellValue(iRow, 9, source.CostEnd, totalValue, styleCost)
                     If source.CostStart > 0 And source.CostEnd > 0 Then
-                        SetCellValue(iRow, 10, CSng(source.CostEnd / source.CostStart), totalValue, styleCost)
+                        Me.SetCellValue(iRow, 10, CSng(source.CostEnd / source.CostStart), totalValue, styleCost)
                     End If
 
                     'jb feb??08 cEcosimFleetSummary.Effort is endEffort/StartEffort
-                    SetCellValue(iRow, 11, CSng(source.Effort), totalValue)
+                    Me.SetCellValue(iRow, 11, CSng(source.Effort), totalValue)
                 End If
 
             Next

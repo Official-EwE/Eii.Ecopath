@@ -30,7 +30,7 @@ Public Interface IMSYPlugin
     ''' <param name="MSEDataStructure">MSE data structures</param>
     ''' <param name="EcosimDatastructures">Ecosim data structures</param>
     ''' <remarks></remarks>
-    Sub MSYInitialized(ByVal MSEDataStructure As Object, ByVal EcosimDatastructures As Object)
+    Sub MSYInitialized(MSEDataStructure As Object, EcosimDatastructures As Object)
 
     ''' <summary>
     ''' The MSY variables have been initialized and search is about to start.
@@ -38,7 +38,7 @@ Public Interface IMSYPlugin
     ''' <param name="MSEDataStructure"></param>
     ''' <param name="EcosimDatastructures"></param>
     ''' <remarks></remarks>
-    Sub MSYRunStarted(ByVal MSEDataStructure As Object, ByVal EcosimDatastructures As Object)
+    Sub MSYRunStarted(MSEDataStructure As Object, EcosimDatastructures As Object)
 
     ''' <summary>
     ''' MSY search has completed all its iteration and computed effort for all fleets. Interface objects have not been populated at this time.
@@ -46,7 +46,7 @@ Public Interface IMSYPlugin
     ''' <param name="MSYEffortByFleet">MSY effort for all fleets</param>
     ''' <param name="MSYFbyGroup">MSY Fishing mortality for groups</param>
     ''' <remarks></remarks>
-    Sub MSYEffortCompleted(ByVal MSYEffortByFleet() As Single, ByVal MSYFbyGroup() As Single)
+    Sub MSYEffortCompleted(MSYEffortByFleet() As Single, MSYFbyGroup() As Single)
 
     ''' <summary>
     ''' MSY search is completed all iterface object have been populated.

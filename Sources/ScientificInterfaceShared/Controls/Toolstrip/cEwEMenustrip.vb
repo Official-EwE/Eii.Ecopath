@@ -57,7 +57,7 @@ Namespace Controls
         ''' Layout handler, overridden to update the state of separators.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnLayout(ByVal e As LayoutEventArgs)
+        Protected Overrides Sub OnLayout(e As LayoutEventArgs)
 
             ' Already updating? Abort
             If Me.m_bInUpdate Then Return

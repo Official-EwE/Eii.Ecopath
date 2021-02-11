@@ -44,7 +44,7 @@ Namespace Utilities
         ''' <param name="sValue">Value to evaluate.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function IsFinite(ByVal sValue As Single) As Boolean
+        Public Shared Function IsFinite(sValue As Single) As Boolean
             If Single.IsInfinity(sValue) Or Single.IsNaN(sValue) Then Return False
             Return True
         End Function
@@ -60,10 +60,10 @@ Namespace Utilities
         ''' <param name="sPosInf">Positive infinity value to substitute.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FixValue(ByVal sValue As Single, _
-                                        Optional ByVal sNaN As Single = 0, _
-                                        Optional ByVal sNegInf As Single = -1, _
-                                        Optional ByVal sPosInf As Single = 1) As Single
+        Public Shared Function FixValue(sValue As Single, _
+                                        Optional sNaN As Single = 0, _
+                                        Optional sNegInf As Single = -1, _
+                                        Optional sPosInf As Single = 1) As Single
 
             If cNumberUtils.IsFinite(sValue) Then Return sValue
 

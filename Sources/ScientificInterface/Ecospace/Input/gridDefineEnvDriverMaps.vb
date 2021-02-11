@@ -175,8 +175,8 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
-                If (TypeOf Layer Is cEcospaceLayerDriver) Then
-                    If (String.Compare(DirectCast(Layer, cEcospaceLayerDriver).Units, Me.Units, False) <> 0) Then
+                If (TypeOf Me.Layer Is cEcospaceLayerDriver) Then
+                    If (String.Compare(DirectCast(Me.Layer, cEcospaceLayerDriver).Units, Me.Units, False) <> 0) Then
                         Return True
                     End If
                 End If
@@ -332,7 +332,7 @@ Namespace Ecospace
             Next
 
             ' Brute-force update grid
-            UpdateGrid()
+            Me.UpdateGrid()
 
         End Sub
 
@@ -404,7 +404,7 @@ Namespace Ecospace
 
             ' Populate rows
             For iRow As Integer = 1 To Me.m_alLayers.Count
-                UpdateRow(iRow)
+                Me.UpdateRow(iRow)
             Next iRow
 
         End Sub
@@ -632,7 +632,7 @@ Namespace Ecospace
         ''' </summary>
         Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsLayerRow(iRow) Then Return False
+            If Not Me.IsLayerRow(iRow) Then Return False
 
             Dim iLayer As Integer = iRow - iFIRSTDATAROW
             Dim li As cLayerInfo = Nothing
@@ -681,7 +681,7 @@ Namespace Ecospace
             Dim bMoveSelection As Boolean = (iRow = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not CanMoveRowUp(iRow) Then Return
+            If Not Me.CanMoveRowUp(iRow) Then Return
             Me.MoveRow(iRow, iRow - 1)
 
             If bMoveSelection Then
@@ -705,7 +705,7 @@ Namespace Ecospace
             Dim bMoveSelection As Boolean = (iRow = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not CanMoveRowDown(iRow) Then Return
+            If Not Me.CanMoveRowDown(iRow) Then Return
             Me.MoveRow(iRow, iRow + 1)
 
             If bMoveSelection Then

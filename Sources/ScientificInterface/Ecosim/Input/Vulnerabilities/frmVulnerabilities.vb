@@ -53,7 +53,7 @@ Namespace Ecosim
 
 #Region " Overloads "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If Me.UIContext Is Nothing Then Return
@@ -70,7 +70,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             If (Me.m_cmdEstimateVs IsNot Nothing) Then
                 Me.m_cmdEstimateVs.RemoveControl(Me.m_tsbEstimateVs)
             End If

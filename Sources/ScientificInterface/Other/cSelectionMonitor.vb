@@ -47,7 +47,7 @@ Public Class cSelectionMonitor
 
         ' Start monitoring
         Me.m_cmdSelect = DirectCast(uic.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
-        AddHandler Me.m_cmdSelect.OnPostInvoke, AddressOf HandleSelectionChanged
+        AddHandler Me.m_cmdSelect.OnPostInvoke, AddressOf Me.HandleSelectionChanged
 
     End Sub
 
@@ -57,7 +57,7 @@ Public Class cSelectionMonitor
         Debug.Assert(Me.m_cmdSelect IsNot Nothing)
 
         ' Stop monitoring
-        RemoveHandler Me.m_cmdSelect.OnPostInvoke, AddressOf HandleSelectionChanged
+        RemoveHandler Me.m_cmdSelect.OnPostInvoke, AddressOf Me.HandleSelectionChanged
         Me.m_cmdSelect = Nothing
 
     End Sub

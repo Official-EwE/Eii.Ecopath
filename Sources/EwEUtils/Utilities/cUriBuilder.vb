@@ -50,29 +50,29 @@ Namespace Utilities
             MyBase.New()
         End Sub
 
-        Public Sub New(ByVal strURI As String)
+        Public Sub New(strURI As String)
             MyBase.New(strURI)
             Me.PopulateQueryString()
         End Sub
 
-        Public Sub New(ByVal strURI As Uri)
+        Public Sub New(strURI As Uri)
             MyBase.New(strURI)
             Me.PopulateQueryString()
         End Sub
 
-        Public Sub New(ByVal strSchemeName As String, ByVal strHostName As String)
+        Public Sub New(strSchemeName As String, strHostName As String)
             MyBase.New(strSchemeName, strHostName)
         End Sub
 
-        Public Sub New(ByVal strScheme As String, ByVal strHost As String, ByVal portNumber As Integer)
+        Public Sub New(strScheme As String, strHost As String, portNumber As Integer)
             MyBase.New(strScheme, strHost, portNumber)
         End Sub
 
-        Public Sub New(ByVal strScheme As String, ByVal strHost As String, ByVal iPort As Integer, ByVal pathValue As String)
+        Public Sub New(strScheme As String, strHost As String, iPort As Integer, pathValue As String)
             MyBase.New(strScheme, strHost, iPort, pathValue)
         End Sub
 
-        Public Sub New(ByVal strScheme As String, ByVal strHost As String, ByVal iPort As Integer, ByVal path As String, ByVal extraValue As String)
+        Public Sub New(strScheme As String, strHost As String, iPort As Integer, path As String, extraValue As String)
             MyBase.New(strScheme, strHost, iPort, path, extraValue)
         End Sub
 
@@ -85,7 +85,7 @@ Namespace Utilities
             Return MyBase.Uri.AbsoluteUri
         End Function
 
-        Public Sub Navigate(Optional ByVal bEndResponse As Boolean = True)
+        Public Sub Navigate(Optional bEndResponse As Boolean = True)
             Dim strURI As String = Me.ToString()
             HttpContext.Current.Response.Redirect(strURI, bEndResponse)
         End Sub
@@ -109,7 +109,7 @@ Namespace Utilities
                 Dim path As String = MyBase.Path
                 Return path.Substring(path.LastIndexOf("/") + 1)
             End Get
-            Set(ByVal Value As String)
+            Set(Value As String)
                 Dim path As String = MyBase.Path
                 path = path.Substring(0, path.LastIndexOf("/"))
                 MyBase.Path = String.Concat(path, "/", Value)

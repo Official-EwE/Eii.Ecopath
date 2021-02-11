@@ -47,14 +47,14 @@ Namespace Ecotracer
 #Region " Constructor "
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructor
 
 #Region " Overloads and events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -95,20 +95,20 @@ Namespace Ecotracer
 
         End Sub
 
-        Private Sub OnConTracingChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
+        Private Sub OnConTracingChanged(p As cProperty, cf As cProperty.eChangeFlags)
             Me.UpdateControls()
         End Sub
 
-        Private Sub rbDisabled_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbDisabled.Click
-            SetTracerRunMode(eTracerRunModeTypes.Disabled)
+        Private Sub rbDisabled_Click(sender As Object, e As System.EventArgs) Handles m_rbDisabled.Click
+            Me.SetTracerRunMode(eTracerRunModeTypes.Disabled)
         End Sub
 
-        Private Sub rbSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbSim.Click
-            SetTracerRunMode(eTracerRunModeTypes.RunSim)
+        Private Sub rbSim_Click(sender As Object, e As System.EventArgs) Handles m_rbSim.Click
+            Me.SetTracerRunMode(eTracerRunModeTypes.RunSim)
         End Sub
 
-        Private Sub rbSpace_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbSpace.Click
-            SetTracerRunMode(eTracerRunModeTypes.RunSpace)
+        Private Sub rbSpace_Click(sender As Object, e As System.EventArgs) Handles m_rbSpace.Click
+            Me.SetTracerRunMode(eTracerRunModeTypes.RunSpace)
         End Sub
 
         Private Sub OnVisitSAUP(sender As System.Object, e As System.EventArgs) _
@@ -138,7 +138,7 @@ Namespace Ecotracer
 
 #Region " Overrides "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             If msg.Source = eCoreComponentType.EcoSim Then
                 Me.ConnectToEcosim(Me.Core.ActiveEcosimScenarioIndex > 0)
             End If
@@ -173,7 +173,7 @@ Namespace Ecotracer
 
         End Sub
 
-        Private Sub ConnectToEcosim(ByVal bConnect As Boolean)
+        Private Sub ConnectToEcosim(bConnect As Boolean)
 
             If bConnect Then
 
@@ -185,21 +185,21 @@ Namespace Ecotracer
                 Dim ecosimModelParams As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
 
                 Me.m_propEcosimConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
-                AddHandler Me.m_propEcosimConTracing.PropertyChanged, AddressOf OnConTracingChanged
+                AddHandler Me.m_propEcosimConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged
 
             Else
 
                 ' Already disconnected? Abort
                 If Not Me.IsConnectedToEcosim() Then Return
 
-                RemoveHandler Me.m_propEcosimConTracing.PropertyChanged, AddressOf OnConTracingChanged
+                RemoveHandler Me.m_propEcosimConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged
                 Me.m_propEcosimConTracing = Nothing
 
             End If
 
         End Sub
 
-        Private Sub ConnectToEcospace(ByVal bConnect As Boolean)
+        Private Sub ConnectToEcospace(bConnect As Boolean)
 
             If bConnect Then
 
@@ -211,14 +211,14 @@ Namespace Ecotracer
                 Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
                 Me.m_propEcospaceConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
-                AddHandler Me.m_propEcospaceConTracing.PropertyChanged, AddressOf OnConTracingChanged
+                AddHandler Me.m_propEcospaceConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged
 
             Else
 
                 ' Already disconnected? Abort
                 If Not Me.IsConnectedToEcospace() Then Return
 
-                RemoveHandler Me.m_propEcospaceConTracing.PropertyChanged, AddressOf OnConTracingChanged
+                RemoveHandler Me.m_propEcospaceConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged
                 Me.m_propEcospaceConTracing = Nothing
 
             End If
@@ -233,7 +233,7 @@ Namespace Ecotracer
             Return (Me.m_propEcospaceConTracing IsNot Nothing)
         End Function
 
-        Private Sub SetTracerRunMode(ByVal tracerRunMode As eTracerRunModeTypes)
+        Private Sub SetTracerRunMode(tracerRunMode As eTracerRunModeTypes)
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EnableEcotracer")
             cmd.Tag = tracerRunMode

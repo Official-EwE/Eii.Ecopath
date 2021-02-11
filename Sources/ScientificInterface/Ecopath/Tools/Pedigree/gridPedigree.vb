@@ -55,7 +55,7 @@ Namespace Ecopath.Tools
 
             Private m_psg As cPedigreeStyleGuide = Nothing
 
-            Public Sub New(ByVal psg As cPedigreeStyleGuide)
+            Public Sub New(psg As cPedigreeStyleGuide)
                 Me.m_psg = psg
             End Sub
 
@@ -66,8 +66,8 @@ Namespace Ecopath.Tools
             ''' <param name="pos">The position to obtain pedigree info for.</param>
             ''' <returns>A <see cref="cPedigreeLevel">pedigree level</see>, or
             ''' Nothing if something went wrong.</returns>
-            Private Function GetLevel(ByVal cell As SourceGrid2.Cells.ICellVirtual,
-                    ByVal pos As SourceGrid2.Position) As cPedigreeLevel
+            Private Function GetLevel(cell As SourceGrid2.Cells.ICellVirtual,
+                    pos As SourceGrid2.Position) As cPedigreeLevel
 
                 Try
 
@@ -110,11 +110,11 @@ Namespace Ecopath.Tools
             ''' </summary>
             ''' -------------------------------------------------------------------
             Protected Overrides Sub DrawCell_Background(
-                    ByVal cell As SourceGrid2.Cells.ICellVirtual,
-                    ByVal pos As SourceGrid2.Position,
-                    ByVal e As System.Windows.Forms.PaintEventArgs,
-                    ByVal rc As System.Drawing.Rectangle,
-                    ByVal status As SourceGrid2.DrawCellStatus)
+                    cell As SourceGrid2.Cells.ICellVirtual,
+                    pos As SourceGrid2.Position,
+                    e As System.Windows.Forms.PaintEventArgs,
+                    rc As System.Drawing.Rectangle,
+                    status As SourceGrid2.DrawCellStatus)
 
                 MyBase.DrawCell_Background(cell, pos, e, rc, status)
 
@@ -133,11 +133,11 @@ Namespace Ecopath.Tools
             ''' </summary>
             ''' -------------------------------------------------------------------
             Protected Overrides Sub DrawCell_ImageAndText(
-                    ByVal cell As SourceGrid2.Cells.ICellVirtual,
-                    ByVal pos As SourceGrid2.Position,
-                    ByVal e As System.Windows.Forms.PaintEventArgs,
-                    ByVal rc As System.Drawing.Rectangle,
-                    ByVal status As SourceGrid2.DrawCellStatus)
+                    cell As SourceGrid2.Cells.ICellVirtual,
+                    pos As SourceGrid2.Position,
+                    e As System.Windows.Forms.PaintEventArgs,
+                    rc As System.Drawing.Rectangle,
+                    status As SourceGrid2.DrawCellStatus)
 
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
                 If (level Is Nothing) Then Return
@@ -179,7 +179,7 @@ Namespace Ecopath.Tools
             ''' </summary>
             ''' <param name="cell">Cell to borrow core from.</param>
             ''' -------------------------------------------------------------------
-            Protected ReadOnly Property Core(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cCore
+            Protected ReadOnly Property Core(cell As SourceGrid2.Cells.ICellVirtual) As cCore
                 Get
                     If (TypeOf cell Is IUIElement) Then
                         Dim uic As cUIContext = DirectCast(cell, IUIElement).UIContext
@@ -231,22 +231,22 @@ Namespace Ecopath.Tools
             Get
                 Return Me.m_psg
             End Get
-            Set(ByVal value As cPedigreeStyleGuide)
+            Set(value As cPedigreeStyleGuide)
                 If (Me.m_psg IsNot Nothing) Then
-                    RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
+                    RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf Me.OnRenderStyleChanged
                 End If
 
                 Me.m_psg = value
 
                 If (Me.m_psg IsNot Nothing) Then
-                    AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
+                    AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf Me.OnRenderStyleChanged
                     Me.m_pcv = New cPedigreeCellVisualizer(Me.m_psg)
                     Me.RefreshContent()
                 End If
             End Set
         End Property
 
-        Public Event OnVariableChanged(ByVal sender As Object, ByVal vn As eVarNameFlags)
+        Public Event OnVariableChanged(sender As Object, vn As eVarNameFlags)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -258,7 +258,7 @@ Namespace Ecopath.Tools
             Get
                 Return Me.m_varName
             End Get
-            Set(ByVal value As eVarNameFlags)
+            Set(value As eVarNameFlags)
                 If (value <> Me.m_varName) Then
                     Me.m_varName = value
                     Me.FillData()
@@ -273,7 +273,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' <param name="iLevel"></param>
         ''' -------------------------------------------------------------------
-        Public Sub SetValue(ByVal iLevel As Integer)
+        Public Sub SetValue(iLevel As Integer)
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.Selection
@@ -363,7 +363,7 @@ Namespace Ecopath.Tools
                 Me(0, iVariable + 1) = cell
             Next iVariable
 
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 group = Me.Core.EcoPathGroupInputs(iGroup)
                 Me(iGroup, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                 Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
@@ -392,7 +392,7 @@ Namespace Ecopath.Tools
                 man = Me.Core.GetPedigreeManager(varname)
 
                 ' For all groups
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     ' Get group
                     group = Me.Core.EcoPathGroupInputs(iGroup)
 
@@ -441,8 +441,8 @@ Namespace Ecopath.Tools
         ''' Overridden to track variable changes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnCellClicked(ByVal p As SourceGrid2.Position, _
-                                              ByVal cell As SourceGrid2.Cells.ICellVirtual)
+        Protected Overrides Sub OnCellClicked(p As SourceGrid2.Position, _
+                                              cell As SourceGrid2.Cells.ICellVirtual)
             MyBase.OnCellClicked(p, cell)
             Dim iVarNew As Integer = p.Column - 1
             Me.SelectedVariable = Me.Core.PedigreeVariable(iVarNew)
@@ -463,7 +463,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' <param name="psg">Maurice and his trained rodents.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub OnRenderStyleChanged(ByVal psg As cPedigreeStyleGuide)
+        Protected Sub OnRenderStyleChanged(psg As cPedigreeStyleGuide)
             Me.FillData()
         End Sub
 

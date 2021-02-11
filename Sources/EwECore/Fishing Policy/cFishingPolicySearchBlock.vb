@@ -27,36 +27,36 @@ Imports EwEUtils.Core
 Public Class cFishingPolicySearchBlock
     Inherits cCoreGroupBase
 
-    Public Sub New(ByVal theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Public Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
         Dim val As cValue
 
-        m_dataType = eDataTypes.FishingPolicySearchBlocks
-        m_coreComponent = eCoreComponentType.FishingPolicySearch
+        Me.m_dataType = eDataTypes.FishingPolicySearchBlocks
+        Me.m_coreComponent = eCoreComponentType.FishingPolicySearch
         Me.AllowValidation = False
         Me.DBID = DBID
 
         'default OK status used for setVariable
         'see comment setVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.SearchBlock, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.IntArray, eVarNameFlags.SearchBlock, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears)
+        Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
 
     End Sub
 
 
-    Public Property SearchBlocks(ByVal iTimeIndex As Integer) As Integer
+    Public Property SearchBlocks(iTimeIndex As Integer) As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.SearchBlock, iTimeIndex))
+            Return CInt(Me.GetVariable(eVarNameFlags.SearchBlock, iTimeIndex))
         End Get
 
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.SearchBlock, value, iTimeIndex)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.SearchBlock, value, iTimeIndex)
         End Set
 
     End Property
@@ -70,12 +70,12 @@ Public Class cFishingPolicySearchBlock
             Return Not Me.AllowValidation
         End Get
 
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
 
             'if turning the BatchEdit On after it has been OFF tell the core that the values has been edited
             'this will allow the core to update the underlying data and send out a datamodified message
             If Me.BatchEdit = True And value = False Then
-                Me.m_core.OnValidated(m_values.Item(eVarNameFlags.SearchBlock), Me)
+                Me.m_core.OnValidated(Me.m_values.Item(eVarNameFlags.SearchBlock), Me)
             End If
             Me.AllowValidation = Not value
 

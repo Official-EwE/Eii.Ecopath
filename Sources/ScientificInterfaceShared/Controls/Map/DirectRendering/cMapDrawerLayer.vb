@@ -49,7 +49,7 @@ Namespace Controls.Map
 
         Overloads Property Map As eVarNameFlags
 
-        Public Overrides Sub DrawMap(ByVal iItem As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
+        Public Overrides Sub DrawMap(iItem As Integer, rcPos As Rectangle, Args As cMapDrawerArgs)
 
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim excl As cEcospaceLayerExclusion = bm.LayerExclusion
@@ -77,7 +77,7 @@ Namespace Controls.Map
                         Dim brCell As Brush = Nothing
 
                         'If it is water
-                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        If Me.m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
                             ' Is not excluded
                             If (Not excl.IsExcludedCell(i, j)) Then
                                 ' Water Cell

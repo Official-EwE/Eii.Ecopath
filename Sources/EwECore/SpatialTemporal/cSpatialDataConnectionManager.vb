@@ -107,7 +107,7 @@ Namespace SpatialData
         Friend Sub New()
         End Sub
 
-        Friend Sub Init(ByVal core As cCore, ByVal data As cSpatialDataStructures)
+        Friend Sub Init(core As cCore, data As cSpatialDataStructures)
 
             Me.m_core = core
             Me.m_data = data
@@ -274,7 +274,7 @@ Namespace SpatialData
 
 #Region " Adapters "
 
-        Public ReadOnly Property Adapter(ByVal varname As eVarNameFlags) As cSpatialDataAdapter
+        Public ReadOnly Property Adapter(varname As eVarNameFlags) As cSpatialDataAdapter
             Get
                 For Each adt As cSpatialDataAdapter In Me.m_data.DataAdapters
                     If (adt.VarName = varname) Then
@@ -362,7 +362,7 @@ Namespace SpatialData
         ''' <param name="ds"></param>
         ''' <param name="ForceUpdate">True to force the notification</param>
         ''' -------------------------------------------------------------------
-        Public Sub Update(ByVal ds As ISpatialDataSet, Optional ForceUpdate As Boolean = False)
+        Public Sub Update(ds As ISpatialDataSet, Optional ForceUpdate As Boolean = False)
             Me.m_datasetManager.Compatibility(ds).Invalidate()
             ' Only send out event if this dataset is used in a spat/temp configuration
             If (Me.IsApplied(ds) Or ForceUpdate) Then
@@ -377,7 +377,7 @@ Namespace SpatialData
         ''' <param name="cv"></param>
         ''' <param name="ForceUpdate">True to force the notification</param>
         ''' -------------------------------------------------------------------
-        Public Sub Update(ByVal cv As ISpatialDataConverter, Optional ForceUpdate As Boolean = False)
+        Public Sub Update(cv As ISpatialDataConverter, Optional ForceUpdate As Boolean = False)
             ' ToDo: Only send out event this converter is used in a spat/temp configuration
             Me.Update()
         End Sub

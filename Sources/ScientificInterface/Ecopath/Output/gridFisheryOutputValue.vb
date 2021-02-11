@@ -52,21 +52,21 @@ Namespace Ecopath.Output
             MyBase.InitStyle()
 
             'Define grid dimensions
-            Me.Redim(1, Core.nFleets + 5)
+            Me.Redim(1, Me.Core.nFleets + 5)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
-            For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, strUnit:=cUnits.MonetaryOverTime)
             Next
 
             ' Catch value column
-            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCHVALUE, cUnits.MonetaryOverTime)
-            Me(0, Core.nFleets + 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_NONMARKETVALUE, cUnits.MonetaryOverTime)
-            Me(0, Core.nFleets + 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE, cUnits.MonetaryOverTime)
+            Me(0, Me.Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CATCHVALUE, cUnits.MonetaryOverTime)
+            Me(0, Me.Core.nFleets + 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_NONMARKETVALUE, cUnits.MonetaryOverTime)
+            Me(0, Me.Core.nFleets + 4) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE, cUnits.MonetaryOverTime)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -81,27 +81,27 @@ Namespace Ecopath.Output
             Me.RowsCount = 1
 
             ' Done?
-            If Core.nFleets = 0 Then Return
+            If Me.Core.nFleets = 0 Then Return
 
             ' Create rows for all groups and sum values in each row
-            For rowIndex As Integer = 1 To Core.nGroups
-                source = Core.EcoPathGroupInputs(rowIndex)
+            For rowIndex As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcoPathGroupInputs(rowIndex)
                 iRow = Me.AddRow()
-                FillRows(iRow, source)
+                Me.FillRows(iRow, source)
             Next rowIndex
 
             'Create "Total value" row (sum values in each column)
-            FillTotalValueRow()
+            Me.FillTotalValueRow()
 
             'Create "Total cost" row
-            FillTotalCostRow()
+            Me.FillTotalCostRow()
 
             'Create "Total profit" row
-            FillTotalProfitRow()
+            Me.FillTotalProfitRow()
 
         End Sub
 
-        Private Sub FillRows(ByVal iRow As Integer, ByVal source As cEcoPathGroupInput)
+        Private Sub FillRows(iRow As Integer, source As cEcoPathGroupInput)
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim propLandings As cProperty = Nothing
@@ -131,10 +131,10 @@ Namespace Ecopath.Output
 
             alSumRow.Clear()
             ' For each fleet (each column) 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
                 alProdLandingsMarketPrice.Clear()
                 ' Get the fleet object 
-                sourceSec = Core.EcopathFleetInputs(iFleet)
+                sourceSec = Me.Core.EcopathFleetInputs(iFleet)
                 ' Get the index landing property
                 propLandings = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 alProdLandingsMarketPrice.Add(propLandings)
@@ -166,7 +166,7 @@ Namespace Ecopath.Output
             ' .. multiply group non-market value by calculated broup biomass
             opNonMarketValue = New cBinaryOperation(cBinaryOperation.eOperatorType.Multiply, _
                 Me.PropertyManager.GetProperty(source, eVarNameFlags.NonMarketValue), _
-                Me.PropertyManager.GetProperty(Core.EcoPathGroupOutputs(source.Index), eVarNameFlags.Biomass))
+                Me.PropertyManager.GetProperty(Me.Core.EcoPathGroupOutputs(source.Index), eVarNameFlags.Biomass))
             propProdNonMarketValue = Me.Formula(opNonMarketValue)
             propCell = New cPropertyCell(CType(propProdNonMarketValue, cProperty))
             propCell.SuppressZero = True
@@ -205,12 +205,12 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_TOTALVALUE, cUnits.Monetary)
 
             alSumAll.Clear()
-            For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
                 alSumCol.Clear()
 
-                For rowIndex As Integer = 1 To Core.nGroups
-                    sourceSec = Core.EcoPathGroupInputs(rowIndex)
+                For rowIndex As Integer = 1 To Me.Core.nGroups
+                    sourceSec = Me.Core.EcoPathGroupInputs(rowIndex)
                     alProdLandingsMarketPrice.Clear()
                     ' Get the index landing property
                     propLandings = Me.PropertyManager.GetProperty(source, eVarNameFlags.Landings, sourceSec)
@@ -267,12 +267,12 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_TOTALCOST, cUnits.Monetary)
 
             alSumCost.Clear()
-            For fleetIndex As Integer = 1 To Core.nFleets
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
 
                 ' Clear the arrayList for the new row
                 alSumFixedCPUESailCost.Clear()
 
-                source = Core.EcopathFleetInputs(fleetIndex)
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
 
                 'Fixed cost 
                 propFixedCost = Me.PropertyManager.GetProperty(source, eVarNameFlags.FixedCost)
@@ -320,7 +320,7 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT, cUnits.Monetary)
 
             alSumProfit.Clear()
-            For fleetIndex As Integer = 1 To Core.nFleets
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
 
                 opMinusValueCost = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
                                                 CType(Me(Me.RowsCount - 3, fleetIndex + 1), Object), _

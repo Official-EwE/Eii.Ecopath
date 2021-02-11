@@ -121,7 +121,7 @@ Public Class cDatasetPicker
     ''' </summary>
     ''' <param name="uic"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, ByVal varname As eVarNameFlags)
+    Public Sub New(uic As cUIContext, varname As eVarNameFlags)
         Me.m_cmsData = New ContextMenuStrip()
         Me.m_uic = uic
         Me.m_varname = varname
@@ -152,10 +152,10 @@ Public Class cDatasetPicker
     ''' <param name="datasetCurrent">The currently selected <see cref="ISpatialDataSet"/>.</param>
     ''' <param name="tag">Optional tag to attach to the pick event.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(ByVal control As Control, _
-                    ByVal datasets As ISpatialDataSet(), _
-                    ByVal datasetCurrent As ISpatialDataSet, _
-                    Optional ByVal tag As Object = Nothing)
+    Public Sub Pick(control As Control, _
+                    datasets As ISpatialDataSet(), _
+                    datasetCurrent As ISpatialDataSet, _
+                    Optional tag As Object = Nothing)
 
         Me.BuildMenu(datasets, datasetCurrent)
 
@@ -174,10 +174,10 @@ Public Class cDatasetPicker
     ''' <param name="datasetCurrent">The currently selected <see cref="ISpatialDataSet"/>.</param>
     ''' <param name="tag">Optional tag to attach to the pick event.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(ByVal pt As Point, _
-                    ByVal datasets As ISpatialDataSet(), _
-                    ByVal datasetCurrent As ISpatialDataSet, _
-                    Optional ByVal tag As Object = Nothing)
+    Public Sub Pick(pt As Point, _
+                    datasets As ISpatialDataSet(), _
+                    datasetCurrent As ISpatialDataSet, _
+                    Optional tag As Object = Nothing)
 
         Me.BuildMenu(datasets, datasetCurrent)
 
@@ -185,8 +185,8 @@ Public Class cDatasetPicker
         Me.m_cmsData.Show(pt, ToolStripDropDownDirection.Default)
     End Sub
 
-    Private Sub BuildMenu(ByVal datasets As ISpatialDataSet(), _
-                          ByVal datasetCurrent As ISpatialDataSet)
+    Private Sub BuildMenu(datasets As ISpatialDataSet(), _
+                          datasetCurrent As ISpatialDataSet)
 
         Dim tsi As ToolStripMenuItem = Nothing
         Dim tsiNew As ToolStripMenuItem = Nothing
@@ -199,7 +199,7 @@ Public Class cDatasetPicker
 
             ' No connection item, if allowed
             If (Me.AllowClear) Then
-                tsi = New ToolStripMenuItem(My.Resources.HEADER_SPATTEMP_NODRIVER, Nothing, AddressOf OnUseDefault)
+                tsi = New ToolStripMenuItem(My.Resources.HEADER_SPATTEMP_NODRIVER, Nothing, AddressOf Me.OnUseDefault)
                 tsi.Checked = (datasetCurrent Is Nothing)
                 Me.m_cmsData.Items.Add(tsi)
             End If
@@ -212,7 +212,7 @@ Public Class cDatasetPicker
                         tsiNew = New ToolStripMenuItem(My.Resources.HEADER_SPATTEMP_CREATE_CONNECTION)
                         Array.Sort(datasetsSorted, New cDatasetSorter())
                         For Each dsTempl As ISpatialDataSet In datasetsSorted
-                            tsi = New ToolStripMenuItem(dsTempl.CustomName, Nothing, AddressOf OnCreateDataset)
+                            tsi = New ToolStripMenuItem(dsTempl.CustomName, Nothing, AddressOf Me.OnCreateDataset)
                             tsi.Tag = dsTempl
                             tsi.ToolTipText = dsTempl.CustomDescription
                             tsiNew.DropDownItems.Add(tsi)
@@ -234,7 +234,7 @@ Public Class cDatasetPicker
                     End If
 
                     For Each ds As ISpatialDataSet In datasetsSorted
-                        tsi = New ToolStripMenuItem(ds.CustomName, Nothing, AddressOf OnUseDataset)
+                        tsi = New ToolStripMenuItem(ds.CustomName, Nothing, AddressOf Me.OnUseDataset)
                         tsi.Tag = ds
                         tsi.ToolTipText = ds.CustomDescription
                         tsi.Checked = ds.Equals(datasetCurrent)
@@ -299,7 +299,7 @@ Public Class cDatasetPicker
     ''' </summary>
     ''' <returns>True if successfully configured.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function TryConfigure(ByVal ds As ISpatialDataSet) As Boolean
+    Private Function TryConfigure(ds As ISpatialDataSet) As Boolean
 
         If (ds Is Nothing) Then Return False
 

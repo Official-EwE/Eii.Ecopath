@@ -66,20 +66,20 @@ Friend Class cDBUpdate6_02_00_000
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return AddStanzaFields(db) And _
-               AddHabitatPreference(db) And _
-               AddGroupMap(db)
+        Return Me.AddStanzaFields(db) And _
+               Me.AddHabitatPreference(db) And _
+               Me.AddGroupMap(db)
 
     End Function
 
-    Private Function AddStanzaFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddStanzaFields(db As cEwEDatabase) As Boolean
 
         db.Execute("ALTER TABLE Stanza ADD COLUMN EggAtSpawn BYTE")
         Return True
 
     End Function
 
-    Private Function AddHabitatPreference(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddHabitatPreference(db As cEwEDatabase) As Boolean
 
         db.Execute("ALTER TABLE EcospaceScenarioGroupHabitat ADD COLUMN Preference SINGLE")
         db.Execute("UPDATE EcospaceScenarioGroupHabitat SET Preference=1 WHERE HabitatID > 0")
@@ -87,7 +87,7 @@ Friend Class cDBUpdate6_02_00_000
 
     End Function
 
-    Private Function AddGroupMap(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddGroupMap(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("CREATE TABLE EcospaceScenarioGroupMap (ScenarioID LONG, GroupID LONG, InRow INTEGER, InCol INTEGER, Capacity SINGLE)")

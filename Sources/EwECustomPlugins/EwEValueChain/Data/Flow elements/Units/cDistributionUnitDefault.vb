@@ -42,7 +42,7 @@ Public Class cDistributionUnitDefault
         Get
             Return "Default"
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
         End Set
     End Property
 

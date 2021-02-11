@@ -74,7 +74,7 @@ Friend Class cDBUpdate6_01_00_002
 
     End Function
 
-    Private Function UpdateMSETables(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateMSETables(db As cEwEDatabase) As Boolean
         Return db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN FixedF SINGLE")
     End Function
 

@@ -52,9 +52,9 @@ Namespace Controls
         ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal vs As cVisualStyle,
-                       ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(uic As cUIContext,
+                       vs As cVisualStyle,
+                       style As cVisualStyle.eVisualStyleTypes)
 
             MyBase.New(uic, vs, style)
             Me.InitializeComponent()
@@ -71,7 +71,7 @@ Namespace Controls
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -89,7 +89,7 @@ Namespace Controls
         ''' <summary>
         ''' Paint the control background to render the current gradient.
         ''' </summary>
-        Protected Overrides Sub OnPaintBackground(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaintBackground(e As System.Windows.Forms.PaintEventArgs)
 
             MyBase.OnPaintBackground(e)
 
@@ -105,7 +105,7 @@ Namespace Controls
 
         End Sub
 
-        Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
+        Public Overrides Function Apply(vs As cVisualStyle) As Boolean
 
             Dim ramp As cColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
 			
@@ -174,7 +174,7 @@ Namespace Controls
 
 #Region " Events "
 
-        'Private Sub OnGradientTypeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        'Private Sub OnGradientTypeChanged(sender As Object, e As System.EventArgs) _
         '    Handles m_rbDefaultGradient.CheckedChanged, m_rbCustomGradient.CheckedChanged
         '    Me.UpdateControls()
         'End Sub
@@ -182,7 +182,7 @@ Namespace Controls
         ''' <summary>
         ''' User clicked CurrentColor box to pick a colour
         ''' </summary>
-        Private Sub OnPickColour(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnPickColour(sender As System.Object, e As System.EventArgs) _
             Handles m_pbCurrentColor.Click
             Try
                 Me.PickColor()
@@ -193,12 +193,12 @@ Namespace Controls
         ''' <summary>
         ''' User altered a colour value via a numeric up/down control.
         ''' </summary>
-        Private Sub OnColorValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnColorValueChanged(sender As Object, e As System.EventArgs) _
             Handles m_nudRed.ValueChanged, m_nudGreen.ValueChanged, m_nudBlue.ValueChanged, m_nudAlpha.ValueChanged
 
             If (Me.m_bInUpdate) Then Return
 
-            Dim clr As Color = Color.FromArgb(CInt(m_nudAlpha.Value), CInt(m_nudRed.Value), CInt(m_nudGreen.Value), CInt(m_nudBlue.Value))
+            Dim clr As Color = Color.FromArgb(CInt(Me.m_nudAlpha.Value), CInt(Me.m_nudRed.Value), CInt(Me.m_nudGreen.Value), CInt(Me.m_nudBlue.Value))
             Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.ApplyColorsToGradient()
 
@@ -207,12 +207,12 @@ Namespace Controls
         ''' <summary>
         ''' User altered a colour value via a slider.
         ''' </summary>
-        Private Sub OnColourSliderChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnColourSliderChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_slRed.ValueChanged, m_slBlue.ValueChanged, m_slGreen.ValueChanged, m_slAlpha.ValueChanged
 
             If (Me.m_bInUpdate) Then Return
 
-            Dim clr As Color = Color.FromArgb(CInt(m_slAlpha.Value), CInt(m_slRed.Value), CInt(m_slGreen.Value), CInt(m_slBlue.Value))
+            Dim clr As Color = Color.FromArgb(CInt(Me.m_slAlpha.Value), CInt(Me.m_slRed.Value), CInt(Me.m_slGreen.Value), CInt(Me.m_slBlue.Value))
             Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.ApplyColorsToGradient()
 
@@ -221,7 +221,7 @@ Namespace Controls
         ''' <summary>
         ''' User added a gradient break.
         ''' </summary>
-        Private Sub OnAddBreak(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnAddBreak(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click
 
             Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
@@ -235,7 +235,7 @@ Namespace Controls
         ''' <summary>
         ''' User removed a gradient break.
         ''' </summary>
-        Private Sub OnRemoveBreak(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRemoveBreak(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRemove.Click
 
             Dim iKnob As Integer = Me.m_slGradient.CurrentKnob
@@ -252,7 +252,7 @@ Namespace Controls
         ''' <summary>
         ''' User selected a different knob in the gradient slider.
         ''' </summary>
-        Private Sub OnGradientSliderCurrentKnobChanged(ByVal sender As Object, ByVal e As SliderKnobChangedEventArgs) _
+        Private Sub OnGradientSliderCurrentKnobChanged(sender As Object, e As SliderKnobChangedEventArgs) _
             Handles m_slGradient.CurrentKnobChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -263,7 +263,7 @@ Namespace Controls
         ''' <summary>
         ''' User selected a different value in the gradient slider.
         ''' </summary>
-        Private Sub OnGradientSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnGradientSliderValueChanged(sender As Object, e As System.EventArgs) _
             Handles m_slGradient.ValueChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -274,7 +274,7 @@ Namespace Controls
         ''' <summary>
         ''' Draw an item in the gradient combo box.
         ''' </summary>
-        Private Sub OnDrawGradientComboBoxItem(ByVal sender As Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
+        Private Sub OnDrawGradientComboBoxItem(sender As Object, e As System.Windows.Forms.DrawItemEventArgs) _
             Handles m_cmbGradient.DrawItem
 
             ' Sanity check
@@ -306,7 +306,7 @@ Namespace Controls
         ''' <summary>
         ''' User selected a gradient from the combo box.
         ''' </summary>
-        Private Sub OnGradientSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnGradientSelected(sender As Object, e As System.EventArgs) _
             Handles m_cmbGradient.SelectedIndexChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -333,7 +333,7 @@ Namespace Controls
         ''' <summary>
         ''' Flip gradient
         ''' </summary>
-        Private Sub OnFlipGradient(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFlipGradient(sender As System.Object, e As System.EventArgs) _
             Handles m_btnFlip.Click
 
             Me.m_bInUpdate = True
@@ -368,7 +368,7 @@ Namespace Controls
 
 #Region " Internals "
 
-        Private Sub SetARGBGradient(ByVal breaks() As Double, ByVal colors() As Color)
+        Private Sub SetARGBGradient(breaks() As Double, colors() As Color)
 
             Me.m_bInUpdate = True
 
@@ -429,7 +429,7 @@ Namespace Controls
 
         Private Sub ApplyColorsToGradient()
 
-            If m_bInUpdate Then Return
+            If Me.m_bInUpdate Then Return
 
             Me.m_bInUpdate = True
 

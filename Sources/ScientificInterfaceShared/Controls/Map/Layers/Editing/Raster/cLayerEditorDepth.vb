@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
             For i As Integer = 1 To bm.InRow
                 For j As Integer = 1 To bm.InCol
                     ' JS 01Feb16: Allow depth layer to be filled when protect coastline is OFF
-                    If (layerDepth.IsWaterCell(i, j) Or ProtectCoastLine = False) Then
+                    If (layerDepth.IsWaterCell(i, j) Or Me.ProtectCoastLine = False) Then
                         Me.Layer.Value(i, j) = Me.CellValue
                     End If
                 Next j

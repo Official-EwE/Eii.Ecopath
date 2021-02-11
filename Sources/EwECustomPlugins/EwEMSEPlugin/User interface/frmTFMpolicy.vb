@@ -99,7 +99,7 @@ Public Class frmTFMpolicy
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -120,9 +120,9 @@ Public Class frmTFMpolicy
         Me.m_qeh.ShowImportExport = False
         Me.m_qeh.Attach(Me.m_grid, Me.UIContext, Me.m_tsHCR)
         Me.m_grid.DataName = "HarvestControlRules"
-        AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
-        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
-        AddHandler Me.m_gridRegulations.onEdited, AddressOf OnGridEdited
+        AddHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
+        AddHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
+        AddHandler Me.m_gridRegulations.onEdited, AddressOf Me.OnGridEdited
 
         Me.m_chkUnits.Checked = My.Settings.DisplayRelativeValues
 
@@ -133,14 +133,14 @@ Public Class frmTFMpolicy
         End If
 
         ' Initialize
-        Me.DisplayRelativeValues = (m_chkUnits.Checked)
+        Me.DisplayRelativeValues = (Me.m_chkUnits.Checked)
         Me.UpdateControls()
 
     End Sub
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
-        If m_bStrategiesSaved = False Then
+        If Me.m_bStrategiesSaved = False Then
             e.Cancel = (Me.m_MSE.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) = eMessageReplyStyle.OK)
         End If
         Me.m_qeh.Detach()
@@ -152,11 +152,11 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-        RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
-        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
-        RemoveHandler Me.m_gridRegulations.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
+        RemoveHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
+        RemoveHandler Me.m_gridRegulations.onEdited, AddressOf Me.OnGridEdited
 
         If (Me.m_zgh IsNot Nothing) Then
             Me.m_zgh.Detach()
@@ -234,7 +234,7 @@ Public Class frmTFMpolicy
         Handles m_tsbnDeleteStrategy.Click
 
         Try
-            Dim selStrategy As Integer = m_tscmStrategies.SelectedIndex
+            Dim selStrategy As Integer = Me.m_tscmStrategies.SelectedIndex
 
             'ToDo this needs to delete the Strategy file as well as removing it from the list
             'that should happen from the Strategies object itself
@@ -276,7 +276,7 @@ Public Class frmTFMpolicy
     ' Controls
     ' -----------------------------
 
-    Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+    Private Sub OnSave(sender As System.Object, e As System.EventArgs) Handles m_btnOK.Click
 
         Try
             Me.m_bStrategiesSaved = Me.m_strategies.Save()
@@ -297,7 +297,7 @@ Public Class frmTFMpolicy
 
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -330,7 +330,7 @@ Public Class frmTFMpolicy
         End Try
     End Sub
 
-    Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub tsbDefaultTFM_Click(sender As System.Object, e As System.EventArgs)
 
         'Try
         '    Me.UIContext.Core.SetDefaultTFM()
@@ -402,7 +402,7 @@ Public Class frmTFMpolicy
 
     Private Property HCRGroup() As HCR_Group
         Get
-            Return m_HCR
+            Return Me.m_HCR
         End Get
         Set(value As HCR_Group)
             Me.m_HCR = value
@@ -444,13 +444,13 @@ Public Class frmTFMpolicy
                 Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
                 If bsum > 0 Then
                     ' Add points
-                    If (m_HCR.HCR_Type = eHCR_Type.Multilevel) Then
+                    If (Me.m_HCR.HCR_Type = eHCR_Type.Multilevel) Then
                         lpts.Add(0, Me.m_HCR.MinF)
                         lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.BStep), Me.m_HCR.MinF)
                         lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.BStep), Me.m_HCR.MinF + (Me.m_HCR.BStep - Me.m_HCR.LowerLimit) / (Me.m_HCR.UpperLimit - Me.m_HCR.LowerLimit) * (Me.m_HCR.MaxF - Me.m_HCR.MinF)) ' Point order?
                         lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF)
                         lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
-                    ElseIf (m_HCR.HCR_Type = eHCR_Type.Traditional) Then
+                    ElseIf (Me.m_HCR.HCR_Type = eHCR_Type.Traditional) Then
                         lpts.Add(0, 0)
                         lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.LowerLimit), 0)
                         lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF) ' Point order?
@@ -533,7 +533,7 @@ Public Class frmTFMpolicy
 
 #Region " Dragging "
 
-    Private Function HandleGraphMouseDownEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+    Private Function HandleGraphMouseDownEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
             Handles m_graph.MouseDownEvent
 
         Dim pane As GraphPane = sender.GraphPane
@@ -555,7 +555,7 @@ Public Class frmTFMpolicy
 
     End Function
 
-    Private Function m_graph_MouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+    Private Function m_graph_MouseMoveEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
         Handles m_graph.MouseMoveEvent
 
         Dim pane As GraphPane = sender.GraphPane
@@ -578,7 +578,7 @@ Public Class frmTFMpolicy
 
     End Function
 
-    Private Function HandleGraphMouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+    Private Function HandleGraphMouseMoveEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
             Handles m_graph.MouseMoveEvent
 
         If Me.m_HCR Is Nothing Then Return False
@@ -592,26 +592,26 @@ Public Class frmTFMpolicy
         If (Me.m_dragtype <> eDragType.None) Then
             ' Translate value
             pane.ReverseTransform(pt, dX, dy)
-            If m_HCR.HCR_Type = eHCR_Type.Multilevel Then
+            If Me.m_HCR.HCR_Type = eHCR_Type.Multilevel Then
 
                 Select Case Me.m_dragtype
                     Case eDragType.Point1
                         Me.m_HCR.BStep = Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)), 0)
-                        Me.m_HCR.MinF = Math.Max(Math.Min(Math.Max(CSng(dy), 0), m_HCR.MaxF), 0)
+                        Me.m_HCR.MinF = Math.Max(Math.Min(Math.Max(CSng(dy), 0), Me.m_HCR.MaxF), 0)
                     Case eDragType.Point2
-                        If Units.Convert(Me.m_conversionToData, dX) <= m_HCR.UpperLimit And CSng(dy) <= m_HCR.MaxF Then
-                            Me.m_HCR.BStep = Math.Min(Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)), 0), m_HCR.UpperLimit)
-                            Me.m_HCR.LowerLimit = Math.Min(Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)) - ((m_HCR.UpperLimit - CSng(Units.Convert(Me.m_conversionToData, dX))) / (m_HCR.MaxF - CSng(dy))) * (CSng(dy) - m_HCR.MinF), 0), m_HCR.UpperLimit)
+                        If Units.Convert(Me.m_conversionToData, dX) <= Me.m_HCR.UpperLimit And CSng(dy) <= Me.m_HCR.MaxF Then
+                            Me.m_HCR.BStep = Math.Min(Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)), 0), Me.m_HCR.UpperLimit)
+                            Me.m_HCR.LowerLimit = Math.Min(Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)) - ((Me.m_HCR.UpperLimit - CSng(Units.Convert(Me.m_conversionToData, dX))) / (Me.m_HCR.MaxF - CSng(dy))) * (CSng(dy) - Me.m_HCR.MinF), 0), Me.m_HCR.UpperLimit)
                         Else
-                            Me.m_HCR.BStep = m_HCR.UpperLimit - CSng(0.00001)
+                            Me.m_HCR.BStep = Me.m_HCR.UpperLimit - CSng(0.00001)
                         End If
                     Case eDragType.Point3
                         Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.BStep, Units.Convert(Me.m_conversionToData, dX)))
-                        Me.m_HCR.MaxF = Math.Max(m_HCR.MinF, CSng(dy))
+                        Me.m_HCR.MaxF = Math.Max(Me.m_HCR.MinF, CSng(dy))
 
                 End Select
 
-            ElseIf m_HCR.HCR_Type = eHCR_Type.Traditional Then
+            ElseIf Me.m_HCR.HCR_Type = eHCR_Type.Traditional Then
                 Select Case Me.m_dragtype
                     Case eDragType.Point1
                         Me.m_HCR.LowerLimit = CSng(Math.Max(0, Math.Min(Units.Convert(Me.m_conversionToData, dX), Me.m_HCR.UpperLimit)))
@@ -631,7 +631,7 @@ Public Class frmTFMpolicy
 
     End Function
 
-    Private Function HandleGraphMouseUpEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+    Private Function HandleGraphMouseUpEvent(sender As ZedGraphControl, e As MouseEventArgs) As Boolean _
             Handles m_graph.MouseUpEvent
 
         Me.m_dragtype = eDragType.None
@@ -642,7 +642,7 @@ Public Class frmTFMpolicy
 
     Private Sub m_chkUnits_CheckedChanged(sender As Object, e As EventArgs) Handles m_chkUnits.CheckedChanged
 
-        Me.DisplayRelativeValues = m_chkUnits.Checked
+        Me.DisplayRelativeValues = Me.m_chkUnits.Checked
         Me.UpdatePlot()
 
     End Sub

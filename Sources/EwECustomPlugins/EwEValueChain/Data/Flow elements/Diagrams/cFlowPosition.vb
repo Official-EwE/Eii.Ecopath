@@ -58,7 +58,7 @@ Public Class cFlowPosition
         Get
             Return Me.m_diagram
         End Get
-        Set(ByVal value As cFlowDiagram)
+        Set(value As cFlowDiagram)
             If (Not ReferenceEquals(value, Me.m_diagram)) Then
                 Me.m_diagram = value
                 Me.SetChanged()
@@ -75,7 +75,7 @@ Public Class cFlowPosition
         Get
             Return Me.m_unit
         End Get
-        Set(ByVal value As cUnit)
+        Set(value As cUnit)
             If (Not ReferenceEquals(value, Me.m_unit)) Then
                 Me.m_unit = value
                 Me.SetChanged()
@@ -92,7 +92,7 @@ Public Class cFlowPosition
         Get
             Return Me.m_iX
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.m_iX) Then
                 Me.m_iX = value
                 Me.SetChanged()
@@ -109,7 +109,7 @@ Public Class cFlowPosition
         Get
             Return Me.m_iY
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.m_iY) Then
                 Me.m_iY = value
                 Me.SetChanged()
@@ -126,7 +126,7 @@ Public Class cFlowPosition
         Get
             Return Me.m_iWidth
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.m_iWidth) Then
                 Me.m_iWidth = value
                 Me.SetChanged()
@@ -143,7 +143,7 @@ Public Class cFlowPosition
         Get
             Return Me.m_iHeight
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.m_iHeight) Then
                 Me.m_iHeight = value
                 Me.SetChanged()

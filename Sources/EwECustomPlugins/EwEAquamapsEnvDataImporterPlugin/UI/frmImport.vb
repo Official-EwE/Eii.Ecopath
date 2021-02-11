@@ -183,7 +183,7 @@ Public Class frmImport
 
     End Sub
 
-    Private Sub VisitURL(ByVal strURL As String)
+    Private Sub VisitURL(strURL As String)
         Try
             Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke(strURL)

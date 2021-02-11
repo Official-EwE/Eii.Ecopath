@@ -38,13 +38,13 @@ Public Class cCatchByTrophicLevel
         '
     End Sub
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                         info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -62,59 +62,59 @@ Public Class cCatchByTrophicLevel
         Dim bShowItem As Boolean = True
         Dim CatchGroupsShown() As Single
 
-        SetUpGridColumn()
+        Me.SetUpGridColumn()
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nTrophicLevels + 1
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = Me.NetworkManager.nTrophicLevels + 1
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         'Calculate non-hidden data
-        ReDim CatchGroupsShown(NetworkManager.nGroups)
-        For i As Integer = 1 To NetworkManager.nGroups
+        ReDim CatchGroupsShown(Me.NetworkManager.nGroups)
+        For i As Integer = 1 To Me.NetworkManager.nGroups
             ' bShowItem = sg.GroupVisible(i)
             If bShowItem Then
-                For j As Integer = 1 To NetworkManager.nTrophicLevels
-                    If NetworkManager.RelativeFlow(i, j) = 0 Then
+                For j As Integer = 1 To Me.NetworkManager.nTrophicLevels
+                    If Me.NetworkManager.RelativeFlow(i, j) = 0 Then
                     Else
                         If i <= core.nLivingGroups Then
-                            CatchGroupsShown(j) = CatchGroupsShown(j) + NetworkManager.RelativeFlow(i, j) * NetworkManager.CatchByGroup(i)
+                            CatchGroupsShown(j) = CatchGroupsShown(j) + Me.NetworkManager.RelativeFlow(i, j) * Me.NetworkManager.CatchByGroup(i)
                         End If
                     End If
                 Next
             End If
         Next
 
-        ReDim strRowContent(Grid.Columns.Count)
+        ReDim strRowContent(Me.Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_TRP_LVL
         strRowContent(1) = My.Resources.COL_HDR_TOTAL_TKM2YR
         strRowContent(2) = My.Resources.COL_HDR_NONHIDDEN
-        Grid.Rows(0).SetValues(strRowContent)
-        Grid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(strRowContent)
+        Me.Grid.Rows(0).Visible = True
 
-        For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
+        For i As Integer = Me.NetworkManager.nTrophicLevels To 1 Step -1
             strRowContent(0) = cStringUtils.ToRoman(i)
-            strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.CatchByTrophicLevel(i))
+            strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CatchByTrophicLevel(i))
             strRowContent(2) = Me.StyleGuide.FormatNumber(CatchGroupsShown(i))
-            Grid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
-            Grid.Rows(NetworkManager.nTrophicLevels - i + 1).Visible = True
+            Me.Grid.Rows(Me.NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
+            Me.Grid.Rows(Me.NetworkManager.nTrophicLevels - i + 1).Visible = True
         Next
 
-        Grid.ClearSelection()
+        Me.Grid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn()
 
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = 3
+        Me.Grid.ColumnCount = 3
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).Frozen = True
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
 
     End Sub
 

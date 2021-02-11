@@ -45,7 +45,7 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 If (value IsNot Nothing) Then
                     Me.m_mcmanager = value.Core.EcosimMonteCarlo
                 Else
@@ -81,7 +81,7 @@ Namespace Ecosim
             Dim mcGrp As cCoreGroupBase = Nothing
 
             For i As Integer = 1 To Me.Core.nLivingGroups
-                mcGrp = m_mcmanager.Groups(i)
+                mcGrp = Me.m_mcmanager.Groups(i)
                 Me(i, 0) = New cEwERowHeaderCell(CStr(mcGrp.Index))
                 Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
                 Me(i, 2) = New cPropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBbf)

@@ -61,7 +61,7 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             ' Design time fix
@@ -74,7 +74,7 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_shapeguihandler.Detach()
             Me.m_shapeguihandler = Nothing
             Me.CoreComponents = Nothing
@@ -88,7 +88,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="msg">Incoming core <see cref="cMessage">messages</see>.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             If msg.Source = eCoreComponentType.ShapesManager Then
                 If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And _

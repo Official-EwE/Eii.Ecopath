@@ -33,13 +33,13 @@ Public Class cEnviroResponseShapeManager
         MyBase.New(EcoSimData, theCore, DataType)
 
         Me.m_spaceData = SpaceData
-        Init()
+        Me.Init()
 
     End Sub
 
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
-            Return m_medData.NMedPoints
+            Return Me.m_medData.NMedPoints
         End Get
     End Property
 
@@ -52,19 +52,19 @@ Public Class cEnviroResponseShapeManager
 
         Dim dbID As Integer
 
-        If m_core.AddShape(strName, m_DataType, dbID, asData, shapeType, params) Then
+        If Me.m_core.AddShape(strName, Me.m_DataType, dbID, asData, shapeType, params) Then
 
             Dim medFunct As cEnviroResponseFunction
 
             'create a new shape that is hooked up to the underlying ecosim data
-            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
-            medFunct.ID = m_shapes.Count
+            medFunct = New cEnviroResponseFunction(Me.m_SimData, Me, Me.m_medData, dbID, Me.m_DataType)
+            medFunct.ID = Me.m_shapes.Count
             medFunct.Load()
 
             'Add the new shape to the list 
             MyBase.Add(medFunct)
 
-            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+            Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
 
             Return medFunct
 
@@ -78,17 +78,17 @@ Public Class cEnviroResponseShapeManager
         Dim medFunct As cEnviroResponseFunction
 
         'get the Enviromental response function for Capacity 
-        m_medData = Me.m_SimData.CapEnvResData
+        Me.m_medData = Me.m_SimData.CapEnvResData
 
         'clear out any existing data
-        m_shapes.Clear()
+        Me.m_shapes.Clear()
 
-        For imed As Integer = 1 To m_medData.MediationShapes
+        For imed As Integer = 1 To Me.m_medData.MediationShapes
             'All mediation shapes from the core will have an object 
-            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
-            medFunct.ID = m_shapes.Count
+            medFunct = New cEnviroResponseFunction(Me.m_SimData, Me, Me.m_medData, Me.m_medData.MediationDBIDs(imed), Me.m_DataType)
+            medFunct.ID = Me.m_shapes.Count
             medFunct.Load()
-            m_shapes.Add(medFunct)
+            Me.m_shapes.Add(medFunct)
 
         Next imed
         Me.Load()

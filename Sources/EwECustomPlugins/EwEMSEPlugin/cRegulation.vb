@@ -58,7 +58,7 @@ Public Class cRegulations
     Sub New(MSE As cMSE, Core As cCore)
         Me.m_MSE = MSE
         Me.m_Core = Core
-        ReDim m_methods(Core.nFleets)
+        ReDim Me.m_methods(Core.nFleets)
         ' Set proper defaults
         For i As Integer = 0 To Core.nFleets - 1
             Me.m_methods(i) = eRegMethod.None
@@ -156,7 +156,7 @@ Public Class cRegulations
     End Function
 
     Public Sub Defaults() Implements IMSEData.Defaults
-        For iFleet = 1 To m_Core.nFleets
+        For iFleet = 1 To Me.m_Core.nFleets
             Me.Method(iFleet) = eRegMethod.None
         Next
         Me.m_bIsChanged = False

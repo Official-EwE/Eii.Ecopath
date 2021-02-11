@@ -1145,8 +1145,8 @@ Namespace DataSources
 
                 Try
                     ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
-                    ecopathDS.PedigreeLevelName(iLevel) = ToLocalizedDefault(CStr(reader("LevelName")), 0)
-                    ecopathDS.PedigreeLevelDescription(iLevel) = ToLocalizedDefault(CStr(reader("Description")), 1)
+                    ecopathDS.PedigreeLevelName(iLevel) = Me.ToLocalizedDefault(CStr(reader("LevelName")), 0)
+                    ecopathDS.PedigreeLevelDescription(iLevel) = Me.ToLocalizedDefault(CStr(reader("Description")), 1)
 
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     ' fudge, no need to issue a database update
@@ -2578,7 +2578,7 @@ Namespace DataSources
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim bSucces As Boolean = True
 
-            ecopathDS.NoGearData = Not IsFishing()
+            ecopathDS.NoGearData = Not Me.IsFishing()
 
             ecopathDS.NumFleet = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathFleet"))
 
@@ -2587,9 +2587,9 @@ Namespace DataSources
                 Return False
             End If
 
-            bSucces = LoadEcopathFleets()
-            bSucces = bSucces And LoadEcopathCatch()
-            bSucces = bSucces And LoadEcopathDiscardFate()
+            bSucces = Me.LoadEcopathFleets()
+            bSucces = bSucces And Me.LoadEcopathCatch()
+            bSucces = bSucces And Me.LoadEcopathDiscardFate()
 
             Return bSucces
 
@@ -2724,9 +2724,9 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
 
-            bSucces = SaveEcopathFleets()
-            bSucces = bSucces And SaveCatch()
-            bSucces = bSucces And SaveDiscardFate()
+            bSucces = Me.SaveEcopathFleets()
+            bSucces = bSucces And Me.SaveCatch()
+            bSucces = bSucces And Me.SaveDiscardFate()
 
             Return bSucces
 
@@ -3817,7 +3817,7 @@ Namespace DataSources
 
             bSucces = Me.m_db.BeginTransaction()
 
-            SaveEcosimScenarioDefinitions()
+            Me.SaveEcosimScenarioDefinitions()
 
             Try
 
@@ -3880,7 +3880,7 @@ Namespace DataSources
 
             ' ToDo: only save these when modified or duplicating
             bSucces = bSucces And Me.SaveEcosimCapacityDrivers(idm)
-            bSucces = bSucces And SaveEcosimCatchabilities(idm)
+            bSucces = bSucces And Me.SaveEcosimCatchabilities(idm)
 
             If bSucces Then
                 ' Commit save
@@ -4020,7 +4020,7 @@ Namespace DataSources
             Try
                 reader = Me.m_db.GetReader("SELECT ScenarioID FROM EcoSimScenario")
                 While reader.Read()
-                    bSucces = bSucces And CreateRepairEcosimGroup(iEcopathGroupID, CInt(reader("ScenarioID")))
+                    bSucces = bSucces And Me.CreateRepairEcosimGroup(iEcopathGroupID, CInt(reader("ScenarioID")))
                 End While
                 Me.m_db.ReleaseReader(reader)
             Catch ex As Exception
@@ -4168,7 +4168,7 @@ Namespace DataSources
             Try
                 reader = Me.m_db.GetReader("SELECT ScenarioID FROM EcoSimScenario")
                 While reader.Read()
-                    bSucces = bSucces And CreateRepairEcosimFleet(iEcopathFleetID, CInt(reader("ScenarioID")))
+                    bSucces = bSucces And Me.CreateRepairEcosimFleet(iEcopathFleetID, CInt(reader("ScenarioID")))
                 End While
                 Me.m_db.ReleaseReader(reader)
             Catch ex As Exception
@@ -4569,7 +4569,7 @@ Namespace DataSources
                     mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.m_db.ReadSafe(reader, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
                     mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.m_db.ReadSafe(reader, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
 
-                    LoadFishingRateShape(iShapeID, iFleet)
+                    Me.LoadFishingRateShape(iShapeID, iFleet)
 
                 Catch ex As Exception
                     bSucces = False
@@ -5774,9 +5774,9 @@ Namespace DataSources
 
                         Select Case ecosimDS.ForcingShapeType(iShape)
                             Case eDataTypes.EggProd
-                                bSucces = bSucces And SaveEggShape(iShape)
+                                bSucces = bSucces And Me.SaveEggShape(iShape)
                             Case eDataTypes.Forcing
-                                bSucces = bSucces And SaveTimeShape(iShape)
+                                bSucces = bSucces And Me.SaveTimeShape(iShape)
                             Case Else
                                 Debug.Assert(False)
                         End Select
@@ -5812,7 +5812,7 @@ Namespace DataSources
                                 drow.EndEdit()
                             End If
                             writer.Commit()
-                            bSucces = bSucces And SaveMediationShape(iShape, medData)
+                            bSucces = bSucces And Me.SaveMediationShape(iShape, medData)
                         End If
                     Next iShape
                 Next
@@ -5866,10 +5866,10 @@ Namespace DataSources
         Private Function SaveShapeAssignments(idm As cIDMappings) As Boolean
 
             Dim bSucces As Boolean = True
-            bSucces = bSucces And SavePredPreyInteractions(idm)
-            bSucces = bSucces And SaveLandingsInteractions(idm)
-            bSucces = bSucces And SaveMediationWeights(idm)
-            bSucces = bSucces And SaveStanzaShapeAssignments(idm)
+            bSucces = bSucces And Me.SavePredPreyInteractions(idm)
+            bSucces = bSucces And Me.SaveLandingsInteractions(idm)
+            bSucces = bSucces And Me.SaveMediationWeights(idm)
+            bSucces = bSucces And Me.SaveStanzaShapeAssignments(idm)
             Return bSucces
 
         End Function
@@ -6958,7 +6958,7 @@ Namespace DataSources
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(readerSub("FleetID")))
-                                iIndexSec = Array.IndexOf(ecopathDS.GroupDBID, CInt(m_db.ReadSafe(readerSub, "GroupID", 0)))
+                                iIndexSec = Array.IndexOf(ecopathDS.GroupDBID, CInt(Me.m_db.ReadSafe(readerSub, "GroupID", 0)))
                             Catch ex As Exception
                                 iIndex = -1
                                 iIndexSec = -1
@@ -7721,7 +7721,7 @@ Namespace DataSources
             ' Start transaction
             bSucces = Me.m_db.BeginTransaction()
 
-            SaveEcospaceScenarioDefinitions()
+            Me.SaveEcospaceScenarioDefinitions()
 
             Try
                 ' Save scenario
@@ -8831,7 +8831,7 @@ Namespace DataSources
             Try
                 reader = Me.m_db.GetReader("SELECT ScenarioID FROM EcoSpaceScenario")
                 While reader.Read()
-                    bSucces = bSucces And AddEcospaceGroup(iEcopathGroupID, CInt(reader("ScenarioID")), bIsDetritus, iID)
+                    bSucces = bSucces And Me.AddEcospaceGroup(iEcopathGroupID, CInt(reader("ScenarioID")), bIsDetritus, iID)
                 End While
                 Me.m_db.ReleaseReader(reader)
 
@@ -9226,7 +9226,7 @@ Namespace DataSources
 
                 reader = Me.m_db.GetReader("SELECT ScenarioID FROM EcospaceScenario")
                 While reader.Read()
-                    bSucces = bSucces And AddEcospaceFleet(iEcopathFleetID, CInt(reader("ScenarioID")), iID)
+                    bSucces = bSucces And Me.AddEcospaceFleet(iEcopathFleetID, CInt(reader("ScenarioID")), iID)
                 End While
                 Me.m_db.ReleaseReader(reader)
 
@@ -9808,7 +9808,7 @@ Namespace DataSources
                 readerLayer = Nothing
             End Try
 
-            Return bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID) And LoadEcospaceDisbledDriverLayers(iScenarioID)
+            Return bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID) And Me.LoadEcospaceDisbledDriverLayers(iScenarioID)
 
         End Function
 
@@ -10714,7 +10714,7 @@ Namespace DataSources
             Try
                 reader = Me.m_db.GetReader("SELECT ScenarioID FROM EcotracerScenario")
                 While reader.Read()
-                    bSucces = bSucces And AddEcotracerGroup(iEcopathGroupID, CInt(reader("ScenarioID")))
+                    bSucces = bSucces And Me.AddEcotracerGroup(iEcopathGroupID, CInt(reader("ScenarioID")))
                 End While
                 Me.m_db.ReleaseReader(reader)
 
@@ -10819,7 +10819,7 @@ Namespace DataSources
                 For Each strValueID As String In Me.m_core.m_dtAuxiliaryData.Keys
 
                     ' Get actual remark instance
-                    ad = m_core.m_dtAuxiliaryData(strValueID)
+                    ad = Me.m_core.m_dtAuxiliaryData(strValueID)
                     ' Has anything to save?
                     If (Not ad.IsEmpty()) Then
 

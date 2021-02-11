@@ -147,8 +147,8 @@ Public Class cFileReader
 
     End Function
 
-    Private Sub SendMessage(ByVal strMessage As String, importance As eMessageImportance,
-                            Optional ByVal strDetails As String = "")
+    Private Sub SendMessage(strMessage As String, importance As eMessageImportance,
+                            Optional strDetails As String = "")
         Dim msg As New cMessage(strMessage, EwEUtils.Core.eMessageType.DataImport, EwEUtils.Core.eCoreComponentType.External, importance)
 
         If (Not String.IsNullOrWhiteSpace(strDetails)) Then

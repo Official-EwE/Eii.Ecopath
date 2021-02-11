@@ -76,7 +76,7 @@ Public Class cKeystonenessGraph
     Private Class cSymbolSizeSorter
         Implements IComparer(Of ZedGraph.CurveItem)
 
-        Public Function Compare(ByVal x As ZedGraph.CurveItem, ByVal y As ZedGraph.CurveItem) As Integer _
+        Public Function Compare(x As ZedGraph.CurveItem, y As ZedGraph.CurveItem) As Integer _
             Implements System.Collections.Generic.IComparer(Of ZedGraph.CurveItem).Compare
             If TypeOf (x) Is LineItem And TypeOf (y) Is LineItem Then
                 Dim liX As LineItem = DirectCast(x, LineItem)
@@ -120,13 +120,13 @@ Public Class cKeystonenessGraph
         Return My.Resources.PAGE_KEYSTONENESS
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                     ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                     info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
 
         Me.Graph.Visible = bSucces
@@ -303,7 +303,7 @@ Public Class cKeystonenessGraph
         Get
             Return Me.m_representation
         End Get
-        Set(ByVal representation As eRepresentationType)
+        Set(representation As eRepresentationType)
             If (Me.m_representation <> representation) Then
                 Me.m_representation = representation
                 Me.DisplayData()
@@ -315,7 +315,7 @@ Public Class cKeystonenessGraph
         Get
             Return Me.m_content
         End Get
-        Set(ByVal content As eContentType)
+        Set(content As eContentType)
             If (Me.m_content <> content) Then
                 Me.m_content = content
                 Me.DisplayData()
@@ -326,13 +326,13 @@ Public Class cKeystonenessGraph
     Private Sub AddToolstripItems()
 
         Me.m_tsmiCircles = New ToolStripMenuItem(My.Resources.MNU_STYLE_CIRCLES)
-        AddHandler Me.m_tsmiCircles.Click, AddressOf OnStyleCircles
+        AddHandler Me.m_tsmiCircles.Click, AddressOf Me.OnStyleCircles
 
         Me.m_tsmiCirclesScaled = New ToolStripMenuItem(My.Resources.MNU_STYLE_CIRCLES_SCALED)
-        AddHandler Me.m_tsmiCirclesScaled.Click, AddressOf OnStyleCirclesScaled
+        AddHandler Me.m_tsmiCirclesScaled.Click, AddressOf Me.OnStyleCirclesScaled
 
         Me.m_tsmiNumbers = New ToolStripMenuItem(My.Resources.MNU_STYLE_NUMBERS)
-        AddHandler Me.m_tsmiNumbers.Click, AddressOf OnStyleNumbers
+        AddHandler Me.m_tsmiNumbers.Click, AddressOf Me.OnStyleNumbers
 
         Me.m_tsStyle = New ToolStripDropDownButton(My.Resources.MNU_STYLE)
         Me.m_tsStyle.DropDownItems.Add(Me.m_tsmiCircles)
@@ -341,16 +341,16 @@ Public Class cKeystonenessGraph
         Me.Toolstrip.Items.Add(Me.m_tsStyle)
 
         Me.m_tsmiKeyst1 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE1)
-        AddHandler Me.m_tsmiKeyst1.Click, AddressOf OnContentKeystoneIndex1
+        AddHandler Me.m_tsmiKeyst1.Click, AddressOf Me.OnContentKeystoneIndex1
 
         Me.m_tsmiKeyst2 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE2)
-        AddHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentKeystoneIndex2
+        AddHandler Me.m_tsmiKeyst2.Click, AddressOf Me.OnContentKeystoneIndex2
 
         Me.m_tsmiKeyst3 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE3)
-        AddHandler Me.m_tsmiKeyst3.Click, AddressOf OnContentKeystoneIndex3
+        AddHandler Me.m_tsmiKeyst3.Click, AddressOf Me.OnContentKeystoneIndex3
 
         Me.m_tsmiTotImpactOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTIMPACT_OVER_B)
-        AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
+        AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf Me.OnContentTI
 
         Me.m_tsContent = New ToolStripDropDownButton(My.Resources.MNU_CONTENT)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst1)
@@ -366,52 +366,52 @@ Public Class cKeystonenessGraph
         Me.Toolstrip.Items.Remove(Me.m_tsStyle)
 
         Me.m_tsStyle.DropDownItems.Clear()
-        RemoveHandler Me.m_tsmiCircles.Click, AddressOf OnStyleCircles
+        RemoveHandler Me.m_tsmiCircles.Click, AddressOf Me.OnStyleCircles
         Me.m_tsmiCircles = Nothing
-        RemoveHandler Me.m_tsmiCirclesScaled.Click, AddressOf OnStyleCirclesScaled
+        RemoveHandler Me.m_tsmiCirclesScaled.Click, AddressOf Me.OnStyleCirclesScaled
         Me.m_tsmiCirclesScaled = Nothing
-        RemoveHandler Me.m_tsmiNumbers.Click, AddressOf OnStyleNumbers
+        RemoveHandler Me.m_tsmiNumbers.Click, AddressOf Me.OnStyleNumbers
         Me.m_tsmiNumbers = Nothing
         Me.m_tsStyle = Nothing
 
         Me.Toolstrip.Items.Remove(Me.m_tsContent)
 
         Me.m_tsContent.DropDownItems.Clear()
-        RemoveHandler Me.m_tsmiKeyst1.Click, AddressOf OnContentKeystoneIndex1
+        RemoveHandler Me.m_tsmiKeyst1.Click, AddressOf Me.OnContentKeystoneIndex1
         Me.m_tsmiKeyst1 = Nothing
-        RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
+        RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf Me.OnContentTI
         Me.m_tsmiTotImpactOverB = Nothing
-        RemoveHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentKeystoneIndex2
+        RemoveHandler Me.m_tsmiKeyst2.Click, AddressOf Me.OnContentKeystoneIndex2
         Me.m_tsmiKeyst2 = Nothing
         Me.m_tsContent = Nothing
 
     End Sub
 
-    Private Sub OnStyleCircles(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnStyleCircles(sender As Object, arg As EventArgs)
         Me.Representation = eRepresentationType.Circle
     End Sub
 
-    Private Sub OnStyleCirclesScaled(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnStyleCirclesScaled(sender As Object, arg As EventArgs)
         Me.Representation = eRepresentationType.CircleScaled
     End Sub
 
-    Private Sub OnStyleNumbers(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnStyleNumbers(sender As Object, arg As EventArgs)
         Me.Representation = eRepresentationType.Number
     End Sub
 
-    Private Sub OnContentKeystoneIndex1(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentKeystoneIndex1(sender As Object, arg As EventArgs)
         Me.Content = eContentType.KeystoneIndex1
     End Sub
 
-    Private Sub OnContentTI(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentTI(sender As Object, arg As EventArgs)
         Me.Content = eContentType.TotalEffectOverB
     End Sub
 
-    Private Sub OnContentKeystoneIndex2(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentKeystoneIndex2(sender As Object, arg As EventArgs)
         Me.Content = eContentType.KeystoneIndex2
     End Sub
 
-    Private Sub OnContentKeystoneIndex3(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentKeystoneIndex3(sender As Object, arg As EventArgs)
         Me.Content = eContentType.KeystoneIndex3
     End Sub
 

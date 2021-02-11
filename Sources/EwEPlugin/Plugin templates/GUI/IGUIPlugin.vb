@@ -60,7 +60,7 @@ Public Interface IGUIPlugin
     ''' <param name="frmPlugin">A reference to the form that the plug-in creates
     ''' or activates in response to this event.</param>
     ''' -----------------------------------------------------------------------
-    Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As Form)
+    Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -50,7 +50,7 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
             End Set
         End Property
@@ -59,7 +59,7 @@ Namespace Controls
             Get
                 Return Me.m_tsddFields.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_tsddFields.Text = value
             End Set
         End Property
@@ -68,7 +68,7 @@ Namespace Controls
             Get
                 Return Me.m_aFields
             End Get
-            Set(ByVal value As Array)
+            Set(value As Array)
                 Me.m_aFields = value
                 Me.UpdateDropdown()
             End Set
@@ -78,7 +78,7 @@ Namespace Controls
             Get
                 Return Me.m_formatter
             End Get
-            Set(ByVal value As ITypeFormatter)
+            Set(value As ITypeFormatter)
                 Me.m_formatter = value
                 Me.UpdateDropdown()
             End Set
@@ -88,13 +88,13 @@ Namespace Controls
             Get
                 Return Me.m_bShowDirPicker
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowDirPicker = value
                 Me.UpdateDropdown()
             End Set
         End Property
 
-        Public Event OnFieldPicked(ByVal sender As ucFieldPicker, ByVal value As Object)
+        Public Event OnFieldPicked(sender As ucFieldPicker, value As Object)
 
         Private Sub UpdateDropdown()
 
@@ -104,7 +104,7 @@ Namespace Controls
             Me.m_tsddFields.DropDownItems.Clear()
 
             If Me.m_bShowDirPicker Then
-                item = New ToolStripButton(My.Resources.LABEL_CHOOSE_FOLDER, Nothing, AddressOf OnPickDirectory)
+                item = New ToolStripButton(My.Resources.LABEL_CHOOSE_FOLDER, Nothing, AddressOf Me.OnPickDirectory)
                 Me.m_tsddFields.DropDown.Items.Add(item)
             End If
 
@@ -120,7 +120,7 @@ Namespace Controls
                             ' Whoah
                         End Try
                     End If
-                    item = New ToolStripButton(strText, Nothing, AddressOf OnItemClicked)
+                    item = New ToolStripButton(strText, Nothing, AddressOf Me.OnItemClicked)
                     item.Tag = obj
                     Me.m_tsddFields.DropDown.Items.Add(item)
                 End If
@@ -128,7 +128,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnItemClicked(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnItemClicked(sender As Object, e As EventArgs)
             Try
                 RaiseEvent OnFieldPicked(Me, DirectCast(sender, ToolStripButton).Tag)
             Catch ex As Exception
@@ -136,9 +136,9 @@ Namespace Controls
             End Try
         End Sub
 
-        Public Event OnDirectoryPicked(ByVal sender As ucFieldPicker, ByVal strDirectory As String)
+        Public Event OnDirectoryPicked(sender As ucFieldPicker, strDirectory As String)
 
-        Private Sub OnPickDirectory(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnPickDirectory(sender As Object, e As EventArgs)
             If Me.m_bShowDirPicker And Me.m_uic IsNot Nothing Then
 
                 Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler

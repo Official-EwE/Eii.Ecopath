@@ -110,7 +110,7 @@ Public Class cMPAOptManager
 
         Try
             Me.m_core = theCore
-            Me.m_searchObjectives = m_core.SearchObjective
+            Me.m_searchObjectives = Me.m_core.SearchObjective
             Me.m_curRowCol = New cMPAOptOutput(theCore)
             Me.m_parameters = New cMPAOptParameters(theCore)
 
@@ -126,18 +126,18 @@ Public Class cMPAOptManager
 
     Public Sub Connect(syncObject As System.ComponentModel.ISynchronizeInvoke, SeedCellCallback As SearchIterationDelegate, RunStateCallback As SearchRunStateDelegate)
 
-        m_syncObject = syncObject
-        m_SeedCellComputedCallback = SeedCellCallback
-        m_SeedRunStateCallback = RunStateCallback
+        Me.m_syncObject = syncObject
+        Me.m_SeedCellComputedCallback = SeedCellCallback
+        Me.m_SeedRunStateCallback = RunStateCallback
 
-        Debug.Assert(m_syncObject IsNot Nothing, Me.ToString & ".Connect() syncObject is null.")
+        Debug.Assert(Me.m_syncObject IsNot Nothing, Me.ToString & ".Connect() syncObject is null.")
         Debug.Assert(SeedCellCallback IsNot Nothing, Me.ToString & ".Connect() SeedCellCallback is null.")
-        Debug.Assert(m_SeedRunStateCallback IsNot Nothing, Me.ToString & ".Connect() SeedCellCallback is null.")
+        Debug.Assert(Me.m_SeedRunStateCallback IsNot Nothing, Me.ToString & ".Connect() SeedCellCallback is null.")
 
-        If m_syncObject IsNot Nothing And m_SeedCellComputedCallback IsNot Nothing And m_SeedRunStateCallback IsNot Nothing Then
-            m_bConnected = True
+        If Me.m_syncObject IsNot Nothing And Me.m_SeedCellComputedCallback IsNot Nothing And Me.m_SeedRunStateCallback IsNot Nothing Then
+            Me.m_bConnected = True
         Else
-            m_bConnected = False
+            Me.m_bConnected = False
             cLog.Write("EcoSeedManager is not connected to an interface.")
         End If
 
@@ -231,10 +231,10 @@ Public Class cMPAOptManager
         Try
 
             'populate the current row col
-            m_curRowCol.Init(m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
+            Me.m_curRowCol.Init(Me.m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
 
-            If m_bConnected Then
-                m_syncObject.BeginInvoke(Me.m_SeedCellComputedCallback, Nothing)
+            If Me.m_bConnected Then
+                Me.m_syncObject.BeginInvoke(Me.m_SeedCellComputedCallback, Nothing)
             Else
                 System.Console.WriteLine("EcoSeedManager not connected to an interface.")
             End If
@@ -250,7 +250,7 @@ Public Class cMPAOptManager
         Try
 
             If RunState = eRunStates.NewBestResultFound Then
-                m_curRowCol.Init(m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
+                Me.m_curRowCol.Init(Me.m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
             End If
 
             If RunState = eRunStates.Completed Then
@@ -259,7 +259,7 @@ Public Class cMPAOptManager
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End If
 
-            If m_bConnected Then
+            If Me.m_bConnected Then
 
                 'Invoke will wait for the function to return 
                 'this lets the interface gather data before it has changed is response to a new best cell selected
@@ -288,7 +288,7 @@ Public Class cMPAOptManager
     Public Function Run() As Boolean
 
         Try
-            Me.m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
+            Me.m_MPASearch.Connect(AddressOf Me.OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 
             If Me.IsRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MPAOPT_RUNNING,
@@ -349,7 +349,7 @@ Public Class cMPAOptManager
     End Function
 
     Public Sub YearTimeStep(ByRef iYear As Integer, Biomass() As Single)
-        m_MPASearch.YearTimeStep(iYear, Biomass)
+        Me.m_MPASearch.YearTimeStep(iYear, Biomass)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -504,13 +504,13 @@ Public Class cMPAOptManager
     ''' </summary>
     Public ReadOnly Property CurrentRowColResults() As cMPAOptOutput
         Get
-            Return m_curRowCol
+            Return Me.m_curRowCol
         End Get
     End Property
 
     Public ReadOnly Property MPAOptimizationParameters() As cMPAOptParameters
         Get
-            Return m_parameters
+            Return Me.m_parameters
         End Get
     End Property
 
@@ -838,8 +838,8 @@ Public Class cObjectiveResult
     End Sub
 
     Public Overrides Function ToString() As String
-        Return "Total weighted value = " & objFuncTotal.ToString & ", Economic = " & objFuncEconomicValue.ToString & ", Mandated = " & objFuncMandatedValue.ToString _
-                & ", Social = " & objFuncSocialValue.ToString & ", Ecological = " & objFuncEcologicalValue.ToString
+        Return "Total weighted value = " & Me.objFuncTotal.ToString & ", Economic = " & Me.objFuncEconomicValue.ToString & ", Mandated = " & Me.objFuncMandatedValue.ToString _
+                & ", Social = " & Me.objFuncSocialValue.ToString & ", Ecological = " & Me.objFuncEcologicalValue.ToString
     End Function
 
     Public Function CompareTo(other As cObjectiveResult) As Integer Implements System.IComparable(Of cObjectiveResult).CompareTo

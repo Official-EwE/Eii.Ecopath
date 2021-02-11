@@ -26,283 +26,282 @@ Public Class cMonteCarloGroup
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
-
-        m_dataType = eDataTypes.MonteCarlo
-        m_coreComponent = eCoreComponentType.EcoSim
+        Me.m_dataType = eDataTypes.MonteCarlo
+        Me.m_coreComponent = eCoreComponentType.EcoSim
         Me.AllowValidation = False
         Me.DBID = DBID
 
         'default OK status used for setVariable
         'see comment setVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Dim val As cValue
 
         'biomass
-        val = New cValue(New Single, eVarNameFlags.mcB, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcB, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'PB
-        val = New cValue(New Single, eVarNameFlags.mcPB, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcPB, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'ba
-        val = New cValue(New Single, eVarNameFlags.mcBA, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBA, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'BaBi
-        val = New cValue(New Single, eVarNameFlags.mcBaBi, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBaBi, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'QB
-        val = New cValue(New Single, eVarNameFlags.mcQB, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcQB, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'EE
-        val = New cValue(New Single, eVarNameFlags.mcEE, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcEE, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'VU
-        val = New cValue(New Single, eVarNameFlags.mcVU, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcVU, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DC
-        val = New cValue(New Single, eVarNameFlags.mcDC, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcDC, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'biomassLower
-        val = New cValue(New Single, eVarNameFlags.mcBLower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'PBLower
-        val = New cValue(New Single, eVarNameFlags.mcPBLower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcPBLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'baLower
-        val = New cValue(New Single, eVarNameFlags.mcBALower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBALower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'babiLower
-        val = New cValue(New Single, eVarNameFlags.mcBaBiLower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBaBiLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'QBLower
-        val = New cValue(New Single, eVarNameFlags.mcQBLower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcQBLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'EELower
-        val = New cValue(New Single, eVarNameFlags.mcEELower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcEELower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'VULower
-        val = New cValue(New Single, eVarNameFlags.mcVULower, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcVULower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Best fit
         'biomassBF
-        val = New cValue(New Single, eVarNameFlags.mcBbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'PBBF
-        val = New cValue(New Single, eVarNameFlags.mcPBbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcPBbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'baBF
-        val = New cValue(New Single, eVarNameFlags.mcBAbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBAbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'baBF
-        val = New cValue(New Single, eVarNameFlags.mcBaBibf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBaBibf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'QBBF
-        val = New cValue(New Single, eVarNameFlags.mcQBbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcQBbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'EEBF
-        val = New cValue(New Single, eVarNameFlags.mcEEbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcEEbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'VUBF
-        val = New cValue(New Single, eVarNameFlags.mcVUbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcVUbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DCBf
-        val = New cValue(New Single, eVarNameFlags.mcDCbf, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcDCbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Upper
 
         'biomassUpper
-        val = New cValue(New Single, eVarNameFlags.mcBUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'PBUpper
-        val = New cValue(New Single, eVarNameFlags.mcPBUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcPBUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'baUpper
-        val = New cValue(New Single, eVarNameFlags.mcBAUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBAUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'babiUpper
-        val = New cValue(New Single, eVarNameFlags.mcBaBiUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBaBiUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'QBUpper
-        val = New cValue(New Single, eVarNameFlags.mcQBUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcQBUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'EEUpper
-        val = New cValue(New Single, eVarNameFlags.mcEEUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcEEUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'VUUpper
-        val = New cValue(New Single, eVarNameFlags.mcVUUpper, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcVUUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'cv
 
         'biomasscv
-        val = New cValue(New Single, eVarNameFlags.mcBcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'PBcv
-        val = New cValue(New Single, eVarNameFlags.mcPBcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcPBcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'bacv
-        val = New cValue(New Single, eVarNameFlags.mcBAcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBAcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'babicv
-        val = New cValue(New Single, eVarNameFlags.mcBaBicv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcBaBicv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'QBcv
-        val = New cValue(New Single, eVarNameFlags.mcQBcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcQBcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'EEcv
-        val = New cValue(New Single, eVarNameFlags.mcEEcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcEEcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DCcv
-        val = New cValue(New Single, eVarNameFlags.mcDCcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcDCcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'VUcv
-        val = New cValue(New Single, eVarNameFlags.mcVUcv, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcVUcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DietMult
-        val = New cValue(New Single, eVarNameFlags.mcDietMult, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.mcDietMult, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'arrayed values
         'landings
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandings, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcLandings, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'discards
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscards, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcDiscards, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'LandingsLower
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcLandingsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DiscardsLower
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcDiscardsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'LandingsBF
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcLandingsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DiscardsBF
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcDiscardsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'LandingsUpper
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcLandingsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'DiscardsUpper
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcDiscardsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'Landingscv
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingscv, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcLandingscv, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'Discardscv
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardscv, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.mcDiscardscv, eStatusFlags.Null, eCoreCounterTypes.nFleets)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
     End Sub
 
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
         Dim value As cValue
-        For Each keyvalue In m_values
+        For Each keyvalue In Me.m_values
             Try
                 value = keyvalue.Value
 
@@ -354,487 +353,487 @@ Public Class cMonteCarloGroup
 
     Public Property B() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcB))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcB))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcB, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcB, value)
         End Set
     End Property
 
     Public Property BA() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBA))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBA))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBA, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBA, value)
         End Set
     End Property
 
     Public Property BaBi() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBaBi))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBaBi))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBaBi, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBaBi, value)
         End Set
     End Property
 
     Public Property PB() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcPB))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcPB))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcPB, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcPB, value)
         End Set
     End Property
 
     Public Property QB() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcQB))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcQB))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcQB, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcQB, value)
         End Set
     End Property
 
     Public Property EE() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcEE))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcEE))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcEE, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcEE, value)
         End Set
     End Property
 
     'VU = vulnerability (or VulMult) by predator
     Public Property VU() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcVU))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcVU))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcVU, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcVU, value)
         End Set
     End Property
 
     Public Property Landings(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcLandings, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcLandings, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcLandings, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcLandings, value, iFleet)
         End Set
     End Property
 
     Public Property Discards(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDiscards, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDiscards, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDiscards, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDiscards, value, iFleet)
         End Set
     End Property
 
-    Public Property Diets(ByVal iIndex As Integer) As Single
+    Public Property Diets(iIndex As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDC, iIndex))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDC, iIndex))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDC, value, iIndex)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDC, value, iIndex)
         End Set
     End Property
 
     Public Property BLower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBLower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBLower))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBLower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBLower, value)
         End Set
     End Property
 
     Public Property BALower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBALower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBALower))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBALower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBALower, value)
         End Set
     End Property
 
     Public Property BaBiLower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBaBiLower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBaBiLower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBaBiLower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBaBiLower, value)
         End Set
     End Property
 
     Public Property PBLower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcPBLower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcPBLower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcPBLower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcPBLower, value)
         End Set
     End Property
 
     Public Property QBLower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcQBLower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcQBLower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcQBLower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcQBLower, value)
         End Set
     End Property
 
     Public Property EELower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcEELower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcEELower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcEELower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcEELower, value)
         End Set
     End Property
 
     Public Property VULower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcVULower))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcVULower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcVULower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcVULower, value)
         End Set
     End Property
 
     Public Property LandingsLower(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcLandingsLower, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcLandingsLower, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcLandingsLower, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcLandingsLower, value, iFleet)
         End Set
     End Property
 
     Public Property DiscardsLower(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDiscardsLower, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDiscardsLower, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDiscardsLower, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDiscardsLower, value, iFleet)
         End Set
     End Property
 
     Public Property BUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBUpper, value)
         End Set
     End Property
 
     Public Property BAUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBAUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBAUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBAUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBAUpper, value)
         End Set
     End Property
 
     Public Property BaBiUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBaBiUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBaBiUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBaBiUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBaBiUpper, value)
         End Set
     End Property
 
     Public Property PBUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcPBUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcPBUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcPBUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcPBUpper, value)
         End Set
     End Property
 
     Public Property QBUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcQBUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcQBUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcQBUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcQBUpper, value)
         End Set
     End Property
 
     Public Property EEUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcEEUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcEEUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcEEUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcEEUpper, value)
         End Set
     End Property
 
     Public Property VUUpper() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcVUUpper))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcVUUpper))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcVUUpper, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcVUUpper, value)
         End Set
     End Property
 
     Public Property LandingsUpper(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcLandingsUpper, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcLandingsUpper, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcLandingsUpper, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcLandingsUpper, value, iFleet)
         End Set
     End Property
 
     Public Property DiscardsUpper(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDiscardsUpper, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDiscardsUpper, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDiscardsUpper, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDiscardsUpper, value, iFleet)
         End Set
     End Property
 
     Public Property Bcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBcv, value)
         End Set
     End Property
 
     Public Property BAcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBAcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBAcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBAcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBAcv, value)
         End Set
     End Property
 
     Public Property BaBicv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBaBicv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBaBicv))
         End Get
         Set(value As Single)
-            SetVariable(eVarNameFlags.mcBaBicv, value)
+            Me.SetVariable(eVarNameFlags.mcBaBicv, value)
         End Set
     End Property
 
     Public Property PBcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcPBcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcPBcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcPBcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcPBcv, value)
         End Set
     End Property
 
     Public Property QBcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcQBcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcQBcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcQBcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcQBcv, value)
         End Set
     End Property
 
     Public Property EEcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcEEcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcEEcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcEEcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcEEcv, value)
         End Set
     End Property
 
     Public Property Dietcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDCcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDCcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDCcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDCcv, value)
         End Set
     End Property
 
     Public Property VUcv() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcVUcv))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcVUcv))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcVUcv, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcVUcv, value)
         End Set
     End Property
 
     Public Property Landingscv(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcLandingscv, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcLandingscv, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcLandingscv, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcLandingscv, value, iFleet)
         End Set
     End Property
 
     Public Property Discardscv(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDiscardscv, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDiscardscv, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDiscardscv, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDiscardscv, value, iFleet)
         End Set
     End Property
 
     Public Property DietMultiplier() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDietMult))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDietMult))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDietMult, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDietMult, value)
         End Set
     End Property
 
     Public Property Bbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBbf, value)
         End Set
     End Property
 
     Public Property BAbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBAbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBAbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBAbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBAbf, value)
         End Set
     End Property
 
     Public Property BaBibf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcBaBibf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcBaBibf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcBaBibf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcBaBibf, value)
         End Set
     End Property
 
     Public Property PBbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcPBbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcPBbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcPBbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcPBbf, value)
         End Set
     End Property
 
     Public Property QBbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcQBbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcQBbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcQBbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcQBbf, value)
         End Set
     End Property
 
     Public Property EEbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcEEbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcEEbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcEEbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcEEbf, value)
         End Set
     End Property
 
     Public Property VUbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcVUbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcVUbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcVUbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcVUbf, value)
         End Set
     End Property
 
     Public Property Landingsbf(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcLandingsbf, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcLandingsbf, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcLandingsbf, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcLandingsbf, value, iFleet)
         End Set
     End Property
 
     Public Property Discardsbf(iFleet As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDiscardsbf, iFleet))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDiscardsbf, iFleet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDiscardsbf, value, iFleet)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDiscardsbf, value, iFleet)
         End Set
     End Property
 
     Public Property Dietsbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDCbf))
+            Return CSng(Me.GetVariable(eVarNameFlags.mcDCbf))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDCbf, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.mcDCbf, value)
         End Set
     End Property
 

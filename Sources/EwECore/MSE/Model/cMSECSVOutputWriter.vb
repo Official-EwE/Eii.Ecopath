@@ -37,12 +37,12 @@ Friend Class cMSECSVOutputWriter
     Private m_core As cCore
     Private m_MSEdata As cMSEDataStructures
 
-    Public Sub New(ByVal theCore As cCore, ByVal MSEData As cMSEDataStructures)
+    Public Sub New(theCore As cCore, MSEData As cMSEDataStructures)
         Me.m_core = theCore
         Me.m_MSEdata = MSEData
     End Sub
 
-    Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
+    Public Function getOutputFileName(strDataType As String, strDataName As String) As String
         Dim strOutputFileName As String = Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(strDataType & " " & strDataName & ".csv", False))
         cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strOutputFileName), True)
         Return strOutputFileName
@@ -54,7 +54,7 @@ Friend Class cMSECSVOutputWriter
         End Get
     End Property
 
-    Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+    Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
         If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
@@ -70,7 +70,7 @@ Friend Class cMSECSVOutputWriter
             'Biomass
             For igrp As Integer = 1 To Me.m_MSEdata.NGroups
                 Try
-                    strFile = getOutputFileName(cMSE.BIOMASS_DATA, epData.GroupName(igrp))
+                    strFile = Me.getOutputFileName(cMSE.BIOMASS_DATA, epData.GroupName(igrp))
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If (its > 1) Then buff.Append(", ")
@@ -91,7 +91,7 @@ Friend Class cMSECSVOutputWriter
             For igrp As Integer = 1 To Me.m_MSEdata.NGroups
                 Try
                     If epData.fCatch(igrp) > 0 Then
-                        strFile = getOutputFileName(cMSE.CATCH_DATA, epData.GroupName(igrp))
+                        strFile = Me.getOutputFileName(cMSE.CATCH_DATA, epData.GroupName(igrp))
                         buff.Length = 0
                         For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                             If (its > 1) Then buff.Append(", ")
@@ -114,7 +114,7 @@ Friend Class cMSECSVOutputWriter
                 Try
                     Dim data(,) As Single = ListOfData.Item(cMSE.eResultsData.GroupQuota)
                     If epData.fCatch(igrp) > 0 Then
-                        strFile = getOutputFileName(cMSE.QUOTAGROUP_DATA, epData.GroupName(igrp))
+                        strFile = Me.getOutputFileName(cMSE.QUOTAGROUP_DATA, epData.GroupName(igrp))
                         buff.Length = 0
                         For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                             If (its > 1) Then buff.Append(", ")
@@ -135,7 +135,7 @@ Friend Class cMSECSVOutputWriter
             'Catch by fleet
             For iflt As Integer = 1 To Me.m_MSEdata.nFleets
                 Try
-                    strFile = getOutputFileName(cMSE.FLEETCATCH_DATA, epData.FleetName(iflt))
+                    strFile = Me.getOutputFileName(cMSE.FLEETCATCH_DATA, epData.FleetName(iflt))
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If (its > 1) Then buff.Append(", ")
@@ -147,7 +147,7 @@ Friend Class cMSECSVOutputWriter
                     strm.Close()
                 Catch ex As Exception
                     'Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(CATCH_DATA, epdata.FleetName(iflt)))
-                    System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getOutputFileName(cMSE.FLEETCATCH_DATA, epData.FleetName(iflt)) & " Exception: " & ex.Message)
+                    System.Console.WriteLine(Me.ToString & " Failed to write data to file " & Me.getOutputFileName(cMSE.FLEETCATCH_DATA, epData.FleetName(iflt)) & " Exception: " & ex.Message)
                     cLog.Write(ex, "MSECSVOutputWriter::FLEETCATCH_DATA_" & iflt)
                 End Try
             Next
@@ -155,7 +155,7 @@ Friend Class cMSECSVOutputWriter
             'Effort by fleet
             For iflt As Integer = 1 To Me.m_MSEdata.nFleets
                 Try
-                    strFile = getOutputFileName(cMSE.EFFORT_DATA, epData.FleetName(iflt))
+                    strFile = Me.getOutputFileName(cMSE.EFFORT_DATA, epData.FleetName(iflt))
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If its > 1 Then buff.Append(", ")
@@ -184,7 +184,7 @@ Friend Class cMSECSVOutputWriter
 
     End Sub
 
-    Private Sub WriteOutputHeader(ByVal DataDescription As String, ByVal GroupFleet As String, ByVal DataFileName As String)
+    Private Sub WriteOutputHeader(DataDescription As String, GroupFleet As String, DataFileName As String)
 
         Try
             If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return

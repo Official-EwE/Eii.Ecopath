@@ -92,8 +92,8 @@ Namespace EcospaceTimeSeries
         End Function
 
         Private Sub Init()
-            m_StartDate = New Date(6666, 6, 6)
-            m_EndDate = New Date(1, 1, 1)
+            Me.m_StartDate = New Date(6666, 6, 6)
+            Me.m_EndDate = New Date(1, 1, 1)
 
             Me.m_MaxRow = 0
             Me.m_MaxCol = 0
@@ -103,13 +103,13 @@ Namespace EcospaceTimeSeries
 
         Private Sub getMinMaxDates(rec As cEcospaceTimeSeriesRec)
 
-            If Date.Compare(m_StartDate, rec.TimeStamp) > 0 Then
-                m_StartDate = rec.TimeStamp
+            If Date.Compare(Me.m_StartDate, rec.TimeStamp) > 0 Then
+                Me.m_StartDate = rec.TimeStamp
             End If
 
 
-            If Date.Compare(m_EndDate, rec.TimeStamp) < 0 Then
-                m_EndDate = rec.TimeStamp
+            If Date.Compare(Me.m_EndDate, rec.TimeStamp) < 0 Then
+                Me.m_EndDate = rec.TimeStamp
             End If
 
         End Sub

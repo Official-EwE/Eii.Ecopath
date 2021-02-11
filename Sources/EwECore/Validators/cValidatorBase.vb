@@ -30,8 +30,8 @@ Public Class cValidatorDefault
 
     Protected m_VarName As eVarNameFlags
 
-    Sub New(ByVal VarName As eVarNameFlags)
-        m_VarName = VarName
+    Sub New(VarName As eVarNameFlags)
+        Me.m_VarName = VarName
     End Sub
 
     ''' <summary>
@@ -39,7 +39,7 @@ Public Class cValidatorDefault
     ''' </summary>
     ''' <remarks></remarks>
     Sub New()
-        m_VarName = eVarNameFlags.NotSet
+        Me.m_VarName = eVarNameFlags.NotSet
     End Sub
 
     ''' <summary>
@@ -48,13 +48,13 @@ Public Class cValidatorDefault
     ''' <remarks>This is set in the constructor.</remarks>
     Public ReadOnly Property VarName() As eVarNameFlags
         Get
-            Return m_VarName
+            Return Me.m_VarName
         End Get
     End Property
 
-    Public Overridable Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overridable Function Validate(ValueObject As cValue, MetaData As cVariableMetaData,
+                                         Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim bCleared As Boolean = False
 

@@ -69,7 +69,7 @@ Friend Class cDBUpdate6_00_06_002
         Return Me.FixMediationFields(db)
     End Function
 
-    Private Function FixMediationFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixMediationFields(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         Try

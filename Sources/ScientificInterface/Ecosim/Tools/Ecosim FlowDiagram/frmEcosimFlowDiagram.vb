@@ -126,7 +126,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub New(ByVal text As String)
+        Public Sub New(text As String)
             Me.New()
             'Set tab text
             Me.TabText = text
@@ -138,7 +138,7 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -155,27 +155,27 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
             Me.UpdateControls()
 
-            AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
-            AddHandler Me.m_tree.OnBiomassLegendChanged, AddressOf OnTreeBiomassLegendChanged
-            AddHandler Me.m_tree.OnFlowRateLegendChanged, AddressOf OnTreeFlowRateLegendChanged
+            AddHandler Me.m_tree.OnChanged, AddressOf Me.OnTreeChanged
+            AddHandler Me.m_tree.OnBiomassLegendChanged, AddressOf Me.OnTreeBiomassLegendChanged
+            AddHandler Me.m_tree.OnFlowRateLegendChanged, AddressOf Me.OnTreeFlowRateLegendChanged
 
             'Slider Overriders
-            m_slider.Minimum = 1
-            m_slider.Maximum = Core.nEcosimTimeSteps
+            Me.m_slider.Minimum = 1
+            Me.m_slider.Maximum = Me.Core.nEcosimTimeSteps
 
-            m_noofTimeSlicesPerYear = Core.EcoSimModelParameters.NumberSummaryTimeSteps
+            Me.m_noofTimeSlicesPerYear = Me.Core.EcoSimModelParameters.NumberSummaryTimeSteps
 
             'Check if the Loaded Model has timeseries Datasets
             Dim firstMonth As Integer = 2
             If Me.UIContext.Core.nTimeSeriesDatasets > 0 Then
-                TimeSeriesds = Me.UIContext.Core.TimeSeriesDataset(1)
-                m_EcosimFirstYear = TimeSeriesds.FirstYear
-                m_tbxYear.Text = m_EcosimFirstYear.ToString
-                m_tbxMonth.Text = cDateUtils.GetMonthName(firstMonth, False)
+                Me.TimeSeriesds = Me.UIContext.Core.TimeSeriesDataset(1)
+                Me.m_EcosimFirstYear = Me.TimeSeriesds.FirstYear
+                Me.m_tbxYear.Text = Me.m_EcosimFirstYear.ToString
+                Me.m_tbxMonth.Text = cDateUtils.GetMonthName(firstMonth, False)
             Else
-                m_EcosimFirstYear = 0
-                m_tbxYear.Text = m_EcosimFirstYear.ToString
-                m_tbxMonth.Text = cDateUtils.GetMonthName(firstMonth, False)
+                Me.m_EcosimFirstYear = 0
+                Me.m_tbxYear.Text = Me.m_EcosimFirstYear.ToString
+                Me.m_tbxMonth.Text = cDateUtils.GetMonthName(firstMonth, False)
             End If
 
             'Default delay value of Slider Animation: 10ms, value range [10, 1000] ms
@@ -203,9 +203,9 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-            RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
+            RemoveHandler Me.m_tree.OnChanged, AddressOf Me.OnTreeChanged
 
             Me.m_fpDelay.Release()
 
@@ -213,7 +213,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
             ' Refresh the diagram data when ecopath data has changed
@@ -225,11 +225,11 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             Me.m_pbFlowDiagram.Invalidate()
         End Sub
 
-        Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+        Protected Overrides Function GetPrintContent(rcPrint As Rectangle) As Image
 
             Dim dpi As Integer = Me.StyleGuide.PreferredDPI
             Dim img As New Bitmap(rcPrint.Width, rcPrint.Height, PixelFormat.Format32bppArgb)
@@ -247,12 +247,12 @@ Namespace Ecosim
 
 #Region " Drawing "
 
-        Private Sub OnFlowDiagramResize(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnFlowDiagramResize(sender As Object, e As System.EventArgs) _
             Handles m_pbFlowDiagram.Resize
             Me.m_pbFlowDiagram.Invalidate()
         End Sub
 
-        Private Sub OnFlowDiagramPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnFlowDiagramPaint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_pbFlowDiagram.Paint
 
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
@@ -264,7 +264,7 @@ Namespace Ecosim
         ''' Override the bakcground paint routine to elimate flickering.
         ''' </summary>
         ''' <param name="pevent"></param>
-        Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
+        Protected Overrides Sub OnPaintBackground(pevent As PaintEventArgs)
             ' NOP
         End Sub
 
@@ -272,7 +272,7 @@ Namespace Ecosim
 
 #Region " Mouse Events "
 
-        Private Sub OnFlowDiagramMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseDown(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseDown
 
             Using g As Graphics = Me.CreateGraphics()
@@ -281,12 +281,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnFlowDiagramMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseUp(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseUp
             Me.m_doodler.EndDrag(Me.m_data, e.Location)
         End Sub
 
-        Private Sub OnFlowDiagramMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseMove
 
             Using g As Graphics = Me.CreateGraphics()
@@ -296,7 +296,7 @@ Namespace Ecosim
         End Sub
 
 
-        Private Sub OnFlowDiagramMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseClick(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseClick
 
             ' ToDo: globalize this method
@@ -320,75 +320,75 @@ Namespace Ecosim
                             'Noting
                         End Try
 
-                        m_mdataGridView = New DataGridView
-                        m_mdataGridView.Columns.Add("column", "header")
-                        m_mdataGridView.Rows.Add()
-                        m_mdataGridView.Rows.Add()
+                        Me.m_mdataGridView = New DataGridView
+                        Me.m_mdataGridView.Columns.Add("column", "header")
+                        Me.m_mdataGridView.Rows.Add()
+                        Me.m_mdataGridView.Rows.Add()
                         'adding first column values
-                        m_mdataGridView.Rows(0).Cells(0).Value = "Prey/Pred Rates"
-                        m_mdataGridView.Rows(1).Cells(0).Value = Me.m_data.ItemName(m_iHighlightedNode)
-                        m_mdataGridView.Rows(1).Cells(0).Style.BackColor = Color.Gold
+                        Me.m_mdataGridView.Rows(0).Cells(0).Value = "Prey/Pred Rates"
+                        Me.m_mdataGridView.Rows(1).Cells(0).Value = Me.m_data.ItemName(Me.m_iHighlightedNode)
+                        Me.m_mdataGridView.Rows(1).Cells(0).Style.BackColor = Color.Gold
 
                         'Dim rowval As Integer = 0
                         Dim celval As Integer = 1
                         For j As Integer = 1 To Me.m_data.NumItems
 
-                            If (Me.m_data.LinkValue(m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
+                            If (Me.m_data.LinkValue(Me.m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
 
-                                Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(m_iHighlightedNode)
+                                Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(Me.m_iHighlightedNode)
                                 Dim gpnm As String = Me.m_data.ItemName(j)
 
-                                m_mdataGridView.Columns.Add("column", "header")
-                                m_mdataGridView.Rows(0).Cells(celval).Value = gpnm
-                                m_mdataGridView.Rows(0).Cells(celval).Style.ForeColor = Color.Green
-                                m_mdataGridView.Rows(1).Cells(celval).Value = cons
-                                m_mdataGridView.Rows(1).Cells(celval).Style.ForeColor = Color.Green
+                                Me.m_mdataGridView.Columns.Add("column", "header")
+                                Me.m_mdataGridView.Rows(0).Cells(celval).Value = gpnm
+                                Me.m_mdataGridView.Rows(0).Cells(celval).Style.ForeColor = Color.Green
+                                Me.m_mdataGridView.Rows(1).Cells(celval).Value = cons
+                                Me.m_mdataGridView.Rows(1).Cells(celval).Style.ForeColor = Color.Green
                                 celval += 1
 
-                            ElseIf (Me.m_data.LinkValue(j, m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
+                            ElseIf (Me.m_data.LinkValue(j, Me.m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
 
-                                Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(m_iHighlightedNode).Consumption(j)
+                                Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(Me.m_iHighlightedNode).Consumption(j)
                                 Dim gpnm1 As String = Me.m_data.ItemName(j)
 
-                                m_mdataGridView.Columns.Add("column", "header")
-                                m_mdataGridView.Rows(0).Cells(celval).Value = gpnm1
-                                m_mdataGridView.Rows(0).Cells(celval).Style.ForeColor = Color.DarkRed
-                                m_mdataGridView.Rows(1).Cells(celval).Value = cons1
-                                m_mdataGridView.Rows(1).Cells(celval).Style.ForeColor = Color.DarkRed
+                                Me.m_mdataGridView.Columns.Add("column", "header")
+                                Me.m_mdataGridView.Rows(0).Cells(celval).Value = gpnm1
+                                Me.m_mdataGridView.Rows(0).Cells(celval).Style.ForeColor = Color.DarkRed
+                                Me.m_mdataGridView.Rows(1).Cells(celval).Value = cons1
+                                Me.m_mdataGridView.Rows(1).Cells(celval).Style.ForeColor = Color.DarkRed
                                 celval += 1
 
                             End If
 
                         Next j
-                        m_iHighlightedNodePrev = m_iHighlightedNode
+                        Me.m_iHighlightedNodePrev = Me.m_iHighlightedNode
 
                         'Displaying DataGridView on the form with properties set to it
-                        m_mdataGridView.Dock = DockStyle.Top
-                        m_mdataGridView.BackgroundColor = System.Drawing.SystemColors.Window
-                        m_mdataGridView.BorderStyle = BorderStyle.None
-                        m_mdataGridView.Size = New Size(720, 70)
-                        m_mdataGridView.ColumnHeadersVisible = False
-                        m_mdataGridView.RowHeadersVisible = False
-                        m_mdataGridView.AllowUserToAddRows = False
-                        m_mdataGridView.AllowUserToDeleteRows = False
-                        m_mdataGridView.AllowUserToOrderColumns = False
-                        m_mdataGridView.ReadOnly = True
-                        m_mdataGridView.MultiSelect = False
-                        m_mdataGridView.AllowUserToResizeColumns = False
-                        m_mdataGridView.AllowUserToResizeRows = False
+                        Me.m_mdataGridView.Dock = DockStyle.Top
+                        Me.m_mdataGridView.BackgroundColor = System.Drawing.SystemColors.Window
+                        Me.m_mdataGridView.BorderStyle = BorderStyle.None
+                        Me.m_mdataGridView.Size = New Size(720, 70)
+                        Me.m_mdataGridView.ColumnHeadersVisible = False
+                        Me.m_mdataGridView.RowHeadersVisible = False
+                        Me.m_mdataGridView.AllowUserToAddRows = False
+                        Me.m_mdataGridView.AllowUserToDeleteRows = False
+                        Me.m_mdataGridView.AllowUserToOrderColumns = False
+                        Me.m_mdataGridView.ReadOnly = True
+                        Me.m_mdataGridView.MultiSelect = False
+                        Me.m_mdataGridView.AllowUserToResizeColumns = False
+                        Me.m_mdataGridView.AllowUserToResizeRows = False
                         'Adding DataGridView to the Flowdiagram control
-                        Me.m_pbFlowDiagram.Controls.Add(m_mdataGridView)
+                        Me.m_pbFlowDiagram.Controls.Add(Me.m_mdataGridView)
                     End If
                 End If
             End If
 
             If Me.m_tree.ShowFlowRateLegend = False Then
                 Try
-                    m_iHighlightedNodePrev = 0 'we can again select the same node
+                    Me.m_iHighlightedNodePrev = 0 'we can again select the same node
                     If (Me.m_mdataGridView IsNot Nothing) Then
                         Me.m_mdataGridView.Dispose()  'Dellocating all the resources to DataGridView
                         Me.m_mdataGridView.ClearSelection()
-                        Me.m_pbFlowDiagram.Controls.Remove(m_mdataGridView)
+                        Me.m_pbFlowDiagram.Controls.Remove(Me.m_mdataGridView)
                     End If
                 Catch
                     'nothing
@@ -401,7 +401,7 @@ Namespace Ecosim
 
 #Region " Tree events (wouldn't that be nice?)"
 
-        Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Private Sub OnTreeChanged(sender As cTreeFlowDiagramRenderer)
 
             ' ToDo: globalize this method
 
@@ -440,78 +440,78 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnTreeBiomassLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Private Sub OnTreeBiomassLegendChanged(sender As cTreeFlowDiagramRenderer)
 
             If Me.m_tree.ShowBiomassLegend = True Then
 
-                m_dt = New DataTable
-                For columnIndex As Integer = 1 To m_noofColumns
-                    m_dt.Columns.Add()
+                Me.m_dt = New DataTable
+                For columnIndex As Integer = 1 To Me.m_noofColumns
+                    Me.m_dt.Columns.Add()
                 Next columnIndex
 
                 'Adding elements to dynamically created rows
                 'Looping through all the groups of model
                 Dim groupIndex As Integer
-                For groupIndex = 1 To Core.nGroups
-                    m_dr0 = m_dt.NewRow()  'Row with Biomass Names 
-                    m_dr1 = m_dt.NewRow()  'Row with Biomass Values
+                For groupIndex = 1 To Me.Core.nGroups
+                    Me.m_dr0 = Me.m_dt.NewRow()  'Row with Biomass Names 
+                    Me.m_dr1 = Me.m_dt.NewRow()  'Row with Biomass Values
 
-                    For innerloop As Integer = 1 To m_noofColumns
+                    For innerloop As Integer = 1 To Me.m_noofColumns
                         'Check to make sure to stay within nGroups
-                        If groupIndex <= Core.nGroups Then
-                            Dim gpnm As String = Core.EcoPathGroupInputs(groupIndex).Name
-                            Dim bmss As Single = Core.EcoSimGroupOutputs(groupIndex).Biomass(CurrentTimestep)
-                            m_dr0(innerloop - 1) = gpnm
-                            m_dr1(innerloop - 1) = bmss
+                        If groupIndex <= Me.Core.nGroups Then
+                            Dim gpnm As String = Me.Core.EcoPathGroupInputs(groupIndex).Name
+                            Dim bmss As Single = Me.Core.EcoSimGroupOutputs(groupIndex).Biomass(Me.CurrentTimestep)
+                            Me.m_dr0(innerloop - 1) = gpnm
+                            Me.m_dr1(innerloop - 1) = bmss
                             'incrementing the groupIndex outside forloop to keep track of next value
                             groupIndex += 1
 
                         End If
                     Next innerloop
                     'Adding the two newly created Rows to DataTable
-                    m_dt.Rows.Add(m_dr0)
-                    m_dt.Rows.Add(m_dr1)
+                    Me.m_dt.Rows.Add(Me.m_dr0)
+                    Me.m_dt.Rows.Add(Me.m_dr1)
 
                     groupIndex -= 1
                 Next groupIndex
 
                 'creating DataGridView 
-                m_dataGridView = New DataGridView
-                m_dataGridView.DataSource = m_dt
+                Me.m_dataGridView = New DataGridView
+                Me.m_dataGridView.DataSource = Me.m_dt
 
                 'DefaultcellStyles
-                m_dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-                m_dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ScrollBar
-                m_dataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-                m_dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText
-                m_dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-                m_dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-                m_dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-                Me.m_dataGridView.DefaultCellStyle = m_dataGridViewCellStyle1
+                Me.m_dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+                Me.m_dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ScrollBar
+                Me.m_dataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+                Me.m_dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText
+                Me.m_dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+                Me.m_dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+                Me.m_dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+                Me.m_dataGridView.DefaultCellStyle = Me.m_dataGridViewCellStyle1
 
                 'AlternatingRowStyles
-                m_dataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-                m_dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-                Me.m_dataGridView.AlternatingRowsDefaultCellStyle = m_dataGridViewCellStyle2
+                Me.m_dataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+                Me.m_dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
+                Me.m_dataGridView.AlternatingRowsDefaultCellStyle = Me.m_dataGridViewCellStyle2
 
                 'Displaying DataGridView on the form with properties set to it
-                m_dataGridView.Dock = DockStyle.Top
-                m_dataGridView.AutoResizeColumns()
-                m_dataGridView.Size = New Size(720, 137)
-                m_dataGridView.ColumnHeadersVisible = False
-                m_dataGridView.RowHeadersVisible = False
-                m_dataGridView.AllowUserToAddRows = False
-                m_dataGridView.AllowUserToDeleteRows = False
-                m_dataGridView.AllowUserToOrderColumns = False
-                m_dataGridView.ReadOnly = True
-                m_dataGridView.MultiSelect = False
-                m_dataGridView.AllowUserToResizeColumns = False
-                m_dataGridView.AllowUserToResizeRows = False
-                m_dataGridView.BackgroundColor = System.Drawing.SystemColors.Window
-                m_dataGridView.BorderStyle = BorderStyle.None
+                Me.m_dataGridView.Dock = DockStyle.Top
+                Me.m_dataGridView.AutoResizeColumns()
+                Me.m_dataGridView.Size = New Size(720, 137)
+                Me.m_dataGridView.ColumnHeadersVisible = False
+                Me.m_dataGridView.RowHeadersVisible = False
+                Me.m_dataGridView.AllowUserToAddRows = False
+                Me.m_dataGridView.AllowUserToDeleteRows = False
+                Me.m_dataGridView.AllowUserToOrderColumns = False
+                Me.m_dataGridView.ReadOnly = True
+                Me.m_dataGridView.MultiSelect = False
+                Me.m_dataGridView.AllowUserToResizeColumns = False
+                Me.m_dataGridView.AllowUserToResizeRows = False
+                Me.m_dataGridView.BackgroundColor = System.Drawing.SystemColors.Window
+                Me.m_dataGridView.BorderStyle = BorderStyle.None
 
                 'Adding DataGridView to the Flowdiagram control
-                Me.m_pbFlowDiagram.Controls.Add(m_dataGridView)
+                Me.m_pbFlowDiagram.Controls.Add(Me.m_dataGridView)
 
             End If
 
@@ -522,7 +522,7 @@ Namespace Ecosim
                         If Me.m_dt.Rows.Count > 0 Then
                             Me.m_dataGridView.Dispose()  'Dellocating all the resources to DataGridView
                             Me.m_dataGridView.ClearSelection()
-                            Me.m_pbFlowDiagram.Controls.Remove(m_dataGridView) 'Removing from the control
+                            Me.m_pbFlowDiagram.Controls.Remove(Me.m_dataGridView) 'Removing from the control
                         End If
                     End If
                 Catch e As Exception
@@ -535,46 +535,46 @@ Namespace Ecosim
         End Sub
 
 
-        Private Sub OnTreeFlowRateLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Private Sub OnTreeFlowRateLegendChanged(sender As cTreeFlowDiagramRenderer)
 
             ' ToDo: globalize this
 
             If Me.m_tree.ShowFlowRateLegend = True Then
-                m_mdataGridView = New DataGridView
-                m_mdataGridView.Columns.Add("column", "header")
-                m_mdataGridView.Columns.Add("column", "header")
-                m_mdataGridView.Columns.Add("column", "header")
-                m_mdataGridView.Columns.Add("column", "header")
-                m_mdataGridView.Columns.Add("column", "header")
-                m_mdataGridView.Rows.Add()
-                m_mdataGridView.Rows.Add()
+                Me.m_mdataGridView = New DataGridView
+                Me.m_mdataGridView.Columns.Add("column", "header")
+                Me.m_mdataGridView.Columns.Add("column", "header")
+                Me.m_mdataGridView.Columns.Add("column", "header")
+                Me.m_mdataGridView.Columns.Add("column", "header")
+                Me.m_mdataGridView.Columns.Add("column", "header")
+                Me.m_mdataGridView.Rows.Add()
+                Me.m_mdataGridView.Rows.Add()
                 'adding first column values
-                m_mdataGridView.Rows(0).Cells(0).Value = "Prey/Pred Rates"
+                Me.m_mdataGridView.Rows(0).Cells(0).Value = "Prey/Pred Rates"
                 'm_mdataGridView.Rows(0).Cells(0).Style.BackColor = Color.White
-                m_mdataGridView.Rows(1).Cells(0).Value = "N/A: Hover over group"
-                m_mdataGridView.Rows(1).Cells(0).Style.BackColor = Color.Gold
-                m_mdataGridView.Dock = DockStyle.Top
-                m_mdataGridView.BackgroundColor = System.Drawing.SystemColors.Window
-                m_mdataGridView.BorderStyle = BorderStyle.None
-                m_mdataGridView.Size = New Size(720, 70)
-                m_mdataGridView.ColumnHeadersVisible = False
-                m_mdataGridView.RowHeadersVisible = False
-                m_mdataGridView.AllowUserToAddRows = False
-                m_mdataGridView.AllowUserToDeleteRows = False
-                m_mdataGridView.AllowUserToOrderColumns = False
-                m_mdataGridView.ReadOnly = True
-                m_mdataGridView.MultiSelect = False
-                m_mdataGridView.AllowUserToResizeColumns = False
-                m_mdataGridView.AllowUserToResizeRows = False
+                Me.m_mdataGridView.Rows(1).Cells(0).Value = "N/A: Hover over group"
+                Me.m_mdataGridView.Rows(1).Cells(0).Style.BackColor = Color.Gold
+                Me.m_mdataGridView.Dock = DockStyle.Top
+                Me.m_mdataGridView.BackgroundColor = System.Drawing.SystemColors.Window
+                Me.m_mdataGridView.BorderStyle = BorderStyle.None
+                Me.m_mdataGridView.Size = New Size(720, 70)
+                Me.m_mdataGridView.ColumnHeadersVisible = False
+                Me.m_mdataGridView.RowHeadersVisible = False
+                Me.m_mdataGridView.AllowUserToAddRows = False
+                Me.m_mdataGridView.AllowUserToDeleteRows = False
+                Me.m_mdataGridView.AllowUserToOrderColumns = False
+                Me.m_mdataGridView.ReadOnly = True
+                Me.m_mdataGridView.MultiSelect = False
+                Me.m_mdataGridView.AllowUserToResizeColumns = False
+                Me.m_mdataGridView.AllowUserToResizeRows = False
                 'Adding DataGridView to the Flowdiagram control
-                Me.m_pbFlowDiagram.Controls.Add(m_mdataGridView)
+                Me.m_pbFlowDiagram.Controls.Add(Me.m_mdataGridView)
             End If
 
             If Me.m_tree.ShowFlowRateLegend = False Then
                 Try  'Delete previous DataTable if still exiting on the form
                     Me.m_mdataGridView.Dispose()  'Dellocating all the resources to DataGridView
                     Me.m_mdataGridView.ClearSelection()
-                    Me.m_pbFlowDiagram.Controls.Remove(m_mdataGridView)
+                    Me.m_pbFlowDiagram.Controls.Remove(Me.m_mdataGridView)
                 Catch
                     'Noting
                 End Try
@@ -594,7 +594,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnLoadLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadLayout(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnImport.Click
 
             Dim ifData As cXMLSettings = Nothing
@@ -608,7 +608,7 @@ Namespace Ecosim
                 Try
                     ifData = New cXMLSettings()
                     ifData.LoadFromFile(cmdFO.FileName)
-                    m_doodler.Load(ifData, Me.m_pbFlowDiagram)
+                    Me.m_doodler.Load(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -618,7 +618,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSaveLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveLayout(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnExport.Click
 
             Dim ifData As cXMLSettings = Nothing
@@ -631,7 +631,7 @@ Namespace Ecosim
                 Try
                     ifData = New cXMLSettings()
                     ifData.LoadFromFile(cmdFS.FileName)
-                    m_doodler.Save(ifData, Me.m_pbFlowDiagram)
+                    Me.m_doodler.Save(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -640,14 +640,14 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSettings(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSettings.Click
 
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub OnSaveToImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveToImage(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSaveToImage.Click
 
             ' ToDo: globalize this
@@ -729,7 +729,7 @@ Namespace Ecosim
         End Sub
 
 
-        Private Sub OnSaveToBatchImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveToBatchImage(sender As System.Object, e As System.EventArgs) _
           Handles m_tsmiSaveToBatchImage.Click
 
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
@@ -762,7 +762,7 @@ Namespace Ecosim
 
                 bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
 
-                Dim totTimeSteps As Integer = Core.nEcosimTimeSteps
+                Dim totTimeSteps As Integer = Me.Core.nEcosimTimeSteps
                 Dim strPath As String = Path.GetDirectoryName(cmdfs.FileName)
                 Dim strFile As String = Path.GetFileNameWithoutExtension(cmdfs.FileName)
                 Dim strExt As String = fmt.ToString()
@@ -772,11 +772,11 @@ Namespace Ecosim
                 'Iterating through all the timesteps and saving FlowDiagram for each TimeStep
                 For currTimeStep As Integer = 1 To totTimeSteps
 
-                    CurrentTimestep = currTimeStep
+                    Me.CurrentTimestep = currTimeStep
 
                     'Calculating Year and Month for timestep
-                    Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
-                    Dim month As Integer = (CurrentTimestep Mod m_noofTimeSlicesPerYear) + 1
+                    Dim currentYear As Integer = Me.m_EcosimFirstYear + CInt(Math.Truncate(Me.CurrentTimestep / Me.m_noofTimeSlicesPerYear))
+                    Dim month As Integer = (Me.CurrentTimestep Mod Me.m_noofTimeSlicesPerYear) + 1
                     'Redraw the flow diagram with updated biomass values. 
                     Me.m_data.Refresh()
                     Me.m_pbFlowDiagram.Invalidate()
@@ -830,29 +830,29 @@ Namespace Ecosim
 
 #Region " Slider "
 
-        Private Sub OnSliderValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSliderValueChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_slider.ValueChanged
 
             If (Me.m_noofTimeSlicesPerYear = 0) Then Return
 
-            m_tbxTimeStep.Text = m_slider.Value.ToString
-            CurrentTimestep = m_slider.Value
-            Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
-            Dim month As Integer = (CurrentTimestep Mod m_noofTimeSlicesPerYear) + 1
-            m_tbxYear.Text = currentYear.ToString
-            m_tbxMonth.Text = cDateUtils.GetMonthName(month, False)
+            Me.m_tbxTimeStep.Text = Me.m_slider.Value.ToString
+            Me.CurrentTimestep = Me.m_slider.Value
+            Dim currentYear As Integer = Me.m_EcosimFirstYear + CInt(Math.Truncate(Me.CurrentTimestep / Me.m_noofTimeSlicesPerYear))
+            Dim month As Integer = (Me.CurrentTimestep Mod Me.m_noofTimeSlicesPerYear) + 1
+            Me.m_tbxYear.Text = currentYear.ToString
+            Me.m_tbxMonth.Text = cDateUtils.GetMonthName(month, False)
 
             'Updating the values of DataGridView as the slider is moved
             If Me.m_tree.ShowBiomassLegend = True Then
                 Dim groupIndex As Integer = 1
                 'Only selecting Rows with Biomass Values to speedup slider functionlity
-                For rowCnt As Integer = 1 To m_dt.Rows.Count
-                    Dim editDataRow As DataRow = m_dt.Rows(rowCnt)
+                For rowCnt As Integer = 1 To Me.m_dt.Rows.Count
+                    Dim editDataRow As DataRow = Me.m_dt.Rows(rowCnt)
                     editDataRow.BeginEdit()
-                    For innerloop As Integer = 1 To m_noofColumns
+                    For innerloop As Integer = 1 To Me.m_noofColumns
                         'Check to see if the GroupIndex is within nGroups count
-                        If groupIndex <= Core.nGroups Then
-                            Dim biomss As Single = Core.EcoSimGroupOutputs(groupIndex).Biomass(CurrentTimestep)
+                        If groupIndex <= Me.Core.nGroups Then
+                            Dim biomss As Single = Me.Core.EcoSimGroupOutputs(groupIndex).Biomass(Me.CurrentTimestep)
                             editDataRow(innerloop - 1) = biomss
                             'Moving onto the next group to get name and Biomass value
                             groupIndex += 1
@@ -874,7 +874,7 @@ Namespace Ecosim
 
 #Region "Slider Animation"
 
-        Private Sub PlayBtn_click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub PlayBtn_click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnPlay.Click
 
             'Play button functionality
@@ -882,7 +882,7 @@ Namespace Ecosim
 
                 Case eAnimationState.Idle
                     Me.m_animationstate = eAnimationState.Playing
-                    Dim thread As New System.Threading.Thread(AddressOf ShowAnimationThread)
+                    Dim thread As New System.Threading.Thread(AddressOf Me.ShowAnimationThread)
                     thread.IsBackground = True
                     thread.Start()
 
@@ -900,7 +900,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub StopBtn_click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub StopBtn_click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnStop.Click
 
             Me.m_animationstate = eAnimationState.Stopping
@@ -909,18 +909,18 @@ Namespace Ecosim
 
         Private Sub ShowAnimationThread()
 
-            Dim totTimeSteps As Integer = Core.nEcosimTimeSteps
+            Dim totTimeSteps As Integer = Me.Core.nEcosimTimeSteps
             Dim currTimeStep As Integer = 1
 
             ' JS 03Mar15: Break on a stop flag rather than shooting the thread
             While (Me.m_animationstate = eAnimationState.Playing)
 
-                AppendTextBox(m_tbxTimeStep, currTimeStep.ToString)  'Cross Threads operating on Textbox
-                CurrentTimestep = currTimeStep
-                Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
-                Dim month As Integer = (CurrentTimestep Mod m_noofTimeSlicesPerYear) + 1
-                AppendTextBox(m_tbxYear, currentYear.ToString)
-                AppendTextBox(m_tbxMonth, cDateUtils.GetMonthName(month, False))
+                Me.AppendTextBox(Me.m_tbxTimeStep, currTimeStep.ToString)  'Cross Threads operating on Textbox
+                Me.CurrentTimestep = currTimeStep
+                Dim currentYear As Integer = Me.m_EcosimFirstYear + CInt(Math.Truncate(Me.CurrentTimestep / Me.m_noofTimeSlicesPerYear))
+                Dim month As Integer = (Me.CurrentTimestep Mod Me.m_noofTimeSlicesPerYear) + 1
+                Me.AppendTextBox(Me.m_tbxYear, currentYear.ToString)
+                Me.AppendTextBox(Me.m_tbxMonth, cDateUtils.GetMonthName(month, False))
                 'Redraw the flow diagram with updated biomass values. 
                 Me.m_data.Refresh()
                 Me.m_pbFlowDiagram.Invalidate()
@@ -943,25 +943,25 @@ Namespace Ecosim
             Me.m_animationstate = eAnimationState.Idle
 
             If (Not Me.IsDisposed()) Then
-                Me.BeginInvoke(New RunCompletedDelegate(AddressOf UpdateControls))
+                Me.BeginInvoke(New RunCompletedDelegate(AddressOf Me.UpdateControls))
             End If
 
         End Sub
 
         ' These delegates enables asynchronous UI element updates -----
 
-        Private Delegate Sub AppendTextBoxDelegate(ByVal TB As TextBox, ByVal txt As String)
-        Private Delegate Sub AppendButtonDelegate(ByVal Btn As Button, ByVal txt As String)
-        Private Delegate Sub AppendSliderDelegate(ByVal sl As ucSlider, ByVal val As Integer)
+        Private Delegate Sub AppendTextBoxDelegate(TB As TextBox, txt As String)
+        Private Delegate Sub AppendButtonDelegate(Btn As Button, txt As String)
+        Private Delegate Sub AppendSliderDelegate(sl As ucSlider, val As Integer)
         Private Delegate Sub RunCompletedDelegate()
 
 
-        Private Sub AppendTextBox(ByVal TB As TextBox, ByVal txt As String)
+        Private Sub AppendTextBox(TB As TextBox, txt As String)
 
             If Me.IsDisposed Then Return
             Try
                 If TB.InvokeRequired Then
-                    TB.Invoke(New AppendTextBoxDelegate(AddressOf AppendTextBox), New Object() {TB, txt})
+                    TB.Invoke(New AppendTextBoxDelegate(AddressOf Me.AppendTextBox), New Object() {TB, txt})
                 Else
                     TB.Text = txt
                 End If
@@ -973,12 +973,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub AppendButton(ByVal Btn As Button, ByVal txt As String)
+        Private Sub AppendButton(Btn As Button, txt As String)
 
             If Me.IsDisposed Then Return
             Try
                 If Btn.InvokeRequired Then
-                    Btn.Invoke(New AppendButtonDelegate(AddressOf AppendButton), New Object() {Btn, txt})
+                    Btn.Invoke(New AppendButtonDelegate(AddressOf Me.AppendButton), New Object() {Btn, txt})
                 Else
                     Btn.Text = txt
                 End If
@@ -989,13 +989,13 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub AppendSlider(ByVal sl As ucSlider, ByVal val As Integer)
+        Private Sub AppendSlider(sl As ucSlider, val As Integer)
 
             If Me.IsDisposed Then Return
 
             Try
                 If sl.InvokeRequired Then
-                    sl.Invoke(New AppendSliderDelegate(AddressOf AppendSlider), New Object() {sl, val})
+                    sl.Invoke(New AppendSliderDelegate(AddressOf Me.AppendSlider), New Object() {sl, val})
                 Else
                     sl.Value = val
                 End If

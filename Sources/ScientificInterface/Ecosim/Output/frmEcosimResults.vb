@@ -68,7 +68,7 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -92,7 +92,7 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Clear last grid
             Me.m_grid.UIContext = Nothing
@@ -106,35 +106,35 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub cbGears_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub cbGears_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbFleets.SelectedIndexChanged
 
             If (Me.UIContext Is Nothing) Then Return
             If (Me.m_grid Is Nothing) Then Return
 
             If (TypeOf Me.m_grid Is gridEcosimResultsGroup) Then
-                DirectCast(Me.m_grid, gridEcosimResultsGroup).SelectedFleetIndex = m_cmbFleets.SelectedIndex
+                DirectCast(Me.m_grid, gridEcosimResultsGroup).SelectedFleetIndex = Me.m_cmbFleets.SelectedIndex
             End If
 
         End Sub
 
-        Private Sub rbGear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub rbGear_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbGear.CheckedChanged
-            If m_rbGear.Checked Then
+            If Me.m_rbGear.Checked Then
                 Me.DisplayMode = eDisplayModeTypes.Fleets
             End If
         End Sub
 
-        Private Sub rbGroup_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub rbGroup_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbGroup.CheckedChanged
-            If m_rbGroup.Checked Then
+            If Me.m_rbGroup.Checked Then
                 Me.DisplayMode = eDisplayModeTypes.Groups
             End If
         End Sub
 
-        Private Sub rbIndices_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub rbIndices_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbIndices.CheckedChanged
-            If m_rbIndices.Checked Then
+            If Me.m_rbIndices.Checked Then
                 Me.DisplayMode = eDisplayModeTypes.Indices
             End If
         End Sub
@@ -147,7 +147,7 @@ Namespace Ecosim
             Get
                 Return Me.m_displayMode
             End Get
-            Set(ByVal value As eDisplayModeTypes)
+            Set(value As eDisplayModeTypes)
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Nothing
@@ -185,7 +185,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="msg"></param>
         ''' <remarks>This updates the grids with the results if the user changed the time periods</remarks>
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             If msg.DataType = eDataTypes.EcoSimModelParameter Then
                 For Each var As cVariableStatus In msg.Variables
                     If var.VarName = eVarNameFlags.EcosimSumEnd Or var.VarName = eVarNameFlags.EcosimSumStart Or var.VarName = eVarNameFlags.EcosimSumNTimeSteps Then

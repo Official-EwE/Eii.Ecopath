@@ -75,9 +75,9 @@ Namespace Ecopath.Input
                 group = groups(i)
                 If Not group.IsMultiStanza Then
                     iRow = Me.AddRow
-                    FillInRows(iRow, group)
+                    Me.FillInRows(iRow, group)
                 Else
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
                     If Not dt.ContainsKey(sg) Then
                         hgcStanza = New cEwEHierarchyGridCell()
                         iRow = Me.AddRow()
@@ -91,15 +91,15 @@ Namespace Ecopath.Input
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, True)
+                    Me.FillInRows(iRow, group, True)
                 End If
             Next
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, _
-                               ByVal group As cCoreGroupBase, _
-                               Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, _
+                               group As cCoreGroupBase, _
+                               Optional isIndented As Boolean = False)
 
             ' Get the group name from EcopathInput
             Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)

@@ -64,7 +64,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="medfn"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal UIC As cUIContext, ByVal medfn As cMediationBaseFunction)
+        Public Sub New(UIC As cUIContext, medfn As cMediationBaseFunction)
 
             Me.InitializeComponent()
 
@@ -93,19 +93,19 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            If (m_uic Is Nothing) Then Return
+            If (Me.m_uic Is Nothing) Then Return
 
             If Not Me.m_bIsLandingsInteractions Then
                 ' Add existing mediations
-                For iGroup As Integer = 1 To m_uic.Core.nGroups
-                    Dim grp As cEcoPathGroupInput = m_uic.Core.EcoPathGroupInputs(iGroup)
+                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                    Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
                     Dim fleet As cEcopathFleetInput = Nothing
 
-                    For j As Integer = 0 To m_medfn.NumGroups - 1
-                        Dim medGrp As cMediatingGroup = m_medfn.Group(j)
+                    For j As Integer = 0 To Me.m_medfn.NumGroups - 1
+                        Dim medGrp As cMediatingGroup = Me.m_medfn.Group(j)
                         If iGroup = medGrp.iGroupIndex Then
                             Me.Add(grp, fleet, medGrp.Weight)
                             Exit For
@@ -113,12 +113,12 @@ Namespace Controls
                     Next
                 Next
 
-                For iFleet As Integer = 1 To m_uic.Core.nFleets
-                    Dim iIndex As Integer = m_uic.Core.nGroups + iFleet
-                    Dim flt As cEcopathFleetInput = m_uic.Core.EcopathFleetInputs(iFleet)
+                For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
+                    Dim iIndex As Integer = Me.m_uic.Core.nGroups + iFleet
+                    Dim flt As cEcopathFleetInput = Me.m_uic.Core.EcopathFleetInputs(iFleet)
 
-                    For j As Integer = 0 To m_medfn.NumFleet - 1
-                        Dim medFlt As cMediatingFleet = m_medfn.Fleet(j)
+                    For j As Integer = 0 To Me.m_medfn.NumFleet - 1
+                        Dim medFlt As cMediatingFleet = Me.m_medfn.Fleet(j)
                         If iFleet = medFlt.iFleetIndex Then
                             Me.Add(flt, Nothing, medFlt.Weight)
                             Exit For
@@ -126,8 +126,8 @@ Namespace Controls
                     Next
                 Next
             Else
-                For j As Integer = 0 To m_medfn.NumGroups - 1
-                    Dim medGrp As cLandingsMediatingGroup = DirectCast(m_medfn.Group(j), cLandingsMediatingGroup)
+                For j As Integer = 0 To Me.m_medfn.NumGroups - 1
+                    Dim medGrp As cLandingsMediatingGroup = DirectCast(Me.m_medfn.Group(j), cLandingsMediatingGroup)
                     Dim grp As cEcoPathGroupInput = Nothing
                     Dim fleet As cEcopathFleetInput = Nothing
                     If (medGrp.iGroupIndex > 0) Then
@@ -142,7 +142,7 @@ Namespace Controls
             End If
 
             ' Update available list box
-            Me.UpdateAvailableGroupsAndFleets(m_uic.Core.EcoPathGroupInputs(1))
+            Me.UpdateAvailableGroupsAndFleets(Me.m_uic.Core.EcoPathGroupInputs(1))
             Me.UpdateGraph()
 
         End Sub
@@ -152,7 +152,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnOkidoki(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOkidoki(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOK.Click
             If Not Me.Apply() Then Return
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -164,7 +164,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
@@ -175,7 +175,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub btnAdd_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click, m_tvAvailable.DoubleClick
 
             Try
@@ -186,7 +186,7 @@ Namespace Controls
 
                 If (item IsNot Nothing) Then
                     src = item.Source
-                    If Not m_bIsLandingsInteractions Then
+                    If Not Me.m_bIsLandingsInteractions Then
                         itemParent = DirectCast(item.Parent, cCoreInputOutputControlItem)
                         If (itemParent IsNot Nothing) Then
                             ' Could be just a decorative node, let's check
@@ -226,7 +226,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub btnRemove_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub btnRemove_Click(sender As Object, e As System.EventArgs) _
             Handles m_btnRemove.Click
             For Each objz As cCoreInputOutputBase() In Me.m_grid.SelectedItems
                 Me.Remove(objz(0), objz(1))
@@ -238,7 +238,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnAvailableSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnAvailableSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_tvAvailable.AfterSelect
             Me.UpdateControls()
         End Sub
@@ -258,7 +258,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_grid_OnWeightChanged(ByVal obj As EwECore.cCoreInputOutputBase, ByVal sWeight As Single) _
+        Private Sub m_grid_OnWeightChanged(obj As EwECore.cCoreInputOutputBase, sWeight As Single) _
             Handles m_grid.OnWeightChanged
             Me.UpdateGraph()
         End Sub
@@ -304,7 +304,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateAvailableGroupsAndFleets(ByVal objSelected As cCoreInputOutputBase)
+        Private Sub UpdateAvailableGroupsAndFleets(objSelected As cCoreInputOutputBase)
 
             Dim lChildren As List(Of cCoreInputOutputControlItem) = Nothing
             Dim group As cCoreGroupBase = Nothing
@@ -316,10 +316,10 @@ Namespace Controls
 
             Try
 
-                If Not m_bIsLandingsInteractions Then
+                If Not Me.m_bIsLandingsInteractions Then
                     lChildren = New List(Of cCoreInputOutputControlItem)
-                    For iGroup As Integer = 1 To m_uic.Core.nGroups
-                        group = m_uic.Core.EcoPathGroupInputs(iGroup)
+                    For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                        group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
                         Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
                         lChildren.Add(node)
                         If ReferenceEquals(group, objSelected) Then nodeSelected = node
@@ -327,8 +327,8 @@ Namespace Controls
                     Me.m_tvAvailable.Nodes.Add(New cCoreInputOutputControlItem(My.Resources.HEADER_GROUPS, lChildren.ToArray))
 
                     lChildren = New List(Of cCoreInputOutputControlItem)
-                    For iFleet As Integer = 1 To m_uic.Core.nFleets
-                        fleet = m_uic.Core.EcopathFleetInputs(iFleet)
+                    For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
+                        fleet = Me.m_uic.Core.EcopathFleetInputs(iFleet)
                         Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(fleet)
                         lChildren.Add(node)
                         If ReferenceEquals(group, objSelected) Then nodeSelected = node
@@ -336,13 +336,13 @@ Namespace Controls
                     Me.m_tvAvailable.Nodes.Add(New cCoreInputOutputControlItem(My.Resources.HEADER_FLEETS, lChildren.ToArray))
                 Else
                     ' Landings: show as landings per fleet, per group
-                    For iFleet As Integer = 1 To m_uic.Core.nFleets
-                        fleet = m_uic.Core.EcopathFleetInputs(iFleet)
+                    For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
+                        fleet = Me.m_uic.Core.EcopathFleetInputs(iFleet)
                         lChildren = New List(Of cCoreInputOutputControlItem)
 
-                        For iGroup As Integer = 1 To m_uic.Core.nGroups
+                        For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                             If fleet.Landings(iGroup) > 0 Then
-                                group = m_uic.Core.EcoPathGroupInputs(iGroup)
+                                group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
 
                                 Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
                                 If ReferenceEquals(fleet, objSelected) Then nodeSelected = node
@@ -396,9 +396,9 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub Add(ByVal obj As cCoreInputOutputBase, _
-                        Optional ByVal objSec As cCoreInputOutputBase = Nothing, _
-                        Optional ByVal sWeight As Single = 1.0)
+        Private Sub Add(obj As cCoreInputOutputBase, _
+                        Optional objSec As cCoreInputOutputBase = Nothing, _
+                        Optional sWeight As Single = 1.0)
 
             ' Is landings?
             If Me.m_bIsLandingsInteractions Then
@@ -419,8 +419,8 @@ Namespace Controls
         ''' 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub Remove(ByVal obj As cCoreInputOutputBase, _
-                           Optional ByVal objSec As cCoreInputOutputBase = Nothing)
+        Private Sub Remove(obj As cCoreInputOutputBase, _
+                           Optional objSec As cCoreInputOutputBase = Nothing)
             If Me.m_grid.Remove(obj, objSec) Then
                 Me.UpdateGraph()
             End If

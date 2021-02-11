@@ -67,7 +67,7 @@ Namespace Controls
 
 #Region " Events "
 
-        Protected Overridable Sub OnStyleGuideChanged(ByVal change As cStyleGuide.eChangeType)
+        Protected Overridable Sub OnStyleGuideChanged(change As cStyleGuide.eChangeType)
             ' Refresh regardless of the type of change
             Me.LoadGraphData(Me.m_data)
         End Sub
@@ -117,7 +117,7 @@ Namespace Controls
             Get
                 Return Me.m_medfn
             End Get
-            Set(ByVal value As cMediationBaseFunction)
+            Set(value As cMediationBaseFunction)
                 ' Store function ref
                 Me.m_medfn = DirectCast(value, cMediationBaseFunction)
                 ' Reload content
@@ -146,10 +146,10 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
 
-                If m_uic IsNot Nothing Then
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                If Me.m_uic IsNot Nothing Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                     Me.m_zgh.Detach()
                     Me.m_zgh = Nothing
                 End If
@@ -166,7 +166,7 @@ Namespace Controls
                         Me.m_zgh.ShowPointValue = True
                     End If
 
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
             End Set
         End Property
@@ -183,7 +183,7 @@ Namespace Controls
             Get
                 Return Me.m_strXAxisLabel
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strXAxisLabel = value
                 If Me.m_zgh IsNot Nothing Then
                     Me.m_zgh.GetPane(1).XAxis.Title.Text = Me.m_strXAxisLabel
@@ -204,7 +204,7 @@ Namespace Controls
             Get
                 Return Me.m_strYAxisLabel
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strYAxisLabel = value
                 If Me.m_zgh IsNot Nothing Then
                     Me.m_zgh.GetPane(1).YAxis.Title.Text = Me.m_strYAxisLabel
@@ -225,7 +225,7 @@ Namespace Controls
             Get
                 Return Me.m_viewmode
             End Get
-            Set(ByVal value As eViewModeTypes)
+            Set(value As eViewModeTypes)
                 Me.m_viewmode = value
                 ' Whoah
                 Me.UIContext = Me.UIContext
@@ -244,7 +244,7 @@ Namespace Controls
             Get
                 Return Me.m_strTitle
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strTitle = value
                 If Me.m_zgh IsNot Nothing Then
                     Me.m_zgh.GetPane(1).Title.Text = Me.m_strTitle
@@ -265,7 +265,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="fn"></param>
 
-        Private Function ExtractData(ByVal fn As cMediationBaseFunction) As cBioPercentData
+        Private Function ExtractData(fn As cMediationBaseFunction) As cBioPercentData
 
             Dim d As New cBioPercentData()
 
@@ -291,7 +291,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="data"></param>
         ''' -------------------------------------------------------------------
-        Public Sub LoadGraphData(ByVal data As cBioPercentData)
+        Public Sub LoadGraphData(data As cBioPercentData)
 
             Me.m_data = data
 
@@ -306,12 +306,12 @@ Namespace Controls
                 End Select
                 Me.m_zedgraph.Visible = True
             Else
-                m_zedgraph.Visible = False
+                Me.m_zedgraph.Visible = False
             End If
 
             ' Calculate the Axis Scale Ranges
-            m_zedgraph.AxisChange()
-            m_zedgraph.Refresh()
+            Me.m_zedgraph.AxisChange()
+            Me.m_zedgraph.Refresh()
 
         End Sub
 
@@ -405,9 +405,9 @@ Namespace Controls
             pane.XAxis.Scale.IsVisible = False
             pane.CurveList.Clear()
 
-            For i As Integer = 0 To Data.Groups.Length - 1
+            For i As Integer = 0 To Me.Data.Groups.Length - 1
                 list = New PointPairList()
-                medGrp = Data.Groups(i)
+                medGrp = Me.Data.Groups(i)
                 list.Add(i + 1, medGrp.Weight)
 
                 ' Get the group
@@ -435,10 +435,10 @@ Namespace Controls
 
             Next
 
-            For i As Integer = 0 To Data.Fleets.Length - 1
+            For i As Integer = 0 To Me.Data.Fleets.Length - 1
                 list = New PointPairList()
-                medFlt = Data.Fleets(i)
-                list.Add(i + 1 + Data.Groups.Length, medFlt.Weight)
+                medFlt = Me.Data.Fleets(i)
+                list.Add(i + 1 + Me.Data.Groups.Length, medFlt.Weight)
 
                 ' Get the fleet
                 source = Me.m_uic.Core.EcopathFleetInputs(medFlt.iFleetIndex)
@@ -472,10 +472,10 @@ Namespace Controls
             pane.XAxis.Scale.IsVisible = False
             pane.CurveList.Clear()
 
-            For i As Integer = 0 To Data.Groups.Length - 1
+            For i As Integer = 0 To Me.Data.Groups.Length - 1
 
                 Dim iGroup As Integer = cCore.NULL_VALUE
-                Dim medGrp As cMediatingGroup = Data.Groups(i)
+                Dim medGrp As cMediatingGroup = Me.Data.Groups(i)
 
                 valSource = core.EcoPathGroupOutputs(medGrp.iGroupIndex)
 
@@ -521,9 +521,9 @@ Namespace Controls
 
             Next
 
-            For i As Integer = 0 To Data.Fleets.Length - 1
+            For i As Integer = 0 To Me.Data.Fleets.Length - 1
 
-                Dim medFlt As cMediatingFleet = Data.Fleets(i)
+                Dim medFlt As cMediatingFleet = Me.Data.Fleets(i)
                 Dim iFleet As Integer = medFlt.iFleetIndex
 
                 ' Get the fleet

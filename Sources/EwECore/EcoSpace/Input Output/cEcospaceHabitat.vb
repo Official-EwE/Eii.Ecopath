@@ -26,12 +26,12 @@ Public Class cEcospaceHabitat
 
 #Region "Constructor"
 
-    Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
         Me.DBID = DBID
-        m_dataType = eDataTypes.EcospaceHabitat
-        m_coreComponent = eCoreComponentType.EcoSpace
+        Me.m_dataType = eDataTypes.EcospaceHabitat
+        Me.m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
 
@@ -40,10 +40,10 @@ Public Class cEcospaceHabitat
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' HabAreaProportion
-            val = New cValue(New Single, eVarNameFlags.HabAreaProportion, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.HabAreaProportion, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceHabitat.")
@@ -58,11 +58,11 @@ Public Class cEcospaceHabitat
 
     Public Property HabAreaProportion() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.HabAreaProportion))
+            Return CSng(Me.GetVariable(eVarNameFlags.HabAreaProportion))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.HabAreaProportion, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.HabAreaProportion, value)
         End Set
     End Property
 
@@ -72,11 +72,11 @@ Public Class cEcospaceHabitat
 
     Public Property HabAreaProportionStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.HabAreaProportion)
+            Return Me.GetStatus(eVarNameFlags.HabAreaProportion)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.HabAreaProportion, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.HabAreaProportion, value)
         End Set
     End Property
 

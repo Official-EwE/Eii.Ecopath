@@ -83,7 +83,7 @@ Friend Class cDBUpdate6_00_04_00042
         End Get
     End Property
 
-    Private Function FixEcotracer(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixEcotracer(db As cEwEDatabase) As Boolean
         Try
             db.Execute("ALTER TABLE EcotracerScenario ADD COLUMN Description MEMO")
         Catch
@@ -92,7 +92,7 @@ Friend Class cDBUpdate6_00_04_00042
         Return True
     End Function
 
-    Private Function AddPedigree(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddPedigree(db As cEwEDatabase) As Boolean
 
         ' Supported pedigree variables
         Dim vnPedigree As eVarNameFlags() = {eVarNameFlags.Biomass, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.Landings}
@@ -172,7 +172,7 @@ Friend Class cDBUpdate6_00_04_00042
         Return bSucces
     End Function
 
-    Private Function AddMonetaryUnit(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddMonetaryUnit(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = db.Execute("ALTER TABLE EcopathModel ADD COLUMN UnitMonetary LONG")
         Return bSucces And db.Execute("ALTER TABLE EcopathModel ADD COLUMN UnitMonetaryCustom TEXT(30)")

@@ -31,65 +31,65 @@ Namespace MSE
     Public Class cMSEFleetInput
         Inherits cCoreGroupBase
 
-        Public Sub New(ByRef theCore As cCore, ByVal theFleetDBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, theFleetDBID As Integer)
+            MyBase.New(core)
 
             Dim val As cValue
 
-            m_dataType = eDataTypes.MSEFleetInput
-            m_coreComponent = eCoreComponentType.MSE
+            Me.m_dataType = eDataTypes.MSEFleetInput
+            Me.m_coreComponent = eCoreComponentType.MSE
             Me.AllowValidation = False
             Me.DBID = theFleetDBID
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            val = New cValue(New Single, eVarNameFlags.MSEQIncrease, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEQIncrease, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Bounds
-            val = New cValue(New Single, eVarNameFlags.MSERefFleetCatchLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefFleetCatchLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSERefFleetCatchUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefFleetCatchUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSERefFleetEffortLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefFleetEffortLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSERefFleetEffortUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefFleetEffortUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Boolean, eVarNameFlags.MSYEvaluateFleet, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.MSYEvaluateFleet, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'MaxEffort
-            val = New cValue(New Single, eVarNameFlags.MaxEffort, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MaxEffort, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'LP Effort Lower bound
-            val = New cValue(New Single, eVarNameFlags.MSELowerLPEffort, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSELowerLPEffort, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'LP Effort Upper bound
-            val = New cValue(New Single, eVarNameFlags.MSEUpperLPEffort, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEUpperLPEffort, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'QuotaType
-            val = New cValue(New Integer, eVarNameFlags.QuotaType, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.QuotaType, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' === arrays ===
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEFleetCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSEFleetCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEFleetWeight, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSEFleetWeight, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.QuotaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.QuotaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+            Me.m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
 
@@ -104,12 +104,12 @@ Namespace MSE
                 Return Not Me.AllowValidation
             End Get
 
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
 
                 'if turning the BatchEdit On after it has been OFF tell the core that the values has been edited
                 'this will allow the core to update the underlying data and send out a datamodified message
                 If Me.BatchEdit = True And value = False Then
-                    Me.m_core.OnValidated(m_values.Item(eVarNameFlags.MSEFleetCV), Me)
+                    Me.m_core.OnValidated(Me.m_values.Item(eVarNameFlags.MSEFleetCV), Me)
                 End If
                 Me.AllowValidation = Not value
 
@@ -117,7 +117,7 @@ Namespace MSE
 
         End Property
 
-        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
             For Each value As cValue In Me.m_values.Values
 
@@ -127,7 +127,7 @@ Namespace MSE
                         Case eVarNameFlags.MSEFleetWeight, _
                              eVarNameFlags.QuotaShare
 
-                            For igrp As Integer = 1 To m_core.nLivingGroups
+                            For igrp As Integer = 1 To Me.m_core.nLivingGroups
                                 If Me.m_core.m_EcoSimData.relQ(value.Index, igrp) > 0 Then
                                     value.Status(igrp) = eStatusFlags.OK
                                 Else
@@ -165,23 +165,23 @@ Namespace MSE
         ''' </summary>
         Public Property QIncrease() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEQIncrease))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEQIncrease))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEQIncrease, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEQIncrease, value)
             End Set
         End Property
 
 
-        Public Property FleetCV(ByVal iTime As Integer) As Single
+        Public Property FleetCV(iTime As Integer) As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFleetCV, iTime))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFleetCV, iTime))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFleetCV, value, iTime)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFleetCV, value, iTime)
             End Set
 
         End Property
@@ -190,11 +190,11 @@ Namespace MSE
         Public Property CatchRefLower() As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefFleetCatchLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefFleetCatchLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefFleetCatchLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefFleetCatchLower, value)
             End Set
 
         End Property
@@ -202,11 +202,11 @@ Namespace MSE
         Public Property CatchRefUpper() As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefFleetCatchUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefFleetCatchUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefFleetCatchUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefFleetCatchUpper, value)
             End Set
 
         End Property
@@ -215,11 +215,11 @@ Namespace MSE
         Public Property EffortRefLower() As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefFleetEffortLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefFleetEffortLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefFleetEffortLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefFleetEffortLower, value)
             End Set
 
         End Property
@@ -227,11 +227,11 @@ Namespace MSE
         Public Property EffortRefUpper() As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefFleetEffortUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefFleetEffortUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefFleetEffortUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefFleetEffortUpper, value)
             End Set
 
         End Property
@@ -240,14 +240,14 @@ Namespace MSE
         ''' Importance weight of fleet on a group
         ''' </summary>
         ''' <param name="iGroup">impacted group</param>
-        Public Property FleetWeight(ByVal iGroup As Integer) As Single
+        Public Property FleetWeight(iGroup As Integer) As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFleetWeight, iGroup))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFleetWeight, iGroup))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFleetWeight, value, iGroup)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFleetWeight, value, iGroup)
             End Set
 
         End Property
@@ -255,63 +255,63 @@ Namespace MSE
         Public Property MSYEvaluateFleet() As Boolean
 
             Get
-                Return CBool(GetVariable(eVarNameFlags.MSYEvaluateFleet))
+                Return CBool(Me.GetVariable(eVarNameFlags.MSYEvaluateFleet))
             End Get
 
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.MSYEvaluateFleet, value)
+            Set(value As Boolean)
+                Me.SetVariable(eVarNameFlags.MSYEvaluateFleet, value)
             End Set
 
         End Property
 
         Public Property MaxEffort() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MaxEffort))
+                Return CSng(Me.GetVariable(eVarNameFlags.MaxEffort))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MaxEffort, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MaxEffort, value)
             End Set
         End Property
 
         Public Property QuotaType() As eQuotaTypes
             Get
-                Return DirectCast(GetVariable(eVarNameFlags.QuotaType), eQuotaTypes)
+                Return DirectCast(Me.GetVariable(eVarNameFlags.QuotaType), eQuotaTypes)
             End Get
 
-            Set(ByVal value As eQuotaTypes)
-                SetVariable(eVarNameFlags.QuotaType, value)
+            Set(value As eQuotaTypes)
+                Me.SetVariable(eVarNameFlags.QuotaType, value)
             End Set
         End Property
 
-        Public Property QuotaShare(ByVal iGroup As Integer) As Single
+        Public Property QuotaShare(iGroup As Integer) As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.QuotaShare, iGroup))
+                Return CSng(Me.GetVariable(eVarNameFlags.QuotaShare, iGroup))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.QuotaShare, value, iGroup)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.QuotaShare, value, iGroup)
             End Set
         End Property
 
 
         Public Property LowerLPEffortBound() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSELowerLPEffort))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSELowerLPEffort))
             End Get
             Set(value As Single)
-                SetVariable(eVarNameFlags.MSELowerLPEffort, value)
+                Me.SetVariable(eVarNameFlags.MSELowerLPEffort, value)
             End Set
         End Property
 
 
         Public Property UpperLPEffortBound() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEUpperLPEffort))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEUpperLPEffort))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEUpperLPEffort, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEUpperLPEffort, value)
             End Set
         End Property
 
@@ -322,84 +322,84 @@ Namespace MSE
 
         Public Property QIncreaseStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEQIncrease)
+                Return Me.GetStatus(eVarNameFlags.MSEQIncrease)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEQIncrease, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEQIncrease, value)
             End Set
         End Property
 
 
         Public Property CatchRefUpperStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSERefFleetCatchUpper)
+                Return Me.GetStatus(eVarNameFlags.MSERefFleetCatchUpper)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSERefFleetCatchUpper, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSERefFleetCatchUpper, value)
             End Set
         End Property
 
         Public Property CatchRefLowerStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSERefGroupCatchLower)
+                Return Me.GetStatus(eVarNameFlags.MSERefGroupCatchLower)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSERefGroupCatchLower, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSERefGroupCatchLower, value)
             End Set
         End Property
 
         Public Property FleetCVStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEFleetCV)
+                Return Me.GetStatus(eVarNameFlags.MSEFleetCV)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEFleetCV, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEFleetCV, value)
             End Set
         End Property
 
-        Public Property FleetWeightStatus(ByVal iGroup As Integer) As eStatusFlags
+        Public Property FleetWeightStatus(iGroup As Integer) As eStatusFlags
 
             Get
-                Return GetStatus(eVarNameFlags.MSEFleetWeight, iGroup)
+                Return Me.GetStatus(eVarNameFlags.MSEFleetWeight, iGroup)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEFleetWeight, value, iGroup)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEFleetWeight, value, iGroup)
             End Set
 
         End Property
 
         Public Property MaxEffortStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MaxEffort)
+                Return Me.GetStatus(eVarNameFlags.MaxEffort)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MaxEffort, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MaxEffort, value)
             End Set
         End Property
 
         Public Property QuotaTypeStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.QuotaType)
+                Return Me.GetStatus(eVarNameFlags.QuotaType)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.QuotaType, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.QuotaType, value)
             End Set
         End Property
 
-        Public Property QuotaStatus(ByVal iGroup As Integer) As eStatusFlags
+        Public Property QuotaStatus(iGroup As Integer) As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.QuotaShare, iGroup)
+                Return Me.GetStatus(eVarNameFlags.QuotaShare, iGroup)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.QuotaShare, value, iGroup)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.QuotaShare, value, iGroup)
             End Set
         End Property
 

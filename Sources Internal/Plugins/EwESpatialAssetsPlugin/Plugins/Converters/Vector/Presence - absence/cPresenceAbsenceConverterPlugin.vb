@@ -112,7 +112,7 @@ Namespace SpatialData
 
                 ' Rasterize
                 rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strFile, _
-                                                   New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
+                                                   New cVectorTools.TranslateValueDelegate(AddressOf Me.ToValue))
                 If (rstResult IsNot Nothing) Then
                     rstResult.Close()
                 Else

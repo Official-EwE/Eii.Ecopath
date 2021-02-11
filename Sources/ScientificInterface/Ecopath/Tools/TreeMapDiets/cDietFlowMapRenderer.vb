@@ -49,7 +49,7 @@ Public Class cDietFlowMapRenderer
         Dim core As cCore = Me.m_uic.Core
         For i As Integer = 1 To core.nLivingGroups
             Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
-            If grp.IsConsumer Then m_lPreds.Add(i)
+            If grp.IsConsumer Then Me.m_lPreds.Add(i)
         Next
 
     End Sub

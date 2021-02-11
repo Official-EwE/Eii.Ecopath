@@ -39,7 +39,7 @@ Public Class ucOptionsPluginAssemblyDetails
     ''' showing details on a plug-in assembly.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal pa As cPluginAssembly)
+    Public Sub New(pa As cPluginAssembly)
 
         Me.InitializeComponent()
 

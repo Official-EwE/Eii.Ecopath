@@ -54,7 +54,7 @@ Public MustInherit Class cTimeSeries
     ''' Constructor
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByRef core As cCore, ByVal DBID As Integer)
+    Friend Sub New(ByRef core As cCore, DBID As Integer)
         MyBase.New(0)
 
         Me.m_core = core
@@ -77,7 +77,7 @@ Public MustInherit Class cTimeSeries
             Return Me.m_timeSeriesType
         End Get
 
-        Set(ByVal tstype As eTimeSeriesType)
+        Set(tstype As eTimeSeriesType)
             ' It is not allowed to switch between TS types once a type has been assigned
             Dim tscatCurr As eTimeSeriesCategoryType = cTimeSeriesFactory.TimeSeriesCategory(Me.m_timeSeriesType)
             Select Case tscatCurr
@@ -130,12 +130,12 @@ Public MustInherit Class cTimeSeries
     ''' Get/set the annual values for a time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property DatVal(ByVal iIndex As Integer) As Single
+    Public Property DatVal(iIndex As Integer) As Single
         Get
             Return CSng(Me.ShapeData(iIndex))
         End Get
 
-        Set(ByVal sValue As Single)
+        Set(sValue As Single)
             Me.ShapeData(iIndex) = sValue
         End Set
     End Property
@@ -151,7 +151,7 @@ Public MustInherit Class cTimeSeries
             Return (Me.m_bEnabled) And (Me.ValidationStatus = eStatusFlags.OK)
         End Get
 
-        Set(ByVal bEnable As Boolean)
+        Set(bEnable As Boolean)
             Me.m_bEnabled = bEnable
         End Set
     End Property

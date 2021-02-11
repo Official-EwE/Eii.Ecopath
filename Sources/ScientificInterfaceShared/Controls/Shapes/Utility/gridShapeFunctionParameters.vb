@@ -130,7 +130,7 @@ Public Class gridShapeFunctionParameters
                 End If
                 RaiseEvent OnShapeFunctionChanged()
 
-                Update()
+                Me.Update()
         End Select
 
         Return True

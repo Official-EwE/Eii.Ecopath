@@ -66,13 +66,13 @@ Public MustInherit Class cContentManager
     ''' The default implementation stores all controls and hides them.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Attach(ByVal manager As cNetworkManager,
-                                       ByVal datagrid As DataGridView,
-                                       ByVal graph As ZedGraphControl,
-                                       ByVal plot As ucPlot,
-                                       ByVal toolstrip As ToolStrip,
-                                       ByVal info As Control,
-                                       ByVal uic As cUIContext) As Boolean
+    Public Overridable Function Attach(manager As cNetworkManager,
+                                       datagrid As DataGridView,
+                                       graph As ZedGraphControl,
+                                       plot As ucPlot,
+                                       toolstrip As ToolStrip,
+                                       info As Control,
+                                       uic As cUIContext) As Boolean
 
         ' Sanity checks
         Debug.Assert(uic IsNot Nothing)
@@ -89,7 +89,7 @@ Public MustInherit Class cContentManager
         ' Hide all managed controls
         Me.HideControls()
 
-        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
 
         Return True
 
@@ -108,7 +108,7 @@ Public MustInherit Class cContentManager
         ' Hide all controls
         Me.HideControls()
 
-        RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+        RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
 
         Me.m_manager = Nothing
         Me.m_datagrid = Nothing
@@ -136,7 +136,7 @@ Public MustInherit Class cContentManager
     ''' <param name="iGroup2">One-based EwE group index of the second selected 
     ''' group, if any.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub UpdateData(ByVal iGroup1 As Integer, ByVal iGroup2 As Integer)
+    Public Overridable Sub UpdateData(iGroup1 As Integer, iGroup2 As Integer)
         ' NOP
     End Sub
 
@@ -163,7 +163,7 @@ Public MustInherit Class cContentManager
     ''' Default implementation does not return a file name.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Filename(ByVal strComponent As String) As String
+    Public Overridable Function Filename(strComponent As String) As String
         Return IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), strComponent)
     End Function
 
@@ -173,7 +173,7 @@ Public MustInherit Class cContentManager
     ''' </summary>
     ''' <param name="strFileName"></param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub SaveToEMF(ByVal strFileName As String)
+    Public Overridable Sub SaveToEMF(strFileName As String)
         ' NOP
     End Sub
 
@@ -345,7 +345,7 @@ Public MustInherit Class cContentManager
     ''' </summary>
     ''' <param name="cf"></param>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
+    Protected Overridable Sub OnStyleGuideChanged(cf As cStyleGuide.eChangeType)
 
         Dim bContentVisible As Boolean = False
 
@@ -365,10 +365,10 @@ Public MustInherit Class cContentManager
 
     End Sub
 
-    Protected Sub ToolstripShowGroupSelections(Optional ByVal strLabel1 As String = "", _
-                                               Optional ByVal groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living, _
-                                               Optional ByVal strLabel2 As String = "", _
-                                               Optional ByVal groupfilter2 As eGroupFilterTypes = eGroupFilterTypes.Living)
+    Protected Sub ToolstripShowGroupSelections(Optional strLabel1 As String = "", _
+                                               Optional groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living, _
+                                               Optional strLabel2 As String = "", _
+                                               Optional groupfilter2 As eGroupFilterTypes = eGroupFilterTypes.Living)
 
         Dim tslbl1 As ToolStripItem = Me.Toolstrip.Items("tslblSelection1")
         Dim tslbl2 As ToolStripItem = Me.Toolstrip.Items("tslblSelection2")
@@ -388,36 +388,36 @@ Public MustInherit Class cContentManager
 
     End Sub
 
-    Protected Sub ToolstripShowDisplayGroups(Optional ByVal bShow As Boolean = True)
+    Protected Sub ToolstripShowDisplayGroups(Optional bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsmiDisplayGroups")
         If (tsi IsNot Nothing) Then
             tsi.Visible = bShow
         End If
     End Sub
 
-    Protected Sub ToolstripShowOptionCSV(Optional ByVal bShow As Boolean = True)
+    Protected Sub ToolstripShowOptionCSV(Optional bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputIndicesCSV")
         If (tsi IsNot Nothing) Then
             tsi.Visible = bShow
         End If
     End Sub
 
-    Protected Sub ToolstripShowOptionEMF(Optional ByVal bShow As Boolean = True)
+    Protected Sub ToolstripShowOptionEMF(Optional bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOutputGraphEMF")
         If (tsi IsNot Nothing) Then
             tsi.Visible = bShow
         End If
     End Sub
 
-    Protected Sub ToolstripShowOptionOptions(Optional ByVal bShow As Boolean = True)
+    Protected Sub ToolstripShowOptionOptions(Optional bShow As Boolean = True)
         Dim tsi As ToolStripItem = Me.Toolstrip.Items("tsbtnOptions")
         If (tsi IsNot Nothing) Then
             tsi.Visible = bShow
         End If
     End Sub
 
-    Protected Sub SendMessage(ByVal strMessage As String, _
-                              Optional ByVal importance As eMessageImportance = eMessageImportance.Critical)
+    Protected Sub SendMessage(strMessage As String, _
+                              Optional importance As eMessageImportance = eMessageImportance.Critical)
         Dim msg As New cMessage(strMessage, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, importance)
         Me.NetworkManager.Core.Messages.SendMessage(msg)
     End Sub

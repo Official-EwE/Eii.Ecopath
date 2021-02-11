@@ -84,10 +84,10 @@ Public Class gridMSEBatchTFMIter
         Dim group As MSE.cMSEBatchTFMGroup = Nothing
 
         ' For each group
-        For iParIter As Integer = 1 To Core.MSEBatchManager.Parameters.nTFMIteration
+        For iParIter As Integer = 1 To Me.Core.MSEBatchManager.Parameters.nTFMIteration
 
             'Get the group info
-            group = Core.MSEBatchManager.TFMGroups(iSelGroup)
+            group = Me.Core.MSEBatchManager.TFMGroups(Me.iSelGroup)
 
             Me.AddRow()
 
@@ -122,14 +122,14 @@ Public Class gridMSEBatchTFMIter
 
     Public Property iSelGroup As Integer
         Get
-            Return m_iSelGroup
+            Return Me.m_iSelGroup
         End Get
 
         Set(value As Integer)
 
             If Me.UIContext IsNot Nothing Then
                 If value <= Me.UIContext.Core.nGroups Then
-                    m_iSelGroup = value
+                    Me.m_iSelGroup = value
                     Me.RefreshContent()
                 End If
             End If
@@ -155,14 +155,14 @@ Public Class gridMSEBatchTFMIter
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
         Try
 
             Dim val As Object = Me(p.Row, p.Column).Value
             Dim iIter As Integer = p.Row
             Dim igrp As Integer = Me.iSelGroup
 
-            Dim group As MSE.cMSEBatchTFMGroup = Core.MSEBatchManager.TFMGroups(iSelGroup)
+            Dim group As MSE.cMSEBatchTFMGroup = Me.Core.MSEBatchManager.TFMGroups(Me.iSelGroup)
 
             Select Case CType(p.Column, eColumnTypes)
 

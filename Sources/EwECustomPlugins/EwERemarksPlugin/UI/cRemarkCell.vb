@@ -47,19 +47,19 @@ Friend Class cRemarkCell
 
 #Region " Construction and destruction "
 
-    Public Sub New(ByVal prop As cProperty)
+    Public Sub New(prop As cProperty)
         MyBase.New(prop.GetRemark(), GetType(String))
 
         Me.VisualModel = m_vmRemarks
         Me.m_prop = prop
-        AddHandler Me.m_prop.PropertyChanged, AddressOf OnPropertyChanged
+        AddHandler Me.m_prop.PropertyChanged, AddressOf Me.OnPropertyChanged
 
     End Sub
 
     Public Overrides Sub Dispose()
 
         If (Me.m_prop IsNot Nothing) Then
-            RemoveHandler Me.m_prop.PropertyChanged, AddressOf OnPropertyChanged
+            RemoveHandler Me.m_prop.PropertyChanged, AddressOf Me.OnPropertyChanged
             Me.m_prop = Nothing
         End If
         MyBase.Dispose()
@@ -70,7 +70,7 @@ Friend Class cRemarkCell
 
 #Region " Monitoring "
 
-    Private Sub OnPropertyChanged(ByVal prop As cProperty, ct As cProperty.eChangeFlags)
+    Private Sub OnPropertyChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         If Me.m_bInUpdate Then Return
         ' Is a remark change?
         If ((ct And cProperty.eChangeFlags.Remarks) > 0) Then

@@ -44,8 +44,8 @@ Namespace GeoCode
             Try
                 For Each r As gazetteerRecord In s_wsdl.getGazetteerRecordsByName(strTerm, False, True)
                     Dim x0, x1, y0, y1 As Single
-                    If (Single.TryParse(r.minLongitude, NumberStyles.Float, m_ci, x0) And Single.TryParse(r.maxLongitude, NumberStyles.Float, m_ci, x1)) And
-                       (Single.TryParse(r.minLatitude, NumberStyles.Float, m_ci, y0) And Single.TryParse(r.maxLatitude, NumberStyles.Float, m_ci, y1)) Then
+                    If (Single.TryParse(r.minLongitude, NumberStyles.Float, Me.m_ci, x0) And Single.TryParse(r.maxLongitude, NumberStyles.Float, Me.m_ci, x1)) And
+                       (Single.TryParse(r.minLatitude, NumberStyles.Float, Me.m_ci, y0) And Single.TryParse(r.maxLatitude, NumberStyles.Float, Me.m_ci, y1)) Then
 
                         Dim strName As String = ""
                         If String.IsNullOrWhiteSpace(r.placeType) Then

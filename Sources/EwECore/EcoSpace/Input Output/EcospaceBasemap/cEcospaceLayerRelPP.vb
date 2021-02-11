@@ -31,7 +31,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerRelPP
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerRelPP, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerRelPP
     End Sub

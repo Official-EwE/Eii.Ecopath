@@ -41,7 +41,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IPlugin.Initialize"/>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) _
+    Public Sub Initialize(core As Object) _
         Implements EwEPlugin.IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
     End Sub
@@ -49,7 +49,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IUIContextPlugin.UIContext"/>
     ''' -----------------------------------------------------------------------
-    Public Sub UIContext(ByVal uic As Object) _
+    Public Sub UIContext(uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
@@ -90,13 +90,13 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         If Not Me.HasForm Then
             Me.m_ui = New frmShapes(Me.GridType)
             Me.m_ui.UIContext = Me.m_uic
             Me.m_ui.Text = Me.DisplayName
-            AddHandler Me.m_ui.FormClosed, AddressOf OnFormClosed
+            AddHandler Me.m_ui.FormClosed, AddressOf Me.OnFormClosed
         End If
         frmPlugin = Me.m_ui
     End Sub
@@ -165,8 +165,8 @@ Public MustInherit Class cShapeGridPlugin
         Return Not Me.m_ui.IsDisposed
     End Function
 
-    Private Sub OnFormClosed(ByVal sender As Object, ByVal arg As EventArgs)
-        RemoveHandler Me.m_ui.FormClosed, AddressOf OnFormClosed
+    Private Sub OnFormClosed(sender As Object, arg As EventArgs)
+        RemoveHandler Me.m_ui.FormClosed, AddressOf Me.OnFormClosed
         Me.m_ui.Dispose()
         Me.m_ui = Nothing
     End Sub

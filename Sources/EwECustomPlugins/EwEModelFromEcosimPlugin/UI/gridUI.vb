@@ -101,8 +101,8 @@ Friend Class gridUI
 
     End Sub
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position,
-                                                    ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As Position,
+                                                    cell As Cells.ICellVirtual) As Boolean
 
         Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -124,8 +124,8 @@ Friend Class gridUI
 
     End Function
 
-    Protected Overrides Function OnCellEdited(ByVal p As Position,
-                                              ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position,
+                                              cell As Cells.ICellVirtual) As Boolean
         Try
             Select Case DirectCast(p.Column, eColumnTypes)
 

@@ -92,10 +92,10 @@ Namespace Ecospace.Controls
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                     Me.m_bmpError.Dispose()
                     Me.m_bmpError = Nothing
                     Me.m_bmpWarning.Dispose()
@@ -135,11 +135,11 @@ Namespace Ecospace.Controls
 
                 ' Config
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.m_mhPath = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_mhPath = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhPath)
-                    Me.m_mhSim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_mhSim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSim)
-                    Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
                     Me.m_mhPath.Name = "ucSpatialTimeSeriesToolbox::m_mhPath"
@@ -306,7 +306,7 @@ Namespace Ecospace.Controls
             If (pos IsNot Nothing) Then
                 Me.SelectedDatasetIndex = pos.m_iPosVert
             End If
-            Me.SelectedTimeStep = TimestepFromPoint(ptClick)
+            Me.SelectedTimeStep = Me.TimestepFromPoint(ptClick)
             MyBase.OnMouseClick(e)
         End Sub
 
@@ -319,8 +319,8 @@ Namespace Ecospace.Controls
             Dim strText As String = ""
 
             If (pos IsNot Nothing) Then
-                Dim comp As cDatasetCompatilibity = m_manSets.Compatibility(pos.m_ds)
-                Dim iStep As Integer = TimestepFromPoint(ptClick)
+                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.m_ds)
+                Dim iStep As Integer = Me.TimestepFromPoint(ptClick)
                 Dim dtStep As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep)
                 Dim strDate As String = dtStep.ToShortDateString
 
@@ -351,7 +351,7 @@ Namespace Ecospace.Controls
             ' Async update to prevent flickering
             If (strText <> Me.m_strTipText) Then
                 Me.m_strTipText = strText
-                BeginInvoke(New MethodInvoker(AddressOf UpdateTooltip))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateTooltip))
             End If
 
         End Sub
@@ -370,7 +370,7 @@ Namespace Ecospace.Controls
             Try
 
                 ' Paint matrix shifted to X and Y scroll position
-                e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
+                e.Graphics.Transform = New Matrix(1, 0, 0, 1, Me.AutoScrollPosition.X, Me.AutoScrollPosition.Y)
                 For i As Integer = 0 To Me.m_lInfo.Count - 1
                     Me.DrawDatasetIndicator(e.Graphics, Me.m_lInfo(i), i = Me.m_iSelectedIndex)
                 Next
@@ -381,7 +381,7 @@ Namespace Ecospace.Controls
                 e.Graphics.ResetTransform()
 
                 ' Paint header at the top of the visible scroll area
-                e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, 0)
+                e.Graphics.Transform = New Matrix(1, 0, 0, 1, Me.AutoScrollPosition.X, 0)
                 Me.DrawGridHeader(e.Graphics, New Rectangle(0, 0, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_headerheight))
                 e.Graphics.ResetTransform()
 
@@ -582,9 +582,9 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
-        Private Sub DrawDatasetIndicator(ByVal g As Graphics, _
-                                         ByVal pos As cDatasetInfo, _
-                                         ByVal bSelected As Boolean)
+        Private Sub DrawDatasetIndicator(g As Graphics, _
+                                         pos As cDatasetInfo, _
+                                         bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
@@ -604,9 +604,9 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
-        Private Sub DrawDataset(ByVal g As Graphics, _
-                                ByVal pos As cDatasetInfo, _
-                                ByVal bSelected As Boolean)
+        Private Sub DrawDataset(g As Graphics, _
+                                pos As cDatasetInfo, _
+                                bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
@@ -621,8 +621,8 @@ Namespace Ecospace.Controls
             Dim iWidthOutline As Integer = 1
 
             ' Is off-screen?
-            Dim bOutRight As Boolean = (rcBar.X > AutoScrollPosition.X + Me.ClientRectangle.Width)
-            Dim bOutLeft As Boolean = ((rcBar.X + rcBar.Width) < AutoScrollPosition.X)
+            Dim bOutRight As Boolean = (rcBar.X > Me.AutoScrollPosition.X + Me.ClientRectangle.Width)
+            Dim bOutLeft As Boolean = ((rcBar.X + rcBar.Width) < Me.AutoScrollPosition.X)
 
             If bSelected Then
                 clrOutline = SystemColors.Highlight

@@ -42,17 +42,17 @@ Public MustInherit Class cNetworkAnalysisResultWriter
     ''' </summary>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal manager As cNetworkManager)
+    Public Sub New(manager As cNetworkManager)
         Me.Manager = manager
     End Sub
 
     Protected ReadOnly Property Manager As cNetworkManager
 
-    Public MustOverride Function WriteResults(ByVal strPath As String) As Boolean
+    Public MustOverride Function WriteResults(strPath As String) As Boolean
 
 #Region " Internals "
 
-    Protected Function WriteFile(ByVal strFileName As String, ByVal strData As String) As Boolean
+    Protected Function WriteFile(strFileName As String, strData As String) As Boolean
 
         Dim strPath As String = Path.GetDirectoryName(strFileName)
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then

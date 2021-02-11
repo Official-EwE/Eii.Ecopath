@@ -23,12 +23,12 @@ Imports ScientificInterfaceShared.Style
 
 Public Class ucUnitDefault
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
         Me.BorderStyle = System.Windows.Forms.BorderStyle.None
     End Sub
 
-    Protected Overrides Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType)
+    Protected Overrides Sub OnStyleguideChanged(changeFlags As cStyleGuide.eChangeType)
         If ((changeFlags And cStyleGuide.eChangeType.Colours) > 0) Then
             Me.Invalidate(True)
         End If
@@ -36,7 +36,7 @@ Public Class ucUnitDefault
 
     Public Property UnitType As cUnitFactory.eUnitType
 
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+    Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
         MyBase.OnPaint(e)
 
         Dim fmt As New StringFormat()

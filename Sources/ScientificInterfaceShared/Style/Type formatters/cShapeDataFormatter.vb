@@ -42,11 +42,11 @@ Namespace Style
             Me.New(My.Resources.GENERIC_VALUE_NONE)
         End Sub
 
-        Public Sub New(ByVal strNone As String)
+        Public Sub New(strNone As String)
             Me.m_strNone = strNone
         End Sub
 
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             If (value Is Nothing) Then Return Me.m_strNone

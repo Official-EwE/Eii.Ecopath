@@ -40,9 +40,9 @@ Public Class cStockAssessmentFleetParameters
 
     Public Property isLoading As Boolean
 
-    Public Event onParameterChanged(ByVal iGroupIndex As Integer)
+    Public Event onParameterChanged(iGroupIndex As Integer)
 
-    Public Sub New(ByVal iFleet As Integer, ByVal StockAssessmentModel As cStockAssessmentModel, EcoPathData As cEcopathDataStructures)
+    Public Sub New(iFleet As Integer, StockAssessmentModel As cStockAssessmentModel, EcoPathData As cEcopathDataStructures)
         Me.m_iFlt = iFleet
         Me.m_Assessment = StockAssessmentModel
         Me.m_epData = EcoPathData

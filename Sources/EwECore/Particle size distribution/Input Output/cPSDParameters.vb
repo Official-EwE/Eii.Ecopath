@@ -30,8 +30,8 @@ Public Class cPSDParameters
 
 #Region "Constructor"
 
-    Public Sub New(ByRef m_core As cCore)
-        MyBase.New(m_core)
+    Public Sub New(core As cCore)
+        MyBase.New(core)
 
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.m_dataType = eDataTypes.ParticleSizeDistribution
@@ -46,43 +46,43 @@ Public Class cPSDParameters
             Me.AllowValidation = False
 
             'PSDEnabled
-            val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'PSDComputed
-            val = New cValue(New Boolean, eVarNameFlags.PSDComputed, eStatusFlags.OK, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.PSDComputed, eStatusFlags.OK, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'PSDNumWeightClasses
-            val = New cValue(New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'PSDMortalityType
-            val = New cValue(New Integer, eVarNameFlags.PSDMortalityType, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.PSDMortalityType, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'PSDFirstWeightClass
-            val = New cValue(New Single, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'ClimateType
             ' To unify with Ecobase enumerated types?
-            val = New cValue(New Integer, eVarNameFlags.ClimateType, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.ClimateType, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'Number of points used in moving average
-            val = New cValue(New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' == ARRAY VARS ==
             'PSDIncluded
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+            val = New cValueArray(core, eValueTypes.BoolArray, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eCoreCounterTypes.nGroups)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
 
@@ -106,11 +106,11 @@ Public Class cPSDParameters
     ''' -----------------------------------------------------------------------
     Public Property PSDEnabled() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.PSDEnabled))
+            Return CBool(Me.GetVariable(eVarNameFlags.PSDEnabled))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.PSDEnabled, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.PSDEnabled, value)
         End Set
     End Property
 
@@ -124,60 +124,60 @@ Public Class cPSDParameters
     ''' -----------------------------------------------------------------------
     Public Property PSDComputed() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.PSDComputed))
+            Return CBool(Me.GetVariable(eVarNameFlags.PSDComputed))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.PSDComputed, value)
         End Set
     End Property
 
     Public Property MortalityType() As ePSDMortalityTypes
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.PSDMortalityType), ePSDMortalityTypes)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.PSDMortalityType), ePSDMortalityTypes)
         End Get
 
-        Set(ByVal value As ePSDMortalityTypes)
-            SetVariable(eVarNameFlags.PSDMortalityType, value)
+        Set(value As ePSDMortalityTypes)
+            Me.SetVariable(eVarNameFlags.PSDMortalityType, value)
         End Set
     End Property
 
     Public Property NumWeightClasses() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.PSDNumWeightClasses))
+            Return CInt(Me.GetVariable(eVarNameFlags.PSDNumWeightClasses))
         End Get
 
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.PSDNumWeightClasses, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.PSDNumWeightClasses, value)
         End Set
     End Property
 
     Public Property FirstWeightClass() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.PSDFirstWeightClass))
+            Return CSng(Me.GetVariable(eVarNameFlags.PSDFirstWeightClass))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PSDFirstWeightClass, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.PSDFirstWeightClass, value)
         End Set
     End Property
 
     Public Property ClimateType() As eClimateTypes
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.ClimateType), eClimateTypes)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.ClimateType), eClimateTypes)
         End Get
 
-        Set(ByVal value As eClimateTypes)
-            SetVariable(eVarNameFlags.ClimateType, value)
+        Set(value As eClimateTypes)
+            Me.SetVariable(eVarNameFlags.ClimateType, value)
         End Set
     End Property
 
     Public Property NumPtsMovAvg() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.NumPtsMovAvg))
+            Return CInt(Me.GetVariable(eVarNameFlags.NumPtsMovAvg))
         End Get
 
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.NumPtsMovAvg, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.NumPtsMovAvg, value)
         End Set
     End Property
 
@@ -187,13 +187,13 @@ Public Class cPSDParameters
     ''' </summary>
     ''' <param name="iGroup">Index of the group.</param>
     ''' -----------------------------------------------------------------------
-    Public Property GroupIncluded(ByVal iGroup As Integer) As Boolean
+    Public Property GroupIncluded(iGroup As Integer) As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.PSDIncluded, iGroup))
+            Return CBool(Me.GetVariable(eVarNameFlags.PSDIncluded, iGroup))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.PSDIncluded, value, iGroup)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.PSDIncluded, value, iGroup)
         End Set
     End Property
 

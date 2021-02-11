@@ -42,7 +42,7 @@ Public Class cLandingsInteraction
     ''' <param name="iFleet"><see cref="cCoreGroupBase.Index">Fleet index</see>.</param>
     ''' <param name="iGroup"><see cref="cCoreGroupBase.Index">Group index</see>.</param>
     ''' <param name="manager"><see cref="cMediatedInteractionManager">Mediated interaction manager</see>.</param>
-    Sub New(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal manager As cMediatedInteractionManager, ApplicationTypes As List(Of eForcingFunctionApplication))
+    Sub New(iFleet As Integer, iGroup As Integer, manager As cMediatedInteractionManager, ApplicationTypes As List(Of eForcingFunctionApplication))
 
         Me.m_dbid = cCore.NULL_VALUE '???
 
@@ -64,7 +64,7 @@ Public Class cLandingsInteraction
     ''' <returns>True if successful.</returns>
     Friend Overrides Function Load() As Boolean
 
-        Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
+        Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
         Dim SFPair As cShapeFunctionTypePair
         Dim man As cLandingsMediationShapeManager = Me.m_manager.getCore.LandingsShapeManager
         Dim bSucces As Boolean = True
@@ -72,7 +72,7 @@ Public Class cLandingsInteraction
         For i As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
             If esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i) = 0 Then Exit For
 
-            SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
+            SFPair = Me.m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
             SFPair.FunctionType = eForcingFunctionApplication.OffVesselPrice
             SFPair.Shape = Me.getShapeFromEcosimIndex(man, esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, i))
         Next i
@@ -120,12 +120,12 @@ Public Class cLandingsInteraction
     ''' </summary>
     Friend Overrides Sub Update()
         Dim ishp As Integer
-        Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
+        Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
 
-        If LockUpdates Then Return
+        If Me.LockUpdates Then Return
 
         Try
-            For Each sfPair As cShapeFunctionTypePair In m_SFPairs
+            For Each sfPair As cShapeFunctionTypePair In Me.m_SFPairs
                 ishp += 1
                 If sfPair.Shape IsNot Nothing Then
                     esdata.PriceMedData.PriceMedFuncNum(Me.m_iGroup, Me.m_iFleet, ishp) = sfPair.Shape.Index
@@ -158,7 +158,7 @@ Public Class cLandingsInteraction
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
     <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides Function GetID() As String
-        Return cValueID.GetDataTypeID(Me.DataType, CInt(m_iFleet * 1000 + m_iGroup))
+        Return cValueID.GetDataTypeID(Me.DataType, CInt(Me.m_iFleet * 1000 + Me.m_iGroup))
     End Function
 
 #End Region

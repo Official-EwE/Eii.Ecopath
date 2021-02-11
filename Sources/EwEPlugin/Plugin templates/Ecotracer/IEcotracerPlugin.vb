@@ -38,7 +38,7 @@ Public Interface IEcotracerPlugin
     ''' <remarks>This plugin point is non-exclusive; each implementation 
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub LoadEcotracerScenario(ByVal dataSource As Object)
+    Sub LoadEcotracerScenario(dataSource As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -50,7 +50,7 @@ Public Interface IEcotracerPlugin
     ''' <remarks>This plugin point is non-exclusive; each implementation 
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub SaveEcotracerScenario(ByVal dataSource As Object)
+    Sub SaveEcotracerScenario(dataSource As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

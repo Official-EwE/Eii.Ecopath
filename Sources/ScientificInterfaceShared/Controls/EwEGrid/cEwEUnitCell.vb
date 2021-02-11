@@ -46,7 +46,7 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strUnit As String)
+        Public Sub New(strUnit As String)
             Me.New("{0}", strUnit)
         End Sub
 
@@ -55,7 +55,7 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, strUnit As String)
+        Public Sub New(strUnitMask As String, strUnit As String)
             MyBase.New(Nothing, GetType(String))
 
             Me.m_strUnitMask = strUnitMask
@@ -70,13 +70,13 @@ Namespace Controls.EwEGrid
             Get
                 Dim strDisplayText As String = ""
                 If (Not String.IsNullOrWhiteSpace(Me.m_strUnit)) Then
-                    strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(Me.m_strUnit))
+                    strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.GetUnitString(Me.m_strUnit))
                 End If
                 Return strDisplayText
             End Get
         End Property
 
-        Private Function GetUnitString(ByVal strUnit As String) As String
+        Private Function GetUnitString(strUnit As String) As String
 
             If (Me.StyleGuide Is Nothing) Then Return "u1"
             Return Me.StyleGuide.FormatUnitString(strUnit)
@@ -92,7 +92,7 @@ Namespace Controls.EwEGrid
             Get
                 Return (MyBase.Style Or cStyleGuide.eStyleFlags.NotEditable)
             End Get
-            Set(ByVal styleNew As cStyleGuide.eStyleFlags)
+            Set(styleNew As cStyleGuide.eStyleFlags)
                 MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.NotEditable)
             End Set
         End Property

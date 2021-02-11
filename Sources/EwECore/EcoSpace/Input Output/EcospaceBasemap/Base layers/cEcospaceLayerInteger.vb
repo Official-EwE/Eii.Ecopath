@@ -54,11 +54,11 @@ Public Class cEcospaceLayerInteger
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                   ByVal manager As IEcospaceLayerManager, _
-                   ByVal strName As String, _
-                   ByVal varName As eVarNameFlags, _
-                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
+    Public Sub New(core As cCore, _
+                   manager As IEcospaceLayerManager, _
+                   strName As String, _
+                   varName As eVarNameFlags, _
+                   Optional iIndex As Integer = cCore.NULL_VALUE)
 
         MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Integer))
 
@@ -71,11 +71,11 @@ Public Class cEcospaceLayerInteger
     ''' <param name="theCore"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, _
-                   ByVal data As Integer(,), _
-                   ByVal strName As String, _
-                   Optional ByVal meta As cVariableMetaData = Nothing, _
-                   Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
+    Public Sub New(theCore As cCore, _
+                   data As Integer(,), _
+                   strName As String, _
+                   Optional meta As cVariableMetaData = Nothing, _
+                   Optional vn As eVarNameFlags = eVarNameFlags.NotSet)
 
         MyBase.New(theCore, CObj(data), strName, GetType(Integer), meta, vn)
 
@@ -86,11 +86,11 @@ Public Class cEcospaceLayerInteger
 #Region " Cell interaction "
 
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Return DirectCast(Me.Data, Integer(,))(iRow, iCol)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim d As Integer(,) = DirectCast(Me.Data, Integer(,))
             Dim i As Integer = CInt(value)
             If Me.ValidateCellValue(i) Then
@@ -137,7 +137,7 @@ Public Class cEcospaceLayerInteger
 
 #Region " Internals "
 
-    Protected Overrides Function ValidateCellValue(ByVal value As Object) As Boolean
+    Protected Overrides Function ValidateCellValue(value As Object) As Boolean
 
         If (Convert.IsDBNull(value)) Then Return False
         Dim iValue As Integer = CInt(value)

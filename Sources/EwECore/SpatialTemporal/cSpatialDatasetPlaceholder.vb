@@ -83,13 +83,13 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
     ''' -------------------------------------------------------------------
     ''' <inheritdocs cref="ISpatialDataSet.Configuration"/>
     ''' -------------------------------------------------------------------
-    Public Property Configuration(ByVal doc As XmlDocument,
-                                      ByVal strFolderRoot As String) As XmlNode _
+    Public Property Configuration(doc As XmlDocument,
+                                      strFolderRoot As String) As XmlNode _
             Implements ISpatialDataSet.Configuration
         Get
             Return Me.ToXML(doc, strFolderRoot)
         End Get
-        Set(ByVal value As XmlNode)
+        Set(value As XmlNode)
             Me.FromXML(doc, value, strFolderRoot)
         End Set
     End Property
@@ -208,7 +208,7 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
     ''' An XML node that contains the content of the dataset.
     ''' </returns>
     ''' -------------------------------------------------------------------
-    Private Function ToXML(ByVal doc As XmlDocument, ByVal strFolderRoot As String) As XmlNode
+    Private Function ToXML(doc As XmlDocument, strFolderRoot As String) As XmlNode
 
         Dim xnMaster As XmlNode = Nothing
 
@@ -229,9 +229,9 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
     ''' True if successful.
     ''' </returns>
     ''' -------------------------------------------------------------------
-    Private Function FromXML(ByVal doc As XmlDocument,
-                             ByVal node As XmlNode,
-                             ByVal strFolderRoot As String) As Boolean
+    Private Function FromXML(doc As XmlDocument,
+                             node As XmlNode,
+                             strFolderRoot As String) As Boolean
 
         Dim xn As XmlNode = Nothing
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()

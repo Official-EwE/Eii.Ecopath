@@ -65,7 +65,7 @@ Friend Class cDBUpdate6_50_00_27
 
     End Function
 
-    Private Function ConvertEcosimEnvDrivers(ByVal db As cEwEDatabase) As Boolean
+    Private Function ConvertEcosimEnvDrivers(db As cEwEDatabase) As Boolean
 
         Dim nGroups As Integer = CInt(db.GetValue("SELECT COUNT(*) FROM EcopathGroup", 0))
         Dim astrGroupNames(nGroups) As String
@@ -157,7 +157,7 @@ Friend Class cDBUpdate6_50_00_27
 
     End Function
 
-    Private Function Cleanup(ByVal db As cEwEDatabase) As Boolean
+    Private Function Cleanup(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = True
         For Each str As String In New String() {"SalOpt", "SdSalLeft", "SdSalRight", "TempOpt", "TempLeft", "TempRight"}
@@ -176,7 +176,7 @@ Friend Class cDBUpdate6_50_00_27
 
     Private m_dtCurves As New Dictionary(Of String, Integer)
 
-    Private Function Hash(ByVal iGroup As Integer, ByVal sOpt As Single, ByVal sStdLeft As Single, ByVal sStdRight As Single) As String
+    Private Function Hash(iGroup As Integer, sOpt As Single, sStdLeft As Single, sStdRight As Single) As String
         Return String.Format("{0}@{1}:{2}:{3}", iGroup, sStdLeft, sOpt, sStdRight)
     End Function
 
@@ -185,9 +185,9 @@ Friend Class cDBUpdate6_50_00_27
     ''' Create a new response function from a sal or temp mean and optimum definition.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function CreateReponseCurve(ByVal db As cEwEDatabase,
-                                       ByVal strResponse As String, ByVal iGroup As Integer, ByVal strGroupName As String, ByVal strScenario As String,
-                                       ByVal sOpt As Single, ByVal sStdLeft As Single, ByVal sStdRight As Single, ByRef iShapeID As Integer) As Boolean
+    Public Function CreateReponseCurve(db As cEwEDatabase,
+                                       strResponse As String, iGroup As Integer, strGroupName As String, strScenario As String,
+                                       sOpt As Single, sStdLeft As Single, sStdRight As Single, ByRef iShapeID As Integer) As Boolean
 
         Dim bSuccess As Boolean = True
 
@@ -268,9 +268,9 @@ Friend Class cDBUpdate6_50_00_27
     ''' <param name="iResponseID">The newly created Ecosim environmental response shape.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AssignResponse(ByVal db As cEwEDatabase,
-                                    ByVal iScenarioID As Integer, ByVal iGroupID As Integer,
-                                    ByVal iDriverID As Integer, ByVal iResponseID As Integer) As Boolean
+    Public Function AssignResponse(db As cEwEDatabase,
+                                    iScenarioID As Integer, iGroupID As Integer,
+                                    iDriverID As Integer, iResponseID As Integer) As Boolean
 
         If (iDriverID <= 0) Then Return True
 
@@ -294,7 +294,7 @@ Friend Class cDBUpdate6_50_00_27
     ''' </summary>
     ''' <param name="db"></param>
     ''' <remarks></remarks>
-    Private Sub UpdateResponseFunctions(ByVal db As cEwEDatabase)
+    Private Sub UpdateResponseFunctions(db As cEwEDatabase)
 
         Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimShapeMediation")
         Dim dt As DataTable = writer.GetDataTable()

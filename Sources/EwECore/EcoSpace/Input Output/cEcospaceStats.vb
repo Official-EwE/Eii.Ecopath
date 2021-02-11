@@ -28,12 +28,12 @@ Imports EwEUtils.Core
 Public Class cEcospaceStats
     Inherits cCoreInputOutputBase
 
-    Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
         Me.DBID = DBID
-        m_dataType = eDataTypes.EcospaceStatistics
-        m_coreComponent = eCoreComponentType.EcoSpace
+        Me.m_dataType = eDataTypes.EcospaceStatistics
+        Me.m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
 
@@ -42,25 +42,23 @@ Public Class cEcospaceStats
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'SS
-            val = New cValue(New Single, eVarNameFlags.EcospaceSS, eStatusFlags.NotEditable, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.EcospaceSS, eStatusFlags.NotEditable, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf theCore.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcospaceSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Boolean, eVarNameFlags.EcospaceSSCalculated, eStatusFlags.NotEditable, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
-
-
+            val = New cValue(core, New Boolean, eVarNameFlags.EcospaceSSCalculated, eStatusFlags.NotEditable, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ''Region SS
-            'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionSS, eStatusFlags.NotEditable, eCoreCounterTypes.nRegions, _
+            'val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionSS, eStatusFlags.NotEditable, eCoreCounterTypes.nRegions, _
             '             AddressOf m_core.GetCoreCounter)
             'm_values.Add(val.varName, val)
 
             'set status flags to their default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceStats.")
@@ -69,7 +67,7 @@ Public Class cEcospaceStats
 
     End Sub
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         Dim i As Integer
 
         'tell the base class to do the default values
@@ -77,7 +75,7 @@ Public Class cEcospaceStats
 
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
         Dim value As cValue
-        For Each keyvalue In m_values
+        For Each keyvalue In Me.m_values
             Try
                 value = keyvalue.Value
 
@@ -106,10 +104,10 @@ Public Class cEcospaceStats
     ''' <returns>sumof(log(observed/predicted))</returns>
     Public Property SS() As Double
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceSS))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceSS))
         End Get
-        Set(ByVal value As Double)
-            SetVariable(eVarNameFlags.EcospaceSS, value)
+        Set(value As Double)
+            Me.SetVariable(eVarNameFlags.EcospaceSS, value)
         End Set
     End Property
 
@@ -117,10 +115,10 @@ Public Class cEcospaceStats
 
     Public Property SSStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceSS)
+            Return Me.GetStatus(eVarNameFlags.EcospaceSS)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceSS, value)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceSS, value)
         End Set
     End Property
 
@@ -132,10 +130,10 @@ Public Class cEcospaceStats
     ''' <returns>sumof(log(observed(igroup)/predicted(igroup))</returns>
     Public Property SSGroup(iGrp As Integer) As Double
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceSSGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceSSGroup, iGrp))
         End Get
-        Set(ByVal value As Double)
-            SetVariable(eVarNameFlags.EcospaceSSGroup, value, iGrp)
+        Set(value As Double)
+            Me.SetVariable(eVarNameFlags.EcospaceSSGroup, value, iGrp)
         End Set
     End Property
 
@@ -143,26 +141,26 @@ Public Class cEcospaceStats
 
     Public Property SSGroupStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceSSGroup)
+            Return Me.GetStatus(eVarNameFlags.EcospaceSSGroup)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceSSGroup, value)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceSSGroup, value)
         End Set
     End Property
 
     Public Property isSSCalculated As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceSSCalculated))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceSSCalculated))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceSSCalculated, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceSSCalculated, value)
         End Set
     End Property
 
     Public ReadOnly Property isSSCalculatedStatus As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceSSCalculated)
+            Return Me.GetStatus(eVarNameFlags.EcospaceSSCalculated)
         End Get
     End Property
 
@@ -172,22 +170,22 @@ Public Class cEcospaceStats
 
 #If DEADCODE Then
     
-    Public Property RegionSS(ByVal iRegion As Integer) As Single
+    Public Property RegionSS(iRegion As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcospaceRegionSS, iRegion))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             SetVariable(eVarNameFlags.EcospaceRegionSS, value, iRegion)
         End Set
     End Property
 
 
 
-    Public Property RegionSSStatus(ByVal iRegion As Integer) As eStatusFlags
+    Public Property RegionSSStatus(iRegion As Integer) As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcospaceRegionSS, iRegion)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Set(value As eStatusFlags)
             SetStatus(eVarNameFlags.EcospaceRegionSS, value, iRegion)
         End Set
     End Property

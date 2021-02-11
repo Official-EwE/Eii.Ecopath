@@ -41,7 +41,7 @@ Public Class cTransectSummary
         Me.Name = l.Name
 
         Dim cells As Point() = t.Cells(bm)
-        ReDim m_values(cells.Count - 1)
+        ReDim Me.m_values(cells.Count - 1)
         For iCell As Integer = 0 To cells.Count - 1
             Dim pt As Point = cells(iCell)
             Dim sValue As Single = cCore.NULL_VALUE
@@ -59,7 +59,7 @@ Public Class cTransectSummary
         Me.Name = strName
 
         Dim cells As Point() = t.Cells(bm)
-        ReDim m_values(cells.Count - 1)
+        ReDim Me.m_values(cells.Count - 1)
         For iCell As Integer = 0 To cells.Count - 1
             Dim pt As Point = cells(iCell)
             Dim sValue As Single = cCore.NULL_VALUE

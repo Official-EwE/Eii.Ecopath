@@ -58,7 +58,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
@@ -66,7 +66,7 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="results">Optional array of results to output.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(Optional ByVal results As cEcosimResultWriter.eResultTypes() = Nothing)
+        Public Overloads Sub Invoke(Optional results As cEcosimResultWriter.eResultTypes() = Nothing)
             Me.Results = results
             MyBase.Invoke()
         End Sub

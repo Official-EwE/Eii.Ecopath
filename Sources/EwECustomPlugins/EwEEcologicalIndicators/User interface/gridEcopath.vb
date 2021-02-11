@@ -59,7 +59,7 @@ Public Class gridEcopath
 
 #Region " Public methods "
 
-    Public Sub Attach(ByVal settings As cIndicatorSettings)
+    Public Sub Attach(settings As cIndicatorSettings)
         Me.m_settings = settings
     End Sub
 

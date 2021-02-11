@@ -44,7 +44,7 @@ Namespace Style
         ''' <param name="strCustom">Any custom unit text as entered by the user. 
         ''' by the user.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strCustom As String)
+        Public Sub New(strCustom As String)
             Me.m_strCustom = strCustom
         End Sub
 
@@ -52,7 +52,7 @@ Namespace Style
             Return GetType(eUnitCurrencyType)
         End Function
 
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim unit As eUnitCurrencyType = DirectCast(value, eUnitCurrencyType)

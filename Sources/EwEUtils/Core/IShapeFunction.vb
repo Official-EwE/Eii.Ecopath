@@ -59,7 +59,7 @@ Namespace Core
         ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
         ''' to obtain the human legible name for.</param>
         ''' -----------------------------------------------------------------------
-        ReadOnly Property ParamName(ByVal iParam As Integer) As String
+        ReadOnly Property ParamName(iParam As Integer) As String
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -68,7 +68,7 @@ Namespace Core
         ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
         ''' to access the value for.</param>
         ''' -----------------------------------------------------------------------
-        Property ParamValue(ByVal iParam As Integer) As Single
+        Property ParamValue(iParam As Integer) As Single
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -77,7 +77,7 @@ Namespace Core
         ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
         ''' to obtain the human legible unit for.</param>
         ''' -----------------------------------------------------------------------
-        ReadOnly Property ParamUnit(ByVal iParam As Integer) As String
+        ReadOnly Property ParamUnit(iParam As Integer) As String
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -87,7 +87,7 @@ Namespace Core
         ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
         ''' to obtain order for.</param>
         ''' -----------------------------------------------------------------------
-        ReadOnly Property ParamStatus(ByVal iParam As Integer) As eStatusFlags
+        ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -96,14 +96,14 @@ Namespace Core
         ''' <param name="nPoints">The number of points to calculate the shape for.</param>
         ''' <returns>An array of points.</returns>
         ''' -----------------------------------------------------------------------
-        Function Shape(ByVal nPoints As Integer) As Single()
+        Function Shape(nPoints As Integer) As Single()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return whether a shape function is relevant for a given <see cref="EwEUtils.Core.eDataTypes">data type</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Function IsCompatible(ByVal datatype As EwEUtils.Core.eDataTypes) As Boolean
+        Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -112,7 +112,7 @@ Namespace Core
         ''' <param name="shape"></param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function Apply(ByVal shape As Object) As Boolean
+        Function Apply(shape As Object) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

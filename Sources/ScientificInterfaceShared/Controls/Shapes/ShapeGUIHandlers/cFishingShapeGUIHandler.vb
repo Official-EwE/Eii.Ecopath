@@ -50,7 +50,7 @@ Namespace Controls
         ''' <param name="cmd">The command that is queried.</param>
         ''' <returns>True if the queried command is supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.SetToZero,
                      eShapeCommandTypes.SetToValue,
@@ -78,7 +78,7 @@ Namespace Controls
         ''' <param name="cmd">The command that is queried.</param>
         ''' <returns>True if the queried command may be enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
             Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
@@ -113,9 +113,9 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes,
-                    Optional ByVal ashapes As EwECore.cShapeData() = Nothing,
-                    Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As cShapeGUIHandler.eShapeCommandTypes,
+                    Optional ashapes As EwECore.cShapeData() = Nothing,
+                    Optional data As Object = Nothing)
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
             Select Case cmd
@@ -137,8 +137,8 @@ Namespace Controls
             End Select
         End Sub
 
-        Protected Overrides Sub ResetShapes(ByVal ashapes As cShapeData(),
-                Optional ByVal sDefaultValue As Single = 1.0!)
+        Protected Overrides Sub ResetShapes(ashapes As cShapeData(),
+                Optional sDefaultValue As Single = 1.0!)
 
             Dim sm As cBaseShapeManager = Nothing
             Dim shape As cShapeData = Nothing
@@ -185,7 +185,7 @@ Namespace Controls
             Get
                 Return MyBase.SketchPad
             End Get
-            Set(ByVal value As ucSketchPad)
+            Set(value As ucSketchPad)
                 MyBase.SketchPad = value
                 If value IsNot Nothing Then
                     If (TypeOf value Is ucForcingSketchPad) Then
@@ -195,7 +195,7 @@ Namespace Controls
             End Set
         End Property
 
-        Protected Sub SetToBaseline(ByVal ashapes As cShapeData())
+        Protected Sub SetToBaseline(ashapes As cShapeData())
 
             Dim man As cFishingBaseShapeManager = Nothing
             Dim sBaseValue As Single = 0.0

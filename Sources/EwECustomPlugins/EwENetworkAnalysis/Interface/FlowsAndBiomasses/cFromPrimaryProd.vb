@@ -41,13 +41,13 @@ Public Class cFromPrimaryProd
         Return "Flows and biomasses from primary producers"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                     ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                     info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -58,18 +58,18 @@ Public Class cFromPrimaryProd
         Dim strRowContent() As String
         Dim sSum() As Single
 
-        SetUpGridColumn()
+        Me.SetUpGridColumn()
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nTrophicLevels + 2
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = Me.NetworkManager.nTrophicLevels + 2
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim strRowContent(Grid.Columns.Count)
-        ReDim sSum(Grid.Columns.Count)
+        ReDim strRowContent(Me.Grid.Columns.Count)
+        ReDim sSum(Me.Grid.Columns.Count)
         strRowContent(0) = My.Resources.COL_HDR_TRP_LVL_FLOW
         strRowContent(1) = My.Resources.COL_HDR_IMPORT
         strRowContent(2) = My.Resources.COL_HDR_CONSUM_PREDAT
@@ -77,51 +77,51 @@ Public Class cFromPrimaryProd
         strRowContent(4) = My.Resources.COL_HDR_FLOW_DET
         strRowContent(5) = My.Resources.COL_HDR_RESP
         strRowContent(6) = My.Resources.COL_HDR_THROUGHPUT
-        Grid.Rows(0).SetValues(strRowContent)
-        Grid.Visible = True
+        Me.Grid.Rows(0).SetValues(strRowContent)
+        Me.Grid.Visible = True
 
-        For i As Integer = NetworkManager.nTrophicLevels To 1 Step -1
+        For i As Integer = Me.NetworkManager.nTrophicLevels To 1 Step -1
             'strRowContent(0) = CStr(i)
             strRowContent(0) = cStringUtils.ToRoman(i)
             If i = 1 Then
-                strRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.PPImport(i))
-                sSum(1) = sSum(1) + NetworkManager.PPImport(i)
+                strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.PPImport(i))
+                sSum(1) = sSum(1) + Me.NetworkManager.PPImport(i)
             Else
                 strRowContent(1) = ""
             End If
-            strRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.PPConsByPred(i))
-            sSum(2) = sSum(2) + NetworkManager.PPConsByPred(i)
-            strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.PPExport(i))
-            sSum(3) = sSum(3) + NetworkManager.PPExport(i)
-            strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PPToDetritus(i))
-            sSum(4) = sSum(4) + NetworkManager.PPToDetritus(i)
-            strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PPRespiration(i))
-            sSum(5) = sSum(5) + NetworkManager.PPRespiration(i)
-            strRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.PPThroughtput(i))
-            sSum(6) = sSum(6) + NetworkManager.PPThroughtput(i)
-            Grid.Rows(NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
-            Grid.Rows(NetworkManager.nTrophicLevels - i + 1).Visible = True
+            strRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.PPConsByPred(i))
+            sSum(2) = sSum(2) + Me.NetworkManager.PPConsByPred(i)
+            strRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.PPExport(i))
+            sSum(3) = sSum(3) + Me.NetworkManager.PPExport(i)
+            strRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.PPToDetritus(i))
+            sSum(4) = sSum(4) + Me.NetworkManager.PPToDetritus(i)
+            strRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.PPRespiration(i))
+            sSum(5) = sSum(5) + Me.NetworkManager.PPRespiration(i)
+            strRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.PPThroughtput(i))
+            sSum(6) = sSum(6) + Me.NetworkManager.PPThroughtput(i)
+            Me.Grid.Rows(Me.NetworkManager.nTrophicLevels - i + 1).SetValues(strRowContent)
+            Me.Grid.Rows(Me.NetworkManager.nTrophicLevels - i + 1).Visible = True
         Next
 
         strRowContent(0) = My.Resources.ROW_HDR_SUM
-        For i As Integer = 1 To Grid.Columns.Count - 1
+        For i As Integer = 1 To Me.Grid.Columns.Count - 1
             strRowContent(i) = Me.StyleGuide.FormatNumber(sSum(i))
         Next
-        Grid.Rows(Grid.RowCount - 1).SetValues(strRowContent)
-        Grid.Rows(Grid.RowCount - 1).Visible = True
-        Grid.ClearSelection()
+        Me.Grid.Rows(Me.Grid.RowCount - 1).SetValues(strRowContent)
+        Me.Grid.Rows(Me.Grid.RowCount - 1).Visible = True
+        Me.Grid.ClearSelection()
     End Sub
 
     Private Sub SetUpGridColumn()
 
-        Grid.ReadOnly = True
+        Me.Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = 7
+        Me.Grid.ColumnCount = 7
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).Frozen = True
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
 
     End Sub
 

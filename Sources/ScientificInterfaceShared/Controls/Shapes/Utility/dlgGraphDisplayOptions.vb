@@ -54,8 +54,8 @@ Namespace Controls
         ''' </summary>
         ''' <param name="sketchPad"><see cref="ucSketchPad">sketch pad</see> to modify.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal sketchPad As ucSketchPad)
+        Public Sub New(uic As cUIContext, _
+                       sketchPad As ucSketchPad)
 
             Me.InitializeComponent()
 
@@ -115,7 +115,7 @@ Namespace Controls
         ''' settings from the attached <see cref="ucSketchPad">sketch pad</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             'Initialization of the interface controls
@@ -151,7 +151,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub dlgGraphDisplayOptions_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+        Private Sub dlgGraphDisplayOptions_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) _
             Handles Me.FormClosing
 
             Me.m_fbYMax.Release()
@@ -162,7 +162,7 @@ Namespace Controls
         ''' Event handler; okidokionizes the dialog.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(sender As System.Object, e As System.EventArgs) Handles OK_Button.Click
             Me.Apply()
             Me.DialogResult = DialogResult.OK
             Me.Close()
@@ -173,7 +173,7 @@ Namespace Controls
         ''' Event handler; cancels the dialog.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub

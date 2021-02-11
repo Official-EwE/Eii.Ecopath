@@ -134,7 +134,7 @@ Public Class cCoreStateMonitor
         AddHandler(handler As CoreExecutionStateDelegate)
             Me.m_executionStateHandlers.Add(handler)
             Try
-                If m_sync IsNot Nothing Then
+                If Me.m_sync IsNot Nothing Then
                     Me.m_sync.Invoke(handler, New Object() {Me})
                 Else
                     handler.Invoke(Me)
@@ -158,7 +158,7 @@ Public Class cCoreStateMonitor
                 Try
 
                     If h IsNot Nothing Then
-                        If m_sync IsNot Nothing Then
+                        If Me.m_sync IsNot Nothing Then
                             Me.m_sync.Invoke(h, New Object() {Me})
                         Else
                             h.Invoke(Me)
@@ -192,7 +192,7 @@ Public Class cCoreStateMonitor
     Public Custom Event CoreDataStateEvent As CoreDataStateDelegate
         AddHandler(handler As CoreDataStateDelegate)
             Me.m_dataStateHandlers.Add(handler)
-            If m_sync IsNot Nothing Then
+            If Me.m_sync IsNot Nothing Then
                 Me.m_sync.Invoke(handler, New Object() {Me})
             Else
                 handler.Invoke(Me)
@@ -205,7 +205,7 @@ Public Class cCoreStateMonitor
 
         RaiseEvent(coreStateMonitor As cCoreStateMonitor)
             For Each h As CoreDataStateDelegate In Me.m_dataStateHandlers
-                If m_sync IsNot Nothing Then
+                If Me.m_sync IsNot Nothing Then
                     Me.m_sync.Invoke(h, New Object() {Me})
                 Else
                     h.Invoke(Me)
@@ -408,7 +408,7 @@ Public Class cCoreStateMonitor
                 ' NOP
 
                 Case eCoreComponentType.EcoPath
-                    SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
+                    Me.SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
                     bHandled = True
 
                 Case eCoreComponentType.EcoSim,
@@ -417,7 +417,7 @@ Public Class cCoreStateMonitor
                      eCoreComponentType.FishingPolicySearch,
                      eCoreComponentType.ShapesManager,
                      eCoreComponentType.TimeSeries
-                    SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
+                    Me.SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
                     bHandled = True
 
                 Case eCoreComponentType.EcoSpace,

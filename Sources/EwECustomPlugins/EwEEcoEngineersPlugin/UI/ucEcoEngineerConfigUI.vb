@@ -65,8 +65,8 @@ Public Class ucEcoEngineerConfigUI
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
 
             If (Me.m_fpFN IsNot Nothing) Then
@@ -102,10 +102,10 @@ Public Class ucEcoEngineerConfigUI
         Me.m_fpB = New cEwEFormatProvider(Me.UIContext, Me.m_tbxB, GetType(Single))
         Me.m_fpC = New cEwEFormatProvider(Me.UIContext, Me.m_tbxC, GetType(Single))
 
-        AddHandler Me.m_fpFN.OnValueChanged, AddressOf OnCurveParamsChanged
-        AddHandler Me.m_fpA.OnValueChanged, AddressOf OnCurveParamsChanged
-        AddHandler Me.m_fpB.OnValueChanged, AddressOf OnCurveParamsChanged
-        AddHandler Me.m_fpC.OnValueChanged, AddressOf OnCurveParamsChanged
+        AddHandler Me.m_fpFN.OnValueChanged, AddressOf Me.OnCurveParamsChanged
+        AddHandler Me.m_fpA.OnValueChanged, AddressOf Me.OnCurveParamsChanged
+        AddHandler Me.m_fpB.OnValueChanged, AddressOf Me.OnCurveParamsChanged
+        AddHandler Me.m_fpC.OnValueChanged, AddressOf Me.OnCurveParamsChanged
 
         ' Create Template complexity rules
         ' Saachi: Template equations added (Marcus Island ecosystem engineers)
@@ -163,10 +163,10 @@ Public Class ucEcoEngineerConfigUI
         cmd.RemoveControl(Me.m_pbEII)
         cmd.RemoveControl(Me.m_pbMare)
 
-        RemoveHandler Me.m_fpFN.OnValueChanged, AddressOf OnCurveParamsChanged
-        RemoveHandler Me.m_fpA.OnValueChanged, AddressOf OnCurveParamsChanged
-        RemoveHandler Me.m_fpB.OnValueChanged, AddressOf OnCurveParamsChanged
-        RemoveHandler Me.m_fpC.OnValueChanged, AddressOf OnCurveParamsChanged
+        RemoveHandler Me.m_fpFN.OnValueChanged, AddressOf Me.OnCurveParamsChanged
+        RemoveHandler Me.m_fpA.OnValueChanged, AddressOf Me.OnCurveParamsChanged
+        RemoveHandler Me.m_fpB.OnValueChanged, AddressOf Me.OnCurveParamsChanged
+        RemoveHandler Me.m_fpC.OnValueChanged, AddressOf Me.OnCurveParamsChanged
 
         Me.m_fpFN.Release()
         Me.m_fpFN = Nothing
@@ -353,7 +353,7 @@ Public Class ucEcoEngineerConfigUI
             ' This event is tricky. The check state is not set yet; it will be set after this call completes.
             ' Therefore, delay the response until the check state has been completed, and then update the UI.
             ' Lovely, no?
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
         Catch ex As Exception
 
         End Try
@@ -389,7 +389,7 @@ Public Class ucEcoEngineerConfigUI
         fmt.LineAlignment = StringAlignment.Center
         fmt.Trimming = StringTrimming.None
 
-        Dim rc As New Rectangle(0, 0, m_lblYAxis.Height, m_lblYAxis.Width)
+        Dim rc As New Rectangle(0, 0, Me.m_lblYAxis.Height, Me.m_lblYAxis.Width)
         Using br As New SolidBrush(Me.BackColor)
             g.FillRectangle(br, Me.m_lblYAxis.ClientRectangle)
         End Using

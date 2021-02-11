@@ -20,10 +20,9 @@
 Option Strict On
 
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 ''' <summary>
-''' Have the core do the data validation via it's cCore.Validate() method
+''' Have the core do the data validation via its cCore.Validate() method
 ''' </summary>
 ''' <remarks>This is used for variables that need to use values from other parts of the core for data validation</remarks>
 Public Class cValidatorCore
@@ -31,15 +30,15 @@ Public Class cValidatorCore
 
     Private m_core As cCore
 
-    Public Sub New(ByRef theCore As cCore)
-        m_core = theCore
+    Public Sub New(theCore As cCore)
+        Me.m_core = theCore
     End Sub
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ValueObject As cValue, MetaData As cVariableMetaData,
+                                         Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
         'Call Validate in the core to do the validation
-        Return m_core.Validate(ValueObject, MetaData, iSecondaryIndex, iThirdIndex)
+        Return Me.m_core.Validate(ValueObject, MetaData, iSecondaryIndex, iThirdIndex)
 
     End Function
 

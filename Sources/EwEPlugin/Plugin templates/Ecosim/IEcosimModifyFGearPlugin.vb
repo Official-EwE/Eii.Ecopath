@@ -32,6 +32,6 @@ Public Interface IEcosimModifyFGearPlugin
     ''' <param name="EcosimDataStructures">Reference to the current EcosimDataStructures passed as an object.</param>
     ''' <param name="CurrentTimeStepIndex">Current timestep index.</param>
     ''' <remarks>At this time this only changes effort during a search there is no easy way to change effort during a normal run. </remarks>
-    Sub EcosimModifyFGear(ByVal FGear() As Single, ByVal BB() As Single, ByVal EcosimDataStructures As Object, ByVal CurrentTimeStepIndex As Integer)
+    Sub EcosimModifyFGear(FGear() As Single, BB() As Single, EcosimDataStructures As Object, CurrentTimeStepIndex As Integer)
 
 End Interface

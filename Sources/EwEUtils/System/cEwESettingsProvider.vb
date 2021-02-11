@@ -109,7 +109,7 @@ Public Class cEwESettingsProvider
     ''' <param name="strName"></param>
     ''' <param name="col"></param>
     ''' -----------------------------------------------------------------------
-    Public Overrides Sub Initialize(ByVal strName As String, ByVal col As NameValueCollection)
+    Public Overrides Sub Initialize(strName As String, col As NameValueCollection)
         MyBase.Initialize(Me.ApplicationName, col)
     End Sub
 
@@ -120,7 +120,7 @@ Public Class cEwESettingsProvider
     ''' <param name="strName">The name of the property to access. This name is not case-sensitive.</param>
     ''' <returns>A value, or Nothing if a property by this name does not exist.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetDefaultValue(ByVal strName As String) As Object
+    Public Function GetDefaultValue(strName As String) As Object
         Dim prop As SettingsProperty = Me.m_settings.Properties(strName)
         If prop IsNot Nothing Then Return prop.DefaultValue
         Return Nothing
@@ -147,7 +147,7 @@ Public Class cEwESettingsProvider
         Get
             Return Me.m_strAssembly
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             'Do nothing
         End Set
     End Property
@@ -159,7 +159,7 @@ Public Class cEwESettingsProvider
     ''' <param name="context"></param>
     ''' <param name="propvals"></param>
     ''' -----------------------------------------------------------------------
-    Public Overrides Sub SetPropertyValues(ByVal context As SettingsContext, ByVal propvals As SettingsPropertyValueCollection)
+    Public Overrides Sub SetPropertyValues(context As SettingsContext, propvals As SettingsPropertyValueCollection)
 
         ' Sanity check
         If propvals Is Nothing Then Return
@@ -188,7 +188,7 @@ Public Class cEwESettingsProvider
     ''' <param name="props"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function GetPropertyValues(ByVal context As SettingsContext, ByVal props As SettingsPropertyCollection) As SettingsPropertyValueCollection
+    Public Overrides Function GetPropertyValues(context As SettingsContext, props As SettingsPropertyCollection) As SettingsPropertyValueCollection
 
         Dim values As SettingsPropertyValueCollection = New SettingsPropertyValueCollection()
         Dim value As SettingsPropertyValue = Nothing
@@ -337,7 +337,7 @@ Public Class cEwESettingsProvider
     ''' A value in the form of a string, or an emtpy string if an error occurred.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetValue(ByVal sp As SettingsProperty) As String
+    Private Function GetValue(sp As SettingsProperty) As String
 
         Dim strValue As String = ""
         Dim node As XmlNode = Nothing
@@ -369,7 +369,7 @@ Public Class cEwESettingsProvider
     ''' </summary>
     ''' <param name="propVal"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub StoreValue(ByVal propVal As SettingsPropertyValue)
+    Private Sub StoreValue(propVal As SettingsPropertyValue)
 
         Dim elem As Xml.XmlElement
         Dim strVal As String = ""

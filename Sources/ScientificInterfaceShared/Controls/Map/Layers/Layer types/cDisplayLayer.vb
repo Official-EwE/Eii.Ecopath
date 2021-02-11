@@ -60,8 +60,8 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="renderer"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal renderer As cLayerRenderer)
+        Public Sub New(uic As cUIContext, _
+                       renderer As cLayerRenderer)
 
             Debug.Assert(uic IsNot Nothing)
 
@@ -77,7 +77,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal layer As cDisplayLayer)
+        Public Sub New(uic As cUIContext, layer As cDisplayLayer)
 
             Me.New(uic, layer.Renderer.Clone())
             Me.Name = layer.Name
@@ -91,12 +91,12 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="bDisposing"></param>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overridable Sub Dispose(bDisposing As Boolean)
             Me.m_bDisposed = True
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
-            Dispose(True)
+            Me.Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
 
@@ -131,7 +131,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="layer"></param>
         ''' <param name="updateType"></param>
-        Public Event LayerChanged(ByVal layer As cDisplayLayer, ByVal updateType As eChangeFlags)
+        Public Event LayerChanged(layer As cDisplayLayer, updateType As eChangeFlags)
 
 #End Region ' Public definitions
 
@@ -148,8 +148,8 @@ Namespace Controls.Map.Layers
         ''' to commit a layer data change to the core, and should be false if the 
         ''' layer is responding to a core layer change message.</param>
         ''' -----------------------------------------------------------------------
-        Public Overridable Sub Update(ByVal updateType As eChangeFlags,
-                                      Optional ByVal bNotifyCore As Boolean = True)
+        Public Overridable Sub Update(updateType As eChangeFlags,
+                                      Optional bNotifyCore As Boolean = True)
 
             ' Prevent looped updates
             If Me.m_bInUpdate = True Then Return
@@ -192,7 +192,7 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.m_strName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If (String.Compare(value, Me.m_strName) <> 0) Then
                     Me.m_strName = value
                     Me.Update(eChangeFlags.Descriptive)
@@ -282,7 +282,7 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.m_bSelected
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value <> Me.m_bSelected) Then
                     Me.m_bSelected = value
                     Me.Update(eChangeFlags.Selected)

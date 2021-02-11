@@ -27,13 +27,13 @@ Public Class cValidatorOddEven
 
     Private m_bOdd As Boolean = True
 
-    Public Sub New(ByVal bOdd As Boolean)
+    Public Sub New(bOdd As Boolean)
         Me.m_bOdd = bOdd
     End Sub
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ValueObject As cValue, MetaData As cVariableMetaData,
+                                         Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         ' Perform 'normal' validation
         If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False

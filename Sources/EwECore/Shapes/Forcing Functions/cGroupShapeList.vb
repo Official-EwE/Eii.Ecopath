@@ -31,15 +31,15 @@ Public Class cGroupShapeList
     Private m_manager As cEggProductionShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef StanzaData As cStanzaDatastructures, ByRef EggProdManager As cEggProductionShapeManager)
-        m_data = EcoSimData
-        m_manager = EggProdManager
-        m_stanza = StanzaData
+        Me.m_data = EcoSimData
+        Me.m_manager = EggProdManager
+        Me.m_stanza = StanzaData
     End Sub
 
     Friend Sub Add(ByRef shapeGroupPair As cGroupShapePair)
 
         'ToDo_jb cAppliesToList.Add()  Make sure the shapeGroupPair.iStanzaGroup is a valid stanza group
-        m_list.Add(shapeGroupPair)
+        Me.m_list.Add(shapeGroupPair)
 
     End Sub
 
@@ -47,14 +47,14 @@ Public Class cGroupShapeList
     Default Public Property Item(Index As Integer) As cGroupShapePair
         Get
             Try
-                Return m_list.Item(Index)
+                Return Me.m_list.Item(Index)
             Catch ex As Exception
                 Return Nothing
             End Try
         End Get
         Set(value As cGroupShapePair)
             Try
-                m_list.Item(Index) = value
+                Me.m_list.Item(Index) = value
             Catch ex As Exception
                 Return
             End Try
@@ -63,11 +63,11 @@ Public Class cGroupShapeList
 
 
     Public Function Count() As Integer
-        Return m_list.Count
+        Return Me.m_list.Count
     End Function
 
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
-        Return m_list.GetEnumerator
+        Return Me.m_list.GetEnumerator
     End Function
 
 

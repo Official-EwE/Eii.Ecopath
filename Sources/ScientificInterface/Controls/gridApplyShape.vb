@@ -54,17 +54,17 @@ Public MustInherit Class gridApplyShapeBase
         Me.m_bmRowCol = New BehaviorModels.CustomEvents()
         Me.m_bmCell = New BehaviorModels.CustomEvents()
 
-        AddHandler m_bmRowCol.Click, New SourceGrid2.PositionEventHandler(AddressOf OnRowColClicked)
-        AddHandler m_bmCell.Click, AddressOf CellClick
+        AddHandler Me.m_bmRowCol.Click, New SourceGrid2.PositionEventHandler(AddressOf Me.OnRowColClicked)
+        AddHandler Me.m_bmCell.Click, AddressOf Me.CellClick
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         MyBase.Dispose(disposing)
 
         If (Me.m_editor IsNot Nothing) Then
-            RemoveHandler m_bmRowCol.Click, New SourceGrid2.PositionEventHandler(AddressOf OnRowColClicked)
-            RemoveHandler m_bmCell.Click, AddressOf CellClick
+            RemoveHandler Me.m_bmRowCol.Click, New SourceGrid2.PositionEventHandler(AddressOf Me.OnRowColClicked)
+            RemoveHandler Me.m_bmCell.Click, AddressOf Me.CellClick
             Me.m_editor = Nothing
             Me.m_bmCell = Nothing
             Me.m_bmRowCol = Nothing
@@ -81,7 +81,7 @@ Public MustInherit Class gridApplyShapeBase
         Get
             Return MyBase.UIContext
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
             If (value IsNot Nothing) Then
                 ' First set crucial properties
                 Me.m_interactionManager = value.Core.MediatedInteractionManager
@@ -117,9 +117,9 @@ Public MustInherit Class gridApplyShapeBase
 
 #Region " Internals "
 
-    Protected MustOverride Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
+    Protected MustOverride Sub CellClick(sender As Object, e As PositionEventArgs)
 
-    Protected MustOverride Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+    Protected MustOverride Sub OnRowColClicked(sender As Object, e As SourceGrid2.PositionEventArgs)
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -127,7 +127,7 @@ Public MustInherit Class gridApplyShapeBase
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' -------------------------------------------------------------------
-    Protected Property GroupAtRow(ByVal iRow As Integer) As Integer
+    Protected Property GroupAtRow(iRow As Integer) As Integer
         Get
             If (1 <= iRow And iRow < Me.RowsCount) Then
                 Return CInt(Me.Rows(iRow).Tag)
@@ -147,7 +147,7 @@ Public MustInherit Class gridApplyShapeBase
     ''' </summary>
     ''' <param name="iCol"></param>
     ''' -------------------------------------------------------------------
-    Protected Property GroupAtColumn(ByVal iCol As Integer) As Integer
+    Protected Property GroupAtColumn(iCol As Integer) As Integer
         Get
             If (2 <= iCol And iCol < Me.ColumnsCount) Then
                 Return CInt(Me.Columns(iCol).Tag)

@@ -34,8 +34,8 @@ Public Class cGroupShapePair
 
 
     Public Function Clear() As Boolean
-        ShapeID = cCore.NULL_VALUE
-        m_shape = Nothing
+        Me.ShapeID = cCore.NULL_VALUE
+        Me.m_shape = Nothing
     End Function
 
     ''' <summary>
@@ -56,7 +56,7 @@ Public Class cGroupShapePair
         End Get
 
         Set(value As Integer)
-            If (value < m_manager.Count And value >= 0) Or (value = cCore.NULL_VALUE) Then
+            If (value < Me.m_manager.Count And value >= 0) Or (value = cCore.NULL_VALUE) Then
                 'only set the value if it passed the lame validation
                 Me.m_iManager = value
 
@@ -65,7 +65,7 @@ Public Class cGroupShapePair
                 Else
                     Me.m_shape = Nothing
                 End If
-                Update()
+                Me.Update()
             Else
                 Me.m_manager.validationFailedMessage()
             End If
@@ -78,7 +78,7 @@ Public Class cGroupShapePair
     ''' </summary>
     Public ReadOnly Property iStanzaGroup() As Integer
         Get
-            Return m_iStanza
+            Return Me.m_iStanza
         End Get
     End Property
 
@@ -90,8 +90,8 @@ Public Class cGroupShapePair
     ''' </remarks>
     Friend ReadOnly Property iShape() As Integer
         Get
-            If m_shape IsNot Nothing Then
-                Return m_shape.Index
+            If Me.m_shape IsNot Nothing Then
+                Return Me.m_shape.Index
             Else
                 Return 0
             End If
@@ -104,23 +104,23 @@ Public Class cGroupShapePair
     ''' <remarks>Stanzas are stored in a zeor base list for the interface. This is the one based index used by the core.</remarks>
     Friend ReadOnly Property iCoreStanzaIndex() As Integer
         Get
-            Return m_iStanza + 1
+            Return Me.m_iStanza + 1
         End Get
     End Property
 
     Sub New(ByRef theManager As cEggProductionShapeManager, ByRef Shape As cForcingFunction, StanzaIndex As Integer)
-        m_manager = theManager
+        Me.m_manager = theManager
 
         'Zero based public stanza index for stanza list 
         'this is the same index as in the cCore.StanzaGroups.Item(iStanza) 
-        m_iStanza = StanzaIndex - 1
+        Me.m_iStanza = StanzaIndex - 1
 
         If Shape Is Nothing Then
-            m_shape = Nothing
-            m_iManager = cCore.NULL_VALUE
+            Me.m_shape = Nothing
+            Me.m_iManager = cCore.NULL_VALUE
         Else
-            m_shape = Shape
-            m_iManager = Shape.ID
+            Me.m_shape = Shape
+            Me.m_iManager = Shape.ID
         End If
     End Sub
 
@@ -130,14 +130,14 @@ Public Class cGroupShapePair
             'tell the manager that this pair has changed it data
             'this will validate the data
 
-            If m_shape IsNot Nothing Then
+            If Me.m_shape IsNot Nothing Then
                 'index of the shape in the managers list stored in ID during construction of the shape
-                m_iManager = m_shape.ID
+                Me.m_iManager = Me.m_shape.ID
             Else
-                m_iManager = cCore.NULL_VALUE
+                Me.m_iManager = cCore.NULL_VALUE
             End If
 
-            Return m_manager.OnChanged(Me)
+            Return Me.m_manager.OnChanged(Me)
 
         Catch ex As Exception
             cLog.Write(ex)

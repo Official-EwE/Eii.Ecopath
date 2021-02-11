@@ -142,15 +142,15 @@ Namespace FishingPolicy
 
             Try
 
-                m_core = theCore
-                m_ecosim = m_core.m_EcoSim
-                m_searchData = m_core.m_SearchData
+                Me.m_core = theCore
+                Me.m_ecosim = Me.m_core.m_EcoSim
+                Me.m_searchData = Me.m_core.m_SearchData
 
-                m_pluginManager = Me.m_core.PluginManager
+                Me.m_pluginManager = Me.m_core.PluginManager
 
-                MaxNoOfIterations = 2000 'from EwE5 frmSim1.load() why it is intialized in ecosim I have no idea
-                m_searchData.InitOption = eInitOption.EcopathBaseF
-                m_searchData.SearchMethod = eSearchOptionTypes.Fletch
+                Me.MaxNoOfIterations = 2000 'from EwE5 frmSim1.load() why it is intialized in ecosim I have no idea
+                Me.m_searchData.InitOption = eInitOption.EcopathBaseF
+                Me.m_searchData.SearchMethod = eSearchOptionTypes.Fletch
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -174,14 +174,14 @@ Namespace FishingPolicy
 
             'run the model
             Try
-                runSearch()
+                Me.runSearch()
             Catch ex As Exception
                 'add a message to the manager
-                addMessage(ex.Message)
+                Me.addMessage(ex.Message)
             End Try
 
-            If SearchCompletedCallBack IsNot Nothing Then
-                SearchCompletedCallBack()
+            If Me.SearchCompletedCallBack IsNot Nothing Then
+                Me.SearchCompletedCallBack()
             End If
 
         End Sub
@@ -196,17 +196,17 @@ Namespace FishingPolicy
 
                 Dim nBlocksUsed As Integer
 
-                SearchFailed = False
-                StopEstimation = False
+                Me.SearchFailed = False
+                Me.StopEstimation = False
 
-                m_searchData = m_core.m_SearchData
-                m_searchData.SearchMode = eSearchModes.FishingPolicy 'make sure the search is turned on this will also set some default values based on the flag
-                m_searchData.initForRun(m_core.m_EcoPathData, m_core.m_EcoSimData)
+                Me.m_searchData = Me.m_core.m_SearchData
+                Me.m_searchData.SearchMode = eSearchModes.FishingPolicy 'make sure the search is turned on this will also set some default values based on the flag
+                Me.m_searchData.initForRun(Me.m_core.m_EcoPathData, Me.m_core.m_EcoSimData)
 
-                TotalTime = m_core.nEcosimYears
-                m_searchData.redimForRun()
+                Me.TotalTime = Me.m_core.nEcosimYears
+                Me.m_searchData.redimForRun()
 
-                m_searchData.setLimitFishingMortality()
+                Me.m_searchData.setLimitFishingMortality()
 
                 'In EwE5
                 'BaseYear can be zero in the interface however once the zero baseyear is used to set the searchblocks it is set back to one
@@ -215,41 +215,41 @@ Namespace FishingPolicy
                 'If BaseYear <= 0 Then BaseYear = 1'make sure baseyear is not zero 
                 'If BaseYear is zero this allows the optimization to vary the baseyear but still get the baseyear values from one
                 'In EwE6 we constrain baseyear 1 to nEcosimYears right from the start
-                If m_searchData.BaseYear < 1 Then
-                    m_searchData.BaseYear = 1
+                If Me.m_searchData.BaseYear < 1 Then
+                    Me.m_searchData.BaseYear = 1
                 End If
 
-                If m_searchData.BaseYear > m_core.nEcosimYears Then
-                    m_searchData.BaseYear = m_core.nEcosimYears
+                If Me.m_searchData.BaseYear > Me.m_core.nEcosimYears Then
+                    Me.m_searchData.BaseYear = Me.m_core.nEcosimYears
                 End If
 
                 Me.m_searchData.bBaseYearSet = False
 
                 'get the number of blocks, sets ParNumber() and BlockNumber()
-                nBlocksUsed = m_searchData.SetFletchPars()
+                nBlocksUsed = Me.m_searchData.SetFletchPars()
 
                 'setting the number of blocks will set Frates to default values, for the new number of blocks
-                m_searchData.nBlocks = nBlocksUsed
+                Me.m_searchData.nBlocks = nBlocksUsed
 
                 'set a new results object with the number of blocks
-                Results = New cFPSSearchResults(m_searchData.nBlocks, m_searchData.NumFleets)
+                Me.Results = New cFPSSearchResults(Me.m_searchData.nBlocks, Me.m_searchData.NumFleets)
 
                 'the length of cSearchDataStructures.BlockNumber can/will be greater then cFPSSearchResults.BlockNumber
                 'see SetFletchPars for why this is
-                Debug.Assert(m_searchData.BlockNumber.Length >= Results.BlockNumber.Length, Me.ToString & " Number of search blocks is to big. This is a bug!")
+                Debug.Assert(Me.m_searchData.BlockNumber.Length >= Me.Results.BlockNumber.Length, Me.ToString & " Number of search blocks is to big. This is a bug!")
                 'copy the BlockNumber set in SetFletchPars into the results object
-                Array.Copy(m_searchData.BlockNumber, Results.BlockNumber, Results.BlockNumber.Length)
+                Array.Copy(Me.m_searchData.BlockNumber, Me.Results.BlockNumber, Me.Results.BlockNumber.Length)
 
-                m_searchData.saveInitialFishingRate(m_core.m_EcoSimData)
+                Me.m_searchData.saveInitialFishingRate(Me.m_core.m_EcoSimData)
 
-                m_ecosim.Init(False)
+                Me.m_ecosim.Init(False)
 
-                checkUseCostPenalty(nBlocksUsed)
+                Me.checkUseCostPenalty(nBlocksUsed)
 
                 'set Frates() for base values for the different Search Initialization Options
                 'Ecopath, Current and Random
                 Dim baseFrate As Single
-                If m_searchData.InitOption = eInitOption.EcopathBaseF Then
+                If Me.m_searchData.InitOption = eInitOption.EcopathBaseF Then
                     'EwE5 base Frates is always zero for Base values this may be a bug but it's copied here
                     baseFrate = 0
                 Else
@@ -257,32 +257,32 @@ Namespace FishingPolicy
                     baseFrate = 0.01
                 End If
 
-                For i As Integer = 1 To m_searchData.nBlocks
-                    m_searchData.Frates(i) = baseFrate
+                For i As Integer = 1 To Me.m_searchData.nBlocks
+                    Me.m_searchData.Frates(i) = baseFrate
                 Next
 
-                m_searchData.setMaxEffort(nBlocksUsed)
+                Me.m_searchData.setMaxEffort(nBlocksUsed)
                 'get the base values for the objective function by running ecosim 
-                getBaseValues(nBlocksUsed)
+                Me.getBaseValues(nBlocksUsed)
 
-                For Iter As Integer = 1 To m_searchData.nRuns
-                    If SearchFailed Or StopEstimation Then
+                For Iter As Integer = 1 To Me.m_searchData.nRuns
+                    If Me.SearchFailed Or Me.StopEstimation Then
                         Exit For
                     End If
 
                     'set the fishing rate to initial values (Frates(nBlocks)) base on the initialization option (m_searchData.InitOption )
-                    m_searchData.restoreSavedFishingRates()
+                    Me.m_searchData.restoreSavedFishingRates()
 
                     'set maxEffort base on the initial fishing rates, maxEffort is used to constrain the fishing rates
-                    m_searchData.setMaxEffort(nBlocksUsed)
+                    Me.m_searchData.setMaxEffort(nBlocksUsed)
 
                     'tell the world that a search 'Run' has started info about the run is available via properties of the manager and results objects
-                    SearchStarted(Iter)
+                    Me.SearchStarted(Iter)
 
-                    Minimize(nBlocksUsed, m_searchData.Frates, m_searchData.SearchMethod)
+                    Me.Minimize(nBlocksUsed, Me.m_searchData.Frates, Me.m_searchData.SearchMethod)
 
-                    If RunCompletedCallBack IsNot Nothing Then
-                        RunCompletedCallBack()
+                    If Me.RunCompletedCallBack IsNot Nothing Then
+                        Me.RunCompletedCallBack()
                     End If
 
                 Next Iter
@@ -301,7 +301,7 @@ Namespace FishingPolicy
 
         End Sub
 
-        Private Sub getBaseValues(ByVal nBlocksUsed As Integer)
+        Private Sub getBaseValues(nBlocksUsed As Integer)
 
             If Me.m_pluginManager IsNot Nothing Then
                 Me.m_pluginManager.SearchIterationsStarting()
@@ -310,38 +310,38 @@ Namespace FishingPolicy
             Me.m_ecosim.bStopRunning = False
 
             'get the base values used by FUNC to tell the change between the current run and the base run
-            m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nBlocksUsed)
+            Me.m_ecosim.RunModelValue(Me.TotalTime, Me.m_searchData.Frates, nBlocksUsed)
 
             If Me.m_pluginManager IsNot Nothing Then
                 Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
             End If
 
-            TotValBase = m_searchData.totval
-            EmployBase = m_searchData.Employ
-            ManValueBase = m_searchData.manvalue
-            EcoValueBase = m_searchData.ecovalue
-            BioDivBase = m_searchData.DiversityIndex
+            Me.TotValBase = Me.m_searchData.totval
+            Me.EmployBase = Me.m_searchData.Employ
+            Me.ManValueBase = Me.m_searchData.manvalue
+            Me.EcoValueBase = Me.m_searchData.ecovalue
+            Me.BioDivBase = Me.m_searchData.DiversityIndex
 
-            If TotValBase = 0 Then TotValBase = 1
-            If TotValBase < 0 Then TotValBase = -TotValBase
-            If EmployBase = 0 Then EmployBase = 1
-            If EmployBase < 0 Then EmployBase = -EmployBase
-            If ManValueBase = 0 Then ManValueBase = 1
-            If EcoValueBase = 0 Then EcoValueBase = 1
-            If BioDivBase = 0 Then BioDivBase = 1
+            If Me.TotValBase = 0 Then Me.TotValBase = 1
+            If Me.TotValBase < 0 Then Me.TotValBase = -Me.TotValBase
+            If Me.EmployBase = 0 Then Me.EmployBase = 1
+            If Me.EmployBase < 0 Then Me.EmployBase = -Me.EmployBase
+            If Me.ManValueBase = 0 Then Me.ManValueBase = 1
+            If Me.EcoValueBase = 0 Then Me.EcoValueBase = 1
+            If Me.BioDivBase = 0 Then Me.BioDivBase = 1
 
         End Sub
 
-        Private Sub SearchStarted(ByVal iIteration As Integer)
+        Private Sub SearchStarted(iIteration As Integer)
 
             Try
 
-                iRun = iIteration
+                Me.iRun = iIteration
                 'clear out the results from the last run
-                Results.Clear()
+                Me.Results.Clear()
 
-                If SearchStartedCallBack IsNot Nothing Then
-                    SearchStartedCallBack()
+                If Me.SearchStartedCallBack IsNot Nothing Then
+                    Me.SearchStartedCallBack()
                 End If
 
             Catch ex As Exception
@@ -355,11 +355,11 @@ Namespace FishingPolicy
 #Region "Message handling"
 
 
-        Private Sub addMessage(ByVal strMessage As String, Optional ByVal msgType As eMessageType = eMessageType.ErrorEncountered, Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Critical)
+        Private Sub addMessage(strMessage As String, Optional msgType As eMessageType = eMessageType.ErrorEncountered, Optional msgImportance As eMessageImportance = eMessageImportance.Critical)
 
             Try
 
-                addMessage(New cMessage(strMessage, msgType, eCoreComponentType.EcoSim, msgImportance))
+                Me.addMessage(New cMessage(strMessage, msgType, eCoreComponentType.EcoSim, msgImportance))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -371,11 +371,11 @@ Namespace FishingPolicy
 
         Private Sub addMessage(ByRef msg As cMessage)
 
-            Debug.Assert(AddMessageCallBack IsNot Nothing, Me.ToString & " Missing AddMessageCallBack().")
+            Debug.Assert(Me.AddMessageCallBack IsNot Nothing, Me.ToString & " Missing AddMessageCallBack().")
 
             Try
-                If AddMessageCallBack IsNot Nothing Then
-                    AddMessageCallBack(msg)
+                If Me.AddMessageCallBack IsNot Nothing Then
+                    Me.AddMessageCallBack(msg)
                 End If
             Catch ex As Exception
                 cLog.Write(ex)
@@ -384,35 +384,35 @@ Namespace FishingPolicy
 
         End Sub
 
-        Sub printstats(ByVal Xtime As Double, ByVal itn As Integer, ByVal ifn As Integer, ByVal F As Double, ByVal n As Integer, ByVal X() As Double, ByVal G() As Double)
+        Sub printstats(Xtime As Double, itn As Integer, ifn As Integer, F As Double, n As Integer, X() As Double, G() As Double)
 
             Try
 
                 'process any data for output
-                Results.nCalls = ifn
+                Me.Results.nCalls = ifn
 
                 For iblk As Integer = 1 To n
                     If X(iblk) < Math.Log(Me.m_searchData.MaxEffort) Then
-                        Results.BlockResults(iblk) = CSng(Math.Exp(X(iblk)))
+                        Me.Results.BlockResults(iblk) = CSng(Math.Exp(X(iblk)))
                     Else
-                        Results.BlockResults(iblk) = 60
+                        Me.Results.BlockResults(iblk) = 60
                     End If
                 Next
 
                 Dim WeightCorrection As Single
-                If m_searchData.ValWeight(1) + m_searchData.ValWeight(2) + m_searchData.ValWeight(3) + m_searchData.ValWeight(4) > 0 Then
-                    WeightCorrection = m_searchData.ValWeight(1) + m_searchData.ValWeight(2) + m_searchData.ValWeight(3) + m_searchData.ValWeight(4)
+                If Me.m_searchData.ValWeight(1) + Me.m_searchData.ValWeight(2) + Me.m_searchData.ValWeight(3) + Me.m_searchData.ValWeight(4) > 0 Then
+                    WeightCorrection = Me.m_searchData.ValWeight(1) + Me.m_searchData.ValWeight(2) + Me.m_searchData.ValWeight(3) + Me.m_searchData.ValWeight(4)
                 End If
                 If WeightCorrection <= 0 Then WeightCorrection = 1
 
-                Results.Totals = CSng((-F + VlocalPenalty) / WeightCorrection)
+                Me.Results.Totals = CSng((-F + Me.VlocalPenalty) / WeightCorrection)
 
                 For icrit As Integer = 1 To cSearchDatastructures.N_CRIT_RESULTS
-                    Results.CriteriaValues(icrit) = CritValue(icrit)
+                    Me.Results.CriteriaValues(icrit) = Me.CritValue(icrit)
                 Next
 
-                If ProgressCallBack IsNot Nothing Then
-                    ProgressCallBack()
+                If Me.ProgressCallBack IsNot Nothing Then
+                    Me.ProgressCallBack()
                 End If
 
 #If DEBUG Then
@@ -505,21 +505,21 @@ Namespace FishingPolicy
 #Region "Private modeling code"
 
 
-        Private Sub checkUseCostPenalty(ByVal nSearchBlocks As Integer)
+        Private Sub checkUseCostPenalty(nSearchBlocks As Integer)
             '  Dim TempTotVal As Double, TempEmploy As Double, TempManVal As Double, TempEcoVal As Double
 
             'jb Logic copied from EwE5 I'm not sure what the point of this 
             'it tells the user it is resetting the InitOption to Ecopath F's but it never resets InitOption flag
-            If m_searchData.InitOption <> eInitOption.EcopathBaseF Then
+            If Me.m_searchData.InitOption <> eInitOption.EcopathBaseF Then
 
-                m_ecosim.RunModelValue(TotalTime, m_searchData.Frates, nSearchBlocks)
+                Me.m_ecosim.RunModelValue(Me.TotalTime, Me.m_searchData.Frates, nSearchBlocks)
 
-                For iflt As Integer = 1 To m_searchData.NumFleets
-                    If m_searchData.CostRatio(iflt) > 1.15 And m_searchData.UseCostPenalty = True Then
+                For iflt As Integer = 1 To Me.m_searchData.NumFleets
+                    If Me.m_searchData.CostRatio(iflt) > 1.15 And Me.m_searchData.UseCostPenalty = True Then
                         'EwE5 message
                         'MsgBox("Cost exceeds income for fleet " + m_core.m_EcoPathData.FleetName(iflt) + " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", vbOKOnly, "Ecosim policy search")
 
-                        addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + m_core.m_EcoPathData.FleetName(iflt) + _
+                        Me.addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + Me.m_core.m_EcoPathData.FleetName(iflt) + _
                                         " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", _
                                         eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Critical))
                         Exit For
@@ -531,8 +531,8 @@ Namespace FishingPolicy
         End Sub
 
 
-        Sub Minimize(ByVal n As Integer, ByVal X() As Double, ByVal SearchMethod As eSearchOptionTypes)
-            'Sub Minimize(ByVal n As Integer, ByVal X() As Double, ByVal SearchMethod As Integer, ByVal ColorN() As Long, ByVal CritVa() As Single)
+        Sub Minimize(n As Integer, X() As Double, SearchMethod As eSearchOptionTypes)
+            'Sub Minimize(n As Integer, X() As Double, SearchMethod As Integer, ColorN() As Long, CritVa() As Single)
             '****************   NOTE TO FLETCH USERS   *****************************
 
             '       To use this program for fitting data to models, you must do the
@@ -578,7 +578,7 @@ Namespace FishingPolicy
             'ReDim X(n) As Double
             Try
 
-                ReDim G(n), Xm(n) ', Nam$(Nmax)
+                ReDim Me.G(n), Me.Xm(n) ', Nam$(Nmax)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Dimensioning strangeness
                 'In flet H() dimensions are accessed in two ways 
@@ -601,7 +601,7 @@ Namespace FishingPolicy
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'EwE5 code
                 'ReDim H(UBound(X) ^ 2 / 2 + 2), W(UBound(X) ^ 2 / 2 + 2)  'was 1000 when nmax was 100
-                ReDim H(ndims), W(ndims)
+                ReDim Me.H(ndims), Me.W(ndims)
 
                 '061205VC: I had a model where the W would go out of bounds and bomb the optimization. it was with x = 3 letting
                 'the expression be = 5.5, which caused it to bomb when the index was 6 !, so now adding 2 instead of 1 as before
@@ -615,19 +615,19 @@ Namespace FishingPolicy
                 eps = 0.000001
                 Gtol = 0.0000000001
                 mode = 1
-                maxfn = MaxNoOfIterations
+                maxfn = Me.MaxNoOfIterations
                 iprint = 1
-                For i = 1 To X.Length - 1 : Xm(i) = X(i) : Next
+                For i = 1 To X.Length - 1 : Me.Xm(i) = X(i) : Next
 
-                Estfn = FUNC(X, n)
-                printstats(0.0, 0, 0, Estfn, n, X, G)
+                Estfn = Me.FUNC(X, n)
+                Me.printstats(0.0, 0, 0, Estfn, n, X, Me.G)
 
                 If SearchMethod = eSearchOptionTypes.Fletch Then
-                    flet(F, X, n, G, H, dfn, Xm, StepSize, eps, mode, m_searchData.nInterations, iprint, W, iexit)
+                    Me.flet(F, X, n, Me.G, Me.H, dfn, Me.Xm, StepSize, eps, mode, Me.m_searchData.nInterations, iprint, Me.W, iexit)
                 ElseIf SearchMethod = eSearchOptionTypes.DFPmin Then
-                    DFPmin(X, n, Gtol, iter, ifn, F)
+                    Me.DFPmin(X, n, Gtol, iter, Me.ifn, F)
                 ElseIf SearchMethod = eSearchOptionTypes.BaseProfitability Then 'search for base profitability
-                    SearchForBaseProfitability(X, n)
+                    Me.SearchForBaseProfitability(X, n)
                 End If
 
             Catch ex As Exception
@@ -638,8 +638,8 @@ Namespace FishingPolicy
 
         End Sub
 
-        Sub flet(ByVal F As Double, ByVal X() As Double, ByVal n As Integer, ByVal G() As Double, ByVal H() As Double, ByVal dfn As Double, ByVal Xm() As Double, _
-                     ByVal hh As Double, ByVal eps As Double, ByVal mode As Integer, ByVal maxfn As Integer, ByVal iprint As Integer, ByVal W() As Double, ByVal iexit As Integer)
+        Sub flet(F As Double, X() As Double, n As Integer, G() As Double, H() As Double, dfn As Double, Xm() As Double, _
+                     hh As Double, eps As Double, mode As Integer, maxfn As Integer, iprint As Integer, W() As Double, iexit As Integer)
             '      subroutine flet(f,x,n,g,h,dfn,xm,hh,eps,
             '     *                 mode,maxfn,iprint,w,iexit,func,*)
             '      implicit real*8 (a-h,o-z)
@@ -683,8 +683,8 @@ Namespace FishingPolicy
             Dim Sig As Double
             Dim temp As Double
 
-            SearchFailed = False
-            Resline = 0
+            Me.SearchFailed = False
+            Me.Resline = 0
             llog = 1
             Np = n + 1
             N1 = n - 1
@@ -747,8 +747,8 @@ pta:        '    continue
             If dmin <= 0.0! Then GoTo Ptc
             Z = F
             itn = 0
-            F = FUNC(X, n) : If SearchFailed = True Then Exit Sub
-            ifn = 1
+            F = Me.FUNC(X, n) : If Me.SearchFailed = True Then Exit Sub
+            Me.ifn = 1
             DF = dfn
             If (dfn = 0.0!) Then DF = F - Z
             If (dfn < 0.0!) Then DF = Math.Abs(DF * F)
@@ -766,7 +766,7 @@ pte:        ' continue
             End If
 
 18:         '    continue
-            If (ifn >= maxfn) Then GoTo 90
+            If (Me.ifn >= maxfn) Then GoTo 90
 20:         '    continue
             If (iprint = 0) Then GoTo 21
             If (itn = 0) Then GoTo 7000
@@ -775,7 +775,7 @@ pte:        ' continue
 7003:       itime = 1
             Xtime = itime / 1000.0!
             'If MaxRuns = 1 Then
-            printstats(Xtime, itn, ifn, F, n, X, G)
+            Me.printstats(Xtime, itn, Me.ifn, F, n, X, G)
             '  If frmOptF.chkBatch.value = False Then Call printstats(Xtime, itn, ifn, F, n, X(), G())
             '    printstats(Xtime, itn, ifn, F, n, X, G)
 21:         itn = itn + 1
@@ -824,14 +824,14 @@ pte:        ' continue
             intt = 0
             iexit = 1
 30:         '    continue
-            If (ifn >= maxfn Or Alpha < 1.0E-20) Then GoTo 90
+            If (Me.ifn >= maxfn Or Alpha < 1.0E-20) Then GoTo 90
 
             For i = 1 To n
                 W(i) = X(i) + Alpha * W(iss + i)
             Next i
 
-            f1 = FUNC(W, n) : If SearchFailed = True Then Exit Sub
-            ifn = ifn + 1
+            f1 = Me.FUNC(W, n) : If Me.SearchFailed = True Then Exit Sub
+            Me.ifn = Me.ifn + 1
             If (f1 >= F) Then GoTo 40
             f2 = F
             tot = tot + Alpha
@@ -846,14 +846,14 @@ pte:        ' continue
             If intt - 1 = 0 Then GoTo 49
 
 35:         '   continue
-            If (ifn >= maxfn Or Alpha < 1.0E-20) Then GoTo 90
+            If (Me.ifn >= maxfn Or Alpha < 1.0E-20) Then GoTo 90
 
             For i = 1 To n
                 W(i) = X(i) + Alpha * W(iss + i)
             Next i
 
-            f1 = FUNC(W, n) : If SearchFailed = True Then Exit Sub
-            ifn = ifn + 1
+            f1 = Me.FUNC(W, n) : If Me.SearchFailed = True Then Exit Sub
+            Me.ifn = Me.ifn + 1
             If (f1 >= F) Then GoTo 50
             If (f1 + f2 >= F + F And 7 * f1 + 5 * f2 > 12 * F) Then intt = 2
             tot = tot + Alpha
@@ -864,15 +864,15 @@ pte:        ' continue
                 GoTo 92
             End If
 
-            If (ifn >= maxfn) Then GoTo 90
+            If (Me.ifn >= maxfn) Then GoTo 90
             Alpha = 0.5 * Alpha
 
             For i = 1 To n
                 W(i) = X(i) + Alpha * W(iss + i)
             Next i
 
-            f2 = FUNC(W, n) : If SearchFailed = True Then Exit Sub
-            ifn = ifn + 1
+            f2 = Me.FUNC(W, n) : If Me.SearchFailed = True Then Exit Sub
+            Me.ifn = Me.ifn + 1
             If (f2 >= F) Then GoTo 45
             tot = tot + Alpha
             F = f2
@@ -906,7 +906,7 @@ pte:        ' continue
             If idiff > 1 Then GoTo 110
             GoTo 100
 54:         '   continue
-            If (ifn >= maxfn) Then GoTo 90
+            If (Me.ifn >= maxfn) Then GoTo 90
             gys = 0
 
             For i = 1 To n
@@ -993,7 +993,7 @@ pte:        ' continue
             'go to (60,20),link
 90:         '   continue
             iexit = 3
-            If PrintOn And MaxRuns = 1 Then
+            If Me.PrintOn And Me.MaxRuns = 1 Then
                 'If Alpha > 1E-20 Then frmOptF.Res.Print "maximum number of evaluations exceeded " Else frmOptF.Res.Print "can't find improving step"
                 If Alpha > 1.0E-20 Then
                     Me.addMessage("maximum number of evaluations exceeded ")
@@ -1010,7 +1010,7 @@ pte:        ' continue
             GoTo pte
 94:         '   continue
             If (iexit = 2) Then
-                If PrintOn And MaxRuns = 1 Then
+                If Me.PrintOn And Me.MaxRuns = 1 Then
                     Me.addMessage("fletch grad transpose times delta x greater than or equal zero --- eps set too small?")
                     '    MsgBox("fletch grad transpose times delta x greater than or equal zero --- eps set too small?")
                 End If
@@ -1035,7 +1035,7 @@ pte:        ' continue
             '    DoWhat = ""
             'End If
 
-            printstats(Xtime, itn, ifn, F, n, X, G)
+            Me.printstats(Xtime, itn, Me.ifn, F, n, X, G)
 
             ' ToDo: globalize this
             Me.addMessage("Optimization done", eMessageType.Any, eMessageImportance.Information)
@@ -1047,12 +1047,12 @@ pte:        ' continue
             For i = 1 To n
                 Z = hh * Xm(i)
                 W(i) = W(i) + Z
-                f1 = FUNC(W, n) : If SearchFailed = True Then Exit Sub
+                f1 = Me.FUNC(W, n) : If Me.SearchFailed = True Then Exit Sub
                 G(i) = (f1 - F) / Z
                 W(i) = W(i) - Z
             Next i
 
-            ifn = ifn + n
+            Me.ifn = Me.ifn + n
             If link = 1 Then GoTo 18
             If link = 2 Then GoTo 54
             ' go to (18,54),link
@@ -1062,14 +1062,14 @@ pte:        ' continue
             For i = 1 To n
                 Z = hh * Xm(i)
                 W(i) = W(i) + Z
-                f1 = FUNC(W, n) : If SearchFailed = True Then Exit Sub
+                f1 = Me.FUNC(W, n) : If Me.SearchFailed = True Then Exit Sub
                 W(i) = W(i) - Z - Z
-                f2 = FUNC(W, n) : If SearchFailed = True Then Exit Sub
+                f2 = Me.FUNC(W, n) : If Me.SearchFailed = True Then Exit Sub
                 G(i) = (f1 - f2) / (2 * Z)
                 W(i) = W(i) + Z
             Next i
 
-            ifn = ifn + n + n
+            Me.ifn = Me.ifn + n + n
             If link = 1 Then GoTo 18
             If link = 2 Then GoTo 54
             'go to (18,54),link
@@ -1079,7 +1079,7 @@ pte:        ' continue
 7010:       'If PrintOn = True Then frmOptF.Res.Print "intermediate statistics"
             llog = 0
             GoTo 7003
-Ptc:        If PrintOn = True Then
+Ptc:        If Me.PrintOn = True Then
                 Me.addMessage("fletch hessian not positive definate")
                 'MsgBox("fletch hessian not positive definate")
             End If
@@ -1089,7 +1089,7 @@ endline:    ' '
 
         End Sub
 
-        Function FUNC(ByVal X() As Double, ByVal n As Integer) As Double
+        Function FUNC(X() As Double, n As Integer) As Double
             Dim i As Integer
             'Dim totval As Double, Employ As Double,ecovalue As Double, manvalue As Double,
             Dim LogUtil As Double
@@ -1107,50 +1107,50 @@ endline:    ' '
 
             Try
 
-                m_ecosim.RunModelValue(TotalTime, X, n)
+                Me.m_ecosim.RunModelValue(Me.TotalTime, X, n)
 
                 If Me.m_searchData.FPSUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
                     Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
                 End If
 
-                VlocalPenalty = 0
+                Me.VlocalPenalty = 0
                 For i = 1 To n
-                    VlocalPenalty = VlocalPenalty + 0.001 * X(i) ^ 2
+                    Me.VlocalPenalty = Me.VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If TotValBase <> 0 Then CritValue(eSearchCriteriaResultTypes.TotalValue) = CSng(m_searchData.totval / TotValBase)
-                If EmployBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Employment) = CSng(m_searchData.Employ / EmployBase)
-                If ManValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.MandateReb) = CSng(m_searchData.manvalue / ManValueBase)
-                If EcoValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Ecological) = CSng(m_searchData.ecovalue / EcoValueBase)
-                If BioDivBase <> 0 Then CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(m_searchData.DiversityIndex / BioDivBase)
+                If Me.TotValBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.TotalValue) = CSng(Me.m_searchData.totval / Me.TotValBase)
+                If Me.EmployBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Employment) = CSng(Me.m_searchData.Employ / Me.EmployBase)
+                If Me.ManValueBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.MandateReb) = CSng(Me.m_searchData.manvalue / Me.ManValueBase)
+                If Me.EcoValueBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Ecological) = CSng(Me.m_searchData.ecovalue / Me.EcoValueBase)
+                If Me.BioDivBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(Me.m_searchData.DiversityIndex / Me.BioDivBase)
 
-                returnvalue = VlocalPenalty - m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_searchData.totval / TotValBase - _
-                        m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * m_searchData.Employ / EmployBase - _
-                        m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_searchData.manvalue / ManValueBase - _
-                        m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_searchData.ecovalue / EcoValueBase - _
-                        m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_searchData.DiversityIndex / BioDivBase
+                returnvalue = Me.VlocalPenalty - Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_searchData.totval / Me.TotValBase - _
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Employ / Me.EmployBase - _
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_searchData.manvalue / Me.ManValueBase - _
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_searchData.ecovalue / Me.EcoValueBase - _
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_searchData.DiversityIndex / Me.BioDivBase
 
-                If m_searchData.MinimizeEffortChange Then
+                If Me.m_searchData.MinimizeEffortChange Then
                     If returnvalue < 0 Then
-                        returnvalue = returnvalue * EffortChangePenalty()
+                        returnvalue = returnvalue * Me.EffortChangePenalty()
                     Else
-                        returnvalue = returnvalue * (1 / EffortChangePenalty())
+                        returnvalue = returnvalue * (1 / Me.EffortChangePenalty())
                     End If
                 End If
 
-                If m_searchData.LimitFishingMortality Then returnvalue = returnvalue * LimitFPenalty()
+                If Me.m_searchData.LimitFishingMortality Then returnvalue = returnvalue * Me.LimitFPenalty()
 
-                If m_searchData.PortFolio = True Then
+                If Me.m_searchData.PortFolio = True Then
                     'calculate general log utility for net economic value
                     'sets to quadratic function with continuous derivative if critvalue is <-.5
-                    If CritValue(1) + 1 > 0.5 Then
-                        LogUtil = Math.Log(CritValue(1) + 1)
+                    If Me.CritValue(1) + 1 > 0.5 Then
+                        LogUtil = Math.Log(Me.CritValue(1) + 1)
                     Else
-                        LogUtil = Math.Log(0.5) + 1 / 0.5 * (CritValue(1) + 1 - 0.5) - 1 / 0.25 * (CritValue(1) + 1 - 0.5) ^ 2
+                        LogUtil = Math.Log(0.5) + 1 / 0.5 * (Me.CritValue(1) + 1 - 0.5) - 1 / 0.25 * (Me.CritValue(1) + 1 - 0.5) ^ 2
                     End If
-                    returnvalue = -m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * LogUtil + _
-                                   m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * m_searchData.Ecodistance - _
-                                   m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ExistValue
+                    returnvalue = -Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * LogUtil + _
+                                   Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Ecodistance - _
+                                   Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ExistValue
                 End If
 
                 'Is the objective function value a valid number
@@ -1159,8 +1159,8 @@ endline:    ' '
                     'figure out which criteria value is an invalid number
                     'and dump it to the log
                     Dim enumNames As String
-                    For icrt As Integer = 0 To CritValue.Length - 1
-                        If Double.IsNaN(CritValue(icrt)) Or Double.IsInfinity(CritValue(icrt)) Then
+                    For icrt As Integer = 0 To Me.CritValue.Length - 1
+                        If Double.IsNaN(Me.CritValue(icrt)) Or Double.IsInfinity(Me.CritValue(icrt)) Then
                             Dim enumname As String = [Enum].GetName(GetType(eSearchCriteriaResultTypes), icrt)
                             enumNames += enumname + " "
                             cLog.Write("Fishing Policy Search criteria value " + enumname + " is invalid.")
@@ -1170,8 +1170,8 @@ endline:    ' '
                     'If there was an error the returnvalue will not matter
                     'SearchFailed will force the search to stop
                     returnvalue = 1.0E+20
-                    SearchFailed = True
-                    addMessage("Fishing Policy Search Error: Invalid optimization value for " + enumNames, eMessageType.ErrorEncountered)
+                    Me.SearchFailed = True
+                    Me.addMessage("Fishing Policy Search Error: Invalid optimization value for " + enumNames, eMessageType.ErrorEncountered)
                 End If
 
                 Return returnvalue
@@ -1180,29 +1180,29 @@ endline:    ' '
                 'If there was an error the returnvalue will not matter
                 'SearchFailed will force the search to stop
                 FUNC = 1.0E+20
-                SearchFailed = True
+                Me.SearchFailed = True
 
                 cLog.Write("Fishing Policy Search Aborted due to Error.")
                 cLog.Write(ex)
-                addMessage("Fishing Policy Search Error: " & ex.Message, eMessageType.ErrorEncountered)
+                Me.addMessage("Fishing Policy Search Error: " & ex.Message, eMessageType.ErrorEncountered)
 
             End Try
 
         End Function
 
 
-        Sub DFPmin(ByVal P() As Double, ByVal n As Integer, ByVal FTOL As Double, ByVal iter As Integer, ByVal ift As Integer, ByVal FRET As Double)
+        Sub DFPmin(P() As Double, n As Integer, FTOL As Double, iter As Integer, ift As Integer, FRET As Double)
             Dim Itmax As Integer, eps As Double, Fp As Double, i As Integer, j As Integer
             Dim its As Integer, Fac As Double, Fae As Double, Fad As Double, Dum As Double
-            SearchFailed = False
-            ifn = 0
-            Itmax = MaxNoOfIterations '200
+            Me.SearchFailed = False
+            Me.ifn = 0
+            Itmax = Me.MaxNoOfIterations '200
             eps = 0.0000000001
             Dim Hessin(,) As Double, xi() As Double, G() As Double, dg() As Double, hdg() As Double
             ReDim Hessin(n, n), xi(n), G(n), dg(n), hdg(n)
 
-            Fp = FUNC2(P, n)
-            DFUNC(P, G, n)
+            Fp = Me.FUNC2(P, n)
+            Me.DFUNC(P, G, n)
 
             For i = 1 To n
                 For j = 1 To n
@@ -1214,18 +1214,18 @@ endline:    ' '
 
             For its = 1 To Itmax
                 iter = its
-                LINMIN(P, xi, n, FRET)
+                Me.LINMIN(P, xi, n, FRET)
                 If 2.0! * Math.Abs(FRET - Fp) <= FTOL * (Math.Abs(FRET) + Math.Abs(Fp) + eps) Then
                     Erase hdg, dg, G, xi, Hessin
-                    ift = ifn
+                    ift = Me.ifn
                     Exit Sub
                 End If
                 Fp = FRET
                 For i = 1 To n
                     dg(i) = G(i)
                 Next i
-                FRET = FUNC2(P, n)
-                DFUNC(P, G, n)
+                FRET = Me.FUNC2(P, n)
+                Me.DFUNC(P, G, n)
                 For i = 1 To n
                     dg(i) = G(i) - dg(i)
                 Next i
@@ -1258,12 +1258,12 @@ endline:    ' '
                         xi(i) = xi(i) - Hessin(i, j) * G(j)
                     Next j
                 Next i
-                printstats(0, its, ifn, FRET, n, P, G)
-                ift = ifn
-                If SearchFailed = True Then Exit Sub
+                Me.printstats(0, its, Me.ifn, FRET, n, P, G)
+                ift = Me.ifn
+                If Me.SearchFailed = True Then Exit Sub
 
             Next its
-            ift = ifn
+            ift = Me.ifn
             'frmOptF.Res.Print "too many iterations in DFPMIN"
             Me.addMessage("too many iterations in DFPMIN")
             '  MsgBox("too many iterations in DFPMIN")
@@ -1272,41 +1272,41 @@ endline:    ' '
 
 
 
-        Sub DFUNC(ByVal X() As Double, ByRef DF() As Double, ByVal n As Integer)
+        Sub DFUNC(X() As Double, ByRef DF() As Double, n As Integer)
             Dim Dstep As Double, Fbase As Double, i As Integer
             'DF(1) = 2 * X(1) - 0.9 * X(2)
             'DF(2) = 2 * X(2) + -0.9 * X(1)
             Dstep = 0.000001
-            Fbase = FUNC2(X, n)
+            Fbase = Me.FUNC2(X, n)
             For i = 1 To n
                 X(i) = X(i) + Dstep
-                DF(i) = (FUNC2(X, n) - Fbase) / Dstep
+                DF(i) = (Me.FUNC2(X, n) - Fbase) / Dstep
                 X(i) = X(i) - Dstep
             Next
         End Sub
 
 
-        Function FUNC2(ByVal X() As Double, ByVal n As Integer) As Double
+        Function FUNC2(X() As Double, n As Integer) As Double
             'FUNC2 = X(1) ^ 2 + X(2) ^ 2 - 0.9 * X(1) * X(2)
-            FUNC2 = FUNC(X, n)
-            ifn = ifn + 1
+            FUNC2 = Me.FUNC(X, n)
+            Me.ifn = Me.ifn + 1
         End Function
 
 
-        Sub LINMIN(ByRef P() As Double, ByRef xi() As Double, ByVal n As Integer, ByRef FRET As Double)
+        Sub LINMIN(ByRef P() As Double, ByRef xi() As Double, n As Integer, ByRef FRET As Double)
             Dim Tol As Double, j As Integer, Ax As Double, XX As Double, Fa As Double
             Dim Fb As Double, Fx As Double, Dum As Double, Bx As Double
             Dim Xmin As Double
             Tol = 0.0001
-            ncom = n
+            Me.ncom = n
             For j = 1 To n
-                pcom(j) = P(j)
-                xicom(j) = xi(j)
+                Me.pcom(j) = P(j)
+                Me.xicom(j) = xi(j)
             Next j
             Ax = 0.0!
             XX = 1.0!
-            MNBRAK(Ax, XX, Bx, Fa, Fx, Fb, Dum)
-            FRET = BRENT(Ax, XX, Bx, Dum, Tol, Xmin)
+            Me.MNBRAK(Ax, XX, Bx, Fa, Fx, Fb, Dum)
+            FRET = Me.BRENT(Ax, XX, Bx, Dum, Tol, Xmin)
             For j = 1 To n
                 xi(j) = Xmin * xi(j)
                 P(j) = P(j) + xi(j)
@@ -1320,8 +1320,8 @@ endline:    ' '
             Gold = 1.618034
             Glimit = 100.0!
             Tiny = 1.0E-20
-            Fa = FUNC(Ax)
-            Fb = FUNC(Bx)
+            Fa = Me.FUNC(Ax)
+            Fb = Me.FUNC(Bx)
             If Fb > Fa Then
                 Dum = Ax
                 Ax = Bx
@@ -1331,7 +1331,7 @@ endline:    ' '
                 Fa = Dum
             End If
             cx = Bx + Gold * (Bx - Ax)
-            FC = FUNC(cx)
+            FC = Me.FUNC(cx)
             Do
                 If Fb < FC Then Exit Do
                 done = True '-1
@@ -1342,7 +1342,7 @@ endline:    ' '
                 U = Bx - ((Bx - cx) * Q - (Bx - Ax) * R) / (2.0! * Dum)
                 Ulim = Bx + Glimit * (cx - Bx)
                 If (Bx - U) * (U - cx) > 0.0! Then
-                    Fu = FUNC(U)
+                    Fu = Me.FUNC(U)
                     If Fu < FC Then
                         Ax = Bx
                         Fa = Fb
@@ -1355,23 +1355,23 @@ endline:    ' '
                         Exit Sub
                     End If
                     U = cx + Gold * (cx - Bx)
-                    Fu = FUNC(U)
+                    Fu = Me.FUNC(U)
                 ElseIf (cx - U) * (U - Ulim) > 0.0! Then
-                    Fu = FUNC(U)
+                    Fu = Me.FUNC(U)
                     If Fu < FC Then
                         Bx = cx
                         cx = U
                         U = cx + Gold * (cx - Bx)
                         Fb = FC
                         FC = Fu
-                        Fu = FUNC(U)
+                        Fu = Me.FUNC(U)
                     End If
                 ElseIf (U - Ulim) * (Ulim - cx) >= 0.0! Then
                     U = Ulim
-                    Fu = FUNC(U)
+                    Fu = Me.FUNC(U)
                 Else
                     U = cx + Gold * (cx - Bx)
-                    Fu = FUNC(U)
+                    Fu = Me.FUNC(U)
                 End If
                 If done Then
                     Ax = Bx
@@ -1403,7 +1403,7 @@ endline:    ' '
             W = v
             X = v
             E = 0.0!
-            Fx = FUNC(X)
+            Fx = Me.FUNC(X)
             Fval = Fx
             Fw = Fx
             For iter = 1 To Itmax
@@ -1442,7 +1442,7 @@ endline:    ' '
                 Else
                     U = X + Math.Abs(Tol1) * Math.Sign(d)
                 End If
-                Fu = FUNC(U)
+                Fu = Me.FUNC(U)
                 If Fu <= Fx Then
                     If U >= X Then
                         A = X
@@ -1479,21 +1479,21 @@ endline:    ' '
         End Function
 
 
-        Private Function FUNC(ByVal X As Double) As Double
-            FUNC = F1DIM(X)
+        Private Function FUNC(X As Double) As Double
+            FUNC = Me.F1DIM(X)
         End Function
 
-        Function F1DIM(ByVal X As Double) As Double
+        Function F1DIM(X As Double) As Double
             Dim XT(50) As Double, j As Integer
-            For j = 1 To ncom
-                XT(j) = pcom(j) + X * xicom(j)
+            For j = 1 To Me.ncom
+                XT(j) = Me.pcom(j) + X * Me.xicom(j)
             Next j
-            F1DIM = FUNC2(XT, ncom)
+            F1DIM = Me.FUNC2(XT, Me.ncom)
             Erase XT
         End Function
 
 
-        Sub SearchForBaseProfitability(ByVal X() As Double, ByVal n As Integer)
+        Sub SearchForBaseProfitability(X() As Double, n As Integer)
             ' Dim totval As Double, Employ As Double, manvalue As Double, ecovalue As Double
             Dim BaseIncome() As Single, Temp As Double
             Dim CostToI() As Single, GainToJ(,) As Single, iter As Integer
@@ -1506,10 +1506,10 @@ endline:    ' '
             Dim i As Integer, j As Integer, K As Integer, SpGaintoJ As Single
             Dim gro As Double, SumGro As Double
 
-            Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
             'exit if search is not over gear types
-            If n <> m_searchData.NumFleets Then
+            If n <> Me.m_searchData.NumFleets Then
                 Me.m_core.Messages.SendMessage(New cMessage("This search method only allows you to search over all fleets. You must set the search blocks to one block per fleet.", _
                                                     eMessageType.ErrorEncountered, eCoreComponentType.FishingPolicySearch, eMessageImportance.Warning))
                 Exit Sub
@@ -1517,14 +1517,14 @@ endline:    ' '
 
             RelaxWt = 0.5
             GroMax = 0.3
-            PropToPlaintiff = 0.0
+            Me.PropToPlaintiff = 0.0
 
             Dim BaseIncomeSpecies(,) As Single
-            ReDim BaseIncome(m_searchData.NumFleets), BaseIncomeSpecies(m_searchData.NumFleets, m_searchData.NumGroups) ', BaseEffort(m_searchData.NumFleets)
-            ReDim CostToI(m_searchData.NumFleets), GainToJ(m_searchData.NumFleets, m_searchData.NumFleets), PaidToJ(m_searchData.NumFleets), PaidToJbyI(m_searchData.NumFleets, m_searchData.NumFleets)
-            ReDim Profitability(m_searchData.NumFleets), G(m_searchData.NumFleets)
+            ReDim BaseIncome(Me.m_searchData.NumFleets), BaseIncomeSpecies(Me.m_searchData.NumFleets, Me.m_searchData.NumGroups) ', BaseEffort(m_searchData.NumFleets)
+            ReDim CostToI(Me.m_searchData.NumFleets), GainToJ(Me.m_searchData.NumFleets, Me.m_searchData.NumFleets), PaidToJ(Me.m_searchData.NumFleets), Me.PaidToJbyI(Me.m_searchData.NumFleets, Me.m_searchData.NumFleets)
+            ReDim Me.Profitability(Me.m_searchData.NumFleets), Me.G(Me.m_searchData.NumFleets)
             Dim tincome As Single, Dummy As Double, nch As Integer
-            ReDim Delp(m_searchData.NumFleets), DelX(m_searchData.NumFleets), LastP(m_searchData.NumFleets), DpDx(m_searchData.NumFleets)
+            ReDim Delp(Me.m_searchData.NumFleets), DelX(Me.m_searchData.NumFleets), LastP(Me.m_searchData.NumFleets), DpDx(Me.m_searchData.NumFleets)
 
             'varies fishing efforts so as to try and achieve baseprofitability for each fleet, while accounting
             'for transfer costs from fleets that cause reduced income to the fleets impacted by such reductions
@@ -1532,44 +1532,44 @@ endline:    ' '
             Do
                 iter = iter + 1
                 'get base incomes and costs for this iteration
-                Dummy = FUNC(X, n)
+                Dummy = Me.FUNC(X, n)
 
                 'LastYearIncome() and LastYearIncomeSpecies() set by Ecosim.RunModelValue called by FUNC()
-                For i = 1 To m_searchData.NumFleets
-                    BaseIncome(i) = m_searchData.LastYearIncome(i)
-                    For K = 1 To m_searchData.NumGroups
-                        BaseIncomeSpecies(i, K) = m_searchData.LastYearIncomeSpecies(i, K)
+                For i = 1 To Me.m_searchData.NumFleets
+                    BaseIncome(i) = Me.m_searchData.LastYearIncome(i)
+                    For K = 1 To Me.m_searchData.NumGroups
+                        BaseIncomeSpecies(i, K) = Me.m_searchData.LastYearIncomeSpecies(i, K)
                     Next
                 Next
 
                 'then get gains to each gear j of eliminating gear i, while accumulating negative gains
                 'as costs to gear i
-                ReDim PaidToJ(m_searchData.NumFleets), PaidToJbyI(m_searchData.NumFleets, m_searchData.NumFleets)
-                For i = 1 To m_searchData.NumFleets
+                ReDim PaidToJ(Me.m_searchData.NumFleets), Me.PaidToJbyI(Me.m_searchData.NumFleets, Me.m_searchData.NumFleets)
+                For i = 1 To Me.m_searchData.NumFleets
                     Temp = X(i)
                     'turn off gear i temporarily and make a run
                     X(i) = -5
-                    m_ecosim.RunModelValue(TotalTime, X, n)
+                    Me.m_ecosim.RunModelValue(Me.TotalTime, X, n)
                     CostToI(i) = 0
-                    For j = 1 To m_searchData.NumFleets
-                        GainToJ(i, j) = m_searchData.LastYearIncome(j) - BaseIncome(j)
+                    For j = 1 To Me.m_searchData.NumFleets
+                        GainToJ(i, j) = Me.m_searchData.LastYearIncome(j) - BaseIncome(j)
 
-                        If m_searchData.IncludeCompetitiveImpact Then
+                        If Me.m_searchData.IncludeCompetitiveImpact Then
 
                             If GainToJ(i, j) > 0 Then
                                 CostToI(i) = CostToI(i) + GainToJ(i, j)
                                 PaidToJ(j) = PaidToJ(j) + GainToJ(i, j)
-                                PaidToJbyI(i, j) = GainToJ(i, j)
+                                Me.PaidToJbyI(i, j) = GainToJ(i, j)
                             End If
 
                         Else
-                            For K = 1 To m_searchData.NumGroups
+                            For K = 1 To Me.m_searchData.NumGroups
                                 If BaseIncomeSpecies(i, K) = 0 Then
-                                    SpGaintoJ = m_searchData.LastYearIncomeSpecies(j, K) - BaseIncomeSpecies(j, K)
+                                    SpGaintoJ = Me.m_searchData.LastYearIncomeSpecies(j, K) - BaseIncomeSpecies(j, K)
                                     If SpGaintoJ > 0 Then
                                         CostToI(i) = CostToI(i) + SpGaintoJ
                                         PaidToJ(j) = PaidToJ(j) + SpGaintoJ
-                                        PaidToJbyI(i, j) = PaidToJbyI(i, j) + SpGaintoJ
+                                        Me.PaidToJbyI(i, j) = Me.PaidToJbyI(i, j) + SpGaintoJ
                                     End If
                                 End If
                             Next
@@ -1578,33 +1578,33 @@ endline:    ' '
                     'restore log effort for gear i
                     X(i) = Temp
                 Next
-                For i = 1 To m_searchData.NumFleets
-                    m_searchData.LastYearIncome(i) = BaseIncome(i)
+                For i = 1 To Me.m_searchData.NumFleets
+                    Me.m_searchData.LastYearIncome(i) = BaseIncome(i)
                 Next
 
-                updateBaseProfitabilityResults()
+                Me.updateBaseProfitabilityResults()
                 'If StopEstimation = False Then ShowFleetCosts()
 
                 'now calculate profitabilities if all gears were charged for their costs to other gears
                 'and increment/decrement log effort in proportion to excess of profitability over target
                 SumGro = 0
                 nch = 0
-                For i = 1 To m_searchData.NumFleets
+                For i = 1 To Me.m_searchData.NumFleets
                     tcost = CSng((epdata.cost(i, eCostIndex.CUPE) + epdata.cost(i, eCostIndex.Sail)) * Math.Exp(X(i)) + CostToI(i) + 0.0000000001)
-                    tincome = CSng(BaseIncome(i) + PropToPlaintiff * PaidToJ(i) + 0.0000000001)
+                    tincome = CSng(BaseIncome(i) + Me.PropToPlaintiff * PaidToJ(i) + 0.0000000001)
 
-                    Profitability(i) = (tincome - tcost) / tincome - m_searchData.TargetProfitability(i)
+                    Me.Profitability(i) = (tincome - tcost) / tincome - Me.m_searchData.TargetProfitability(i)
                     LastX = X(i)
                     If Math.Abs(DelX(i)) < 0.1 Then
                         'use simple step based on profitability
-                        gro = Profitability(i)
+                        gro = Me.Profitability(i)
                         If gro > GroMax Then gro = GroMax
                         If gro < -GroMax Then gro = -GroMax
 
                         X(i) = X(i) + RelaxWt * gro
                     Else
                         'use linear projection step based on dprofitability/dX
-                        Delp(i) = Profitability(i) - LastP(i)
+                        Delp(i) = Me.Profitability(i) - LastP(i)
                         DpDx(i) = Delp(i) / DelX(i)
                         If Math.Abs(DpDx(i)) > 0.01 Then
                             gro = -LastP(i) / (DpDx(i))
@@ -1620,16 +1620,16 @@ endline:    ' '
                     DelX(i) = X(i) - LastX
                     SumGro = SumGro + Math.Abs(DelX(i))
                     If Math.Abs(gro) > 0.01 Then nch = nch + 1
-                    LastP(i) = Profitability(i)
+                    LastP(i) = Me.Profitability(i)
                 Next
 
-                printstats(Xtime, iter, m_searchData.NumFleets * iter, Dummy, n, X, G)
+                Me.printstats(Xtime, iter, Me.m_searchData.NumFleets * iter, Dummy, n, X, Me.G)
 
-                If SumGro < 0.01 Or nch = 0 Or iter > 100 Or StopEstimation Then Exit Do
+                If SumGro < 0.01 Or nch = 0 Or iter > 100 Or Me.StopEstimation Then Exit Do
             Loop
 
             'do one last model run to set fishing rates to final optimum found
-            Dummy = FUNC(X, n)
+            Dummy = Me.FUNC(X, n)
 
         End Sub
 
@@ -1637,13 +1637,13 @@ endline:    ' '
 
             Try
 
-                For iflt As Integer = 1 To Results.nFleets
+                For iflt As Integer = 1 To Me.Results.nFleets
 
-                    Results.Income(iflt) = m_searchData.LastYearIncome(iflt)
-                    Results.Profitability(iflt) = Profitability(iflt)
+                    Me.Results.Income(iflt) = Me.m_searchData.LastYearIncome(iflt)
+                    Me.Results.Profitability(iflt) = Me.Profitability(iflt)
 
-                    For iflt2 As Integer = 1 To Results.nFleets
-                        Results.CompensationMatrix(iflt, iflt2) = CSng(PaidToJbyI(iflt, iflt2) / (m_searchData.LastYearIncome(iflt) + 1.0E-20))
+                    For iflt2 As Integer = 1 To Me.Results.nFleets
+                        Me.Results.CompensationMatrix(iflt, iflt2) = CSng(Me.PaidToJbyI(iflt, iflt2) / (Me.m_searchData.LastYearIncome(iflt) + 1.0E-20))
                     Next iflt2
 
                 Next iflt
@@ -1666,22 +1666,22 @@ endline:    ' '
             Dim CurEffort() As Single
             Dim LastEffort() As Single
             Dim penalty As Single
-            ReDim CurEffort(m_searchData.NumFleets)
-            ReDim LastEffort(m_searchData.NumFleets)
+            ReDim CurEffort(Me.m_searchData.NumFleets)
+            ReDim LastEffort(Me.m_searchData.NumFleets)
 
             penalty = 1 'default return value 
 
-            For i = 1 To m_searchData.NumFleets
-                For iyr = 2 To TotalTime
-                    If m_searchData.FblockCode(i, iyr) > 0 Then
-                        LastEffort(i) = m_core.m_EcoSimData.FishRateGear(i, 12 * iyr - 23)
-                        CurEffort(i) = m_core.m_EcoSimData.FishRateGear(i, 12 * iyr - 11)
+            For i = 1 To Me.m_searchData.NumFleets
+                For iyr = 2 To Me.TotalTime
+                    If Me.m_searchData.FblockCode(i, iyr) > 0 Then
+                        LastEffort(i) = Me.m_core.m_EcoSimData.FishRateGear(i, 12 * iyr - 23)
+                        CurEffort(i) = Me.m_core.m_EcoSimData.FishRateGear(i, 12 * iyr - 11)
 
                         If CurEffort(i) > 0 And LastEffort(i) > 0 Then
 
-                            If CurEffort(i) > LastEffort(i) * m_searchData.MaxEffortChange Then
+                            If CurEffort(i) > LastEffort(i) * Me.m_searchData.MaxEffortChange Then
                                 penalty = penalty * (LastEffort(i) / CurEffort(i))
-                            ElseIf LastEffort(i) > CurEffort(i) * m_searchData.MaxEffortChange Then
+                            ElseIf LastEffort(i) > CurEffort(i) * Me.m_searchData.MaxEffortChange Then
                                 penalty = penalty * (CurEffort(i) / LastEffort(i))
                             End If
 
@@ -1726,21 +1726,21 @@ Next
             Dim maxF As Single
             Dim Grp As Integer
             LimitFPenalty = 1
-            Dim tSteps As Integer = m_core.nEcosimTimeSteps
-            For Grp = 1 To m_core.nLivingGroups
-                If m_searchData.FLimit(Grp) < 1000 And m_searchData.FLimit(Grp) > 0 Then
+            Dim tSteps As Integer = Me.m_core.nEcosimTimeSteps
+            For Grp = 1 To Me.m_core.nLivingGroups
+                If Me.m_searchData.FLimit(Grp) < 1000 And Me.m_searchData.FLimit(Grp) > 0 Then
                     maxF = 0
                     '080610VC: changed the time loop below to start at baseyear+1, 
                     'we're not interested in what happened earlier when doing a search
                     'Also, changed it to annual steps, since effort is annual; faster!
-                    For i = 12 * (m_searchData.BaseYear + 1) To tSteps Step 12
-                        If m_core.m_EcoSimData.FishRateNo(Grp, i) > m_searchData.FLimit(Grp) Then
-                            If m_core.m_EcoSimData.FishRateNo(Grp, i) > maxF Then
-                                maxF = m_core.m_EcoSimData.FishRateNo(Grp, i)
+                    For i = 12 * (Me.m_searchData.BaseYear + 1) To tSteps Step 12
+                        If Me.m_core.m_EcoSimData.FishRateNo(Grp, i) > Me.m_searchData.FLimit(Grp) Then
+                            If Me.m_core.m_EcoSimData.FishRateNo(Grp, i) > maxF Then
+                                maxF = Me.m_core.m_EcoSimData.FishRateNo(Grp, i)
                             End If
                         End If
                     Next
-                    If maxF > 0 Then LimitFPenalty = CSng(LimitFPenalty * (m_searchData.FLimit(Grp) / maxF) ^ 2) ': Stop
+                    If maxF > 0 Then LimitFPenalty = CSng(LimitFPenalty * (Me.m_searchData.FLimit(Grp) / maxF) ^ 2) ': Stop
                 End If
             Next
 
@@ -1776,56 +1776,56 @@ Next
         Private m_nblocks As Integer
         Private m_nFleets As Integer
 
-        Friend Sub New(ByVal NumberOfBlocks As Integer, ByVal NumberOfFleets As Integer)
+        Friend Sub New(NumberOfBlocks As Integer, NumberOfFleets As Integer)
 
-            m_nblocks = NumberOfBlocks
-            m_nFleets = NumberOfFleets
+            Me.m_nblocks = NumberOfBlocks
+            Me.m_nFleets = NumberOfFleets
 
-            RedimBlocks()
-            RedimBaseProfitability()
+            Me.RedimBlocks()
+            Me.RedimBaseProfitability()
 
         End Sub
 
         Private Sub RedimBlocks()
-            ReDim BlockResults(m_nblocks)
-            ReDim BlockNumber(m_nblocks)
+            ReDim Me.BlockResults(Me.m_nblocks)
+            ReDim Me.BlockNumber(Me.m_nblocks)
         End Sub
 
         Private Sub RedimBaseProfitability()
 
-            ReDim Income(m_nFleets)
-            ReDim Profitability(m_nFleets)
-            ReDim CompensationMatrix(m_nFleets, m_nFleets)
+            ReDim Me.Income(Me.m_nFleets)
+            ReDim Me.Profitability(Me.m_nFleets)
+            ReDim Me.CompensationMatrix(Me.m_nFleets, Me.m_nFleets)
 
         End Sub
 
 
         Public Property nBlocks() As Integer
             Get
-                Return m_nblocks
+                Return Me.m_nblocks
             End Get
-            Friend Set(ByVal value As Integer)
-                m_nblocks = value
-                RedimBlocks()
+            Friend Set(value As Integer)
+                Me.m_nblocks = value
+                Me.RedimBlocks()
             End Set
         End Property
 
         Public ReadOnly Property nFleets() As Integer
             Get
-                Return m_nFleets
+                Return Me.m_nFleets
             End Get
         End Property
 
 
         Friend Sub Clear()
-            Totals = 0
-            nCalls = 0
+            Me.Totals = 0
+            Me.nCalls = 0
 
-            Array.Clear(Income, 0, Income.Length)
-            Array.Clear(Profitability, 0, Profitability.Length)
-            Array.Clear(BlockResults, 0, BlockResults.Length)
+            Array.Clear(Me.Income, 0, Me.Income.Length)
+            Array.Clear(Me.Profitability, 0, Me.Profitability.Length)
+            Array.Clear(Me.BlockResults, 0, Me.BlockResults.Length)
 
-            Array.Clear(CompensationMatrix, 0, CompensationMatrix.Length)
+            Array.Clear(Me.CompensationMatrix, 0, Me.CompensationMatrix.Length)
 
         End Sub
 

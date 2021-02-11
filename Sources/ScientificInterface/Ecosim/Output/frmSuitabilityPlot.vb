@@ -29,13 +29,13 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 MyBase.UIContext = value
                 Me.m_plot.UIContext = value
             End Set
         End Property
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
         End Sub
 

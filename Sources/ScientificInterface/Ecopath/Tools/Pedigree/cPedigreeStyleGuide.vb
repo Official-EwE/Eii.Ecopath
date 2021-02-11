@@ -48,7 +48,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' <param name="uic"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.m_uic = uic
         End Sub
 
@@ -68,9 +68,9 @@ Namespace Ecopath.Tools
         ''' <see cref="RenderStyle">present render style</see>.</param>
         ''' <returns>A color.</returns>
         ''' -------------------------------------------------------------------
-        Public Function BackgroundColor(ByVal clrBack As Color, _
-                                        ByVal level As cPedigreeLevel, _
-                                        Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As Color
+        Public Function BackgroundColor(clrBack As Color, _
+                                        level As cPedigreeLevel, _
+                                        Optional style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As Color
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
@@ -103,8 +103,8 @@ Namespace Ecopath.Tools
         ''' <returns>A text that represents the given level, considering the
         ''' <paramref name="style">provided</paramref> and <see cref="RenderStyle">selected</see> render styles.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DisplayText(ByVal level As cPedigreeLevel, _
-                                    Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
+        Public Function DisplayText(level As cPedigreeLevel, _
+                                    Optional style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
@@ -167,7 +167,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' <param name="sender">The style guide sending the event.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnRenderStyleChanged(ByVal sender As cPedigreeStyleGuide)
+        Public Event OnRenderStyleChanged(sender As cPedigreeStyleGuide)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -178,7 +178,7 @@ Namespace Ecopath.Tools
             Get
                 Return Me.m_renderstyle
             End Get
-            Set(ByVal value As eRenderStyleTypes)
+            Set(value As eRenderStyleTypes)
                 If (value <> Me.m_renderstyle) Then
                     Me.m_renderstyle = value
                     RaiseEvent OnRenderStyleChanged(Me)

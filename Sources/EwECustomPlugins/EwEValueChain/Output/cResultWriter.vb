@@ -48,7 +48,7 @@ Public Class cResultWriter
     ''' <param name="data"><see cref="cData">Value chain data</see> to plunder.</param>
     ''' <param name="results"><see cref="cResults">Value chain results</see> to write.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal data As cData, ByVal results As cResults)
+    Public Sub New(data As cData, results As cResults)
         Me.m_data = data
         Me.m_results = results
     End Sub
@@ -60,7 +60,7 @@ Public Class cResultWriter
     ''' <param name="agg">Data aggregation method in use during the run.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType) As Boolean
+    Public Function WriteResults(agg As cParameters.eAggregationModeType) As Boolean
         Return Me.WriteResults(agg, 0, "")
     End Function
 
@@ -73,9 +73,9 @@ Public Class cResultWriter
     ''' <param name="strItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, _
-                                 ByVal iItem As Integer, _
-                                 ByVal strItem As String) As Boolean
+    Public Function WriteResults(agg As cParameters.eAggregationModeType, _
+                                 iItem As Integer, _
+                                 strItem As String) As Boolean
 
         Dim strFile As String = Me.GetFileName(agg, strItem)
         Dim sw As StreamWriter = Nothing
@@ -149,13 +149,13 @@ Public Class cResultWriter
     ''' <param name="strItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetFileName(ByVal agg As cParameters.eAggregationModeType,
-                                 ByVal strItem As String) As String
+    Private Function GetFileName(agg As cParameters.eAggregationModeType,
+                                 strItem As String) As String
 
         Dim strPath As String = ""
         Dim strFile As String = ""
 
-        Select Case m_results.RunType
+        Select Case Me.m_results.RunType
             Case cModel.eRunTypes.Ecopath
                 strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "ValueChain")
             Case cModel.eRunTypes.Ecosim

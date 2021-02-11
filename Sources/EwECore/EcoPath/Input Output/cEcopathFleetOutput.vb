@@ -32,31 +32,31 @@ Public Class cEcopathFleetOutput
     'ToDo: Added comments to varname enums
 
 
-    Public Sub New(ByRef TheCore As cCore, ByVal DBID As Integer, ByVal iIndex As Integer)
-        MyBase.New(TheCore)
+    Public Sub New(core As cCore, DBID As Integer, iIndex As Integer)
+        MyBase.New(core)
 
         Dim val As cValue
         Me.m_dataType = eDataTypes.EcoPathFleetOutput
         Me.Index = iIndex
         Me.DBID = DBID
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathCatchTotalByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcopathCatchTotalByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathCatchMortByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcopathCatchMortByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathLandingsByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcopathLandingsByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathDiscardsByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcopathDiscardsByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathDiscardsMortByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcopathDiscardsMortByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathDiscardsSurvivalByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcopathDiscardsSurvivalByFleetGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
     End Sub
 
@@ -66,29 +66,29 @@ Public Class cEcopathFleetOutput
     ''' </summary>
     ''' <param name="iGrp"></param>
     ''' <returns></returns>
-    Public Property CatchTotalByGroup(ByVal iGrp As Integer) As Single
+    Public Property CatchTotalByGroup(iGrp As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathCatchTotalByFleetGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcopathCatchTotalByFleetGroup, iGrp))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.EcopathCatchTotalByFleetGroup, newValue, iGrp)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.EcopathCatchTotalByFleetGroup, newValue, iGrp)
             End If
         End Set
 
     End Property
 
-    Public Property CatchMortByGroup(ByVal iGrp As Integer) As Single
+    Public Property CatchMortByGroup(iGrp As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathCatchMortByFleetGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcopathCatchMortByFleetGroup, iGrp))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.EcopathCatchMortByFleetGroup, newValue, iGrp)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.EcopathCatchMortByFleetGroup, newValue, iGrp)
             End If
         End Set
 
@@ -100,15 +100,15 @@ Public Class cEcopathFleetOutput
     ''' </summary>
     ''' <param name="iGrp"></param>
     ''' <returns></returns>
-    Public Property LandingsByGroup(ByVal iGrp As Integer) As Single
+    Public Property LandingsByGroup(iGrp As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathLandingsByFleetGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcopathLandingsByFleetGroup, iGrp))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.EcopathLandingsByFleetGroup, newValue, iGrp)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.EcopathLandingsByFleetGroup, newValue, iGrp)
             End If
         End Set
 
@@ -118,15 +118,15 @@ Public Class cEcopathFleetOutput
     ''' Total Discards 
     ''' </summary>
     ''' <param name="iGrp"></param>
-    Public Property DiscardByGroup(ByVal iGrp As Integer) As Single
+    Public Property DiscardByGroup(iGrp As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathDiscardsByFleetGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcopathDiscardsByFleetGroup, iGrp))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.EcopathDiscardsByFleetGroup, newValue, iGrp)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.EcopathDiscardsByFleetGroup, newValue, iGrp)
             End If
         End Set
 
@@ -137,15 +137,15 @@ Public Class cEcopathFleetOutput
     ''' </summary>
     ''' <param name="iGrp"></param>
     ''' <returns></returns>
-    Public Property DiscardMortByGroup(ByVal iGrp As Integer) As Single
+    Public Property DiscardMortByGroup(iGrp As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathDiscardsMortByFleetGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcopathDiscardsMortByFleetGroup, iGrp))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.EcopathDiscardsMortByFleetGroup, newValue, iGrp)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.EcopathDiscardsMortByFleetGroup, newValue, iGrp)
             End If
         End Set
 
@@ -156,15 +156,15 @@ Public Class cEcopathFleetOutput
     ''' </summary>
     ''' <param name="iGrp"></param>
     ''' <returns></returns>
-    Public Property DiscardSurvivalByGroup(ByVal iGrp As Integer) As Single
+    Public Property DiscardSurvivalByGroup(iGrp As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathDiscardsSurvivalByFleetGroup, iGrp))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcopathDiscardsSurvivalByFleetGroup, iGrp))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.EcopathDiscardsSurvivalByFleetGroup, newValue, iGrp)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.EcopathDiscardsSurvivalByFleetGroup, newValue, iGrp)
             End If
         End Set
 

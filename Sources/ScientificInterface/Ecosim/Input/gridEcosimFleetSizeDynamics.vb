@@ -58,8 +58,8 @@ Namespace Ecosim
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            For iRow As Integer = 1 To core.nFleets
-                source = core.EcosimFleetInputs(iRow)
+            For iRow As Integer = 1 To Me.core.nFleets
+                source = Me.core.EcosimFleetInputs(iRow)
                 Me.Rows.Insert(iRow)
                 Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)

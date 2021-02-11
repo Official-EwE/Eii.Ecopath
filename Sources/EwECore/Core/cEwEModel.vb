@@ -33,8 +33,8 @@ Public Class cEwEModel
 
 #Region " Constructor "
 
-    Sub New(ByRef TheCore As cCore)
-        MyBase.New(TheCore)
+    Sub New(core As cCore)
+        MyBase.New(core)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
@@ -42,155 +42,155 @@ Public Class cEwEModel
 
         Try
 
-            m_dataType = eDataTypes.EwEModel
-            m_coreComponent = eCoreComponentType.EcoPath
+            Me.m_dataType = eDataTypes.EwEModel
+            Me.m_coreComponent = eCoreComponentType.EcoPath
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Description - use private metadata to allow more than the standard 254 characters
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta)
+            val = New cValue(core, New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Contact
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Area
-            val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.OK, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.Area, eStatusFlags.OK, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' NumDigits
-            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' FirstYear
-            val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' NumYears
-            val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' North
-            val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' South
-            val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' East
-            val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' West
-            val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' GroupDigits
-            val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Time unit (enum)
-            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Time unit (text)
-            val = New cValue(New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Currency unit (enum)
-            val = New cValue(New Integer, eVarNameFlags.UnitCurrency, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.UnitCurrency, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Currency unit (text)
-            val = New cValue(New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Monetary unit (enum)
-            val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Area unit (enum)
-            val = New cValue(New Integer, eVarNameFlags.UnitArea, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.UnitArea, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Area unit (text)
-            val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Map georeferencing unit (enum)
-            val = New cValue(New Integer, eVarNameFlags.UnitMapRef, eStatusFlags.OK, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.UnitMapRef, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Country
-            val = New cValue(New String(desc), eVarNameFlags.Country, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.Country, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New String(desc), eVarNameFlags.EcosystemType, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.EcosystemType, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Ecobase code
-            val = New cValue(New String(desc), eVarNameFlags.CodeEcobase, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.CodeEcobase, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' DOI
-            val = New cValue(New String(desc), eVarNameFlags.PublicationDOI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.PublicationDOI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             ' URI
-            val = New cValue(New String(desc), eVarNameFlags.PublicationURI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.PublicationURI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Reference
-            val = New cValue(New String(desc), eVarNameFlags.PublicationReference, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, New String(desc), eVarNameFlags.PublicationReference, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Last saved julian date
-            val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng)
+            val = New cValue(core, New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' IsEcopaceCoupled
-            val = New cValue(New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ' DiversityIndex (enum)
-            val = New cValue(New Integer, eVarNameFlags.DiversityIndex, eStatusFlags.OK, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.DiversityIndex, eStatusFlags.OK, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cModel.")
@@ -205,141 +205,141 @@ Public Class cEwEModel
 
     Public Property Description() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Description))
+            Return CStr(Me.GetVariable(eVarNameFlags.Description))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Description, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.Description, str)
         End Set
     End Property
 
     Public Property Author() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Author))
+            Return CStr(Me.GetVariable(eVarNameFlags.Author))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Author, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.Author, str)
         End Set
     End Property
 
     Public Property Contact() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Contact))
+            Return CStr(Me.GetVariable(eVarNameFlags.Contact))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Contact, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.Contact, str)
         End Set
     End Property
 
     Public Property Area() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Area))
+            Return CSng(Me.GetVariable(eVarNameFlags.Area))
         End Get
 
-        Set(ByVal sArea As Single)
-            SetVariable(eVarNameFlags.Area, sArea)
+        Set(sArea As Single)
+            Me.SetVariable(eVarNameFlags.Area, sArea)
         End Set
     End Property
 
     Public Property NumDigits() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.NumDigits))
+            Return CInt(Me.GetVariable(eVarNameFlags.NumDigits))
         End Get
 
-        Set(ByVal iNumDigits As Integer)
-            SetVariable(eVarNameFlags.NumDigits, iNumDigits)
+        Set(iNumDigits As Integer)
+            Me.SetVariable(eVarNameFlags.NumDigits, iNumDigits)
         End Set
     End Property
 
     Public Property GroupDigits() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.GroupDigits))
+            Return CBool(Me.GetVariable(eVarNameFlags.GroupDigits))
         End Get
 
-        Set(ByVal bGroupDigits As Boolean)
-            SetVariable(eVarNameFlags.GroupDigits, bGroupDigits)
+        Set(bGroupDigits As Boolean)
+            Me.SetVariable(eVarNameFlags.GroupDigits, bGroupDigits)
         End Set
     End Property
 
     Public Property DiversityIndexType() As eDiversityIndexType
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.DiversityIndex), eDiversityIndexType)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.DiversityIndex), eDiversityIndexType)
         End Get
 
-        Set(ByVal i As eDiversityIndexType)
-            SetVariable(eVarNameFlags.DiversityIndex, CInt(i))
+        Set(i As eDiversityIndexType)
+            Me.SetVariable(eVarNameFlags.DiversityIndex, CInt(i))
         End Set
     End Property
 
     Public Property UnitTime() As eUnitTimeType
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitTime), eUnitTimeType)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.UnitTime), eUnitTimeType)
         End Get
 
-        Set(ByVal i As eUnitTimeType)
-            SetVariable(eVarNameFlags.UnitTime, CInt(i))
+        Set(i As eUnitTimeType)
+            Me.SetVariable(eVarNameFlags.UnitTime, CInt(i))
         End Set
     End Property
 
     Public Property UnitTimeCustomText() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.UnitTimeCustomText))
+            Return CStr(Me.GetVariable(eVarNameFlags.UnitTimeCustomText))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.UnitTimeCustomText, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.UnitTimeCustomText, str)
         End Set
     End Property
 
     Public Property UnitCurrency() As eUnitCurrencyType
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitCurrency), eUnitCurrencyType)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.UnitCurrency), eUnitCurrencyType)
         End Get
 
-        Set(ByVal i As eUnitCurrencyType)
-            SetVariable(eVarNameFlags.UnitCurrency, CInt(i))
+        Set(i As eUnitCurrencyType)
+            Me.SetVariable(eVarNameFlags.UnitCurrency, CInt(i))
         End Set
     End Property
 
     Public Property UnitCurrencyCustomText() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.UnitCurrencyCustomText))
+            Return CStr(Me.GetVariable(eVarNameFlags.UnitCurrencyCustomText))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.UnitCurrencyCustomText, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.UnitCurrencyCustomText, str)
         End Set
     End Property
 
     Public Property UnitMonetary() As String
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitMonetary), String)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.UnitMonetary), String)
         End Get
 
-        Set(ByVal strUnit As String)
-            SetVariable(eVarNameFlags.UnitMonetary, strUnit)
+        Set(strUnit As String)
+            Me.SetVariable(eVarNameFlags.UnitMonetary, strUnit)
         End Set
     End Property
 
     Public Property UnitArea() As eUnitAreaType
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.UnitArea), eUnitAreaType)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.UnitArea), eUnitAreaType)
         End Get
 
-        Set(ByVal i As eUnitAreaType)
-            SetVariable(eVarNameFlags.UnitArea, CInt(i))
+        Set(i As eUnitAreaType)
+            Me.SetVariable(eVarNameFlags.UnitArea, CInt(i))
         End Set
     End Property
 
     Public Property UnitAreaCustomText() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.UnitAreaCustomText))
+            Return CStr(Me.GetVariable(eVarNameFlags.UnitAreaCustomText))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.UnitAreaCustomText, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.UnitAreaCustomText, str)
         End Set
     End Property
 
@@ -351,7 +351,7 @@ Public Class cEwEModel
             Return CInt(Me.GetVariable(eVarNameFlags.EcopathFirstYear))
         End Get
 
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.EcopathFirstYear, value)
         End Set
     End Property
@@ -364,7 +364,7 @@ Public Class cEwEModel
             Return CInt(Me.GetVariable(eVarNameFlags.EcopathNumYears))
         End Get
 
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.EcopathNumYears, value)
         End Set
     End Property
@@ -377,7 +377,7 @@ Public Class cEwEModel
             Return CSng(Me.GetVariable(eVarNameFlags.South))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.South, value)
         End Set
     End Property
@@ -390,7 +390,7 @@ Public Class cEwEModel
             Return CSng(Me.GetVariable(eVarNameFlags.North))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.North, value)
         End Set
     End Property
@@ -403,7 +403,7 @@ Public Class cEwEModel
             Return CSng(Me.GetVariable(eVarNameFlags.West))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.West, value)
         End Set
     End Property
@@ -416,7 +416,7 @@ Public Class cEwEModel
             Return CSng(Me.GetVariable(eVarNameFlags.East))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.East, value)
         End Set
     End Property
@@ -452,81 +452,81 @@ Public Class cEwEModel
     ''' </summary>
     Public Property LastSaved() As Double
         Get
-            Return CDbl(GetVariable(eVarNameFlags.LastSaved))
+            Return CDbl(Me.GetVariable(eVarNameFlags.LastSaved))
         End Get
 
-        Set(ByVal value As Double)
-            SetVariable(eVarNameFlags.LastSaved, value)
+        Set(value As Double)
+            Me.SetVariable(eVarNameFlags.LastSaved, value)
         End Set
     End Property
 
     Public Property IsEcoSpaceModelCoupled() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsEcospaceModelCoupled))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsEcospaceModelCoupled))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsEcospaceModelCoupled, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.IsEcospaceModelCoupled, value)
         End Set
     End Property
 
     Public Property Country As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Country))
+            Return CStr(Me.GetVariable(eVarNameFlags.Country))
         End Get
 
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.Country, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.Country, value)
         End Set
     End Property
 
     Public Property EcosystemType As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.EcosystemType))
+            Return CStr(Me.GetVariable(eVarNameFlags.EcosystemType))
         End Get
 
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.EcosystemType, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.EcosystemType, value)
         End Set
     End Property
 
     Public Property EcobaseCode As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.CodeEcobase))
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeEcobase))
         End Get
 
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.CodeEcobase, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.CodeEcobase, value)
         End Set
     End Property
 
     Public Property PublicationDOI As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.PublicationDOI))
+            Return CStr(Me.GetVariable(eVarNameFlags.PublicationDOI))
         End Get
 
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.PublicationDOI, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.PublicationDOI, value)
         End Set
     End Property
 
     Public Property PublicationURI As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.PublicationURI))
+            Return CStr(Me.GetVariable(eVarNameFlags.PublicationURI))
         End Get
 
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.PublicationURI, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.PublicationURI, value)
         End Set
     End Property
 
     Public Property PublicationReference As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.PublicationReference))
+            Return CStr(Me.GetVariable(eVarNameFlags.PublicationReference))
         End Get
 
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.PublicationReference, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.PublicationReference, value)
         End Set
     End Property
 
@@ -537,10 +537,10 @@ Public Class cEwEModel
     Public Property DescriptionStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Description)
+            Return Me.GetStatus(eVarNameFlags.Description)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Description, value)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Description, value)
         End Set
 
     End Property
@@ -548,10 +548,10 @@ Public Class cEwEModel
     Public Property NumDigitsStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.NumDigits)
+            Return Me.GetStatus(eVarNameFlags.NumDigits)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NumDigits, value)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NumDigits, value)
         End Set
 
     End Property

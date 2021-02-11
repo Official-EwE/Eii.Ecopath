@@ -41,10 +41,10 @@ Namespace Ecosim
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)

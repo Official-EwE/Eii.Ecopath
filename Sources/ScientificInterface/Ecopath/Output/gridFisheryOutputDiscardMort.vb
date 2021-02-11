@@ -49,21 +49,21 @@ Namespace Ecopath.Output
             If (Me.UIContext Is Nothing) Then Return
 
             'Define grid dimensions
-            Me.Redim(1, Core.nFleets + 3)
+            Me.Redim(1, Me.Core.nFleets + 3)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
-            For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                      source, eVarNameFlags.Name, Nothing,
                                                                      cUnits.CurrencyOverTime)
             Next
 
             ' Total column
-            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_DISCARD_MORT)
+            Me(0, Me.Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_DISCARD_MORT)
 
             Me.FixedColumns = 2
         End Sub
@@ -82,22 +82,22 @@ Namespace Ecopath.Output
             Me.RowsCount = 1
 
             ' Done?
-            If Core.nFleets = 0 Then Return
+            If Me.Core.nFleets = 0 Then Return
 
             ' Create rows for all groups and sum quantities in each row
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 iRow = Me.AddRow()
-                FillRows(iRow, iGroup)
+                Me.FillRows(iRow, iGroup)
             Next iGroup
 
             ' Create column totals
-            FillTotalsRow()
+            Me.FillTotalsRow()
 
         End Sub
 
-        Private Sub FillRows(ByVal iRow As Integer, ByVal iGroup As Integer)
+        Private Sub FillRows(iRow As Integer, iGroup As Integer)
 
-            Dim group As cEcoPathGroupInput = Core.EcoPathGroupInputs(iGroup)
+            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
             Dim fleetOut As cEcopathFleetOutput = Nothing
             Dim sVal As Single = 0
             Dim sTot As Single = 0
@@ -106,9 +106,9 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cEwERowHeaderCell(group.Name)
 
             ' For each fleet (each column) 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
                 ' Get the fleet object 
-                fleetOut = Core.EcoPathFleetOutputs(iFleet)
+                fleetOut = Me.Core.EcoPathFleetOutputs(iFleet)
                 sVal = fleetOut.DiscardMortByGroup(iGroup)
                 Dim cell As New cEwECell(sVal, cStyleGuide.eStyleFlags.ValueComputed Or cStyleGuide.eStyleFlags.NotEditable)
                 cell.SuppressZero = True
@@ -132,11 +132,11 @@ Namespace Ecopath.Output
             Me(Me.RowsCount - 1, 0) = New cEwERowHeaderCell()
             Me(Me.RowsCount - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_DISCARD_MORT)
 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
                 Dim sFleetTot As Single = 0
-                fleetOut = Core.EcoPathFleetOutputs(iFleet)
+                fleetOut = Me.Core.EcoPathFleetOutputs(iFleet)
 
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     sFleetTot += fleetOut.DiscardMortByGroup(iGroup)
                 Next
                 Me(Me.RowsCount - 1, iFleet + 1) = New cEwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)

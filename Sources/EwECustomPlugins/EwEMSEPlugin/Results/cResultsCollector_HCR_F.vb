@@ -46,19 +46,19 @@ Public MustInherit Class cResultsCollector_HCR_F
 
     Public Overrides ReadOnly Property nElements As Integer
         Get
-            Return m_MSE.Core.nGroups
+            Return Me.m_MSE.Core.nGroups
         End Get
     End Property
 
     Public Overrides ReadOnly Property ElementName(iElement As Integer) As String
         Get
-            Return m_MSE.Core.EcoPathGroupInputs(iElement).Name
+            Return Me.m_MSE.Core.EcoPathGroupInputs(iElement).Name
         End Get
     End Property
 
     Public Overrides ReadOnly Property GetValue_Formatted4CSV(iStrategy As Integer, iElement As Integer, iTime As Integer) As Object
         Get
-            Return cStringUtils.FormatNumber(GetValue(iStrategy, iElement, iTime))
+            Return cStringUtils.FormatNumber(Me.GetValue(iStrategy, iElement, iTime))
         End Get
     End Property
 

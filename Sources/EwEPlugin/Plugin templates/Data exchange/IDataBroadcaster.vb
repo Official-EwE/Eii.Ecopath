@@ -33,7 +33,7 @@ Namespace Data
     ''' ---------------------------------------------------------------------------
     Public Interface IDataBroadcaster
 
-        Function BroadcastData(ByVal strDataName As String, ByVal data As IPluginData) As Boolean
+        Function BroadcastData(strDataName As String, data As IPluginData) As Boolean
 
     End Interface
 

@@ -43,7 +43,7 @@ Namespace Data
         ''' <param name="iMaxResults">The max number of results to return.</param>
         ''' <returns>True if started successful.</returns>
         ''' -------------------------------------------------------------------
-        Function StartSearch(ByVal data As Object, iMaxResults As Integer) As Boolean
+        Function StartSearch(data As Object, iMaxResults As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -69,7 +69,7 @@ Namespace Data
         ''' <param name="results">Returned search results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SearchResults(ByVal dataTerm As Object, ByRef results As IDataSearchResults) As Boolean
+        Function SearchResults(dataTerm As Object, ByRef results As IDataSearchResults) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

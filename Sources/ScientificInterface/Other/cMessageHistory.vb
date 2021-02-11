@@ -103,8 +103,8 @@ Public Class cMessageHistory
         ''' <see cref="cVariableStatus">variable status information</see>.
         ''' </remarks>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal msg As cMessage)
+        Public Sub New(pm As cPropertyManager,
+                       msg As cMessage)
 
             Me.New(msg.Message, msg.Importance, msg.Hyperlink)
             Me.m_source = msg.Source
@@ -163,9 +163,9 @@ Public Class cMessageHistory
         ''' <param name="vs"><see cref="cVariableStatus">variable status</see>
         ''' to create item for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub New(ByVal pm As cPropertyManager,
-                        ByVal vs As cVariableStatus,
-                        ByVal source As eCoreComponentType)
+        Private Sub New(pm As cPropertyManager,
+                        vs As cVariableStatus,
+                        source As eCoreComponentType)
 
             Me.New(vs.Message, DirectCast(Math.Max(vs.Importance, eMessageImportance.Information), eMessageImportance))
             Me.m_strValueID = pm.ExtractPropertyID(vs)
@@ -182,9 +182,9 @@ Public Class cMessageHistory
         ''' inherited from the parent message.</param>
         ''' <param name="strHyperlink">Hyperlink to include in the message.</param>
         ''' -------------------------------------------------------------------
-        Private Sub New(ByVal strMessage As String,
-                        ByVal imp As eMessageImportance,
-                        Optional ByVal strHyperlink As String = "")
+        Private Sub New(strMessage As String,
+                        imp As eMessageImportance,
+                        Optional strHyperlink As String = "")
 
             Me.m_strText = strMessage
             Me.m_strHyperlink = strHyperlink
@@ -271,7 +271,7 @@ Public Class cMessageHistory
         ''' <param name="pm"><see cref="cPropertyManager">Property manager</see>
         ''' to extract <see cref="cProperty">properties</see> from.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Properties(ByVal pm As cPropertyManager) As cProperty()
+        Public ReadOnly Property Properties(pm As cPropertyManager) As cProperty()
             Get
                 Dim lProps As New List(Of cProperty)
                 If Me.IsValid Then Me.GetProperties(pm, lProps)
@@ -314,7 +314,7 @@ Public Class cMessageHistory
         ''' <param name="pm"></param>
         ''' <param name="lProps"></param>
         ''' -------------------------------------------------------------------
-        Private Sub GetProperties(ByVal pm As cPropertyManager, ByVal lProps As List(Of cProperty))
+        Private Sub GetProperties(pm As cPropertyManager, lProps As List(Of cProperty))
             Dim prop As cProperty = pm.GetProperty(Me.m_strValueID)
             If (prop IsNot Nothing) Then lProps.Add(prop)
             For Each item As cHistoryItem In Me.m_lItems
@@ -338,7 +338,7 @@ Public Class cMessageHistory
         Get
             Return Me.m_uic
         End Get
-        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
             If (Object.Equals(Me.m_uic, value)) Then Return
             If (Me.m_uic IsNot Nothing) Then Me.ConfigMessageHandlers(False)
             Me.m_uic = value
@@ -364,11 +364,11 @@ Public Class cMessageHistory
     ''' <summary>Event to signify that an item was added to the history.</summary>
     ''' <param name="sender">The history instance the item was added to.</param>
     ''' <param name="item">The added <see cref="cHistoryItem">item</see>.</param>
-    Public Event OnHistoryItemAdded(ByVal sender As cMessageHistory, ByVal item As cHistoryItem)
+    Public Event OnHistoryItemAdded(sender As cMessageHistory, item As cHistoryItem)
 
     ''' <summary>Event to signify that something big changed about the history log.</summary>
     ''' <param name="sender">The history instance that was refreshed.</param>
-    Public Event OnHistoryRefreshed(ByVal sender As cMessageHistory)
+    Public Event OnHistoryRefreshed(sender As cMessageHistory)
 
     ''' <summary>
     ''' Clear the message suppress cache.
@@ -395,14 +395,14 @@ Public Class cMessageHistory
 
 #Region " Internals "
 
-    Private Sub ConfigMessageHandler(ByVal src As eCoreComponentType, ByVal bSet As Boolean)
+    Private Sub ConfigMessageHandler(src As eCoreComponentType, bSet As Boolean)
 
         Dim mh As cMessageHandler = Nothing
 
         If (src = eCoreComponentType.NotSet) Then Return
 
         If bSet Then
-            mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
+            mh = New cMessageHandler(AddressOf Me.AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
 #If DEBUG Then
             ' Name the message handler for profiling
             mh.Name = "cMessageHistory::All"
@@ -424,7 +424,7 @@ Public Class cMessageHistory
     ''' </summary>
     ''' <param name="bSet">True to set, False to clear.</param>
     ''' -------------------------------------------------------------------
-    Private Sub ConfigMessageHandlers(ByVal bSet As Boolean)
+    Private Sub ConfigMessageHandlers(bSet As Boolean)
 
         ' Set up message handlers
         For Each src As eCoreComponentType In [Enum].GetValues(GetType(eCoreComponentType))
@@ -524,7 +524,7 @@ Public Class cMessageHistory
     ''' <param name="msg">The <see cref="cFeedbackMessage">feedback message</see>
     ''' to handle.</param>
     ''' -------------------------------------------------------------------
-    Private Sub HandleFeedbackMessage(ByVal msg As cFeedbackMessage)
+    Private Sub HandleFeedbackMessage(msg As cFeedbackMessage)
 
         Dim mbb As MessageBoxButtons = MessageBoxButtons.YesNo
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Question
@@ -637,7 +637,7 @@ Public Class cMessageHistory
     ''' True if a problem occurred displaying the message
     ''' </returns>
     ''' -------------------------------------------------------------------
-    Private Function ShowMessageBox(ByVal msg As cMessage) As Boolean
+    Private Function ShowMessageBox(msg As cMessage) As Boolean
 
         Dim strMessage As String = ""
         Dim mbb As MessageBoxButtons = MessageBoxButtons.OK
@@ -647,7 +647,7 @@ Public Class cMessageHistory
         ' Sanity check
         If (msg IsNot Nothing) Then
 
-            bError = ToMessageBoxText(msg, strMessage)
+            bError = Me.ToMessageBoxText(msg, strMessage)
 
             ' Resolve what icon to show
             Select Case msg.Importance
@@ -694,7 +694,7 @@ Public Class cMessageHistory
         Return bError
     End Function
 
-    Private Function ToMessageBoxText(ByVal msg As cMessage, ByRef strMessage As String) As Boolean
+    Private Function ToMessageBoxText(msg As cMessage, ByRef strMessage As String) As Boolean
 
         Dim sb As New StringBuilder()
         Dim iNumSubLines As Integer = 0
@@ -734,7 +734,7 @@ Public Class cMessageHistory
 
     End Function
 
-    Private Function GetChildComponents(ByVal source As eCoreComponentType) As eCoreComponentType()
+    Private Function GetChildComponents(source As eCoreComponentType) As eCoreComponentType()
 
         Select Case source
 

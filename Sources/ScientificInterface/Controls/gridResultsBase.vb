@@ -44,7 +44,7 @@ Namespace Controls
             MyBase.InitStyle()
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If ((ct And cStyleGuide.eChangeType.GroupVisibility) > 0) Or _
                ((ct And cStyleGuide.eChangeType.FleetVisibility) > 0) Then
                 Me.RefreshContent()
@@ -60,7 +60,7 @@ Namespace Controls
         ''' <param name="astrNames"></param>
         ''' <param name="aiCalc">Array with column indices to render as computed.</param>
         ''' <remarks></remarks>
-        Protected Sub InitCells(ByVal iRow As Integer, ByVal astrNames() As String, ByVal aiCalc() As Integer)
+        Protected Sub InitCells(iRow As Integer, astrNames() As String, aiCalc() As Integer)
 
             Dim cell As cEwECell = Nothing
             Dim cnt As Integer = Me.RowsCount - 1
@@ -112,9 +112,9 @@ Namespace Controls
 
         End Sub
 
-        Protected Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, _
-                                   ByVal sValue As Single, ByVal asValueTotal() As Single, _
-                                   Optional ByVal styleExtra As cStyleGuide.eStyleFlags = 0)
+        Protected Sub SetCellValue(iRow As Integer, iCol As Integer, _
+                                   sValue As Single, asValueTotal() As Single, _
+                                   Optional styleExtra As cStyleGuide.eStyleFlags = 0)
 
             Dim cell As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)
 
@@ -126,7 +126,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValue As String)
+        Protected Sub SetCellValue(iRow As Integer, iCol As Integer, sValue As String)
             Try
                 Me(iRow, iCol).Value = sValue
             Catch ex As Exception
@@ -134,7 +134,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Protected Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValue As Single)
+        Protected Sub SetCellValue(iRow As Integer, iCol As Integer, sValue As Single)
             Try
                 Me(iRow, iCol).Value = sValue
             Catch ex As Exception

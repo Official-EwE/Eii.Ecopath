@@ -89,13 +89,13 @@ Namespace Controls.Map
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal uic As cUIContext)
+            Set(uic As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
                 Me.m_uic = uic
                 If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
                 Me.Clear()
             End Set
@@ -103,7 +103,7 @@ Namespace Controls.Map
 
 #Region " Public interfaces "
 
-        Public Function SaveToBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
+        Public Function SaveToBitmap(strFileName As String, format As System.Drawing.Imaging.ImageFormat) As Boolean
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim bm As cEcospaceBasemap = Me.Basemap
@@ -156,7 +156,7 @@ Namespace Controls.Map
             Get
                 Return Me.m_strTitle
             End Get
-            Set(ByVal strTitle As String)
+            Set(strTitle As String)
                 Me.m_strTitle = strTitle
             End Set
         End Property
@@ -186,7 +186,7 @@ Namespace Controls.Map
             Me.Invalidate()
         End Sub
 
-        Public Sub UpdateMap(ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
+        Public Sub UpdateMap(ptCellFrom As Point, ptCellTo As Point)
 
             If (ptCellFrom = ptCellTo) Then Return
 
@@ -201,7 +201,7 @@ Namespace Controls.Map
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.CalcMapSize()
         End Sub
@@ -211,7 +211,7 @@ Namespace Controls.Map
         ''' Clean-up.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ucBaseMap_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub ucBaseMap_Disposed(sender As Object, e As System.EventArgs) _
             Handles Me.Disposed
             Me.Clear()
         End Sub
@@ -232,14 +232,14 @@ Namespace Controls.Map
         ''' Paint handler; selectively redraws the bitmap.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
 
             If (Me.Basemap Is Nothing) Then Return
 
             Try
                 Me.DrawMap(e.Graphics, e.ClipRectangle)
             Catch ex As Exception
-                ResetExceptionState(Me)
+                Me.ResetExceptionState(Me)
             End Try
 
         End Sub
@@ -249,7 +249,7 @@ Namespace Controls.Map
         ''' Mouse down handler; intializes map drawing.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
 
             Dim bm As cEcospaceBasemap = Me.Basemap
 
@@ -274,7 +274,7 @@ Namespace Controls.Map
         ''' Mouse move handler; performs a map drawing step.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
+        Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -333,7 +333,7 @@ Namespace Controls.Map
         ''' Mouse up handler; finalizes map drawing.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseUp(ByVal e As MouseEventArgs)
+        Protected Overrides Sub OnMouseUp(e As MouseEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -343,7 +343,7 @@ Namespace Controls.Map
             Me.m_layerSelected.Editor.ProcessMouseUp()
 
             ' Process pending layer changes
-            For Each l As cDisplayLayer In m_layers
+            For Each l As cDisplayLayer In Me.m_layers
                 If (TypeOf l Is cDisplayLayerRaster) Then
                     Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
                     If rl.IsModified Then rl.Update(cDisplayLayer.eChangeFlags.Map) : rl.IsModified = False
@@ -368,7 +368,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="l">The layer that changed</param>
         ''' -------------------------------------------------------------------
-        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal cf As cDisplayLayer.eChangeFlags)
+        Private Sub OnLayerChanged(l As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
 
             ' Ignore sole descriptive layer changes
             If (cf = cDisplayLayer.eChangeFlags.Descriptive) Then Return
@@ -421,7 +421,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub ProcessMouseMove(ByVal e As MouseEventArgs)
+        Private Sub ProcessMouseMove(e As MouseEventArgs)
 
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
@@ -439,7 +439,7 @@ Namespace Controls.Map
         ''' of indicated cells.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub DrawMap(g As Graphics, ByVal rcClip As Rectangle)
+        Private Sub DrawMap(g As Graphics, rcClip As Rectangle)
 
             ' Sanity check
             Dim bm As cEcospaceBasemap = Me.Basemap
@@ -581,7 +581,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub UpdateSelection(ByVal l As cDisplayLayer)
+        Private Sub UpdateSelection(l As cDisplayLayer)
 
             ' Sanity check
             If Me.Basemap Is Nothing Then Return
@@ -615,7 +615,7 @@ Namespace Controls.Map
         End Function
 
         <ReflectionPermission(SecurityAction.Demand, MemberAccess:=True)>
-        Private Sub ResetExceptionState(ByVal control As Control)
+        Private Sub ResetExceptionState(control As Control)
             ' Reset exception state on drawing errors
             Dim args() As Object = {&H400000, False}
             GetType(Control).InvokeMember("SetState",
@@ -639,7 +639,7 @@ Namespace Controls.Map
             Next
 
             ' Should be neatly cleaned out
-            Debug.Assert(m_layers.Count = 0)
+            Debug.Assert(Me.m_layers.Count = 0)
 
         End Sub
 
@@ -650,8 +650,8 @@ Namespace Controls.Map
         ''' <param name="layer">The layer to add.</param>
         ''' <param name="layerPosition">The layer to add the layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal layer As cDisplayLayer,
-                            Optional ByVal layerPosition As cDisplayLayer = Nothing)
+        Public Sub AddLayer(layer As cDisplayLayer,
+                            Optional layerPosition As cDisplayLayer = Nothing)
 
             ' Sanity check
             If (layer Is Nothing) Then Return
@@ -681,7 +681,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="layer">The layer to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveLayer(ByVal layer As cDisplayLayer)
+        Public Sub RemoveLayer(layer As cDisplayLayer)
 
             ' Sanity check
             If (layer Is Nothing) Then Return
@@ -732,7 +732,7 @@ Namespace Controls.Map
         ''' Calculate the control rectangle of a cell in pixels, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function GetCellRect(ByVal ptCellIndex As Point) As RectangleF
+        Public Function GetCellRect(ptCellIndex As Point) As RectangleF
             Return New RectangleF(Me.m_maprect.X + Me.m_cellsize * (ptCellIndex.X - 1),
                                   Me.m_maprect.Y + Me.m_cellsize * (ptCellIndex.Y - 1), Me.m_cellsize, Me.m_cellsize)
         End Function
@@ -997,8 +997,8 @@ Namespace Controls.Map
             Dim ptcenter As New Point(CInt(rc.X + rc.Width / 2), CInt(rc.Y + rc.Height / 2))
 
             ' Center map
-            Me.m_maprect = New Rectangle(CInt(ptcenter.X - bm.InCol * m_cellsize / 2.0!),
-                                         CInt(ptcenter.Y - bm.InRow * m_cellsize / 2.0!),
+            Me.m_maprect = New Rectangle(CInt(ptcenter.X - bm.InCol * Me.m_cellsize / 2.0!),
+                                         CInt(ptcenter.Y - bm.InRow * Me.m_cellsize / 2.0!),
                                          CInt(bm.InCol * Me.m_cellsize),
                                          CInt(bm.InRow * Me.m_cellsize))
 

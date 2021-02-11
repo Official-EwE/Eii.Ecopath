@@ -55,7 +55,7 @@ Public Class Strategy
 
     Const LatestVersion = "V2"
 
-    Public Sub New(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String, Core As cCore, MSE As cMSE)
+    Public Sub New(StrategyName As String, StrategyNumber As Integer, theFilename As String, Core As cCore, MSE As cMSE)
         Me.m_core = Core
         Me.m_MSE = MSE
         Me.m_EcosimData = MSE.EcosimData
@@ -145,9 +145,9 @@ Public Class Strategy
         Me.m_HCRsList.Insert(index, item)
     End Sub
 
-    Public Function StrategyContainsHCRforiGrp(ByVal iGrp As Integer) As Boolean
+    Public Function StrategyContainsHCRforiGrp(iGrp As Integer) As Boolean
         'Checks to see whether this strategy has an HCR for the indexed group
-        For Each iHCR In m_HCRsList
+        For Each iHCR In Me.m_HCRsList
             If iHCR.GroupF.Index = iGrp Then
                 Return True
             End If
@@ -228,7 +228,7 @@ Public Class Strategy
 
             'Latest version of hcr files contains info that it is version v2 to distinguish it from previous versions
             'Use this to check whether latest version
-            If IsOldVersionHCRFile(recs) Then
+            If Me.IsOldVersionHCRFile(recs) Then
 
                 'Save with v2 prefix so that it doesn't overwrite original hcr file because I need to be able to read from that
                 'Remove prefix later
@@ -307,7 +307,7 @@ Public Class Strategy
             Return bSuccess
         End If
 
-        UpdateHCRFile(strFilename)
+        Me.UpdateHCRFile(strFilename)
 
         Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
         If (reader IsNot Nothing) Then
@@ -325,7 +325,7 @@ Public Class Strategy
                 ElseIf recs(0) <> "GroupNameForBiomass" Then
                     Dim tempHCRGroup As HCR_Group
                     'Each HCR Group needs to be a new object
-                    tempHCRGroup = New HCR_Group(m_core, m_MSE)
+                    tempHCRGroup = New HCR_Group(Me.m_core, Me.m_MSE)
 
                     Try
                         ' Resolve group
@@ -424,6 +424,6 @@ Public Class Strategy
 #End Region ' IMSEData implementation
 
     Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
-        Return FileExists(strFilename)
+        Return Me.FileExists(strFilename)
     End Function
 End Class

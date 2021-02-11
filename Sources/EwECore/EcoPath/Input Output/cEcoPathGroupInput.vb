@@ -35,22 +35,19 @@ Public Class cEcoPathGroupInput
 
 #Region " Private stuff "
 
-    ''' <summary>Core Counter interface for group taxon</summary>
-    Private m_CoreCounter As CoreIndexedCounterDelegate
-
     ''' <summary>
     ''' Clear the Status/message (CurrentStatus) object for this group 
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ClearCurrentStatus()
 
-        m_ValidationStatus.Status = eStatusFlags.OK
-        m_ValidationStatus.Source = eCoreComponentType.EcoPath
-        m_ValidationStatus.Message = ""
-        m_ValidationStatus.VarName = eVarNameFlags.NotSet
-        m_ValidationStatus.Index = Index
-        m_ValidationStatus.DataType = eDataTypes.EcoPathGroupInput
-        m_ValidationStatus.CoreDataObject = Me
+        Me.m_ValidationStatus.Status = eStatusFlags.OK
+        Me.m_ValidationStatus.Source = eCoreComponentType.EcoPath
+        Me.m_ValidationStatus.Message = ""
+        Me.m_ValidationStatus.VarName = eVarNameFlags.NotSet
+        Me.m_ValidationStatus.Index = Me.Index
+        Me.m_ValidationStatus.DataType = eDataTypes.EcoPathGroupInput
+        Me.m_ValidationStatus.CoreDataObject = Me
 
     End Sub
 
@@ -58,13 +55,10 @@ Public Class cEcoPathGroupInput
 
 #Region " Constructor and Initialization "
 
-    Sub New(ByVal core As cCore, ByVal DBID As Integer, ByVal iIndex As Integer)
+    Sub New(core As cCore, DBID As Integer, iIndex As Integer)
         MyBase.New(core)
 
         Dim val As cValue = Nothing
-
-        'get the core counter interface for the NTaxon (number of taxa) counter
-        Me.m_CoreCounter = AddressOf m_core.GetCoreCounter
 
         Me.m_dataType = eDataTypes.EcoPathGroupInput
         Me.m_coreComponent = eCoreComponentType.EcoPath
@@ -82,122 +76,122 @@ Public Class cEcoPathGroupInput
         'the Meta data tells the validator what the min and max allowable values are
         'the validator decides what to do if a value is < min, set the value to the meta data nullValue or reject the value
 
-        ClearCurrentStatus()
+        Me.ClearCurrentStatus()
 
         ' HabitatArea
-        val = New cValue(New Single, eVarNameFlags.HabitatArea, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.HabitatArea, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' BioAccumInput
-        val = New cValue(New Single, eVarNameFlags.BioAccumInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.BioAccumInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' Biomass
-        val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.Biomass, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' BiomassAreaInput
-        val = New cValue(New Single, eVarNameFlags.BiomassAreaInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.BiomassAreaInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' DetImp
-        val = New cValue(New Single, eVarNameFlags.DetImp, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.DetImp, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' EEInput
-        val = New cValue(New Single, eVarNameFlags.EEInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.EEInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' OtherMortInput
-        val = New cValue(New Single, eVarNameFlags.OtherMortInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.OtherMortInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' Emig
-        val = New cValue(New Single, eVarNameFlags.Emig, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.Emig, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' EmigRate
-        val = New cValue(New Single, eVarNameFlags.EmigRate, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.EmigRate, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' GEInput
-        val = New cValue(New Single, eVarNameFlags.GEInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.GEInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' GS
-        val = New cValue(New Single, eVarNameFlags.GS, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.GS, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' PBInput
-        val = New cValue(New Single, eVarNameFlags.PBInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.PBInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' Immig
-        val = New cValue(New Single, eVarNameFlags.Immig, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.Immig, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' QBInput
-        val = New cValue(New Single, eVarNameFlags.QBInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.QBInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' BioAccumRate
-        val = New cValue(New Single, eVarNameFlags.BioAccumRate, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.BioAccumRate, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' ImpDiet
-        val = New cValue(New Single, eVarNameFlags.ImpDiet, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.ImpDiet, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' PoolColor
-        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(core, New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
         ' NonMarketValue
-        val = New cValue(New Single, eVarNameFlags.NonMarketValue, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.NonMarketValue, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' IsFished
-        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
+        val = New cValue(core, New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
         val.AffectsRunState = False
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         ' -- arrays --
 
         ' DietComp
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DietComp, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.DietComp, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
         ' DetritusFate
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DetritusFate, eStatusFlags.Null, eCoreCounterTypes.nDetritus, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.DetritusFate, eStatusFlags.Null, eCoreCounterTypes.nDetritus)
+        Me.m_values.Add(val.varName, val)
         ' VBK
-        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' TCatchInput
-        val = New cValue(New Single, eVarNameFlags.TCatchInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TCatchInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' AinLWInput
-        val = New cValue(New Single, eVarNameFlags.AinLWInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.AinLWInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' BinLWInput
-        val = New cValue(New Single, eVarNameFlags.BinLWInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.BinLWInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' LooInput
-        val = New cValue(New Single, eVarNameFlags.LooInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.LooInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' WinfInput
-        val = New cValue(New Single, eVarNameFlags.WinfInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.WinfInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' t0Input
-        val = New cValue(New Single, eVarNameFlags.t0Input, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.t0Input, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' TmaxInput
-        val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
         ' GroupTaxa - dimensioned by nTaxa(iIndex)
 
-        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.BoolArray, eVarNameFlags.IsPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
         val.Stored = False
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.BoolArray, eVarNameFlags.IsPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
         val.Stored = False
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         ' iTaxon dimensioned by nTaxa(iIndex)
-        val = New cValueArrayIndexed(eValueTypes.IntArray, eVarNameFlags.GroupTaxa, eStatusFlags.Null, eCoreCounterTypes.nTaxonForGroup, AddressOf m_core.GetCoreCounter, Me.Index, Me.DataType)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.IntArray, eVarNameFlags.GroupTaxa, eStatusFlags.Null, eCoreCounterTypes.nTaxonForGroup, Me.Index, Me.DataType)
+        Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
 
     End Sub
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         MyBase.ResetStatusFlags(bForceReset)
 
         Me.m_core.Set_PB_QB_GE_BA_Flags(Me, False)
@@ -225,11 +219,11 @@ Public Class cEcoPathGroupInput
     Public Property BioAccumInput() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.BioAccumInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.BioAccumInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BioAccumInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.BioAccumInput, value)
         End Set
 
     End Property
@@ -242,11 +236,11 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     Public Property PBInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.PBInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.PBInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PBInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.PBInput, value)
         End Set
 
     End Property
@@ -260,11 +254,11 @@ Public Class cEcoPathGroupInput
     Public Property QBInput() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.QBInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.QBInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.QBInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.QBInput, value)
         End Set
     End Property
 
@@ -277,11 +271,11 @@ Public Class cEcoPathGroupInput
     Public Property GEInput() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.GEInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.GEInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.GEInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.GEInput, value)
         End Set
 
     End Property
@@ -295,11 +289,11 @@ Public Class cEcoPathGroupInput
     Public Property GS() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.GS))
+            Return CSng(Me.GetVariable(eVarNameFlags.GS))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.GS, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.GS, value)
         End Set
 
     End Property
@@ -312,11 +306,11 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     Public Property DetImport() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.DetImp))
+            Return CSng(Me.GetVariable(eVarNameFlags.DetImp))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.DetImp, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.DetImp, value)
         End Set
 
     End Property
@@ -329,11 +323,11 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     Public Property Area() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.HabitatArea))
+            Return CSng(Me.GetVariable(eVarNameFlags.HabitatArea))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.HabitatArea, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.HabitatArea, value)
         End Set
 
     End Property
@@ -347,11 +341,11 @@ Public Class cEcoPathGroupInput
     Public Property BiomassAreaInput() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.BiomassAreaInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.BiomassAreaInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BiomassAreaInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.BiomassAreaInput, value)
         End Set
 
     End Property
@@ -365,11 +359,11 @@ Public Class cEcoPathGroupInput
     Public Property EEInput() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EEInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.EEInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EEInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EEInput, value)
         End Set
 
     End Property
@@ -382,11 +376,11 @@ Public Class cEcoPathGroupInput
     Public Property OtherMortInput() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.OtherMortInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.OtherMortInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.OtherMortInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.OtherMortInput, value)
         End Set
 
     End Property
@@ -394,11 +388,11 @@ Public Class cEcoPathGroupInput
     Public Property ImpDiet() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.ImpDiet))
+            Return CSng(Me.GetVariable(eVarNameFlags.ImpDiet))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.ImpDiet, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.ImpDiet, value)
         End Set
 
     End Property
@@ -426,13 +420,13 @@ Public Class cEcoPathGroupInput
     ''' </code>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Property DietComp(ByVal iPreyGroup As Integer) As Single
+    Public Property DietComp(iPreyGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.DietComp, iPreyGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.DietComp, iPreyGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.DietComp, value, iPreyGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.DietComp, value, iPreyGroup)
         End Set
 
     End Property
@@ -446,11 +440,11 @@ Public Class cEcoPathGroupInput
     Public Property DietComp() As Single()
 
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.DietComp), Single())
+            Return DirectCast(Me.GetVariable(eVarNameFlags.DietComp), Single())
         End Get
 
-        Set(ByVal value As Single())
-            SetVariable(eVarNameFlags.DietComp, value)
+        Set(value As Single())
+            Me.SetVariable(eVarNameFlags.DietComp, value)
         End Set
 
     End Property
@@ -462,13 +456,13 @@ Public Class cEcoPathGroupInput
     ''' </summary>
     ''' <param name="iDetritusGroup"></param>
     ''' -----------------------------------------------------------------------
-    Public Property DetritusFate(ByVal iDetritusGroup As Integer) As Single
+    Public Property DetritusFate(iDetritusGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.DetritusFate, iDetritusGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.DetritusFate, iDetritusGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.DetritusFate, value, iDetritusGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.DetritusFate, value, iDetritusGroup)
         End Set
 
     End Property
@@ -482,11 +476,11 @@ Public Class cEcoPathGroupInput
     Public Property DetritusFate() As Single()
 
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.DetritusFate), Single())
+            Return DirectCast(Me.GetVariable(eVarNameFlags.DetritusFate), Single())
         End Get
 
-        Set(ByVal value As Single())
-            SetVariable(eVarNameFlags.DetritusFate, value)
+        Set(value As Single())
+            Me.SetVariable(eVarNameFlags.DetritusFate, value)
         End Set
 
     End Property
@@ -500,11 +494,11 @@ Public Class cEcoPathGroupInput
     Public Property EmigRate() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.EmigRate))
+            Return CSng(Me.GetVariable(eVarNameFlags.EmigRate))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EmigRate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EmigRate, value)
         End Set
 
     End Property
@@ -518,11 +512,11 @@ Public Class cEcoPathGroupInput
     Public Property BioAccumRate() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.BioAccumRate))
+            Return CSng(Me.GetVariable(eVarNameFlags.BioAccumRate))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BioAccumRate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.BioAccumRate, value)
         End Set
 
     End Property
@@ -536,11 +530,11 @@ Public Class cEcoPathGroupInput
     Public Property Immigration() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.Immig))
+            Return CSng(Me.GetVariable(eVarNameFlags.Immig))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Immig, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Immig, value)
         End Set
 
     End Property
@@ -554,112 +548,112 @@ Public Class cEcoPathGroupInput
     Public Property Emigration() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.Emig))
+            Return CSng(Me.GetVariable(eVarNameFlags.Emig))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Emig, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Emig, value)
         End Set
 
     End Property
 
     Public Property VBK() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.VBK))
+            Return CSng(Me.GetVariable(eVarNameFlags.VBK))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.VBK, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.VBK, value)
         End Set
     End Property
 
     Public Property PoolColor() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.PoolColor))
+            Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.PoolColor, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.PoolColor, value)
         End Set
     End Property
 
     Public Property NonMarketValue() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.NonMarketValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.NonMarketValue))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.NonMarketValue, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.NonMarketValue, value)
         End Set
 
     End Property
 
     Public Property TcatchInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.TCatchInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.TCatchInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TCatchInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.TCatchInput, value)
         End Set
     End Property
 
     Public Property AinLWInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.AinLWInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.AinLWInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.AinLWInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.AinLWInput, value)
         End Set
     End Property
 
     Public Property BinLWInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.BinLWInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.BinLWInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BinLWInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.BinLWInput, value)
         End Set
     End Property
 
     Public Property LooInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.LooInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.LooInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.LooInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.LooInput, value)
         End Set
     End Property
 
     Public Property WinfInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.WinfInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.WinfInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.WinfInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.WinfInput, value)
         End Set
     End Property
 
     Public Property t0Input() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.t0Input))
+            Return CSng(Me.GetVariable(eVarNameFlags.t0Input))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.t0Input, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.t0Input, value)
         End Set
     End Property
 
     Public Property TmaxInput() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.TmaxInput))
+            Return CSng(Me.GetVariable(eVarNameFlags.TmaxInput))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TmaxInput, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.TmaxInput, value)
         End Set
     End Property
 
@@ -671,10 +665,10 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     Public Property IsFished() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsFished))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsFished))
         End Get
 
-        Friend Set(ByVal value As Boolean)
+        Friend Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
     End Property
@@ -683,14 +677,14 @@ Public Class cEcoPathGroupInput
     ''' Get whether this group is predated on by <paramref name="iGroup">group index</paramref>.
     ''' </summary>
     ''' <param name="iGroup">Group index of the predator</param>
-    Public Property IsPred(ByVal iGroup As Integer) As Boolean
+    Public Property IsPred(iGroup As Integer) As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsPred, iGroup))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsPred, iGroup))
         End Get
 
-        Friend Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsPred, value, iGroup)
+        Friend Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.IsPred, value, iGroup)
         End Set
 
     End Property
@@ -699,14 +693,14 @@ Public Class cEcoPathGroupInput
     ''' Get whether this group predates on <paramref name="iGroup">group index</paramref>.
     ''' </summary>
     ''' <param name="iGroup">Group index of the prey</param>
-    Public Property IsPrey(ByVal iGroup As Integer) As Boolean
+    Public Property IsPrey(iGroup As Integer) As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsPrey, iGroup))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsPrey, iGroup))
         End Get
 
-        Friend Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsPrey, value, iGroup)
+        Friend Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.IsPrey, value, iGroup)
         End Set
 
     End Property
@@ -722,13 +716,13 @@ Public Class cEcoPathGroupInput
     ''' </summary>
     ''' <param name="iGroup">Prey <see cref="Index">index</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Property DietCompStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property DietCompStatus(iGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.DietComp, iGroup)
+            Return Me.GetStatus(eVarNameFlags.DietComp, iGroup)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.DietComp, value, iGroup)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.DietComp, value, iGroup)
         End Set
 
     End Property
@@ -741,13 +735,13 @@ Public Class cEcoPathGroupInput
     ''' </summary>
     ''' <param name="iDetritusGroup">Detritus group <see cref="Index">index</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Property DetritusFateStatus(ByVal iDetritusGroup As Integer) As eStatusFlags
+    Public Property DetritusFateStatus(iDetritusGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.DetritusFate, Index)
+            Return Me.GetStatus(eVarNameFlags.DetritusFate, Me.Index)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.DetritusFate, value, Index)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.DetritusFate, value, Me.Index)
         End Set
 
     End Property
@@ -761,11 +755,11 @@ Public Class cEcoPathGroupInput
     Public Property AreaStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.HabitatArea)
+            Return Me.GetStatus(eVarNameFlags.HabitatArea)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.HabitatArea, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.HabitatArea, value)
         End Set
 
     End Property
@@ -779,11 +773,11 @@ Public Class cEcoPathGroupInput
     Public Property BiomassAreaStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.BiomassAreaInput)
+            Return Me.GetStatus(eVarNameFlags.BiomassAreaInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BiomassAreaInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.BiomassAreaInput, value)
         End Set
 
     End Property
@@ -797,11 +791,11 @@ Public Class cEcoPathGroupInput
     Public Property PBStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.PBInput)
+            Return Me.GetStatus(eVarNameFlags.PBInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.PBInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.PBInput, value)
         End Set
 
     End Property
@@ -815,11 +809,11 @@ Public Class cEcoPathGroupInput
     Public Property QBInputStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.QBInput)
+            Return Me.GetStatus(eVarNameFlags.QBInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.QBInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.QBInput, value)
         End Set
 
     End Property
@@ -833,11 +827,11 @@ Public Class cEcoPathGroupInput
     Public Property EEInputStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.EEInput)
+            Return Me.GetStatus(eVarNameFlags.EEInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EEInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EEInput, value)
         End Set
 
     End Property
@@ -851,11 +845,11 @@ Public Class cEcoPathGroupInput
     Public Property OtherMortInputStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.OtherMortInput)
+            Return Me.GetStatus(eVarNameFlags.OtherMortInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.OtherMortInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.OtherMortInput, value)
         End Set
 
     End Property
@@ -869,11 +863,11 @@ Public Class cEcoPathGroupInput
     Public Property GEStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.GEInput)
+            Return Me.GetStatus(eVarNameFlags.GEInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.GEInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.GEInput, value)
         End Set
 
     End Property
@@ -887,11 +881,11 @@ Public Class cEcoPathGroupInput
     Public Property GSStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.GS)
+            Return Me.GetStatus(eVarNameFlags.GS)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.GS, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.GS, value)
         End Set
 
     End Property
@@ -905,11 +899,11 @@ Public Class cEcoPathGroupInput
     Public Property DetImportStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.DetImp)
+            Return Me.GetStatus(eVarNameFlags.DetImp)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.DetImp, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.DetImp, value)
         End Set
 
     End Property
@@ -923,11 +917,11 @@ Public Class cEcoPathGroupInput
     Public Property BioAccumStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.BioAccumInput)
+            Return Me.GetStatus(eVarNameFlags.BioAccumInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BioAccumInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.BioAccumInput, value)
         End Set
 
     End Property
@@ -941,11 +935,11 @@ Public Class cEcoPathGroupInput
     Public Property EmigRateStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.EmigRate)
+            Return Me.GetStatus(eVarNameFlags.EmigRate)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EmigRate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EmigRate, value)
         End Set
 
     End Property
@@ -959,11 +953,11 @@ Public Class cEcoPathGroupInput
     Public Property EmigrationStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Emig)
+            Return Me.GetStatus(eVarNameFlags.Emig)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Emig, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Emig, value)
         End Set
 
     End Property
@@ -977,11 +971,11 @@ Public Class cEcoPathGroupInput
     Public Property ImmigrationStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Immig)
+            Return Me.GetStatus(eVarNameFlags.Immig)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Immig, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Immig, value)
         End Set
 
     End Property
@@ -995,93 +989,93 @@ Public Class cEcoPathGroupInput
     Public Property BioAccumRateStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.BioAccumRate)
+            Return Me.GetStatus(eVarNameFlags.BioAccumRate)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BioAccumRate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.BioAccumRate, value)
         End Set
 
     End Property
 
     Public Property VBKStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.VBK)
+            Return Me.GetStatus(eVarNameFlags.VBK)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.VBK, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.VBK, value)
         End Set
     End Property
 
     'Joeh
     Public Property AinLWInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.AinLWInput)
+            Return Me.GetStatus(eVarNameFlags.AinLWInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.AinLWInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.AinLWInput, value)
         End Set
     End Property
 
     Public Property BinLWInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.BinLWInput)
+            Return Me.GetStatus(eVarNameFlags.BinLWInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BinLWInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.BinLWInput, value)
         End Set
     End Property
 
     Public Property LooInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.LooInput)
+            Return Me.GetStatus(eVarNameFlags.LooInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.LooInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.LooInput, value)
         End Set
     End Property
 
     Public Property WinfInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.WinfInput)
+            Return Me.GetStatus(eVarNameFlags.WinfInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.WinfInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.WinfInput, value)
         End Set
     End Property
 
     Public Property t0InputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.t0Input)
+            Return Me.GetStatus(eVarNameFlags.t0Input)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.t0Input, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.t0Input, value)
         End Set
     End Property
 
     Public Property TcatchInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.TCatchInput)
+            Return Me.GetStatus(eVarNameFlags.TCatchInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TCatchInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.TCatchInput, value)
         End Set
     End Property
 
     Public Property TmaxInputStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.TmaxInput)
+            Return Me.GetStatus(eVarNameFlags.TmaxInput)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TmaxInput, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.TmaxInput, value)
         End Set
     End Property
     'End Joeh
@@ -1094,11 +1088,11 @@ Public Class cEcoPathGroupInput
     Public Property ImpDietStatus() As eStatusFlags
 
         Get
-            Return DietCompStatus(0)
+            Return Me.DietCompStatus(0)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            DietCompStatus(0) = value
+        Friend Set(value As eStatusFlags)
+            Me.DietCompStatus(0) = value
         End Set
 
     End Property
@@ -1106,11 +1100,11 @@ Public Class cEcoPathGroupInput
     Public Property NonMarketValueStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.NonMarketValue)
+            Return Me.GetStatus(eVarNameFlags.NonMarketValue)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.NonMarketValue, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NonMarketValue, value)
         End Set
 
     End Property
@@ -1130,7 +1124,7 @@ Public Class cEcoPathGroupInput
             Return getStatus(eVarNameFlags.Biomass)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
+        Friend Set(value As eStatusFlags)
             setStatus(eVarNameFlags.Biomass, value)
         End Set
 
@@ -1150,7 +1144,7 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NTaxon() As Integer
         Get
-            Return m_CoreCounter(eCoreCounterTypes.nTaxonForGroup, Me.Index)
+            Return Me.m_core.GetCoreCounter(eCoreCounterTypes.nTaxonForGroup, Me.Index)
         End Get
     End Property
 
@@ -1182,11 +1176,11 @@ Public Class cEcoPathGroupInput
     ''' </code>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Property iTaxon(ByVal iIndex As Integer) As Integer
+    Public Property iTaxon(iIndex As Integer) As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.GroupTaxa, iIndex))
+            Return CInt(Me.GetVariable(eVarNameFlags.GroupTaxa, iIndex))
         End Get
-        Friend Set(ByVal value As Integer)
+        Friend Set(value As Integer)
             Me.SetVariable(eVarNameFlags.GroupTaxa, value, iIndex)
         End Set
     End Property

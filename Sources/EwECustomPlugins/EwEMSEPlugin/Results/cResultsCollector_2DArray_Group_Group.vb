@@ -39,42 +39,42 @@ Public MustInherit Class cResultsCollector_2DArray_Group_Group
 
     Public Overrides Sub Initialise(MSE As cMSE)
 
-        m_MSE = MSE
-        SetSize(MSE.Strategies.Count, Me.nPred, Me.nPrey, NumberOfTimeRecords)
+        Me.m_MSE = MSE
+        Me.SetSize(MSE.Strategies.Count, Me.nPred, Me.nPrey, Me.NumberOfTimeRecords)
 
     End Sub
 
     Public ReadOnly Property nPred As Integer
         Get
-            Return m_MSE.Core.nGroups
+            Return Me.m_MSE.Core.nGroups
         End Get
     End Property
 
     Public ReadOnly Property nPrey As Integer
         Get
-            Return m_MSE.Core.nGroups
+            Return Me.m_MSE.Core.nGroups
         End Get
     End Property
 
-    Public ReadOnly Property GetValue(ByVal iStrategy As Integer, ByVal iPred As Integer, ByVal iPrey As Integer,
-                                      ByVal iTime As Integer) As Object
+    Public ReadOnly Property GetValue(iStrategy As Integer, iPred As Integer, iPrey As Integer,
+                                      iTime As Integer) As Object
         Get
-            Return m_DataArray(iStrategy, iPred, iPrey, iTime)
+            Return Me.m_DataArray(iStrategy, iPred, iPrey, iTime)
         End Get
     End Property
 
-    Protected WriteOnly Property SetValue(ByVal iStrategy As Integer, ByVal iPred As Integer, ByVal iPrey As Integer,
-                                          ByVal iTime As Integer) As Object
+    Protected WriteOnly Property SetValue(iStrategy As Integer, iPred As Integer, iPrey As Integer,
+                                          iTime As Integer) As Object
         Set(value As Object)
-            m_DataArray(iStrategy, iPred, iPrey, iTime) = value
+            Me.m_DataArray(iStrategy, iPred, iPrey, iTime) = value
         End Set
     End Property
 
-    Protected Overrides Sub SetDefaults(ByVal DefaultValue As Object)
-        For iStrategy = 0 To m_nStrategies
+    Protected Overrides Sub SetDefaults(DefaultValue As Object)
+        For iStrategy = 0 To Me.m_nStrategies
             For iPred = 0 To Me.nPred
                 For iPrey = 0 To Me.nPrey
-                    For iTime = 0 To NumberOfTimeRecords
+                    For iTime = 0 To Me.NumberOfTimeRecords
                         Me.SetValue(iStrategy, iPred, iPrey, iTime) = DefaultValue
                     Next
                 Next
@@ -83,8 +83,8 @@ Public MustInherit Class cResultsCollector_2DArray_Group_Group
     End Sub
 
     Protected Sub SetSize(nStrategy As Integer, nPred As Integer, nPrey As Integer, nTime As Integer)
-        ReDim m_DataArray(nStrategy, nPred, nPrey, nTime)
-        m_nStrategies = nStrategy
+        ReDim Me.m_DataArray(nStrategy, nPred, nPrey, nTime)
+        Me.m_nStrategies = nStrategy
     End Sub
 End Class
 

@@ -46,15 +46,15 @@ Public Class Strategies
     Private m_Core As cCore = Nothing
 
     Sub New(MSE As cMSE, Core As cCore)
-        m_MSE = MSE
-        m_Core = Core
+        Me.m_MSE = MSE
+        Me.m_Core = Core
     End Sub
 
     ''' <summary>
     ''' Overwrite default behaviour to delete the Strategy file when removing a Strategy from the list
     ''' </summary>
     ''' <param name="ZeroBasedIndex">Zero based index of the Strategy to remove</param>
-    Public Shadows Sub RemoveAt(ByVal ZeroBasedIndex As Integer)
+    Public Shadows Sub RemoveAt(ZeroBasedIndex As Integer)
         Try
             Dim strategy As Strategy = Me.Item(ZeroBasedIndex)
             MyBase.RemoveAt(ZeroBasedIndex)
@@ -68,7 +68,7 @@ Public Class Strategies
         End Try
     End Sub
 
-    Public Function HCRExistsForGroup(ByVal iGrp As Integer) As Boolean
+    Public Function HCRExistsForGroup(iGrp As Integer) As Boolean
 
         For Each iStrategy In Me
             For iHCR = 1 To iStrategy.Count
@@ -135,8 +135,8 @@ Public Class Strategies
 
         Dim StrategiesFileNames As String()
         Dim Strategy As Strategy
-        Dim strStategyDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
-        Dim strRegulationDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
+        Dim strStategyDir As String = cMSEUtils.MSEFolder(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        Dim strRegulationDir As String = cMSEUtils.MSEFolder(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim StratCounter As Integer = 1
         Dim bSuccess As Boolean = True
         Dim StrategyFileWithoutHCRReg As String
@@ -155,7 +155,7 @@ Public Class Strategies
             StrategyFileWithoutHCRReg = StrategyFile.Replace("_hcr", "").Replace("_reg", "")
             StrategyFileWithoutExtension = Path.GetFileNameWithoutExtension(StrategyFile).Replace("_hcr", "").Replace("_reg", "")
 
-            Strategy = New Strategy(StrategyFileWithoutExtension, StratCounter, StrategyFile, m_Core, m_MSE)
+            Strategy = New Strategy(StrategyFileWithoutExtension, StratCounter, StrategyFile, Me.m_Core, Me.m_MSE)
 
             'Only add the Strategy if it read both strategy and regulations from file
             If Strategy.Load(msg) And Strategy.Regulations.Load(msg, Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv")) Then
@@ -175,7 +175,7 @@ Public Class Strategies
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
-        Dim strRegulationDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
+        Dim strRegulationDir As String = cMSEUtils.MSEFolder(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim strFile As String = ""
         Dim strPath As String = ""
         Dim msg As cMessage = Nothing

@@ -63,16 +63,16 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Attach(ByVal stb As ucShapeToolbox,
-                                    ByVal stbtb As ucShapeToolboxToolbar,
-                                    ByVal sp As ucSketchPad,
-                                    ByVal sptb As ucSketchPadToolbar)
+        Public Overrides Sub Attach(stb As ucShapeToolbox,
+                                    stbtb As ucShapeToolboxToolbar,
+                                    sp As ucSketchPad,
+                                    sptb As ucSketchPadToolbar)
             MyBase.Attach(stb, stbtb, sp, sptb)
             Me.UpdateShapeList()
 
-            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.Any, Me.UIContext.SyncObject)
+            Me.m_mhShapes = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
-            Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.UIContext.SyncObject)
+            Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             Me.DisplayFullXAxis = Me.m_bShowAll
@@ -122,8 +122,8 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="cShapeData">shape</see> to affect.</param>
         ''' <param name="sDefaultValue">The value to set.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub ResetShapes(ByVal ashapes As cShapeData(),
-                Optional ByVal sDefaultValue As Single = 1.0!)
+        Protected Overridable Sub ResetShapes(ashapes As cShapeData(),
+                Optional sDefaultValue As Single = 1.0!)
 
             Dim sm As cBaseShapeManager = Nothing
             Dim shape As cShapeData = Nothing
@@ -196,7 +196,7 @@ Namespace Controls
         ''' <param name="cmd">The command to test.</param>
         ''' <returns>True if command is supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(cmd As eShapeCommandTypes) As Boolean
 
             ' A 101 things you can do with a Forcing shape
             Select Case cmd
@@ -239,7 +239,7 @@ Namespace Controls
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <returns>True if enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
             Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
@@ -295,8 +295,8 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes,
-                 Optional ByVal ashapes As EwECore.cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As eShapeCommandTypes,
+                 Optional ashapes As EwECore.cShapeData() = Nothing, Optional data As Object = Nothing)
 
             Dim cmdX As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
 
@@ -402,7 +402,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The forcing function that has changed.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeChanged(ByVal shape As EwECore.cShapeData)
+        Public Overrides Sub OnShapeChanged(shape As EwECore.cShapeData)
             If Me.m_bInUpdate Then Return
             If shape IsNot Nothing Then
                 Me.m_bInUpdate = True
@@ -417,7 +417,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The forcing function that has changed.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+        Public Overrides Sub OnShapeFinalized(shape As EwECore.cShapeData, sketchpad As ucSketchPad)
             If Me.m_bInUpdate Then Return
             If shape IsNot Nothing Then
                 Me.m_bInUpdate = True
@@ -432,7 +432,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The newly selected shape.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal shape As EwECore.cShapeData())
+        Public Overrides Sub OnShapeSelected(shape As EwECore.cShapeData())
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             Me.SelectedShapes = shape
@@ -532,7 +532,7 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Duplicate">Duplicate</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub DuplicateFF(ByVal ashapes As cShapeData())
+        Private Sub DuplicateFF(ashapes As cShapeData())
 
             ' Sanity check
             Debug.Assert(ashapes IsNot Nothing, "Need valid FF")
@@ -559,7 +559,7 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Modify">Modify</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub ModifyFF(ByVal shape As cShapeData)
+        Private Sub ModifyFF(shape As cShapeData)
 
             ' Sanity check
             Debug.Assert(shape IsNot Nothing, "Need valid FF")
@@ -570,7 +570,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub ScaleShape(ByVal shape As cShapeData, ByVal sNewMax As Single)
+        Private Sub ScaleShape(shape As cShapeData, sNewMax As Single)
 
             ' Sanity check
             Debug.Assert(shape IsNot Nothing, "Need valid FF")
@@ -597,7 +597,7 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Remove">Remove</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub RemoveFF(ByVal ashapes As cShapeData())
+        Private Sub RemoveFF(ashapes As cShapeData())
 
             Dim fms As cFeedbackMessage = Nothing
             Dim strMessage As String = ""
@@ -624,7 +624,7 @@ Namespace Controls
             Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
             For Each shape As cShapeData In ashapes
                 Debug.Assert(TypeOf shape Is cForcingFunction, "Need valid FF")
-                bSucces = bSucces And ShapeManager.Remove(DirectCast(shape, cForcingFunction))
+                bSucces = bSucces And Me.ShapeManager.Remove(DirectCast(shape, cForcingFunction))
             Next
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
 
@@ -638,7 +638,7 @@ Namespace Controls
         ''' Helper method; reflect on-going modifications in the selected forcing function.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateFF(ByVal shape As cShapeData)
+        Private Sub UpdateFF(shape As cShapeData)
             If (Me.ShapeToolBox IsNot Nothing) Then
                 Me.ShapeToolBox.UpdateThumbnail(shape)
             End If
@@ -650,7 +650,7 @@ Namespace Controls
         ''' <see cref="ShapeManager">underlying manager</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub CommitFF(ByVal shape As cShapeData)
+        Private Sub CommitFF(shape As cShapeData)
 
             If shape IsNot Nothing Then
 
@@ -662,7 +662,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Sub ResetShapePrompted(ByVal ashapes As cShapeData())
+        Protected Sub ResetShapePrompted(ashapes As cShapeData())
 
             Dim strCaption As String = My.Resources.SHAPE_HEADER_SET_TO_VALUE
             Dim strMessage As String = My.Resources.SHAPE_PROMPT_SET_TO_VALUE
@@ -743,10 +743,10 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strName">Name of the new forcing function.</param>
         ''' -------------------------------------------------------------------
-        Private Sub CreateShape(ByVal strName As String)
+        Private Sub CreateShape(strName As String)
             ' Create new shape
 
-            Dim shapeNew As cForcingFunction = ShapeManager.CreateNewShape(strName, Nothing)
+            Dim shapeNew As cForcingFunction = Me.ShapeManager.CreateNewShape(strName, Nothing)
             ' Validate
             If shapeNew Is Nothing Then Return
             ' Update 
@@ -759,7 +759,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="ashapeSelect">Forcing functions to select.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateShapeList(Optional ByVal ashapeSelect As cShapeData() = Nothing)
+        Private Sub UpdateShapeList(Optional ashapeSelect As cShapeData() = Nothing)
 
             Dim bHasSelection As Boolean = False
             Dim bHasShapes As Boolean = False

@@ -33,6 +33,6 @@ Public Interface IEcosimModifyTimeseriesPlugin
     ''' </summary>
     ''' <param name="TimeSeriesDataStructures">cTimeSeriesDataStructures instance.</param>
     ''' <remarks>Call prior to initialization of run data.</remarks>
-    Sub EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object)
+    Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object)
 
 End Interface

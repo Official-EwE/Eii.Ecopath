@@ -36,12 +36,12 @@ Public Class cEcospaceLayerIBMAge1Forcing
     Inherits cEcospaceLayerSingle
 
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerIBMAge1Forcing, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerIBMAge1Forcing
     End Sub
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Try
                 Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
@@ -51,7 +51,7 @@ Public Class cEcospaceLayerIBMAge1Forcing
             End Try
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Try
                 Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
                 Dim s As Single = Convert.ToSingle(value)

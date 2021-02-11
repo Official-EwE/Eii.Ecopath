@@ -90,10 +90,10 @@ Namespace Ecosim
             Dim fleetMSE As cMSEFleetInput = Nothing
 
             ' For each flt
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
 
                 'Get the flt info
-                fleetMSE = Core.MSEManager.EcopathFleetInputs(iFleet)
+                fleetMSE = Me.Core.MSEManager.EcopathFleetInputs(iFleet)
 
                 Me.AddRow()
 
@@ -132,7 +132,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iRow">The index of the row to refresh.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateRow(ByVal iRow As Integer)
+        Private Sub UpdateRow(iRow As Integer)
 
             Dim flt As cMSEFleetInput = Nothing
             Dim ri As RowInfo = Nothing
@@ -167,7 +167,7 @@ Namespace Ecosim
         ''' makes this method mandatory.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If Not Me.AllowUpdates Then Return True
 
@@ -218,7 +218,7 @@ Namespace Ecosim
             Get
                 Return (Me.m_iUpdateLock = 0)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value Then
                     Me.m_iUpdateLock += 1
                 Else

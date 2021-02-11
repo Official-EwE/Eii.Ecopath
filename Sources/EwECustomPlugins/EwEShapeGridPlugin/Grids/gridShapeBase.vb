@@ -48,15 +48,15 @@ Public MustInherit Class gridShapeBase
         Get
             Return MyBase.UIContext
         End Get
-        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
             If (MyBase.UIContext IsNot Nothing) Then
-                RemoveHandler Me.Handler.OnRefreshed, AddressOf OnRefreshed
+                RemoveHandler Me.Handler.OnRefreshed, AddressOf Me.OnRefreshed
                 Me.Handler.Detach()
             End If
             MyBase.UIContext = value
             If (MyBase.UIContext IsNot Nothing) Then
                 Me.Handler.Attach(Nothing, Nothing, Nothing, Nothing)
-                AddHandler Me.Handler.OnRefreshed, AddressOf OnRefreshed
+                AddHandler Me.Handler.OnRefreshed, AddressOf Me.OnRefreshed
                 Me.RefreshContent()
             End If
         End Set
@@ -72,7 +72,7 @@ Public MustInherit Class gridShapeBase
         Get
             Return Me.m_bIsSeasonal
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (Me.m_bIsSeasonal = value) Then Return
             Me.m_bIsSeasonal = value
             Me.RefreshContent()
@@ -96,7 +96,7 @@ Public MustInherit Class gridShapeBase
 
     Public MustOverride ReadOnly Property Handler() As cShapeGUIHandler
     Public MustOverride ReadOnly Property Manager() As IEnumerable
-    Protected MustOverride Sub OnRefreshed(ByVal sender As cShapeGUIHandler)
+    Protected MustOverride Sub OnRefreshed(sender As cShapeGUIHandler)
 
     Public ReadOnly Property Shapes() As EwECore.cShapeData()
         Get
@@ -123,20 +123,20 @@ Public MustInherit Class gridShapeBase
         Return (shape.IsSeasonal = Me.IsSeasonal)
     End Function
 
-    Protected Property Shape(ByVal iCol As Integer) As cShapeData
+    Protected Property Shape(iCol As Integer) As cShapeData
         Get
             Return DirectCast(Me.Columns(iCol).Tag, cShapeData)
         End Get
-        Set(ByVal value As cShapeData)
+        Set(value As cShapeData)
             Me.Columns(iCol).Tag = value
         End Set
     End Property
 
-    Protected Sub InvalidateShape(ByVal iCol As Integer)
+    Protected Sub InvalidateShape(iCol As Integer)
         Me.InvalidateShape(Me.Shape(iCol))
     End Sub
 
-    Protected Sub InvalidateShape(ByVal shape As cShapeData)
+    Protected Sub InvalidateShape(shape As cShapeData)
 
         If Not Me.m_lInvalidatedShapes.Contains(shape) Then
             Me.m_lInvalidatedShapes.Add(shape)
@@ -168,6 +168,6 @@ Public MustInherit Class gridShapeBase
     ''' <param name="iPoint">The zero-based point index to return the label for.</param>
     ''' <returns>A formatted X-axis label for a data point.</returns>
     ''' -----------------------------------------------------------------------
-    Protected MustOverride Function Label(ByVal iPoint As Integer) As String
+    Protected MustOverride Function Label(iPoint As Integer) As String
 
 End Class

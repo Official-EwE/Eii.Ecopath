@@ -112,8 +112,8 @@ Public Class cSurvivability
 
         End Sub
 
-        Public Sub New(ByVal Index As Integer, FleetNumber As Integer, ByVal GroupNumber As Integer, _
-                       ByVal Alpha As Double, ByVal Beta As Double)
+        Public Sub New(Index As Integer, FleetNumber As Integer, GroupNumber As Integer, _
+                       Alpha As Double, Beta As Double)
             Me.Index = Index
             Me.FleetNo = FleetNumber
             Me.GroupNo = GroupNumber
@@ -122,8 +122,8 @@ Public Class cSurvivability
 
         End Sub
 
-        Public Sub New(ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, _
-                       ByVal Alpha As Double, ByVal Beta As Double)
+        Public Sub New(FleetNumber As Integer, GroupNumber As Integer, _
+                       Alpha As Double, Beta As Double)
             Me.FleetNo = FleetNumber
             Me.GroupNo = GroupNumber
             Me.Alpha = Alpha
@@ -149,7 +149,7 @@ Public Class cSurvivability
         Public Property GroupNo As Integer
         Public Property Survivability As Single
 
-        Public Sub New(ByVal Iteration As Integer, ByVal FleetNumber As Integer, ByVal GroupNumber As Integer, ByVal Survivability As Single)
+        Public Sub New(Iteration As Integer, FleetNumber As Integer, GroupNumber As Integer, Survivability As Single)
 
             Me.Iteration = Iteration
             Me.FleetNo = FleetNumber
@@ -172,7 +172,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public ReadOnly Property ListofSurvDistParams() As List(Of cSurvivabilityDistributonParam)
         Get
-            Return mListofSuriveDistParams
+            Return Me.mListofSuriveDistParams
         End Get
     End Property
 
@@ -182,7 +182,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public ReadOnly Property CountDist() As Integer
         Get
-            Return mListofSuriveDistParams.Count
+            Return Me.mListofSuriveDistParams.Count
         End Get
     End Property
 
@@ -201,7 +201,7 @@ Public Class cSurvivability
         Dim nextIndex As Integer
 
         'Check Fleet Number
-        If param.FleetNo < 0 Or param.FleetNo > mcore.nFleets Then Return False
+        If param.FleetNo < 0 Or param.FleetNo > Me.mcore.nFleets Then Return False
 
         'Check Fleet Name
         'ValuesOkay = False
@@ -211,7 +211,7 @@ Public Class cSurvivability
         'If ValuesOkay = False Then Return False
 
         'Check GroupNo
-        If param.GroupNo < 0 Or param.GroupNo > mcore.nGroups Then Return False
+        If param.GroupNo < 0 Or param.GroupNo > Me.mcore.nGroups Then Return False
 
         'Check GroupName
         'ValuesOkay = False
@@ -223,8 +223,8 @@ Public Class cSurvivability
         'Check Alpha and Beta
         If param.Alpha <= 0 Or param.Beta <= 0 Then Return False
 
-        nextIndex = mListofSuriveDistParams.Count + 1
-        mListofSuriveDistParams.Add(New cSurvivabilityDistributonParam(nextIndex, param.FleetNo, param.GroupNo, param.Alpha, param.Beta))
+        nextIndex = Me.mListofSuriveDistParams.Count + 1
+        Me.mListofSuriveDistParams.Add(New cSurvivabilityDistributonParam(nextIndex, param.FleetNo, param.GroupNo, param.Alpha, param.Beta))
 
         Return True
 
@@ -238,8 +238,8 @@ Public Class cSurvivability
     ''' <remarks>iRow is zero-based</remarks>
     Public Function ReadRowDist(iRow As Integer) As cSurvivabilityDistributonParam
         If iRow < 0 Then Return Nothing
-        If iRow > mListofSuriveDistParams.Count - 1 Then Return Nothing
-        Return mListofSuriveDistParams(iRow)
+        If iRow > Me.mListofSuriveDistParams.Count - 1 Then Return Nothing
+        Return Me.mListofSuriveDistParams(iRow)
     End Function
 
     ''' <summary>
@@ -251,11 +251,11 @@ Public Class cSurvivability
     ''' <remarks>iFleet and iGroup are zero-based</remarks>
     Public Function ReadiFleetiGroupDist(iFleet As Integer, iGroup As Integer) As cSurvivabilityDistributonParam
 
-        If iFleet < 1 Or iFleet > mcore.nFleets Then Return Nothing
-        If iGroup < 1 Or iGroup > mcore.nGroups Then Return Nothing
+        If iFleet < 1 Or iFleet > Me.mcore.nFleets Then Return Nothing
+        If iGroup < 1 Or iGroup > Me.mcore.nGroups Then Return Nothing
 
-        For iRow As Integer = 0 To mListofSuriveDistParams.Count - 1
-            If mListofSuriveDistParams(iRow).FleetNo = iFleet And mListofSuriveDistParams(iRow).GroupNo = iGroup Then Return mListofSuriveDistParams(iRow)
+        For iRow As Integer = 0 To Me.mListofSuriveDistParams.Count - 1
+            If Me.mListofSuriveDistParams(iRow).FleetNo = iFleet And Me.mListofSuriveDistParams(iRow).GroupNo = iGroup Then Return Me.mListofSuriveDistParams(iRow)
         Next
 
         Return Nothing
@@ -287,7 +287,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public ReadOnly Property SurvParamFileValid As Boolean
         Get
-            Return mSurvParamFileValid
+            Return Me.mSurvParamFileValid
         End Get
     End Property
 
@@ -299,10 +299,10 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public Property SurvivabilityParamFileExists() As Boolean
         Get
-            Return mSurvParamFileExists
+            Return Me.mSurvParamFileExists
         End Get
-        Set(ByVal value As Boolean)
-            mSurvParamFileExists = value
+        Set(value As Boolean)
+            Me.mSurvParamFileExists = value
         End Set
     End Property
 
@@ -324,12 +324,12 @@ Public Class cSurvivability
 
         Try
             For iParameter = 1 To nParams
-                For iRow = 0 To mListofSuriveDistParams.Count - 1
+                For iRow = 0 To Me.mListofSuriveDistParams.Count - 1
                     TempSurvDistParam = Me.ReadRowDist(iRow)
                     BetaGenerator.Alpha = TempSurvDistParam.Alpha
                     BetaGenerator.Beta = TempSurvDistParam.Beta
                     TempSampledParam = Convert.ToSingle(BetaGenerator.NextDouble())
-                    m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo, _
+                    Me.m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo, _
                                                                         TempSurvDistParam.GroupNo, _
                                                                         TempSampledParam))
                 Next
@@ -353,19 +353,19 @@ Public Class cSurvivability
         Dim csv As CsvReader = Nothing
         Dim param As cSampledSurvivability
         Dim bSuccess As Boolean = True
-        Dim filePath As String = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv")
+        Dim filePath As String = cMSEUtils.MSEFile(Me.mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv")
 
         If File.Exists(filePath) Then
             reader = cMSEUtils.GetReader(filePath)
             If (reader IsNot Nothing) Then
                 Try
                     csv = New CsvReader(reader, True)
-                    mSurvParamFileExists = False
+                    Me.mSurvParamFileExists = False
                     While Not csv.EndOfStream
-                        param = ExtractSampledParam(csv)
+                        param = Me.ExtractSampledParam(csv)
 
                         If (param IsNot Nothing) Then
-                            m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(param.Iteration, param.FleetNo, param.GroupNo, _
+                            Me.m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(param.Iteration, param.FleetNo, param.GroupNo, _
                                                           param.Survivability))
                         End If
                     End While
@@ -391,7 +391,7 @@ Public Class cSurvivability
     ''' <param name="csv">The csv object that links to the file</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExtractSampledParam(ByVal csv As CsvReader) As cSampledSurvivability
+    Private Function ExtractSampledParam(csv As CsvReader) As cSampledSurvivability
         ' Sanity checks
         If (csv Is Nothing) Then Return Nothing
         If (Not csv.ReadNextRecord()) Then Return Nothing
@@ -424,7 +424,7 @@ Public Class cSurvivability
     ''' <remarks></remarks>
     Public Function SaveSampledToCSV() As Boolean
 
-        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv"), False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.mMSE.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv"), False)
 
         Dim bSuccess As Boolean = False
 
@@ -433,12 +433,12 @@ Public Class cSurvivability
         Try
             writer.WriteLine("Iteration,FleetNumber,FleetName,GroupNumber,GroupName,Survivability")
 
-            For Each entry As cSampledSurvivability In m_ListOfSampledSurvivabilities
+            For Each entry As cSampledSurvivability In Me.m_ListOfSampledSurvivabilities
                 writer.WriteLine(cStringUtils.ToCSVField(entry.Iteration) & "," &
                                  cStringUtils.ToCSVField(entry.FleetNo) & "," &
-                                 cStringUtils.ToCSVField(mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
+                                 cStringUtils.ToCSVField(Me.mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.GroupNo) & "," &
-                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
+                                 cStringUtils.ToCSVField(Me.mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.Survivability))
             Next
 
@@ -456,11 +456,11 @@ Public Class cSurvivability
 
 #Region " Subroutines "
 
-    Public Sub ConfigCoreWithSurvivabilities(ByVal iModel As Integer)
+    Public Sub ConfigCoreWithSurvivabilities(iModel As Integer)
         ' TODO MP
-        For iFleet = 1 To mcore.nFleets
-            For iGroup = 1 To mcore.nGroups
-                mPathData.PropDiscardMort(iFleet, iGroup) = 1 - GetSurvivability_FleetGroupModel(iFleet, iGroup, iModel)
+        For iFleet = 1 To Me.mcore.nFleets
+            For iGroup = 1 To Me.mcore.nGroups
+                Me.mPathData.PropDiscardMort(iFleet, iGroup) = 1 - Me.GetSurvivability_FleetGroupModel(iFleet, iGroup, iModel)
             Next
         Next
     End Sub
@@ -530,7 +530,7 @@ Public Class cSurvivability
 
         Const DefaultSurvivability = 0
 
-        For Each iSurvivability In m_ListOfSampledSurvivabilities
+        For Each iSurvivability In Me.m_ListOfSampledSurvivabilities
             If iSurvivability.FleetNo = iFleet And iSurvivability.GroupNo = iGroup And iSurvivability.Iteration = iModel Then
                 Return iSurvivability.Survivability
             End If
@@ -568,7 +568,7 @@ Public Class cSurvivability
                 Try
                     csv = New CsvReader(reader, True)
 
-                    While ExtractSurvivabilityDist(msg, csv, param)
+                    While Me.ExtractSurvivabilityDist(msg, csv, param)
                         Me.AddDist(param)
                     End While
                     csv.Dispose()
@@ -619,25 +619,25 @@ Public Class cSurvivability
 
         Try
             writer.WriteLine("FleetNumber,FleetName,GroupNumber,GroupName,Alpha,Beta")
-            If mListofSuriveDistParams.Count = 0 Then
-                For iFleet = 1 To mcore.nFleets
-                    For iGroup = 1 To mcore.nGroups
-                        If mcore.EcopathFleetInputs(iFleet).Landings(iGroup) + mcore.EcopathFleetInputs(iFleet).Discards(iGroup) > 0 Then
+            If Me.mListofSuriveDistParams.Count = 0 Then
+                For iFleet = 1 To Me.mcore.nFleets
+                    For iGroup = 1 To Me.mcore.nGroups
+                        If Me.mcore.EcopathFleetInputs(iFleet).Landings(iGroup) + Me.mcore.EcopathFleetInputs(iFleet).Discards(iGroup) > 0 Then
                             writer.WriteLine(cStringUtils.ToCSVField(iFleet) & "," &
-                                     cStringUtils.ToCSVField(mcore.EcopathFleetInputs(iFleet).Name) & "," &
+                                     cStringUtils.ToCSVField(Me.mcore.EcopathFleetInputs(iFleet).Name) & "," &
                                      cStringUtils.ToCSVField(iGroup) & "," &
-                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(iGroup).Name) & "," &
+                                     cStringUtils.ToCSVField(Me.mcore.EcoPathGroupInputs(iGroup).Name) & "," &
                                      cStringUtils.ToCSVField(DefaultAlpha) & "," &
                                      cStringUtils.ToCSVField(DefaultBeta))
                         End If
                     Next
                 Next
             Else
-                For Each entry As cSurvivabilityDistributonParam In mListofSuriveDistParams
+                For Each entry As cSurvivabilityDistributonParam In Me.mListofSuriveDistParams
                     writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," &
-                                     cStringUtils.ToCSVField(mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
+                                     cStringUtils.ToCSVField(Me.mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
                                      cStringUtils.ToCSVField(entry.GroupNo) & "," &
-                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
+                                     cStringUtils.ToCSVField(Me.mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
                                      cStringUtils.ToCSVField(entry.Alpha) & "," &
                                      cStringUtils.ToCSVField(entry.Beta))
                 Next
@@ -660,8 +660,8 @@ Public Class cSurvivability
     ''' <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExtractSurvivabilityDist(ByVal msg As cMessage, _
-                                              ByVal csv As CsvReader, _
+    Private Function ExtractSurvivabilityDist(msg As cMessage, _
+                                              csv As CsvReader, _
                                               ByRef param As cSurvivabilityDistributonParam) As Boolean
 
         ' Sanity checks
@@ -690,7 +690,7 @@ Public Class cSurvivability
     End Function
 
     Private Function DefaultFilePath() As String
-        Return cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
+        Return cMSEUtils.MSEFile(Me.mMSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "Survivabilities_dist.csv")
     End Function
 
     Public Function FileExists(Optional strFilename As String = "") As Boolean _

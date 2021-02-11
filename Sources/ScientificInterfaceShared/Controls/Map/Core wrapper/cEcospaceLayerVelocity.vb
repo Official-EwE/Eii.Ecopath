@@ -59,10 +59,10 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="theCore"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal theCore As cCore,
-                   ByVal strName As String,
-                   ByVal manager As cEcospaceBasemap,
-                   ByVal vn As eVarNameFlags)
+        Public Sub New(theCore As cCore,
+                   strName As String,
+                   manager As cEcospaceBasemap,
+                   vn As eVarNameFlags)
             MyBase.New(theCore, Nothing, strName, GetType(Single), Nothing, vn)
 
             Me.m_lXVel = DirectCast(manager.Layers(vn)(0), cEcospaceLayerSingle)
@@ -102,11 +102,11 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <param name="iCol"></param>
-        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
                 Return New Single() {Me.XVelocity(iRow, iCol, iIndexSec), Me.YVelocity(iRow, iCol, iIndexSec)}
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 Dim asValues As Single() = DirectCast(value, Single())
                 Me.XVelocity(iRow, iCol, iIndexSec) = asValues(0)
                 Me.YVelocity(iRow, iCol, iIndexSec) = asValues(1)

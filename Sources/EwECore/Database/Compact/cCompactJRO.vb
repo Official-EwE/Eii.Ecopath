@@ -61,7 +61,7 @@ Namespace Database
             If cCompactJRO.s_bEngineSearched Then Return cCompactJRO.s_bEngineFound
 
             ' "Universal" JRO key (same root on XP, Vista and Windows 7)
-            cCompactJRO.s_bEngineFound = DetectJRORecursive(Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}", False))
+            cCompactJRO.s_bEngineFound = Me.DetectJRORecursive(Registry.ClassesRoot.OpenSubKey("TypeLib\{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}", False))
             cCompactJRO.s_bEngineSearched = True
 
             Return cCompactJRO.s_bEngineFound
@@ -79,10 +79,10 @@ Namespace Database
         ''' <returns>A <see cref="eDatasourceAccessType">database access
         ''' result code</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Compact(ByVal strFileFrom As String, _
-                                ByVal strConnectionFrom As String, _
-                                ByVal strFileTo As String, _
-                                ByVal strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
+        Public Function Compact(strFileFrom As String, _
+                                strConnectionFrom As String, _
+                                strFileTo As String, _
+                                strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
             Implements IDatabaseCompact.Compact
 
             Dim engine As JRO.JetEngine = Nothing
@@ -134,7 +134,7 @@ Namespace Database
         ''' its subkeys.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function DetectJRORecursive(ByVal key As RegistryKey) As Boolean
+        Private Function DetectJRORecursive(key As RegistryKey) As Boolean
 
             Dim aKeys As String() = Nothing
             Dim keyValue As Object = Nothing
@@ -192,7 +192,7 @@ Namespace Database
         ''' <param name="strFile">The JRO main DLL to validate.</param>
         ''' <returns>True if JRO has the correct version.</returns>
         ''' -------------------------------------------------------------------
-        Private Function IsCorrectJRO(ByVal strFile As String) As Boolean
+        Private Function IsCorrectJRO(strFile As String) As Boolean
 
             If String.IsNullOrEmpty(strFile) Then Return False
             If Not File.Exists(strFile) Then Return False

@@ -76,7 +76,7 @@ Imports SourceGrid2.Cells
     Private Class cPedigreeInfoListSorter
         Implements IComparer(Of cPedigreeLevelInfo)
 
-        Public Function Compare(ByVal x As cPedigreeLevelInfo, ByVal y As cPedigreeLevelInfo) As Integer _
+        Public Function Compare(x As cPedigreeLevelInfo, y As cPedigreeLevelInfo) As Integer _
             Implements IComparer(Of cPedigreeLevelInfo).Compare
             ' Sort by index value ascending
             If x.IndexValue < y.IndexValue Then Return -1
@@ -108,7 +108,7 @@ Imports SourceGrid2.Cells
         Private m_bConfigChanged As Boolean = False
         Private m_bLevelsChanged As Boolean = False
 
-        Public Sub New(ByVal core As cCore, ByVal vn As eVarNameFlags)
+        Public Sub New(core As cCore, vn As eVarNameFlags)
 
             Me.m_core = core
             Me.m_vn = vn
@@ -282,7 +282,7 @@ Imports SourceGrid2.Cells
         ''' initialize this instance from. If set, this instance represents a
         ''' Level currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal level As cPedigreeLevel)
+        Public Sub New(level As cPedigreeLevel)
 
             Debug.Assert(level IsNot Nothing)
 
@@ -304,9 +304,9 @@ Imports SourceGrid2.Cells
         ''' </summary>
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strName As String,
-                       Optional ByVal sIndexValue As Single = 0.0!,
-                       Optional ByVal iConfidenceInterval As Integer = 0)
+        Public Sub New(strName As String,
+                       Optional sIndexValue As Single = 0.0!,
+                       Optional iConfidenceInterval As Integer = 0)
 
             Me.Name = strName
             Me.Description = ""
@@ -404,7 +404,7 @@ Imports SourceGrid2.Cells
         ''' has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(ByVal level As cPedigreeLevel) As Boolean
+        Public Function IsChanged(level As cPedigreeLevel) As Boolean
             If (Me.LevelDBID <> level.DBID) Then Return False
             Return (level.Name <> Me.Name) Or
                    (level.PoolColor <> Me.Color) Or
@@ -423,7 +423,7 @@ Imports SourceGrid2.Cells
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
-            Set(ByVal bDelete As Boolean)
+            Set(bDelete As Boolean)
                 If Not Me.IsNew() Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
@@ -462,7 +462,7 @@ Imports SourceGrid2.Cells
         Get
             Return Me.m_vnActive
         End Get
-        Set(ByVal value As eVarNameFlags)
+        Set(value As eVarNameFlags)
             If (value <> Me.m_vnActive) Then
                 Me.m_vnActive = value
                 Me.RefreshContent()
@@ -528,7 +528,7 @@ Imports SourceGrid2.Cells
         If Me.m_vnActive = eVarNameFlags.NotSet Then Return
 
         ' Brute-force update grid
-        UpdateGrid()
+        Me.UpdateGrid()
 
     End Sub
 
@@ -581,7 +581,7 @@ Imports SourceGrid2.Cells
 
         ' Populate rows
         For iRow As Integer = 1 To Me.ActiveConfig.Levels.Count
-            UpdateRow(iRow)
+            Me.UpdateRow(iRow)
         Next iRow
 
     End Sub
@@ -604,7 +604,7 @@ Imports SourceGrid2.Cells
 
     End Sub
 
-    Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnResize(e As System.EventArgs)
         MyBase.OnResize(e)
         If Me.ColumnsCount > 0 Then
             Me.Columns(eColumnTypes.LevelName).Width = 100
@@ -618,7 +618,7 @@ Imports SourceGrid2.Cells
     ''' </summary>
     ''' <param name="iRow">The index of the row to refresh.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateRow(ByVal iRow As Integer)
+    Private Sub UpdateRow(iRow As Integer)
 
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
         Dim ri As RowInfo = Nothing
@@ -677,7 +677,7 @@ Imports SourceGrid2.Cells
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         If Not Me.AllowUpdates Then Return True
 
@@ -721,7 +721,7 @@ Imports SourceGrid2.Cells
     ''' Cell click handler, called in response to clicking button-like cells.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+    Protected Overrides Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.LevelColor
@@ -734,7 +734,7 @@ Imports SourceGrid2.Cells
 
 #Region " Row manipulation "
 
-    Public Sub SelectLevel(ByVal Level As cPedigreeLevel)
+    Public Sub SelectLevel(Level As cPedigreeLevel)
 
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
 
@@ -760,8 +760,8 @@ Imports SourceGrid2.Cells
     ''' and <see cref="TriState.[False]">False</see> will undelete the row.
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Public Sub ToggleDeleteRow(Optional ByVal iRow As Integer = -1, _
-                               Optional ByVal tsDelete As TriState = TriState.UseDefault)
+    Public Sub ToggleDeleteRow(Optional iRow As Integer = -1, _
+                               Optional tsDelete As TriState = TriState.UseDefault)
 
         If iRow = -1 Then iRow = Me.SelectedRow
 
@@ -814,7 +814,7 @@ Imports SourceGrid2.Cells
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' <returns></returns>
-    Public Function IsDataRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsDataRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
     End Function
@@ -822,9 +822,9 @@ Imports SourceGrid2.Cells
     ''' <summary>
     ''' States whether the Level on a row is flagged for deletion.
     ''' </summary>
-    Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not IsDataRow(iRow) Then Return False
+        If Not Me.IsDataRow(iRow) Then Return False
 
         Dim iLevel As Integer = iRow - iFIRSTDATAROW
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
@@ -837,7 +837,7 @@ Imports SourceGrid2.Cells
     ''' <summary>
     ''' Insert a row by creating a new Level.
     ''' </summary>
-    Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
+    Public Sub InsertRow(Optional iRow As Integer = -1)
         If iRow = -1 Then iRow = Me.SelectedRow()
         If iRow = -1 Then iRow = Math.Max(iFIRSTDATAROW, Me.RowsCount)
         If Not Me.CanInsertRow(iRow) Then Return
@@ -847,7 +847,7 @@ Imports SourceGrid2.Cells
     ''' <summary>
     ''' Create a new Level.
     ''' </summary>
-    Private Sub CreateLevel(ByVal iRow As Integer)
+    Private Sub CreateLevel(iRow As Integer)
 
         Dim iLevel As Integer = -1
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
@@ -877,7 +877,7 @@ Imports SourceGrid2.Cells
     ''' <summary>
     ''' States whether a row can be inserted at the indicated position.
     ''' </summary>
-    Public Function CanInsertRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanInsertRow(Optional iRow As Integer = -1) As Boolean
         Return True
     End Function
 
@@ -896,7 +896,7 @@ Imports SourceGrid2.Cells
             If (iRow < 0) Then Return ""
             Return Me.ActiveConfig.Levels(iRow).Description
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Dim iRow As Integer = Me.SelectedRow - iFIRSTDATAROW
             If (iRow < 0) Then Return
             Me.ActiveConfig.Levels(iRow).Description = value
@@ -928,7 +928,7 @@ Imports SourceGrid2.Cells
         Get
             Return (Me.m_iUpdateLock = 0)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If value Then
                 Me.m_iUpdateLock += 1
             Else
@@ -939,7 +939,7 @@ Imports SourceGrid2.Cells
 
 #Region " Selection extension "
 
-    Private Overloads Sub SelectRow(ByVal info As cPedigreeLevelInfo)
+    Private Overloads Sub SelectRow(info As cPedigreeLevelInfo)
         For iLevel As Integer = 0 To Me.ActiveConfig.Levels.Count - 1
             If Object.ReferenceEquals(Me.ActiveConfig.Levels(iLevel), info) Then
                 Me.SelectRow(iLevel + iFIRSTDATAROW)
@@ -959,13 +959,13 @@ Imports SourceGrid2.Cells
         Next
     End Sub
 
-    Public Sub SetDefaultColor(Optional ByVal iRow As Integer = -1)
+    Public Sub SetDefaultColor(Optional iRow As Integer = -1)
         If iRow = -1 Then iRow = Me.SelectedRow
         Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW).Color = 0
         Me.UpdateRow(iRow)
     End Sub
 
-    Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
+    Public Sub SelectCustomColor(Optional iRow As Integer = -1)
 
         Dim lvlInfo As cPedigreeLevelInfo = Nothing
         Dim dlgColor As cEwEColorDialog = Nothing

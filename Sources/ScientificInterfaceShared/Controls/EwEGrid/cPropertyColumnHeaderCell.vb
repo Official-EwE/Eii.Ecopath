@@ -67,14 +67,14 @@ Namespace Controls.EwEGrid
         ''' <param name="strUnit">Dynamic units to place in the cell
         ''' display text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, Optional ByVal strUnit As String = "")
+        Public Sub New(prop As cProperty, Optional strUnit As String = "")
             MyBase.New(prop)
             Me.VisualModel = g_visualizer
 
             If (prop.VarName <> eVarNameFlags.Name) Then
                 Dim pm As cPropertyManager = prop.PropertyManager
                 Me.m_propTooltip = pm.GetProperty(prop.Source, eVarNameFlags.Name, prop.SourceSec)
-                AddHandler Me.m_propTooltip.PropertyChanged, AddressOf OnPropertyChanged
+                AddHandler Me.m_propTooltip.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Me.UpdateTooltip()
             End If
             Me.SetUnits(strUnit)
@@ -96,11 +96,11 @@ Namespace Controls.EwEGrid
         ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
         ''' does not require an index.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal Source As cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing,
-                       Optional ByVal strUnit As String = "")
+        Public Sub New(pm As cPropertyManager,
+                       Source As cCoreInputOutputBase,
+                       VarName As eVarNameFlags,
+                       Optional SourceSec As cCoreInputOutputBase = Nothing,
+                       Optional strUnit As String = "")
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
@@ -135,7 +135,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cProperty.eChangeFlags">aspect</see>
         ''' of the property has changed.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnPropertyChanged(ByVal prop As Properties.cProperty, ByVal changeFlags As Properties.cProperty.eChangeFlags)
+        Protected Overrides Sub OnPropertyChanged(prop As Properties.cProperty, changeFlags As Properties.cProperty.eChangeFlags)
             MyBase.OnPropertyChanged(prop, changeFlags)
             If (ReferenceEquals(prop, Me.m_propTooltip) And _
                 (changeFlags And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value) Then

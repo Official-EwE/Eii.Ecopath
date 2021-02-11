@@ -48,7 +48,7 @@ Namespace SpatialData
         Private m_lastXData(,) As Double = Nothing
         Private m_lastYData(,) As Double = Nothing
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -191,11 +191,11 @@ Namespace SpatialData
         ''' <remarks>Overridden to scale values prior to being set in the 
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer,
-                                             ByVal conn As cSpatialDataConnection,
-                                             ByVal iRow As Integer,
-                                             ByVal iCol As Integer,
-                                             ByVal sValueAtT As Double) As Boolean
+        Protected Overrides Function SetCell(layer As cEcospaceLayer,
+                                             conn As cSpatialDataConnection,
+                                             iRow As Integer,
+                                             iCol As Integer,
+                                             sValueAtT As Double) As Boolean
 
             Try
 

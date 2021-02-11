@@ -393,7 +393,7 @@
     <value>m_hdrResp</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -426,7 +426,7 @@
     <value>m_hdrApplied</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -453,7 +453,7 @@
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -513,7 +513,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_tlpFunctions</value>
@@ -633,7 +633,7 @@
     <value>m_changeshape</value>
   </data>
   <data name="&gt;&gt;m_changeshape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucChangeShapeType, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucChangeShapeType, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_changeshape.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -5234,6 +5234,6 @@
     <value>dlgSelectEnvironmentalResponse</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -182,7 +182,7 @@ Namespace Controls
                 e.Graphics.FillRectangle(SystemBrushes.Window, rcFull)
             End If
 
-            If m_bShowTime And e.Node.Parent Is Nothing Then
+            If Me.m_bShowTime And e.Node.Parent Is Nothing Then
                 Dim sz As Size = TextRenderer.MeasureText("XX:XX:XXW", Me.Font)
                 rcItem.Width -= sz.Width
                 If (fmt And TextFormatFlags.RightToLeft) > 0 Then

@@ -67,7 +67,7 @@ Public Class cEcospaceLayerExclusion
     ''' -----------------------------------------------------------------------
     Public Property IsIncludedCell(iRow As Integer, iCol As Integer) As Boolean
         Get
-            Return Not IsExcludedCell(iRow, iCol)
+            Return Not Me.IsExcludedCell(iRow, iCol)
         End Get
         Set(value As Boolean)
             Me.IsExcludedCell(iRow, iCol) = Not value

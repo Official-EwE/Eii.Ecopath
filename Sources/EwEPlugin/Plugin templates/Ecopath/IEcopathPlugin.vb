@@ -40,7 +40,7 @@ Public Interface IEcopathPlugin
     ''' plug-ins can respond to this event.</remarks>
     ''' <returns>True if loaded successful.</returns>
     ''' -----------------------------------------------------------------------
-    Function LoadModel(ByVal dataSource As Object) As Boolean
+    Function LoadModel(dataSource As Object) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -52,7 +52,7 @@ Public Interface IEcopathPlugin
     ''' <remarks>This plug-in point is non-exclusive, meaning that multiple
     ''' plug-ins can respond to this event.</remarks>
     ''' -----------------------------------------------------------------------
-    Function SaveModel(ByVal dataSource As Object) As Boolean
+    Function SaveModel(dataSource As Object) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

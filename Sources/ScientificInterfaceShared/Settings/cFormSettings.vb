@@ -67,7 +67,7 @@ Public Class cFormSettings
 
 #Region " Constructor "
 
-        Public Sub New(ByVal strFormName As String)
+        Public Sub New(strFormName As String)
             Me.m_strName = strFormName
         End Sub
 
@@ -81,7 +81,7 @@ Public Class cFormSettings
         ''' </summary>
         ''' <param name="frm">The form to position.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Apply(ByVal frm As Form)
+        Public Sub Apply(frm As Form)
 
             frm.SuspendLayout()
 
@@ -132,7 +132,7 @@ Public Class cFormSettings
         ''' <param name="frm">The form to read.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Store(ByVal frm As Form) As Boolean
+        Public Function Store(frm As Form) As Boolean
             Dim rc As Rectangle = Nothing
 
             If (frm Is Nothing) Then Return False
@@ -169,7 +169,7 @@ Public Class cFormSettings
         ''' <param name="nodeSetting">The xml node to read.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function FromXML(ByVal nodeSetting As XmlNode) As Boolean
+        Public Function FromXML(nodeSetting As XmlNode) As Boolean
             Try
                 Dim node As XmlNode = Nothing
 
@@ -212,7 +212,7 @@ Public Class cFormSettings
         ''' </summary>
         ''' <returns>A settings string.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ToXML(ByVal doc As XmlDocument) As XmlNode
+        Public Function ToXML(doc As XmlDocument) As XmlNode
 
             Dim node As XmlNode = doc.CreateElement("formsetting")
             Dim nodeChild As XmlNode = Nothing
@@ -282,7 +282,7 @@ Public Class cFormSettings
         Get
             Return Me.Content()
         End Get
-        Set(ByVal value As XmlDocument)
+        Set(value As XmlDocument)
             Me.Initialize(value)
         End Set
     End Property
@@ -293,14 +293,14 @@ Public Class cFormSettings
     ''' </summary>
     ''' <param name="frm">The form to store the position for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Store(ByVal frm As Form, Optional ByVal bIncludeFormText As Boolean = True)
+    Public Sub Store(frm As Form, Optional bIncludeFormText As Boolean = True)
 
         Dim fs As cFormSetting = Nothing
         Dim strFormType As String = ""
 
         ' Sanity check
         If frm Is Nothing Then Return
-        strFormType = FormTypeString(frm, bIncludeFormText)
+        strFormType = Me.FormTypeString(frm, bIncludeFormText)
 
         ' Already has it?
         If Me.m_dictFormSettings.ContainsKey(strFormType) Then
@@ -324,12 +324,12 @@ Public Class cFormSettings
     ''' </summary>
     ''' <param name="frm">The form to reposition.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Apply(ByVal frm As Form, Optional ByVal bIncludeFormText As Boolean = True)
+    Public Sub Apply(frm As Form, Optional bIncludeFormText As Boolean = True)
 
         Dim strFormType As String = ""
         ' Sanity check
         If frm Is Nothing Then Return
-        strFormType = FormTypeString(frm, bIncludeFormText)
+        strFormType = Me.FormTypeString(frm, bIncludeFormText)
         ' Get info
         If Me.m_dictFormSettings.ContainsKey(strFormType) Then
             ' Apply
@@ -347,7 +347,7 @@ Public Class cFormSettings
     ''' </summary>
     ''' <param name="settings">The settings to analyze.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub Initialize(ByVal settings As XmlDocument)
+    Private Sub Initialize(settings As XmlDocument)
 
         Dim fp As cFormSetting = Nothing
         Dim node As XmlNode = Nothing
@@ -406,7 +406,7 @@ Public Class cFormSettings
     ''' <param name="frm">The form to identify.</param>
     ''' <returns>A string uniquely identifying a form instance.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function FormTypeString(ByVal frm As Form, ByVal bIncludeFormText As Boolean) As String
+    Private Function FormTypeString(frm As Form, bIncludeFormText As Boolean) As String
         If bIncludeFormText Then
             Return frm.GetType().FullName & "_" & frm.Text
         Else

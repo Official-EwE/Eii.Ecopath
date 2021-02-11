@@ -52,7 +52,7 @@ Namespace Controls
         ''' <param name="pszSubIdList"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Declare Unicode Function SetWindowTheme Lib "uxtheme.dll" (ByVal hWnd As IntPtr, ByVal pszSubAppName As String, ByVal pszSubIdList As String) As Integer
+        Public Declare Unicode Function SetWindowTheme Lib "uxtheme.dll" (hWnd As IntPtr, pszSubAppName As String, pszSubIdList As String) As Integer
 
         Protected Overrides Sub CreateHandle()
             MyBase.CreateHandle()
@@ -107,7 +107,7 @@ Namespace Controls
             End Get
             Set(value As Boolean)
                 Me.m_bShowImages = value
-                UpdateImageVisibility()
+                Me.UpdateImageVisibility()
             End Set
         End Property
 
@@ -117,7 +117,7 @@ Namespace Controls
             End Get
             Set(value As ImageList)
                 Me.m_il = value
-                UpdateImageVisibility()
+                Me.UpdateImageVisibility()
             End Set
         End Property
 

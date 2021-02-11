@@ -60,7 +60,7 @@ Namespace Controls.Map
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 ' Just to be sure
                 For Each zc As ucMapZoom In Me.m_lZoomContainers.ToArray
@@ -70,8 +70,8 @@ Namespace Controls.Map
                 Debug.Assert(Me.m_lLayers.Count = 0)
                 Debug.Assert(Me.m_lZoomContainers.Count = 0)
 
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -95,12 +95,12 @@ Namespace Controls.Map
         ''' <param name="zoomContainer">A <see cref="ucMapZoom">zoom container</see> 
         ''' that this toolbar needs to manage.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddZoomContainer(ByVal zoomContainer As ucMapZoom)
+        Public Sub AddZoomContainer(zoomContainer As ucMapZoom)
 
             Debug.Assert(Not Me.m_lZoomContainers.Contains(zoomContainer))
 
-            AddHandler zoomContainer.MouseWheel, AddressOf OnMapMousewheel
-            AddHandler zoomContainer.OnPositionChanged, AddressOf OnMapPositionChanged
+            AddHandler zoomContainer.MouseWheel, AddressOf Me.OnMapMousewheel
+            AddHandler zoomContainer.OnPositionChanged, AddressOf Me.OnMapPositionChanged
 
             Me.m_lZoomContainers.Add(zoomContainer)
             ' All all existing layers manually - 'cause we may have missed addition events
@@ -108,8 +108,8 @@ Namespace Controls.Map
                 Me.m_lLayers.Add(l)
             Next
 
-            AddHandler zoomContainer.Map.LayerAdded, AddressOf OnMapLayerAdded
-            AddHandler zoomContainer.Map.LayerRemoved, AddressOf OnMapLayerRemoved
+            AddHandler zoomContainer.Map.LayerAdded, AddressOf Me.OnMapLayerAdded
+            AddHandler zoomContainer.Map.LayerRemoved, AddressOf Me.OnMapLayerRemoved
 
         End Sub
 
@@ -120,15 +120,15 @@ Namespace Controls.Map
         ''' <param name="zoomContainer">A <see cref="ucMapZoom">zoom container</see> 
         ''' that this toolbar no longer needs to manage.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub RemoveZoomContainer(ByVal zoomContainer As ucMapZoom)
+        Public Sub RemoveZoomContainer(zoomContainer As ucMapZoom)
 
             Debug.Assert(Me.m_lZoomContainers.Contains(zoomContainer))
 
-            RemoveHandler zoomContainer.Map.LayerAdded, AddressOf OnMapLayerAdded
-            RemoveHandler zoomContainer.Map.LayerRemoved, AddressOf OnMapLayerRemoved
+            RemoveHandler zoomContainer.Map.LayerAdded, AddressOf Me.OnMapLayerAdded
+            RemoveHandler zoomContainer.Map.LayerRemoved, AddressOf Me.OnMapLayerRemoved
 
-            RemoveHandler zoomContainer.MouseWheel, AddressOf OnMapMousewheel
-            RemoveHandler zoomContainer.OnPositionChanged, AddressOf OnMapPositionChanged
+            RemoveHandler zoomContainer.MouseWheel, AddressOf Me.OnMapMousewheel
+            RemoveHandler zoomContainer.OnPositionChanged, AddressOf Me.OnMapPositionChanged
             Me.m_lZoomContainers.Remove(zoomContainer)
 
             ' Remove all layers manually - 'cause we're going to miss removal events
@@ -173,7 +173,7 @@ Namespace Controls.Map
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -187,25 +187,25 @@ Namespace Controls.Map
 
 #Region " Zoom controls "
 
-        Private Sub OnZoomIn(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnZoomIn(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbZoomIn.Click, m_tsmiZoomIn.Click
             Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn, False)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnZoomOut(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnZoomOut(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbZoomOut.Click, m_tsmiZoomOut.Click
             Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut, False)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnZoomReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnZoomReset(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbZoomReset.Click, m_tsmiZoomReset.Click
             Me.Zoom(ucMapZoom.eZoomTypes.ZoomReset, False)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnMapMousewheel(ByVal sender As Object, ByVal e As MouseEventArgs)
+        Private Sub OnMapMousewheel(sender As Object, e As MouseEventArgs)
             If (e.Delta > 0) Then
                 Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn, True)
             Else
@@ -214,7 +214,7 @@ Namespace Controls.Map
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnMapPositionChanged(ByVal sender As ucMapZoom)
+        Private Sub OnMapPositionChanged(sender As ucMapZoom)
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers
@@ -229,7 +229,7 @@ Namespace Controls.Map
 
 #Region " Save "
 
-        Private Sub m_tsbSaveImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tsbSaveImage_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbSaveImage.Click
 
             If (Me.UIContext Is Nothing) Then Return
@@ -274,11 +274,11 @@ Namespace Controls.Map
 
         Private Sub OnMapLayerAdded(sender As ucMap, layer As cDisplayLayer)
             Me.m_lLayers.Add(layer)
-            AddHandler layer.LayerChanged, AddressOf OnLayerChanged
+            AddHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
         End Sub
 
         Private Sub OnMapLayerRemoved(sender As ucMap, layer As cDisplayLayer)
-            RemoveHandler layer.LayerChanged, AddressOf OnLayerChanged
+            RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
             Me.m_lLayers.Remove(layer)
         End Sub
 
@@ -302,7 +302,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="zoomType">The <see cref="ucMapZoom.eZoomTypes">Zoom level</see> to use.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub Zoom(ByVal zoomType As ucMapZoom.eZoomTypes, bZoomToCursor As Boolean)
+        Private Sub Zoom(zoomType As ucMapZoom.eZoomTypes, bZoomToCursor As Boolean)
 
             ' Apply
             For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers

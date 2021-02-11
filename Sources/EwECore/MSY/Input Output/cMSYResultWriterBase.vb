@@ -58,7 +58,7 @@ Namespace MSY
         ''' <returns>The writer, or nothing if an error occurred.</returns>
         ''' <remarks>Close the writer with <see cref="CloseWriter"/>.</remarks>
         ''' -------------------------------------------------------------------
-        Protected Function OpenWriter(ByVal strFile As String) As StreamWriter
+        Protected Function OpenWriter(strFile As String) As StreamWriter
 
             Dim msg As cMessage = Nothing
             Dim sw As StreamWriter = Nothing
@@ -118,9 +118,9 @@ Namespace MSY
         ''' <param name="ass">Type of MSY <see cref="eMSYAssessmentTypes"/>.</param>
         ''' <param name="strRun">Name of the run</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub WriteHeader(ByVal writer As StreamWriter, _
-                                              ByVal ass As eMSYAssessmentTypes, _
-                                              ByVal strRun As String)
+        Protected Overridable Sub WriteHeader(writer As StreamWriter, _
+                                              ass As eMSYAssessmentTypes, _
+                                              strRun As String)
 
             If (writer Is Nothing) Then Return
 
@@ -150,7 +150,7 @@ Namespace MSY
         ''' <param name="strReason">Reason of failure, most likely the text obtained from an exception.</param>
         ''' <returns>The message to use to report an error.</returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function ErrorMessage(ByVal strPath As String, ByVal strReason As String) As cMessage
+        Protected MustOverride Function ErrorMessage(strPath As String, strReason As String) As cMessage
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -158,7 +158,7 @@ Namespace MSY
         ''' </summary>
         ''' <param name="strPath">Output file name.</param>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function SuccessMessage(ByVal strPath As String) As cMessage
+        Protected MustOverride Function SuccessMessage(strPath As String) As cMessage
 
 #End Region ' Internals
 

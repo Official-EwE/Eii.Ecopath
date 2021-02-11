@@ -28,7 +28,7 @@ Public Class cEcotracerGroupOutput
 
 #Region "Constructor"
 
-    Public Sub New(ByVal TheCore As cCore)
+    Public Sub New(TheCore As cCore)
         MyBase.New(TheCore)
 
         'Dim val As cValue
@@ -62,7 +62,7 @@ Public Class cEcotracerGroupOutput
 
 #Region "Implementation of GetVariable() GetVariable() GetStatus() SetStatus()"
 
-    Public Overloads Function GetVariable(ByVal varName As eVarNameFlags, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public Overloads Function GetVariable(varName As eVarNameFlags, iGroup As Integer, iTimeStep As Integer) As Single
         Try
             Select Case varName
                 Case eVarNameFlags.Concentration
@@ -85,7 +85,7 @@ Public Class cEcotracerGroupOutput
 
     End Function
 
-    Public Overloads Function SetVariable(ByVal varName As eVarNameFlags, ByVal newValue As Single, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
+    Public Overloads Function SetVariable(varName As eVarNameFlags, newValue As Single, iGroup As Integer, iTimeStep As Integer) As Boolean
         Try
             Debug.Assert(False, Me.ToString & " variable " & varName.ToString & " is ReadOnly.")
             Return False
@@ -97,11 +97,11 @@ Public Class cEcotracerGroupOutput
 
     End Function
 
-    Public Overloads Function GetStatus(ByVal varName As eVarNameFlags, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As eStatusFlags
+    Public Overloads Function GetStatus(varName As eVarNameFlags, iGroup As Integer, iTimeStep As Integer) As eStatusFlags
         Return eStatusFlags.OK Or eStatusFlags.NotEditable
     End Function
 
-    Public Overloads Function SetStatus(ByVal varName As eVarNameFlags, ByVal newValue As eStatusFlags, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
+    Public Overloads Function SetStatus(varName As eVarNameFlags, newValue As eStatusFlags, iGroup As Integer, iTimeStep As Integer) As Boolean
         Debug.Assert(False, "Not implemented yet.")
     End Function
 
@@ -109,10 +109,10 @@ Public Class cEcotracerGroupOutput
 
 #Region "Variable via dot '.' operator"
 
-    Public Property Concentration(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public Property Concentration(iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return GetVariable(eVarNameFlags.Concentration, iGroup, iTimeStep)
+                Return Me.GetVariable(eVarNameFlags.Concentration, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -120,9 +120,9 @@ Public Class cEcotracerGroupOutput
 
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
-                SetVariable(eVarNameFlags.Concentration, value, iGroup, iTimeStep)
+                Me.SetVariable(eVarNameFlags.Concentration, value, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -130,10 +130,10 @@ Public Class cEcotracerGroupOutput
     End Property
 
 
-    Public Property ConBio(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public Property ConBio(iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return GetVariable(eVarNameFlags.ConcBio, iGroup, iTimeStep)
+                Return Me.GetVariable(eVarNameFlags.ConcBio, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -141,9 +141,9 @@ Public Class cEcotracerGroupOutput
 
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
-                SetVariable(eVarNameFlags.ConcBio, value, iGroup, iTimeStep)
+                Me.SetVariable(eVarNameFlags.ConcBio, value, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -155,13 +155,13 @@ Public Class cEcotracerGroupOutput
 
 #Region "Status Flags via dot '.' operator"
 
-    Public Property ConcentrationStatus(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As eStatusFlags
+    Public Property ConcentrationStatus(iGroup As Integer, iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Concentration, iGroup, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.Concentration, iGroup, iTimeStep)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Concentration, value, iGroup, iTimeStep)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Concentration, value, iGroup, iTimeStep)
         End Set
     End Property
 

@@ -55,7 +55,7 @@ Namespace Controls
         ''' Connects an instance to a tree view.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub Attach(ByVal uic As cUIContext, ByVal tv As TreeView)
+        Public Sub Attach(uic As cUIContext, tv As TreeView)
 
             Debug.Assert(Me.m_tv Is Nothing)
             Debug.Assert(tv IsNot Nothing)
@@ -64,9 +64,9 @@ Namespace Controls
             Me.m_tv = tv
             Me.m_uic = uic
 
-            AddHandler Me.m_tv.AfterSelect, AddressOf OnAfterSelect
-            AddHandler Me.m_tv.AfterExpand, AddressOf OnAfterExpand
-            AddHandler Me.m_tv.VisibleChanged, AddressOf OnVisibleChanged
+            AddHandler Me.m_tv.AfterSelect, AddressOf Me.OnAfterSelect
+            AddHandler Me.m_tv.AfterExpand, AddressOf Me.OnAfterExpand
+            AddHandler Me.m_tv.VisibleChanged, AddressOf Me.OnVisibleChanged
 
         End Sub
 
@@ -79,9 +79,9 @@ Namespace Controls
 
             Debug.Assert(Me.m_tv IsNot Nothing)
 
-            RemoveHandler Me.m_tv.AfterSelect, AddressOf OnAfterSelect
-            RemoveHandler Me.m_tv.AfterExpand, AddressOf OnAfterExpand
-            RemoveHandler Me.m_tv.VisibleChanged, AddressOf OnVisibleChanged
+            RemoveHandler Me.m_tv.AfterSelect, AddressOf Me.OnAfterSelect
+            RemoveHandler Me.m_tv.AfterExpand, AddressOf Me.OnAfterExpand
+            RemoveHandler Me.m_tv.VisibleChanged, AddressOf Me.OnVisibleChanged
 
             Me.m_tv = Nothing
             Me.m_uic = Nothing
@@ -166,10 +166,10 @@ Namespace Controls
         ''' the application navigation tree.</param>
         ''' <param name="strHelpURL">Help URL for this node.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub Add(ByVal strTreeNodeName As String,
-                       ByVal execstate As eCoreExecutionState,
-                       ByVal tClass As Type,
-                       Optional ByVal strHelpURL As String = "")
+        Private Sub Add(strTreeNodeName As String,
+                       execstate As eCoreExecutionState,
+                       tClass As Type,
+                       Optional strHelpURL As String = "")
 
             Dim ni As New cNodeInfo(strTreeNodeName, execstate, tClass, strHelpURL)
             Me.m_lNodeInfo.Add(ni)
@@ -185,8 +185,8 @@ Namespace Controls
         ''' <see cref="cNodeInfo.NodeName">Name</see>, or Nothing if no such nodeInfo
         ''' was added.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function SearchNodeByName(ByVal strNodeName As String) As cNodeInfo
-            For Each eachNode As cNodeInfo In m_lNodeInfo
+        Public Function SearchNodeByName(strNodeName As String) As cNodeInfo
+            For Each eachNode As cNodeInfo In Me.m_lNodeInfo
                 If strNodeName = eachNode.NodeName Then
                     '' Load the selection
                     Return eachNode
@@ -203,7 +203,7 @@ Namespace Controls
         ''' <param name="bExpand">Flag indicating whether node should expand (True)
         ''' or collapse (False).</param>
         ''' -----------------------------------------------------------------------
-        Public Sub ExpandCollapseNodes(ByVal node As TreeNode, Optional ByVal bExpand As Boolean = True)
+        Public Sub ExpandCollapseNodes(node As TreeNode, Optional bExpand As Boolean = True)
             If bExpand Then
                 node.Expand()
                 Me.ExpandChildren(node)
@@ -230,10 +230,10 @@ Namespace Controls
 
 #Region " Internals "
 
-        Private Sub ExpandChildren(ByVal node As TreeNode)
+        Private Sub ExpandChildren(node As TreeNode)
             If node.GetNodeCount(False) = 1 Then
                 node.Expand()
-                ExpandChildren(node.FirstNode)
+                Me.ExpandChildren(node.FirstNode)
             End If
         End Sub
 
@@ -245,7 +245,7 @@ Namespace Controls
         ''' <param name="sender">The tree</param>
         ''' <param name="e">Event info</param>
         ''' -------------------------------------------------------------------------------------------
-        Private Sub OnAfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
+        Private Sub OnAfterSelect(sender As System.Object, e As System.Windows.Forms.TreeViewEventArgs)
 
             ' Sanity check
             Debug.Assert(Me.m_tv IsNot Nothing, "Node detached?!")
@@ -279,8 +279,8 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnAfterExpand(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
-            ExpandCollapseNodes(e.Node)
+        Private Sub OnAfterExpand(sender As Object, e As System.Windows.Forms.TreeViewEventArgs)
+            Me.ExpandCollapseNodes(e.Node)
         End Sub
 
         ''' -------------------------------------------------------------------------------------------
@@ -291,14 +291,14 @@ Namespace Controls
         ''' <param name="sender">The tree</param>
         ''' <param name="e">Event info</param>
         ''' -------------------------------------------------------------------------------------------
-        Private Sub OnVisibleChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnVisibleChanged(sender As System.Object, e As System.EventArgs)
 
-            If m_tv.Visible Then
+            If Me.m_tv.Visible Then
 
-                Dim selNd As TreeNode = m_tv.SelectedNode
+                Dim selNd As TreeNode = Me.m_tv.SelectedNode
 
                 If selNd IsNot Nothing Then
-                    ExpandCollapseNodes(selNd)
+                    Me.ExpandCollapseNodes(selNd)
                     selNd.EnsureVisible()
                 End If
             End If
@@ -340,10 +340,10 @@ Namespace Controls
         ''' <param name="tClass">The Type of the Form that needs to be instantiated
         ''' when the corresponding <see cref="TreeNode">TreeNode</see> is selected.</param>
         ''' ---------------------------------------------------------------------------
-        Public Sub New(ByVal strName As String,
-                        ByVal executionState As eCoreExecutionState,
-                        ByVal tClass As Type,
-                        ByVal strHelpURL As String)
+        Public Sub New(strName As String,
+                        executionState As eCoreExecutionState,
+                        tClass As Type,
+                        strHelpURL As String)
             Me.m_strName = strName
             Me.m_executionState = executionState
             Me.m_type = tClass
@@ -384,7 +384,7 @@ Namespace Controls
             Get
                 Return Me.m_type
             End Get
-            Set(ByVal classType As Type)
+            Set(classType As Type)
                 Me.m_type = classType
             End Set
         End Property

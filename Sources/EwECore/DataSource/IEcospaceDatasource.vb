@@ -45,7 +45,7 @@ Namespace DataSources
         ''' <param name="ds">The datasource to copy data to.</param>
         ''' <returns>True if sucessful.</returns>
         ''' -------------------------------------------------------------------
-        Overloads Function CopyTo(ByVal ds As IEcospaceDatasource) As Boolean
+        Overloads Function CopyTo(ds As IEcospaceDatasource) As Boolean
 
 #End Region ' Generic
 
@@ -72,7 +72,7 @@ Namespace DataSources
         ''' <remarks>An implementing class should ensure that this load will cascade to
         ''' load all information pertaining to a scenario.</remarks>
         ''' -------------------------------------------------------------------
-        Function LoadEcospaceScenario(ByVal iDBID As Integer) As Boolean
+        Function LoadEcospaceScenario(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -83,7 +83,7 @@ Namespace DataSources
         ''' is saved.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SaveEcospaceScenario(ByVal iDBID As Integer) As Boolean
+        Function SaveEcospaceScenario(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -93,8 +93,8 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID to save the current scenario to.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SaveEcospaceScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String, _
-                ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean
+        Function SaveEcospaceScenarioAs(strScenarioName As String, strDescription As String, _
+                strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -112,10 +112,10 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendEcospaceScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, _
-            ByVal InRow As Integer, ByVal InCol As Integer, _
-            ByVal sOriginLat As Single, ByVal sOriginLon As Single, ByVal sCellLength As Single, _
+        Function AppendEcospaceScenario(strScenarioName As String, strDescription As String, _
+            strAuthor As String, strContact As String, _
+            InRow As Integer, InCol As Integer, _
+            sOriginLat As Single, sOriginLon As Single, sCellLength As Single, _
             ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -125,7 +125,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the scenario to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcospaceScenario(ByVal iDBID As Integer) As Boolean
+        Function RemoveEcospaceScenario(iDBID As Integer) As Boolean
 
 #End Region ' Scenarios 
 
@@ -139,7 +139,7 @@ Namespace DataSources
         ''' <param name="InCol">New number of columns to assign to the basemap.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function ResizeEcospaceBasemap(ByVal InRow As Integer, ByVal InCol As Integer) As Boolean
+        Function ResizeEcospaceBasemap(InRow As Integer, InCol As Integer) As Boolean
 
 #End Region ' Basemap
 
@@ -154,7 +154,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new habitat.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddEcospaceHabitat(ByVal strName As String, iIndex As Integer, ByRef iDBID As Integer) As Boolean
+        Function AddEcospaceHabitat(strName As String, iIndex As Integer, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -163,7 +163,7 @@ Namespace DataSources
         ''' <param name="iHabitatID">Database ID of the habitat to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcospaceHabitat(ByVal iHabitatID As Integer) As Boolean
+        Function RemoveEcospaceHabitat(iHabitatID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -173,7 +173,7 @@ Namespace DataSources
         ''' <param name="iPosition">The new position of the habitat in the habitat sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MoveHabitat(ByVal iHabitatID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MoveHabitat(iHabitatID As Integer, iPosition As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -183,7 +183,7 @@ Namespace DataSources
         ''' <param name="iPosition">The new position of the MPA in the MPA sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MoveEcospaceMPA(ByVal iMPAID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MoveEcospaceMPA(iMPAID As Integer, iPosition As Integer) As Boolean
 
 #End Region ' Habitats
 
@@ -199,7 +199,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new MPA.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddEcospaceMPA(ByVal strName As String, iIndex As Integer, ByVal bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean
+        Function AddEcospaceMPA(strName As String, iIndex As Integer, bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -208,7 +208,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the MPA to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcospaceMPA(ByVal iDBID As Integer) As Boolean
+        Function RemoveEcospaceMPA(iDBID As Integer) As Boolean
 
 #End Region ' MPAs
 
@@ -225,7 +225,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new layer.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendEcospaceImportanceLayer(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single, ByRef iDBID As Integer) As Boolean
+        Function AppendEcospaceImportanceLayer(strName As String, strDescription As String, sWeight As Single, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -235,7 +235,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the layer to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcospaceImportanceLayer(ByVal iDBID As Integer) As Boolean
+        Function RemoveEcospaceImportanceLayer(iDBID As Integer) As Boolean
 
 #End Region ' Importance layers
 
@@ -251,7 +251,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new driver layer.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean
+        Function AddEcospaceDriverLayer(strName As String, strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -260,7 +260,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the driver layer to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean
+        Function RemoveEcospaceDriverLayer(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -270,7 +270,7 @@ Namespace DataSources
         ''' <param name="iPosition">The new position of the layer in the layer sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MoveEcospaceDriverLayer(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MoveEcospaceDriverLayer(iDBID As Integer, iPosition As Integer) As Boolean
 
 #End Region ' Driver layers
 

@@ -48,7 +48,7 @@ Namespace Controls
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal handler As cShapeGUIHandler)
+            Set(handler As cShapeGUIHandler)
                 Me.m_handler = handler
                 Me.UpdateControls()
             End Set
@@ -67,7 +67,7 @@ Namespace Controls
 
 #Region " Helper methods "
 
-        Protected Overrides Sub OnVisibleChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnVisibleChanged(e As System.EventArgs)
             Me.UpdateControls()
         End Sub
 
@@ -108,7 +108,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub UpdateCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)
+        Private Sub UpdateCommand(cmd As cShapeGUIHandler.eShapeCommandTypes, tsi As ToolStripItem)
             If (Me.m_handler Is Nothing) Then Return
             If Me.m_handler.SupportCommand(cmd) Then
                 tsi.Visible = True
@@ -118,7 +118,7 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub UpdateCommand(ByVal cmds As cShapeGUIHandler.eShapeCommandTypes(), ByVal tsi As ToolStripItem)
+        Private Sub UpdateCommand(cmds As cShapeGUIHandler.eShapeCommandTypes(), tsi As ToolStripItem)
             If (Me.m_handler Is Nothing) Then Return
             Dim bSupport As Boolean = False
             For Each cmd As cShapeGUIHandler.eShapeCommandTypes In cmds
@@ -135,22 +135,22 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Private Sub tsbAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbAdd.Click
+        Private Sub tsbAdd_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbAdd.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
         End Sub
 
-        Private Sub tsbDuplicate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbDuplicate.Click
+        Private Sub tsbDuplicate_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbDuplicate.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate)
         End Sub
 
-        Private Sub tsbRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbRemove.Click
+        Private Sub tsbRemove_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbRemove.Click
             If (Me.m_handler Is Nothing) Then Return
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Remove)
         End Sub
 
-        Private Sub tsbWeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsbWeight_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbWeight.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -158,7 +158,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub tsbLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsbLoad_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbLoad.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -166,7 +166,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub tsbImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsbImport_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbImport.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -174,7 +174,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub tsbExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsbExport_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbExport.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -182,7 +182,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub m_tsbResetAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub m_tsbResetAll_Click(sender As Object, e As System.EventArgs) _
             Handles m_tsbResetAll.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -190,7 +190,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub tsbSetTo0_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub tsbSetTo0_Click(sender As Object, e As System.EventArgs) _
             Handles m_tsbSetTo0.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -198,7 +198,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub tsbSetToValue_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub tsbSetToValue_Click(sender As Object, e As System.EventArgs) _
             Handles m_tsbSetToValue.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -206,7 +206,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnSteToBaseline(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnSteToBaseline(sender As Object, e As System.EventArgs) _
             Handles m_tsbSetToBaseline.Click
 
             If (Me.m_handler Is Nothing) Then Return
@@ -214,7 +214,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnFilterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
             Handles m_tscmbFilter.SelectedIndexChanged
             If (Me.m_handler Is Nothing) Then Return
             Try
@@ -224,7 +224,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private Sub OnShowAllData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowAllData(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnShowExtraData.Click
             If (Me.m_handler Is Nothing) Then Return
             Try

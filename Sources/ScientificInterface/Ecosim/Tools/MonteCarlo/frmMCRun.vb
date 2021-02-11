@@ -113,7 +113,7 @@ Namespace Ecosim
 
 #Region " Form overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -148,14 +148,14 @@ Namespace Ecosim
 
             'set the call back delegates for the monte carlo trials and ecopath iteration
             ' ToDo: replace time step handlers with events to allow simulatenous use by other tools
-            Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
+            Me.m_mcmanager.MonteCarloStepHandler = AddressOf Me.MonteCarloStepHandler
             Me.m_mcmanager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
             Me.m_mcmanager.MonteCarloCompletedHandler = AddressOf Me.MonteCarloCompletedHandler
             Me.m_mcmanager.EcosimTimeStepHandler = AddressOf Me.EcoSimTimeStepHandler
             Me.m_mcmanager.SyncObject = Me
 
             Me.m_fpNumTrials = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumTrials, GetType(Integer))
-            Me.m_fpNumTrials.Value = m_mcmanager.nTrials
+            Me.m_fpNumTrials.Value = Me.m_mcmanager.nTrials
 
             Me.m_fpTrial = New cEwEFormatProvider(Me.UIContext, Me.m_lblTrialValue, GetType(Integer))
             Me.m_fpTrial.Value = 0
@@ -177,14 +177,14 @@ Namespace Ecosim
 
             Me.m_fpEETol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxEETol, GetType(Single))
             Me.m_fpEETol.Value = Me.m_mcmanager.EcopathEETolerance
-            AddHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
+            AddHandler Me.m_fpEETol.OnValueChanged, AddressOf Me.OnEETolChanged
 
             Me.m_fpFMratio = New cEwEFormatProvider(Me.UIContext, Me.m_tbxFMratio, GetType(Single))
             Me.m_fpFMratio.Value = Me.m_mcmanager.FMRatioForSRA
-            AddHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
+            AddHandler Me.m_fpFMratio.OnValueChanged, AddressOf Me.OnFMratioChanged
 
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
-            Me.m_mcmanager.RetainFits = m_cbRetainEstimates.Checked
+            Me.m_mcmanager.RetainFits = Me.m_cbRetainEstimates.Checked
 
             'Set the interface checkbox with the value from the core
             Me.m_cbSave.Checked = Me.m_mcmanager.IsSaveOutput
@@ -217,7 +217,7 @@ Namespace Ecosim
             Me.m_cmdLoadTS.AddControl(Me.m_btnTS)
 
             Me.m_propNYears = New cSingleProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
-            AddHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
+            AddHandler Me.m_propNYears.PropertyChanged, AddressOf Me.OnPropNumYearsChanged
 
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
@@ -263,7 +263,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -323,16 +323,16 @@ Namespace Ecosim
                 Me.m_fpSSorg.Release()
                 Me.m_fpSS.Release()
                 Me.m_fpSSBest.Release()
-                RemoveHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
+                RemoveHandler Me.m_fpEETol.OnValueChanged, AddressOf Me.OnEETolChanged
                 Me.m_fpEETol.Release()
-                RemoveHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
+                RemoveHandler Me.m_fpFMratio.OnValueChanged, AddressOf Me.OnFMratioChanged
                 Me.m_fpFMratio.Release()
 
                 Me.m_plothelper.Detach()
                 Me.m_plothelper = Nothing
 
                 ' -- local properties
-                RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
+                RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf Me.OnPropNumYearsChanged
                 Me.m_propNYears = Nothing
 
             Catch ex As Exception
@@ -390,7 +390,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub OnStop(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnStop(sender As Object, e As System.EventArgs) _
             Handles m_btnStop.Click
             Try
                 Me.StopRun()
@@ -399,7 +399,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnApply(sender As System.Object, e As System.EventArgs) _
             Handles m_btnApply.Click
             If Not Me.m_mcmanager Is Nothing Then
                 Try
@@ -424,14 +424,14 @@ Namespace Ecosim
         End Sub
 
 
-        'Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        'Private Sub cbRetainCurPattern_CheckedChanged(sender As System.Object, e As System.EventArgs) _
         '    Handles m_cbRetainCurPattern.CheckedChanged, m_cbSRA.CheckedChanged
         '    If Not Me.m_mcmanager Is Nothing Then
         '        ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
         '    End If
         'End Sub
 
-        Private Sub OnToggleRetainEstimates(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnToggleRetainEstimates(sender As System.Object, e As System.EventArgs) _
             Handles m_cbRetainEstimates.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
                 Try
@@ -441,7 +441,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnNumTrialsChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnNumTrialsChanged(sender As Object, e As System.EventArgs) _
             Handles m_nudNumTrials.ValueChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -451,7 +451,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnAutosaveToggled(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnAutosaveToggled(sender As Object, e As System.EventArgs) _
             Handles m_cbSave.CheckedChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -461,7 +461,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnLoadBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadBFromPedigree(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnLoadPedB.Click
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -471,7 +471,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnLoadPBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadPBFromPedigree(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnLoadPedPB.Click
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -481,7 +481,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnLoadQBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadQBFromPedigree(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnLoadPedQB.Click
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -532,7 +532,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnFMratioChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnFMratioChanged(sender As Object, e As System.EventArgs)
             If Me.m_mcmanager IsNot Nothing Then
                 Try
                     Me.m_mcmanager.FMRatioForSRA = CSng(Me.m_fpFMratio.Value)
@@ -541,7 +541,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnEETolChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnEETolChanged(sender As Object, e As System.EventArgs)
             If Me.m_mcmanager IsNot Nothing Then
                 Try
                     Me.m_mcmanager.EcopathEETolerance = CSng(Me.m_fpEETol.Value)
@@ -550,7 +550,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnDefaultTol(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaultTol(sender As System.Object, e As System.EventArgs) _
             Handles m_btDefaultTol.Click
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -666,7 +666,7 @@ Namespace Ecosim
                     Me.m_gridBestFit.RefreshContent()
 
                     ' Select outputs
-                    Me.m_tcMain.SelectedTab = m_tbpBestTrial
+                    Me.m_tcMain.SelectedTab = Me.m_tbpBestTrial
                 End If
 
             Catch ex As Exception
@@ -680,7 +680,7 @@ Namespace Ecosim
         ''' Time Step handler for Ecosim results
         ''' </summary>
         ''' <remarks>This will be called at each ecosim timestep for plotting the data</remarks>
-        Private Sub EcoSimTimeStepHandler(ByVal lTime As Long, ByVal results As cEcoSimResults)
+        Private Sub EcoSimTimeStepHandler(lTime As Long, results As cEcoSimResults)
 
             Dim ppl As PointPairList = Nothing
 
@@ -711,7 +711,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As cCommand) _
+        Private Sub m_cmdRunMonteCarlo_OnInvoke(cmd As cCommand) _
             Handles m_cmdRunMonteCarlo.OnInvoke
 
             Dim bCheckTimeseries As Boolean = True
@@ -759,7 +759,7 @@ Namespace Ecosim
             Me.m_plothelper.Clear()
             Me.m_plothelper.XScaleMax = Me.Core.EcosimFirstYear + Me.Core.nEcosimYears
 
-            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopRun))
+            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
             Me.NewIteration()
             Me.m_mcmanager.Run()
 
@@ -773,7 +773,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As cCommand) _
+        Private Sub m_cmdRunMonteCarlo_OnUpdate(cmd As cCommand) _
             Handles m_cmdRunMonteCarlo.OnUpdate
 
             cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And
@@ -792,7 +792,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdStopMonteCarlo">Stop Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
+        Private Sub m_cmdStopMonteCarlo_OnUpdate(cmd As cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
             cmd.Enabled = Me.m_mcmanager.IsRunning
         End Sub
 
@@ -801,7 +801,7 @@ Namespace Ecosim
         ''' The Apply time series Command/button has been invoked
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As cCommand) _
+        Private Sub m_cmdApplyTS_OnPostInvoke(cmd As cCommand) _
             Handles m_cmdLoadTS.OnPostInvoke
             'this means the time series data could have changed
             'reload the data into the manager
@@ -811,11 +811,11 @@ Namespace Ecosim
             Me.UpdateGraphXAxis()
         End Sub
 
-        Private Sub OnPropNumYearsChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Private Sub OnPropNumYearsChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
             Me.UpdateGraphXAxis()
         End Sub
 
-        Private Sub m_lbGroups_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_lbGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
             Me.UpdateGraphHighlights()
         End Sub
@@ -939,7 +939,7 @@ Namespace Ecosim
                     line = Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strGroupName)
                     Me.m_plothelper.Metadata(line, "SS") = Me.m_mcmanager.SS
 
-                    line.IsVisible = Not m_bShowBetterSS Or (Me.m_mcmanager.SS < Me.m_mcmanager.SSorg)
+                    line.IsVisible = Not Me.m_bShowBetterSS Or (Me.m_mcmanager.SS < Me.m_mcmanager.SSorg)
                     lLines.Add(line)
 
                 Next iGroup
@@ -955,7 +955,7 @@ Namespace Ecosim
 
             For Each ci As CurveItem In Me.m_plothelper.DataLines()
                 Dim sSS As Single = CSng(Me.m_plothelper.Metadata(ci, "SS"))
-                ci.IsVisible = Not m_bShowBetterSS Or (sSS < Me.m_mcmanager.SSorg)
+                ci.IsVisible = Not Me.m_bShowBetterSS Or (sSS < Me.m_mcmanager.SSorg)
             Next
             Me.m_plothelper.RescaleAndRedraw()
 

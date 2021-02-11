@@ -77,7 +77,7 @@ Public Class frmMSE
         End Get
     End Property
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -114,7 +114,7 @@ Public Class frmMSE
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         If Me.m_MSE.isConnected Then
             Dim bstopped As Boolean
@@ -147,7 +147,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub OnShowHideGroups(ByVal cmd As cCommand)
+    Private Sub OnShowHideGroups(cmd As cCommand)
 
         'Just clear the graphs and add the reference lines
         'there is no interation data available for the graph
@@ -173,7 +173,7 @@ Public Class frmMSE
 
 #Region "Core interactions"
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+    Public Overrides Sub OnCoreMessage(msg As cMessage)
 
         Me.m_coreMessage.HandleCoreMessage(msg)
 
@@ -194,7 +194,7 @@ Public Class frmMSE
             If Me.m_MSE.ValidateRun() Then
 
                 Me.m_MSE.Connect(AddressOf Me.onMSECallBack, Nothing)
-                Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopMSE))
+                Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopMSE))
 
                 cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MSE_INITIALIZING)
 
@@ -223,7 +223,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub onMSECallBack(ByVal CallBackType As MSE.eMSERunStates)
+    Private Sub onMSECallBack(CallBackType As MSE.eMSERunStates)
 
         If Not Me.m_MSE.isConnected Then
             System.Console.WriteLine("MSE Interface recieved message " & CallBackType.ToString & " when no longer running.")
@@ -265,7 +265,7 @@ Public Class frmMSE
 
 #Region "Interface events"
 
-    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub rbFTracking_CheckedChanged(sender As System.Object, e As System.EventArgs)
 
         If Me.m_MSE Is Nothing Then Exit Sub
 
@@ -286,7 +286,7 @@ Public Class frmMSE
     End Sub
 
 
-    Private Sub onRunClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btRun.Click
+    Private Sub onRunClick(sender As Object, e As System.EventArgs) Handles m_btRun.Click
 
         Try
             Me.runMSE()
@@ -303,7 +303,7 @@ Public Class frmMSE
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub onAssessmentMethodChanged(sender As System.Object, e As System.EventArgs)
         Try
 
             If Me.m_MSE Is Nothing Then Exit Sub
@@ -321,7 +321,7 @@ Public Class frmMSE
 
     End Sub
 
-    Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub btStop_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnStop.Click
         Try
             Me.StopMSE()
@@ -329,7 +329,7 @@ Public Class frmMSE
         End Try
     End Sub
 
-    Private Sub OnSaveClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSaveClicked(sender As System.Object, e As System.EventArgs) _
         Handles m_ckSave.Click
         Try
             Me.Core.Autosave(eAutosaveTypes.MSE) = Me.m_ckSave.Checked
@@ -392,7 +392,7 @@ Public Class frmMSE
 
 #Region "Controls"
 
-    Private Shadows Sub UpdateControls(ByVal State As eMSEStates)
+    Private Shadows Sub UpdateControls(State As eMSEStates)
 
         Try
 
@@ -405,8 +405,8 @@ Public Class frmMSE
                     Me.m_nudStartYear.Enabled = True
                     Me.m_nudNumTrials.Enabled = True
                     Me.m_ckSave.Enabled = True
-                    m_lblNumTrials.Enabled = True
-                    m_lblStartYear.Enabled = True
+                    Me.m_lblNumTrials.Enabled = True
+                    Me.m_lblStartYear.Enabled = True
 
                 Case eMSEStates.Running
                     Me.m_btRun.Enabled = False
@@ -415,8 +415,8 @@ Public Class frmMSE
                     Me.m_nudStartYear.Enabled = False
                     Me.m_nudNumTrials.Enabled = False
                     Me.m_ckSave.Enabled = False
-                    m_lblNumTrials.Enabled = False
-                    m_lblStartYear.Enabled = False
+                    Me.m_lblNumTrials.Enabled = False
+                    Me.m_lblStartYear.Enabled = False
 
                 Case eMSEStates.Completed
                     Me.m_btRun.Enabled = True
@@ -425,12 +425,12 @@ Public Class frmMSE
                     Me.m_nudStartYear.Enabled = True
                     Me.m_nudNumTrials.Enabled = True
                     Me.m_ckSave.Enabled = True
-                    m_lblNumTrials.Enabled = True
-                    m_lblStartYear.Enabled = True
+                    Me.m_lblNumTrials.Enabled = True
+                    Me.m_lblStartYear.Enabled = True
 
             End Select
 
-            m_curState = State
+            Me.m_curState = State
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".UpdateControls(): " & ex.Message)

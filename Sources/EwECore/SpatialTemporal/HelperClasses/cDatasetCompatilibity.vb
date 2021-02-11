@@ -372,7 +372,7 @@ Namespace SpatialData
 
             For iStep As Integer = iTimeStart To iTimeEnd
 
-                Select Case CompatibilityAt(iStep)
+                Select Case Me.CompatibilityAt(iStep)
 
                     Case eCompatibilityTypes.NoTemporal
                         ' No temporal overlap.

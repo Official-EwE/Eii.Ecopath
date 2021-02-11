@@ -51,13 +51,13 @@ Namespace Ecopath.Input
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(1, 2 + Core.nFleets)
+            Me.Redim(1, 2 + Me.Core.nFleets)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
-                src = Core.EcopathFleetInputs(iFleet)
+                src = Me.Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name)
             Next
 
@@ -81,7 +81,7 @@ Namespace Ecopath.Input
 
                 group = groups(i)
                 If group.IsMultiStanza Then
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
                     If (group.iStanza <> iStanzaPrev) Then
                         ' Create stanza header row
                         iRow = Me.AddRow
@@ -106,7 +106,7 @@ Namespace Ecopath.Input
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
-                    fleet = Core.EcopathFleetInputs(iFleet)
+                    fleet = Me.Core.EcopathFleetInputs(iFleet)
                     Me(iRow, 1 + iFleet) = New cPropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
                 Next
             Next

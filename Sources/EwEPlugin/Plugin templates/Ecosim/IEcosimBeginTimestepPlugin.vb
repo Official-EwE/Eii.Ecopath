@@ -32,6 +32,6 @@ Public Interface IEcosimBeginTimestepPlugin
     ''' <param name="BiomassAtTimestep">The biomasses at the beginning at the time step.</param>
     ''' <param name="EcosimDatastructures">The Ecosim data structures that you can poke around in.</param>
     ''' <param name="iTime">The time step that will be executed.</param>
-    Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer)
+    Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer)
 
 End Interface

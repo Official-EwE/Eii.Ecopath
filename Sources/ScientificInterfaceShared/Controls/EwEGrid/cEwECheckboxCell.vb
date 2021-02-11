@@ -40,8 +40,8 @@ Namespace Controls.EwEGrid
         Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
         Private m_uic As cUIContext = Nothing
 
-        Public Sub New(ByVal bChecked As Boolean,
-                       Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
+        Public Sub New(bChecked As Boolean,
+                       Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
 
             MyBase.New(bChecked)
             ' Set shared visualizer
@@ -51,7 +51,7 @@ Namespace Controls.EwEGrid
         End Sub
 
         Public Overridable Sub Dispose() Implements IDisposable.Dispose
-            If UIContext IsNot Nothing Then
+            If Me.UIContext IsNot Nothing Then
 
                 Me.UIContext = Nothing
 
@@ -88,7 +88,7 @@ Namespace Controls.EwEGrid
                 Return Me.m_style
             End Get
 
-            Set(ByVal s As cStyleGuide.eStyleFlags)
+            Set(s As cStyleGuide.eStyleFlags)
                 Me.m_style = s
                 If ((s And cStyleGuide.eStyleFlags.NotEditable) = 0) Then
                     Me.DataModel.EnableEdit = True
@@ -108,7 +108,7 @@ Namespace Controls.EwEGrid
         ''' StyleGuide change event handler; makes sure cells are redrawn
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overridable Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
             Me.Invalidate()
         End Sub
 
@@ -120,7 +120,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cUIContext">UI context</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnAddToGrid(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnAddToGrid(e As System.EventArgs)
             MyBase.OnAddToGrid(e)
             If (TypeOf Me.Grid Is IUIElement) Then
                 ' Grab UI context from parent grid
@@ -134,7 +134,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cUIContext">UI context</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnRemoveToGrid(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnRemoveToGrid(e As System.EventArgs)
             MyBase.OnRemoveToGrid(e)
             Me.UIContext = Nothing
         End Sub
@@ -168,7 +168,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_uic
             End Get
-            Protected Set(ByVal value As cUIContext)
+            Protected Set(value As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
                     ' Clean up

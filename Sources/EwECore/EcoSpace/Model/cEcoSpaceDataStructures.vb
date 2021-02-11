@@ -872,7 +872,7 @@ Public Class cEcospaceDataStructures
     ''' <param name="Value"></param>
     ''' <remarks></remarks>
     Public Sub setHabCapGroupIsChanged(ByVal Value As Boolean)
-        For igrp As Integer = 1 To NGroups
+        For igrp As Integer = 1 To Me.NGroups
             Me.isGroupHabCapChanged(igrp) = Value
         Next
     End Sub
@@ -886,11 +886,11 @@ Public Class cEcospaceDataStructures
     ''' <remarks>This was nvar in EwE5</remarks>
     Public Property NGroups() As Integer
         Get
-            Return m_ngroups
+            Return Me.m_ngroups
         End Get
         Set(ByVal value As Integer)
-            m_ngroups = value
-            RedimGroups() 'implicit ??????
+            Me.m_ngroups = value
+            Me.RedimGroups() 'implicit ??????
             'this is different then the other counters (nFleets....) 
             'which delay the dimensioning until the data is loaded
             'this may not be a good idea
@@ -902,10 +902,10 @@ Public Class cEcospaceDataStructures
         Get
             Try
                 Dim n As Integer = 0
-                For irow As Integer = 1 To InRow
-                    For icol As Integer = 1 To InCol
+                For irow As Integer = 1 To Me.InRow
+                    For icol As Integer = 1 To Me.InCol
                         If Me.Depth(irow, icol) > 0 Then
-                            If Region(irow, icol) = iRegion Then
+                            If Me.Region(irow, icol) = iRegion Then
                                 n += 1
                             End If
                         End If
@@ -924,7 +924,7 @@ Public Class cEcospaceDataStructures
     Public ReadOnly Property nTimeSteps() As Integer
 
         Get
-            Return CInt(TotalTime * (1 / TimeStep))
+            Return CInt(Me.TotalTime * (1 / Me.TimeStep))
         End Get
 
     End Property
@@ -937,7 +937,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public ReadOnly Property nTimeStepsPerYear As Integer
         Get
-            Return CInt(1 / TimeStep)
+            Return CInt(1 / Me.TimeStep)
         End Get
     End Property
 
@@ -999,71 +999,71 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            Depth = Nothing
-            DepthA = Nothing
-            DepthX = Nothing
-            DepthY = Nothing
-            Xvel = Nothing
-            Yvel = Nothing
-            Xvloc = Nothing
-            Yvloc = Nothing
-            UpVel = Nothing
-            Xv = Nothing
-            Yv = Nothing
-            flow = Nothing
-            Region = Nothing
-            MPA = Nothing
-            RelPP = Nothing
-            RelCin = Nothing
-            Sail = Nothing
-            GroupDetritus = Nothing
+            Me.Depth = Nothing
+            Me.DepthA = Nothing
+            Me.DepthX = Nothing
+            Me.DepthY = Nothing
+            Me.Xvel = Nothing
+            Me.Yvel = Nothing
+            Me.Xvloc = Nothing
+            Me.Yvloc = Nothing
+            Me.UpVel = Nothing
+            Me.Xv = Nothing
+            Me.Yv = Nothing
+            Me.flow = Nothing
+            Me.Region = Nothing
+            Me.MPA = Nothing
+            Me.RelPP = Nothing
+            Me.RelCin = Nothing
+            Me.Sail = Nothing
+            Me.GroupDetritus = Nothing
 
-            Basebiomass = Nothing
-            Bnew = Nothing
-            der = Nothing
+            Me.Basebiomass = Nothing
+            Me.Bnew = Nothing
+            Me.der = Nothing
             'EatEffBad = Nothing
-            MPABiomass = Nothing
-            Mrate = Nothing
-            Mvel = Nothing
-            RelMoveBad = Nothing
-            RelVulBad = Nothing
-            IsAdvected = Nothing
+            Me.MPABiomass = Nothing
+            Me.Mrate = Nothing
+            Me.Mvel = Nothing
+            Me.RelMoveBad = Nothing
+            Me.RelVulBad = Nothing
+            Me.IsAdvected = Nothing
 
-            PrefRow = Nothing
-            Prefcol = Nothing
-            IsMigratory = Nothing
-            MigConcRow = Nothing
-            MigConcCol = Nothing
-            barrierAvoidanceWeight = Nothing
-            MigMaps = Nothing
+            Me.PrefRow = Nothing
+            Me.Prefcol = Nothing
+            Me.IsMigratory = Nothing
+            Me.MigConcRow = Nothing
+            Me.MigConcCol = Nothing
+            Me.barrierAvoidanceWeight = Nothing
+            Me.MigMaps = Nothing
 
-            MPADBID = Nothing '(Me.MPAno)
-            MPAname = Nothing '(Me.MPAno)
-            MPAmonth = Nothing '(12, Me.MPAno)
-            MPAfishery = Nothing '(Me.nFleets, Me.MPAno)
+            Me.MPADBID = Nothing '(Me.MPAno)
+            Me.MPAname = Nothing '(Me.MPAno)
+            Me.MPAmonth = Nothing '(12, Me.MPAno)
+            Me.MPAfishery = Nothing '(Me.nFleets, Me.MPAno)
 
-            ResultsByGroup = Nothing ', N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
-            ResultsByFleet = Nothing ', N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
-            ResultsByFleetGroup = Nothing ', N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
+            Me.ResultsByGroup = Nothing ', N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
+            Me.ResultsByFleet = Nothing ', N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
+            Me.ResultsByFleetGroup = Nothing ', N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
 
-            ResultsRegionGroup = Nothing ', NoRegions, NGroups, NumberOfTimeSteps)
-            ResultsCatchRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
-            MPred = Nothing
-            EffortSpace = Nothing
-            PredCell = Nothing
-            IFDweight = Nothing
-            Ftot = Nothing
-            EffPower = Nothing
-            SEmult = Nothing
-            HabAreaProportion = Nothing
-            HabArea = Nothing
-            PHabType = Nothing
-            FleetSailCells = Nothing
+            Me.ResultsRegionGroup = Nothing ', NoRegions, NGroups, NumberOfTimeSteps)
+            Me.ResultsCatchRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            Me.MPred = Nothing
+            Me.EffortSpace = Nothing
+            Me.PredCell = Nothing
+            Me.IFDweight = Nothing
+            Me.Ftot = Nothing
+            Me.EffPower = Nothing
+            Me.SEmult = Nothing
+            Me.HabAreaProportion = Nothing
+            Me.HabArea = Nothing
+            Me.PHabType = Nothing
+            Me.FleetSailCells = Nothing
 
-            MigMaps = Nothing
+            Me.MigMaps = Nothing
 
-            If dctENACells IsNot Nothing Then dctENACells.Clear()
-            dctENACells = Nothing
+            If Me.dctENACells IsNot Nothing Then Me.dctENACells.Clear()
+            Me.dctENACells = Nothing
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
@@ -1082,58 +1082,58 @@ Public Class cEcospaceDataStructures
         Try
 
             'EwE5 default value hardwired into the interface
-            FitnessResp = 100
-            PPupWell = 0.01
-            PredictEffort = True
+            Me.FitnessResp = 100
+            Me.PPupWell = 0.01
+            Me.PredictEffort = True
 
             'SOR weight from EwE5 interface frmSpace.text3
-            W = 0.9
+            Me.W = 0.9
 
-            TimeStep = 1 / 12 'monthly time steps. In EwE5 this is set all over the place 
+            Me.TimeStep = 1 / 12 'monthly time steps. In EwE5 this is set all over the place 
 
             'EwE5 set to True in frmSpace.Form_Activate()
             'its value is then changed from an option radio button SpaceInit() on the run tab
-            AdjustSpace = True
+            Me.AdjustSpace = True
 
             'jb SpaceTime and CurrentForce defaults from EwE5 frmSpace.Load()
-            SpaceTime = True 'in EwE5 the check box that controls this is labled 'Integrate' on the run tab
-            CurrentForce = False
+            Me.SpaceTime = True 'in EwE5 the check box that controls this is labled 'Integrate' on the run tab
+            Me.CurrentForce = False
 
-            InRow = 0
-            InCol = 0
+            Me.InRow = 0
+            Me.InCol = 0
 
-            AdvectSpeed = 0.1
+            Me.AdvectSpeed = 0.1
 
-            CellLength = 100 'this is from the EwE5 database
+            Me.CellLength = 100 'this is from the EwE5 database
 
-            MoveScale = 2.0 '0.2
-            If TotalTime = 0 Then TotalTime = 50 'default of 50 year simulation
+            Me.MoveScale = 2.0 '0.2
+            If Me.TotalTime = 0 Then Me.TotalTime = 50 'default of 50 year simulation
 
             'redimTimeVaraibles()
-            setDefaultSummaryPeriod()
+            Me.setDefaultSummaryPeriod()
 
-            NoHabitats = 1
+            Me.NoHabitats = 1
             'requires NoHabitats, nGroups, nFleets, NoHabChanges
-            RedimHabitatVariables()
+            Me.RedimHabitatVariables()
 
             'dimension arrays to current problem size
             'DefaultBasemapDimensions()
-            ReDimMapVars()
+            Me.ReDimMapVars()
 
-            RedimMigratoryVariables()
+            Me.RedimMigratoryVariables()
 
-            SetDefaultMeanVelocityMvel()
+            Me.SetDefaultMeanVelocityMvel()
 
-            For i = 1 To NGroups                            'CJW had nvar not n1
-                PrefHab(i, 0) = 1.0! ' True
-                InMigAreaMovement(i) = 0.1F
-                Kmovefit(i) = 0
+            For i = 1 To Me.NGroups                            'CJW had nvar not n1
+                Me.PrefHab(i, 0) = 1.0! ' True
+                Me.InMigAreaMovement(i) = 0.1F
+                Me.Kmovefit(i) = 0
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            ReDimFleets()
+            Me.ReDimFleets()
 
             Me.bUseEffortDistThreshold = False
-            EffortDistThreshold = 10000
+            Me.EffortDistThreshold = 10000
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Spin Up
@@ -1174,7 +1174,7 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            Debug.Assert(EcoPathData IsNot Nothing, "Ecospace must have a reference to Ecopath data to initialize.")
+            Debug.Assert(Me.EcoPathData IsNot Nothing, "Ecospace must have a reference to Ecopath data to initialize.")
 
             'Dim MaxTL As Single
             'MaxTL = 0
@@ -1183,8 +1183,8 @@ Public Class cEcospaceDataStructures
             'Next
             'MaxTL = MaxTL - 1
             'Set max average velocity movement to 100 km/year and the others linearly scaled after trophic level
-            For j = 1 To NGroups  'NumLiving
-                Mvel(j) = 300   'CInt(99 * (1 - (MaxTL - (TTLX(j) - 1)) / MaxTL)) + 1
+            For j = 1 To Me.NGroups  'NumLiving
+                Me.Mvel(j) = 300   'CInt(99 * (1 - (MaxTL - (TTLX(j) - 1)) / MaxTL)) + 1
             Next
             'For j = NumLiving + 1 To NumGroups
             '    Mvel(j) = 1
@@ -1192,10 +1192,10 @@ Public Class cEcospaceDataStructures
             'How about discards they should have a lower dispersal rate:
             'check the discard fate
             'DiscardFate(NumGear, NumGroups - NumLiving)
-            For j = nLiving + 1 To NGroups
-                For i = 1 To nFleets
-                    If EcoPathData.DiscardFate(i, j - nLiving) > 0 Then
-                        Mvel(j) = 10
+            For j = Me.nLiving + 1 To Me.NGroups
+                For i = 1 To Me.nFleets
+                    If Me.EcoPathData.DiscardFate(i, j - Me.nLiving) > 0 Then
+                        Me.Mvel(j) = 10
                         Exit For
                     End If
 
@@ -1217,10 +1217,10 @@ Public Class cEcospaceDataStructures
     Public Sub RedimMPAVariables()
         Try
             ReDim Me.MPADBID(Me.MPAno)
-            ReDim MPAname(Me.MPAno)
-            ReDim MPAmonth(12, Me.MPAno)
-            ReDim MPAfishery(Me.nFleets, Me.MPAno)
-            Me.allocate(Me.MPA, Me.MPAno, InRow + 1, InCol + 1)
+            ReDim Me.MPAname(Me.MPAno)
+            ReDim Me.MPAmonth(12, Me.MPAno)
+            ReDim Me.MPAfishery(Me.nFleets, Me.MPAno)
+            Me.allocate(Me.MPA, Me.MPAno, Me.InRow + 1, Me.InCol + 1)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimMPAVariables() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".RedimMPAVariables() Error: " & ex.Message)
@@ -1236,12 +1236,12 @@ Public Class cEcospaceDataStructures
     Public Sub RedimMigratoryVariables()
         Try
 
-            ReDim IsMigratory(nvartot)
-            ReDim PrefRow(NGroups, 12)
-            ReDim Prefcol(NGroups, 12)
-            ReDim MigConcRow(NGroups)
-            ReDim MigConcCol(NGroups)
-            ReDim barrierAvoidanceWeight(NGroups)
+            ReDim Me.IsMigratory(Me.nvartot)
+            ReDim Me.PrefRow(Me.NGroups, 12)
+            ReDim Me.Prefcol(Me.NGroups, 12)
+            ReDim Me.MigConcRow(Me.NGroups)
+            ReDim Me.MigConcCol(Me.NGroups)
+            ReDim Me.barrierAvoidanceWeight(Me.NGroups)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimMigratoryVariables() Error: " & ex.Message)
@@ -1268,37 +1268,37 @@ Public Class cEcospaceDataStructures
             If Not PreserveHabitat Then
                 'new model is being read
                 'clear out the exiting data
-                ReDim PrefHab(NGroups, NoHabitats)
-                ReDim GearHab(nFleets, NoHabitats)
-                ReDim HabitatText(NoHabitats)
-                ReDim HabArea(NoHabitats)
-                ReDim HabAreaProportion(NoHabitats)
-                ReDim HabitatDBID(NoHabitats)
+                ReDim Me.PrefHab(Me.NGroups, Me.NoHabitats)
+                ReDim Me.GearHab(Me.nFleets, Me.NoHabitats)
+                ReDim Me.HabitatText(Me.NoHabitats)
+                ReDim Me.HabArea(Me.NoHabitats)
+                ReDim Me.HabAreaProportion(Me.NoHabitats)
+                ReDim Me.HabitatDBID(Me.NoHabitats)
 
-                allocate(Me.PHabType, Me.NoHabitats, Me.InRow, Me.InCol)
+                Me.allocate(Me.PHabType, Me.NoHabitats, Me.InRow, Me.InCol)
 
                 ' JS 15oct07: fix for bug 289 - By default, GearHab and PrefHab are True for 'All' habitat
-                For iGroup As Integer = 0 To NGroups
-                    PrefHab(iGroup, 0) = 1.0! ' True
+                For iGroup As Integer = 0 To Me.NGroups
+                    Me.PrefHab(iGroup, 0) = 1.0! ' True
                 Next
 
-                For iFleet As Integer = 0 To nFleets
-                    GearHab(iFleet, 0) = True
+                For iFleet As Integer = 0 To Me.nFleets
+                    Me.GearHab(iFleet, 0) = True
                 Next
 
             Else
                 'only the number of habitats has changed 
                 'keep the existing data
-                ReDim Preserve PrefHab(NGroups, NoHabitats)
-                ReDim Preserve GearHab(nFleets, NoHabitats)
-                ReDim Preserve HabitatText(NoHabitats)
-                ReDim Preserve HabArea(NoHabitats)
-                ReDim Preserve HabAreaProportion(NoHabitats)
-                ReDim Preserve HabitatDBID(NoHabitats)
+                ReDim Preserve Me.PrefHab(Me.NGroups, Me.NoHabitats)
+                ReDim Preserve Me.GearHab(Me.nFleets, Me.NoHabitats)
+                ReDim Preserve Me.HabitatText(Me.NoHabitats)
+                ReDim Preserve Me.HabArea(Me.NoHabitats)
+                ReDim Preserve Me.HabAreaProportion(Me.NoHabitats)
+                ReDim Preserve Me.HabitatDBID(Me.NoHabitats)
 
             End If
 
-            Me.allocate(PHabType, NoHabitats, InRow, InCol)
+            Me.allocate(Me.PHabType, Me.NoHabitats, Me.InRow, Me.InCol)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimHabitatVariables() Error: " & ex.Message)
@@ -1313,9 +1313,9 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public Sub DefaultBasemapDimensions()
 
-        If InRow = 0 Then InRow = 20 'number of map cell rows
-        If InCol = 0 Then InCol = 20 'number of map cell columns
-        If CellLength = 0 Then CellLength = 5 'map cell size, in degrees
+        If Me.InRow = 0 Then Me.InRow = 20 'number of map cell rows
+        If Me.InCol = 0 Then Me.InCol = 20 'number of map cell columns
+        If Me.CellLength = 0 Then Me.CellLength = 5 'map cell size, in degrees
 
     End Sub
 
@@ -1324,53 +1324,53 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            Debug.Assert(StanzaGroups IsNot Nothing, Me.ToString & ".ReDimMapVars() Stanzagroups needs to be set.")
+            Debug.Assert(Me.StanzaGroups IsNot Nothing, Me.ToString & ".ReDimMapVars() Stanzagroups needs to be set.")
 
             'count up the total number of stanza groups
-            Nvarsplit = 0
-            For i = 1 To StanzaGroups.Nsplit
-                For j = 1 To StanzaGroups.Nstanza(i)
-                    Nvarsplit = Nvarsplit + 1
+            Me.Nvarsplit = 0
+            For i = 1 To Me.StanzaGroups.Nsplit
+                For j = 1 To Me.StanzaGroups.Nstanza(i)
+                    Me.Nvarsplit = Me.Nvarsplit + 1
                 Next
             Next
 
             'jb EwE5 EwE6 does not have Pairs (split pools)
             'nvartot = NumGroups + 2 * npairs + Nvarsplit
-            nvartot = NGroups + Nvarsplit
+            Me.nvartot = Me.NGroups + Me.Nvarsplit
 
-            ReDim Basebiomass(nvartot)
-            ReDim Bnew(nvartot)
-            ReDim der(nvartot)
+            ReDim Me.Basebiomass(Me.nvartot)
+            ReDim Me.Bnew(Me.nvartot)
+            ReDim Me.der(Me.nvartot)
             'ReDim EatEff(nvartot)
             'ReDim EatEffBad(nvartot)
             'ReDim Flowin(nvartot)
             'ReDim FlowoutRate(nvartot)
-            ReDim MPABiomass(nvartot)
-            ReDim Mrate(nvartot)
-            ReDim Mvel(nvartot)
-            ReDim RelMoveBad(nvartot)
-            ReDim RelVulBad(nvartot)
-            ReDim IsAdvected(NGroups)
-            ReDim Me.TotHabCap(NGroups)
-            ReDim Me.MaxHabCap(NGroups)
+            ReDim Me.MPABiomass(Me.nvartot)
+            ReDim Me.Mrate(Me.nvartot)
+            ReDim Me.Mvel(Me.nvartot)
+            ReDim Me.RelMoveBad(Me.nvartot)
+            ReDim Me.RelVulBad(Me.nvartot)
+            ReDim Me.IsAdvected(Me.NGroups)
+            ReDim Me.TotHabCap(Me.NGroups)
+            ReDim Me.MaxHabCap(Me.NGroups)
 
-            ReDim InMigAreaMovement(NGroups)
+            ReDim Me.InMigAreaMovement(Me.NGroups)
 
             ' Allocate room for Depth map
-            ReDim CapacityResponseFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
+            ReDim Me.CapacityResponseFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
 
-            ReDim MortalityResposeFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
+            ReDim Me.MortalityResposeFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
 
-            ReDim Me.ImportanceLayerDBID(nImportanceLayers)
-            ReDim Me.ImportanceLayerName(nImportanceLayers)
-            ReDim Me.ImportanceLayerDescription(nImportanceLayers)
-            ReDim Me.ImportanceLayerWeight(nImportanceLayers)
+            ReDim Me.ImportanceLayerDBID(Me.nImportanceLayers)
+            ReDim Me.ImportanceLayerName(Me.nImportanceLayers)
+            ReDim Me.ImportanceLayerDescription(Me.nImportanceLayers)
+            ReDim Me.ImportanceLayerWeight(Me.nImportanceLayers)
 
-            ReDim Me.EnvironmentalLayerDBID(nEnvironmentalDriverLayers)
-            ReDim Me.EnvironmentalLayerName(nEnvironmentalDriverLayers)
-            ReDim Me.EnvironmentalLayerDescription(nEnvironmentalDriverLayers)
-            ReDim Me.EnvironmentalLayerUnits(nEnvironmentalDriverLayers)
-            ReDim Me.EnvironmentalLayerCapacityDisabled(nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerDBID(Me.nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerName(Me.nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerDescription(Me.nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerUnits(Me.nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerCapacityDisabled(Me.nEnvironmentalDriverLayers)
 
             Me.MOLayerChanged = New List(Of Integer)
 
@@ -1384,19 +1384,19 @@ Public Class cEcospaceDataStructures
     Public Sub ReDimFleets()
         Try
 
-            ReDim Me.FleetDBID(nFleets)
-            ReDim Me.EcopathFleetDBID(nFleets)
-            ReDim Me.SEmult(nFleets)
-            ReDim Me.EffPower(nFleets)
+            ReDim Me.FleetDBID(Me.nFleets)
+            ReDim Me.EcopathFleetDBID(Me.nFleets)
+            ReDim Me.SEmult(Me.nFleets)
+            ReDim Me.EffPower(Me.nFleets)
 
             'Sets the number of Effort Areas to a default of one
             Me.ReDimEffortZones(1)
 
             Me.setFleetDefaults()
 
-            ReDim FleetSailCells(nFleets)
-            For iflt As Integer = 1 To nFleets
-                FleetSailCells(iflt) = New List(Of cRowCol)
+            ReDim Me.FleetSailCells(Me.nFleets)
+            For iflt As Integer = 1 To Me.nFleets
+                Me.FleetSailCells(iflt) = New List(Of cRowCol)
             Next
 
         Catch ex As Exception
@@ -1415,12 +1415,12 @@ Public Class cEcospaceDataStructures
         Debug.Assert(NumberOfZones > 0, "ReDimPropEffortArea(nAreas) NumberOfAreas must be greater than 0.")
 
         Me.nEffZones = NumberOfZones
-        Me.PropEffortFleetZone = New Single(nFleets, nEffZones) {}
+        Me.PropEffortFleetZone = New Single(Me.nFleets, Me.nEffZones) {}
 
-        For iflt As Integer = 1 To nFleets
+        For iflt As Integer = 1 To Me.nFleets
             'Default proportion of effort in an area = 1
-            For iarea As Integer = 0 To nEffZones
-                PropEffortFleetZone(iflt, iarea) = 1
+            For iarea As Integer = 0 To Me.nEffZones
+                Me.PropEffortFleetZone(iflt, iarea) = 1
             Next iarea
         Next
 
@@ -1430,9 +1430,9 @@ Public Class cEcospaceDataStructures
     Private Sub setFleetDefaults()
 
         'jb just set to default of one
-        For i As Integer = 1 To nFleets
-            EffPower(i) = 1
-            SEmult(i) = 1
+        For i As Integer = 1 To Me.nFleets
+            Me.EffPower(i) = 1
+            Me.SEmult(i) = 1
         Next
 
     End Sub
@@ -1452,15 +1452,15 @@ Public Class cEcospaceDataStructures
         End If
 
         If (Me.MigMaps Is Nothing) Then
-            Me.MigMaps = New Single(NGroups, 12)(,) {}
+            Me.MigMaps = New Single(Me.NGroups, 12)(,) {}
         End If
 
         '  Me.MigMaps = New Single(NGroups, 12)(,) {}
         For iGrp As Integer = 1 To Me.NGroups
-            If IsMigratory(iGrp) Then
-                If (MigMaps(iGrp, 1) Is Nothing) Then
+            If Me.IsMigratory(iGrp) Then
+                If (Me.MigMaps(iGrp, 1) Is Nothing) Then
                     For iMonth As Integer = 1 To 12
-                        Me.MigMaps(iGrp, iMonth) = New Single(InRow + 1, InCol + 1) {}
+                        Me.MigMaps(iGrp, iMonth) = New Single(Me.InRow + 1, Me.InCol + 1) {}
                     Next
                 End If
             End If
@@ -1477,14 +1477,14 @@ Public Class cEcospaceDataStructures
         For iflt As Integer = 1 To Me.nFleets
             For iz As Integer = 1 To Me.nEffZones
                 'Effort by zone
-                Me.PropEffortFleetZone(iflt, iz) = CSng(iz / nEffZones)
+                Me.PropEffortFleetZone(iflt, iz) = CSng(iz / Me.nEffZones)
             Next
         Next
         Dim iseq As Integer
-        For ir As Integer = 1 To InRow
-            For ic As Integer = 1 To InCol
+        For ir As Integer = 1 To Me.InRow
+            For ic As Integer = 1 To Me.InCol
                 iseq += 1
-                Me.EffZones(ir, ic) = 1 + CInt((nEffZones - 1) * (iseq / (InRow * InCol)))
+                Me.EffZones(ir, ic) = 1 + CInt((Me.nEffZones - 1) * (iseq / (Me.InRow * Me.InCol)))
             Next
         Next
 
@@ -1544,16 +1544,16 @@ Public Class cEcospaceDataStructures
 
         Debug.Assert(False, "Warning debugCalcPrefRowColFromMap() Calculating PrefRow() PrefCol() from Migration Maps")
         Dim minRow As Integer, maxRow As Integer, minCol As Integer, maxCol As Integer
-        For igrp As Integer = 1 To NGroups
-            If IsMigratory(igrp) Then
+        For igrp As Integer = 1 To Me.NGroups
+            If Me.IsMigratory(igrp) Then
                 For imon As Integer = 1 To 12
-                    minRow = InRow + 1
-                    minCol = InCol + 1
+                    minRow = Me.InRow + 1
+                    minCol = Me.InCol + 1
                     maxRow = 0
                     maxCol = 0
 
-                    For irow As Integer = 1 To InRow
-                        For icol As Integer = 1 To InCol
+                    For irow As Integer = 1 To Me.InRow
+                        For icol As Integer = 1 To Me.InCol
 
                             If (Me.MigMaps(igrp, imon)(irow, icol) > cEcoSpace.MIN_MIG_PROB) Then
                                 minRow = Math.Min(irow, minRow)
@@ -1563,8 +1563,8 @@ Public Class cEcospaceDataStructures
                             End If
                         Next icol
                     Next irow
-                    PrefRow(igrp, imon) = (minRow + maxRow) \ 2
-                    Prefcol(igrp, imon) = (minCol + maxCol) \ 2
+                    Me.PrefRow(igrp, imon) = (minRow + maxRow) \ 2
+                    Me.Prefcol(igrp, imon) = (minCol + maxCol) \ 2
 
                 Next imon
             End If 'If IsMigratory(igrp) Then
@@ -1581,10 +1581,10 @@ Public Class cEcospaceDataStructures
         For igrp As Integer = 1 To Me.NGroups
             sumDiscards = 0
             n = 0
-            For ir As Integer = 1 To InRow
-                For ic As Integer = 1 To InCol
-                    If DiscardsMap(ir, ic, igrp) > 0 Then
-                        sumDiscards += DiscardsMap(ir, ic, igrp)
+            For ir As Integer = 1 To Me.InRow
+                For ic As Integer = 1 To Me.InCol
+                    If Me.DiscardsMap(ir, ic, igrp) > 0 Then
+                        sumDiscards += Me.DiscardsMap(ir, ic, igrp)
                         n += 1
                     End If
                 Next ic
@@ -1639,7 +1639,7 @@ Public Class cEcospaceDataStructures
             Me.FleetSailCells(iflt).Clear()
             For ir As Integer = 1 To Me.InRow
                 For ic As Integer = 1 To Me.InCol
-                    If Depth(ir, ic) > 0 Then
+                    If Me.Depth(ir, ic) > 0 Then
                         If Me.Sail(iflt)(ir, ic) < Me.EffortDistThreshold Then
                             Me.FleetSailCells(iflt).Add(New cRowCol(ir, ic))
                         End If 'Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold 
@@ -1647,7 +1647,7 @@ Public Class cEcospaceDataStructures
                 Next ic
             Next ir
 
-            System.Console.WriteLine("  Fleet " + iflt.ToString + " n cells, " + FleetSailCells(iflt).Count.ToString)
+            System.Console.WriteLine("  Fleet " + iflt.ToString + " n cells, " + Me.FleetSailCells(iflt).Count.ToString)
 
         Next iflt
 
@@ -1940,116 +1940,116 @@ Public Class cEcospaceDataStructures
         'NvarTot = nvar + 2 * npairs
         Dim i As Integer, j As Integer, k As Integer
 
-        Debug.Assert(StanzaGroups IsNot Nothing, Me.ToString & ".ReDimMapDims() Stanzagroups needs to be set.")
+        Debug.Assert(Me.StanzaGroups IsNot Nothing, Me.ToString & ".ReDimMapDims() Stanzagroups needs to be set.")
 
         Try
 
             'jb this is also set in ReDimMapVars()
-            Nvarsplit = 0
-            For i = 1 To StanzaGroups.Nsplit
-                For j = 1 To StanzaGroups.Nstanza(i)
-                    Nvarsplit = Nvarsplit + 1
+            Me.Nvarsplit = 0
+            For i = 1 To Me.StanzaGroups.Nsplit
+                For j = 1 To Me.StanzaGroups.Nstanza(i)
+                    Me.Nvarsplit = Me.Nvarsplit + 1
                 Next
             Next
-            nvartot = NGroups + Nvarsplit
+            Me.nvartot = Me.NGroups + Me.Nvarsplit
 
             'force the garbage collection
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
-            Me.allocate(Bcell, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(Blast, InRow + 1, InCol + 1, nvartot)
+            Me.allocate(Me.Bcell, Me.InRow + 1, Me.InCol + 1, Me.nvartot)
+            Me.allocate(Me.Blast, Me.InRow + 1, Me.InCol + 1, Me.nvartot)
 
-            Me.allocate(CatchMap, InRow, InCol, NGroups)
-            Me.allocate(DiscardsMap, InRow, InCol, NGroups)
-            Me.allocate(CatchFleetMap, InRow, InCol, nFleets)
+            Me.allocate(Me.CatchMap, Me.InRow, Me.InCol, Me.NGroups)
+            Me.allocate(Me.DiscardsMap, Me.InRow, Me.InCol, Me.NGroups)
+            Me.allocate(Me.CatchFleetMap, Me.InRow, Me.InCol, Me.nFleets)
 
             'For Nereus EcoOcean there are more fleets than groups
             'so dimension the fleets first
-            Me.allocate(Port, nFleets, InRow, InCol)
-            Me.allocate(PAreaFished, nFleets, InRow, InCol)
-            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
+            Me.allocate(Me.Port, Me.nFleets, Me.InRow, Me.InCol)
+            Me.allocate(Me.PAreaFished, Me.nFleets, Me.InRow, Me.InCol)
+            Me.allocate(Me.Sail, Me.nFleets, Me.InRow + 1, Me.InCol + 1)
 
             'MOLoss
-            Me.allocate(MOLoss, NGroups, InRow, InCol)
+            Me.allocate(Me.MOLoss, Me.NGroups, Me.InRow, Me.InCol)
 
-            Me.allocate(Me.HabCapInput, NGroups, InRow + 1, InCol + 1)
-            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To NGroups : HabCapInput(k)(i, j) = 1 : Next : Next : Next
-            Me.allocate(Me.HabCap, NGroups, InRow + 1, InCol + 1)
+            Me.allocate(Me.HabCapInput, Me.NGroups, Me.InRow + 1, Me.InCol + 1)
+            For i = 1 To Me.InRow : For j = 1 To Me.InCol : For k = 1 To Me.NGroups : Me.HabCapInput(k)(i, j) = 1 : Next : Next : Next
+            Me.allocate(Me.HabCap, Me.NGroups, Me.InRow + 1, Me.InCol + 1)
 
-            Me.allocate(Me.MOProp, NGroups, InRow + 1, InCol + 1)
+            Me.allocate(Me.MOProp, Me.NGroups, Me.InRow + 1, Me.InCol + 1)
 
-            Me.allocate(PHabType, NoHabitats, InRow, InCol)
+            Me.allocate(Me.PHabType, Me.NoHabitats, Me.InRow, Me.InCol)
 
-            Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
-            Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
+            Me.allocate(Me.Xv, Me.InRow + 1, Me.InCol + 1, cCore.N_MONTHS)
+            Me.allocate(Me.Yv, Me.InRow + 1, Me.InCol + 1, cCore.N_MONTHS)
             '  For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
-            Me.allocate(DepthInput, InRow + 1, InCol + 1)
+            Me.allocate(Me.DepthInput, Me.InRow + 1, Me.InCol + 1)
             'Resized basemap should have water everywhere
-            DepthInput.Fill(1)
-            Me.allocate(Excluded, InRow + 1, InCol + 1)
+            Me.DepthInput.Fill(1)
+            Me.allocate(Me.Excluded, Me.InRow + 1, Me.InCol + 1)
 
-            Me.allocate(Depth, InRow + 1, InCol + 1)
-            Me.allocate(DepthA, InRow + 1, InCol + 1)
-            Me.allocate(DepthX, InRow + 1, InCol + 1)
-            Me.allocate(DepthY, InRow + 1, InCol + 1)
-            Me.allocate(Xvel, InRow + 1, InCol + 1)
-            Me.allocate(Yvel, InRow + 1, InCol + 1)
-            Me.allocate(Xvloc, InRow + 1, InCol + 1)
-            Me.allocate(Yvloc, InRow + 1, InCol + 1)
-            Me.allocate(UpVel, InRow + 1, InCol + 1)
-            Me.allocate(flow, InRow + 1, InCol + 1)
+            Me.allocate(Me.Depth, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.DepthA, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.DepthX, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.DepthY, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.Xvel, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.Yvel, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.Xvloc, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.Yvloc, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.UpVel, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.flow, Me.InRow + 1, Me.InCol + 1)
 
-            Me.allocate(Region, InRow + 1, InCol + 1)
-            Me.allocate(RelPP, InRow + 1, InCol + 1)
-            Me.allocate(RelCin, InRow + 1, InCol + 1)
+            Me.allocate(Me.Region, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.RelPP, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.RelCin, Me.InRow + 1, Me.InCol + 1)
 
-            Me.allocate(RelNutMult, InRow, InCol)
+            Me.allocate(Me.RelNutMult, Me.InRow, Me.InCol)
 
             ' JS 14May16: Only allocate this temporary array when a relPP backup is made
             'Me.allocate(relPP0, InRow + 1, InCol + 1)
             Me.RelPP0 = Nothing
 
-            Me.allocate(TL, InRow, InCol, NGroups)
-            Me.allocate(TLc, InRow, InCol)
-            Me.allocate(KemptonsQ, InRow, InCol)
-            Me.allocate(ShannonDiversity, InRow, InCol)
+            Me.allocate(Me.TL, Me.InRow, Me.InCol, Me.NGroups)
+            Me.allocate(Me.TLc, Me.InRow, Me.InCol)
+            Me.allocate(Me.KemptonsQ, Me.InRow, Me.InCol)
+            Me.allocate(Me.ShannonDiversity, Me.InRow, Me.InCol)
 
-            Me.allocate(ImportanceLayerMap, Me.nImportanceLayers, InRow + 1, InCol + 1)
-            Me.allocate(EnvironmentalLayerMap, Me.nEnvironmentalDriverLayers, InRow + 1, InCol + 1)
+            Me.allocate(Me.ImportanceLayerMap, Me.nImportanceLayers, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.EnvironmentalLayerMap, Me.nEnvironmentalDriverLayers, Me.InRow + 1, Me.InCol + 1)
 
-            ReDim MPAfishery(nFleets, 1)
-            ReDim MPAmonth(12, 1)
-            ReDim IsFished(nFleets, Me.InRow, Me.InCol)
-            ReDim EffZones(InRow, InCol)
-            ReDim Width(InRow)
+            ReDim Me.MPAfishery(Me.nFleets, 1)
+            ReDim Me.MPAmonth(12, 1)
+            ReDim Me.IsFished(Me.nFleets, Me.InRow, Me.InCol)
+            ReDim Me.EffZones(Me.InRow, Me.InCol)
+            ReDim Me.Width(Me.InRow)
 
-            Me.allocate(MonthlyXvel, 12, InRow + 1, InCol + 1)
-            Me.allocate(MonthlyYvel, 12, InRow + 1, InCol + 1)
-            Me.allocate(MonthlyUpWell, 12, InRow + 1, InCol + 1)
+            Me.allocate(Me.MonthlyXvel, 12, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.MonthlyYvel, 12, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.MonthlyUpWell, 12, Me.InRow + 1, Me.InCol + 1)
 
 
             'jb move this here to set a few defaults this will have to change
-            For i = 1 To NGroups                            'CJW had nvar not n1
-                PrefHab(i, 0) = 1.0! ' True
+            For i = 1 To Me.NGroups                            'CJW had nvar not n1
+                Me.PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
             'Populate the Width() array
             Me.CalculateCellWidth()
 
-            For i = 1 To InRow
-                For j = 1 To InCol      'Default Values for new maps
-                    Depth(i, j) = 1
-                    DepthA(i, j) = Depth(i, j)
+            For i = 1 To Me.InRow
+                For j = 1 To Me.InCol      'Default Values for new maps
+                    Me.Depth(i, j) = 1
+                    Me.DepthA(i, j) = Me.Depth(i, j)
                     ' HabType(i, j) = 1
-                    RelPP(i, j) = 1
-                    RelCin(i, j) = 1
-                    For k = 1 To nFleets
-                        Sail(k)(i, j) = 1
+                    Me.RelPP(i, j) = 1
+                    Me.RelCin(i, j) = 1
+                    For k = 1 To Me.nFleets
+                        Me.Sail(k)(i, j) = 1
                     Next
 
                     'Use all habitats
-                    PHabType(0)(i, j) = 1.0F
+                    Me.PHabType(0)(i, j) = 1.0F
 
                     'Default Areas=1
                     Me.EffZones(i, j) = 1
@@ -2070,18 +2070,18 @@ Public Class cEcospaceDataStructures
 
         Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
         Dim dtLat As Single
-        For i As Integer = 1 To InRow
+        For i As Integer = 1 To Me.InRow
 
             dtLat = Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
             'System.Console.WriteLine((Lat1 - dtLat).ToString + ", ")
 
             'jb 28-Nov-2013 find width for the center of the cell
             If (Me.AssumeSquareCells) Then
-                Width(i) = 1
+                Me.Width(i) = 1
             Else
                 'half a cell height in degrees 
-                Dim Lat As Single = Lat1 - dtLat
-                Width(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
+                Dim Lat As Single = Me.Lat1 - dtLat
+                Me.Width(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
             End If
 
         Next i
@@ -2101,33 +2101,33 @@ Public Class cEcospaceDataStructures
         'which will be different for each run
         If Me.Ccell Is Nothing Then
             'not allocated yet so create it
-            ReDim Ccell(InRow + 1, InCol + 1, NGroups)
+            ReDim Me.Ccell(Me.InRow + 1, Me.InCol + 1, Me.NGroups)
         End If
 
         'check the size incase this is a new model/basemap
-        Dim size As Integer = (InRow + 2) * (InCol + 2) * (NGroups + 1)
-        If Ccell.Length <> size Then
-            ReDim Ccell(InRow + 1, InCol + 1, NGroups)
+        Dim size As Integer = (Me.InRow + 2) * (Me.InCol + 2) * (Me.NGroups + 1)
+        If Me.Ccell.Length <> size Then
+            ReDim Me.Ccell(Me.InRow + 1, Me.InCol + 1, Me.NGroups)
         End If
         'Clear out any old data
-        Array.Clear(Ccell, 0, size)
+        Array.Clear(Me.Ccell, 0, size)
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        ReDim Clast(InRow + 1, InCol + 1, NGroups)
-        ReDim AMmTr(InRow + 1, InCol + 1, NGroups)
-        ReDim Ftr(InRow + 1, InCol + 1, NGroups)
+        ReDim Me.Clast(Me.InRow + 1, Me.InCol + 1, Me.NGroups)
+        ReDim Me.AMmTr(Me.InRow + 1, Me.InCol + 1, Me.NGroups)
+        ReDim Me.Ftr(Me.InRow + 1, Me.InCol + 1, Me.NGroups)
 
     End Sub
 
     Public Sub RedimGroups()
         Try
-            ReDim GroupDBID(m_ngroups)
-            ReDim EcopathGroupDBID(m_ngroups)
-            ReDim CapCalType(m_ngroups)
+            ReDim Me.GroupDBID(Me.m_ngroups)
+            ReDim Me.EcopathGroupDBID(Me.m_ngroups)
+            ReDim Me.CapCalType(Me.m_ngroups)
 
-            ReDim IsEcosimBioForcingGroup(m_ngroups)
-            ReDim IsEcosimDiscardForcingGroup(m_ngroups)
-            ReDim Kmovefit(m_ngroups)
+            ReDim Me.IsEcosimBioForcingGroup(Me.m_ngroups)
+            ReDim Me.IsEcosimDiscardForcingGroup(Me.m_ngroups)
+            ReDim Me.Kmovefit(Me.m_ngroups)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimGroupDBID() Error: " & ex.Message)
@@ -2149,14 +2149,14 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            Me.allocate(ResultsByGroup, [Enum].GetValues(GetType(eSpaceResultsGroups)).Length, NGroups, NumberOfTimeSteps)
-            Me.allocate(ResultsByFleet, [Enum].GetValues(GetType(eSpaceResultsFleets)).Length, nFleets, NumberOfTimeSteps)
-            Me.allocate(ResultsByFleetGroup, [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, nFleets, NGroups, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsByGroup, [Enum].GetValues(GetType(eSpaceResultsGroups)).Length, Me.NGroups, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsByFleet, [Enum].GetValues(GetType(eSpaceResultsFleets)).Length, Me.nFleets, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsByFleetGroup, [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, Me.nFleets, Me.NGroups, NumberOfTimeSteps)
 
-            Me.allocate(ResultsRegionGroup, nRegions, NGroups, NumberOfTimeSteps)
-            Me.allocate(ResultsRegionGroupYear, nRegions, NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
-            Me.allocate(ResultsCatchRegionGearGroup, nRegions, nFleets, NGroups, NumberOfTimeSteps)
-            Me.allocate(ResultsCatchRegionGearGroupYear, nRegions, nFleets, NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
+            Me.allocate(Me.ResultsRegionGroup, Me.nRegions, Me.NGroups, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsRegionGroupYear, Me.nRegions, Me.NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
+            Me.allocate(Me.ResultsCatchRegionGearGroup, Me.nRegions, Me.nFleets, Me.NGroups, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsCatchRegionGearGroupYear, Me.nRegions, Me.nFleets, Me.NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
 
         Catch exmem As OutOfMemoryException
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & exmem.Message)
@@ -2179,15 +2179,15 @@ Public Class cEcospaceDataStructures
 
     Public Sub setDefaultSummaryPeriod()
         Try
-            Debug.Assert(TimeStep > 0)
+            Debug.Assert(Me.TimeStep > 0)
             'set the summary data to be over the total time
-            SumStart(0) = 0 'start of first summary period
-            SumStart(1) = TotalTime - 1 'start of last summary perion
-            NumStep = Math.Max(1, CInt(1.0 / TimeStep)) 'number of time steps to summarize over one year for the default summary
+            Me.SumStart(0) = 0 'start of first summary period
+            Me.SumStart(1) = Me.TotalTime - 1 'start of last summary perion
+            Me.NumStep = Math.Max(1, CInt(1.0 / Me.TimeStep)) 'number of time steps to summarize over one year for the default summary
         Catch ex As Exception
-            SumStart(0) = 0 'start of first summary period
-            SumStart(1) = TotalTime - 1 'start of last summary period
-            NumStep = 1 'number of time steps to summarize over one year for the default summary
+            Me.SumStart(0) = 0 'start of first summary period
+            Me.SumStart(1) = Me.TotalTime - 1 'start of last summary period
+            Me.NumStep = 1 'number of time steps to summarize over one year for the default summary
             Debug.Assert(False)
         End Try
     End Sub
@@ -2200,13 +2200,13 @@ Public Class cEcospaceDataStructures
 
         Debug.Assert(False, "Ecospace spatial reference data has not been implemented yet!")
 
-        Dim ttYears As Integer = CInt(TotalTime)
-        ReDim SpaceBiomassByRegion(ttYears, NGroups, nRegions)
-        ReDim SpaceBiomassByRegionCount(ttYears, NGroups, nRegions)
-        ReDim SpaceCatchByRegion(ttYears, NGroups, nRegions)
-        ReDim SpaceCatchByRegionCount(ttYears, NGroups, nRegions)
-        ReDim SpaceEffortByRegionFleet(ttYears, nFleets, nRegions)
-        ReDim SpaceEffortByRegionFleetCount(ttYears, nFleets, nRegions)
+        Dim ttYears As Integer = CInt(Me.TotalTime)
+        ReDim Me.SpaceBiomassByRegion(ttYears, Me.NGroups, Me.nRegions)
+        ReDim Me.SpaceBiomassByRegionCount(ttYears, Me.NGroups, Me.nRegions)
+        ReDim Me.SpaceCatchByRegion(ttYears, Me.NGroups, Me.nRegions)
+        ReDim Me.SpaceCatchByRegionCount(ttYears, Me.NGroups, Me.nRegions)
+        ReDim Me.SpaceEffortByRegionFleet(ttYears, Me.nFleets, Me.nRegions)
+        ReDim Me.SpaceEffortByRegionFleetCount(ttYears, Me.nFleets, Me.nRegions)
 
     End Sub
 
@@ -2460,7 +2460,7 @@ Public Class cEcospaceDataStructures
 
             For ivar = 0 To [Enum].GetValues(GetType(eSpaceResultsFleets)).Length
                 For iflt = 0 To Me.nFleets
-                    For it = 1 To nTimeSteps
+                    For it = 1 To Me.nTimeSteps
                         Me.ResultsByFleet(ivar, iflt, it) /= Me.nWaterCells
                     Next it
                 Next iflt
@@ -2469,7 +2469,7 @@ Public Class cEcospaceDataStructures
             For ivar = 0 To [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
-                        For it = 1 To nTimeSteps
+                        For it = 1 To Me.nTimeSteps
                             Me.ResultsByFleetGroup(ivar, iflt, igrp, it) /= Me.nWaterCells
                         Next it
                     Next igrp
@@ -2480,7 +2480,7 @@ Public Class cEcospaceDataStructures
                 ncells = Me.nCellsInRegion(irgn)
                 If ncells = 0 Then ncells = 1
                 For igrp = 1 To Me.NGroups
-                    For it = 1 To nTimeSteps
+                    For it = 1 To Me.nTimeSteps
                         Me.ResultsRegionGroup(irgn, igrp, it) /= ncells
                     Next it
                 Next igrp
@@ -2491,7 +2491,7 @@ Public Class cEcospaceDataStructures
                 If ncells = 0 Then ncells = 1
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
-                        For it = 1 To nTimeSteps
+                        For it = 1 To Me.nTimeSteps
                             Me.ResultsCatchRegionGearGroup(irgn, iflt, igrp, it) /= ncells
                         Next it
                     Next igrp
@@ -2511,10 +2511,10 @@ Public Class cEcospaceDataStructures
         Dim cost As Single, value As Single
 
         'Me.nSumTimeSteps = 0
-        Debug.Assert(nTimeSteps <= ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
+        Debug.Assert(nTimeSteps <= Me.ResultsByFleet.GetUpperBound(2), "EcoSpace summary data time step counter not set correctly!")
 
         'number of years the model actually ran for, computed in case the model run was stopped by the user
-        Dim nYears As Single = CSng(nTimeSteps / (1 / TimeStep))
+        Dim nYears As Single = CSng(nTimeSteps / (1 / Me.TimeStep))
 
         ReDim Me.ResultsSummaryByFleet(1, Me.nFleets)
 
@@ -2532,9 +2532,9 @@ Public Class cEcospaceDataStructures
             cost = EcopathCost(iflt, 1) + (FishEffort * EcopathCost(iflt, 2) + SailEffort * EcopathCost(iflt, 3))
 
             'profit average yearly
-            ResultsSummaryByFleet(0, iflt) = (value - cost) / nYears
+            Me.ResultsSummaryByFleet(0, iflt) = (value - cost) / nYears
             'jobs average yearly
-            ResultsSummaryByFleet(1, iflt) = value * JobMultiplier(iflt) / nYears
+            Me.ResultsSummaryByFleet(1, iflt) = value * JobMultiplier(iflt) / nYears
 
         Next
 
@@ -2562,7 +2562,7 @@ Public Class cEcospaceDataStructures
     ''' Preserve RelPP map in the <see cref="relPP0"/> temporary array.
     ''' </summary>
     Public Sub setBaseRelPP()
-        Me.allocate(Me.RelPP0, InRow + 1, InCol + 1)
+        Me.allocate(Me.RelPP0, Me.InRow + 1, Me.InCol + 1)
         Array.Copy(Me.RelPP, Me.RelPP0, Me.RelPP.Length)
     End Sub
 
@@ -2573,7 +2573,7 @@ Public Class cEcospaceDataStructures
     ''' This will clear the relPP0 temporary array.
     ''' </remarks>
     Public Sub restoreBaseRelPP()
-        If (RelPP0 IsNot Nothing) Then
+        If (Me.RelPP0 IsNot Nothing) Then
             Array.Copy(Me.RelPP0, Me.RelPP, Me.RelPP.Length)
             Me.RelPP0 = Nothing
         End If

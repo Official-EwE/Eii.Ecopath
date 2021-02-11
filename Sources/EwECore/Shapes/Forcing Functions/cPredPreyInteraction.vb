@@ -45,8 +45,8 @@ Public Class cPredPreyInteraction
     ''' <param name="PredIndex"><see cref="cCoreGroupBase.Index">Predator index</see>.</param>
     ''' <param name="PreyIndex"><see cref="cCoreGroupBase.Index">Prey index</see>.</param>
     ''' <param name="manager"><see cref="cMediatedInteractionManager">Mediated interaction manager</see>.</param>
-    Sub New(ByVal PredIndex As Integer, ByVal PreyIndex As Integer,
-            ByVal manager As cMediatedInteractionManager, ApplicationTypes As List(Of eForcingFunctionApplication))
+    Sub New(PredIndex As Integer, PreyIndex As Integer,
+            manager As cMediatedInteractionManager, ApplicationTypes As List(Of eForcingFunctionApplication))
 
         Me.m_dbid = cCore.NULL_VALUE '???
 
@@ -80,22 +80,22 @@ Public Class cPredPreyInteraction
     ''' <returns>True if successful.</returns>
     Friend Overrides Function Load() As Boolean
 
-        Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
+        Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
         Dim SFPair As cShapeFunctionTypePair
         Dim bSucces As Boolean = True
 
         For i As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
 
-            If esdata.BioMedData.FunctionNumber(m_prey, m_pred, i) = 0 Then Exit For
+            If esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i) = 0 Then Exit For
 
-            If Me.m_lstAppTypes.Contains(esdata.BioMedData.ApplicationType(m_prey, m_pred, i)) Then
+            If Me.m_lstAppTypes.Contains(esdata.BioMedData.ApplicationType(Me.m_prey, Me.m_pred, i)) Then
 
                 'get the cShapeFunctionTypePair object for this index
-                SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
-                SFPair.FunctionType = esdata.BioMedData.ApplicationType(m_prey, m_pred, i)
+                SFPair = Me.m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
+                SFPair.FunctionType = esdata.BioMedData.ApplicationType(Me.m_prey, Me.m_pred, i)
 
                 ' Retrieve shape
-                If esdata.BioMedData.IsMedFunction(m_prey, m_pred, i) Then
+                If esdata.BioMedData.IsMedFunction(Me.m_prey, Me.m_pred, i) Then
                     SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.MediationShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
                 Else
                     SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.ForcingShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
@@ -118,7 +118,7 @@ Public Class cPredPreyInteraction
     ''' </summary>
     Public ReadOnly Property PredIndex() As Integer
         Get
-            Return m_pred
+            Return Me.m_pred
         End Get
     End Property
 
@@ -128,7 +128,7 @@ Public Class cPredPreyInteraction
     ''' </summary>
     Public ReadOnly Property PreyIndex() As Integer
         Get
-            Return m_prey
+            Return Me.m_prey
         End Get
     End Property
 
@@ -137,7 +137,7 @@ Public Class cPredPreyInteraction
     ''' </summary>
     Public ReadOnly Property isProdRate() As Boolean
         Get
-            Return m_bIsProd
+            Return Me.m_bIsProd
         End Get
     End Property
 
@@ -161,28 +161,28 @@ Public Class cPredPreyInteraction
     ''' This allows a manager to update all the data then tell the core. </remarks>
     Friend Overrides Sub Update()
         Dim ishp As Integer
-        Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
+        Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
 
-        If LockUpdates Then Return
+        If Me.LockUpdates Then Return
 
         Try
 
             'this only need to set FunctionNumber(), FunctionType() and IsMedFunction() 
             'Ecosim will set MedIsUsed() in InitializeMedFunctions() based on FunctionNumber()
-            For Each sfPair As cShapeFunctionTypePair In m_SFPairs
+            For Each sfPair As cShapeFunctionTypePair In Me.m_SFPairs
                 ishp += 1
                 If sfPair.Shape IsNot Nothing Then
-                    esdata.BioMedData.FunctionNumber(m_prey, m_pred, ishp) = sfPair.Shape.Index 'Index to data arrays in Ecosim zscale()
-                    esdata.BioMedData.ApplicationType(m_prey, m_pred, ishp) = sfPair.FunctionType
+                    esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, ishp) = sfPair.Shape.Index 'Index to data arrays in Ecosim zscale()
+                    esdata.BioMedData.ApplicationType(Me.m_prey, Me.m_pred, ishp) = sfPair.FunctionType
                     If TypeOf sfPair.Shape Is cMediationFunction Then
-                        esdata.BioMedData.IsMedFunction(m_prey, m_pred, ishp) = True
+                        esdata.BioMedData.IsMedFunction(Me.m_prey, Me.m_pred, ishp) = True
                     Else
-                        esdata.BioMedData.IsMedFunction(m_prey, m_pred, ishp) = False
+                        esdata.BioMedData.IsMedFunction(Me.m_prey, Me.m_pred, ishp) = False
                     End If
                 Else
-                    esdata.BioMedData.FunctionNumber(m_prey, m_pred, ishp) = 0
-                    esdata.BioMedData.ApplicationType(m_prey, m_pred, ishp) = eForcingFunctionApplication.NotSet
-                    esdata.BioMedData.IsMedFunction(m_prey, m_pred, ishp) = False 'this probable doesn't matter
+                    esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, ishp) = 0
+                    esdata.BioMedData.ApplicationType(Me.m_prey, Me.m_pred, ishp) = eForcingFunctionApplication.NotSet
+                    esdata.BioMedData.IsMedFunction(Me.m_prey, Me.m_pred, ishp) = False 'this probable doesn't matter
                 End If
 
             Next
@@ -212,7 +212,7 @@ Public Class cPredPreyInteraction
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
     <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides Function GetID() As String
-        Return cValueID.GetDataTypeID(Me.DataType, CInt(m_pred * 1000 + m_prey))
+        Return cValueID.GetDataTypeID(Me.DataType, CInt(Me.m_pred * 1000 + Me.m_prey))
     End Function
 
 #End Region

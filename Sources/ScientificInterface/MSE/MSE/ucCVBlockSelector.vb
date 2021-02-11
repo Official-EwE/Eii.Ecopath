@@ -69,7 +69,7 @@ Public Class ucCVBlockSelector
         Get
             Return Me.m_uic
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
 
             If (Me.m_uic IsNot Nothing) Then
                 Me.m_gridSelector.Detach()
@@ -89,7 +89,7 @@ Public Class ucCVBlockSelector
 #Region " IBlockSelector implementation "
 
     ''' <inheritdoc cref="IBlockSelector.BlockColor"/>
-    Public ReadOnly Property BlockColor(ByVal iBlock As Integer) As System.Drawing.Color _
+    Public ReadOnly Property BlockColor(iBlock As Integer) As System.Drawing.Color _
         Implements IBlockSelector.BlockColor
         Get
             If iBlock >= 0 And iBlock <= Me.NumBlocks Then
@@ -112,10 +112,10 @@ Public Class ucCVBlockSelector
     Public Property NumBlocks() As Integer _
         Implements IBlockSelector.NumBlocks
         Get
-            Return m_numBlocks
+            Return Me.m_numBlocks
         End Get
 
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_numBlocks = value
             Try
                 Me.setCVsToNBlocks()
@@ -133,7 +133,7 @@ Public Class ucCVBlockSelector
         Get
             Return Me.m_gridSelector.SelectedBlock
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.m_gridSelector.SelectedBlock) Then
                 Me.m_gridSelector.SelectedBlock = value
             End If
@@ -150,7 +150,7 @@ Public Class ucCVBlockSelector
     End Property
 
     ''' <inheritdoc cref="IBlockSelector.BlocktoValue"/>
-    Public Function BlocktoValue(ByVal iBlock As Integer) As Single _
+    Public Function BlocktoValue(iBlock As Integer) As Single _
         Implements IBlockSelector.BlocktoValue
         Try
             If iBlock < 1 Then Return 0.0F
@@ -167,7 +167,7 @@ Public Class ucCVBlockSelector
     ''' <param name="cv">CV to search for</param>
     ''' <returns>Index of the CV in the IBlockSelector</returns>
     ''' <remarks>Finds the closest matching. </remarks>
-    Public Function ValuetoBlock(ByVal cv As Single) As Integer _
+    Public Function ValuetoBlock(cv As Single) As Integer _
         Implements IBlockSelector.ValuetoBlock
 
         Try
@@ -222,7 +222,7 @@ Public Class ucCVBlockSelector
             Return Me.m_cvs
         End Get
 
-        Set(ByVal value As Single())
+        Set(value As Single())
             Try
                 Me.m_cvs = value
                 Me.m_numBlocks = Me.m_cvs.Length - 1
@@ -244,7 +244,7 @@ Public Class ucCVBlockSelector
 
 #Region " Events "
 
-    Private Sub onGridValueChanged(ByVal newValue As Single, ByVal Index As Integer) _
+    Private Sub onGridValueChanged(newValue As Single, Index As Integer) _
         Handles m_gridSelector.OnValueChanged
 
         Try

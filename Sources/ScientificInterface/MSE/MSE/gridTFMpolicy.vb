@@ -69,7 +69,7 @@ Namespace Ecosim
                 End If
                 Return Nothing
             End Get
-            Set(ByVal value As cMSEGroupInput)
+            Set(value As cMSEGroupInput)
                 Me.Selection.Clear()
                 If value IsNot Nothing Then
                     Me.Selection.Add(New Position(value.Index, 0))
@@ -105,10 +105,10 @@ Namespace Ecosim
             Dim group As cMSEGroupInput = Nothing
 
             ' For each group
-            For iGroup As Integer = 1 To Core.nLivingGroups
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
                 'Get the group info
-                group = Core.MSEManager.GroupInputs(iGroup)
+                group = Me.Core.MSEManager.GroupInputs(iGroup)
 
                 Me.AddRow()
 

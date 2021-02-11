@@ -44,11 +44,11 @@ Public Class frmEditDecreaseEffort
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, ByVal mse As cMSE)
+    Public Sub Init(uic As cUIContext, mse As cMSE)
         Me.m_mse = mse
         Me.m_data = New cEffortLimits(mse, mse.Core)
         Me.m_data.Load()
-        Me.Grid = m_grid
+        Me.Grid = Me.m_grid
         Me.UIContext = uic
     End Sub
 

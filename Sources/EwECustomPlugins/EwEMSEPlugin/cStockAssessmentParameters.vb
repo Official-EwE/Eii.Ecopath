@@ -44,9 +44,9 @@ Public Class cStockAssessmentParameters
 
     Public Property isLoading As Boolean
 
-    Public Event onParameterChanged(ByVal iGroupIndex As Integer)
+    Public Event onParameterChanged(iGroupIndex As Integer)
 
-    Public Sub New(ByVal iGroup As Integer, ByVal StockAssessmentModel As cStockAssessmentModel, ByVal EcoSimData As cEcosimDatastructures, ByVal EcoPathData As cEcopathDataStructures)
+    Public Sub New(iGroup As Integer, StockAssessmentModel As cStockAssessmentModel, EcoSimData As cEcosimDatastructures, EcoPathData As cEcopathDataStructures)
         Me.m_iGrp = iGroup
         Me.m_Assessment = StockAssessmentModel
         Me.m_simdata = EcoSimData
@@ -59,7 +59,7 @@ Public Class cStockAssessmentParameters
         End Get
         Set(value As Single)
             Me.m_Assessment.RHalfB0Ratio(Me.iGroupIndex) = value
-            FireOnChanged()
+            Me.FireOnChanged()
         End Set
     End Property
 
@@ -109,7 +109,7 @@ Public Class cStockAssessmentParameters
         End Get
         Set(value As Single)
             Me.m_Assessment.CVRecruitError(Me.iGroupIndex) = value
-            FireOnChanged()
+            Me.FireOnChanged()
         End Set
     End Property
 
@@ -128,7 +128,7 @@ Public Class cStockAssessmentParameters
 
     Public ReadOnly Property isFished As Boolean
         Get
-            Return Me.m_Assessment.Core.EcoPathGroupInputs(iGroupIndex).IsFished
+            Return Me.m_Assessment.Core.EcoPathGroupInputs(Me.iGroupIndex).IsFished
         End Get
     End Property
 

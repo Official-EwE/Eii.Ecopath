@@ -148,7 +148,7 @@ Namespace HCR_GroupNS
         Public Sub New(theCore As cCore, MSE As cMSE)
             Me.m_core = theCore
             Me.m_MSE = MSE
-            TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me, MSE)
+            Me.TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me, MSE)
         End Sub
 
 #End Region
@@ -189,18 +189,18 @@ Namespace HCR_GroupNS
 
         End Function
 
-        Public Function CalcF(ByRef Biomass As Single(), ByRef iYearProjecting As Integer, ByVal iTimeStep As Integer) As Single
+        Public Function CalcF(ByRef Biomass As Single(), ByRef iYearProjecting As Integer, iTimeStep As Integer) As Single
 
-            Dim HCR_F As Single = CalcFfromHCR(Biomass(Me.GroupB.Index))
+            Dim HCR_F As Single = Me.CalcFfromHCR(Biomass(Me.GroupB.Index))
             Debug.Assert(HCR_F >= 0, "The F calculated from the HCR in CalcFfromHCR is negative")
 
-            If TimeFrameRule.CheckValidRule(iYearProjecting, HCR_F, iTimeStep) And Me.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target Then 'Use a time frame rule
+            If Me.TimeFrameRule.CheckValidRule(iYearProjecting, HCR_F, iTimeStep) And Me.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target Then 'Use a time frame rule
 
 #If DEBUG Then
-                Console.WriteLine("(HCR_Group.CalcFfromHCR) Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
+                Console.WriteLine("(HCR_Group.CalcFfromHCR) Model = " & Me.m_MSE.CurrentModelID & "   Strategy = " & Me.m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
 #End If
 
-                Return TimeFrameRule.F(iTimeStep, iYearProjecting, HCR_F)
+                Return Me.TimeFrameRule.F(iTimeStep, iYearProjecting, HCR_F)
             Else
                 Return HCR_F
             End If
@@ -211,24 +211,24 @@ Namespace HCR_GroupNS
 
             If Biomass < 0 Then Throw New ArgumentOutOfRangeException("Biomass")
 
-            If HCR_Type = eHCR_Type.Traditional Then
+            If Me.HCR_Type = eHCR_Type.Traditional Then
 
-                If Biomass > UpperLimit Then 'otherwise use the standard HCR
-                    Return MaxF
-                ElseIf Biomass < LowerLimit Then
+                If Biomass > Me.UpperLimit Then 'otherwise use the standard HCR
+                    Return Me.MaxF
+                ElseIf Biomass < Me.LowerLimit Then
                     Return 0
                 Else
-                    Return ((Biomass - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF
+                    Return ((Biomass - Me.LowerLimit) / (Me.UpperLimit - Me.LowerLimit)) * Me.MaxF
                 End If
 
             Else 'If HCR_Type = eHCR_Type.Multilevel Then
 
-                If Biomass > UpperLimit Then 'otherwise use the standard HCR
-                    Return MaxF
-                ElseIf Biomass < BStep Then
-                    Return MinF
+                If Biomass > Me.UpperLimit Then 'otherwise use the standard HCR
+                    Return Me.MaxF
+                ElseIf Biomass < Me.BStep Then
+                    Return Me.MinF
                 Else
-                    Return MinF + (Biomass - LowerLimit) * ((MaxF - MinF) / (UpperLimit - LowerLimit))
+                    Return Me.MinF + (Biomass - Me.LowerLimit) * ((Me.MaxF - Me.MinF) / (Me.UpperLimit - Me.LowerLimit))
                 End If
 
             End If

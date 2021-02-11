@@ -46,9 +46,9 @@ Public Class cWoRMSTaxonSearchResults
 
 #End Region ' Private bits
 
-    Public Sub New(ByVal term As ITaxonSearchData, _
-                   ByVal results As ITaxonSearchData(), _
-                   ByVal strPluginName As String)
+    Public Sub New(term As ITaxonSearchData, _
+                   results As ITaxonSearchData(), _
+                   strPluginName As String)
         Me.m_term = term
         Me.m_taxa = results
         Me.m_strPluginName = strPluginName

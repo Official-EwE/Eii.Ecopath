@@ -153,12 +153,12 @@ Public Class cEcospaceImportExportASCIIData
     ''' <param name="iCol">One-based column index to access a value for.</param>
     ''' <param name="strField">This parameter is ignored by this class</param>
     ''' -------------------------------------------------------------------
-    Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal strField As String = "") As Object _
+    Public Property Value(iRow As Integer, iCol As Integer, Optional strField As String = "") As Object _
         Implements IEcospaceImportExport.Value
         Get
             Return Me.Value(Me.Seq(iRow, iCol))
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Me.Value(Me.Seq(iRow, iCol)) = value
         End Set
     End Property
@@ -170,12 +170,12 @@ Public Class cEcospaceImportExportASCIIData
     ''' <param name="iCell">The one-based cell sequential index to access
     ''' a value for.</param>
     ''' -------------------------------------------------------------------
-    Private Property Value(ByVal iCell As Integer) As Object
+    Private Property Value(iCell As Integer) As Object
         Get
             If Not Me.m_buffer.ContainsKey(iCell) Then Return Me.m_dNoData
             Return Me.m_buffer(iCell)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Me.m_buffer(iCell) = value
         End Set
     End Property
@@ -186,7 +186,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' </summary>
     ''' <returns>A raster.</returns>
     ''' -------------------------------------------------------------------
-    Public Function ToRaster(Optional ByVal strField As String = "") As ISpatialRaster _
+    Public Function ToRaster(Optional strField As String = "") As ISpatialRaster _
         Implements IEcospaceImportExport.ToRaster
         Return New cEcospaceImportExportRaster(Me, strField)
     End Function
@@ -199,7 +199,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' <param name="iCol">One-based column index to get a cell for.</param>
     ''' <returns>A one-based sequence number for a cell.</returns>
     ''' -------------------------------------------------------------------
-    Private Function Seq(ByVal iRow As Integer, ByVal iCol As Integer) As Integer
+    Private Function Seq(iRow As Integer, iCol As Integer) As Integer
         Return (iRow - 1) * Me.m_nCols + (iCol - 1)
     End Function
 
@@ -227,7 +227,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' If any of the header fields is missing the method will fail.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Protected Function ReadHeader(ByVal reader As StreamReader) As Boolean
+    Protected Function ReadHeader(reader As StreamReader) As Boolean
 
         Dim nCols As Integer = 0
         Dim nRows As Integer = 0
@@ -351,7 +351,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' <param name="reader">The open stream reader to read from.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Protected Function ReadBody(ByVal reader As StreamReader) As Boolean
+    Protected Function ReadBody(reader As StreamReader) As Boolean
 
         Dim bSuccess As Boolean = True
 
@@ -381,7 +381,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' </summary>
     ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
+    Protected Sub WriteASCIIHeader(writer As StreamWriter)
 
         writer.WriteLine("ncols         " & Me.m_nCols)
         writer.WriteLine("nrows         " & Me.m_nRows)
@@ -398,7 +398,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' </summary>
     ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIBody(ByVal writer As StreamWriter)
+    Protected Sub WriteASCIIBody(writer As StreamWriter)
 
         Dim value As Object = 0
         Dim strValue As String = ""

@@ -63,7 +63,7 @@ Public Class cSettingsParser
     ''' <param name="parser">The instance to cast.</param>
     ''' <returns>The internal <see cref="Buffer"/> within the parser.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Widening Operator CType(ByVal parser As cSettingsParser) As String
+    Public Shared Widening Operator CType(parser As cSettingsParser) As String
         Return parser.Buffer
     End Operator
 
@@ -75,7 +75,7 @@ Public Class cSettingsParser
     ''' <returns>A populated parser that has interpreted the contents of the 
     ''' string into paramater/value pairs.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Narrowing Operator CType(ByVal strBuffer As String) As cSettingsParser
+    Public Shared Narrowing Operator CType(strBuffer As String) As cSettingsParser
         Return New cSettingsParser(strBuffer)
     End Operator
 

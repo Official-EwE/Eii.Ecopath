@@ -39,7 +39,7 @@ Namespace Controls.Wizard
         ''' </summary>
         ''' <param name="wizard">The wizard to attach.</param>
         ''' -------------------------------------------------------------------
-        Sub Attach(ByVal wizard As cWizard)
+        Sub Attach(wizard As cWizard)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

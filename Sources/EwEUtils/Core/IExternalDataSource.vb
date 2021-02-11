@@ -40,7 +40,7 @@ Namespace Core
         ''' <param name="runtype">The core run type to check availability for.</param>
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
-        Function IsDataAvailable(ByVal runtype As IRunType) As Boolean
+        Function IsDataAvailable(runtype As IRunType) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -50,7 +50,7 @@ Namespace Core
         ''' <param name="runtype">The core run type to check availability for.</param>
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
-        Property EnableData(ByVal runtype As IRunType) As Boolean
+        Property EnableData(runtype As IRunType) As Boolean
 
     End Interface
 

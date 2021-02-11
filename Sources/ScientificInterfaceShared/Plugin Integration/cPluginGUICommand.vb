@@ -49,7 +49,7 @@ Public Class cPluginGUICommand
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal cmdh As cCommandHandler)
+    Public Sub New(cmdh As cCommandHandler)
         MyBase.New(cmdh, cPluginGUICommand.COMMAND_NAME)
     End Sub
 
@@ -136,7 +136,7 @@ Public Class cPluginGUICommand
 
     End Sub
 
-    Friend Overloads Sub Invoke(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
+    Friend Overloads Sub Invoke(ip As IGUIPlugin, sender As Object, e As EventArgs)
 
         ' Reset fields
         Me.m_bHasRun = False

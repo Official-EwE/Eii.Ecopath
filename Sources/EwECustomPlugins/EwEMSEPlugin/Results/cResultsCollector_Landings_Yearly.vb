@@ -32,7 +32,7 @@ Public Class cResultsCollector_Landings_Yearly
         Get
             Dim TempTotalGroupFleetLandingsRate As Double = 0
             For iMonth = 1 To 12
-                TempTotalGroupFleetLandingsRate += m_MSE.LandingsThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
+                TempTotalGroupFleetLandingsRate += Me.m_MSE.LandingsThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
             Next
             TempTotalGroupFleetLandingsRate /= 12
             Return TempTotalGroupFleetLandingsRate
@@ -48,7 +48,7 @@ Public Class cResultsCollector_Landings_Yearly
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return m_MSE.NYearsProject
+            Return Me.m_MSE.NYearsProject
         End Get
     End Property
 

@@ -45,7 +45,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="strValue">The value to set.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(Optional ByVal strValue As String = "")
+        Public Sub New(Optional strValue As String = "")
             MyBase.New(strValue)
             ' Set visualizer
             Me.VisualModel = New cEwEGridRowHeaderVisualizer()
@@ -59,16 +59,16 @@ Namespace Controls.EwEGrid
         ''' the <paramref name="strUnit">unit</paramref> will be displayed.</param>
         ''' <param name="strUnit">The unit to dynamically substitute in the cell display text.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, ByVal strUnit As String)
+        Public Sub New(strUnitMask As String, strUnit As String)
             Me.New(strUnitMask)
             Me.SetUnits(strUnit)
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags)
+        Public Sub New(varname As eVarNameFlags)
             Me.New(New cVarnameTypeFormatter().ToString(varname, eDescriptorTypes.Name))
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal strUnit As String)
+        Public Sub New(varname As eVarNameFlags, strUnitMask As String, strUnit As String)
             Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE,
                                  New cVarnameTypeFormatter().ToString(varname, eDescriptorTypes.Name),
                                  strUnitMask), strUnit)

@@ -45,14 +45,14 @@ Public Class frmMSEAssessFleets
         Get
             Return MyBase.UIContext
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
             MyBase.UIContext = value
             Me.m_grid.UIContext = value
             Me.m_blocks.UIContext = value
         End Set
     End Property
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         Try
 
@@ -62,7 +62,7 @@ Public Class frmMSEAssessFleets
 
             ' Track MSE start year changes
             Me.m_propStartYear = Me.PropertyManager.GetProperty(Me.UIContext.Core.MSEManager.ModelParameters, eVarNameFlags.MSEStartYear)
-            AddHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            AddHandler Me.m_propStartYear.PropertyChanged, AddressOf Me.OnLastYearChanged
 
         Catch ex As Exception
 
@@ -73,11 +73,11 @@ Public Class frmMSEAssessFleets
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
         Try
             ' No longer track MSE start year changes
-            RemoveHandler Me.m_propStartYear.PropertyChanged, AddressOf OnLastYearChanged
+            RemoveHandler Me.m_propStartYear.PropertyChanged, AddressOf Me.OnLastYearChanged
             ' Release blocks
             Me.m_blocks.Dispose()
 
@@ -88,7 +88,7 @@ Public Class frmMSEAssessFleets
 
     End Sub
 
-    Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+    Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
 
         If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
             Me.m_blocks.Refresh()
@@ -96,7 +96,7 @@ Public Class frmMSEAssessFleets
 
     End Sub
 
-    Private Sub OnLastYearChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+    Private Sub OnLastYearChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
         Try
             If (changeFlags And cProperty.eChangeFlags.Value) > 0 Then
                 Me.m_blocks.Refresh()

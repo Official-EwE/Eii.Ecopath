@@ -106,7 +106,7 @@ Namespace SpatialData
             Me.m_mtbIntervalStart.ValidatingType = GetType(Date)
             Me.m_mtbIntervalStart.Text = dtStart.ToString("yyyy") & dtStart.ToString("MM")
 
-            While dt <= m_dataset.TimeEnd
+            While dt <= Me.m_dataset.TimeEnd
                 If (Me.m_dataset.HasDataAtT(dt)) Then
                     Me.m_lFiles.Add(New cFileEntry(Me.m_dataset.File(dt), dt))
                 End If

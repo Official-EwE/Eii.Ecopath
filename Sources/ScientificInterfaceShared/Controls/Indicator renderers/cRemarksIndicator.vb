@@ -41,11 +41,11 @@ Namespace Controls
         ''' <param name="bHasRemarks">States whether the indicator is rendered as having remarks (true) or
         ''' as ready for receiving remarks (false)</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Paint(ByVal clrFill As Color, _
-                                ByVal rcClip As Rectangle, _
-                                ByVal g As Graphics, _
-                                ByVal bHasRemarks As Boolean, _
-                                ByVal bRightToLeft As Boolean)
+        Public Shared Sub Paint(clrFill As Color, _
+                                rcClip As Rectangle, _
+                                g As Graphics, _
+                                bHasRemarks As Boolean, _
+                                bRightToLeft As Boolean)
 
             If (bHasRemarks) Then
 
@@ -67,7 +67,7 @@ Namespace Controls
         ''' <param name="rcClip">Coordinates of the area to get the remarks indicator bounding box for.</param>
         ''' <returns>The bounding box that fully encapsulates the Remarks indicator.</returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetBounds(ByVal bRightToLeft As Boolean, ByVal rcClip As Rectangle) As Rectangle
+        Private Shared Function GetBounds(bRightToLeft As Boolean, rcClip As Rectangle) As Rectangle
             Dim pt As Point() = cRemarksIndicator.GetPoints(bRightToLeft, rcClip)
             Return New Rectangle(Math.Min(pt(0).X, pt(1).X), pt(0).Y, Math.Abs(pt(1).X - pt(0).X), pt(2).Y - pt(0).Y)
         End Function
@@ -80,8 +80,8 @@ Namespace Controls
         ''' <param name="rcClip">Clip boundary to calculate the remarks indicator for</param>
         ''' <returns>A series of <see cref="Point">points</see></returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetPoints(ByVal bRightToLeft As Boolean, _
-                                          ByVal rcClip As Rectangle) As Point()
+        Private Shared Function GetPoints(bRightToLeft As Boolean, _
+                                          rcClip As Rectangle) As Point()
             Dim nSize As Integer = CInt(Math.Floor(rcClip.Height / 2.5))
             Dim pt(2) As Point
 

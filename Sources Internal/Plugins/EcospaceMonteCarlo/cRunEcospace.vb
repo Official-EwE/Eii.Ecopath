@@ -54,11 +54,11 @@ Public Class cRunEcospace
 
         'Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
 
-        Core.EwEModel.FirstYear = parameters.StartYear
-        Core.EcospaceModelParameters.TotalTime = parameters.nYears
+        Me.Core.EwEModel.FirstYear = parameters.StartYear
+        Me.Core.EcospaceModelParameters.TotalTime = parameters.nYears
 
-        nTimeStepPerYear = CInt(Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
-        StartOfLastYear = CInt((Core.EcospaceModelParameters.TotalTime - 1) * nTimeStepPerYear)
+        Me.nTimeStepPerYear = CInt(Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+        Me.StartOfLastYear = CInt((Me.Core.EcospaceModelParameters.TotalTime - 1) * Me.nTimeStepPerYear)
 
         Dim curSearchMode As eSearchModes = Me.Ecospace.SearchData.SearchMode
         Me.Ecospace.SearchData.SearchMode = eSearchModes.NotInSearch
@@ -68,8 +68,8 @@ Public Class cRunEcospace
 
     Public Sub Run()
 
-        Core.StopEcospace()
-        Core.RunEcoSpace(Nothing, False)
+        Me.Core.StopEcospace()
+        Me.Core.RunEcoSpace(Nothing, False)
 
     End Sub
 

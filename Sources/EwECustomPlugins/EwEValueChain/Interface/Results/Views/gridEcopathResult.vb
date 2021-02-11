@@ -75,7 +75,7 @@ Public Class gridEcopathResult
         NumberOfDependentsTotal
     End Enum
 
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
         MyBase.New()
         Me.UIContext = uic
     End Sub
@@ -113,74 +113,74 @@ Public Class gridEcopathResult
         Me(eRowTypes.Header, 7) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
         ' Row headers
-        Me(eRowTypes.Production, 0) = CreateRowHeaderCell("Production")
-        Me(eRowTypes.Production, 1) = CreateUnitCell("t")
+        Me(eRowTypes.Production, 0) = Me.CreateRowHeaderCell("Production")
+        Me(eRowTypes.Production, 1) = Me.CreateUnitCell("t")
 
-        Me(eRowTypes.ProductionLive, 0) = CreateRowHeaderCell("Production, live weight")
-        Me(eRowTypes.ProductionLive, 1) = CreateUnitCell("t")
+        Me(eRowTypes.ProductionLive, 0) = Me.CreateRowHeaderCell("Production, live weight")
+        Me(eRowTypes.ProductionLive, 1) = Me.CreateUnitCell("t")
 
-        Me(eRowTypes.RevenueProductsMain, 0) = CreateRowHeaderCell("Production value")
-        Me(eRowTypes.RevenueProductsMain, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.RevenueProductsMain, 0) = Me.CreateRowHeaderCell("Production value")
+        Me(eRowTypes.RevenueProductsMain, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.RevenueProductsOther, 0) = CreateRowHeaderCell("Other production value")
-        Me(eRowTypes.RevenueProductsOther, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.RevenueProductsOther, 0) = Me.CreateRowHeaderCell("Other production value")
+        Me(eRowTypes.RevenueProductsOther, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.RevenueTickets, 0) = CreateRowHeaderCell("Ticket revenue")
-        Me(eRowTypes.RevenueTickets, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.RevenueTickets, 0) = Me.CreateRowHeaderCell("Ticket revenue")
+        Me(eRowTypes.RevenueTickets, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.RevenueSubsidies, 0) = CreateRowHeaderCell("Subsidies")
-        Me(eRowTypes.RevenueSubsidies, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.RevenueSubsidies, 0) = Me.CreateRowHeaderCell("Subsidies")
+        Me(eRowTypes.RevenueSubsidies, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.RevenueTotal, 0) = CreateRowHeaderCell("= Revenue", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.RevenueTotal, 1) = CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.RevenueTotal, 0) = Me.CreateRowHeaderCell("= Revenue", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.RevenueTotal, 1) = Me.CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.CostSalariesShares, 0) = CreateRowHeaderCell("Salaries/shares")
-        Me(eRowTypes.CostSalariesShares, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.CostSalariesShares, 0) = Me.CreateRowHeaderCell("Salaries/shares")
+        Me(eRowTypes.CostSalariesShares, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.CostRawmaterial, 0) = CreateRowHeaderCell("Input (fish)")
-        Me(eRowTypes.CostRawmaterial, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.CostRawmaterial, 0) = Me.CreateRowHeaderCell("Input (fish)")
+        Me(eRowTypes.CostRawmaterial, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.CostInput, 0) = CreateRowHeaderCell("Input other")
-        Me(eRowTypes.CostInput, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.CostInput, 0) = Me.CreateRowHeaderCell("Input other")
+        Me(eRowTypes.CostInput, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.CostTaxes, 0) = CreateRowHeaderCell("Taxes")
-        Me(eRowTypes.CostTaxes, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.CostTaxes, 0) = Me.CreateRowHeaderCell("Taxes")
+        Me(eRowTypes.CostTaxes, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 0) = CreateRowHeaderCell("Management, royalty, certification, observers")
-        Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 1) = CreateUnitCell(cUnits.Monetary)
+        Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 0) = Me.CreateRowHeaderCell("Management, royalty, certification, observers")
+        Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 1) = Me.CreateUnitCell(cUnits.Monetary)
 
-        Me(eRowTypes.Cost, 0) = CreateRowHeaderCell("= Cost", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.Cost, 1) = CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Cost, 0) = Me.CreateRowHeaderCell("= Cost", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Cost, 1) = Me.CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.Profit, 0) = CreateRowHeaderCell("= Profit", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.Profit, 1) = CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Profit, 0) = Me.CreateRowHeaderCell("= Profit", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Profit, 1) = Me.CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.TotalUtility, 0) = CreateRowHeaderCell("= Total utility", cStyleGuide.eStyleFlags.Sum)   'throughput
-        Me(eRowTypes.TotalUtility, 1) = CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.TotalUtility, 0) = Me.CreateRowHeaderCell("= Total utility", cStyleGuide.eStyleFlags.Sum)   'throughput
+        Me(eRowTypes.TotalUtility, 1) = Me.CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.AverageSaleries, 0) = CreateRowHeaderCell("Average saleries", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.AverageSaleries, 1) = CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.AverageSaleries, 0) = Me.CreateRowHeaderCell("Average saleries", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.AverageSaleries, 1) = Me.CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.GDPContribution, 0) = CreateRowHeaderCell("GDP contribution", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.GDPContribution, 1) = CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.GDPContribution, 0) = Me.CreateRowHeaderCell("GDP contribution", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.GDPContribution, 1) = Me.CreateUnitCell(cUnits.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.NumberOfJobsFemaleTotal, 0) = CreateRowHeaderCell("Jobs, female")
-        Me(eRowTypes.NumberOfJobsFemaleTotal, 1) = CreateUnitCell()
+        Me(eRowTypes.NumberOfJobsFemaleTotal, 0) = Me.CreateRowHeaderCell("Jobs, female")
+        Me(eRowTypes.NumberOfJobsFemaleTotal, 1) = Me.CreateUnitCell()
 
-        Me(eRowTypes.NumberOfJobsMaleTotal, 0) = CreateRowHeaderCell("Jobs, male")
-        Me(eRowTypes.NumberOfJobsMaleTotal, 1) = CreateUnitCell()
+        Me(eRowTypes.NumberOfJobsMaleTotal, 0) = Me.CreateRowHeaderCell("Jobs, male")
+        Me(eRowTypes.NumberOfJobsMaleTotal, 1) = Me.CreateUnitCell()
 
-        Me(eRowTypes.NumberOfJobsTotal, 0) = CreateRowHeaderCell("= Jobs, total", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.NumberOfJobsTotal, 1) = CreateUnitCell("", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfJobsTotal, 0) = Me.CreateRowHeaderCell("= Jobs, total", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfJobsTotal, 1) = Me.CreateUnitCell("", cStyleGuide.eStyleFlags.Sum)
 
-        Me(eRowTypes.NumberOfWorkerDependents, 0) = CreateRowHeaderCell("Worker dependents")
-        Me(eRowTypes.NumberOfWorkerDependents, 1) = CreateUnitCell()
+        Me(eRowTypes.NumberOfWorkerDependents, 0) = Me.CreateRowHeaderCell("Worker dependents")
+        Me(eRowTypes.NumberOfWorkerDependents, 1) = Me.CreateUnitCell()
 
-        Me(eRowTypes.NumberOfOwnerDependents, 0) = CreateRowHeaderCell("Owner dependents")
-        Me(eRowTypes.NumberOfOwnerDependents, 1) = CreateUnitCell()
+        Me(eRowTypes.NumberOfOwnerDependents, 0) = Me.CreateRowHeaderCell("Owner dependents")
+        Me(eRowTypes.NumberOfOwnerDependents, 1) = Me.CreateUnitCell()
 
-        Me(eRowTypes.NumberOfDependentsTotal, 0) = CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
-        Me(eRowTypes.NumberOfDependentsTotal, 1) = CreateUnitCell("", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfDependentsTotal, 0) = Me.CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfDependentsTotal, 1) = Me.CreateUnitCell("", cStyleGuide.eStyleFlags.Sum)
 
         ' Create data cells for unit cells
         For i As Integer = 0 To 4
@@ -234,10 +234,10 @@ Public Class gridEcopathResult
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub ShowResults(ByVal iFleet As Integer, _
-                           ByVal lUnits As cUnit(), _
-                           ByVal results As cResults, _
-                           ByVal iYear As Integer) _
+    Public Sub ShowResults(iFleet As Integer, _
+                           lUnits As cUnit(), _
+                           results As cResults, _
+                           iYear As Integer) _
         Implements IResultView.ShowResults
 
         ' Split units in the different types
@@ -335,16 +335,16 @@ Public Class gridEcopathResult
 
     End Sub
 
-    Private Function CreateRowHeaderCell(ByVal strLabel As String,
-                                         Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names) As cEwECell
+    Private Function CreateRowHeaderCell(strLabel As String,
+                                         Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names) As cEwECell
         Dim cell As New cEwERowHeaderCell(strLabel)
         cell.Style = style
         Return cell
     End Function
 
-    Private Function CreateUnitCell(Optional ByVal strUnit As String = "",
-                                    Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names,
-                                    Optional ByVal strUnitMask As String = "{0}") As cEwECell
+    Private Function CreateUnitCell(Optional strUnit As String = "",
+                                    Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Names,
+                                    Optional strUnitMask As String = "{0}") As cEwECell
         Dim cell As New cEwEUnitCell(strUnitMask, strUnit)
         cell.Style = style
         cell.EditableMode = EditableMode.None
@@ -352,7 +352,7 @@ Public Class gridEcopathResult
         Return cell
     End Function
 
-    Private Function CreateDataCell(Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As cEwECell
+    Private Function CreateDataCell(Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK) As cEwECell
 
         Dim cell As New cEwECell(0, GetType(Single))
 
@@ -371,12 +371,12 @@ Public Class gridEcopathResult
 
     End Function
 
-    Private Sub UpdateDataCell(ByVal cell As Cells.ICell, _
-                               ByVal results As cResults, _
-                               ByVal vn As cResults.eVariableType, _
-                               ByVal lUnits As cUnit(), _
-                               ByVal iFleet As Integer, _
-                               ByVal iYear As Integer)
+    Private Sub UpdateDataCell(cell As Cells.ICell, _
+                               results As cResults, _
+                               vn As cResults.eVariableType, _
+                               lUnits As cUnit(), _
+                               iFleet As Integer, _
+                               iYear As Integer)
 
         Dim iTimeMin As Integer = 1
         Dim iTimeMax As Integer = 1
@@ -395,7 +395,7 @@ Public Class gridEcopathResult
 
     End Sub
 
-    Private Sub UpdateDataCell(ByVal cell As Cells.ICell, ByVal sValue As Single)
+    Private Sub UpdateDataCell(cell As Cells.ICell, sValue As Single)
         Try
             If (cell IsNot Nothing) Then
                 cell.Value = Math.Round(sValue)

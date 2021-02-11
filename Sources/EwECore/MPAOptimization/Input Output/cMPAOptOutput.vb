@@ -30,8 +30,8 @@ Public Class cMPAOptOutput
 
     'Private m_cells As List(Of cMPACell)
 
-    Sub New(ByRef theCore As cCore)
-        MyBase.New(theCore)
+    Sub New(core As cCore)
+        MyBase.New(core)
         Dim val As cValue = Nothing
 
         Me.DBID = cCore.NULL_VALUE '????
@@ -39,53 +39,53 @@ Public Class cMPAOptOutput
         Me.m_dataType = eDataTypes.MPAOptOutput
 
         ' Outputs should never send out messages
-        m_coreComponent = eCoreComponentType.MPAOptimization
+        Me.m_coreComponent = eCoreComponentType.MPAOptimization
         'default OK status used for SetVariable
         'see comment SetVariable(...)
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK Or eStatusFlags.NotEditable, "", eVarNameFlags.NotSet)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK Or eStatusFlags.NotEditable, "", eVarNameFlags.NotSet)
 
-        val = New cValue(New Integer, eVarNameFlags.MPAOptBestCol, eStatusFlags.NotEditable, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.MPAOptBestCol, eStatusFlags.NotEditable, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.MPAOptBestRow, eStatusFlags.NotEditable, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.MPAOptBestRow, eStatusFlags.NotEditable, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.MPAOptCurRow, eStatusFlags.NotEditable, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.MPAOptCurRow, eStatusFlags.NotEditable, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.MPAOptCurCol, eStatusFlags.NotEditable, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.MPAOptCurCol, eStatusFlags.NotEditable, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptEconomicValue, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptEconomicValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptEcologicalValue, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptEcologicalValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptMandatedValue, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptMandatedValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptSocialValue, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptSocialValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptTotalValue, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptTotalValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.MPAOptPercentageClosed, eStatusFlags.NotEditable, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.MPAOptPercentageClosed, eStatusFlags.NotEditable, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptBiomassDiversityValue, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptBiomassDiversityValue, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.MPAOptAreaBoundary, eStatusFlags.NotEditable, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.MPAOptAreaBoundary, eStatusFlags.NotEditable, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
 
 
     End Sub
 
 
-    Friend Sub Init(ByRef mpaData As cMPAOptDataStructures, ByVal SpaceData As cEcospaceDataStructures)
+    Friend Sub Init(ByRef mpaData As cMPAOptDataStructures, SpaceData As cEcospaceDataStructures)
 
         Me.BestRow = mpaData.bestrow
         Me.BestCol = mpaData.bestcol
@@ -124,12 +124,12 @@ Public Class cMPAOptOutput
     ''' <remarks></remarks>
     Public Property BestRow() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MPAOptBestRow))
+            Return CInt(Me.GetVariable(eVarNameFlags.MPAOptBestRow))
         End Get
 
-        Set(ByVal newValue As Integer)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptBestRow, newValue)
+        Set(newValue As Integer)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptBestRow, newValue)
             End If
         End Set
 
@@ -143,12 +143,12 @@ Public Class cMPAOptOutput
     ''' <remarks></remarks>
     Public Property BestCol() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MPAOptBestCol))
+            Return CInt(Me.GetVariable(eVarNameFlags.MPAOptBestCol))
         End Get
 
-        Set(ByVal newValue As Integer)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptBestCol, newValue)
+        Set(newValue As Integer)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptBestCol, newValue)
             End If
         End Set
 
@@ -162,12 +162,12 @@ Public Class cMPAOptOutput
     ''' <remarks></remarks>
     Public Property CurRow() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MPAOptCurRow))
+            Return CInt(Me.GetVariable(eVarNameFlags.MPAOptCurRow))
         End Get
 
-        Set(ByVal newValue As Integer)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptCurRow, newValue)
+        Set(newValue As Integer)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptCurRow, newValue)
             End If
         End Set
 
@@ -181,12 +181,12 @@ Public Class cMPAOptOutput
     ''' <remarks></remarks>
     Public Property CurCol() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MPAOptCurCol))
+            Return CInt(Me.GetVariable(eVarNameFlags.MPAOptCurCol))
         End Get
 
-        Set(ByVal newValue As Integer)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptCurCol, newValue)
+        Set(newValue As Integer)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptCurCol, newValue)
             End If
         End Set
 
@@ -195,12 +195,12 @@ Public Class cMPAOptOutput
 
     Public Property EconomicValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptEconomicValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptEconomicValue))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptEconomicValue, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptEconomicValue, newValue)
             End If
         End Set
 
@@ -208,12 +208,12 @@ Public Class cMPAOptOutput
 
     Public Property EcologicalValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptEcologicalValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptEcologicalValue))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptEcologicalValue, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptEcologicalValue, newValue)
             End If
         End Set
 
@@ -221,12 +221,12 @@ Public Class cMPAOptOutput
 
     Public Property MandatedValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptMandatedValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptMandatedValue))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptMandatedValue, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptMandatedValue, newValue)
             End If
         End Set
 
@@ -234,12 +234,12 @@ Public Class cMPAOptOutput
 
     Public Property SocialValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptSocialValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptSocialValue))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptSocialValue, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptSocialValue, newValue)
             End If
         End Set
 
@@ -247,12 +247,12 @@ Public Class cMPAOptOutput
 
     Public Property BiomassDiversityValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptBiomassDiversityValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptBiomassDiversityValue))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptBiomassDiversityValue, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptBiomassDiversityValue, newValue)
             End If
         End Set
 
@@ -260,12 +260,12 @@ Public Class cMPAOptOutput
 
     Public Property TotalValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptTotalValue))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptTotalValue))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptTotalValue, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptTotalValue, newValue)
             End If
         End Set
 
@@ -274,12 +274,12 @@ Public Class cMPAOptOutput
 
     Public Property AreaBoundaryValue() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MPAOptAreaBoundary))
+            Return CSng(Me.GetVariable(eVarNameFlags.MPAOptAreaBoundary))
         End Get
 
-        Set(ByVal newValue As Single)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptAreaBoundary, newValue)
+        Set(newValue As Single)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptAreaBoundary, newValue)
             End If
         End Set
 
@@ -287,12 +287,12 @@ Public Class cMPAOptOutput
 
     Public Property PercentageClosed() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MPAOptPercentageClosed))
+            Return CInt(Me.GetVariable(eVarNameFlags.MPAOptPercentageClosed))
         End Get
 
-        Set(ByVal newValue As Integer)
-            If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptPercentageClosed, newValue)
+        Set(newValue As Integer)
+            If Not Me.m_bReadOnly Then
+                Me.SetVariable(eVarNameFlags.MPAOptPercentageClosed, newValue)
             End If
         End Set
 

@@ -56,12 +56,12 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteGroupResults(ByVal strPath As String, _
-                                          ByVal iGroup As Integer, _
-                                          ByVal ass As eMSYAssessmentTypes, _
-                                          ByVal FBase As Single, _
-                                          ByVal results As cMSYFResult(), _
-                                          ByVal optimum As cMSYOptimum) As Boolean
+        Public Function WriteGroupResults(strPath As String, _
+                                          iGroup As Integer, _
+                                          ass As eMSYAssessmentTypes, _
+                                          FBase As Single, _
+                                          results As cMSYFResult(), _
+                                          optimum As cMSYOptimum) As Boolean
 
             Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
             Dim sw As StreamWriter = Nothing
@@ -116,12 +116,12 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteGroupValueResults(ByVal strPath As String,
-                                               ByVal iGroup As Integer,
-                                               ByVal ass As eMSYAssessmentTypes,
-                                               ByVal FBase As Single,
-                                               ByVal results As cMSYFResult(),
-                                               ByVal optimum As cMSYOptimum) As Boolean
+        Public Function WriteGroupValueResults(strPath As String,
+                                               iGroup As Integer,
+                                               ass As eMSYAssessmentTypes,
+                                               FBase As Single,
+                                               results As cMSYFResult(),
+                                               optimum As cMSYOptimum) As Boolean
 
             Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
             Dim strFile As String = ""
@@ -165,11 +165,11 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteFleetResults(ByVal strPath As String,
-                                          ByVal iFleet As Integer,
-                                          ByVal assessment As eMSYAssessmentTypes,
-                                          ByVal results As cMSYFResult(),
-                                          ByVal optimum As cMSYOptimum) As Boolean
+        Public Function WriteFleetResults(strPath As String,
+                                          iFleet As Integer,
+                                          assessment As eMSYAssessmentTypes,
+                                          results As cMSYFResult(),
+                                          optimum As cMSYOptimum) As Boolean
 
             Dim flt As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
@@ -225,11 +225,11 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteFleetValueResults(ByVal strPath As String,
-                                               ByVal iFleet As Integer,
-                                               ByVal assessment As eMSYAssessmentTypes,
-                                               ByVal results As cMSYFResult(),
-                                               ByVal optimum As cMSYOptimum) As Boolean
+        Public Function WriteFleetValueResults(strPath As String,
+                                               iFleet As Integer,
+                                               assessment As eMSYAssessmentTypes,
+                                               results As cMSYFResult(),
+                                               optimum As cMSYOptimum) As Boolean
 
             Dim flt As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
@@ -268,9 +268,9 @@ Namespace MSY
 
 #Region " Internals "
 
-        Protected Sub WriteGroupHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes,
-                                       ByVal target As cEcoPathGroupInput,
-                                       ByVal fBase As Single, ByVal optimum As cMSYOptimum)
+        Protected Sub WriteGroupHeader(sw As StreamWriter, ass As eMSYAssessmentTypes,
+                                       target As cEcoPathGroupInput,
+                                       fBase As Single, optimum As cMSYOptimum)
             MyBase.WriteHeader(sw, ass, "MSY")
             sw.WriteLine("Group,{0}", cStringUtils.ToCSVField(target.Name))
             sw.WriteLine("Fbase,{0}", cStringUtils.FormatSingle(fBase))
@@ -279,8 +279,8 @@ Namespace MSY
                                                        cStringUtils.ToCSVField(My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND)))
         End Sub
 
-        Protected Sub WriteFleetHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes,
-                                       ByVal target As cEcopathFleetInput, ByVal optimum As cMSYOptimum)
+        Protected Sub WriteFleetHeader(sw As StreamWriter, ass As eMSYAssessmentTypes,
+                                       target As cEcopathFleetInput, optimum As cMSYOptimum)
 
             Me.WriteHeader(sw, ass)
 
@@ -305,9 +305,9 @@ Namespace MSY
             MyBase.WriteHeader(sw, ass, "MSY")
         End Sub
 
-        Protected Function CSVFileName(ByVal target As cCoreInputOutputBase, _
-                                       ByVal strVar As String, _
-                                       ByVal assessment As eMSYAssessmentTypes) As String
+        Protected Function CSVFileName(target As cCoreInputOutputBase, _
+                                       strVar As String, _
+                                       assessment As eMSYAssessmentTypes) As String
             Return cFileUtils.ToValidFileName(target.Name & "_" & strVar & "_" & assessment.ToString() & ".csv", False)
 
         End Function

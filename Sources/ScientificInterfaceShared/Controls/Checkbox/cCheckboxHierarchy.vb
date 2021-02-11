@@ -170,12 +170,12 @@ Namespace Controls
             Public Sub New(cb As CheckBox, hr As cCheckboxHierarchy, parent As cLink)
                 MyBase.New(hr, parent)
                 Me.m_cb = cb
-                AddHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
+                AddHandler Me.m_cb.CheckedChanged, AddressOf Me.OnCheckChanged
             End Sub
 
             Public Overrides Sub Dispose()
                 If (Me.m_cb IsNot Nothing) Then
-                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
+                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf Me.OnCheckChanged
                     Me.m_cb = Nothing
                 End If
                 MyBase.Dispose()
@@ -385,12 +385,12 @@ Namespace Controls
             Public Sub New(cb As DataGridViewCheckBoxCell, hr As cCheckboxHierarchy, parent As cLink)
                 MyBase.New(hr, parent)
                 Me.m_cb = cb
-                AddHandler Me.m_cb.DataGridView.CellContentClick, AddressOf OnCellValueChanged
+                AddHandler Me.m_cb.DataGridView.CellContentClick, AddressOf Me.OnCellValueChanged
             End Sub
 
             Public Overrides Sub Dispose()
                 If (Me.m_cb IsNot Nothing) Then
-                    RemoveHandler Me.m_cb.DataGridView.CellContentClick, AddressOf OnCellValueChanged
+                    RemoveHandler Me.m_cb.DataGridView.CellContentClick, AddressOf Me.OnCellValueChanged
                     Me.m_cb = Nothing
                 End If
                 MyBase.Dispose()

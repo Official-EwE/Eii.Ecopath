@@ -44,21 +44,21 @@ Friend Class cMSEEventSource
     Public Event onRunCompleted()
 
     Public Sub New()
-        m_dtReflevels.Add(eVarNameFlags.MSERefBioLower, AddressOf Me.fireOnRefLevelsChanged)
-        m_dtReflevels.Add(eVarNameFlags.MSERefBioUpper, AddressOf Me.fireOnRefLevelsChanged)
-        m_dtReflevels.Add(eVarNameFlags.MSEBBase, AddressOf Me.fireOnRefLevelsChanged)
-        m_dtReflevels.Add(eVarNameFlags.MSEBLim, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefBioLower, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefBioUpper, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSEBBase, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSEBLim, AddressOf Me.fireOnRefLevelsChanged)
 
-        m_dtReflevels.Add(eVarNameFlags.MSERefFleetCatchLower, AddressOf Me.fireOnRefLevelsChanged)
-        m_dtReflevels.Add(eVarNameFlags.MSERefFleetCatchUpper, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefFleetCatchLower, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefFleetCatchUpper, AddressOf Me.fireOnRefLevelsChanged)
 
-        m_dtReflevels.Add(eVarNameFlags.MSERefFleetEffortLower, AddressOf Me.fireOnRefLevelsChanged)
-        m_dtReflevels.Add(eVarNameFlags.MSERefFleetEffortUpper, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefFleetEffortLower, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefFleetEffortUpper, AddressOf Me.fireOnRefLevelsChanged)
 
-        m_dtReflevels.Add(eVarNameFlags.MSERefGroupCatchLower, AddressOf Me.fireOnRefLevelsChanged)
-        m_dtReflevels.Add(eVarNameFlags.MSERefGroupCatchUpper, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefGroupCatchLower, AddressOf Me.fireOnRefLevelsChanged)
+        Me.m_dtReflevels.Add(eVarNameFlags.MSERefGroupCatchUpper, AddressOf Me.fireOnRefLevelsChanged)
 
-        m_dtDataChanged.Add(eMessageType.MSERunCompleted, AddressOf Me.fireOnRunCompleted)
+        Me.m_dtDataChanged.Add(eMessageType.MSERunCompleted, AddressOf Me.fireOnRunCompleted)
 
     End Sub
 
@@ -67,14 +67,14 @@ Friend Class cMSEEventSource
     ''' </summary>
     ''' <param name="msg"></param>
     ''' <remarks></remarks>
-    Public Sub HandleCoreMessage(ByVal msg As cMessage)
+    Public Sub HandleCoreMessage(msg As cMessage)
         Try
             'Reference levels
             If msg.DataType = eDataTypes.MSEGroupInput Then
                 For Each var As cVariableStatus In msg.Variables
-                    If m_dtReflevels.ContainsKey(var.VarName) Then
+                    If Me.m_dtReflevels.ContainsKey(var.VarName) Then
                         Try
-                            m_dtReflevels.Item(var.VarName).Invoke()
+                            Me.m_dtReflevels.Item(var.VarName).Invoke()
                         Catch ex As Exception
                             Debug.Assert(False, Me.ToString & ".onRefLevelsChanged() Exception: " & ex.Message)
                         End Try
@@ -89,7 +89,7 @@ Friend Class cMSEEventSource
 
         Try
             If Me.m_dtDataChanged.ContainsKey(msg.Type) Then
-                m_dtDataChanged.Item(msg.Type).Invoke()
+                Me.m_dtDataChanged.Item(msg.Type).Invoke()
             End If
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onStatsDataChanged() Exception: " & ex.Message)
@@ -117,7 +117,7 @@ Friend Class cMSEEventSource
     Private disposedValue As Boolean = False        ' To detect redundant calls
 
     ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+    Protected Overridable Sub Dispose(disposing As Boolean)
         If Not Me.disposedValue Then
             If disposing Then
                 Try
@@ -147,8 +147,8 @@ Friend Class cMSEEventSource
 #Region " IDisposable Support "
     ' This code added by Visual Basic to correctly implement the disposable pattern.
     Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
+        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+        Me.Dispose(True)
         GC.SuppressFinalize(Me)
     End Sub
 #End Region

@@ -72,7 +72,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         frmPlugin = cEwENetworkAnalysisPlugin.SwitchForm(Me.FormPage)
     End Sub
@@ -114,7 +114,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Overridable Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
         ' NOP
     End Sub
 

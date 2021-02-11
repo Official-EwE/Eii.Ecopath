@@ -89,7 +89,7 @@ Public Class frmNetworkAnalysis
     ''' <summary>UI context for UI to use.</summary>
     Private m_uic As cUIContext = Nothing
 
-    Public Sub New(ByVal networkmanager As cNetworkManager, ByVal uic As cUIContext)
+    Public Sub New(networkmanager As cNetworkManager, uic As cUIContext)
 
         Me.m_networkmanager = networkmanager
         Me.m_uic = uic
@@ -102,7 +102,7 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_graph.Visible = False
@@ -129,14 +129,14 @@ Public Class frmNetworkAnalysis
             '             the visible flag. Connecting the command thus means that we have lost control over button visibility.
             '             Instead, simply invoke the command on a button click
             'Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
-            AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
+            AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf Me.OnPostInvokeDisplayGroups
         End If
 
-        AddHandler Me.m_networkmanager.OnRunStateChanged, AddressOf OnRunStateChanged
+        AddHandler Me.m_networkmanager.OnRunStateChanged, AddressOf Me.OnRunStateChanged
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.m_contentmanager IsNot Nothing) Then
             Me.m_contentmanager.Detach()
@@ -145,11 +145,11 @@ Public Class frmNetworkAnalysis
 
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             'Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
-            RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
+            RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf Me.OnPostInvokeDisplayGroups
             Me.m_cmdDisplayGroups = Nothing
         End If
 
-        RemoveHandler Me.m_networkmanager.OnRunStateChanged, AddressOf OnRunStateChanged
+        RemoveHandler Me.m_networkmanager.OnRunStateChanged, AddressOf Me.OnRunStateChanged
 
         MyBase.OnFormClosed(e)
     End Sub
@@ -159,7 +159,7 @@ Public Class frmNetworkAnalysis
     ''' Re-run Network Analysis bit.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles tsmiRun.Click
         ' Shazaam
         Me.ShowPage(Me.m_pageCurrent)
@@ -171,7 +171,7 @@ Public Class frmNetworkAnalysis
     ''' and informs the current control manager to save to the selected file.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub tsbtnOutputIndicesCSV_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub tsbtnOutputIndicesCSV_Click(sender As Object, e As System.EventArgs) _
         Handles tsbtnOutputIndicesCSV.Click
 
         Try
@@ -206,7 +206,7 @@ Public Class frmNetworkAnalysis
     ''' and informs the current control manager to save to the selected file.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub tsbtnOutputGraphEMF_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub tsbtnOutputGraphEMF_Click(sender As Object, e As System.EventArgs) _
         Handles tsbtnOutputGraphEMF.Click
 
         Try
@@ -235,12 +235,12 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Private Sub tscmbSelection1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub tscmbSelection1_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
         Handles tscmbSelection1.SelectedIndexChanged
 
         Try
 
-            Me.m_iSelectedGroup1 = tscmbSelection1.SelectedIndex + 1
+            Me.m_iSelectedGroup1 = Me.tscmbSelection1.SelectedIndex + 1
 
             If Me.m_bInUpdate Then Return
 
@@ -260,12 +260,12 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Private Sub tscmbSelection2_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub tscmbSelection2_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
         Handles tscmbSelection2.SelectedIndexChanged
 
         Try
 
-            Me.m_iSelectedGroup2 = tscmbSelection2.SelectedIndex + 1
+            Me.m_iSelectedGroup2 = Me.tscmbSelection2.SelectedIndex + 1
 
             If Me.m_bInUpdate Then Return
 
@@ -285,26 +285,26 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Private Sub dgvNetworkAnalysis_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles m_datagrid.CellClick
+    Private Sub dgvNetworkAnalysis_CellClick(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles m_datagrid.CellClick
 
         Try
 
             If e.RowIndex > 0 And e.ColumnIndex > 0 Then
                 'highlight the cell
-                m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
-                m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
+                Me.m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+                Me.m_datagrid.Rows(e.RowIndex).Cells(e.ColumnIndex).Selected = True
             ElseIf e.RowIndex > 0 And e.ColumnIndex = 0 Then
                 'highlight the row
-                m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-                m_datagrid.Rows(e.RowIndex).Selected = True
+                Me.m_datagrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+                Me.m_datagrid.Rows(e.RowIndex).Selected = True
             ElseIf e.RowIndex = 0 And e.ColumnIndex > 0 Then
                 'highlight the column
-                m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
-                m_datagrid.Columns(e.ColumnIndex).Selected = True
+                Me.m_datagrid.SelectionMode = DataGridViewSelectionMode.FullColumnSelect
+                Me.m_datagrid.Columns(e.ColumnIndex).Selected = True
             ElseIf e.RowIndex = 0 And e.ColumnIndex = 0 Then
                 'highlight the whole grid
-                m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
-                m_datagrid.SelectAll()
+                Me.m_datagrid.SelectionMode = DataGridViewSelectionMode.CellSelect
+                Me.m_datagrid.SelectAll()
             End If
 
         Catch ex As Exception
@@ -313,9 +313,9 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Private Sub tsbtnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub tsbtnOptions_Click(sender As System.Object, e As System.EventArgs) _
         Handles tsbtnOptions.Click
-        Me.ShowOptions(tsbtnOptions.Checked = False)
+        Me.ShowOptions(Me.tsbtnOptions.Checked = False)
     End Sub
 
     Private Sub OnFontsClicked(sender As Object, e As EventArgs) Handles tsbnFonts.Click
@@ -333,7 +333,7 @@ Public Class frmNetworkAnalysis
     ''' Event handler, triggered after 'DisplayGroups' command has been invoked.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Sub OnPostInvokeDisplayGroups(ByVal cmd As cCommand)
+    Protected Overridable Sub OnPostInvokeDisplayGroups(cmd As cCommand)
         If (Me.m_contentmanager IsNot Nothing) Then
             Try
                 Me.m_contentmanager.DisplayData()
@@ -365,7 +365,7 @@ Public Class frmNetworkAnalysis
 
     End Sub
 
-    Public Sub ShowPage(ByVal page As eNetworkAnalysisPageTypes)
+    Public Sub ShowPage(page As eNetworkAnalysisPageTypes)
 
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
@@ -575,7 +575,7 @@ Public Class frmNetworkAnalysis
         Me.ShowPage(Me.m_pageCurrent)
     End Sub
 
-    Private Sub ShowOptions(ByVal bShow As Boolean)
+    Private Sub ShowOptions(bShow As Boolean)
 
         Dim ctrlOptions As Control = Nothing
         Dim iWidth As Integer = 0

@@ -62,7 +62,7 @@ Public Class cCalendarCell
             dataGridViewCellStyle)
 
         Dim ctl As cCalendarEditingControl = _
-            CType(DataGridView.EditingControl, cCalendarEditingControl)
+            CType(Me.DataGridView.EditingControl, cCalendarEditingControl)
 
         ' Use the default row value when Value property is null.
         If (Me.Value Is Nothing) Then
@@ -148,10 +148,10 @@ Class cCalendarEditingControl
         Implements IDataGridViewEditingControl.EditingControlRowIndex
 
         Get
-            Return rowIndexNum
+            Return Me.rowIndexNum
         End Get
         Set(ByVal value As Integer)
-            rowIndexNum = value
+            Me.rowIndexNum = value
         End Set
 
     End Property
@@ -194,10 +194,10 @@ Class cCalendarEditingControl
         Implements IDataGridViewEditingControl.EditingControlDataGridView
 
         Get
-            Return dataGridViewControl
+            Return Me.dataGridViewControl
         End Get
         Set(ByVal value As DataGridView)
-            dataGridViewControl = value
+            Me.dataGridViewControl = value
         End Set
 
     End Property
@@ -206,10 +206,10 @@ Class cCalendarEditingControl
         Implements IDataGridViewEditingControl.EditingControlValueChanged
 
         Get
-            Return valueIsChanged
+            Return Me.valueIsChanged
         End Get
         Set(ByVal value As Boolean)
-            valueIsChanged = value
+            Me.valueIsChanged = value
         End Set
 
     End Property
@@ -226,7 +226,7 @@ Class cCalendarEditingControl
     Protected Overrides Sub OnValueChanged(ByVal eventargs As EventArgs)
 
         ' Notify the DataGridView that the contents of the cell have changed.
-        valueIsChanged = True
+        Me.valueIsChanged = True
         Me.EditingControlDataGridView.NotifyCurrentCellDirty(True)
         MyBase.OnValueChanged(eventargs)
 

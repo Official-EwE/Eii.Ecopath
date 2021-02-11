@@ -44,7 +44,7 @@ Public Class cTimeSeriesImport
     ''' <param name="iNumYears">Number of years in this time series.</param>
     ''' <param name="timeSeriesType"><see cref="eTimeSeriesType">Type</see> of this time series.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByVal iNumYears As Integer, ByVal timeSeriesType As eTimeSeriesType)
+    Friend Sub New(iNumYears As Integer, timeSeriesType As eTimeSeriesType)
         MyBase.New(Nothing, -1)
         Me.m_timeSeriesType = timeSeriesType
         Me.ResizeData(iNumYears)

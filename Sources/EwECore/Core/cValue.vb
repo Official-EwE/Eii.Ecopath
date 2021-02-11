@@ -21,12 +21,9 @@ Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 
+#Disable Warning CA1063 ' Implement IDisposable Correctly
+
 Namespace ValueWrapper
-
-
-    Public Delegate Function CoreCounterDelegate(ByVal SizeType As eCoreCounterTypes) As Integer
-    Public Delegate Function CoreIndexedCounterDelegate(ByVal SizeType As eCoreCounterTypes, ByVal iArrayIndex As Integer) As Integer
-
 
     ''' <summary>
     ''' Classes used to wrap variables and there associated data used be the ICoreInputOuput objects
@@ -55,9 +52,6 @@ Namespace ValueWrapper
 
 #End Region
 
-#Region "cValue"
-
-
     ''' <summary>
     ''' Wraps the Value, Status, Name and Type of a variable used be an ICoreInputOuput object into one place.
     ''' </summary>
@@ -81,6 +75,8 @@ Namespace ValueWrapper
         Protected m_bStored As Boolean = False
         Protected m_bAffectsRunState As Boolean = True
 
+        Protected m_core As cCore = Nothing
+
         ''' <summary>
         ''' Validator supplied in the constructor of the object.
         ''' </summary>
@@ -96,8 +92,8 @@ Namespace ValueWrapper
         ''' A default value will not be stored, will affect the core run state.
         ''' A default value has no metadata and no validation.
         ''' </remarks>
-        Sub New()
-            Me.New(Nothing, eVarNameFlags.NotSet, eStatusFlags.Null, eValueTypes.Sng)
+        Sub New(core As cCore)
+            Me.New(core, Nothing, eVarNameFlags.NotSet, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_bStored = False
         End Sub
 
@@ -109,16 +105,10 @@ Namespace ValueWrapper
         ''' <param name="Status">Bitwise <see cref="eStatusFlags">status flag pattern</see> to initialize the value with.</param>
         ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
         ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see> to use.</param>
-        ''' <param name="Validator">The <see cref="cValidatorDefault">Validator</see> to use. If no validator is provided
-        ''' a default validator will be obtained unless the value is flagged as <see cref="eStatusFlags.NotEditable"/>
-        ''' in the <paramref name="Status"/> parameter.</param>
-        Sub New(ByVal Value As Object,
-                ByVal VarName As eVarNameFlags,
-                ByVal Status As eStatusFlags,
-                ByVal VarType As eValueTypes,
-                Optional ByVal MetaData As cVariableMetaData = Nothing,
-                Optional ByVal Validator As cValidatorDefault = Nothing)
+        Sub New(core As cCore, Value As Object, VarName As eVarNameFlags, Status As eStatusFlags, VarType As eValueTypes,
+                Optional MetaData As cVariableMetaData = Nothing, Optional Validator As cValidatorDefault = Nothing)
 
+            Me.m_core = core
             Me.m_value = Value
             Me.m_varType = VarType
             Me.m_varName = VarName
@@ -129,11 +119,10 @@ Namespace ValueWrapper
             Me.AllowValidation = ((Status And eStatusFlags.NotEditable) = 0)
 
             If (Me.AllowValidation) Then
-                ' Set the validator and its properties
-                Me.m_validator = Validator
-                ' Resolve default validator if missing
-                If (Me.m_validator Is Nothing) Then
-                    Me.m_validator = cValidatorManager.Get(VarName)
+                If (Validator IsNot Nothing) Then
+                    Me.m_validator = Validator
+                Else
+                    Me.m_validator = core.m_validators.getValidator(Me.m_varName)
                 End If
             End If
 
@@ -181,12 +170,12 @@ Namespace ValueWrapper
         ''' Get/set the status flag for a Value.
         ''' </summary>
         ''' <param name="iSecondIndex">Optional value index.</param>
-        Public Overridable Property Status(Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+        Public Overridable Property Status(Optional iSecondIndex As Integer = cCore.NULL_VALUE, Optional iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
-                Return m_status
+                Return Me.m_status
             End Get
-            Friend Set(ByVal value As eStatusFlags)
-                m_status = value
+            Friend Set(value As eStatusFlags)
+                Me.m_status = value
             End Set
         End Property
 
@@ -194,12 +183,12 @@ Namespace ValueWrapper
         ''' Get/set the last valation result for a Value.
         ''' </summary>
         ''' <param name="iIndex">Optional value index.</param>
-        Public Overridable Property ValidationStatus(Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+        Public Overridable Property ValidationStatus(Optional iIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
-                Return m_validationstatus
+                Return Me.m_validationstatus
             End Get
-            Set(ByVal value As eStatusFlags)
-                m_validationstatus = value
+            Set(value As eStatusFlags)
+                Me.m_validationstatus = value
             End Set
         End Property
 
@@ -207,12 +196,12 @@ Namespace ValueWrapper
         ''' Get/set the actual value of a Value.
         ''' </summary>
         ''' <param name="iIndex">Optional value index.</param>
-        Public Overridable Property Value(Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE) As Object
+        Public Overridable Property Value(Optional iIndex As Integer = cCore.NULL_VALUE, Optional iIndex2 As Integer = cCore.NULL_VALUE) As Object
             Get
-                Return m_value
+                Return Me.m_value
             End Get
-            Set(ByVal value As Object)
-                Validate(value)
+            Set(value As Object)
+                Me.Validate(value)
             End Set
         End Property
 
@@ -236,10 +225,10 @@ Namespace ValueWrapper
 
         Public Property ValidationMessage() As String
             Get
-                Return m_message
+                Return Me.m_message
             End Get
-            Friend Set(ByVal value As String)
-                m_message = value
+            Friend Set(value As String)
+                Me.m_message = value
             End Set
         End Property
 
@@ -250,7 +239,7 @@ Namespace ValueWrapper
             Get
                 Return Me.m_bStored
             End Get
-            Friend Set(ByVal value As Boolean)
+            Friend Set(value As Boolean)
                 Me.m_bStored = value
             End Set
         End Property
@@ -262,7 +251,7 @@ Namespace ValueWrapper
             Get
                 Return Me.m_bAffectsRunState
             End Get
-            Friend Set(ByVal value As Boolean)
+            Friend Set(value As Boolean)
                 Me.m_bAffectsRunState = value
             End Set
         End Property
@@ -286,8 +275,8 @@ Namespace ValueWrapper
         End Property
 
         Protected Overridable Function Validate(ByRef NewValue As Object,
-                                                Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                                Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+                                                Optional iSecondIndex As Integer = cCore.NULL_VALUE,
+                                                Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
             'set the value of this object to the new value passed in 
             'this allows the validator the access the new value via the public interface
@@ -330,7 +319,7 @@ Namespace ValueWrapper
                 'End If
             Else 'If m_validator.Validate(Me, iSecondaryIndex) Then
                 'for some reason the validator returned False it could not validate the value
-                Debug.Assert(False, "Validator for " & m_varName.ToString & " failed.")
+                Debug.Assert(False, "Validator for " & Me.m_varName.ToString & " failed.")
                 Return False
             End If
 
@@ -343,11 +332,11 @@ Namespace ValueWrapper
         ''' </summary>
         ''' <param name="iSecondIndex"></param>
         ''' <remarks>This is use be the cCoreInputOutputBase to set the status flags of all its values </remarks>
-        Public Overridable Sub setStatusFlag(Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                                Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE)
+        Public Overridable Sub setStatusFlag(Optional iSecondIndex As Integer = cCore.NULL_VALUE,
+                                                Optional iThirdIndex As Integer = cCore.NULL_VALUE)
 
-            If m_validator IsNot Nothing Then
-                m_validator.Validate(Me, m_metadata, iSecondIndex, iThirdIndex)
+            If Me.m_validator IsNot Nothing Then
+                Me.m_validator.Validate(Me, Me.m_metadata, iSecondIndex, iThirdIndex)
             Else
                 ' System.Console.WriteLine("No validator definded for " & m_varType.ToString)
             End If
@@ -368,7 +357,7 @@ Namespace ValueWrapper
         ''' <param name="newValue"></param>
         ''' <returns></returns>
         ''' <remarks>This is because different types of controls pass empty values differently</remarks>
-        Protected Function convertEmptyInputs(ByVal newValue As Object) As Object
+        Protected Function convertEmptyInputs(newValue As Object) As Object
 
             ' Test whether provided value is empty
             Dim bNeedDefault As Boolean = (newValue Is Nothing) Or (TypeOf newValue Is System.DBNull)
@@ -414,9 +403,9 @@ Namespace ValueWrapper
                                 Single.TryParse(newValue.ToString, x)
                                 If x = 0.0F And (Me.Metadata IsNot Nothing) Then
                                     ' #Yes: does metadata NOT allow 0.0?
-                                    If Not (Metadata.MinOperator.Compare(0.0!, Metadata.Min) And Metadata.MaxOperator.Compare(0.0!, Metadata.Max)) Then
+                                    If Not (Me.Metadata.MinOperator.Compare(0.0!, Me.Metadata.Min) And Me.Metadata.MaxOperator.Compare(0.0!, Me.Metadata.Max)) Then
                                         ' #Yes: Core_NULL is the default? 
-                                        If (CSng(Metadata.NullValue) = cCore.NULL_VALUE) Then
+                                        If (CSng(Me.Metadata.NullValue) = cCore.NULL_VALUE) Then
                                             ' #Yes: '0' clears the variable
                                             bNeedDefault = True
                                         End If
@@ -490,7 +479,5 @@ Namespace ValueWrapper
         End Sub
 
     End Class
-
-#End Region
 
 End Namespace

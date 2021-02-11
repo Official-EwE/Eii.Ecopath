@@ -34,6 +34,6 @@ Public Interface IEcospaceInitializedPlugin
     ''' <param name="EcospaceDatastructures">The ecospace datastructures that 
     ''' just received new scenario data.</param>
     ''' -----------------------------------------------------------------------
-    Sub EcospaceInitialized(ByVal EcospaceDatastructures As Object)
+    Sub EcospaceInitialized(EcospaceDatastructures As Object)
 
 End Interface

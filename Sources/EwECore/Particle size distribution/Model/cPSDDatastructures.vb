@@ -63,7 +63,7 @@ Public Class cPSDDatastructures
     Public LorenzenMortality(,) As Single
     Public PSD(,) As Single
 
-    Public Sub New(ByVal EcopathDS As cEcopathDataStructures)
+    Public Sub New(EcopathDS As cEcopathDataStructures)
         Me.EcopathDS = EcopathDS
     End Sub
 
@@ -114,33 +114,33 @@ Public Class cPSDDatastructures
     ''' <returns>True if no error</returns>
     Public Function redimGroupVariables() As Boolean
 
-        ReDim BiomassAvgSzWt(NumGroups)
-        ReDim BiomassSzWt(NumGroups)
-        ReDim AinLW(NumGroups)
-        ReDim BinLW(NumGroups)
-        ReDim Loo(NumGroups)
-        ReDim Winf(NumGroups)
-        ReDim t0(NumGroups)
-        ReDim Tcatch(NumGroups)
-        ReDim Tmax(NumGroups)
+        ReDim Me.BiomassAvgSzWt(Me.NumGroups)
+        ReDim Me.BiomassSzWt(Me.NumGroups)
+        ReDim Me.AinLW(Me.NumGroups)
+        ReDim Me.BinLW(Me.NumGroups)
+        ReDim Me.Loo(Me.NumGroups)
+        ReDim Me.Winf(Me.NumGroups)
+        ReDim Me.t0(Me.NumGroups)
+        ReDim Me.Tcatch(Me.NumGroups)
+        ReDim Me.Tmax(Me.NumGroups)
 
-        ReDim AinLWInput(NumGroups)
-        ReDim BinLWInput(NumGroups)
-        ReDim LooInput(NumGroups)
-        ReDim WinfInput(NumGroups)
-        ReDim t0Input(NumGroups)
-        ReDim TcatchInput(NumGroups)
-        ReDim TmaxInput(NumGroups)
+        ReDim Me.AinLWInput(Me.NumGroups)
+        ReDim Me.BinLWInput(Me.NumGroups)
+        ReDim Me.LooInput(Me.NumGroups)
+        ReDim Me.WinfInput(Me.NumGroups)
+        ReDim Me.t0Input(Me.NumGroups)
+        ReDim Me.TcatchInput(Me.NumGroups)
+        ReDim Me.TmaxInput(Me.NumGroups)
 
-        ReDim EcopathWeight(NumGroups, NAgeSteps)
-        ReDim EcopathNumber(NumGroups, NAgeSteps)
-        ReDim EcopathBiomass(NumGroups, NAgeSteps)
-        ReDim LorenzenMortality(NumGroups, NAgeSteps)
+        ReDim Me.EcopathWeight(Me.NumGroups, Me.NAgeSteps)
+        ReDim Me.EcopathNumber(Me.NumGroups, Me.NAgeSteps)
+        ReDim Me.EcopathBiomass(Me.NumGroups, Me.NAgeSteps)
+        ReDim Me.LorenzenMortality(Me.NumGroups, Me.NAgeSteps)
 
-        ReDim PSD(NumGroups, NWeightClasses)
-        ReDim Include(NumGroups)
-        For i As Integer = 1 To NumGroups
-            Include(i) = True
+        ReDim Me.PSD(Me.NumGroups, Me.NWeightClasses)
+        ReDim Me.Include(Me.NumGroups)
+        For i As Integer = 1 To Me.NumGroups
+            Me.Include(i) = True
         Next
 
         Return True
@@ -158,13 +158,13 @@ Public Class cPSDDatastructures
         'Warning EwE5 also included input variables for BA, Immig, and Emigration 
         'See modEcosSense.MakeUnknownUnknown
         Try
-            AinLWInput.CopyTo(AinLW, 0)
-            BinLWInput.CopyTo(BinLW, 0)
-            LooInput.CopyTo(Loo, 0)
-            WinfInput.CopyTo(Winf, 0)
-            t0Input.CopyTo(t0, 0)
-            TcatchInput.CopyTo(Tcatch, 0)
-            TmaxInput.CopyTo(Tmax, 0)
+            Me.AinLWInput.CopyTo(Me.AinLW, 0)
+            Me.BinLWInput.CopyTo(Me.BinLW, 0)
+            Me.LooInput.CopyTo(Me.Loo, 0)
+            Me.WinfInput.CopyTo(Me.Winf, 0)
+            Me.t0Input.CopyTo(Me.t0, 0)
+            Me.TcatchInput.CopyTo(Me.Tcatch, 0)
+            Me.TmaxInput.CopyTo(Me.Tmax, 0)
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             Return False

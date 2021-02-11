@@ -43,7 +43,7 @@ Public Class frmEditQuotaShares
 
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext)
+    Public Sub Init(uic As cUIContext)
         Me.UIContext = uic
         Me.m_grid.UIContext = uic
         Me.m_grid.Init(Me.m_mse, Me.m_mse.QuotaShares)
@@ -59,7 +59,7 @@ Public Class frmEditQuotaShares
         Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
-        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        AddHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
 
         Me.m_bIsDirty = False
         Me.UpdateControls()
@@ -85,7 +85,7 @@ Public Class frmEditQuotaShares
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.QuickEditHandler.Detach()
-        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
         Me.m_grid.UIContext = Nothing
 
         MyBase.OnFormClosed(e)
@@ -102,18 +102,18 @@ Public Class frmEditQuotaShares
         Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
     End Sub
 
-    Private Sub OutputMessageNotSum1(ByVal Groups_Not_Summing_to_1 As List(Of Integer))
+    Private Sub OutputMessageNotSum1(Groups_Not_Summing_to_1 As List(Of Integer))
 
         Dim strGroupsNotSum1 As String
 
-        strGroupsNotSum1 = m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(0)).Name
+        strGroupsNotSum1 = Me.m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(0)).Name
 
         If Groups_Not_Summing_to_1.Count > 1 Then
             For i = 2 To Groups_Not_Summing_to_1.Count
                 If i = Groups_Not_Summing_to_1.Count Then
-                    strGroupsNotSum1 &= " and " & m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
+                    strGroupsNotSum1 &= " and " & Me.m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
                 Else
-                    strGroupsNotSum1 &= ", " & m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
+                    strGroupsNotSum1 &= ", " & Me.m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
                 End If
             Next
         End If
@@ -133,15 +133,15 @@ Public Class frmEditQuotaShares
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.Fleet)
         Dim Groups_Not_Summing_to_1 As New List(Of Integer)
 
-        If Not QuotaSharesSumTo1(Groups_Not_Summing_to_1) Then
+        If Not Me.QuotaSharesSumTo1(Groups_Not_Summing_to_1) Then
 
-            OutputMessageNotSum1(Groups_Not_Summing_to_1)
+            Me.OutputMessageNotSum1(Groups_Not_Summing_to_1)
             Exit Sub
 
         End If
 
         'Saves all the parameters to csv when user clicks to save
-        If m_quotashares.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "QuotaShares.csv"))
+        If Me.m_quotashares.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "QuotaShares.csv"))
 
         Me.m_bIsDirty = False
 
@@ -155,15 +155,15 @@ Public Class frmEditQuotaShares
     Private Function QuotaSharesSumTo1(ByRef GroupsNotSum1 As List(Of Integer)) As Boolean
 
         Const Precision As Single = 0.0001
-        Dim QShares As List(Of cQuotaShares.QuotaShare) = m_quotashares.GetLstGrpShares
-        Dim SumShare(m_mse.Core.nGroups) As Single
+        Dim QShares As List(Of cQuotaShares.QuotaShare) = Me.m_quotashares.GetLstGrpShares
+        Dim SumShare(Me.m_mse.Core.nGroups) As Single
         Dim PassTest As Boolean = True
 
         For Each iQuotaShare In QShares
             SumShare(iQuotaShare.mGroupNo) += iQuotaShare.mShare
         Next
 
-        For iGrp = 1 To m_mse.Core.nGroups
+        For iGrp = 1 To Me.m_mse.Core.nGroups
             If SumShare(iGrp) <> 0 Then
                 If SumShare(iGrp) < 1 - Precision Or SumShare(iGrp) > 1 + Precision Then
                     GroupsNotSum1.Add(iGrp)
@@ -178,10 +178,10 @@ Public Class frmEditQuotaShares
 
     Private Sub OnGridEdited()
         Me.m_bIsDirty = True
-        Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
+        Me.Invoke(New MethodInvoker(AddressOf Me.UpdateControls))
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
     Handles m_btnCancel.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -195,24 +195,24 @@ Public Class frmEditQuotaShares
         Dim SumQuotaShare As Single = 0
 
 
-        SumQuotaShare = m_quotashares.ReadRowDist(0).mShare
+        SumQuotaShare = Me.m_quotashares.ReadRowDist(0).mShare
 
-        For i = 2 To m_quotashares.CountDist
-            If m_quotashares.ReadRowDist(i - 1).mGroupNo <> m_quotashares.ReadRowDist(i - 2).mGroupNo Then
+        For i = 2 To Me.m_quotashares.CountDist
+            If Me.m_quotashares.ReadRowDist(i - 1).mGroupNo <> Me.m_quotashares.ReadRowDist(i - 2).mGroupNo Then
                 For iChange = iStart To i - 2
-                    m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
+                    Me.m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
                 Next
                 SumQuotaShare = 0
                 iStart = i - 1
             End If
-            If m_quotashares.ReadRowDist(i - 1).mShare > 0 Then SumQuotaShare += m_quotashares.ReadRowDist(i - 1).mShare
+            If Me.m_quotashares.ReadRowDist(i - 1).mShare > 0 Then SumQuotaShare += Me.m_quotashares.ReadRowDist(i - 1).mShare
         Next
 
-        For iChange = iStart To m_quotashares.CountDist - 1
-            m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
+        For iChange = iStart To Me.m_quotashares.CountDist - 1
+            Me.m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
         Next
 
-        Me.m_grid.Init(Me.m_mse, m_quotashares)
+        Me.m_grid.Init(Me.m_mse, Me.m_quotashares)
 
         Me.UpdateGrid(Me.m_quotashares.GetLstGrpShares, My.Resources.HEADER_SURVIVABILITIES)
 

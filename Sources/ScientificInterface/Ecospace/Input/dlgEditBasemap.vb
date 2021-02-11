@@ -58,7 +58,7 @@ Public Class dlgEditBasemap
 
 #End Region ' Private variables
 
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
         Me.m_uic = uic
         Me.m_basemap = Me.m_uic.Core.EcospaceBasemap
         Me.InitializeComponent()
@@ -66,7 +66,7 @@ Public Class dlgEditBasemap
 
 #Region " Events "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_pbLink.Image = ScientificInterfaceShared.My.Resources.chain_vert
@@ -89,12 +89,12 @@ Public Class dlgEditBasemap
         Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellSize, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellSize))
         Me.m_fpCellSize.Value = Me.m_basemap.CellSize
 
-        Me.m_fpnCells = New cEwEFormatProvider(Me.m_uic, m_lbNCells, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.nCells))
+        Me.m_fpnCells = New cEwEFormatProvider(Me.m_uic, Me.m_lbNCells, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.nCells))
         Me.m_fpnCells.Value = Me.m_basemap.nCells
 
         Me.m_fpSquareCells = New cEwEFormatProvider(Me.m_uic, Me.m_cbAssumeSquareCells, GetType(Boolean))
         Me.m_fpSquareCells.Value = Me.m_basemap.AssumeSquareCells
-        AddHandler Me.m_fpSquareCells.OnValueChanged, AddressOf OnAssumeSquareCellsChanged
+        AddHandler Me.m_fpSquareCells.OnValueChanged, AddressOf Me.OnAssumeSquareCellsChanged
 
         Me.UpdateControls()
 
@@ -102,9 +102,9 @@ Public Class dlgEditBasemap
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-        RemoveHandler Me.m_fpSquareCells.OnValueChanged, AddressOf OnAssumeSquareCellsChanged
+        RemoveHandler Me.m_fpSquareCells.OnValueChanged, AddressOf Me.OnAssumeSquareCellsChanged
         Me.m_fpSquareCells.Release()
 
         Me.m_fpCellLength.Release()
@@ -147,24 +147,24 @@ Public Class dlgEditBasemap
 
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) Handles m_btnOk.Click
         If Me.Apply() Then
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End If
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
-    Private Sub OnCellLengthChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnCellLengthChanged(sender As Object, e As System.EventArgs) _
             Handles m_nudCellLength.ValueChanged
         Me.CalcCellSize()
     End Sub
 
-    Private Sub OnCellSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnCellSizeChanged(sender As Object, e As System.EventArgs) _
         Handles m_nudCellSize.ValueChanged
         Me.CalcCellLength()
     End Sub

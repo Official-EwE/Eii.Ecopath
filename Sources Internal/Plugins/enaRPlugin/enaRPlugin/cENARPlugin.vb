@@ -95,7 +95,7 @@ Public Class cENARPlugin
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
     Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
-            m_core = DirectCast(CoreAsObject, cCore)
+            Me.m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Initialize() Exception " + ex.Message)
         End Try
@@ -112,11 +112,11 @@ Public Class cENARPlugin
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
-            m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
+            Me.m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
+            Me.m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            Me.m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
+            Debug.Assert((Me.m_EcoPath IsNot Nothing) And (Me.m_EcoSim IsNot Nothing) And (Me.m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -281,7 +281,7 @@ Public Class cENARPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
             If (Me.m_EcoSpaceData IsNot Nothing) Then

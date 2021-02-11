@@ -76,16 +76,16 @@ Namespace SpatialData
             Public Const NULL_CELL As Integer = -6666
 
             Public Sub New(IndexOfLayer As Integer, EcospaceData As cEcospaceDataStructures)
-                iLayerIndex = IndexOfLayer
-                m_spacedata = EcospaceData
-                data = New Single(m_spacedata.InRow, m_spacedata.InCol) {}
+                Me.iLayerIndex = IndexOfLayer
+                Me.m_spacedata = EcospaceData
+                Me.data = New Single(Me.m_spacedata.InRow, Me.m_spacedata.InCol) {}
                 Me.clear()
             End Sub
 
             Public Sub clear()
-                For ir As Integer = 1 To m_spacedata.InRow
-                    For ic As Integer = 1 To m_spacedata.InCol
-                        data(ir, ic) = NULL_CELL
+                For ir As Integer = 1 To Me.m_spacedata.InRow
+                    For ic As Integer = 1 To Me.m_spacedata.InCol
+                        Me.data(ir, ic) = NULL_CELL
                     Next
                 Next
 
@@ -107,7 +107,7 @@ Namespace SpatialData
 #Region "Construction and Initialization"
 
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
 
         End Sub
@@ -148,9 +148,9 @@ Namespace SpatialData
         ''' <param name="dNoData"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer,
-                                                ByVal conn As cSpatialDataConnection, ByVal iTime As Integer, ByVal dt As Date,
-                                                ByVal dataExternal As ISpatialRaster, ByVal dNoData As Double) As Boolean
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer,
+                                                conn As cSpatialDataConnection, iTime As Integer, dt As Date,
+                                                dataExternal As ISpatialRaster, dNoData As Double) As Boolean
 
             Me.setIsForced(layer.Index)
 
@@ -264,7 +264,7 @@ Namespace SpatialData
 
         End Function
 
-        Protected Overridable Sub saveForcedCell(iLayerIndex As Integer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValueAtT As Double)
+        Protected Overridable Sub saveForcedCell(iLayerIndex As Integer, iRow As Integer, iCol As Integer, sValueAtT As Double)
 
             Debug.Assert(Me.m_ForcingMaps(iLayerIndex) IsNot Nothing, Me.ToString + ".saveForcedCell() Layer index not set to valid layer!")
             Try

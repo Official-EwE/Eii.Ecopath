@@ -48,7 +48,7 @@ Public Class cRemarksPlugin
 
 #Region " Plug-in implementation "
 
-    Public Sub Initialize(ByVal core As Object) _
+    Public Sub Initialize(core As Object) _
         Implements IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
     End Sub
@@ -98,7 +98,7 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public Sub UIContext(ByVal uic As Object) _
+    Public Sub UIContext(uic As Object) _
         Implements IUIContextPlugin.UIContext
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -120,7 +120,7 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements IGUIPlugin.OnControlClick
         Try
             If (Me.m_core Is Nothing) Then Return

@@ -73,7 +73,7 @@ Friend Class cDBUpdate6_00_06_005
                Me.AddEcosimQuotaFields(db)
     End Function
 
-    Private Function AddEcopathYear(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcopathYear(db As cEwEDatabase) As Boolean
         Dim bSucces As Boolean = True
 
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathModel ADD COLUMN FirstYear LONG")
@@ -82,7 +82,7 @@ Friend Class cDBUpdate6_00_06_005
 
     End Function
 
-    Private Function MoveFleetSizeDynamics(ByVal db As cEwEDatabase) As Boolean
+    Private Function MoveFleetSizeDynamics(db As cEwEDatabase) As Boolean
 
         Dim nFleets As Integer = CInt(db.GetValue("SELECT COUNT(*) FROM EcopathFleet"))
         Dim iFleetID As Integer
@@ -193,7 +193,7 @@ Friend Class cDBUpdate6_00_06_005
 
     End Function
 
-    Private Function AddEcosimQuotaFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcosimQuotaFields(db As cEwEDatabase) As Boolean
         Dim bSucces As Boolean = True
 
         'bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN FishMortMax SINGLE") ' Already added by update 6.0.6.021

@@ -48,27 +48,27 @@ Public Class cResultsCollector_HighestValueGroup
 
     Public Overrides ReadOnly Property ElementName(iElement As Integer) As String
         Get
-            Return m_MSE.Core.EcopathFleetInputs(iElement).Name
+            Return Me.m_MSE.Core.EcopathFleetInputs(iElement).Name
         End Get
     End Property
 
     Public Overrides ReadOnly Property nElements As Integer
         Get
-            Return m_MSE.Core.nFleets
+            Return Me.m_MSE.Core.nFleets
         End Get
     End Property
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return m_MSE.NYearsProject
+            Return Me.m_MSE.NYearsProject
         End Get
     End Property
 
     Public Overrides Sub Populate()
-        Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
-        For iFleet = 1 To m_MSE.Core.nFleets
-            For iTime = 1 To NumberOfTimeRecords
-                Me.SetValue(StrategyIndex, iFleet, iTime) = m_MSE.HighestValueGroup(iFleet, iTime)
+        Dim StrategyIndex = Me.m_MSE.Strategies.IndexOf(Me.m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
+        For iFleet = 1 To Me.m_MSE.Core.nFleets
+            For iTime = 1 To Me.NumberOfTimeRecords
+                Me.SetValue(StrategyIndex, iFleet, iTime) = Me.m_MSE.HighestValueGroup(iFleet, iTime)
             Next
         Next
     End Sub
@@ -81,7 +81,7 @@ Public Class cResultsCollector_HighestValueGroup
 
     Public Overrides ReadOnly Property GetValue_Formatted4CSV(iStrategy As Integer, iElement As Integer, iTime As Integer) As Object
         Get
-            Return cStringUtils.ToCSVField(GetValue(iStrategy, iElement, iTime))
+            Return cStringUtils.ToCSVField(Me.GetValue(iStrategy, iElement, iTime))
         End Get
     End Property
 

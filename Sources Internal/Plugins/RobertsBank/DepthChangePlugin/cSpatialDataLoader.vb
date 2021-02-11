@@ -178,7 +178,7 @@ Friend Class cSpatialDataLoader
                 'Now hook them up
                 'And add the DepthAdapter to the core spatial data manager          
                 'Me.m_DepthAdapter.Converter(1, 1) = Converter
-                Plugin.Core.SpatialDataConnectionManager.AddAdapter(Me.m_DepthAdapter)
+                Me.Plugin.Core.SpatialDataConnectionManager.AddAdapter(Me.m_DepthAdapter)
                 cSpatialDataLoader.m_isAdapterLoaded = True
             End If
 
@@ -190,7 +190,7 @@ Friend Class cSpatialDataLoader
     End Sub
 
     Private Function getConverterByType(ConverterType As Type) As EwEUtils.SpatialData.ISpatialDataConverter
-        For Each converter In Plugin.Core.SpatialDataConnectionManager.ConverterTemplates()
+        For Each converter In Me.Plugin.Core.SpatialDataConnectionManager.ConverterTemplates()
             If converter.GetType Is ConverterType Then
                 Return converter
             End If
@@ -201,7 +201,7 @@ Friend Class cSpatialDataLoader
 
     Private Function getDataSetByName(name As String) As EwEUtils.SpatialData.ISpatialDataSet
 
-        For Each ds As EwEUtils.SpatialData.ISpatialDataSet In Plugin.Core.SpatialDataConnectionManager.DatasetManager
+        For Each ds As EwEUtils.SpatialData.ISpatialDataSet In Me.Plugin.Core.SpatialDataConnectionManager.DatasetManager
             If String.Compare(ds.CustomName, name) = 0 Then
                 Return ds
             End If

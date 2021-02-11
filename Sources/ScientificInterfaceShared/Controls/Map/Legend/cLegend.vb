@@ -180,7 +180,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="map">The map to populate the legend from.</param>
         ''' -------------------------------------------------------------------
-        Private Sub New(ByVal map As ucMap)
+        Private Sub New(map As ucMap)
 
             Me.New(map.UIContext, map.Title)
 
@@ -228,7 +228,7 @@ Namespace Controls.Map
         ''' <param name="map">The map to populate the legend from.</param>
         ''' <returns>A <see cref="cLegend">legend</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FromMap(ByVal map As ucMap) As cLegend
+        Public Shared Function FromMap(map As ucMap) As cLegend
             Debug.Assert(map IsNot Nothing)
             Return New cLegend(map)
         End Function
@@ -425,7 +425,7 @@ Namespace Controls.Map
         ''' <param name="format"></param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Save(ByVal strFileName As String, ByVal format As ImageFormat) As Boolean
+        Public Function Save(strFileName As String, format As ImageFormat) As Boolean
 
             If (Me.m_uic Is Nothing) Then Return False
 
@@ -458,15 +458,15 @@ Namespace Controls.Map
 
 #Region " Internals "
 
-        Private Function RenderTitleSize(ByVal g As Graphics, ByVal ft As Font) As SizeF
+        Private Function RenderTitleSize(g As Graphics, ft As Font) As SizeF
             Return g.MeasureString(Me.Title, ft, 10000, Me.m_fmt)
         End Function
 
-        Private Sub DrawTitle(ByVal g As Graphics, ByVal ft As Font, ByVal pt As Point)
+        Private Sub DrawTitle(g As Graphics, ft As Font, pt As Point)
             g.DrawString(Me.Title, ft, Brushes.Black, pt)
         End Sub
 
-        Private Function MeasureLayer(ByVal g As Graphics, ByVal ftLabel As Font, ByVal ftScale As Font, ByVal l As cLegendEntry) As SizeF
+        Private Function MeasureLayer(g As Graphics, ftLabel As Font, ftScale As Font, l As cLegendEntry) As SizeF
 
             Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
             Dim szBox As New SizeF(0, 0)
@@ -500,7 +500,7 @@ Namespace Controls.Map
 
         End Function
 
-        Private Sub DrawLayer(ByVal g As Graphics, ByVal ftLabel As Font, ByVal ftScale As Font, ByVal l As cLegendEntry, ByVal pt As Point)
+        Private Sub DrawLayer(g As Graphics, ftLabel As Font, ftScale As Font, l As cLegendEntry, pt As Point)
 
             Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
             Dim strText As String = ""
@@ -561,7 +561,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Function GetRenderStyle(ByVal l As cLegendEntry) As eLayerRenderStyle
+        Private Function GetRenderStyle(l As cLegendEntry) As eLayerRenderStyle
             If (TypeOf (l.Renderer) Is cLayerRendererValue) Then
                 Return eLayerRenderStyle.Gradient
             ElseIf (TypeOf (l.Renderer) Is cLayerRendererSymbol) Then

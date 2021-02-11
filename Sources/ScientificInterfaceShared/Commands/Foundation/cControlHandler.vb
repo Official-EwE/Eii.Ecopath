@@ -54,7 +54,7 @@ Namespace Commands
         ''' <param name="objCmd">The Command instance to attach.</param>
         ''' <param name="objGUI">The User Interface instance to attach.</param>
         ''' ---------------------------------------------------------------------------
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             Debug.Assert(TypeOf objCmd Is cCommand)
             Me.m_cmd = DirectCast(objCmd, cCommand)
             Me.m_objParams = fnparms
@@ -132,7 +132,7 @@ Namespace Commands
 
         Private WithEvents m_tsi As ToolStripMenuItem = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripMenuItem)
             Me.m_tsi = DirectCast(objGUI, ToolStripMenuItem)
@@ -152,7 +152,7 @@ Namespace Commands
             End If
         End Sub
 
-        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsi.Click
+        Private Sub OnClick(sender As Object, e As EventArgs) Handles m_tsi.Click
             Try
                 Me.Invoke()
             Catch ex As Exception
@@ -177,7 +177,7 @@ Namespace Commands
 
         Private WithEvents m_tsb As ToolStripButton = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripButton)
@@ -197,7 +197,7 @@ Namespace Commands
             End If
         End Sub
 
-        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.Click
+        Private Sub OnClick(sender As Object, e As EventArgs) Handles m_tsb.Click
             Try
                 Me.Invoke()
             Catch ex As Exception
@@ -222,7 +222,7 @@ Namespace Commands
 
         Private WithEvents m_tsb As ToolStripDropDownButton = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripDropDownButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripDropDownButton)
@@ -241,7 +241,7 @@ Namespace Commands
             End If
         End Sub
 
-        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.Click
+        Private Sub OnClick(sender As Object, e As EventArgs) Handles m_tsb.Click
             Try
                 Me.Invoke()
             Catch ex As Exception
@@ -266,7 +266,7 @@ Namespace Commands
 
         Private WithEvents m_tsb As ToolStripSplitButton = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripSplitButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripSplitButton)
@@ -285,7 +285,7 @@ Namespace Commands
             End If
         End Sub
 
-        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.ButtonClick
+        Private Sub OnClick(sender As Object, e As EventArgs) Handles m_tsb.ButtonClick
             Try
                 Me.Invoke()
             Catch ex As Exception
@@ -309,7 +309,7 @@ Namespace Commands
 
         Private WithEvents m_ctrl As Control = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is Control)
             Me.m_ctrl = DirectCast(objGUI, Control)
@@ -326,7 +326,7 @@ Namespace Commands
             'Me.m_btn.ToolTipText = Me.Command.Description
         End Sub
 
-        Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_ctrl.Click
+        Private Sub OnClick(sender As Object, e As EventArgs) Handles m_ctrl.Click
             Try
                 Me.Invoke()
             Catch ex As Exception
@@ -350,7 +350,7 @@ Namespace Commands
 
         Private WithEvents m_ctrl As RichTextBox = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+        Public Sub New(objCmd As Object, objGUI As Object, fnparms As Object())
             MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is RichTextBox)
             Me.m_ctrl = DirectCast(objGUI, RichTextBox)

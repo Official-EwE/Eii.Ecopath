@@ -75,7 +75,7 @@ Public Class cExponentialShapeFunction
             Next i
         End If
 
-        Me.ScaleData(nPoints, ParamValue(4))
+        Me.ScaleData(nPoints, Me.ParamValue(4))
 
         Return MyBase.Shape(nPoints)
 

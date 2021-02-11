@@ -44,7 +44,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
             Me.InitializeComponent()
 
@@ -56,11 +56,11 @@ Namespace Other
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso components IsNot Nothing Then
+        Protected Overrides Sub Dispose(disposing As Boolean)
+            If disposing AndAlso Me.components IsNot Nothing Then
                 Me.m_grid.UIContext = Nothing
                 Me.m_qeh.Detach()
-                components.Dispose()
+                Me.components.Dispose()
             End If
             MyBase.Dispose(disposing)
         End Sub

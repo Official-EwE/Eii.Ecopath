@@ -34,7 +34,7 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Not Me.IsAttached) Then Return
@@ -56,7 +56,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_btnClear.Enabled = (Me.IsAttached)
@@ -68,7 +68,7 @@ Namespace Controls.Map.Layers
             Get
                 Return DirectCast(MyBase.Editor, cLayerEditorPorts)
             End Get
-            Set(ByVal editor As cLayerEditorPorts)
+            Set(editor As cLayerEditorPorts)
                 ' Sanity check
                 Debug.Assert(TypeOf editor Is cLayerEditorPorts, "ucLayerEditorFleet connected to wrong editor class")
                 ' Configure editor
@@ -83,7 +83,7 @@ Namespace Controls.Map.Layers
                 If (Not Me.IsAttached) Then Return cCore.NULL_VALUE
                 Return Me.Editor.Fleet
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (Me.IsAttached) Then
                     If (Me.Editor.Fleet <> value) Then
                         Me.Editor.Fleet = value
@@ -104,7 +104,7 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Private Sub OnFleetSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFleetSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbFleet.SelectedIndexChanged
             Dim item As Object = Me.m_cmbFleet.SelectedItem
             If (TypeOf item Is cCoreInputOutputBase) Then
@@ -114,12 +114,12 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Private Sub OnClear(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClear(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClear.Click
             Me.UIContext.Core.ClearEcospacePort(Me.FleetIndex)
         End Sub
 
-        Private Sub OnSet(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSet(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSet.Click
             Me.UIContext.Core.SetEcospaceAllCoastToPort(Me.FleetIndex)
         End Sub

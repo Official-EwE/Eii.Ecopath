@@ -36,8 +36,8 @@ Friend Class cEwENetworkAnalysisData
     Private m_Ascendancy(6, 5) As Single
     Private m_OI As Single()
 
-    Public Sub New(ByVal strPluginName As String, _
-                   ByVal man As cNetworkManager)
+    Public Sub New(strPluginName As String, _
+                   man As cNetworkManager)
         Me.m_strPluginName = strPluginName
         Me.m_man = man
     End Sub

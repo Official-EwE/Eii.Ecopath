@@ -48,17 +48,17 @@ Public Class cResults
         ''' <summary>Results(# variable types, # units)</summary>
         Private m_results(,) As Single
 
-        Public Sub New(ByVal data As cData, ByVal iTimeStep As Integer)
+        Public Sub New(data As cData, iTimeStep As Integer)
             Me.m_data = data
             Me.m_iTimeStep = iTimeStep
             ReDim Me.m_results([Enum].GetNames(GetType(eVariableType)).Length, Me.m_data.UnitCount)
         End Sub
 
-        Public Property Results(ByVal iVar As Integer, ByVal iUnit As Integer) As Single
+        Public Property Results(iVar As Integer, iUnit As Integer) As Single
             Get
                 Return Me.m_results(iVar, iUnit)
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Me.m_results(iVar, iUnit) = value
             End Set
         End Property
@@ -331,7 +331,7 @@ Public Class cResults
 
 #Region " Construction "
 
-    Public Sub New(ByVal data As cData)
+    Public Sub New(data As cData)
         Me.m_data = data
     End Sub
 
@@ -426,7 +426,7 @@ Public Class cResults
     ''' </summary>
     ''' <remarks>Call this method before starting a new search.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub Reset(ByVal runType As cModel.eRunTypes)
+    Public Sub Reset(runType As cModel.eRunTypes)
 
         Dim core As cCore = Me.m_data.Core
         Dim nNumUnits As Integer = Me.m_data.GetUnits(cUnitFactory.eUnitType.All).Length
@@ -460,10 +460,10 @@ Public Class cResults
     ''' <param name="sValue">Value to save</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Store(ByVal unit As cUnit, _
-                          ByVal var As eVariableType, _
-                          ByVal sValue As Single, _
-                          ByVal iTimeStep As Integer) As Boolean
+    Public Function Store(unit As cUnit, _
+                          var As eVariableType, _
+                          sValue As Single, _
+                          iTimeStep As Integer) As Boolean
 
         Try
 
@@ -486,7 +486,7 @@ Public Class cResults
     ''' <param name="iTimeStep">The time step to store a snapshot for.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function StoreSnapshot(ByVal objKey As Object, ByVal iTimeStep As Integer) As Boolean
+    Public Function StoreSnapshot(objKey As Object, iTimeStep As Integer) As Boolean
 
         Dim tsr As cTimeStepResults = Me.GetTimeStepResult(iTimeStep).Clone
         Me.m_dtSnapshots(objKey) = tsr
@@ -527,11 +527,11 @@ Public Class cResults
     ''' <param name="iItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Result(ByVal unit As cUnit, _
-                           ByVal var As eVariableType, _
-                           ByVal iTimeStep As Integer, _
-                           ByVal iItem As Integer, _
-                           ByVal contr As eContributionType) As Single
+    Public Function Result(unit As cUnit, _
+                           var As eVariableType, _
+                           iTimeStep As Integer, _
+                           iItem As Integer, _
+                           contr As eContributionType) As Single
 
         Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
         Dim sValue As Single = rs.Results(var, unit.Sequence)
@@ -549,7 +549,7 @@ Public Class cResults
 
     End Function
 
-    Public Sub CalculateDerivedValues(ByVal iTimeStep As Integer)
+    Public Sub CalculateDerivedValues(iTimeStep As Integer)
         Me.GetTimeStepResult(iTimeStep).CalculateDerivedValues()
     End Sub
 
@@ -560,7 +560,7 @@ Public Class cResults
     ''' <param name="var"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function SnapshotValue(ByVal unit As cUnit, ByVal var As eVariableType, ByVal objKey As Object) As Single
+    Public Function SnapshotValue(unit As cUnit, var As eVariableType, objKey As Object) As Single
         Dim tsr As cTimeStepResults = Me.GetSnapshot(objKey)
         If tsr IsNot Nothing Then Return tsr.Results(var, unit.Sequence)
         Return 0.0!
@@ -607,9 +607,9 @@ Public Class cResults
 
 #Region " Totals "
 
-    Public Function GetSnapshotTotal(ByVal vartype As eVariableType, _
-                                    ByVal objKey As Object, _
-                                    Optional ByVal lUnits As cUnit() = Nothing) As Single
+    Public Function GetSnapshotTotal(vartype As eVariableType, _
+                                    objKey As Object, _
+                                    Optional lUnits As cUnit() = Nothing) As Single
         Dim sTotal As Single = 0.0!
 
         If lUnits Is Nothing Then
@@ -636,11 +636,11 @@ Public Class cResults
     ''' <param name="contr"><see cref="eContributionType"/> to extract contribution for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetTimeStepTotal(ByVal vartype As eVariableType, _
-                                     ByVal iTimeStep As Integer, _
-                                     ByVal lUnits As cUnit(), _
-                                     ByVal iItem As Integer, _
-                                     ByVal contr As eContributionType) As Single
+    Public Function GetTimeStepTotal(vartype As eVariableType, _
+                                     iTimeStep As Integer, _
+                                     lUnits As cUnit(), _
+                                     iItem As Integer, _
+                                     contr As eContributionType) As Single
 
         Dim sTotal As Single = 0.0!
 
@@ -666,9 +666,9 @@ Public Class cResults
     ''' <param name="iItem">Item to filter by.</param>
     ''' <returns>A total value.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetTotal(ByVal vartype As eVariableType, _
-                             Optional ByVal lUnits As cUnit() = Nothing, _
-                             Optional ByVal iItem As Integer = 0, _
+    Public Function GetTotal(vartype As eVariableType, _
+                             Optional lUnits As cUnit() = Nothing, _
+                             Optional iItem As Integer = 0, _
                              Optional contr As eContributionType = eContributionType.Value) As Single
 
         Dim sTotal As Single = 0.0!
@@ -691,12 +691,12 @@ Public Class cResults
 
 #Region " Internals "
 
-    Private Function GetTimeStepResult(ByVal iTimeStep As Integer) As cTimeStepResults
+    Private Function GetTimeStepResult(iTimeStep As Integer) As cTimeStepResults
 
         Dim tsr As cTimeStepResults = Nothing
         If Not Me.m_dtResultTimeStep.ContainsKey(iTimeStep) Then
             tsr = New cTimeStepResults(Me.m_data, iTimeStep)
-            m_dtResultTimeStep.Add(iTimeStep, tsr)
+            Me.m_dtResultTimeStep.Add(iTimeStep, tsr)
         Else
             tsr = Me.m_dtResultTimeStep(iTimeStep)
         End If
@@ -705,7 +705,7 @@ Public Class cResults
 
     End Function
 
-    Private Function GetSnapshot(ByVal objKey As Object) As cTimeStepResults
+    Private Function GetSnapshot(objKey As Object) As cTimeStepResults
 
         Dim tsr As cTimeStepResults = Nothing
         If Me.m_dtSnapshots.ContainsKey(objKey) Then Return Me.m_dtSnapshots(objKey)
@@ -731,11 +731,11 @@ Public Class cResults
     ''' very closely approximate) the value for the unit for the default chain.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub StoreContribution(ByVal iItem As Integer, _
-                                 ByVal unit As cUnit, _
-                                 ByVal iTimeStep As Integer, _
-                                 ByVal sValueContribution As Single, _
-                                 ByVal sBiomassContribution As Single)
+    Public Sub StoreContribution(iItem As Integer, _
+                                 unit As cUnit, _
+                                 iTimeStep As Integer, _
+                                 sValueContribution As Single, _
+                                 sBiomassContribution As Single)
 
         Dim bOkidoki As Boolean = False
 
@@ -767,9 +767,9 @@ Public Class cResults
     ''' <param name="unit"></param>
     ''' <param name="iTimestep"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub GetContributionRatios(ByVal iItem As Integer, _
-                                     ByVal unit As cUnit, _
-                                     ByVal iTimestep As Integer, _
+    Public Sub GetContributionRatios(iItem As Integer, _
+                                     unit As cUnit, _
+                                     iTimestep As Integer, _
                                      ByRef sValueContribution As Single, _
                                      ByRef sBiomassContribution As Single)
 

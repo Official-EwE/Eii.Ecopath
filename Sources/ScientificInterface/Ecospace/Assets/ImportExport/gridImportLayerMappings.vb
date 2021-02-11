@@ -68,7 +68,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Nothing
             End Get
-            Set(ByVal value As cEcospaceLayer())
+            Set(value As cEcospaceLayer())
                 Me.m_aLayers = value
             End Set
         End Property
@@ -77,7 +77,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_astrFields
             End Get
-            Set(ByVal value As String())
+            Set(value As String())
                 Dim lstr As New List(Of String)
                 If (value IsNot Nothing) Then lstr.AddRange(value)
                 If lstr.IndexOf(SharedResources.GENERIC_VALUE_NONE) = -1 Then lstr.Insert(0, SharedResources.GENERIC_VALUE_NONE)
@@ -197,7 +197,7 @@ Namespace Ecospace.Basemap
             Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
         End Sub
 
-        Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
             Dim strField As String = Me.FieldAtRow(p.Row)
             Dim layer As cEcospaceLayer = Me.LayerAtRow(p.Row)
@@ -250,14 +250,14 @@ Namespace Ecospace.Basemap
             End Try
         End Sub
 
-        Private Function LayerAtRow(ByVal iRow As Integer) As cEcospaceLayer
+        Private Function LayerAtRow(iRow As Integer) As cEcospaceLayer
             If iRow > 0 And iRow < Me.RowsCount Then
                 Return DirectCast(Me.Rows(iRow).Tag, cEcospaceLayer)
             End If
             Return Nothing
         End Function
 
-        Private Function FieldAtRow(ByVal iRow As Integer) As String
+        Private Function FieldAtRow(iRow As Integer) As String
             Dim strField As String = ""
             If iRow > 0 And iRow < Me.RowsCount Then
                 strField = CStr(Me(iRow, eColumnTypes.ColumnField).Value)

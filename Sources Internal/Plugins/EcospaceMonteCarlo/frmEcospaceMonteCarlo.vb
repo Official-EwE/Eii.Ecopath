@@ -115,9 +115,9 @@ Public Class frmEcospaceMonteCarlo
     End Property
 
     Public Sub Init(ByVal PluginPoint As cEcospaceMonteCarloPluginPoint)
-        m_plugin = PluginPoint
+        Me.m_plugin = PluginPoint
 
-        UpdateControls()
+        Me.UpdateControls()
 
     End Sub
 

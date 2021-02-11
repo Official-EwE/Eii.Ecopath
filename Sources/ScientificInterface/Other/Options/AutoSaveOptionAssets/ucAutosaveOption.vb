@@ -70,9 +70,9 @@ Namespace Other
         ''' <param name="strLabel">Label to use for the item.</param>
         ''' <param name="iIndent">Checkbox indentation to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal strLabel As String,
-                       ByVal iIndent As Integer)
+        Public Sub New(uic As cUIContext,
+                       strLabel As String,
+                       iIndent As Integer)
 
             MyBase.New()
             Me.InitializeComponent()
@@ -93,9 +93,9 @@ Namespace Other
         ''' associate the item with.</param>
         ''' <param name="iIndent">Checkbox indentation to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal autosavetype As eAutosaveTypes,
-                       ByVal iIndent As Integer)
+        Public Sub New(uic As cUIContext,
+                       autosavetype As eAutosaveTypes,
+                       iIndent As Integer)
             Me.New()
 
             Me.UIContext = uic
@@ -115,9 +115,9 @@ Namespace Other
         ''' <param name="pi"><see cref="IAutoSavePlugin"/> to associate the 
         ''' item with.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal pi As IAutoSavePlugin,
-                       ByVal iIndent As Integer)
+        Public Sub New(uic As cUIContext,
+                       pi As IAutoSavePlugin,
+                       iIndent As Integer)
             Me.New()
 
             Me.UIContext = uic
@@ -136,10 +136,10 @@ Namespace Other
         ''' <param name="writer"><see cref="IResultsWriter"/> to associate the 
         ''' item with.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal writer As IResultsWriter,
-                       ByVal autosavetype As eAutosaveTypes,
-                       ByVal iIndent As Integer)
+        Public Sub New(uic As cUIContext,
+                       writer As IResultsWriter,
+                       autosavetype As eAutosaveTypes,
+                       iIndent As Integer)
             Me.New()
 
             Me.UIContext = uic
@@ -152,11 +152,11 @@ Namespace Other
 
         Private Property UIContext As cUIContext = Nothing Implements IUIElement.UIContext
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
+                If disposing AndAlso Me.components IsNot Nothing Then
                     Me.UIContext = Nothing
-                    components.Dispose()
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -167,7 +167,7 @@ Namespace Other
 
 #Region " Public interfaces "
 
-        Public Sub SetOutputMask(ByVal strMask As String)
+        Public Sub SetOutputMask(strMask As String)
             Me.m_strOutputMask = strMask
             Me.UpdateControls()
         End Sub

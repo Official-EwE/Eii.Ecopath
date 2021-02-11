@@ -79,7 +79,7 @@ Public Class gridFishingWeights
                 Me.AddRow()
 
                 'Get the group info
-                group = Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))

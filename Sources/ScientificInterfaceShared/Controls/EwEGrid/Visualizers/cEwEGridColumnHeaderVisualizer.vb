@@ -41,24 +41,24 @@ Namespace Controls.EwEGrid
     Public Class cEwEGridColumnHeaderVisualizer
         : Inherits SourceGrid2.VisualModels.Header
 
-        Public Sub New(Optional ByVal alignment As ContentAlignment = ContentAlignment.MiddleCenter)
+        Public Sub New(Optional alignment As ContentAlignment = ContentAlignment.MiddleCenter)
             MyBase.New(False)
             Me.TextAlignment = alignment
             Me.WordWrap = True
             Me.AlignTextToImage = True
         End Sub
 
-        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_Border(p_Cell As SourceGrid2.Cells.ICellVirtual, p_CellPosition As SourceGrid2.Position, e As System.Windows.Forms.PaintEventArgs, p_ClientRectangle As System.Drawing.Rectangle, p_Status As SourceGrid2.DrawCellStatus)
 
             Dim border As RectangleBorder = Me.Border
             Dim rc As Rectangle = p_ClientRectangle
             Dim l_BackColor As Color = Me.BackColor
 
             If (p_Status = DrawCellStatus.Focus) Then
-                l_BackColor = FocusBackColor
+                l_BackColor = Me.FocusBackColor
             ElseIf (p_Status = DrawCellStatus.Selected) Then
-                l_BackColor = SelectionBackColor
-                l_BackColor = BackColor
+                l_BackColor = Me.SelectionBackColor
+                l_BackColor = Me.BackColor
             End If
 
             ' Draw the border

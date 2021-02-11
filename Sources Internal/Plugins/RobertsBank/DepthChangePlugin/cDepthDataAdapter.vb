@@ -67,7 +67,7 @@ Public Class cDepthDataAdapter
         Me.m_core.onChanged(Me.m_core.EcospaceBasemap.LayerDepth)
 
         'Counts and re-sets the number of water cells in the core
-        WaterCells()
+        Me.WaterCells()
 
         Me.SpaceData.isCapacityChanged = True
         Me.SpaceData.setHabCapGroupIsChanged(True)
@@ -88,38 +88,38 @@ Public Class cDepthDataAdapter
         Dim foundRow As Boolean
         Dim waterCtr As Integer = 0
         Dim iRow As Integer, iCol As Integer
-        For iCol = 1 To SpaceData.InCol
+        For iCol = 1 To Me.SpaceData.InCol
             foundRow = False
-            SpaceData.iStartRow(iCol) = SpaceData.InRow + 1
-            SpaceData.iEndRow(iCol) = 0
-            For iRow = 1 To SpaceData.InRow
-                If SpaceData.Depth(iRow, iCol) > 0 Then
+            Me.SpaceData.iStartRow(iCol) = Me.SpaceData.InRow + 1
+            Me.SpaceData.iEndRow(iCol) = 0
+            For iRow = 1 To Me.SpaceData.InRow
+                If Me.SpaceData.Depth(iRow, iCol) > 0 Then
                     waterCtr = waterCtr + 1
-                    SpaceData.iWaterCellIndex(waterCtr) = iRow
-                    SpaceData.jWaterCellIndex(waterCtr) = iCol
-                    If SpaceData.iStartRow(iCol) = SpaceData.InRow + 1 Then
-                        SpaceData.iStartRow(iCol) = iRow
+                    Me.SpaceData.iWaterCellIndex(waterCtr) = iRow
+                    Me.SpaceData.jWaterCellIndex(waterCtr) = iCol
+                    If Me.SpaceData.iStartRow(iCol) = Me.SpaceData.InRow + 1 Then
+                        Me.SpaceData.iStartRow(iCol) = iRow
                         foundRow = True
                     End If
-                    SpaceData.iEndRow(iCol) = iRow
+                    Me.SpaceData.iEndRow(iCol) = iRow
                 End If
             Next
             'SpaceData.iStartRow(j) = 1
             'SpaceData.iEndRow(j) = SpaceData.Inrow
         Next
 
-        SpaceData.iTotalWaterCells = waterCtr
-        SpaceData.nWaterCells = waterCtr
+        Me.SpaceData.iTotalWaterCells = waterCtr
+        Me.SpaceData.nWaterCells = waterCtr
 
-        For iRow = 1 To SpaceData.InRow
-            SpaceData.jStartCol(iRow) = SpaceData.InCol + 1
-            SpaceData.jEndCol(iRow) = 0
-            For iCol = 1 To SpaceData.InCol
-                If SpaceData.Depth(iRow, iCol) > 0 Then
-                    If SpaceData.jStartCol(iRow) = SpaceData.InCol + 1 Then
-                        SpaceData.jStartCol(iRow) = iCol
+        For iRow = 1 To Me.SpaceData.InRow
+            Me.SpaceData.jStartCol(iRow) = Me.SpaceData.InCol + 1
+            Me.SpaceData.jEndCol(iRow) = 0
+            For iCol = 1 To Me.SpaceData.InCol
+                If Me.SpaceData.Depth(iRow, iCol) > 0 Then
+                    If Me.SpaceData.jStartCol(iRow) = Me.SpaceData.InCol + 1 Then
+                        Me.SpaceData.jStartCol(iRow) = iCol
                     End If
-                    SpaceData.jEndCol(iRow) = iCol
+                    Me.SpaceData.jEndCol(iRow) = iCol
                 End If
             Next
         Next

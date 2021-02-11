@@ -97,12 +97,12 @@ Namespace SpatialData
         ''' bounding box indicated by <paramref name="ptfNE"/>, <paramref name="ptfSW"/> and 
         ''' <paramref name="dCellSize">cell size</paramref>.</returns>
         ''' -------------------------------------------------------------------
-        Function Convert(ByVal data As Object, _
-                         ByVal ptfNE As PointF, _
-                         ByVal ptfSW As PointF, _
-                         ByVal dCellSize As Double, _
-                         ByVal strProjToWkt As String, _
-                         ByVal strFile As String) As ISpatialRaster
+        Function Convert(data As Object, _
+                         ptfNE As PointF, _
+                         ptfSW As PointF, _
+                         dCellSize As Double, _
+                         strProjToWkt As String, _
+                         strFile As String) As ISpatialRaster
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -110,7 +110,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="doc"><see cref="XmlDocument"/> for creating and parsing nodes.</param>
         ''' -------------------------------------------------------------------
-        Property Configuration(ByVal doc As XmlDocument) As XmlNode
+        Property Configuration(doc As XmlDocument) As XmlNode
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -127,7 +127,7 @@ Namespace SpatialData
         ''' <param name="ds">The dataset to the data.</param>
         ''' <returns>True if compatible.</returns>
         ''' -------------------------------------------------------------------
-        Function IsCompatible(ByVal ds As ISpatialDataSet) As Boolean
+        Function IsCompatible(ds As ISpatialDataSet) As Boolean
 
     End Interface
 

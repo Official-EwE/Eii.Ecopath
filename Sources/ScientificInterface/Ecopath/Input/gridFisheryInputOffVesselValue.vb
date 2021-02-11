@@ -55,14 +55,14 @@ Namespace Ecopath.Input
             Dim source As cCoreInputOutputBase = Nothing
             Dim md As cVariableMetaData = Nothing
 
-            Me.Redim(1, Core.nFleets + 1 + 1)
+            Me.Redim(1, Me.Core.nFleets + 1 + 1)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet names
-            For fleetIndex As Integer = 1 To core.nFleets
-                source = core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.core.nFleets
+                source = Me.core.EcopathFleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.OffVesselPrice)
                 Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
@@ -77,18 +77,18 @@ Namespace Ecopath.Input
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
+            Dim intStanzaGroupIndex(Me.Core.nGroups) As Integer 'Hold the stanza group index
             Dim hgcStanza As cEwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
-            For i As Integer = 1 To Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Me.Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(stanzaGroupIndex)
+            For stanzaGroupIndex As Integer = 0 To Me.Core.nStanzas - 1
+                sg = Me.Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.nLifeStages
-                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = Me.Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     intStanzaGroupIndex(source.Index) = stanzaGroupIndex
                 Next
             Next
@@ -97,14 +97,14 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For rowIndex As Integer = 1 To Core.nGroups
-                source = Core.EcoPathGroupInputs(rowIndex)
+            For rowIndex As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcoPathGroupInputs(rowIndex)
 
                 If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
-                    FillInRows(iRow, source)
+                    Me.FillInRows(iRow, source)
                 Else 'Group is stanza
-                    sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
+                    sg = Me.Core.StanzaGroups(intStanzaGroupIndex(source.Index))
                     If (Not dtStanzaCells.ContainsKey(sg)) Then
                         hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
@@ -112,7 +112,7 @@ Namespace Ecopath.Input
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         ' Complete row with dummy cells
-                        For i As Integer = 2 To Core.nFleets + 1 : Me(iRow, i) = New cEwERowHeaderCell() : Next
+                        For i As Integer = 2 To Me.Core.nFleets + 1 : Me(iRow, i) = New cEwERowHeaderCell() : Next
                         iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
@@ -120,13 +120,13 @@ Namespace Ecopath.Input
                     End If
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, source, True)
+                    Me.FillInRows(iRow, source, True)
                 End If
             Next
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, Optional isIndented As Boolean = False)
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
 
@@ -137,9 +137,9 @@ Namespace Ecopath.Input
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
             ' For each fleet
-            For fleetIndex As Integer = 1 To Core.nFleets
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
                 ' Get the fleet info
-                sourceSec = Core.EcopathFleetInputs(fleetIndex)
+                sourceSec = Me.Core.EcopathFleetInputs(fleetIndex)
                 ' The market price is indexed by (fleetIndex, groupIndex)
                 ' Add the dynamic property to the destined cell
                 Me(iRow, fleetIndex + 1) = New cPropertyCell(Me.PropertyManager, sourceSec, eVarNameFlags.OffVesselPrice, source)

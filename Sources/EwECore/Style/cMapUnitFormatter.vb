@@ -47,7 +47,7 @@ Namespace Style
             Return GetType(eUnitMapRefType)
         End Function
 
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim unit As eUnitMapRefType = DirectCast(value, eUnitMapRefType)

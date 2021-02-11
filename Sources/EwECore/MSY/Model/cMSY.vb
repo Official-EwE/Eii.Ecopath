@@ -167,8 +167,8 @@ Namespace MSY
         ''' <param name="EcopathData"><see cref="cEcopathDataStructures">Ecopath data structures</see> to use.</param>
         ''' <param name="EcosimData"><see cref="cEcosimDatastructures">Ecosim data structures</see> to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Ecosim As cEcoSimModel, ByVal MsyData As cMSYDataStructures, _
-                       ByVal EcopathData As cEcopathDataStructures, ByVal EcosimData As cEcosimDatastructures)
+        Public Sub New(Ecosim As cEcoSimModel, MsyData As cMSYDataStructures, _
+                       EcopathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
 
             Debug.Assert(Ecosim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")
             Debug.Assert(Ecosim.EcosimData IsNot Nothing, Me.ToString & ".New() Invalid Ecosim data object!")
@@ -193,8 +193,8 @@ Namespace MSY
         ''' <param name="MessageDelegate">The <see cref="cCore.CoreMessageDelegate">message delegate</see> 
         ''' through which the MSY model can send <see cref="cMessage">messages</see>.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Connect(ByVal RunStateDelegate As MSYRunStateDelegate,
-                           ByVal MessageDelegate As cCore.CoreMessageDelegate)
+        Public Sub Connect(RunStateDelegate As MSYRunStateDelegate,
+                           MessageDelegate As cCore.CoreMessageDelegate)
             Me.m_RunStateDelegate = RunStateDelegate
             Me.m_MessageDelegate = MessageDelegate
         End Sub
@@ -231,13 +231,13 @@ Namespace MSY
 
                 ' InitForSingleSpeciesRun will set m_FStep
                 'If InitForSingleSpeciesRun Fails it will return false
-                If Not InitForSingleRun() Then Return False
+                If Not Me.InitForSingleRun() Then Return False
 
                 Dim iNumSteps As Integer = CInt(Me.m_Fmax / Me.m_Fstep)
                 Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
 
                 Me.StartProgress(cStringUtils.Localize(My.Resources.CoreMessages.MSY_STATUS_RUNNING, strAssessment), iNumSteps)
-                bRan = runSingleSpecies()
+                bRan = Me.runSingleSpecies()
                 Me.EndProgress()
 
             Catch ex As Exception
@@ -343,12 +343,12 @@ Namespace MSY
                 Me.m_msyData.FSelectionMode = eMSYFSelectionModeType.Groups
                 Me.m_msyData.MSYRunType = eMSYRunTypes.FMSY
 
-                ReDim FmsySS(Me.m_msyData.nGroups)
-                ReDim CmsySS(Me.m_msyData.nGroups)
-                ReDim VmsySS(Me.m_msyData.nGroups)
+                ReDim Me.FmsySS(Me.m_msyData.nGroups)
+                ReDim Me.CmsySS(Me.m_msyData.nGroups)
+                ReDim Me.VmsySS(Me.m_msyData.nGroups)
 
-                ReDim CatchAtFmsy(Me.m_msyData.nGroups)
-                ReDim ValueAtFmsy(Me.m_msyData.nGroups)
+                ReDim Me.CatchAtFmsy(Me.m_msyData.nGroups)
+                ReDim Me.ValueAtFmsy(Me.m_msyData.nGroups)
 
                 Return Me.InitForRun()
 
@@ -365,9 +365,9 @@ Namespace MSY
             Try
 
                 'Redim local arrays need for any run SS MSY or FMSY
-                ReDim bb(Me.m_msyData.nGroups)
-                ReDim ValSum(Me.m_msyData.nGroups)
-                ReDim ValSumBase(Me.m_msyData.nGroups)
+                ReDim Me.bb(Me.m_msyData.nGroups)
+                ReDim Me.ValSum(Me.m_msyData.nGroups)
+                ReDim Me.ValSumBase(Me.m_msyData.nGroups)
 
                 If Me.m_msyData.FSelectionMode = eMSYFSelectionModeType.Groups Then
                     Debug.Assert(Me.m_msyData.iSelGroupFleet <= Me.m_msyData.nGroups, Me.ToString & ".InitForRun() Selected group > ngroups.")
@@ -605,7 +605,7 @@ Namespace MSY
                 Next F
 
                 'Re-init Ecosim to the base values
-                InitEcosimForRK4()
+                Me.InitEcosimForRK4()
                 'This will re-run Ecosim with the base line values
                 'which is needed to re-init to the base for the next set of runs
                 Me.setBaseLineValues()
@@ -716,7 +716,7 @@ Namespace MSY
                 End While
 
                 'Re-init Ecosim to the base values
-                InitEcosimForRK4()
+                Me.InitEcosimForRK4()
                 'This will re-run Ecosim with the base line values
                 'which is needed to re-init to the base for the next set of runs
                 Me.setBaseLineValues()
@@ -773,7 +773,7 @@ Namespace MSY
 
             ' Gather up catches (should really be obtained from last result)
             For igrp = 1 To Me.m_msyData.nGroups
-                [Catch](igrp) = bb(igrp) * Me.m_simData.FishTime(igrp)
+                [Catch](igrp) = Me.bb(igrp) * Me.m_simData.FishTime(igrp)
             Next
 
             If Me.m_msyData.FSelectionMode = eMSYFSelectionModeType.Groups Then
@@ -913,13 +913,13 @@ Namespace MSY
 
                 'set any loaded forcing function for this time step
                 Me.m_Ecosim.settval(imon)
-                Me.m_Ecosim.setDenDepCatchMult(bb)
+                Me.m_Ecosim.setDenDepCatchMult(Me.bb)
 
                 'Clear out the monthly averaged multi-stanza variables
                 Me.m_Ecosim.clearMonthlyStanzaVars()
 
                 'Run the rk4 this is the main engine of Ecosim
-                Me.m_Ecosim.rk4(bb, t, DeltaT, imon, True)
+                Me.m_Ecosim.rk4(Me.bb, t, DeltaT, imon, True)
                 t += DeltaT
 
                 'Reset the biomass back to the start biomass if the group is forced
@@ -927,7 +927,7 @@ Namespace MSY
                 'for the next Ecosim run
                 For igrp As Integer = 1 To Me.m_msyData.nGroups
                     If Me.m_msyData.ForceGroupB(igrp) = True Then
-                        bb(igrp) = Me.m_simData.StartBiomass(igrp)
+                        Me.bb(igrp) = Me.m_simData.StartBiomass(igrp)
                     End If
                 Next igrp
 
@@ -955,16 +955,16 @@ Namespace MSY
         End Function
 
 
-        Private Sub getEcosimRunResults(F As Single, ByVal bIncrementing As Boolean)
+        Private Sub getEcosimRunResults(F As Single, bIncrementing As Boolean)
             Try
                 If Me.m_msyData.MSYRunType = eMSYRunTypes.SingleRunMSY Then
                     'Single Run 
                     'Populate the cMSYFResults object for this F step 
                     'and store it in the list of results lstResults
                     If bIncrementing Then
-                        Me.m_msyData.lstResults.Add(EcosimResultFactory(F))
+                        Me.m_msyData.lstResults.Add(Me.EcosimResultFactory(F))
                     Else
-                        Me.m_msyData.lstResults.Insert(0, EcosimResultFactory(F))
+                        Me.m_msyData.lstResults.Insert(0, Me.EcosimResultFactory(F))
                     End If
 
                 ElseIf Me.m_msyData.MSYRunType = eMSYRunTypes.FMSY Then
@@ -972,7 +972,7 @@ Namespace MSY
                     'This ONLY populates the results used for the FMSY Search cFMSYResults
                     'This leaves the results from a Single Species run intact for the interface to use
                     Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
-                    Dim curCatch As Single = bb(igrp) * Me.m_simData.FishTime(igrp)
+                    Dim curCatch As Single = Me.bb(igrp) * Me.m_simData.FishTime(igrp)
                     Dim t As cFoptTracker = Me.m_FOptTracker(igrp)
                     t.Track(Me.m_simData.FishTime(igrp), curCatch)
 
@@ -1007,7 +1007,7 @@ Namespace MSY
 
                 For igrp As Integer = 1 To Me.m_msyData.nGroups
                     'Catch on a group across all the fleets
-                    Dim curCatch As Single = bb(igrp) * Me.m_simData.FishTime(igrp)
+                    Dim curCatch As Single = Me.bb(igrp) * Me.m_simData.FishTime(igrp)
                     Me.CatchAtFmsy(igrp) = curCatch
 
                     For iflt As Integer = 1 To Me.m_msyData.nFleets
@@ -1029,13 +1029,13 @@ Namespace MSY
 
             'Get Total value from Ecosim F and B 
             Dim igrp As Integer = 0
-            Dim TotVal As Single = Me.getTotalValue(Me.m_simData.FishTime, bb)
+            Dim TotVal As Single = Me.getTotalValue(Me.m_simData.FishTime, Me.bb)
             Dim result As New cMSYFResult(Me.m_msyData.nGroups, FishingMort, TotVal)
             Dim t As cFoptTracker = Nothing
 
             For igrp = 1 To Me.m_msyData.nGroups
-                result.B(igrp) = bb(igrp)
-                result.Catch(igrp) = bb(igrp) * Me.m_simData.FishTime(igrp)
+                result.B(igrp) = Me.bb(igrp)
+                result.Catch(igrp) = Me.bb(igrp) * Me.m_simData.FishTime(igrp)
                 result.FishingMort(igrp) = Me.m_simData.FishTime(igrp)
             Next
 
@@ -1092,11 +1092,11 @@ Namespace MSY
             Private m_sCatchMax As Single = 0
             Private m_sFMax As Single = 0
 
-            Public Sub New(ByVal iGroup As Integer)
+            Public Sub New(iGroup As Integer)
                 Me.m_iGroup = iGroup
             End Sub
 
-            Public Sub Track(ByVal sF As Single, ByVal sCatch As Single)
+            Public Sub Track(sF As Single, sCatch As Single)
 
                 ' Fifo: add sample, and kick out old samples
                 Me.m_lSamples.Add(sCatch)
@@ -1105,7 +1105,7 @@ Namespace MSY
                 End While
 
                 ' Update max
-                If (sCatch > m_sCatchMax) Then
+                If (sCatch > Me.m_sCatchMax) Then
                     Me.m_sCatchMax = sCatch
                     Me.m_sFMax = sF
                     'Me.m_bIsFOpt = False
@@ -1128,7 +1128,7 @@ Namespace MSY
             Public Function IsFopt() As Boolean
 
                 Dim sMean As Single = 0
-                Dim nResults As Integer = m_lSamples.Count
+                Dim nResults As Integer = Me.m_lSamples.Count
 
                 If (nResults < SAMPLESIZE) Then Return False
 
@@ -1157,7 +1157,7 @@ Namespace MSY
 
 #Region " Progress reporting "
 
-        Private Sub StartProgress(ByVal strStatus As String, ByVal iNumSteps As Integer)
+        Private Sub StartProgress(strStatus As String, iNumSteps As Integer)
             Try
 
                 Me.ChangeRunState(eMSYRunStates.MSYRunStarted)

@@ -124,7 +124,7 @@ Public Class cEcospaceSpinupPlugin
         Try
             RaiseEvent OnEcospaceTimeStep()
         Catch ex As Exception
-            LogMessage(ex, "Failed to send OnEcospaceTimeStep() Event to interface.")
+            Me.LogMessage(ex, "Failed to send OnEcospaceTimeStep() Event to interface.")
         End Try
     End Sub
 
@@ -134,7 +134,7 @@ Public Class cEcospaceSpinupPlugin
             ' Done
             RaiseEvent OnEcospaceRunCompleted()
         Catch ex As Exception
-            LogMessage(ex, "Failed to send OnEcospaceTimeStep() Event to interface.")
+            Me.LogMessage(ex, "Failed to send OnEcospaceTimeStep() Event to interface.")
         End Try
     End Sub
 
@@ -142,7 +142,7 @@ Public Class cEcospaceSpinupPlugin
         Try
             RaiseEvent OnEcospaceRunStarting()
         Catch ex As Exception
-            LogMessage(ex, "Failed to send fireOnRunStarting() Event to interface.")
+            Me.LogMessage(ex, "Failed to send fireOnRunStarting() Event to interface.")
         End Try
     End Sub
 
@@ -157,7 +157,7 @@ Public Class cEcospaceSpinupPlugin
             Me.EcoSpaceData.UseSpinUpBase = Me.UseSpinUpBaseBio
 
         Catch ex As Exception
-            LogMessage(ex, "Exception initializing OnEcospaceInitRunStarted.")
+            Me.LogMessage(ex, "Exception initializing OnEcospaceInitRunStarted.")
         End Try
 
     End Sub
@@ -173,7 +173,7 @@ Public Class cEcospaceSpinupPlugin
             Me.fireOnRunStarting()
 
         Catch ex As Exception
-            LogMessage(ex, "Exception initializing EcospaceSpinupPlugin.")
+            Me.LogMessage(ex, "Exception initializing EcospaceSpinupPlugin.")
         End Try
     End Sub
 
@@ -213,29 +213,29 @@ Public Class cEcospaceSpinupPlugin
 
                     BtBt1 = Bt / BtMinus1  'Math.Log(Bt / B0) ^ 2
 
-                    BtBtMinus1(igrp) += BtBt1
+                    Me.BtBtMinus1(igrp) += BtBt1
                     'slre summed across all the groups
-                    BtBtMinus1(0) += BtBt1
+                    Me.BtBtMinus1(0) += BtBt1
 
-                    BioAtBase(igrp) = B0
-                    BioAtTime(igrp) = Bt
+                    Me.BioAtBase(igrp) = B0
+                    Me.BioAtTime(igrp) = Bt
 
                     'sum into the zero index
-                    BioAtBase(0) += B0
-                    BioAtTime(0) += Bt
+                    Me.BioAtBase(0) += B0
+                    Me.BioAtTime(0) += Bt
 
 
                 Next
 
                 'sum across all the groups into zero index
                 Me.BtB0(0) = Me.BtB0(0) / Me.EcoSpaceData.NGroups ' (BioAtTime(0) - BioAtBase(0)) / BioAtBase(0) * 100
-                BtBtMinus1(0) = BtBtMinus1(0) / Me.EcoSpaceData.NGroups
+                Me.BtBtMinus1(0) = Me.BtBtMinus1(0) / Me.EcoSpaceData.NGroups
                 Me.fireOnTimeStep()
 
             End If
 
         Catch ex As Exception
-            LogMessage(ex, "Exception on Ecospace timestep.")
+            Me.LogMessage(ex, "Exception on Ecospace timestep.")
         End Try
 
     End Sub
@@ -256,7 +256,7 @@ Public Class cEcospaceSpinupPlugin
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
     Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
-            m_core = DirectCast(CoreAsObject, cCore)
+            Me.m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
             Me.LogMessage(ex)
         End Try
@@ -273,11 +273,11 @@ Public Class cEcospaceSpinupPlugin
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
-            m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
+            Me.m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
+            Me.m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            Me.m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
+            Debug.Assert((Me.m_EcoPath IsNot Nothing) And (Me.m_EcoSim IsNot Nothing) And (Me.m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -396,7 +396,7 @@ Public Class cEcospaceSpinupPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
         form = Me.GetMainForm
     End Sub
 
@@ -409,7 +409,7 @@ Public Class cEcospaceSpinupPlugin
 
     Private Function GetMainForm() As frmEcospaceSpinup
 
-        If Not HasMainForm() Then
+        If Not Me.HasMainForm() Then
             Me.m_form = New frmEcospaceSpinup()
             Me.m_form.UIContext = Me.m_uic
             Me.m_form.Init(Me)

@@ -51,8 +51,8 @@ Public Class cEcospaceImportExportRaster
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal parent As IEcospaceImportExport,
-                   Optional ByVal strField As String = "")
+    Public Sub New(parent As IEcospaceImportExport,
+                   Optional strField As String = "")
         Me.m_parent = parent
         Me.m_strField = strField
     End Sub

@@ -65,7 +65,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iRow">One based index of the row</param>
         ''' <remarks>Group names or Fleet names depending on the data source</remarks>
-        ReadOnly Property RowLabel(ByVal iRow As Integer) As String
+        ReadOnly Property RowLabel(iRow As Integer) As String
 
         ''' <summary>
         ''' Turns Off/On core updates while adding values to core data
@@ -83,7 +83,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="Blocks">implementation of IBlockSelector</param>
         ''' <remarks>The data source need to listen to the Block selector and set the number of blocks and cv values</remarks>
-        Sub Attach(ByVal Blocks As IBlockSelector)
+        Sub Attach(Blocks As IBlockSelector)
 
         ''' <summary>
         ''' Init the data source
@@ -95,7 +95,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iRow">Row</param>
         ''' <param name="iCol">Column</param>
-        Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)
+        Sub FillBlock(iRow As Integer, iCol As Integer)
 
         ''' <summary>
         ''' Sets a sequence of BlockCells
@@ -103,7 +103,7 @@ Namespace Ecosim
         ''' <param name="startYear">Year for the first block to fill</param>
         ''' <param name="endYear">End of the sequence</param>
         ''' <param name="yearPerBlock">Number of years per unique block</param>
-        Sub SetSeqColorCodes(ByVal startYear As Integer, ByVal endYear As Integer, ByVal yearPerBlock As Integer)
+        Sub SetSeqColorCodes(startYear As Integer, endYear As Integer, yearPerBlock As Integer)
 
         ''' <summary>
         ''' Update the core data 
@@ -115,7 +115,7 @@ Namespace Ecosim
         ''' Return the value of a Block
         ''' </summary>
         ''' <param name="iBlock">Block index/value</param>
-        Function BlockToValue(ByVal iBlock As Integer) As Single
+        Function BlockToValue(iBlock As Integer) As Single
 
     End Interface
 

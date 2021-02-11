@@ -76,9 +76,9 @@ Public MustInherit Class cBaseShapeManager
     ''' <param name="EcoSimData">EcoSim data used to populate the Shapes</param>
     ''' <remarks>New ShapeMangers can only be created by the Core so this is Declares as a Friend. Derived class should override the Init() function to initialize the Shapes. </remarks>
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
-        m_SimData = EcoSimData
-        m_core = theCore
-        m_DataType = DataType
+        Me.m_SimData = EcoSimData
+        Me.m_core = theCore
+        Me.m_DataType = DataType
     End Sub
 
     ''' <inheritdocs cref="IDisposable.Dispose"/>
@@ -120,7 +120,7 @@ Public MustInherit Class cBaseShapeManager
     Default Public Overridable ReadOnly Property Item(ItemIndex As Integer) As cForcingFunction
         Get
             Try
-                Return m_shapes.Item(ItemIndex)
+                Return Me.m_shapes.Item(ItemIndex)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".Item() Error: " & ex.Message)
                 Return Nothing
@@ -138,7 +138,7 @@ Public MustInherit Class cBaseShapeManager
         Get
             Try
                 'convert core one based index to zero base for list
-                Return m_shapes.Item(CoreOneBasedIndex - 1)
+                Return Me.m_shapes.Item(CoreOneBasedIndex - 1)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".CoreIndex() Error: " & ex.Message)
                 Return Nothing
@@ -155,7 +155,7 @@ Public MustInherit Class cBaseShapeManager
     ''' <remarks>The collection is zero based(0). So Count is one more then the last index i.e. ShapeManager.Item(ShapeManager.Count - 1) Will return the last Item in the list.  </remarks>
     Public ReadOnly Property Count() As Integer
         Get
-            Return m_shapes.Count
+            Return Me.m_shapes.Count
         End Get
     End Property
 
@@ -165,7 +165,7 @@ Public MustInherit Class cBaseShapeManager
     ''' <returns>The Enumerator of the List used by this object</returns>
     ''' <remarks></remarks>
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
-        Return m_shapes.GetEnumerator
+        Return Me.m_shapes.GetEnumerator
     End Function
 
     ''' <summary>
@@ -176,7 +176,7 @@ Public MustInherit Class cBaseShapeManager
     ''' <remarks></remarks>
     Public Function Contains(ByRef ForcingFunction As cForcingFunction) As Boolean
         Try
-            Return m_shapes.Contains(ForcingFunction)
+            Return Me.m_shapes.Contains(ForcingFunction)
         Catch ex As Exception
             Return False
         End Try
@@ -194,7 +194,7 @@ Public MustInherit Class cBaseShapeManager
 
             'Remove all references to ShapeToRemove from Databse, EcoSim data arrays and All Shape Managers
             'this will remove this record from the database and re-load all EcoSim Data Arrays that are related to the shapes
-            If Not m_core.RemoveShape(ShapeToRemove.DBID) Then Return False
+            If Not Me.m_core.RemoveShape(ShapeToRemove.DBID) Then Return False
 
             'remove the shape from the shape managers memory
             Me.m_shapes.Remove(ShapeToRemove)
@@ -204,7 +204,7 @@ Public MustInherit Class cBaseShapeManager
             'The structure of the underlying EcoSim data has changed because it was re-loaded above
             'So re-init both Forcing and Eggprod shape managers from the underlying EcoSim Data
             'it is not good enough to just init this manager as other shape managers were affected by changing the data
-            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+            Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
 
             Return True
 
@@ -243,7 +243,7 @@ Public MustInherit Class cBaseShapeManager
     ''' </summary>
     ''' <remarks>Tell the core that a shape has changed. </remarks>
     Friend Overridable Sub ShapeChanged(Optional shape As cShapeData = Nothing)
-        m_core.onChanged(Me, eMessageType.DataModified)
+        Me.m_core.onChanged(Me, eMessageType.DataModified)
 
         ' Send a shape changed message
         'Me.m_core.Messages.SendMessage()
@@ -358,7 +358,7 @@ Public MustInherit Class cBaseShapeManager
     <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
-            Return m_DataType
+            Return Me.m_DataType
         End Get
     End Property
 
@@ -384,8 +384,8 @@ Public MustInherit Class cBaseShapeManager
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
     <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Function GetID() As String Implements ICoreInterface.GetID
-        Dim id As Integer = CType(m_DataType, Integer)
-        Return cValueID.GetDataTypeID(m_DataType, id)
+        Dim id As Integer = CType(Me.m_DataType, Integer)
+        Return cValueID.GetDataTypeID(Me.m_DataType, id)
     End Function
 
     ''' <inheritdocs cref="ICoreInterface.Index"/>
@@ -427,82 +427,3 @@ Public MustInherit Class cBaseShapeManager
 #End Region ' Deprecated
 
 End Class
-
-' ''' <summary>
-' ''' Implemenation of the Base class for capacity shapes
-' ''' </summary>
-'Public Class cEcosimResponseShapeManager
-'    Inherits cBaseShapeManager
-
-'    Private m_medData As cMediationDataStructures
-
-'    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
-'        MyBase.New(EcoSimData, theCore, DataType)
-
-'        Me.Init()
-
-'    End Sub
-
-
-'    Public Overrides ReadOnly Property NPoints() As Integer
-'        Get
-'            Return m_medData.NMedPoints
-'        End Get
-'    End Property
-
-'    ''' <summary>
-'    ''' Create a new Mediation shape
-'    ''' </summary>
-'    Public Overrides Function CreateNewShape(strName As String, asData As Single(), _
-'            Optional sYZero As Single = 0, Optional sYBase As Single = 0, _
-'            Optional sYEnd As Single = 0, Optional sSteep As Single = 0, _
-'            Optional shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
-
-'        Dim dbID As Integer
-
-'        If m_core.AddShape(strName, eDataTypes.CapacityMediation, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
-
-'            Dim medFunct As cEnviroResponseFunction
-
-'            'create a new shape that is hooked up to the underlying ecosim data
-'            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
-'            medFunct.ID = m_shapes.Count
-'            medFunct.Load()
-
-'            medFunct.ShapeFunctionType = shapeType
-
-'            'Add the new shape to the list 
-'            MyBase.Add(medFunct)
-
-'            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
-
-'            Return medFunct
-
-'        End If
-
-'        Return Nothing
-
-'    End Function
-
-'    Friend Overrides Function Init() As Boolean
-'        Dim medFunct As cEnviroResponseFunction
-
-'        'get the Enviromental response function for Capacity 
-'        m_medData = Me.m_SimData.CapEnvResData
-
-'        'clear out any existing data
-'        m_shapes.Clear()
-
-'        For imed As Integer = 1 To m_medData.MediationShapes
-'            'All mediation shapes from the core will have an object 
-'            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
-'            medFunct.ID = m_shapes.Count
-'            medFunct.Load()
-'            m_shapes.Add(medFunct)
-
-'        Next imed
-'        Me.Load()
-
-'    End Function
-
-'End Class

@@ -72,7 +72,7 @@ Namespace Ecospace.Advection
         ''' <summary>Delegate that will be called at the end of each advection iteration.</summary>
         ''' <param name="iIteration">The number of the iteration.</param>
         ''' -------------------------------------------------------------------
-        Public Delegate Sub ComputationProgressDelegate(ByVal iIteration As Integer)
+        Public Delegate Sub ComputationProgressDelegate(iIteration As Integer)
 
         ''' -------------------------------------------------------------------
         ''' <summary>Delegate that will be called when advection computations have finished.</summary>
@@ -80,7 +80,7 @@ Namespace Ecospace.Advection
         ''' <param name="bInterrupted">Flag stating whether the iterations were interrupted by the user.</param>
         ''' <param name="bBadFlow">Flag stating whether the computed flow was considered 'bad'.</param>
         ''' -------------------------------------------------------------------
-        Public Delegate Sub ComputationCompletedDelegate(ByVal iIteration As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
+        Public Delegate Sub ComputationCompletedDelegate(iIteration As Integer, bInterrupted As Boolean, bBadFlow As Boolean)
 
 #Region " Private Variables "
 
@@ -125,9 +125,9 @@ Namespace Ecospace.Advection
         ''' <remarks>Make sure to properly <see cref="Disconnect">Disconnect</see>
         ''' when this manager is no longer needed.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub Connect(ByVal ComputationStartedCallBack As ComputationStartedDelegate,
-                           ByVal ComputationCompletedBack As ComputationCompletedDelegate,
-                           ByVal ComputationProgressCallBack As ComputationProgressDelegate)
+        Public Sub Connect(ComputationStartedCallBack As ComputationStartedDelegate,
+                           ComputationCompletedBack As ComputationCompletedDelegate,
+                           ComputationProgressCallBack As ComputationProgressDelegate)
 
             Me.m_RunStartedDelegate = ComputationStartedCallBack
             Me.m_RunCompletedDelegate = ComputationCompletedBack
@@ -156,21 +156,21 @@ Namespace Ecospace.Advection
         ''' <param name="theCore">Core instance to operate upon.</param>
         ''' <param name="theEcospace">Ecospace instance to operate upon.</param>
         ''' -------------------------------------------------------------------
-        Friend Function Init(ByVal theCore As cCore, ByVal theEcospace As cEcoSpace) As Boolean
+        Friend Function Init(theCore As cCore, theEcospace As cEcoSpace) As Boolean
             Try
 
                 Me.m_core = theCore
 
-                m_comp = New cAdvection()
-                m_comp.Init(theCore, theEcospace)
+                Me.m_comp = New cAdvection()
+                Me.m_comp.Init(theCore, theEcospace)
                 'm_comp.AddMessageCallback = AddressOf OnAddMessageHandler
-                m_comp.ProgressCallback = AddressOf OnAdvectionCalcsProgressHandler
-                m_comp.RunStartedCallBack = AddressOf OnAdvectionCalcsStartedHandler
-                m_comp.RunCompletedCallback = AddressOf OnAdvectionCalcsCompletedHandler
+                Me.m_comp.ProgressCallback = AddressOf Me.OnAdvectionCalcsProgressHandler
+                Me.m_comp.RunStartedCallBack = AddressOf Me.OnAdvectionCalcsStartedHandler
+                Me.m_comp.RunCompletedCallback = AddressOf Me.OnAdvectionCalcsCompletedHandler
 
                 'get the data from the core
-                m_data = m_core.m_EcoSpaceData
-                m_parameters = New cAdvectionParameters(Me.m_core, -1)
+                Me.m_data = Me.m_core.m_EcoSpaceData
+                Me.m_parameters = New cAdvectionParameters(Me.m_core, -1)
 
                 Return True
 
@@ -190,13 +190,13 @@ Namespace Ecospace.Advection
         Friend Function Load() As Boolean
 
             Try
-                m_parameters.AllowValidation = False
+                Me.m_parameters.AllowValidation = False
 
                 Me.m_parameters.UpwellingThreshold = Me.m_comp.UpwellingThreshold
                 Me.m_parameters.UpwellingPPMultiplier = Me.m_data.PPupWell
 
-                m_parameters.ResetStatusFlags()
-                m_parameters.AllowValidation = True
+                Me.m_parameters.ResetStatusFlags()
+                Me.m_parameters.AllowValidation = True
                 Return True
             Catch ex As Exception
                 Return False
@@ -227,7 +227,7 @@ Namespace Ecospace.Advection
         Public Sub Clear()
             Try
                 If Me.m_parameters IsNot Nothing Then
-                    m_parameters.Clear()
+                    Me.m_parameters.Clear()
                 End If
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
@@ -246,7 +246,7 @@ Namespace Ecospace.Advection
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ModelParameters() As cAdvectionParameters
             Get
-                Return m_parameters
+                Return Me.m_parameters
             End Get
         End Property
 
@@ -267,7 +267,7 @@ Namespace Ecospace.Advection
         '''' </summary>
         '''' <remarks>This will not do anything if the search is not running</remarks>
         '''' -------------------------------------------------------------------
-        'Public Sub StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1)
+        'Public Sub StopRun(Optional WaitTimeInMillSec As Integer = -1)
 
         'End Sub
 
@@ -304,7 +304,7 @@ Namespace Ecospace.Advection
                 bSuccess = Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
                                                          eCoreComponentType.EcoSpace,
                                                          eMessageImportance.Critical,
@@ -314,7 +314,7 @@ Namespace Ecospace.Advection
                 bSuccess = False
             End Try
 
-            m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             'send any messages generated from starting the search
             Me.OnSendCoreMessages()
 
@@ -322,7 +322,7 @@ Namespace Ecospace.Advection
         End Function
 
 
-        Public Function RunPhysicsModel(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+        Public Function RunPhysicsModel(SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
             ' Sanity check
             If (Me.m_core.StateMonitor.IsBusy) Then Return False
@@ -349,7 +349,7 @@ Namespace Ecospace.Advection
 
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
                                                          eCoreComponentType.EcoSpace,
                                                          eMessageImportance.Critical,
@@ -421,7 +421,7 @@ Namespace Ecospace.Advection
 
         End Function
 
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
             Me.m_comp.Interrupted = True
         End Function
 
@@ -434,10 +434,10 @@ Namespace Ecospace.Advection
 
             Try
 
-                If m_RunStartedDelegate IsNot Nothing Then
+                If Me.m_RunStartedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    If m_syncObject IsNot Nothing Then
-                        m_syncObject.BeginInvoke(Me.m_RunStartedDelegate, Nothing)
+                    If Me.m_syncObject IsNot Nothing Then
+                        Me.m_syncObject.BeginInvoke(Me.m_RunStartedDelegate, Nothing)
                     Else
                         Me.m_RunStartedDelegate.Invoke()
                     End If
@@ -449,17 +449,17 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnAdvectionCalcsProgressHandler(ByVal iInteration As Integer)
+        Private Sub OnAdvectionCalcsProgressHandler(iInteration As Integer)
 
             Try
-                If m_RunProgressDelegate IsNot Nothing Then
+                If Me.m_RunProgressDelegate IsNot Nothing Then
                     ' Invalidate layers
                     For Each layer As cEcospaceLayer In Me.m_core.EcospaceBasemap.LayerAdvection
                         layer.Invalidate()
                     Next
                     ' Call the delegate supplied by the interface
-                    If m_syncObject IsNot Nothing Then
-                        m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
+                    If Me.m_syncObject IsNot Nothing Then
+                        Me.m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
                     Else
                         Me.m_RunProgressDelegate.Invoke(Me.m_comp.Iteration)
                     End If
@@ -471,22 +471,22 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnAdvectionCalcsCompletedHandler(ByVal iIteration As Integer, ByVal bInterrupted As Boolean, ByVal bBadAdvection As Boolean)
+        Private Sub OnAdvectionCalcsCompletedHandler(iIteration As Integer, bInterrupted As Boolean, bBadAdvection As Boolean)
 
             Try
-                m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
 
                 ' Release any waiting threads
                 Me.ReleaseWait()
 
                 'send any messages that the model added to the managers list of messages
                 'by using the m_syncObject the messages will be sent on the Interfaces thread not the FPS thread
-                If m_syncObject IsNot Nothing Then
+                If Me.m_syncObject IsNot Nothing Then
                     Dim ctd As CallingThreadDelegate = AddressOf Me.OnSendCoreMessages
-                    m_syncObject.BeginInvoke(ctd, Nothing)
+                    Me.m_syncObject.BeginInvoke(ctd, Nothing)
 
                     ctd = AddressOf Me.OnChanged
-                    m_syncObject.BeginInvoke(ctd, Nothing)
+                    Me.m_syncObject.BeginInvoke(ctd, Nothing)
                 Else
                     Me.OnSendCoreMessages()
                     Me.OnChanged()
@@ -494,8 +494,8 @@ Namespace Ecospace.Advection
 
                 If Me.m_RunCompletedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    If m_syncObject IsNot Nothing Then
-                        m_syncObject.BeginInvoke(m_RunCompletedDelegate, New Object() {iIteration, bInterrupted, bBadAdvection})
+                    If Me.m_syncObject IsNot Nothing Then
+                        Me.m_syncObject.BeginInvoke(Me.m_RunCompletedDelegate, New Object() {iIteration, bInterrupted, bBadAdvection})
                     Else
                         Me.m_RunCompletedDelegate(iIteration, bInterrupted, bBadAdvection)
                     End If
@@ -503,25 +503,25 @@ Namespace Ecospace.Advection
 
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End Try
 
         End Sub
 
-        Private Sub OnAddMessageHandler(ByVal message As cMessage)
+        Private Sub OnAddMessageHandler(message As cMessage)
             'add the message to the managers list of mesasges
             'these messages will be sent at the end of the run
-            m_lstMessages.Add(message)
+            Me.m_lstMessages.Add(message)
 
         End Sub
 
         Private Sub OnSendCoreMessages()
             Try
-                For Each msg As cMessage In m_lstMessages
-                    m_core.Messages.AddMessage(msg)
+                For Each msg As cMessage In Me.m_lstMessages
+                    Me.m_core.Messages.AddMessage(msg)
                 Next
-                m_core.Messages.sendAllMessages()
-                m_lstMessages.Clear()
+                Me.m_core.Messages.sendAllMessages()
+                Me.m_lstMessages.Clear()
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
                 cLog.Write(ex)
@@ -530,7 +530,7 @@ Namespace Ecospace.Advection
 
         Private Sub OnChanged()
             Try
-                m_core.onChanged(Me)
+                Me.m_core.onChanged(Me)
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
                 cLog.Write(ex)
@@ -571,7 +571,7 @@ Namespace Ecospace.Advection
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 ' NOP
             End Set
         End Property
@@ -592,7 +592,7 @@ Namespace Ecospace.Advection
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 ' NOP
             End Set
         End Property
@@ -605,7 +605,7 @@ Namespace Ecospace.Advection
             Get
                 Return Me.ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ' NOP
             End Set
         End Property
@@ -642,7 +642,7 @@ Namespace Ecospace.Advection
         ''' <param name="SyncObject"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+        Public Function Run(SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
             ' Sanity check
             If (Me.m_core.StateMonitor.IsBusy) Then Return False

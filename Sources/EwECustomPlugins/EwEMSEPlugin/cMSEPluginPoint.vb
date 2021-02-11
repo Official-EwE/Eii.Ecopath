@@ -102,7 +102,7 @@ Public Class cMSEPluginPoint
         End Get
     End Property
 
-    Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -117,7 +117,7 @@ Public Class cMSEPluginPoint
 #Region " Construction "
 
     Public Sub New()
-        Me.m_MSE = New cMSE(m_monitor, Me)
+        Me.m_MSE = New cMSE(Me.m_monitor, Me)
     End Sub
 
 #End Region ' Construction
@@ -167,25 +167,28 @@ Public Class cMSEPluginPoint
         ' NOP
     End Sub
 
-    Public Sub onInitialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub onInitialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
         Me.m_core = CType(core, cCore)
-        Units.Init(m_core)
+        Units.Init(Me.m_core)
     End Sub
 
     Public Sub onCoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) _
         Implements EwEPlugin.ICorePlugin.CoreInitialized
+
+        ' UIC required
+        If Not Me.CanRun Then Return
 
         Me.m_ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
         Me.m_ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
 
         Debug.Assert(Me.m_uic IsNot Nothing)
 
-        Me.MSE.onCoreInitialized(Me.m_core, m_ecopath, m_ecosim)
+        Me.MSE.onCoreInitialized(Me.m_core, Me.m_ecopath, Me.m_ecosim)
 
         ' Set message handlers
-        Me.m_mhEcopath = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
-        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
-        Me.m_mhSettings = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+        Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhSettings = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
 
 #If DEBUG Then
         Me.m_mhEcopath.Name = "CefasMSE_mhEcopath"
@@ -202,6 +205,8 @@ Public Class cMSEPluginPoint
     Public Sub Dispose() _
         Implements EwEPlugin.IDisposedPlugin.Dispose
 
+        If Not Me.CanRun Then Return
+
         Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcopath)
         Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
         Me.Core.Messages.RemoveMessageHandler(Me.m_mhSettings)
@@ -214,17 +219,20 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) _
                 Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+
+        If Not Me.CanRun Then Return
 
         Me.m_pathdata = DirectCast(EcopathDataAsObject, cEcopathDataStructures)
         Me.MSE.onEcopathInitialized(Me.m_pathdata)
 
     End Sub
 
-    Public Sub onEcosimInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub onEcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
+
+        If Not Me.CanRun Then Return
 
         If TypeOf EcosimDatastructures Is cEcosimDatastructures Then
 
@@ -237,6 +245,8 @@ Public Class cMSEPluginPoint
 
     Public Sub MSEInitialized(MSEModel As Object, MSEDataStructure As Object, EcosimDatastructures As Object) _
         Implements EwEPlugin.IMSEInitialized.MSEInitialized
+
+        If Not Me.CanRun Then Return
 
         Try
             Me.m_coreMSEData = DirectCast(MSEDataStructure, MSE.cMSEDataStructures)
@@ -255,6 +265,8 @@ Public Class cMSEPluginPoint
     Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
 
+        If Not Me.CanRun Then Return
+
         ' A session is only active IF the user has the MSE interface open when starting Ecosim
         Me.m_bSessionActive = Me.HasUI
         If (Not Me.m_bSessionActive) Then Return
@@ -267,9 +279,10 @@ Public Class cMSEPluginPoint
         End Try
     End Sub
 
-    Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer) _
+    Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) _
         Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
 
+        If (Not Me.CanRun) Then Return
         If (Not Me.m_bSessionActive) Then Return
 
         Try
@@ -285,6 +298,10 @@ Public Class cMSEPluginPoint
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+
+        If (Not Me.CanRun) Then Return
+        If (Not Me.m_bSessionActive) Then Return
+
         Try
             Me.MSE.onEcosimEndTimeStep(BiomassAtTimestep, iTime)
         Catch ex As Exception
@@ -292,15 +309,15 @@ Public Class cMSEPluginPoint
         End Try
     End Sub
 
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
-        If Not Me.HasUI Then
+        If Not Me.HasUI And Me.CanRun Then
             Me.InvalidateConfiguration()
             Me.m_frm = New frmMSE(Me, Me.m_uic)
         End If
 
         ' Let EwE show the form
-        frmPlugin = m_frm
+        frmPlugin = Me.m_frm
 
     End Sub
 
@@ -375,7 +392,12 @@ Public Class cMSEPluginPoint
 
 #Region " Helper methods "
 
+    Private Function CanRun() As Boolean
+        Return Me.m_uic IsNot Nothing
+    End Function
+
     Private Function HasUI() As Boolean
+        If Not Me.CanRun Then Return False
         If (Me.m_frm Is Nothing) Then Return False
         Return Not Me.m_frm.IsDisposed
     End Function
@@ -491,7 +513,7 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-    Private Sub onPreProcessMessage(ByVal msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _
+    Private Sub onPreProcessMessage(msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _
         Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
 
         ' JS 03Oct13: ONLY SUPPRESS MESSAGES WHEN MSE IS RUNNING! 

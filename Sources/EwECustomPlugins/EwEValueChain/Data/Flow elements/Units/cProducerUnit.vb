@@ -62,12 +62,12 @@ Public Class cProducerUnit
             Return lFleets
         End Function
 
-        Public Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesSupported(context As ITypeDescriptorContext) As Boolean
             ' Show combo
             Return True
         End Function
 
-        Public Overrides Function GetStandardValuesExclusive(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesExclusive(context As ITypeDescriptorContext) As Boolean
             ' Do not edit combo
             Return True
         End Function
@@ -76,7 +76,7 @@ Public Class cProducerUnit
         ''' Override the GetStandardValues method and return a 
         ''' StandardValuesCollection filled with your standard values
         ''' </summary>
-        Public Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
+        Public Overrides Function GetStandardValues(context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
             Dim lFleets As List(Of cEcopathFleetInput) = Me.FleetList
             Dim lFleetNames As New List(Of String)
             Dim fleet As cEcopathFleetInput = Nothing
@@ -89,20 +89,20 @@ Public Class cProducerUnit
             Return New StandardValuesCollection(lFleetNames)
         End Function
 
-        Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext, ByVal sourceType As System.Type) As Boolean
+        Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, sourceType As System.Type) As Boolean
             Return sourceType Is GetType(String)
         End Function
 
-        Public Overrides Function CanConvertTo(ByVal context As ITypeDescriptorContext, ByVal destinationType As System.Type) As Boolean
+        Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, destinationType As System.Type) As Boolean
             Return destinationType Is GetType(Integer)
         End Function
 
         ''' <summary>
         ''' Convert fleet name to DBID
         ''' </summary>
-        Public Overrides Function ConvertFrom(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object) As Object
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object) As Object
 
             If TypeOf value Is String Then
                 If Not String.IsNullOrEmpty(CStr(value)) Then
@@ -125,10 +125,10 @@ Public Class cProducerUnit
         ''' <summary>
         ''' Convert DBID to fleet name
         ''' </summary>
-        Public Overrides Function ConvertTo(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object, _
-                ByVal destinationType As System.Type) As Object
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object, _
+                destinationType As System.Type) As Object
 
             If TypeOf value Is Integer Then
                 Dim lFleets As List(Of cEcopathFleetInput) = Me.FleetList
@@ -181,13 +181,13 @@ Public Class cProducerUnit
     ''' </summary>
     ''' <param name="iSequence"></param>
     ''' -----------------------------------------------------------------------
-    Public Overrides Sub InitRun(ByVal iSequence As Integer)
+    Public Overrides Sub InitRun(iSequence As Integer)
         MyBase.InitRun(iSequence)
         ' Reset local vars for the next run
         Me.m_sOriginalOutputBiomass = 0.0!
 
-        ReDim Me.m_asLandings(core.nGroups)
-        ReDim Me.m_asLandingsValue(core.nGroups)
+        ReDim Me.m_asLandings(Me.core.nGroups)
+        ReDim Me.m_asLandingsValue(Me.core.nGroups)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -206,7 +206,7 @@ Public Class cProducerUnit
         End If
     End Sub
 
-    Public Shadows Function HasTarget(ByVal unit As cUnit, ByVal group As cEcoPathGroupInput) As Boolean
+    Public Shadows Function HasTarget(unit As cUnit, group As cEcoPathGroupInput) As Boolean
 
         ' Follow each output link
         For iLink As Integer = 0 To Me.LinkOutCount - 1
@@ -228,10 +228,10 @@ Public Class cProducerUnit
 #Region " Calculations "
 
     <Obsolete("cProducerUnit.Process override should not be called anymore")> _
-    Public Overrides Sub Process(ByVal results As cResults, _
-                                 ByVal input As cInput, _
-                                 ByVal iTimeStep As Integer, _
-                                 ByVal iUnit As Integer)
+    Public Overrides Sub Process(results As cResults, _
+                                 input As cInput, _
+                                 iTimeStep As Integer, _
+                                 iUnit As Integer)
 
         Throw New NotImplementedException("cProducerUnit.Process override should not be called anymore")
         '' Store landings and landings price only for producers
@@ -244,10 +244,10 @@ Public Class cProducerUnit
 
     End Sub
 
-    Protected Overrides Function Calculate(ByVal results As cResults, _
-            ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-            ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-            ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function Calculate(results As cResults, _
+            sInputBiomass As Single, sInputValue As Single, _
+            sOutputBiomass As Single, sOutputValue As Single, _
+            iTimeStep As Integer) As Boolean
         Dim bSucces As Boolean
 
         'VC090310: Producer cost needs to reflect ecosim effort. 
@@ -283,10 +283,10 @@ Public Class cProducerUnit
                 Debug.Assert((shp IsNot Nothing), "Error on timestep " & CStr(iTimeStep) & ": fishing rate shape not available")
                 ' Get effort
                 'We run the policy search for 20 extra years for which there is no effort, so use last effort for those years
-                If iTimeStep <= Core.EcoSimModelParameters.NumberYears * 12 Then
+                If iTimeStep <= Me.Core.EcoSimModelParameters.NumberYears * 12 Then
                     Me.m_sEffort = shp.ShapeData(iTimeStep)
                 Else
-                    Me.m_sEffort = shp.ShapeData(Core.EcoSimModelParameters.NumberYears * 12)
+                    Me.m_sEffort = shp.ShapeData(Me.Core.EcoSimModelParameters.NumberYears * 12)
                 End If
             End If
         End If
@@ -316,10 +316,10 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcProducts(ByVal results As cResults, _
-             ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-             ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-             ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcProducts(results As cResults, _
+             sInputBiomass As Single, sInputValue As Single, _
+             sOutputBiomass As Single, sOutputValue As Single, _
+             iTimeStep As Integer) As Boolean
 
 
         'Now add to this the revenue from paying customers
@@ -335,19 +335,19 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcRawmaterialCost(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcRawmaterialCost(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Return results.Store(Me, cResults.eVariableType.CostRawmaterial, 0, iTimeStep)
 
     End Function
 
-    Protected Overrides Function CalcInputCost(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcInputCost(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         ' Need to include effort in our calculations
         If Me.m_bUseEffort Then
@@ -361,10 +361,10 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcManagementRoyaltyCertificationCost(ByVal results As cResults, _
-               ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-               ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-               ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcManagementRoyaltyCertificationCost(results As cResults, _
+               sInputBiomass As Single, sInputValue As Single, _
+               sOutputBiomass As Single, sOutputValue As Single, _
+               iTimeStep As Integer) As Boolean
 
         'the costs for management and royalties are proportional to effort
         If Me.m_bUseEffort Then
@@ -380,10 +380,10 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcSubsidy(ByVal results As cResults, _
-               ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-               ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-               ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcSubsidy(results As cResults, _
+               sInputBiomass As Single, sInputValue As Single, _
+               sOutputBiomass As Single, sOutputValue As Single, _
+               iTimeStep As Integer) As Boolean
 
         If Me.m_bUseEffort Then
             Dim sSum As Single = Me.m_sEffort * Me.m_sOriginalOutputBiomass * (Me.SubsidyEnergy + Me.SubsidyOther)
@@ -394,8 +394,8 @@ Public Class cProducerUnit
         End If
     End Function
 
-    Protected Overridable Function CalcObserverCost(ByVal results As cResults, ByVal sOutputBiomass As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcObserverCost(results As cResults, sOutputBiomass As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sObsCost As Single = 0
         If Me.m_bUseEffort Then
@@ -418,10 +418,10 @@ Public Class cProducerUnit
     ''' <param name="iTimeStep"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Protected Overrides Function CalcWorkerFemales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcWorkerFemales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
         If Me.m_bUseEffort Then
             Dim sSum As Single = Me.m_sEffort * Me.m_sOriginalOutputBiomass * Me.WorkerFemale
             Return results.Store(Me, cResults.eVariableType.NumberOfWorkerFemales, sSum, iTimeStep)
@@ -431,10 +431,10 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcWorkerMales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcWorkerMales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         If Me.m_bUseEffort Then
             Dim sSum As Single = Me.m_sEffort * Me.m_sOriginalOutputBiomass * Me.WorkerMale
@@ -445,10 +445,10 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcOwnerMales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcOwnerMales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         If Me.m_bUseEffort Then
             Dim sSum As Single = Me.m_sEffort * Me.m_sOriginalOutputBiomass * Me.OwnerMale
@@ -459,10 +459,10 @@ Public Class cProducerUnit
 
     End Function
 
-    Protected Overrides Function CalcOwnerFemales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function CalcOwnerFemales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         If Me.m_bUseEffort Then
             Dim sSum As Single = Me.m_sEffort * Me.m_sOriginalOutputBiomass * Me.OwnerFemale
@@ -511,7 +511,7 @@ Public Class cProducerUnit
             End If
             Return strName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ' Setting generated name?
             If (String.Compare(value, Me.GenerateName()) = 0) Then
                 ' #Yes: Clear the base name
@@ -585,7 +585,7 @@ Public Class cProducerUnit
         Get
             Return Me.m_sObserverCost
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_sObserverCost = value
             Me.SetChanged()
         End Set
@@ -601,7 +601,7 @@ Public Class cProducerUnit
         Get
             Return Me.m_sObserverRate
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_sObserverRate = value
             Me.SetChanged()
         End Set
@@ -615,11 +615,11 @@ Public Class cProducerUnit
      cPropertySorter.PropertyOrder(1)> _
     Public Property TicketProducts() As Single
         Get
-            Return m_sTicketProducts
+            Return Me.m_sTicketProducts
         End Get
-        Set(ByVal value As Single)
-            m_sTicketProducts = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_sTicketProducts = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -634,7 +634,7 @@ Public Class cProducerUnit
         Get
             Return Me.m_iEcopathFleetID
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iEcopathFleetID = value
             Me.SetChanged()
         End Set
@@ -667,10 +667,10 @@ Public Class cProducerUnit
         Get
             Return Me.m_fleet
         End Get
-        Friend Set(ByVal value As cEcopathFleetInput)
+        Friend Set(value As cEcopathFleetInput)
             Me.m_fleet = value
-            If (Fleet IsNot Nothing) Then
-                Me.EcopathFleetID = CInt(Fleet.GetVariable(eVarNameFlags.DBID))
+            If (Me.Fleet IsNot Nothing) Then
+                Me.EcopathFleetID = CInt(Me.Fleet.GetVariable(eVarNameFlags.DBID))
             Else
                 Me.EcopathFleetID = 0
             End If
@@ -689,14 +689,14 @@ Public Class cProducerUnit
     ''' <param name="iGroup"></param>
     ''' <param name="sBiomass">Total biomass landed in area</param>
     ''' <param name="sValue">Total value landed in area</param>
-    Public Sub SetLandings(ByVal iGroup As Integer, ByVal sBiomass As Single, ByVal sValue As Single)
+    Public Sub SetLandings(iGroup As Integer, sBiomass As Single, sValue As Single)
         Me.m_asLandings(iGroup) = sBiomass
         Me.m_asLandingsValue(iGroup) = sValue
     End Sub
 
-    Public Overloads Sub Process(ByVal results As cResults, _
-                                 ByVal iTimeStep As Integer, _
-                                 ByVal iItem As Integer)
+    Public Overloads Sub Process(results As cResults, _
+                                 iTimeStep As Integer, _
+                                 iItem As Integer)
 
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0

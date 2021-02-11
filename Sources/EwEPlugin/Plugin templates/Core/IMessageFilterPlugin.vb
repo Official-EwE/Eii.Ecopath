@@ -75,6 +75,6 @@ Public Interface IMessageFilterPlugin
     ''' message handler in your code.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Sub PreProcessMessage(ByVal msg As IMessage, ByRef bCancelMessage As Boolean)
+    Sub PreProcessMessage(msg As IMessage, ByRef bCancelMessage As Boolean)
 
 End Interface

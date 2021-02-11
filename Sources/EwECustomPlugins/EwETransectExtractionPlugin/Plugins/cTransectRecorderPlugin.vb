@@ -86,7 +86,7 @@ Public Class cTransectRecorderPlugin
         Next
 
         ' Add Ecospace delegate to receive access to Ecospace time step results
-        Me.m_dgt = New cCore.EcoSpaceInterfaceDelegate(AddressOf OnEcospaceTimeStep)
+        Me.m_dgt = New cCore.EcoSpaceInterfaceDelegate(AddressOf Me.OnEcospaceTimeStep)
         Me.m_core.AddEcospaceTimeStepHandler(Me.m_dgt)
 
     End Sub

@@ -71,7 +71,7 @@ Public Class cEwEStatusBar
         End If
     End Sub
 
-    Public Sub Attach(ByVal uic As cUIContext, frm As frmEwE6)
+    Public Sub Attach(uic As cUIContext, frm As frmEwE6)
 
         ' Sanity checks
         Debug.Assert(Me.m_uic Is Nothing)
@@ -81,11 +81,11 @@ Public Class cEwEStatusBar
         Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_selmon.Attach(uic)
 
-        AddHandler Me.m_csm.CoreDataStateEvent, AddressOf OnCoreDataStateEvent
-        AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
-        AddHandler Me.m_selmon.OnSelectionChanged, AddressOf OnSelectionChanged
+        AddHandler Me.m_csm.CoreDataStateEvent, AddressOf Me.OnCoreDataStateEvent
+        AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
+        AddHandler Me.m_selmon.OnSelectionChanged, AddressOf Me.OnSelectionChanged
 
-        Me.m_mhSpatConfig = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+        Me.m_mhSpatConfig = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
         Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpatConfig)
 #If DEBUG Then
         Me.m_mhSpatConfig.Name = "cEwEStatusBar:Ecospace"
@@ -102,9 +102,9 @@ Public Class cEwEStatusBar
         Me.m_mhSpatConfig.Dispose()
         Me.m_mhSpatConfig = Nothing
 
-        RemoveHandler Me.m_csm.CoreDataStateEvent, AddressOf OnCoreDataStateEvent
-        RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
-        RemoveHandler Me.m_selmon.OnSelectionChanged, AddressOf OnSelectionChanged
+        RemoveHandler Me.m_csm.CoreDataStateEvent, AddressOf Me.OnCoreDataStateEvent
+        RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
+        RemoveHandler Me.m_selmon.OnSelectionChanged, AddressOf Me.OnSelectionChanged
 
         Me.m_selmon.Detach()
         Me.m_csm = Nothing
@@ -124,8 +124,8 @@ Public Class cEwEStatusBar
     ''' for a detailed description of this event.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub OnCoreDataStateEvent(ByVal csm As EwECore.cCoreStateMonitor)
-        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateModelPanes))
+    Private Sub OnCoreDataStateEvent(csm As EwECore.cCoreStateMonitor)
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateModelPanes))
         'Me.UpdateModelPanes()
     End Sub
 
@@ -139,7 +139,7 @@ Public Class cEwEStatusBar
     ''' for a detailed description of this event.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreExecutionStateEvent(csm As cCoreStateMonitor)
         Me.UpdateModelPanes()
     End Sub
 
@@ -195,7 +195,7 @@ Public Class cEwEStatusBar
             ' ----------------------
             strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP,
                                        eweModel.Name,
-                                       m_frmEwE6.SelectedFileName)
+                                       Me.m_frmEwE6.SelectedFileName)
             Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, strTooltip)
 
             ' -------
@@ -284,7 +284,7 @@ Public Class cEwEStatusBar
 
     End Sub
 
-    Private Function ToTooltipLabel(ByVal str As String) As String
+    Private Function ToTooltipLabel(str As String) As String
         If String.IsNullOrEmpty(str) Then Return SharedResources.GENERIC_VALUE_NONE
         Return str
     End Function
@@ -309,9 +309,9 @@ Public Class cEwEStatusBar
     ''' <param name="strTooltipText">Tooltip text to assign to the item. If this value
     ''' is an empty string no tooltip will appear.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateToolstripItem(ByVal tsi As ToolStripItem,
-            Optional ByVal strText As String = "",
-            Optional ByVal strTooltipText As String = "")
+    Private Sub UpdateToolstripItem(tsi As ToolStripItem,
+            Optional strText As String = "",
+            Optional strTooltipText As String = "")
 
         ' Abort if something went wrong
         If tsi Is Nothing Then Return
@@ -337,7 +337,7 @@ Public Class cEwEStatusBar
     ''' <param name="sProgress">Progress ([0, 1] or -1 )to set in a continuous progress bar,
     ''' 0.0 to hide progress bar, or -1 to show a marquee progress bar.</param>
     ''' -------------------------------------------------------------------
-    Public Sub SetStatusText(ByVal strText As String, Optional ByVal sProgress As Single = 0.0)
+    Public Sub SetStatusText(strText As String, Optional sProgress As Single = 0.0)
 
         ' Early bail-out
         If (Me.m_tsStatus Is Nothing) Then Return
@@ -354,7 +354,7 @@ Public Class cEwEStatusBar
         End If
 
         ' Optimization
-        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) And (Not Me.m_sLastProgress = cCore.NULL_VALUE) Then
+        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = Me.m_sLastProgress) And (Not Me.m_sLastProgress = cCore.NULL_VALUE) Then
             Return
         End If
 

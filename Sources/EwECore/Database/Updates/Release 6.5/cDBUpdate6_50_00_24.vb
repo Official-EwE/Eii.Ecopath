@@ -61,7 +61,7 @@ Friend Class cDBUpdate6_50_00_24
 
         Dim bSuccess As Boolean = True
 
-        For Each strTable As String In s_tables
+        For Each strTable As String In Me.s_tables
             Try
                 bSuccess = bSuccess And Me.UpdateShapeFunctions(db, strTable)
             Catch ex As Exception
@@ -190,15 +190,15 @@ Friend Class cDBUpdate6_50_00_24
         db.ReleaseWriter(writer, True)
 
         For i As Integer = 0 To 3
-            bSuccess = bSuccess And db.Execute("ALTER TABLE " & strTableName & " DROP COLUMN " & s_fields(i))
+            bSuccess = bSuccess And db.Execute("ALTER TABLE " & strTableName & " DROP COLUMN " & Me.s_fields(i))
         Next
 
         Return bSuccess
 
     End Function
 
-    Private Function ConvertNormalDistribution(ByVal normaldist As cNormalShapeFunction,
-                                               ByVal Mean As Single, ByVal SDLeft As Single, ByVal SDRight As Single, ByVal DataWidth As Single, _
+    Private Function ConvertNormalDistribution(normaldist As cNormalShapeFunction,
+                                               Mean As Single, SDLeft As Single, SDRight As Single, DataWidth As Single, _
                                                ByRef Xmin As Single, ByRef XMax As Single) As Boolean
 
         Mean = Xmin + (XMax - Xmin) / 2

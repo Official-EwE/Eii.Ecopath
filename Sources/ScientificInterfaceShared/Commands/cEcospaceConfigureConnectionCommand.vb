@@ -45,7 +45,7 @@ Namespace Commands
         ''' Constructor, initializes a new instance of the NavigationCommand class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, cCOMMAND_NAME)
         End Sub
 
@@ -55,8 +55,8 @@ Namespace Commands
         ''' element defined by this call.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal layer As cEcospaceLayer, _
-                                    Optional ByVal conn As SpatialData.cSpatialDataConnection = Nothing)
+        Public Overloads Sub Invoke(layer As cEcospaceLayer, _
+                                    Optional conn As SpatialData.cSpatialDataConnection = Nothing)
             Me.Layer = layer
             Me.Connection = conn
             MyBase.Invoke()

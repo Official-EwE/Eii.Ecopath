@@ -145,15 +145,15 @@ Public Class cTransect
             If Math.Abs(y1 - y0) < Math.Abs(x1 - x0) Then
 
                 If x0 > x1 Then
-                    GetCellsX(x1, y1, x0, y0)
+                    Me.GetCellsX(x1, y1, x0, y0)
                 Else
-                    GetCellsX(x0, y0, x1, y1)
+                    Me.GetCellsX(x0, y0, x1, y1)
                 End If
             Else
                 If y0 > y1 Then
-                    GetCellsY(x1, y1, x0, y0)
+                    Me.GetCellsY(x1, y1, x0, y0)
                 Else
-                    GetCellsY(x0, y0, x1, y1)
+                    Me.GetCellsY(x0, y0, x1, y1)
                 End If
             End If
         End If
@@ -202,8 +202,8 @@ Public Class cTransect
         Dim t As Integer = results.iTimeStep
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            Me.m_summaries(Key(t, iGroup, eSummaryType.Biomass)) = New cTransectSummary(Me, bm, "Biomass " & t, results.BiomassMap, iGroup)
-            Me.m_summaries(Key(t, iGroup, eSummaryType.Catch)) = New cTransectSummary(Me, bm, "Catch " & t, results.CatchMap, iGroup)
+            Me.m_summaries(Me.Key(t, iGroup, eSummaryType.Biomass)) = New cTransectSummary(Me, bm, "Biomass " & t, results.BiomassMap, iGroup)
+            Me.m_summaries(Me.Key(t, iGroup, eSummaryType.Catch)) = New cTransectSummary(Me, bm, "Catch " & t, results.CatchMap, iGroup)
         Next
     End Sub
 
@@ -221,7 +221,7 @@ Public Class cTransect
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function Summary(iTimestep As Integer, iGroup As Integer, variable As eSummaryType) As cTransectSummary
-        Dim strKey As String = Key(iTimestep, iGroup, variable)
+        Dim strKey As String = Me.Key(iTimestep, iGroup, variable)
         If Me.m_summaries.ContainsKey(strKey) Then Return Me.m_summaries(strKey)
         Return Nothing
     End Function

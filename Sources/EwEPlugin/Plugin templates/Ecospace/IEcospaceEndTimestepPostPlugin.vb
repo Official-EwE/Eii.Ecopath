@@ -28,7 +28,7 @@
 Public Interface IEcospaceEndTimestepPostPlugin
     Inherits IPlugin
 
-    Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer)
+    Sub EcospaceEndTimeStepPost(EcospaceDatastructures As Object, iTime As Integer)
 
 End Interface
 

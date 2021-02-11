@@ -55,10 +55,10 @@ Public Class cEcosimMortalityResponseManager
 
     Private Sub LoadFromCoreData(manager As cForcingFunctionShapeManager)
 
-        If m_lstEnviroData Is Nothing Then
-            m_lstEnviroData = New List(Of IEnviroInputData)
+        If Me.m_lstEnviroData Is Nothing Then
+            Me.m_lstEnviroData = New List(Of IEnviroInputData)
         End If
-        m_lstEnviroData.Clear()
+        Me.m_lstEnviroData.Clear()
 
         'populate the list of IEnviroInputData objects that the user will interact with 
         'to change region related parameters from the interface
@@ -72,7 +72,7 @@ Public Class cEcosimMortalityResponseManager
                     EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.MortalityRespFuncIndex(iEnv, iGroup)
                 Next
                 'Me.m_simData.lstEnviroInputData.Add(EnviroData)
-                m_lstEnviroData.Add(EnviroData)
+                Me.m_lstEnviroData.Add(EnviroData)
 
             Catch ex As Exception
                 Debug.Assert(False, "LoadFromCoreData Error: " & ex.Message)

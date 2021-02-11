@@ -58,11 +58,11 @@ Namespace Ecopath.Output
             Private Class ElectivityGridCellVisualizer
                 : Inherits cEwEGridVisualizerBase
 
-                Protected Overrides Sub DrawCell_Background(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                        ByVal p_CellPosition As SourceGrid2.Position, _
-                        ByVal e As System.Windows.Forms.PaintEventArgs, _
-                        ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                        ByVal p_Status As SourceGrid2.DrawCellStatus)
+                Protected Overrides Sub DrawCell_Background(p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                        p_CellPosition As SourceGrid2.Position, _
+                        e As System.Windows.Forms.PaintEventArgs, _
+                        p_ClientRectangle As System.Drawing.Rectangle, _
+                        p_Status As SourceGrid2.DrawCellStatus)
 
                     If (p_Status = SourceGrid2.DrawCellStatus.Normal) Then
 
@@ -107,10 +107,10 @@ Namespace Ecopath.Output
             ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces.</param>
             ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal pm As cPropertyManager, _
-                           ByVal Source As cCoreInputOutputBase, _
-                           ByVal VarName As eVarNameFlags, _
-                           Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+            Public Sub New(pm As cPropertyManager, _
+                           Source As cCoreInputOutputBase, _
+                           VarName As eVarNameFlags, _
+                           Optional SourceSec As cCoreInputOutputBase = Nothing)
                 MyBase.new(pm, Source, VarName, SourceSec)
                 ' Set shared visualizer
                 Me.VisualModel = g_visualizer
@@ -122,7 +122,7 @@ Namespace Ecopath.Output
             ''' </summary>
             ''' <param name="prop">The property to assign to the cell.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal prop As cProperty)
+            Public Sub New(prop As cProperty)
                 ' Call baseclass constructor
                 MyBase.New(prop)
                 ' Set shared visualizer
@@ -147,16 +147,16 @@ Namespace Ecopath.Output
 
             Dim source As cCoreGroupBase = Nothing
 
-            Me.Redim(core.nGroups + 1, 2)
+            Me.Redim(Me.core.nGroups + 1, 2)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To core.nGroups
+            For i As Integer = 1 To Me.core.nGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = core.EcoPathGroupOutputs(i)
+                source = Me.core.EcoPathGroupOutputs(i)
                 ' Group index header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
@@ -180,14 +180,14 @@ Namespace Ecopath.Output
             Dim columnIndex As Integer = 2
 
             ' For each column
-            For groupIndex As Integer = 1 To core.nGroups
+            For groupIndex As Integer = 1 To Me.core.nGroups
                 ' Get the group
-                source = core.EcoPathGroupOutputs(groupIndex)
+                source = Me.core.EcoPathGroupOutputs(groupIndex)
                 If source.PP < 1 Then
                     ' For each row
-                    For rowIndex As Integer = 1 To core.nGroups
+                    For rowIndex As Integer = 1 To Me.core.nGroups
                         ' Get index group
-                        sourceSec = core.EcoPathGroupOutputs(rowIndex)
+                        sourceSec = Me.core.EcoPathGroupOutputs(rowIndex)
                         ' Create cell
                         cell = New ElectivityGridCell(Me.PropertyManager, source, eVarNameFlags.Alpha, sourceSec)
                         ' Cells suppress zeroes to increase legibility of the grid

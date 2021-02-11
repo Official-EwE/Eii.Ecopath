@@ -79,7 +79,7 @@ Friend Class cDBUpdate6_00_04_0005
     End Function
 
 
-    Private Function AddEcospaceWeightTables(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcospaceWeightTables(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -97,7 +97,7 @@ Friend Class cDBUpdate6_00_04_0005
 
     End Function
 
-    Private Function FixFieldLengths(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixFieldLengths(db As cEwEDatabase) As Boolean
         Return db.Execute("ALTER TABLE EcosimTimeSeriesDataset ALTER COLUMN DatasetName TEXT(255)")
     End Function
 

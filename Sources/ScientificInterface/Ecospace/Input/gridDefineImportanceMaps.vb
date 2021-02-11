@@ -94,7 +94,7 @@ Namespace Ecospace
             ''' initialize this instance from. If set, this instance represents a
             ''' Layer currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal Layer As cEcospaceLayerImportance)
+            Public Sub New(Layer As cEcospaceLayerImportance)
                 Debug.Assert(Layer IsNot Nothing)
                 Me.m_Layer = Layer
                 Me.m_strName = Layer.Name
@@ -109,7 +109,7 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single)
+            Public Sub New(strName As String, strDescription As String, sWeight As Single)
                 Me.m_Layer = Nothing
                 Me.m_strName = strName
                 Me.m_strDescription = strDescription
@@ -126,7 +126,7 @@ Namespace Ecospace
                 Get
                     Return Me.m_strName
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     Me.m_strName = value
                 End Set
             End Property
@@ -140,7 +140,7 @@ Namespace Ecospace
                 Get
                     Return Me.m_strDescription
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     Me.m_strDescription = value
                 End Set
             End Property
@@ -154,7 +154,7 @@ Namespace Ecospace
                 Get
                     Return Me.m_sWeight
                 End Get
-                Set(ByVal value As Single)
+                Set(value As Single)
                     Me.m_sWeight = value
                 End Set
             End Property
@@ -192,7 +192,7 @@ Namespace Ecospace
                 Get
                     Return Me.m_bConfirmed
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     Me.m_bConfirmed = value
                 End Set
             End Property
@@ -234,7 +234,7 @@ Namespace Ecospace
                 Get
                     Return Me.m_status = eItemStatusTypes.Removed
                 End Get
-                Set(ByVal bDelete As Boolean)
+                Set(bDelete As Boolean)
                     If Me.m_Layer IsNot Nothing Then
                         If bDelete Then
                             Me.m_status = eItemStatusTypes.Removed
@@ -328,7 +328,7 @@ Namespace Ecospace
             Next
 
             ' Brute-force update grid
-            UpdateGrid()
+            Me.UpdateGrid()
 
         End Sub
 
@@ -386,7 +386,7 @@ Namespace Ecospace
 
             ' Populate rows
             For iRow As Integer = 1 To Me.m_alLayers.Count
-                UpdateRow(iRow)
+                Me.UpdateRow(iRow)
             Next iRow
 
         End Sub
@@ -397,7 +397,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow">The index of the row to refresh.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateRow(ByVal iRow As Integer)
+        Private Sub UpdateRow(iRow As Integer)
 
             Dim li As cLayerInfo = Nothing
             Dim ri As RowInfo = Nothing
@@ -444,7 +444,7 @@ Namespace Ecospace
         ''' just edited for text and combo box controls. *sigh*
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If Not Me.AllowUpdates Then Return True
 
@@ -489,7 +489,7 @@ Namespace Ecospace
         ''' Cell click handler, called in response to clicking button-like cells.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        Protected Overrides Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
 
             Select Case DirectCast(p.Column, eColumnTypes)
             End Select
@@ -506,7 +506,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow">The index of the row to delete.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub ToggleDeleteRow(Optional ByVal iRow As Integer = -1)
+        Public Sub ToggleDeleteRow(Optional iRow As Integer = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow
 
@@ -551,7 +551,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsLayerRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsLayerRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (iRow >= iFIRSTDATAROW) And (iRow < Me.RowsCount)
         End Function
@@ -559,9 +559,9 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether the layer on a row is flagged for deletion.
         ''' </summary>
-        Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsLayerRow(iRow) Then Return False
+            If Not Me.IsLayerRow(iRow) Then Return False
 
             Dim iLayer As Integer = iRow - iFIRSTDATAROW
             Dim li As cLayerInfo = Nothing
@@ -637,7 +637,7 @@ Namespace Ecospace
             Get
                 Return (Me.m_iUpdateLock = 0)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value Then
                     Me.m_iUpdateLock += 1
                 Else
@@ -648,7 +648,7 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal li As cLayerInfo)
+        Private Overloads Sub SelectRow(li As cLayerInfo)
             For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
                 If ReferenceEquals(Me.m_alLayers(iLayer), li) Then
                     Me.SelectRow(iLayer + iFIRSTDATAROW)

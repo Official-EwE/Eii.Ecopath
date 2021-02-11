@@ -45,9 +45,9 @@ Public Class cBugReporter
     ''' <param name="strMailTo">Target email address.</param>
     ''' <param name="pm">Plug-in manager to extract components from.</param>
     ''' -----------------------------------------------------------------------
-    Public Shared Function BugReport(ByVal strAppName As String, _
-                                     ByVal strMailTo As String, _
-                                     Optional ByVal pm As cPluginManager = Nothing) As String
+    Public Shared Function BugReport(strAppName As String, _
+                                     strMailTo As String, _
+                                     Optional pm As cPluginManager = Nothing) As String
 
         Dim an As AssemblyName = Nothing
         Dim ub As New cUriBuilder("mailto:" & strMailTo)
@@ -86,9 +86,9 @@ Public Class cBugReporter
 
     End Function
 
-    'Private Shared Function SendAttachment(ByVal strAppName As String, _
-    '                                ByVal strAddress As String, _
-    '                                ByVal pm As cPluginManager) As Boolean
+    'Private Shared Function SendAttachment(strAppName As String, _
+    '                                strAddress As String, _
+    '                                pm As cPluginManager) As Boolean
 
     '    Dim an As AssemblyName = Nothing
     '    Dim oMsg As New MailMessage()

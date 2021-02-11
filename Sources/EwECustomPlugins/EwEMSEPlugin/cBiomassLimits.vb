@@ -62,7 +62,7 @@ Public Class cBiomassLimits
         Public Sub New(Core As cCore)
             'mPlugin = Plugin
             'mMSE = mPlugin.MSE
-            mCore = Core
+            Me.mCore = Core
             'mFileName = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits, mFileNameOnly)
         End Sub
 
@@ -73,10 +73,10 @@ Public Class cBiomassLimits
     Public Sub New(MSE As cMSE)
 
         'mPlugin = Plugin
-        mMSE = MSE
-        mCore = mMSE.Core
-        mFileName = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits, mFileNameOnly)
-        lstBiomassLimits = New List(Of cBiomassLimit)
+        Me.mMSE = MSE
+        Me.mCore = Me.mMSE.Core
+        Me.mFileName = cMSEUtils.MSEFile(Me.mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits, mFileNameOnly)
+        Me.lstBiomassLimits = New List(Of cBiomassLimit)
         Me.Defaults()
 
     End Sub
@@ -108,7 +108,7 @@ Public Class cBiomassLimits
 
 
     Public Function GetUpperLimit(iGrp As Integer) As Double
-        For Each iBiomassLimit In lstBiomassLimits
+        For Each iBiomassLimit In Me.lstBiomassLimits
             If iBiomassLimit.mGroup.Index = iGrp Then Return iBiomassLimit.mUpperLimit
         Next
 
@@ -116,14 +116,14 @@ Public Class cBiomassLimits
     End Function
 
     Public Function GetLowerLimit(iGrp As Integer) As Double
-        For Each iBiomassLimit In lstBiomassLimits
+        For Each iBiomassLimit In Me.lstBiomassLimits
             If iBiomassLimit.mGroup.Index = iGrp Then Return iBiomassLimit.mLowerLimit
         Next
         Return 1.0E-20
     End Function
 
     Public Function Exist(iGrp As Integer) As Boolean
-        For Each iBiomassLimit In lstBiomassLimits
+        For Each iBiomassLimit In Me.lstBiomassLimits
             If iBiomassLimit.mGroup.Index = iGrp Then Return True
         Next
         Return False
@@ -153,7 +153,7 @@ Public Class cBiomassLimits
     Public ReadOnly Property Count As Integer _
         Implements ICollection(Of cBiomassLimit).Count
         Get
-            Return lstBiomassLimits.Count
+            Return Me.lstBiomassLimits.Count
         End Get
     End Property
 
@@ -206,7 +206,7 @@ Public Class cBiomassLimits
     End Function
 
     Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
-        Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits)
+        Dim datadir As String = cMSEUtils.MSEFolder(Me.mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits)
         Dim strVal As String = ""
         Dim StratCounter As Integer = 1
         Dim lstFailedFiles As New List(Of String)
@@ -235,13 +235,13 @@ Public Class cBiomassLimits
 
                     Dim tempBiomassLimit As cBiomassLimit
                     'Each HCR Group needs to be a new object
-                    tempBiomassLimit = New cBiomassLimit(mCore)
+                    tempBiomassLimit = New cBiomassLimit(Me.mCore)
 
                     If (recs(0).Contains("_"c)) Then
                         ' Work-around for values such as "EcopathGroupInput_#"
-                        tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0).Substring(recs(0).LastIndexOf("_") + 1)))
+                        tempBiomassLimit.mGroup = Me.mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0).Substring(recs(0).LastIndexOf("_") + 1)))
                     Else
-                        tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
+                        tempBiomassLimit.mGroup = Me.mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
                     End If
                     tempBiomassLimit.mLowerLimit = cStringUtils.ConvertToDouble(recs(1))
                     tempBiomassLimit.mUpperLimit = cStringUtils.ConvertToDouble(recs(2))
@@ -341,7 +341,7 @@ Public Class cBiomassLimits
         For i As Integer = 1 To Me.mMSE.Core.nGroups
             'Me.Value(i) = cEffortLimits.NoHCR_F
             Me.lstBiomassLimits.Add(New cBiomassLimit(Me.mMSE.Core))
-            Me.lstBiomassLimits(i - 1).mGroup = mMSE.Core.EcoPathGroupInputs(i)
+            Me.lstBiomassLimits(i - 1).mGroup = Me.mMSE.Core.EcoPathGroupInputs(i)
             Me.lstBiomassLimits(i - 1).mLowerLimit = 0
             Me.lstBiomassLimits(i - 1).mUpperLimit = 1000000
         Next

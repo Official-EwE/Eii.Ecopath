@@ -362,7 +362,7 @@ Public Class dlgEcobaseExport
         ' -- Objectives --
         Dim bHasObjOptions As Boolean = (Me.m_cbObjectiveFisheries.Checked Or Me.m_cbObjectiveAquaculture.Checked Or
                                          Me.m_cbObjectiveEcosystemFunctioning.Checked Or Me.m_cbObjectiveEnvironmentalVariability.Checked Or
-                                         Me.m_cbObjectivePollution.Checked Or m_cbObjectiveMarineProtection.Checked)
+                                         Me.m_cbObjectivePollution.Checked Or Me.m_cbObjectiveMarineProtection.Checked)
         Dim bHasObjOther As Boolean = Me.m_cbObjectiveOtherImpactAssessment.Checked
         Dim bHasObjOtherText As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
         Dim bObjectivesOK As Boolean = bHasObjOptions
@@ -517,7 +517,7 @@ Public Class dlgEcobaseExport
     ''' True if successful.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Private Function UpdateModelNumber(ByVal strNumber As String) As Boolean
+    Private Function UpdateModelNumber(strNumber As String) As Boolean
 
         Dim core As cCore = Me.UIContext.Core
         Dim model As cEwEModel = core.EwEModel
@@ -550,7 +550,7 @@ Public Class dlgEcobaseExport
         Debug.Assert(Me.Core.IsModelBalanced)
 
         ' Prepare data to send to Ecobase
-        Dim data As New WebServices.Ecobase.cEcobaseModelParameters(core)
+        Dim data As New WebServices.Ecobase.cEcobaseModelParameters(Me.core)
         Dim md As Ecobase.cModelData = data.Model
 
         ' Update values not stored in the model
@@ -607,7 +607,7 @@ Public Class dlgEcobaseExport
 
         msg = New cMessage("Ecobase export XML saved to " & strFile, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strFile)
-        core.Messages.SendMessage(msg)
+        Me.core.Messages.SendMessage(msg)
         msg = Nothing
 #End If
 
@@ -642,7 +642,7 @@ Public Class dlgEcobaseExport
         End Try
 
         If (msg IsNot Nothing) Then
-            core.Messages.SendMessage(msg)
+            Me.core.Messages.SendMessage(msg)
         End If
 
         Return bSucces

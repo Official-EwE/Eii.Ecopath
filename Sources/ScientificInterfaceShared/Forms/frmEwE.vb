@@ -167,7 +167,7 @@ Namespace Forms
                 If (src = eCoreComponentType.NotSet) Then Return
 
                 If bSet Then
-                    mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.m_so)
+                    mh = New cMessageHandler(AddressOf Me.AllMessagesHandler, src, eMessageType.Any, Me.m_so)
 #If DEBUG Then
                     mh.Name = "cEwEFormRefresh::Any"
 #End If
@@ -266,7 +266,7 @@ Namespace Forms
 
             If (Me.UIContext IsNot Nothing) Then
 
-                AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
 
                 If (Me.DesignMode = False) And (Me.UIContext.FormSettings IsNot Nothing) Then
                     Me.UIContext.FormSettings.Apply(Me)
@@ -306,7 +306,7 @@ Namespace Forms
                     Me.UIContext.Help.HelpTopic(Me) = ""
                 End If
 
-                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 Me.UIContext = Nothing
             End If
 
@@ -492,7 +492,7 @@ Namespace Forms
             If (Me.m_printDoc Is Nothing) Then
                 Me.m_printDoc = New PrintDocument
                 Me.m_printDoc.DocumentName = Me.Text
-                AddHandler Me.m_printDoc.PrintPage, AddressOf OnPrintMe
+                AddHandler Me.m_printDoc.PrintPage, AddressOf Me.OnPrintMe
             End If
             Me.m_iPrintPage = 0
             Return Me.m_printDoc
@@ -506,7 +506,7 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Public Sub EndPrint()
             If (Me.m_printDoc IsNot Nothing) Then
-                RemoveHandler Me.m_printDoc.PrintPage, AddressOf OnPrintMe
+                RemoveHandler Me.m_printDoc.PrintPage, AddressOf Me.OnPrintMe
                 Me.m_printDoc.Dispose()
                 Me.m_printDoc = Nothing
             End If
@@ -567,7 +567,7 @@ Namespace Forms
         <Browsable(False)>
         Public Property CoreComponents() As eCoreComponentType()
             Get
-                Return m_aMessageSources
+                Return Me.m_aMessageSources
             End Get
 
             Set(value As eCoreComponentType())

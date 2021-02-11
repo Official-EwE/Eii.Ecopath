@@ -44,8 +44,8 @@ Namespace SearchObjectives
     Public Class cSearchObjectiveFleetInput
         Inherits cCoreGroupBase
 
-        Public Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, DBID As Integer)
+            MyBase.New(core)
 
             Me.AllowValidation = False
 
@@ -57,42 +57,40 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-
-            val = New cValue(New Single, eVarNameFlags.FPSFleetJobCatchValue, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSFleetJobCatchValue, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSFleetTargetProfit
-            val = New cValue(New Single, eVarNameFlags.FPSFleetTargetProfit, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSFleetTargetProfit, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         End Sub
 
         Public Property JobCatchValue() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.FPSFleetJobCatchValue))
+                Return CSng(Me.GetVariable(eVarNameFlags.FPSFleetJobCatchValue))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSFleetJobCatchValue, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSFleetJobCatchValue, value)
             End Set
         End Property
 
 
         Public Property TargetProfitability() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.FPSFleetTargetProfit))
+                Return CSng(Me.GetVariable(eVarNameFlags.FPSFleetTargetProfit))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSFleetTargetProfit, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSFleetTargetProfit, value)
             End Set
         End Property
 
@@ -105,8 +103,8 @@ Namespace SearchObjectives
     Public Class cSearchObjectiveWeights
         Inherits cCoreInputOutputBase
 
-        Public Sub New(ByRef theCore As cCore)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore)
+            MyBase.New(core)
 
             Me.AllowValidation = False
 
@@ -117,115 +115,115 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'FPSEcoSystemWeight
-            val = New cValue(New Single, eVarNameFlags.FPSEconomicWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSEconomicWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSSocialWeight
-            val = New cValue(New Single, eVarNameFlags.FPSSocialWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSSocialWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSBiomassDiversityWeight
-            val = New cValue(New Single, eVarNameFlags.FPSBiomassDiversityWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSBiomassDiversityWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSMandatedRebuildingWeight
-            val = New cValue(New Single, eVarNameFlags.FPSMandatedRebuildingWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSMandatedRebuildingWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSEcoSystemWeight
-            val = New cValue(New Single, eVarNameFlags.FPSEcoSystemWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSEcoSystemWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSPredictionVariance
-            val = New cValue(New Single, eVarNameFlags.FPSPredictionVariance, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSPredictionVariance, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'FPSExistenceValue
-            val = New cValue(New Single, eVarNameFlags.FPSExistenceValue, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSExistenceValue, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         End Sub
 
         Public Property EconomicWeight() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSEconomicWeight), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSEconomicWeight), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSEconomicWeight, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSEconomicWeight, value)
             End Set
         End Property
 
         Public Property SocialWeight() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSSocialWeight), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSSocialWeight), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSSocialWeight, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSSocialWeight, value)
             End Set
         End Property
 
         Public Property BiomassDiversityWeight() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSBiomassDiversityWeight), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSBiomassDiversityWeight), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSBiomassDiversityWeight, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSBiomassDiversityWeight, value)
             End Set
         End Property
 
         Public Property MandatedRebuildingWeight() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSMandatedRebuildingWeight), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSMandatedRebuildingWeight), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSMandatedRebuildingWeight, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSMandatedRebuildingWeight, value)
             End Set
         End Property
 
         Public Property EcoSystemWeight() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSEcoSystemWeight), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSEcoSystemWeight), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSEcoSystemWeight, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSEcoSystemWeight, value)
             End Set
         End Property
 
         Public Property PredictionVariance() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSPredictionVariance), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSPredictionVariance), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSPredictionVariance, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSPredictionVariance, value)
             End Set
         End Property
 
         Public Property ExistenceValue() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSExistenceValue), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSExistenceValue), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSExistenceValue, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSExistenceValue, value)
             End Set
         End Property
 
@@ -240,8 +238,8 @@ Namespace SearchObjectives
         Inherits cCoreGroupBase
 
 
-        Public Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, DBID As Integer)
+            MyBase.New(core)
             Me.AllowValidation = False
             Me.DBID = DBID
 
@@ -250,26 +248,26 @@ Namespace SearchObjectives
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
 
             'FPSGroupMandRelBiom
-            val = New cValue(New Single, eVarNameFlags.FPSGroupMandRelBiom, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSGroupMandRelBiom, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'StrucRelWeight
-            val = New cValue(New Single, eVarNameFlags.FPSGroupStrucRelWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSGroupStrucRelWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'Fishing Limit
-            val = New cValue(New Single, eVarNameFlags.FPSFishingLimit, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.FPSFishingLimit, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         End Sub
@@ -277,32 +275,32 @@ Namespace SearchObjectives
 
         Public Property MandRelBiom() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSGroupMandRelBiom), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSGroupMandRelBiom), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSGroupMandRelBiom, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSGroupMandRelBiom, value)
             End Set
         End Property
 
         Public Property StrucRelWeight() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSGroupStrucRelWeight), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSGroupStrucRelWeight), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSGroupStrucRelWeight, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSGroupStrucRelWeight, value)
             End Set
         End Property
 
 
         Public Property FishingLimit() As Single
             Get
-                Return CType(GetVariable(eVarNameFlags.FPSFishingLimit), Single)
+                Return CType(Me.GetVariable(eVarNameFlags.FPSFishingLimit), Single)
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.FPSFishingLimit, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.FPSFishingLimit, value)
             End Set
         End Property
 
@@ -315,103 +313,103 @@ Namespace SearchObjectives
     Public Class cSearchObjectiveParameters
         Inherits cCoreInputOutputBase
 
-        Public Sub New(ByRef theCore As cCore)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore)
+            MyBase.New(core)
 
             Me.AllowValidation = False
             Me.DBID = cCore.NULL_VALUE
             Me.m_dataType = eDataTypes.SearchObjectiveParameters
             Me.m_coreComponent = eCoreComponentType.SearchObjective
-            AllowValidation = False
+            Me.AllowValidation = False
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
 
             'SearchDiscountRate
-            val = New cValue(New Single, eVarNameFlags.SearchDiscountRate, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.SearchDiscountRate, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'SearchGenDiscRate
-            val = New cValue(New Single, eVarNameFlags.SearchGenDiscRate, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.SearchGenDiscRate, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'SearchBaseYear
-            val = New cValue(New Integer, eVarNameFlags.SearchBaseYear, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.SearchBaseYear, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'SearchPrevCostEarning
-            val = New cValue(New Boolean, eVarNameFlags.SearchPrevCostEarning, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.SearchPrevCostEarning, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'SearchFishingMortalityPenalty
-            val = New cValue(New Boolean, eVarNameFlags.SearchFishingMortalityPenalty, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.SearchFishingMortalityPenalty, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            ResetStatusFlags()
-            AllowValidation = True
+            Me.ResetStatusFlags()
+            Me.AllowValidation = True
 
         End Sub
 
 
         Public Property DiscountRate() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.SearchDiscountRate))
+                Return CSng(Me.GetVariable(eVarNameFlags.SearchDiscountRate))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.SearchDiscountRate, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.SearchDiscountRate, value)
             End Set
         End Property
 
 
         Public Property GenDiscRate() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.SearchGenDiscRate))
+                Return CSng(Me.GetVariable(eVarNameFlags.SearchGenDiscRate))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.SearchGenDiscRate, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.SearchGenDiscRate, value)
             End Set
         End Property
 
 
         Public Property BaseYear() As Integer
             Get
-                Return CInt(GetVariable(eVarNameFlags.SearchBaseYear))
+                Return CInt(Me.GetVariable(eVarNameFlags.SearchBaseYear))
             End Get
 
-            Set(ByVal value As Integer)
-                SetVariable(eVarNameFlags.SearchBaseYear, value)
+            Set(value As Integer)
+                Me.SetVariable(eVarNameFlags.SearchBaseYear, value)
             End Set
         End Property
 
 
         Public Property PrevCostEarning() As Boolean
             Get
-                Return CBool(GetVariable(eVarNameFlags.SearchPrevCostEarning))
+                Return CBool(Me.GetVariable(eVarNameFlags.SearchPrevCostEarning))
             End Get
 
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.SearchPrevCostEarning, value)
+            Set(value As Boolean)
+                Me.SetVariable(eVarNameFlags.SearchPrevCostEarning, value)
             End Set
         End Property
 
 
         Public Property FishingMortalityPenalty() As Boolean
             Get
-                Return CBool(GetVariable(eVarNameFlags.SearchFishingMortalityPenalty))
+                Return CBool(Me.GetVariable(eVarNameFlags.SearchFishingMortalityPenalty))
             End Get
 
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.SearchFishingMortalityPenalty, value)
+            Set(value As Boolean)
+                Me.SetVariable(eVarNameFlags.SearchFishingMortalityPenalty, value)
             End Set
         End Property
 

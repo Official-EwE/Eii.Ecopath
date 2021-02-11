@@ -31,17 +31,17 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceLayerMPA
     Inherits cEcospaceLayerInteger
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerMPA, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerMPA
     End Sub
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then Return d(Me.Index)(iRow, iCol) Else Return CInt(cCore.NULL_VALUE)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
             Dim s As Integer = Convert.ToInt16(value)
             If Me.ValidateCellValue(value) Then

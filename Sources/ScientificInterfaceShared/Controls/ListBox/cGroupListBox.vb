@@ -117,7 +117,7 @@ Namespace Controls
             ''' </summary>
             ''' <param name="group">Group to link to.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal group As cEcoPathGroupInput)
+            Public Sub New(group As cEcoPathGroupInput)
                 MyBase.New(group)
             End Sub
 
@@ -128,7 +128,7 @@ Namespace Controls
             ''' <param name="strLabel">Name to display for a non-group item.</param>
             ''' <param name="color">Color for this item, if any.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal strLabel As String, ByVal color As Color)
+            Public Sub New(strLabel As String, color As Color)
                 MyBase.New(strLabel)
                 Me.m_color = color
             End Sub
@@ -153,7 +153,7 @@ Namespace Controls
                 Get
                     Return Me.m_sValue
                 End Get
-                Set(ByVal sSortValue As Single)
+                Set(sSortValue As Single)
                     Me.m_sValue = sSortValue
                 End Set
             End Property
@@ -167,7 +167,7 @@ Namespace Controls
                 Get
                     Return Me.m_color
                 End Get
-                Set(ByVal value As Color)
+                Set(value As Color)
                     Me.m_color = value
                 End Set
             End Property
@@ -294,7 +294,7 @@ Namespace Controls
         ''' Destroys a cGroupListBox.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Me.Detach()
             MyBase.Dispose(disposing)
         End Sub
@@ -307,14 +307,14 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Private Set(ByVal uic As cUIContext)
+            Private Set(uic As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
                     Me.Items.Clear()
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
                 Me.m_uic = uic
                 If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                     Me.Populate()
                 End If
             End Set
@@ -324,7 +324,7 @@ Namespace Controls
 
 #Region " Attach / detach "
 
-        Public Sub Attach(ByVal uic As cUIContext)
+        Public Sub Attach(uic As cUIContext)
             Me.UIContext = uic
         End Sub
 
@@ -349,7 +349,7 @@ Namespace Controls
             Get
                 Return Me.m_sortType
             End Get
-            Set(ByVal sortType As eSortType)
+            Set(sortType As eSortType)
                 If (Me.m_sortType <> sortType) Then
                     Me.m_sortType = sortType
                     Me.Refresh()
@@ -370,7 +370,7 @@ Namespace Controls
             Get
                 Return Me.m_sSortThreshold
             End Get
-            Set(ByVal sSortThreshold As Single)
+            Set(sSortThreshold As Single)
                 If (Me.m_sSortThreshold <> sSortThreshold) Then
                     Me.m_sSortThreshold = sSortThreshold
                     Me.Refresh()
@@ -384,13 +384,13 @@ Namespace Controls
         ''' </summary>
         ''' <param name="group">The group to get/set the sort value for.</param>
         ''' -------------------------------------------------------------------
-        Public Property SortValue(ByVal group As cCoreGroupBase) As Single
+        Public Property SortValue(group As cCoreGroupBase) As Single
             Get
                 Dim gi As cGroupItem = Me.GroupItem(group)
                 If (gi Is Nothing) Then Return cCore.NULL_VALUE
                 Return gi.SortValue
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Dim gi As cGroupItem = Me.GroupItem(group)
                 If (gi IsNot Nothing) Then
                     gi.SortValue = value
@@ -404,13 +404,13 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iGroup">The group index to get/set the sort value for.</param>
         ''' -------------------------------------------------------------------
-        Public Property SortValue(ByVal iGroup As Integer) As Single
+        Public Property SortValue(iGroup As Integer) As Single
             Get
                 Dim gi As cGroupItem = Me.GroupItem(Me.GroupIndex(iGroup))
                 If (gi Is Nothing) Then Return cCore.NULL_VALUE
                 Return gi.SortValue
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Dim gi As cGroupItem = Me.GroupItem(Me.GroupIndex(iGroup))
                 If (gi IsNot Nothing) Then
                     gi.SortValue = value
@@ -435,7 +435,7 @@ Namespace Controls
             Get
                 Return Me.m_groupdisplaystyle
             End Get
-            Set(ByVal value As eGroupDisplayStyleTypes)
+            Set(value As eGroupDisplayStyleTypes)
                 If value <> Me.m_groupdisplaystyle Then
                     Me.m_groupdisplaystyle = value
                     Me.Populate()
@@ -456,7 +456,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowAllGroupsItem
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value <> Me.m_bShowAllGroupsItem Then
                     Me.m_bShowAllGroupsItem = value
                     Me.Populate()
@@ -477,7 +477,7 @@ Namespace Controls
             Get
                 Return Me.m_strAllGroupsItem
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strAllGroupsItem = value
                 Me.Populate()
             End Set
@@ -496,7 +496,7 @@ Namespace Controls
             Get
                 Return Me.m_clrAllGroupsItem
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 Me.m_clrAllGroupsItem = value
                 Me.Populate()
             End Set
@@ -515,7 +515,7 @@ Namespace Controls
             Get
                 Return Me.m_grouptrackingtype
             End Get
-            Set(ByVal value As eGroupTrackingType)
+            Set(value As eGroupTrackingType)
                 If value <> Me.m_grouptrackingtype Then
                     Me.m_grouptrackingtype = value
                     Me.Populate()
@@ -537,7 +537,7 @@ Namespace Controls
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnMouseDoubleClick(ByVal e As MouseEventArgs)
+        Protected Overrides Sub OnMouseDoubleClick(e As MouseEventArgs)
 
             If Not Me.IsInitialized() Then Return
 
@@ -563,13 +563,13 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iGroup">The one-based group index to test.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsGroupSelected(ByVal iGroup As Integer) As Boolean
+        Public Property IsGroupSelected(iGroup As Integer) As Boolean
             Get
                 If (Not Me.IsInitialized()) Then Return False
                 Dim iItem As Integer = Me.GroupIndex(iGroup)
                 Return Me.GetSelected(iItem)
             End Get
-            Set(ByVal bSelected As Boolean)
+            Set(bSelected As Boolean)
                 If (Not Me.IsInitialized()) Then Return
                 Dim iItem As Integer = Me.GroupIndex(iGroup)
                 Me.SetSelected(iItem, bSelected)
@@ -581,7 +581,7 @@ Namespace Controls
                 If (Not Me.IsInitialized()) Then Return False
                 Return Me.m_bShowAllGroupsItem And Me.GetSelected(0)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (Not Me.IsInitialized()) Then Return
                 If Not Me.m_bShowAllGroupsItem Then Return
                 Me.SetSelected(0, value)
@@ -594,11 +594,11 @@ Namespace Controls
         ''' </summary>
         ''' <param name="group">The group to test.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsGroupSelected(ByVal group As cCoreGroupBase) As Boolean
+        Public Property IsGroupSelected(group As cCoreGroupBase) As Boolean
             Get
                 Return Me.IsGroupSelected(group.Index)
             End Get
-            Set(ByVal bSelected As Boolean)
+            Set(bSelected As Boolean)
                 If (Not Me.IsInitialized()) Then Return
                 Me.IsGroupSelected(group) = bSelected
             End Set
@@ -617,7 +617,7 @@ Namespace Controls
                 If (gi.Source Is Nothing) Then Return -1
                 Return gi.Source.Index
             End Get
-            Set(ByVal iGroup As Integer)
+            Set(iGroup As Integer)
                 If (Not Me.IsInitialized()) Then Return
                 If (iGroup < 1 Or iGroup >= Me.m_uic.Core.nGroups) Then
                     Me.SelectedIndex = If(Me.m_bShowAllGroupsItem, 0, -1)
@@ -639,7 +639,7 @@ Namespace Controls
                 If gi Is Nothing Then Return Nothing
                 Return gi.Source
             End Get
-            Set(ByVal group As cEcoPathGroupInput)
+            Set(group As cEcoPathGroupInput)
                 If (Not Me.IsInitialized()) Then Return
                 If (group Is Nothing) Then
                     Me.SelectedIndex = If(Me.m_bShowAllGroupsItem, 0, -1)
@@ -655,7 +655,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iGroup">The group index to translate into an item index.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupIndex(ByVal iGroup As Integer) As Integer
+        Public ReadOnly Property GroupIndex(iGroup As Integer) As Integer
             Get
                 Dim gi As cGroupItem = Nothing
                 Dim item As Object = Nothing
@@ -683,7 +683,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="group">The group to translate into an item index.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupIndex(ByVal group As cCoreGroupBase) As Integer
+        Public ReadOnly Property GroupIndex(group As cCoreGroupBase) As Integer
             Get
                 Return Me.GroupIndex(group.Index)
             End Get
@@ -698,7 +698,7 @@ Namespace Controls
         ''' Returns Nothing if no group was found at the given index.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GetGroupAt(ByVal iIndex As Integer) As cCoreGroupBase
+        Public ReadOnly Property GetGroupAt(iIndex As Integer) As cCoreGroupBase
             Get
                 If (iIndex < 0 Or iIndex >= Me.Items.Count) Then Return Nothing
                 Return DirectCast(Me.Items(iIndex), cGroupItem).Source
@@ -715,7 +715,7 @@ Namespace Controls
         ''' found at the given index.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GetGroupIndexAt(ByVal iIndex As Integer) As Integer
+        Public ReadOnly Property GetGroupIndexAt(iIndex As Integer) As Integer
             Get
                 Dim gi As cGroupItem = Me.GroupItem(iIndex)
 
@@ -822,12 +822,12 @@ Namespace Controls
             Return (Me.m_uic IsNot Nothing)
         End Function
 
-        Protected Function GroupItem(ByVal iIndex As Integer) As cGroupItem
+        Protected Function GroupItem(iIndex As Integer) As cGroupItem
             If (iIndex >= 0 And iIndex < Me.Items.Count) Then Return DirectCast(Me.Items(iIndex), cGroupItem)
             Return Nothing
         End Function
 
-        Protected Function GroupItem(ByVal group As cCoreGroupBase) As cGroupItem
+        Protected Function GroupItem(group As cCoreGroupBase) As cGroupItem
             If group Is Nothing Then Return Nothing
             Return Me.GroupItem(Me.GroupIndex(group.Index))
         End Function
@@ -838,7 +838,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="e">Event parameters</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnDrawItem(ByVal e As DrawItemEventArgs)
+        Protected Overrides Sub OnDrawItem(e As DrawItemEventArgs)
 
             If (e.Index >= Me.Items.Count Or e.Index < 0) Then Return
             ' Sanity check
@@ -917,7 +917,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If ((ct And cStyleGuide.eChangeType.GroupVisibility) > 0) Then
                 Select Case Me.GroupDisplayStyle
                     Case eGroupDisplayStyleTypes.DisplayAlways

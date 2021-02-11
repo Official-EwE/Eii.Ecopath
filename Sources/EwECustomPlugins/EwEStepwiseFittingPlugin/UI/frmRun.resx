@@ -337,7 +337,7 @@
     <value>m_hdrIterations</value>
   </data>
   <data name="&gt;&gt;m_hdrIterations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16166.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIterations.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -442,7 +442,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>568, 239</value>
+    <value>568, 211</value>
   </data>
   <data name="m_btnApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -493,7 +493,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_lblStepSize.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="m_nudStepSize.Location" type="System.Drawing.Point, System.Drawing">
     <value>464, 50</value>
@@ -514,7 +514,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_nudStepSize.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_lblSearchBy.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -544,7 +544,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_lblSearchBy.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_rbPredator.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -577,7 +577,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_rbPredator.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_rbPredPrey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -610,7 +610,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_rbPredPrey.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_hdrParameters.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -637,13 +637,13 @@
     <value>m_hdrParameters</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16166.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.Parent" xml:space="preserve">
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_hdrOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -670,7 +670,7 @@
     <value>m_hdrOutput</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16166.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -793,7 +793,7 @@
     <value>m_hdrEwE</value>
   </data>
   <data name="&gt;&gt;m_hdrEwE.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16166.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEwE.Parent" xml:space="preserve">
     <value>m_plModel</value>
@@ -988,7 +988,7 @@
     <value>6, 21</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 241</value>
+    <value>556, 213</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -997,7 +997,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.6.16166.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
+    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -1009,13 +1009,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plConfig.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 207</value>
+    <value>0, 235</value>
   </data>
   <data name="m_plConfig.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>671, 269</value>
+    <value>671, 241</value>
   </data>
   <data name="m_plConfig.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1185,6 +1185,33 @@
   <data name="&gt;&gt;m_plRun.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_lblNoRuns.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblNoRuns.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 104</value>
+  </data>
+  <data name="m_lblNoRuns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 13</value>
+  </data>
+  <data name="m_lblNoRuns.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_lblNoRuns.Text" xml:space="preserve">
+    <value>No parallel &amp;fits:</value>
+  </data>
+  <data name="&gt;&gt;m_lblNoRuns.Name" xml:space="preserve">
+    <value>m_lblNoRuns</value>
+  </data>
+  <data name="&gt;&gt;m_lblNoRuns.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblNoRuns.Parent" xml:space="preserve">
+    <value>m_plSettings</value>
+  </data>
+  <data name="&gt;&gt;m_lblNoRuns.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -1213,7 +1240,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_btnExport.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_cmbAnomalyShape.Location" type="System.Drawing.Point, System.Drawing">
     <value>118, 49</value>
@@ -1234,7 +1261,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_cmbAnomalyShape.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblAnomalyShape.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1264,7 +1291,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_lblAnomalyShape.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_cbEnableAbsBioforBaseline.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1294,7 +1321,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_cbEnableAbsBioforBaseline.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_btnTS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1324,7 +1351,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_btnTS.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_nudK.Location" type="System.Drawing.Point, System.Drawing">
     <value>464, 24</value>
@@ -1345,7 +1372,7 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_nudK.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_lblNumVars.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1375,7 +1402,28 @@
     <value>m_plSettings</value>
   </data>
   <data name="&gt;&gt;m_lblNumVars.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
+  </data>
+  <data name="m_nudNoThreads.Location" type="System.Drawing.Point, System.Drawing">
+    <value>118, 102</value>
+  </data>
+  <data name="m_nudNoThreads.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 20</value>
+  </data>
+  <data name="m_nudNoThreads.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;m_nudNoThreads.Name" xml:space="preserve">
+    <value>m_nudNoThreads</value>
+  </data>
+  <data name="&gt;&gt;m_nudNoThreads.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudNoThreads.Parent" xml:space="preserve">
+    <value>m_plSettings</value>
+  </data>
+  <data name="&gt;&gt;m_nudNoThreads.ZOrder" xml:space="preserve">
+    <value>12</value>
   </data>
   <data name="m_plSettings.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1387,7 +1435,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>671, 100</value>
+    <value>671, 128</value>
   </data>
   <data name="m_plSettings.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -5963,9 +6011,6 @@
         //////////////////////////////////////////////////8=
 </value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>679, 490</value>
   </data>
@@ -5973,6 +6018,6 @@
     <value>frmRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16166.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

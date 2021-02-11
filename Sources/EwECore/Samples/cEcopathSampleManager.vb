@@ -157,7 +157,7 @@ Namespace Samples
                     If (i > 1) Then sb.Append(" ")
                     For j As Integer = 1 To data.GetUpperBound(1)
                         If (j > 1) Then sb.Append(" ")
-                        sb.Append(FormatNumber(data(i, j)))
+                        sb.Append(Me.FormatNumber(data(i, j)))
                     Next
                 Next
                 Debug.Print(strVar & ": " & sb.ToString())
@@ -189,7 +189,7 @@ Namespace Samples
         ''' </summary>
         ''' <param name="core">The core to initialize to.</param>
         ''' -------------------------------------------------------------------
-        Friend Sub New(ByVal core As cCore)
+        Friend Sub New(core As cCore)
             Me.m_core = core
             Me.m_data = core.m_SampleData
             Me.m_rnd = New Random()
@@ -252,7 +252,7 @@ Namespace Samples
             Get
                 Return Me.ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ' NOP
             End Set
         End Property
@@ -558,7 +558,7 @@ Namespace Samples
                     Me.m_core.LoadEcopathFleetInputs()
                     Me.m_core.RunEcoPath()
 #If DEBUG Then
-                    ValidateSnapshot(s)
+                    Me.ValidateSnapshot(s)
 #End If
                 End If
             End If
@@ -601,7 +601,7 @@ Namespace Samples
         ''' <param name="iNumSamples"></param>
         ''' <param name="iStartAt">One-based sample index to start at</param>
         ''' <param name="bRandomize"></param>
-        Public Sub Run(ByVal iNumSamples As Integer, iStartAt As Integer, bRandomize As Boolean)
+        Public Sub Run(iNumSamples As Integer, iStartAt As Integer, bRandomize As Boolean)
 
             If (iNumSamples = 0) Then Return
 
@@ -611,7 +611,7 @@ Namespace Samples
             Me.m_bStopRun = False
 
 #If 1 Then
-            Dim thread As New Threading.Thread(AddressOf RunBatch)
+            Dim thread As New Threading.Thread(AddressOf Me.RunBatch)
             thread.Start()
 #Else
             Me.RunThreaded()
@@ -796,7 +796,7 @@ Namespace Samples
             Debug.WriteLine("EcoSampler: Loading " & s.Name)
 
             ' User wants to keep the best fit parameters
-            For iGroup As Integer = 1 To m_core.nGroups
+            For iGroup As Integer = 1 To Me.m_core.nGroups
 
                 If (s.B(iGroup) > cCore.NULL_VALUE) Then
                     epdata.Binput(iGroup) = s.B(iGroup)
@@ -824,7 +824,7 @@ Namespace Samples
                     epdata.BaBi(iGroup) = s.BaBi(iGroup)
                 End If
 
-                For iFleet As Integer = 1 To m_core.nFleets
+                For iFleet As Integer = 1 To Me.m_core.nFleets
                     If (s.Landing(iFleet, iGroup) > cCore.NULL_VALUE) Then
                         epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)
                     End If
@@ -854,7 +854,7 @@ Namespace Samples
             If (s Is Nothing) Then Return
 
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            For iGroup As Integer = 1 To m_core.nGroups
+            For iGroup As Integer = 1 To Me.m_core.nGroups
 
                 Debug.Assert(epdata.B(iGroup).Approximates(s.B(iGroup)) Or s.B(iGroup) = cCore.NULL_VALUE)
                 Debug.Assert(epdata.BA(iGroup).Approximates(s.BA(iGroup)) Or s.BA(iGroup) = cCore.NULL_VALUE)

@@ -55,7 +55,7 @@ Public Class cSigmoidShapeFunction
             'If the user has supplied an XOpt (x axis at optimum) or no K (steepness or slope)
             'then calculate K at XOpt
             If (XOpt <> 0.0) Or (k = 0.0) Then
-                k = calSlope()
+                k = Me.calSlope()
                 If Single.IsNaN(k) Or Single.IsInfinity(k) Then
                     k = Me.ParamValue(5)
                 Else

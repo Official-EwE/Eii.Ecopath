@@ -73,7 +73,7 @@ Namespace Ecosim
             End Get
         End Property
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
             MyBase.OnLoad(e)
@@ -91,7 +91,7 @@ Namespace Ecosim
 
                 Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
                 If (Me.m_cmdTSWeights IsNot Nothing) Then
-                    AddHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
+                    AddHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf Me.OnPostInvokeTSCommand
                 End If
 
                 Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
@@ -114,7 +114,7 @@ Namespace Ecosim
                 Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
                 Me.m_sketchPad.NumDataPoints = Me.Core.nTimeSeriesYears
 
-                AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+                AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
 
                 Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
                 Me.UpdateMaxSplinePoints()
@@ -128,11 +128,11 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
-            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
 
             If (Me.m_bIsRunOwner) Then
                 Me.m_F2TSManager.Disconnect()
@@ -155,7 +155,7 @@ Namespace Ecosim
                 Me.m_shapeHandler = Nothing
 
                 If (Me.m_cmdTSWeights IsNot Nothing) Then
-                    RemoveHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
+                    RemoveHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf Me.OnPostInvokeTSCommand
                     Me.m_cmdTSWeights = Nothing
                 End If
 
@@ -192,7 +192,7 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             Select Case msg.Source
 
                 Case eCoreComponentType.EcoPath
@@ -220,11 +220,11 @@ Namespace Ecosim
             End Select
         End Sub
 
-        Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
+        Private Sub OnCoreExecutionStateEvent(csm As cCoreStateMonitor)
             Try
                 ' Form may be closing because the core is shutting down. Nasty
                 If Not Me.IsDisposed Then
-                    Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+                    Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "frmFitToTimeSeries.OnCoreExecutionStateEvent")
@@ -235,7 +235,7 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 MyBase.UIContext = value
                 If Me.m_vulnerabilityBlockCodeSelector IsNot Nothing Then
                     Me.m_vulnerabilityBlockCodeSelector.UIContext = value
@@ -254,7 +254,7 @@ Namespace Ecosim
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSearch(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSearch.Click
 
             Dim shapeSelected As cShapeData = Nothing
@@ -288,7 +288,7 @@ Namespace Ecosim
             'Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
 
             Me.m_bIsRunOwner = True
-            Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
+            Me.m_F2TSManager.Connect(Me, AddressOf Me.OnRunStarted, AddressOf Me.OnRunStep, AddressOf Me.OnRunStopped, AddressOf Me.OnModelRun)
             Me.m_F2TSManager.RunSearch()
 
         End Sub
@@ -300,7 +300,7 @@ Namespace Ecosim
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
+        Private Sub OnStop(sender As System.Object, e As System.EventArgs) Handles m_btnStop.Click
             'this will stop any running model Search or Sensitivity
             Me.m_F2TSManager.StopRun(0)
         End Sub
@@ -312,7 +312,7 @@ Namespace Ecosim
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub m_tsbSensOfSS2V_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbSensOfSS2V.Click
+        Private Sub m_tsbSensOfSS2V_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbSensOfSS2V.Click
 
             Dim dlgSensOfSS As New dlgSensitivityOfSStoV(Me.UIContext, Me.m_F2TSManager)
             dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
@@ -324,8 +324,8 @@ Namespace Ecosim
                 Next iPrey
             Next iPred
 
-            m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
-            m_F2TSManager.nBlockCodes = m_vulnerabilityBlockCodeSelector.NumBlocks
+            Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
+            Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 
             If dlgSensOfSS.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
 
@@ -348,25 +348,25 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnBlockSelected(ByVal sender As IBlockSelector) _
+        Private Sub OnBlockSelected(sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlock
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnNumBlocksChanged(ByVal sender As IBlockSelector) _
+        Private Sub OnNumBlocksChanged(sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnNumBlocksChanged
             Me.m_vulnerabilityBlockMatrix.BlockColors = sender.BlockColors
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnFirstYearChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFirstYearChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudFirstYear.ValueChanged
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnLastYearChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLastYearChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudLastYear.ValueChanged
 
             If (Not Me.m_bInUpdate) Then
@@ -378,7 +378,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnNoSplinePtsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnNoSplinePtsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudSplinePts.ValueChanged
 
             If (Not Me.m_bInUpdate) Then Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
@@ -386,7 +386,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShapeSelectionChanged(ByVal ashapes As EwECore.cShapeData()) _
+        Private Sub OnShapeSelectionChanged(ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
 
             If Me.UIContext Is Nothing Then Return
@@ -400,7 +400,7 @@ Namespace Ecosim
             Dim shape As cShapeData = Me.m_shapeHandler.SelectedShape
 
             ' Reset year range when new shape selected
-            If (Not ReferenceEquals(m_shapeSelected, shape)) Then
+            If (Not ReferenceEquals(Me.m_shapeSelected, shape)) Then
 
                 ' Remember newly selected shape
                 Me.m_shapeSelected = shape
@@ -411,37 +411,37 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_sketchPad_OnYearRangeChanged(ByVal sender As ucAnomalySearchSketchPad) Handles m_sketchPad.OnYearRangeChanged
+        Private Sub m_sketchPad_OnYearRangeChanged(sender As ucAnomalySearchSketchPad) Handles m_sketchPad.OnYearRangeChanged
             Me.m_bInUpdate = True
             Me.m_nudFirstYear.Value = Math.Min(Math.Max(Me.m_nudFirstYear.Minimum, sender.FirstYear), Me.m_nudFirstYear.Maximum)
             Me.m_nudLastYear.Value = Math.Min(Math.Max(Me.m_nudLastYear.Minimum, sender.LastYear), Me.m_nudLastYear.Maximum)
             Me.m_bInUpdate = False
         End Sub
 
-        Private Sub m_btnTimeSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnTimeSeries_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnTimeSeriesWeights.Click
             If (Me.m_cmdTSWeights IsNot Nothing) Then
                 Me.m_cmdTSWeights.Invoke()
             End If
         End Sub
 
-        Private Sub OnAnomalySearchChecked(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnAnomalySearchChecked(sender As Object, e As System.EventArgs) _
             Handles m_cbAnomalySearch.CheckedChanged
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tsbSearchGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tsbSearchGroup_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbSearchGroup.Click
 
             Dim nBlocks As Integer = 0 ' Me.m_vulnerabilityBlockCodeSelector.NumBlocks
             Dim iBlock As Integer = 1
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
-            Dim abUseBlock(Core.nGroups) As Boolean
+            Dim abUseBlock(Me.Core.nGroups) As Boolean
 
             Me.Core.CheckResetDefaultVulnerabilities()
 
-            For iTS As Integer = 1 To Core.nTimeSeries - 1
+            For iTS As Integer = 1 To Me.Core.nTimeSeries - 1
                 ts = Me.Core.EcosimTimeSeries(iTS)
                 If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) Then
                     gts = DirectCast(ts, cGroupTimeSeries)
@@ -475,12 +475,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnClearOutputs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClearOutputs(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClearOutputs.Click
             Me.m_gridOutput.Clear()
         End Sub
 
-        Private Sub OnVulBlocksColourChanged(ByVal sender As Object, ByVal iBlock As Integer) _
+        Private Sub OnVulBlocksColourChanged(sender As Object, iBlock As Integer) _
             Handles m_vulnerabilityBlockMatrix.OnSelectedBlockChanged
             Try
                 Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = iBlock
@@ -489,7 +489,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub OnShowAllData_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowAllData_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbShowAllData.CheckedChanged
             Try
                 Me.m_shapeHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Nothing, Me.m_cbShowAllData.Checked)
@@ -508,7 +508,7 @@ Namespace Ecosim
         ''' <param name="runType"></param>
         ''' <param name="nSteps"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
+        Private Sub OnRunStarted(runType As eRunType, nSteps As Integer)
 
             Me.m_lbResults.Items.Clear()
 
@@ -559,7 +559,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="runType"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnRunStopped(ByVal runType As eRunType)
+        Private Sub OnRunStopped(runType As eRunType)
 
             If (Me.m_bIsRunOwner) Then
                 Me.m_F2TSManager.Disconnect()
@@ -588,7 +588,7 @@ Namespace Ecosim
         ''' <param name="iCurrentIterationStep"></param>
         ''' <param name="nTotalIterationSteps"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalIterationSteps As Integer)
+        Private Sub OnModelRun(runType As eRunType, iCurrentIterationStep As Integer, nTotalIterationSteps As Integer)
             '    System.Console.WriteLine("Ecosim run " & iCurrentIterationStep.ToString & " of " & nTotalIterationSteps.ToString)
         End Sub
 
@@ -602,7 +602,7 @@ Namespace Ecosim
         ''' time series configuration.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnPostInvokeTSCommand(ByVal cmd As cCommand)
+        Private Sub OnPostInvokeTSCommand(cmd As cCommand)
             Me.UpdateControls()
         End Sub
 
@@ -671,7 +671,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="strEntry"></param>
         ''' -------------------------------------------------------------------
-        Private Sub LogProgress(ByVal strEntry As String)
+        Private Sub LogProgress(strEntry As String)
             Me.m_lbResults.Items.Insert(0, strEntry)
         End Sub
 

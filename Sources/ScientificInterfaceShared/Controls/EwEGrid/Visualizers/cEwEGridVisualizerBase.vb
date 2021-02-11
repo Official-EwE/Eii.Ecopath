@@ -69,7 +69,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_iTextIndent
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iTextIndent = Math.Max(0, value)
             End Set
         End Property
@@ -84,11 +84,11 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub DrawCell_Background( _
-                ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal pos As SourceGrid2.Position, _
-                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal rc As System.Drawing.Rectangle, _
-                ByVal status As SourceGrid2.DrawCellStatus)
+                cell As SourceGrid2.Cells.ICellVirtual, _
+                pos As SourceGrid2.Position, _
+                e As System.Windows.Forms.PaintEventArgs, _
+                rc As System.Drawing.Rectangle, _
+                status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
 
@@ -105,11 +105,11 @@ Namespace Controls.EwEGrid
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
                 ' #Yes: obtain standard focus bk color
-                clrBack = FocusBackColor
+                clrBack = Me.FocusBackColor
                 ' Is cell selected?
             ElseIf (status = DrawCellStatus.Selected) Then
                 ' #Yes: obtain standard selection bk color
-                clrBack = SelectionBackColor
+                clrBack = Me.SelectionBackColor
             End If
 
             ' Draw the background
@@ -143,11 +143,11 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub DrawCell_ImageAndText(
-                ByVal cell As SourceGrid2.Cells.ICellVirtual,
-                ByVal pos As SourceGrid2.Position,
-                ByVal e As System.Windows.Forms.PaintEventArgs,
-                ByVal rc As System.Drawing.Rectangle,
-                ByVal status As SourceGrid2.DrawCellStatus)
+                cell As SourceGrid2.Cells.ICellVirtual,
+                pos As SourceGrid2.Position,
+                e As System.Windows.Forms.PaintEventArgs,
+                rc As System.Drawing.Rectangle,
+                status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
 
@@ -214,11 +214,11 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw cell border using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Border(ByVal cell As SourceGrid2.Cells.ICellVirtual,
-                                                ByVal pos As SourceGrid2.Position,
-                                                ByVal e As System.Windows.Forms.PaintEventArgs,
-                                                ByVal rc As System.Drawing.Rectangle,
-                                                ByVal status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_Border(cell As SourceGrid2.Cells.ICellVirtual,
+                                                pos As SourceGrid2.Position,
+                                                e As System.Windows.Forms.PaintEventArgs,
+                                                rc As System.Drawing.Rectangle,
+                                                status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
 
@@ -230,11 +230,11 @@ Namespace Controls.EwEGrid
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
                 ' #Yes: obtain standard focus border properties
-                rcBorder = FocusBorder
+                rcBorder = Me.FocusBorder
                 ' Is cell selected?
             ElseIf (status = DrawCellStatus.Selected) Then
                 ' #Yes: obtain standard selected border properties
-                rcBorder = SelectionBorder
+                rcBorder = Me.SelectionBorder
             End If
 
             ' Need to render highlightboder?
@@ -267,7 +267,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="cell">The cell to query.</param>
         ''' -------------------------------------------------------------------
-        Protected ReadOnly Property StyleGuide(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
+        Protected ReadOnly Property StyleGuide(cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
             Get
                 If (TypeOf cell Is IEwECell) Then
                     Dim uic As cUIContext = DirectCast(cell, IEwECell).UIContext
@@ -286,7 +286,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="cell">The cell to query.</param>
         ''' -------------------------------------------------------------------
-        Protected ReadOnly Property Style(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide.eStyleFlags
+        Protected ReadOnly Property Style(cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide.eStyleFlags
             Get
                 ' Rendering an EwE base cell?
                 If (TypeOf cell Is IEwECell) Then
@@ -297,7 +297,7 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Protected ReadOnly Property RelativePedigree(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Single
+        Protected ReadOnly Property RelativePedigree(cell As SourceGrid2.Cells.ICellVirtual) As Single
             Get
                 If (TypeOf cell Is cEwECellBase) Then
                     Return DirectCast(cell, cEwECellBase).RelativePedigree

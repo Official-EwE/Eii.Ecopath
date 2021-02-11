@@ -51,7 +51,7 @@ Public Class cSCORFileWriter
 
             strm.WriteLine(Me.m_EPData.ModelName)
 
-            strm.WriteLine("{0,3}{1,3}", m_EPData.NumGroups, m_EPData.NumLiving)
+            strm.WriteLine("{0,3}{1,3}", Me.m_EPData.NumGroups, Me.m_EPData.NumLiving)
 
             For igrp = 1 To Me.m_EPData.NumGroups
                 'strip spaces out of group names
@@ -109,7 +109,7 @@ Public Class cSCORFileWriter
 
 
 #If 0 Then
-     Private Function Write(ByVal strFileName As String) As Boolean
+     Private Function Write(strFileName As String) As Boolean
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Code from original attempt as a SCOR file writer

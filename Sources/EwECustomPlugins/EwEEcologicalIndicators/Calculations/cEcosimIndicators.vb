@@ -52,13 +52,13 @@ Public Class cEcosimIndicators
     ''' <param name="ecosimDS">The <see cref="cEcosimDatastructures">Ecosim data structures</see> to operate onto.</param>
     ''' <param name="iTime">The Ecosim time to calculate the indicators for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore,
-                   ByVal ecopathDS As cEcopathDataStructures,
-                   ByVal ecosimDS As cEcosimDatastructures,
-                   ByVal iTime As Integer,
-                   ByVal stanzaDS As cStanzaDatastructures,
-                   ByVal taxonDS As cTaxonDataStructures,
-                   ByVal lookup As cTaxonAnalysis)
+    Public Sub New(core As cCore,
+                   ecopathDS As cEcopathDataStructures,
+                   ecosimDS As cEcosimDatastructures,
+                   iTime As Integer,
+                   stanzaDS As cStanzaDatastructures,
+                   taxonDS As cTaxonDataStructures,
+                   lookup As cTaxonAnalysis)
 
         MyBase.New(core, ecopathDS, stanzaDS, taxonDS, lookup)
 

@@ -121,9 +121,9 @@ Public Class cStockAssessmentModel
 
 #Region "Construction and Initialization"
 
-    Public Sub New(ByVal MSE As cMSE)
+    Public Sub New(MSE As cMSE)
         Me.m_MSE = MSE
-        Me.m_core = m_MSE.Core
+        Me.m_core = Me.m_MSE.Core
 
         Me.m_simdata = Me.MSE.EcosimData
         Me.m_pathdata = Me.MSE.EcopathData
@@ -145,8 +145,8 @@ Public Class cStockAssessmentModel
 
     End Sub
 
-    Public Sub ResetSeed(ByVal iModel As Integer)
-        m_rand = New Random(iModel)
+    Public Sub ResetSeed(iModel As Integer)
+        Me.m_rand = New Random(iModel)
     End Sub
 
     Private Sub Init()
@@ -189,7 +189,7 @@ Public Class cStockAssessmentModel
                 Me.m_lstParams.Add(New cStockAssessmentParameters(igrp, Me, Me.m_simdata, Me.m_pathdata))
             Next
 
-            m_lstFleets = New List(Of cStockAssessmentFleetParameters)
+            Me.m_lstFleets = New List(Of cStockAssessmentFleetParameters)
             'Include the zero element so the indexing matches up with the core one based indexes
             For iflt As Integer = 0 To Me.m_core.nGroups
                 Me.m_lstFleets.Add(New cStockAssessmentFleetParameters(iflt, Me, Me.m_pathdata))
@@ -206,8 +206,8 @@ Public Class cStockAssessmentModel
     Private Sub InitBiomass()
         'Init Bestimate() and BestimateLast() to the start biomass with some error
         For igrp As Integer = 1 To Me.Core.nLivingGroups
-            Bestimate(igrp) = m_simdata.StartBiomass(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * getNextRandNormal()))
-            BestimateLast(igrp) = Bestimate(igrp)
+            Me.Bestimate(igrp) = Me.m_simdata.StartBiomass(igrp) * CSng(Math.Exp(Me.CVbiomEst(igrp) * Me.getNextRandNormal()))
+            Me.BestimateLast(igrp) = Me.Bestimate(igrp)
         Next igrp
 
     End Sub
@@ -220,16 +220,16 @@ Public Class cStockAssessmentModel
             'GstockPred could have been altered by an interface
             For igrp = 1 To Me.Core.nLivingGroups
                 'BaB is correct for Stanza groups because Ecopath.BA() gets updated with Stanza.BaBsplit()
-                BaB = m_pathdata.BA(igrp) / m_pathdata.B(igrp)
+                BaB = Me.m_pathdata.BA(igrp) / Me.m_pathdata.B(igrp)
                 'gstockpred=exp(bab)-rstockratio, rather than 1-rstockratio.  Check to insure gstockpred>0
 
                 'Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
-                GstockPred(igrp) = CSng(Math.Exp(BaB) - RstockRatio(igrp))
-                If GstockPred(igrp) < 0 Then GstockPred(igrp) = 0
-                BhalfT(igrp) = RHalfB0Ratio(igrp) * m_pathdata.B(igrp)
+                Me.GstockPred(igrp) = CSng(Math.Exp(BaB) - Me.RstockRatio(igrp))
+                If Me.GstockPred(igrp) < 0 Then Me.GstockPred(igrp) = 0
+                Me.BhalfT(igrp) = Me.RHalfB0Ratio(igrp) * Me.m_pathdata.B(igrp)
 
-                RStock0(igrp) = RstockRatio(igrp) * m_simdata.StartBiomass(igrp)
-                Rmax(igrp) = RStock0(igrp) * (RHalfB0Ratio(igrp) + 1)
+                Me.RStock0(igrp) = Me.RstockRatio(igrp) * Me.m_simdata.StartBiomass(igrp)
+                Me.Rmax(igrp) = Me.RStock0(igrp) * (Me.RHalfB0Ratio(igrp) + 1)
 
             Next
         Catch ex As Exception
@@ -243,41 +243,41 @@ Public Class cStockAssessmentModel
 
         Dim MSEData As MSE.cMSEDataStructures = Me.MSE.CoreMSEData
 
-        Array.Copy(MSEData.Rmax, Rmax, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.BhalfT, BhalfT, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.CVbiomEst, CVbiomEst, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.GstockPred, GstockPred, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.RstockRatio, RstockRatio, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.RStock0, RStock0, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.RHalfB0Ratio, RHalfB0Ratio, Me.Core.nLivingGroups)
-        Array.Copy(MSEData.cvRec, cvRec, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.Rmax, Me.Rmax, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.BhalfT, Me.BhalfT, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.CVbiomEst, Me.CVbiomEst, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.GstockPred, Me.GstockPred, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.RstockRatio, Me.RstockRatio, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.RStock0, Me.RStock0, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.RHalfB0Ratio, Me.RHalfB0Ratio, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.cvRec, Me.cvRec, Me.Core.nLivingGroups)
 
         'HACK WARNING EwE does not have a seperate error on recruitment
         'it uses the observed biomass error
-        Array.Copy(MSEData.CVbiomEst, CVRecruitError, Me.Core.nLivingGroups)
+        Array.Copy(MSEData.CVbiomEst, Me.CVRecruitError, Me.Core.nLivingGroups)
 
-        Array.Copy(MSEData.CVFest, CVImpError, Me.Core.nFleets)
+        Array.Copy(MSEData.CVFest, Me.CVImpError, Me.Core.nFleets)
 
     End Sub
 
     Private Sub InitData()
 
-        Bestimate = New Single(Me.Core.nLivingGroups) {}
-        BestimateLast = New Single(Me.Core.nLivingGroups) {}
+        Me.Bestimate = New Single(Me.Core.nLivingGroups) {}
+        Me.BestimateLast = New Single(Me.Core.nLivingGroups) {}
 
-        Rmax = New Single(Me.Core.nLivingGroups) {}
-        BhalfT = New Single(Me.Core.nLivingGroups) {}
-        CVbiomEst = New Single(Me.Core.nLivingGroups) {}
-        GstockPred = New Single(Me.Core.nLivingGroups) {}
-        RstockRatio = New Single(Me.Core.nLivingGroups) {}
-        RStock0 = New Single(Me.Core.nLivingGroups) {}
-        RHalfB0Ratio = New Single(Me.Core.nLivingGroups) {}
-        cvRec = New Single(Me.Core.nLivingGroups) {}
-        KalmanGain = New Single(Me.Core.nLivingGroups) {}
+        Me.Rmax = New Single(Me.Core.nLivingGroups) {}
+        Me.BhalfT = New Single(Me.Core.nLivingGroups) {}
+        Me.CVbiomEst = New Single(Me.Core.nLivingGroups) {}
+        Me.GstockPred = New Single(Me.Core.nLivingGroups) {}
+        Me.RstockRatio = New Single(Me.Core.nLivingGroups) {}
+        Me.RStock0 = New Single(Me.Core.nLivingGroups) {}
+        Me.RHalfB0Ratio = New Single(Me.Core.nLivingGroups) {}
+        Me.cvRec = New Single(Me.Core.nLivingGroups) {}
+        Me.KalmanGain = New Single(Me.Core.nLivingGroups) {}
 
-        CVRecruitError = New Single(Me.Core.nLivingGroups) {}
+        Me.CVRecruitError = New Single(Me.Core.nLivingGroups) {}
 
-        CVImpError = New Single(Me.Core.nFleets) {}
+        Me.CVImpError = New Single(Me.Core.nFleets) {}
 
     End Sub
 
@@ -303,7 +303,7 @@ Public Class cStockAssessmentModel
 #Region "Public Methods"
 
 
-    Public Function DoAnnualStockAssessment(ByVal Strategy As Strategy, iTimestep As Integer, Biomass() As Single) As Single()
+    Public Function DoAnnualStockAssessment(Strategy As Strategy, iTimestep As Integer, Biomass() As Single) As Single()
         Try
             'Run the Stock assessment model at the start of each year.
             'This returns the biomass for the comming year that the quotas will be based on. 
@@ -323,7 +323,7 @@ Public Class cStockAssessmentModel
                 For igrp As Integer = 1 To nGrps
                     'Get the Observed Biomass
                     'Average biomass from the last year with sampling error
-                    Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(CVbiomEst(igrp) * getNextRandNormal()))
+                    Bobs(igrp) = Bavg(igrp) * CSng(Math.Exp(Me.CVbiomEst(igrp) * Me.getNextRandNormal()))
 
                     'Get the estimated biomass base on the observed biomass plus uncertainty
                     'Using the stock recruitment curve from the EwE6 MSE interface
@@ -352,7 +352,7 @@ Public Class cStockAssessmentModel
 
     Public Sub RunEnded()
 
-        cMSEUtils.ReleaseWriter(m_strmBobsB)
+        cMSEUtils.ReleaseWriter(Me.m_strmBobsB)
 
     End Sub
 
@@ -363,7 +363,7 @@ Public Class cStockAssessmentModel
 
     End Sub
 
-    Public ReadOnly Property Parameter(ByVal iGroupIndex As Integer) As cStockAssessmentParameters
+    Public ReadOnly Property Parameter(iGroupIndex As Integer) As cStockAssessmentParameters
         Get
             Try
                 Return Me.m_lstParams.Item(iGroupIndex)
@@ -374,7 +374,7 @@ Public Class cStockAssessmentModel
         End Get
     End Property
 
-    Public ReadOnly Property FleetParameter(ByVal iFleetIndex As Integer) As cStockAssessmentFleetParameters
+    Public ReadOnly Property FleetParameter(iFleetIndex As Integer) As cStockAssessmentFleetParameters
         Get
             Try
                 Return Me.m_lstFleets.Item(iFleetIndex)
@@ -386,14 +386,14 @@ Public Class cStockAssessmentModel
     End Property
 
 
-    Public Sub OnParameterChanged(ByVal iGroupIndex As Integer)
+    Public Sub OnParameterChanged(iGroupIndex As Integer)
         'InitStockAssessment()
         Me.m_isChanged = True
     End Sub
 
     Public Function getImplementationError(iFleet As Integer) As Single
 
-        Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
+        Return CSng(Math.Exp(Me.CVImpError(iFleet) * Me.getNextRandNormal()))
         'Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal(True, iFleet)))
 
     End Function
@@ -432,7 +432,7 @@ Public Class cStockAssessmentModel
         Return val
     End Function
 
-    Private Function getNextRandNormal(ByVal Save2File As Boolean, ByVal iFleet As Integer) As Single
+    Private Function getNextRandNormal(Save2File As Boolean, iFleet As Integer) As Single
 
         Dim val As Single
         Dim V1 As Double, V2 As Double
@@ -485,7 +485,7 @@ Public Class cStockAssessmentModel
 
     Private Sub dumpBioEstOverB(Strategy As Strategy, iTimestep As Integer, BioEst() As Single, B() As Single)
         Try
-            Me.m_strmBobsB.Write(m_iTrial.ToString & "," & Strategy.Name & "," & iTimestep.ToString)
+            Me.m_strmBobsB.Write(Me.m_iTrial.ToString & "," & Strategy.Name & "," & iTimestep.ToString)
             For i As Integer = 1 To Me.Core.nLivingGroups
                 Me.m_strmBobsB.Write("," & (BioEst(i) / B(i)).ToString)
             Next
@@ -521,7 +521,7 @@ Public Class cStockAssessmentModel
 
     End Function
 
-    Private Function stockRecruitment(ByVal iTime As Integer, ByVal iGroup As Integer, ByVal BioEst As Single, ByVal Blast As Single) As Single
+    Private Function stockRecruitment(iTime As Integer, iGroup As Integer, BioEst As Single, Blast As Single) As Single
         'B is the biomass calculated by Ecosim
         'BioEst is the observed biomass(Ecosim biomass + random variation)
         'Blast is the biomass predicted for the last timestep ( Blast = stockRecruitment(t-1) )
@@ -540,11 +540,11 @@ Public Class cStockAssessmentModel
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         Me.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-CatchYear(iGroup) / Blast + simdata.Fish1(iGroup)))
 
-        RstockPred = CSng(Rmax(iGroup) * Me.BestimateLast(iGroup) / (BhalfT(iGroup) + Me.BestimateLast(iGroup)))
-        vPred = CSng((RstockRatio(iGroup) * cvRec(iGroup)) ^ 2 / (1 - GstockPred(iGroup) ^ 2))
-        KalmanGain(iGroup) = CSng(vPred / (vPred + CVbiomEst(iGroup) ^ 2))
+        RstockPred = CSng(Me.Rmax(iGroup) * Me.BestimateLast(iGroup) / (Me.BhalfT(iGroup) + Me.BestimateLast(iGroup)))
+        vPred = CSng((Me.RstockRatio(iGroup) * Me.cvRec(iGroup)) ^ 2 / (1 - Me.GstockPred(iGroup) ^ 2))
+        Me.KalmanGain(iGroup) = CSng(vPred / (vPred + Me.CVbiomEst(iGroup) ^ 2))
 
-        Best = KalmanGain(iGroup) * BioEst + (1 - KalmanGain(iGroup)) * (GstockPred(iGroup) * Me.BestimateLast(iGroup) + RstockPred)
+        Best = Me.KalmanGain(iGroup) * BioEst + (1 - Me.KalmanGain(iGroup)) * (Me.GstockPred(iGroup) * Me.BestimateLast(iGroup) + RstockPred)
 
         'If BioEst is tiny Best can be an invalid number
         If Best = 0 Or Single.IsNaN(Best) Then
@@ -594,26 +594,26 @@ Public Class cStockAssessmentModel
     End Property
 
     Private Function DefaultFileName() As String
-        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
+        Return cMSEUtils.MSEFile(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
     End Function
 
 
     Private Sub InitOutputFiles()
         Try
 
-            If m_strmBobsB IsNot Nothing Then
-                cMSEUtils.ReleaseWriter(m_strmBobsB)
+            If Me.m_strmBobsB IsNot Nothing Then
+                cMSEUtils.ReleaseWriter(Me.m_strmBobsB)
             End If
 
             Dim fn As String = cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "BobsOverB.csv")
-            m_strmBobsB = cMSEUtils.GetWriter(fn, False)
+            Me.m_strmBobsB = cMSEUtils.GetWriter(fn, False)
             'Headers
-            m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
-            m_strmBobsB.Write("TrialNumber,Strategy,TimeStep")
+            Me.m_strmBobsB.WriteLine("B_StockAssessment / B_Ecosim")
+            Me.m_strmBobsB.Write("TrialNumber,Strategy,TimeStep")
             For igrp As Integer = 1 To Me.Core.nGroups
-                m_strmBobsB.Write("," & Me.m_pathdata.GroupName(igrp))
+                Me.m_strmBobsB.Write("," & Me.m_pathdata.GroupName(igrp))
             Next
-            m_strmBobsB.WriteLine()
+            Me.m_strmBobsB.WriteLine()
 
         Catch ex As Exception
 
@@ -744,7 +744,7 @@ Public Class cStockAssessmentModel
             'Header
             buff = strm.ReadLine()
             'Fleet data
-            For iflt As Integer = 1 To Core.nFleets
+            For iflt As Integer = 1 To Me.Core.nFleets
                 buff = strm.ReadLine()
                 'Let the parameter object figure out the format of the data
                 Me.FleetParameter(iflt).FromCSVString(buff)

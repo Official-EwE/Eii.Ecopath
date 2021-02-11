@@ -39,7 +39,7 @@ Namespace Controls.Map.Layers
             Me.New(Nothing, True)
         End Sub
 
-        Public Sub New(ByVal typeGUI As Type, bAutoToggleCellValue As Boolean)
+        Public Sub New(typeGUI As Type, bAutoToggleCellValue As Boolean)
             MyBase.New(typeGUI)
             Me.AutoToggleCellValue = bAutoToggleCellValue
         End Sub
@@ -49,7 +49,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayer)
+        Public Overrides Sub Initialize(uic As cUIContext, layer As cDisplayLayer)
             MyBase.Initialize(uic, layer)
             Dim rl As cDisplayLayerRaster = DirectCast(layer, cDisplayLayerRaster)
             Me.CellValueMax = CSng(Math.Max(rl.ValueSet, rl.ValueClear))
@@ -59,7 +59,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.StartEdit"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub StartEdit(ByVal e As MouseEventArgs, map As ucMap)
+        Protected Overrides Sub StartEdit(e As MouseEventArgs, map As ucMap)
 
             If (Not Me.IsEditable) Then Return
 
@@ -70,12 +70,12 @@ Namespace Controls.Map.Layers
             If (Me.AutoToggleCellValue) Then
 
                 ' Clicked on an empty cell?
-                If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueClear)) Then
+                If Decimal.Equals(CSng(Me.Layer.Value(ptClick.Y, ptClick.X)), CSng(Me.Layer.ValueClear)) Then
                     ' #Yes: start setting values
-                    Me.CellValue = CSng(Layer.ValueSet)
+                    Me.CellValue = CSng(Me.Layer.ValueSet)
                 Else
                     ' #No: start clearing values
-                    Me.CellValue = CSng(Layer.ValueClear)
+                    Me.CellValue = CSng(Me.Layer.ValueClear)
                 End If
 
                 If Me.GUI IsNot Nothing Then

@@ -35,7 +35,7 @@ Public Class cMonteCarloResultsWriterOneFile
 
     Private m_msgStatus As cMessage = Nothing
 
-    Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
+    Public Sub New(MonteCarlo As cEcosimMonteCarlo, theCore As cCore)
 
         Me.MC = MonteCarlo
         Me.Core = theCore
@@ -92,7 +92,7 @@ Public Class cMonteCarloResultsWriterOneFile
     ''' <summary>
     ''' Save both iteration and baseline data to file
     ''' </summary>
-    Public Sub Save(ByVal iTrial As Integer) Implements IMonteCarloResultsWriter.Save
+    Public Sub Save(iTrial As Integer) Implements IMonteCarloResultsWriter.Save
 
         Dim strm As StreamWriter
         Dim isBaseLineData As Boolean = (iTrial <= 0)
@@ -122,40 +122,40 @@ Public Class cMonteCarloResultsWriterOneFile
             strm.WriteLine(cStringUtils.ToCSVField("Current SS") & "," & cStringUtils.ToCSVField(Me.MC.SSCurrent))
             strm.WriteLine(cStringUtils.ToCSVField("Ecopath parameters"))
 
-            strm.WriteLine(cStringUtils.ToCSVField("Group Name") & "," & Me.ToCSVString(Core.m_EcoPathData.GroupName))
+            strm.WriteLine(cStringUtils.ToCSVField("Group Name") & "," & Me.ToCSVString(Me.Core.m_EcoPathData.GroupName))
 
-            strm.WriteLine("Biomass," & Me.ToCSVString(Core.m_EcoPathData.B))
-            strm.WriteLine("PB," & Me.ToCSVString(Core.m_EcoPathData.PB))
-            strm.WriteLine("EE," & Me.ToCSVString(Core.m_EcoPathData.EE))
-            strm.WriteLine("QB," & Me.ToCSVString(Core.m_EcoPathData.QB))
-            strm.WriteLine("BA," & Me.ToCSVString(Core.m_EcoPathData.BA))
+            strm.WriteLine("Biomass," & Me.ToCSVString(Me.Core.m_EcoPathData.B))
+            strm.WriteLine("PB," & Me.ToCSVString(Me.Core.m_EcoPathData.PB))
+            strm.WriteLine("EE," & Me.ToCSVString(Me.Core.m_EcoPathData.EE))
+            strm.WriteLine("QB," & Me.ToCSVString(Me.Core.m_EcoPathData.QB))
+            strm.WriteLine("BA," & Me.ToCSVString(Me.Core.m_EcoPathData.BA))
 
             strm.WriteLine("Landings")
-            For iflt As Integer = 1 To Core.nFleets
-                Dim landings(Core.nGroups) As Single
-                For igrp As Integer = 1 To Core.nGroups
-                    landings(igrp) += Core.m_EcoPathData.Landing(iflt, igrp)
+            For iflt As Integer = 1 To Me.Core.nFleets
+                Dim landings(Me.Core.nGroups) As Single
+                For igrp As Integer = 1 To Me.Core.nGroups
+                    landings(igrp) += Me.Core.m_EcoPathData.Landing(iflt, igrp)
                 Next
-                strm.WriteLine(cStringUtils.ToCSVField(Core.m_EcoPathData.FleetName(iflt) & "," & Me.ToCSVString(landings)))
+                strm.WriteLine(cStringUtils.ToCSVField(Me.Core.m_EcoPathData.FleetName(iflt) & "," & Me.ToCSVString(landings)))
             Next
 
             strm.WriteLine("Discards")
-            For iflt As Integer = 1 To Core.nFleets
-                Dim discards(Core.nGroups) As Single
-                For igrp As Integer = 1 To Core.nGroups
-                    discards(igrp) += Core.m_EcoPathData.Discard(iflt, igrp)
+            For iflt As Integer = 1 To Me.Core.nFleets
+                Dim discards(Me.Core.nGroups) As Single
+                For igrp As Integer = 1 To Me.Core.nGroups
+                    discards(igrp) += Me.Core.m_EcoPathData.Discard(iflt, igrp)
                 Next
-                strm.WriteLine(cStringUtils.ToCSVField(Core.m_EcoPathData.FleetName(iflt) & "," & Me.ToCSVString(discards)))
+                strm.WriteLine(cStringUtils.ToCSVField(Me.Core.m_EcoPathData.FleetName(iflt) & "," & Me.ToCSVString(discards)))
             Next
 
             strm.WriteLine("Diets")
-            For iPrey As Integer = 1 To Core.nGroups
+            For iPrey As Integer = 1 To Me.Core.nGroups
                 strm.Write("," & cStringUtils.ToCSVField("Prey " & iPrey.ToString))
             Next
-            For iPred As Integer = 1 To Core.nGroups
+            For iPred As Integer = 1 To Me.Core.nGroups
                 strm.Write("Pred " & iPred.ToString)
-                For iPrey As Integer = 1 To Core.nGroups
-                    strm.Write("," & Me.ToCSVString(Core.m_EcoPathData.DC, iPred))
+                For iPrey As Integer = 1 To Me.Core.nGroups
+                    strm.Write("," & Me.ToCSVString(Me.Core.m_EcoPathData.DC, iPred))
                 Next
             Next
             strm.WriteLine(cStringUtils.ToCSVField("Ecosim biomass"))
@@ -166,7 +166,7 @@ Public Class cMonteCarloResultsWriterOneFile
             Next
             strm.WriteLine()
             For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
-                strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Core.m_EcoPathData.GroupName(igrp)) & ",")
+                strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Me.Core.m_EcoPathData.GroupName(igrp)) & ",")
                 strm.WriteLine(Me.ToCSVString(Me.Core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, igrp))
             Next
             strm.WriteLine(cStringUtils.ToCSVField("Ecosim catch"))
@@ -177,7 +177,7 @@ Public Class cMonteCarloResultsWriterOneFile
             Next
             strm.WriteLine()
             For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
-                strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Core.m_EcoPathData.GroupName(igrp)) & ",")
+                strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Me.Core.m_EcoPathData.GroupName(igrp)) & ",")
                 strm.WriteLine(Me.ToCSVString(Me.Core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, igrp))
             Next
             ' ToDo: Export Landings, Discards, DiscardMort, DiscardSurv ;)
@@ -269,7 +269,7 @@ Public Class cMonteCarloResultsWriterOneFile
         Dim buff As New StringBuilder
 
         'Group name
-        buff.AppendLine(cStringUtils.ToCSVField("Group Name") & "," & Me.ToCSVString(Core.m_EcoPathData.GroupName))
+        buff.AppendLine(cStringUtils.ToCSVField("Group Name") & "," & Me.ToCSVString(Me.Core.m_EcoPathData.GroupName))
 
         'CV's
         buff.AppendLine(cStringUtils.ToCSVField("Biomass CV") & "," & Me.ToCSVString(Me.MC.CVpar, eMCParams.Biomass))
@@ -300,11 +300,11 @@ Public Class cMonteCarloResultsWriterOneFile
     End Function
 
 
-    Private Function ToCSVString(ByVal Values(,,) As Single, ByVal FirstFixedIndex As Integer, ByVal SecondFixedIndex As Integer) As String
+    Private Function ToCSVString(Values(,,) As Single, FirstFixedIndex As Integer, SecondFixedIndex As Integer) As String
 
         Dim buff As New StringBuilder()
         Try
-            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+            For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff.Append(",")
                 buff.Append(cStringUtils.FormatSingle(Values(FirstFixedIndex, SecondFixedIndex, igrp)))
             Next
@@ -316,11 +316,11 @@ Public Class cMonteCarloResultsWriterOneFile
     End Function
 
 
-    Private Function ToCSVString(ByVal Values(,) As Single, ByVal FixedIndex As Integer) As String
+    Private Function ToCSVString(Values(,) As Single, FixedIndex As Integer) As String
 
         Dim buff As New StringBuilder()
         Try
-            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+            For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff.Append(",")
                 buff.Append(cStringUtils.FormatSingle(Values(FixedIndex, igrp)))
             Next
@@ -332,7 +332,7 @@ Public Class cMonteCarloResultsWriterOneFile
     End Function
 
 
-    Private Function ToCSVString(ByVal Values(,,) As Single, ByVal Variable As cEcosimDatastructures.eEcosimResults, ByVal iGroup As Integer) As String
+    Private Function ToCSVString(Values(,,) As Single, Variable As cEcosimDatastructures.eEcosimResults, iGroup As Integer) As String
 
         Dim buff As New StringBuilder()
         Try
@@ -348,11 +348,11 @@ Public Class cMonteCarloResultsWriterOneFile
     End Function
 
 
-    Private Function ToCSVString(ByVal Values() As String) As String
+    Private Function ToCSVString(Values() As String) As String
 
         Dim buff As New StringBuilder()
         Try
-            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+            For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff.Append(",")
                 buff.Append(Values(igrp))
             Next
@@ -364,11 +364,11 @@ Public Class cMonteCarloResultsWriterOneFile
     End Function
 
 
-    Private Function ToCSVString(ByVal values() As Single) As String
+    Private Function ToCSVString(values() As Single) As String
 
         Dim buff As New StringBuilder()
         Try
-            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+            For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff.Append(",")
                 buff.Append(cStringUtils.FormatSingle(values(igrp)))
             Next

@@ -163,18 +163,28 @@
   <data name="HEADER_STATE" xml:space="preserve">
     <value>State</value>
   </data>
-  <data name="STATE_ERROR" xml:space="preserve">
+  <data name="STATE_ITERATION_ERROR" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="STATE_OK" xml:space="preserve">
+  <data name="STATE_ITERATION_INITIALIZING" xml:space="preserve">
+    <value>(initializing)</value>
+  </data>
+  <data name="STATE_ITERATION_OK" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="STATE_RUNNING" xml:space="preserve">
+  <data name="STATE_ITERATION_RUNNING" xml:space="preserve">
     <value>(running)</value>
   </data>
+  <data name="STATE_ITERATION_STOPPING" xml:space="preserve">
+    <value>(stopping)</value>
+  </data>
+  <data name="STATUS_INITIALIZING" xml:space="preserve">
+    <value>{0} initializing</value>
+    <comment>{0}=CAPTION</comment>
+  </data>
   <data name="STATUS_RUNNING" xml:space="preserve">
-    <value>{0} running {1}...</value>
-    <comment>{0}=CAPTION; {1}=iteration name</comment>
+    <value>{0} in progress</value>
+    <comment>{0}=CAPTION</comment>
   </data>
   <data name="STATUS_SAVE_DETAIL_FAILED" xml:space="preserve">
     <value>{0} results could not be saved. {1}</value>

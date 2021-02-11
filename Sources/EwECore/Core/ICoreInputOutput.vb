@@ -69,7 +69,7 @@ Public Interface ICoreInputOutput
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iIndex2">Optional index of the value to return when accessing an array-type variable.</param>
     ''' <returns>Any loose-typed value, or Nothing if an error occurred.</returns>
-    Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex1 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
+    Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = cCore.NULL_VALUE, Optional iIndex2 As Integer = cCore.NULL_VALUE, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
     ''' <summary>
     ''' Sets the value of a variable exposed by a Core input or output object.
@@ -77,7 +77,7 @@ Public Interface ICoreInputOutput
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iIndex">Optional index of the value to set when accessing an array-type variable.</param>
     ''' <returns>True if successful.</returns>
-    Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+    Function SetVariable(VarName As eVarNameFlags, newValue As Object, Optional iIndex As Integer = cCore.NULL_VALUE, Optional iThirdIndex As Integer = -9999) As Boolean
 
     ''' <summary>
     ''' Returns the <see cref="eStatusFlags">Status</see> of a value exposed by a Core input or output object.
@@ -85,8 +85,8 @@ Public Interface ICoreInputOutput
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iSecondaryIndex">Optional index of the value status to query when accessing an array-type variable.</param>
     ''' <returns>Any loose-typed value, or Nothing if an error occurred.</returns>
-    Function GetStatus(ByVal VarName As eVarNameFlags, Optional ByVal iSecondaryIndex As Integer = -9999,
-                                            Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags
+    Function GetStatus(VarName As eVarNameFlags, Optional iSecondaryIndex As Integer = -9999,
+                                            Optional iThirdIndex As Integer = -9999) As eStatusFlags
 
     ''' <summary>
     ''' Sets the <see cref="eStatusFlags">Status</see> of a value exposed by a Core input or output object.
@@ -94,8 +94,8 @@ Public Interface ICoreInputOutput
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iSecondaryIndex">Optional index of the value status to set when accessing an array-type variable.</param>
     ''' <returns>Any loose-typed value, or Nothing if an error occurred.</returns>
-    Function SetStatus(ByVal VarName As eVarNameFlags, ByVal newStatus As eStatusFlags, Optional ByVal iSecondaryIndex As Integer = -9999,
-                                            Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+    Function SetStatus(VarName As eVarNameFlags, newStatus As eStatusFlags, Optional iSecondaryIndex As Integer = -9999,
+                                            Optional iThirdIndex As Integer = -9999) As Boolean
 
     ''' <summary>
     ''' Returns the <see cref="cVariableStatus">result</see> of the most recent 
@@ -258,27 +258,27 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Create and populate the Lookup tables, as well as <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see>-defined variables.
     ''' </summary>
     ''' <remarks>A class the inherits from this base class will need to define its own variables in its constructor</remarks>
-    Sub New(ByRef TheCore As cCore)
+    Sub New(core As cCore)
 
         Dim val As cValue
         Dim name() As Char
 
-        m_core = TheCore
+        Me.m_core = core
 
         Me.m_ValidationStatus = New cVariableStatus()
         Me.m_ValidationStatus.CoreDataObject = Me
 
-        val = New cValue(New String(name), eVarNameFlags.Name, eStatusFlags.OK, eValueTypes.Str)
+        val = New cValue(core, New String(name), eVarNameFlags.Name, eStatusFlags.OK, eValueTypes.Str)
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.Index, eStatusFlags.OK, eValueTypes.Int)
+        val = New cValue(core, New Integer, eVarNameFlags.Index, eStatusFlags.OK, eValueTypes.Int)
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.OK, eValueTypes.Int)
+        val = New cValue(core, New Integer, eVarNameFlags.DBID, eStatusFlags.OK, eValueTypes.Int)
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
 #If DEBUG Then
         Me.m_iInstance = cCoreInputOutputBase.s_iNextInstance
@@ -294,7 +294,7 @@ Public MustInherit Class cCoreInputOutputBase
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
         Dim value As cValue
 
-        For Each keyvalue In m_values
+        For Each keyvalue In Me.m_values
             value = keyvalue.Value
             'only cValueArray objects will actually resize the underlying data
             value.SetSize()
@@ -354,8 +354,8 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="objSec">Secundary object within the given <paramref name="varName">variable</paramref>
     ''' that a remark applies to.</param>
     ''' -----------------------------------------------------------------------
-    Public Property Remark(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name,
-                           Optional ByVal objSec As cCoreInputOutputBase = Nothing) As String
+    Public Property Remark(Optional varName As eVarNameFlags = eVarNameFlags.Name,
+                           Optional objSec As cCoreInputOutputBase = Nothing) As String
         Get
             Dim key As cValueID = Nothing
             If (objSec Is Nothing) Then
@@ -365,7 +365,7 @@ Public MustInherit Class cCoreInputOutputBase
             End If
             Return Me.m_core.AuxillaryData(key).Remark
         End Get
-        Set(ByVal strRemark As String)
+        Set(strRemark As String)
             Dim key As cValueID = Nothing
             If (objSec Is Nothing) Then
                 key = New cValueID(Me.DataType, Me.DBID, varName)
@@ -376,7 +376,7 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
-    Public Overridable Property Units(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name) As String
+    Public Overridable Property Units(Optional varName As eVarNameFlags = eVarNameFlags.Name) As String
         Get
             Dim md As cVariableMetaData = cVariableMetaData.Get(varName)
             Return md.Units()
@@ -399,7 +399,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' objects will need to provide their own implementation due to the 
     ''' absence of validators.</remarks>
     ''' -----------------------------------------------------------------------
-    Friend Overridable Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overridable Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
         Dim i As Integer
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
@@ -408,7 +408,7 @@ Public MustInherit Class cCoreInputOutputBase
 
         If Me.m_bReadOnly Then status = eStatusFlags.NotEditable
 
-        For Each keyvalue In m_values
+        For Each keyvalue In Me.m_values
             Try
                 value = keyvalue.Value
 
@@ -482,11 +482,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
     ''' <param name="iIndex2">Optional secundary index within <paramref name="VarName">VarName</paramref>.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags,
-                                          Optional ByVal iIndex As Integer = -9999,
-                                          Optional ByVal iIndex2 As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
+    Public Overridable Function GetStatus(VarName As eVarNameFlags,
+                                          Optional iIndex As Integer = -9999,
+                                          Optional iIndex2 As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
-            Dim val As cValue = m_values.Item(VarName)
+            Dim val As cValue = Me.m_values.Item(VarName)
             Return val.Status(iIndex, iIndex2) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
         Catch ex As Exception
             Debug.Assert(False, "GetStatus() Error " & ex.Message)
@@ -503,12 +503,12 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="newStatus">The new status values to set.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function SetStatus(ByVal VarName As eVarNameFlags,
-                              ByVal newStatus As eStatusFlags,
-                              Optional ByVal iIndex As Integer = -9999,
-                              Optional ByVal iThirdIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
+    Friend Function SetStatus(VarName As eVarNameFlags,
+                              newStatus As eStatusFlags,
+                              Optional iIndex As Integer = -9999,
+                              Optional iThirdIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
         Try
-            m_values.Item(VarName).Status(iIndex, iThirdIndex) = newStatus
+            Me.m_values.Item(VarName).Status(iIndex, iThirdIndex) = newStatus
             Return True
         Catch ex As Exception
             Debug.Assert(False, "SetStatus(...) Failed to set Status " & VarName.ToString)
@@ -525,11 +525,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="statusFlags">The status values to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function SetStatusFlags(ByVal VarName As eVarNameFlags,
-                                   ByVal statusFlags As eStatusFlags,
-                                   Optional ByVal iIndex As Integer = -9999) As Boolean
+    Friend Function SetStatusFlags(VarName As eVarNameFlags,
+                                   statusFlags As eStatusFlags,
+                                   Optional iIndex As Integer = -9999) As Boolean
         Try
-            m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) Or statusFlags
+            Me.m_values.Item(VarName).Status(iIndex) = Me.m_values.Item(VarName).Status(iIndex) Or statusFlags
             Return True
         Catch ex As Exception
             Debug.Assert(False, "SetStatusFlags(...) Failed to set status flags " & VarName.ToString)
@@ -546,9 +546,9 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="statusFlags">The status values to clear.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function ClearStatusFlags(ByVal VarName As eVarNameFlags, ByVal statusFlags As eStatusFlags, Optional ByVal iIndex As Integer = -9999) As Boolean
+    Friend Function ClearStatusFlags(VarName As eVarNameFlags, statusFlags As eStatusFlags, Optional iIndex As Integer = -9999) As Boolean
         Try
-            m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) And (Not statusFlags)
+            Me.m_values.Item(VarName).Status(iIndex) = Me.m_values.Item(VarName).Status(iIndex) And (Not statusFlags)
             Return True
         Catch ex As Exception
             Debug.Assert(False, "ClearStatusFlags(...) Failed to clear status flags " & VarName.ToString)
@@ -570,11 +570,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <returns></returns>
     ''' <remarks>This only provides variables for one optional index Override this if you you need access to variables with two indexes</remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
+    Public Overridable Function GetVariable(VarName As eVarNameFlags, Optional iIndex As Integer = cCore.NULL_VALUE, Optional iIndex2 As Integer = cCore.NULL_VALUE, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
 
         Try
             ' Debug.Assert(iIndex2 = cCore.NULL_VALUE, "GetVariable(eVarNameFlags,Option Integer, Optional Integer) Called with optional argument iIndex2 this behavior must be implemented in a derived class.")
-            Return m_values.Item(VarName).Value(iIndex, iIndex2)
+            Return Me.m_values.Item(VarName).Value(iIndex, iIndex2)
         Catch ex As Exception
             Debug.Assert(False, "GetVariable() Error: " & VarName.ToString & " " & ex.Message)
             Return Nothing
@@ -593,10 +593,10 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <remarks>The outcome of the SetVariable call can be examined via 
     ''' <see cref="cValue.ValidationStatus">cValue.ValidationStatus</see>.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function SetVariable(ByVal VarName As eVarNameFlags,
-            ByVal newValue As Object,
-            Optional ByVal iSecondaryIndex As Integer = -9999,
-            Optional ByVal iThirdIndex As Integer = -9999) As Boolean _
+    Public Overridable Function SetVariable(VarName As eVarNameFlags,
+            newValue As Object,
+            Optional iSecondaryIndex As Integer = -9999,
+            Optional iThirdIndex As Integer = -9999) As Boolean _
             Implements ICoreInputOutput.SetVariable
 
         Dim bSucces As Boolean = True
@@ -604,7 +604,7 @@ Public MustInherit Class cCoreInputOutputBase
 
         'get the cValue object for the dictionary
         Try
-            valueobject = m_values.Item(VarName)
+            valueobject = Me.m_values.Item(VarName)
 
             ' Optimization: abort when the set operation will not change the variable value, and when
             '               a value does not need re-validating.
@@ -618,11 +618,11 @@ Public MustInherit Class cCoreInputOutputBase
             valueobject.Value(iSecondaryIndex, iThirdIndex) = newValue
             If valueobject.ValidationStatus = eStatusFlags.FailedValidation Then bSucces = False
 
-            If AllowValidation Then
+            If Me.AllowValidation Then
 
                 ' Prepare status
-                m_ValidationStatus.Copy(valueobject)
-                m_ValidationStatus.iArrayIndex = iSecondaryIndex
+                Me.m_ValidationStatus.Copy(valueobject)
+                Me.m_ValidationStatus.iArrayIndex = iSecondaryIndex
 
                 ' Notify core, if provided
                 If (Me.m_core IsNot Nothing) Then
@@ -633,8 +633,8 @@ Public MustInherit Class cCoreInputOutputBase
 
         Catch ex As KeyNotFoundException
             'this is most likely a programming error so assert and try to figure out why
-            m_ValidationStatus.Status = eStatusFlags.ErrorEncountered
-            m_ValidationStatus.Message = Me.ToString & ".setVariable(...) Failed to find variable: " & VarName.ToString
+            Me.m_ValidationStatus.Status = eStatusFlags.ErrorEncountered
+            Me.m_ValidationStatus.Message = Me.ToString & ".setVariable(...) Failed to find variable: " & VarName.ToString
             Debug.Assert(False, Me.ToString & ".setVariable(...) Failed to find variable: " & VarName.ToString)
             bSucces = False
 
@@ -663,10 +663,10 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Null if something went wrong.</returns>
     ''' -----------------------------------------------------------------------
     <EditorBrowsable(EditorBrowsableState.Advanced)>
-    Public Function GetVariableMetadata(ByVal varName As eVarNameFlags) As cVariableMetaData
+    Public Function GetVariableMetadata(varName As eVarNameFlags) As cVariableMetaData
 
         If Me.m_values.ContainsKey(varName) Then
-            Return m_values.Item(varName).Metadata
+            Return Me.m_values.Item(varName).Metadata
         End If
         Return cVariableMetaData.Get(varName)
 
@@ -689,17 +689,17 @@ Public MustInherit Class cCoreInputOutputBase
     <EditorBrowsable(EditorBrowsableState.Advanced)>
     Friend Overridable Property AllowValidation() As Boolean
         Get
-            Return m_bValidate
+            Return Me.m_bValidate
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
 
-            m_bValidate = value
+            Me.m_bValidate = value
 
             'set the do validation flag in all the values
             Dim valueobject As cValue
-            For Each keyvalue As KeyValuePair(Of eVarNameFlags, cValue) In m_values
+            For Each keyvalue As KeyValuePair(Of eVarNameFlags, cValue) In Me.m_values
                 valueobject = keyvalue.Value
-                valueobject.AllowValidation = m_bValidate
+                valueobject.AllowValidation = Me.m_bValidate
             Next
 
         End Set
@@ -722,11 +722,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <seealso cref="Index"/>
     Public Property Name() As String Implements ICoreInterface.Name
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.Name), String)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.Name), String)
         End Get
 
-        Set(ByVal newValue As String)
-            SetVariable(eVarNameFlags.Name, newValue)
+        Set(newValue As String)
+            Me.SetVariable(eVarNameFlags.Name, newValue)
         End Set
     End Property
 
@@ -744,19 +744,19 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <seealso cref="Name"/>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.Index), Integer)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.Index), Integer)
         End Get
 
-        Set(ByVal newValue As Integer)
+        Set(newValue As Integer)
 
             Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
             Dim value As cValue
-            For Each keyvalue In m_values
+            For Each keyvalue In Me.m_values
                 value = keyvalue.Value
                 value.Index = newValue
             Next
 
-            SetVariable(eVarNameFlags.Index, newValue)
+            Me.SetVariable(eVarNameFlags.Index, newValue)
         End Set
     End Property
 
@@ -770,10 +770,10 @@ Public MustInherit Class cCoreInputOutputBase
     <EditorBrowsable(EditorBrowsableState.Advanced)>
     Property DBID() As Integer Implements ICoreInterface.DBID
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.DBID), Integer)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.DBID), Integer)
         End Get
-        Friend Set(ByVal newValue As Integer)
-            SetVariable(eVarNameFlags.DBID, newValue)
+        Friend Set(newValue As Integer)
+            Me.SetVariable(eVarNameFlags.DBID, newValue)
         End Set
     End Property
 
@@ -785,7 +785,7 @@ Public MustInherit Class cCoreInputOutputBase
     Public ReadOnly Property ValidationStatus() As cVariableStatus _
         Implements ICoreInputOutput.ValidationStatus
         Get
-            Return m_ValidationStatus
+            Return Me.m_ValidationStatus
         End Get
     End Property
 
@@ -796,7 +796,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see>
     ''' to retrieve the value descriptor for.</param>
     <EditorBrowsable(EditorBrowsableState.Advanced)>
-    Public ReadOnly Property ValueDescriptor(ByVal varName As eVarNameFlags) As cValue
+    Public ReadOnly Property ValueDescriptor(varName As eVarNameFlags) As cValue
         Get
             If Me.m_values.ContainsKey(varName) Then Return Me.m_values(varName)
             Return Nothing
@@ -829,11 +829,11 @@ Public Class cCoreGroupBase
     ''' Create and populate the Lookup tables 
     ''' </summary>
     ''' <remarks>A class the inherits from this base class will need to define its own variables in its constructor</remarks>
-    Sub New(ByRef core As cCore)
+    Sub New(core As cCore)
         MyBase.New(core)
 
-        Dim val As New cValue(New Single, eVarNameFlags.PP, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        Dim val As New cValue(core, New Single, eVarNameFlags.PP, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
     End Sub
 
@@ -865,10 +865,10 @@ Public Class cCoreGroupBase
     ''' -----------------------------------------------------------------------
     Public Property PP() As Single Implements ICoreGroup.PP
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.PP), Single)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.PP), Single)
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PP, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.PP, value)
         End Set
     End Property
 
@@ -880,10 +880,10 @@ Public Class cCoreGroupBase
     Public Property iStanza() As Integer _
         Implements ICoreGroup.iStanza
         Get
-            Return m_iStanza
+            Return Me.m_iStanza
         End Get
-        Set(ByVal value As Integer)
-            m_iStanza = value
+        Set(value As Integer)
+            Me.m_iStanza = value
         End Set
     End Property
 
@@ -966,7 +966,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' <param name="dt">The <see cref="eDataTypes">data type</see> of objects that this list holds.</param>
     ''' <param name="iItemOffset">The offset for items in this list.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByVal dt As eDataTypes, ByVal iItemOffset As Integer)
+    Friend Sub New(dt As eDataTypes, iItemOffset As Integer)
         Me.m_dt = dt
         Me.m_iItemOffset = iItemOffset
     End Sub
@@ -983,7 +983,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' </summary>
     ''' <param name="list">The list that fired the event.</param>
     ''' -----------------------------------------------------------------------
-    Public Event OnListChanged(ByVal list As cCoreInputOutputList(Of T))
+    Public Event OnListChanged(list As cCoreInputOutputList(Of T))
 
     ''' <summary>Event lock flag, stating whether events are allowed to be sent out.</summary>
     ''' <remarks>This flag should be used to suppress events when a list is being configured.</remarks>
@@ -1002,7 +1002,7 @@ Public Class cCoreInputOutputList(Of T)
             Return Me.m_bAllowEvents
         End Get
 
-        Set(ByVal bAllow As Boolean)
+        Set(bAllow As Boolean)
             ' Set the flag
             Me.m_bAllowEvents = bAllow
             ' If an event was withheld, send it now.
@@ -1061,7 +1061,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Restricted access because the content of this list is managed by the EwE Core.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Overridable Sub Add(ByVal item As T) _
+    Friend Overridable Sub Add(item As T) _
             Implements System.Collections.Generic.ICollection(Of T).Add
         Me.m_list.Add(item)
         ' JS 27aug07: disabled list events to avoid confusion about possible list interfaces
@@ -1086,7 +1086,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Strong-typed <see cref="List.Contains">List.Contains</see> implementation.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Contains(ByVal item As T) As Boolean _
+    Public Overridable Function Contains(item As T) As Boolean _
              Implements System.Collections.Generic.ICollection(Of T).Contains
         Return Me.m_list.Contains(item)
     End Function
@@ -1096,7 +1096,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Strong-typed <see cref="List.CopyTo">List.CopyTo</see> implementation.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub CopyTo(ByVal aItems() As T, ByVal iIndex As Integer) _
+    Public Overridable Sub CopyTo(aItems() As T, iIndex As Integer) _
             Implements System.Collections.Generic.ICollection(Of T).CopyTo
         Me.m_list.CopyTo(aItems, iIndex - Me.m_iItemOffset)
     End Sub
@@ -1134,7 +1134,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Restricted access because the content of this list is managed by the EwE Core.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Overridable Function Remove(ByVal item As T) As Boolean _
+    Friend Overridable Function Remove(item As T) As Boolean _
              Implements System.Collections.Generic.ICollection(Of T).Remove
         Me.m_list.Remove(item)
         ' JS 27aug07: disabled list events to avoid confusion about possible list interfaces
@@ -1156,7 +1156,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Strong-typed <see cref="List.IndexOf">List.IndexOf</see> impementation. 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function IndexOf(ByVal item As T) As Integer _
+    Public Function IndexOf(item As T) As Integer _
              Implements System.Collections.Generic.IList(Of T).IndexOf
         Return Me.m_list.IndexOf(item) + Me.m_iItemOffset
     End Function
@@ -1166,7 +1166,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Strong-typed <see cref="List.Insert">List.Insert</see> impementation. 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub Insert(ByVal iIndex As Integer, ByVal item As T) _
+    Public Sub Insert(iIndex As Integer, item As T) _
              Implements System.Collections.Generic.IList(Of T).Insert
         Me.m_list.Insert(iIndex - Me.m_iItemOffset, item)
         ' JS 27aug07: disabled list events to avoid confusion about possible list interfaces
@@ -1179,7 +1179,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Restricted set access because the content of this list is managed by the EwE Core.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Default Public Property Item(ByVal iIndex As Integer) As T _
+    Default Public Property Item(iIndex As Integer) As T _
             Implements System.Collections.Generic.IList(Of T).Item
         Get
             Try
@@ -1189,7 +1189,7 @@ Public Class cCoreInputOutputList(Of T)
                 Return Nothing
             End Try
         End Get
-        Friend Set(ByVal value As T)
+        Friend Set(value As T)
             Me.m_list.Item(iIndex - Me.m_iItemOffset) = value
             ' JS 27aug07: disabled list events to avoid confusion about possible list interfaces
             'Me.FireEvent()
@@ -1202,7 +1202,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' Restricted access because the content of this list is managed by the EwE Core.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub RemoveAt(ByVal iIndex As Integer) _
+    Friend Sub RemoveAt(iIndex As Integer) _
              Implements System.Collections.Generic.IList(Of T).RemoveAt
         Me.m_list.RemoveAt(iIndex - Me.m_iItemOffset)
         ' JS 27aug07: disabled list events to avoid confusion about possible list interfaces
@@ -1233,7 +1233,7 @@ End Class ' cCoreInputOutputList
 ''' <remarks>Ouput (model time step results) objects <see cref="cEcoSimGroupOutput">cEcoSimGroupOutput</see> hold a reference to core data that is wrapped for the interface to access via dot operators or getVariable(eVarNameFalgs,index,index)  </remarks>
 Friend Interface IResultsWrapper
 
-    Property Value(ByVal Index1 As Integer, Optional ByVal index2 As Integer = cCore.NULL_VALUE, Optional ByVal index3 As Integer = cCore.NULL_VALUE) As Single
+    Property Value(Index1 As Integer, Optional index2 As Integer = cCore.NULL_VALUE, Optional index3 As Integer = cCore.NULL_VALUE) As Single
 
 End Interface
 
@@ -1250,24 +1250,24 @@ Friend Class c4DResultsWrapper
     Private m_iVarFixed As Integer
     Private m_iGroupFixed As Integer
 
-    Public Sub New(ByVal TheBuffer(,,,) As Single, ByVal VarIndex As Integer, ByVal GroupIndex As Integer)
-        m_data = TheBuffer
-        m_iVarFixed = VarIndex
-        m_iGroupFixed = GroupIndex
+    Public Sub New(TheBuffer(,,,) As Single, VarIndex As Integer, GroupIndex As Integer)
+        Me.m_data = TheBuffer
+        Me.m_iVarFixed = VarIndex
+        Me.m_iGroupFixed = GroupIndex
     End Sub
 
-    Public Property Value(ByVal GroupIndex As Integer, Optional ByVal TimeIndex As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+    Public Property Value(GroupIndex As Integer, Optional TimeIndex As Integer = cCore.NULL_VALUE, Optional NotUsedIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_iVarFixed, m_iGroupFixed, GroupIndex, TimeIndex)
+            Return Me.m_data(Me.m_iVarFixed, Me.m_iGroupFixed, GroupIndex, TimeIndex)
         End Get
-        Set(ByVal value As Single)
-            m_data(m_iVarFixed, m_iGroupFixed, GroupIndex, TimeIndex) = value
+        Set(value As Single)
+            Me.m_data(Me.m_iVarFixed, Me.m_iGroupFixed, GroupIndex, TimeIndex) = value
         End Set
     End Property
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
-        m_data = Nothing
+        Me.m_data = Nothing
         ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 
@@ -1285,23 +1285,23 @@ Friend Class c4DResultsWrapperFirstFixed
     Private m_data(,,,) As Single
     Private m_FixedIndex As Integer
 
-    Public Sub New(ByVal TheBuffer(,,,) As Single, ByVal FixedIndex As Integer)
-        m_data = TheBuffer
-        m_FixedIndex = FixedIndex
+    Public Sub New(TheBuffer(,,,) As Single, FixedIndex As Integer)
+        Me.m_data = TheBuffer
+        Me.m_FixedIndex = FixedIndex
     End Sub
 
-    Public Property Value(ByVal FirstIndex As Integer, Optional ByVal SecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal ThirdIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+    Public Property Value(FirstIndex As Integer, Optional SecondIndex As Integer = cCore.NULL_VALUE, Optional ThirdIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex)
+            Return Me.m_data(Me.m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex)
         End Get
-        Set(ByVal value As Single)
-            m_data(m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex) = value
+        Set(value As Single)
+            Me.m_data(Me.m_FixedIndex, FirstIndex, SecondIndex, ThirdIndex) = value
         End Set
     End Property
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
-        m_data = Nothing
+        Me.m_data = Nothing
         ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 
@@ -1319,23 +1319,23 @@ Friend Class c2DResultsWrapper
     Private m_data(,) As Single
     Private m_FixedGroupIndex As Integer
 
-    Public Sub New(ByVal TheBuffer(,) As Single, ByVal FixedGroupIndex As Integer)
-        m_data = TheBuffer
-        m_FixedGroupIndex = FixedGroupIndex
+    Public Sub New(TheBuffer(,) As Single, FixedGroupIndex As Integer)
+        Me.m_data = TheBuffer
+        Me.m_FixedGroupIndex = FixedGroupIndex
     End Sub
 
-    Public Property Value(ByVal TimeIndex As Integer, Optional ByVal NotUsedIndex1 As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex2 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+    Public Property Value(TimeIndex As Integer, Optional NotUsedIndex1 As Integer = cCore.NULL_VALUE, Optional NotUsedIndex2 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_FixedGroupIndex, TimeIndex)
+            Return Me.m_data(Me.m_FixedGroupIndex, TimeIndex)
         End Get
-        Set(ByVal value As Single)
-            m_data(m_FixedGroupIndex, TimeIndex) = value
+        Set(value As Single)
+            Me.m_data(Me.m_FixedGroupIndex, TimeIndex) = value
         End Set
     End Property
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
-        m_data = Nothing
+        Me.m_data = Nothing
         ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 
@@ -1353,24 +1353,24 @@ Friend Class c2DResultsWrapper2Fixed
     Private m_Fixed1 As Integer
     Private m_Fixed2 As Integer
 
-    Public Sub New(ByVal TheBuffer(,) As Single, ByVal FirstFixed As Integer, ByVal SecondFixed As Integer)
-        m_data = TheBuffer
-        m_Fixed1 = FirstFixed
-        m_Fixed2 = SecondFixed
+    Public Sub New(TheBuffer(,) As Single, FirstFixed As Integer, SecondFixed As Integer)
+        Me.m_data = TheBuffer
+        Me.m_Fixed1 = FirstFixed
+        Me.m_Fixed2 = SecondFixed
     End Sub
 
-    Public Property Value(ByVal NotUsedIndex1 As Integer, Optional ByVal NotUsedIndex12 As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+    Public Property Value(NotUsedIndex1 As Integer, Optional NotUsedIndex12 As Integer = cCore.NULL_VALUE, Optional NotUsedIndex3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_Fixed1, m_Fixed2)
+            Return Me.m_data(Me.m_Fixed1, Me.m_Fixed2)
         End Get
-        Set(ByVal value As Single)
-            m_data(m_Fixed1, m_Fixed2) = value
+        Set(value As Single)
+            Me.m_data(Me.m_Fixed1, Me.m_Fixed2) = value
         End Set
     End Property
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
-        m_data = Nothing
+        Me.m_data = Nothing
         ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 
@@ -1389,23 +1389,23 @@ Friend Class c3DResultsWrapper
     Private m_data(,,) As Single
     Private m_FixedGroupIndex As Integer
 
-    Public Sub New(ByVal TheBuffer(,,) As Single, ByVal FixedGroupIndex As Integer)
-        m_data = TheBuffer
-        m_FixedGroupIndex = FixedGroupIndex
+    Public Sub New(TheBuffer(,,) As Single, FixedGroupIndex As Integer)
+        Me.m_data = TheBuffer
+        Me.m_FixedGroupIndex = FixedGroupIndex
     End Sub
 
-    Public Property Value(ByVal GroupIndex As Integer, Optional ByVal Timeindex As Integer = cCore.NULL_VALUE, Optional ByVal NotUsedIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+    Public Property Value(GroupIndex As Integer, Optional Timeindex As Integer = cCore.NULL_VALUE, Optional NotUsedIndex As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_FixedGroupIndex, GroupIndex, Timeindex)
+            Return Me.m_data(Me.m_FixedGroupIndex, GroupIndex, Timeindex)
         End Get
-        Set(ByVal value As Single)
-            m_data(m_FixedGroupIndex, GroupIndex, Timeindex) = value
+        Set(value As Single)
+            Me.m_data(Me.m_FixedGroupIndex, GroupIndex, Timeindex) = value
         End Set
     End Property
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
-        m_data = Nothing
+        Me.m_data = Nothing
         ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 End Class
@@ -1422,25 +1422,25 @@ Friend Class c3DResultsWrapper2Fixed
     Private m_FixedGroupIndex As Integer
     Private m_FixedVarIndex As Integer
 
-    Public Sub New(ByVal TheBuffer(,,) As Single, ByVal FixedVarIndex As Integer, ByVal FixedGroupIndex As Integer)
-        m_data = TheBuffer
-        m_FixedGroupIndex = FixedGroupIndex
-        m_FixedVarIndex = FixedVarIndex
+    Public Sub New(TheBuffer(,,) As Single, FixedVarIndex As Integer, FixedGroupIndex As Integer)
+        Me.m_data = TheBuffer
+        Me.m_FixedGroupIndex = FixedGroupIndex
+        Me.m_FixedVarIndex = FixedVarIndex
         'System.Console.WriteLine("New Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 
-    Public Property Value(ByVal TimeIndex As Integer, Optional ByVal index2 As Integer = cCore.NULL_VALUE, Optional ByVal index3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
+    Public Property Value(TimeIndex As Integer, Optional index2 As Integer = cCore.NULL_VALUE, Optional index3 As Integer = cCore.NULL_VALUE) As Single Implements IResultsWrapper.Value
         Get
-            Return m_data(m_FixedVarIndex, m_FixedGroupIndex, TimeIndex)
+            Return Me.m_data(Me.m_FixedVarIndex, Me.m_FixedGroupIndex, TimeIndex)
         End Get
-        Set(ByVal value As Single)
-            m_data(m_FixedVarIndex, m_FixedGroupIndex, TimeIndex) = value
+        Set(value As Single)
+            Me.m_data(Me.m_FixedVarIndex, Me.m_FixedGroupIndex, TimeIndex) = value
         End Set
     End Property
 
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
-        m_data = Nothing
+        Me.m_data = Nothing
         ' System.Console.WriteLine("Finalize Var=" & m_FixedVarIndex.ToString & ", group=" & m_FixedGroupIndex)
     End Sub
 

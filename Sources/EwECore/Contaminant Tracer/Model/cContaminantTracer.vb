@@ -70,22 +70,22 @@ Public Class cContaminantTracer
     Private m_Stanza As cStanzaDatastructures
     Private m_TracerData As cContaminantTracerDataStructures
 
-    Public Sub Cupdate(ByVal Biom() As Single)
+    Public Sub Cupdate(Biom() As Single)
         Dim i As Integer, istep As Integer, Ceq As Single, Tst As Single, InputMult As Single
         Dim maxT As Single, nstep As Integer, Ttemp As Single, Terr As Single, tempsum As Single
         Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, Derivcon2() As Single
 
-        ReDim Derivcon(m_EPData.NumGroups), Cintotal(m_EPData.NumGroups), Closs(m_EPData.NumGroups), Derivcon2(m_EPData.NumGroups)
+        ReDim Derivcon(Me.m_EPData.NumGroups), Cintotal(Me.m_EPData.NumGroups), Closs(Me.m_EPData.NumGroups), Derivcon2(Me.m_EPData.NumGroups)
 
         'update change in Contaminant concentrations for 1 month--call after first call to derivt
         'in adamsbasforth, rk4
         'use Closs first to calculate total uptake from environment as loss to env conc
         'Tst = 1.0# / (12 * 30)
-        ConcTr(m_EPData.NumGroups + 1) = 0
+        Me.ConcTr(Me.m_EPData.NumGroups + 1) = 0
 
-        If m_TracerData.ConForceNumber > 0 Then
+        If Me.m_TracerData.ConForceNumber > 0 Then
             ' If i = 0 And m_TracerData.ConForceNumber > 0 Then
-            InputMult = m_ESData.tval(m_TracerData.ConForceNumber)
+            InputMult = Me.m_ESData.tval(Me.m_TracerData.ConForceNumber)
             Debug.Assert(InputMult <> 1)
         Else
             InputMult = 1
@@ -94,13 +94,13 @@ Public Class cContaminantTracer
 
 
         'find the maximum allowable timestep
-        ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
+        Me.ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
         maxT = 1.0# / 12
-        For i = 0 To m_EPData.NumGroups
+        For i = 0 To Me.m_EPData.NumGroups
             'calculate equilibrium state estimate
             Ceq = CSng(Cintotal(i) / (Closs(i)) + 1.0E-20)
             'calculate distance to equilibrium (%)
-            Terr = CSng(2.0 * Math.Abs(Ceq - ConcTr(i)) / (Ceq + ConcTr(i)))
+            Terr = CSng(2.0 * Math.Abs(Ceq - Me.ConcTr(i)) / (Ceq + Me.ConcTr(i)))
             If Terr < 0.1 Then
                 'this forces the maximum timestep size to be 1/closs
                 Terr = 0.1
@@ -116,7 +116,7 @@ Public Class cContaminantTracer
         Tst = CSng(1.0# / (12 * nstep))
 
         'Euler 1st step
-        For i = 0 To m_EPData.NumGroups
+        For i = 0 To Me.m_EPData.NumGroups
             Me.ConcTr(i) = Me.ConcTr(i) + Derivcon(i) * Tst
             Derivcon2(i) = Derivcon(i)
             Me.EnvConDriver(i) = 0.0
@@ -124,8 +124,8 @@ Public Class cContaminantTracer
 
         'Adams bashford steps 2-N
         For istep = 2 To nstep
-            ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
-            For i = 0 To m_EPData.NumGroups
+            Me.ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
+            For i = 0 To Me.m_EPData.NumGroups
                 'ConCtot = ConCtot + ConcTr(i)
                 'Analytic solution assuming Cintotal is constant (this does not conserve mass in general)
                 'Ceq = CSng(Cintotal(i) / (Closs(i) + 1.0E-20))
@@ -133,21 +133,21 @@ Public Class cContaminantTracer
                 'Euler
                 'ConcTr(i) = ConcTr(i) + Derivcon(i) * Tst
                 'Adams Bashford multistep
-                ConcTr(i) = CSng(ConcTr(i) + (3.0 * Derivcon(i) - Derivcon2(i)) * Tst / 2.0)
+                Me.ConcTr(i) = CSng(Me.ConcTr(i) + (3.0 * Derivcon(i) - Derivcon2(i)) * Tst / 2.0)
                 Derivcon2(i) = Derivcon(i)
             Next
         Next
         'Sum up the total concentration in the last ConcTr position
         tempsum = 0
-        For i = 0 To m_EPData.NumGroups
-            ConcTr(m_EPData.NumGroups + 1) = ConcTr(m_EPData.NumGroups + 1) + ConcTr(i)
+        For i = 0 To Me.m_EPData.NumGroups
+            Me.ConcTr(Me.m_EPData.NumGroups + 1) = Me.ConcTr(Me.m_EPData.NumGroups + 1) + Me.ConcTr(i)
             tempsum = tempsum + Derivcon(i)
         Next
 
     End Sub
 
 
-    Public Sub ConDeriv(ByVal Biom() As Single, ByVal Derivcon() As Single, ByVal Cintotal() As Single, ByVal Closs() As Single, ByVal InputMult As Single, ByVal Space As Boolean)
+    Public Sub ConDeriv(Biom() As Single, Derivcon() As Single, Cintotal() As Single, Closs() As Single, InputMult As Single, Space As Boolean)
         'calculates total derivative of contaminant concentrations given
         'rate coefficients from interface and monthly call to derivt
 
@@ -158,37 +158,37 @@ Public Class cContaminantTracer
         Dim ExcretToEnv As Single
         Dim InputMultT As Single
         Dim Cgradloss() As Single
-        ReDim Cgradloss(m_EPData.NumGroups)
+        ReDim Cgradloss(Me.m_EPData.NumGroups)
 
         'leave the zero index with environmental inflows set by the user
-        For i = 1 To m_EPData.NumGroups : m_TracerData.Cinflow(i) = 0 : Next
+        For i = 1 To Me.m_EPData.NumGroups : Me.m_TracerData.Cinflow(i) = 0 : Next
 
         'first accumulate inputs for all pools as functions of concs
         'in donor pools and rate constants
 
         'flows associated with trophic linkages
-        For ii = 1 To m_ESData.inlinks
-            i = m_ESData.ilink(ii) : j = m_ESData.jlink(ii)
-            ConFlow = ConKtrophic(ii) * ConcTr(i) '(ConKtrophic(ii) = eat / biomass(iPrey))
+        For ii = 1 To Me.m_ESData.inlinks
+            i = Me.m_ESData.ilink(ii) : j = Me.m_ESData.jlink(ii)
+            ConFlow = Me.ConKtrophic(ii) * Me.ConcTr(i) '(ConKtrophic(ii) = eat / biomass(iPrey))
             ' m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConFlow * (1 - m_EPData.GS(j)) 
-            m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConFlow * (1 - m_TracerData.CassimProp(j))
+            Me.m_TracerData.Cinflow(j) = Me.m_TracerData.Cinflow(j) + ConFlow * (1 - Me.m_TracerData.CassimProp(j))
 
             'flow to environment of consumed contaminant excreted over all trophic flows
             'ExcretToEnv = ExcretToEnv + ConFlow * (1 - m_EPData.GS(j)) * m_TracerData.CassimProp(j)
-            ExcretToEnv = ExcretToEnv + ConFlow * m_TracerData.CassimProp(j)
+            ExcretToEnv = ExcretToEnv + ConFlow * Me.m_TracerData.CassimProp(j)
 
-            For K = m_EPData.NumLiving + 1 To m_EPData.NumGroups
+            For K = Me.m_EPData.NumLiving + 1 To Me.m_EPData.NumGroups
                 'm_TracerData.Cinflow(K) = m_TracerData.Cinflow(K) + m_EPData.GS(j) * ConFlow * m_EPData.DF(j, K - m_EPData.NumLiving)
             Next
 
         Next
 
         'flows associated with detritus and discards
-        For i = 1 To m_EPData.NumLiving
-            For j = m_EPData.NumLiving + 1 To m_EPData.NumGroups
-                m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + m_ESData.mo(i) * (1 - m_ESData.MoPred(i) + m_ESData.MoPred(i) * m_ESData.Ftime(i)) * ConcTr(i) * m_EPData.DF(i, j - m_EPData.NumLiving)
-                For K = 1 To m_EPData.NumFleet 'nb: loop bypassed if numgear=0
-                    m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConKdet(i, j, K) * ConcTr(i)
+        For i = 1 To Me.m_EPData.NumLiving
+            For j = Me.m_EPData.NumLiving + 1 To Me.m_EPData.NumGroups
+                Me.m_TracerData.Cinflow(j) = Me.m_TracerData.Cinflow(j) + Me.m_ESData.mo(i) * (1 - Me.m_ESData.MoPred(i) + Me.m_ESData.MoPred(i) * Me.m_ESData.Ftime(i)) * Me.ConcTr(i) * Me.m_EPData.DF(i, j - Me.m_EPData.NumLiving)
+                For K = 1 To Me.m_EPData.NumFleet 'nb: loop bypassed if numgear=0
+                    Me.m_TracerData.Cinflow(j) = Me.m_TracerData.Cinflow(j) + Me.ConKdet(i, j, K) * Me.ConcTr(i)
                 Next
             Next
         Next
@@ -197,40 +197,40 @@ Public Class cContaminantTracer
         'If Space = False Then
         'following code will fail in ecospace, since gradflow is difficult to estimate; ignore it
         'when call is from ecospace (space=true)
-        For i = 1 To m_Stanza.Nsplit
-            For ist = 2 To m_Stanza.Nstanza(i)
-                ieco = m_Stanza.EcopathCode(i, ist - 1)
+        For i = 1 To Me.m_Stanza.Nsplit
+            For ist = 2 To Me.m_Stanza.Nstanza(i)
+                ieco = Me.m_Stanza.EcopathCode(i, ist - 1)
                 If Space = True Then
-                    GradFlow = 12 * m_Stanza.SplitRflow(i, ist) * ConcTr(ieco)
-                    Cgradloss(ieco) = 12 * m_Stanza.SplitRflow(i, ist)
-                    ieco = m_Stanza.EcopathCode(i, ist)
-                    m_TracerData.Cinflow(ieco) = m_TracerData.Cinflow(ieco) + GradFlow
+                    GradFlow = 12 * Me.m_Stanza.SplitRflow(i, ist) * Me.ConcTr(ieco)
+                    Cgradloss(ieco) = 12 * Me.m_Stanza.SplitRflow(i, ist)
+                    ieco = Me.m_Stanza.EcopathCode(i, ist)
+                    Me.m_TracerData.Cinflow(ieco) = Me.m_TracerData.Cinflow(ieco) + GradFlow
                 Else
-                    GradFlow = 12 * m_Stanza.NageS(i, m_Stanza.Age1(i, ist)) * m_Stanza.WageS(i, m_Stanza.Age1(i, ist)) * ConcTr(ieco) / Biom(ieco)
+                    GradFlow = 12 * Me.m_Stanza.NageS(i, Me.m_Stanza.Age1(i, ist)) * Me.m_Stanza.WageS(i, Me.m_Stanza.Age1(i, ist)) * Me.ConcTr(ieco) / Biom(ieco)
 
                     ' ieco = EcopathCode(i, ist - 1)
-                    m_TracerData.Cinflow(ieco) = m_TracerData.Cinflow(ieco) - GradFlow
-                    ieco = m_Stanza.EcopathCode(i, ist)
-                    m_TracerData.Cinflow(ieco) = m_TracerData.Cinflow(ieco) + GradFlow
+                    Me.m_TracerData.Cinflow(ieco) = Me.m_TracerData.Cinflow(ieco) - GradFlow
+                    ieco = Me.m_Stanza.EcopathCode(i, ist)
+                    Me.m_TracerData.Cinflow(ieco) = Me.m_TracerData.Cinflow(ieco) + GradFlow
                 End If
             Next
         Next
 
         'other losses and flows to environment
         Closs(0) = 0
-        For i = 1 To m_EPData.NumGroups
-            Closs(0) = Closs(0) + m_TracerData.Cenv(i) * Biom(i)
-            ExcretToEnv = ExcretToEnv + ConcTr(i) * m_TracerData.CmetabolismRate(i)
+        For i = 1 To Me.m_EPData.NumGroups
+            Closs(0) = Closs(0) + Me.m_TracerData.Cenv(i) * Biom(i)
+            ExcretToEnv = ExcretToEnv + Me.ConcTr(i) * Me.m_TracerData.CmetabolismRate(i)
         Next
         DetToEnv = 0
-        For i = m_EPData.NumLiving + 1 To m_EPData.NumGroups
-            DetToEnv = DetToEnv + m_ESData.DetritusOut(i) * ConcTr(i)
+        For i = Me.m_EPData.NumLiving + 1 To Me.m_EPData.NumGroups
+            DetToEnv = DetToEnv + Me.m_ESData.DetritusOut(i) * Me.ConcTr(i)
         Next
 
         'save this result as the "loss" rate from environment to ecosystem components
-        loss(0) = Closs(0) : Biom(0) = 1
+        Me.loss(0) = Closs(0) : Biom(0) = 1
 
-        For i = 0 To m_EPData.NumGroups
+        For i = 0 To Me.m_EPData.NumGroups
             If i = 0 Then
                 InputMultT = InputMult
             Else
@@ -239,7 +239,7 @@ Public Class cContaminantTracer
 
             'add environmental and immigration flows to get total inflow
             '(at this point, m_tracer.Cinflow already sums inflow components from biological flows (derivt)
-            Cintotal(i) = InputMultT * m_TracerData.Cinflow(i) + m_TracerData.Cimmig(i) * m_EPData.Immig(i) + m_TracerData.Cenv(i) * Biom(i) * ConcTr(0)
+            Cintotal(i) = InputMultT * Me.m_TracerData.Cinflow(i) + Me.m_TracerData.Cimmig(i) * Me.m_EPData.Immig(i) + Me.m_TracerData.Cenv(i) * Biom(i) * Me.ConcTr(0)
             'Added Ecospace forced contaminants
             Cintotal(i) += Me.EnvConDriver(i)
 
@@ -249,8 +249,8 @@ Public Class cContaminantTracer
 
             'and set up total instantaneous loss rate (note m_tracer.CoutFlow nonzero only for i=0)
             'jb for Ecospace loss will need to be ecospace loss 
-            Closs(i) = loss(i) / Biom(i) + m_TracerData.cdecay(i) + m_TracerData.CoutFlow(i) + Cgradloss(i) + m_TracerData.CmetabolismRate(i) '+ 1E-20
-            Derivcon(i) = Cintotal(i) - Closs(i) * ConcTr(i)
+            Closs(i) = Me.loss(i) / Biom(i) + Me.m_TracerData.cdecay(i) + Me.m_TracerData.CoutFlow(i) + Cgradloss(i) + Me.m_TracerData.CmetabolismRate(i) '+ 1E-20
+            Derivcon(i) = Cintotal(i) - Closs(i) * Me.ConcTr(i)
             'Ceq = Cintotal / Closs
             'update concentration over one month assuming constant inflow and loss over month
             'ConcTr(i) = Ceq + (ConcTr(i) - Ceq) * Exp(-Closs / 12)
@@ -263,24 +263,24 @@ Public Class cContaminantTracer
         'initialize contaminant concentrations at start of simulation (call from initialstate)
         Try
 
-            ReDim ConKtrophic(m_ESData.inlinks)
-            ReDim ConcTr(m_EPData.NumGroups + 1)
+            ReDim Me.ConKtrophic(Me.m_ESData.inlinks)
+            ReDim Me.ConcTr(Me.m_EPData.NumGroups + 1)
             'BypassIntegrated() should all be false all groups need to run the grid integration 
-            ReDim BypassIntegrated(m_EPData.NumGroups)
-            ReDim EnvConDriver(m_EPData.NumGroups + 1)
+            ReDim Me.BypassIntegrated(Me.m_EPData.NumGroups)
+            ReDim Me.EnvConDriver(Me.m_EPData.NumGroups + 1)
 
             'jb EwE5
             ' ReDim ConKdet(EPData.NumGroups, NumLiving + 1 To EPData.NumGroups, NumGear) 
-            ReDim ConKdet(m_EPData.NumGroups, m_EPData.NumGroups, m_EPData.NumFleet)
+            ReDim Me.ConKdet(Me.m_EPData.NumGroups, Me.m_EPData.NumGroups, Me.m_EPData.NumFleet)
 
-            For i As Integer = 0 To m_EPData.NumGroups
-                ConcTr(i) = m_TracerData.Czero(i)
-                If i > 0 Then m_TracerData.CoutFlow(i) = 0 '(outflow from ecopath groups already accounted in m_data.loss(i) emig component
+            For i As Integer = 0 To Me.m_EPData.NumGroups
+                Me.ConcTr(i) = Me.m_TracerData.Czero(i)
+                If i > 0 Then Me.m_TracerData.CoutFlow(i) = 0 '(outflow from ecopath groups already accounted in m_data.loss(i) emig component
             Next
-            ConcTr(m_EPData.NumGroups + 1) = 0   'for total in environment
+            Me.ConcTr(Me.m_EPData.NumGroups + 1) = 0   'for total in environment
 
             'make room for the results
-            m_TracerData.redimForEcosimRun(m_ESData.nGroups, m_ESData.NTimes)
+            Me.m_TracerData.redimForEcosimRun(Me.m_ESData.nGroups, Me.m_ESData.NTimes)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -292,19 +292,19 @@ Public Class cContaminantTracer
 
     Public Sub Init(ByRef refTracerData As cContaminantTracerDataStructures, ByRef refEcopathData As cEcopathDataStructures, ByRef refEcosimData As cEcosimDatastructures, ByRef refStanzaData As cStanzaDatastructures)
 
-        m_TracerData = refTracerData
-        m_EPData = refEcopathData
-        m_ESData = refEcosimData
-        m_Stanza = refStanzaData
+        Me.m_TracerData = refTracerData
+        Me.m_EPData = refEcopathData
+        Me.m_ESData = refEcosimData
+        Me.m_Stanza = refStanzaData
 
     End Sub
 
 
-    Public Sub SaveEcosimTimeStepData(ByVal iTime As Integer, ByVal Biomass() As Single, ByRef TracerData As cContaminantTracerDataStructures)
+    Public Sub SaveEcosimTimeStepData(iTime As Integer, Biomass() As Single, ByRef TracerData As cContaminantTracerDataStructures)
         Dim igrp As Integer
-        For igrp = 0 To m_EPData.NumGroups + 1
+        For igrp = 0 To Me.m_EPData.NumGroups + 1
             TracerData.TracerConc(igrp, iTime) = Me.ConcTr(igrp)
-            If igrp <= m_EPData.NumGroups Then
+            If igrp <= Me.m_EPData.NumGroups Then
                 TracerData.TracerCB(igrp, iTime) = Me.ConcTr(igrp) / (Biomass(igrp) + 1.0E-20F)
             End If
         Next igrp

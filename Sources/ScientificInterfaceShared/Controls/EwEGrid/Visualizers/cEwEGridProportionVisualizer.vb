@@ -40,11 +40,11 @@ Namespace Controls.EwEGrid
     Public Class cEwEGridProportionVisualizer
         Inherits cEwEGridVisualizerBase
 
-        Protected Overrides Sub DrawCell_ImageAndText(ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                                                      ByVal pos As SourceGrid2.Position, _
-                                                      ByVal e As System.Windows.Forms.PaintEventArgs, _
-                                                      ByVal rc As System.Drawing.Rectangle, _
-                                                      ByVal status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_ImageAndText(cell As SourceGrid2.Cells.ICellVirtual, _
+                                                      pos As SourceGrid2.Position, _
+                                                      e As System.Windows.Forms.PaintEventArgs, _
+                                                      rc As System.Drawing.Rectangle, _
+                                                      status As SourceGrid2.DrawCellStatus)
 
             Dim objVal As Object = cell.GetValue(pos)
             If Not (TypeOf objVal Is Single) Then Return

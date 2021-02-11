@@ -38,12 +38,12 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             Try
                 If bDisposing Then
                     If (Me.UIContext Is Nothing) Then Return
-                    If components IsNot Nothing Then
-                        components.Dispose()
+                    If Me.components IsNot Nothing Then
+                        Me.components.Dispose()
                     End If
                 End If
             Finally
@@ -55,7 +55,7 @@ Namespace Controls.Map.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub Initialize(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub Initialize(editor As cLayerEditorRaster)
             MyBase.Initialize(editor)
 
             Debug.Assert(TypeOf editor Is cLayerEditorDepth, "Depth editor expected")
@@ -63,7 +63,7 @@ Namespace Controls.Map.Layers
             Dim meta As New cVariableMetaData(0.1, 10000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             Me.m_fpDepth = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Single), meta)
             Me.m_fpDepth.Value = 1
-            AddHandler Me.m_fpDepth.OnValueChanged, AddressOf OnValueChanged
+            AddHandler Me.m_fpDepth.OnValueChanged, AddressOf Me.OnValueChanged
 
             Me.m_cbProtectCoastline.Checked = DirectCast(editor, cLayerEditorDepth).ProtectCoastLine
 
@@ -78,13 +78,13 @@ Namespace Controls.Map.Layers
 
         Public Overrides Sub Detach()
 
-            RemoveHandler Me.m_fpDepth.OnValueChanged, AddressOf OnValueChanged
+            RemoveHandler Me.m_fpDepth.OnValueChanged, AddressOf Me.OnValueChanged
             Me.m_fpDepth.Release()
             MyBase.Detach()
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Dim val As Single
@@ -117,13 +117,13 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
             Me.UpdateContent(Me.Editor)
         End Sub
 
-        Private Sub OnLandWaterSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLandWaterSelected(sender As System.Object, e As System.EventArgs) _
             Handles m_rbWater.CheckedChanged, m_rbLand.CheckedChanged
             Me.UpdateValue()
         End Sub
@@ -133,13 +133,13 @@ Namespace Controls.Map.Layers
             Me.m_rbWater.Checked = True
         End Sub
 
-        Private Sub OnValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnValueChanged(sender As System.Object, e As System.EventArgs)
             If (Me.UIContext Is Nothing) Then Return
             Me.m_rbWater.Checked = True
             Me.UpdateValue()
         End Sub
 
-        Private Sub OnProtectCoastlineCheckChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnProtectCoastlineCheckChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbProtectCoastline.CheckedChanged
             If (Me.UIContext Is Nothing) Then Return
             If (TypeOf Me.Editor Is cLayerEditorDepth) Then
@@ -154,7 +154,7 @@ Namespace Controls.Map.Layers
             Me.Editor.Smooth()
         End Sub
 
-        Private Sub OnFillLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnFillLayer(sender As System.Object, e As System.EventArgs) _
             Handles m_btnFill.Click
             Me.Editor.Reset()
         End Sub
@@ -163,7 +163,7 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Private Sub UpdatePreview(ByVal pb As PictureBox, ByVal sValue As Single)
+        Private Sub UpdatePreview(pb As PictureBox, sValue As Single)
 
             Dim bmp As New Bitmap(pb.Width, pb.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim g As Graphics = Graphics.FromImage(bmp)

@@ -99,7 +99,7 @@ Namespace Ecospace.Controls
 
             Me.m_cbEnableIndexing.Checked = Me.m_manSets.IsIndexingEnabled
 
-            AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
 
             Me.CenterToParent()
             Me.Reload()
@@ -108,7 +108,7 @@ Namespace Ecospace.Controls
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-            RemoveHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            RemoveHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
             Me.UIContext = Nothing
             MyBase.OnFormClosed(e)
         End Sub

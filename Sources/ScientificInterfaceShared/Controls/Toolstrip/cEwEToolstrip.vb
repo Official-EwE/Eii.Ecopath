@@ -63,7 +63,7 @@ Namespace Controls
 
             If Not Me.DesignMode And Me.IsHandleCreated Then
                 Me.m_bIsDirty = True
-                BeginInvoke(New MethodInvoker(AddressOf ShowHideRepeatingSeparators))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.ShowHideRepeatingSeparators))
             End If
 
         End Sub
@@ -200,7 +200,7 @@ Namespace Controls
             ' Copy sub items first
             If TypeOf itemSrc Is ToolStripDropDownButton Then
                 For Each item As ToolStripItem In DirectCast(itemSrc, ToolStripDropDownButton).DropDownItems
-                    DirectCast(itemNew, ToolStripDropDownButton).DropDownItems.Add(Clone(item))
+                    DirectCast(itemNew, ToolStripDropDownButton).DropDownItems.Add(Me.Clone(item))
                 Next
             ElseIf TypeOf itemSrc Is ToolStripComboBox Then
                 For Each item As Object In DirectCast(itemSrc, ToolStripComboBox).Items
@@ -215,7 +215,7 @@ Namespace Controls
             Next
 
             ' Create a new menu name
-            itemNew.Name = itemSrc.Name & "-" & CStr(Math.Max(Threading.Interlocked.Increment(s_lNextItem), s_lNextItem - 1))
+            itemNew.Name = itemSrc.Name & "-" & CStr(Math.Max(Threading.Interlocked.Increment(Me.s_lNextItem), Me.s_lNextItem - 1))
 
             ' Process any other properties
             If itemSrc.ImageIndex <> -1 Then
@@ -230,7 +230,7 @@ Namespace Controls
             itemNew.Visible = itemSrc.Visible
 
             ' The handler list starts empty because we created its parent via a new
-            AddHandlers(itemSrc, itemNew)
+            Me.AddHandlers(itemSrc, itemNew)
 
             Return itemNew
 
@@ -240,8 +240,8 @@ Namespace Controls
         ''' Adds the handlers from the source component to the destination component
         ''' </summary>
         Private Sub AddHandlers(source As ToolStripItem, target As ToolStripItem)
-            Dim sourceEventHandlerList As EventHandlerList = EventHandlerList(source)
-            Dim destEventHandlerList As EventHandlerList = EventHandlerList(target)
+            Dim sourceEventHandlerList As EventHandlerList = Me.EventHandlerList(source)
+            Dim destEventHandlerList As EventHandlerList = Me.EventHandlerList(target)
             destEventHandlerList.AddHandlers(sourceEventHandlerList)
         End Sub
 

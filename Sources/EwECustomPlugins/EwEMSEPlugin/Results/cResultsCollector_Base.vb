@@ -41,7 +41,7 @@ Public MustInherit Class cResultsCollector_Base
 
     Protected MustOverride ReadOnly Property DefaultValue As Object
 
-    Protected MustOverride Sub SetDefaults(ByVal DefaultValue As Object)
+    Protected MustOverride Sub SetDefaults(DefaultValue As Object)
 
     Public MustOverride ReadOnly Property Yearly As Boolean
 
@@ -51,19 +51,19 @@ Public MustInherit Class cResultsCollector_Base
 
     Public ReadOnly Property nStrategies As Integer
         Get
-            Return m_nStrategies
+            Return Me.m_nStrategies
         End Get
     End Property
 
     Public ReadOnly Property ModelID As Integer
         Get
-            Return m_ModelID
+            Return Me.m_ModelID
         End Get
     End Property
 
     Public Sub Init_for_iModel(iModel As Integer)
-        m_ModelID = iModel
-        SetDefaults(DefaultValue)
+        Me.m_ModelID = iModel
+        Me.SetDefaults(Me.DefaultValue)
     End Sub
 
 End Class

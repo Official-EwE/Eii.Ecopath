@@ -72,8 +72,8 @@ Namespace Style
         ''' <param name="typeAssem">Assembly that contains the resource string.</param>
         ''' <param name="strDefault">Default string to return if no suitable resource string could be found.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strResName As String,
-                       ByVal typeAssem As Type,
+        Public Sub New(strResName As String,
+                       typeAssem As Type,
                        Optional strDefault As String = "")
             MyBase.New()
 

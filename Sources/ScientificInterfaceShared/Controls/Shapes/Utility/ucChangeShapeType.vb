@@ -55,12 +55,12 @@ Namespace Controls
             Me.UpdateControls()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    RemoveHandler Me.m_grid.OnShapeFunctionChanged, AddressOf OnShapeParametersChanged
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    RemoveHandler Me.m_grid.OnShapeFunctionChanged, AddressOf Me.OnShapeParametersChanged
                     Me.UIContext = Nothing
-                    components.Dispose()
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -73,7 +73,7 @@ Namespace Controls
 
         Protected Overrides Sub OnLoad(e As EventArgs)
             MyBase.OnLoad(e)
-            AddHandler Me.m_grid.OnShapeFunctionChanged, AddressOf OnShapeParametersChanged
+            AddHandler Me.m_grid.OnShapeFunctionChanged, AddressOf Me.OnShapeParametersChanged
         End Sub
 
 #End Region ' Overrides
@@ -129,7 +129,7 @@ Namespace Controls
             e.Value = fmt.ToString(e.ListItem)
         End Sub
 
-        Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShapeFunctionTypeSelected(sender As System.Object, e As System.EventArgs) _
             Handles m_lbShapeFunctionTypes.SelectedIndexChanged
 
             If (Me.m_bInUpdate) Then Return

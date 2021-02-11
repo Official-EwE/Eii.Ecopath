@@ -74,10 +74,10 @@ Namespace Controls.Wizard
         ''' <param name="content">Panel where wizard can display its content.</param>
         ''' <param name="nav">Navigator attached to this wizard.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal parent As Form, _
-                       ByVal content As Panel, _
-                       ByVal nav As IWizardNavigation)
+        Public Sub New(uic As cUIContext, _
+                       parent As Form, _
+                       content As Panel, _
+                       nav As IWizardNavigation)
 
             ' Sanity checks
             Debug.Assert(nav IsNot Nothing)
@@ -120,7 +120,7 @@ Namespace Controls.Wizard
         ''' and must implement the <see cref="IWizardPage">IWizardPage</see>
         ''' interface.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub AddPage(ByVal tpage As Type)
+        Public Overridable Sub AddPage(tpage As Type)
 
             ' Sanity checks
             Debug.Assert(GetType(IWizardPage).IsAssignableFrom(tpage), "Page must implement IWizardPage")
@@ -146,7 +146,7 @@ Namespace Controls.Wizard
         ''' </summary>
         ''' <param name="page">The page whose content changed.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub PageChanged(ByVal page As IWizardPage)
+        Public Overridable Sub PageChanged(page As IWizardPage)
             ' Is this the current active page?
             If (ReferenceEquals(page, Me.m_page)) Then
                 ' #Yes: refresh navigation
@@ -228,7 +228,7 @@ Namespace Controls.Wizard
         ''' </summary>
         ''' <param name="iPage">Index of the page to switch to.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub SwitchPage(ByVal iPage As Integer)
+        Protected Sub SwitchPage(iPage As Integer)
 
             ' Optimization
             If (iPage = Me.m_iPageActive) Then Return
@@ -276,7 +276,7 @@ Namespace Controls.Wizard
                 ctrl.Show()
 
                 If (TypeOf ctrl Is IOptionsPage) Then
-                    AddHandler DirectCast(ctrl, IOptionsPage).OnChanged, AddressOf OnOptionsChanged
+                    AddHandler DirectCast(ctrl, IOptionsPage).OnChanged, AddressOf Me.OnOptionsChanged
                 End If
             End If
 
@@ -290,7 +290,7 @@ Namespace Controls.Wizard
                 Me.m_page.Close()
 
                 If (TypeOf Me.m_page Is IOptionsPage) Then
-                    RemoveHandler DirectCast(Me.m_page, IOptionsPage).OnChanged, AddressOf OnOptionsChanged
+                    RemoveHandler DirectCast(Me.m_page, IOptionsPage).OnChanged, AddressOf Me.OnOptionsChanged
                 End If
 
                 Try
@@ -419,7 +419,7 @@ Namespace Controls.Wizard
         ''' Callback for the navigation system to close the wizard.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Overridable Sub Close(ByVal result As DialogResult)
+        Friend Overridable Sub Close(result As DialogResult)
             Me.m_parent.DialogResult = result
             Me.m_parent.Close()
         End Sub

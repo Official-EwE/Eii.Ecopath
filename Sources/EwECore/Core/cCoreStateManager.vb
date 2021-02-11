@@ -35,7 +35,7 @@ Public Class cCoreStateManager
 #Region " Construction "
 
     Friend Sub New(ByRef theCore As cCore)
-        m_core = theCore
+        Me.m_core = theCore
     End Sub
 
 #End Region ' Construction
@@ -47,7 +47,7 @@ Public Class cCoreStateManager
     ''' </summary>
     ''' <param name="ExecutionState">State to bring the core up to</param>
     ''' <returns>True if successful. False otherwise.</returns>
-    Public Function LoadState(ByVal ExecutionState As eCoreExecutionState) As Boolean
+    Public Function LoadState(ExecutionState As eCoreExecutionState) As Boolean
         Try
             Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
 
@@ -57,12 +57,12 @@ Public Class cCoreStateManager
                 Case eCoreExecutionState.EcopathCompleted
                     If Not sm.HasEcopathLoaded Then Return False
                     If sm.HasEcopathRan Then Return True
-                    Return m_core.RunEcoPath()
+                    Return Me.m_core.RunEcoPath()
 
                 Case eCoreExecutionState.EcosimInitialized
                     If Not sm.HasEcosimLoaded Then Return False
                     If sm.HasEcosimInitialized Then Return True
-                    If m_core.m_EcoSim.Init(False) Then
+                    If Me.m_core.m_EcoSim.Init(False) Then
                         sm.SetEcoSimInitialized()
                         Return True
                     End If
@@ -71,7 +71,7 @@ Public Class cCoreStateManager
                 Case eCoreExecutionState.EcosimCompleted
                     If Not sm.HasEcosimLoaded Then Return False
                     If sm.HasEcosimRan Then Return True
-                    Return m_core.RunEcoSim()
+                    Return Me.m_core.RunEcoSim()
 
                 Case Else
                     ' Not implemented (yet)
@@ -100,12 +100,12 @@ Public Class cCoreStateManager
         Try
 
             'Only load the dietcomp into ecosim if it is loaded
-            If Not m_core.StateMonitor.HasEcosimLoaded Then
+            If Not Me.m_core.StateMonitor.HasEcosimLoaded Then
                 Return False
             End If
 
             'this will copy diet comp into Ecosim SimDC()
-            m_core.m_EcoSim.RemoveImportFromEcosim()
+            Me.m_core.m_EcoSim.RemoveImportFromEcosim()
 
         Catch ex As Exception
             cLog.Write(ex)

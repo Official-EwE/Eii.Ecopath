@@ -47,7 +47,7 @@ Public Class frmMSEBatchParameters
         Me.InitializeComponent()
     End Sub
 
-    Private Sub EcospaceParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub EcospaceParameters_Load(sender As Object, e As System.EventArgs) _
           Handles Me.Load
      
 
@@ -70,11 +70,11 @@ Public Class frmMSEBatchParameters
         Me.m_fpQB = New cPropertyFormatProvider(Me.UIContext, Me.chkQB, Me.m_batchManager.Parameters, eVarNameFlags.MSEBatchOutputConBio)
         Me.m_fpFeeding = New cPropertyFormatProvider(Me.UIContext, Me.chkFeedingTime, Me.m_batchManager.Parameters, eVarNameFlags.MSEBatchOutputFeedingTime)
 
-        Me.m_lbOutputDir.Text = m_batchManager.Parameters.OutputDir
+        Me.m_lbOutputDir.Text = Me.m_batchManager.Parameters.OutputDir
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_fpBiomass = Nothing
 

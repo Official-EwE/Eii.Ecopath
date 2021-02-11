@@ -28,6 +28,8 @@ Public Class cF2TSDataStructures
     Public LastYear As Integer = 1
     Public VulnerabilityVariance As Single = 10.0!
     Public PPVariance As Single = 0.1!
+    ''' <summary>Index of anomaly shape.</summary>
+    ''' <remarks>One-based or zero-based? Shape managers are zero-based; stepwise fitting assumes one-based!</remarks>
     Public iCatchAnomalySearchShapeNumber As Integer = 0
     Public nNumSplinePoints As Integer = 0
     Public RunSilent As Boolean = False

@@ -106,7 +106,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="core">The core to import into.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(core As cCore)
 
             MyBase.New(core)
 
@@ -130,7 +130,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Open"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Open(ByVal strSource As String) As Boolean
+        Public Overrides Function Open(strSource As String) As Boolean
 
             ' Pre
             Debug.Assert(Not Me.IsOpen())
@@ -204,8 +204,8 @@ Namespace Database
 
 #Region " Generic "
 
-        Private Function SplitNumberListString(ByVal strMemo As String, Optional ByVal cSplitChar As Char = CChar(" "), _
-                Optional ByVal nDefaultNumberLen As Integer = 7) As String()
+        Private Function SplitNumberListString(strMemo As String, Optional cSplitChar As Char = CChar(" "), _
+                Optional nDefaultNumberLen As Integer = 7) As String()
 
             Dim astrMemoBits() As String = {""}
             Dim sValue As Single = 0.0!
@@ -293,10 +293,10 @@ Namespace Database
         ''' times a value for the source string should be repeated.</param>
         ''' <returns>A smaller string representing the same numbers.</returns>
         ''' -------------------------------------------------------------------
-        Private Function RebuildNumberListString(ByVal strMemo As String, _
-                Optional ByVal cSplitChar As Char = CChar(" "), _
-                Optional ByVal nDefaultNumberLen As Integer = 7, _
-                Optional ByVal nRepetition As Integer = 1) As String
+        Private Function RebuildNumberListString(strMemo As String, _
+                Optional cSplitChar As Char = CChar(" "), _
+                Optional nDefaultNumberLen As Integer = 7, _
+                Optional nRepetition As Integer = 1) As String
 
             Dim astrMemoBits() As String
             Dim sb As New StringBuilder
@@ -339,7 +339,7 @@ Namespace Database
         ''' </param>
         ''' <returns>A bit pattern of the provided string.</returns>
         ''' -------------------------------------------------------------------
-        Private Function StringToBitFlags(ByVal strFlags As String, ByVal strMatch As String, Optional ByVal bMatchAsOne As Boolean = True) As Integer
+        Private Function StringToBitFlags(strFlags As String, strMatch As String, Optional bMatchAsOne As Boolean = True) As Integer
             Dim iBitFlags As Integer = 0
             Dim iBit As Integer = 0
             Dim cTest As Char = Nothing
@@ -380,7 +380,7 @@ Namespace Database
         ''' if any. No scenario filter is applied if this value is less than or equals to 0.</param>
         ''' <param name="dtScenario">Data type of this scenario, if any.</param>
         ''' -------------------------------------------------------------------
-        Private Function MakeHashKey(ByVal strKey As String, ByVal iScenarioID As Integer, ByVal dtScenario As eDataTypes) As String
+        Private Function MakeHashKey(strKey As String, iScenarioID As Integer, dtScenario As eDataTypes) As String
             If iScenarioID <= 0 Then
                 Return strKey
             Else
@@ -404,11 +404,11 @@ Namespace Database
         ''' process.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Property HashKey(ByVal dt As eDataTypes, ByVal strKey As String, _
-                Optional ByVal dtScenario As eDataTypes = eDataTypes.NotSet, Optional ByVal iScenarioID As Integer = 0) As Integer
+        Private Property HashKey(dt As eDataTypes, strKey As String, _
+                Optional dtScenario As eDataTypes = eDataTypes.NotSet, Optional iScenarioID As Integer = 0) As Integer
             Get
                 ' Get proper dictionary
-                Dim dict As Dictionary(Of String, Integer) = m_adtKeys(CInt(dt))
+                Dim dict As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(dt))
                 Dim strKeyInt As String = Me.MakeHashKey(strKey, iScenarioID, dtScenario)
 
                 If (dict Is Nothing) Then
@@ -424,16 +424,16 @@ Namespace Database
                 ' Return the item, let this crash if item cannot be found
                 Return dict.Item(strKeyInt)
             End Get
-            Set(ByVal iValue As Integer)
+            Set(iValue As Integer)
                 ' Get proper dictionary
-                Dim dict As Dictionary(Of String, Integer) = m_adtKeys(CInt(dt))
+                Dim dict As Dictionary(Of String, Integer) = Me.m_adtKeys(CInt(dt))
                 Dim strKeyInt As String = Me.MakeHashKey(strKey, iScenarioID, dtScenario)
                 ' Already allocated?
                 If (dict Is Nothing) Then
                     ' #No: create new
                     dict = New Dictionary(Of String, Integer)
                     ' Store dict
-                    m_adtKeys(CInt(dt)) = dict
+                    Me.m_adtKeys(CInt(dt)) = dict
                 End If
                 ' Store the item, let this crash if the key already exists
                 dict(strKeyInt) = iValue
@@ -451,7 +451,7 @@ Namespace Database
         ''' administration of EwE5 to EwE6 key mappings during the import 
         ''' process.</para>
         ''' -------------------------------------------------------------------
-        Private Property MappedID(ByVal dt As eDataTypes, ByVal iEwE5Index As Integer) As Integer
+        Private Property MappedID(dt As eDataTypes, iEwE5Index As Integer) As Integer
             Get
                 ' Get proper dictionary
                 Dim dict As Dictionary(Of Integer, Integer) = Me.m_adtIndexes(CInt(dt))
@@ -462,7 +462,7 @@ Namespace Database
                 Return dict.Item(iEwE5Index)
             End Get
 
-            Set(ByVal iValue As Integer)
+            Set(iValue As Integer)
                 ' Get proper dictionary
                 Dim dict As Dictionary(Of Integer, Integer) = Me.m_adtIndexes(CInt(dt))
                 ' Already allocated?
@@ -492,8 +492,8 @@ Namespace Database
         ''' <param name="valDefault">Optional default value to return if the value found in the reader is a DBNull value.</param>
         ''' <returns>The groomed and pruned value.</returns>
         ''' -------------------------------------------------------------------
-        Private Function FixValue(ByRef r As IDataReader, ByVal strField As String, _
-                Optional ByVal valDefault As Object = Nothing) As Object
+        Private Function FixValue(ByRef r As IDataReader, strField As String, _
+                Optional valDefault As Object = Nothing) As Object
 
             Dim value As Object = Nothing
 
@@ -538,7 +538,7 @@ Namespace Database
             Return value
         End Function
 
-        Private Function ExtractLastSavedJulianDate(ByVal strDescription As String) As Single
+        Private Function ExtractLastSavedJulianDate(strDescription As String) As Single
 
             Dim strDate As String = ""
             Dim iLastSeparatorPos As Integer = -1
@@ -581,7 +581,7 @@ Namespace Database
         Protected Overrides Function PerformImport() As Boolean
 
             ' Allocate primary key lookup tables
-            ReDim m_adtKeys(System.Enum.GetValues(GetType(eDataTypes)).Length)
+            ReDim Me.m_adtKeys(System.Enum.GetValues(GetType(eDataTypes)).Length)
             ' Allocate object indexes lookup tables
             ReDim Me.m_adtIndexes(System.Enum.GetValues(GetType(eDataTypes)).Length)
 
@@ -753,10 +753,10 @@ Namespace Database
             ' Clear table
             Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
 
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Models] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Models] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 
-            writer = m_dbTarget.GetWriter("EcopathModel")
+            writer = Me.m_dbTarget.GetWriter("EcopathModel")
 
             reader.Read()
             drow = writer.NewRow()
@@ -867,11 +867,11 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbTarget.Execute("DELETE * FROM Stanza")
 
-            readerStanza = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Stanza] where modelName='{0}' ORDER BY StanzaName, Sequence ASC", Me.m_strModelName))
+            readerStanza = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Stanza] where modelName='{0}' ORDER BY StanzaName, Sequence ASC", Me.m_strModelName))
             If readerStanza Is Nothing Then Return
 
-            writerStanza = m_dbTarget.GetWriter("Stanza")
-            writerLifeStages = m_dbTarget.GetWriter("StanzaLifeStage")
+            writerStanza = Me.m_dbTarget.GetWriter("Stanza")
+            writerLifeStages = Me.m_dbTarget.GetWriter("StanzaLifeStage")
 
             While readerStanza.Read()
 
@@ -996,8 +996,8 @@ Namespace Database
             Dim sTemp As Single = 0.0
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
-            Dim nNumGroups As Integer = CInt(m_dbEwE5.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}'", Me.m_strModelName)))
-            Dim nNumLiving As Integer = CInt(m_dbEwE5.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}' AND (TYPE <= 1)", Me.m_strModelName)))
+            Dim nNumGroups As Integer = CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}'", Me.m_strModelName)))
+            Dim nNumLiving As Integer = CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}' AND (TYPE <= 1)", Me.m_strModelName)))
 
             If (nNumGroups = nNumLiving) Then
                 ' Need to murder one group?
@@ -1006,10 +1006,10 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
 
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Group Info] WHERE modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Group Info] WHERE modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
             If reader Is Nothing Then Return
 
-            writer = m_dbTarget.GetWriter("EcopathGroup")
+            writer = Me.m_dbTarget.GetWriter("EcopathGroup")
             writerPedigree = Me.m_dbTarget.GetWriter("EcopathGroupPedigree")
 
             While reader.Read()
@@ -1088,7 +1088,7 @@ Namespace Database
                 ' Remember group ID mapping
                 Me.HashKey(eDataTypes.EcoPathGroupInput, CStr(reader("groupName"))) = nGroupID
                 ' Remember group group index mapping
-                MappedID(eDataTypes.EcoPathGroupInput, nSequence) = nGroupID
+                Me.MappedID(eDataTypes.EcoPathGroupInput, nSequence) = nGroupID
 
                 ' Import Remarks
                 Me.AddRemark(reader("remarks"), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.Name)
@@ -1132,10 +1132,10 @@ Namespace Database
             Dim nPredatorID As Integer = 0
             Dim sValue As Single = 0.0
 
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group x Group] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group x Group] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 
-            writer = m_dbTarget.GetWriter("EcopathDietComp")
+            writer = Me.m_dbTarget.GetWriter("EcopathDietComp")
 
             While reader.Read()
 
@@ -1153,7 +1153,7 @@ Namespace Database
                 ' If there should be any leftover diet for a producer then get rid of it
                 sValue = CSng(Me.FixValue(reader, "diet"))
                 ' Is a producer with no q/b? (carbon models can have this)
-                readerPred = m_dbTarget.GetReader(cStringUtils.Localize("SELECT Type, ConsBiom FROM EcopathGroup WHERE (GroupID={0})", nPredatorID))
+                readerPred = Me.m_dbTarget.GetReader(cStringUtils.Localize("SELECT Type, ConsBiom FROM EcopathGroup WHERE (GroupID={0})", nPredatorID))
                 readerPred.Read()
                 If CSng(readerPred("ConsBiom")) <= 0.0 And CSng(readerPred("Type")) = 1.0 Then
                     ' #Yes: set diet components to 0
@@ -1169,8 +1169,8 @@ Namespace Database
                 writer.AddRow(drow)
 
                 ' Import remarks
-                AddRemark(reader("remarksDiet"), eDataTypes.EcoPathGroupInput, nPredatorID, eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, nPreyID)
-                AddRemark(reader("remarksDF"), eDataTypes.EcoPathGroupInput, nPredatorID, eVarNameFlags.DiscardFate, eDataTypes.EcoPathGroupInput, nPreyID)
+                Me.AddRemark(reader("remarksDiet"), eDataTypes.EcoPathGroupInput, nPredatorID, eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, nPreyID)
+                Me.AddRemark(reader("remarksDF"), eDataTypes.EcoPathGroupInput, nPredatorID, eVarNameFlags.DiscardFate, eDataTypes.EcoPathGroupInput, nPreyID)
 
                 ' JS 061221: References do not need to be imported for now
                 ' ImportRefCode("RefCodeDiet", "quickRefDiet")
@@ -1198,11 +1198,11 @@ Namespace Database
             Dim sValue As Single = 0.0!
 
             ' Get writer
-            writer = m_dbTarget.GetWriter("EcopathGroup")
+            writer = Me.m_dbTarget.GetWriter("EcopathGroup")
             dt = writer.GetDataTable()
 
             ' Merge EwE5 Group Size data with EwE6 GroupInfo for non-stanza groups
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group size] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group size] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 
             While reader.Read()
@@ -1275,10 +1275,10 @@ Namespace Database
             ' Clear table(s)
             Me.m_dbTarget.Execute("DELETE * FROM EcopathFleet")
 
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Gear] where modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Gear] where modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
             If reader Is Nothing Then Return
 
-            writer = m_dbTarget.GetWriter("EcopathFleet")
+            writer = Me.m_dbTarget.GetWriter("EcopathFleet")
 
             While reader.Read()
 
@@ -1298,7 +1298,7 @@ Namespace Database
                 ' Remember Fleet ID mapping
                 Me.HashKey(eDataTypes.FleetInput, CStr(reader("gearName"))) = nFleetID
                 ' Remember fleet index mapping
-                MappedID(eDataTypes.FleetInput, nSequence) = nFleetID
+                Me.MappedID(eDataTypes.FleetInput, nSequence) = nFleetID
 
                 ' Map remarks
                 Me.AddRemark(reader("remarksCost"), eDataTypes.FleetInput, nFleetID, eVarNameFlags.FixedCost)
@@ -1329,10 +1329,10 @@ Namespace Database
             Dim nGroupID As Integer = 0
             Dim nFleetID As Integer = 0
 
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Catch] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Catch] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 
-            writer = m_dbTarget.GetWriter("EcopathCatch")
+            writer = Me.m_dbTarget.GetWriter("EcopathCatch")
 
             While reader.Read()
 
@@ -1716,7 +1716,7 @@ Namespace Database
                     ' .. create a new ecosim group
 
                     ' Check if an ecosim group exists for this ecopath group, ecosim scenario combination
-                    reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
+                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
                             Me.m_strModelName, strScenario, strGroup))
 
                     bHasGroup = reader.Read()
@@ -1848,7 +1848,7 @@ Namespace Database
             Dim strJuvinile As String = ""
             Dim bWarned As Boolean = False
 
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim Pairs] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim Pairs] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 
             While reader.Read
@@ -1859,12 +1859,12 @@ Namespace Database
                 End If
 
                 Try
-                    readerTmp = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("iadult")))
+                    readerTmp = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("iadult")))
                     readerTmp.Read()
                     strAdult = CStr(readerTmp("groupName"))
                     Me.m_dbEwE5.ReleaseReader(readerTmp)
 
-                    readerTmp = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("ijuv")))
+                    readerTmp = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Info] where modelName='{0}' and sequence={1}", Me.m_strModelName, reader("ijuv")))
                     readerTmp.Read()
                     strJuvinile = CStr(readerTmp("groupName"))
                     Me.m_dbEwE5.ReleaseReader(readerTmp)
@@ -1915,7 +1915,7 @@ Namespace Database
                     ' Grab foreign keys
                     iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleet)
 
-                    reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
+                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
                                                               Me.m_strModelName, strFleet, strScenario))
                     ' Assume no shape is read
                     iShapeID = 0
@@ -1938,7 +1938,7 @@ Namespace Database
                     drow("FleetID") = iFleetID
                     drow("FishRateShapeID") = iShapeID
 
-                    readerEcopath = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleet))
+                    readerEcopath = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Gear] WHERE (gearName='{0}')", strFleet))
                     readerEcopath.Read()
 
                     drow("EPower") = Me.FixValue(readerEcopath, "EPower", 3.0!)
@@ -1947,7 +1947,7 @@ Namespace Database
                     drow("CapBaseGrowth") = Me.FixValue(readerEcopath, "CapBaseGrowth", 0.2!)
                     drow("EffortConversionFactor") = 1.0!
 
-                    m_dbEwE5.ReleaseReader(readerEcopath)
+                    Me.m_dbEwE5.ReleaseReader(readerEcopath)
                     readerEcopath = Nothing
 
                     iFleetID += 1
@@ -2116,7 +2116,7 @@ Namespace Database
             'Public Steep As Single = 0
             Public IMedBase As Single = 0
 
-            Public Overrides Function Equals(ByVal obj As Object) As Boolean
+            Public Overrides Function Equals(obj As Object) As Boolean
 
                 If Not (TypeOf (obj) Is cForcingShapeData) Then Return False
 
@@ -2133,7 +2133,7 @@ Namespace Database
 
         End Class
 
-        Private Function GetDuplicate(ByVal fsd As cForcingShapeData) As cForcingShapeData
+        Private Function GetDuplicate(fsd As cForcingShapeData) As cForcingShapeData
             For Each fsdTest As cForcingShapeData In Me.m_lImportedForcingShapes
                 ' Is duplicate?
                 If fsdTest.Equals(fsd) Then
@@ -2146,8 +2146,8 @@ Namespace Database
 
 #End Region ' Shape duplicates management
 
-        Private Function ImportShape(ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
-                ByVal reader As IDataReader, Optional ByVal bIsSeasonal As Boolean = False) As Integer
+        Private Function ImportShape(iShapeID As Integer, shapeDataType As eDataTypes, _
+                reader As IDataReader, Optional bIsSeasonal As Boolean = False) As Integer
 
             ' import shape specific data in subtable
             Select Case shapeDataType
@@ -2179,10 +2179,10 @@ Namespace Database
         ''' <returns>The ID for the imported shape. Note that this ID may indicate
         ''' an earlier imported shape in case of duplicates.</returns>
         ''' -------------------------------------------------------------------
-        Private Function ImportForcingShape(ByVal iShapeID As Integer, _
-                                            ByVal shapeDataType As eDataTypes, _
-                                            ByVal reader As IDataReader, _
-                                            Optional ByVal bIsSeasonal As Boolean = False) As Integer
+        Private Function ImportForcingShape(iShapeID As Integer, _
+                                            shapeDataType As eDataTypes, _
+                                            reader As IDataReader, _
+                                            Optional bIsSeasonal As Boolean = False) As Integer
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -2301,10 +2301,10 @@ Namespace Database
             Return fsd.DBID
         End Function
 
-        Private Function ImportFishingShape(ByVal iShapeID As Integer, _
-                                            ByVal shapeDataType As eDataTypes, _
-                                            ByVal reader As IDataReader, _
-                                            Optional ByVal bIsSeasonal As Boolean = False) As Integer
+        Private Function ImportFishingShape(iShapeID As Integer, _
+                                            shapeDataType As eDataTypes, _
+                                            reader As IDataReader, _
+                                            Optional bIsSeasonal As Boolean = False) As Integer
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -2362,8 +2362,8 @@ Namespace Database
             Return iShapeID
         End Function
 
-        Private Function CreateDummyShape(ByVal iShapeID As Integer, ByVal shapeDataType As eDataTypes, _
-                Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+        Private Function CreateDummyShape(iShapeID As Integer, shapeDataType As eDataTypes, _
+                Optional bIsSeasonal As Boolean = False) As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -2468,7 +2468,7 @@ Namespace Database
 
             While reader.Read()
 
-                iScenarioID = HashKey(eDataTypes.EcoSimScenario, CStr(reader("Scenario")))
+                iScenarioID = Me.HashKey(eDataTypes.EcoSimScenario, CStr(reader("Scenario")))
                 iNutShapeID = 0
                 iSalinityShapeID = 0
 
@@ -2561,7 +2561,7 @@ Namespace Database
                             If (iEggShapeID + iHatchShapeID) > 0 Then
                                 drow = writer.NewRow()
                                 ' Map foreign keys
-                                drow("StanzaID") = HashKey(eDataTypes.Stanza, CStr(reader("stanzaName")))
+                                drow("StanzaID") = Me.HashKey(eDataTypes.Stanza, CStr(reader("stanzaName")))
                                 ' Link shapes (leave missing shape links to DBNull)
                                 If (iEggShapeID > 0) Then drow("EggprodShapeID") = iEggShapeID
                                 If (iHatchShapeID > 0) Then drow("HatchCodeShapeID") = iHatchShapeID
@@ -2591,7 +2591,7 @@ Namespace Database
         ''' <param name="strZScale">Zscale part.</param>
         ''' <param name="strTitle">Title part.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SplitZScale(ByVal strIn As String, ByRef strZScale As String, ByRef strTitle As String)
+        Private Sub SplitZScale(strIn As String, ByRef strZScale As String, ByRef strTitle As String)
             ' Separate title from Zscale data. EwE5 stores the title in the first 
             ' 20 characters of the ZScale data.
             strTitle = strIn.Substring(1, 19).Trim()
@@ -2608,7 +2608,7 @@ Namespace Database
         ''' True if the given shape number, for both the given model and scenario,
         ''' is used as a Time forcing shape.</returns>
         ''' -------------------------------------------------------------------
-        Private Function IsUsedAsTimeShape(ByVal nShapeNumber As Integer) As Boolean
+        Private Function IsUsedAsTimeShape(nShapeNumber As Integer) As Boolean
             If (Me.m_dbEwE5.GetVersion < 1.705) Then
                 Dim strDetectEggSQL As String = "SELECT COUNT(*) FROM [ECOSIM NXN] WHERE (modelName='{0}') AND (seasonType={1})"
                 Return CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
@@ -2628,7 +2628,7 @@ Namespace Database
         ''' True if the given shape number for the given model is used 
         ''' as an Egg production forcing shape.</returns>
         ''' -------------------------------------------------------------------
-        Private Function IsUsedAsEggShape(ByVal nShapeNumber As Integer) As Boolean
+        Private Function IsUsedAsEggShape(nShapeNumber As Integer) As Boolean
             ' EggShapes in EwE5 are assigned to stanza groups independent of scenario!
             Dim strDetectEggSQL As String = "SELECT COUNT(*) FROM [GROUP STANZA] WHERE (modelName='{0}') AND (EggProdShape={1})"
             Return CInt(Me.m_dbEwE5.GetValue(cStringUtils.Localize(strDetectEggSQL, Me.m_strModelName, nShapeNumber))) > 0
@@ -2777,7 +2777,7 @@ Namespace Database
             Dim iFFApplication As eForcingFunctionApplication = 0
 
             ' EwE6: Shape type explicitly identifies a shape type
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcosimScenarioPredPreyShape")
@@ -2907,9 +2907,9 @@ Namespace Database
             Dim strMemo As String = ""
 
             If (Me.m_dbEwE5.GetVersion >= 1.62) Then
-                reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}' ORDER BY SequenceNo ASC", Me.m_strModelName))
+                reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}' ORDER BY SequenceNo ASC", Me.m_strModelName))
             Else
-                reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}'", Me.m_strModelName))
+                reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}'", Me.m_strModelName))
             End If
 
             If reader Is Nothing Then Return
@@ -3227,7 +3227,7 @@ Namespace Database
             Next
 
             ' Now import habitat information using most recent EwE5 format
-            reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecospace habitats] WHERE modelName='{0}'", Me.m_strModelName))
+            reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecospace habitats] WHERE modelName='{0}'", Me.m_strModelName))
             While reader.Read()
                 ' Resolve scenario ID
                 iScenarioID = Me.HashKey(eDataTypes.EcoSpaceScenario, CStr(reader("scenario")))
@@ -3493,7 +3493,7 @@ Namespace Database
                         Me.LogProgress("Importing maps for scenario " & strEcospaceScenario & ", fleet " & strEcopathFleet)
 
                         ' Generate an Ecospace fleet entry
-                        reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                        reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
                                                                   Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
                         bHasFleet = reader.Read()
 
@@ -3520,7 +3520,7 @@ Namespace Database
                             ReDim astrPort(nRows * nCols)
                             For iRow As Integer = 0 To nRows : For iCol As Integer = 0 To nCols : astrPort(iRow * nCols + iCol) = "" : Next : Next
                             Try
-                                readerSub = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                                readerSub = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
                                                                              Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
 
                                 If readerSub IsNot Nothing Then
@@ -3675,17 +3675,17 @@ Namespace Database
                 ReDim dataRelCin(nRows, nCols)
 
                 ' Depth: 2 formats encountered: '#####' and '#### '
-                astrDepth = SplitNumberListString(CStr(Me.FixValue(reader, "Depth", "0")), CChar(" "), 5)
+                astrDepth = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Depth", "0")), CChar(" "), 5)
                 ' Habtype: 2 formats encountered: '###' and '## '
-                astrHabType = SplitNumberListString(CStr(Me.FixValue(reader, "HabType", "0")), CChar(" "), 3)
+                astrHabType = Me.SplitNumberListString(CStr(Me.FixValue(reader, "HabType", "0")), CChar(" "), 3)
                 ' Region: no live data seen, but spec'ed as 3 digits in length in EwE5 sources
-                astrRegion = SplitNumberListString(CStr(Me.FixValue(reader, "Region", "0")), CChar(" "), 3)
+                astrRegion = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Region", "0")), CChar(" "), 3)
                 ' MPA: 2 formats encountered, '##' and '# '
-                astrMPA = SplitNumberListString(CStr(Me.FixValue(reader, "MPA", "0")), CChar(" "), 2)
+                astrMPA = Me.SplitNumberListString(CStr(Me.FixValue(reader, "MPA", "0")), CChar(" "), 2)
                 ' RelPP: 2 formats encountered, '#######' and '###### '
-                astrRelPP = SplitNumberListString(CStr(Me.FixValue(reader, "RelPP", "1.0")), CChar(" "), 7)
+                astrRelPP = Me.SplitNumberListString(CStr(Me.FixValue(reader, "RelPP", "1.0")), CChar(" "), 7)
                 ' RelCin: no live data encountered, but spec'ed as 7 digits in length in EwE5 sources
-                astrRelCin = SplitNumberListString(CStr(Me.FixValue(reader, "RelCin", "1.0")), CChar(" "), 7)
+                astrRelCin = Me.SplitNumberListString(CStr(Me.FixValue(reader, "RelCin", "1.0")), CChar(" "), 7)
 
                 ' Reset cell counter
                 iCell = 0
@@ -3932,10 +3932,10 @@ Namespace Database
         ''' core object instance, variable type an optional subgroup.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddRemark(ByVal objRemark As Object, _
-                ByVal dataType As eDataTypes, ByVal nID As Integer, _
-                ByVal varName As eVarNameFlags, _
-                Optional ByVal dataTypeSec As eDataTypes = eDataTypes.NotSet, Optional ByVal nIDSec As Integer = -1)
+        Private Sub AddRemark(objRemark As Object, _
+                dataType As eDataTypes, nID As Integer, _
+                varName As eVarNameFlags, _
+                Optional dataTypeSec As eDataTypes = eDataTypes.NotSet, Optional nIDSec As Integer = -1)
 
             Dim strRemark As String = ""
 
@@ -3961,10 +3961,10 @@ Namespace Database
         ''' <param name="varName">The <see cref="eVarNameFlags">Core variable name</see>
         ''' to store pedigree for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddPedigree(ByVal writer As cEwEDatabase.cEwEDbWriter, _
-                                ByVal iPedigree As Integer, _
-                                ByVal iGroupID As Integer, _
-                                ByVal varName As eVarNameFlags)
+        Private Sub AddPedigree(writer As cEwEDatabase.cEwEDbWriter, _
+                                iPedigree As Integer, _
+                                iGroupID As Integer, _
+                                varName As eVarNameFlags)
 
             ' Find pedigree levels for a variable
             Dim drow As DataRow = Nothing
@@ -4004,11 +4004,11 @@ Namespace Database
         ''' core object instance, variable type an optional subgroup.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddAuxillaryData(ByVal strRemark As String, _
-                                     ByVal dataType As eDataTypes, ByVal nID As Integer, _
-                                     ByVal varName As eVarNameFlags, _
-                                     ByVal dataTypeSec As eDataTypes, _
-                                     ByVal nIDSec As Integer)
+        Private Sub AddAuxillaryData(strRemark As String, _
+                                     dataType As eDataTypes, nID As Integer, _
+                                     varName As eVarNameFlags, _
+                                     dataTypeSec As eDataTypes, _
+                                     nIDSec As Integer)
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_dbTarget.GetWriter("Auxillary")
             Dim dt As DataTable = Nothing
@@ -4072,7 +4072,7 @@ Namespace Database
 
 #Region " Local utilities "
 
-        Private Function FixColor(ByVal iColor As Integer) As String
+        Private Function FixColor(iColor As Integer) As String
 
             Dim clrTemp As Color = Color.FromArgb(iColor)
             Dim a As Byte = clrTemp.A

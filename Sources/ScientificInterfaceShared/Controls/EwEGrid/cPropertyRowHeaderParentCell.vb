@@ -53,11 +53,11 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">An optional secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal Source As cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing,
-                       Optional ByVal hcell As cEwEHierarchyGridCell = Nothing)
+        Public Sub New(pm As cPropertyManager,
+                       Source As cCoreInputOutputBase,
+                       VarName As eVarNameFlags,
+                       Optional SourceSec As cCoreInputOutputBase = Nothing,
+                       Optional hcell As cEwEHierarchyGridCell = Nothing)
             Me.New(pm.GetProperty(Source, VarName, SourceSec), hcell)
         End Sub
 
@@ -67,8 +67,8 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop">cProperty to attach to the cell</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty,
-                       Optional ByVal hcell As cEwEHierarchyGridCell = Nothing)
+        Public Sub New(prop As cProperty,
+                       Optional hcell As cEwEHierarchyGridCell = Nothing)
             ' Call baseclass constructor
             MyBase.New(prop)
             ' Set shared visualizer

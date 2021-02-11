@@ -41,7 +41,7 @@ Namespace Controls.Map.Layers
             Me.New(GetType(ucLayerEditorRange))
         End Sub
 
-        Public Sub New(ByVal t As Type)
+        Public Sub New(t As Type)
             MyBase.New(t)
             Me.CellValue = 1
         End Sub
@@ -62,7 +62,7 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.Layer.Data.SecundaryIndex
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 ' Will Group index change?
                 If (value <> Me.Layer.Data.SecundaryIndex) Then
                     ' #Yes: update Group index in the underlying Ecospace layer

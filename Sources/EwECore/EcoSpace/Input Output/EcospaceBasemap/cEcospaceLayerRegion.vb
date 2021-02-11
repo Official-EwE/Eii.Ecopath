@@ -30,7 +30,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerRegion
     Inherits cEcospaceLayerInteger
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerRegion)
         Me.m_dataType = eDataTypes.EcospaceLayerRegion
     End Sub

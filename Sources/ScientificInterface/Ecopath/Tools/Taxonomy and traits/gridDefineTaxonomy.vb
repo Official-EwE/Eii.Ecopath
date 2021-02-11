@@ -100,7 +100,7 @@ Public Class gridDefineTaxonomy
         ''' Create an new taxon administrative unit for an existing group.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal group As cEcoPathGroupInput)
+        Public Sub New(group As cEcoPathGroupInput)
             MyBase.New("")
             Me.iGroup = group.Index
             Me.iStanza = 0
@@ -113,7 +113,7 @@ Public Class gridDefineTaxonomy
         ''' Create an new taxon administrative unit for an existing stanza.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal stanza As cStanzaGroup)
+        Public Sub New(stanza As cStanzaGroup)
             MyBase.New("")
             Me.iGroup = 0
             Me.iStanza = stanza.Index
@@ -126,7 +126,7 @@ Public Class gridDefineTaxonomy
         ''' Create an administrative unit for an existing taxon.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal taxon As cTaxon)
+        Public Sub New(taxon As cTaxon)
             MyBase.New(taxon.Source)
             Me.TaxonID = CInt(taxon.GetVariable(eVarNameFlags.DBID))
             Me.TaxonIndex = taxon.Index
@@ -166,7 +166,7 @@ Public Class gridDefineTaxonomy
             Me.m_status = eItemStatusTypes.Original
         End Sub
 
-        Public Sub New(ByVal taxon As ITaxonSearchData)
+        Public Sub New(taxon As ITaxonSearchData)
             MyBase.New(taxon.Source)
             Me.Update(taxon)
         End Sub
@@ -302,7 +302,7 @@ Public Class gridDefineTaxonomy
         ''' </summary>
         ''' <param name="taxon"></param>
         ''' -------------------------------------------------------------------
-        Public Sub Update(ByVal taxon As ITaxonSearchData)
+        Public Sub Update(taxon As ITaxonSearchData)
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFishBase = taxon.CodeFishBase
             Me.CodeSeaLifeBase = taxon.CodeSeaLifeBase
@@ -368,7 +368,7 @@ Public Class gridDefineTaxonomy
         ''' <returns>
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsChanged(ByVal taxon As cTaxon) As Boolean
+        Public ReadOnly Property IsChanged(taxon As cTaxon) As Boolean
             Get
                 If (Me.IsNew()) Then Return False
 
@@ -422,7 +422,7 @@ Public Class gridDefineTaxonomy
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
-            Set(ByVal bDelete As Boolean)
+            Set(bDelete As Boolean)
                 If Not Me.IsNew Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
@@ -439,7 +439,7 @@ Public Class gridDefineTaxonomy
             End Set
         End Property
 
-        Public Overrides Function Equals(ByVal obj As Object) As Boolean
+        Public Overrides Function Equals(obj As Object) As Boolean
             If (obj Is Nothing) Then Return False
             If (TypeOf obj Is ITaxonSearchData) Then
                 Dim t As ITaxonSearchData = DirectCast(obj, ITaxonSearchData)
@@ -484,7 +484,7 @@ Public Class gridDefineTaxonomy
         Public Property PropC() As Single = 1.0
 
 
-        Public Sub ApplyChanges(ByVal taxon As cTaxon)
+        Public Sub ApplyChanges(taxon As cTaxon)
             If Me.IsChanged(taxon) Then
                 With taxon
                     .Name = Me.Common
@@ -710,7 +710,7 @@ Public Class gridDefineTaxonomy
     ''' our parent that the selection has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellGotFocus(ByVal e As SourceGrid2.PositionCancelEventArgs)
+    Protected Overrides Sub OnCellGotFocus(e As SourceGrid2.PositionCancelEventArgs)
         MyBase.OnCellGotFocus(e)
         Me.RaiseSelectionChangeEvent()
     End Sub
@@ -721,7 +721,7 @@ Public Class gridDefineTaxonomy
     ''' our parent that the selection has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellLostFocus(ByVal e As SourceGrid2.PositionCancelEventArgs)
+    Protected Overrides Sub OnCellLostFocus(e As SourceGrid2.PositionCancelEventArgs)
         MyBase.OnCellLostFocus(e)
         Me.Selection.Clear()
         Me.RaiseSelectionChangeEvent()
@@ -733,7 +733,7 @@ Public Class gridDefineTaxonomy
     ''' </summary>
     ''' <param name="iRow">The index of the row to refresh.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateRow(ByVal iRow As Integer)
+    Private Sub UpdateRow(iRow As Integer)
 
         Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
         Dim dt As Date = Nothing
@@ -766,7 +766,7 @@ Public Class gridDefineTaxonomy
 
     End Sub
 
-    Private Function FindParentRow(ByVal iRow As Integer) As Integer
+    Private Function FindParentRow(iRow As Integer) As Integer
         If iRow < 1 Then Return -1
         While (iRow > 0) And Not (TypeOf Me(iRow, eColumnTypes.Hierarchy) Is cEwEHierarchyGridCell)
             iRow -= 1
@@ -774,7 +774,7 @@ Public Class gridDefineTaxonomy
         Return iRow
     End Function
 
-    Private Function AddTaxonRow(ByVal ti As cTaxonInfo, Optional ByVal iRow As Integer = -1) As Integer
+    Private Function AddTaxonRow(ti As cTaxonInfo, Optional iRow As Integer = -1) As Integer
 
         Dim cell As cEwECell = Nothing
 
@@ -840,7 +840,7 @@ Public Class gridDefineTaxonomy
 
     End Function
 
-    Private Sub RemoveTaxonRow(ByVal iRow As Integer)
+    Private Sub RemoveTaxonRow(iRow As Integer)
         If iRow <= 0 Then iRow = Me.SelectedRow
         Dim iRowParent As Integer = Me.FindParentRow(iRow)
         If iRowParent >= 1 Then
@@ -874,7 +874,7 @@ Public Class gridDefineTaxonomy
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         Dim ti As cTaxonInfo = Me.TaxonInfo(p.Row)
         If ti Is Nothing Then Return False
@@ -917,7 +917,7 @@ Public Class gridDefineTaxonomy
     ''' <returns>A cTaxonInfo instance, or nothing if the row did not contain
     ''' a taxoninfo link.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function TaxonInfo(ByVal iRow As Integer) As cTaxonInfo
+    Private Function TaxonInfo(iRow As Integer) As cTaxonInfo
         Dim tag As Object = Nothing
         If (iRow <= 1) Then Return Nothing
         tag = Me(iRow, eColumnTypes.Hierarchy).Tag
@@ -944,10 +944,10 @@ Public Class gridDefineTaxonomy
         Get
             Return Me.TaxonInfo(Me.SelectedRow)
         End Get
-        Set(ByVal taxon As ITaxonSearchData)
+        Set(taxon As ITaxonSearchData)
             If Not (TypeOf taxon Is cTaxonInfo) Then Return
             For iRow As Integer = 1 To Me.RowsCount - 1
-                If ReferenceEquals(TaxonInfo(iRow), taxon) Then
+                If ReferenceEquals(Me.TaxonInfo(iRow), taxon) Then
                     Me.SelectRow(iRow)
                     Return
                 End If
@@ -1018,7 +1018,7 @@ Public Class gridDefineTaxonomy
     ''' Add a taxon for the selected group.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub AddTaxon(Optional ByVal taxon As ITaxonSearchData = Nothing)
+    Public Sub AddTaxon(Optional taxon As ITaxonSearchData = Nothing)
 
         If Not Me.CanAddTaxon(taxon) Then Return
 
@@ -1063,7 +1063,7 @@ Public Class gridDefineTaxonomy
     ''' </list>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Function CanAddTaxon(Optional ByVal taxon As ITaxonSearchData = Nothing) As Boolean
+    Public Function CanAddTaxon(Optional taxon As ITaxonSearchData = Nothing) As Boolean
 
         Dim grp As cEcoPathGroupInput = Me.SelectedGroup
         Dim stz As cStanzaGroup = Me.SelectedStanza
@@ -1168,7 +1168,7 @@ Public Class gridDefineTaxonomy
     ''' </summary>
     ''' <param name="taxon"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdateSelectedTaxon(ByVal taxon As ITaxonSearchData)
+    Public Sub UpdateSelectedTaxon(taxon As ITaxonSearchData)
         Dim ti As cTaxonInfo = Me.TaxonInfo(Me.SelectedRow)
         If (ti Is Nothing) Then Return
         ti.Update(taxon)
@@ -1201,7 +1201,7 @@ Public Class gridDefineTaxonomy
     ''' <param name="taxonSearch">Taxon to create a search term for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetSearchTerm(Optional ByVal taxonSearch As ITaxonSearchData = Nothing) As ITaxonSearchData
+    Public Function GetSearchTerm(Optional taxonSearch As ITaxonSearchData = Nothing) As ITaxonSearchData
 
         Me.m_tiSearchLinked = Me.SelectedTaxon
 
@@ -1219,7 +1219,7 @@ Public Class gridDefineTaxonomy
     ''' <param name="taxon"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsSearchTerm(ByVal taxon As ITaxonSearchData) As Boolean
+    Public Function IsSearchTerm(taxon As ITaxonSearchData) As Boolean
         Return (ReferenceEquals(taxon, Me.m_tiSearch)) And
                (ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
     End Function

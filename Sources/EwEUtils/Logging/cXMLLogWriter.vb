@@ -523,11 +523,11 @@ Namespace Core
 
 #Region " Methods with default behavior "
 
-        Public Overloads Sub WriteElementString(ByVal ElementName As String, ByVal value As String)
+        Public Overloads Sub WriteElementString(ElementName As String, value As String)
             m_XMLwriter.WriteElementString(ElementName, value)
         End Sub
 
-        Public Overloads Sub WriteAttributeString(ByVal AttributeName As String, ByVal value As String)
+        Public Overloads Sub WriteAttributeString(AttributeName As String, value As String)
             m_XMLwriter.WriteAttributeString(AttributeName, value)
         End Sub
 
@@ -535,15 +535,15 @@ Namespace Core
             m_XMLwriter.Flush()
         End Sub
 
-        Public Overrides Function LookupPrefix(ByVal ns As String) As String
+        Public Overrides Function LookupPrefix(ns As String) As String
             Return m_XMLwriter.LookupPrefix(ns)
         End Function
 
-        Public Overrides Sub WriteBase64(ByVal buffer() As Byte, ByVal index As Integer, ByVal count As Integer)
+        Public Overrides Sub WriteBase64(buffer() As Byte, index As Integer, count As Integer)
             m_XMLwriter.WriteBase64(buffer, index, count)
         End Sub
 
-        Public Overrides Sub WriteCData(ByVal text As String)
+        Public Overrides Sub WriteCData(text As String)
             m_XMLwriter.WriteCData(text)
         End Sub
 
@@ -555,15 +555,15 @@ Namespace Core
             m_XMLwriter.WriteEndElement()
         End Sub
 
-        Public Overloads Overrides Sub WriteRaw(ByVal data As String)
+        Public Overloads Overrides Sub WriteRaw(data As String)
             m_XMLwriter.WriteRaw(data)
         End Sub
 
-        Public Overloads Overrides Sub WriteStartAttribute(ByVal prefix As String, ByVal localName As String, ByVal ns As String)
+        Public Overloads Overrides Sub WriteStartAttribute(prefix As String, localName As String, ns As String)
             m_XMLwriter.WriteStartAttribute(prefix, localName, ns)
         End Sub
 
-        Public Overloads Sub WriteStartAttribute(ByVal AtributeName As String, ByVal value As String)
+        Public Overloads Sub WriteStartAttribute(AtributeName As String, value As String)
             m_XMLwriter.WriteStartAttribute(AtributeName, value)
         End Sub
 
@@ -571,15 +571,15 @@ Namespace Core
             m_XMLwriter.WriteStartDocument()
         End Sub
 
-        Public Overloads Overrides Sub WriteStartDocument(ByVal standalone As Boolean)
+        Public Overloads Overrides Sub WriteStartDocument(standalone As Boolean)
             m_XMLwriter.WriteStartDocument(standalone)
         End Sub
 
-        Public Overloads Sub WriteStartElement(ByVal localName As String)
+        Public Overloads Sub WriteStartElement(localName As String)
             m_XMLwriter.WriteStartElement(localName)
         End Sub
 
-        Public Overloads Overrides Sub WriteStartElement(ByVal prefix As String, ByVal localName As String, ByVal ns As String)
+        Public Overloads Overrides Sub WriteStartElement(prefix As String, localName As String, ns As String)
             m_XMLwriter.WriteStartElement(prefix, localName, ns)
         End Sub
 
@@ -589,19 +589,19 @@ Namespace Core
             End Get
         End Property
 
-        Public Overrides Sub WriteString(ByVal text As String)
+        Public Overrides Sub WriteString(text As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteSurrogateCharEntity(ByVal lowChar As Char, ByVal highChar As Char)
+        Public Overrides Sub WriteSurrogateCharEntity(lowChar As Char, highChar As Char)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteWhitespace(ByVal ws As String)
+        Public Overrides Sub WriteWhitespace(ws As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteEntityRef(ByVal name As String)
+        Public Overrides Sub WriteEntityRef(name As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
@@ -609,27 +609,27 @@ Namespace Core
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteProcessingInstruction(ByVal name As String, ByVal text As String)
+        Public Overrides Sub WriteProcessingInstruction(name As String, text As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overloads Overrides Sub WriteRaw(ByVal buffer() As Char, ByVal index As Integer, ByVal count As Integer)
+        Public Overloads Overrides Sub WriteRaw(buffer() As Char, index As Integer, count As Integer)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteCharEntity(ByVal ch As Char)
+        Public Overrides Sub WriteCharEntity(ch As Char)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteChars(ByVal buffer() As Char, ByVal index As Integer, ByVal count As Integer)
+        Public Overrides Sub WriteChars(buffer() As Char, index As Integer, count As Integer)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteComment(ByVal text As String)
+        Public Overrides Sub WriteComment(text As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-        Public Overrides Sub WriteDocType(ByVal name As String, ByVal pubid As String, ByVal sysid As String, ByVal subset As String)
+        Public Overrides Sub WriteDocType(name As String, pubid As String, sysid As String, subset As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 

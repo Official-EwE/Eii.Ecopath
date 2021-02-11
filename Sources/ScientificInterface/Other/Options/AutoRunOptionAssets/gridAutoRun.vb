@@ -150,11 +150,11 @@ Public Class gridAutoRun
     End Function
 
     Public Sub CheckAll()
-        CheckAll(True)
+        Me.CheckAll(True)
     End Sub
 
     Public Sub ClearAll()
-        CheckAll(False)
+        Me.CheckAll(False)
     End Sub
 
     Public Function Apply() As Boolean

@@ -34,8 +34,8 @@ Public Class cLandingsMediationFunction
 #Region " Constructors "
 
 
-    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
-                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, _
+                   data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
@@ -48,23 +48,23 @@ Public Class cLandingsMediationFunction
         Try
 
             Me.m_datatype = eDataTypes.PriceMediation
-            Dim iShape As Integer = m_iEcoSimIndex 'just for clarity
+            Dim iShape As Integer = Me.m_iEcoSimIndex 'just for clarity
 
-            m_manager = Manager 'keep a reference to the manager for this shape
+            Me.m_manager = Manager 'keep a reference to the manager for this shape
 
             Dim grp As cLandingsMediatingGroup = Nothing
 
             ' Groups: if this mediation shape has any weights applied to it then load the weight and group into an object
-            For iGrp As Integer = 1 To m_data.nGroups
+            For iGrp As Integer = 1 To Me.m_data.nGroups
                 For iflt As Integer = 0 To Me.m_data.nGear
-                    If m_medData.MedPriceWeights(iGrp, iflt, iShape) > 0 Then
-                        grp = New cLandingsMediatingGroup(iGrp, iflt, m_medData.MedPriceWeights(iGrp, iflt, iShape))
-                        m_groups.Add(grp)
+                    If Me.m_medData.MedPriceWeights(iGrp, iflt, iShape) > 0 Then
+                        grp = New cLandingsMediatingGroup(iGrp, iflt, Me.m_medData.MedPriceWeights(iGrp, iflt, iShape))
+                        Me.m_groups.Add(grp)
                     End If
                 Next
             Next
 
-            m_bInInit = False
+            Me.m_bInInit = False
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
             Throw New ApplicationException(Me.ToString & ".New() Error: " & ex.Message, ex)
@@ -86,24 +86,24 @@ Public Class cLandingsMediationFunction
         MyBase.Update()
 
         'do not update during initialization
-        If m_bInInit Then
+        If Me.m_bInInit Then
             Return False
         End If
 
         Dim nused As Integer
-        For Each grp As cLandingsMediatingGroup In m_groups
+        For Each grp As cLandingsMediatingGroup In Me.m_groups
             nused += 1
-            m_medData.IMedFltUsed(grp.iFleetIndex, m_iEcoSimIndex) = grp.iFleetIndex
-            m_medData.IMedUsed(grp.iGroupIndex, m_iEcoSimIndex) = grp.iGroupIndex
-            m_medData.MedPriceWeights(grp.iGroupIndex, grp.iFleetIndex, m_iEcoSimIndex) = grp.Weight
+            Me.m_medData.IMedFltUsed(grp.iFleetIndex, Me.m_iEcoSimIndex) = grp.iFleetIndex
+            Me.m_medData.IMedUsed(grp.iGroupIndex, Me.m_iEcoSimIndex) = grp.iGroupIndex
+            Me.m_medData.MedPriceWeights(grp.iGroupIndex, grp.iFleetIndex, Me.m_iEcoSimIndex) = grp.Weight
         Next grp
 
         'nused = 0
 
-        m_medData.NMedXused(m_iEcoSimIndex) = nused
+        Me.m_medData.NMedXused(Me.m_iEcoSimIndex) = nused
 
         'tell the manager that a shape has changed it's data
-        ShapeChanged()
+        Me.ShapeChanged()
 
         Return True
 
@@ -120,10 +120,10 @@ Public Class cLandingsMediationFunction
 
         Try
 
-            For Each grp As cLandingsMediatingGroup In m_groups
-                m_medData.IMedFltUsed(grp.iFleetIndex, m_iEcoSimIndex) = 0
-                m_medData.IMedUsed(grp.iGroupIndex, m_iEcoSimIndex) = 0
-                m_medData.MedPriceWeights(grp.iGroupIndex, grp.iFleetIndex, m_iEcoSimIndex) = 0
+            For Each grp As cLandingsMediatingGroup In Me.m_groups
+                Me.m_medData.IMedFltUsed(grp.iFleetIndex, Me.m_iEcoSimIndex) = 0
+                Me.m_medData.IMedUsed(grp.iGroupIndex, Me.m_iEcoSimIndex) = 0
+                Me.m_medData.MedPriceWeights(grp.iGroupIndex, grp.iFleetIndex, Me.m_iEcoSimIndex) = 0
             Next grp
 
         Catch ex As Exception
@@ -137,11 +137,11 @@ Public Class cLandingsMediationFunction
 
     ''' <inheritdocs cref="cMediationBaseFunction.AddGroup"/>
     ''' <param name="iFleet"></param>
-    Public Overloads Overrides Function AddGroup(ByVal iGroup As Integer, ByVal weight As Single, Optional ByVal iFleet As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overloads Overrides Function AddGroup(iGroup As Integer, weight As Single, Optional iFleet As Integer = cCore.NULL_VALUE) As Boolean
         'ToDo: data validation
         Debug.Assert(iFleet >= 0, Me.ToString & ".AddGroup() Invalid Fleet index")
-        m_groups.Add(New cLandingsMediatingGroup(iGroup, iFleet, weight))
-        Update()
+        Me.m_groups.Add(New cLandingsMediatingGroup(iGroup, iFleet, weight))
+        Me.Update()
         Return True
 
     End Function
@@ -149,21 +149,21 @@ Public Class cLandingsMediationFunction
     ''' <inheritdocs cref="cMediationBaseFunction.NumGroups"/>
     Public Overrides ReadOnly Property NumGroups() As Integer
         Get
-            Return m_groups.Count
+            Return Me.m_groups.Count
         End Get
     End Property
 
     ''' <inheritdocs cref="cMediationBaseFunction.Group"/>
-    Public Overrides Property Group(ByVal iGroup As Integer) As cMediatingGroup
+    Public Overrides Property Group(iGroup As Integer) As cMediatingGroup
         Get
-            Return m_groups(iGroup)
+            Return Me.m_groups(iGroup)
         End Get
 
-        Set(ByVal value As cMediatingGroup)
+        Set(value As cMediatingGroup)
             Try
                 Dim grp As cLandingsMediatingGroup = DirectCast(value, cLandingsMediatingGroup)
-                m_groups.Item(iGroup) = grp
-                Update()
+                Me.m_groups.Item(iGroup) = grp
+                Me.Update()
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".Group() Failed to add group Invalid group type!")
             End Try
@@ -177,15 +177,15 @@ Public Class cLandingsMediationFunction
     ''' <param name="iIndex">Zero-based index [0, <see cref="NumGroups"/>-1] of the 
     ''' mediating group to remove.</param>
     ''' <returns></returns>
-    Public Function RemoveGroup(ByVal iIndex As Integer) As Boolean
+    Public Function RemoveGroup(iIndex As Integer) As Boolean
 
         Try
             'clear the ecosim data
-            clearMedWeights()
+            Me.clearMedWeights()
             'remove the group from the list
-            m_groups.RemoveAt(iIndex)
+            Me.m_groups.RemoveAt(iIndex)
             'update the ecosim data with the remaining group(s)
-            Update()
+            Me.Update()
 
             Return True
         Catch ex As Exception
@@ -198,11 +198,11 @@ Public Class cLandingsMediationFunction
 
         Try
             'clear the ecosim data
-            clearMedWeights()
+            Me.clearMedWeights()
             'remove the group from the list
-            m_groups.Remove(group)
+            Me.m_groups.Remove(group)
             'update the ecosim data with the remaining group(s)
-            Update()
+            Me.Update()
             Return True
         Catch ex As Exception
             Return False
@@ -215,8 +215,8 @@ Public Class cLandingsMediationFunction
 
         Try
             'clear the ecosim data
-            clearMedWeights()
-            m_groups.Clear()
+            Me.clearMedWeights()
+            Me.m_groups.Clear()
 
             MyBase.Clear()
 
@@ -226,7 +226,7 @@ Public Class cLandingsMediationFunction
 
     End Sub
 
-    Public Overrides Function AddFleet(ByVal iFleet As Integer, ByVal weight As Single) As Boolean
+    Public Overrides Function AddFleet(iFleet As Integer, weight As Single) As Boolean
         Debug.Assert(False, Me.ToString & ".AddFleet() Property not supported.")
         Return False
     End Function
@@ -238,11 +238,11 @@ Public Class cLandingsMediationFunction
         End Get
     End Property
 
-    Public Overrides Property Fleet(ByVal iGroup As Integer) As cMediatingFleet
+    Public Overrides Property Fleet(iGroup As Integer) As cMediatingFleet
         Get
             Return Nothing
         End Get
-        Set(ByVal value As cMediatingFleet)
+        Set(value As cMediatingFleet)
             Debug.Assert(False, Me.ToString & ".Fleet() Property not supported.")
         End Set
     End Property

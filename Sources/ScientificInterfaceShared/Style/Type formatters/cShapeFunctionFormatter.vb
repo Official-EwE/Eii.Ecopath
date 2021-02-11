@@ -52,7 +52,7 @@ Namespace Style
         End Function
 
         ''' <inheritdocs cref="ITypeFormatter.ToString"/>
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             ' Plug-in name discovery takes presedence, as plug-ins may inherit cShapeFunction

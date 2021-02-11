@@ -99,7 +99,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Sub Add(man As IEcospaceLayerManager, Optional vn As eVarNameFlags = eVarNameFlags.NotSet)
             For Each l As cEcospaceLayer In man.Layers(vn)
-                Add(l)
+                Me.Add(l)
             Next
         End Sub
 
@@ -119,7 +119,7 @@ Namespace Style
             Dim vs As cVisualStyle = ad.VisualStyle
             If (vs Is Nothing) Then Return
 
-            Add(l.Name, vs, l.VarName, l.Index)
+            Me.Add(l.Name, vs, l.VarName, l.Index)
 
         End Sub
 
@@ -155,7 +155,7 @@ Namespace Style
         Public Sub Remove(l As cEcospaceLayer)
 
             If (l Is Nothing) Then Return
-            Remove(l.Name)
+            Me.Remove(l.Name)
 
         End Sub
 
@@ -270,7 +270,7 @@ Namespace Style
                 ' Make inventory of missing layers
                 Dim missing As New List(Of cImportExportStyle.cStyleEntry)
                 For Each entry As cImportExportStyle.cStyleEntry In Me.Entries
-                    If (CanCreate(entry) And (entry.Enabled)) Then
+                    If (Me.CanCreate(entry) And (entry.Enabled)) Then
                         Dim l As cEcospaceLayer = Me.FindMatchingLayer(entry)
                         If (l Is Nothing) Then missing.Add(entry)
                     End If
@@ -300,7 +300,7 @@ Namespace Style
             ' Restyle existing layers
             For Each entry As cImportExportStyle.cStyleEntry In Me.Entries
                 If (entry.VisualStyle IsNot Nothing) And (entry.Enabled) Then
-                    Dim l As cEcospaceLayer = FindMatchingLayer(entry)
+                    Dim l As cEcospaceLayer = Me.FindMatchingLayer(entry)
                     If (l IsNot Nothing) Then
                         Dim ad As cAuxiliaryData = Me.m_fact.GetAuxillaryData(Me.m_uic.Core, l)
                         If (ad.VisualStyle Is Nothing) Then

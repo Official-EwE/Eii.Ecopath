@@ -46,7 +46,7 @@ Namespace Controls
             Baseline
         End Enum
 
-        Public Shadows Function CreateLineItem(ByVal strName As String, ByVal ppl As ZedGraph.PointPairList, ByVal lineType As eEnvResponseLineType) As ZedGraph.LineItem
+        Public Shadows Function CreateLineItem(strName As String, ppl As ZedGraph.PointPairList, lineType As eEnvResponseLineType) As ZedGraph.LineItem
             Dim clr As Color
             Select Case lineType
                 Case eEnvResponseLineType.Histogram : clr = Color.Gray
@@ -57,7 +57,7 @@ Namespace Controls
             Return MyBase.CreateLineItem(strName, Definitions.eSketchDrawModeTypes.Line, clr, ppl, lineType)
         End Function
 
-        Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
+        Protected Overrides Function FormatTooltip(pane As ZedGraph.GraphPane, curve As ZedGraph.CurveItem, iPoint As Integer) As String
 
             'This is not a very good way to do this 
             'It may be better to not use a tool tip at all 

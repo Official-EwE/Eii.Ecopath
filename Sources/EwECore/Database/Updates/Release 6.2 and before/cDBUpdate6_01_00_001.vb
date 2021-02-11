@@ -74,7 +74,7 @@ Friend Class cDBUpdate6_01_00_001
 
     End Function
 
-    Private Function UpdateMSETables(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateMSETables(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN RecruitmentCV SINGLE")
         bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioGroup ADD COLUMN RStockRatio SINGLE")

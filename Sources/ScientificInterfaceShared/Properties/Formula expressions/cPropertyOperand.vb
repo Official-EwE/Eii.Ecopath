@@ -47,11 +47,11 @@ Namespace Properties
         ''' </summary>
         ''' <param name="prop">The <see cref="cSingleProperty">cSingleProperty</see> to observe.</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal prop As cSingleProperty)
+        Public Sub New(prop As cSingleProperty)
             ' Store property
             Me.m_prop = prop
             ' Start listening to property events
-            AddHandler prop.PropertyChanged, AddressOf onPropertyChanged
+            AddHandler prop.PropertyChanged, AddressOf Me.onPropertyChanged
         End Sub
 
         ''' ---------------------------------------------------------------
@@ -60,16 +60,16 @@ Namespace Properties
         ''' </summary>
         ''' <param name="prop">The <see cref="cBooleanProperty">cBooleanProperty</see> to observe.</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal prop As cBooleanProperty)
+        Public Sub New(prop As cBooleanProperty)
             ' Store property
             Me.m_prop = prop
             ' Start listening to property events
-            AddHandler prop.PropertyChanged, AddressOf onPropertyChanged
+            AddHandler prop.PropertyChanged, AddressOf Me.onPropertyChanged
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' Stop listening to property events
-            RemoveHandler Me.m_prop.PropertyChanged, AddressOf onPropertyChanged
+            RemoveHandler Me.m_prop.PropertyChanged, AddressOf Me.onPropertyChanged
             Me.m_prop = Nothing
         End Sub
 
@@ -99,7 +99,7 @@ Namespace Properties
         ''' <param name="prop">The property that changed.</param>
         ''' <param name="changeFlag">Information on what changed.</param>
         ''' ---------------------------------------------------------------
-        Public Sub onPropertyChanged(ByVal prop As cProperty, ByVal changeFlag As cProperty.eChangeFlags)
+        Public Sub onPropertyChanged(prop As cProperty, changeFlag As cProperty.eChangeFlags)
             ' Is this a value or status change?
             If (changeFlag And (cProperty.eChangeFlags.Value Or cProperty.eChangeFlags.CoreStatus)) <> 0 Then
                 ' #Yes: that's for us. Fire a change.

@@ -74,7 +74,7 @@ Friend Class cDBUpdate6_01_00_003
 
     End Function
 
-    Private Function UpdateEcopathModel(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateEcopathModel(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

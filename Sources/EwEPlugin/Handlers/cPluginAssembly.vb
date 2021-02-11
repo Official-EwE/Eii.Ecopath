@@ -41,7 +41,7 @@ Public Class cPluginAssembly
     Private Class cPluginComparer
         Implements IComparer(Of IPlugin)
 
-        Public Function Compare(ByVal x As IPlugin, ByVal y As IPlugin) As Integer _
+        Public Function Compare(x As IPlugin, y As IPlugin) As Integer _
             Implements IComparer(Of IPlugin).Compare
             Return String.Compare(x.DisplayName, y.DisplayName)
         End Function
@@ -79,7 +79,7 @@ Public Class cPluginAssembly
     ''' <param name="ass">The wrapped <see cref="Assembly"/>.</param>
     ''' <param name="bEnabled">Flag stating that the plug-in assembly is allowed to load.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal ass As Assembly, ByVal bEnabled As Boolean, strSandbox As String)
+    Public Sub New(ass As Assembly, bEnabled As Boolean, strSandbox As String)
         Me.m_ass = ass
         Me.Sandbox = strSandbox
         Me.SessionEnabled = bEnabled
@@ -101,7 +101,7 @@ Public Class cPluginAssembly
     ''' <remarks>An exception will be thrown when adding a plugin
     ''' with a duplicate name.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Property Plugin(ByVal strName As String, Optional ByVal bAllowDisabled As Boolean = False) As IPlugin
+    Public Property Plugin(strName As String, Optional bAllowDisabled As Boolean = False) As IPlugin
         Get
             Dim ip As IPlugin = Nothing
 
@@ -113,7 +113,7 @@ Public Class cPluginAssembly
             End If
             Return ip
         End Get
-        Set(ByVal ip As IPlugin)
+        Set(ip As IPlugin)
             strName = strName.ToLower()
             If Me.m_dictPlugins.ContainsKey(strName) Then
                 Throw New cPluginException(Me, String.Format(My.Resources.PLUGIN_EXCEPTION_DUPLICATE, Me.Filename, strName), Nothing)
@@ -132,8 +132,8 @@ Public Class cPluginAssembly
     ''' <param name="bAllowDisabled">Flag stating if plug-ins from disabled 
     ''' assemblies can be aquired as well.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Plugins(Optional ByVal t As Type = Nothing,
-                                     Optional ByVal bAllowDisabled As Boolean = False) As ICollection(Of IPlugin)
+    Public ReadOnly Property Plugins(Optional t As Type = Nothing,
+                                     Optional bAllowDisabled As Boolean = False) As ICollection(Of IPlugin)
         Get
             Dim collPlugins As New List(Of IPlugin)
 
@@ -182,7 +182,7 @@ Public Class cPluginAssembly
         Get
             Return Me.m_bEnabled Or Me.AlwaysEnabled()
         End Get
-        Set(ByVal bEnabled As Boolean)
+        Set(bEnabled As Boolean)
             ' Abort when enabled state will not change
             If (Me.m_bEnabled = bEnabled) Then Return
             ' Abort when trying to disable an AlwaysEnabled plugin
@@ -265,7 +265,7 @@ Public Class cPluginAssembly
         Get
             Return Me.m_compatibility
         End Get
-        Friend Set(ByVal value As ePluginCompatibilityTypes)
+        Friend Set(value As ePluginCompatibilityTypes)
             Me.m_compatibility = value
         End Set
     End Property

@@ -37,7 +37,7 @@ Public Interface IEcosimModifyEffort
     ''' <param name="iYearIndex">Year index of the current timestep</param>
     ''' <param name="EcosimDataStructures">cEcosimDataStructures as an Object</param>
     ''' <remarks></remarks>
-    Sub EcosimModifyEffort(ByRef bEffortModified As Boolean, ByVal Effort() As Single, ByVal BB() As Single, ByVal iTimeIndex As Integer, iYearIndex As Integer, ByVal EcosimDataStructures As Object)
+    Sub EcosimModifyEffort(ByRef bEffortModified As Boolean, Effort() As Single, BB() As Single, iTimeIndex As Integer, iYearIndex As Integer, EcosimDataStructures As Object)
 
 End Interface
 

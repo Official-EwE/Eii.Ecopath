@@ -24,7 +24,7 @@ Namespace Import
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
                     components.Dispose()
@@ -71,7 +71,8 @@ Namespace Import
             Me.Controls.Add(Me.m_plWizardContent)
             Me.Controls.Add(Me.m_navigator)
             Me.Controls.Add(Me.m_sep)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+            Me.MaximizeBox = False
+            Me.MinimizeBox = False
             Me.Name = "dlgImportDatabase"
             Me.ShowInTaskbar = False
             Me.ResumeLayout(False)

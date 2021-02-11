@@ -44,11 +44,11 @@ Public Class ucResults
         Private m_source As cCoreInputOutputBase
         Private m_strLabel As String
 
-        Public Sub New(ByVal source As cCoreInputOutputBase)
+        Public Sub New(source As cCoreInputOutputBase)
             Me.m_source = source
         End Sub
 
-        Public Sub New(ByVal strLabel As String)
+        Public Sub New(strLabel As String)
             Me.m_strLabel = strLabel
         End Sub
 
@@ -70,7 +70,7 @@ Public Class ucResults
 
         Private m_source As cUnit
 
-        Public Sub New(ByVal source As cUnit)
+        Public Sub New(source As cUnit)
             Me.m_source = source
         End Sub
 
@@ -92,7 +92,7 @@ Public Class ucResults
         Private m_iYear As Integer
         Private m_strLabel As String
 
-        Public Sub New(ByVal iYear As Integer, ByVal strLabel As String)
+        Public Sub New(iYear As Integer, strLabel As String)
             Me.m_iYear = iYear
             Me.m_strLabel = strLabel
         End Sub
@@ -172,10 +172,10 @@ Public Class ucResults
 
 #Region " Constructor "
 
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal data As cData, _
-                   ByVal model As cModel, _
-                   ByVal result As cResults)
+    Public Sub New(uic As cUIContext, _
+                   data As cData, _
+                   model As cModel, _
+                   result As cResults)
 
         Me.InitializeComponent()
 
@@ -189,45 +189,45 @@ Public Class ucResults
         ' Set up commands
         Me.m_cmdRunEcopath = New cCommand(cmdH, "VC_RunEcopath")
         Me.m_cmdRunEcopath.AddControl(Me.m_btnRunEcopath)
-        AddHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcopath
-        AddHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf OnUpdateRunEcopath
+        AddHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf Me.OnInvokeRunEcopath
+        AddHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf Me.OnUpdateRunEcopath
 
         Me.m_cmdRunEcosim = New cCommand(cmdH, "VC_RunEcosim")
         Me.m_cmdRunEcosim.AddControl(Me.m_btnRunEcosim)
-        AddHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf OnInvokeRunEcosim
-        AddHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf OnUpdateRunEcosim
+        AddHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf Me.OnInvokeRunEcosim
+        AddHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf Me.OnUpdateRunEcosim
 
         Me.m_cmdRunEqulibrium = New cCommand(cmdH, "VC_RunEqulibrium")
         Me.m_cmdRunEqulibrium.AddControl(Me.m_btnRunEquilibrium)
-        AddHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf OnInvokeRunEquilibrium
-        AddHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf OnUpdateRunEquilibrium
+        AddHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf Me.OnInvokeRunEquilibrium
+        AddHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf Me.OnUpdateRunEquilibrium
 
         Me.Initialize()
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing Then
                 Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
 
                 cmdh.Remove(Me.m_cmdRunEcopath)
-                RemoveHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf OnInvokeRunEcosim
-                RemoveHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf OnUpdateRunEcosim
+                RemoveHandler Me.m_cmdRunEcopath.OnInvoke, AddressOf Me.OnInvokeRunEcosim
+                RemoveHandler Me.m_cmdRunEcopath.OnUpdate, AddressOf Me.OnUpdateRunEcosim
                 Me.m_cmdRunEcopath = Nothing
 
                 cmdh.Remove(Me.m_cmdRunEcosim)
-                RemoveHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf OnInvokeRunEcosim
-                RemoveHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf OnUpdateRunEcosim
+                RemoveHandler Me.m_cmdRunEcosim.OnInvoke, AddressOf Me.OnInvokeRunEcosim
+                RemoveHandler Me.m_cmdRunEcosim.OnUpdate, AddressOf Me.OnUpdateRunEcosim
                 Me.m_cmdRunEcosim = Nothing
 
                 cmdh.Remove(Me.m_cmdRunEqulibrium)
-                RemoveHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf OnInvokeRunEquilibrium
-                RemoveHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf OnUpdateRunEquilibrium
+                RemoveHandler Me.m_cmdRunEqulibrium.OnInvoke, AddressOf Me.OnInvokeRunEquilibrium
+                RemoveHandler Me.m_cmdRunEqulibrium.OnUpdate, AddressOf Me.OnUpdateRunEquilibrium
                 Me.m_cmdRunEcosim = Nothing
 
-                If components IsNot Nothing Then
-                    components.Dispose()
+                If Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
 
             End If
@@ -240,7 +240,7 @@ Public Class ucResults
 
 #Region " Events "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_tsbnSave.Image = SharedResources.saveHS
@@ -277,7 +277,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnFilterByItem(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnFilterByItem(sender As System.Object, e As System.EventArgs) _
         Handles m_tscmbItems.SelectedIndexChanged
 
         ' Filter by fleet
@@ -298,7 +298,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnFilterByUnit(ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub OnFilterByUnit(sender As Object, e As EventArgs) _
         Handles m_tscmbUnit.SelectedIndexChanged
 
         ' Filter by unit
@@ -321,40 +321,40 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnDoubleClickedFlow(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDoubleClickedFlow(sender As System.Object, e As System.EventArgs) _
         Handles m_scResults.DoubleClick
-        Me.m_tsbShowFlow.Checked = Not m_tsbShowFlow.Checked
+        Me.m_tsbShowFlow.Checked = Not Me.m_tsbShowFlow.Checked
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnShowFlow(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowFlow(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbShowFlow.Click
-        Me.m_tsbShowFlow.Checked = Not m_tsbShowFlow.Checked
+        Me.m_tsbShowFlow.Checked = Not Me.m_tsbShowFlow.Checked
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnShowEcopath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowEcopath(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbEcopath.Click
         Me.SetViewMode(eViewModeType.Grid)
         Me.UpdateResults()
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnShowEcosim(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowEcosim(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbEcosim.Click
         Me.SetViewMode(eViewModeType.Graph)
         Me.UpdateResults()
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnShowEquilibrium(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowEquilibrium(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbEquilibrium.Click
         Me.SetViewMode(eViewModeType.GraphEquilibrium)
         Me.UpdateResults()
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnGraphDataSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnGraphDataSelectionChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tscmbGraphData.SelectedIndexChanged
         Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, cResults.eGraphDataType))
         Me.UpdateResults()
@@ -384,7 +384,7 @@ Public Class ucResults
 
 #Region " Commands "
 
-    Private Sub OnInvokeRunEcopath(ByVal cmd As cCommand)
+    Private Sub OnInvokeRunEcopath(cmd As cCommand)
 
         Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcopath
 
@@ -422,12 +422,12 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnUpdateRunEcopath(ByVal cmd As cCommand)
+    Private Sub OnUpdateRunEcopath(cmd As cCommand)
         Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
         cmd.Enabled = csm.HasEcopathLoaded And (Not csm.IsEcopathRunning)
     End Sub
 
-    Private Sub OnInvokeRunEcosim(ByVal cmd As cCommand)
+    Private Sub OnInvokeRunEcosim(cmd As cCommand)
 
         Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcosim
 
@@ -464,12 +464,12 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnUpdateRunEcosim(ByVal cmd As cCommand)
+    Private Sub OnUpdateRunEcosim(cmd As cCommand)
         Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
         cmd.Enabled = csm.HasEcosimLoaded And (Not csm.IsEcosimRunning)
     End Sub
 
-    Private Sub OnInvokeRunEquilibrium(ByVal cmd As cCommand)
+    Private Sub OnInvokeRunEquilibrium(cmd As cCommand)
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_RUNNING_EQUILIBRIUM)
         ' Switch to manual run mode
@@ -499,7 +499,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnUpdateRunEquilibrium(ByVal cmd As cCommand)
+    Private Sub OnUpdateRunEquilibrium(cmd As cCommand)
         Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
         cmd.Enabled = csm.HasEcosimLoaded And (Not csm.IsEcosimRunning)
     End Sub
@@ -640,7 +640,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub SetViewMode(ByVal viewMode As eViewModeType)
+    Private Sub SetViewMode(viewMode As eViewModeType)
 
         Dim ctrl As ScrollableControl = Nothing
 
@@ -684,7 +684,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub SetGraphData(ByVal graphmode As cResults.eGraphDataType)
+    Private Sub SetGraphData(graphmode As cResults.eGraphDataType)
 
         Me.m_graphmode = graphmode
         Me.UpdateControls()
@@ -761,7 +761,7 @@ Public Class ucResults
     ''' <param name="cmb">The combo box to plunder.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetCoreComboItem(ByVal source As cCoreInputOutputBase, ByVal cmb As ToolStripComboBox) As cCoreComboItem
+    Private Function GetCoreComboItem(source As cCoreInputOutputBase, cmb As ToolStripComboBox) As cCoreComboItem
         Dim item As cCoreComboItem = Nothing
         For i As Integer = 0 To cmb.Items.Count - 1
             item = DirectCast(cmb.Items(i), cCoreComboItem)
@@ -781,7 +781,7 @@ Public Class ucResults
     ''' <param name="cmb">The combo box to plunder.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetUnitComboItem(ByVal source As cUnit, ByVal cmb As ToolStripComboBox) As cUnitComboItem
+    Private Function GetUnitComboItem(source As cUnit, cmb As ToolStripComboBox) As cUnitComboItem
         Dim item As cUnitComboItem = Nothing
         For i As Integer = 0 To cmb.Items.Count - 1
             item = DirectCast(cmb.Items(i), cUnitComboItem)

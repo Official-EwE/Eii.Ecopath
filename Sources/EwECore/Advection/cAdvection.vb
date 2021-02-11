@@ -87,7 +87,7 @@ Namespace Ecospace.Advection
 
 #Region " Public access "
 
-        Public Sub Init(ByVal core As cCore, ByVal ecospace As cEcoSpace)
+        Public Sub Init(core As cCore, ecospace As cEcoSpace)
 
             Me.m_core = core
             Me.m_data = core.m_EcoSpaceData
@@ -115,7 +115,7 @@ Namespace Ecospace.Advection
             Get
                 Return Me.m_bInterrupted
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bInterrupted = value
             End Set
         End Property
@@ -140,7 +140,7 @@ Namespace Ecospace.Advection
             Get
                 Return Me.m_RunStartedDelegate
             End Get
-            Set(ByVal value As ComputationStartedDelegate)
+            Set(value As ComputationStartedDelegate)
                 Me.m_RunStartedDelegate = value
             End Set
         End Property
@@ -154,7 +154,7 @@ Namespace Ecospace.Advection
             Get
                 Return Me.m_RunProgressDelegate
             End Get
-            Set(ByVal value As ComputationProgressDelegate)
+            Set(value As ComputationProgressDelegate)
                 Me.m_RunProgressDelegate = value
             End Set
         End Property
@@ -168,7 +168,7 @@ Namespace Ecospace.Advection
             Get
                 Return Me.m_RunCompletedDelegate
             End Get
-            Set(ByVal value As ComputationCompletedDelegate)
+            Set(value As ComputationCompletedDelegate)
                 Me.m_RunCompletedDelegate = value
             End Set
         End Property
@@ -219,7 +219,7 @@ Namespace Ecospace.Advection
         ''' <param name="Corio"></param>
         ''' <param name="Hstress"></param>
         ''' -------------------------------------------------------------------
-        Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
+        Private Sub SetVtot(XvTot(,) As Single, YvTot(,) As Single, Corio As Single, Hstress As Single)
             'sets total pressure in x and y directions for all cells
             Dim i As Integer, j As Integer
             For i = 0 To Me.m_data.InRow + 1
@@ -258,8 +258,8 @@ Namespace Ecospace.Advection
                 Me.storeOrgValues()
 
                 Dim WindXbase(,) As Single, WindYbase(,) As Single
-                WindXbase = New Single(m_data.InRow + 1, m_data.InCol + 1) {}
-                WindYbase = New Single(m_data.InRow + 1, m_data.InCol + 1) {}
+                WindXbase = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+                WindYbase = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
 
                 Me.fireRunStarted()
 
@@ -267,8 +267,8 @@ Namespace Ecospace.Advection
                     Me.m_iter = imon
 
                     'copy the wind velocity vectors from the 3d array into 2d
-                    For ir As Integer = 0 To m_data.InRow + 1
-                        For ic As Integer = 0 To m_data.InCol + 1
+                    For ir As Integer = 0 To Me.m_data.InRow + 1
+                        For ic As Integer = 0 To Me.m_data.InCol + 1
                             WindXbase(ir, ic) = Me.m_data.Xv(ir, ic, imon)
                             WindYbase(ir, ic) = Me.m_data.Yv(ir, ic, imon)
                         Next ic
@@ -276,15 +276,15 @@ Namespace Ecospace.Advection
 
                     If Me.m_bInterrupted Then Exit For
 
-                    Physicsmodel(WindXbase, WindYbase)
+                    Me.Physicsmodel(WindXbase, WindYbase)
 
                     Me.fireProgress()
 
                     'copy the X and Y velocities and upwelling into monthly arrays for storage
                     'The proper monthly value will get copied back into Xvel() and Yvel() 
                     'in the Ecospace time loop if isAdvectionActive = True 
-                    For ir As Integer = 0 To m_data.InRow + 1
-                        For ic As Integer = 0 To m_data.InCol + 1
+                    For ir As Integer = 0 To Me.m_data.InRow + 1
+                        For ic As Integer = 0 To Me.m_data.InCol + 1
 
                             Me.m_data.MonthlyXvel(imon)(ir, ic) = Me.m_data.Xvel(ir, ic)
                             Me.m_data.MonthlyYvel(imon)(ir, ic) = Me.m_data.Yvel(ir, ic)
@@ -366,7 +366,7 @@ Namespace Ecospace.Advection
             Const alpha As Single = 0.7
             Const gravcon As Single = 9.8
 
-            inrowp = m_data.InRow + 1 : incolp = m_data.InCol + 1
+            inrowp = Me.m_data.InRow + 1 : incolp = Me.m_data.InCol + 1
 
             Erase h : ReDim h(inrowp, incolp)
             'ERASE dh: REDIM dh(inrowp, incolp)
@@ -393,7 +393,7 @@ Namespace Ecospace.Advection
             hone = 0 'honea
             hosw = 0 'hoswa
             hose = 0 'hosea
-            Lengthcell = m_data.CellLength
+            Lengthcell = Me.m_data.CellLength
             'set wind driven surface velocity for flat ocean conditions, dependent on scenario number (e.g. ipscen can be month of year)
 
             'velx = velxs(ipscen) : vely = velys(ipscen)
@@ -414,8 +414,8 @@ Namespace Ecospace.Advection
                 h1 = 0 ' hone + i / inrowp * (hose - hone)
                 For j = 0 To incolp
                     h(i, j) = 0 'ho + j / incolp * (h1 - ho)  Could avoid this after time 1 if running multiple fields over time
-                    If i > 0 And i <= m_data.InRow And j > 0 And j <= m_data.InCol Then
-                        If m_data.Depth(i, j) = 0 Then A(i, j) = -1.0E+30 : h(i, j) = 0 : f(i, j) = 0
+                    If i > 0 And i <= Me.m_data.InRow And j > 0 And j <= Me.m_data.InCol Then
+                        If Me.m_data.Depth(i, j) = 0 Then A(i, j) = -1.0E+30 : h(i, j) = 0 : f(i, j) = 0
 
                         '****make sure surface and groundwater inputs are saved as actual units in map array
                         'and therefore that the const are just conversions and are corrected above
@@ -445,11 +445,11 @@ Namespace Ecospace.Advection
                 For j = 1 To incolp
                     jc = j - 1 : If jc < 1 Then jc = 1
                     ic = i - 1 : If ic < 1 Then ic = 1
-                    im = i : If im > m_data.InRow Then im = m_data.InRow
-                    jm = j : If jm > m_data.InCol Then jm = m_data.InCol
-                    If m_data.Depth(ic, jm) > 0 And m_data.Depth(im, jm) > 0 Then
+                    im = i : If im > Me.m_data.InRow Then im = Me.m_data.InRow
+                    jm = j : If jm > Me.m_data.InCol Then jm = Me.m_data.InCol
+                    If Me.m_data.Depth(ic, jm) > 0 And Me.m_data.Depth(im, jm) > 0 Then
                         'do rates for top boundary of cell
-                        Call GetDepthUp(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
+                        Call Me.GetDepthUp(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                         alphae = alpha : If depth = 0 Then alphae = 0
                         wv = WindYw(i, j) * (dtotal + alphae * hsurf)
                         gd = CSng(grav * (dtotal ^ 2 + alphae * hsurf ^ 2))
@@ -460,9 +460,9 @@ Namespace Ecospace.Advection
                         b(i, j) = gd
                         c(i - 1, j) = gd
                     End If
-                    If m_data.Depth(im, jc) > 0 And m_data.Depth(im, jm) > 0 Then
+                    If Me.m_data.Depth(im, jc) > 0 And Me.m_data.Depth(im, jm) > 0 Then
                         'do rates for left boundary of cell
-                        Call getdepthleft(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
+                        Call Me.getdepthleft(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                         alphae = alpha : If depth = 0 Then alphae = 0
                         wv = WindXw(i, j) * (dtotal + alphae * hsurf)
                         gd = CSng(grav * (dtotal ^ 2 + alphae * hsurf ^ 2))
@@ -477,19 +477,19 @@ Namespace Ecospace.Advection
 
                 Next : Next
 
-            For i = 1 To m_data.InRow
-                For j = 1 To m_data.InCol
+            For i = 1 To Me.m_data.InRow
+                For j = 1 To Me.m_data.InCol
                     If A(i, j) = 0 Then A(i, j) = -1.0E+30
                     Me.m_data.UpVel(i, j) = 0.0!
                 Next : Next
 
             Tol = 0.00001 '0.0000001
             W = 1.25
-            For i = 1 To m_data.InCol : jord(i) = i : Next
-            jstart = CInt(m_data.InCol / 3)
+            For i = 1 To Me.m_data.InCol : jord(i) = i : Next
+            jstart = CInt(Me.m_data.InCol / 3)
             jord(1) = jstart : If jord(1) = 0 Then jord(1) = 1
             i = 1
-            For j = jstart + 1 To m_data.InCol
+            For j = jstart + 1 To Me.m_data.InCol
                 i = i + 1
                 jord(i) = j
             Next
@@ -500,21 +500,21 @@ Namespace Ecospace.Advection
 
             'solve for the sea level height field h using solvegrid linear system solver
 
-            FastSolveGrid(h, A, b, c, d, e, f, m_data.InRow, m_data.InCol, Tol, jord, W)
+            Me.FastSolveGrid(h, A, b, c, d, e, f, Me.m_data.InRow, Me.m_data.InCol, Tol, jord, W)
 
             ' next solve for the velocities given the h field results from above
             grav = CSng(gravcon / (Lengthcell * 1000.0#) * 86400.0! / 0.001)
-            For i = 1 To m_data.InRow + 1
-                For j = 1 To m_data.InCol + 1
+            For i = 1 To Me.m_data.InRow + 1
+                For j = 1 To Me.m_data.InCol + 1
                     jc = j - 1 : If jc < 1 Then jc = 1
                     ic = i - 1 : If ic < 1 Then ic = 1
-                    im = i : If im > m_data.InRow Then im = m_data.InRow
-                    jm = j : If jm > m_data.InCol Then jm = m_data.InCol
+                    im = i : If im > Me.m_data.InRow Then im = Me.m_data.InRow
+                    jm = j : If jm > Me.m_data.InCol Then jm = Me.m_data.InCol
                     vxs = 0 : vxd = 0
                     vys = 0 : vyd = 0
-                    If j <= m_data.InCol Then
-                        If m_data.Depth(ic, j) > 0 And m_data.Depth(im, j) > 0 Then
-                            Call GetDepthUp(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
+                    If j <= Me.m_data.InCol Then
+                        If Me.m_data.Depth(ic, j) > 0 And Me.m_data.Depth(im, j) > 0 Then
+                            Call Me.GetDepthUp(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                             alphae = alpha : If depth = 0 Then alphae = 0
                             wv = Windy(i, j)
                             vyd = wv + grav * dtotal * (h(i - 1, j) - h(i, j))
@@ -527,9 +527,9 @@ Namespace Ecospace.Advection
 
                         End If
                     End If
-                    If i <= m_data.InRow Then
-                        If m_data.Depth(i, jc) > 0 And m_data.Depth(i, jm) > 0 Then
-                            Call getdepthleft(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
+                    If i <= Me.m_data.InRow Then
+                        If Me.m_data.Depth(i, jc) > 0 And Me.m_data.Depth(i, jm) > 0 Then
+                            Call Me.getdepthleft(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                             alphae = alpha : If depth = 0 Then alphae = 0
                             wv = Windx(i, j)
                             vxd = wv + grav * dtotal * (h(i, j - 1) - h(i, j))
@@ -543,8 +543,8 @@ Namespace Ecospace.Advection
 
                     'save the velocities xvel and yvel
                     'convert from m/day to cm/sec
-                    m_data.Yvel(i, j) = vys * saveconst
-                    m_data.Xvel(i, j) = vxs * saveconst
+                    Me.m_data.Yvel(i, j) = vys * saveconst
+                    Me.m_data.Xvel(i, j) = vxs * saveconst
 
                     'joe, velocities below are for deep water, deeper than hsurface; ecospace probably will never use those
                     'but can be saved in some other array names like YvelDeep and XvelDeep if we want
@@ -556,10 +556,10 @@ Namespace Ecospace.Advection
             'finally calculate upwelling from accumulated flows (accumulated during above
             'velocity calculation, in array upwell for each cell
             uconst = -1.0! / (Lengthcell * 1000)
-            For i = 1 To m_data.InRow
-                For j = 1 To m_data.InCol
+            For i = 1 To Me.m_data.InRow
+                For j = 1 To Me.m_data.InCol
                     'If dscale * map(0, i, j) > hsurface Then
-                    If m_data.Depth(i, j) > Me.UpwellingThreshold Then
+                    If Me.m_data.Depth(i, j) > Me.UpwellingThreshold Then
 
                         Me.m_data.UpVel(i, j) = Me.m_data.UpVel(i, j) * uconst
 
@@ -678,15 +678,15 @@ exitline:
             'returns depths across left boundary of cell i,j
             'dscale no longer required since Map() array is now single rather than Integer
             'therefore depths don't have to be rescaled
-            ii = i : If ii > m_data.InRow Then ii = m_data.InRow
+            ii = i : If ii > Me.m_data.InRow Then ii = Me.m_data.InRow
             Select Case j
                 Case 1
-                    dtotal = m_data.Depth(ii, j) '* dscale
-                Case m_data.InCol + 1
-                    dtotal = m_data.Depth(ii, m_data.InCol) ' * dscale
+                    dtotal = Me.m_data.Depth(ii, j) '* dscale
+                Case Me.m_data.InCol + 1
+                    dtotal = Me.m_data.Depth(ii, Me.m_data.InCol) ' * dscale
                 Case Else
-                    dtotal = m_data.Depth(ii, j) '* dscale
-                    d1 = m_data.Depth(ii, j - 1) '* dscale
+                    dtotal = Me.m_data.Depth(ii, j) '* dscale
+                    d1 = Me.m_data.Depth(ii, j - 1) '* dscale
                     If d1 < dtotal Then dtotal = d1
             End Select
             hsurf = hsurface
@@ -698,15 +698,15 @@ exitline:
         Private Sub GetDepthUp(i As Integer, j As Integer, hsurface As Single, ByRef dtotal As Single, ByRef hsurf As Single, ByRef depth As Single)
             Dim jj As Integer, d1 As Single
             'returns depths across top boundary of cell i,j
-            jj = j : If jj > m_data.InCol Then jj = m_data.InCol
+            jj = j : If jj > Me.m_data.InCol Then jj = Me.m_data.InCol
             Select Case i
                 Case 1
-                    dtotal = m_data.Depth(i, jj) '* dscale
-                Case m_data.InRow + 1
-                    dtotal = m_data.Depth(m_data.InRow, jj) ' * dscale
+                    dtotal = Me.m_data.Depth(i, jj) '* dscale
+                Case Me.m_data.InRow + 1
+                    dtotal = Me.m_data.Depth(Me.m_data.InRow, jj) ' * dscale
                 Case Else
-                    dtotal = m_data.Depth(i, jj) '* dscale
-                    d1 = m_data.Depth(i - 1, jj) '* dscale
+                    dtotal = Me.m_data.Depth(i, jj) '* dscale
+                    d1 = Me.m_data.Depth(i - 1, jj) '* dscale
                     If d1 < dtotal Then dtotal = d1
             End Select
             hsurf = hsurface
@@ -719,18 +719,18 @@ exitline:
         Private Sub storeOrgValues()
             Try
 
-                m_OrgMonthlyXvel = New Single(12)(,) {}
-                m_OrgMonthlyYvel = New Single(12)(,) {}
-                m_OrgMonthlyUpWell = New Single(12)(,) {}
+                Me.m_OrgMonthlyXvel = New Single(12)(,) {}
+                Me.m_OrgMonthlyYvel = New Single(12)(,) {}
+                Me.m_OrgMonthlyUpWell = New Single(12)(,) {}
 
                 For imon As Integer = 1 To 12
-                    m_OrgMonthlyXvel(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
-                    m_OrgMonthlyYvel(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
-                    m_OrgMonthlyUpWell(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+                    Me.m_OrgMonthlyXvel(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+                    Me.m_OrgMonthlyYvel(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+                    Me.m_OrgMonthlyUpWell(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
 
-                    Array.Copy(Me.m_data.MonthlyXvel(imon), m_OrgMonthlyXvel(imon), Me.m_data.MonthlyXvel(imon).Length)
-                    Array.Copy(Me.m_data.MonthlyXvel(imon), m_OrgMonthlyYvel(imon), Me.m_data.MonthlyXvel(imon).Length)
-                    Array.Copy(Me.m_data.MonthlyXvel(imon), m_OrgMonthlyUpWell(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Copy(Me.m_data.MonthlyXvel(imon), Me.m_OrgMonthlyXvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Copy(Me.m_data.MonthlyXvel(imon), Me.m_OrgMonthlyYvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Copy(Me.m_data.MonthlyXvel(imon), Me.m_OrgMonthlyUpWell(imon), Me.m_data.MonthlyXvel(imon).Length)
                 Next
 
             Catch ex As Exception
@@ -765,7 +765,7 @@ exitline:
         Private Sub fireProgress()
             Try
                 If (Me.m_RunProgressDelegate IsNot Nothing) Then
-                    Me.m_RunProgressDelegate.Invoke(m_iter)
+                    Me.m_RunProgressDelegate.Invoke(Me.m_iter)
                 End If
             Catch ex As Exception
 
@@ -953,8 +953,8 @@ exitline:
         ''' <param name="YvTot"></param>
         ''' -------------------------------------------------------------------
         Private Sub SetVelocities(ByRef vel(,) As Single, _
-                                  ByVal SorWv As Single, ByVal Grav As Single, ByVal UpWell As Single, _
-                                  ByVal XvToT(,) As Single, ByVal YvTot(,) As Single)
+                                  SorWv As Single, Grav As Single, UpWell As Single, _
+                                  XvToT(,) As Single, YvTot(,) As Single)
             Dim i As Integer
             Dim j As Integer
             For i = 0 To Me.m_data.InRow

@@ -37,7 +37,7 @@ Public Class cFleetTimeSeries
     ''' Constructor, initializes a new instance of this class.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer)
+    Friend Sub New(core As cCore, iDBID As Integer)
         MyBase.New(core, iDBID)
         Me.m_datatype = eDataTypes.FleetTimeSeries
     End Sub
@@ -51,7 +51,7 @@ Public Class cFleetTimeSeries
         Get
             Return Me.DatPool
         End Get
-        Set(ByVal iFleet As Integer)
+        Set(iFleet As Integer)
             Me.DatPool = iFleet
         End Set
     End Property

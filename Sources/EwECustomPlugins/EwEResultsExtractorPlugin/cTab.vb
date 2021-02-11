@@ -37,7 +37,7 @@
 '        Private m_SuperTitle As String
 '        Private m_SubTitles As List(Of String)
 
-'        Public Sub New(ByVal SuperTitle As String, ByVal SubTitles As List(Of String))
+'        Public Sub New(SuperTitle As String, SubTitles As List(Of String))
 '            m_SuperTitle = SuperTitle
 '            m_SubTitles = SubTitles
 '        End Sub
@@ -56,11 +56,11 @@
 
 '    End Class
 
-'    Public Sub New(ByVal TabName As String, ByVal Header As String, _
-'                ByVal ColTitles As List(Of cColumnHeader), _
-'                ByVal RowNames() As String, ByVal BodyData() As Single, _
-'                      Optional ByVal ColDataAdditional() As Single = Nothing, _
-'                      Optional ByVal RowDataAdditional() As Single = Nothing)
+'    Public Sub New(TabName As String, Header As String, _
+'                ColTitles As List(Of cColumnHeader), _
+'                RowNames() As String, BodyData() As Single, _
+'                      Optional ColDataAdditional() As Single = Nothing, _
+'                      Optional RowDataAdditional() As Single = Nothing)
 
 '        m_TabName = TabName
 '        m_Header = Header
@@ -73,12 +73,12 @@
 
 '    End Sub
 
-'    Public Sub New(ByVal TabName As String, ByVal Header As String, _
-'            ByVal ColTitles As List(Of String), _
-'            ByVal ContainsSubTitles As Boolean, _
-'            ByVal RowNames() As String, ByVal BodyData() As Single, _
-'                  Optional ByVal ColDataAdditional() As Single = Nothing, _
-'                  Optional ByVal RowDataAdditional() As Single = Nothing)
+'    Public Sub New(TabName As String, Header As String, _
+'            ColTitles As List(Of String), _
+'            ContainsSubTitles As Boolean, _
+'            RowNames() As String, BodyData() As Single, _
+'                  Optional ColDataAdditional() As Single = Nothing, _
+'                  Optional RowDataAdditional() As Single = Nothing)
 
 '        m_TabName = TabName
 '        m_Header = Header
@@ -91,7 +91,7 @@
 
 '    End Sub
 
-'    Public Sub AddHeader(ByVal SuperTitle As String, Optional ByVal SubTitle As List(Of String) = Nothing)
+'    Public Sub AddHeader(SuperTitle As String, Optional SubTitle As List(Of String) = Nothing)
 '        m_ColTitles.Add(New cColumnHeader(SuperTitle, SubTitle))
 '    End Sub
 

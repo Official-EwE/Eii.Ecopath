@@ -720,7 +720,7 @@ Namespace WebServices.Ecobase
                 End Select
                 Return eCatchType.Discards
             End Get
-            Set(ByVal value As eCatchType)
+            Set(value As eCatchType)
                 Select Case value
                     Case eCatchType.Discards : Me.Type = "discards"
                     Case eCatchType.Landing : Me.Type = "total landings"
@@ -839,7 +839,7 @@ Namespace WebServices.Ecobase
             ' NOP
         End Sub
 
-        Public Sub New(ByVal core As cCore, ByVal iStanza As Integer)
+        Public Sub New(core As cCore, iStanza As Integer)
 
             Dim stanzads As cStanzaDatastructures = core.m_Stanza
             Dim taxonDS As cTaxonDataStructures = core.m_TaxonData
@@ -916,7 +916,7 @@ Namespace WebServices.Ecobase
             ' NOP
         End Sub
 
-        Public Sub New(ByVal core As cCore, ByVal iStanza As Integer, ByVal iLifeStage As Integer)
+        Public Sub New(core As cCore, iStanza As Integer, iLifeStage As Integer)
 
             Dim stanzaDS As cStanzaDatastructures = core.m_Stanza
 
@@ -984,7 +984,7 @@ Namespace WebServices.Ecobase
             'NOP
         End Sub
 
-        Public Sub New(ByVal core As cCore, iLevel As Integer)
+        Public Sub New(core As cCore, iLevel As Integer)
 
             Dim ecopathDS As cEcopathDataStructures = core.m_EcoPathData
 
@@ -1043,7 +1043,7 @@ Namespace WebServices.Ecobase
             'NOP
         End Sub
 
-        Public Sub New(ByVal var As eVarNameFlags, ByVal iLevel As Integer)
+        Public Sub New(var As eVarNameFlags, iLevel As Integer)
 
             Me.VarName = var
             Me.LevelIndex = iLevel
@@ -1252,7 +1252,7 @@ Namespace WebServices.Ecobase
             'NOP
         End Sub
 
-        Public Sub New(ByVal core As cCore, iTaxon As Integer)
+        Public Sub New(core As cCore, iTaxon As Integer)
 
             Dim taxonDS As cTaxonDataStructures = core.m_TaxonData
 

@@ -104,7 +104,7 @@ Public MustInherit Class cDistributionParams
     ''' Generate entire parameter set from CSV.
     ''' </summary>
     ''' <param name="msg">Panic message, if any.</param>
-    Public MustOverride Function Load(ByVal msg As cMessage) As Boolean
+    Public MustOverride Function Load(msg As cMessage) As Boolean
 
     ''' <summary>
     ''' Save entire parameter set to CSV.
@@ -145,12 +145,12 @@ End Class
 Public Class cEcopathDistributionParamsData
     Implements IDistributionParamsData
 
-    Public Sub New(ByVal GroupNumber As Integer, _
-                   ByVal GroupName As String, _
-                   ByVal Mean As Single, _
-                   ByVal CV As Double, _
-                   ByVal LowerBound As Double, _
-                   ByVal UpperBound As Double)
+    Public Sub New(GroupNumber As Integer, _
+                   GroupName As String, _
+                   Mean As Single, _
+                   CV As Double, _
+                   LowerBound As Double, _
+                   UpperBound As Double)
         Me.GroupNo = GroupNumber
         Me.GroupName = GroupName
         Me.Mean = Mean
@@ -249,31 +249,31 @@ Public Class cEcopathDistributionParams
     End Property
 
     ''' <inheritdocs cref="cDistributionParams.Load"/>
-    Public Overrides Function Load(ByVal msg As cMessage) As Boolean
-        Return LoadEcopathParamX(msg, B, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eDistrParamName.B) And _
-               LoadEcopathParamX(msg, PB, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eDistrParamName.PB) And _
-               LoadEcopathParamX(msg, QB, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eDistrParamName.QB) And _
-               LoadEcopathParamX(msg, EE, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eDistrParamName.EE) And _
-               LoadEcopathParamX(msg, BA, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eDistrParamName.BA)
+    Public Overrides Function Load(msg As cMessage) As Boolean
+        Return Me.LoadEcopathParamX(msg, Me.B, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "B_Dist.csv"), eDistrParamName.B) And _
+               Me.LoadEcopathParamX(msg, Me.PB, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PB_Dist.csv"), eDistrParamName.PB) And _
+               Me.LoadEcopathParamX(msg, Me.QB, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QB_Dist.csv"), eDistrParamName.QB) And _
+               Me.LoadEcopathParamX(msg, Me.EE, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "EE_Dist.csv"), eDistrParamName.EE) And _
+               Me.LoadEcopathParamX(msg, Me.BA, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "BA_Dist.csv"), eDistrParamName.BA)
     End Function
 
     ''' <inheritdocs cref="cDistributionParams.Save"/>
     Public Overrides Function Save() As Boolean
-        Return SaveEcopathParameters2CSV(B, "B_Dist") And _
-               SaveEcopathParameters2CSV(BA, "BA_Dist") And _
-               SaveEcopathParameters2CSV(PB, "PB_Dist") And _
-               SaveEcopathParameters2CSV(QB, "QB_Dist") And _
-               SaveEcopathParameters2CSV(EE, "EE_Dist")
+        Return Me.SaveEcopathParameters2CSV(Me.B, "B_Dist") And _
+               Me.SaveEcopathParameters2CSV(Me.BA, "BA_Dist") And _
+               Me.SaveEcopathParameters2CSV(Me.PB, "PB_Dist") And _
+               Me.SaveEcopathParameters2CSV(Me.QB, "QB_Dist") And _
+               Me.SaveEcopathParameters2CSV(Me.EE, "EE_Dist")
     End Function
 
 #End Region ' Public bits
 
 #Region " Internals "
 
-    Private Function LoadEcopathParamX(ByVal msg As cMessage, _
-                                       ByVal ParamList As List(Of IDistributionParamsData), _
-                                       ByVal strPath As String, _
-                                       ByVal ParamName As eDistrParamName) As Boolean
+    Private Function LoadEcopathParamX(msg As cMessage, _
+                                       ParamList As List(Of IDistributionParamsData), _
+                                       strPath As String, _
+                                       ParamName As eDistrParamName) As Boolean
 
         Dim csv As CsvReader
         Dim MonteCarlo As cMonteCarloManager = Me.Core.EcosimMonteCarlo
@@ -319,7 +319,7 @@ Public Class cEcopathDistributionParams
                     bSuccess = False
                 End Try
 
-                If bSuccess And (nGroups <> Core.nLivingGroups) Then
+                If bSuccess And (nGroups <> Me.Core.nLivingGroups) Then
                     If nGroups < Me.Core.nLivingGroups Then
                         cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING, Path.GetFileName(strPath)))
                     ElseIf nGroups > Me.Core.nLivingGroups Then 'Check whether there are too many groups in the file
@@ -381,7 +381,7 @@ Public Class cEcopathDistributionParams
     ''' <param name="csv"></param>
     ''' <param name="ParameterType"></param>
     ''' <returns></returns>
-    Private Function ExtractEcopathParam(ByVal csv As CsvReader, ByVal ParameterType As eDistrParamName) As cEcopathDistributionParamsData
+    Private Function ExtractEcopathParam(csv As CsvReader, ParameterType As eDistrParamName) As cEcopathDistributionParamsData
 
         ' Sanity checks
         If (csv Is Nothing) Then Return Nothing
@@ -429,7 +429,7 @@ Public Class cEcopathDistributionParams
 
     End Function
 
-    Private Function SaveEcopathParameters2CSV(ByVal parms As List(Of IDistributionParamsData), ByVal strFileName As String) As Boolean
+    Private Function SaveEcopathParameters2CSV(parms As List(Of IDistributionParamsData), strFileName As String) As Boolean
 
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
         Dim bSuccess As Boolean = False
@@ -478,12 +478,12 @@ End Class
 Public Class cEcosimDistributionParamsData
     Implements IDistributionParamsData
 
-    Public Sub New(ByVal GroupNumber As Integer, _
-                   ByVal GroupName As String, _
-                   ByVal DistributionType As cMSE.DistributionType, _
-                   ByVal LowerBound As Double, _
-                   ByVal UpperBound As Double, _
-                   ByVal MidPoint As Double)
+    Public Sub New(GroupNumber As Integer, _
+                   GroupName As String, _
+                   DistributionType As cMSE.DistributionType, _
+                   LowerBound As Double, _
+                   UpperBound As Double, _
+                   MidPoint As Double)
         Me.GroupNo = GroupNumber
         Me.GroupName = GroupName
         Me.DistributionType = DistributionType
@@ -544,28 +544,28 @@ Public Class cEcosimDistributionParams
         Me.Load(Nothing)
     End Sub
 
-    Public Overrides Function Load(ByVal msg As cMessage) As Boolean
+    Public Overrides Function Load(msg As cMessage) As Boolean
 
         'loads all the ecosim csv files up and creates instances of lists of structures that hold it all in memory
-        Return LoadEcosimParamX(msg, DenDepCatchability, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DenDepCatchability.csv"), eDistrParamName.DenDepCatchability) And _
-               LoadEcosimParamX(msg, SwitchingPower, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "SwitchingPower.csv"), eDistrParamName.SwitchingPower) And _
-               LoadEcosimParamX(msg, QBMaxxQBio, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QBMaxxQBio.csv"), eDistrParamName.QBMaxxQBio) And _
-               LoadEcosimParamX(msg, PredEffectFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PredEffectFeedingTime.csv"), eDistrParamName.PredEffectFeedingTime) And _
-               LoadEcosimParamX(msg, OtherMortFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "OtherMortFeedingTime.csv"), eDistrParamName.OtherMortFeedingTime) And _
-               LoadEcosimParamX(msg, MaxRelFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "MaxRelFeedingTime.csv"), eDistrParamName.MaxRelFeedingTime) And _
-               LoadEcosimParamX(msg, FeedingTimeAdjustRate, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "FeedingTimeAdjustRate.csv"), eDistrParamName.FeedingTimeAdjustRate)
+        Return Me.LoadEcosimParamX(msg, Me.DenDepCatchability, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "DenDepCatchability.csv"), eDistrParamName.DenDepCatchability) And _
+               Me.LoadEcosimParamX(msg, Me.SwitchingPower, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "SwitchingPower.csv"), eDistrParamName.SwitchingPower) And _
+               Me.LoadEcosimParamX(msg, Me.QBMaxxQBio, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "QBMaxxQBio.csv"), eDistrParamName.QBMaxxQBio) And _
+               Me.LoadEcosimParamX(msg, Me.PredEffectFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "PredEffectFeedingTime.csv"), eDistrParamName.PredEffectFeedingTime) And _
+               Me.LoadEcosimParamX(msg, Me.OtherMortFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "OtherMortFeedingTime.csv"), eDistrParamName.OtherMortFeedingTime) And _
+               Me.LoadEcosimParamX(msg, Me.MaxRelFeedingTime, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "MaxRelFeedingTime.csv"), eDistrParamName.MaxRelFeedingTime) And _
+               Me.LoadEcosimParamX(msg, Me.FeedingTimeAdjustRate, cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, "FeedingTimeAdjustRate.csv"), eDistrParamName.FeedingTimeAdjustRate)
 
     End Function
 
     Public Overrides Function Save() As Boolean
 
-        Return SaveEcoSimParameters2CSV(DenDepCatchability, "DenDepCatchability") And _
-               SaveEcoSimParameters2CSV(SwitchingPower, "SwitchingPower") And _
-               SaveEcoSimParameters2CSV(QBMaxxQBio, "QBMaxxQBio") And _
-               SaveEcoSimParameters2CSV(PredEffectFeedingTime, "PredEffectFeedingTime") And _
-               SaveEcoSimParameters2CSV(OtherMortFeedingTime, "OtherMortFeedingTime") And _
-               SaveEcoSimParameters2CSV(MaxRelFeedingTime, "MaxRelFeedingTime") And _
-               SaveEcoSimParameters2CSV(FeedingTimeAdjustRate, "FeedingTimeAdjustRate")
+        Return Me.SaveEcoSimParameters2CSV(Me.DenDepCatchability, "DenDepCatchability") And _
+               Me.SaveEcoSimParameters2CSV(Me.SwitchingPower, "SwitchingPower") And _
+               Me.SaveEcoSimParameters2CSV(Me.QBMaxxQBio, "QBMaxxQBio") And _
+               Me.SaveEcoSimParameters2CSV(Me.PredEffectFeedingTime, "PredEffectFeedingTime") And _
+               Me.SaveEcoSimParameters2CSV(Me.OtherMortFeedingTime, "OtherMortFeedingTime") And _
+               Me.SaveEcoSimParameters2CSV(Me.MaxRelFeedingTime, "MaxRelFeedingTime") And _
+               Me.SaveEcoSimParameters2CSV(Me.FeedingTimeAdjustRate, "FeedingTimeAdjustRate")
 
     End Function
 
@@ -574,7 +574,7 @@ Public Class cEcosimDistributionParams
     ''' </summary>
     ''' <param name="csv"></param>
     ''' <returns></returns>
-    Private Function ExtractEcosimParam(ByVal csv As CsvReader) As cEcosimDistributionParamsData
+    Private Function ExtractEcosimParam(csv As CsvReader) As cEcosimDistributionParamsData
 
         ' JS 12Oct13: made fail-proof
         ' JS 12Oct13: used fixed CSV field reading
@@ -616,10 +616,10 @@ Public Class cEcosimDistributionParams
 
     End Function
 
-    Private Function LoadEcosimParamX(ByVal msg As cMessage, _
+    Private Function LoadEcosimParamX(msg As cMessage, _
                                       ByRef ParamList As List(Of IDistributionParamsData), _
-                                      ByVal strPath As String, _
-                                      ByVal ParamName As eDistrParamName) As Boolean
+                                      strPath As String, _
+                                      ParamName As eDistrParamName) As Boolean
 
         Dim reader As StreamReader = Nothing
         Dim csv As CsvReader = Nothing
@@ -680,7 +680,7 @@ Public Class cEcosimDistributionParams
                     bSuccess = False
                 End Try
 
-                If bSuccess And (nGroups <> Core.nLivingGroups - nPrimaryProducers) Then
+                If bSuccess And (nGroups <> Me.Core.nLivingGroups - nPrimaryProducers) Then
                     If nGroups < Me.Core.nLivingGroups - nPrimaryProducers Then
                         cMSEUtils.LogError(msg, String.Format(My.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW, Path.GetFileName(strPath)))
                     ElseIf nGroups > Me.Core.nLivingGroups - nPrimaryProducers Then 'Check whether there are too many groups in the file
@@ -710,7 +710,7 @@ Public Class cEcosimDistributionParams
                 ElseIf ParamName = eDistrParamName.SwitchingPower Then
                     TMean = Me.Core.EcoSimGroupInputs(iGrp).SwitchingPower
                 End If
-                If Core.EcoPathGroupInputs(iGrp).IsProducer Then
+                If Me.Core.EcoPathGroupInputs(iGrp).IsProducer Then
                     params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcoPathGroupInputs(iGrp).Name, cMSE.DistributionType.NotSet, -9999, -9999, -9999)
                 Else
                     params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcoPathGroupInputs(iGrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
@@ -720,7 +720,7 @@ Public Class cEcosimDistributionParams
 
         For Each param In params
             If (param IsNot Nothing) Then
-                Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(param.GroupNo)
+                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(param.GroupNo)
                 ' Only allow living non-producers
                 If (grp.IsLiving) Then
                     ParamList.Add(param)
@@ -732,7 +732,7 @@ Public Class cEcosimDistributionParams
 
     End Function
 
-    Private Function SaveEcoSimParameters2CSV(ByVal params As List(Of IDistributionParamsData), ByVal strFileName As String) As Boolean
+    Private Function SaveEcoSimParameters2CSV(params As List(Of IDistributionParamsData), strFileName As String) As Boolean
 
         Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.DistrParams, strFileName & ".csv"), False)
         Dim bSuccess As Boolean = False

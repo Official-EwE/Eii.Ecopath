@@ -27,10 +27,10 @@ Public Class frmSelectPredatorPrey
     Public Event FormExited()
 
 
-    Public Sub New(ByVal i As cSelectionData, ByRef p As cCore)
+    Public Sub New(i As cSelectionData, ByRef p As cCore)
         MyBase.New(i, p)
         ' This call is required by the Windows Form Designer.
-        InitializeComponent()
+        Me.InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         'Me.m_core = cCore.GetInstance()
@@ -38,7 +38,7 @@ Public Class frmSelectPredatorPrey
 
     End Sub
 
-    Public Overrides Sub PopulateAttachedList(ByVal Predator As String)
+    Public Overrides Sub PopulateAttachedList(Predator As String)
 
         Dim PredIndex As Integer
 
@@ -53,15 +53,15 @@ Public Class frmSelectPredatorPrey
 
             ' Find the index number to refer to selected predator
             PredIndex = 1
-            Do While Core.EcoSimGroupOutputs(PredIndex).Name IsNot Predator
+            Do While Me.Core.EcoSimGroupOutputs(PredIndex).Name IsNot Predator
                 PredIndex += 1
             Loop
 
             'Check which functional groups are prey to given predator and add to prey chklist
             With Me.chklstAttached.Items
-                For i As Integer = 1 To Core.nGroups
-                    If Core.EcoPathGroupInputs(PredIndex).IsPrey(i) Then
-                        .Add(Core.EcoSimGroupOutputs(i).Name)
+                For i As Integer = 1 To Me.Core.nGroups
+                    If Me.Core.EcoPathGroupInputs(PredIndex).IsPrey(i) Then
+                        .Add(Me.Core.EcoSimGroupOutputs(i).Name)
                     End If
                 Next
             End With
@@ -70,7 +70,7 @@ Public Class frmSelectPredatorPrey
 
     End Sub
 
-    Private Sub frmSelectPredatorPrey_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+    Private Sub frmSelectPredatorPrey_FormClosed(sender As Object, e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         If FireChecked = False Then
             frmResults.NextAction()
         End If

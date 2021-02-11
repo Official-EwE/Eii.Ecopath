@@ -56,13 +56,13 @@ Namespace Ecopath.Input
             If (Me.UIContext Is Nothing) Then Return
 
             'Define grid dimensions
-            Me.Redim(Core.nGroups + 2, Core.nFleets + 3)
+            Me.Redim(Me.Core.nGroups + 2, Me.Core.nFleets + 3)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
-            For fleetIndex As Integer = 1 To Core.nFleets
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
                 source = Me.Core.EcopathFleetInputs(fleetIndex)
 
                 md = source.GetVariableMetadata(eVarNameFlags.Landings)
@@ -71,9 +71,9 @@ Namespace Ecopath.Input
             Next
 
             ' Total column
-            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+            Me(0, Me.Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
             ' Sum row
-            Me(Core.nGroups + 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
+            Me(Me.Core.nGroups + 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -110,7 +110,7 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             ' Done?
-            If Core.nFleets = 0 Then Return
+            If Me.Core.nFleets = 0 Then Return
 
             'Create rows for all groups
             For i As Integer = 0 To groups.Count - 1
@@ -123,10 +123,10 @@ Namespace Ecopath.Input
                 'If group is non-stanza Then display group info
                 If Not group.IsMultiStanza Then
                     iRow = Me.AddRow
-                    FillInRows(iRow, group, alSumRow, alSumAll)
+                    Me.FillInRows(iRow, group, alSumRow, alSumAll)
                     iStanzaPrev = -1
                 Else 'Group is stanza
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
                     ' Switching stanza?
                     If (iStanzaPrev <> group.iStanza) Then
                         ' #Yes: create hierarchy box
@@ -134,12 +134,12 @@ Namespace Ecopath.Input
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New cPropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        For j As Integer = 2 To Core.nFleets + 2 : Me(iRow, j) = New cEwERowHeaderCell() : Next
+                        For j As Integer = 2 To Me.Core.nFleets + 2 : Me(iRow, j) = New cEwERowHeaderCell() : Next
                         iStanzaPrev = group.iStanza
                     End If
                     iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, alSumRow, alSumAll, True)
+                    Me.FillInRows(iRow, group, alSumRow, alSumAll, True)
                 End If
 
                 ' Set the property to the last cell of the row, which is the sum of the row
@@ -152,12 +152,12 @@ Namespace Ecopath.Input
             iRow = Me.AddRow()
             Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
             Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
-            For iFleet As Integer = 1 To Core.nFleets
-                fleet = Core.EcopathFleetInputs(iFleet)
+            For iFleet As Integer = 1 To Me.Core.nFleets
+                fleet = Me.Core.EcopathFleetInputs(iFleet)
                 alSumCol.Clear()
 
-                For iGroup As Integer = 1 To Core.nGroups
-                    groupSec = Core.EcoPathGroupInputs(iGroup)
+                For iGroup As Integer = 1 To Me.Core.nGroups
+                    groupSec = Me.Core.EcoPathGroupInputs(iGroup)
                     prop = pm.GetProperty(fleet, eVarNameFlags.Landings, groupSec)
                     alSumCol.Add(prop)
                 Next
@@ -175,8 +175,8 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, _
-            ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, _
+            ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional isIndented As Boolean = False)
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim pm As cPropertyManager = Me.PropertyManager
@@ -191,9 +191,9 @@ Namespace Ecopath.Input
             End If
 
             ' For each fleet (each column) 
-            For fleetIndex As Integer = 1 To Core.nFleets
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
                 ' Get the fleet object 
-                sourceSec = Core.EcopathFleetInputs(fleetIndex)
+                sourceSec = Me.Core.EcopathFleetInputs(fleetIndex)
                 ' Get the index landing property
                 prop = pm.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 ' Set the property to the cell

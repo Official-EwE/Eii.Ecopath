@@ -72,7 +72,7 @@ Namespace Properties
         ''' <param name="aOperands">Array of operands.</param>
         ''' <remarks>For supported operand types, see <see cref="cFormulaProperty.GetExpression">cFormulaProperty.GetExpression</see>.</remarks>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal nOperator As eOperatorType, ByVal aOperands() As Object)
+        Public Sub New(nOperator As eOperatorType, aOperands() As Object)
             ' Store operator
             Me.m_nOperator = nOperator
             ' For each operand
@@ -90,13 +90,13 @@ Namespace Properties
             Me.m_style = Me.CalcStyle()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' For each operand
             For nOperand As Integer = 0 To Me.m_lOperands.Count - 1
                 ' Get it
                 Dim operand As cExpression = Me.m_lOperands(nOperand)
                 ' Stop listening to its events
-                RemoveHandler operand.OnValueChanged, AddressOf OnOperandValueChanged
+                RemoveHandler operand.OnValueChanged, AddressOf Me.OnOperandValueChanged
                 operand.Dispose()
             Next nOperand
             Me.m_lOperands.Clear()
@@ -113,7 +113,7 @@ Namespace Properties
                 ' Get it
                 Dim operand As cExpression = Me.m_lOperands(nOperand)
                 ' Stop listening to its events
-                RemoveHandler operand.OnValueChanged, AddressOf OnOperandValueChanged
+                RemoveHandler operand.OnValueChanged, AddressOf Me.OnOperandValueChanged
             Next
         End Sub
 
@@ -142,7 +142,7 @@ Namespace Properties
         ''' the outcome of the operation.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Private Sub OnOperandValueChanged(ByVal exp As cExpression)
+        Private Sub OnOperandValueChanged(exp As cExpression)
             ' Calc new value and style
             Dim sVal As Single = Me.CalcValue()
             Dim style As cStyleGuide.eStyleFlags = Me.CalcStyle()
@@ -153,7 +153,7 @@ Namespace Properties
                 Me.m_style = style
 
                 ' Broadcast change notification
-                FireChangeNotification()
+                Me.FireChangeNotification()
             End If
         End Sub
 

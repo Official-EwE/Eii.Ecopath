@@ -67,7 +67,7 @@ Namespace Import
         ''' <param name="wizard">The <see cref="cImportWizard">import wizard</see>
         ''' to initialize the grid with</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Init(ByVal wizard As cImportWizard)
+        Public Sub Init(wizard As cImportWizard)
 
             ' Sanity check
             Debug.Assert(wizard IsNot Nothing)
@@ -86,7 +86,7 @@ Namespace Import
         ''' </summary>
         ''' <param name="grid">The grid instance that fired the event.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnEdited(ByVal grid As cImportGrid)
+        Public Event OnEdited(grid As cImportGrid)
 
         Public ReadOnly Property SelectedModelInfo As cExternalModelInfo
             Get
@@ -184,8 +184,8 @@ Namespace Import
         ''' work with it.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellEdited(ByVal p As Position, _
-                                                  ByVal cell As ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, _
+                                                  cell As ICellVirtual) As Boolean
 
             Dim settings As cImportWizard.cImportSettings = Me.ImportSettings(p.Row)
 
@@ -219,8 +219,8 @@ Namespace Import
         ''' work with it.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, _
-                                                        ByVal cell As ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As Position, _
+                                                        cell As ICellVirtual) As Boolean
 
             Dim settings As cImportWizard.cImportSettings = Me.ImportSettings(p.Row)
 
@@ -246,12 +246,12 @@ Namespace Import
         ''' </summary>
         ''' <param name="iRow">The row associated with the import settings.</param>
         ''' -----------------------------------------------------------------------
-        Private Property ImportSettings(ByVal iRow As Integer) As cImportWizard.cImportSettings
+        Private Property ImportSettings(iRow As Integer) As cImportWizard.cImportSettings
             Get
                 Dim ri As RowInfo = Me.Rows(iRow)
                 Return DirectCast(ri.Tag, cImportWizard.cImportSettings)
             End Get
-            Set(ByVal value As cImportWizard.cImportSettings)
+            Set(value As cImportWizard.cImportSettings)
                 Dim ri As RowInfo = Me.Rows(iRow)
                 ri.Tag = value
             End Set
@@ -263,7 +263,7 @@ Namespace Import
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateEwE6ModelCell(ByVal iRow As Integer)
+        Private Sub UpdateEwE6ModelCell(iRow As Integer)
 
             Dim settings As cImportWizard.cImportSettings = Me.ImportSettings(iRow)
             Dim cellEwE As cEwECell = DirectCast(Me(iRow, eColumnTypes.Target), cEwECell)

@@ -50,7 +50,7 @@ Namespace Controls.EwEGrid
 
         Public Sub New()
             MyBase.New("", GetType(String))
-            Me.VisualModel = m_viz
+            Me.VisualModel = Me.m_viz
             Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
             Me.Expanded = Me.m_bExpanded
         End Sub
@@ -59,7 +59,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_bExpanded
             End Get
-            Set(ByVal bExpanded As Boolean)
+            Set(bExpanded As Boolean)
                 ' Store flag
                 Me.m_bExpanded = bExpanded
                 ' Show/hide child rows
@@ -75,7 +75,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="iRow">Index of the row to add.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddChildRow(ByVal iRow As Integer)
+        Public Sub AddChildRow(iRow As Integer)
 
             Dim iPos As Integer = 0
 
@@ -95,7 +95,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="iRow">Index of the row to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveChildRow(ByVal iRow As Integer)
+        Public Sub RemoveChildRow(iRow As Integer)
             For Each ri As RowInfo In Me.m_lChildRows
                 If ri.Index = iRow Then
                     Me.m_lChildRows.Remove(ri)
@@ -126,7 +126,7 @@ Namespace Controls.EwEGrid
             End If
         End Sub
 
-        Public Overrides Sub OnClick(ByVal e As SourceGrid2.PositionEventArgs)
+        Public Overrides Sub OnClick(e As SourceGrid2.PositionEventArgs)
             ' MyBase.OnClick(e)
             Me.Expanded = Not Me.Expanded
         End Sub
@@ -135,7 +135,7 @@ Namespace Controls.EwEGrid
             Get
                 Return cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             End Get
-            Set(ByVal value As cStyleGuide.eStyleFlags)
+            Set(value As cStyleGuide.eStyleFlags)
                 ' No style
             End Set
         End Property

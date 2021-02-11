@@ -41,12 +41,12 @@ Public Class LinkWrapper
     Private m_lLinks As New List(Of cLink)
     Private m_color As Color
 
-    Public Sub New(ByVal link As cLink)
+    Public Sub New(link As cLink)
         Me.m_lLinks.Add(link)
         Me.m_color = Me.GetNextColor()
     End Sub
 
-    Public Sub AddLink(ByVal link As cLink)
+    Public Sub AddLink(link As cLink)
         ' Sanity checks
         Debug.Assert(Me.HasLink(link))
         Debug.Assert(Not Me.m_lLinks.Contains(link))
@@ -54,7 +54,7 @@ Public Class LinkWrapper
         Me.m_lLinks.Add(link)
     End Sub
 
-    Public Sub RemoveLink(ByVal link As cLink)
+    Public Sub RemoveLink(link As cLink)
         ' Sanity checks
         Debug.Assert(Me.HasLink(link))
         Debug.Assert(Me.m_lLinks.Contains(link))
@@ -124,7 +124,7 @@ Public Class LinkWrapper
         End Get
     End Property
 
-    Public Function HasLink(ByVal obj As Object) As Boolean
+    Public Function HasLink(obj As Object) As Boolean
         If TypeOf obj Is cLink Then
             Return ReferenceEquals(DirectCast(obj, cLink).Source, Me.Source) And _
                    ReferenceEquals(DirectCast(obj, cLink).Target, Me.Target)

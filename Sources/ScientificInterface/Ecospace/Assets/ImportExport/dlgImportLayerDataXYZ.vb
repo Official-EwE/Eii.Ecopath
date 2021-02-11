@@ -51,7 +51,7 @@ Namespace Ecospace.Basemap
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
             Me.m_uic = uic
         End Sub
@@ -66,7 +66,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_lLayers.ToArray()
             End Get
-            Set(ByVal aLayers As cEcospaceLayer())
+            Set(aLayers As cEcospaceLayer())
                 Me.m_lLayers.Clear()
 
                 If aLayers Is Nothing Then Return
@@ -80,7 +80,7 @@ Namespace Ecospace.Basemap
 
 #Region " Form overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.DesignMode = True) Then Return
@@ -108,7 +108,7 @@ Namespace Ecospace.Basemap
                 End If
             End If
 
-            AddHandler Me.m_grid.MappingChanged, AddressOf UpdateControls
+            AddHandler Me.m_grid.MappingChanged, AddressOf Me.UpdateControls
 
             Me.UpdateControls()
 
@@ -116,7 +116,7 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-            RemoveHandler Me.m_grid.MappingChanged, AddressOf UpdateControls
+            RemoveHandler Me.m_grid.MappingChanged, AddressOf Me.UpdateControls
 
             Me.m_grid.Layers = Nothing
             Me.m_grid.UIContext = Nothing
@@ -151,7 +151,7 @@ Namespace Ecospace.Basemap
             MyBase.OnDragDrop(e)
         End Sub
 
-        Private Sub OnBrowseInput(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnBrowseInput(sender As System.Object, e As System.EventArgs) _
             Handles m_btnBrowseInput.Click
 
             ' Browse via EwE6 open file dialog 
@@ -170,10 +170,10 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_bntOK.Click
 
-            If ReadCSVFile() Then
+            If Me.ReadCSVFile() Then
                 If Not Me.LoadMappedLayers() Then Return
             End If
 
@@ -182,7 +182,7 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnRowColFieldChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRowColFieldChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbRow.SelectedIndexChanged, m_cmbCol.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
@@ -311,7 +311,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_cmbRow.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_cmbRow.Text = value
             End Set
         End Property
@@ -320,7 +320,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_cmbCol.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_cmbCol.Text = value
             End Set
         End Property
@@ -345,9 +345,9 @@ Namespace Ecospace.Basemap
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()>
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+        Protected Overrides Sub Dispose(disposing As Boolean)
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
             MyBase.Dispose(disposing)
         End Sub

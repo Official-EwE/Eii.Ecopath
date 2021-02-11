@@ -60,8 +60,8 @@ Namespace Ecopath
             Me.InitializeComponent()
         End Sub
 
-        Public Sub New(ByVal uic As cUIContext,
-                       Optional ByVal group As cEcoPathGroupInput = Nothing)
+        Public Sub New(uic As cUIContext,
+                       Optional group As cEcoPathGroupInput = Nothing)
 
             Me.InitializeComponent()
 
@@ -74,7 +74,7 @@ Namespace Ecopath
 
 #End Region
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             ' Need to center myself, no?
             MyBase.OnLoad(e)
@@ -128,7 +128,7 @@ Namespace Ecopath
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Clean up
             Me.m_zgh.Detach()
@@ -155,20 +155,20 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCalculate(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
 
             Me.SaveChanges(False)
             Me.m_grid.CalculateStanzaParameters()
             Me.m_grid.RefreshContent()
-            Me.UpdateGraph(m_zgc)
+            Me.UpdateGraph(Me.m_zgc)
 
             'because number at age 0 changed
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOK.Click
 
             Me.SaveChanges(True)
@@ -177,7 +177,7 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
 
             Me.m_grid.ResetStanzaGroupValues()
@@ -186,7 +186,7 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub OnSelectStanza(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectStanza(sender As Object, e As System.EventArgs) _
              Handles m_cmbStanzaGroups.SelectionChangeCommitted
 
             Me.SaveChanges(False)
@@ -206,7 +206,7 @@ Namespace Ecopath
         ''' </summary>
         ''' <param name="zgc"></param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateGraph(ByVal zgc As ZedGraphControl)
+        Private Sub UpdateGraph(zgc As ZedGraphControl)
 
             Dim sg As cStanzaGroup = Me.m_grid.StanzaGroup
             Dim li As LineItem = Nothing
@@ -342,7 +342,7 @@ Namespace Ecopath
             Me.m_grid.CalculateStanzaParameters()
             Me.m_grid.RefreshContent()
 
-            Me.UpdateGraph(m_zgc)
+            Me.UpdateGraph(Me.m_zgc)
 
             Me.m_bInUpdate = False
 
@@ -354,7 +354,7 @@ Namespace Ecopath
         ''' </summary>
         ''' <param name="bApplyToCore"></param>
         ''' -------------------------------------------------------------------
-        Private Sub SaveChanges(ByVal bApplyToCore As Boolean)
+        Private Sub SaveChanges(bApplyToCore As Boolean)
 
             Dim bEcosimLoaded As Boolean = Me.m_uic.Core.StateMonitor.HasEcosimLoaded()
             Dim stanza As cStanzaGroup = Me.m_grid.StanzaGroup

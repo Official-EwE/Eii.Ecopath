@@ -77,7 +77,7 @@ Namespace Ecosim
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
             End Set
         End Property
@@ -96,7 +96,7 @@ Namespace Ecosim
                 Return Me.m_iNumBlocks
             End Get
 
-            Set(ByVal value As Integer)
+            Set(value As Integer)
 
                 '' Truncate value
                 'value = Math.Max(0, Math.Min(CInt(Me.m_nudNumBlockCodes.Maximum), value))
@@ -123,7 +123,7 @@ Namespace Ecosim
             Get
                 Return Me.m_iSelectedBlock
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iSelectedBlock = Math.Max(0, Math.Min(Me.m_iNumBlocks, value))
 
                 If (Me.m_uic Is Nothing) Then Return
@@ -153,7 +153,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iBlock">The index of the block to access the color for.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BlockColor(ByVal iBlock As Integer) As Color Implements IBlockSelector.BlockColor
+        Public ReadOnly Property BlockColor(iBlock As Integer) As Color Implements IBlockSelector.BlockColor
             Get
                 If iBlock >= 0 And iBlock <= Me.NumBlocks Then
                     Return Me.BlockColors(iBlock)
@@ -186,7 +186,7 @@ Namespace Ecosim
         ''' that sent this event.
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Event OnNumBlocksChanged(ByVal sender As IBlockSelector) Implements IBlockSelector.OnNumBlocksChanged
+        Public Event OnNumBlocksChanged(sender As IBlockSelector) Implements IBlockSelector.OnNumBlocksChanged
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -197,7 +197,7 @@ Namespace Ecosim
         ''' that sent this event.
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Event OnBlockSelected(ByVal sender As IBlockSelector) Implements IBlockSelector.OnBlockSelected
+        Public Event OnBlockSelected(sender As IBlockSelector) Implements IBlockSelector.OnBlockSelected
 
         ''' <summary>
         ''' CV value has changed
@@ -205,7 +205,7 @@ Namespace Ecosim
         ''' <param name="newValue"></param>
         ''' <param name="Index"></param>
         ''' <remarks>Not used for this implementation</remarks>
-        Public Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.OnValueChanged
+        Public Event OnValueChanged(newValue As Single, Index As Integer) Implements IBlockSelector.OnValueChanged
 
 
 #End Region ' Public events
@@ -216,12 +216,12 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.UpdateControls()
         End Sub
 
-        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnResize(e As System.EventArgs)
             MyBase.OnResize(e)
             Me.m_slSelectedBlockCode.Left = Me.m_pbxBlockCodes.Left + CInt(Me.BlockWidth / 2)
             Me.m_slSelectedBlockCode.Width = CInt(Me.m_pbxBlockCodes.Width - Me.BlockWidth)
@@ -232,7 +232,7 @@ Namespace Ecosim
 
 #Region " Control events "
 
-        Private Sub OnNumBocksChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnNumBocksChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudNumBlockCodes.ValueChanged
 
             If (Me.m_uic Is Nothing) Then Return
@@ -242,7 +242,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectedBlockCodeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectedBlockCodeChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudSelectedBlockCode.ValueChanged
 
             If (Me.m_uic Is Nothing) Then Return
@@ -252,7 +252,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnBlockSelectionChanged(ByVal sender As Object, ByVal e As MouseEventArgs) _
+        Private Sub OnBlockSelectionChanged(sender As Object, e As MouseEventArgs) _
             Handles m_pbxBlockCodes.MouseDown
 
             If (Me.m_uic Is Nothing) Then Return
@@ -262,7 +262,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnBlockSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnBlockSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_slSelectedBlockCode.ValueChanged, m_pbxBlockCodes.MouseDown
 
             If (Me.m_uic Is Nothing) Then Return
@@ -272,7 +272,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnPaintBlocks(ByVal sender As Object, ByVal e As PaintEventArgs) _
+        Private Sub OnPaintBlocks(sender As Object, e As PaintEventArgs) _
             Handles m_pbxBlockCodes.Paint
 
             If (Me.m_uic Is Nothing) Then Return
@@ -324,7 +324,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="g">The graphics to draw onto.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PaintBlocks(ByVal g As Graphics)
+        Private Sub PaintBlocks(g As Graphics)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -352,17 +352,17 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private ReadOnly Property BlockWidth() As Single
             Get
-                Return CSng(m_pbxBlockCodes.ClientRectangle.Width / (Me.m_iNumBlocks + 1))
+                Return CSng(Me.m_pbxBlockCodes.ClientRectangle.Width / (Me.m_iNumBlocks + 1))
             End Get
         End Property
 
 #End Region ' Internal implementation
 
-        Public Function BlocktoValue(ByVal iBlock As Integer) As Single Implements IBlockSelector.BlocktoValue
+        Public Function BlocktoValue(iBlock As Integer) As Single Implements IBlockSelector.BlocktoValue
             Return cCore.NULL_VALUE
         End Function
 
-        Public Function ValuetoBlock(ByVal cv As Single) As Integer Implements IBlockSelector.ValuetoBlock
+        Public Function ValuetoBlock(cv As Single) As Integer Implements IBlockSelector.ValuetoBlock
             Return cCore.NULL_VALUE
         End Function
 

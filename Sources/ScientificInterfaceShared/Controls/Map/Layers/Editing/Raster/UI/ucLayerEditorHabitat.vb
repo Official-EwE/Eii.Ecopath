@@ -45,7 +45,7 @@ Namespace Controls.Map.Layers
             Get
                 Return DirectCast(MyBase.Editor, cLayerEditorHabitat)
             End Get
-            Set(ByVal editor As cLayerEditorHabitat)
+            Set(editor As cLayerEditorHabitat)
                 ' Sanity check
                 Debug.Assert(TypeOf editor Is cLayerEditorHabitat, "ucLayerEditorHabitat connected to wrong editor class")
                 ' Set

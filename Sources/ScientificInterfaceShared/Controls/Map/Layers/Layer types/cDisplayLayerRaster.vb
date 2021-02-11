@@ -88,7 +88,7 @@ Namespace Controls.Map.Layers
                 Get
                     Return True
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     ' NOP
                 End Set
             End Property
@@ -150,18 +150,18 @@ Namespace Controls.Map.Layers
         ''' <param name="sValueSet"></param>
         ''' <param name="sValueClear"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal data As cEcospaceLayer,
-                       ByVal renderer As cLayerRenderer,
-                       ByVal editor As cLayerEditor,
-                       Optional ByVal source As cCoreInputOutputBase = Nothing,
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name,
-                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE,
-                       Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
+        Public Sub New(uic As cUIContext,
+                       data As cEcospaceLayer,
+                       renderer As cLayerRenderer,
+                       editor As cLayerEditor,
+                       Optional source As cCoreInputOutputBase = Nothing,
+                       Optional varName As eVarNameFlags = eVarNameFlags.Name,
+                       Optional sValueSet As Single = cCore.NULL_VALUE,
+                       Optional sValueClear As Single = cCore.NULL_VALUE)
 
             MyBase.New(uic, renderer)
 
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
+            Me.m_mh = New cMessageHandler(AddressOf Me.EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
 #If DEBUG Then
             Me.m_mh.Name = "UI::cRasterLayer " & Me.m_varName.ToString
 #End If
@@ -181,8 +181,8 @@ Namespace Controls.Map.Layers
             Me.m_valueType = data.ValueType
             Me.m_propName = uic.PropertyManager.GetProperty(source, varName)
 
-            If (m_propName IsNot Nothing) Then
-                AddHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
+            If (Me.m_propName IsNot Nothing) Then
+                AddHandler Me.m_propName.PropertyChanged, AddressOf Me.OnPropertyChanged
             End If
 
         End Sub
@@ -193,7 +193,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
+        Public Sub New(uic As cUIContext, layer As cDisplayLayerRaster)
 
             Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), layer.Source, layer.VarName, layer.ValueSet, layer.ValueClear)
 
@@ -205,14 +205,14 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="bDisposing"></param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             If Not Me.m_bDisposed Then
                 If bDisposing Then
                     If Me.m_uic IsNot Nothing Then
                         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mh)
                     End If
                     If Me.m_propName IsNot Nothing Then
-                        RemoveHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
+                        RemoveHandler Me.m_propName.PropertyChanged, AddressOf Me.OnPropertyChanged
                         Me.m_propName = Nothing
                     End If
                 End If
@@ -233,7 +233,7 @@ Namespace Controls.Map.Layers
         ''' to place the unit value.</param>
         ''' <param name="strUnits">Unit(s) to place in the layer display text.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal strUnits As String)
+        Public Sub SetUnitMask(strUnitMask As String, strUnits As String)
             Me.SetUnitHeader(strUnitMask, strUnits)
         End Sub
 
@@ -248,8 +248,8 @@ Namespace Controls.Map.Layers
         ''' to commit a layer data change to the core, and should be false if the 
         ''' layer is responding to a core layer change message.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub Update(ByVal updateType As eChangeFlags,
-                                    Optional ByVal bNotifyCore As Boolean = True)
+        Public Overrides Sub Update(updateType As eChangeFlags,
+                                    Optional bNotifyCore As Boolean = True)
 
             ' Prevent looped updates
             If (Me.m_bInUpdate = True) Then Return
@@ -317,7 +317,7 @@ Namespace Controls.Map.Layers
                 ' Return base name
                 Return MyBase.Name
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 ' #Yes: is a backlink property provided?
                 If (Me.m_propName IsNot Nothing) Then
                     ' #Yes: and is this property linked to a true name?
@@ -472,7 +472,7 @@ Namespace Controls.Map.Layers
         ''' Get whether a given cell position has a value.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property IsValue(ByVal objValue As Object) As Boolean
+        Public Overridable ReadOnly Property IsValue(objValue As Object) As Boolean
             Get
                 'If Object.ReferenceEquals(Me.m_sValueSet, Nothing) Then Return False
 
@@ -501,11 +501,11 @@ Namespace Controls.Map.Layers
         ''' <param name="iRow">One-based row index</param>
         ''' <param name="iCol">One-based column index</param>
         ''' -----------------------------------------------------------------------
-        Public Overridable Property Value(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Public Overridable Property Value(iRow As Integer, iCol As Integer) As Object
             Get
                 Return Me.Data.Cell(iRow, iCol)
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 Me.Data.Cell(iRow, iCol) = value
             End Set
         End Property
@@ -563,7 +563,7 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.m_bModified
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Dim l As cEcospaceLayer = Me.Data
                 If (l Is Nothing) Then Return
                 Me.m_bModified = value
@@ -632,7 +632,7 @@ Namespace Controls.Map.Layers
         ''' <param name="prop"></param>
         ''' <param name="changeFlags"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Private Sub OnPropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
 
             ' Prevent looped updates
             If Me.m_bInUpdate Then Return
@@ -663,7 +663,7 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal strUnits As String)
+        Protected Sub SetUnitHeader(strUnitMask As String, strUnits As String)
             Me.m_strUnitMask = strUnitMask
             Me.m_strUnits = strUnits
         End Sub
@@ -672,7 +672,7 @@ Namespace Controls.Map.Layers
             Get
                 Dim strDisplayText As String = ""
 
-                If (m_strUnits Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
+                If (Me.m_strUnits Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
                     strDisplayText = Me.Name
                 Else
                     Try

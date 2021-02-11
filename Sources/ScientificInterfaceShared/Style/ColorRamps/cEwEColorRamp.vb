@@ -53,7 +53,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(ByVal dValue As Double, Optional ByVal dValueMax As Double = 1.0) As Color
+        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
 
             Const sMaxColor As Double = 250
 
@@ -117,7 +117,7 @@ Namespace Style
 #If 0 Then
 
             ' The original VB6 Color Gradient function as obtained from VC (EcoSim), 20 jun 2005
-            Private Function OrigColorGrad(ByVal color_array() As Integer) As Boolean
+            Private Function OrigColorGrad(color_array() As Integer) As Boolean
 
                 Dim maxloop As Integer, i As Integer, Z As Single = 0
                 Dim R As Long, G As Long, B As Long

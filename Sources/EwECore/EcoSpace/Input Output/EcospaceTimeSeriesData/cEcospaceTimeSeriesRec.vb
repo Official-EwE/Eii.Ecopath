@@ -62,7 +62,7 @@ Namespace EcospaceTimeSeries
             Dim data() As String
 
             Me.InputTimeStepFormat = TimeStepFormatString
-            VarType = DataType
+            Me.VarType = DataType
             Me.m_validation = eTimeSeriesRecValidations.isReadValid
 
             Dim tempTimeStamp As Date
@@ -71,7 +71,7 @@ Namespace EcospaceTimeSeries
                     Me.Row = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Row))
                     Me.Col = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Col))
                     Me.iGroupID = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.GroupID))
-                    tempTimeStamp = EwEUtils.Utilities.cStringUtils.ConvertToDate(data(eDataCols.Timestamp), InputTimeStepFormat)
+                    tempTimeStamp = EwEUtils.Utilities.cStringUtils.ConvertToDate(data(eDataCols.Timestamp), Me.InputTimeStepFormat)
                     'strip the day off of the timestamp
                     Me.TimeStamp = New Date(tempTimeStamp.Year, tempTimeStamp.Month, 1)
                     Me.CellValue = EwEUtils.Utilities.cStringUtils.ConvertToSingle(data(eDataCols.Value))
@@ -140,8 +140,8 @@ Namespace EcospaceTimeSeries
         End Property
 
         Public Sub ClearResults()
-            PredError = cCore.NULL_VALUE
-            PredictedValue = cCore.NULL_VALUE
+            Me.PredError = cCore.NULL_VALUE
+            Me.PredictedValue = cCore.NULL_VALUE
         End Sub
 
 #End Region

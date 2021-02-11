@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EwEStepwiseFittingPlugin.cSFPAnomalySearch" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Iterations\cSFPAnomalySearch.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEStepwiseFittingPlugin.cSFPEcosimRun" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Iterations\cSFPEcosimRun.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEStepwiseFittingPlugin.cSFPGenericIteration" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EwAwgAFFgXEgBYCAAABhCASAAQAIIABQiIAEIAJAAAI=</HashCode>
+      <FileName>Iterations\cSFPGenericIteration.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EwEStepwiseFittingPlugin.cSFPVandASearch" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Iterations\cSFPVandASearch.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEStepwiseFittingPlugin.cSFPVulnerabilitySearch" Collapsed="true">
+    <Position X="10" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Iterations\cSFPVulnerabilitySearch.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EwEStepwiseFittingPlugin.ISFPIteration" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EwAggAEAAFAABICAAAAgCAQAAAAAAAAAAIAGIIBAAAI=</HashCode>
+      <FileName>ISFPIteration.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

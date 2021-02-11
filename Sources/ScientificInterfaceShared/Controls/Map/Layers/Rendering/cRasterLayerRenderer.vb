@@ -56,12 +56,12 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cLayerRenderer.Render"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub Render(ByVal g As System.Drawing.Graphics,
-                                    ByVal layer As cDisplayLayer,
-                                    ByVal rc As System.Drawing.RectangleF,
-                                    ByVal ptfTL As System.Drawing.PointF,
-                                    ByVal ptfBR As System.Drawing.PointF,
-                                    ByVal style As Style.cStyleGuide.eStyleFlags)
+        Public Overrides Sub Render(g As System.Drawing.Graphics,
+                                    layer As cDisplayLayer,
+                                    rc As System.Drawing.RectangleF,
+                                    ptfTL As System.Drawing.PointF,
+                                    ptfBR As System.Drawing.PointF,
+                                    style As Style.cStyleGuide.eStyleFlags)
 
             Throw New NotImplementedException("Invalid render mode")
 
@@ -76,11 +76,11 @@ Namespace Controls.Map.Layers
         ''' <param name="layer">Layer to render from</param>
         ''' <param name="value">The value to render.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderCell(ByVal g As Graphics,
-                                           ByVal rc As RectangleF,
-                                           ByVal layer As cEcospaceLayer,
-                                           ByVal value As Object,
-                                           ByVal style As cStyleGuide.eStyleFlags)
+        Public MustOverride Sub RenderCell(g As Graphics,
+                                           rc As RectangleF,
+                                           layer As cEcospaceLayer,
+                                           value As Object,
+                                           style As cStyleGuide.eStyleFlags)
 
         Public Property SuppressZero As Boolean
 

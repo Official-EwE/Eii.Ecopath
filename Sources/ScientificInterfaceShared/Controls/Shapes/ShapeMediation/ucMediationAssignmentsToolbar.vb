@@ -50,7 +50,7 @@ Namespace Controls
 #Region " Constructors "
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructors
@@ -61,7 +61,7 @@ Namespace Controls
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal value As cMediationShapeGUIHandler)
+            Set(value As cMediationShapeGUIHandler)
                 Me.m_handler = value
                 Me.UpdateControls()
             End Set
@@ -71,7 +71,7 @@ Namespace Controls
             Get
                 Return Me.m_tsMenus.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_tsMenus.Visible = value
             End Set
         End Property
@@ -80,7 +80,7 @@ Namespace Controls
             Get
                 Return Me.m_tsbnDefineMediatingItems.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_tsbnDefineMediatingItems.Text = value
             End Set
         End Property
@@ -98,27 +98,27 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.m_tsbnViewAsPie.Checked = True
             Me.UpdateControls()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+        Protected Overrides Sub Dispose(disposing As Boolean)
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
                 ' Release handler
                 Me.Handler = Nothing
             End If
             MyBase.Dispose(disposing)
         End Sub
 
-        Private Sub OnDefineXAxis(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefineXAxis(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnDefineMediatingItems.Click
             If Me.Handler IsNot Nothing Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation)
         End Sub
 
-        Private Sub OnViewAsBar(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnViewAsBar(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnViewAsBar.Click
             If Me.Handler IsNot Nothing Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode, Nothing, ucMediationAssignments.eViewModeTypes.Bar)
@@ -127,7 +127,7 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub OnViewAsPie(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnViewAsPie(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnViewAsPie.Click
             If Me.Handler IsNot Nothing Then
                 Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ViewMode, Nothing, ucMediationAssignments.eViewModeTypes.Pie)
@@ -157,17 +157,17 @@ Namespace Controls
             Me.m_tsbnViewAsPie.Visible = bShowViewMode
             Me.m_tsbnViewAsPie.Enabled = bEnableViewMode
 
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation, m_tsbnDefineMediatingItems)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DefineMediation, Me.m_tsbnDefineMediatingItems)
 
             Me.m_tsMenus.ResumeLayout(True)
 
         End Sub
 
-        Private Sub UpdateCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)
+        Private Sub UpdateCommand(cmd As cShapeGUIHandler.eShapeCommandTypes, tsi As ToolStripItem)
             If (Me.m_handler Is Nothing) Then Return
             If Me.m_handler.SupportCommand(cmd) Then
                 tsi.Visible = True
-                tsi.Enabled = (m_handler.EnableCommand(cmd))
+                tsi.Enabled = (Me.m_handler.EnableCommand(cmd))
             Else
                 tsi.Visible = False
             End If

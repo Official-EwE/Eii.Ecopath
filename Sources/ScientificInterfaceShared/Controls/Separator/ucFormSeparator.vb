@@ -36,10 +36,10 @@ Namespace Controls
 
         Public Property Horizontal As Boolean
 
-        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
 
             Using br As New SolidBrush(Me.BackColor)
-                e.Graphics.FillRectangle(br, 0, 0, Width, Height)
+                e.Graphics.FillRectangle(br, 0, 0, Me.Width, Me.Height)
             End Using
 
             If Me.Horizontal Then

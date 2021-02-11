@@ -251,7 +251,7 @@ Public Class EwEEcosamplerPlugin
 
         ' Capture SS and store it
         If (Me.m_sampleCurrent IsNot Nothing) Then
-            Me.m_sampleman.StoreEcosimDiagnostics(Me.m_sampleCurrent, Me.m_montecarlo, m_esdata)
+            Me.m_sampleman.StoreEcosimDiagnostics(Me.m_sampleCurrent, Me.m_montecarlo, Me.m_esdata)
             Me.m_sampleCurrent = Nothing
         End If
     End Sub

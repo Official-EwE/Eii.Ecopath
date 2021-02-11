@@ -60,7 +60,7 @@ Namespace Ecosim
             Get
                 Return Me.m_manager
             End Get
-            Set(ByVal value As ISearchObjective)
+            Set(value As ISearchObjective)
                 Me.m_manager = value
                 Me.RefreshContent()
             End Set
@@ -87,7 +87,7 @@ Namespace Ecosim
             Dim source As cCoreGroupBase = Nothing
 
             For i As Integer = 1 To Me.UIContext.Core.nGroups
-                source = m_manager.GroupObjectives(i)
+                source = Me.m_manager.GroupObjectives(i)
 
                 Me.Rows.Insert(i)
                 Me(i, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i))

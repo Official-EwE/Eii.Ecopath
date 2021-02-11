@@ -56,7 +56,7 @@ Namespace Ecosim
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
             Me.UIContext = uic
         End Sub
@@ -65,7 +65,7 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Me.m_zgh = New cZedGraphHelper()
@@ -73,15 +73,15 @@ Namespace Ecosim
 
             Me.m_grid.SelectedGroupIndex = 1
 
-            AddHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf OnSelectedVulnerabilitiesChanged
+            AddHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf Me.OnSelectedVulnerabilitiesChanged
 
             Me.UpdateControls()
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
-            RemoveHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf OnSelectedVulnerabilitiesChanged
+            RemoveHandler Me.m_grid.OnSelectedVulnerabilitiesChanged, AddressOf Me.OnSelectedVulnerabilitiesChanged
 
             Me.m_zgh.Detach()
             MyBase.OnFormClosed(e)
@@ -102,7 +102,7 @@ Namespace Ecosim
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
                 Me.m_grid.UIContext = value
             End Set
@@ -112,22 +112,22 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub m_rbB0Bu_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_rbB0Bu_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbBoBu.CheckedChanged
             If (Me.m_rbBoBu.Checked) Then Me.EstimationMethod = eEstimationTypes.BoBu
         End Sub
 
-        Private Sub m_rbBuB0_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_rbBuB0_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbBuBo.CheckedChanged
             If (Me.m_rbBuBo.Checked) Then Me.EstimationMethod = eEstimationTypes.BuBo
         End Sub
 
-        Private Sub m_rbFMaxM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_rbFMaxM_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbFMaxM.CheckedChanged
             If (Me.m_rbFMaxM.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxM
         End Sub
 
-        Private Sub m_rbPredMort_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_rbPredMort_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbPredMort.CheckedChanged
             If (Me.m_rbPredMort.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxBoBu
         End Sub
@@ -137,19 +137,19 @@ Namespace Ecosim
             Me.UpdatePlot()
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
             Me.Close()
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOK.Click
             If Me.Apply() Then
                 Me.Close()
             End If
         End Sub
 
-        Private Sub OnSelectedVulnerabilitiesChanged(ByVal grid As gridEstimateVs)
+        Private Sub OnSelectedVulnerabilitiesChanged(grid As gridEstimateVs)
             Me.UpdateControls()
         End Sub
 
@@ -161,7 +161,7 @@ Namespace Ecosim
             Get
                 Return Me.m_estimationmethod
             End Get
-            Private Set(ByVal value As eEstimationTypes)
+            Private Set(value As eEstimationTypes)
                 Me.m_estimationmethod = value
                 Me.UpdatePlot()
             End Set
@@ -171,7 +171,7 @@ Namespace Ecosim
             Get
                 Return Me.m_grid.SelectedGroupIndex
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_grid.SelectedGroupIndex = value
             End Set
         End Property
@@ -228,7 +228,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub PlotGroup(ByVal iGroup As Integer)
+        Private Sub PlotGroup(iGroup As Integer)
 
             Dim gp As GraphPane = Me.m_zgh.GetPane(1)
 
@@ -320,9 +320,9 @@ Namespace Ecosim
         ''' <param name="PlotVal"></param>
         ''' <param name="bFTimeOn"></param>
         ''' <returns></returns>
-        Private Function MakePlotLine(ByVal XVal() As Single, _
-                                     ByVal PlotVal(,) As Single, _
-                                     ByVal bFTimeOn As Boolean) As LineItem
+        Private Function MakePlotLine(XVal() As Single, _
+                                     PlotVal(,) As Single, _
+                                     bFTimeOn As Boolean) As LineItem
 
             Dim li As LineItem = Nothing
             Dim iIndex As Integer = 0

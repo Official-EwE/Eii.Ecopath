@@ -73,9 +73,9 @@ Namespace Ecospace
 
                 If (MyBase.UIContext IsNot Nothing) Then
                     ' Set handler to listen to layer changes
-                    m_mhLayers = New cMessageHandler(AddressOf Me.MessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.UIContext.SyncObject)
+                    Me.m_mhLayers = New cMessageHandler(AddressOf Me.MessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.UIContext.SyncObject)
 #If DEBUG Then
-                    m_mhLayers.Name = "gridCapacityCalcType::Ecospace"
+                    Me.m_mhLayers.Name = "gridCapacityCalcType::Ecospace"
 #End If
                     Me.Core.Messages.AddMessageHandler(Me.m_mhLayers)
                 End If
@@ -94,7 +94,7 @@ Namespace Ecospace
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+            Me.Redim(Me.Core.nGroups + 1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
@@ -104,9 +104,9 @@ Namespace Ecospace
 
             Me.m_bInUpdate = True
 
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
 
-                group = Core.EcospaceGroupInputs(iGroup)
+                group = Me.Core.EcospaceGroupInputs(iGroup)
 
                 ' # Group name row header cells
                 Me(iGroup, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
@@ -116,13 +116,13 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.InputCapacity) = New cEwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
                 Me(iGroup, eColumnTypes.Habitat) = New cEwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat)
-                Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(EwEEditHandler)
+                Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iGroup, eColumnTypes.EnvResponses) = New cEwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
-                Me(iGroup, eColumnTypes.EnvResponses).Behaviors.Add(EwEEditHandler)
+                Me(iGroup, eColumnTypes.EnvResponses).Behaviors.Add(Me.EwEEditHandler)
 
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(group, eVarNameFlags.EcospaceCapCalType)
-                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+                AddHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Me.m_lProps.Add(prop)
 
             Next
@@ -135,7 +135,7 @@ Namespace Ecospace
 
         Protected Overrides Sub ClearData()
             For Each prop As cProperty In Me.m_lProps
-                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+                RemoveHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
             Next
             MyBase.ClearData()
         End Sub
@@ -154,7 +154,7 @@ Namespace Ecospace
         Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
             If (Not Me.m_bInUpdate) Then
-                Dim group As cEcospaceGroupInput = Core.EcospaceGroupInputs(p.Row)
+                Dim group As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(p.Row)
                 Dim val As eEcospaceCapacityCalType = group.CapacityCalculationType
                 Dim bSet As Boolean = CBool(cell.GetValue(p))
 
@@ -190,7 +190,7 @@ Namespace Ecospace
         Private Sub MessageHandler(ByRef message As cMessage)
             If (message.DataType = eDataTypes.EcospaceLayerHabitatCapacityInput) Then
                 Me.m_bIsCapacityStatusDirty = True
-                BeginInvoke(New MethodInvoker(AddressOf UpdateRowCapacityInputStatus))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateRowCapacityInputStatus))
             End If
         End Sub
 

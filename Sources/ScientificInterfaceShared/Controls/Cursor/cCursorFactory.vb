@@ -42,7 +42,7 @@ Namespace Controls
         ''' <param name="imgAdd"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetCursorOverlay(ByVal crsBase As Cursor, imgAdd As Image) As Cursor
+        Public Shared Function GetCursorOverlay(crsBase As Cursor, imgAdd As Image) As Cursor
 
             If (imgAdd Is Nothing) Then Return crsBase
 

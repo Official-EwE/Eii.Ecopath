@@ -76,7 +76,7 @@ Friend Class cDBUpdate6_01_00_007
 
     End Function
 
-    Private Function AddPedigreeColor(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddPedigreeColor(db As cEwEDatabase) As Boolean
 
         ' No need to set defaults; an integer of 0 will mean a 100% transparent colour,
         ' which is the indicator for any GIU to use a default colour for pedigree.
@@ -85,13 +85,13 @@ Friend Class cDBUpdate6_01_00_007
 
     End Function
 
-    Private Function FixPedigreeLandingsColumn(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixPedigreeLandingsColumn(db As cEwEDatabase) As Boolean
 
         Return db.Execute("UPDATE Pedigree SET VarName='TCatchInput' WHERE VarName='Landings'")
 
     End Function
 
-    Private Function ChangePedigreeStorage(ByVal db As cEwEDatabase) As Boolean
+    Private Function ChangePedigreeStorage(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("CREATE TABLE EcopathGroupPedigree (GroupID LONG, VarName TEXT(50), LevelID LONG)")
@@ -103,7 +103,7 @@ Friend Class cDBUpdate6_01_00_007
 
     End Function
 
-    Private Function MovePedigreeFromAuxillary(ByVal db As cEwEDatabase) As Boolean
+    Private Function MovePedigreeFromAuxillary(db As cEwEDatabase) As Boolean
 
         Dim astrVars() As String = New String() {"Biomass", "PBInput", "QBInput", "DietComp", "Landings"}
         Dim strGroupID As String = "EcopathGroupInput"
@@ -158,7 +158,7 @@ Friend Class cDBUpdate6_01_00_007
 
     End Function
 
-    Private Function PurgePedigreeAuxillary(ByVal db As cEwEDatabase) As Boolean
+    Private Function PurgePedigreeAuxillary(db As cEwEDatabase) As Boolean
 
         ' Need to remove relationship first, may fail
         db.Execute("ALTER TABLE Auxillary DROP COLUMN PedigreeLevelID")

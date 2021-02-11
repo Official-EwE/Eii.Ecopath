@@ -142,7 +142,7 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If (Me.m_bInUpdate) Then Return True
 
@@ -169,7 +169,7 @@ Namespace Ecospace
             Handles m_bpEffort.PropertyChanged
 
             Try
-                BeginInvoke(New MethodInvoker(AddressOf RefreshContent))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.RefreshContent))
             Catch ex As Exception
 
             End Try

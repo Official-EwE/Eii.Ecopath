@@ -78,7 +78,7 @@ Namespace MSECommandFile
 
         Private m_curForceIter As Integer
 
-        Public Sub New(ByVal Core As cCore, ByVal BatchManager As cMSEBatchManager)
+        Public Sub New(Core As cCore, BatchManager As cMSEBatchManager)
             Me.m_core = Core
             Me.m_MSEdata = Me.Core.m_MSEData
             Me.m_BatchData = BatchManager.BatchData
@@ -125,7 +125,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Function Read(ByVal filename As String) As Boolean
+        Public Function Read(filename As String) As Boolean
 
             Me.m_BatchData.isInit = False
 
@@ -237,21 +237,21 @@ Namespace MSECommandFile
 
         End Function
 
-        Private Sub addParameter(ByVal parameter As IMSEParameter)
+        Private Sub addParameter(parameter As IMSEParameter)
 
             'Does the dictionary of control parameters contain this Tag
-            If Not m_dicControls.ContainsKey(parameter.Tag) Then
+            If Not Me.m_dicControls.ContainsKey(parameter.Tag) Then
                 'No then add it
-                m_dicControls.Add(parameter.Tag, New List(Of IMSEParameter))
+                Me.m_dicControls.Add(parameter.Tag, New List(Of IMSEParameter))
             End If
             'set the index of this parameter object 
-            Dim lst As List(Of IMSEParameter) = m_dicControls.Item(parameter.Tag)
+            Dim lst As List(Of IMSEParameter) = Me.m_dicControls.Item(parameter.Tag)
             parameter.Index = lst.Count + 1
-            m_dicControls.Item(parameter.Tag).Add(parameter)
+            Me.m_dicControls.Item(parameter.Tag).Add(parameter)
 
         End Sub
 
-        Private Function ParameterReaderFactory(ByVal controlString As String) As IMSEParameter
+        Private Function ParameterReaderFactory(controlString As String) As IMSEParameter
 
             If controlString Is Nothing Then
                 Return Nothing
@@ -322,7 +322,7 @@ Namespace MSECommandFile
             Dim values() As String = controlString.Split(",")
             Dim tag As String = values(0)
 
-            If isIndexTag(tag) Then
+            If Me.isIndexTag(tag) Then
                 Return New cIndexParameter(tag)
             End If
 
@@ -330,7 +330,7 @@ Namespace MSECommandFile
 
         End Function
 
-        Private Function updateDataByTag(ByVal DataTag As String) As Boolean
+        Private Function updateDataByTag(DataTag As String) As Boolean
             Dim lst As List(Of IMSEParameter)
             Try
                 lst = Me.getTagData(DataTag)
@@ -471,17 +471,17 @@ Namespace MSECommandFile
         ''' <param name="tag">Tag to check</param>
         ''' <returns>True if this Tag is for an Index parameter</returns>
         ''' <remarks></remarks>
-        Private Function isIndexTag(ByVal tag As String) As Boolean
-            If isTag(tag, TFM_INDEX_TAG) Then
+        Private Function isIndexTag(tag As String) As Boolean
+            If Me.isTag(tag, TFM_INDEX_TAG) Then
                 Return True
             End If
-            If isTag(tag, F_INDEX_TAG) Then
+            If Me.isTag(tag, F_INDEX_TAG) Then
                 Return True
             End If
-            If isTag(tag, Y_INDEX_TAG) Then
+            If Me.isTag(tag, Y_INDEX_TAG) Then
                 Return True
             End If
-            If isTag(tag, CONTROLTYPE_INDEX_TAG) Then
+            If Me.isTag(tag, CONTROLTYPE_INDEX_TAG) Then
                 Return True
             End If
         End Function
@@ -494,7 +494,7 @@ Namespace MSECommandFile
         ''' <param name="TagConstant"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function isTag(ByVal InputTag As String, ByVal TagConstant As String) As Boolean
+        Private Function isTag(InputTag As String, TagConstant As String) As Boolean
             If String.Compare(InputTag, TagConstant) = 0 Then
                 Return True
             End If
@@ -502,7 +502,7 @@ Namespace MSECommandFile
         End Function
 
 
-        Public Shared Function CanRead(ByVal Tag As String, ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(Tag As String, ControlString As String) As Boolean
             Dim values() As String
 
             Try
@@ -550,7 +550,7 @@ Namespace MSECommandFile
         ''' If no data was found for this TAG then return a list with zero IMSEParameter objects.
         ''' The user is responsible for checking then number of objects in the list
         ''' </remarks>
-        Friend Function getTagData(ByVal tag As String) As List(Of IMSEParameter)
+        Friend Function getTagData(tag As String) As List(Of IMSEParameter)
 
             Dim list As List(Of IMSEParameter)
             If Me.m_dicControls.ContainsKey(tag) Then
@@ -602,7 +602,7 @@ Namespace MSECommandFile
         ''' <param name="iControlIndex"></param>
         ''' <returns>A valid EwEUtils.Core.eQuotaTypes</returns>
         ''' <remarks></remarks>
-        Friend Function ControlToQuotaType(ByVal iControlIndex As Integer) As EwEUtils.Core.eQuotaTypes
+        Friend Function ControlToQuotaType(iControlIndex As Integer) As EwEUtils.Core.eQuotaTypes
             Try
                 Return Me.m_ConTypeLookup.Item(iControlIndex)
             Catch ex As Exception
@@ -612,7 +612,7 @@ Namespace MSECommandFile
         End Function
 
 
-        Friend Function RunIndexToRunType(ByVal RunIndex As Integer) As eMSEBatchRunTypes
+        Friend Function RunIndexToRunType(RunIndex As Integer) As eMSEBatchRunTypes
 
             Try
                 Return Me.m_RunTypeLookup(RunIndex)
@@ -624,7 +624,7 @@ Namespace MSECommandFile
         End Function
 
 
-        Friend Function OuputTagToOuputType(ByVal OuputTag As String) As eMSEBatchOuputTypes
+        Friend Function OuputTagToOuputType(OuputTag As String) As eMSEBatchOuputTypes
             Try
                 Return Me.m_OuputTagToEnumLookup(OuputTag)
             Catch ex As Exception

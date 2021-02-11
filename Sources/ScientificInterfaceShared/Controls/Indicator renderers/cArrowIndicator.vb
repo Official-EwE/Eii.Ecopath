@@ -44,12 +44,12 @@ Namespace Controls
         ''' <param name="sSize">Size of the angle. [0, 1], 0 is smallest size, 1 will
         ''' size the arrow to optimally fit in the rectangle with 1 pixel margin.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawArrow(ByVal g As Graphics, _
-                                    ByVal clr As Color, _
-                                    ByVal rc As Rectangle, _
-                                    ByVal sAngle As Single, _
-                                    ByVal sSize As Single, _
-                                    Optional ByVal bFilledArrow As Boolean = True)
+        Public Shared Sub DrawArrow(g As Graphics, _
+                                    clr As Color, _
+                                    rc As Rectangle, _
+                                    sAngle As Single, _
+                                    sSize As Single, _
+                                    Optional bFilledArrow As Boolean = True)
 
             Dim matOrg As Matrix = g.Transform
             Dim matArr As New Matrix()
@@ -95,12 +95,12 @@ Namespace Controls
         ''' <param name="dx">X velocity.</param>
         ''' <param name="dy">Y velocity.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawArrowDxDy(ByVal g As Graphics,
-                                    ByVal clr As Color,
-                                    ByVal rc As RectangleF,
-                                    ByVal dx As Single,
-                                    ByVal dy As Single,
-                                    Optional ByVal bFilledArrow As Boolean = True)
+        Public Shared Sub DrawArrowDxDy(g As Graphics,
+                                    clr As Color,
+                                    rc As RectangleF,
+                                    dx As Single,
+                                    dy As Single,
+                                    Optional bFilledArrow As Boolean = True)
 
             ' Leave a margin
             'rc.Inflate(-2, -2)

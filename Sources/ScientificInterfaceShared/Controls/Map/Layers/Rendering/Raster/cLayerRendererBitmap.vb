@@ -43,8 +43,8 @@ Namespace Controls.Map.Layers
             MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.Image)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                            ByVal rc As RectangleF,
+        Public Overrides Sub RenderPreview(g As Graphics,
+                                            rc As RectangleF,
                                             Optional iSymbol As Integer = 0)
             If (Me.IsStyleValid) Then
                 Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, 1.0!)
@@ -53,11 +53,11 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
-                                        ByVal rc As System.Drawing.RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As System.Drawing.Graphics,
+                                        rc As System.Drawing.RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As cStyleGuide.eStyleFlags)
             If (Me.IsStyleValid) Then
                 Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, Math.Min(1, Math.Max(0, CSng(value))))
             Else
@@ -76,7 +76,7 @@ Namespace Controls.Map.Layers
             Return DirectCast(objClone, cRasterLayerRenderer)
         End Function
 
-        Private Sub DrawImageAlpha(ByVal g As Graphics, ByVal rc As RectangleF, ByVal img As Image, ByVal sAlpha As Single)
+        Private Sub DrawImageAlpha(g As Graphics, rc As RectangleF, img As Image, sAlpha As Single)
 
             If sAlpha >= 1 Then
                 Using br As New TextureBrush(img, WrapMode.Tile)

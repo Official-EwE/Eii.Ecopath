@@ -79,11 +79,11 @@ Namespace Controls
         ''' </summary>
         ''' <param name="disposing">Yeah...</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Me.UIContext = Nothing
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -105,11 +105,11 @@ Namespace Controls
             End Get
             Set(value As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleguideChanged
                 End If
                 Me.m_uic = value
                 If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleguideChanged
                 End If
             End Set
         End Property

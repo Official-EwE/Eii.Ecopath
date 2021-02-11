@@ -62,7 +62,7 @@ Namespace Ecopath.Output
 
 #Region "Event handlers"
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             Debug.Assert(Me.UIContext IsNot Nothing)
 
@@ -93,13 +93,13 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub llbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
-            AddCurves()
-            UpdatePlots()
+            Me.AddCurves()
+            Me.UpdatePlots()
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
             Me.m_lbGroups.Detach()
@@ -110,7 +110,7 @@ Namespace Ecopath.Output
 
 #Region "Helper methods"
 
-        Private Sub CreatePane(ByVal iPane As ePaneTypes, ByVal strPaneTitle As String, ByVal strXaxisTitle As String, ByVal strYaxisTitle As String)
+        Private Sub CreatePane(iPane As ePaneTypes, strPaneTitle As String, strXaxisTitle As String, strYaxisTitle As String)
 
             'Define a new graph pane
             Dim pane As New GraphPane
@@ -124,11 +124,11 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub InitGraphPane(ByVal strPaneTitle As String,
-                                  ByVal strXaxisTitle As String,
-                                  ByVal strYaxisTitle As String,
-                                  ByVal paneType As ePaneTypes,
-                                  ByVal iPane As Integer)
+        Private Sub InitGraphPane(strPaneTitle As String,
+                                  strXaxisTitle As String,
+                                  strYaxisTitle As String,
+                                  paneType As ePaneTypes,
+                                  iPane As Integer)
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strPaneTitle,
@@ -164,7 +164,7 @@ Namespace Ecopath.Output
 
             'Find the selected group number based on the selected index
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                If Me.Core.EcoPathGroupOutputs(iGroup).Name = m_lbGroups.Items(m_lbGroups.SelectedIndex).ToString() Then
+                If Me.Core.EcoPathGroupOutputs(iGroup).Name = Me.m_lbGroups.Items(Me.m_lbGroups.SelectedIndex).ToString() Then
                     iSelectedGrpNum = iGroup
                     Exit For
                 End If
@@ -173,9 +173,9 @@ Namespace Ecopath.Output
             grpOutput = Me.Core.EcoPathGroupOutputs(iSelectedGrpNum)
             Select Case parms.MortalityType
                 Case ePSDMortalityTypes.GroupZ
-                    InitLists(resultLists, 4)
+                    Me.InitLists(resultLists, 4)
                 Case ePSDMortalityTypes.Lorenzen
-                    InitLists(resultLists, 5)
+                    Me.InitLists(resultLists, 5)
             End Select
 
             For iTimeStep As Integer = 1 To Me.Core.nAgeSteps
@@ -203,7 +203,7 @@ Namespace Ecopath.Output
             Next
 
             'Find the system PSD by summing the group PSD
-            FindSystemPSD(sSystemPSD)
+            Me.FindSystemPSD(sSystemPSD)
 
             For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 sXValue = CSng(parms.FirstWeightClass * 2 ^ (iWtClass - 1))
@@ -217,25 +217,25 @@ Namespace Ecopath.Output
             Next
 
             'Set the master pane title
-            Me.m_graph.MasterPane.Title.Text = CStr(m_lbGroups.SelectedItem.ToString)
+            Me.m_graph.MasterPane.Title.Text = CStr(Me.m_lbGroups.SelectedItem.ToString)
 
             ' Clear all panes
             For Each gp As GraphPane In Me.m_graph.MasterPane.PaneList
                 gp.CurveList.Clear()
             Next
 
-            AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
-            AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
-            AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
-            AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            Me.AddCurveToGraphPane(ePaneTypes.Weight, resultLists(0), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            Me.AddCurveToGraphPane(ePaneTypes.Number, resultLists(1), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            Me.AddCurveToGraphPane(ePaneTypes.Biomass, resultLists(2), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+            Me.AddCurveToGraphPane(ePaneTypes.PSD, resultLists(3), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
 
             'Lorenzen mortality plot if mortality type is Lorenzen
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
+                Me.AddCurveToGraphPane(ePaneTypes.LorenzenMortality, resultLists(4), Me.StyleGuide.GroupColor(Me.Core, iSelectedGrpNum - 1))
             End If
         End Sub
 
-        Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
+        Private Sub InitLists(ByRef lists As List(Of PointPairList), size As Integer)
             ' Init the result lists
             For i As Integer = 1 To size
                 Dim list As New PointPairList()
@@ -243,7 +243,7 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePaneTypes, ByVal list As PointPairList, ByVal clr As Color)
+        Private Sub AddCurveToGraphPane(paneType As ePaneTypes, list As PointPairList, clr As Color)
             Dim gp As GraphPane = Me.m_graph.MasterPane.PaneList(CInt(paneType))
             Dim brItem As BarItem
 
@@ -268,7 +268,7 @@ Namespace Ecopath.Output
             Me.m_graph.Refresh()
         End Sub
 
-        Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+        Private Sub FindSystemPSD(sSystemPSD() As Single)
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD

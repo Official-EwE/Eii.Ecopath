@@ -71,7 +71,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(ByVal dValue As Double, Optional ByVal dValueMax As Double = 1.0) As Color
+        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
 
             Dim RPrev, RNext As Integer
             Dim GPrev, GNext As Integer
@@ -90,8 +90,8 @@ Namespace Style
             Dim dx As Double = dValue - iPrev
 
             ' Interpolate R, G and B
-            ToRGB(Me.m_ramps(Me.Option, iPrev), RPrev, GPrev, BPrev)
-            ToRGB(Me.m_ramps(Me.Option, iNext), RNext, GNext, BNext)
+            Me.ToRGB(Me.m_ramps(Me.Option, iPrev), RPrev, GPrev, BPrev)
+            Me.ToRGB(Me.m_ramps(Me.Option, iNext), RNext, GNext, BNext)
 
             Return Color.FromArgb(255, CByte(Math.Round(Me.Interpolate(RPrev, RNext, dx))),
                                        CByte(Math.Round(Me.Interpolate(GPrev, GNext, dx))),

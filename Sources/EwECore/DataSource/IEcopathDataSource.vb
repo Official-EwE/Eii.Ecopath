@@ -45,7 +45,7 @@ Namespace DataSources
         ''' <param name="ds">The datasource to copy data to.</param>
         ''' <returns>True if sucessful.</returns>
         ''' -------------------------------------------------------------------
-        Overloads Function CopyTo(ByVal ds As IEcopathDataSource) As Boolean
+        Overloads Function CopyTo(ds As IEcopathDataSource) As Boolean
 
 #End Region ' Generic
 
@@ -98,8 +98,8 @@ Namespace DataSources
         ''' core a full data reload is required after a group is created.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
-                          ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean
+        Function AddGroup(strGroupName As String, sPP As Single, sVBK As Single, _
+                          iPosition As Integer, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -112,7 +112,7 @@ Namespace DataSources
         ''' core a full data reload is required after a group is removed.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Function RemoveGroup(ByVal iDBID As Integer) As Boolean
+        Function RemoveGroup(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -122,7 +122,7 @@ Namespace DataSources
         ''' <param name="iPosition">The new position of the group in the group sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MoveGroup(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MoveGroup(iDBID As Integer, iPosition As Integer) As Boolean
 
 #End Region ' Groups
 
@@ -137,7 +137,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean
+        Function AddFleet(strFleetName As String, iPosition As Integer, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -146,7 +146,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the fleet to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveFleet(ByVal iDBID As Integer) As Boolean
+        Function RemoveFleet(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -156,7 +156,7 @@ Namespace DataSources
         ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MoveFleet(iDBID As Integer, iPosition As Integer) As Boolean
 
 #End Region ' Fleets
 
@@ -176,7 +176,7 @@ Namespace DataSources
         ''' is defined without having any groups. To avoid this situation, this method
         ''' requires valid <paramref name="aiGroupID">group IDs</paramref>.</remarks>
         ''' -------------------------------------------------------------------
-        Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal iGroupAges() As Integer, _
+        Function AppendStanza(strStanzaName As String, aiGroupID() As Integer, iGroupAges() As Integer, _
                 ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -186,7 +186,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the stanza group to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveStanza(ByVal iDBID As Integer) As Boolean
+        Function RemoveStanza(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -197,8 +197,8 @@ Namespace DataSources
         ''' <param name="iStartAge">Start age of this life stage.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer,
-                                    ByVal iStartAge As Integer) As Boolean
+        Function AddStanzaLifestage(iStanzaDBID As Integer, iGroupDBID As Integer,
+                                    iStartAge As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -208,7 +208,7 @@ Namespace DataSources
         ''' <param name="iGroupDBID">Group to remove as the life stage.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer) As Boolean
+        Function RemoveStanzaLifestage(iStanzaDBID As Integer, iGroupDBID As Integer) As Boolean
 
 #End Region ' Stanza
 
@@ -230,13 +230,13 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddPedigreeLevel(ByVal iPosition As Integer, _
-                                  ByVal strName As String, _
-                                  ByVal iColor As Integer, _
-                                  ByVal strDescription As String, _
-                                  ByVal varName As eVarNameFlags, _
-                                  ByVal sIndexValue As Single, _
-                                  ByVal sConfidence As Single, _
+        Function AddPedigreeLevel(iPosition As Integer, _
+                                  strName As String, _
+                                  iColor As Integer, _
+                                  strDescription As String, _
+                                  varName As eVarNameFlags, _
+                                  sIndexValue As Single, _
+                                  sConfidence As Single, _
                                   ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -246,7 +246,7 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID of the pedigree level to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean
+        Function RemovePedigreeLevel(iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -257,7 +257,7 @@ Namespace DataSources
         ''' level sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MovePedigreeLevel(iDBID As Integer, iPosition As Integer) As Boolean
 
 #End Region ' Pedigree
 
@@ -289,7 +289,7 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="iTaxonID">Database ID of the taxon to remove.</param>
         ''' -------------------------------------------------------------------
-        Function RemoveTaxon(ByVal iTaxonID As Integer) As Boolean
+        Function RemoveTaxon(iTaxonID As Integer) As Boolean
 
 #End Region ' Taxa
 

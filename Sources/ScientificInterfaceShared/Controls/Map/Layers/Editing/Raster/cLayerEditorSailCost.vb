@@ -41,7 +41,7 @@ Namespace Controls.Map.Layers
             Me.New(GetType(ucLayerEditorPort))
         End Sub
 
-        Public Sub New(ByVal t As Type)
+        Public Sub New(t As Type)
             MyBase.New(t)
             Me.CellValue = 1
         End Sub
@@ -63,7 +63,7 @@ Namespace Controls.Map.Layers
                 Dim layer As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
                 Return layer.iLayer
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Dim layer As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
                 value = Math.Max(1, Math.Min(Me.UIContext.Core.nFleets, value))
                 ' Will fleet index change?

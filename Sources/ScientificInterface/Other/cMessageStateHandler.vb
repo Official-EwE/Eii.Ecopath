@@ -62,14 +62,14 @@ Public Class cMessageStateHandler
 
 #Region " Public bits "
 
-        Public Property AutoReply(ByVal mt As eMessageType) As DialogResult
+        Public Property AutoReply(mt As eMessageType) As DialogResult
             Get
                 If Me.m_dictAutoReplies.ContainsKey(mt) Then
                     Return Me.m_dictAutoReplies(mt)
                 End If
                 Return System.Windows.Forms.DialogResult.None
             End Get
-            Set(ByVal value As DialogResult)
+            Set(value As DialogResult)
                 If Me.m_dictAutoReplies.ContainsKey(mt) Then
                     Me.m_dictAutoReplies.Remove(mt)
                 End If
@@ -77,11 +77,11 @@ Public Class cMessageStateHandler
             End Set
         End Property
 
-        Public Property Suppress(ByVal mt As eMessageType) As Boolean
+        Public Property Suppress(mt As eMessageType) As Boolean
             Get
                 Return (Me.m_lSuppressedMessageTypes.IndexOf(mt) > -1)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value Then
                     Me.m_lSuppressedMessageTypes.Add(mt)
                 Else
@@ -117,25 +117,25 @@ Public Class cMessageStateHandler
 
 #Region " Public bits "
 
-    Public Property IsSuppressed(ByVal source As eCoreComponentType, ByVal mt As eMessageType) As Boolean
+    Public Property IsSuppressed(source As eCoreComponentType, mt As eMessageType) As Boolean
         Get
             Return Me.GetCache(source).Suppress(mt)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.GetCache(source).Suppress(mt) = value
         End Set
     End Property
 
-    Public Property AutoReply(ByVal source As eCoreComponentType, ByVal mt As eMessageType) As DialogResult
+    Public Property AutoReply(source As eCoreComponentType, mt As eMessageType) As DialogResult
         Get
             Return Me.GetCache(source).AutoReply(mt)
         End Get
-        Set(ByVal value As DialogResult)
+        Set(value As DialogResult)
             Me.GetCache(source).AutoReply(mt) = value
         End Set
     End Property
 
-    Public Sub Clear(ByVal src As eCoreComponentType)
+    Public Sub Clear(src As eCoreComponentType)
         Me.GetCache(src).Clear()
     End Sub
 
@@ -143,7 +143,7 @@ Public Class cMessageStateHandler
 
 #Region " Internals "
 
-    Private Function GetCache(ByVal source As eCoreComponentType) As cMessageStateCache
+    Private Function GetCache(source As eCoreComponentType) As cMessageStateCache
 
         Dim c As cMessageStateCache = Nothing
 

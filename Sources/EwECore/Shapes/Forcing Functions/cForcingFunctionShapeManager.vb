@@ -37,7 +37,7 @@ Public Class cForcingFunctionShapeManager
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
-        Init()
+        Me.Init()
 
     End Sub
 
@@ -49,7 +49,7 @@ Public Class cForcingFunctionShapeManager
     ''' <remarks>This is provided for convenience. So the number of points can be retrieved without getting a shape.</remarks>
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
-            Return m_SimData.ForcePoints
+            Return Me.m_SimData.ForcePoints
         End Get
     End Property
 
@@ -70,15 +70,15 @@ Public Class cForcingFunctionShapeManager
         'Add storage to the underlying data arrays and the db
         'AddShape() will NOT preserve the existing data  
         'All the data in the Ecosim data structures will be reloaded from the database
-        If m_core.AddShape(strName, m_DataType, dbID, points, shapeType, parms) Then
+        If Me.m_core.AddShape(strName, Me.m_DataType, dbID, points, shapeType, parms) Then
 
             'get the index from the dbid for the new shape
-            iEcoSimIndex = Array.IndexOf(m_SimData.ForcingDBIDs, dbID)
+            iEcoSimIndex = Array.IndexOf(Me.m_SimData.ForcingDBIDs, dbID)
 
             'create a new shape that contains a database ID to the underlying ecosim data
-            shape = New cForcingFunction(m_SimData, Me, dbID, m_DataType)
+            shape = New cForcingFunction(Me.m_SimData, Me, dbID, Me.m_DataType)
 
-            shape.ID = m_shapes.Count
+            shape.ID = Me.m_shapes.Count
 
             'tell the shape to load from the ecosim data
             'the call below to onChanged() will reload all the data this is not really necessary 
@@ -90,7 +90,7 @@ Public Class cForcingFunctionShapeManager
 
             'When the new shape was added to the EcoSim data all the existing data in memory was erased and re-loaded when the arrays where resized
             'Now tell all the Shape Managers to re-load the Ecosim data into their existing shapes
-            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+            Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
 
             Return shape
 
@@ -103,15 +103,15 @@ Public Class cForcingFunctionShapeManager
         Dim forcing As cForcingFunction
 
         'clear out any existing data
-        m_shapes.Clear()
-        For isp As Integer = 1 To m_SimData.NumForcingShapes
+        Me.m_shapes.Clear()
+        For isp As Integer = 1 To Me.m_SimData.NumForcingShapes
 
-            If m_SimData.ForcingShapeType(isp) = m_DataType Then
+            If Me.m_SimData.ForcingShapeType(isp) = Me.m_DataType Then
 
-                forcing = New cForcingFunction(m_SimData, Me, m_SimData.ForcingDBIDs(isp), m_DataType)
+                forcing = New cForcingFunction(Me.m_SimData, Me, Me.m_SimData.ForcingDBIDs(isp), Me.m_DataType)
                 'keep the index of this forcing function in the list in the function itself
                 'it will be used later to return the list item for a given EcoSim array index
-                forcing.ID = m_shapes.Count
+                forcing.ID = Me.m_shapes.Count
                 forcing.Load()
 
                 'now Add it to the base class list so that it does not try to Add via the overridden Add in this class

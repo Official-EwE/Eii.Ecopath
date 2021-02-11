@@ -44,21 +44,21 @@ Namespace Controls
             Me.InitializeComponent()
         End Sub
 
-        Public Shadows Function Show(ByVal owner As IWin32Window, _
-                                     ByVal strPrompt As String, _
+        Public Shadows Function Show(owner As IWin32Window, _
+                                     strPrompt As String, _
                                      Optional strCaption As String = "", _
                                      Optional strInitialValue As String = "") As DialogResult
             Return Me.ShowDialog(owner, strPrompt, strCaption, strInitialValue)
         End Function
 
-        Public Shadows Function Show(ByVal strPrompt As String, _
+        Public Shadows Function Show(strPrompt As String, _
                                      Optional strCaption As String = "", _
                                      Optional strInitialValue As String = "") As DialogResult
             Return Me.ShowDialog(Nothing, strPrompt, strCaption, strInitialValue)
         End Function
 
         Public Shadows Function ShowDialog(owner As IWin32Window, _
-                              ByVal strPrompt As String, _
+                              strPrompt As String, _
                               Optional strCaption As String = "", _
                               Optional strInitialValue As String = "") As DialogResult
             Me.Text = strCaption

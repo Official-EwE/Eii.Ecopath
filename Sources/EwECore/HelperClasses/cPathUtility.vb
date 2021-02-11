@@ -79,7 +79,7 @@ Public Class cPathUtility
     ''' <returns>True if successful.</returns>
     ''' <remarks>Note that the core needs to have a model loaded.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Shared Function ResolvePath(ByVal strMask As String, ByVal core As cCore, ByRef strPathOut As String) As Boolean
+    Public Shared Function ResolvePath(strMask As String, core As cCore, ByRef strPathOut As String) As Boolean
 
         If (core Is Nothing) Then Return False
         If (core.StateMonitor.HasEcopathLoaded) Then
@@ -98,9 +98,9 @@ Public Class cPathUtility
     ''' <param name="strPathOut">The resulting path.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function ResolvePath(ByVal strMask As String, _
-                                       ByVal strPathIn As String, _
-                                       ByVal strModelVersion As String, _
+    Public Shared Function ResolvePath(strMask As String, _
+                                       strPathIn As String, _
+                                       strModelVersion As String, _
                                        ByRef strPathOut As String) As Boolean
         Dim strModelFile As String = Path.GetFileNameWithoutExtension(strPathIn)
         Dim strModelPath As String = Path.GetDirectoryName(strPathIn)
@@ -120,8 +120,8 @@ Public Class cPathUtility
     ''' <param name="strPathOut">The resulting path.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function ResolvePath(ByVal strMask As String, _
-                                       ByVal strModelFile As String, ByVal strModelPath As String, ByVal strModelExt As String, ByVal strModelVersion As String, _
+    Public Shared Function ResolvePath(strMask As String, _
+                                       strModelFile As String, strModelPath As String, strModelExt As String, strModelVersion As String, _
                                        ByRef strPathOut As String) As Boolean
         ' Pre-doctor
         strPathOut = strMask
@@ -164,11 +164,11 @@ Public Class cPathUtility
     ''' <param name="strModelVersion">The model file version to use.</param>
     ''' <returns>A susbstituted value.</returns>
     ''' -----------------------------------------------------------------------
-    Private Shared Function ResolvePlaceholder(ByVal placeholder As ePathPlaceholderTypes, _
-                                               ByVal strModelFile As String, _
-                                               ByVal strModelPath As String, _
-                                               ByVal strModelExt As String, _
-                                               ByVal strModelVersion As String) As String
+    Private Shared Function ResolvePlaceholder(placeholder As ePathPlaceholderTypes, _
+                                               strModelFile As String, _
+                                               strModelPath As String, _
+                                               strModelExt As String, _
+                                               strModelVersion As String) As String
 
         Dim strResolved As String = ""
         Try

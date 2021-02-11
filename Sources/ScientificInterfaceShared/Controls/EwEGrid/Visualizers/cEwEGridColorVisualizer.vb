@@ -47,11 +47,11 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub DrawCell_ImageAndText( _
-                ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal p_CellPosition As SourceGrid2.Position, _
-                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                ByVal p_Status As SourceGrid2.DrawCellStatus)
+                p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                p_CellPosition As SourceGrid2.Position, _
+                e As System.Windows.Forms.PaintEventArgs, _
+                p_ClientRectangle As System.Drawing.Rectangle, _
+                p_Status As SourceGrid2.DrawCellStatus)
 
             Dim value As Object = p_Cell.GetValue(p_CellPosition)
 

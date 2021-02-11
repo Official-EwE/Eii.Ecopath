@@ -42,7 +42,7 @@ Namespace Ecosim
             MyBase.New()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             MyBase.Dispose(disposing)
         End Sub
 
@@ -56,9 +56,9 @@ Namespace Ecosim
             Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             ' For each column (groupIndex - Fleet)
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
                 ' For each row (rowIndex - Landed group)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
 
                     ' Can assign FF at this spot in the matrix?
                     If Me.m_interactionManager.isLandings(iFleet, iGroup) Then
@@ -97,7 +97,7 @@ Namespace Ecosim
             Dim group As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(Core.nLivingGroups + 1, Core.nFleets + 2)
+            Me.Redim(Me.Core.nLivingGroups + 1, Me.Core.nFleets + 2)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
@@ -108,8 +108,8 @@ Namespace Ecosim
                 Me(0, 1 + iFleet).Behaviors.Add(Me.m_bmRowCol)
             Next
 
-            For iGroup As Integer = 1 To Core.nLivingGroups
-                group = Core.EcoPathGroupInputs(iGroup)
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                group = Me.Core.EcoPathGroupInputs(iGroup)
                 ' # Group name row header cells
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
@@ -183,7 +183,7 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Protected Overrides Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
+        Protected Overrides Sub CellClick(sender As Object, e As PositionEventArgs)
 
             Try
                 Dim dlg As New dlgApplyLandingShape(Me.UIContext, e.Position.Row, e.Position.Column - 1)
@@ -194,7 +194,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overrides Sub OnRowColClicked(sender As Object, e As SourceGrid2.PositionEventArgs)
 
             Dim iRow As Integer = e.Position.Row
             Dim iCol As Integer = e.Position.Column

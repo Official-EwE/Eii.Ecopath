@@ -62,13 +62,13 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
             Me.m_bInUpdate = True
 
-            Dim parms As cEcoSimModelParameters = Core.EcoSimModelParameters()
+            Dim parms As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
             Dim pm As cPropertyManager = Me.PropertyManager
 
             Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumberYears, parms, eVarNameFlags.EcoSimNYears)
@@ -80,10 +80,10 @@ Namespace Ecosim
             Me.m_fpSORwt = New cPropertyFormatProvider(Me.UIContext, Me.m_txSORwt, parms, eVarNameFlags.EcosimSORWt)
 
             Me.m_propConTracing = DirectCast(pm.GetProperty(parms, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
-            AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
+            AddHandler Me.m_propConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged
 
             Me.m_propPredictEffort = DirectCast(pm.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
-            AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
+            AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf Me.OnPredictEffortChanged
 
             ' Listen to shapes data added or removed messages
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoSim}
@@ -98,7 +98,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
@@ -111,10 +111,10 @@ Namespace Ecosim
             Me.m_fpForagingTimeLowerLimit.Release()
             Me.m_fpSORwt.Release()
 
-            RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
+            RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged
             Me.m_propConTracing = Nothing
 
-            RemoveHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
+            RemoveHandler Me.m_propPredictEffort.PropertyChanged, AddressOf Me.OnPredictEffortChanged
             Me.m_propPredictEffort = Nothing
 
             MyBase.OnFormClosed(e)
@@ -123,7 +123,7 @@ Namespace Ecosim
 
         Dim m_bInUpdate As Boolean = False
 
-        Private Sub chkConTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub chkConTracing_Click(sender As Object, e As System.EventArgs) _
             Handles m_chkConTracing.Click, m_chkUseVarPQ.Click
 
             If (Me.m_bInUpdate = True) Then Return
@@ -151,11 +151,11 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnConTracingChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
+        Private Sub OnConTracingChanged(p As cProperty, cf As cProperty.eChangeFlags)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnPredictEffortChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
+        Private Sub OnPredictEffortChanged(p As cProperty, cf As cProperty.eChangeFlags)
             '   Me.m_fpRegulatoryFeedback.Value = Me.m_fpPredictEffort.Value
             Me.UpdateControls()
         End Sub
@@ -176,7 +176,7 @@ Namespace Ecosim
             If Me.m_bInUpdate Then Return
 
             Try
-                Dim parms As cEcoSimModelParameters = Core.EcoSimModelParameters()
+                Dim parms As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
                 parms.NutForceFunctionNumber = Me.m_cmbNutForcing.SelectedIndex
             Catch ex As Exception
 
@@ -187,7 +187,7 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+        Public Overrides Sub OnCoreMessage(msg As cMessage)
             If ((msg.Source = eCoreComponentType.ShapesManager) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 Me.UpdateEnvForcingControls()
             End If

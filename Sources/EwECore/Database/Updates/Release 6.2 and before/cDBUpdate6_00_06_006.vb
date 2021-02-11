@@ -71,7 +71,7 @@ Friend Class cDBUpdate6_00_06_006
                Me.AddEcosimForcingApplicationTypes(db)
     End Function
 
-    Private Function AddEcosimTempFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcosimTempFields(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -84,7 +84,7 @@ Friend Class cDBUpdate6_00_06_006
 
     End Function
 
-    Private Function AddEcosimForcingApplicationTypes(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcosimForcingApplicationTypes(db As cEwEDatabase) As Boolean
 
         Return db.Execute("ALTER TABLE EcosimShapeTime ADD COLUMN ApplicationType LONG")
 

@@ -66,8 +66,8 @@ Namespace Controls
         ''' <param name="tree">The <see cref="IFlowDiagramRenderer"/> tree to do 
         ''' the actual rendering and UI interactions.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal data As IFlowDiagramData, _
-                       ByVal tree As IFlowDiagramRenderer)
+        Public Sub New(data As IFlowDiagramData, _
+                       tree As IFlowDiagramRenderer)
 
             Me.m_data = data
             Me.m_tree = tree
@@ -87,7 +87,7 @@ Namespace Controls
             Get
                 Return Me.m_iHighlight
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (Me.m_iHighlight <> value) Then
                     Me.m_iHighlight = value
                 End If
@@ -108,7 +108,7 @@ Namespace Controls
         ''' <param name="g">Graphics to draw onto.</param>
         ''' <param name="rc">Rectangle to draw within.</param>
         ''' -------------------------------------------------------------------
-        Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
+        Public Sub DrawFlowDiagram(g As Graphics, rc As Rectangle)
 
             Try
 
@@ -117,7 +117,7 @@ Namespace Controls
                 Me.m_tree.DrawLegend(g, New Point(5, 5))
 
                 For Each hl As IFlowDiagramRenderer.eFDHighlightType In s_draworder
-                    DrawFlow(g, rc, hl)
+                    Me.DrawFlow(g, rc, hl)
                 Next
 
             Catch ex As Exception
@@ -128,7 +128,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub DrawFlow(ByVal g As Graphics, ByVal rc As Rectangle, ByVal focus As IFlowDiagramRenderer.eFDHighlightType)
+        Private Sub DrawFlow(g As Graphics, rc As Rectangle, focus As IFlowDiagramRenderer.eFDHighlightType)
 
             Dim hl As IFlowDiagramRenderer.eFDHighlightType = IFlowDiagramRenderer.eFDHighlightType.None
             Dim bDraw As Boolean = False
@@ -228,7 +228,7 @@ Namespace Controls
         ''' <param name="rc"></param>
         ''' <param name="pt"></param>
         ''' -------------------------------------------------------------------
-        Public Sub ProcessMouseMove(ByVal g As Graphics, ByVal rc As Rectangle, ByVal pt As PointF)
+        Public Sub ProcessMouseMove(g As Graphics, rc As Rectangle, pt As PointF)
 
             Dim iNode As Integer = 0
 
@@ -269,7 +269,7 @@ Namespace Controls
         ''' <param name="settings">The <see cref="cXMLSettings">settings</see> to save to.</param>
         ''' <param name="ctrl">The control that renders the diagram.</param>
         ''' -------------------------------------------------------------------
-        Public Function Save(ByVal settings As cXMLSettings, ByVal ctrl As Control) As Boolean
+        Public Function Save(settings As cXMLSettings, ctrl As Control) As Boolean
 
             Try
                 Dim rc As Rectangle = ctrl.ClientRectangle()
@@ -301,7 +301,7 @@ Namespace Controls
         ''' <param name="settings">The <see cref="cXMLSettings">file</see> to load from.</param>
         ''' <param name="ctrl">The control that draws the diagram.</param>
         ''' -------------------------------------------------------------------
-        Public Function Load(ByVal settings As cXMLSettings, ByVal ctrl As Control) As Boolean
+        Public Function Load(settings As cXMLSettings, ctrl As Control) As Boolean
 
             Try
 
@@ -332,7 +332,7 @@ Namespace Controls
 
 #Region " Dragging "
 
-        Public Sub BeginDrag(ByVal rc As Rectangle, ByVal pt As PointF, ByVal g As Graphics)
+        Public Sub BeginDrag(rc As Rectangle, pt As PointF, g As Graphics)
 
             If (Me.IsDragging) Then Return
             If (Me.HighlightNode = 0) Then Return
@@ -351,7 +351,7 @@ Namespace Controls
             End Using
 
             iNode = Me.GetNodeAtPoint(rc, pt)
-            If iNode = HighlightNode Then
+            If iNode = Me.HighlightNode Then
                 Me.m_dragMode = eDragMode.Node
                 ptItem = Me.m_tree.NodeLocation(iNode, rc)
                 Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
@@ -359,7 +359,7 @@ Namespace Controls
 
         End Sub
 
-        Public Sub EndDrag(ByVal fdData As IFlowDiagramData, ByVal pt As PointF)
+        Public Sub EndDrag(fdData As IFlowDiagramData, pt As PointF)
             Me.m_dragMode = eDragMode.None
         End Sub
 
@@ -386,7 +386,7 @@ Namespace Controls
         ''' is returned.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function GetNodeAtPoint(ByVal rc As Rectangle, ByVal pt As PointF) As Integer
+        Private Function GetNodeAtPoint(rc As Rectangle, pt As PointF) As Integer
 
             Dim iNodeViz As Integer = 0
             Dim iNodeHid As Integer = 0
@@ -420,10 +420,10 @@ Namespace Controls
         ''' node at the location, or 0 if no node was found.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function GetLabelAtPoint(ByVal rc As Rectangle,
-                                         ByVal pt As PointF,
-                                         ByVal g As Graphics,
-                                         ByVal font As Font) As Integer
+        Private Function GetLabelAtPoint(rc As Rectangle,
+                                         pt As PointF,
+                                         g As Graphics,
+                                         font As Font) As Integer
 
             Dim iNodeViz As Integer = 0
             Dim iNodeHid As Integer = 0

@@ -42,7 +42,7 @@ Public Class cProducerUnitDefault
         Get
             Return "Default"
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
         End Set
     End Property
 
@@ -57,7 +57,7 @@ Public Class cProducerUnitDefault
     Public Overrides Property EcopathFleetID() As Integer
         Get
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
         End Set
     End Property
 
@@ -66,7 +66,7 @@ Public Class cProducerUnitDefault
         Get
             Return Nothing
         End Get
-        Friend Set(ByVal value As EwECore.cEcopathFleetInput)
+        Friend Set(value As EwECore.cEcopathFleetInput)
         End Set
     End Property
 

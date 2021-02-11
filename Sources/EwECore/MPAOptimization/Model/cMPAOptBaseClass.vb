@@ -111,17 +111,17 @@ Public MustInherit Class cMPAOptBaseClass
 
         Try
 
-            m_EcoSpace = EcoSpaceModel
-            m_data = MPAOptData
+            Me.m_EcoSpace = EcoSpaceModel
+            Me.m_data = MPAOptData
 
-            m_SpaceData = m_EcoSpace.EcoSpaceData
-            m_search = m_EcoSpace.SearchData
+            Me.m_SpaceData = Me.m_EcoSpace.EcoSpaceData
+            Me.m_search = Me.m_EcoSpace.SearchData
 
             'set EcoSpace to use this MPA optimization model
-            m_EcoSpace.MPAOptimization = Me
+            Me.m_EcoSpace.MPAOptimization = Me
 
             'the seed array can be needed before the model is run
-            ReDim m_data.MPASeed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
+            ReDim Me.m_data.MPASeed(Me.m_SpaceData.InRow + 1, Me.m_SpaceData.InCol + 1)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -134,27 +134,27 @@ Public MustInherit Class cMPAOptBaseClass
 
 
     Protected Sub InitIsMPA()
-        Dim nRows As Integer = m_SpaceData.InRow
-        Dim nCols As Integer = m_SpaceData.InCol
+        Dim nRows As Integer = Me.m_SpaceData.InRow
+        Dim nCols As Integer = Me.m_SpaceData.InCol
         Me.IsMPA = New Boolean(nRows + 1, nCols + 1) {}
 
         For i As Integer = 1 To nRows
             For j As Integer = 1 To nCols
                 ' make snapshot of MPA cell occupation for quick lookup during computations
                 Me.IsMPA(i, j) = False
-                For k As Integer = 1 To m_SpaceData.MPAno
+                For k As Integer = 1 To Me.m_SpaceData.MPAno
                     Me.IsMPA(i, j) = Me.IsMPA(i, j) Or (Me.m_SpaceData.MPA(k)(i, j) > 0)
                 Next
             Next
         Next
     End Sub
 
-    Public Overridable Sub Connect(ByVal OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
-                       ByVal OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
-                       ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
-        m_cellComputedCallback = OnSearchInteration
-        m_StateCallback = OnRunStateChanged
-        m_SendMessageDelegate = OnSendMessage
+    Public Overridable Sub Connect(OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
+                       OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
+                       OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
+        Me.m_cellComputedCallback = OnSearchInteration
+        Me.m_StateCallback = OnRunStateChanged
+        Me.m_SendMessageDelegate = OnSendMessage
     End Sub
 
 
@@ -164,17 +164,17 @@ Public MustInherit Class cMPAOptBaseClass
 
     Public Overridable Property MPAOptData() As cMPAOptDataStructures Implements IMPASearchModel.MPAOptData
         Get
-            Return m_data
+            Return Me.m_data
         End Get
-        Set(ByVal value As cMPAOptDataStructures)
-            m_data = value
+        Set(value As cMPAOptDataStructures)
+            Me.m_data = value
         End Set
     End Property
 
     Public Overridable ReadOnly Property EcospaceStartTime() As Single Implements IMPASearchModel.EcospaceStartTime
         Get
 
-            If Not m_bRunning Then
+            If Not Me.m_bRunning Then
                 'this got called even though Ecoseed is not running this should NOT happen
                 'Oh well return zero this should be the default start time for ecospace
                 Return 0
@@ -202,15 +202,15 @@ Public MustInherit Class cMPAOptBaseClass
     End Property
 
     Public Overridable Sub StopRun() Implements IMPASearchModel.StopRun
-        m_data.StopRun = True
+        Me.m_data.StopRun = True
     End Sub
 
     Public Overridable Sub clearMPAs() Implements IMPASearchModel.clearMPAs
-        For ir As Integer = 1 To m_SpaceData.InRow
-            For ic As Integer = 1 To m_SpaceData.InCol
+        For ir As Integer = 1 To Me.m_SpaceData.InRow
+            For ic As Integer = 1 To Me.m_SpaceData.InCol
                 'm_SpaceData.MPA(ir, ic) = 0
-                For impa As Integer = 1 To m_SpaceData.MPAno
-                    m_SpaceData.MPA(impa)(ir, ic) = 0
+                For impa As Integer = 1 To Me.m_SpaceData.MPAno
+                    Me.m_SpaceData.MPA(impa)(ir, ic) = 0
                 Next
 
             Next ic
@@ -218,27 +218,27 @@ Public MustInherit Class cMPAOptBaseClass
     End Sub
 
     Public Overridable Sub clearSeedCells() Implements IMPASearchModel.clearSeedCells
-        For ir As Integer = 1 To m_SpaceData.InRow
-            For ic As Integer = 1 To m_SpaceData.InCol
-                m_data.MPASeed(ir, ic) = 0
+        For ir As Integer = 1 To Me.m_SpaceData.InRow
+            For ic As Integer = 1 To Me.m_SpaceData.InCol
+                Me.m_data.MPASeed(ir, ic) = 0
             Next ic
         Next ir
     End Sub
 
 
-    Public Overridable Function setAllCellsToMPA(ByVal MAPIndex As Integer) As Boolean Implements IMPASearchModel.setAllCellsToMPA
+    Public Overridable Function setAllCellsToMPA(MAPIndex As Integer) As Boolean Implements IMPASearchModel.setAllCellsToMPA
 
         'make sure the MPA index supplied by the user is in bounds
-        If MAPIndex > 0 And MAPIndex <= m_SpaceData.MPAno Then
+        If MAPIndex > 0 And MAPIndex <= Me.m_SpaceData.MPAno Then
             Dim impanew As Integer
-            For impa As Integer = 1 To m_SpaceData.MPAno
+            For impa As Integer = 1 To Me.m_SpaceData.MPAno
                 impanew = 0
                 If impa = MAPIndex Then
                     impanew = 1
                 End If
-                For ir As Integer = 1 To m_SpaceData.InRow
-                    For ic As Integer = 1 To m_SpaceData.InCol
-                        m_SpaceData.MPA(impa)(ir, ic) = impanew
+                For ir As Integer = 1 To Me.m_SpaceData.InRow
+                    For ic As Integer = 1 To Me.m_SpaceData.InCol
+                        Me.m_SpaceData.MPA(impa)(ir, ic) = impanew
                     Next ic
                 Next ir
             Next
@@ -250,13 +250,13 @@ Public MustInherit Class cMPAOptBaseClass
 
     End Function
 
-    Public Overridable Function setAllCellsToSeed(ByVal iMPA As Integer) As Boolean Implements IMPASearchModel.setAllCellsToSeed
+    Public Overridable Function setAllCellsToSeed(iMPA As Integer) As Boolean Implements IMPASearchModel.setAllCellsToSeed
 
         'make sure the MPA index supplied by the user is in bounds
-        If iMPA > 0 And iMPA <= m_SpaceData.MPAno Then
-            For ir As Integer = 1 To m_SpaceData.InRow
-                For ic As Integer = 1 To m_SpaceData.InCol
-                    m_data.MPASeed(ir, ic) = iMPA
+        If iMPA > 0 And iMPA <= Me.m_SpaceData.MPAno Then
+            For ir As Integer = 1 To Me.m_SpaceData.InRow
+                For ic As Integer = 1 To Me.m_SpaceData.InCol
+                    Me.m_data.MPASeed(ir, ic) = iMPA
                 Next ic
             Next ir
             Return True
@@ -281,7 +281,7 @@ Public MustInherit Class cMPAOptBaseClass
 
 
     ''' <inheritdocs cref="IMPASearchModel.ConfigureAutosave"/>
-    Public Overridable Sub ConfigureAutosave(ByVal bAutosave As Boolean, ByVal strOutputPath As String, ByVal strHeader As String) _
+    Public Overridable Sub ConfigureAutosave(bAutosave As Boolean, strOutputPath As String, strHeader As String) _
         Implements IMPASearchModel.ConfigureAutosave
         Me.m_bAutosaveResults = bAutosave
         Me.m_strOutputPath = strOutputPath
@@ -298,37 +298,37 @@ Public MustInherit Class cMPAOptBaseClass
 
         Try
 
-            curSum = m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_search.totval / TotValBase + _
-                     m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
-                     m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
-                     m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
-                     m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.DiversityIndex / DiversityBase
+            curSum = Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_search.totval / Me.TotValBase + _
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.Employ / Me.EmployBase + _
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.manvalue / Me.ManValueBase + _
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.ecovalue / Me.EcoValueBase + _
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_search.DiversityIndex / Me.DiversityBase
 
 
             'Calculate boundary length/area ratio
-            AreaBoundary = CalculateAreaOverBondaryLength()
-            curSum = curSum + AreaBoundary * m_data.BoundaryWeight
-            m_data.objFuncTotal = (m_search.WeightedTotal + AreaBoundary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
+            Me.AreaBoundary = Me.CalculateAreaOverBondaryLength()
+            curSum = curSum + Me.AreaBoundary * Me.m_data.BoundaryWeight
+            Me.m_data.objFuncTotal = (Me.m_search.WeightedTotal + Me.AreaBoundary * Me.m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
             'calculate the relative values in to data structures 
             'so they can be use to populate the Input/Output object for the interface
-            m_data.objFuncEcologicalValue = m_search.ecovalue / EcoValueBase
-            m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
-            m_data.objFuncSocialValue = m_search.Employ / EmployBase
-            m_data.objFuncEconomicValue = m_search.totval / TotValBase
-            m_data.objFuncBiodiversity = m_search.DiversityIndex / DiversityBase
-            m_data.objFuncAreaBorder = AreaBoundary '/ AreaBoundBase
+            Me.m_data.objFuncEcologicalValue = Me.m_search.ecovalue / Me.EcoValueBase
+            Me.m_data.objFuncMandatedValue = Me.m_search.manvalue / Me.ManValueBase
+            Me.m_data.objFuncSocialValue = Me.m_search.Employ / Me.EmployBase
+            Me.m_data.objFuncEconomicValue = Me.m_search.totval / Me.TotValBase
+            Me.m_data.objFuncBiodiversity = Me.m_search.DiversityIndex / Me.DiversityBase
+            Me.m_data.objFuncAreaBorder = Me.AreaBoundary '/ AreaBoundBase
 
-            If curSum > TargetSumMax Then
+            If curSum > Me.TargetSumMax Then
                 'save the best results 
-                TargetSumMax = curSum
+                Me.TargetSumMax = curSum
 
                 Me.setRunState(cMPAOptManager.eRunStates.NewBestResultFound)
 
             End If
 
             'keep the results of every search
-            Me.m_lstObjectiveResults.Add(New cObjectiveResult(m_data, Me.m_SpaceData))
+            Me.m_lstObjectiveResults.Add(New cObjectiveResult(Me.m_data, Me.m_SpaceData))
 
             ''Memory management for results
             'If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
@@ -364,7 +364,7 @@ Public MustInherit Class cMPAOptBaseClass
     ''' <param name="Biomass"></param>
     ''' <param name="iYear"></param>
     ''' <remarks>This is used by Ecoseed to control the length of the Ecospace run</remarks>
-    Public Overridable Sub YearTimeStep(ByRef iYear As Integer, ByVal Biomass() As Single) Implements IMPASearchModel.YearTimeStep
+    Public Overridable Sub YearTimeStep(ByRef iYear As Integer, Biomass() As Single) Implements IMPASearchModel.YearTimeStep
 
         If Not Me.m_bRunning Then
             'Ecoseed is not running so don't do anything
@@ -407,7 +407,7 @@ Public MustInherit Class cMPAOptBaseClass
 
         Try
             If Me.m_cellComputedCallback IsNot Nothing Then
-                m_cellComputedCallback.Invoke()
+                Me.m_cellComputedCallback.Invoke()
             End If
         Catch ex As Exception
             Me.WriteError(ex)
@@ -416,61 +416,61 @@ Public MustInherit Class cMPAOptBaseClass
 
     End Sub
 
-    Protected Overridable Sub dumpSearchValues(ByVal search As cSearchDatastructures)
+    Protected Overridable Sub dumpSearchValues(search As cSearchDatastructures)
 
-        System.Console.WriteLine("Total Value = " & search.totval / TotValBase & _
-                                    ", Employ Value = " & search.Employ / EmployBase & _
-                                    ", Mandated Value = " & search.manvalue / ManValueBase & _
-                                    ", Eco Value = " & search.ecovalue / EcoValueBase)
+        System.Console.WriteLine("Total Value = " & search.totval / Me.TotValBase & _
+                                    ", Employ Value = " & search.Employ / Me.EmployBase & _
+                                    ", Mandated Value = " & search.manvalue / Me.ManValueBase & _
+                                    ", Eco Value = " & search.ecovalue / Me.EcoValueBase)
     End Sub
 
 
-    Protected Sub StoreEcospaceState(ByVal biomass() As Single)
+    Protected Sub StoreEcospaceState(biomass() As Single)
         Dim i As Integer, j As Integer, ip As Integer
 
         Debug.Assert(Me.nInterationCompleted = 0, "Opps you can only save the Ecospace state on the first optimization run.")
 
         'In the first interation keep the original bcell values
-        For i = 1 To m_SpaceData.InRow
-            For j = 1 To m_SpaceData.InCol
-                For ip = 1 To m_SpaceData.NGroups
-                    BOrig(i, j, ip) = m_SpaceData.Bcell(i, j, ip)
-                    FOrig(i, j, ip) = m_EcoSpace.FtimeCell(i, j, ip)
+        For i = 1 To Me.m_SpaceData.InRow
+            For j = 1 To Me.m_SpaceData.InCol
+                For ip = 1 To Me.m_SpaceData.NGroups
+                    Me.BOrig(i, j, ip) = Me.m_SpaceData.Bcell(i, j, ip)
+                    Me.FOrig(i, j, ip) = Me.m_EcoSpace.FtimeCell(i, j, ip)
                     '   WOrig(i, j, ip) = m_esData.WchangeVar(i, j, ip)
-                    Blastseed(i, j, ip) = m_SpaceData.Blast(i, j, ip)
+                    Me.Blastseed(i, j, ip) = Me.m_SpaceData.Blast(i, j, ip)
                 Next
             Next
         Next
         'Btime is needed when running Ecoseed
-        For i = 1 To m_SpaceData.NGroups
-            StoreBtimeForEcoSeed(i) = biomass(i)
+        For i = 1 To Me.m_SpaceData.NGroups
+            Me.StoreBtimeForEcoSeed(i) = biomass(i)
         Next
 
     End Sub
 
 
-    Protected Sub RestoreEcospaceState(ByVal biomass() As Single)
+    Protected Sub RestoreEcospaceState(biomass() As Single)
         Dim i As Integer, j As Integer, ip As Integer
 
-        For i = 1 To m_SpaceData.InRow
-            For j = 1 To m_SpaceData.InCol
-                For ip = 1 To m_SpaceData.NGroups
+        For i = 1 To Me.m_SpaceData.InRow
+            For j = 1 To Me.m_SpaceData.InCol
+                For ip = 1 To Me.m_SpaceData.NGroups
 
-                    m_SpaceData.Blast(i, j, ip) = Blastseed(i, j, ip)
-                    m_SpaceData.Bcell(i, j, ip) = BOrig(i, j, ip) 'Bseed(i, j, ip)
-                    m_EcoSpace.FtimeCell(i, j, ip) = FOrig(i, j, ip)
+                    Me.m_SpaceData.Blast(i, j, ip) = Me.Blastseed(i, j, ip)
+                    Me.m_SpaceData.Bcell(i, j, ip) = Me.BOrig(i, j, ip) 'Bseed(i, j, ip)
+                    Me.m_EcoSpace.FtimeCell(i, j, ip) = Me.FOrig(i, j, ip)
                     ' WchangeVar(i, j, ip) = Wseed(i, j, ip)
                     '    LastT = m_esData.SumStart(0) - TimeStep
                 Next
             Next
         Next
-        For i = 1 To m_SpaceData.NGroups
-            biomass(i) = StoreBtimeForEcoSeed(i)
+        For i = 1 To Me.m_SpaceData.NGroups
+            biomass(i) = Me.StoreBtimeForEcoSeed(i)
         Next
 
     End Sub
 
-    Protected Sub setRunState(ByVal RunState As cMPAOptManager.eRunStates)
+    Protected Sub setRunState(RunState As cMPAOptManager.eRunStates)
 
         Try
             Me.m_runstate = RunState
@@ -486,11 +486,11 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Function CellsNotMPA() As Boolean
 
-        For i As Integer = 1 To m_SpaceData.InRow
-            For j As Integer = 1 To m_SpaceData.InCol
+        For i As Integer = 1 To Me.m_SpaceData.InRow
+            For j As Integer = 1 To Me.m_SpaceData.InCol
                 If Me.m_SpaceData.Depth(i, j) > 0 Then
                     For impa As Integer = 1 To Me.m_SpaceData.MPAno
-                        If m_SpaceData.MPA(impa)(i, j) > 0 Then
+                        If Me.m_SpaceData.MPA(impa)(i, j) > 0 Then
                             Return True
                         End If
                     Next impa
@@ -509,8 +509,8 @@ Public MustInherit Class cMPAOptBaseClass
         Dim Area As Single
         Dim Border As Integer
         CalculateAreaOverBondaryLength = 0
-        For ir = 1 To m_SpaceData.InRow
-            For ic = 1 To m_SpaceData.InCol
+        For ir = 1 To Me.m_SpaceData.InRow
+            For ic = 1 To Me.m_SpaceData.InCol
 
                 'is there any MPA in this cell
                 If Me.IsMPA(ir, ic) Then
@@ -519,10 +519,10 @@ Public MustInherit Class cMPAOptBaseClass
                     Area = Area + 1
                     'Border
                     'Include it in the Border area if not an MPA and modelled water cell
-                    If Not Me.IsMPA(ir - 1, ic) And m_SpaceData.Depth(ir - 1, ic) > 0 Then Border = Border + 1 'cell above is not mpa
-                    If Not Me.IsMPA(ir + 1, ic) And m_SpaceData.Depth(ir - 1, ic) > 0 Then Border = Border + 1 'cell below is not mpa
-                    If Not Me.IsMPA(ir, ic - 1) And m_SpaceData.Depth(ir, ic - 1) > 0 Then Border = Border + 1 'cell left is not mpa
-                    If Not Me.IsMPA(ir, ic + 1) And m_SpaceData.Depth(ir, ic + 1) > 0 Then Border = Border + 1 'cell right is not mpa
+                    If Not Me.IsMPA(ir - 1, ic) And Me.m_SpaceData.Depth(ir - 1, ic) > 0 Then Border = Border + 1 'cell above is not mpa
+                    If Not Me.IsMPA(ir + 1, ic) And Me.m_SpaceData.Depth(ir - 1, ic) > 0 Then Border = Border + 1 'cell below is not mpa
+                    If Not Me.IsMPA(ir, ic - 1) And Me.m_SpaceData.Depth(ir, ic - 1) > 0 Then Border = Border + 1 'cell left is not mpa
+                    If Not Me.IsMPA(ir, ic + 1) And Me.m_SpaceData.Depth(ir, ic + 1) > 0 Then Border = Border + 1 'cell right is not mpa
                 End If
             Next
         Next
@@ -536,44 +536,44 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Sub getBaseValues()
 
-        m_search.redimForRun()
+        Me.m_search.redimForRun()
 
         'on the first call to ecospace ecoseed makes a copy of Biomass(), FTime()... See KeepOrReloadCellValues() at the user defined start time-step
         'then on subsequient calls it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
         Me.m_nIters = 0
         'Get economic values for the base year BaseYearCost and BaseYearEffort
         Me.m_search.bBaseYearSet = False
-        m_EcoSpace.Run()
+        Me.m_EcoSpace.Run()
 
         If Me.m_data.StopRun Then Exit Sub
 
         'this will start ecospace at the user defined timestep and copy the saved state back into Ecospace at the user defined time step
         Me.m_nIters = 1
-        m_EcoSpace.Run()
+        Me.m_EcoSpace.Run()
 
         'values were set in the search object by EcoSpace.Run()
-        EmployBase = m_search.Employ
-        TotValBase = m_search.totval
-        ManValueBase = m_search.manvalue
-        EcoValueBase = m_search.ecovalue
-        DiversityBase = m_search.DiversityIndex
-        AreaBoundBase = CalculateAreaOverBondaryLength()
+        Me.EmployBase = Me.m_search.Employ
+        Me.TotValBase = Me.m_search.totval
+        Me.ManValueBase = Me.m_search.manvalue
+        Me.EcoValueBase = Me.m_search.ecovalue
+        Me.DiversityBase = Me.m_search.DiversityIndex
+        Me.AreaBoundBase = Me.CalculateAreaOverBondaryLength()
 
-        If TotValBase = 0 Then TotValBase = 1
-        If TotValBase < 0 Then TotValBase = -TotValBase
-        If EmployBase = 0 Then EmployBase = 1
-        If EmployBase < 0 Then EmployBase = -EmployBase
-        If ManValueBase = 0 Then ManValueBase = 1
-        If EcoValueBase = 0 Then EcoValueBase = 1
-        If AreaBoundBase = 0 Then AreaBoundBase = 1
-        If DiversityBase = 0 Then DiversityBase = 1
+        If Me.TotValBase = 0 Then Me.TotValBase = 1
+        If Me.TotValBase < 0 Then Me.TotValBase = -Me.TotValBase
+        If Me.EmployBase = 0 Then Me.EmployBase = 1
+        If Me.EmployBase < 0 Then Me.EmployBase = -Me.EmployBase
+        If Me.ManValueBase = 0 Then Me.ManValueBase = 1
+        If Me.EcoValueBase = 0 Then Me.EcoValueBase = 1
+        If Me.AreaBoundBase = 0 Then Me.AreaBoundBase = 1
+        If Me.DiversityBase = 0 Then Me.DiversityBase = 1
 
-        TotWeightedValueBase = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotValBase + _
-                        m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployBase + _
-                        m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValueBase + _
-                        m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValueBase + _
-                        m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * DiversityBase + _
-                        m_data.BoundaryWeight * AreaBoundBase
+        Me.TotWeightedValueBase = 0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.TotValBase + _
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.EmployBase + _
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ManValueBase + _
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.EcoValueBase + _
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityBase + _
+                        Me.m_data.BoundaryWeight * Me.AreaBoundBase
 
     End Sub
 
@@ -585,7 +585,7 @@ Public MustInherit Class cMPAOptBaseClass
     ''' Store the best row and col for this search interation
     ''' </summary>
     ''' <remarks>Right now this is writting the results file and memory</remarks>
-    Protected Sub StoreObjectiveFunctionResults(ByVal writer As StreamWriter)
+    Protected Sub StoreObjectiveFunctionResults(writer As StreamWriter)
 
         Try
 
@@ -608,7 +608,7 @@ Public MustInherit Class cMPAOptBaseClass
     ''' Write header information to an output writer.
     ''' </summary>
     ''' <param name="writer">The writer to write to.</param>
-    Protected Sub WriteOutputFileHeader(ByVal writer As StreamWriter)
+    Protected Sub WriteOutputFileHeader(writer As StreamWriter)
 
         If (writer Is Nothing) Then Return
 
@@ -632,12 +632,12 @@ Public MustInherit Class cMPAOptBaseClass
         writer.WriteLine("Base Values")
         writer.WriteLine("Economic, Social, Mandated, Ecosystem, Biomass diversity, Area/Boundary")
         writer.WriteLine(String.Format("{0},{1},{2},{3},{4},{5}", _
-                cStringUtils.FormatNumber(TotValBase), _
-                cStringUtils.FormatNumber(EmployBase), _
-                cStringUtils.FormatNumber(ManValueBase), _
-                cStringUtils.FormatNumber(EcoValueBase), _
-                cStringUtils.FormatNumber(DiversityBase), _
-                cStringUtils.FormatNumber(AreaBoundBase)))
+                cStringUtils.FormatNumber(Me.TotValBase), _
+                cStringUtils.FormatNumber(Me.EmployBase), _
+                cStringUtils.FormatNumber(Me.ManValueBase), _
+                cStringUtils.FormatNumber(Me.EcoValueBase), _
+                cStringUtils.FormatNumber(Me.DiversityBase), _
+                cStringUtils.FormatNumber(Me.AreaBoundBase)))
         writer.WriteLine()
         'writer.WriteLine("Data Format")
         'writer.WriteLine("Number of Rows and Columns")
@@ -646,7 +646,7 @@ Public MustInherit Class cMPAOptBaseClass
 
         ' ToDo: globalize this
         ' ToDo: send at end of autosave, include result
-        Dim msg As New cMessage(String.Format("MPA search output saved to '{0}", Path.Combine(Me.m_strOutputPath, m_OutputFilename)), _
+        Dim msg As New cMessage(String.Format("MPA search output saved to '{0}", Path.Combine(Me.m_strOutputPath, Me.m_OutputFilename)), _
                                 eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Me.m_strOutputPath
         Me.SendMessage(msg)
@@ -657,7 +657,7 @@ Public MustInherit Class cMPAOptBaseClass
     ''' Write the objective function values to file
     ''' </summary>
     ''' <param name="writer">The writer to write to.</param>
-    Protected Sub WriteOutputData(ByVal writer As StreamWriter)
+    Protected Sub WriteOutputData(writer As StreamWriter)
 
         If (writer Is Nothing) Then Return
 
@@ -666,7 +666,7 @@ Public MustInherit Class cMPAOptBaseClass
             'Write #fnum, bestrow, bestcol, ObjF(0), ObjF(1), ObjF(2), ObjF(3), ObjF(4)
             writer.WriteLine("Iteration," & Me.m_data.nIterations)
             writer.WriteLine("MPA cells," & cStringUtils.FormatNumber(Me.m_data.Cells.Count))
-            For Each cell As cMPACell In m_data.Cells
+            For Each cell As cMPACell In Me.m_data.Cells
                 writer.WriteLine("{0},{1},{2}", cell.Row, cell.Col, cell.iMPA)
             Next
             writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
@@ -690,21 +690,21 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Overridable Sub cleanUp()
 
-        Erase BOrig
-        Erase FOrig
-        Erase WOrig
-        Erase Blastseed
+        Erase Me.BOrig
+        Erase Me.FOrig
+        Erase Me.WOrig
+        Erase Me.Blastseed
 
     End Sub
 
     Protected Overridable Sub RedimSeedVariables()
-        Dim nvartot As Integer = m_SpaceData.NGroups + 2
+        Dim nvartot As Integer = Me.m_SpaceData.NGroups + 2
 
-        ReDim BOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim FOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim WOrig(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim Blastseed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1, nvartot)
-        ReDim StoreBtimeForEcoSeed(m_SpaceData.NGroups)
+        ReDim Me.BOrig(Me.m_SpaceData.InRow + 1, Me.m_SpaceData.InCol + 1, nvartot)
+        ReDim Me.FOrig(Me.m_SpaceData.InRow + 1, Me.m_SpaceData.InCol + 1, nvartot)
+        ReDim Me.WOrig(Me.m_SpaceData.InRow + 1, Me.m_SpaceData.InCol + 1, nvartot)
+        ReDim Me.Blastseed(Me.m_SpaceData.InRow + 1, Me.m_SpaceData.InCol + 1, nvartot)
+        ReDim Me.StoreBtimeForEcoSeed(Me.m_SpaceData.NGroups)
         ' new
         ' ReDim IsMPA(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
 
@@ -715,7 +715,7 @@ Public MustInherit Class cMPAOptBaseClass
 
 #Region " Message handling "
 
-    Protected Sub WriteError(ByVal ex As Exception)
+    Protected Sub WriteError(ex As Exception)
         Try
             cLog.Write(ex)
             System.Console.WriteLine(Me.ToString & " Error: " & ex.Message)
@@ -725,21 +725,21 @@ Public MustInherit Class cMPAOptBaseClass
         End Try
     End Sub
 
-    Protected Sub WriteError(ByVal message As String, ByVal ex As Exception)
+    Protected Sub WriteError(message As String, ex As Exception)
         Try
             cLog.Write(message)
-            WriteError(ex)
+            Me.WriteError(ex)
         Catch newEx As Exception
             Debug.Assert(False, newEx.Message)
         End Try
     End Sub
 
-    Protected Sub WriteError(ByVal message As String)
+    Protected Sub WriteError(message As String)
         Dim msg As New cMessage(message, eMessageType.ErrorEncountered, eCoreComponentType.MPAOptimization, eMessageImportance.Critical)
         Me.SendMessage(msg)
     End Sub
 
-    Protected Sub SendMessage(ByVal msg As cMessage)
+    Protected Sub SendMessage(msg As cMessage)
         Try
             If (Me.m_SendMessageDelegate IsNot Nothing) Then Me.m_SendMessageDelegate.Invoke(msg)
         Catch ex As Exception

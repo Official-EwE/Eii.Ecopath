@@ -64,7 +64,7 @@ Friend Class cDBUpdate6_02_00_02
                Me.UpdateEcospaceParmsTable(db)
     End Function
 
-    Private Function UpdateForcePoints(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateForcePoints(db As cEwEDatabase) As Boolean
 
         Dim iForcePoints As Integer = cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS
         Dim readerScenario As IDataReader = Nothing
@@ -93,7 +93,7 @@ Friend Class cDBUpdate6_02_00_02
 
     End Function
 
-    Private Function AddCapacityMapTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddCapacityMapTable(db As cEwEDatabase) As Boolean
         Dim bSuccess As Boolean = True
 
         ' Read ecosim run length
@@ -107,7 +107,7 @@ Friend Class cDBUpdate6_02_00_02
 
     End Function
 
-    Private Function AddCapacityMapAssignmentTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddCapacityMapAssignmentTable(db As cEwEDatabase) As Boolean
         Dim bSuccess As Boolean = True
 
         bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacitDrivers (ScenarioID LONG, GroupID LONG, VarName TEXT(50), VarDBID LONG, ShapeID LONG)")
@@ -121,7 +121,7 @@ Friend Class cDBUpdate6_02_00_02
 
     End Function
 
-    Private Function UpdateMediationTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateMediationTable(db As cEwEDatabase) As Boolean
         Dim bSuccess As Boolean = True
 
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimShapeMediation ADD COLUMN XAxisMin SINGLE")
@@ -131,7 +131,7 @@ Friend Class cDBUpdate6_02_00_02
         Return bSuccess
     End Function
 
-    Private Function UpdateStanzaTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateStanzaTable(db As cEwEDatabase) As Boolean
 
         db.Execute("ALTER TABLE Stanza ADD COLUMN EggAtSpawn SHORT")
         Me.LogProgress("Updated table UpdateStanzaTable", True)
@@ -139,7 +139,7 @@ Friend Class cDBUpdate6_02_00_02
 
     End Function
 
-    Private Function UpdateEcospaceParmsTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateEcospaceParmsTable(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = True
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalType SHORT")

@@ -37,8 +37,8 @@ Public Interface IEcopathRunInitializedPlugin
     ''' <param name="TaxonDataAsObject">cTanonDataStructures as an object.</param>
     ''' <param name="StanzaDataAsObject">cStanzaDataStructures as an object.</param>
     ''' -----------------------------------------------------------------------
-    Sub EcopathRunInitialized(ByVal EcopathDataAsObject As Object, _
-                              ByVal TaxonDataAsObject As Object, _
-                              ByVal StanzaDataAsObject As Object)
+    Sub EcopathRunInitialized(EcopathDataAsObject As Object, _
+                              TaxonDataAsObject As Object, _
+                              StanzaDataAsObject As Object)
 
 End Interface

@@ -50,21 +50,21 @@ Namespace Ecopath.Output
             If (Me.UIContext Is Nothing) Then Return
 
             'Define grid dimensions
-            Me.Redim(1, Core.nFleets + 3)
+            Me.Redim(1, Me.Core.nFleets + 3)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet name
-            For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                      source, eVarNameFlags.Name, Nothing,
                                                                      cUnits.CurrencyOverTime)
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(eVarNameFlags.TotalCatch)
+            Me(0, Me.Core.nFleets + 2) = New cEwEColumnHeaderCell(eVarNameFlags.TotalCatch)
 
             Me.FixedColumns = 2
         End Sub
@@ -83,23 +83,23 @@ Namespace Ecopath.Output
             Me.RowsCount = 1
 
             ' Done?
-            If Core.nFleets = 0 Then Return
+            If Me.Core.nFleets = 0 Then Return
 
             ' Create rows for all groups and sum quantities in each row
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 iRow = Me.AddRow()
-                FillRows(iRow, iGroup)
+                Me.FillRows(iRow, iGroup)
             Next iGroup
 
             ' Create "Total catch" row (sum values in each column)
-            FillTotalCatchRow()
+            Me.FillTotalCatchRow()
 
             ' Create "Trophic level" row
-            FillTrophicLevelRow()
+            Me.FillTrophicLevelRow()
 
         End Sub
 
-        Private Sub FillRows(ByVal iRow As Integer, ByVal iGroup As Integer)
+        Private Sub FillRows(iRow As Integer, iGroup As Integer)
 
             Dim cell As cEwECell = Nothing
             Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
@@ -109,7 +109,7 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cEwERowHeaderCell(group.Name)
 
             ' For each fleet (each column) 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
 
                 Dim fleet As cEcopathFleetOutput = Me.Core.EcoPathFleetOutputs(iFleet)
                 Dim sLanding As Single = fleet.LandingsByGroup(iGroup)
@@ -134,12 +134,12 @@ Namespace Ecopath.Output
             Me(Me.RowsCount - 1, 0) = New cEwERowHeaderCell()
             Me(Me.RowsCount - 1, 1) = New cEwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
-            For iFleet As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
 
                 Dim sFleetTot As Single = 0
-                Dim fleet As cEcopathFleetOutput = Core.EcoPathFleetOutputs(iFleet)
+                Dim fleet As cEcopathFleetOutput = Me.Core.EcoPathFleetOutputs(iFleet)
 
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     sFleetTot += fleet.LandingsByGroup(iGroup) + fleet.DiscardMortByGroup(iGroup)
                 Next
                 Me(Me.RowsCount - 1, iFleet + 1) = New cEwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
@@ -193,14 +193,14 @@ Namespace Ecopath.Output
 
             alSumQuantityAll.Clear()
             alSumQuantityTTLXAll.Clear()
-            For fleetIndex As Integer = 1 To Core.nFleets
-                sourceGrpIntput = Core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                sourceGrpIntput = Me.Core.EcopathFleetInputs(fleetIndex)
                 alSumQuantityCol.Clear()
                 alSumQuantityTTLXCol.Clear()
 
-                For rowIndex As Integer = 1 To Core.nGroups
-                    sourceGrpIntputSec = Core.EcoPathGroupInputs(rowIndex)
-                    sourceGrpOutput = Core.EcoPathGroupOutputs(rowIndex)
+                For rowIndex As Integer = 1 To Me.Core.nGroups
+                    sourceGrpIntputSec = Me.Core.EcoPathGroupInputs(rowIndex)
+                    sourceGrpOutput = Me.Core.EcoPathGroupOutputs(rowIndex)
                     alSumLandingsDiscards.Clear()
                     alProdQuantityTTLX.Clear()
                     ' Get the index landing property

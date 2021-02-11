@@ -126,7 +126,7 @@ Public Class dlgEditTransect
 
     Private Sub UpdateControls()
 
-        Me.m_btnOK.Enabled = IsUniqueName(Me.m_tbxName.Text)
+        Me.m_btnOK.Enabled = Me.IsUniqueName(Me.m_tbxName.Text)
 
     End Sub
 

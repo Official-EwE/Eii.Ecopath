@@ -50,7 +50,7 @@ Namespace Database
         Private Class cDBUpdatePluginContextSort
             Implements IComparer(Of cDBUpdate)
 
-            Public Function Compare(ByVal x As cDBUpdate, ByVal y As cDBUpdate) As Integer _
+            Public Function Compare(x As cDBUpdate, y As cDBUpdate) As Integer _
                     Implements IComparer(Of cDBUpdate).Compare
                 Return CInt(if(x.UpdateVersion < y.UpdateVersion, -1, 1))
             End Function
@@ -71,7 +71,7 @@ Namespace Database
         ''' Constructor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal sBaselineVersion As Single)
+        Public Sub New(core As cCore, sBaselineVersion As Single)
             ' Lemembel the cole
             Me.m_core = core
             ' Store baseline version number
@@ -85,7 +85,7 @@ Namespace Database
         ''' <param name="db"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function HasUpdates(ByVal db As cEwEDatabase) As Boolean
+        Public Function HasUpdates(db As cEwEDatabase) As Boolean
             Return Me.HasDatabaseUpdates(db, Me.m_sBaselineVersion)
         End Function
 
@@ -96,7 +96,7 @@ Namespace Database
         ''' <param name="db">The <see cref="cEwEDatabase">database</see> to update</param>
         ''' <returns>True if successful</returns>
         ''' -------------------------------------------------------------------
-        Public Function UpdateDatabase(ByVal db As cEwEDatabase) As Boolean
+        Public Function UpdateDatabase(db As cEwEDatabase) As Boolean
             Return Me.RunAllUpdates(db)
         End Function
 
@@ -126,7 +126,7 @@ Namespace Database
         ''' </summary>
         ''' <returns>An array of available updates.</returns>
         ''' -------------------------------------------------------------------
-        Private Shared Function GetUpdates(ByVal sVersion As Single) As cDBUpdate()
+        Private Shared Function GetUpdates(sVersion As Single) As cDBUpdate()
 
             Dim lUpdates As New List(Of cDBUpdate)
             Dim clsType As Type = Nothing
@@ -173,7 +173,7 @@ Namespace Database
         ''' by the EwE software.</param>
         ''' <returns>True if updates are available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
+        Public Function HasDatabaseUpdates(db As cEwEDatabase, sBaselineVersion As Single) As Boolean
 
             ' Sanity checks
             If (db Is Nothing) Then Return False
@@ -194,7 +194,7 @@ Namespace Database
         ''' This method does not attempt to cross thread boundaries.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Function RunAllUpdates(ByVal db As cEwEDatabase) As Boolean
+        Private Function RunAllUpdates(db As cEwEDatabase) As Boolean
 
             Dim sDBVersion As Single = 0.0!
             Dim iUpdate As Integer = 0
@@ -293,7 +293,7 @@ Namespace Database
         ''' <param name="strDescription"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function ToShortDescription(ByVal strDescription As String) As String
+        Private Function ToShortDescription(strDescription As String) As String
 
             Dim sbDescription As New StringBuilder()
             Dim strBit As String = ""
@@ -319,8 +319,8 @@ Namespace Database
         ''' <param name="importance">Message importance.</param>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Private Sub ReportUpdateError(ByVal strStatus As String,
-                                      Optional ByVal importance As eMessageImportance = eMessageImportance.Critical)
+        Private Sub ReportUpdateError(strStatus As String,
+                                      Optional importance As eMessageImportance = eMessageImportance.Critical)
 
             Dim msg As cMessage = New cMessage(strStatus, eMessageType.DataImport, eCoreComponentType.DataSource, importance)
             Try
@@ -339,9 +339,9 @@ Namespace Database
         ''' <param name="strStatus">Status message.</param>
         ''' <param name="sProgress">Progress indicator.</param>
         ''' -------------------------------------------------------------------
-        Private Sub ReportUpdateProgress(ByVal status As eProgressState,
-                                         ByVal strStatus As String,
-                                         ByVal sProgress As Single)
+        Private Sub ReportUpdateProgress(status As eProgressState,
+                                         strStatus As String,
+                                         sProgress As Single)
 
             Dim msg As cMessage = New cProgressMessage(status, 1, sProgress, strStatus, eMessageType.Progress)
 

@@ -90,7 +90,7 @@ Imports EwEUtils.Core
         ''' initialize this instance from. If set, this instance represents a
         ''' Fleet currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal fleet As cEcopathFleetInput)
+        Public Sub New(fleet As cEcopathFleetInput)
             Debug.Assert(fleet IsNot Nothing)
             Me.m_iFleetDBID = fleet.DBID
             Me.m_iFleetIndex = fleet.Index
@@ -105,7 +105,7 @@ Imports EwEUtils.Core
         ''' </summary>
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strName As String)
+        Public Sub New(strName As String)
             Me.Name = strName
             Me.PoolColor = 0
             Me.m_status = eItemStatusTypes.Added
@@ -177,7 +177,7 @@ Imports EwEUtils.Core
         ''' True if the underlying fleet has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(ByVal fleet As cEcopathFleetInput) As Boolean
+        Public Function IsChanged(fleet As cEcopathFleetInput) As Boolean
             If (Me.m_iFleetDBID <> fleet.DBID) Then Return False
             Return (fleet.Name <> Me.Name) Or
                    (fleet.PoolColor <> Me.PoolColor)
@@ -202,7 +202,7 @@ Imports EwEUtils.Core
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
-            Set(ByVal bDelete As Boolean)
+            Set(bDelete As Boolean)
                 If Not Me.IsNew() Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
@@ -285,13 +285,13 @@ Imports EwEUtils.Core
 
         ' Make snapshot of Fleet configuration
         For iFleet As Integer = 1 To Me.Core.nFleets
-            Fleet = Core.EcopathFleetInputs(iFleet)
+            Fleet = Me.Core.EcopathFleetInputs(iFleet)
             fi = New cFleetInfo(Fleet)
             Me.m_lfiFleets.Add(fi)
         Next
 
         ' Brute-force update grid
-        UpdateGrid()
+        Me.UpdateGrid()
 
     End Sub
 
@@ -337,7 +337,7 @@ Imports EwEUtils.Core
 
         ' Populate rows
         For iRow As Integer = 1 To Me.m_lfiFleets.Count
-            UpdateRow(iRow)
+            Me.UpdateRow(iRow)
         Next iRow
 
     End Sub
@@ -354,7 +354,7 @@ Imports EwEUtils.Core
     ''' </summary>
     ''' <param name="iRow">The index of the row to refresh.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateRow(ByVal iRow As Integer)
+    Private Sub UpdateRow(iRow As Integer)
 
         Dim fi As cFleetInfo = Nothing
         Dim ri As RowInfo = Nothing
@@ -422,7 +422,7 @@ Imports EwEUtils.Core
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         If Not Me.AllowUpdates Then Return True
 
@@ -446,7 +446,7 @@ Imports EwEUtils.Core
     ''' Cell click handler, called in response to clicking button-like cells.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+    Protected Overrides Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.FleetColor
@@ -459,7 +459,7 @@ Imports EwEUtils.Core
 
 #Region " Row manipulation "
 
-    Public Sub SelectFleet(ByVal fleet As cEcopathFleetInput)
+    Public Sub SelectFleet(fleet As cEcopathFleetInput)
 
         Dim fi As cFleetInfo = Nothing
 
@@ -481,7 +481,7 @@ Imports EwEUtils.Core
     ''' </summary>
     ''' <param name="iRow">The index of the row to delete.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ToggleDeleteRow(Optional ByVal iRow As Integer = -1)
+    Public Sub ToggleDeleteRow(Optional iRow As Integer = -1)
 
         If iRow = -1 Then iRow = Me.SelectedRow
 
@@ -526,7 +526,7 @@ Imports EwEUtils.Core
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' <returns></returns>
-    Public Function IsFleetRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsFleetRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (iRow >= iFIRSTFLEETROW) And (iRow < Me.RowsCount)
     End Function
@@ -534,9 +534,9 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' States whether the fleet on a row is flagged for deletion.
     ''' </summary>
-    Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not IsFleetRow(iRow) Then Return False
+        If Not Me.IsFleetRow(iRow) Then Return False
 
         Dim iFleet As Integer = iRow - iFIRSTFLEETROW
         Dim fi As cFleetInfo = Nothing
@@ -549,7 +549,7 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' Insert a row by creating a new fleet.
     ''' </summary>
-    Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
+    Public Sub InsertRow(Optional iRow As Integer = -1)
         If iRow = -1 Then iRow = Me.SelectedRow()
         If iRow = -1 Then iRow = Math.Max(iFIRSTFLEETROW, Me.RowsCount)
         If Not Me.CanInsertRow(iRow) Then Return
@@ -559,7 +559,7 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' Create a new fleet.
     ''' </summary>
-    Private Sub CreateFleet(ByVal iRow As Integer)
+    Private Sub CreateFleet(iRow As Integer)
 
         Dim iFleet As Integer = -1
         Dim fi As cFleetInfo = Nothing
@@ -588,18 +588,18 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' States whether a row can be inserted at the indicated position.
     ''' </summary>
-    Public Function CanInsertRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanInsertRow(Optional iRow As Integer = -1) As Boolean
         Return True
     End Function
 
     ''' <summary>
     ''' Move row up, switching positions with the row above it.
     ''' </summary>
-    Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
+    Public Sub MoveRowUp(Optional iRow As Integer = -1)
         Dim bMoveSelection As Boolean = (iRow = -1)
 
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not CanMoveRowUp(iRow) Then Return
+        If Not Me.CanMoveRowUp(iRow) Then Return
         Me.MoveRow(iRow, iRow - 1)
 
         If bMoveSelection Then
@@ -610,7 +610,7 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' States whether a row can be moved up.
     ''' </summary>
-    Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanMoveRowUp(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (Me.RowsCount > (iFIRSTFLEETROW + 1)) And (iRow > iFIRSTFLEETROW)
     End Function
@@ -618,11 +618,11 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' Move row down, switching positions with the row below it.
     ''' </summary>
-    Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
+    Public Sub MoveRowDown(Optional iRow As Integer = -1)
         Dim bMoveSelection As Boolean = (iRow = -1)
 
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not CanMoveRowDown(iRow) Then Return
+        If Not Me.CanMoveRowDown(iRow) Then Return
         Me.MoveRow(iRow, iRow + 1)
 
         If bMoveSelection Then
@@ -633,7 +633,7 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' States whether a row can be moved down.
     ''' </summary>
-    Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanMoveRowDown(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (Me.RowsCount > (iFIRSTFLEETROW + 1)) And (iRow >= iFIRSTFLEETROW) And (iRow < Me.RowsCount - 1)
     End Function
@@ -641,7 +641,7 @@ Imports EwEUtils.Core
     ''' <summary>
     ''' Move one row to another position.
     ''' </summary>
-    Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+    Private Sub MoveRow(iFromRow As Integer, iToRow As Integer)
 
         Dim objTemp As cFleetInfo = Nothing
         Dim iStep As Integer = 1
@@ -687,7 +687,7 @@ Imports EwEUtils.Core
         Get
             Return (Me.m_iUpdateLock = 0)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If value Then
                 Me.m_iUpdateLock += 1
             Else
@@ -698,7 +698,7 @@ Imports EwEUtils.Core
 
 #Region " Selection extension "
 
-    Private Overloads Sub SelectRow(ByVal fi As cFleetInfo)
+    Private Overloads Sub SelectRow(fi As cFleetInfo)
         For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
             If ReferenceEquals(Me.m_lfiFleets(iFleet), fi) Then
                 Me.SelectRow(iFleet + iFIRSTFLEETROW)
@@ -718,12 +718,12 @@ Imports EwEUtils.Core
         Next
     End Sub
 
-    Public Sub SetDefaultFleetColor(ByVal iRow As Integer)
+    Public Sub SetDefaultFleetColor(iRow As Integer)
         Me.m_lfiFleets(iRow - iFIRSTFLEETROW).PoolColor = 0 'cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iRow - iFIRSTFLEETROW + 1, Me.m_lfiFleets.Count))
         Me.UpdateRow(iRow)
     End Sub
 
-    Public Sub SelectCustomFleetColor(Optional ByVal iRow As Integer = -1)
+    Public Sub SelectCustomFleetColor(Optional iRow As Integer = -1)
 
         Dim fi As cFleetInfo = Nothing
         Dim dlgColor As cEwEColorDialog = Nothing
@@ -795,7 +795,7 @@ Imports EwEUtils.Core
 
     End Function
 
-    Private Function IsNameUnique(ByVal strName As String, ByVal fi As cFleetInfo) As Boolean
+    Private Function IsNameUnique(strName As String, fi As cFleetInfo) As Boolean
 
         ' Check if name is unique
         For i As Integer = 0 To Me.m_lfiFleets.Count - 1
@@ -924,7 +924,7 @@ Imports EwEUtils.Core
 
             ' Get (possibly changed) core fleets
             Dim dtFleets As New Dictionary(Of Integer, cEcopathFleetInput)
-            For iFleet = 1 To Core.nFleets
+            For iFleet = 1 To Me.Core.nFleets
                 fleet = Me.Core.EcopathFleetInputs(iFleet)
                 dtFleets(fleet.DBID) = fleet
             Next

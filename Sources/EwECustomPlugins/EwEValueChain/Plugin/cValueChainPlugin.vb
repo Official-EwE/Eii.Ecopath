@@ -79,7 +79,7 @@ Public Class cValueChainPlugin
         End If
     End Sub
 
-    Public Shared Function SwitchForm(ByVal page As frmMain.eValueChainPageTypes) As frmMain
+    Public Shared Function SwitchForm(page As frmMain.eValueChainPageTypes) As frmMain
 
         ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
         Dim bIsFormReady As Boolean = False
@@ -152,7 +152,7 @@ Public Class cValueChainPlugin
     ''' <summary>
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
-    Public Overrides Sub Initialize(ByVal core As Object)
+    Public Overrides Sub Initialize(core As Object)
 
         ' Sanity checks
         Debug.Assert(core IsNot Nothing)
@@ -176,7 +176,7 @@ Public Class cValueChainPlugin
                 If (Me.m_syncobj Is Nothing) Then
                     Me.m_syncobj = New SynchronizationContext()
                 End If
-                Me.m_mhEcopath = New cMessageHandler(AddressOf OnEcopathMessage,
+                Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnEcopathMessage,
                                                      eCoreComponentType.EcoPath,
                                                      eMessageType.DataValidation,
                                                      Me.m_syncobj)
@@ -214,7 +214,7 @@ Public Class cValueChainPlugin
 
 #Region " GUI "
 
-    Public Sub UIContext(ByVal uic As Object) _
+    Public Sub UIContext(uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
@@ -230,7 +230,7 @@ Public Class cValueChainPlugin
     ''' <param name="strName">The name of the datasource.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Open(ByVal strName As String) As Boolean _
+    Public Function Open(strName As String) As Boolean _
         Implements EwEPlugin.Data.IDatabasePlugin.Open
         ' NOP
     End Function
@@ -271,7 +271,7 @@ Public Class cValueChainPlugin
     ''' <param name="dataSource">The loaded datasource.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadModel(ByVal dataSource As Object) As Boolean _
+    Public Function LoadModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.LoadModel
 
         ' Sanity checks
@@ -295,7 +295,7 @@ Public Class cValueChainPlugin
     ''' <param name="dataSource">The loaded datasource.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveModel(ByVal dataSource As Object) As Boolean _
+    Public Function SaveModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
         Return Me.m_data.Save()
     End Function
@@ -357,7 +357,7 @@ Public Class cValueChainPlugin
     ''' Plug-in point implementation, called just before Ecosim will run.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) _
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
 
         Dim parms As cParameters = Me.m_data.Parameters
@@ -384,9 +384,9 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
-                          ByVal EcosimDatastructures As Object,
-                          ByVal iTimeStep As Integer,
-                          ByVal ecosimresults As Object) _
+                          EcosimDatastructures As Object,
+                          iTimeStep As Integer,
+                          ecosimresults As Object) _
         Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Dim parms As cParameters = Me.m_data.Parameters
@@ -410,7 +410,7 @@ Public Class cValueChainPlugin
     ''' Plug-in point implementation, called when Ecosim has finished running.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub EcosimRunCompleted(ByVal EcosimDatastructures As Object) _
+    Private Sub EcosimRunCompleted(EcosimDatastructures As Object) _
         Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
 
         Dim parms As cParameters = Me.m_data.Parameters
@@ -435,7 +435,7 @@ Public Class cValueChainPlugin
 
 #Region " Data Exchange "
 
-    Private Sub BroadcastResults(ByVal iTimeStep As Integer)
+    Private Sub BroadcastResults(iTimeStep As Integer)
 
         If (Me.m_dataBroadcaster IsNot Nothing) And (Me.m_bIsEnabled = True) Then
 
@@ -460,7 +460,7 @@ Public Class cValueChainPlugin
 
     End Sub
 
-    Private Sub Populate(ByVal data As cPluginData.cVCEconomicData, ByVal iTimeStep As Integer, ByVal iFleet As Integer)
+    Private Sub Populate(data As cPluginData.cVCEconomicData, iTimeStep As Integer, iFleet As Integer)
 
         data.m_sCost = Me.GetValue(cResults.eVariableType.Cost, iTimeStep, iFleet)
         data.m_sCostInput = Me.GetValue(cResults.eVariableType.CostRawmaterial, iTimeStep, iFleet)
@@ -490,14 +490,14 @@ Public Class cValueChainPlugin
     End Function
 
 
-    Public Sub Broadcaster(ByVal broadcaster As EwEPlugin.Data.IDataBroadcaster) _
+    Public Sub Broadcaster(broadcaster As EwEPlugin.Data.IDataBroadcaster) _
         Implements EwEPlugin.Data.IDataProducerPlugin.Broadcaster
 
         Me.m_dataBroadcaster = broadcaster
 
     End Sub
 
-    Public Function IsDataAvailable(ByVal typeData As System.Type, Optional ByVal runType As IRunType = Nothing) As Boolean _
+    Public Function IsDataAvailable(typeData As System.Type, Optional runType As IRunType = Nothing) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
 
         Dim bIsAvailable As Boolean = False
@@ -524,7 +524,7 @@ Public Class cValueChainPlugin
 
     End Function
 
-    Public Function GetDataByType(ByVal typeData As System.Type,
+    Public Function GetDataByType(typeData As System.Type,
                                   ByRef data As EwEPlugin.Data.IPluginData) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.GetDataByType
 
@@ -537,7 +537,7 @@ Public Class cValueChainPlugin
 
     End Function
 
-    Public Function IsEnabled(ByVal typeData As System.Type, ByVal runtype As IRunType) As Boolean _
+    Public Function IsEnabled(typeData As System.Type, runtype As IRunType) As Boolean _
          Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
         If Not (typeData Is GetType(IEconomicData)) Then Return False
@@ -561,7 +561,7 @@ Public Class cValueChainPlugin
 
     End Function
 
-    Public Sub SetEnabled(ByVal typeData As System.Type, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
+    Public Sub SetEnabled(typeData As System.Type, runType As IRunType, bEnabled As Boolean) _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
 
         Dim parms As cParameters = Me.Data.Parameters
@@ -587,7 +587,7 @@ Public Class cValueChainPlugin
         Return Me.m_bIsEnabled
     End Function
 
-    Public Function SetEnabled1(ByVal bEnable As Boolean) As Boolean _
+    Public Function SetEnabled1(bEnable As Boolean) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
         Me.m_bIsEnabled = bEnable
     End Function
@@ -638,7 +638,7 @@ Public Class cValueChainPlugin
     ''' performed. Implemented to provide economic search results.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub PostRunSearchResults(ByVal SearchDatastructures As Object) _
+    Public Sub PostRunSearchResults(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
 
         Dim ds As cSearchDatastructures = DirectCast(SearchDatastructures, cSearchDatastructures)

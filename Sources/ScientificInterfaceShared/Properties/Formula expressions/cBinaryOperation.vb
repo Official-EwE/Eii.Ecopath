@@ -75,21 +75,21 @@ Namespace Properties
         ''' <param name="operand2">Second operand (right side of operator).</param>
         ''' <remarks>For supported operand types, see <see cref="cFormulaProperty.GetExpression">cFormulaProperty.GetExpression</see>.</remarks>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal nOperator As eOperatorType, ByVal operand1 As Object, ByVal operand2 As Object)
+        Public Sub New(nOperator As eOperatorType, operand1 As Object, operand2 As Object)
             Me.m_nOperator = nOperator
             Me.m_operand1 = cFormulaProperty.GetExpression(operand1)
             Me.m_operand2 = cFormulaProperty.GetExpression(operand2)
             Me.m_sValue = Me.CalcValue()
             Me.m_style = Me.CalcStyle()
             ' Start listening for operand changes
-            AddHandler Me.m_operand1.OnValueChanged, AddressOf OnOperandValueChanged
-            AddHandler Me.m_operand2.OnValueChanged, AddressOf OnOperandValueChanged
+            AddHandler Me.m_operand1.OnValueChanged, AddressOf Me.OnOperandValueChanged
+            AddHandler Me.m_operand2.OnValueChanged, AddressOf Me.OnOperandValueChanged
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' Stop listening for operand changes
-            RemoveHandler Me.m_operand1.OnValueChanged, AddressOf OnOperandValueChanged
-            RemoveHandler Me.m_operand2.OnValueChanged, AddressOf OnOperandValueChanged
+            RemoveHandler Me.m_operand1.OnValueChanged, AddressOf Me.OnOperandValueChanged
+            RemoveHandler Me.m_operand2.OnValueChanged, AddressOf Me.OnOperandValueChanged
             ' Clean up
             Me.m_operand1.Dispose()
             Me.m_operand2.Dispose()
@@ -122,7 +122,7 @@ Namespace Properties
         ''' the outcome of the operation.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Private Sub OnOperandValueChanged(ByVal exp As cExpression)
+        Private Sub OnOperandValueChanged(exp As cExpression)
             ' Calc new value and style
             Dim sVal As Single = Me.CalcValue()
             Dim style As cStyleGuide.eStyleFlags = Me.CalcStyle()
@@ -133,7 +133,7 @@ Namespace Properties
                 Me.m_style = style
 
                 ' Broadcast change notification
-                FireChangeNotification()
+                Me.FireChangeNotification()
             End If
         End Sub
 

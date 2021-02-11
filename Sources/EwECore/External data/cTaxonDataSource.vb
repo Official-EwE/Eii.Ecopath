@@ -58,7 +58,7 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="TaxonData"></param>
         ''' -----------------------------------------------------------------------
-        Public Event OnTaxonData(ByVal TaxonData As ITaxonSearchData)
+        Public Event OnTaxonData(TaxonData As ITaxonSearchData)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -66,7 +66,7 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="data"></param>
         ''' -----------------------------------------------------------------------
-        Public Event OnTaxonSearchResults(ByVal data As IDataSearchResults)
+        Public Event OnTaxonSearchResults(data As IDataSearchResults)
 
 #End Region ' Public events
 
@@ -122,12 +122,12 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="runtype"></param>
         ''' -----------------------------------------------------------------------
-        Public Property EnableData(ByVal runtype As IRunType) As Boolean _
+        Public Property EnableData(runtype As IRunType) As Boolean _
             Implements IExternalDataSource.EnableData
             Get
                 Return s_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 s_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype) = value
             End Set
         End Property
@@ -139,7 +139,7 @@ Namespace ExternalData
         ''' <param name="runtype">The core run type to check availability for.</param>
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function IsDataAvailable(ByVal runtype As EwEUtils.Core.IRunType) As Boolean _
+        Public Function IsDataAvailable(runtype As EwEUtils.Core.IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
             Return s_core.PluginManager.IsDataAvailable(GetType(ITaxonSearchData), runtype)
         End Function
@@ -167,7 +167,7 @@ Namespace ExternalData
             Get
                 Return Me.m_strProviderName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If String.Compare(value, Me.m_strProviderName, True) = 0 Then Return
                 Me.m_strProviderName = value
                 For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
@@ -180,7 +180,7 @@ Namespace ExternalData
 
 #Region " Private methods "
 
-        Private Sub FireOnTaxonData(ByVal data As ITaxonSearchData)
+        Private Sub FireOnTaxonData(data As ITaxonSearchData)
             Try
                 RaiseEvent OnTaxonData(data)
             Catch ex As Exception
@@ -188,7 +188,7 @@ Namespace ExternalData
             End Try
         End Sub
 
-        Private Sub FireOnTaxonSearchResults(ByVal data As IDataSearchResults)
+        Private Sub FireOnTaxonSearchResults(data As IDataSearchResults)
             Try
                 RaiseEvent OnTaxonSearchResults(data)
             Catch ex As Exception
@@ -215,7 +215,7 @@ Namespace ExternalData
         ''' <param name="data">Actual incoming data.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ReceiveData(ByVal strDataName As String, ByVal data As EwEPlugin.Data.IPluginData) As Boolean _
+        Public Function ReceiveData(strDataName As String, data As EwEPlugin.Data.IPluginData) As Boolean _
             Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
 
             Try
@@ -258,7 +258,7 @@ Namespace ExternalData
             End Get
         End Property
 
-        Public Sub Initialize(ByVal core As Object) _
+        Public Sub Initialize(core As Object) _
             Implements EwEPlugin.IPlugin.Initialize
             s_core = DirectCast(core, cCore)
         End Sub

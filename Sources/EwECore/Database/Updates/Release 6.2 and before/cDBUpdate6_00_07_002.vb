@@ -69,7 +69,7 @@ Friend Class cDBUpdate6_00_07_002
         Return Me.AddSailingCostFields(db)
     End Function
 
-    Private Function AddSailingCostFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddSailingCostFields(db As cEwEDatabase) As Boolean
         Return db.Execute("ALTER TABLE EcospaceScenarioFleetMap ADD COLUMN SailCost SINGLE")
     End Function
 

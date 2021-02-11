@@ -38,7 +38,7 @@ Namespace Controls.Map
     Public Class cMapDrawerFleet
         Inherits cMapDrawerBase
 
-        Public Sub New(core As cCore, ByVal sg As cStyleGuide)
+        Public Sub New(core As cCore, sg As cStyleGuide)
             MyBase.New(core, sg)
         End Sub
 

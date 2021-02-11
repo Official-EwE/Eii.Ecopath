@@ -52,9 +52,9 @@ Namespace Controls
         ''' <param name="sYMax">Clip rectangle vert. axis corresponds to [0, syMax].</param>
         ''' <returns>A point in the clip rectangle that corresponds to ptModel.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToImagePoint(ByVal ptModel As PointF, _
-                                    ByVal rcClip As Rectangle, _
-                                    ByVal sXMax As Single, ByVal sYMax As Single) As PointF
+        Public Shared Function ToImagePoint(ptModel As PointF, _
+                                    rcClip As Rectangle, _
+                                    sXMax As Single, sYMax As Single) As PointF
 
             Dim ptImage As PointF = Nothing
 
@@ -75,9 +75,9 @@ Namespace Controls
         ''' <param name="sXMax">X max scale to translate the point to. This code assumes that the x min scale always equals 0.</param>
         ''' <param name="sYMax">Y max scale to translate the point to. This code assumes that the y min scale always equals 0.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToModelPoint(ByVal ptImage As PointF,
-                                    ByVal rcClip As Rectangle,
-                                    ByVal sXMax As Single, ByVal sYMax As Single) As PointF
+        Public Shared Function ToModelPoint(ptImage As PointF,
+                                    rcClip As Rectangle,
+                                    sXMax As Single, sYMax As Single) As PointF
 
             Dim ptModel As New PointF(CInt(Math.Ceiling((ptImage.X - rcClip.Left) * sXMax / rcClip.Width)),
                                 (rcClip.Height + rcClip.Top - ptImage.Y) * sYMax / rcClip.Height)
@@ -107,18 +107,18 @@ Namespace Controls
         ''' <param name="sXMark">X mark line position, expressed in the same units as the X-axis values of the shape. Provide cCore.NULL_VALUE to use the default.</param>
         ''' <param name="sYMark">Y mark line position, expressed in the same units as the Y-axis values of the shape. Provide cCore.NULL_VALUE to use the default.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub DrawShape(ByVal uic As cUIContext,
-                                ByVal shape As cShapeData,
-                                ByVal rcImage As Rectangle,
-                                ByVal g As Graphics,
-                                ByVal clr As Color,
-                                ByVal drawMode As eSketchDrawModeTypes,
-                                Optional ByVal iXMax As Integer = cCore.NULL_VALUE,
-                                Optional ByVal sYMax As Single = cCore.NULL_VALUE,
-                                Optional ByVal sXMark As Single = cCore.NULL_VALUE,
-                                Optional ByVal sYMark As Single = cCore.NULL_VALUE,
-                                Optional ByVal strXMarkLabel As String = "",
-                                Optional ByVal strYMarkLabel As String = "")
+        Public Shared Sub DrawShape(uic As cUIContext,
+                                shape As cShapeData,
+                                rcImage As Rectangle,
+                                g As Graphics,
+                                clr As Color,
+                                drawMode As eSketchDrawModeTypes,
+                                Optional iXMax As Integer = cCore.NULL_VALUE,
+                                Optional sYMax As Single = cCore.NULL_VALUE,
+                                Optional sXMark As Single = cCore.NULL_VALUE,
+                                Optional sYMark As Single = cCore.NULL_VALUE,
+                                Optional strXMarkLabel As String = "",
+                                Optional strYMarkLabel As String = "")
 
             If (shape Is Nothing) Then Return
 
@@ -142,17 +142,17 @@ Namespace Controls
 
         End Sub
 
-        Public Shared Sub DrawShapeDirect(ByVal uic As cUIContext,
-                                          ByVal asData As Single(), ByVal nPoints As Integer, ByVal bIsSeasonal As Boolean,
-                                          ByVal rcImage As Rectangle,
-                                          ByVal g As Graphics,
-                                          ByVal clr As Color,
-                                          ByVal drawMode As eSketchDrawModeTypes,
-                                          ByVal sYMax As Single,
-                                          ByVal sXMark As Single,
-                                          ByVal sYMark As Single,
-                                          Optional ByVal strXMarkLabel As String = "",
-                                          Optional ByVal strYMarkLabel As String = "",
+        Public Shared Sub DrawShapeDirect(uic As cUIContext,
+                                          asData As Single(), nPoints As Integer, bIsSeasonal As Boolean,
+                                          rcImage As Rectangle,
+                                          g As Graphics,
+                                          clr As Color,
+                                          drawMode As eSketchDrawModeTypes,
+                                          sYMax As Single,
+                                          sXMark As Single,
+                                          sYMark As Single,
+                                          Optional strXMarkLabel As String = "",
+                                          Optional strYMarkLabel As String = "",
                                           Optional bDrawZero As Boolean = False)
 
             Dim sg As cStyleGuide = uic.StyleGuide
@@ -354,13 +354,13 @@ Namespace Controls
         ''' should be displayed in the lower left corner of the shape
         ''' (or lower right, depending on locale reading order).</param>
         ''' -------------------------------------------------------------------
-        Public Shared Function IconImage(ByVal uic As cUIContext, _
-                ByVal shape As cShapeData, _
-                ByVal clr As Color, _
-                ByVal dm As eSketchDrawModeTypes, _
-                ByVal iXMax As Integer, _
-                Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
-                Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
+        Public Shared Function IconImage(uic As cUIContext, _
+                shape As cShapeData, _
+                clr As Color, _
+                dm As eSketchDrawModeTypes, _
+                iXMax As Integer, _
+                Optional sYMax As Single = cCore.NULL_VALUE, _
+                Optional bShowWarning As Boolean = False) As System.Drawing.Image
 
             Dim sg As cStyleGuide = uic.StyleGuide
             Dim bmp As New Bitmap(sg.ThumbnailSize, sg.ThumbnailSize)

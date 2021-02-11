@@ -70,7 +70,7 @@ Public Class frmCEFASRecruitment
         Public Recruitment() As Single
         Public NumSteps As Integer
 
-        Public Sub New(ByVal iStep As Integer)
+        Public Sub New(iStep As Integer)
             Me.NumSteps = iStep
             ReDim Me.Biomass(iStep)
             ReDim Me.Recruitment(iStep)
@@ -92,7 +92,7 @@ Public Class frmCEFASRecruitment
 
 #Region " Overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Try
@@ -117,7 +117,7 @@ Public Class frmCEFASRecruitment
             Me.m_qehGrid.Attach(Me.m_grid, Me.UIContext, Me.m_tsMain)
 
             'Select first group with likely values
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 If Me.m_Assessment.Parameter(iGroup).isFished Then
                     Me.m_grid.Group = Me.m_Assessment.Parameter(iGroup)
                     Exit For
@@ -137,7 +137,7 @@ Public Class frmCEFASRecruitment
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
         If (Me.m_qehGrid IsNot Nothing) Then
             Me.m_qehGrid.Detach()
@@ -167,7 +167,7 @@ Public Class frmCEFASRecruitment
         Me.Group = Me.m_grid.Group
     End Sub
 
-    Private Sub OnSetDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSetDefaults(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnDefaults.Click
         Try
             Me.m_Assessment.Defaults()
@@ -196,7 +196,7 @@ Public Class frmCEFASRecruitment
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnParameterChanged(ByVal iGroupIndex As Integer)
+    Private Sub OnParameterChanged(iGroupIndex As Integer)
         ' A relevant property has changed: redraw the graph
         Try
             If Not Me.m_bInitialized Then Return
@@ -220,11 +220,11 @@ Public Class frmCEFASRecruitment
             Return Me.m_group
         End Get
 
-        Set(ByVal value As cStockAssessmentParameters)
+        Set(value As cStockAssessmentParameters)
             ' Unregister
             If (Me.m_group IsNot Nothing) Then
                 'RemoveHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
-                RemoveHandler Me.m_group.onParameterChanged, AddressOf OnParameterChanged
+                RemoveHandler Me.m_group.onParameterChanged, AddressOf Me.OnParameterChanged
             End If
 
             ' Update
@@ -233,7 +233,7 @@ Public Class frmCEFASRecruitment
             ' Register
             If (Me.m_group IsNot Nothing) Then
                 'AddHandler Me.m_group.onParameterChanged, AddressOf onParameterChanged
-                AddHandler Me.m_group.onParameterChanged, AddressOf OnParameterChanged
+                AddHandler Me.m_group.onParameterChanged, AddressOf Me.OnParameterChanged
             End If
 
             ' Redraw the graph
@@ -275,8 +275,8 @@ Public Class frmCEFASRecruitment
 
             'Let's just scale the x-axis to default 10 times the HalfRecruitmentBiomass
             Dim maxXaxisValue As Single = 10
-            If CSng(1.1 / Group.RHalfB0Ratio) > maxXaxisValue Then
-                maxXaxisValue = CSng(1.2 / Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
+            If CSng(1.1 / Me.Group.RHalfB0Ratio) > maxXaxisValue Then
+                maxXaxisValue = CSng(1.2 / Me.Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
             End If
 
             'the max recruitment = RecEcop*(Ratio+1)

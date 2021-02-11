@@ -35,20 +35,16 @@ Public Class cEcosimEnviroResponseManager
     Private m_simData As cEcosimDatastructures
     Private m_medData As cMediationDataStructures
 
-    Private m_lstEnviroData As List(Of IEnviroInputData)
-
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         MyBase.New(core)
         Me.m_coreComponent = eCoreComponentType.EcosimCapacityResponseInteractionManager
         Me.m_dataType = eDataTypes.EcosimEnviroResponseFunctionManager
     End Sub
 
-    Friend Sub Init(ByVal EocsimData As cEcosimDatastructures, ByVal MediationData As cMediationDataStructures)
+    Friend Sub Init(EocsimData As cEcosimDatastructures, MediationData As cMediationDataStructures)
         Me.m_simData = EocsimData
         Me.m_medData = MediationData
-        'Me.m_simData.lstEnviroInputData = New List(Of IEnviroInputData)
-
-        m_lstEnviroData = New List(Of IEnviroInputData)
+        Me.m_simData.lstEnviroInputData = New List(Of IEnviroInputData)
     End Sub
 
     Public Sub Load(manager As cForcingFunctionShapeManager)
@@ -56,11 +52,6 @@ Public Class cEcosimEnviroResponseManager
     End Sub
 
     Private Sub LoadFromCoreData(manager As cForcingFunctionShapeManager)
-
-        If m_lstEnviroData Is Nothing Then
-            m_lstEnviroData = New List(Of IEnviroInputData)
-        End If
-        m_lstEnviroData.Clear()
 
         'populate the list of IEnviroInputData objects that the user will interact with 
         'to change region related parameters from the interface
@@ -73,8 +64,7 @@ Public Class cEcosimEnviroResponseManager
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
                     EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.EnvRespFuncIndex(iEnv, iGroup)
                 Next
-                ' Me.m_simData.lstEnviroInputData.Add(EnviroData)
-                Me.m_lstEnviroData.Add(EnviroData)
+                Me.m_simData.lstEnviroInputData.Add(EnviroData)
 
             Catch ex As Exception
                 Debug.Assert(False, "LoadFromCoreData Error: " & ex.Message)
@@ -93,8 +83,7 @@ Public Class cEcosimEnviroResponseManager
         Dim bSuccess As Boolean = True
 
         Try
-            'For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
-            For Each env As cEcosimEnviroInputData In Me.m_lstEnviroData
+            For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
                     'If this is a new application
                     'check that the response function cover some of the input(forcing) data
@@ -120,17 +109,15 @@ Public Class cEcosimEnviroResponseManager
 
     Public ReadOnly Property nInputData() As Integer Implements IEnvironmentalResponseManager.nEnviroData
         Get
-            Return Me.m_lstEnviroData.Count
-            'Return Me.m_simData.lstEnviroInputData.Count
+            Return Me.m_simData.lstEnviroInputData.Count
         End Get
     End Property
 
 
-    Public ReadOnly Property InputData(ByVal iDataIndex As Integer) As IEnviroInputData Implements IEnvironmentalResponseManager.EnviroData
+    Public ReadOnly Property InputData(iDataIndex As Integer) As IEnviroInputData Implements IEnvironmentalResponseManager.EnviroData
         Get
             If iDataIndex > 0 And iDataIndex <= Me.nInputData Then
-                Return Me.m_lstEnviroData(iDataIndex - 1)
-                ' Return Me.m_simData.lstEnviroInputData(iDataIndex - 1)
+                Return Me.m_simData.lstEnviroInputData(iDataIndex - 1)
             End If
             Return Nothing
         End Get
@@ -180,28 +167,20 @@ Public Class cEcosimEnviroResponseManager
             msg.AppendLine(My.Resources.CoreMessages.ECOSIM_RESPONSE_NO_OVERLAP)
         End If
 
-        'If Me.m_simData.QBoutside(iGrp) <> 0 Then
-        '    Dim break As String = String.Empty
-        '    If msg.Length > 0 Then break = EwEUtils.Utilities.cStringUtils.vbCrLf
-        '    msg.Append(break & My.Resources.CoreMessages.ECOSIM_RESPONSE_DIET)
-        'End If
+        If Me.m_simData.QBoutside(iGrp) <> 0 Then
+            Dim break As String = String.Empty
+            If msg.Length > 0 Then break = EwEUtils.Utilities.cStringUtils.vbCrLf
+            msg.Append(break & My.Resources.CoreMessages.ECOSIM_RESPONSE_DIET)
+        End If
 
         If Not String.IsNullOrEmpty(msg.ToString) Then
-            Me.m_core.Messages.SendMessage(New cMessage(msg.ToString, eMessageType.DataModified, eCoreComponentType.EcosimCapacityResponseInteractionManager, eMessageImportance.Warning))
+            Me.m_core.Messages.SendMessage(New cMessage(msg.ToString, eMessageType.DataModified, Me.CoreComponent, eMessageImportance.Warning))
         End If
 
-    End Sub
-
-
-    Public Overrides Sub Clear()
-        MyBase.Clear()
-        If Me.m_lstEnviroData IsNot Nothing Then
-            Me.m_lstEnviroData.Clear()
-            'Me.m_lstEnviroData = Nothing
-        End If
     End Sub
 
     Public Sub UpdateLayer(layer As cEcospaceLayer) Implements IEnvironmentalResponseManager.UpdateLayer
         'Nope nothing for Ecosim
     End Sub
+
 End Class

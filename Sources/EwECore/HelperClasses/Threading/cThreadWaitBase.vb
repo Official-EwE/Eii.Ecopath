@@ -59,13 +59,13 @@ Public MustInherit Class cThreadWaitBase
     ''' ---------------------------------------------------------------------------
     ''' <inheritdocs cref="IThreadedProcess.StopRun"/>
     ''' ---------------------------------------------------------------------------
-    Public MustOverride Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean _
+    Public MustOverride Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean _
         Implements IThreadedProcess.StopRun
 
     ''' ---------------------------------------------------------------------------
     ''' <inheritdocs cref="IThreadedProcess.Wait"/>
     ''' ---------------------------------------------------------------------------
-    Public Overridable Function Wait(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
+    Public Overridable Function Wait(Optional WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
         'if WaitTimeInMillSec  = -1 wait until completed(WaitOne returns True) no matter how long
         'if WaitTimeInMillSec = 0 then wait for zero time even if WaitOne returns False, process has not completed
         'WaitTimeInMillSec > 0 (any positive integer) then wait for WaitTimeInMillSec or until WaitOne returns True
@@ -149,7 +149,7 @@ Public MustInherit Class cThreadWaitBase
         Implements IThreadedProcess.SetWait
 
         'set the isRunning flag
-        m_bIsRunning = True
+        Me.m_bIsRunning = True
         'puts the ManualResetEvent into a non-signaled state
         'threads calling Wait() will block until ReleaseWait() is called
         Me.m_SignalState.Reset()
@@ -162,7 +162,7 @@ Public MustInherit Class cThreadWaitBase
     Public Overridable Sub ReleaseWait() _
         Implements IThreadedProcess.ReleaseWait
 
-        m_bIsRunning = False
+        Me.m_bIsRunning = False
         'puts the ManualResetEvent into a signaled state
         'Threads that called Wait() will be signaled to proceed
         Me.m_SignalState.Set()
@@ -175,13 +175,13 @@ Public MustInherit Class cThreadWaitBase
     Public Overridable ReadOnly Property IsRunning() As Boolean _
         Implements IThreadedProcess.IsRunning
         Get
-            Return m_bIsRunning
+            Return Me.m_bIsRunning
         End Get
     End Property
 
     Public WriteOnly Property MessagePump As cCore.MessagePumpDelegate Implements IThreadedProcess.MessagePump
         Set(value As cCore.MessagePumpDelegate)
-            m_MessagePump = value
+            Me.m_MessagePump = value
         End Set
     End Property
 End Class

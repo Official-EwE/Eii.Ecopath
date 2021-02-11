@@ -227,21 +227,21 @@ Public Class cEcosimMonteCarlo
 
     Public Sub New(ByRef theCore As cCore)
 
-        m_core = theCore
+        Me.m_core = theCore
 
-        m_ecopath = m_core.m_EcoPath
-        m_ecosim = m_core.m_EcoSim
-        m_epdata = m_core.m_EcoPathData
-        m_esdata = m_core.m_EcoSimData
-        m_tsdata = m_core.m_TSData
+        Me.m_ecopath = Me.m_core.m_EcoPath
+        Me.m_ecosim = Me.m_core.m_EcoSim
+        Me.m_epdata = Me.m_core.m_EcoPathData
+        Me.m_esdata = Me.m_core.m_EcoSimData
+        Me.m_tsdata = Me.m_core.m_TSData
         'data from Ecosim
-        m_stanza = m_ecosim.m_stanza
-        m_tracerData = m_ecosim.TracerData
+        Me.m_stanza = Me.m_ecosim.m_stanza
+        Me.m_tracerData = Me.m_ecosim.TracerData
 
-        Ntrials = 20 'default number of trials
-        EcopathEETol = 0.0005 '0.05%
+        Me.Ntrials = 20 'default number of trials
+        Me.EcopathEETol = 0.0005 '0.05%
 
-        m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
+        Me.m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
 
         ' Set default
         Me.ResultWriter = New cMonteCarloResultsWriterOneFile(Me, Me.m_core)
@@ -249,10 +249,10 @@ Public Class cEcosimMonteCarlo
     End Sub
 
     Public Sub initRandomSequence(seed As Integer)
-        m_rand = New Random(seed)
+        Me.m_rand = New Random(seed)
     End Sub
 
-    Public Function SampleGamma(ByVal Alpha As Single, ByVal Theta As Single) As Double
+    Public Function SampleGamma(Alpha As Single, Theta As Single) As Double
         Dim n As Double = Math.Truncate(Alpha)
         Dim delta As Double = Alpha - n
         Dim xi As Double = 0
@@ -264,15 +264,15 @@ Public Class cEcosimMonteCarlo
 
         If (n > 0) Then
             For k As Integer = 1 To CInt(n)
-                part1 = part1 + Math.Log(m_rand.NextDouble)
+                part1 = part1 + Math.Log(Me.m_rand.NextDouble)
             Next
         End If
 
         If (delta > 0) Then
             Do
-                U = m_rand.NextDouble
-                V = m_rand.NextDouble
-                W = m_rand.NextDouble
+                U = Me.m_rand.NextDouble
+                V = Me.m_rand.NextDouble
+                W = Me.m_rand.NextDouble
 
                 If (U <= (Math.E / (Math.E + delta))) Then
                     xi = V ^ (1 / delta)
@@ -297,7 +297,7 @@ Public Class cEcosimMonteCarlo
 
             'set if a parameter can be varied
             'redimVariables() needs m_isVariable(group,parameter) to be set before it is called
-            ReDim m_isEnabled(Me.NumParams())
+            ReDim Me.m_isEnabled(Me.NumParams())
             Me.m_isEnabled(eMCParams.Biomass) = True
             Me.m_isEnabled(eMCParams.BA) = True
             Me.m_isEnabled(eMCParams.BaBi) = True
@@ -311,40 +311,40 @@ Public Class cEcosimMonteCarlo
             Me.maxEcopathTries = MAX_ECOPATH_TRIES
 
             Me.redimVariables()
-            m_pluginmanager = Me.m_core.PluginManager
+            Me.m_pluginmanager = Me.m_core.PluginManager
 
-            ReDim Pmean(Me.NumParams(), m_core.nGroups)
-            ReDim PMeanLanding(m_core.nFleets, m_core.nGroups)
-            ReDim PMeanDiscard(m_core.nFleets, m_core.nGroups)
-            ReDim PMeanDC(m_core.nGroups, m_core.nGroups)
-            ReDim startValues(Me.NumParams(), m_epdata.NumGroups)
-            ReDim m_startValuesDiets(m_epdata.NumGroups, m_epdata.NumGroups)
-            ReDim BestFit(Me.NumParams(), m_core.nGroups)
-            ReDim BestFitLanding(m_core.nFleets, m_core.nGroups)
-            ReDim BestFitDiscard(m_core.nFleets, m_core.nGroups)
-            ReDim BestFitDiets(m_epdata.NumGroups, m_epdata.NumGroups)
+            ReDim Me.Pmean(Me.NumParams(), Me.m_core.nGroups)
+            ReDim Me.PMeanLanding(Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.PMeanDiscard(Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.PMeanDC(Me.m_core.nGroups, Me.m_core.nGroups)
+            ReDim Me.startValues(Me.NumParams(), Me.m_epdata.NumGroups)
+            ReDim Me.m_startValuesDiets(Me.m_epdata.NumGroups, Me.m_epdata.NumGroups)
+            ReDim Me.BestFit(Me.NumParams(), Me.m_core.nGroups)
+            ReDim Me.BestFitLanding(Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.BestFitDiscard(Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.BestFitDiets(Me.m_epdata.NumGroups, Me.m_epdata.NumGroups)
             ' ReDim orgVul(m_core.nGroups, m_core.nGroups)
 
-            For igrp As Integer = 1 To m_core.nGroups
-                Pmean(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
-                Pmean(eMCParams.PB, igrp) = m_epdata.PB(igrp)
-                Pmean(eMCParams.QB, igrp) = m_epdata.QB(igrp)
-                Pmean(eMCParams.EE, igrp) = m_epdata.EE(igrp)
-                Pmean(eMCParams.BA, igrp) = m_epdata.BA(igrp)
-                Pmean(eMCParams.BaBi, igrp) = m_epdata.BaBi(igrp)
-                Pmean(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
-                Pmean(eMCParams.OtherMort, igrp) = m_epdata.OtherMortinput(igrp)
+            For igrp As Integer = 1 To Me.m_core.nGroups
+                Me.Pmean(eMCParams.Biomass, igrp) = Me.m_epdata.B(igrp)
+                Me.Pmean(eMCParams.PB, igrp) = Me.m_epdata.PB(igrp)
+                Me.Pmean(eMCParams.QB, igrp) = Me.m_epdata.QB(igrp)
+                Me.Pmean(eMCParams.EE, igrp) = Me.m_epdata.EE(igrp)
+                Me.Pmean(eMCParams.BA, igrp) = Me.m_epdata.BA(igrp)
+                Me.Pmean(eMCParams.BaBi, igrp) = Me.m_epdata.BaBi(igrp)
+                Me.Pmean(eMCParams.Vulnerability, igrp) = Me.m_esdata.VulnerabilityPredator(igrp)
+                Me.Pmean(eMCParams.OtherMort, igrp) = Me.m_epdata.OtherMortinput(igrp)
 
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    PMeanLanding(iFleet, igrp) = m_epdata.Landing(iFleet, igrp)
-                    PMeanDiscard(iFleet, igrp) = m_epdata.Discard(iFleet, igrp)
+                    Me.PMeanLanding(iFleet, igrp) = Me.m_epdata.Landing(iFleet, igrp)
+                    Me.PMeanDiscard(iFleet, igrp) = Me.m_epdata.Discard(iFleet, igrp)
                 Next
 
-                For iPrey As Integer = 0 To m_core.nGroups
-                    PMeanDC(igrp, iPrey) = m_epdata.DC(igrp, iPrey)
+                For iPrey As Integer = 0 To Me.m_core.nGroups
+                    Me.PMeanDC(igrp, iPrey) = Me.m_epdata.DC(igrp, iPrey)
                 Next
             Next
-            CalculateUpperLowerLimits(False)
+            Me.CalculateUpperLowerLimits(False)
 
             ' Fire plug-in point
             If Me.m_pluginmanager IsNot Nothing Then
@@ -402,7 +402,7 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Function PedigreeVarToMCIndex(ByVal vn As eVarNameFlags) As eMCParams
+    Private Function PedigreeVarToMCIndex(vn As eVarNameFlags) As eMCParams
 
         Select Case vn
             Case eVarNameFlags.BiomassAreaInput : Return eMCParams.Biomass
@@ -447,13 +447,13 @@ Public Class cEcosimMonteCarlo
                                  eVarNameFlags.QBInput,
                                  eVarNameFlags.DietComp
                                 parm = Me.PedigreeVarToMCIndex(varname)
-                                CVpar(parm, i) = opt / 100.0! / 2.0!
+                                Me.CVpar(parm, i) = opt / 100.0! / 2.0!
                                 Me.CalculateUpperLowerLimits(False, parm)
 
                             Case eVarNameFlags.TCatchInput
                                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                                    CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
-                                    CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
+                                    Me.CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
+                                    Me.CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
                                 Next
 
                                 Me.CalculateUpperLowerLimits(False, eMCParams.Landings)
@@ -475,20 +475,20 @@ Public Class cEcosimMonteCarlo
 
         Try
 
-            StopTrial = False
-            m_esdata.SS = 0
+            Me.StopTrial = False
+            Me.m_esdata.SS = 0
 
             'This gives the same sequence of random numbers 
             'Used for debugging
             'm_rand = New Random(666)
 
-            ReDim isCrashed(m_core.nGroups)
-            ReDim isExploded(m_core.nGroups)
+            ReDim Me.isCrashed(Me.m_core.nGroups)
+            ReDim Me.isExploded(Me.m_core.nGroups)
 
-            m_ecosim.Init(True)
+            Me.m_ecosim.Init(True)
 
-            m_core.m_EcoSimData.bTimestepOutput = True
-            m_ecosim.TimeStepDelegate = Nothing
+            Me.m_core.m_EcoSimData.bTimestepOutput = True
+            Me.m_ecosim.TimeStepDelegate = Nothing
 
             'jb remove vulnerabilities until there is a proper interface
             'if it is left in place it causes problem because it changes the vulnerabilities
@@ -507,36 +507,36 @@ Public Class cEcosimMonteCarlo
             'Next
 
             'run ecosim to get the fit (SS) of the ref data to the current ecopath parameters
-            m_ecosim.Run()
+            Me.m_ecosim.Run()
 
-            For iGrp As Integer = 1 To m_core.nGroups
-                Pmean(eMCParams.Biomass, iGrp) = m_epdata.B(iGrp)
-                Pmean(eMCParams.PB, iGrp) = m_epdata.PB(iGrp)
-                Pmean(eMCParams.EE, iGrp) = m_epdata.EE(iGrp)
-                Pmean(eMCParams.BA, iGrp) = m_epdata.BA(iGrp)
-                Pmean(eMCParams.BaBi, iGrp) = m_epdata.BaBi(iGrp)
-                Pmean(eMCParams.QB, iGrp) = m_epdata.QB(iGrp)
-                Pmean(eMCParams.OtherMort, iGrp) = m_epdata.OtherMortinput(iGrp)
+            For iGrp As Integer = 1 To Me.m_core.nGroups
+                Me.Pmean(eMCParams.Biomass, iGrp) = Me.m_epdata.B(iGrp)
+                Me.Pmean(eMCParams.PB, iGrp) = Me.m_epdata.PB(iGrp)
+                Me.Pmean(eMCParams.EE, iGrp) = Me.m_epdata.EE(iGrp)
+                Me.Pmean(eMCParams.BA, iGrp) = Me.m_epdata.BA(iGrp)
+                Me.Pmean(eMCParams.BaBi, iGrp) = Me.m_epdata.BaBi(iGrp)
+                Me.Pmean(eMCParams.QB, iGrp) = Me.m_epdata.QB(iGrp)
+                Me.Pmean(eMCParams.OtherMort, iGrp) = Me.m_epdata.OtherMortinput(iGrp)
 
                 'Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
 
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    PMeanLanding(iFleet, iGrp) = m_epdata.Landing(iFleet, iGrp)
-                    PMeanDiscard(iFleet, iGrp) = m_epdata.Discard(iFleet, iGrp)
+                    Me.PMeanLanding(iFleet, iGrp) = Me.m_epdata.Landing(iFleet, iGrp)
+                    Me.PMeanDiscard(iFleet, iGrp) = Me.m_epdata.Discard(iFleet, iGrp)
                 Next
 
-                For iPrey As Integer = 0 To m_core.nGroups ' JS: why 0?
-                    PMeanDC(iGrp, iPrey) = m_epdata.DC(iGrp, iPrey)
+                For iPrey As Integer = 0 To Me.m_core.nGroups ' JS: why 0?
+                    Me.PMeanDC(iGrp, iPrey) = Me.m_epdata.DC(iGrp, iPrey)
                 Next
             Next
 
             'make a copy for the best fitting data 
-            Array.Copy(Pmean, BestFit, Pmean.Length)
-            Array.Copy(PMeanDC, BestFitDiets, PMeanDC.Length)
+            Array.Copy(Me.Pmean, Me.BestFit, Me.Pmean.Length)
+            Array.Copy(Me.PMeanDC, Me.BestFitDiets, Me.PMeanDC.Length)
             'make a copy of the original values so the user can restore the values
-            Array.Copy(Pmean, startValues, Pmean.Length)
+            Array.Copy(Me.Pmean, Me.startValues, Me.Pmean.Length)
             ' MP Apr 2016 adding diets
-            Array.Copy(PMeanDC, m_startValuesDiets, PMeanDC.Length)
+            Array.Copy(Me.PMeanDC, Me.m_startValuesDiets, Me.PMeanDC.Length)
             'vulnerabilities 
             'Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
 
@@ -566,12 +566,12 @@ Public Class cEcosimMonteCarlo
                 'End Using
             End If
 #End If
-            SSorg = m_esdata.SS
+            Me.SSorg = Me.m_esdata.SS
 
             'make sure the ecopath type of run is correct for the monte carlo runs
-            m_ecopath.ParameterEstimationType = eEstimateParameterFor.Sensitivity
+            Me.m_ecopath.ParameterEstimationType = eEstimateParameterFor.Sensitivity
 
-            m_ecosim.TimeStepDelegate = EcosimTimeStep
+            Me.m_ecosim.TimeStepDelegate = Me.EcosimTimeStep
 
             If Me.m_pluginmanager IsNot Nothing Then
                 Try
@@ -645,7 +645,7 @@ Public Class cEcosimMonteCarlo
         End Set
     End Property
 
-    Public Sub Run(ByVal ob As Object)
+    Public Sub Run(ob As Object)
 
         Dim iter As Integer 'number of ecopath interation to find new pararameters for each trial
         Dim Fpenalty As Single
@@ -656,15 +656,15 @@ Public Class cEcosimMonteCarlo
         'Dim MCthreadList As New List(Of cMonteCarloThread)
         'Dim MCthread As cMonteCarloThread
         Dim bForcedCatches(Me.m_epdata.NumGroups) As Boolean
-        For its As Integer = 1 To m_tsdata.nTimeSeries
-            If m_tsdata.TimeSeriesType(its) = eTimeSeriesType.CatchesForcing Then
-                bForcedCatches(m_tsdata.iPool(its)) = True
+        For its As Integer = 1 To Me.m_tsdata.nTimeSeries
+            If Me.m_tsdata.TimeSeriesType(its) = eTimeSeriesType.CatchesForcing Then
+                bForcedCatches(Me.m_tsdata.iPool(its)) = True
             End If
         Next
 
         System.Console.WriteLine("----------Starting Monte Carlo----------")
         Try
-            initForRun()
+            Me.initForRun()
 
             If (Me.ResultWriter IsNot Nothing) Then
                 Me.ResultWriter.Init()
@@ -686,83 +686,83 @@ Public Class cEcosimMonteCarlo
 
             'tell ecopath to run in silent mode
             'this does not turn off the core's messages just ecopath
-            m_ecopath.suppressMessages = True
+            Me.m_ecopath.suppressMessages = True
 
             'Ecosim was run in initForRun()
             'm_esdata.SS is the fit of the currently loaded reference data
             If Me.isTimeSeriesLoaded Then
-                SSBestFit = m_esdata.SS
+                Me.SSBestFit = Me.m_esdata.SS
             Else
-                SSBestFit = 0
+                Me.SSBestFit = 0
             End If
 
-            For m_iTrial = 1 To Ntrials 'PerThread
+            For Me.m_iTrial = 1 To Me.Ntrials 'PerThread
 
-                If StopTrial = True Then Exit For
+                If Me.StopTrial = True Then Exit For
 
                 'number of ecopath iterations to find new parameters
                 iter = 0
-                RunsSinceLastWithLowerSS += 1
+                Me.RunsSinceLastWithLowerSS += 1
                 Me.m_bIsBestFit = False
 
-                If BalanceEcopathWithNewPars(iter, maxEcopathTries) Then
+                If Me.BalanceEcopathWithNewPars(iter, Me.maxEcopathTries) Then
 
-                    Me.BalancedEcopathModel(m_iTrial, iter)
+                    Me.BalancedEcopathModel(Me.m_iTrial, iter)
 
-                    m_ecosim.Init(True)
+                    Me.m_ecosim.Init(True)
 
                     'the ecosim time step delegate was set before the loop
-                    m_ecosim.Run()
+                    Me.m_ecosim.Run()
 
-                    Me.m_bIsBestFit = Me.isTimeSeriesLoaded() And (m_esdata.SS < SSBestFit)
+                    Me.m_bIsBestFit = Me.isTimeSeriesLoaded() And (Me.m_esdata.SS < Me.SSBestFit)
 
                     'xxxxxxxxxxxxxxxxxxxx Below is for global Nereus model, June 2013 xxxxxxxxxxxxxxxxxx
                     'Calculate penalty for being away from reasonable fishing mortalityIsVariable
                     Fpenalty = Me.getFPenalty(bFirstRun, bForcedCatches)
-                    m_esdata.SS += Fpenalty
+                    Me.m_esdata.SS += Fpenalty
                     'Debug.Print(Me.m_esdata.SS & " = " & Me.m_esdata.SS - Fpenalty & " + " & Fpenalty)
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     'Only keep the best fit if there is time series loaded
-                    If Me.isTimeSeriesLoaded() And (m_esdata.SS < SSBestFit) Then
-                        RunsSinceLastWithLowerSS = 0
+                    If Me.isTimeSeriesLoaded() And (Me.m_esdata.SS < Me.SSBestFit) Then
+                        Me.RunsSinceLastWithLowerSS = 0
                         'SSBestFit = MCthread.ESdata.SS
-                        SSBestFit = m_esdata.SS
-                        Console.WriteLine("Total trials: " & m_iTrial.ToString & ", " & SSBestFit.ToString & ", to fit last Ecopath: " & iter.ToString) '& ", total: " & Itertot.ToString)
+                        Me.SSBestFit = Me.m_esdata.SS
+                        Console.WriteLine("Total trials: " & Me.m_iTrial.ToString & ", " & Me.SSBestFit.ToString & ", to fit last Ecopath: " & iter.ToString) '& ", total: " & Itertot.ToString)
 
-                        CheckWhoIsCrashed()
+                        Me.CheckWhoIsCrashed()
                         'keep the best fits for applying later
-                        For igrp As Integer = 1 To m_core.nGroups
-                            BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
-                            BestFit(eMCParams.QB, igrp) = m_epdata.QB(igrp)
-                            BestFit(eMCParams.PB, igrp) = m_epdata.PB(igrp)
-                            BestFit(eMCParams.EE, igrp) = m_epdata.EE(igrp)
-                            BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
-                            BestFit(eMCParams.BaBi, igrp) = m_epdata.BaBi(igrp)
+                        For igrp As Integer = 1 To Me.m_core.nGroups
+                            Me.BestFit(eMCParams.Biomass, igrp) = Me.m_epdata.B(igrp)
+                            Me.BestFit(eMCParams.QB, igrp) = Me.m_epdata.QB(igrp)
+                            Me.BestFit(eMCParams.PB, igrp) = Me.m_epdata.PB(igrp)
+                            Me.BestFit(eMCParams.EE, igrp) = Me.m_epdata.EE(igrp)
+                            Me.BestFit(eMCParams.BA, igrp) = Me.m_epdata.BA(igrp)
+                            Me.BestFit(eMCParams.BaBi, igrp) = Me.m_epdata.BaBi(igrp)
                             '  BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
 
                             For iFlt As Integer = 1 To Me.m_epdata.NumFleet
-                                BestFitLanding(iFlt, igrp) = m_epdata.Landing(iFlt, igrp)
-                                BestFitDiscard(iFlt, igrp) = m_epdata.Discard(iFlt, igrp)
+                                Me.BestFitLanding(iFlt, igrp) = Me.m_epdata.Landing(iFlt, igrp)
+                                Me.BestFitDiscard(iFlt, igrp) = Me.m_epdata.Discard(iFlt, igrp)
                             Next
 
-                            For iPrey As Integer = 1 To m_core.nGroups
-                                BestFitDiets(igrp, iPrey) = m_epdata.DC(igrp, iPrey)
+                            For iPrey As Integer = 1 To Me.m_core.nGroups
+                                Me.BestFitDiets(igrp, iPrey) = Me.m_epdata.DC(igrp, iPrey)
                             Next
                         Next
 
-                        If RetainBiomass Then
-                            Array.Copy(BestFit, Pmean, BestFit.Length)
+                        If Me.RetainBiomass Then
+                            Array.Copy(Me.BestFit, Me.Pmean, Me.BestFit.Length)
 
-                            Array.Copy(BestFitDiscard, PMeanDiscard, BestFitDiscard.Length)
-                            Array.Copy(BestFitLanding, PMeanLanding, BestFitLanding.Length)
+                            Array.Copy(Me.BestFitDiscard, Me.PMeanDiscard, Me.BestFitDiscard.Length)
+                            Array.Copy(Me.BestFitLanding, Me.PMeanLanding, Me.BestFitLanding.Length)
 
                             If Me.IsEnabled(eMCParams.Diets) Then
-                                Array.Copy(BestFitDiets, PMeanDC, PMeanDC.Length)
+                                Array.Copy(Me.BestFitDiets, Me.PMeanDC, Me.PMeanDC.Length)
                             End If
 
                             'VC 2008 don't want it to stop just as it found a better fit so:
-                            m_iTrial = Math.Min(m_iTrial, CInt(0.9 * Ntrials))
+                            Me.m_iTrial = Math.Min(Me.m_iTrial, CInt(0.9 * Me.Ntrials))
 
                         End If 'bRetainBiomass
                     End If ' m_esdata.SS < SSBestFit
@@ -771,30 +771,30 @@ Public Class cEcosimMonteCarlo
                         Try
                             Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
                         Catch ex As Exception
-                            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & m_iTrial & ")")
+                            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
                         End Try
                     End If
 
                     If (Me.ResultWriter IsNot Nothing) Then
                         ' Only save when an alternative balanced model was found
-                        Me.ResultWriter.Save(m_iTrial)
+                        Me.ResultWriter.Save(Me.m_iTrial)
                     End If
 
                 End If 'iter < maxEcopathTries 
 
-                TrialProgress(m_iTrial, iter)
-                EcopathIterationsProgress(iter)
+                Me.TrialProgress(Me.m_iTrial, iter)
+                Me.EcopathIterationsProgress(iter)
 
                 ' Fire plug-in point
                 If Me.m_pluginmanager IsNot Nothing Then
                     Try
                         Me.m_pluginmanager.PostRunSearchResults(Me.m_core.m_SearchData)
                     Catch ex As Exception
-                        cLog.Write(ex, "cEcosimMonteCarlo::Run(" & m_iTrial & ")")
+                        cLog.Write(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
                     End Try
                 End If
-                If RunsSinceLastWithLowerSS > 2000 Then Exit For
-            Next m_iTrial
+                If Me.RunsSinceLastWithLowerSS > 2000 Then Exit For
+            Next Me.m_iTrial
 
             'restore ecopath back to its original state
             Me.restoreOriginalState()
@@ -811,9 +811,9 @@ Public Class cEcosimMonteCarlo
             Me.m_ecopath.suppressMessages = False
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & m_iTrial & ")")
+            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
             Debug.Assert(False, ex.StackTrace)
-            m_ecopath.suppressMessages = False
+            Me.m_ecopath.suppressMessages = False
         End Try
 
         If (Me.ResultWriter IsNot Nothing) Then
@@ -830,7 +830,7 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Sub BalancedEcopathModel(ByVal iTrial As Integer, ByVal iter As Integer)
+    Private Sub BalancedEcopathModel(iTrial As Integer, iter As Integer)
         If Me.m_pluginmanager IsNot Nothing Then
             Try
                 'Create a Manual reset event in a state that will NOT block 
@@ -885,7 +885,7 @@ Public Class cEcosimMonteCarlo
             Dim sStr As String = ""
             For ii As Integer = 1 To Me.m_epdata.NumGroups
                 If (bForcedCatches(ii)) Then
-                    Dim lasttimestep As Integer = m_esdata.NTimes
+                    Dim lasttimestep As Integer = Me.m_esdata.NTimes
                     Dim NatMort As Single = Me.m_epdata.M0(ii) + Me.m_epdata.M2(ii)
                     Dim SScont As Single = (Me.m_esdata.FishRateNo(ii, lasttimestep) - Me.FMratioForSRA * NatMort)
                     Fpenalty += CSng(100 * SScont ^ 2)
@@ -894,11 +894,11 @@ Public Class cEcosimMonteCarlo
             Next
 
             If bFirstRun Then
-                SSBestFit = SSBestFit + Fpenalty
+                Me.SSBestFit = Me.SSBestFit + Fpenalty
                 bFirstRun = False
             End If
 
-            System.Console.WriteLine("SS = " + m_esdata.SS.ToString + ", F Penalty = " + Fpenalty.ToString + ", SS + Fpenalty = " + (m_esdata.SS + Fpenalty).ToString)
+            System.Console.WriteLine("SS = " + Me.m_esdata.SS.ToString + ", F Penalty = " + Fpenalty.ToString + ", SS + Fpenalty = " + (Me.m_esdata.SS + Fpenalty).ToString)
         End If
 
         Return Fpenalty
@@ -916,24 +916,24 @@ Public Class cEcosimMonteCarlo
             'Set Ecopath inputs back to original values
             'VC Oct 02. below was setting, b, pb, ee, ba, but it needs to set input parameters,so I've changed this
             For i As Integer = 1 To Me.m_epdata.NumLiving
-                If m_epdata.Binput(i) > 0 Then m_epdata.Binput(i) = startValues(eMCParams.Biomass, i)
-                If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
-                If m_epdata.QBinput(i) > 0 Then m_epdata.QBinput(i) = startValues(eMCParams.QB, i)
-                If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
-                If m_epdata.OtherMortinput(i) > 0 Then m_epdata.OtherMortinput(i) = startValues(eMCParams.OtherMort, i)
+                If Me.m_epdata.Binput(i) > 0 Then Me.m_epdata.Binput(i) = Me.startValues(eMCParams.Biomass, i)
+                If Me.m_epdata.PBinput(i) > 0 Then Me.m_epdata.PBinput(i) = Me.startValues(eMCParams.PB, i)
+                If Me.m_epdata.QBinput(i) > 0 Then Me.m_epdata.QBinput(i) = Me.startValues(eMCParams.QB, i)
+                If Me.m_epdata.EEinput(i) > 0 Then Me.m_epdata.EEinput(i) = Me.startValues(eMCParams.EE, i)
+                If Me.m_epdata.OtherMortinput(i) > 0 Then Me.m_epdata.OtherMortinput(i) = Me.startValues(eMCParams.OtherMort, i)
 
-                m_epdata.BA(i) = startValues(eMCParams.BA, i)
-                m_epdata.BaBi(i) = startValues(eMCParams.BaBi, i)
+                Me.m_epdata.BA(i) = Me.startValues(eMCParams.BA, i)
+                Me.m_epdata.BaBi(i) = Me.startValues(eMCParams.BaBi, i)
                 ' m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
             Next
 
-            For iGrp As Integer = 1 To m_epdata.NumGroups
-                For iFlt As Integer = 1 To m_epdata.NumFleet
-                    Me.m_epdata.Landing(iFlt, iGrp) = PMeanLanding(iFlt, iGrp)
-                    Me.m_epdata.Discard(iFlt, iGrp) = PMeanDiscard(iFlt, iGrp)
+            For iGrp As Integer = 1 To Me.m_epdata.NumGroups
+                For iFlt As Integer = 1 To Me.m_epdata.NumFleet
+                    Me.m_epdata.Landing(iFlt, iGrp) = Me.PMeanLanding(iFlt, iGrp)
+                    Me.m_epdata.Discard(iFlt, iGrp) = Me.PMeanDiscard(iFlt, iGrp)
                 Next
-                For iPrey As Integer = 0 To m_epdata.NumGroups
-                    Me.m_epdata.DC(iGrp, iPrey) = m_startValuesDiets(iGrp, iPrey)
+                For iPrey As Integer = 0 To Me.m_epdata.NumGroups
+                    Me.m_epdata.DC(iGrp, iPrey) = Me.m_startValuesDiets(iGrp, iPrey)
                 Next
             Next
 
@@ -963,13 +963,13 @@ Public Class cEcosimMonteCarlo
     End Sub
 
 
-    Private Sub TrialProgress(ByVal iTrial As Integer, ByVal iEcopathIterations As Integer)
+    Private Sub TrialProgress(iTrial As Integer, iEcopathIterations As Integer)
 
         Try
             Me.nTrialIterations = iTrial
             Me.nEcopathIterations = iEcopathIterations
             Me.SSCurrent = Me.m_core.m_EcoSimData.SS
-            If dlgTrialStepHandler IsNot Nothing Then
+            If Me.dlgTrialStepHandler IsNot Nothing Then
                 Me.dlgTrialStepHandler()
             End If
         Catch ex As Exception
@@ -980,12 +980,12 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Sub EcopathIterationsProgress(ByVal iEcopathIterations As Integer)
+    Private Sub EcopathIterationsProgress(iEcopathIterations As Integer)
 
         Try
             Me.nEcopathIterations = iEcopathIterations
-            If dlgEcopathIterationHandler IsNot Nothing Then
-                dlgEcopathIterationHandler.Invoke()
+            If Me.dlgEcopathIterationHandler IsNot Nothing Then
+                Me.dlgEcopathIterationHandler.Invoke()
             End If
         Catch ex As Exception
             cLog.Write(ex)
@@ -995,7 +995,7 @@ Public Class cEcosimMonteCarlo
 
     Private Sub CompletedCallback()
         Try
-            If dlgMonteCarloCompletedHandler IsNot Nothing Then
+            If Me.dlgMonteCarloCompletedHandler IsNot Nothing Then
                 Me.dlgMonteCarloCompletedHandler.Invoke()
             End If
         Catch ex As Exception
@@ -1015,7 +1015,7 @@ Public Class cEcosimMonteCarlo
     Friend Function selectNewEcopathParameters(Optional MaxIters As Integer = MAX_ECOPATH_TRIES) As Boolean
         Try
             Dim nIters As Integer
-            If BalanceEcopathWithNewPars(nIters, MaxIters) Then
+            If Me.BalanceEcopathWithNewPars(nIters, MaxIters) Then
                 ''Used for debugging CEFAS MSE Plugin
                 'If MaxIters > 1 Then
                 '    System.Console.WriteLine("Balanced model in " + nIters.ToString)
@@ -1039,9 +1039,9 @@ Public Class cEcosimMonteCarlo
     Private Sub dumpEstimatedParameters()
 
         System.Console.WriteLine("-------------Start Parameters Estimated by Ecopath----------------")
-        For igrp As Integer = 1 To m_core.nLivingGroups
+        For igrp As Integer = 1 To Me.m_core.nLivingGroups
             For iPar As Integer = 1 To 4
-                If m_ecopath.missing(igrp, iPar) = True Then
+                If Me.m_ecopath.missing(igrp, iPar) = True Then
                     'Estimated by Ecopath
                     System.Console.WriteLine(Me.m_epdata.GroupName(igrp) + ", Index =  " + igrp.ToString + ", Parameter = " + iPar.ToString)
                 End If
@@ -1058,8 +1058,8 @@ Public Class cEcosimMonteCarlo
     ''' <param name="maxEcopathIterations"></param>
     ''' <returns>Returns True if a balanced model was resampled</returns>
     Private Function BalanceEcopathWithNewPars(ByRef iter As Integer,
-                                               ByVal maxEcopathIterations As Integer) As Boolean
-        'EwE5 StartEcosimWithNewPars(ByVal Pstartup(,) As Single, ByVal CVpar(,) As Single, ByVal iter As Long)
+                                               maxEcopathIterations As Integer) As Boolean
+        'EwE5 StartEcosimWithNewPars(Pstartup(,) As Single, CVpar(,) As Single, iter As Long)
         Dim igrp As Integer
         Dim bEcopathNeedsBalancing As Boolean
 
@@ -1076,10 +1076,10 @@ Public Class cEcosimMonteCarlo
                 iter = iter + 1
                 Me.m_epdata.CopyInputToModelArrays() 'MakeUnknownUnknown())
 
-                For igrp = 1 To m_core.nLivingGroups
+                For igrp = 1 To Me.m_core.nLivingGroups
 
                     If Me.IsVariable(igrp, eMCParams.Biomass) Then
-                        m_epdata.B(igrp) = ChooseFeasiblePar(eMCParams.Biomass,
+                        Me.m_epdata.B(igrp) = Me.ChooseFeasiblePar(eMCParams.Biomass,
                                                              Me.Pmean(eMCParams.Biomass, igrp),
                                                              Me.CVpar(eMCParams.Biomass, igrp),
                                                              Me.ParLimit(0, eMCParams.Biomass, igrp),
@@ -1087,15 +1087,15 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.BA) Then
-                        m_epdata.BA(igrp) = ChooseFeasibleBA(Pmean(eMCParams.Biomass, igrp), ' Must operate on original estimated biomass, not input (may be missing)
+                        Me.m_epdata.BA(igrp) = Me.ChooseFeasibleBA(Me.Pmean(eMCParams.Biomass, igrp), ' Must operate on original estimated biomass, not input (may be missing)
                                                              Me.Pmean(eMCParams.BA, igrp),
                                                              Me.CVpar(eMCParams.BA, igrp),
                                                              Me.ParLimit(0, eMCParams.BA, igrp),
-                         ParLimit(1, eMCParams.BA, igrp))
+                         Me.ParLimit(1, eMCParams.BA, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.BaBi) Then
-                        m_epdata.BaBi(igrp) = ChooseFeasiblePar(eMCParams.BaBi,
+                        Me.m_epdata.BaBi(igrp) = Me.ChooseFeasiblePar(eMCParams.BaBi,
                                                              Me.Pmean(eMCParams.BaBi, igrp),
                                                              Me.CVpar(eMCParams.BaBi, igrp),
                                                              Me.ParLimit(0, eMCParams.BaBi, igrp),
@@ -1103,15 +1103,15 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.PB) Then
-                        m_epdata.PB(igrp) = ChooseFeasiblePar(eMCParams.PB,
-                                                              Pmean(eMCParams.PB, igrp),
-                                                              CVpar(eMCParams.PB, igrp),
-                                                              ParLimit(0, eMCParams.PB, igrp),
-                                                              ParLimit(1, eMCParams.PB, igrp))
+                        Me.m_epdata.PB(igrp) = Me.ChooseFeasiblePar(eMCParams.PB,
+                                                              Me.Pmean(eMCParams.PB, igrp),
+                                                              Me.CVpar(eMCParams.PB, igrp),
+                                                              Me.ParLimit(0, eMCParams.PB, igrp),
+                                                              Me.ParLimit(1, eMCParams.PB, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.QB) Then
-                        m_epdata.QB(igrp) = ChooseFeasiblePar(eMCParams.QB,
+                        Me.m_epdata.QB(igrp) = Me.ChooseFeasiblePar(eMCParams.QB,
                                                               Me.Pmean(eMCParams.QB, igrp),
                                                               Me.CVpar(eMCParams.QB, igrp),
                                                               Me.ParLimit(0, eMCParams.QB, igrp),
@@ -1119,7 +1119,7 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.EE) Then
-                        m_epdata.EE(igrp) = ChooseFeasiblePar(eMCParams.EE,
+                        Me.m_epdata.EE(igrp) = Me.ChooseFeasiblePar(eMCParams.EE,
                                                               Me.Pmean(eMCParams.EE, igrp),
                                                               Me.CVpar(eMCParams.EE, igrp),
                                                               Me.ParLimit(0, eMCParams.EE, igrp),
@@ -1127,9 +1127,9 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsEnabled(eMCParams.Landings) Then
-                        For iflt As Integer = 1 To m_epdata.NumFleet
+                        For iflt As Integer = 1 To Me.m_epdata.NumFleet
                             If (Me.PMeanLanding(iflt, igrp) > 0) And (Me.CVparLanding(iflt, igrp) > 0) Then
-                                Me.m_epdata.Landing(iflt, igrp) = ChooseFeasiblePar(eMCParams.Landings,
+                                Me.m_epdata.Landing(iflt, igrp) = Me.ChooseFeasiblePar(eMCParams.Landings,
                                                                                     Me.PMeanLanding(iflt, igrp),
                                                                                     Me.CVparLanding(iflt, igrp),
                                                                                     Me.ParLimitLanding(0, iflt, igrp),
@@ -1140,9 +1140,9 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsEnabled(eMCParams.Discards) Then
-                        For iflt As Integer = 1 To m_epdata.NumFleet
+                        For iflt As Integer = 1 To Me.m_epdata.NumFleet
                             If (Me.PMeanDiscard(iflt, igrp) > 0) And (Me.CVparDiscard(iflt, igrp) > 0) Then
-                                Me.m_epdata.Discard(iflt, igrp) = ChooseFeasiblePar(eMCParams.Discards,
+                                Me.m_epdata.Discard(iflt, igrp) = Me.ChooseFeasiblePar(eMCParams.Discards,
                                                                                     Me.PMeanDiscard(iflt, igrp),
                                                                                     Me.CVparDiscard(iflt, igrp),
                                                                                     Me.ParLimitDiscard(0, iflt, igrp),
@@ -1154,11 +1154,11 @@ Public Class cEcosimMonteCarlo
                     If Me.IsEnabled(eMCParams.Diets) Then
                         Select Case Me.DietSamplingMethod
                             Case eMCDietSamplingMethod.Dirichlets
-                                ChooseFeasibleDiet(PMeanDC, CVParDC(eMCDietSamplingMethod.Dirichlets, igrp), igrp, m_epdata.DC)
+                                Me.ChooseFeasibleDiet(Me.PMeanDC, Me.CVParDC(eMCDietSamplingMethod.Dirichlets, igrp), igrp, Me.m_epdata.DC)
                             Case eMCDietSamplingMethod.NormalDistribution
-                                For iPred As Integer = 1 To m_epdata.NumLiving
+                                For iPred As Integer = 1 To Me.m_epdata.NumLiving
                                     If (Me.PMeanDC(iPred, igrp) > 0) Then
-                                        Me.m_epdata.DC(iPred, igrp) = ChooseFeasiblePar(eMCParams.Diets,
+                                        Me.m_epdata.DC(iPred, igrp) = Me.ChooseFeasiblePar(eMCParams.Diets,
                                                                                     Me.PMeanDC(iPred, igrp),
                                                                                     Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred),
                                                                                     Me.ParLimitDC(0, iPred, igrp),
@@ -1192,7 +1192,7 @@ Public Class cEcosimMonteCarlo
                         bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(EcoFunctions, True) = False)
                     End If
 
-                    For igrp = 1 To m_core.nGroups
+                    For igrp = 1 To Me.m_core.nGroups
                         If Me.m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or Me.m_epdata.EE(igrp) < 0 And Me.m_epdata.EE(igrp) <> cCore.NULL_VALUE Then
                             'this loop did not balance Ecopath
                             bEcopathNeedsBalancing = True
@@ -1216,7 +1216,7 @@ Public Class cEcosimMonteCarlo
                 'tell the interface
                 'EcopathIterationsProgress(iter)
 
-                If StopTrial = True Then Exit Do
+                If Me.StopTrial = True Then Exit Do
 
                 If iter >= maxEcopathIterations Then
                     'max number of iteration to find balanced ecopath model
@@ -1249,16 +1249,16 @@ Public Class cEcosimMonteCarlo
         Me.m_ecosim.InitStanza()
 
         'Update the working variables with the calcualted multi-stanza values 
-        For isp As Integer = 1 To m_stanza.Nsplit
+        For isp As Integer = 1 To Me.m_stanza.Nsplit
             Dim ieco As Integer
-            For i As Integer = 1 To m_stanza.Nstanza(isp)
+            For i As Integer = 1 To Me.m_stanza.Nstanza(isp)
                 'Explicitly copy the multi stanza computed values from the ecopath inputs
                 'into the working values
-                ieco = m_stanza.EcopathCode(isp, i)
+                ieco = Me.m_stanza.EcopathCode(isp, i)
                 'Debug.Assert(m_epdata.B(ieco) = m_epdata.Binput(ieco))
-                m_epdata.B(ieco) = m_epdata.Binput(ieco)
-                m_epdata.PB(ieco) = m_epdata.PBinput(ieco)
-                m_epdata.QB(ieco) = m_epdata.QBinput(ieco)
+                Me.m_epdata.B(ieco) = Me.m_epdata.Binput(ieco)
+                Me.m_epdata.PB(ieco) = Me.m_epdata.PBinput(ieco)
+                Me.m_epdata.QB(ieco) = Me.m_epdata.QBinput(ieco)
             Next i
 
         Next isp
@@ -1274,16 +1274,16 @@ Public Class cEcosimMonteCarlo
 
         Dim dietsum As Single = 0
 
-        For iPred As Integer = 1 To m_epdata.NumLiving
-            If m_epdata.PP(iPred) < 1 Then
+        For iPred As Integer = 1 To Me.m_epdata.NumLiving
+            If Me.m_epdata.PP(iPred) < 1 Then
                 dietsum = 0
-                For iPrey As Integer = 0 To m_epdata.NumGroups
+                For iPrey As Integer = 0 To Me.m_epdata.NumGroups
                     dietsum += dcRef(iPred, iPrey)
                 Next
                 If (dietsum > 0) Then
-                    For iPrey As Integer = 0 To m_epdata.NumGroups
+                    For iPrey As Integer = 0 To Me.m_epdata.NumGroups
                         dcRef(iPred, iPrey) /= dietsum
-                        If (PMeanDC(iPred, iPrey) > 0) Then
+                        If (Me.PMeanDC(iPred, iPrey) > 0) Then
                             ' Fail normalization if a diet got lost
                             If dcRef(iPred, iPrey) < 1.0E-20 Then
                                 Return False
@@ -1308,7 +1308,7 @@ Public Class cEcosimMonteCarlo
     Private Function isStanzaGroupVariable(igrp As Integer, varType As eMCParams) As Boolean
 
         'Not a multistanza group
-        If Not m_epdata.StanzaGroup(igrp) Then Return False
+        If Not Me.m_epdata.StanzaGroup(igrp) Then Return False
 
         'Optimistic this group can be varied
         Dim bReturn As Boolean = True
@@ -1355,34 +1355,34 @@ Public Class cEcosimMonteCarlo
     Friend Sub ApplyBestFits()
 
         'user wants to keep the best fit parameters
-        For iPred As Integer = 1 To m_core.nGroups
-            If m_ecopath.missing(iPred, 1) = False Then
-                m_epdata.Binput(iPred) = BestFit(eMCParams.Biomass, iPred)
-                m_epdata.BHinput(iPred) = BestFit(eMCParams.Biomass, iPred) / m_epdata.Area(iPred)
+        For iPred As Integer = 1 To Me.m_core.nGroups
+            If Me.m_ecopath.missing(iPred, 1) = False Then
+                Me.m_epdata.Binput(iPred) = Me.BestFit(eMCParams.Biomass, iPred)
+                Me.m_epdata.BHinput(iPred) = Me.BestFit(eMCParams.Biomass, iPred) / Me.m_epdata.Area(iPred)
             End If
-            If m_ecopath.missing(iPred, 2) = False Then
-                m_epdata.PBinput(iPred) = BestFit(eMCParams.PB, iPred)
-            End If
-
-            If m_ecopath.missing(iPred, 3) = False Then
-                m_epdata.QBinput(iPred) = BestFit(eMCParams.QB, iPred)
+            If Me.m_ecopath.missing(iPred, 2) = False Then
+                Me.m_epdata.PBinput(iPred) = Me.BestFit(eMCParams.PB, iPred)
             End If
 
-            If m_ecopath.missing(iPred, 4) = False Then
-                m_epdata.EEinput(iPred) = BestFit(eMCParams.EE, iPred)
+            If Me.m_ecopath.missing(iPred, 3) = False Then
+                Me.m_epdata.QBinput(iPred) = Me.BestFit(eMCParams.QB, iPred)
             End If
 
-            m_epdata.BA(iPred) = BestFit(eMCParams.BA, iPred)
-            m_epdata.BaBi(iPred) = BestFit(eMCParams.BaBi, iPred)
+            If Me.m_ecopath.missing(iPred, 4) = False Then
+                Me.m_epdata.EEinput(iPred) = Me.BestFit(eMCParams.EE, iPred)
+            End If
 
-            For iFleet As Integer = 1 To m_core.nFleets
-                m_epdata.Landing(iFleet, iPred) = Me.BestFitLanding(iFleet, iPred)
-                m_epdata.Discard(iFleet, iPred) = Me.BestFitDiscard(iFleet, iPred)
+            Me.m_epdata.BA(iPred) = Me.BestFit(eMCParams.BA, iPred)
+            Me.m_epdata.BaBi(iPred) = Me.BestFit(eMCParams.BaBi, iPred)
+
+            For iFleet As Integer = 1 To Me.m_core.nFleets
+                Me.m_epdata.Landing(iFleet, iPred) = Me.BestFitLanding(iFleet, iPred)
+                Me.m_epdata.Discard(iFleet, iPred) = Me.BestFitDiscard(iFleet, iPred)
             Next
 
-            For iPrey As Integer = 1 To m_core.nGroups
-                m_epdata.DC(iPred, iPrey) = BestFitDiets(iPred, iPrey)
-                m_epdata.DCInput(iPred, iPrey) = BestFitDiets(iPred, iPrey)
+            For iPrey As Integer = 1 To Me.m_core.nGroups
+                Me.m_epdata.DC(iPred, iPrey) = Me.BestFitDiets(iPred, iPrey)
+                Me.m_epdata.DCInput(iPred, iPrey) = Me.BestFitDiets(iPred, iPrey)
             Next
 
             'vc sep 2008: adding vulnerability to MC
@@ -1415,37 +1415,37 @@ Public Class cEcosimMonteCarlo
     Private Sub redimVariables()
         Try
 
-            ReDim CVpar(Me.NumParams, m_core.nGroups)
-            ReDim CVparLanding(m_core.nFleets, m_core.nGroups)
-            ReDim CVparDiscard(m_core.nFleets, m_core.nGroups)
-            ReDim CVParDC(Me.NumDietSamplingMethods - 1, m_core.nGroups)
+            ReDim Me.CVpar(Me.NumParams, Me.m_core.nGroups)
+            ReDim Me.CVparLanding(Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.CVparDiscard(Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.CVParDC(Me.NumDietSamplingMethods - 1, Me.m_core.nGroups)
 
-            ReDim ParLimit(1, NumParams(), m_core.nGroups)
-            ReDim ParLimitLanding(1, m_core.nFleets, m_core.nGroups)
-            ReDim ParLimitDiscard(1, m_core.nFleets, m_core.nGroups)
-            ReDim ParLimitDC(1, m_core.nGroups, m_core.nGroups)
+            ReDim Me.ParLimit(1, Me.NumParams(), Me.m_core.nGroups)
+            ReDim Me.ParLimitLanding(1, Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.ParLimitDiscard(1, Me.m_core.nFleets, Me.m_core.nGroups)
+            ReDim Me.ParLimitDC(1, Me.m_core.nGroups, Me.m_core.nGroups)
 
-            ReDim m_isVariableItem(m_core.nGroups, Me.NumParams())
+            ReDim Me.m_isVariableItem(Me.m_core.nGroups, Me.NumParams())
 
-            For iGroup As Integer = 1 To m_core.nGroups
+            For iGroup As Integer = 1 To Me.m_core.nGroups
                 For iVar As Integer = 1 To Me.NumParams
 
                     Select Case DirectCast(iVar, eMCParams)
                         Case eMCParams.BA
-                            CVpar(iVar, iGroup) = 0.05
+                            Me.CVpar(iVar, iGroup) = 0.05
                         Case eMCParams.BaBi
-                            CVpar(iVar, iGroup) = 0.05
+                            Me.CVpar(iVar, iGroup) = 0.05
                         Case eMCParams.Diets
-                            CVParDC(eMCDietSamplingMethod.Dirichlets, iGroup) = 1
-                            CVParDC(eMCDietSamplingMethod.NormalDistribution, iGroup) = 0.05
+                            Me.CVParDC(eMCDietSamplingMethod.Dirichlets, iGroup) = 1
+                            Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iGroup) = 0.05
                         Case Else
-                            CVpar(iVar, iGroup) = 0.1
+                            Me.CVpar(iVar, iGroup) = 0.1
                     End Select
                 Next iVar
 
-                For iFleet As Integer = 1 To m_core.nFleets
-                    CVparLanding(iFleet, iGroup) = 0.1
-                    CVparDiscard(iFleet, iGroup) = 0.1
+                For iFleet As Integer = 1 To Me.m_core.nFleets
+                    Me.CVparLanding(iFleet, iGroup) = 0.1
+                    Me.CVparDiscard(iFleet, iGroup) = 0.1
                 Next iFleet
 
             Next iGroup
@@ -1465,65 +1465,65 @@ Public Class cEcosimMonteCarlo
     ''' <param name="IsCrashEvaluated">Not USED!</param>
     ''' <param name="param">The parameter to calculate, or <see cref="eMCParams.NotSet"/> to calculate all.</param>
     ''' <remarks>Called once during initialization to set default values or when CV values have been edited</remarks>
-    Public Sub CalculateUpperLowerLimits(ByVal IsCrashEvaluated As Boolean, Optional param As eMCParams = eMCParams.NotSet)
+    Public Sub CalculateUpperLowerLimits(IsCrashEvaluated As Boolean, Optional param As eMCParams = eMCParams.NotSet)
 
         Try
             'jb set the Upper and Lower Limits to 2*CV
             Dim factor As Integer = 2
 
             'We want a wide range for searching, cv will still limit the steps
-            For iGroup As Integer = 1 To m_core.nLivingGroups
+            For iGroup As Integer = 1 To Me.m_core.nLivingGroups
 
                 If (param = eMCParams.Biomass Or param = eMCParams.NotSet) Then
                     ' Upper
-                    ParLimit(0, eMCParams.Biomass, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.B(iGroup) * (1 - factor * CVpar(eMCParams.Biomass, iGroup)))
+                    Me.ParLimit(0, eMCParams.Biomass, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.B(iGroup) * (1 - factor * Me.CVpar(eMCParams.Biomass, iGroup)))
                     ' Lower
-                    ParLimit(1, eMCParams.Biomass, iGroup) = Me.m_epdata.B(iGroup) * (1 + factor * CVpar(eMCParams.Biomass, iGroup))
-                    If ParLimit(1, eMCParams.Biomass, iGroup) < ParLimit(0, eMCParams.Biomass, iGroup) Then
-                        ParLimit(1, eMCParams.Biomass, iGroup) = 10 * ParLimit(0, eMCParams.Biomass, iGroup)
+                    Me.ParLimit(1, eMCParams.Biomass, iGroup) = Me.m_epdata.B(iGroup) * (1 + factor * Me.CVpar(eMCParams.Biomass, iGroup))
+                    If Me.ParLimit(1, eMCParams.Biomass, iGroup) < Me.ParLimit(0, eMCParams.Biomass, iGroup) Then
+                        Me.ParLimit(1, eMCParams.Biomass, iGroup) = 10 * Me.ParLimit(0, eMCParams.Biomass, iGroup)
                     End If
                 End If
 
                 If (param = eMCParams.PB Or param = eMCParams.NotSet) Then
                     ' Upper
-                    ParLimit(0, eMCParams.PB, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.PB(iGroup) * (1 - factor * CVpar(eMCParams.PB, iGroup)))
+                    Me.ParLimit(0, eMCParams.PB, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.PB(iGroup) * (1 - factor * Me.CVpar(eMCParams.PB, iGroup)))
                     ' Lower
-                    ParLimit(1, eMCParams.PB, iGroup) = Me.m_epdata.PB(iGroup) * (1 + factor * CVpar(eMCParams.PB, iGroup))
-                    If ParLimit(1, eMCParams.PB, iGroup) < ParLimit(0, eMCParams.PB, iGroup) Then ParLimit(1, eMCParams.PB, iGroup) = 10 * ParLimit(0, eMCParams.PB, iGroup)
+                    Me.ParLimit(1, eMCParams.PB, iGroup) = Me.m_epdata.PB(iGroup) * (1 + factor * Me.CVpar(eMCParams.PB, iGroup))
+                    If Me.ParLimit(1, eMCParams.PB, iGroup) < Me.ParLimit(0, eMCParams.PB, iGroup) Then Me.ParLimit(1, eMCParams.PB, iGroup) = 10 * Me.ParLimit(0, eMCParams.PB, iGroup)
                 End If
 
                 If (param = eMCParams.QB Or param = eMCParams.NotSet) Then
                     ' Upper
-                    ParLimit(0, eMCParams.QB, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.QB(iGroup) * (1 - factor * CVpar(eMCParams.QB, iGroup)))
+                    Me.ParLimit(0, eMCParams.QB, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.QB(iGroup) * (1 - factor * Me.CVpar(eMCParams.QB, iGroup)))
                     ' Lower
-                    ParLimit(1, eMCParams.QB, iGroup) = Me.m_epdata.QB(iGroup) * (1 + factor * CVpar(eMCParams.QB, iGroup))
-                    If ParLimit(1, eMCParams.QB, iGroup) < ParLimit(0, eMCParams.QB, iGroup) Then ParLimit(1, eMCParams.QB, iGroup) = 10 * ParLimit(0, eMCParams.QB, iGroup)
+                    Me.ParLimit(1, eMCParams.QB, iGroup) = Me.m_epdata.QB(iGroup) * (1 + factor * Me.CVpar(eMCParams.QB, iGroup))
+                    If Me.ParLimit(1, eMCParams.QB, iGroup) < Me.ParLimit(0, eMCParams.QB, iGroup) Then Me.ParLimit(1, eMCParams.QB, iGroup) = 10 * Me.ParLimit(0, eMCParams.QB, iGroup)
                 End If
 
                 If (param = eMCParams.EE Or param = eMCParams.NotSet) Then
                     ' Upper
-                    ParLimit(0, eMCParams.EE, iGroup) = Math.Max(0, Me.m_epdata.EE(iGroup) * (1 - factor * CVpar(eMCParams.EE, iGroup)))
+                    Me.ParLimit(0, eMCParams.EE, iGroup) = Math.Max(0, Me.m_epdata.EE(iGroup) * (1 - factor * Me.CVpar(eMCParams.EE, iGroup)))
                     ' Lower
-                    ParLimit(1, eMCParams.EE, iGroup) = Me.m_epdata.EE(iGroup) * (1 + factor * CVpar(eMCParams.EE, iGroup))
-                    If ParLimit(1, eMCParams.EE, iGroup) > 1 Then ParLimit(1, eMCParams.EE, iGroup) = 1
+                    Me.ParLimit(1, eMCParams.EE, iGroup) = Me.m_epdata.EE(iGroup) * (1 + factor * Me.CVpar(eMCParams.EE, iGroup))
+                    If Me.ParLimit(1, eMCParams.EE, iGroup) > 1 Then Me.ParLimit(1, eMCParams.EE, iGroup) = 1
                 End If
 
                 If (param = eMCParams.BA Or param = eMCParams.NotSet) Then
                     'BA is +- relative to B not to BA (which is usually zero)
-                    ParLimit(0, eMCParams.BA, iGroup) = Me.m_epdata.BA(iGroup) + Me.m_epdata.B(iGroup) * (-factor * CVpar(eMCParams.BA, iGroup))
+                    Me.ParLimit(0, eMCParams.BA, iGroup) = Me.m_epdata.BA(iGroup) + Me.m_epdata.B(iGroup) * (-factor * Me.CVpar(eMCParams.BA, iGroup))
 
                     'BA is +- relative to B not to BA (which is usually zero)
-                    ParLimit(1, eMCParams.BA, iGroup) = m_epdata.BA(iGroup) + m_epdata.B(iGroup) * (factor * CVpar(eMCParams.BA, iGroup))
+                    Me.ParLimit(1, eMCParams.BA, iGroup) = Me.m_epdata.BA(iGroup) + Me.m_epdata.B(iGroup) * (factor * Me.CVpar(eMCParams.BA, iGroup))
                 End If
 
                 If (param = eMCParams.BaBi Or param = eMCParams.NotSet) Then
-                    ParLimit(0, eMCParams.BaBi, iGroup) = Me.m_epdata.BaBi(iGroup) * (1 - factor * CVpar(eMCParams.BaBi, iGroup))
-                    ParLimit(1, eMCParams.BaBi, iGroup) = Me.m_epdata.BaBi(iGroup) * (1 + factor * CVpar(eMCParams.BaBi, iGroup))
+                    Me.ParLimit(0, eMCParams.BaBi, iGroup) = Me.m_epdata.BaBi(iGroup) * (1 - factor * Me.CVpar(eMCParams.BaBi, iGroup))
+                    Me.ParLimit(1, eMCParams.BaBi, iGroup) = Me.m_epdata.BaBi(iGroup) * (1 + factor * Me.CVpar(eMCParams.BaBi, iGroup))
 
-                    If ParLimit(0, eMCParams.BaBi, iGroup) > ParLimit(1, eMCParams.BaBi, iGroup) Then
-                        Dim t As Single = ParLimit(0, eMCParams.BaBi, iGroup)
-                        ParLimit(0, eMCParams.BaBi, iGroup) = ParLimit(1, eMCParams.BaBi, iGroup)
-                        ParLimit(1, eMCParams.BaBi, iGroup) = t
+                    If Me.ParLimit(0, eMCParams.BaBi, iGroup) > Me.ParLimit(1, eMCParams.BaBi, iGroup) Then
+                        Dim t As Single = Me.ParLimit(0, eMCParams.BaBi, iGroup)
+                        Me.ParLimit(0, eMCParams.BaBi, iGroup) = Me.ParLimit(1, eMCParams.BaBi, iGroup)
+                        Me.ParLimit(1, eMCParams.BaBi, iGroup) = t
                     End If
                 End If
 
@@ -1533,8 +1533,8 @@ Public Class cEcosimMonteCarlo
 
                 If (param = eMCParams.Diets Or param = eMCParams.NotSet) Then
                     For iPred As Integer = 1 To Me.m_core.nLivingGroups
-                        ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 - factor * CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
-                        ParLimitDC(1, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 + factor * CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 - factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(1, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
                     Next iPred
                 End If
 
@@ -1543,13 +1543,13 @@ Public Class cEcosimMonteCarlo
             For iGroup As Integer = 1 To Me.m_core.nGroups
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     If (param = eMCParams.Landings Or param = eMCParams.NotSet) Then
-                        ParLimitLanding(0, iFleet, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.Landing(iFleet, iGroup) * (1 - factor * CVparLanding(iFleet, iGroup)))
-                        ParLimitLanding(1, iFleet, iGroup) = Math.Min(10 * ParLimitLanding(0, iFleet, iGroup), Me.m_epdata.Landing(iFleet, iGroup) * (1 + factor * CVparLanding(iFleet, iGroup)))
+                        Me.ParLimitLanding(0, iFleet, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.Landing(iFleet, iGroup) * (1 - factor * Me.CVparLanding(iFleet, iGroup)))
+                        Me.ParLimitLanding(1, iFleet, iGroup) = Math.Min(10 * Me.ParLimitLanding(0, iFleet, iGroup), Me.m_epdata.Landing(iFleet, iGroup) * (1 + factor * Me.CVparLanding(iFleet, iGroup)))
                     End If
 
                     If (param = eMCParams.Discards Or param = eMCParams.NotSet) Then
-                        ParLimitDiscard(0, iFleet, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.Discard(iFleet, iGroup) * (1 - factor * CVparDiscard(iFleet, iGroup)))
-                        ParLimitDiscard(1, iFleet, iGroup) = Math.Min(10 * ParLimitDiscard(0, iFleet, iGroup), Me.m_epdata.Discard(iFleet, iGroup) * (1 + factor * CVparDiscard(iFleet, iGroup)))
+                        Me.ParLimitDiscard(0, iFleet, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.Discard(iFleet, iGroup) * (1 - factor * Me.CVparDiscard(iFleet, iGroup)))
+                        Me.ParLimitDiscard(1, iFleet, iGroup) = Math.Min(10 * Me.ParLimitDiscard(0, iFleet, iGroup), Me.m_epdata.Discard(iFleet, iGroup) * (1 + factor * Me.CVparDiscard(iFleet, iGroup)))
                     End If
 
                 Next iFleet
@@ -1564,9 +1564,9 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Function ChooseFeasiblePar(ByVal par As eMCParams,
-                                       ByVal xbar As Single, ByVal CV As Single,
-                                       ByVal ParMin As Single, ByVal ParMax As Single) As Single
+    Private Function ChooseFeasiblePar(par As eMCParams,
+                                       xbar As Single, CV As Single,
+                                       ParMin As Single, ParMax As Single) As Single
 
         ' Sanity checks
         'jb NOPE if the user has set CV to zero this will fail
@@ -1579,7 +1579,7 @@ Public Class cEcosimMonteCarlo
         While (i < MAX_ECOPATH_TRIES)
             'jb 7-Dec-2010 ChooseFeasiblePar() changed application of CV 
             ' X = xbar * (1 + 0.02 * CV * RandomNormal())
-            X = xbar * (1 + CV * RandomNormal())
+            X = xbar * (1 + CV * Me.RandomNormal())
             If (X >= ParMin And X <= ParMax) Then Return X
             i += 1
         End While
@@ -1589,9 +1589,9 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
-    Private Function ChooseFeasibleBA(ByVal Biomass As Single,
-                                      ByVal xbar As Single, ByVal CV As Single,
-                                      ByVal ParMin As Single, ByVal ParMax As Single) As Single
+    Private Function ChooseFeasibleBA(Biomass As Single,
+                                      xbar As Single, CV As Single,
+                                      ParMin As Single, ParMax As Single) As Single
 
         ' Sanity checks
         Debug.Assert((ParMin <= xbar) And (xbar <= ParMax))
@@ -1600,7 +1600,7 @@ Public Class cEcosimMonteCarlo
         Dim i As Integer = 0
 
         While (i < MAX_ECOPATH_TRIES)
-            X = xbar + Biomass * (CV * RandomNormal())
+            X = xbar + Biomass * (CV * Me.RandomNormal())
             If (X >= ParMin And X <= ParMax) Then Return X
             i += 1
         End While
@@ -1617,7 +1617,7 @@ Public Class cEcosimMonteCarlo
     ''' <param name="cv"></param>
     ''' <param name="iPred"></param>
     ''' <param name="EcopathDiet"></param>
-    Private Sub ChooseFeasibleDiet(ByVal Diets(,) As Single, ByVal cv As Single, ByVal iPred As Integer, ByRef EcopathDiet(,) As Single)
+    Private Sub ChooseFeasibleDiet(Diets(,) As Single, cv As Single, iPred As Integer, ByRef EcopathDiet(,) As Single)
 
         Debug.Assert(Me.DietSamplingMethod = eMCDietSamplingMethod.Dirichlets)
 
@@ -1629,14 +1629,14 @@ Public Class cEcosimMonteCarlo
         Const MIN_DIET_PROP As Single = 0.000001
 
         'SumInteractions(iPred - 1) += If(m_core.EcoPathGroupInputs(iPred).ImpDiet > 0, 1, 0)
-        For iPrey As Integer = 0 To m_core.nGroups
+        For iPrey As Integer = 0 To Me.m_core.nGroups
             SumInteractions += If(Diets(iPred, iPrey) > 0, 1, 0)
         Next
 
         'mCore.EcoPathGroupInputs(iPred + 1).DietComp(0) = 0
         If (SumInteractions = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
             'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
-            For iPrey As Integer = 0 To m_core.nGroups
+            For iPrey As Integer = 0 To Me.m_core.nGroups
                 EcopathDiet(iPred, iPrey) = 0
             Next
         Else
@@ -1648,7 +1648,7 @@ Public Class cEcosimMonteCarlo
             '    MeanPropMod(iPointer) = Diets(iPred, 0)
             '    iPointer += 1
             'End If
-            For iPrey As Integer = 0 To m_core.nGroups
+            For iPrey As Integer = 0 To Me.m_core.nGroups
                 If Diets(iPred, iPrey) > 0 Then
                     MeanPropMod(iPointer) = Diets(iPred, iPrey)
                     iPointer += 1
@@ -1656,12 +1656,12 @@ Public Class cEcosimMonteCarlo
             Next iPrey
 
             'Samples a set of Dirichlet distributed parameters
-            TempDirichlet = DirichletSample2(SumInteractions, MeanPropMod, cv)
+            TempDirichlet = Me.DirichletSample2(SumInteractions, MeanPropMod, cv)
 
             Dim i As Integer = 1
             Dim dProp As Single
 
-            For iPrey As Integer = 0 To m_core.nGroups
+            For iPrey As Integer = 0 To Me.m_core.nGroups
                 If Diets(iPred, iPrey) > 0 Then
                     dProp = TempDirichlet(i)
                     If dProp < MIN_DIET_PROP Then
@@ -1676,7 +1676,7 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Public Function DirichletSample2(ByVal nDimensions As Integer, ByVal alpha() As Single, ByVal DietMultiplier As Single) As Single()
+    Public Function DirichletSample2(nDimensions As Integer, alpha() As Single, DietMultiplier As Single) As Single()
         Dim gamma(nDimensions) As Single
         Dim dirichlet(nDimensions) As Single
         Dim sumofgamma As Single
@@ -1686,7 +1686,7 @@ Public Class cEcosimMonteCarlo
         Next
 
         For i As Integer = 1 To nDimensions
-            gamma(i) = CSng(SampleGamma(alpha(i), 1))
+            gamma(i) = CSng(Me.SampleGamma(alpha(i), 1))
         Next
 
         sumofgamma = gamma.Sum()
@@ -1705,7 +1705,7 @@ Public Class cEcosimMonteCarlo
         Return X
     End Function
 
-    'Private Sub ChangeVulnerabilities(ByVal ParCurVal(,) As Single, ByVal CVpar(,) As Single)
+    'Private Sub ChangeVulnerabilities(ParCurVal(,) As Single, CVpar(,) As Single)
 
     '    For iPred As Integer = 1 To m_core.nLivingGroups
     '        m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred),
@@ -1721,17 +1721,17 @@ Public Class cEcosimMonteCarlo
     'End Sub
 
     Private Sub CheckWhoIsCrashed()
-        Dim EndTime As Integer = (m_core.EcoSimModelParameters.NumberYears - 1) * 12
+        Dim EndTime As Integer = (Me.m_core.EcoSimModelParameters.NumberYears - 1) * 12
         'Dim sStr As String = "Crashed: "
-        For iGrp As Integer = 1 To m_core.nLivingGroups
+        For iGrp As Integer = 1 To Me.m_core.nLivingGroups
 
-            If Me.m_esdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
+            If Me.m_esdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, EndTime) / Me.m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
                 'jb use the core arrays instead of the Ecosim Output objects because the output objects have not been initialized
                 'If m_core.EcoSimGroupOutputs(iGrp).Biomass(EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
-                isCrashed(iGrp) = True
+                Me.isCrashed(iGrp) = True
                 'sStr += iGrp.ToString & ", "
             Else
-                isCrashed(iGrp) = False
+                Me.isCrashed(iGrp) = False
             End If
             'If m_core.EcoSimGroupOutputs(iGrp).Biomass(EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass > 10 Then
             '    isexploded(iGrp) = True
@@ -1756,7 +1756,7 @@ Public Class cEcosimMonteCarlo
     ''' <summary>
     ''' Multi threaded Monte Carlo code has been disabled but left in place for future reference
     ''' </summary>
-    Private Sub initThreads(ByVal trList As List(Of cMonteCarloThread), ByVal nThreads As Integer)
+    Private Sub initThreads(trList As List(Of cMonteCarloThread), nThreads As Integer)
         'gives back a list (nThreads long) of fully initialized cMonteCarloThread objects
 
         Dim MCthread As cMonteCarloThread

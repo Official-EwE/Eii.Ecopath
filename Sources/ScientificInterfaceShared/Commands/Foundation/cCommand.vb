@@ -75,9 +75,9 @@ Namespace Commands
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' 
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler,
-                       ByVal strName As String,
-                       Optional ByVal strDescription As String = "")
+        Public Sub New(cmdh As cCommandHandler,
+                       strName As String,
+                       Optional strDescription As String = "")
 
             ' Store ref to the handler
             Me.m_cmdh = cmdh
@@ -115,7 +115,7 @@ Namespace Commands
         ''' state is changed.
         ''' </remarks>
         ''' ----------------------------------------------------------------------
-        Public Sub AddControl(ByVal objGUI As Object)
+        Public Sub AddControl(objGUI As Object)
             Me.AddControl(objGUI, Nothing)
         End Sub
 
@@ -134,7 +134,7 @@ Namespace Commands
         ''' state is changed.
         ''' </remarks>
         ''' ----------------------------------------------------------------------
-        Public Sub AddControl(ByVal objGUI As Object, param As Object)
+        Public Sub AddControl(objGUI As Object, param As Object)
             Dim parms As Object() = Nothing
             If param IsNot Nothing Then parms = New Object() {param}
             Me.AddControl(objGUI, parms)
@@ -156,7 +156,7 @@ Namespace Commands
         ''' state is changed.
         ''' </remarks>
         ''' ----------------------------------------------------------------------
-        Public Sub AddControl(ByVal objGUI As Object, params As Object())
+        Public Sub AddControl(objGUI As Object, params As Object())
 
             Dim cmdh As cCommandHandler = Me.m_cmdh
             Dim t As Type = cmdh.GetControlHandlerType(objGUI)
@@ -180,7 +180,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="objGUI">The control to remove.</param>
         ''' ----------------------------------------------------------------------
-        Public Sub RemoveControl(ByVal objGUI As Object)
+        Public Sub RemoveControl(objGUI As Object)
             Try
                 If (Me.m_dictControls.ContainsKey(objGUI)) Then
                     Me.m_dictControls.Remove(objGUI)
@@ -239,7 +239,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is invoked.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnPreInvoke(ByVal cmd As cCommand)
+        Public Event OnPreInvoke(cmd As cCommand)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -247,7 +247,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is invoked.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnInvoke(ByVal cmd As cCommand)
+        Public Event OnInvoke(cmd As cCommand)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -255,7 +255,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is invoked.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnPostInvoke(ByVal cmd As cCommand)
+        Public Event OnPostInvoke(cmd As cCommand)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -334,7 +334,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmd">The command that is updated.</param>
         ''' -----------------------------------------------------------------------
-        Public Event OnUpdate(ByVal cmd As cCommand)
+        Public Event OnUpdate(cmd As cCommand)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -344,9 +344,9 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Overridable Sub Update()
             ' Can update?
-            If Not m_bLockUpdates Then
+            If Not Me.m_bLockUpdates Then
                 ' #Yes: lock to prevent loops
-                m_bLockUpdates = True
+                Me.m_bLockUpdates = True
                 ' Call for changes
                 RaiseEvent OnUpdate(Me)
                 ' Dispatch changes
@@ -354,7 +354,7 @@ Namespace Commands
                     ctrlh.Update()
                 Next
                 ' Unlock
-                m_bLockUpdates = False
+                Me.m_bLockUpdates = False
             End If
         End Sub
 
@@ -372,7 +372,7 @@ Namespace Commands
             Get
                 Return Me.m_bAvailable
             End Get
-            Set(ByVal bAvailable As Boolean)
+            Set(bAvailable As Boolean)
                 If (Me.m_bAvailable <> bAvailable) Then
                     Me.m_bAvailable = bAvailable
                     Me.Update()
@@ -389,7 +389,7 @@ Namespace Commands
             Get
                 Return Me.m_bEnabled
             End Get
-            Set(ByVal bEnable As Boolean)
+            Set(bEnable As Boolean)
                 If (Me.m_bEnabled <> bEnable) Then
                     Me.m_bEnabled = bEnable
                     Me.Update()
@@ -406,7 +406,7 @@ Namespace Commands
             Get
                 Return Me.m_bChecked
             End Get
-            Set(ByVal bCheck As Boolean)
+            Set(bCheck As Boolean)
                 If (Me.m_bChecked <> bCheck) Then
                     Me.m_bChecked = bCheck
                     Me.Update()

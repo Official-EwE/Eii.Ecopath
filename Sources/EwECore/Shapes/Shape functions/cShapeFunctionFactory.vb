@@ -45,7 +45,7 @@ Public Class cShapeFunctionFactory
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function GetShapeFunction(ft As Long,
-                                            Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction
+                                            Optional pm As cPluginManager = Nothing) As IShapeFunction
 
         For Each sf As IShapeFunction In GetShapeFunctions(pm)
             If (ft = sf.ShapeFunctionType) Then Return sf
@@ -62,8 +62,8 @@ Public Class cShapeFunctionFactory
     ''' <param name="pm"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetShapeFunction(ByVal shape As cForcingFunction,
-                                            Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction
+    Public Shared Function GetShapeFunction(shape As cForcingFunction,
+                                            Optional pm As cPluginManager = Nothing) As IShapeFunction
 
         If (shape Is Nothing) Then Return Nothing
 
@@ -90,8 +90,8 @@ Public Class cShapeFunctionFactory
     ''' An array of compatible <see cref="IShapeFunction">shape function</see> instances.
     ''' </returns> 
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetShapeFunctions(ByVal shape As cForcingFunction,
-                                             Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction()
+    Public Shared Function GetShapeFunctions(shape As cForcingFunction,
+                                             Optional pm As cPluginManager = Nothing) As IShapeFunction()
 
         Dim lfs As New List(Of IShapeFunction)
         For Each fs As IShapeFunction In GetShapeFunctions(pm)
@@ -126,7 +126,7 @@ Public Class cShapeFunctionFactory
     ''' An array of compatible <see cref="IShapeFunction">shape function</see> instances.
     ''' </returns> 
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetShapeFunctions(Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction()
+    Public Shared Function GetShapeFunctions(Optional pm As cPluginManager = Nothing) As IShapeFunction()
 
         Dim lfs As New List(Of IShapeFunction)
         Dim fs As IShapeFunction = Nothing

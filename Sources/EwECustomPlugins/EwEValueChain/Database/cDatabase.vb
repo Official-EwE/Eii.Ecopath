@@ -47,9 +47,9 @@ Public Class cDatabase
     ''' to 'NotSet' to auto-detect the database type.</param>
     ''' <returns>True if connected succesfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Overrides Function Open(ByVal strDatabase As String, _
-                                   Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
-                                   Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
+    Public Overrides Function Open(strDatabase As String, _
+                                   Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                                   Optional bReadOnly As Boolean = False) As eDatasourceAccessType
 
         Dim result As eDatasourceAccessType = MyBase.Open(strDatabase, databaseType, bReadOnly)
         If result = eDatasourceAccessType.Opened Then
@@ -67,7 +67,7 @@ Public Class cDatabase
     ''' <param name="data"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadModel(ByVal data As cData) As Boolean
+    Public Function LoadModel(data As cData) As Boolean
 
         Dim aObjects As cOOPStorable() = Nothing
         Dim bSucces As Boolean = True
@@ -190,7 +190,7 @@ Public Class cDatabase
 
 #Region " Save "
 
-    Public Function SaveModel(ByVal data As cData) As Boolean
+    Public Function SaveModel(data As cData) As Boolean
 
         Dim bSucces As Boolean = True
         Dim ass As Assembly = Assembly.GetAssembly(GetType(cUnit))

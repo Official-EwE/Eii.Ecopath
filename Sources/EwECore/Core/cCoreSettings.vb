@@ -42,7 +42,8 @@ Friend Class cCoreSettings
 #Region " Constructor "
 
     Public Sub New()
-        ReDim m_bAutosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
+        ReDim Me.m_bAutosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
+        Me.ThreatCount = cSystemUtils.ProcessorCount
     End Sub
 
 #End Region ' Constructor
@@ -77,7 +78,7 @@ Friend Class cCoreSettings
     ''' Get/set the core output path.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property OutputPath As String
+    Public Property OutputPath As String = ""
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -91,14 +92,21 @@ Friend Class cCoreSettings
     ''' Get/set the default EwE author.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Author As String
+    Public Property Author As String = ""
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the default EwE author contact.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Contact As String
+    Public Property Contact As String = ""
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the number of threads that can be used by computations.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ThreatCount As Integer = 1
 
 #End Region ' Accessors
 

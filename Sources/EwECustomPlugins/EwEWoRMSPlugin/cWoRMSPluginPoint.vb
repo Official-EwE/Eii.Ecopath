@@ -62,11 +62,11 @@ Public Class cWoRMSPluginPoint
 #Region " Init "
 
     ''' <inheritdocs cref="IPlugin.Initialize"/>
-    Friend Sub Initialize(ByVal core As Object) _
+    Friend Sub Initialize(core As Object) _
         Implements IPlugin.Initialize
 
         Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
-        m_bInitOk = False
+        Me.m_bInitOk = False
         Try
             If TypeOf core Is EwECore.cCore Then
                 Me.m_core = DirectCast(core, EwECore.cCore)
@@ -172,21 +172,21 @@ Public Class cWoRMSPluginPoint
 #Region " Data "
 
     ''' <inheritdocs cref="IDataProducerPlugin.Broadcaster"/>
-    Friend Sub Broadcaster(ByVal broadcaster As IDataBroadcaster) _
+    Friend Sub Broadcaster(broadcaster As IDataBroadcaster) _
         Implements IDataProducerPlugin.Broadcaster
         Me.m_broadcaster = broadcaster
     End Sub
 
     ''' <inheritdocs cref="IDataProducerPlugin.GetDataByType"/>
-    Friend Function GetDataByType(ByVal typeData As System.Type, ByRef data As IPluginData) As Boolean _
+    Friend Function GetDataByType(typeData As System.Type, ByRef data As IPluginData) As Boolean _
         Implements IDataProducerPlugin.GetDataByType
         If (TypeOf data Is ITaxonSearchData) Then data = DirectCast(Me.m_term, IPluginData)
         Return Me.IsEnabled
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.IsDataAvailable"/>
-    Friend Function IsDataAvailable(ByVal typeData As System.Type, _
-                                    Optional ByVal runType As EwEUtils.Core.IRunType = Nothing) As Boolean _
+    Friend Function IsDataAvailable(typeData As System.Type, _
+                                    Optional runType As EwEUtils.Core.IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (GetType(ITaxonSearchData).IsAssignableFrom(typeData))
     End Function
@@ -198,23 +198,23 @@ Public Class cWoRMSPluginPoint
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.IsEnabled"/>
-    Friend Function IsEnabled(ByVal typeData As System.Type,
-                              ByVal runType As EwEUtils.Core.IRunType) As Boolean _
+    Friend Function IsEnabled(typeData As System.Type,
+                              runType As EwEUtils.Core.IRunType) As Boolean _
         Implements IDataProducerPlugin.IsEnabled
         Return Me.m_bEnabled
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.SetEnabled"/>
-    Friend Function SetEnabled(ByVal bEnable As Boolean) As Boolean _
+    Friend Function SetEnabled(bEnable As Boolean) As Boolean _
         Implements IDataProducerPlugin.SetEnabled
         Me.m_bEnabled = bEnable
         Return Me.m_bEnabled
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.SetEnabled"/>
-    Friend Sub SetEnabled(ByVal typeData As System.Type, _
-                          ByVal runType As EwEUtils.Core.IRunType, _
-                          ByVal bEnable As Boolean) _
+    Friend Sub SetEnabled(typeData As System.Type, _
+                          runType As EwEUtils.Core.IRunType, _
+                          bEnable As Boolean) _
         Implements IDataProducerPlugin.SetEnabled
         ' NOP
     End Sub
@@ -224,7 +224,7 @@ Public Class cWoRMSPluginPoint
 #Region " Search "
 
     ''' <inheritdocs cref="IDataSearchProducerPlugin.StartSearch"/>
-    Friend Function StartSearch(ByVal data As Object, iMaxResults As Integer) As Boolean _
+    Friend Function StartSearch(data As Object, iMaxResults As Integer) As Boolean _
         Implements IDataSearchProducerPlugin.StartSearch
 
         If Not Me.IsEnabled() Then Return False
@@ -252,7 +252,7 @@ Public Class cWoRMSPluginPoint
     End Function
 
     ''' <inheritdocs cref="IDataSearchProducerPlugin.SearchResults"/>
-    Friend Function SearchResults(ByVal dataTerm As Object, ByRef results As IDataSearchResults) As Boolean _
+    Friend Function SearchResults(dataTerm As Object, ByRef results As IDataSearchResults) As Boolean _
         Implements IDataSearchProducerPlugin.SearchResults
 
         If (ReferenceEquals(dataTerm, Me.m_term)) Then
@@ -338,7 +338,7 @@ Public Class cWoRMSPluginPoint
     ''' If successful, the local results will be populated.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Function Search(ByVal taxon As ITaxonSearchData) As Boolean
+    Private Function Search(taxon As ITaxonSearchData) As Boolean
 
         If (Me.m_thread IsNot Nothing) Then
             If (Me.m_client IsNot Nothing) Then
@@ -442,7 +442,7 @@ Public Class cWoRMSPluginPoint
     ''' <param name="record"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function ReadTaxon(ByVal record As AphiaRecord) As ITaxonSearchData
+    Private Function ReadTaxon(record As AphiaRecord) As ITaxonSearchData
 
         If (record Is Nothing) Then Return Nothing
 

@@ -72,7 +72,7 @@ Namespace Controls
             Get
                 Return MyBase.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 MyBase.Text = value
             End Set
         End Property
@@ -87,7 +87,7 @@ Namespace Controls
             Get
                 Return Convert.ToChar(Me.CharCode)
             End Get
-            Set(ByVal value As Char)
+            Set(value As Char)
                 Me.CharCode = Convert.ToInt32(value)
             End Set
         End Property
@@ -102,7 +102,7 @@ Namespace Controls
             Get
                 Return Me.m_iChar
             End Get
-            Set(ByVal value As Int32)
+            Set(value As Int32)
 
                 ' Check if character is supported by the control
                 If Not Me.SupportsChar(DirectCast(value, Keys)) Then Return
@@ -150,7 +150,7 @@ Namespace Controls
             Get
                 Return Me.m_strCharMask
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strCharMask = value
             End Set
         End Property
@@ -170,7 +170,7 @@ Namespace Controls
             Get
                 Return Me.m_bMaskInclusive
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bMaskInclusive = value
             End Set
         End Property
@@ -184,7 +184,7 @@ Namespace Controls
         ''' Key down handler, overridden to eat up 'Del' and 'Back' key presses.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnKeyDown(ByVal e As System.Windows.Forms.KeyEventArgs)
+        Protected Overrides Sub OnKeyDown(e As System.Windows.Forms.KeyEventArgs)
             If (e.KeyCode = Keys.Delete) Or (e.KeyCode = Keys.Back) Then
                 e.Handled = True
                 e.SuppressKeyPress = True
@@ -198,7 +198,7 @@ Namespace Controls
         ''' text. There shalt be no doubt.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnKeyPress(ByVal e As System.Windows.Forms.KeyPressEventArgs)
+        Protected Overrides Sub OnKeyPress(e As System.Windows.Forms.KeyPressEventArgs)
             e.Handled = True
             Me.Character = e.KeyChar
         End Sub
@@ -211,10 +211,10 @@ Namespace Controls
         ''' <param name="iChar">The character code to check.</param>
         ''' <returns>True if allowed to be entered.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function SupportsChar(ByVal iChar As Integer) As Boolean
+        Private Function SupportsChar(iChar As Integer) As Boolean
             Dim bSupported As Boolean = String.IsNullOrEmpty(Me.m_strCharMask)
 
-            If m_bMaskInclusive Then
+            If Me.m_bMaskInclusive Then
                 bSupported = bSupported Or Me.m_strCharMask.Contains(Convert.ToChar(iChar))
             Else
                 bSupported = bSupported Or (Not Me.m_strCharMask.Contains(Convert.ToChar(iChar)))

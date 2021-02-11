@@ -77,7 +77,7 @@ Namespace Controls
             If (elements.Count = 0) Then Return
 
             Dim slice As cSlice = Me.GetSlice(elements, 1, Me.MinSliceRatio)
-            Dim rectangles As IEnumerable(Of cSliceRectangle) = GetRectangles(slice, rect.Width, rect.Height)
+            Dim rectangles As IEnumerable(Of cSliceRectangle) = Me.GetRectangles(slice, rect.Width, rect.Height)
 
             gfx.FillRectangle(Brushes.White, rect)
 
@@ -113,12 +113,12 @@ Namespace Controls
                 slice.Elements = elements
                 slice.Size = totalSize
             Else
-                Dim sliceResult As cSliceResult = GetElementsForSlice(elements, sliceWidth)
+                Dim sliceResult As cSliceResult = Me.GetElementsForSlice(elements, sliceWidth)
                 slice = New cSlice()
                 slice.Elements = elements
                 slice.Size = totalSize
-                slice.SubSlices = {GetSlice(sliceResult.Elements, sliceResult.ElementsSize, sliceWidth),
-                                   GetSlice(sliceResult.RemainingElements, 1 - sliceResult.ElementsSize, sliceWidth)}
+                slice.SubSlices = {Me.GetSlice(sliceResult.Elements, sliceResult.ElementsSize, sliceWidth),
+                                   Me.GetSlice(sliceResult.RemainingElements, 1 - sliceResult.ElementsSize, sliceWidth)}
             End If
             Return slice
 

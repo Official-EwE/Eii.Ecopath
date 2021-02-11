@@ -76,7 +76,7 @@ Friend Class cAutoUpdate
     ''' <param name="core">The core assembly to download updates for.</param>
     ''' <param name="iTimeOut">Number of miliseconds to wait before timing out.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As Object, iTimeOut As Integer)
+    Public Sub New(core As Object, iTimeOut As Integer)
 
         Me.m_verCore = Me.CoreVersion(core)
         Me.m_cookiejar = New CookieContainer()
@@ -97,7 +97,7 @@ Friend Class cAutoUpdate
     ''' <param name="strFile"></param>
     ''' <returns>True if this is a valid assembly.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AttachAssembly(ByVal strFile As String) As Boolean
+    Public Function AttachAssembly(strFile As String) As Boolean
 
         Dim assemPlugin As AssemblyName = Nothing
 
@@ -278,7 +278,7 @@ Friend Class cAutoUpdate
     ''' </summary>
     ''' <param name="core">The core object to query the assembly for.</param>
     ''' -----------------------------------------------------------------------
-    Private ReadOnly Property CoreVersion(ByVal core As Object) As Version
+    Private ReadOnly Property CoreVersion(core As Object) As Version
         Get
             Dim anCore As AssemblyName = cAssemblyUtils.GetAssemblyName(core.GetType())
             Return cAssemblyUtils.GetVersion(anCore)

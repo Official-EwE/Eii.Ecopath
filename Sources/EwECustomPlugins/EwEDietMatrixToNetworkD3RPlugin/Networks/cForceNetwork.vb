@@ -55,9 +55,9 @@ Public Class cForceNetwork
         sb.AppendLine("library(networkD3)")
         sb.AppendLine()
         sb.AppendLine("# Links")
-        sb.AppendLine(MakeLinks(strLinks))
+        sb.AppendLine(Me.MakeLinks(strLinks))
         sb.AppendLine("# Nodes")
-        sb.AppendLine(MakeNodes(strNodes))
+        sb.AppendLine(Me.MakeNodes(strNodes))
         sb.AppendLine()
         sb.AppendLine("# Plot")
         sb.AppendLine("forceNetwork(Links = " & strLinks & ", Nodes = " & strNodes & ", Source = 'source',")
@@ -87,11 +87,11 @@ Public Class cForceNetwork
         Next
 
         Dim sb As New StringBuilder()
-        sb.AppendLine(ArrayLine("src", lSrc))
-        sb.AppendLine(ArrayLine("tgt", lTgt))
-        sb.AppendLine(ArrayLine("dc", lDC))
+        sb.AppendLine(Me.ArrayLine("src", lSrc))
+        sb.AppendLine(Me.ArrayLine("tgt", lTgt))
+        sb.AppendLine(Me.ArrayLine("dc", lDC))
         sb.AppendLine(strVar & " <- data.frame(src, tgt, dc)")
-        sb.AppendLine(ArrayLine("colnames(" & strVar & ")", lCol))
+        sb.AppendLine(Me.ArrayLine("colnames(" & strVar & ")", lCol))
         Return sb.ToString()
 
     End Function
@@ -109,7 +109,7 @@ Public Class cForceNetwork
             If (My.Settings.UseSymbolicNames) Then
                 lNms.Add(cStringUtils.ToExcelColumnName(iGroup))
             Else
-                lNms.Add(ToRString(grp.Name))
+                lNms.Add(Me.ToRString(grp.Name))
             End If
             If grp.IsConsumer Then
                 lGrp.Add(SharedResources.HEADER_CONSUMER)
@@ -122,11 +122,11 @@ Public Class cForceNetwork
         Next
 
         Dim sb As New StringBuilder()
-        sb.AppendLine(ArrayLine("name", lNms))
-        sb.AppendLine(ArrayLine("group", lGrp))
-        sb.AppendLine(ArrayLine("biomass", lSz))
+        sb.AppendLine(Me.ArrayLine("name", lNms))
+        sb.AppendLine(Me.ArrayLine("group", lGrp))
+        sb.AppendLine(Me.ArrayLine("biomass", lSz))
         sb.AppendLine(strVar & " <- data.frame(name, group, biomass)")
-        sb.Append(ArrayLine("colnames(" & strVar & ")", lCol))
+        sb.Append(Me.ArrayLine("colnames(" & strVar & ")", lCol))
         Return sb.ToString()
 
     End Function

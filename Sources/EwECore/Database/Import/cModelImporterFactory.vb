@@ -45,9 +45,9 @@ Public Class cModelImporterFactory
     ''' <returns>A <see cref="cEwE5ModelImporter">EwE5 model importer</see>, if
     ''' all went well, or Nothing otherwise.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetModelImporter(ByVal core As cCore, _
-                                            ByVal strSource As String, _
-                                            ByVal pm As cPluginManager) As IModelImporter
+    Public Shared Function GetModelImporter(core As cCore, _
+                                            strSource As String, _
+                                            pm As cPluginManager) As IModelImporter
 
         If (strSource.ToLower().StartsWith("ewe-ecobase:")) Then
             Return New cEcobaseImporter(core)

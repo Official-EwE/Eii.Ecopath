@@ -27,7 +27,7 @@ Namespace FitToTimeSeries
 
     Friend Class cF2TSResultsFactory
 
-        Shared Function Create(ByVal runType As eRunType) As cF2TSResults
+        Shared Function Create(runType As eRunType) As cF2TSResults
             Dim data As cF2TSResults = Nothing
             Select Case runType
 
@@ -44,7 +44,7 @@ Namespace FitToTimeSeries
             Return data
         End Function
 
-        Shared Function CreateCopy(ByVal results As cF2TSResults) As cF2TSResults
+        Shared Function CreateCopy(results As cF2TSResults) As cF2TSResults
             Dim resultsClone As cF2TSResults = cF2TSResultsFactory.Create(results.RunType)
             results.CopyTo(resultsClone)
             Return resultsClone
@@ -63,11 +63,11 @@ Namespace FitToTimeSeries
         Protected m_nSteps As Integer = 0
         Protected m_BaseSS As Single
 
-        Friend Sub New(ByVal runType As eRunType)
+        Friend Sub New(runType As eRunType)
             Me.m_runType = runType
         End Sub
 
-        Public Overridable Sub CopyTo(ByVal results As cF2TSResults)
+        Public Overridable Sub CopyTo(results As cF2TSResults)
             If results Is Nothing Then Return
             results.m_runType = Me.m_runType
         End Sub
@@ -76,7 +76,7 @@ Namespace FitToTimeSeries
             Get
                 Return Me.m_runType
             End Get
-            Friend Set(ByVal value As eRunType)
+            Friend Set(value As eRunType)
                 Me.m_runType = value
             End Set
         End Property
@@ -87,8 +87,8 @@ Namespace FitToTimeSeries
             Get
                 Return Me.m_iStep
             End Get
-            Set(ByVal value As Integer)
-                m_iStep = value
+            Set(value As Integer)
+                Me.m_iStep = value
             End Set
         End Property
 
@@ -100,10 +100,10 @@ Namespace FitToTimeSeries
 
         Public Property BaseSS() As Single
             Get
-                Return m_BaseSS
+                Return Me.m_BaseSS
             End Get
-            Friend Set(ByVal value As Single)
-                m_BaseSS = value
+            Friend Set(value As Single)
+                Me.m_BaseSS = value
             End Set
         End Property
 
@@ -131,12 +131,12 @@ Namespace FitToTimeSeries
         Private m_ipred As Integer
         Private m_iprey As Integer
 
-        Friend Sub New(ByVal runType As eRunType)
+        Friend Sub New(runType As eRunType)
             MyBase.New(runType)
         End Sub
 
 
-        Friend Sub New(ByVal runType As eRunType, ByVal iPred As Integer, ByVal iprey As Integer, ByVal SS As Single, ByVal maxSS As Single)
+        Friend Sub New(runType As eRunType, iPred As Integer, iprey As Integer, SS As Single, maxSS As Single)
             MyBase.New(runType)
 
             Me.m_ipred = iPred
@@ -146,7 +146,7 @@ Namespace FitToTimeSeries
 
         End Sub
 
-        Public Overrides Sub CopyTo(ByVal results As cF2TSResults)
+        Public Overrides Sub CopyTo(results As cF2TSResults)
             MyBase.CopyTo(results)
 
             If results Is Nothing Then Return
@@ -167,11 +167,11 @@ Namespace FitToTimeSeries
 
         Public Property SSen() As Single
             Get
-                Return m_Ssen
+                Return Me.m_Ssen
             End Get
 
-            Friend Set(ByVal value As Single)
-                m_Ssen = value
+            Friend Set(value As Single)
+                Me.m_Ssen = value
             End Set
 
         End Property
@@ -179,43 +179,43 @@ Namespace FitToTimeSeries
 
         Public Property SSMax() As Single
             Get
-                Return m_SSMax
+                Return Me.m_SSMax
             End Get
 
-            Friend Set(ByVal value As Single)
-                m_SSMax = value
+            Friend Set(value As Single)
+                Me.m_SSMax = value
             End Set
 
         End Property
 
         'To be removed in the real thing
         Public WriteOnly Property StepNumSensitivityPredPrey() As Integer
-            Set(ByVal value As Integer)
-                m_Temp = value
-                m_Ssen = m_arySsen(m_Temp)
+            Set(value As Integer)
+                Me.m_Temp = value
+                Me.m_Ssen = Me.m_arySsen(Me.m_Temp)
             End Set
         End Property
 
 
         Public Property iPred() As Integer
             Get
-                Return m_ipred
+                Return Me.m_ipred
             End Get
-            Friend Set(ByVal value As Integer)
-                m_ipred = value
+            Friend Set(value As Integer)
+                Me.m_ipred = value
             End Set
         End Property
 
         Public Property iPrey() As Integer
             Get
-                Return m_iprey
+                Return Me.m_iprey
             End Get
-            Friend Set(ByVal value As Integer)
-                m_iprey = value
+            Friend Set(value As Integer)
+                Me.m_iprey = value
             End Set
         End Property
 
-        Public Function CompareTo(ByVal other As cSensitivityToVulResults) As Integer Implements System.IComparable(Of cSensitivityToVulResults).CompareTo
+        Public Function CompareTo(other As cSensitivityToVulResults) As Integer Implements System.IComparable(Of cSensitivityToVulResults).CompareTo
             ' Return m_Ssen.CompareTo(other.SSen)
 
             If other.SSen < Me.SSen Then
@@ -244,11 +244,11 @@ Namespace FitToTimeSeries
         Protected m_AIC As Single
         Protected m_nAICPars As Integer
 
-        Friend Sub New(ByVal runType As eRunType)
+        Friend Sub New(runType As eRunType)
             MyBase.New(eRunType.Search)
         End Sub
 
-        Public Overrides Sub CopyTo(ByVal results As cF2TSResults)
+        Public Overrides Sub CopyTo(results As cF2TSResults)
             MyBase.CopyTo(results)
 
             If results Is Nothing Then Return
@@ -268,10 +268,10 @@ Namespace FitToTimeSeries
 
         Public Property IterSS() As Single
             Get
-                Return m_IterSS
+                Return Me.m_IterSS
             End Get
-            Set(ByVal value As Single)
-                m_IterSS = value
+            Set(value As Single)
+                Me.m_IterSS = value
             End Set
         End Property
 
@@ -279,8 +279,8 @@ Namespace FitToTimeSeries
             Get
                 Return Me.m_AIC
             End Get
-            Set(ByVal value As Single)
-                m_AIC = value
+            Set(value As Single)
+                Me.m_AIC = value
             End Set
         End Property
 
@@ -289,8 +289,8 @@ Namespace FitToTimeSeries
             Get
                 Return Me.m_nAICPars
             End Get
-            Set(ByVal value As Integer)
-                m_nAICPars = value
+            Set(value As Integer)
+                Me.m_nAICPars = value
             End Set
         End Property
 

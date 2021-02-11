@@ -43,7 +43,7 @@ Public Class frmApplyShapeBase
 
 #Region " Baseclass overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If Me.UIContext Is Nothing Then Return
@@ -79,7 +79,7 @@ Public Class frmApplyShapeBase
         End Get
     End Property
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+    Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
         Dim bMustRedimension As Boolean = False
         Dim bMustUpdate As Boolean = False

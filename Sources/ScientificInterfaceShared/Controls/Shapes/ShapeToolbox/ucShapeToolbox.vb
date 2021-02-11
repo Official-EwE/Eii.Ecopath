@@ -65,11 +65,11 @@ Namespace Controls
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
-            Me.UpdateThumbnails(m_selectionDelayed)
+            Me.UpdateThumbnails(Me.m_selectionDelayed)
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
 
             If (bDisposing) Then
 
@@ -90,8 +90,8 @@ Namespace Controls
                     Me.m_lvShapes.LargeImageList = Nothing
                 End If
 
-                If components IsNot Nothing Then
-                    components.Dispose()
+                If Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             End If
 
@@ -112,7 +112,7 @@ Namespace Controls
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal handler As cShapeGUIHandler)
+            Set(handler As cShapeGUIHandler)
                 Me.m_handler = handler
                 Me.UpdateControls()
             End Set
@@ -143,7 +143,7 @@ Namespace Controls
             Get
                 Return Me.m_iMaxXScale
             End Get
-            Set(ByVal iValue As Integer)
+            Set(iValue As Integer)
                 Me.m_iMaxXScale = iValue
                 Me.UpdateThumbnails(Me.Selection)
                 Me.Invalidate()
@@ -159,7 +159,7 @@ Namespace Controls
             Get
                 Return Me.m_lvShapes.CheckBoxes
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_lvShapes.CheckBoxes = value
             End Set
         End Property
@@ -175,7 +175,7 @@ Namespace Controls
             Get
                 Return Me.m_sketchDrawMode
             End Get
-            Set(ByVal value As eSketchDrawModeTypes)
+            Set(value As eSketchDrawModeTypes)
                 Me.m_sketchDrawMode = value
                 Me.Invalidate()
             End Set
@@ -187,7 +187,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The shape to update the image for.</param>
         ''' ------------------------------------------------------------------
-        Public Sub UpdateThumbnail(ByVal shape As cShapeData)
+        Public Sub UpdateThumbnail(shape As cShapeData)
             If Me.m_bInUpdate Then Return
             Me.UpdateThumbnails(New cShapeData() {shape})
         End Sub
@@ -200,7 +200,7 @@ Namespace Controls
         ''' <param name="lShapes"></param>
         ''' <param name="ashapeSelect"></param>
         ''' ------------------------------------------------------------------
-        Public Sub SetShapes(ByVal lShapes As List(Of cShapeData), ByVal ashapeSelect As cShapeData())
+        Public Sub SetShapes(lShapes As List(Of cShapeData), ashapeSelect As cShapeData())
 
             Dim shape As cShapeData = Nothing
 
@@ -224,7 +224,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="ashapes">The list of selected shapes.</param>
         ''' ------------------------------------------------------------------
-        Public Event OnSelectionChanged(ByVal ashapes As cShapeData())
+        Public Event OnSelectionChanged(ashapes As cShapeData())
 
         ''' ------------------------------------------------------------------
         ''' <summary>
@@ -241,7 +241,7 @@ Namespace Controls
                 Return lShapes.ToArray()
             End Get
 
-            Set(ByVal ashapes As cShapeData())
+            Set(ashapes As cShapeData())
 
                 If (Not Me.Created) Then
                     Me.m_selectionDelayed = ashapes
@@ -317,13 +317,13 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
                 Me.m_uic = value
                 If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
             End Set
         End Property
@@ -336,7 +336,7 @@ Namespace Controls
         ''' Create a thumbnail image for a shape
         ''' </summary>
         ''' <param name="shape"></param>
-        Private Function GetThumbnail(ByVal shape As cShapeData) As Image
+        Private Function GetThumbnail(shape As cShapeData) As Image
 
             ' Determine whether to show enabled tick
             Dim bShowWarning As Boolean = False
@@ -387,7 +387,7 @@ Namespace Controls
 
         End Sub
 
-        Private Function CanShowButton(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Private Function CanShowButton(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             If (Me.m_handler IsNot Nothing) Then
                 Return Me.m_handler.SupportCommand(cmd)
             Else
@@ -395,7 +395,7 @@ Namespace Controls
             End If
         End Function
 
-        Private Function CanEnableButton(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Private Function CanEnableButton(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             If (Me.m_handler IsNot Nothing) Then
                 Return Me.m_handler.EnableCommand(cmd)
             Else
@@ -426,7 +426,7 @@ Namespace Controls
             Me.m_bUpdateRequested = True
 
             Try
-                Me.BeginInvoke(New MethodInvoker(AddressOf DelayUpdateThumbnails))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.DelayUpdateThumbnails))
             Catch ex As Exception
                 ' Whoah!
             End Try
@@ -487,7 +487,7 @@ Namespace Controls
 
             End If
 
-            m_lvShapes.ResumeLayout()
+            Me.m_lvShapes.ResumeLayout()
             Me.m_bInUpdate = False
 
             ' Update selection
@@ -500,7 +500,7 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        'Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        'Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         '    MyBase.OnLoad(e)
 
@@ -516,12 +516,12 @@ Namespace Controls
         ''' <summary>
         ''' Modify shape data.
         ''' </summary>
-        Private Sub lvShapes_ItemActivate(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvShapes_ItemActivate(sender As Object, e As System.EventArgs) _
                     Handles m_lvShapes.ItemActivate
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.Selection)
         End Sub
 
-        Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
+        Private Sub lvShapes_ItemChecked(sender As Object, e As System.Windows.Forms.ItemCheckedEventArgs) _
             Handles m_lvShapes.ItemChecked
 
             Dim ts As cTimeSeries = Nothing
@@ -548,7 +548,7 @@ Namespace Controls
                     ' Update enabled state
                     ts.Enabled = e.Item.Checked
                     ' HACK!!!
-                    If (m_bInUpdate = False) Then
+                    If (Me.m_bInUpdate = False) Then
                         Me.m_uic.Core.UpdateTimeSeries()
                     End If
                 End If
@@ -560,7 +560,7 @@ Namespace Controls
         ''' <summary>
         ''' The event handler when the selected thumbnail changes in the listview.
         ''' </summary>
-        Private Sub lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub lvShapes_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lvShapes.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
@@ -572,7 +572,7 @@ Namespace Controls
         ''' <summary>
         ''' Duplicate a shape data.
         ''' </summary>
-        Private Sub DuplicateShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub DuplicateShape_Click(sender As System.Object, e As System.EventArgs) _
             Handles DuplicateToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Duplicate, Me.Selection)
         End Sub
@@ -580,7 +580,7 @@ Namespace Controls
         ''' <summary>
         ''' Remove a shape data.
         ''' </summary>
-        Private Sub RemoveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub RemoveShape_Click(sender As System.Object, e As System.EventArgs) _
             Handles RemoveToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Remove, Me.Selection)
         End Sub
@@ -588,7 +588,7 @@ Namespace Controls
         ''' <summary>
         ''' Add a shape data.
         ''' </summary>
-        Private Sub AddShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub AddShape_Click(sender As System.Object, e As System.EventArgs) _
             Handles AddToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
         End Sub
@@ -609,7 +609,7 @@ Namespace Controls
         ''' <summary>
         ''' Import a time series dataset.
         ''' </summary>
-        Private Sub tsBtnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnImport_Click(sender As System.Object, e As System.EventArgs) _
             Handles ImportToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Import)
         End Sub
@@ -617,7 +617,7 @@ Namespace Controls
         ''' <summary>
         ''' Export a time series dataset.
         ''' </summary>
-        Private Sub tsBtnExport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnExport_Click(sender As System.Object, e As System.EventArgs) _
             Handles ExportToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Export)
         End Sub
@@ -625,7 +625,7 @@ Namespace Controls
         ''' <summary>
         ''' Styleguide change event.
         ''' </summary>
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Thumbnails) > 0 Then
                 Me.UpdateThumbnails(Me.Selection)
             End If

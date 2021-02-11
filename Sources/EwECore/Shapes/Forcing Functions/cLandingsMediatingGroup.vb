@@ -34,16 +34,16 @@ Public Class cLandingsMediatingGroup
     ''' Build a new Mediation Group
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub New(ByVal iGroup As Integer, ByVal iFleet As Integer, ByVal theWeight As Single)
+    Public Sub New(iGroup As Integer, iFleet As Integer, theWeight As Single)
         MyBase.New(iGroup, theWeight)
 
-        iFleetIndex = iFleet
+        Me.iFleetIndex = iFleet
 
     End Sub
 
     Public Sub New()
         MyBase.New()
-        iFleetIndex = 0
+        Me.iFleetIndex = 0
     End Sub
 
 End Class

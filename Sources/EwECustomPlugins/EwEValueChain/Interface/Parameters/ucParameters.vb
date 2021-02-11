@@ -61,7 +61,7 @@ Public Class ucParameters
     ''' <param name="data">The data to paramterize.</param>
     ''' <param name="uic">UI context of EwE GUI.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal data As cData, ByVal uic As cUIContext)
+    Public Sub New(data As cData, uic As cUIContext)
 
         Me.InitializeComponent()
 
@@ -69,14 +69,14 @@ Public Class ucParameters
         Me.m_uic = uic
 
         ' Start listening for core messages
-        Me.m_mhCore = New cMessageHandler(AddressOf CoreMessageHandler, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
+        Me.m_mhCore = New cMessageHandler(AddressOf Me.CoreMessageHandler, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
 #If DEBUG Then
         Me.m_mhCore.Name = "ValueChain.ucParameters.Core"
 #End If
         Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhCore)
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing Then
 
@@ -104,9 +104,9 @@ Public Class ucParameters
                 If (Me.m_uic IsNot Nothing) Then
 
                     ' Stop listening to core state changes
-                    RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+                    RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
                     ' Stop listening to parameter changes
-                    RemoveHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
+                    RemoveHandler Me.m_params.OnChanged, AddressOf Me.OnParametersChanged
 
                     Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
                     cmd.RemoveControl(Me.m_pbLenfest)
@@ -119,8 +119,8 @@ Public Class ucParameters
 
                 End If
 
-                If components IsNot Nothing Then
-                    components.Dispose()
+                If Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             End If
         Finally
@@ -137,7 +137,7 @@ Public Class ucParameters
     ''' Load me!
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Debug.Assert(Me.m_uic IsNot Nothing)
@@ -159,9 +159,9 @@ Public Class ucParameters
         Me.UpdateControlValues()
 
         ' Start listening to core state changes
-        AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
         ' Start listening to parameter changes
-        AddHandler Me.m_params.OnChanged, AddressOf OnParametersChanged
+        AddHandler Me.m_params.OnChanged, AddressOf Me.OnParametersChanged
 
         Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
         cmd.AddControl(Me.m_pbLenfest, "http://www.lenfestocean.org/")
@@ -183,7 +183,7 @@ Public Class ucParameters
     ''' </summary>
     ''' <param name="csm">Core state monitor that changes.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnCoreStateChanged(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
         Me.ConfigureEcosimControls(csm.HasEcosimLoaded)
     End Sub
 
@@ -192,7 +192,7 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnRunWithEcopathCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRunWithEcopathCheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_chkRunWithEcopath.CheckedChanged
         If Me.m_bInUpdate Then Return
         Me.m_params.RunWithEcopath = Me.m_chkRunWithEcopath.Checked
@@ -203,7 +203,7 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnRunWithEcosimCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRunWithEcosimCheckedChanged(sender As System.Object, e As System.EventArgs) _
           Handles m_chkRunWithEcosim.CheckedChanged
         If Me.m_bInUpdate Then Return
         Me.m_params.RunWithEcosim = Me.m_chkRunWithEcosim.Checked
@@ -214,7 +214,7 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnRunWithFishingPolicySearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRunWithFishingPolicySearchCheckedChanged(sender As System.Object, e As System.EventArgs) _
          Handles m_chkRunWithSearches.CheckedChanged
         If Me.m_bInUpdate Then Return
         Me.m_params.RunWithSearches = Me.m_chkRunWithSearches.Checked
@@ -225,7 +225,7 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnAggregationModeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnAggregationModeChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbAggNone.CheckedChanged, m_rbAggFleet.CheckedChanged, m_rbAggGroup.CheckedChanged
 
         If Me.m_bInUpdate Then Return
@@ -244,21 +244,21 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnAutoSaveChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnAutoSaveChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbAutoSave.CheckedChanged
         If Me.m_bInUpdate Then Return
         My.Settings.AutosaveResults = Me.m_cbAutoSave.Checked
         Me.m_uic.Core.OnSettingsChanged()
     End Sub
 
-    Private Sub m_nudEffortMin_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_nudEffortMin_ValueChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_nudEffortMin.ValueChanged
         If (Me.m_params Is Nothing) Then Return
         If Me.m_bInUpdate Then Return
         Me.m_params.EquilibriumEffortMin = CSng(Me.m_nudEffortMin.Value)
     End Sub
 
-    Private Sub m_nudEffortMax_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_nudEffortMax_ValueChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_nudEffortMax.ValueChanged
 
         If (Me.m_params Is Nothing) Then Return
@@ -267,7 +267,7 @@ Public Class ucParameters
         Me.m_params.EquilibriumEffortMax = CSng(Me.m_nudEffortMax.Value)
     End Sub
 
-    Private Sub m_nudEffortIncr_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_nudEffortIncr_ValueChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_nudEffortIncr.ValueChanged
 
         If (Me.m_params Is Nothing) Then Return
@@ -283,7 +283,7 @@ Public Class ucParameters
         e.Value = fmt.ToString(item)
     End Sub
 
-    Private Sub OnFleetSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnFleetSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_clbFleets.SelectedIndexChanged
 
         If Me.m_bInUpdate Then Return
@@ -294,7 +294,7 @@ Public Class ucParameters
         Next
     End Sub
 
-    Private Sub OnParametersChanged(ByVal obj As cOOPStorable)
+    Private Sub OnParametersChanged(obj As cOOPStorable)
         Me.UpdateControlValues()
     End Sub
 
@@ -348,7 +348,7 @@ Public Class ucParameters
     ''' True to connect to Ecosim, False to disconnect.
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Private Sub ConfigureEcosimControls(ByVal bConnect As Boolean)
+    Private Sub ConfigureEcosimControls(bConnect As Boolean)
 
         If (bConnect) Then
 

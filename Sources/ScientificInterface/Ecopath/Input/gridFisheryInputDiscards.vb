@@ -63,14 +63,14 @@ Namespace Ecopath.Input
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Me.Core.nFleets
-                source = Core.EcopathFleetInputs(fleetIndex)
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.Discards)
                 Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
             Next
 
             ' Total column
-            Me(0, Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+            Me(0, Me.Core.nFleets + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
             Me.FixedColumns = 2
 
@@ -106,7 +106,7 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             ' Done?
-            If Core.nFleets = 0 Then Return
+            If Me.Core.nFleets = 0 Then Return
 
             ' Create rows for all groups
             For i As Integer = 0 To groups.Count - 1
@@ -119,11 +119,11 @@ Namespace Ecopath.Input
                 If Not group.IsMultiStanza Then
 
                     iRow = Me.AddRow()
-                    FillInRows(iRow, group, alSumRow, alSumAll)
+                    Me.FillInRows(iRow, group, alSumRow, alSumAll)
 
                 Else
 
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
 
                     ' Create hierarchy cell if entering a new stanza config
                     If group.iStanza <> iStanzaPrev Then
@@ -143,7 +143,7 @@ Namespace Ecopath.Input
 
                     ' Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, alSumRow, alSumAll, True)
+                    Me.FillInRows(iRow, group, alSumRow, alSumAll, True)
                 End If
 
                 ' Set the property to the last cell of the row, which is the sum of the row
@@ -156,12 +156,12 @@ Namespace Ecopath.Input
             iRow = Me.AddRow()
             Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
             Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
-            For fleetIndex As Integer = 1 To Core.nFleets
-                fleet = Core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                fleet = Me.Core.EcopathFleetInputs(fleetIndex)
                 alSumCol.Clear()
 
-                For rowIndex As Integer = 1 To Core.nGroups
-                    sourceSec = Core.EcoPathGroupInputs(rowIndex)
+                For rowIndex As Integer = 1 To Me.Core.nGroups
+                    sourceSec = Me.Core.EcoPathGroupInputs(rowIndex)
                     prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.Discards, sourceSec)
                     alSumCol.Add(prop)
                 Next
@@ -179,8 +179,8 @@ Namespace Ecopath.Input
             Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New cPropertyCell(propSumAll)
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, _
-            ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, _
+            ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional isIndented As Boolean = False)
 
             Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim prop As cProperty = Nothing
@@ -195,7 +195,7 @@ Namespace Ecopath.Input
             ' For each fleet (each column) 
             For fleetIndex As Integer = 1 To Me.Core.nFleets
                 ' Get the fleet object 
-                sourceSec = Core.EcopathFleetInputs(fleetIndex)
+                sourceSec = Me.Core.EcopathFleetInputs(fleetIndex)
                 ' Get the index landing property
                 prop = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Discards, source)
 

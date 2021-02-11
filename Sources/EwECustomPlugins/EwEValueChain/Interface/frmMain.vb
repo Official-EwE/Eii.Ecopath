@@ -61,7 +61,7 @@ Public Class frmMain
 
 #Region " Constructor "
 
-    Public Sub New(ByVal plugin As cValueChainPlugin)
+    Public Sub New(plugin As cValueChainPlugin)
 
         Me.InitializeComponent()
 
@@ -82,7 +82,7 @@ Public Class frmMain
     ''' </summary>
     ''' <param name="page">Indicator of the page to show.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ShowForm(ByVal page As eValueChainPageTypes)
+    Public Sub ShowForm(page As eValueChainPageTypes)
 
         If Me.m_pageCurrent = page Then Return
         If Me.m_bInUpdate Then Return
@@ -151,7 +151,7 @@ Public Class frmMain
     ''' <param name="strFormName"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function ResolveFormName(ByVal strFormName As String) As String
+    Private Function ResolveFormName(strFormName As String) As String
         Select Case strFormName
             Case "" : Return "ndParameters"
             Case "ndTables" : Return "ndProducer"
@@ -159,7 +159,7 @@ Public Class frmMain
         Return strFormName
     End Function
 
-    Private Sub ShowForm(ByVal f As Control, ByVal strTitle As String)
+    Private Sub ShowForm(f As Control, strTitle As String)
 
         Debug.Assert(f IsNot Nothing)
 

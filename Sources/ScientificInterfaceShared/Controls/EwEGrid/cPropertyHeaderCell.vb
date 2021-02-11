@@ -49,7 +49,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty)
+        Public Sub New(prop As cProperty)
             ' Call baseclass constructor
             MyBase.New(prop)
             ' Always
@@ -63,8 +63,8 @@ Namespace Controls.EwEGrid
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
         ''' <param name="strUnit">The unit to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty,
-                       ByVal strUnit As String)
+        Public Sub New(prop As cProperty,
+                       strUnit As String)
             Me.New(prop)
             Me.SetUnits(strUnit)
         End Sub
@@ -78,10 +78,10 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">An optional secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal Source As cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+        Public Sub New(pm As cPropertyManager,
+                       Source As cCoreInputOutputBase,
+                       VarName As eVarNameFlags,
+                       Optional SourceSec As cCoreInputOutputBase = Nothing)
             Me.New(pm.GetProperty(Source, VarName, SourceSec))
         End Sub
 
@@ -95,11 +95,11 @@ Namespace Controls.EwEGrid
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnit">The unit to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal Source As cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       ByVal SourceSec As cCoreInputOutputBase,
-                       ByVal strUnit As String)
+        Public Sub New(pm As cPropertyManager,
+                       Source As cCoreInputOutputBase,
+                       VarName As eVarNameFlags,
+                       SourceSec As cCoreInputOutputBase,
+                       strUnit As String)
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
@@ -116,7 +116,7 @@ Namespace Controls.EwEGrid
             Get
                 Return (MyBase.Style Or cStyleGuide.eStyleFlags.NotEditable)
             End Get
-            Set(ByVal styleNew As cStyleGuide.eStyleFlags)
+            Set(styleNew As cStyleGuide.eStyleFlags)
                 MyBase.Style = (styleNew Or cStyleGuide.eStyleFlags.NotEditable)
             End Set
         End Property
@@ -136,7 +136,7 @@ Namespace Controls.EwEGrid
         ''' <param name="strUnit">The <see cref="cUnits">unit string</see> to set.
         ''' To clear units, simply pass in an empty string.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub SetUnits(ByVal strUnit As String)
+        Protected Sub SetUnits(strUnit As String)
             Me.m_strUnit = strUnit
         End Sub
 
@@ -167,7 +167,7 @@ Namespace Controls.EwEGrid
                 If (strVal.Contains("{0}")) Then Return cStringUtils.Localize(strVal, strUnit)
                 Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strVal, strUnit)
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 If (TypeOf value Is String) Then
                     Dim strValue As String = CStr(value)
                     If strValue.IndexOf("|"c) > -1 Then

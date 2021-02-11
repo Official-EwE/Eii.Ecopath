@@ -43,7 +43,7 @@ Friend Class cData
             Get
                 Return Me.m_strModelName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strModelName = value
             End Set
         End Property
@@ -102,12 +102,12 @@ Friend Class cData
     ''' </summary>
     ''' <param name="iYear">The one-based year index.</param>
     ''' -----------------------------------------------------------------------
-    Public Property CreateModel(ByVal iYear As Integer) As Boolean
+    Public Property CreateModel(iYear As Integer) As Boolean
         Get
             If (iYear < 1 Or iYear > Me.NumYears) Then Return False
             Return Me.m_dtEntries.ContainsKey(iYear)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (iYear < 1 Or iYear > Me.NumYears) Then Return
 
             If value Then
@@ -129,14 +129,14 @@ Friend Class cData
     ''' </summary>
     ''' <param name="iYear">The one-based year index to use.</param>
     ''' -----------------------------------------------------------------------
-    Public Property ModelName(ByVal iYear As Integer) As String
+    Public Property ModelName(iYear As Integer) As String
         Get
             If Not Me.CreateModel(iYear) Then Return ""
             Dim record As cEcopathModelEntry = Me.m_dtEntries(iYear)
-            If record.IsDefaultName Then Return DefaultModelName(iYear)
+            If record.IsDefaultName Then Return Me.DefaultModelName(iYear)
             Return record.ModelName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             If Not Me.CreateModel(iYear) Then Return
             Me.m_dtEntries(iYear).ModelName = value
         End Set
@@ -208,7 +208,7 @@ Friend Class cData
     ''' </summary>
     ''' <param name="iYear">The one-based year index to get the label for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property YearLabel(ByVal iYear As Integer) As String
+    Public ReadOnly Property YearLabel(iYear As Integer) As String
         Get
             Return CStr(Me.FirstLabelYear + iYear - 1)
         End Get
@@ -220,7 +220,7 @@ Friend Class cData
     ''' </summary>
     ''' <param name="iYear">The one-based year index to get the default model name for.</param>
     ''' -----------------------------------------------------------------------
-    Private ReadOnly Property DefaultModelName(ByVal iYear As Integer) As String
+    Private ReadOnly Property DefaultModelName(iYear As Integer) As String
         Get
             If (iYear < 1 Or iYear > Me.NumYears) Then Return ""
             Return cFileUtils.ToValidFileName(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _

@@ -35,8 +35,8 @@ Namespace MSE
         'Private m_FMaxValues() As Single
         Private m_BatchData As MSEBatchManager.cMSEBatchDataStructures
 
-        Public Sub New(ByRef theCore As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, ByVal theGroupDBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, theGroupDBID As Integer)
+            MyBase.New(core)
 
             Dim val As cValue
 
@@ -49,20 +49,20 @@ Namespace MSE
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            val = New cValue(New Single, eVarNameFlags.MSEBatchTACLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEBatchTACLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSEBatchTACUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEBatchTACUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Used
-            val = New cValue(New Boolean, eVarNameFlags.MSEBatchTACManaged, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.MSEBatchTACManaged, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
 
@@ -71,31 +71,31 @@ Namespace MSE
 
         Public Property TAC As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETAC))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETAC))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETAC, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETAC, value)
             End Set
         End Property
 
         Public Property TACLower As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBatchTACLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBatchTACLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBatchTACLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBatchTACLower, value)
             End Set
         End Property
 
         Public Property TACUpper As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBatchTACUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBatchTACUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBatchTACUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBatchTACUpper, value)
             End Set
         End Property
 
@@ -103,11 +103,11 @@ Namespace MSE
 
         Public Property isManaged As Boolean
             Get
-                Return CBool(GetVariable(eVarNameFlags.MSEBatchTACManaged))
+                Return CBool(Me.GetVariable(eVarNameFlags.MSEBatchTACManaged))
             End Get
 
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.MSEBatchTACManaged, value)
+            Set(value As Boolean)
+                Me.SetVariable(eVarNameFlags.MSEBatchTACManaged, value)
             End Set
         End Property
 
@@ -122,7 +122,7 @@ Namespace MSE
                 Return cCore.NULL_VALUE
             End Get
 
-            Set(ByVal value As Single)
+            Set(value As Single)
                 ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
                 If IterationIndex <= Me.m_BatchData.nTAC Then
                     Me.m_BatchData.TAC(IterationIndex, Me.Index) = value
@@ -136,7 +136,7 @@ Namespace MSE
 
             Select Case VarName
                 Case eVarNameFlags.MSEBatchTACValues
-                    Return Me.m_BatchData.TAC(iIndex, Index)
+                    Return Me.m_BatchData.TAC(iIndex, Me.Index)
 
             End Select
 
@@ -145,13 +145,13 @@ Namespace MSE
         End Function
 
 
-        Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+        Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As Boolean
 
             Select Case VarName
 
                 Case eVarNameFlags.MSEBatchTACValues
 
-                    Me.m_BatchData.TAC(iSecondaryIndex, Index) = CSng(newValue)
+                    Me.m_BatchData.TAC(iSecondaryIndex, Me.Index) = CSng(newValue)
                     Return True
             End Select
 
@@ -160,7 +160,7 @@ Namespace MSE
         End Function
 
 
-        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
             MyBase.ResetStatusFlags(bForceReset)
 
             Me.AllowValidation = False

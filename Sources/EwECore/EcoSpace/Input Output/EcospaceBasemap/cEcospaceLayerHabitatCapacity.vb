@@ -35,20 +35,20 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceLayerHabitatCapacity
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal dt As eDataTypes, ByVal vn As eVarNameFlags, iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, dt As eDataTypes, vn As eVarNameFlags, iIndex As Integer)
         MyBase.New(theCore, manager, "", vn, iIndex)
         Me.m_dataType = dt
     End Sub
 
 #Region " Cell interaction "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then Return data(Me.Index)(iRow, iCol)
             Return 0
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then data(Me.Index)(iRow, iCol) = CSng(value)
         End Set

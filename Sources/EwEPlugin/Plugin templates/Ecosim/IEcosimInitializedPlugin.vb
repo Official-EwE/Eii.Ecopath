@@ -29,6 +29,6 @@ Public Interface IEcosimInitializedPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures">cEcosimDataStructures passed as an object.</param>
     ''' <remarks>Called after an Ecosim scenario has loaded but prior to initialization of data.</remarks>
-    Sub EcosimInitialized(ByVal EcosimDatastructures As Object)
+    Sub EcosimInitialized(EcosimDatastructures As Object)
 
 End Interface

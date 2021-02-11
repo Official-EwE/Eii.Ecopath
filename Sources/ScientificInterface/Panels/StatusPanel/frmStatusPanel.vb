@@ -57,7 +57,7 @@ Public Class frmStatusPanel
     ''' Constructor, initializes a new instance of the RemarkPanel.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, ByVal hist As cMessageHistory)
+    Public Sub New(uic As cUIContext, hist As cMessageHistory)
 
         Me.InitializeComponent()
         Me.m_uic = uic
@@ -77,7 +77,7 @@ Public Class frmStatusPanel
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.m_uic Is Nothing) Then Return
@@ -93,15 +93,15 @@ Public Class frmStatusPanel
         Me.SyncHistory()
 
         ' Go live
-        AddHandler Me.m_hist.OnHistoryItemAdded, AddressOf OnHistoryItemAdded
-        AddHandler Me.m_hist.OnHistoryRefreshed, AddressOf OnHistoryRefreshed
+        AddHandler Me.m_hist.OnHistoryItemAdded, AddressOf Me.OnHistoryItemAdded
+        AddHandler Me.m_hist.OnHistoryRefreshed, AddressOf Me.OnHistoryRefreshed
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-        RemoveHandler Me.m_hist.OnHistoryItemAdded, AddressOf OnHistoryItemAdded
-        RemoveHandler Me.m_hist.OnHistoryRefreshed, AddressOf OnHistoryRefreshed
+        RemoveHandler Me.m_hist.OnHistoryItemAdded, AddressOf Me.OnHistoryItemAdded
+        RemoveHandler Me.m_hist.OnHistoryRefreshed, AddressOf Me.OnHistoryRefreshed
 
         Me.m_uic = Nothing
         Me.m_tvStatus.ImageList = Nothing
@@ -142,8 +142,8 @@ Public Class frmStatusPanel
     ''' <param name="hist"></param>
     ''' <param name="item"></param>
     ''' -------------------------------------------------------------------
-    Private Sub OnHistoryItemAdded(ByVal hist As cMessageHistory,
-                                   ByVal item As cMessageHistory.cHistoryItem)
+    Private Sub OnHistoryItemAdded(hist As cMessageHistory,
+                                   item As cMessageHistory.cHistoryItem)
         If Me.InvokeRequired Then
             Me.Invoke(New AddHistoryItemDelegate(AddressOf Me.AddHistoryItem), New Object() {item})
         Else
@@ -157,7 +157,7 @@ Public Class frmStatusPanel
     ''' </summary>
     ''' <param name="hist"></param>
     ''' -------------------------------------------------------------------
-    Private Sub OnHistoryRefreshed(ByVal hist As cMessageHistory)
+    Private Sub OnHistoryRefreshed(hist As cMessageHistory)
         If Me.InvokeRequired Then
             Me.Invoke(New ClearHistoryItemsDelegate(AddressOf Me.RefreshHistoryItems), New Object() {})
         Else
@@ -169,7 +169,7 @@ Public Class frmStatusPanel
 
 #Region " Tree view maintenance "
 
-    Private Function GetPropertylistFromNode(ByVal tn As TreeNode) As cProperty()
+    Private Function GetPropertylistFromNode(tn As TreeNode) As cProperty()
 
         If (tn Is Nothing) Then Return Nothing
         If (tn.Tag Is Nothing) Then Return Nothing
@@ -196,12 +196,12 @@ Public Class frmStatusPanel
     ''' Sets the properties to highlight
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Sub SetHighlights(ByVal props As cProperty())
+    Public Sub SetHighlights(props As cProperty())
 
         ' Clear current highlights, if any
         If Me.m_lpHighlighted.Count > 0 Then
             ' Clear current highlights
-            HighlightProperties(False)
+            Me.HighlightProperties(False)
             ' Clear list of highlights
             Me.m_lpHighlighted.Clear()
         End If
@@ -213,7 +213,7 @@ Public Class frmStatusPanel
             ' Update list of highlights
             Me.m_lpHighlighted.InsertRange(0, props)
             ' Set the highlights
-            HighlightProperties(True)
+            Me.HighlightProperties(True)
         End If
 
     End Sub
@@ -224,7 +224,7 @@ Public Class frmStatusPanel
     ''' </summary>
     ''' <param name="bHighlight">Flag, stating the new highlight state for the proeprties for this cMessage</param>
     ''' -------------------------------------------------------------------
-    Private Sub HighlightProperties(ByVal bHighlight As Boolean)
+    Private Sub HighlightProperties(bHighlight As Boolean)
 
         Dim bsm As cProperty.eBitSetMode = cProperty.eBitSetMode.BitwiseOn
 
@@ -249,12 +249,12 @@ Public Class frmStatusPanel
     ''' for a clicked item.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnStatusMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnStatusMouseDown(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
         Handles m_tvStatus.MouseDown
         ' Get node that the user clicked on, if any
         Dim tn As TreeNode = Me.m_tvStatus.GetNodeAt(e.Location)
         ' Extract list op properties and highlight these
-        SetHighlights(Me.GetPropertylistFromNode(tn))
+        Me.SetHighlights(Me.GetPropertylistFromNode(tn))
     End Sub
 
     ''' -------------------------------------------------------------------
@@ -262,10 +262,10 @@ Public Class frmStatusPanel
     ''' Event handler; traps the mouse up event to end property highlighting.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnStatusMouseUp(ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub OnStatusMouseUp(sender As Object, e As EventArgs) _
         Handles m_tvStatus.MouseUp, m_tvStatus.MouseLeave
         ' Clear any highlights
-        SetHighlights(Nothing)
+        Me.SetHighlights(Nothing)
     End Sub
 
 #End Region ' Message highlighting
@@ -278,7 +278,7 @@ Public Class frmStatusPanel
     ''' </summary>
     ''' <param name="item">The item to add.</param>
     ''' -------------------------------------------------------------------
-    Private Delegate Sub AddHistoryItemDelegate(ByVal item As cMessageHistory.cHistoryItem)
+    Private Delegate Sub AddHistoryItemDelegate(item As cMessageHistory.cHistoryItem)
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -286,7 +286,7 @@ Public Class frmStatusPanel
     ''' </summary>
     ''' <param name="item">The item to add.</param>
     ''' -------------------------------------------------------------------
-    Private Sub AddHistoryItem(ByVal item As cMessageHistory.cHistoryItem)
+    Private Sub AddHistoryItem(item As cMessageHistory.cHistoryItem)
 
         Me.m_tvStatus.BeginUpdate()
         Try
@@ -306,8 +306,8 @@ Public Class frmStatusPanel
     ''' <param name="item">The item to add.</param>
     ''' <param name="tnParent">The tree node to add this item to.</param>
     ''' -------------------------------------------------------------------
-    Private Sub AddHistoryItemRecursive(ByVal item As cMessageHistory.cHistoryItem,
-                                        ByVal tnParent As TreeNode)
+    Private Sub AddHistoryItemRecursive(item As cMessageHistory.cHistoryItem,
+                                        tnParent As TreeNode)
 
         ' Sanity checks
         If (item Is Nothing) Then Return
@@ -433,7 +433,7 @@ Public Class frmStatusPanel
     ''' <param name="item">The item to obtain log text for.</param>
     ''' <returns>A single line of text.</returns>
     ''' -------------------------------------------------------------------
-    Private Function GetLogText(ByVal item As cMessageHistory.cHistoryItem) As String
+    Private Function GetLogText(item As cMessageHistory.cHistoryItem) As String
         Dim strText As String = ""
         If (item IsNot Nothing) Then
             strText = item.Text.Replace(cStringUtils.vbNewline, " ")

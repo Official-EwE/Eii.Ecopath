@@ -40,8 +40,8 @@ Public Class cEcoFunctions
     ''' Initialize the instance to the current core.
     ''' </summary>
     ''' <param name="theCore">The core to initialize to.</param>
-    Friend Sub Init(ByVal theCore As cCore)
-        m_core = theCore
+    Friend Sub Init(theCore As cCore)
+        Me.m_core = theCore
     End Sub
 
     ''' <summary>
@@ -49,11 +49,11 @@ Public Class cEcoFunctions
     ''' </summary>
     Public ReadOnly Property MatrixCalc() As cMatrixCalc
         Get
-            Return m_matrix
+            Return Me.m_matrix
         End Get
     End Property
 
-    Public Function ShannonDiversityIndex(iNumLiving As Integer, ByVal Bio() As Single) As Single
+    Public Function ShannonDiversityIndex(iNumLiving As Integer, Bio() As Single) As Single
 
         Try
             Dim sumB As Single = 0
@@ -90,7 +90,7 @@ Public Class cEcoFunctions
 
 
     Public Function KemptonsQ(iNumLiving As Integer, ttlx As Single(), _
-                              ByVal Bio() As Single, ByVal Quan As Single) As Single
+                              Bio() As Single, Quan As Single) As Single
 
         'VC programmed this function 23 October 2002 from Tony Pitcher's description
         Dim BLower As Single
@@ -195,11 +195,11 @@ Public Class cEcoFunctions
     ''' This method is totally independent of cCore; all required information
     ''' is passed in.
     ''' </remarks>
-    Public Function EstimateTrophicLevels(ByVal iNumGroups As Integer,
-                                          ByVal iNumLiving As Integer,
-                                          ByVal PP() As Single,
-                                          ByVal Diet(,) As Single,
-                                          ByVal TLreturn() As Single) As Boolean
+    Public Function EstimateTrophicLevels(iNumGroups As Integer,
+                                          iNumLiving As Integer,
+                                          PP() As Single,
+                                          Diet(,) As Single,
+                                          TLreturn() As Single) As Boolean
 
         Dim SumDC(iNumGroups) As Single
         Dim LHS(iNumGroups, iNumGroups) As Single
@@ -280,7 +280,7 @@ Public Class cEcoFunctions
     ''' cCore.NULL_VALUE if this group does not belong to a stanza configuration.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function getStanzaIndexForGroup(ByVal iGroup As Integer) As Integer
+    Public Function getStanzaIndexForGroup(iGroup As Integer) As Integer
 
         For i As Integer = 1 To Me.m_core.m_Stanza.Nsplit
 
@@ -341,14 +341,14 @@ Public Class cMatrixCalc
             'On Local Error GoTo sseqnerr: 
             'Lo = LBound(A, 1)
             'jb in EwE5 lo boundary of the arrays was set to 1 we can not do that here so hard wire this value
-            Lo = 1
+            Me.Lo = 1
             'Up = UBound(A, 1)
-            Up = A.GetUpperBound(0)
-            ReDim X(Up)
-            ReDim rpvt(Up)
-            ReDim cpvt(Up)
+            Me.Up = A.GetUpperBound(0)
+            ReDim X(Me.Up)
+            ReDim Me.rpvt(Me.Up)
+            ReDim Me.cpvt(Me.Up)
 
-            ErrCode = matluS(A, OkToContinue)                      'Get LU matrix
+            ErrCode = Me.matluS(A, OkToContinue)                      'Get LU matrix
             'If Not OkToContinue Then Error ErrCode
             If Not OkToContinue Then
                 cLog.Write("Ecopath error matluS() returned False. Trophic Levels will not be computed for this run.")
@@ -356,19 +356,19 @@ Public Class cMatrixCalc
             End If
             'check dimensions of b
             'If (Lo <> LBound(B)) Or (Up <> UBound(B)) Then Error 197
-            If (Up <> B.Length - 1) Then
+            If (Me.Up <> B.Length - 1) Then
                 Debug.Assert(False)
                 Return 197
             End If
 
-            bserrcode = matbsS(A, B, X)          'Backsolve system
+            bserrcode = Me.matbsS(A, B, X)          'Backsolve system
             'If bserrcode Then Error bserrcode
             If bserrcode <> 0 Then
                 Debug.Assert(False)
                 Return bserrcode
             End If
 
-            For row = Lo To Up
+            For row = Me.Lo To Me.Up
                 B(row) = X(row)                         'Put solution in b for return
             Next row
 
@@ -429,7 +429,7 @@ Public Class cMatrixCalc
         Try
             'Checks if A is square, returns error code if not
             'If Up <> UBound(A, 2) Then
-            If Up <> A.GetUpperBound(1) Then
+            If Me.Up <> A.GetUpperBound(1) Then
 
                 'If Not (Lo = LBound(A, 2) And Up = UBound(A, 2)) Then
 
@@ -437,15 +437,15 @@ Public Class cMatrixCalc
                 Return 198
             End If
 
-            ReDim rownorm(Up)
+            ReDim rownorm(Me.Up)
             count = 0                            'initialize count, OkToContinue
             OkToContinue = True
 
-            For row = Lo To Up                  'initialize rpvt and cpvt
-                rpvt(row) = row
-                cpvt(row) = row
+            For row = Me.Lo To Me.Up                  'initialize rpvt and cpvt
+                Me.rpvt(row) = row
+                Me.cpvt(row) = row
                 rownorm(row) = 0.0                'find the row norms of A()
-                For col = Lo To Up
+                For col = Me.Lo To Me.Up
                     rownorm(row) = rownorm(row) + Math.Abs(A(row, col))
                 Next col
                 'If rownorm(Row) = 0! Then        'if any rownorm is zero, the matrix
@@ -454,13 +454,13 @@ Public Class cMatrixCalc
                 'End If
             Next row
 
-            For pvt = Lo To (Up - 1)
+            For pvt = Me.Lo To (Me.Up - 1)
                 'Find best available pivot
                 max = 0.0                         'checks all values in rows and columns not
-                For row = pvt To Up             'already used for pivoting and finds the
-                    R = rpvt(row)                'number largest in absolute value relative
-                    For col = pvt To Up          'to its row norm
-                        CCC = cpvt(col)
+                For row = pvt To Me.Up             'already used for pivoting and finds the
+                    R = Me.rpvt(row)                'number largest in absolute value relative
+                    For col = pvt To Me.Up          'to its row norm
+                        CCC = Me.cpvt(col)
                         If (rownorm(R) <> 0) Then
                             Temp = Math.Abs(A(R, CCC)) / rownorm(R)
                         End If
@@ -485,44 +485,44 @@ Public Class cMatrixCalc
                 End If
 
                 oldmax = max
-                If rpvt(pvt) <> rpvt(bestrow) Then
+                If Me.rpvt(pvt) <> Me.rpvt(bestrow) Then
                     count = count + 1                    'if a row or column pivot is
                     'SWAP rpvt(pvt), rpvt(bestrow)      'necessary, count it and permute
-                    Temp = rpvt(pvt)
-                    rpvt(pvt) = rpvt(bestrow)
-                    rpvt(bestrow) = CInt(Temp)
+                    Temp = Me.rpvt(pvt)
+                    Me.rpvt(pvt) = Me.rpvt(bestrow)
+                    Me.rpvt(bestrow) = CInt(Temp)
                 End If                                  'rpvt or cpvt. Note: the rows and
-                If cpvt(pvt) <> cpvt(bestcol) Then    'columns are not actually switched,
+                If Me.cpvt(pvt) <> Me.cpvt(bestcol) Then    'columns are not actually switched,
                     count = count + 1                    'only the order in which they are
                     'SWAP cpvt(pvt), cpvt(bestcol)      'used.
-                    Temp! = cpvt(pvt)
-                    cpvt(pvt) = cpvt(bestrow)
-                    cpvt(bestrow) = CInt(Temp)
+                    Temp! = Me.cpvt(pvt)
+                    Me.cpvt(pvt) = Me.cpvt(bestrow)
+                    Me.cpvt(bestrow) = CInt(Temp)
                 End If
                 'Eliminate all values below the pivot
-                rp = rpvt(pvt)
-                cp = cpvt(pvt)
-                For row = (pvt + 1) To Up
-                    R = rpvt(row)
+                rp = Me.rpvt(pvt)
+                cp = Me.cpvt(pvt)
+                For row = (pvt + 1) To Me.Up
+                    R = Me.rpvt(row)
 
                     If (A(rp, cp) <> 0) Then
                         A(R, cp) = -A(R, cp) / A(rp, cp)  'save multipliers
                     End If
-                    For col = (pvt + 1) To Up
-                        CCC = cpvt(col)                      'complete row operations
+                    For col = (pvt + 1) To Me.Up
+                        CCC = Me.cpvt(col)                      'complete row operations
                         A(R, CCC) = A(R, CCC) + A(R, cp) * A(rp, CCC)
                     Next col
                 Next row
             Next pvt
 
-            If A(rpvt(Up), cpvt(Up)) = 0.0 Then
+            If A(Me.rpvt(Me.Up), Me.cpvt(Me.Up)) = 0.0 Then
                 'if last pivot is zero or pivot drop is
                 'too large, A is singular, send back error
                 OkToContinue = False
                 'DispError 0, "Last pivot is zero or pivot drop is too large."
                 'Debug.Assert(False, "matlus: Last pivot is zero or pivot drop is too large.")
                 Return 199
-            ElseIf (Math.Abs(A(rpvt(Up), cpvt(Up))) / rownorm(rpvt(Up))) < (seps * oldmax) Then
+            ElseIf (Math.Abs(A(Me.rpvt(Me.Up), Me.cpvt(Me.Up))) / rownorm(Me.rpvt(Me.Up))) < (seps * oldmax) Then
                 'if pivot is not identically zero then
                 'OkToContinue remains TRUE
                 'Debug.Assert(False, "matlus: Last pivot is zero or pivot drop is too large.")
@@ -581,21 +581,21 @@ Public Class cMatrixCalc
 
             'On Local Error GoTo sbserr: matbsS = 0
             'do row operations on b using the multipliers in L to find Lb
-            For pvt = Lo To (Up - 1)
-                CCC = cpvt(pvt)
-                For row = (pvt + 1) To Up
-                    R = rpvt(row)
-                    B(R) = B(R) + A(R, CCC) * B(rpvt(pvt))
+            For pvt = Me.Lo To (Me.Up - 1)
+                CCC = Me.cpvt(pvt)
+                For row = (pvt + 1) To Me.Up
+                    R = Me.rpvt(row)
+                    B(R) = B(R) + A(R, CCC) * B(Me.rpvt(pvt))
                 Next row
             Next pvt
 
             'backsolve Ux=Lb to find x
-            For row = Up To Lo Step -1
-                CCC = cpvt(row)
-                R = rpvt(row)
+            For row = Me.Up To Me.Lo Step -1
+                CCC = Me.cpvt(row)
+                R = Me.rpvt(row)
                 X(CCC) = B(R)
-                For col = (row + 1) To Up
-                    X(CCC) = X(CCC) - A(R, cpvt(col)) * X(cpvt(col))
+                For col = (row + 1) To Me.Up
+                    X(CCC) = X(CCC) - A(R, Me.cpvt(col)) * X(Me.cpvt(col))
                 Next col
 
                 If A(R, CCC) <> 0 Then

@@ -43,7 +43,7 @@ Public Class frmEditSurvivabilities
         Me.Grid = Me.m_grid
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext)
+    Public Sub Init(uic As cUIContext)
         Me.UIContext = uic
         Me.m_grid.UIContext = uic
         Me.m_grid.Init(Me.m_mse, Me.m_mse.Survivability)
@@ -59,7 +59,7 @@ Public Class frmEditSurvivabilities
         Me.QuickEditHandler.ShowImportExport = False
         Me.QuickEditHandler.Attach(Me.m_grid, Me.UIContext, Me.m_ts)
 
-        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        AddHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
 
         Me.m_bIsDirty = False
         Me.UpdateControls()
@@ -85,7 +85,7 @@ Public Class frmEditSurvivabilities
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.QuickEditHandler.Detach()
-        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
         Me.m_grid.UIContext = Nothing
 
         MyBase.OnFormClosed(e)
@@ -107,7 +107,7 @@ Public Class frmEditSurvivabilities
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.DistrParams)
 
         'Saves all the parameters to csv when user clicks to save
-        If m_survivability.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
+        If Me.m_survivability.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "Survivabilities_dist.csv"))
 
         Me.m_bIsDirty = False
 
@@ -120,10 +120,10 @@ Public Class frmEditSurvivabilities
 
     Private Sub OnGridEdited()
         Me.m_bIsDirty = True
-        Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
+        Me.Invoke(New MethodInvoker(AddressOf Me.UpdateControls))
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel

@@ -46,7 +46,7 @@ Public Class cEcosimEnviroInputData
 
 #Region "Construction Initialization"
 
-    Public Sub New(ByVal EcosimResponseManager As IEnvironmentalResponseManager, ByVal shape As cForcingFunction)
+    Public Sub New(EcosimResponseManager As IEnvironmentalResponseManager, shape As cForcingFunction)
         Me.m_manager = EcosimResponseManager
         Me.m_source = shape
         Me.m_iTSIndex = shape.Index
@@ -77,7 +77,7 @@ Public Class cEcosimEnviroInputData
     End Function
 
     ''' <inheritdocs cref="IEnviroInputData.setManager"/>
-    Friend Sub setManager(ByVal theManager As IEnvironmentalResponseManager) _
+    Friend Sub setManager(theManager As IEnvironmentalResponseManager) _
         Implements IEnviroInputData.SetManager
         '  Me.m_manager = theManager
     End Sub
@@ -106,7 +106,7 @@ Public Class cEcosimEnviroInputData
 
             For ifp As Integer = 1 To nFpts
                 Dim value As Single = Me.m_EcosimData.zscale(ifp, Me.m_iTSIndex)
-                ipt = CInt(Math.Truncate((value - Me.Min) / m_binWidth)) + 1
+                ipt = CInt(Math.Truncate((value - Me.Min) / Me.m_binWidth)) + 1
                 If ipt >= nBins Then ipt = nBins
                 If ipt <= 0 Then ipt = 1
                 pts(ipt).Y += 1
@@ -118,7 +118,7 @@ Public Class cEcosimEnviroInputData
             'Normalize the histogram
             '29-Sept-2011 make it the percentage instead
             For i As Integer = 1 To nBins
-                pts(i).X = CSng(Me.Min + m_binWidth * i)
+                pts(i).X = CSng(Me.Min + Me.m_binWidth * i)
                 'normalize the data
                 'pts(i).Y = pts(i).Y / maxPts
                 pts(i).Y = pts(i).Y / nFpts
@@ -222,13 +222,13 @@ Public Class cEcosimEnviroInputData
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
-    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer _
+    Public Property ResponseIndexForGroup(GrpIndex As Integer, Optional bUpdateMaps As Boolean = True) As Integer _
         Implements IEnviroInputData.ResponseIndexForGroup
         Get
             Return Me.m_GrpToShape(GrpIndex)
         End Get
 
-        Set(ByVal ResponseShapeIndex As Integer)
+        Set(ResponseShapeIndex As Integer)
             If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
                 ''Response index(shape index) of -9999 NULL_VALUE means there is no response set for this Map/Group
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
@@ -291,7 +291,7 @@ Public Class cEcosimEnviroInputData
 #Region "Overloaded Methods not implemented by cEcosimEnviroInputData"
 
 
-    Friend Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean _
+    Friend Function Init(EnviroMediationData As cMediationDataStructures, SpaceData As cEcospaceDataStructures) As Boolean _
         Implements IEnviroInputData.Init
 
 
@@ -307,7 +307,7 @@ Public Class cEcosimEnviroInputData
     ''' <param name="iMapRow">Row of the input map</param>
     ''' <param name="iMapCol">Col of the input map</param>
     ''' <returns>Y = F(x)</returns>
-    Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single _
+    Public Function ResponseFunction(igrp As Integer, iMapRow As Integer, iMapCol As Integer) As Single _
         Implements IEnviroInputData.ResponseFunction
 
         Debug.Assert(False, Me.ToString + ".ResponseFunction(igrp,irow,icol) not implemented for " + Me.ToString)

@@ -30,8 +30,8 @@ Public Class cEcospaceRegionOutput
 
 #Region "Constructor"
 
-    Public Sub New(ByRef TheCore As cCore, ByVal EcospaceData As cEcospaceDataStructures, ByVal iRegion As Integer)
-        MyBase.New(TheCore)
+    Public Sub New(core As cCore, EcospaceData As cEcospaceDataStructures, iRegion As Integer)
+        MyBase.New(core)
 
         Me.m_spacedata = EcospaceData
 
@@ -48,11 +48,11 @@ Public Class cEcospaceRegionOutput
         'If no core array and the data contains more then one variable index then use a local buffer
 
         'cValue objects
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionBiomassStart, eStatusFlags.OK, eCoreCounterTypes.nGroups, AddressOf TheCore.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionBiomassStart, eStatusFlags.OK, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionBiomassEnd, eStatusFlags.OK, eCoreCounterTypes.nGroups, AddressOf TheCore.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcospaceRegionBiomassEnd, eStatusFlags.OK, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
     End Sub
 
@@ -60,11 +60,11 @@ Public Class cEcospaceRegionOutput
     Public Sub Init()
 
         Try
-            m_CoreArrays.Clear()
-            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomass, New c3DResultsWrapper(m_spacedata.ResultsRegionGroup, Me.Index))
-            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomassYear, New c3DResultsWrapper(m_spacedata.ResultsRegionGroupYear, Me.Index))
-            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatch, New c4DResultsWrapperFirstFixed(m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
-            m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, New c4DResultsWrapperFirstFixed(m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
+            Me.m_CoreArrays.Clear()
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomass, New c3DResultsWrapper(Me.m_spacedata.ResultsRegionGroup, Me.Index))
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomassYear, New c3DResultsWrapper(Me.m_spacedata.ResultsRegionGroupYear, Me.Index))
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatch, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Init() Error: " & ex.Message)
             cLog.Write(ex)
@@ -76,16 +76,16 @@ Public Class cEcospaceRegionOutput
 
 #Region "Implementation of GetVariable() SetVariable() GetStatus() SetStatus()"
 
-    Public Overrides Function GetVariable(ByVal varName As eVarNameFlags, Optional ByVal iFirstIndex As Integer = cCore.NULL_VALUE, Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Function GetVariable(varName As eVarNameFlags, Optional iFirstIndex As Integer = cCore.NULL_VALUE, Optional iSecondIndex As Integer = cCore.NULL_VALUE, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
         Try
 
-            If Not m_CoreArrays.ContainsKey(varName) Then
+            If Not Me.m_CoreArrays.ContainsKey(varName) Then
                 Debug.Assert(iSecondIndex = cCore.NULL_VALUE, Me.ToString & ".GetVariable() called with optional argument iSecondIndex for variable " & varName.ToString & " this can not be handled for this variable.")
                 'NOT in list of sim vars so get the value from the base class GetVariable(...)
                 Return MyBase.GetVariable(varName, iFirstIndex)
             Else
                 'Varname is access directly via the core data
-                Return m_CoreArrays.Item(varName).Value(iFirstIndex, iSecondIndex, iIndex3)
+                Return Me.m_CoreArrays.Item(varName).Value(iFirstIndex, iSecondIndex, iIndex3)
             End If
 
         Catch ex As Exception
@@ -97,11 +97,11 @@ Public Class cEcospaceRegionOutput
     End Function
 
 
-    Public Overloads Function GetStatus(ByVal varName As eVarNameFlags, ByVal iFleet As Integer, ByVal iGroup As Integer) As eStatusFlags
+    Public Overloads Function GetStatus(varName As eVarNameFlags, iFleet As Integer, iGroup As Integer) As eStatusFlags
         Return eStatusFlags.OK 'Oh Yeah 
     End Function
 
-    Public Overloads Function SetStatus(ByVal varName As eVarNameFlags, ByVal newValue As eStatusFlags, ByVal iFleet As Integer, ByVal iGroup As Integer) As Boolean
+    Public Overloads Function SetStatus(varName As eVarNameFlags, newValue As eStatusFlags, iFleet As Integer, iGroup As Integer) As Boolean
         Debug.Assert(False, "Not implemented yet.")
     End Function
 
@@ -118,27 +118,27 @@ Public Class cEcospaceRegionOutput
 
 #Region "Variable via dot '.' operator"
 
-    Public Property BiomassStart(ByVal iGroup As Integer) As Single
+    Public Property BiomassStart(iGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceRegionBiomassStart, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceRegionBiomassStart, iGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcospaceRegionBiomassStart, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospaceRegionBiomassStart, value, iGroup)
         End Set
     End Property
 
-    Public Property BiomassEnd(ByVal iGroup As Integer) As Single
+    Public Property BiomassEnd(iGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, iGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospaceRegionBiomassEnd, value, iGroup)
         End Set
     End Property
 
-    Public Property CatchFleetGroupStart(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
+    Public Property CatchFleetGroupStart(iFleet As Integer, iGroup As Integer) As Single
         Get
             Try
                 Return Me.m_CatchFleetGroup(0, iFleet, iGroup)
@@ -148,7 +148,7 @@ Public Class cEcospaceRegionOutput
             End Try
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
                 Me.m_CatchFleetGroup(0, iFleet, iGroup) = value
             Catch ex As Exception
@@ -158,7 +158,7 @@ Public Class cEcospaceRegionOutput
     End Property
 
 
-    Public Property CatchFleetGroupEnd(ByVal iFleet As Integer, ByVal iGroup As Integer) As Single
+    Public Property CatchFleetGroupEnd(iFleet As Integer, iGroup As Integer) As Single
         Get
             Try
                 Return Me.m_CatchFleetGroup(1, iFleet, iGroup)
@@ -168,7 +168,7 @@ Public Class cEcospaceRegionOutput
             End Try
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
                 Me.m_CatchFleetGroup(1, iFleet, iGroup) = value
             Catch ex As Exception
@@ -177,10 +177,10 @@ Public Class cEcospaceRegionOutput
         End Set
     End Property
 
-    Public ReadOnly Property BiomassByTime(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property BiomassByTime(iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionBiomass, iGroup, iTimeStep), Single)
+                Return DirectCast(Me.GetVariable(eVarNameFlags.EcospaceRegionBiomass, iGroup, iTimeStep), Single)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -188,10 +188,10 @@ Public Class cEcospaceRegionOutput
         End Get
     End Property
 
-    Public ReadOnly Property BiomassByYear(ByVal iGroup As Integer, ByVal iYear As Integer) As Single
+    Public ReadOnly Property BiomassByYear(iGroup As Integer, iYear As Integer) As Single
         Get
             Try
-                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionBiomassYear, iGroup, iYear), Single)
+                Return DirectCast(Me.GetVariable(eVarNameFlags.EcospaceRegionBiomassYear, iGroup, iYear), Single)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -199,10 +199,10 @@ Public Class cEcospaceRegionOutput
         End Get
     End Property
 
-    Public ReadOnly Property CatchFleetGroupTime(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property CatchFleetGroupTime(iFleet As Integer, iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatch, iFleet, iGroup, iTimeStep), Single)
+                Return DirectCast(Me.GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatch, iFleet, iGroup, iTimeStep), Single)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -210,10 +210,10 @@ Public Class cEcospaceRegionOutput
         End Get
     End Property
 
-    Public ReadOnly Property CatchFleetGroupYear(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal iYear As Integer) As Single
+    Public ReadOnly Property CatchFleetGroupYear(iFleet As Integer, iGroup As Integer, iYear As Integer) As Single
         Get
             Try
-                Return DirectCast(GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, iFleet, iGroup, iYear), Single)
+                Return DirectCast(Me.GetVariable(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, iFleet, iGroup, iYear), Single)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -225,45 +225,45 @@ Public Class cEcospaceRegionOutput
 
 #Region "Status Flags via dot '.' operator"
 
-    Public Property BiomassStartStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property BiomassStartStatus(iGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceRegionBiomassStart, iGroup)
+            Return Me.GetStatus(eVarNameFlags.EcospaceRegionBiomassStart, iGroup)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceRegionBiomassStart, value, iGroup)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceRegionBiomassStart, value, iGroup)
         End Set
     End Property
 
-    Public Property BiomassEndStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property BiomassEndStatus(iGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceRegionBiomassEnd, iGroup)
+            Return Me.GetStatus(eVarNameFlags.EcospaceRegionBiomassEnd, iGroup)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceRegionBiomassEnd, value, iGroup)
-        End Set
-    End Property
-
-
-    Public Property CatchFleetGroupStartStatus(ByVal iGroup As Integer, ByVal iFleet As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.EcospaceRegionCatchStart, iGroup, iFleet)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceRegionCatchStart, value, iGroup, iFleet)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceRegionBiomassEnd, value, iGroup)
         End Set
     End Property
 
 
-    Public Property CatchFleetGroupEndStatus(ByVal iGroup As Integer, ByVal iFleet As Integer) As eStatusFlags
+    Public Property CatchFleetGroupStartStatus(iGroup As Integer, iFleet As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceRegionCatchEnd, iGroup, iFleet)
+            Return Me.GetStatus(eVarNameFlags.EcospaceRegionCatchStart, iGroup, iFleet)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceRegionCatchEnd, value, iGroup, iFleet)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceRegionCatchStart, value, iGroup, iFleet)
+        End Set
+    End Property
+
+
+    Public Property CatchFleetGroupEndStatus(iGroup As Integer, iFleet As Integer) As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.EcospaceRegionCatchEnd, iGroup, iFleet)
+        End Get
+
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceRegionCatchEnd, value, iGroup, iFleet)
         End Set
     End Property
 

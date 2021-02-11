@@ -36,8 +36,8 @@ Public MustInherit Class cMediationBaseFunction
 
 #Region " Constructors "
 
-    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
-                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, _
+                   data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
@@ -57,13 +57,13 @@ Public MustInherit Class cMediationBaseFunction
             Me.m_bInInit = True
             Me.m_data = EcoSimData
             Me.m_iDBID = DBID
-            Me.m_iEcoSimIndex = Array.IndexOf(m_medData.MediationDBIDs, m_iDBID)
+            Me.m_iEcoSimIndex = Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)
 
-            Dim iShape As Integer = m_iEcoSimIndex 'just for clarity
+            Dim iShape As Integer = Me.m_iEcoSimIndex 'just for clarity
 
-            m_manager = Manager 'keep a reference to the manager for this shape
+            Me.m_manager = Manager 'keep a reference to the manager for this shape
 
-            m_bInInit = False
+            Me.m_bInInit = False
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
             Throw New ApplicationException(Me.ToString & ".New() Error: " & ex.Message, ex)
@@ -79,27 +79,27 @@ Public MustInherit Class cMediationBaseFunction
     Protected Friend Overrides Function Load() As Boolean
 
         'copy the data from zscale into an array that will be used to create a forcing data object
-        m_bInInit = True
+        Me.m_bInInit = True
         Me.LockUpdates()
 
-        m_iEcoSimIndex = Array.IndexOf(m_medData.MediationDBIDs, m_iDBID)
-        Debug.Assert(m_iEcoSimIndex > -1, "mediation shape database ID invalid.")
-        If m_iEcoSimIndex < 0 Then Return False
+        Me.m_iEcoSimIndex = Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)
+        Debug.Assert(Me.m_iEcoSimIndex > -1, "mediation shape database ID invalid.")
+        If Me.m_iEcoSimIndex < 0 Then Return False
 
-        Me.ResizeData(m_medData.NMedPoints)
-        For ipt As Integer = 1 To m_medData.NMedPoints
-            Me.ShapeData(ipt) = m_medData.Medpoints(ipt, m_iEcoSimIndex)
+        Me.ResizeData(Me.m_medData.NMedPoints)
+        For ipt As Integer = 1 To Me.m_medData.NMedPoints
+            Me.ShapeData(ipt) = Me.m_medData.Medpoints(ipt, Me.m_iEcoSimIndex)
         Next ipt
 
-        m_nYears = m_data.NumYears
-        Me.Name = m_medData.MediationTitles(m_iEcoSimIndex)
+        Me.m_nYears = Me.m_data.NumYears
+        Me.Name = Me.m_medData.MediationTitles(Me.m_iEcoSimIndex)
 
         'shape parameters
-        m_ShapeFunctionType = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_params = CType(m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams.Clone(), Single())
+        Me.m_ShapeFunctionType = Me.m_medData.MediationShapeParams(Me.m_iEcoSimIndex).ShapeFunctionType
+        Me.m_params = CType(Me.m_medData.MediationShapeParams(Me.m_iEcoSimIndex).ShapeFunctionParams.Clone(), Single())
 
         Me.UnlockUpdates()
-        m_bInInit = False
+        Me.m_bInInit = False
         Return True
 
     End Function
@@ -112,21 +112,21 @@ Public MustInherit Class cMediationBaseFunction
     Public MustOverride ReadOnly Property NumGroups() As Integer
     ''' <summary>Retrieve a <see cref="cMediatingGroup">mediating group</see>.</summary>
     ''' <param name="iIndex">Zero-based index [0, <see cref="NumGroups"/>-1] of the mediating group to retrieve.</param>
-    Public MustOverride Property Group(ByVal iIndex As Integer) As cMediatingGroup
+    Public MustOverride Property Group(iIndex As Integer) As cMediatingGroup
     ''' <summary>Add a <see cref="cMediatingGroup">mediating group</see> to this function.</summary>
     ''' <param name="iGroup">The <see cref="cEcoPathGroupInput.Index">ecopath index</see> of the group to add.</param>
     ''' <param name="weight">The weight of the mediating fleet.</param>
-    Public MustOverride Function AddGroup(ByVal iGroup As Integer, ByVal weight As Single, Optional ByVal iFleetIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public MustOverride Function AddGroup(iGroup As Integer, weight As Single, Optional iFleetIndex As Integer = cCore.NULL_VALUE) As Boolean
 
     ''' <summary>Returns the number of <see cref="cMediatingFleet">mediating fleets</see> attached to this function.</summary>
     Public MustOverride ReadOnly Property NumFleet() As Integer
     ''' <summary>Retrieve a <see cref="cMediatingFleet">mediating fleet</see>.</summary>
     ''' <param name="iIndex">Zero-based index [0, <see cref="NumFleet"/>-1] of the mediating fleet to retrieve.</param>
-    Public MustOverride Property Fleet(ByVal iIndex As Integer) As cMediatingFleet
+    Public MustOverride Property Fleet(iIndex As Integer) As cMediatingFleet
     ''' <summary>Add a <see cref="cMediatingFleet">mediating fleet</see> to this function.</summary>
     ''' <param name="iFleet">The <see cref="cFleetInput.Index">ecopath index</see> of the fleet to add.</param>
     ''' <param name="weight">The weight of the mediating fleet.</param>
-    Public MustOverride Function AddFleet(ByVal iFleet As Integer, ByVal weight As Single) As Boolean
+    Public MustOverride Function AddFleet(iFleet As Integer, weight As Single) As Boolean
 
 #End Region
 
@@ -141,16 +141,16 @@ Public MustInherit Class cMediationBaseFunction
     Public Property XBaseIndex() As Integer
         Get
             Try
-                Return m_medData.IMedBase(Array.IndexOf(m_medData.MediationDBIDs, m_iDBID))
+                Return Me.m_medData.IMedBase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex)
             End Try
 
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Try
-                m_medData.IMedBase(Array.IndexOf(m_medData.MediationDBIDs, m_iDBID)) = value
+                Me.m_medData.IMedBase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex)
@@ -168,7 +168,7 @@ Public MustInherit Class cMediationBaseFunction
     Public ReadOnly Property XBase() As Single
         Get
             Try
-                Return m_medData.MedXbase(Array.IndexOf(m_medData.MediationDBIDs, m_iDBID))
+                Return Me.m_medData.MedXbase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex)
@@ -190,13 +190,13 @@ Public MustInherit Class cMediationBaseFunction
     Public Overrides Function Update() As Boolean
 
         'do not update during initialization
-        If m_bInInit Then
+        If Me.m_bInInit Then
             Return False
         End If
 
-        m_iEcoSimIndex = Array.IndexOf(m_medData.MediationDBIDs, m_iDBID)
+        Me.m_iEcoSimIndex = Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)
         'can not update if there is not an index to the underlying data structures
-        If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_medData.MediationShapes) Then
+        If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_medData.MediationShapes) Then
             cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
             Return False
         End If
@@ -204,21 +204,21 @@ Public MustInherit Class cMediationBaseFunction
         'make sure the shape data is the same size as the EcoSim Shape data
         'this is a double check as the data size was check when the forcing function was added to the Shape Manager
         'however it could have been changed be an interface at a later date
-        Me.ResizeData(m_medData.NMedPoints)
+        Me.ResizeData(Me.m_medData.NMedPoints)
 
         'populate the raw shape data
         For ipt As Integer = 1 To Me.nPoints
-            m_medData.Medpoints(ipt, m_iEcoSimIndex) = Me.ShapeData(ipt)
+            Me.m_medData.Medpoints(ipt, Me.m_iEcoSimIndex) = Me.ShapeData(ipt)
         Next ipt
 
-        m_medData.MediationTitles(m_iEcoSimIndex) = Me.Name
+        Me.m_medData.MediationTitles(Me.m_iEcoSimIndex) = Me.Name
 
         ' Forcing application type not applicable to mediation functions
         'm_data.ForcingApplicationType(m_iEcoSimIndex) = Me.m_ForcingApplicationType
 
         'shape parameters
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams = CType(m_params.Clone(), Single())
+        Me.m_medData.MediationShapeParams(Me.m_iEcoSimIndex).ShapeFunctionType = Me.m_ShapeFunctionType
+        Me.m_medData.MediationShapeParams(Me.m_iEcoSimIndex).ShapeFunctionParams = CType(Me.m_params.Clone(), Single())
 
         Return True
 

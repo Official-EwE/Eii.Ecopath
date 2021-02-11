@@ -42,7 +42,7 @@ Public Class cInput
     ''' <param name="sTons">Weight of the product, in tons</param>
     ''' <param name="sValue">Total value of the product.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal src As cUnit, ByVal sTons As Single, ByVal sValue As Single)
+    Public Sub New(src As cUnit, sTons As Single, sValue As Single)
         Me.m_src = src
         Me.m_sTons = sTons
         Me.m_sValue = sValue

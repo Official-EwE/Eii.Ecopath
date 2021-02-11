@@ -70,13 +70,13 @@ Public Class cLindemanSpine
         Return "Lindeman spine"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                         info As Control,
+                                     uic As cUIContext) As Boolean
 
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
 
@@ -87,8 +87,8 @@ Public Class cLindemanSpine
 
         Me.m_graph = New cLindemanSpineDiagram(manager, Me.StyleGuide)
 
-        AddHandler Me.Plot.Content.Paint, AddressOf PaintUC
-        AddHandler Me.Plot.Content.Resize, AddressOf ResizeUC
+        AddHandler Me.Plot.Content.Paint, AddressOf Me.PaintUC
+        AddHandler Me.Plot.Content.Resize, AddressOf Me.ResizeUC
 
         Return bSucces
 
@@ -96,8 +96,8 @@ Public Class cLindemanSpine
 
     Public Overrides Sub Detach()
 
-        RemoveHandler Me.Plot.Content.Paint, AddressOf PaintUC
-        RemoveHandler Me.Plot.Content.Resize, AddressOf ResizeUC
+        RemoveHandler Me.Plot.Content.Paint, AddressOf Me.PaintUC
+        RemoveHandler Me.Plot.Content.Resize, AddressOf Me.ResizeUC
 
         Me.m_graph = Nothing
 
@@ -113,11 +113,11 @@ Public Class cLindemanSpine
         Me.UpdateControls()
     End Sub
 
-    Public Overrides Function Filename(ByVal strFilter As String) As String
+    Public Overrides Function Filename(strFilter As String) As String
         Return MyBase.Filename("lindeman-spine")
     End Function
 
-    Public Overrides Sub SaveToEMF(ByVal strFileName As String)
+    Public Overrides Sub SaveToEMF(strFileName As String)
 
         Dim fs As FileStream = Nothing
         Dim bmp As Bitmap = Nothing
@@ -134,25 +134,25 @@ Public Class cLindemanSpine
         End Using
 
         Using g As Graphics = Graphics.FromImage(mf)
-            PlotToEMF(g)
+            Me.PlotToEMF(g)
         End Using
         fs.Close()
         mf.Dispose()
     End Sub
 
-    Private Sub PaintUC(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
-        PlotToScreen(e.Graphics)
+    Private Sub PaintUC(sender As Object, e As System.Windows.Forms.PaintEventArgs)
+        Me.PlotToScreen(e.Graphics)
     End Sub
 
-    Private Sub ResizeUC(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub ResizeUC(sender As Object, e As System.EventArgs)
         Me.Plot.Invalidate()
     End Sub
 
-    Private Sub PlotToScreen(ByVal g As Graphics)
+    Private Sub PlotToScreen(g As Graphics)
         Me.m_graph.Draw(g)
     End Sub
 
-    Private Sub PlotToEMF(ByVal g As Graphics)
+    Private Sub PlotToEMF(g As Graphics)
         Me.m_graph.Draw(g)
     End Sub
 
@@ -162,30 +162,30 @@ Public Class cLindemanSpine
         Dim tsmiChild As ToolStripMenuItem = Nothing
 
         Me.m_tsmiCollapseDet = New ToolStripMenuItem(My.Resources.MNU_STYLE_DETRITUS_COLLAPSE)
-        AddHandler Me.m_tsmiCollapseDet.Click, AddressOf OnStyleCollapseDetritus
+        AddHandler Me.m_tsmiCollapseDet.Click, AddressOf Me.OnStyleCollapseDetritus
 
         Me.m_tsStyle = New ToolStripDropDownButton(My.Resources.MNU_STYLE)
         Me.m_tsStyle.DropDownItems.Add(Me.m_tsmiCollapseDet)
         Me.Toolstrip.Items.Add(Me.m_tsStyle)
 
         Me.m_tsmiShowImport = New ToolStripMenuItem(My.Resources.MNU_CONTENT_SHOW_IMPORT)
-        AddHandler Me.m_tsmiShowImport.Click, AddressOf OnContentShowImport
+        AddHandler Me.m_tsmiShowImport.Click, AddressOf Me.OnContentShowImport
 
         Me.m_tsmiShowTST = New ToolStripMenuItem(My.Resources.MNU_CONTENT_SHOW_TST)
-        AddHandler Me.m_tsmiShowTST.Click, AddressOf OnContentShowTST
+        AddHandler Me.m_tsmiShowTST.Click, AddressOf Me.OnContentShowTST
 
         Me.m_tsmiShowBiomass = New ToolStripMenuItem(My.Resources.MNU_CONTENT_SHOW_BIOMASS)
-        AddHandler Me.m_tsmiShowBiomass.Click, AddressOf OnContentShowBiomass
+        AddHandler Me.m_tsmiShowBiomass.Click, AddressOf Me.OnContentShowBiomass
 
         Me.m_tsmiShowBiomassAccum = New ToolStripMenuItem(My.Resources.MNU_CONTENT_SHOW_BIOMASSACCUM)
-        AddHandler Me.m_tsmiShowBiomassAccum.Click, AddressOf OnContentShowBiomassAccum
+        AddHandler Me.m_tsmiShowBiomassAccum.Click, AddressOf Me.OnContentShowBiomassAccum
 
         ' Create max TL sub menu
         tsmi = New ToolStripMenuItem(My.Resources.MNU_CONTENT_MAXTL)
         For iTL As Integer = 1 To Me.NetworkManager.nTrophicLevels
             tsmiChild = New ToolStripMenuItem(cStringUtils.ToRoman(iTL))
             tsmiChild.Tag = iTL
-            AddHandler tsmiChild.Click, AddressOf OnContentNumTrophicLevels
+            AddHandler tsmiChild.Click, AddressOf Me.OnContentNumTrophicLevels
             tsmi.DropDownItems.Add(tsmiChild)
             Me.m_ltsmiTL.Add(tsmiChild)
         Next
@@ -206,23 +206,23 @@ Public Class cLindemanSpine
         Me.Toolstrip.Items.Remove(Me.m_tsStyle)
 
         Me.m_tsStyle.DropDownItems.Clear()
-        RemoveHandler Me.m_tsmiCollapseDet.Click, AddressOf OnStyleCollapseDetritus
+        RemoveHandler Me.m_tsmiCollapseDet.Click, AddressOf Me.OnStyleCollapseDetritus
         Me.m_tsmiCollapseDet = Nothing
         Me.m_tsStyle = Nothing
 
         Me.Toolstrip.Items.Remove(Me.m_tsContent)
 
         Me.m_tsContent.DropDownItems.Clear()
-        RemoveHandler Me.m_tsmiShowImport.Click, AddressOf OnContentShowImport
+        RemoveHandler Me.m_tsmiShowImport.Click, AddressOf Me.OnContentShowImport
         Me.m_tsmiShowImport = Nothing
-        RemoveHandler Me.m_tsmiShowTST.Click, AddressOf OnContentShowTST
+        RemoveHandler Me.m_tsmiShowTST.Click, AddressOf Me.OnContentShowTST
         Me.m_tsmiShowTST = Nothing
-        RemoveHandler Me.m_tsmiShowBiomass.Click, AddressOf OnContentShowBiomass
+        RemoveHandler Me.m_tsmiShowBiomass.Click, AddressOf Me.OnContentShowBiomass
         Me.m_tsmiShowBiomass = Nothing
-        RemoveHandler Me.m_tsmiShowBiomassAccum.Click, AddressOf OnContentShowBiomassAccum
+        RemoveHandler Me.m_tsmiShowBiomassAccum.Click, AddressOf Me.OnContentShowBiomassAccum
 
         For Each tsmi As ToolStripMenuItem In Me.m_ltsmiTL
-            RemoveHandler tsmi.Click, AddressOf OnContentNumTrophicLevels
+            RemoveHandler tsmi.Click, AddressOf Me.OnContentNumTrophicLevels
         Next
         Me.m_ltsmiTL.Clear()
 
@@ -231,32 +231,32 @@ Public Class cLindemanSpine
 
     End Sub
 
-    Private Sub OnStyleCollapseDetritus(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnStyleCollapseDetritus(sender As Object, arg As EventArgs)
         Me.m_graph.CollapseDetritus = Not Me.m_graph.CollapseDetritus
         Me.DisplayData()
     End Sub
 
-    Private Sub OnContentShowImport(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentShowImport(sender As Object, arg As EventArgs)
         Me.m_graph.ShowImport = Not Me.m_graph.ShowImport
         Me.DisplayData()
     End Sub
 
-    Private Sub OnContentShowTST(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentShowTST(sender As Object, arg As EventArgs)
         Me.m_graph.ShowTST = Not Me.m_graph.ShowTST
         Me.DisplayData()
     End Sub
 
-    Private Sub OnContentShowBiomass(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentShowBiomass(sender As Object, arg As EventArgs)
         Me.m_graph.ShowBiomass = Not Me.m_graph.ShowBiomass
         Me.DisplayData()
     End Sub
 
-    Private Sub OnContentShowBiomassAccum(ByVal sender As Object, ByVal arg As EventArgs)
+    Private Sub OnContentShowBiomassAccum(sender As Object, arg As EventArgs)
         Me.m_graph.ShowBiomassAccum = Not Me.m_graph.ShowBiomassAccum
         Me.DisplayData()
     End Sub
 
-    Private Sub OnContentNumTrophicLevels(ByVal sender As Object, ByVal args As EventArgs)
+    Private Sub OnContentNumTrophicLevels(sender As Object, args As EventArgs)
         Me.m_graph.NumTrophicLevels = CInt(DirectCast(sender, ToolStripMenuItem).Tag)
         Me.DisplayData()
     End Sub

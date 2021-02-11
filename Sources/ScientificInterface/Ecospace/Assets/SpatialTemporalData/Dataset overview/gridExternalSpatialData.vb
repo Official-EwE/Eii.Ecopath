@@ -75,13 +75,13 @@ Namespace Ecospace
                 If (Me.UIContext IsNot Nothing) Then
                     Me.m_man = Nothing
                     Me.m_manSets = Nothing
-                    RemoveHandler m_bmCell.Click, AddressOf CellClick
+                    RemoveHandler Me.m_bmCell.Click, AddressOf Me.CellClick
                 End If
                 ' Peek ahead...
                 If (value IsNot Nothing) Then
                     Me.m_man = value.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-                    AddHandler m_bmCell.Click, AddressOf CellClick
+                    AddHandler Me.m_bmCell.Click, AddressOf Me.CellClick
 
                     Dim bHasConnections As Boolean = False
                     For Each adt As cSpatialDataAdapter In Me.m_man.Adapters
@@ -240,7 +240,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
+        Protected Sub CellClick(sender As Object, e As PositionEventArgs)
             Try
 
                 Dim info As cConnectionInfo = Me.InfoAtRow(e.Position.Row)
@@ -257,7 +257,7 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
             If (p.Column = eColumnTypes.Enabled) Then
                 Dim layer As cEcospaceLayer = Me.InfoAtRow(p.Row).Layer
                 Dim adt As cSpatialDataAdapter = Me.InfoAtRow(p.Row).Adapter

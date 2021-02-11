@@ -40,7 +40,7 @@ Namespace Ecopath.Input
             Me.Grid = Me.m_grid
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             Dim cmd As cCommand = Nothing
             MyBase.OnLoad(e)
 
@@ -52,7 +52,7 @@ Namespace Ecopath.Input
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditMultiStanza)
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.CommandHandler IsNot Nothing) Then
                 Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditGroups")

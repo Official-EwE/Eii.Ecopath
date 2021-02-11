@@ -119,7 +119,7 @@ Namespace Wizard
                 Get
                     Return Me.m_column
                 End Get
-                Set(ByVal value As eColumnTypes)
+                Set(value As eColumnTypes)
                     Me.m_column = value
                 End Set
             End Property
@@ -132,7 +132,7 @@ Namespace Wizard
             ''' <param name="y"></param>
             ''' <returns></returns>
             ''' -------------------------------------------------------------------
-            Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer _
+            Public Function Compare(x As Object, y As Object) As Integer _
                     Implements IComparer.Compare
 
                 Dim lvi1 As ListViewItem = DirectCast(x, ListViewItem)
@@ -188,9 +188,9 @@ Namespace Wizard
         ''' <param name="uic">The UI context to connect to.</param>
         ''' <param name="mode"><see cref="eDialogModeType">Dialog interaction mode</see>.</param>
         ''' <param name="scenario">EwE scenario to save, if any.</param>
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal mode As eDialogModeType, _
-                       Optional ByVal scenario As cEwEScenario = Nothing)
+        Public Sub New(uic As cUIContext, _
+                       mode As eDialogModeType, _
+                       Optional scenario As cEwEScenario = Nothing)
 
             Me.InitializeComponent()
 
@@ -221,7 +221,7 @@ Namespace Wizard
             Get
                 Return Me.m_uic
             End Get
-            Private Set(ByVal value As cUIContext)
+            Private Set(value As cUIContext)
                 Me.m_uic = value
             End Set
         End Property
@@ -238,11 +238,11 @@ Namespace Wizard
             Return ""
         End Function
 
-        Protected Overridable Function GetDialogCaption(ByVal mode As eDialogModeType, ByVal strEwEModelName As String) As String
+        Protected Overridable Function GetDialogCaption(mode As eDialogModeType, strEwEModelName As String) As String
             Return ""
         End Function
 
-        Protected Overridable Function DeleteScenario(ByVal scenario As cEwEScenario) As Boolean
+        Protected Overridable Function DeleteScenario(scenario As cEwEScenario) As Boolean
             Return False
         End Function
 
@@ -254,7 +254,7 @@ Namespace Wizard
 
 #Region " Internal implementation "
 
-        Private Sub SwitchMode(ByVal mode As eDialogModeType)
+        Private Sub SwitchMode(mode As eDialogModeType)
 
             For iPage As Integer = 0 To Me.tabctrlModes.TabCount - 1
                 Dim tp As TabPage = Me.tabctrlModes.TabPages(iPage)
@@ -312,9 +312,9 @@ Namespace Wizard
 
                     ' Sync all with selection
                     If Me.Scenario IsNot Nothing Then
-                        Me.tbDescriptionLoad.Text = Scenario.Description
-                        Me.tbAuthorLoad.Text = Scenario.Author
-                        Me.tbContactLoad.Text = Scenario.Contact
+                        Me.tbDescriptionLoad.Text = Me.Scenario.Description
+                        Me.tbAuthorLoad.Text = Me.Scenario.Author
+                        Me.tbContactLoad.Text = Me.Scenario.Contact
                     End If
 
                 Case eDialogModeType.SaveScenario
@@ -326,7 +326,7 @@ Namespace Wizard
 
                     ' Sync name with selection
                     If Me.Scenario IsNot Nothing Then
-                        Me.tbNameSaveAs.Text = Scenario.Name
+                        Me.tbNameSaveAs.Text = Me.Scenario.Name
                     End If
 
                 Case eDialogModeType.DeleteScenario
@@ -338,16 +338,16 @@ Namespace Wizard
 
                     ' Sync all with selection
                     If Me.Scenario IsNot Nothing Then
-                        Me.tbDescriptionDelete.Text = Scenario.Description
-                        Me.tbAuthorDelete.Text = Scenario.Author
-                        Me.tbContactDelete.Text = Scenario.Contact
+                        Me.tbDescriptionDelete.Text = Me.Scenario.Description
+                        Me.tbAuthorDelete.Text = Me.Scenario.Author
+                        Me.tbContactDelete.Text = Me.Scenario.Contact
                     End If
 
             End Select
 
         End Sub
 
-        Private Function GetScenarioListViewItem(ByVal scenario As cEwEScenario) As ListViewItem
+        Private Function GetScenarioListViewItem(scenario As cEwEScenario) As ListViewItem
 
             Dim lvi As ListViewItem = Nothing
             Dim astrColumns([Enum].GetValues(GetType(eColumnTypes)).Length - 1) As String
@@ -390,10 +390,10 @@ Namespace Wizard
             ' Add the list of scenarios
             For i As Integer = 0 To Me.m_lScenarios.Count - 1
 
-                Me.lvCreate.Items.Add(Me.GetScenarioListViewItem(m_lScenarios(i)))
-                Me.lvLoad.Items.Add(Me.GetScenarioListViewItem(m_lScenarios(i)))
-                Me.lvDelete.Items.Add(Me.GetScenarioListViewItem(m_lScenarios(i)))
-                Me.lvSaveAs.Items.Add(Me.GetScenarioListViewItem(m_lScenarios(i)))
+                Me.lvCreate.Items.Add(Me.GetScenarioListViewItem(Me.m_lScenarios(i)))
+                Me.lvLoad.Items.Add(Me.GetScenarioListViewItem(Me.m_lScenarios(i)))
+                Me.lvDelete.Items.Add(Me.GetScenarioListViewItem(Me.m_lScenarios(i)))
+                Me.lvSaveAs.Items.Add(Me.GetScenarioListViewItem(Me.m_lScenarios(i)))
             Next
 
             ' Set the selected index
@@ -440,7 +440,7 @@ Namespace Wizard
             Return bHasSelection
         End Function
 
-        Private Function FindScenarioByName(ByVal strScenarioName As String) As cEwEScenario
+        Private Function FindScenarioByName(strScenarioName As String) As cEwEScenario
             For iScenario As Integer = 0 To Me.m_lScenarios.Count - 1
                 If (String.Compare(Me.m_lScenarios(iScenario).Name, strScenarioName, True) = 0) Then
                     Return Me.m_lScenarios(iScenario)
@@ -449,19 +449,19 @@ Namespace Wizard
             Return Nothing
         End Function
 
-        Private Property SelectedScenario(ByVal lv As ListView) As cEwEScenario
+        Private Property SelectedScenario(lv As ListView) As cEwEScenario
             Get
                 If (lv.SelectedItems.Count <> 1) Then Return Nothing
                 Return DirectCast(lv.SelectedItems(0).Tag, cEwEScenario)
             End Get
-            Set(ByVal value As cEwEScenario)
+            Set(value As cEwEScenario)
                 For Each item As ListViewItem In lv.Items
                     item.Selected = ReferenceEquals(item.Tag, value)
                 Next
             End Set
         End Property
 
-        Private Function IsUniqueScenarioName(ByVal strName As String) As Boolean
+        Private Function IsUniqueScenarioName(strName As String) As Boolean
             Dim bYepItIs As Boolean = Not String.IsNullOrEmpty(strName)
             For Each sc As cEwEScenario In Me.m_lScenarios
                 If String.Compare(strName, sc.Name, True) = 0 Then
@@ -475,7 +475,7 @@ Namespace Wizard
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             ' Set up possible modes correctly
@@ -486,7 +486,7 @@ Namespace Wizard
                 .TabPages(3).Tag = eDialogModeType.SaveScenario
             End With
 
-            Select Case Mode
+            Select Case Me.Mode
 
                 Case eDialogModeType.CreateScenario
                     ' Cannot save as
@@ -537,7 +537,7 @@ Namespace Wizard
             MyBase.OnFormClosed(e)
         End Sub
 
-        Private Sub tabctrlModes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub tabctrlModes_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
                 Handles tabctrlModes.SelectedIndexChanged
 
             ' Sanity check
@@ -546,7 +546,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnCreateScenario(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCreateScenario(sender As System.Object, e As System.EventArgs) _
                 Handles btnCreate.Click, lvCreate.DoubleClick
 
             ' Sanity check
@@ -559,7 +559,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnLoadScenario(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadScenario(sender As System.Object, e As System.EventArgs) _
                 Handles btnLoad.Click, lvLoad.DoubleClick, tsmLoad.Click
 
             ' Sanity check
@@ -572,7 +572,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnSaveScenarioAs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveScenarioAs(sender As System.Object, e As System.EventArgs) _
                 Handles btnSave.Click, lvSaveAs.DoubleClick, tsmSave.Click
 
             ' Sanity check
@@ -588,7 +588,7 @@ Namespace Wizard
         ''' <summary>
         ''' Event handler to delete a EwE scenario.
         ''' </summary>
-        Private Sub OnDeleteScenario(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDeleteScenario(sender As System.Object, e As System.EventArgs) _
                 Handles btnDelete.Click, lvDelete.DoubleClick, tsmDelete.Click
 
             If Not Me.CanDeleteScenario() Then Return
@@ -614,7 +614,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
                 Handles btnCancelCreate.Click, btnCancelLoad.Click, btnCancelSave.Click, btnCancelDelete.Click
 
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -625,24 +625,24 @@ Namespace Wizard
         ''' <summary>
         ''' Event handler...
         ''' </summary>
-        Private Sub OnScenarioCreateNameChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnScenarioCreateNameChanged(sender As System.Object, e As System.EventArgs) _
                 Handles tbNameCreate.TextChanged
 
-            Me.Scenario = Me.FindScenarioByName(tbNameCreate.Text)
+            Me.Scenario = Me.FindScenarioByName(Me.tbNameCreate.Text)
 
         End Sub
 
         ''' <summary>
         ''' Event handler...
         ''' </summary>
-        Private Sub OnScenarioSaveAsNameChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnScenarioSaveAsNameChanged(sender As System.Object, e As System.EventArgs) _
                 Handles tbNameSaveAs.TextChanged
 
-            Me.Scenario = Me.FindScenarioByName(tbNameSaveAs.Text)
+            Me.Scenario = Me.FindScenarioByName(Me.tbNameSaveAs.Text)
 
         End Sub
 
-        Private Sub OnRenameScenario(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRenameScenario(sender As System.Object, e As System.EventArgs) _
                 Handles tsmRename.Click
 
             Dim lv As ListView = Nothing
@@ -664,7 +664,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnLVBeforeLabelEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) _
+        Private Sub OnLVBeforeLabelEdit(sender As Object, e As System.Windows.Forms.LabelEditEventArgs) _
                 Handles lvCreate.BeforeLabelEdit, lvSaveAs.BeforeLabelEdit
 
             Dim lv As ListView = DirectCast(sender, ListView)
@@ -674,7 +674,7 @@ Namespace Wizard
             e.CancelEdit = (scenario Is Nothing)
         End Sub
 
-        Private Sub OnLVAfterLabelEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.LabelEditEventArgs) _
+        Private Sub OnLVAfterLabelEdit(sender As Object, e As System.Windows.Forms.LabelEditEventArgs) _
                 Handles lvCreate.AfterLabelEdit, lvSaveAs.AfterLabelEdit
 
             ' Reject empty names
@@ -695,7 +695,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnLVColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) _
+        Private Sub OnLVColumnClick(sender As Object, e As System.Windows.Forms.ColumnClickEventArgs) _
                 Handles lvCreate.ColumnClick, lvDelete.ColumnClick, lvLoad.ColumnClick, lvSaveAs.ColumnClick
 
             Dim lv As ListView = Nothing
@@ -711,7 +711,7 @@ Namespace Wizard
 
         End Sub
 
-        Private Sub OnLVSelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnLVSelectedIndexChanged(sender As Object, e As System.EventArgs) _
                 Handles lvCreate.SelectedIndexChanged, lvDelete.SelectedIndexChanged, lvLoad.SelectedIndexChanged, lvSaveAs.SelectedIndexChanged
 
             Dim lv As ListView = DirectCast(sender, ListView)
@@ -736,7 +736,7 @@ Namespace Wizard
             Get
                 Return Me.m_scenario
             End Get
-            Set(ByVal scenario As cEwEScenario)
+            Set(scenario As cEwEScenario)
                 If Me.m_bInUpdate Then Return
 
                 ' Lock down
@@ -807,7 +807,7 @@ Namespace Wizard
             Get
                 Return Me.m_mode
             End Get
-            Set(ByVal value As eDialogModeType)
+            Set(value As eDialogModeType)
                 Me.SwitchMode(value)
             End Set
         End Property

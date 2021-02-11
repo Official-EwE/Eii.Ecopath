@@ -40,7 +40,7 @@ Namespace Commands
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~exportLayer"
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.new(cmdh, cExportLayerCommand.cCOMMAND_NAME)
         End Sub
 
@@ -55,7 +55,7 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="alayers">The layers to export data from.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, _
+        Public Overloads Sub Invoke(alayers() As cEcospaceLayer, _
                                     Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
             Me.m_alayers = alayers
             Me.m_format = format

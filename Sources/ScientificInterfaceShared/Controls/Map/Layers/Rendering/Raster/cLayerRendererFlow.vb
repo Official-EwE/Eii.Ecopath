@@ -42,8 +42,8 @@ Namespace Controls.Map.Layers
             MyBase.New(uic, vs)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As RectangleF,
+        Public Overrides Sub RenderPreview(g As Graphics,
+                                           rc As RectangleF,
                                            Optional iSymbol As Integer = 0)
             If Me.IsStyleValid Then
                 Dim sz As Single = Math.Min(rc.Width, rc.Height)
@@ -65,11 +65,11 @@ Namespace Controls.Map.Layers
         ''' [0, 1] as the second index.</param>
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub RenderCell(ByVal g As Graphics,
-                                        ByVal rc As RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As Graphics,
+                                        rc As RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As cStyleGuide.eStyleFlags)
 
             Dim asValues As Single() = Nothing
             Dim ptfCenter As PointF = Nothing

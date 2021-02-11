@@ -77,7 +77,7 @@ Friend Class cMSERefPoint
     Private m_low As Single
     Private m_upper As Single
 
-    Public Sub New(ByVal LowerRef As Single, ByVal UpperRef As Single)
+    Public Sub New(LowerRef As Single, UpperRef As Single)
         Me.m_low = LowerRef
         Me.m_upper = UpperRef
     End Sub
@@ -86,7 +86,7 @@ Friend Class cMSERefPoint
         Get
             Return Me.m_low
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_low = value
         End Set
     End Property
@@ -95,7 +95,7 @@ Friend Class cMSERefPoint
         Get
             Return Me.m_upper
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_upper = value
         End Set
     End Property
@@ -131,9 +131,9 @@ Friend Class cMSEPlotter
     ''' </summary>
     ''' <param name="uic">UI context to use.</param>
     ''' <param name="graph">Graph to use.</param>
-    Public Sub Init(ByVal uic As cUIContext, _
-                    ByVal MSEManager As cMSEManager, _
-                    ByVal graph As ZedGraphControl)
+    Public Sub Init(uic As cUIContext, _
+                    MSEManager As cMSEManager, _
+                    graph As ZedGraphControl)
 
         Me.m_uic = uic
         Me.m_zdGraph = graph
@@ -168,8 +168,8 @@ Friend Class cMSEPlotter
         Get
             Return Me.m_type
         End Get
-        Set(ByVal value As eMSEPlotTypes)
-            m_type = value
+        Set(value As eMSEPlotTypes)
+            Me.m_type = value
         End Set
     End Property
 
@@ -180,12 +180,12 @@ Friend Class cMSEPlotter
         Get
             Return Me.m_dataType
         End Get
-        Set(ByVal value As eMSEPlotData)
-            m_dataType = value
+        Set(value As eMSEPlotData)
+            Me.m_dataType = value
         End Set
     End Property
 
-    Public Sub PlotIterations(ByVal iIterMin As Integer, ByVal iIterMax As Integer)
+    Public Sub PlotIterations(iIterMin As Integer, iIterMax As Integer)
         Me.m_iIterMin = iIterMin
         Me.m_iIterMax = iIterMax
         ' Redraw if need be
@@ -227,7 +227,7 @@ Friend Class cMSEPlotter
 
                 Me.plotRefLines()
 
-                Select Case m_type
+                Select Case Me.m_type
                     Case eMSEPlotTypes.Histogram
                         Me.PlotHistoGram()
                     Case eMSEPlotTypes.Values
@@ -252,7 +252,7 @@ Friend Class cMSEPlotter
     ''' Added data to be plotted
     ''' </summary>
     ''' <param name="ListOfData"></param>
-    Public Sub AddData(ByVal ListOfData As List(Of cCoreGroupBase))
+    Public Sub AddData(ListOfData As List(Of cCoreGroupBase))
 
         Try
 
@@ -313,7 +313,7 @@ Friend Class cMSEPlotter
     ''' <remarks></remarks>
     Public Sub AddReference()
 
-        plotRefLines()
+        Me.plotRefLines()
 
     End Sub
 
@@ -350,7 +350,7 @@ Friend Class cMSEPlotter
     End Sub
 
 
-    Private Function getRefPoint(ByVal ItemIndex As Integer) As cMSERefPoint
+    Private Function getRefPoint(ItemIndex As Integer) As cMSERefPoint
 
         Dim refPoint As cMSERefPoint = Nothing
 
@@ -393,9 +393,9 @@ Friend Class cMSEPlotter
 
     Private Sub ConfigPanes()
         If Me.m_type = eMSEPlotTypes.Histogram Then
-            ConfigHistoPanes()
+            Me.ConfigHistoPanes()
         ElseIf Me.m_type = eMSEPlotTypes.Values Or Me.m_type = eMSEPlotTypes.Line Then
-            ConfigValuePanes()
+            Me.ConfigValuePanes()
         End If
     End Sub
 
@@ -404,7 +404,7 @@ Friend Class cMSEPlotter
         Me.m_zgh.YScaleGrace = 1.1
         Dim ipane As Integer
         Dim min As Single, max As Single
-        For Each data As cMSEStats In m_Data
+        For Each data As cMSEStats In Me.m_Data
             ipane += 1
             min = data.Min
             max = data.Max
@@ -418,7 +418,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Friend Function IsGroupVisible(ByVal GroupIndex As Integer) As Boolean
+    Friend Function IsGroupVisible(GroupIndex As Integer) As Boolean
 
         If Me.m_uic.StyleGuide.GroupVisible(GroupIndex) Then
 
@@ -524,7 +524,7 @@ Friend Class cMSEPlotter
                         Case eMSEPlotData.Effort
                             Return SharedResources.HEADER_EFFORT
                         Case eMSEPlotData.FleetValue
-                            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, SharedResources.HEADER_CATCHVALUE, m_uic.StyleGuide.FormatUnitString(cUnits.Monetary))
+                            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, SharedResources.HEADER_CATCHVALUE, Me.m_uic.StyleGuide.FormatUnitString(cUnits.Monetary))
                         Case eMSEPlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
                         Case eMSEPlotData.FishingMortalityComparison
@@ -792,7 +792,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub PlotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
+    Private Sub PlotMean(StatsData As cMSEStats, ipane As Integer)
 
         Dim x As Double, dx As Double
         Dim ppl As PointPairList = Nothing
@@ -840,7 +840,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub PlotRefLine(ByVal LowerBound As Single, ByVal UpperBound As Single, ByVal pane As ZedGraph.GraphPane)
+    Private Sub PlotRefLine(LowerBound As Single, UpperBound As Single, pane As ZedGraph.GraphPane)
         'Dim dx As Double
 
         Me.RemoveRefLines(pane)
@@ -894,7 +894,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub RemoveRefLines(ByVal pane As ZedGraph.GraphPane)
+    Private Sub RemoveRefLines(pane As ZedGraph.GraphPane)
 
         Dim lbIndex As Integer = pane.CurveList.IndexOfTag(LB_TAG)
         If lbIndex > -1 Then
@@ -908,7 +908,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Function GetLineColour(ByVal StatsData As cMSEStats) As Color
+    Private Function GetLineColour(StatsData As cMSEStats) As Color
 
         Try
             'if this is group data then get the colour from the style guide
@@ -951,10 +951,10 @@ Friend Class cMSEPlotter
         End If
 
         If Me.m_dataType = eMSEPlotData.Effort Or Me.m_dataType = eMSEPlotData.FleetValue Then
-            Return NumVisFleets()
+            Return Me.NumVisFleets()
         End If
 
-        Return NumVisGroups()
+        Return Me.NumVisGroups()
 
     End Function
 

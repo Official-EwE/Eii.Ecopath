@@ -42,13 +42,13 @@ Namespace TL1ToConsumer
             Return "Cycles and pathways TL1 to consumer"
         End Function
 
-        Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                        ByVal datagrid As DataGridView,
-                                        ByVal graph As ZedGraphControl,
-                                        ByVal plot As ucPlot,
-                                        ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                        ByVal uic As cUIContext) As Boolean
+        Public Overrides Function Attach(manager As cNetworkManager,
+                                        datagrid As DataGridView,
+                                        graph As ZedGraphControl,
+                                        plot As ucPlot,
+                                        toolstrip As ToolStrip,
+                                         info As Control,
+                                        uic As cUIContext) As Boolean
             Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
             Me.Grid.Visible = bSucces
             Me.Toolstrip.Visible = bSucces
@@ -58,63 +58,63 @@ Namespace TL1ToConsumer
 
         Public Overrides Sub DisplayData()
 
-            Grid.ReadOnly = True
-            Grid.ColumnCount = 2
+            Me.Grid.ReadOnly = True
+            Me.Grid.ColumnCount = 2
 
-            SetGridColumnPropertyDefault(Grid)
+            SetGridColumnPropertyDefault(Me.Grid)
 
-            Grid.Columns(0).Frozen = True
-            Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+            Me.Grid.Columns(0).Frozen = True
+            Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
 
-            Grid.Columns(1).Width = 660
-            Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+            Me.Grid.Columns(1).Width = 660
+            Me.Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
         End Sub
 
-        Public Overrides Sub UpdateData(ByVal iSel1 As Integer, ByVal iSel2 As Integer)
+        Public Overrides Sub UpdateData(iSel1 As Integer, iSel2 As Integer)
 
             Dim strRowContent() As String
 
-            Grid.RowHeadersVisible = False
+            Me.Grid.RowHeadersVisible = False
 
-            ReDim strRowContent(Grid.Columns.Count)
-            NetworkManager.FindPathwaysToConsumer(iSel1)
-            If NetworkManager.PathWays.Count > 0 Then
-                Grid.RowCount = NetworkManager.PathWays.Count + 1
-                Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-                Grid.Rows(0).Frozen = True
-                Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+            ReDim strRowContent(Me.Grid.Columns.Count)
+            Me.NetworkManager.FindPathwaysToConsumer(iSel1)
+            If Me.NetworkManager.PathWays.Count > 0 Then
+                Me.Grid.RowCount = Me.NetworkManager.PathWays.Count + 1
+                Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+                Me.Grid.Rows(0).Frozen = True
+                Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
                 strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
                 strRowContent(1) = My.Resources.COL_HDR_PATH_CONSUM
-                Grid.Rows(0).SetValues(strRowContent)
-                Grid.Rows(0).Visible = True
+                Me.Grid.Rows(0).SetValues(strRowContent)
+                Me.Grid.Rows(0).Visible = True
 
-                For intPathwayIndex As Integer = 0 To NetworkManager.PathWays.Count - 1
+                For intPathwayIndex As Integer = 0 To Me.NetworkManager.PathWays.Count - 1
                     strRowContent(0) = CStr(intPathwayIndex + 1)
-                    strRowContent(1) = CStr(NetworkManager.PathWays.Item(intPathwayIndex))
-                    Grid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
-                    Grid.Rows(intPathwayIndex + 1).Visible = True
+                    strRowContent(1) = CStr(Me.NetworkManager.PathWays.Item(intPathwayIndex))
+                    Me.Grid.Rows(intPathwayIndex + 1).SetValues(strRowContent)
+                    Me.Grid.Rows(intPathwayIndex + 1).Visible = True
                 Next
             Else
-                Grid.RowCount = 2
-                Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-                Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-                Grid.Rows(0).Frozen = True
-                Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+                Me.Grid.RowCount = 2
+                Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+                Me.Grid.Rows(0).Frozen = True
+                Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
                 strRowContent(0) = My.Resources.COL_HDR_PATH_NUM
                 strRowContent(1) = My.Resources.COL_HDR_PATH_CONSUM
-                Grid.Rows(0).SetValues(strRowContent)
-                Grid.Rows(0).Visible = True
+                Me.Grid.Rows(0).SetValues(strRowContent)
+                Me.Grid.Rows(0).Visible = True
 
                 strRowContent(0) = My.Resources.ROW_HDR_NO_PATH_FOUND
                 strRowContent(1) = ""
-                Grid.Rows(1).SetValues(strRowContent)
-                Grid.Rows(1).Visible = True
+                Me.Grid.Rows(1).SetValues(strRowContent)
+                Me.Grid.Rows(1).Visible = True
             End If
-            Grid.ClearSelection()
+            Me.Grid.ClearSelection()
         End Sub
 
     End Class

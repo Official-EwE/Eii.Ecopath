@@ -46,15 +46,15 @@ Namespace Ecopath.Output
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(core.nGroups + 1, 2)
+            Me.Redim(Me.core.nGroups + 1, 2)
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To core.nGroups
+            For i As Integer = 1 To Me.core.nGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = core.EcoPathGroupOutputs(i)
+                source = Me.core.EcoPathGroupOutputs(i)
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
                 Me(i, 1) = New cEwERowHeaderCell(source.Name)
@@ -84,14 +84,14 @@ Namespace Ecopath.Output
             visDiagonal.BackColor = Color.LightGray
             visDiagonal.TextAlignment = ContentAlignment.MiddleCenter
 
-            For groupIndex As Integer = 1 To core.nGroups
+            For groupIndex As Integer = 1 To Me.core.nGroups
 
                 'Get the group output
-                source = core.EcoPathGroupOutputs(groupIndex)
+                source = Me.core.EcoPathGroupOutputs(groupIndex)
                 If source.PP < 1 Then
-                    For rowIndex As Integer = 1 To core.nGroups
+                    For rowIndex As Integer = 1 To Me.core.nGroups
                         ' Get the group output
-                        sourceSec = core.EcoPathGroupOutputs(rowIndex)
+                        sourceSec = Me.core.EcoPathGroupOutputs(rowIndex)
                         ' Get the indexed comsumption property by (rowIndex, columnIndex)
                         prop = pm.GetProperty(sourceSec, eVarNameFlags.SearchRate, source)
                         ' Add property to the cell

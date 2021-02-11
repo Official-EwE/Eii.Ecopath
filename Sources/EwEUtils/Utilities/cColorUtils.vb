@@ -44,7 +44,7 @@ Namespace Utilities
         ''' <param name="sShade">Shade [-1, 1] to obtain. -1 returns black, 1 returns white.</param>
         ''' <returns>A different shade of a colour.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetVariant(ByVal clr As Color, ByVal sShade As Single) As Color
+        Public Shared Function GetVariant(clr As Color, sShade As Single) As Color
 
             sShade = Math.Max(-1, Math.Min(1, sShade))
 
@@ -69,7 +69,7 @@ Namespace Utilities
         ''' <param name="iColor">The integer to convert.</param>
         ''' <returns>A color.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function IntToColor(ByVal iColor As Integer) As Color
+        Public Shared Function IntToColor(iColor As Integer) As Color
             Return Color.FromArgb((iColor >> 24) And &HFF, (iColor >> 16) And &HFF, (iColor >> 8) And &HFF, iColor And &HFF)
         End Function
 
@@ -80,7 +80,7 @@ Namespace Utilities
         ''' <param name="clr">The <see cref="Color">color</see> to convert.</param>
         ''' <returns>An integer of the format AARRGGBB.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ColorToInt(ByVal clr As Color) As Integer
+        Public Shared Function ColorToInt(clr As Color) As Integer
             Return ((clr.A And &HFF) << 24) + ((clr.R And &HFF) << 16) + ((clr.G And &HFF) << 8) + (clr.B And &HFF)
         End Function
 

@@ -76,7 +76,7 @@ Namespace Auxiliary
         Public Sub New()
         End Sub
 
-        Public Sub New(ByVal container As cAuxiliaryData, Optional ByVal bUpdate As Boolean = False)
+        Public Sub New(container As cAuxiliaryData, Optional bUpdate As Boolean = False)
             Me.m_container = container
             container.AllowValidation = bUpdate
             container.VisualStyle = Me
@@ -142,7 +142,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_clrFore
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 If (value <> Me.m_clrFore) Then
                     Me.m_clrFore = value
                     Me.Update()
@@ -159,7 +159,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_clrBack
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 If (value <> Me.m_clrBack) Then
                     Me.m_clrBack = value
                     Me.Update()
@@ -176,7 +176,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_img
             End Get
-            Set(ByVal value As Image)
+            Set(value As Image)
                 If Not Equals(value, Me.m_img) Then
                     Me.m_img = value
                     Me.Update()
@@ -193,7 +193,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_hatchStyle
             End Get
-            Set(ByVal value As HatchStyle)
+            Set(value As HatchStyle)
                 If (value <> Me.m_hatchStyle) Then
                     Me.m_hatchStyle = value
                     Me.Update()
@@ -210,7 +210,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_strFontName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 If (value <> Me.m_strFontName) Then
                     Me.m_strFontName = value
                     Me.Update()
@@ -227,7 +227,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_sFontSize
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 If (value <> Me.m_sFontSize) Then
                     Me.m_sFontSize = value
                     Me.Update()
@@ -244,7 +244,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_fontstyle
             End Get
-            Set(ByVal value As FontStyle)
+            Set(value As FontStyle)
                 If (value <> Me.m_fontstyle) Then
                     Me.m_fontstyle = value
                     Me.Update()
@@ -265,7 +265,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_gradientBreaks
             End Get
-            Set(ByVal value As Double())
+            Set(value As Double())
                 Me.m_gradientBreaks = value
                 Me.Update()
             End Set
@@ -284,7 +284,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_gradientColors
             End Get
-            Set(ByVal value As Color())
+            Set(value As Color())
                 Me.m_gradientColors = value
                 Me.Update()
             End Set
@@ -299,7 +299,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_gradientID
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_gradientID = value
                 Me.Update()
             End Set
@@ -314,7 +314,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_gradientName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_gradientName = value
                 Me.Update()
             End Set
@@ -326,7 +326,7 @@ Namespace Auxiliary
         ''' </summary>
         ''' <param name="obj">The visual style to compare to.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function Equals(ByVal obj As Object) As Boolean
+        Public Overrides Function Equals(obj As Object) As Boolean
             If Not (TypeOf obj Is cVisualStyle) Then Return False
 
             Dim vs As cVisualStyle = DirectCast(obj, cVisualStyle)
@@ -361,7 +361,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_container
             End Get
-            Set(ByVal value As cAuxiliaryData)
+            Set(value As cAuxiliaryData)
                 Me.m_container = value
             End Set
         End Property
@@ -386,7 +386,7 @@ Namespace Auxiliary
     ''' ===========================================================================
     Public Class cVisualStyleReader
 
-        Public Shared Function StyleToString(ByVal vs As cVisualStyle) As String
+        Public Shared Function StyleToString(vs As cVisualStyle) As String
 
             Dim strResult As String = String.Empty
             Dim bf As New Binary.BinaryFormatter()
@@ -430,7 +430,7 @@ Namespace Auxiliary
 
         End Class
 
-        Public Shared Function StringToStyle(ByVal str As String) As cVisualStyle
+        Public Shared Function StringToStyle(str As String) As cVisualStyle
 
             Dim vsResult As cVisualStyle = Nothing
 

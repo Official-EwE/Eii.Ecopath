@@ -33,13 +33,13 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceLayerContaminantForcingAbsolute
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         ' Nassssty! We canot use zero-indexed layers in EwE
         MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerContaminantForcingAbsolute, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerContaminantForcingAbs
     End Sub
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Try
                 Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
@@ -49,7 +49,7 @@ Public Class cEcospaceLayerContaminantForcingAbsolute
             End Try
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Try
                 Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
                 Dim s As Single = Convert.ToSingle(value)

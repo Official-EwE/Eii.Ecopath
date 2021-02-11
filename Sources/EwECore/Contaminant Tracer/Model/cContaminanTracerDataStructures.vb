@@ -124,51 +124,51 @@ Public Class cContaminantTracerDataStructures
     Public MaxTimeSteps As Integer
 
     Public Sub New()
-        MaxTimeSteps = 1000
+        Me.MaxTimeSteps = 1000
     End Sub
 
-    Friend Sub RedimByNGroups(ByVal nGroups As Integer)
+    Friend Sub RedimByNGroups(nGroups As Integer)
         Me.m_nGroups = nGroups
-        ReDim Czero(nGroups)
-        ReDim Cimmig(nGroups)
-        ReDim Cenv(nGroups)
-        ReDim cdecay(nGroups)
-        ReDim Cinflow(nGroups)
-        ReDim CoutFlow(nGroups)
-        ReDim CassimProp(nGroups)
-        ReDim CmetabolismRate(nGroups)
+        ReDim Me.Czero(nGroups)
+        ReDim Me.Cimmig(nGroups)
+        ReDim Me.Cenv(nGroups)
+        ReDim Me.cdecay(nGroups)
+        ReDim Me.Cinflow(nGroups)
+        ReDim Me.CoutFlow(nGroups)
+        ReDim Me.CassimProp(nGroups)
+        ReDim Me.CmetabolismRate(nGroups)
     End Sub
 
-    Public Sub redimForEcosimRun(ByVal nGroups As Integer, ByVal nTime As Integer)
+    Public Sub redimForEcosimRun(nGroups As Integer, nTime As Integer)
         Me.m_nTime = nTime
         Me.m_nRegions = 0
-        ReDim TracerConc(nGroups + 1, nTime)
-        ReDim TracerCB(nGroups + 1, nTime)
+        ReDim Me.TracerConc(nGroups + 1, nTime)
+        ReDim Me.TracerCB(nGroups + 1, nTime)
 
     End Sub
 
-    Public Sub redimForEcospaceRun(ByVal nRegions As Integer, ByVal nGroups As Integer, ByVal nTime As Integer)
+    Public Sub redimForEcospaceRun(nRegions As Integer, nGroups As Integer, nTime As Integer)
         Me.m_nTime = nTime
         Me.m_nRegions = nRegions
-        ReDim TracerConcByRegion(nRegions, nGroups + 1, nTime)
-        ReDim TracerCBRegion(nRegions, nGroups + 1, nTime)
+        ReDim Me.TracerConcByRegion(nRegions, nGroups + 1, nTime)
+        ReDim Me.TracerCBRegion(nRegions, nGroups + 1, nTime)
     End Sub
 
     Public Sub Clear()
         Me.m_nGroups = 0
 
-        TracerConc = Nothing '(nGroups + 1, nTime)
-        TracerCB = Nothing
-        TracerConcByRegion = Nothing '(nRegions, nGroups + 1, nTime)
-        TracerCBRegion = Nothing '(nRegions, nGroups + 1, nTime)
+        Me.TracerConc = Nothing '(nGroups + 1, nTime)
+        Me.TracerCB = Nothing
+        Me.TracerConcByRegion = Nothing '(nRegions, nGroups + 1, nTime)
+        Me.TracerCBRegion = Nothing '(nRegions, nGroups + 1, nTime)
 
-        Czero = Nothing '(nGroups)
-        Cimmig = Nothing '(nGroups)
-        Cenv = Nothing '(nGroups)
-        cdecay = Nothing '(nGroups)
-        Cinflow = Nothing '(nGroups)
-        CoutFlow = Nothing '(nGroups)
-        CassimProp = Nothing '(nGroups)
+        Me.Czero = Nothing '(nGroups)
+        Me.Cimmig = Nothing '(nGroups)
+        Me.Cenv = Nothing '(nGroups)
+        Me.cdecay = Nothing '(nGroups)
+        Me.Cinflow = Nothing '(nGroups)
+        Me.CoutFlow = Nothing '(nGroups)
+        Me.CassimProp = Nothing '(nGroups)
 
         'Me.RedimByNGroups(0)
     End Sub
@@ -176,16 +176,16 @@ Public Class cContaminantTracerDataStructures
     Public Sub CopyTo(ByRef d As cContaminantTracerDataStructures)
         'EwE5 ReadEcoTracer() for variables that are saved to database
 
-        d.cdecay = CType(cdecay.Clone, Single())
-        d.Czero = CType(Czero.Clone, Single())
-        d.Cinflow = CType(Cinflow.Clone, Single())
-        d.Cenv = CType(Cenv.Clone, Single())
-        d.Cimmig = CType(Cimmig.Clone, Single())
-        d.CoutFlow = CType(CoutFlow.Clone, Single())
-        d.CassimProp = CType(CassimProp.Clone, Single())
-        d.ConForceNumber = ConForceNumber
-        d.EcoSimConSimOn = EcoSimConSimOn
-        d.EcoSpaceConSimOn = EcoSpaceConSimOn
+        d.cdecay = CType(Me.cdecay.Clone, Single())
+        d.Czero = CType(Me.Czero.Clone, Single())
+        d.Cinflow = CType(Me.Cinflow.Clone, Single())
+        d.Cenv = CType(Me.Cenv.Clone, Single())
+        d.Cimmig = CType(Me.Cimmig.Clone, Single())
+        d.CoutFlow = CType(Me.CoutFlow.Clone, Single())
+        d.CassimProp = CType(Me.CassimProp.Clone, Single())
+        d.ConForceNumber = Me.ConForceNumber
+        d.EcoSimConSimOn = Me.EcoSimConSimOn
+        d.EcoSpaceConSimOn = Me.EcoSpaceConSimOn
 
         d.CmetabolismRate = Me.CmetabolismRate
 
@@ -196,7 +196,7 @@ Public Class cContaminantTracerDataStructures
     '        Return Me.m_bEcoSimConSimOn
     '        'Return ((Me.m_bEcoSimConSimOn = True) And (Me.m_nGroups > 0))
     '    End Get
-    '    Set(ByVal value As Boolean)
+    '    Set(value As Boolean)
     '        m_bEcoSimConSimOn = value
     '    End Set
     'End Property
@@ -204,14 +204,14 @@ Public Class cContaminantTracerDataStructures
 
     Public Property EcoSpaceConSimOn() As Boolean
         Get
-            Return m_bEcoSpaceConSimOn
+            Return Me.m_bEcoSpaceConSimOn
             'jb this is not valid for Ecospace
             'because of the mulithreading Ecospace gets a copy of the data initialized be the database
             'RedimByNGroups() is never called on the actual object so m_nGroups is never set
             '  Return ((Me.m_bEcoSpaceConSimOn = True) And (Me.m_nGroups > 0))
         End Get
-        Set(ByVal value As Boolean)
-            m_bEcoSpaceConSimOn = value
+        Set(value As Boolean)
+            Me.m_bEcoSpaceConSimOn = value
         End Set
     End Property
 

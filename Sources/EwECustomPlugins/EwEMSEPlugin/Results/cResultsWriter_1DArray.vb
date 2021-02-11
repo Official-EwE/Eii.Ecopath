@@ -41,14 +41,14 @@ Public Class cResultsWriter_1DArray
         Dim strFile As String
         Dim writer As StreamWriter
 
-        m_ResultsArray = Results_Array
+        Me.m_ResultsArray = Results_Array
 
-        m_MSE = MSE
-        m_Core = MSE.Core
-        m_StreamWriters = New List(Of StreamWriter)
+        Me.m_MSE = MSE
+        Me.m_Core = MSE.Core
+        Me.m_StreamWriters = New List(Of StreamWriter)
 
-        For iElement = 1 To m_ResultsArray.nElements
-            strFile = cFileUtils.ToValidFileName(m_ResultsArray.FileNamePrefix & m_ResultsArray.ElementName(iElement) & "_" & m_ResultsArray.Dim_Name & "No" & iElement & ".csv", False)
+        For iElement = 1 To Me.m_ResultsArray.nElements
+            strFile = cFileUtils.ToValidFileName(Me.m_ResultsArray.FileNamePrefix & Me.m_ResultsArray.ElementName(iElement) & "_" & Me.m_ResultsArray.Dim_Name & "No" & iElement & ".csv", False)
 
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, FolderPath, strFile))
             msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -56,39 +56,39 @@ Public Class cResultsWriter_1DArray
             Debug.Assert(writer IsNot Nothing)
 
             'Setup the HCR F Targ file for igrp
-            m_StreamWriters.Add(writer)
-            If Me.m_Core.SaveWithFileHeader Then m_StreamWriters(iElement - 1).WriteLine(Me.m_Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-            m_StreamWriters(iElement - 1).Write(m_ResultsArray.Dim_Name & "Name,ModelID,StrategyName,ResultType")
-            For iTime As Integer = 1 To m_ResultsArray.NumberOfTimeRecords
-                m_StreamWriters(iElement - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Me.m_StreamWriters.Add(writer)
+            If Me.m_Core.SaveWithFileHeader Then Me.m_StreamWriters(iElement - 1).WriteLine(Me.m_Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            Me.m_StreamWriters(iElement - 1).Write(Me.m_ResultsArray.Dim_Name & "Name,ModelID,StrategyName,ResultType")
+            For iTime As Integer = 1 To Me.m_ResultsArray.NumberOfTimeRecords
+                Me.m_StreamWriters(iElement - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
-            m_StreamWriters(iElement - 1).WriteLine()
+            Me.m_StreamWriters(iElement - 1).WriteLine()
 
         Next
 
     End Sub
 
     Public Overrides Sub ReleaseWriters()
-        For Each iStreamWriter In m_StreamWriters
+        For Each iStreamWriter In Me.m_StreamWriters
             cMSEUtils.ReleaseWriter(iStreamWriter)
         Next
-        m_StreamWriters.Clear()
+        Me.m_StreamWriters.Clear()
     End Sub
 
     Public Overrides Sub WriteResults()
 
-        For iElement = 1 To m_ResultsArray.nElements
-            For iStrategy = 1 To m_ResultsArray.nStrategies
-                If m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
-                m_StreamWriters(iElement - 1).Write("{0},{1},{2},{3}",
-                       cStringUtils.ToCSVField(m_ResultsArray.ElementName(iElement)),
-                       cStringUtils.FormatNumber(m_ResultsArray.ModelID),
-                       cStringUtils.ToCSVField(StrategyName(iStrategy)),
-                       cStringUtils.ToCSVField(m_ResultsArray.DataName))
-                For iTime = 1 To m_ResultsArray.NumberOfTimeRecords
-                    m_StreamWriters(iElement - 1).Write("," & m_ResultsArray.GetValue_Formatted4CSV(iStrategy, iElement, iTime))
+        For iElement = 1 To Me.m_ResultsArray.nElements
+            For iStrategy = 1 To Me.m_ResultsArray.nStrategies
+                If Me.m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
+                Me.m_StreamWriters(iElement - 1).Write("{0},{1},{2},{3}",
+                       cStringUtils.ToCSVField(Me.m_ResultsArray.ElementName(iElement)),
+                       cStringUtils.FormatNumber(Me.m_ResultsArray.ModelID),
+                       cStringUtils.ToCSVField(Me.StrategyName(iStrategy)),
+                       cStringUtils.ToCSVField(Me.m_ResultsArray.DataName))
+                For iTime = 1 To Me.m_ResultsArray.NumberOfTimeRecords
+                    Me.m_StreamWriters(iElement - 1).Write("," & Me.m_ResultsArray.GetValue_Formatted4CSV(iStrategy, iElement, iTime))
                 Next
-                m_StreamWriters(iElement - 1).WriteLine()
+                Me.m_StreamWriters(iElement - 1).WriteLine()
             Next
         Next
 

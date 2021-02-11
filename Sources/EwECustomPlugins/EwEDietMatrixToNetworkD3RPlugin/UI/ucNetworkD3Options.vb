@@ -72,7 +72,7 @@ Public Class ucNetworkD3Options
     Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
 
         If Me.InvokeRequired Then
-            Me.Invoke(New MethodInvoker(AddressOf ApplySafe))
+            Me.Invoke(New MethodInvoker(AddressOf Me.ApplySafe))
         Else
             Me.ApplySafe()
         End If

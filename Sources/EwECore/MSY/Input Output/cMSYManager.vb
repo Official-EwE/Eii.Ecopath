@@ -34,7 +34,7 @@ Namespace MSY
     ''' Delegate that allows MSY / FMSY run progress to be broadcasted.
     ''' </summary>
     ''' <param name="RunStateType"></param>
-    Public Delegate Sub MSYRunStateDelegate(ByVal RunStateType As eMSYRunStates)
+    Public Delegate Sub MSYRunStateDelegate(RunStateType As eMSYRunStates)
 
     ''' <summary>
     ''' Manager for interacting with the MSY routines.
@@ -65,7 +65,7 @@ Namespace MSY
 
 #Region "Construction Initialization"
 
-        Public Sub New(ByVal theCore As cCore, MSYData As cMSYDataStructures)
+        Public Sub New(theCore As cCore, MSYData As cMSYDataStructures)
 
             Debug.Assert(theCore IsNot Nothing, Me.ToString & ".New() Invalid core object!")
             Debug.Assert(MSYData IsNot Nothing, Me.ToString & ".New() Invalid MSY Data object!")
@@ -285,9 +285,9 @@ Namespace MSY
 
 #Region " Notifications "
 
-        Private Sub OnRunStateChanged(ByVal RunState As eMSYRunStates)
+        Private Sub OnRunStateChanged(RunState As eMSYRunStates)
             Try
-                m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunStateDelegate), RunState)
+                Me.m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunStateDelegate), RunState)
             Catch ex As Exception
 
             End Try
@@ -299,12 +299,12 @@ Namespace MSY
             End If
         End Sub
 
-        Private Sub fireRunStateDelegate(ByVal obj As Object)
+        Private Sub fireRunStateDelegate(obj As Object)
             Try
                 'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
                 If Me.m_RunStateDelegate IsNot Nothing Then
                     Dim cbType As eMSYRunStates = DirectCast(obj, eMSYRunStates)
-                    m_RunStateDelegate.Invoke(cbType)
+                    Me.m_RunStateDelegate.Invoke(cbType)
                 End If
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
@@ -440,9 +440,9 @@ Namespace MSY
 
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
-            m_Core = theCore
-            m_searchObjective = m_Core.SearchObjective
-            m_search = theCore.m_SearchData
+            Me.m_Core = theCore
+            Me.m_searchObjective = Me.m_Core.SearchObjective
+            Me.m_search = theCore.m_SearchData
 
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
             'if there is no current context then create a new one on this thread.
@@ -461,7 +461,7 @@ Namespace MSY
         ''' Update the underlying core data with edits from the interface
         ''' </summary>
         ''' <remarks>This is called by the core when a variable passes validation via cCore.OnValidated()</remarks>
-        Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+        Public Function Update(DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
             ' NOP
         End Function
 
@@ -469,13 +469,13 @@ Namespace MSY
             ' NOP
         End Sub
 
-        Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+        Public ReadOnly Property FleetObjectives(iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
             Get
                 Return Me.m_searchObjective.FleetObjectives(iFleet)
             End Get
         End Property
 
-        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+        Public ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
             Get
                 Return Me.m_searchObjective.GroupObjectives(iGroup)
             End Get
@@ -516,7 +516,7 @@ Namespace MSY
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Private Set(ByVal value As Integer)
+            Private Set(value As Integer)
                 ' NOP
             End Set
         End Property
@@ -531,7 +531,7 @@ Namespace MSY
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Private Set(ByVal value As Integer)
+            Private Set(value As Integer)
                 ' NOP
             End Set
         End Property
@@ -540,7 +540,7 @@ Namespace MSY
             Get
                 Return "MSYmanager"
             End Get
-            Private Set(ByVal value As String)
+            Private Set(value As String)
                 ' NOP
             End Set
         End Property
@@ -549,7 +549,7 @@ Namespace MSY
 
 #Region "cThreadWaitBase Overrides"
 
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
             Dim result As Boolean = True
 
             If (Me.m_Core Is Nothing) Then Return True

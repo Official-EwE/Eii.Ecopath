@@ -27,11 +27,11 @@ Public Class cComputeLandingPortions
     Private m_sumCatch() As Single
     Private m_sumValue() As Single
 
-    Public Sub New(ByVal data As cData, ByVal iTimeStep As Integer, ByVal runType As cModel.eRunTypes)
-        Compute(data, iTimeStep, runType)
+    Public Sub New(data As cData, iTimeStep As Integer, runType As cModel.eRunTypes)
+        Me.Compute(data, iTimeStep, runType)
     End Sub
 
-    Private Function Compute(ByVal data As cData, ByVal iTimeStep As Integer, ByVal runType As cModel.eRunTypes) As Boolean
+    Private Function Compute(data As cData, iTimeStep As Integer, runType As cModel.eRunTypes) As Boolean
 
         Dim EwECore As cCore = data.Core
         Dim RunOK As Boolean
@@ -141,7 +141,7 @@ Public Class cComputeLandingPortions
             'I presume here (for lack of knowledge of how it has been implemented)
             'that there is a matrix, which stores 'producer-association', somewhat like this
 
-            ReDim m_ProducerReference(EwECore.nGroups, EwECore.nGroups)
+            ReDim Me.m_ProducerReference(EwECore.nGroups, EwECore.nGroups)
             'then assume that when the flow is set up we read the producer ID into the ProducerReference
             'and that we thus can cycle through species/groups and read producer number
 
@@ -161,27 +161,27 @@ Public Class cComputeLandingPortions
                 '(which may be a fleet, or a fleet/group combination)
                 'cycle through each producer, and get the catches:
 
-                ReDim m_sumCatch(NoProducers)
-                ReDim m_sumValue(NoProducers)
+                ReDim Me.m_sumCatch(NoProducers)
+                ReDim Me.m_sumValue(NoProducers)
 
                 For iSp As Integer = 1 To EwECore.nGroups
                     For iFt As Integer = 1 To EwECore.nFleets
                         'Is this species/fleet combination associated with a producer?
-                        If m_ProducerReference(iSp, iFt) > 0 Then
+                        If Me.m_ProducerReference(iSp, iFt) > 0 Then
                             'If there is a TS catch then use it
                             If iSpTimeSeriesCatch(iSp) Then
-                                m_sumCatch(m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) += _
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                m_sumValue(m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) += _
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) _
                                     * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp)
                             Else        'if not then use the Ecosim landing
-                                m_sumCatch(m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                m_sumValue(m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp) * sArea
                             End If
@@ -208,7 +208,7 @@ Public Class cComputeLandingPortions
     End Function
 
 #Region " Properties "
-    Public ReadOnly Property ProducerValue(ByVal spc As Integer, ByVal flt As Integer) As Integer
+    Public ReadOnly Property ProducerValue(spc As Integer, flt As Integer) As Integer
         Get
             Return Me.m_ProducerReference(spc, flt)
         End Get

@@ -94,7 +94,7 @@ Public MustInherit Class cMediatedInteraction
             Dim n As Integer
             'count the number of shapes that are used 
             'all shapes after the first null shape are not used
-            For Each sfpair As cShapeFunctionTypePair In m_SFPairs
+            For Each sfpair As cShapeFunctionTypePair In Me.m_SFPairs
                 If sfpair.Shape IsNot Nothing Then
                     n += 1
                 Else
@@ -124,11 +124,11 @@ Public MustInherit Class cMediatedInteraction
     ''' <param name="FunctionType"><see cref="eForcingFunctionApplication">Type of variable</see>
     ''' that this modifier applies to.</param>
     ''' <returns>True if there is a shape modifier defined at this index.</returns>
-    Public Function getShape(ByVal iItem As Integer, _
+    Public Function getShape(iItem As Integer, _
                              ByRef shape As cForcingFunction, _
                              ByRef functiontype As eForcingFunctionApplication) As Boolean
 
-        Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
+        Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
 
         Try
 
@@ -144,7 +144,7 @@ Public MustInherit Class cMediatedInteraction
             'indexes in the interface are one based
             Dim iList As Integer = iItem - 1
 
-            Dim pair As cShapeFunctionTypePair = m_SFPairs.Item(iList)
+            Dim pair As cShapeFunctionTypePair = Me.m_SFPairs.Item(iList)
             shape = pair.Shape
             functiontype = pair.FunctionType
 
@@ -177,11 +177,11 @@ Public MustInherit Class cMediatedInteraction
     ''' to apply this modifier to.</param>
     ''' <returns>True is the index was in bounds and the shape was set</returns>
     ''' <remarks>To clear an index set the shape to Nothing</remarks>
-    Public Function setShape(ByVal ItemIndex As Integer, _
-                             ByVal shape As cForcingFunction, _
-                             Optional ByVal FunctionType As eForcingFunctionApplication = eForcingFunctionApplication.SearchRate) As Boolean
+    Public Function setShape(ItemIndex As Integer, _
+                             shape As cForcingFunction, _
+                             Optional FunctionType As eForcingFunctionApplication = eForcingFunctionApplication.SearchRate) As Boolean
 
-        Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
+        Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
 
         Try
 
@@ -198,7 +198,7 @@ Public MustInherit Class cMediatedInteraction
             'set the shape object and the function type
             'in the already existing cShapeFunctionTypePair object from the m_SFPairs list
             'the cShapeFunctionTypePair objects were created when this interaction object was constructed
-            Dim sfPair As cShapeFunctionTypePair = m_SFPairs.Item(iList)
+            Dim sfPair As cShapeFunctionTypePair = Me.m_SFPairs.Item(iList)
             sfPair.Shape = shape
             sfPair.FunctionType = FunctionType
 
@@ -223,10 +223,10 @@ Public MustInherit Class cMediatedInteraction
     ''' </summary>
     Public Property LockUpdates() As Boolean
         Get
-            Return m_bLockUpdates
+            Return Me.m_bLockUpdates
         End Get
-        Set(ByVal value As Boolean)
-            m_bLockUpdates = value
+        Set(value As Boolean)
+            Me.m_bLockUpdates = value
             Me.Update()
         End Set
     End Property
@@ -242,7 +242,7 @@ Public MustInherit Class cMediatedInteraction
 
 #Region " Internal Methods "
 
-    Protected Function getShapeFromEcosimIndex(ByRef theManager As cBaseShapeManager, ByVal iEcosimIndex As Integer) As cForcingFunction
+    Protected Function getShapeFromEcosimIndex(ByRef theManager As cBaseShapeManager, iEcosimIndex As Integer) As cForcingFunction
 
         'HACK find a shape with the matching Ecosim index in the theManager
         For Each shape As cForcingFunction In theManager
@@ -278,10 +278,10 @@ Public MustInherit Class cMediatedInteraction
     <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
-            Return m_dbid
+            Return Me.m_dbid
         End Get
-        Set(ByVal value As Integer)
-            m_dbid = value
+        Set(value As Integer)
+            Me.m_dbid = value
         End Set
     End Property
 
@@ -290,7 +290,7 @@ Public MustInherit Class cMediatedInteraction
         Get
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Debug.Assert(False, "Not Implemented")
         End Set
     End Property
@@ -300,7 +300,7 @@ Public MustInherit Class cMediatedInteraction
         Get
             Return "Predator/Prey interaction"
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Debug.Assert(False, "Not Implemented")
         End Set
     End Property

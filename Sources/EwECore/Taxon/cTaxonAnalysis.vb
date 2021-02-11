@@ -47,7 +47,7 @@ Public Class cTaxonAnalysis
     ''' <param name="taxonDS">The <see cref="cTaxonDataStructures">taxonomy data structures</see>
     ''' to obtain taxon data from.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByVal taxonDS As cTaxonDataStructures)
+    Friend Sub New(taxonDS As cTaxonDataStructures)
         Me.m_taxonDS = taxonDS
     End Sub
 
@@ -78,9 +78,9 @@ Public Class cTaxonAnalysis
     ''' </code>
     ''' </example>
     ''' -----------------------------------------------------------------------
-    Public Function GroupBiomassProportion(ByVal iGroup As Integer,
-                                           ByVal val As Object,
-                                           Optional ByVal op As eOperators = eOperators.EqualTo) As Single
+    Public Function GroupBiomassProportion(iGroup As Integer,
+                                           val As Object,
+                                           Optional op As eOperators = eOperators.EqualTo) As Single
         Return Me.GroupProportion(eComputationType.Biomass, iGroup, val, op)
     End Function
 
@@ -97,9 +97,9 @@ Public Class cTaxonAnalysis
     ''' If not provided <see cref="eOperators.EqualTo">'='</see> is used.</param>
     ''' <returns>The proportion of catch.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GroupCatchProportion(ByVal iGroup As Integer,
-                                         ByVal val As Object,
-                                         Optional ByVal op As eOperators = eOperators.EqualTo) As Single
+    Public Function GroupCatchProportion(iGroup As Integer,
+                                         val As Object,
+                                         Optional op As eOperators = eOperators.EqualTo) As Single
         Return Me.GroupProportion(eComputationType.Catch, iGroup, val, op)
     End Function
 
@@ -129,10 +129,10 @@ Public Class cTaxonAnalysis
     ''' <param name="op"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GroupProportion(ByVal computation As eComputationType,
-                                     ByVal iGroup As Integer,
-                                     ByVal value As Object,
-                                     ByVal op As eOperators) As Single
+    Private Function GroupProportion(computation As eComputationType,
+                                     iGroup As Integer,
+                                     value As Object,
+                                     op As eOperators) As Single
 
         Dim iTaxon As Integer = 0
         Dim sProportion As Single = 0
@@ -153,7 +153,7 @@ Public Class cTaxonAnalysis
             ElseIf TypeOf (value) Is eEcologyTypes Then
                 avals = Me.m_taxonDS.TaxonEcologyType
             ElseIf TypeOf (value) Is eOccurrenceStatusTypes Then
-                avals = m_taxonDS.TaxonOccurrenceStatus
+                avals = Me.m_taxonDS.TaxonOccurrenceStatus
             End If
 
             Debug.Assert(avals IsNot Nothing)
@@ -191,11 +191,11 @@ Public Class cTaxonAnalysis
 
     End Function
 
-    Private Function Key(ByVal comp As eComputationType,
-                         ByVal iGroup As Integer,
-                         ByVal sVal As Single,
-                         ByVal t As Type,
-                         ByVal op As eOperators) As String
+    Private Function Key(comp As eComputationType,
+                         iGroup As Integer,
+                         sVal As Single,
+                         t As Type,
+                         op As eOperators) As String
         Return comp.ToString & ":" & iGroup & "_" & op & "_" & t.ToString & "(" & sVal & ")"
     End Function
 

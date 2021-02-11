@@ -48,7 +48,7 @@ Namespace Properties
             GC.SuppressFinalize(Me)
         End Sub
 
-        Protected MustOverride Sub Dispose(ByVal bDisposing As Boolean)
+        Protected MustOverride Sub Dispose(bDisposing As Boolean)
 
 #End Region ' Disposal
 
@@ -71,7 +71,7 @@ Namespace Properties
         ''' Change notification event delegate.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Public Delegate Sub ValueChangedEventHandler(ByVal exp As cExpression)
+        Public Delegate Sub ValueChangedEventHandler(exp As cExpression)
 
         ''' ---------------------------------------------------------------
         ''' <summary>

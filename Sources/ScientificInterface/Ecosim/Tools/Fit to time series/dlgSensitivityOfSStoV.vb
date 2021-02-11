@@ -56,8 +56,8 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal manager As cF2TSManager)
+    Public Sub New(uic As cUIContext, _
+                   manager As cF2TSManager)
 
         Me.InitializeComponent()
 
@@ -87,7 +87,7 @@ Public Class dlgSensitivityOfSStoV
         Get
             Return Me.m_iNumBlocks
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
 
             ' Truncate
             value = Math.Max(0, Math.Min(CInt(Me.m_nudNumBlocks.Maximum), value))
@@ -117,7 +117,7 @@ Public Class dlgSensitivityOfSStoV
 
 #Region " Form "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
         Me.m_nudNumBlocks.Maximum = Me.m_uic.Core.nGroups * Me.m_uic.Core.nGroups
@@ -126,7 +126,7 @@ Public Class dlgSensitivityOfSStoV
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
         Me.m_F2TSManager = Nothing
         MyBase.OnFormClosed(e)
     End Sub
@@ -140,7 +140,7 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnSearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSearchCheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbSearchPred.CheckedChanged, _
                 m_rbSearchPredPrey.CheckedChanged
 
@@ -157,7 +157,7 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSearch(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSearch.Click
 
         Me.StartRun()
@@ -169,7 +169,7 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OK_Button_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOk.Click
 
         If (Me.StopRun() = False) Then Return
@@ -178,7 +178,7 @@ Public Class dlgSensitivityOfSStoV
 
     End Sub
 
-    Private Sub OnNumBlocksChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnNumBlocksChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_nudNumBlocks.ValueChanged
 
         If (Me.m_uic Is Nothing) Then Return
@@ -193,7 +193,7 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
 
         If (Me.StopRun() = False) Then Return
@@ -224,7 +224,7 @@ Public Class dlgSensitivityOfSStoV
 
 #Region " F2TS manager interface "
 
-    Private Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
+    Private Sub OnRunStarted(runType As eRunType, nSteps As Integer)
         ' Sanity check
         Debug.Assert(runType = Me.RunType)
 
@@ -279,7 +279,7 @@ Public Class dlgSensitivityOfSStoV
     ''' </summary>
     ''' <param name="runType"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnRunStopped(ByVal runType As eRunType)
+    Private Sub OnRunStopped(runType As eRunType)
 
         ' Sanity check
         Debug.Assert(runType = Me.RunType)
@@ -296,7 +296,7 @@ Public Class dlgSensitivityOfSStoV
     ''' <param name="iCurrentIterationStep"></param>
     ''' <param name="nTotalIterationSteps"></param>
     ''' -------------------------------------------------------------------
-    Protected Sub OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalIterationSteps As Integer)
+    Protected Sub OnModelRun(runType As eRunType, iCurrentIterationStep As Integer, nTotalIterationSteps As Integer)
         ' NOP
     End Sub
 
@@ -361,7 +361,7 @@ Public Class dlgSensitivityOfSStoV
         ' Reset controls
         Me.m_progress.Value = 0
 
-        Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, Nothing)
+        Me.m_F2TSManager.Connect(Me, AddressOf Me.OnRunStarted, AddressOf Me.OnRunStep, AddressOf Me.OnRunStopped, Nothing)
         If (Me.m_rbSearchPredPrey.Checked) Then
             If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(False, TriState.False) = False) Then
                 Return False
@@ -412,7 +412,7 @@ Public Class dlgSensitivityOfSStoV
             'have the manager sort the blocks acording to the last run sensitivity type
             Me.m_F2TSManager.setNBlocksFromSensitivity(Me.NumBlocks)
 
-            Dim vblocks(,) As Integer = m_F2TSManager.VulnerabilityBlocks
+            Dim vblocks(,) As Integer = Me.m_F2TSManager.VulnerabilityBlocks
             For iPred As Integer = 1 To Me.m_uic.Core.nGroups
                 For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
                     If Me.m_F2TSManager.isPredPrey(iPred, iPrey) Then

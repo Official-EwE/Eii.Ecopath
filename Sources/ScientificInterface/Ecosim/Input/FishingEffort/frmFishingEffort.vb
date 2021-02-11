@@ -56,7 +56,7 @@ Namespace Ecosim
 
 #Region " Form overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If Me.UIContext Is Nothing Then Return
@@ -67,13 +67,13 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_handler.Detach()
             Me.m_handler = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             Select Case msg.Source
                 Case eCoreComponentType.ShapesManager
                     If (msg.DataType = eDataTypes.FishingEffort) Then

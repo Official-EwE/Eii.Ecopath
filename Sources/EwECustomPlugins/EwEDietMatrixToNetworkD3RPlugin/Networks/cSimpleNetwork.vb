@@ -54,8 +54,8 @@ Public Class cSimpleNetwork
                         lSrc.Add(cStringUtils.ToExcelColumnName(iPred))
                         lTgt.Add(cStringUtils.ToExcelColumnName(iPrey))
                     Else
-                        lSrc.Add(ToRString(pred.Name))
-                        lTgt.Add(ToRString(prey.Name))
+                        lSrc.Add(Me.ToRString(pred.Name))
+                        lTgt.Add(Me.ToRString(prey.Name))
                     End If
                 End If
             Next
@@ -67,8 +67,8 @@ Public Class cSimpleNetwork
         sb.AppendLine()
         sb.AppendLine("library(networkD3)")
         sb.AppendLine()
-        sb.AppendLine(ArrayLine(src, lSrc))
-        sb.AppendLine(ArrayLine(target, lTgt))
+        sb.AppendLine(Me.ArrayLine(src, lSrc))
+        sb.AppendLine(Me.ArrayLine(target, lTgt))
         sb.AppendLine()
         sb.AppendLine("networkData <- data.frame(" & src & ", " & target & ")")
         sb.AppendLine("# Plot")

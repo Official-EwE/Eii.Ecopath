@@ -49,7 +49,7 @@ Namespace Controls.EwEGrid
         Class cCatchEnterPressBehaviour
             Inherits BehaviorModels.Common
 
-            Public Overrides Sub OnKeyUp(ByVal e As SourceGrid2.PositionKeyEventArgs)
+            Public Overrides Sub OnKeyUp(e As SourceGrid2.PositionKeyEventArgs)
                 If (e.KeyEventArgs.KeyCode = Keys.Enter) Then
 
                     Dim dm As DataModels.IDataModel = e.Cell.DataModel
@@ -142,14 +142,14 @@ Namespace Controls.EwEGrid
         ''' <summary>Behaviour model to catch cell resize events.</summary>
         Private m_bmResize As cCellResizeBehaviour = Nothing
 
-        Public Sub New(ByVal objVal As Object, ByVal t As Type)
+        Public Sub New(objVal As Object, t As Type)
             MyBase.New(Nothing, t)
 
             ' Set shared visualizer
             Me.VisualModel = New cEwECellVisualizer()
 
             ' Configure data model, if any
-            If (DataModel IsNot Nothing) Then
+            If (Me.DataModel IsNot Nothing) Then
                 Me.DataModel.AllowNull = True
                 Me.DataModel.DefaultValue = cCore.NULL_VALUE
             End If
@@ -206,7 +206,7 @@ Namespace Controls.EwEGrid
                 Return Me.m_style
             End Get
 
-            Set(ByVal s As cStyleGuide.eStyleFlags)
+            Set(s As cStyleGuide.eStyleFlags)
                 Me.m_style = s
                 If (Me.DataModel IsNot Nothing) Then
                     If ((s And cStyleGuide.eStyleFlags.NotEditable) = 0) Then
@@ -221,7 +221,7 @@ Namespace Controls.EwEGrid
 
         End Property
 
-        Public Overrides Sub OnEditStarting(ByVal e As SourceGrid2.PositionCancelEventArgs)
+        Public Overrides Sub OnEditStarting(e As SourceGrid2.PositionCancelEventArgs)
             ' JS, 26aug08: Bug fix 502
             ' Safety catch, this method should be obsolete but *apparently* a double-click on
             ' disabled cells (EndableEdit and EditableMode locked down) still
@@ -244,11 +244,11 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="sZeroValue">A custom zero value, if applicable.</param>
         ''' -------------------------------------------------------------------
-        Public Property SuppressZero(Optional ByVal sZeroValue As Single = 0.0) As Boolean
+        Public Property SuppressZero(Optional sZeroValue As Single = 0.0) As Boolean
             Get
                 Return Me.m_bSuppressZero
             End Get
-            Set(ByVal bSuppress As Boolean)
+            Set(bSuppress As Boolean)
                 If (bSuppress <> Me.m_bSuppressZero) And (Me.DataModel IsNot Nothing) Then
                     Me.m_bSuppressZero = bSuppress
                     Me.DataModel.DefaultValue = sZeroValue
@@ -268,7 +268,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_iNumDigits
             End Get
-            Set(ByVal iNumDigits As Integer)
+            Set(iNumDigits As Integer)
                 If (iNumDigits <> Me.m_iNumDigits) Then
                     Me.m_iNumDigits = iNumDigits
                     Me.Invalidate()
@@ -403,7 +403,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="md">The <see cref="cVariableMetaData">variable meta data</see> to examine.</param>
         ''' -------------------------------------------------------------------
-        Public Sub ConfigureCell(ByVal md As cVariableMetaData)
+        Public Sub ConfigureCell(md As cVariableMetaData)
 
             ' Sanity checks
             If (md Is Nothing) Then Return
@@ -473,7 +473,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cUIContext">UI context</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnAddToGrid(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnAddToGrid(e As System.EventArgs)
             MyBase.OnAddToGrid(e)
             If TypeOf Me.Grid Is IUIElement Then
                 Me.UIContext = DirectCast(Me.Grid, IUIElement).UIContext
@@ -486,7 +486,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cUIContext">UI context</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnRemoveToGrid(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnRemoveToGrid(e As System.EventArgs)
             MyBase.OnRemoveToGrid(e)
             Me.UIContext = Nothing
         End Sub
@@ -501,7 +501,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_uic
             End Get
-            Protected Set(ByVal value As cUIContext)
+            Protected Set(value As cUIContext)
 
                 ' JS 29Nov11: dramatically improved grid performace by handling styleguide updates 
                 '             in the grid instead of in the individual cells. StyleGuide changes

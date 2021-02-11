@@ -31,8 +31,8 @@ Public Class cEcospaceMPA
 
 #Region "Constructor"
 
-    Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, iDBID As Integer)
+        MyBase.New(core)
 
         Dim val As cValue = Nothing
 
@@ -47,7 +47,7 @@ Public Class cEcospaceMPA
             Me.ResetStatusFlags()
 
             ' MPAMonth
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.MPAMonth, eStatusFlags.OK, eCoreCounterTypes.nMonths, AddressOf m_core.GetCoreCounter)
+            val = New cValueArray(core, eValueTypes.BoolArray, eVarNameFlags.MPAMonth, eStatusFlags.OK, eCoreCounterTypes.nMonths)
             Me.m_values.Add(val.varName, val)
 
         Catch ex As Exception
@@ -66,13 +66,13 @@ Public Class cEcospaceMPA
     ''' </summary>
     ''' <param name="iMonth">The one-based month index to access the 
     ''' MPA open state for.</param>
-    Public Property MPAMonth(ByVal iMonth As Integer) As Boolean
+    Public Property MPAMonth(iMonth As Integer) As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.MPAMonth, iMonth))
+            Return CBool(Me.GetVariable(eVarNameFlags.MPAMonth, iMonth))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.MPAMonth, value, iMonth)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.MPAMonth, value, iMonth)
         End Set
     End Property
 
@@ -80,13 +80,13 @@ Public Class cEcospaceMPA
 
 #Region " Status by dot (.) operator "
 
-    Public Property MPAMonthStatus(ByVal iMonth As Integer) As eStatusFlags
+    Public Property MPAMonthStatus(iMonth As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.MPAMonth, iMonth)
+            Return Me.GetStatus(eVarNameFlags.MPAMonth, iMonth)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MPAMonth, value, iMonth)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.MPAMonth, value, iMonth)
         End Set
     End Property
 
@@ -139,7 +139,7 @@ Public Class cEcospaceMPA
     ''' <seealso cref="cEcospaceMPA.IsActive(Integer)"/>
     ''' <seealso cref="cEcospaceMPA.IsClosed(Integer)"/>
     ''' -----------------------------------------------------------------------
-    Public Property IsOpen(ByVal iMonth As Integer) As Boolean
+    Public Property IsOpen(iMonth As Integer) As Boolean
         Get
             Return Me.MPAMonth(iMonth) = True
         End Get
@@ -158,7 +158,7 @@ Public Class cEcospaceMPA
     ''' <seealso cref="cEcospaceMPA.IsOpen(Integer)"/>
     ''' <seealso cref="cEcospaceMPA.IsActive(Integer)"/>
     ''' -----------------------------------------------------------------------
-    Public Property IsClosed(ByVal iMonth As Integer) As Boolean
+    Public Property IsClosed(iMonth As Integer) As Boolean
         Get
             Return Me.MPAMonth(iMonth) = False
         End Get

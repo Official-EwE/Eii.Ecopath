@@ -36,7 +36,7 @@ Namespace SpatialData
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 

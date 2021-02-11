@@ -35,8 +35,8 @@ Namespace Ecospace.Advection
     Public Class cAdvectionParameters
         Inherits cCoreInputOutputBase
 
-        Public Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, DBID As Integer)
+            MyBase.New(core)
 
             Me.AllowValidation = False
             Me.DBID = DBID
@@ -51,30 +51,30 @@ Namespace Ecospace.Advection
             Dim val As cValue
 
             ' XVel
-            val = New cValue(New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             ' YVel
-            val = New cValue(New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             ' Coriolis
-            val = New cValue(New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             ' SorWv
-            val = New cValue(New Single, eVarNameFlags.SorWv, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.SorWv, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
@@ -87,11 +87,11 @@ Namespace Ecospace.Advection
 
         Public Property UpwellingThreshold() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.AdvectionUpwellingThreshold))
+                Return CSng(Me.GetVariable(eVarNameFlags.AdvectionUpwellingThreshold))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.AdvectionUpwellingThreshold, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.AdvectionUpwellingThreshold, value)
             End Set
         End Property
 
@@ -99,11 +99,11 @@ Namespace Ecospace.Advection
         'UpwellingPPMultiplier
         Public Property UpwellingPPMultiplier() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.AdvectionUpwellingPPMultiplier))
+                Return CSng(Me.GetVariable(eVarNameFlags.AdvectionUpwellingPPMultiplier))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.AdvectionUpwellingPPMultiplier, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.AdvectionUpwellingPPMultiplier, value)
             End Set
         End Property
 

@@ -49,7 +49,7 @@ Namespace Data
         ''' <see cref="IDataConsumerPlugin.ReceiveData">ReceiveData</see>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Sub Broadcaster(ByVal broadcaster As IDataBroadcaster)
+        Sub Broadcaster(broadcaster As IDataBroadcaster)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -63,7 +63,7 @@ Namespace Data
         ''' <see cref="IRunType">Run type</see> of the data to request.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Function IsDataAvailable(ByVal typeData As Type, Optional ByVal runType As IRunType = Nothing) As Boolean
+        Function IsDataAvailable(typeData As Type, Optional runType As IRunType = Nothing) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -75,7 +75,7 @@ Namespace Data
         ''' the plug-in.</param>
         ''' <returns>True if requested data is available.</returns>
         ''' -----------------------------------------------------------------------
-        Function GetDataByType(ByVal typeData As Type, ByRef data As IPluginData) As Boolean
+        Function GetDataByType(typeData As Type, ByRef data As IPluginData) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -89,7 +89,7 @@ Namespace Data
         ''' Set whether a data producer is allowed to distribute data.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Function SetEnabled(ByVal bEnable As Boolean) As Boolean
+        Function SetEnabled(bEnable As Boolean) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -100,7 +100,7 @@ Namespace Data
         ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Sub SetEnabled(ByVal typeData As Type, ByVal runType As IRunType, ByVal bEnable As Boolean)
+        Sub SetEnabled(typeData As Type, runType As IRunType, bEnable As Boolean)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -112,7 +112,7 @@ Namespace Data
         ''' <see cref="IRunType">Run type</see> of the data to enable or disable.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Function IsEnabled(ByVal typeData As Type, ByVal runType As IRunType) As Boolean
+        Function IsEnabled(typeData As Type, runType As IRunType) As Boolean
 
     End Interface
 

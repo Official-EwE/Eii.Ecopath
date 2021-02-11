@@ -50,7 +50,7 @@ Public Class frmStartPanel
     ''' </summary>
     ''' <param name="uic">UI context to link to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
         MyBase.New()
         Me.InitializeComponent()
         Me.UIContext = uic
@@ -73,7 +73,7 @@ Public Class frmStartPanel
         Get
              Return Me.m_strURL
         End Get
-        Set(ByVal strURL As String)
+        Set(strURL As String)
             Try
                 If String.IsNullOrWhiteSpace(strURL) Then
                     Dim link As New cWebLinks(Me.UIContext.Core)
@@ -101,7 +101,7 @@ Public Class frmStartPanel
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
 #If BETA = 1 Then
@@ -118,7 +118,7 @@ Public Class frmStartPanel
         Me.m_tsbnBugTracker.Image = SharedResources.bug
         Me.m_tsbnBetaFeedback.Image = My.Resources.logo_sm
 
-        AddHandler Me.m_browser.NavigationCompleted, AddressOf OnUpdateNav
+        AddHandler Me.m_browser.NavigationCompleted, AddressOf Me.OnUpdateNav
 
         Me.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.HomeHS.GetHicon)
 
@@ -128,11 +128,11 @@ Public Class frmStartPanel
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.Icon.Dispose()
 
-        RemoveHandler Me.m_browser.NavigationCompleted, AddressOf OnUpdateNav
+        RemoveHandler Me.m_browser.NavigationCompleted, AddressOf Me.OnUpdateNav
 
         MyBase.OnFormClosed(e)
 
@@ -146,7 +146,7 @@ Public Class frmStartPanel
 
 #Region " Events "
 
-    Private Sub OnBrowserNavBack(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnBrowserNavBack(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnBack.Click
         Try
             Me.m_browser.GoBack()
@@ -155,7 +155,7 @@ Public Class frmStartPanel
         End Try
     End Sub
 
-    Private Sub OnBrowserNavForward(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnBrowserNavForward(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnForward.Click
         Try
             Me.m_browser.GoForward()
@@ -164,7 +164,7 @@ Public Class frmStartPanel
         End Try
     End Sub
 
-    Private Sub OnBrowserRefresh(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnBrowserRefresh(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnRefresh.Click
         Try
             Me.m_browser.Refresh()
@@ -173,7 +173,7 @@ Public Class frmStartPanel
         End Try
     End Sub
 
-    Private Sub OnBrowserStart(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnBrowserStart(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnStartPage.Click
         Try
             Me.Browse(cWebLinks.eLinkType.Start)
@@ -192,15 +192,15 @@ Public Class frmStartPanel
 
     End Sub
 
-    Private Sub OnUpdateNav(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub OnUpdateNav(sender As Object, e As EventArgs)
         If Me.InvokeRequired Then
-            Me.Invoke(New UpdateControlsDelegate(AddressOf UpdateControls))
+            Me.Invoke(New UpdateControlsDelegate(AddressOf Me.UpdateControls))
         Else
             Me.UpdateControls()
         End If
     End Sub
 
-    'Private Sub OnViewRSS(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    'Private Sub OnViewRSS(sender As System.Object, e As System.EventArgs) _
     '    Handles m_tsbnRSS.Click
     '    Try
     '        Me.Browse(cWebLinks.eLinkType.HomeRSS)

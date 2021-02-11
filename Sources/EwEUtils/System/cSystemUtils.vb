@@ -163,10 +163,10 @@ Namespace SystemUtilities
         ''' here to detect the application file in all possible locations.</param>
         ''' <param name="strOutputParameters">Arguments to pass to the executable.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Function AppExec(ByVal strAppName As String,
-                                       ByVal strOutputParameters As String,
+        Public Shared Function AppExec(strAppName As String,
+                                       strOutputParameters As String,
                                        ByRef strError As String,
-                                       Optional ByVal strPath As String = "") As Boolean
+                                       Optional strPath As String = "") As Boolean
 
             ' Check if Directory is forced 
             If Not String.IsNullOrEmpty(strPath) Then
@@ -202,9 +202,9 @@ Namespace SystemUtilities
         ''' <param name="strOutputParameters"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function ExecuteApplication(ByVal strLocationDir As String,
-                                                   ByVal strAppName As String,
-                                                   ByVal strOutputParameters As String,
+        Private Shared Function ExecuteApplication(strLocationDir As String,
+                                                   strAppName As String,
+                                                   strOutputParameters As String,
                                                    ByRef strError As String) As Boolean
             Dim proc As New System.Diagnostics.Process()
             Dim bSuccess As Boolean = False
@@ -418,7 +418,7 @@ Namespace SystemUtilities
         ''' <returns>The path</returns>
         ''' <seealso cref="ApplicationSettingsFolderName"/>
         ''' -------------------------------------------------------------------
-        Public Shared Function ApplicationSettingsPath(Optional ByVal bPerUserSetting As Boolean = True) As String
+        Public Shared Function ApplicationSettingsPath(Optional bPerUserSetting As Boolean = True) As String
 
             Dim strBaseDir As String = ""
             Dim strPath As String = ""
@@ -460,7 +460,7 @@ Namespace SystemUtilities
         ''' </remarks>
         ''' -------------------------------------------------------------------
         <Obsolete("Use If(condition, truepart, falsepart) construction instead")>
-        Public Shared Function IIF(Of T)(ByVal bValue As Boolean, ByVal cTrue As T, ByVal cFalse As T) As T
+        Public Shared Function IIF(Of T)(bValue As Boolean, cTrue As T, cFalse As T) As T
             Return If(bValue, cTrue, cFalse)
         End Function
 
@@ -476,7 +476,7 @@ Namespace SystemUtilities
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Val(ByVal strValue As String) As Double
+        Public Shared Function Val(strValue As String) As Double
             Dim dVal As Double = 0
             ' Does not handle Exponent values!
             'Dim m As Match = Regex.Match(strValue, "^-?[\d\s]*(\.[\d\s]+|[\d\s]*)")
@@ -499,7 +499,7 @@ Namespace SystemUtilities
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Val(ByVal value As Object) As Double
+        Public Shared Function Val(value As Object) As Double
             Return Val(value.ToString)
         End Function
 
@@ -515,7 +515,7 @@ Namespace SystemUtilities
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Val(ByVal value As Char) As Integer
+        Public Shared Function Val(value As Char) As Integer
             If Char.IsDigit(value) Then
                 Return Convert.ToInt32(value)
             End If

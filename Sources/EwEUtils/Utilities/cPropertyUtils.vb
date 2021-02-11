@@ -64,7 +64,7 @@ Namespace Utilities
             ''' <summary>Simple attribute to allow the order of a property to be specified.</summary>
             Private m_iOrder As Integer = 0
 
-            Public Sub New(ByVal iOrder As Integer)
+            Public Sub New(iOrder As Integer)
                 Me.m_iOrder = iOrder
             End Sub
 
@@ -96,8 +96,8 @@ Namespace Utilities
             ''' <param name="strDisplayName">Name attribute</param>
             ''' <param name="iOrder">Order attribute</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal strPropertyName As String, _
-                           ByVal strCategory As String, ByVal strDisplayName As String, ByVal iOrder As Integer)
+            Public Sub New(strPropertyName As String, _
+                           strCategory As String, strDisplayName As String, iOrder As Integer)
                 Me.m_strPropertyName = strPropertyName
                 Me.m_strCategory = strCategory
                 Me.m_strDisplayName = strDisplayName
@@ -128,7 +128,7 @@ Namespace Utilities
                 End Get
             End Property
 
-            Public Function CompareTo(ByVal obj As Object) As Integer _
+            Public Function CompareTo(obj As Object) As Integer _
                 Implements System.IComparable.CompareTo
 
                 ' Get object to compare to
@@ -163,7 +163,7 @@ Namespace Utilities
 
 #End Region ' Helper classes
 
-        Public Overloads Overrides Function GetPropertiesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overloads Overrides Function GetPropertiesSupported(context As ITypeDescriptorContext) As Boolean
             Return True
         End Function
 
@@ -174,7 +174,7 @@ Namespace Utilities
         ''' <param name="value"></param>
         ''' <param name="attributes"></param>
         ''' <returns></returns>
-        Public Overloads Overrides Function GetProperties(ByVal context As ITypeDescriptorContext, ByVal value As Object, ByVal attributes As Attribute()) As PropertyDescriptorCollection
+        Public Overloads Overrides Function GetProperties(context As ITypeDescriptorContext, value As Object, attributes As Attribute()) As PropertyDescriptorCollection
 
             Dim pdc As PropertyDescriptorCollection = TypeDescriptor.GetProperties(value, attributes)
             Dim attribute As Attribute = Nothing
@@ -237,7 +237,7 @@ Namespace Utilities
         ''' <returns>A <see cref="PropertyDescriptor">PropertyDescriptor</see>
         ''' instance, or nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindOrigPropertyDescriptor(ByVal pi As PropertyInfo) As PropertyDescriptor
+        Public Shared Function FindOrigPropertyDescriptor(pi As PropertyInfo) As PropertyDescriptor
             For Each pd As PropertyDescriptor In TypeDescriptor.GetProperties(pi.DeclaringType)
                 If pd.Name.Equals(pi.Name) Then
                     Return pd
@@ -257,7 +257,7 @@ Namespace Utilities
         ''' <returns>A <see cref="PropertyInfo">PropertyInfo</see> instance,
         ''' or nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindOrigPropertyInfo(ByVal t As Type, ByVal pd As PropertyDescriptor) As PropertyInfo
+        Public Shared Function FindOrigPropertyInfo(t As Type, pd As PropertyDescriptor) As PropertyInfo
             For Each pi As PropertyInfo In t.GetProperties()
                 If pd.Name.Equals(pi.Name) Then
                     Return pi

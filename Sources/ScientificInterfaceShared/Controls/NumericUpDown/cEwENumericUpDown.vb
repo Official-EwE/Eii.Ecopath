@@ -78,24 +78,24 @@ Namespace Controls
             End If
 
             ' Add handlers (MouseEnter and MouseLeave events of NumericUpDown are not working properly)
-            AddHandler m_tbx.MouseEnter, AddressOf HiddenMouseEnterLeave
-            AddHandler m_tbx.MouseLeave, AddressOf HiddenMouseEnterLeave
-            AddHandler m_updown.MouseEnter, AddressOf HiddenMouseEnterLeave
-            AddHandler m_updown.MouseLeave, AddressOf HiddenMouseEnterLeave
-            AddHandler MyBase.MouseEnter, AddressOf HiddenMouseEnterLeave
-            AddHandler MyBase.MouseLeave, AddressOf HiddenMouseEnterLeave
+            AddHandler Me.m_tbx.MouseEnter, AddressOf Me.HiddenMouseEnterLeave
+            AddHandler Me.m_tbx.MouseLeave, AddressOf Me.HiddenMouseEnterLeave
+            AddHandler Me.m_updown.MouseEnter, AddressOf Me.HiddenMouseEnterLeave
+            AddHandler Me.m_updown.MouseLeave, AddressOf Me.HiddenMouseEnterLeave
+            AddHandler MyBase.MouseEnter, AddressOf Me.HiddenMouseEnterLeave
+            AddHandler MyBase.MouseLeave, AddressOf Me.HiddenMouseEnterLeave
 
         End Sub
 
         Protected Overrides Sub Dispose(disposing As Boolean)
 
             ' Remove handlers
-            RemoveHandler m_tbx.MouseEnter, AddressOf HiddenMouseEnterLeave
-            RemoveHandler m_tbx.MouseLeave, AddressOf HiddenMouseEnterLeave
-            RemoveHandler m_updown.MouseEnter, AddressOf HiddenMouseEnterLeave
-            RemoveHandler m_updown.MouseLeave, AddressOf HiddenMouseEnterLeave
-            RemoveHandler MyBase.MouseEnter, AddressOf HiddenMouseEnterLeave
-            RemoveHandler MyBase.MouseLeave, AddressOf HiddenMouseEnterLeave
+            RemoveHandler Me.m_tbx.MouseEnter, AddressOf Me.HiddenMouseEnterLeave
+            RemoveHandler Me.m_tbx.MouseLeave, AddressOf Me.HiddenMouseEnterLeave
+            RemoveHandler Me.m_updown.MouseEnter, AddressOf Me.HiddenMouseEnterLeave
+            RemoveHandler Me.m_updown.MouseLeave, AddressOf Me.HiddenMouseEnterLeave
+            RemoveHandler MyBase.MouseEnter, AddressOf Me.HiddenMouseEnterLeave
+            RemoveHandler MyBase.MouseLeave, AddressOf Me.HiddenMouseEnterLeave
             MyBase.Dispose(disposing)
 
         End Sub
@@ -104,7 +104,7 @@ Namespace Controls
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             If (Me.m_updown.Visible = False) Then
                 e.Graphics.Clear(Me.BackColor)
             End If
@@ -118,12 +118,12 @@ Namespace Controls
             Const WM_MOUSEWHEEL As Integer = &H20A
 
             If (m.Msg = WM_MOUSEWHEEL) Then
-                Select Case InterceptMouseWheel
+                Select Case Me.InterceptMouseWheel
                     Case eInterceptMouseWheelType.Always
                         ' standard message
                         MyBase.WndProc(m)
                     Case eInterceptMouseWheelType.WhenMouseOver
-                        If m_bMouseOver Then
+                        If Me.m_bMouseOver Then
                             ' standard message
                             MyBase.WndProc(m)
                         End If
@@ -153,10 +153,10 @@ Namespace Controls
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Property SelectionStart() As Integer
             Get
-                Return m_tbx.SelectionStart
+                Return Me.m_tbx.SelectionStart
             End Get
-            Set(ByVal value As Integer)
-                m_tbx.SelectionStart = value
+            Set(value As Integer)
+                Me.m_tbx.SelectionStart = value
             End Set
         End Property
 
@@ -167,10 +167,10 @@ Namespace Controls
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Property SelectionLength() As Integer
             Get
-                Return m_tbx.SelectionLength
+                Return Me.m_tbx.SelectionLength
             End Get
-            Set(ByVal value As Integer)
-                m_tbx.SelectionLength = value
+            Set(value As Integer)
+                Me.m_tbx.SelectionLength = value
             End Set
         End Property
 
@@ -181,10 +181,10 @@ Namespace Controls
         <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
         Public Property SelectedText() As String
             Get
-                Return m_tbx.SelectedText
+                Return Me.m_tbx.SelectedText
             End Get
-            Set(ByVal value As String)
-                m_tbx.SelectedText = value
+            Set(value As String)
+                Me.m_tbx.SelectedText = value
             End Set
         End Property
 
@@ -224,12 +224,12 @@ Namespace Controls
         <Description("Set UpDownButtons visibility mode.")>
         Public Property ShowUpDownButtons() As eShowUpDownButtonsType
             Get
-                Return m_showUpdownMode
+                Return Me.m_showUpdownMode
             End Get
-            Set(ByVal value As eShowUpDownButtonsType)
-                m_showUpdownMode = value
+            Set(value As eShowUpDownButtonsType)
+                Me.m_showUpdownMode = value
                 ' update UpDownButtons visibility
-                UpdateUpDownButtonsVisibility()
+                Me.UpdateUpDownButtonsVisibility()
             End Set
         End Property
 
@@ -269,7 +269,7 @@ Namespace Controls
         ''' Select all the text on focus enter
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnGotFocus(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnGotFocus(e As System.EventArgs)
 
             Me.m_bHasFocus = True
             If Me.AutoSelect Then Me.m_tbx.SelectAll()
@@ -304,9 +304,9 @@ Namespace Controls
         ''' Will restore it, but only if user have not made a partial text selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseUp(ByVal mevent As System.Windows.Forms.MouseEventArgs)
-            If AutoSelect AndAlso m_tbx.SelectionLength = 0 Then
-                m_tbx.SelectAll()
+        Protected Overrides Sub OnMouseUp(mevent As System.Windows.Forms.MouseEventArgs)
+            If Me.AutoSelect AndAlso Me.m_tbx.SelectionLength = 0 Then
+                Me.m_tbx.SelectAll()
             End If
             MyBase.OnMouseUp(mevent)
         End Sub
@@ -324,19 +324,19 @@ Namespace Controls
         Public Event BeforeValueIncrement As CancelEventHandler
 
         ' this handler is called at each mouse Enter/Leave movement
-        Private Sub HiddenMouseEnterLeave(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub HiddenMouseEnterLeave(sender As Object, e As System.EventArgs)
 
-            Dim cr As Drawing.Rectangle = RectangleToScreen(ClientRectangle)
+            Dim cr As Drawing.Rectangle = Me.RectangleToScreen(Me.ClientRectangle)
             Dim mp As Drawing.Point = MousePosition
 
             ' actual state
             Dim bIsOver As Boolean = cr.Contains(mp)
 
             ' test if status changed
-            If m_bMouseOver Xor bIsOver Then
+            If Me.m_bMouseOver Xor bIsOver Then
                 ' update state
-                m_bMouseOver = bIsOver
-                If m_bMouseOver Then
+                Me.m_bMouseOver = bIsOver
+                If Me.m_bMouseOver Then
                     RaiseEvent MouseEnter(Me, EventArgs.Empty)
                 Else
                     RaiseEvent MouseLeave(Me, EventArgs.Empty)
@@ -344,8 +344,8 @@ Namespace Controls
             End If
 
             ' update UpDownButtons visibility
-            If m_showUpdownMode <> eShowUpDownButtonsType.Always Then
-                UpdateUpDownButtonsVisibility()
+            If Me.m_showUpdownMode <> eShowUpDownButtonsType.Always Then
+                Me.UpdateUpDownButtonsVisibility()
             End If
 
         End Sub
@@ -364,8 +364,8 @@ Namespace Controls
             RaiseEvent BeforeValueDecrement(Me, e)
             If e.Cancel Then Exit Sub
             ' decrement with wrap
-            If WrapValue AndAlso Value - Increment < Minimum Then
-                Value = Maximum
+            If Me.WrapValue AndAlso Me.Value - Me.Increment < Me.Minimum Then
+                Me.Value = Me.Maximum
             Else
                 MyBase.DownButton()
             End If
@@ -380,8 +380,8 @@ Namespace Controls
             RaiseEvent BeforeValueIncrement(Me, e)
             If e.Cancel Then Exit Sub
             ' increment with wrap
-            If WrapValue AndAlso Value + Increment > Maximum Then
-                Value = Minimum
+            If Me.WrapValue AndAlso Me.Value + Me.Increment > Me.Maximum Then
+                Me.Value = Me.Minimum
             Else
                 MyBase.UpButton()
             End If
@@ -398,26 +398,26 @@ Namespace Controls
 
             ' test new state
             Dim newVisible As Boolean = False
-            Select Case m_showUpdownMode
+            Select Case Me.m_showUpdownMode
                 Case eShowUpDownButtonsType.WhenMouseOver
-                    newVisible = m_bMouseOver
+                    newVisible = Me.m_bMouseOver
                 Case eShowUpDownButtonsType.WhenFocus
-                    newVisible = m_bHasFocus
+                    newVisible = Me.m_bHasFocus
                 Case eShowUpDownButtonsType.WhenFocusOrMouseOver
-                    newVisible = m_bHasFocus OrElse m_bMouseOver
+                    newVisible = Me.m_bHasFocus OrElse Me.m_bMouseOver
                 Case Else
                     newVisible = True
             End Select
 
             ' assign only if needed
-            If m_updown.Visible <> newVisible Then
+            If Me.m_updown.Visible <> newVisible Then
                 If newVisible Then
-                    m_tbx.Width = Me.ClientRectangle.Width - m_updown.Width
+                    Me.m_tbx.Width = Me.ClientRectangle.Width - Me.m_updown.Width
                 Else
-                    m_tbx.Width = Me.ClientRectangle.Width
+                    Me.m_tbx.Width = Me.ClientRectangle.Width
                 End If
-                m_updown.Visible = newVisible
-                OnTextBoxResize(m_tbx, EventArgs.Empty)
+                Me.m_updown.Visible = newVisible
+                Me.OnTextBoxResize(Me.m_tbx, EventArgs.Empty)
                 Me.Invalidate()
             End If
 
@@ -426,9 +426,9 @@ Namespace Controls
         ''' <summary>
         ''' Custom textbox size management
         ''' </summary>
-        Protected Overrides Sub OnTextBoxResize(ByVal source As Object, ByVal e As System.EventArgs)
-            If m_tbx Is Nothing Then Exit Sub
-            If m_showUpdownMode = eShowUpDownButtonsType.Always Then
+        Protected Overrides Sub OnTextBoxResize(source As Object, e As System.EventArgs)
+            If Me.m_tbx Is Nothing Then Exit Sub
+            If Me.m_showUpdownMode = eShowUpDownButtonsType.Always Then
                 ' standard management
                 MyBase.OnTextBoxResize(source, e)
             Else
@@ -437,12 +437,12 @@ Namespace Controls
                 ' change position if RTL
                 Dim fixPos As Boolean = Me.RightToLeft = RightToLeft.Yes Xor Me.UpDownAlign = LeftRightAlignment.Left
 
-                If m_bMouseOver Then
-                    m_tbx.Width = Me.ClientSize.Width - m_tbx.Left - m_updown.Width - 2
-                    If fixPos Then m_tbx.Location = New Point(16, m_tbx.Location.Y)
+                If Me.m_bMouseOver Then
+                    Me.m_tbx.Width = Me.ClientSize.Width - Me.m_tbx.Left - Me.m_updown.Width - 2
+                    If fixPos Then Me.m_tbx.Location = New Point(16, Me.m_tbx.Location.Y)
                 Else
-                    If fixPos Then m_tbx.Location = New Point(2, m_tbx.Location.Y)
-                    m_tbx.Width = Me.ClientSize.Width - m_tbx.Left - 2
+                    If fixPos Then Me.m_tbx.Location = New Point(2, Me.m_tbx.Location.Y)
+                    Me.m_tbx.Width = Me.ClientSize.Width - Me.m_tbx.Left - 2
                 End If
 
             End If

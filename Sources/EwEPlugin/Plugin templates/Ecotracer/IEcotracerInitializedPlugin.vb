@@ -25,6 +25,6 @@
 Public Interface IEcotracerInitializedPlugin
     Inherits IPlugin
 
-    Sub EcotracerInitialized(ByVal ContaminantTracerDatastructures As Object)
+    Sub EcotracerInitialized(ContaminantTracerDatastructures As Object)
 
 End Interface

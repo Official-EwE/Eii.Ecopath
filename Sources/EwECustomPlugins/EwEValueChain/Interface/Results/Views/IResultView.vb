@@ -36,9 +36,9 @@ Public Interface IResultView
     ''' <param name="iYear">Year to show.</param>
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
-    Sub ShowResults(ByVal iFleet As Integer, _
-                    ByVal lUnits As cUnit(), _
-                    ByVal result As cResults, _
-                    ByVal iYear As Integer)
+    Sub ShowResults(iFleet As Integer, _
+                    lUnits As cUnit(), _
+                    result As cResults, _
+                    iYear As Integer)
 
 End Interface

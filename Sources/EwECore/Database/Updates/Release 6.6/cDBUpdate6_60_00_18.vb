@@ -133,7 +133,7 @@ Friend Class cDBUpdate6_60_00_18
 
     End Function
 
-    Private Function Add(db As cEwEDatabase, ByRef iLevelID As Integer, var As eVarNameFlags, resName As String, ByVal sIndexValue As Single, ByVal iConfidenceInterval As Integer) As Boolean
+    Private Function Add(db As cEwEDatabase, ByRef iLevelID As Integer, var As eVarNameFlags, resName As String, sIndexValue As Single, iConfidenceInterval As Integer) As Boolean
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim strSQL As String = String.Format("INSERT INTO Pedigree (LevelID, Sequence, LevelName, Description, VarName, IndexValue, Confidence) " &

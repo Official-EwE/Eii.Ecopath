@@ -66,7 +66,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="img">Image to maintain in an instance.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal img As Image)
+        Public Sub New(img As Image)
             Me.m_image = img
             Me.InitializeComponent()
 
@@ -88,7 +88,7 @@ Namespace Controls
             Get
                 Return Me.m_bSelected
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bSelected = value
                 Me.Invalidate()
             End Set
@@ -114,7 +114,7 @@ Namespace Controls
         ''' Draw me! Draw me! Yes! ME!
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub DoPaint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        Private Sub DoPaint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
 
             If (Me.m_image Is Nothing) Then Return
 

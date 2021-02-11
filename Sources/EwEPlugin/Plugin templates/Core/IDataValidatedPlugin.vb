@@ -40,6 +40,6 @@ Public Interface IDataValidatedPlugin
     ''' <param name="dt">The eDataTypes flag identifying the core source of the
     ''' variable.</param>
     ''' -----------------------------------------------------------------------
-    Sub DataValidated(ByVal varname As eVarNameFlags, ByVal dt As eDataTypes)
+    Sub DataValidated(varname As eVarNameFlags, dt As eDataTypes)
 
 End Interface

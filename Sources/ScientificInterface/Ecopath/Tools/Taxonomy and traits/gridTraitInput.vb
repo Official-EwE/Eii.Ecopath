@@ -169,11 +169,11 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Protected Property Taxon(ByVal iRow As Integer) As cTaxon
+        Protected Property Taxon(iRow As Integer) As cTaxon
             Get
                 Return DirectCast(Me.Rows(iRow).Tag, cTaxon)
             End Get
-            Set(ByVal value As cTaxon)
+            Set(value As cTaxon)
                 Me.Rows(iRow).Tag = value
             End Set
         End Property
@@ -196,7 +196,7 @@ Namespace Ecopath.Input
             Return lTaxa.ToArray()
         End Function
 
-        Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
             Dim taxon As cTaxon = Me.Taxon(p.Row)
 
             Select Case DirectCast(p.Column, eColumnTypes)
@@ -218,7 +218,7 @@ Namespace Ecopath.Input
             Return MyBase.OnCellValueChanged(p, cell)
         End Function
 
-        Private Sub AddTaxonRow(ByVal taxon As cTaxon, ByVal iRow As Integer, ByVal hgcParent As cEwEHierarchyGridCell)
+        Private Sub AddTaxonRow(taxon As cTaxon, iRow As Integer, hgcParent As cEwEHierarchyGridCell)
 
             Dim cell As cEwECellBase = Nothing
             Dim propScName As cScientificNameProperty = New cScientificNameProperty(Me.PropertyManager, taxon)

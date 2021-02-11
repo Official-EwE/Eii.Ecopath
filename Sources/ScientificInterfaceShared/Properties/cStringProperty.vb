@@ -60,9 +60,9 @@ Namespace Properties
         ''' </para>
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As EwECore.cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                Optional ByVal SourceSec As EwECore.cCoreInputOutputBase = Nothing, _
-                Optional ByVal iSecIndexOffset As Integer = 0)
+        Public Sub New(Source As EwECore.cCoreInputOutputBase, VarName As eVarNameFlags, _
+                Optional SourceSec As EwECore.cCoreInputOutputBase = Nothing, _
+                Optional iSecIndexOffset As Integer = 0)
             MyBase.New(Source, VarName, SourceSec, iSecIndexOffset)
         End Sub
 
@@ -91,7 +91,7 @@ Namespace Properties
         ''' <param name="bHonourNull">Flag stating whether NULL status flags 
         ''' should return a NULL value.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Property Value(Optional ByVal bHonourNull As Boolean = True) As Object
+        Protected Overrides Property Value(Optional bHonourNull As Boolean = True) As Object
             Get
                 ' Is this a NULL value?
                 If bHonourNull And ((Me.m_Style And cStyleGuide.eStyleFlags.Null) = cStyleGuide.eStyleFlags.Null) Then
@@ -100,7 +100,7 @@ Namespace Properties
                 End If
                 Return Me.m_strValue
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 Dim str As String = ""
                 Try
                     ' Try to convert to string
@@ -119,7 +119,7 @@ Namespace Properties
         ''' <param name="value">The value to compare against the value in the property</param>
         ''' <returns>True if the values can be considered equal</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function IsValue(ByVal value As Object) As Boolean
+        Public Overrides Function IsValue(value As Object) As Boolean
             Try
                 Dim strValue As String = ""
                 If value IsNot Nothing Then strValue = value.ToString
@@ -137,9 +137,9 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Protected Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return m_Style
+                Return Me.m_Style
             End Get
-            Set(ByVal Style As cStyleGuide.eStyleFlags)
+            Set(Style As cStyleGuide.eStyleFlags)
                 Me.m_Style = Style
             End Set
         End Property
@@ -152,7 +152,7 @@ Namespace Properties
         ''' <returns>True if the Style equal</returns>
         ''' <remarks>This will need to change to StyleGuide.DisplayStyle</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function IsStyle(ByVal Style As cStyleGuide.eStyleFlags) As Boolean
+        Protected Overrides Function IsStyle(Style As cStyleGuide.eStyleFlags) As Boolean
             Return Me.m_Style = Style
         End Function
 

@@ -79,7 +79,7 @@ Friend Class cDBUpdate6_00_04_02
 
     End Function
 
-    Private Function FixCurrencyUnits(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixCurrencyUnits(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         Dim iCurrentValue As Integer = -1

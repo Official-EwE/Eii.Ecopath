@@ -48,7 +48,7 @@ Public Class cEcosimArenaManager
 
         Me.Clear()
 
-        ReDim m_arenas(simdata.Narena)
+        ReDim Me.m_arenas(simdata.Narena)
 
         ' Initialize arenas from all available links, not from only set links!
         For i As Integer = 1 To simdata.inlinks

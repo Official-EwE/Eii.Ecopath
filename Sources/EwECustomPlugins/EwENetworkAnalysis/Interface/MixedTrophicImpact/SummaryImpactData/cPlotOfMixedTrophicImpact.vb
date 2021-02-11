@@ -63,13 +63,13 @@ Public Class cPlotOfMixedTrophicImpact
         Return "Mixed tropic level impacts"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                     ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                     info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Plot.Visible = bSucces
         Me.Toolstrip.Visible = bSucces
@@ -77,14 +77,14 @@ Public Class cPlotOfMixedTrophicImpact
         Me.ToolstripShowOptionOptions()
         Me.ToolstripShowDisplayGroups()
 
-        AddHandler Me.Plot.Content.Paint, AddressOf OnPaintPlot
-        AddHandler Me.Plot.Resize, AddressOf OnResizePlot
+        AddHandler Me.Plot.Content.Paint, AddressOf Me.OnPaintPlot
+        AddHandler Me.Plot.Resize, AddressOf Me.OnResizePlot
         Return bSucces
     End Function
 
     Public Overrides Sub Detach()
-        RemoveHandler Me.Plot.Content.Paint, AddressOf OnPaintPlot
-        RemoveHandler Me.Plot.Resize, AddressOf OnResizePlot
+        RemoveHandler Me.Plot.Content.Paint, AddressOf Me.OnPaintPlot
+        RemoveHandler Me.Plot.Resize, AddressOf Me.OnResizePlot
         ' Restore fill
         Me.Plot.Content.Dock = DockStyle.Fill
         MyBase.Detach()
@@ -93,54 +93,54 @@ Public Class cPlotOfMixedTrophicImpact
     Public Overrides Sub DisplayData()
 
         ' ID mapper
-        Dim aIDS(NetworkManager.nGroups + NetworkManager.nFleets) As Integer
+        Dim aIDS(Me.NetworkManager.nGroups + Me.NetworkManager.nFleets) As Integer
         Dim iNumItems As Integer = 0
-        For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+        For i As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
             aIDS(i) = -1
-            If i <= NetworkManager.nGroups Then
+            If i <= Me.NetworkManager.nGroups Then
                 If Me.StyleGuide.GroupVisible(i) Then
                     aIDS(i) = iNumItems
                     iNumItems += 1
                 End If
             Else
-                If Me.StyleGuide.FleetVisible(i - NetworkManager.nGroups) Then
+                If Me.StyleGuide.FleetVisible(i - Me.NetworkManager.nGroups) Then
                     aIDS(i) = iNumItems
                     iNumItems += 1
                 End If
             End If
         Next
 
-        ReDim m_asData(iNumItems - 1, iNumItems - 1)
-        ReDim m_astrLabelsX(iNumItems - 1)
-        ReDim m_astrLabelsY(iNumItems - 1)
+        ReDim Me.m_asData(iNumItems - 1, iNumItems - 1)
+        ReDim Me.m_astrLabelsX(iNumItems - 1)
+        ReDim Me.m_astrLabelsY(iNumItems - 1)
 
-        For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
-            For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+        For i As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
+            For j As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
                 If (aIDS(j) >= 0) And (aIDS(i) >= 0) Then
                     Dim strLabel As String = ""
 
-                    If j <= NetworkManager.nGroups Then
+                    If j <= Me.NetworkManager.nGroups Then
                         Select Case Me.m_labelstyle
                             Case eLabelStyle.Name
-                                strLabel = NetworkManager.GroupName(j)
+                                strLabel = Me.NetworkManager.GroupName(j)
                             Case eLabelStyle.Number
                                 strLabel = CStr(j)
                             Case eLabelStyle.All
-                                strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, j, NetworkManager.GroupName(j))
+                                strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, j, Me.NetworkManager.GroupName(j))
                         End Select
                     Else
                         Select Case Me.m_labelstyle
                             Case eLabelStyle.Name
-                                strLabel = NetworkManager.FleetName(j - NetworkManager.nGroups)
+                                strLabel = Me.NetworkManager.FleetName(j - Me.NetworkManager.nGroups)
                             Case eLabelStyle.Number
-                                strLabel = CStr(j - NetworkManager.nGroups)
+                                strLabel = CStr(j - Me.NetworkManager.nGroups)
                             Case eLabelStyle.All
-                                strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, j - NetworkManager.nGroups, NetworkManager.FleetName(j - NetworkManager.nGroups))
+                                strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, j - Me.NetworkManager.nGroups, Me.NetworkManager.FleetName(j - Me.NetworkManager.nGroups))
                         End Select
                     End If
-                    m_astrLabelsX(aIDS(j)) = strLabel
-                    m_astrLabelsY(aIDS(j)) = strLabel
-                    m_asData(aIDS(i), aIDS(j)) = NetworkManager.MixedTrophicImpacts(j, i)
+                    Me.m_astrLabelsX(aIDS(j)) = strLabel
+                    Me.m_astrLabelsY(aIDS(j)) = strLabel
+                    Me.m_asData(aIDS(i), aIDS(j)) = Me.NetworkManager.MixedTrophicImpacts(j, i)
                 End If
             Next j
         Next i
@@ -150,11 +150,11 @@ Public Class cPlotOfMixedTrophicImpact
 
     End Sub
 
-    Public Overloads Function Filename(ByVal strFilter As String) As String
+    Public Overloads Function Filename(strFilter As String) As String
         Return MyBase.Filename("MTI")
     End Function
 
-    Public Overrides Sub SaveToEMF(ByVal strFileName As String)
+    Public Overrides Sub SaveToEMF(strFileName As String)
 
         Dim bmp As Bitmap = Nothing
         Dim hdc As IntPtr = Nothing ' :)
@@ -164,7 +164,7 @@ Public Class cPlotOfMixedTrophicImpact
         Me.Plot.Refresh()
         bmp = New Bitmap(Me.Plot.Content.Width, Me.Plot.Content.Height, PixelFormat.Format32bppArgb)
         Using g As Graphics = Graphics.FromImage(bmp)
-            PlotToEMF(g)
+            Me.PlotToEMF(g)
         End Using
         Try
             bmp.Save(strFileName)
@@ -185,15 +185,15 @@ Public Class cPlotOfMixedTrophicImpact
         Return New ucPlotOfMTIOptions(Me)
     End Function
 
-    Private Sub OnPaintPlot(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs)
-        PlotToScreen(e.Graphics)
+    Private Sub OnPaintPlot(sender As Object, e As System.Windows.Forms.PaintEventArgs)
+        Me.PlotToScreen(e.Graphics)
     End Sub
 
-    Private Sub OnResizePlot(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnResizePlot(sender As Object, e As System.EventArgs)
         Me.Plot.Invalidate(True)
     End Sub
 
-    Private Sub PlotToScreen(ByVal g As Graphics)
+    Private Sub PlotToScreen(g As Graphics)
 
         Dim ag As New cArrayGraphRenderer()
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
@@ -206,8 +206,8 @@ Public Class cPlotOfMixedTrophicImpact
             Me.Plot.Content.Dock = DockStyle.None
             Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style,
                                                    Me.m_asData,
-                                                   My.Resources.LBL_IMPACTED_GP, m_astrLabelsX,
-                                                   My.Resources.LBL_IMPACTING_GP, m_astrLabelsY,
+                                                   My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX,
+                                                   My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY,
                                                    astrLegends,
                                                    Me.m_bDrawGrid,
                                                    If(Me.m_bDrawSlanted, 30, 0))
@@ -215,14 +215,14 @@ Public Class cPlotOfMixedTrophicImpact
 
         ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style,
                 Me.m_asData,
-                My.Resources.LBL_IMPACTED_GP, m_astrLabelsX,
-                My.Resources.LBL_IMPACTING_GP, m_astrLabelsY,
+                My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX,
+                My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY,
                 astrLegends,
                 Me.m_bDrawGrid,
                 If(Me.m_bDrawSlanted, 30, 0))
     End Sub
 
-    Private Sub PlotToEMF(ByVal g As Graphics)
+    Private Sub PlotToEMF(g As Graphics)
 
         Dim ag As New cArrayGraphRenderer()
         Dim astrLegends() As String = {My.Resources.LBL_POSITIVE, My.Resources.LBL_NEGATIVE}
@@ -244,7 +244,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_style = cArrayGraphRenderer.eRenderStyle.Circles
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_style = cArrayGraphRenderer.eRenderStyle.Circles
             Me.Plot.Invalidate(True)
         End Set
@@ -254,7 +254,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_style = cArrayGraphRenderer.eRenderStyle.Bars
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_style = cArrayGraphRenderer.eRenderStyle.Bars
             Me.Plot.Invalidate(True)
         End Set
@@ -264,7 +264,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_style = cArrayGraphRenderer.eRenderStyle.Colours
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_style = cArrayGraphRenderer.eRenderStyle.Colours
             Me.Plot.Invalidate(True)
         End Set
@@ -275,7 +275,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_bDrawGrid
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bDrawGrid = value
             Me.Plot.Invalidate(True)
         End Set
@@ -285,7 +285,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_bDrawSlanted
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bDrawSlanted = value
             Me.Plot.Invalidate(True)
         End Set
@@ -312,7 +312,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_bDrawLegend
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bDrawLegend = value
             Me.Plot.Invalidate(True)
         End Set
@@ -322,7 +322,7 @@ Public Class cPlotOfMixedTrophicImpact
         Get
             Return Me.m_bFillPlot
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bFillPlot = value
             If Me.m_bFillPlot Then
                 Me.Plot.Content.Dock = DockStyle.Fill
@@ -334,8 +334,8 @@ Public Class cPlotOfMixedTrophicImpact
                 Me.Plot.Content.Dock = DockStyle.None
                 Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style,
                                                        Me.m_asData,
-                                                       My.Resources.LBL_IMPACTED_GP, m_astrLabelsX,
-                                                       My.Resources.LBL_IMPACTING_GP, m_astrLabelsY,
+                                                       My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX,
+                                                       My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY,
                                                        Nothing,
                                                        Me.m_bDrawGrid,
                                                        If(Me.m_bDrawSlanted, 30, 0))

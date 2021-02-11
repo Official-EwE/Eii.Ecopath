@@ -43,15 +43,15 @@ Namespace Controls.Map.Layers
         Private m_iLayer As Integer = 0
         Private m_cc As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal data As cEcospaceLayer(),
-                       ByVal renderer As cLayerRenderer,
-                       ByVal editor As cLayerEditor,
-                       ByVal cc As eCoreCounterTypes,
-                       ByVal source As cCoreInputOutputBase,
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name,
-                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE,
-                       Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
+        Public Sub New(uic As cUIContext,
+                       data As cEcospaceLayer(),
+                       renderer As cLayerRenderer,
+                       editor As cLayerEditor,
+                       cc As eCoreCounterTypes,
+                       source As cCoreInputOutputBase,
+                       Optional varName As eVarNameFlags = eVarNameFlags.Name,
+                       Optional sValueSet As Single = cCore.NULL_VALUE,
+                       Optional sValueClear As Single = cCore.NULL_VALUE)
 
             MyBase.New(uic, data(0), renderer, editor, source, varName, sValueSet, sValueClear)
 
@@ -131,7 +131,7 @@ Namespace Controls.Map.Layers
         ''' <param name="iLayer">The index of the layer to obtain. Note that this
         ''' value cannot exceed the range stipulted by the underlying <see cref="CoreCounter"/>.</param>
         ''' -------------------------------------------------------------------
-        Public Overloads ReadOnly Property Data(ByVal iLayer As Integer) As EwECore.cEcospaceLayer
+        Public Overloads ReadOnly Property Data(iLayer As Integer) As EwECore.cEcospaceLayer
             Get
                 Debug.Assert(iLayer <= Me.m_uic.Core.GetCoreCounter(Me.m_cc))
                 Return Me.m_layers(iLayer)

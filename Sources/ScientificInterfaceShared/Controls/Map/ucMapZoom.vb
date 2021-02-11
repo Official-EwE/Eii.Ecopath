@@ -69,13 +69,13 @@ Namespace Controls.Map
             ZoomReset
         End Enum
 
-        Public Event OnPositionChanged(ByVal sender As ucMapZoom)
+        Public Event OnPositionChanged(sender As ucMapZoom)
 
         ''' <summary>
         ''' Zoom and position to the location of another map
         ''' </summary>
         ''' <param name="src"></param>
-        Public Sub UpdatePosition(ByVal src As ucMapZoom)
+        Public Sub UpdatePosition(src As ucMapZoom)
             Me.m_bInUpdate = True
 
             Me.ZoomScale = src.ZoomScale
@@ -115,7 +115,7 @@ Namespace Controls.Map
             Get
                 Return Me.m_map.Zoom
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Me.m_map.Zoom = value
             End Set
         End Property
@@ -138,7 +138,7 @@ Namespace Controls.Map
 
 #Region " Form events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
         End Sub
 

@@ -54,7 +54,7 @@ Namespace Controls.Map
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
                 If (Me.m_uic IsNot Nothing) Then
                     Me.Clear()
@@ -72,7 +72,7 @@ Namespace Controls.Map
         ''' <param name="layerPosition">Layer to position this layer before, if any</param>
         ''' <remarks>A layer can only be added once.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal layer As cDisplayLayer, ByVal strGroup As String, ByVal strCommand As String, Optional ByVal layerPosition As cDisplayLayer = Nothing)
+        Public Sub AddLayer(layer As cDisplayLayer, strGroup As String, strCommand As String, Optional layerPosition As cDisplayLayer = Nothing)
 
             Dim ucg As ucLayerGroup = Me.FindGroup(strGroup)
 
@@ -85,7 +85,7 @@ Namespace Controls.Map
             ' Add layer
             ucg.AddLayer(layer, layerPosition)
             Me.m_dtLayerToGroup.Add(layer, strGroup)
-            AddHandler layer.LayerChanged, AddressOf OnLayerChanged
+            AddHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
 
             ' Link to editors
             If (TypeOf layer Is cDisplayLayerRaster) Then
@@ -107,7 +107,7 @@ Namespace Controls.Map
                 End If
 
                 If bFilter Then
-                    AddHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf OnLayerFilterChanged
+                    AddHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf Me.OnLayerFilterChanged
                 End If
             End If
 
@@ -120,7 +120,7 @@ Namespace Controls.Map
         ''' <param name="layer">The <see cref="cDisplayLayer">display layer</see> to remove.</param>
         ''' <remarks>A layer can only be removed once.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveLayer(ByVal layer As cDisplayLayer)
+        Public Sub RemoveLayer(layer As cDisplayLayer)
 
             Dim ucg As ucLayerGroup = Me.FindGroup(layer)
 
@@ -147,13 +147,13 @@ Namespace Controls.Map
                 End If
 
                 If bFilter Then
-                    RemoveHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf OnLayerFilterChanged
+                    RemoveHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf Me.OnLayerFilterChanged
                 End If
 
             End If
 
             ' Remove layer
-            RemoveHandler layer.LayerChanged, AddressOf OnLayerChanged
+            RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
             ucg.RemoveLayer(layer)
             Me.m_dtLayerToGroup.Remove(layer)
 
@@ -175,10 +175,10 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="strGroup">Name of the group to add.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGroup(ByVal strGroup As String, _
-                            ByVal strCommand As String, _
-                            Optional ByVal bVisible As Boolean = True, _
-                            Optional ByVal bClearGroup As Boolean = True)
+        Public Sub AddGroup(strGroup As String, _
+                            strCommand As String, _
+                            Optional bVisible As Boolean = True, _
+                            Optional bClearGroup As Boolean = True)
 
             Dim ucg As ucLayerGroup = Nothing
 
@@ -212,7 +212,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="strGroup">Name of the group to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveGroup(ByVal strGroup As String)
+        Public Sub RemoveGroup(strGroup As String)
 
             If Not Me.m_dtGroups.ContainsKey(strGroup) Then Return
 
@@ -239,7 +239,7 @@ Namespace Controls.Map
             Next
         End Sub
 
-        Public Sub ShowGroup(ByVal strGroup As String, ByVal bShow As Boolean, Optional ByVal bShowGroupControl As Boolean = True)
+        Public Sub ShowGroup(strGroup As String, bShow As Boolean, Optional bShowGroupControl As Boolean = True)
             If Not Me.m_dtGroups.ContainsKey(strGroup) Then Return
 
             Dim ucg As ucLayerGroup = Me.FindGroup(strGroup)
@@ -249,7 +249,7 @@ Namespace Controls.Map
             ucg.Visible = bShowGroupControl
         End Sub
 
-        Public Sub EnableGroup(ByVal strGroup As String, ByVal bEditable As Boolean)
+        Public Sub EnableGroup(strGroup As String, bEditable As Boolean)
             If Not Me.m_dtGroups.ContainsKey(strGroup) Then Return
 
             Dim ucg As ucLayerGroup = Me.FindGroup(strGroup)
@@ -330,7 +330,7 @@ Namespace Controls.Map
 
 #Region " Events "
 
-        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateType As cDisplayLayer.eChangeFlags)
+        Private Sub OnLayerChanged(l As cDisplayLayer, updateType As cDisplayLayer.eChangeFlags)
             If ((updateType And cDisplayLayer.eChangeFlags.Selected) = cDisplayLayer.eChangeFlags.Selected) Then
                 ' Make sure only one layer is selected at the time
                 Me.UpdateSelectedLayer(l)
@@ -372,12 +372,12 @@ Namespace Controls.Map
 
         End Sub
 
-        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnResize(e As System.EventArgs)
             Me.m_fpItems.Width = Me.Width - Me.Margin.Horizontal
             Me.m_fpItems.Height = Me.Height - Me.Margin.Vertical
         End Sub
 
-        Private Sub fpItems_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_fpItems.Resize
+        Private Sub fpItems_Resize(sender As Object, e As System.EventArgs) Handles m_fpItems.Resize
             Me.ResizeControls()
         End Sub
 
@@ -406,7 +406,7 @@ Namespace Controls.Map
         ''' <param name="layerSelect">The <see cref="cDisplayLayer">display layer</see> 
         ''' that has been selected.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateSelectedLayer(ByVal layerSelect As cDisplayLayer)
+        Private Sub UpdateSelectedLayer(layerSelect As cDisplayLayer)
 
             ' Abort if already busy
             If Me.m_bInSelectionUpdate = True Then Return
@@ -445,7 +445,7 @@ Namespace Controls.Map
         ''' <param name="layer">The <see cref="cDisplayLayer">display layer</see> 
         ''' that has been selected.</param>
         ''' -------------------------------------------------------------------
-        Private Sub FireSelectionCommand(ByVal layer As cDisplayLayer)
+        Private Sub FireSelectionCommand(layer As cDisplayLayer)
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
@@ -465,12 +465,12 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Function FindGroup(ByVal strGroup As String) As ucLayerGroup
+        Private Function FindGroup(strGroup As String) As ucLayerGroup
             If (Not Me.m_dtGroups.ContainsKey(strGroup)) Then Return Nothing
             Return Me.m_dtGroups(strGroup)
         End Function
 
-        Private Function FindGroup(ByVal l As cDisplayLayer) As ucLayerGroup
+        Private Function FindGroup(l As cDisplayLayer) As ucLayerGroup
             If Me.m_dtLayerToGroup.ContainsKey(l) Then Return Me.FindGroup(Me.m_dtLayerToGroup(l))
             Return Nothing
         End Function

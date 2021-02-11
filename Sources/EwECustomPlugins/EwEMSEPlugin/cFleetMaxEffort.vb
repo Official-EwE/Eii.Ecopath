@@ -45,20 +45,20 @@ Public Class cFleetMaxEffort
     ' returns the max effort for a fleet in the current year
     Public ReadOnly Property MaxEffort As Single
         Get
-            Return m_max_effort
+            Return Me.m_max_effort
         End Get
     End Property
 
     Public Sub New(iFleet As Integer, final_hindcast_effort As Single, max_percentage_change_in_max_effort As Single, decaying_max_effort As Boolean)
 
-        m_iFleet = iFleet
-        m_max_effort = final_hindcast_effort
-        m_max_percentage_change_in_max_effort = max_percentage_change_in_max_effort
+        Me.m_iFleet = iFleet
+        Me.m_max_effort = final_hindcast_effort
+        Me.m_max_percentage_change_in_max_effort = max_percentage_change_in_max_effort
 
         If decaying_max_effort Then
-            m_max_effort_type = eMaxEffortType.Decaying
+            Me.m_max_effort_type = eMaxEffortType.Decaying
         ElseIf Not decaying_max_effort Then
-            m_max_effort_type = eMaxEffortType.LastYearProp
+            Me.m_max_effort_type = eMaxEffortType.LastYearProp
         End If
 
     End Sub
@@ -67,11 +67,11 @@ Public Class cFleetMaxEffort
     ' param end_previous_year_effort is the effort at the last time step for the previous year
     Public Sub UpdateLimit(end_previous_year_effort As Single)
 
-        Select Case m_max_effort_type
+        Select Case Me.m_max_effort_type
             Case eMaxEffortType.Decaying
-                UpdateUsingDecaying(end_previous_year_effort)
+                Me.UpdateUsingDecaying(end_previous_year_effort)
             Case eMaxEffortType.LastYearProp
-                UpdateUsingProp(end_previous_year_effort)
+                Me.UpdateUsingProp(end_previous_year_effort)
         End Select
 
     End Sub
@@ -82,16 +82,16 @@ Public Class cFleetMaxEffort
         Dim max_reduction_in_max_effort As Single
         Dim min_increase_in_max_effort As Single
 
-        max_reduction_in_max_effort = m_max_effort - m_max_effort * m_max_percentage_change_in_max_effort
-        min_increase_in_max_effort = end_previous_year_effort + end_previous_year_effort * m_max_percentage_change_in_max_effort
+        max_reduction_in_max_effort = Me.m_max_effort - Me.m_max_effort * Me.m_max_percentage_change_in_max_effort
+        min_increase_in_max_effort = end_previous_year_effort + end_previous_year_effort * Me.m_max_percentage_change_in_max_effort
 
-        m_max_effort = Math.Max(max_reduction_in_max_effort, min_increase_in_max_effort)
+        Me.m_max_effort = Math.Max(max_reduction_in_max_effort, min_increase_in_max_effort)
 
     End Sub
 
     ' Calculates the max effort as a proportion of the final effort from the previous year
     Private Sub UpdateUsingProp(end_previous_year_effort As Single)
-        m_max_effort = end_previous_year_effort * (1 + m_max_percentage_change_in_max_effort)
+        Me.m_max_effort = end_previous_year_effort * (1 + Me.m_max_percentage_change_in_max_effort)
     End Sub
 
 End Class

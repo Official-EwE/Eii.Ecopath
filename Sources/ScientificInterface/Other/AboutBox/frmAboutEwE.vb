@@ -43,14 +43,14 @@ Namespace Other
         Private m_qehTech As cQuickEditHandler = Nothing
         Private m_bInUpdate As Boolean = False
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
             Me.m_uic = uic
             Me.m_gridTechnical.UIContext = uic
             Me.m_gridDatabase.UIContext = uic
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.m_uic Is Nothing) Then Return
@@ -77,9 +77,9 @@ Namespace Other
             'End If
 
             ' Format RTF content pages
-            Me.m_rtbTeam.Rtf = StyleRTF(My.Resources.team)
-            Me.m_rtbLicense.Rtf = StyleRTF(My.Resources.license)
-            Me.m_rtbAcknowledgements.Rtf = StyleRTF(My.Resources.acknowledgements)
+            Me.m_rtbTeam.Rtf = Me.StyleRTF(My.Resources.team)
+            Me.m_rtbLicense.Rtf = Me.StyleRTF(My.Resources.license)
+            Me.m_rtbAcknowledgements.Rtf = Me.StyleRTF(My.Resources.acknowledgements)
 
             ' Format technical page
             Me.m_lblNetVersion.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, cSysConfig.OSVersion(), cSysConfig.NETVersion())
@@ -119,7 +119,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOK.Click
             Me.Close()
         End Sub

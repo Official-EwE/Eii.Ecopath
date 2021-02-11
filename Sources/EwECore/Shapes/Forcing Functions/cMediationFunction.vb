@@ -34,8 +34,8 @@ Public Class cMediationFunction
 
 #Region " Constructors "
 
-    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
-                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, _
+                   data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
         'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
@@ -47,34 +47,34 @@ Public Class cMediationFunction
 
         Try
 
-            Dim iShape As Integer = m_iEcoSimIndex 'just for clarity
+            Dim iShape As Integer = Me.m_iEcoSimIndex 'just for clarity
 
-            m_manager = Manager 'keep a reference to the manager for this shape
+            Me.m_manager = Manager 'keep a reference to the manager for this shape
 
             Dim grp As cMediatingGroup = Nothing
             Dim flt As cMediatingFleet = Nothing
 
             ' Groups: if this mediation shape has any weights applied to it then load the weight and group into an object
-            For iGrp As Integer = 1 To m_data.nGroups
-                If m_medData.MedWeights(iGrp, iShape) > 0 Then
+            For iGrp As Integer = 1 To Me.m_data.nGroups
+                If Me.m_medData.MedWeights(iGrp, iShape) > 0 Then
                     grp = New cMediatingGroup
                     grp.iGroupIndex = iGrp ' m_data.IMedUsed(iGrp, iShape)
-                    grp.Weight = m_medData.MedWeights(iGrp, iShape)
-                    m_groups.Add(grp)
+                    grp.Weight = Me.m_medData.MedWeights(iGrp, iShape)
+                    Me.m_groups.Add(grp)
                 End If
             Next
 
             ' Fleets: if this mediation shape has any weights applied to it then load the weight and fleet into an object
-            For iFlt As Integer = 1 To m_data.nGear
-                If m_medData.MedWeights(m_data.nGroups + iFlt, iShape) > 0 Then
+            For iFlt As Integer = 1 To Me.m_data.nGear
+                If Me.m_medData.MedWeights(Me.m_data.nGroups + iFlt, iShape) > 0 Then
                     flt = New cMediatingFleet
                     flt.iFleetIndex = iFlt ' m_data.IMedUsed(iGrp, iShape)
-                    flt.Weight = m_medData.MedWeights(m_data.nGroups + iFlt, iShape)
-                    m_fleets.Add(flt)
+                    flt.Weight = Me.m_medData.MedWeights(Me.m_data.nGroups + iFlt, iShape)
+                    Me.m_fleets.Add(flt)
                 End If
             Next
 
-            m_bInInit = False
+            Me.m_bInInit = False
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
             Throw New ApplicationException(Me.ToString & ".New() Error: " & ex.Message, ex)
@@ -100,29 +100,29 @@ Public Class cMediationFunction
         MyBase.Update()
 
         'do not update during initialization
-        If m_bInInit Then
+        If Me.m_bInInit Then
             Return False
         End If
 
 
         Dim nused As Integer
-        For Each grp As cMediatingGroup In m_groups
+        For Each grp As cMediatingGroup In Me.m_groups
             nused += 1
-            m_medData.IMedUsed(grp.iGroupIndex, m_iEcoSimIndex) = grp.iGroupIndex
-            m_medData.MedWeights(grp.iGroupIndex, m_iEcoSimIndex) = grp.Weight
+            Me.m_medData.IMedUsed(grp.iGroupIndex, Me.m_iEcoSimIndex) = grp.iGroupIndex
+            Me.m_medData.MedWeights(grp.iGroupIndex, Me.m_iEcoSimIndex) = grp.Weight
         Next grp
 
         nused = 0
-        For Each flt As cMediatingFleet In m_fleets
+        For Each flt As cMediatingFleet In Me.m_fleets
             nused += 1
-            m_medData.IMedUsed(m_data.nGroups + flt.iFleetIndex, m_iEcoSimIndex) = flt.iFleetIndex
-            m_medData.MedWeights(m_data.nGroups + flt.iFleetIndex, m_iEcoSimIndex) = flt.Weight
+            Me.m_medData.IMedUsed(Me.m_data.nGroups + flt.iFleetIndex, Me.m_iEcoSimIndex) = flt.iFleetIndex
+            Me.m_medData.MedWeights(Me.m_data.nGroups + flt.iFleetIndex, Me.m_iEcoSimIndex) = flt.Weight
         Next flt
 
-        m_medData.NMedXused(m_iEcoSimIndex) = nused
+        Me.m_medData.NMedXused(Me.m_iEcoSimIndex) = nused
 
         'tell the manager that a shape has changed it's data
-        ShapeChanged()
+        Me.ShapeChanged()
 
         Return True
 
@@ -139,14 +139,14 @@ Public Class cMediationFunction
 
         Try
 
-            For Each grp As cMediatingGroup In m_groups
-                m_medData.IMedUsed(grp.iGroupIndex, m_iEcoSimIndex) = 0
-                m_medData.MedWeights(grp.iGroupIndex, m_iEcoSimIndex) = 0
+            For Each grp As cMediatingGroup In Me.m_groups
+                Me.m_medData.IMedUsed(grp.iGroupIndex, Me.m_iEcoSimIndex) = 0
+                Me.m_medData.MedWeights(grp.iGroupIndex, Me.m_iEcoSimIndex) = 0
             Next grp
 
-            For Each flt As cMediatingFleet In m_fleets
-                m_medData.IMedUsed(m_data.nGroups + flt.iFleetIndex, m_iEcoSimIndex) = 0
-                m_medData.MedWeights(m_data.nGroups + flt.iFleetIndex, m_iEcoSimIndex) = 0
+            For Each flt As cMediatingFleet In Me.m_fleets
+                Me.m_medData.IMedUsed(Me.m_data.nGroups + flt.iFleetIndex, Me.m_iEcoSimIndex) = 0
+                Me.m_medData.MedWeights(Me.m_data.nGroups + flt.iFleetIndex, Me.m_iEcoSimIndex) = 0
             Next flt
 
         Catch ex As Exception
@@ -159,11 +159,11 @@ Public Class cMediationFunction
 #Region " Implementation of Must Override properties "
 
     ''' <inheritdocs cref="cMediationBaseFunction.AddGroup"/>
-    Public Overloads Overrides Function AddGroup(ByVal iGroup As Integer, ByVal weight As Single, Optional ByVal iFleetIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overloads Overrides Function AddGroup(iGroup As Integer, weight As Single, Optional iFleetIndex As Integer = cCore.NULL_VALUE) As Boolean
         'ToDo: data validation
         Debug.Assert(iFleetIndex <= 0, Me.ToString & ".AddGroup() Invalid Fleet index")
-        m_groups.Add(New cMediatingGroup(iGroup, weight))
-        Update()
+        Me.m_groups.Add(New cMediatingGroup(iGroup, weight))
+        Me.Update()
         Return True
 
     End Function
@@ -171,19 +171,19 @@ Public Class cMediationFunction
     ''' <inheritdocs cref="cMediationBaseFunction.NumGroups"/>
     Public Overrides ReadOnly Property NumGroups() As Integer
         Get
-            Return m_groups.Count
+            Return Me.m_groups.Count
         End Get
     End Property
 
     ''' <inheritdocs cref="cMediationBaseFunction.Group"/>
-    Public Overrides Property Group(ByVal iGroup As Integer) As cMediatingGroup
+    Public Overrides Property Group(iGroup As Integer) As cMediatingGroup
         Get
-            Return m_groups(iGroup)
+            Return Me.m_groups(iGroup)
         End Get
 
-        Set(ByVal value As cMediatingGroup)
-            m_groups.Item(iGroup) = value
-            Update()
+        Set(value As cMediatingGroup)
+            Me.m_groups.Item(iGroup) = value
+            Me.Update()
         End Set
     End Property
 
@@ -192,9 +192,9 @@ Public Class cMediationFunction
 
         Try
             'clear the ecosim data
-            clearMedWeights()
-            m_groups.Clear()
-            m_fleets.Clear()
+            Me.clearMedWeights()
+            Me.m_groups.Clear()
+            Me.m_fleets.Clear()
 
             MyBase.Clear()
 
@@ -205,24 +205,24 @@ Public Class cMediationFunction
     End Sub
 
     ''' <inheritdocs cref="cMediationBaseFunction.AddFleet"/>
-    Public Overrides Function AddFleet(ByVal iFleet As Integer, ByVal weight As Single) As Boolean
+    Public Overrides Function AddFleet(iFleet As Integer, weight As Single) As Boolean
 
         'ToDo: data validation
-        m_fleets.Add(New cMediatingFleet(iFleet, weight))
-        Update()
+        Me.m_fleets.Add(New cMediatingFleet(iFleet, weight))
+        Me.Update()
         Return True
     End Function
 
     ''' <inheritdocs cref="cMediationBaseFunction.Fleet"/>
-    Public Overrides Property Fleet(ByVal iFleet As Integer) As cMediatingFleet
+    Public Overrides Property Fleet(iFleet As Integer) As cMediatingFleet
 
         Get
-            Return m_fleets(iFleet)
+            Return Me.m_fleets(iFleet)
         End Get
 
-        Set(ByVal value As cMediatingFleet)
-            m_fleets.Item(iFleet) = value
-            Update()
+        Set(value As cMediatingFleet)
+            Me.m_fleets.Item(iFleet) = value
+            Me.Update()
         End Set
 
     End Property
@@ -230,7 +230,7 @@ Public Class cMediationFunction
     ''' <inheritdocs cref="cMediationBaseFunction.NumFleet"/>
     Public Overrides ReadOnly Property NumFleet() As Integer
         Get
-            Return m_fleets.Count
+            Return Me.m_fleets.Count
         End Get
     End Property
 
@@ -240,15 +240,15 @@ Public Class cMediationFunction
     ''' <param name="iIndex">Zero-based index [0, <see cref="NumFleet"/>-1] of the 
     ''' mediating group to remove.</param>
     ''' <returns></returns>
-    Public Function RemoveFleet(ByVal iIndex As Integer) As Boolean
+    Public Function RemoveFleet(iIndex As Integer) As Boolean
 
         Try
             'clear the ecosim data
-            clearMedWeights()
+            Me.clearMedWeights()
             'remove the fleet from the list
-            m_fleets.RemoveAt(iIndex)
+            Me.m_fleets.RemoveAt(iIndex)
             'update the ecosim data with the remaining fleet(s)
-            Update()
+            Me.Update()
 
             Return True
         Catch ex As Exception
@@ -261,11 +261,11 @@ Public Class cMediationFunction
 
         Try
             'clear the ecosim data
-            clearMedWeights()
+            Me.clearMedWeights()
             'remove the fleet from the list
-            m_fleets.Remove(fleet)
+            Me.m_fleets.Remove(fleet)
             'update the ecosim data with the remaining fleet(s)
-            Update()
+            Me.Update()
             Return True
         Catch ex As Exception
             Return False

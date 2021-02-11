@@ -96,10 +96,10 @@ Public Class gridMSEBatchFixedF
         Dim group As MSE.cMSEBatchFGroup
         Dim RowStyle As cStyleGuide.eStyleFlags
 
-        For iGroup As Integer = 1 To Core.nLivingGroups
+        For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
             'Get the group info
-            group = Core.MSEBatchManager.FixedFGroups(iGroup)
+            group = Me.Core.MSEBatchManager.FixedFGroups(iGroup)
 
             Me.AddRow()
 
@@ -114,7 +114,7 @@ Public Class gridMSEBatchFixedF
 
             Me(iGroup, eColumnTypes.FixedF) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFixedF)
 
-            Me(iGroup, eColumnTypes.FixedFValue) = New cEwECell(group.FixedFValue(iCurIter), GetType(Single), RowStyle)
+            Me(iGroup, eColumnTypes.FixedFValue) = New cEwECell(group.FixedFValue(Me.iCurIter), GetType(Single), RowStyle)
             Me(iGroup, eColumnTypes.FixedFValue).Behaviors.Add(Me.EwEEditHandler)
 
             Me(iGroup, eColumnTypes.FixedFLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFLower)
@@ -139,13 +139,13 @@ Public Class gridMSEBatchFixedF
 
     Public Property iCurIter As Integer
         Get
-            Return m_iter
+            Return Me.m_iter
         End Get
 
         Set(value As Integer)
             If Me.UIContext IsNot Nothing Then
                 If value <= Me.UIContext.Core.MSEBatchManager.Parameters.nFixedFIteration Then
-                    m_iter = value
+                    Me.m_iter = value
                     Me.RefreshContent()
                 End If
             End If
@@ -169,7 +169,7 @@ Public Class gridMSEBatchFixedF
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
         Dim iGrp As Integer
         Dim ColType As eColumnTypes
 
@@ -181,7 +181,7 @@ Public Class gridMSEBatchFixedF
 
             Select Case ColType
                 Case eColumnTypes.FixedFValue
-                    Core.MSEBatchManager.FixedFGroups(iGrp).FixedFValue(Me.iCurIter) = CSng(val)
+                    Me.Core.MSEBatchManager.FixedFGroups(iGrp).FixedFValue(Me.iCurIter) = CSng(val)
             End Select
 
         Catch ex As Exception

@@ -75,7 +75,7 @@ Public Class dlgDefineTaxonomy
 
         Private m_prod As IDataSearchProducerPlugin = Nothing
 
-        Public Sub New(ByVal prod As IDataSearchProducerPlugin)
+        Public Sub New(prod As IDataSearchProducerPlugin)
             Me.m_prod = prod
         End Sub
 
@@ -106,14 +106,14 @@ Public Class dlgDefineTaxonomy
         ''' <summary>Search results.</summary>
         Private m_results As IDataSearchResults = Nothing
 
-        Public Sub New(ByVal form As dlgDefineTaxonomy, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
+        Public Sub New(form As dlgDefineTaxonomy, prod As IDataSearchProducerPlugin, res As IDataSearchResults)
             Me.m_ui = form
             Me.m_producer = prod
             Me.m_results = res
         End Sub
 
         Public Sub Wait()
-            While m_producer.IsSeaching
+            While Me.m_producer.IsSeaching
                 ' NOP
             End While
             Me.m_ui.OnProcessSearchResults(Me.m_results)
@@ -141,14 +141,14 @@ Public Class dlgDefineTaxonomy
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
 
         Me.InitializeComponent()
         Me.m_uic = uic
 
         Me.m_gridGroups.UIContext = uic
         'Me.m_gridResults.UIContext = uic
-        Me.m_gridResults.Init(Me.m_uic, New gridTaxonSearchResults.IsTaxonUsedDelegate(AddressOf OnIsTaxonUsed))
+        Me.m_gridResults.Init(Me.m_uic, New gridTaxonSearchResults.IsTaxonUsedDelegate(AddressOf Me.OnIsTaxonUsed))
 
     End Sub
 
@@ -156,7 +156,7 @@ Public Class dlgDefineTaxonomy
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_tds = cTaxonDataSource.GetInstance()
@@ -170,11 +170,11 @@ Public Class dlgDefineTaxonomy
         Me.m_btnExport.Visible = False
 #End If
         ' Connect to group grid selection changes
-        AddHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
+        AddHandler Me.m_gridGroups.OnSelectionChanged, AddressOf Me.OnRowSelectionChanged
         ' Connect to search result changes
-        AddHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
+        AddHandler Me.m_tds.OnTaxonSearchResults, AddressOf Me.OnProcessResults
         ' Connect to result selection changes
-        AddHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
+        AddHandler Me.m_gridResults.OnResultSelected, AddressOf Me.OnResultSelected
 
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
 
@@ -185,11 +185,11 @@ Public Class dlgDefineTaxonomy
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-        RemoveHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
-        RemoveHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
-        RemoveHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
+        RemoveHandler Me.m_gridGroups.OnSelectionChanged, AddressOf Me.OnRowSelectionChanged
+        RemoveHandler Me.m_tds.OnTaxonSearchResults, AddressOf Me.OnProcessResults
+        RemoveHandler Me.m_gridResults.OnResultSelected, AddressOf Me.OnResultSelected
 
         Me.m_gridGroups.UIContext = Nothing
         Me.m_gridGroups.Dispose()
@@ -218,7 +218,7 @@ Public Class dlgDefineTaxonomy
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnResultSelected(ByVal result As Object)
+    Private Sub OnResultSelected(result As Object)
 
         If (result Is Nothing) Then Return
         If Not (TypeOf result Is ITaxonSearchData) Then Return
@@ -226,7 +226,7 @@ Public Class dlgDefineTaxonomy
 
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles OK_Button.Click
         Try
             If Me.m_gridGroups.Apply Then
@@ -238,13 +238,13 @@ Public Class dlgDefineTaxonomy
         End Try
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
-    Private Sub OnDefineNew(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDefineNew(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDefine.Click
         Try
             Me.m_gridGroups.AddTaxon()
@@ -255,7 +255,7 @@ Public Class dlgDefineTaxonomy
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnRemoveSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemoveSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRemove.Click
         Try
             Me.m_gridGroups.DeleteRows(True)
@@ -266,7 +266,7 @@ Public Class dlgDefineTaxonomy
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnKeepSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnKeepSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_btnKeep.Click
         Try
             Me.m_gridGroups.DeleteRows(False)
@@ -295,7 +295,7 @@ Public Class dlgDefineTaxonomy
 
     End Sub
 
-    Private Sub OnSearchTextChanged(ByVal sender As System.Object, ByVal e As EventArgs) _
+    Private Sub OnSearchTextChanged(sender As System.Object, e As EventArgs) _
         Handles m_tbxSearchTerm.TextChanged
         Try
             Me.RefreshSearch()
@@ -304,7 +304,7 @@ Public Class dlgDefineTaxonomy
         End Try
     End Sub
 
-    Private Sub OnIncludeExtentChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnIncludeExtentChanged(sender As Object, e As System.EventArgs) _
         Handles m_cbIncludeExtent.CheckedChanged
         Try
             Me.RefreshSearch()
@@ -316,13 +316,13 @@ Public Class dlgDefineTaxonomy
     Private Sub OnResultSelected() _
         Handles m_gridResults.OnSelectionChanged
         Try
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub OnConnect(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnConnect(sender As System.Object, e As System.EventArgs) _
         Handles m_btnConfigure.Click
         Try
             Me.ConfigureSelectedDataProducer()
@@ -331,7 +331,7 @@ Public Class dlgDefineTaxonomy
         End Try
     End Sub
 
-    Private Sub OnSourceChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSourceChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cmbEngine.SelectedIndexChanged
 
         If (Me.m_bInUpdate) Then Return
@@ -342,7 +342,7 @@ Public Class dlgDefineTaxonomy
 
     Private m_wait As cWaitForSearch = Nothing
 
-    Private Sub OnProcessResults(ByVal results As IDataSearchResults)
+    Private Sub OnProcessResults(results As IDataSearchResults)
 
         ' Ignore search terms of different data types
         If Not TypeOf results.SearchTerm Is ITaxonSearchData Then Return
@@ -356,19 +356,19 @@ Public Class dlgDefineTaxonomy
 
     End Sub
 
-    Protected Delegate Sub OnProcessSearchResultsDelegate(ByVal results As IDataSearchResults)
+    Protected Delegate Sub OnProcessSearchResultsDelegate(results As IDataSearchResults)
 
-    Friend Sub OnProcessSearchResults(ByVal results As IDataSearchResults)
+    Friend Sub OnProcessSearchResults(results As IDataSearchResults)
 
         If Me.InvokeRequired Then
-            Me.Invoke(New OnProcessSearchResultsDelegate(AddressOf ProcessSearchResults), New Object() {results})
+            Me.Invoke(New OnProcessSearchResultsDelegate(AddressOf Me.ProcessSearchResults), New Object() {results})
         Else
             Me.ProcessSearchResults(results)
         End If
 
     End Sub
 
-    Private Sub ProcessSearchResults(ByVal results As IDataSearchResults)
+    Private Sub ProcessSearchResults(results As IDataSearchResults)
 
         Debug.Assert(Not Me.InvokeRequired)
 
@@ -563,7 +563,7 @@ Public Class dlgDefineTaxonomy
 
     End Sub
 
-    Private Sub ApplyTaxon(ByVal taxon As ITaxonSearchData)
+    Private Sub ApplyTaxon(taxon As ITaxonSearchData)
         Me.m_gridGroups.UpdateSelectedTaxon(taxon)
         Me.m_gridGroups.UpdateSelectedTaxonRow()
         Me.UpdateControls()
@@ -579,7 +579,7 @@ Public Class dlgDefineTaxonomy
     ''' </summary>
     ''' <param name="strTerm">The text to search for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub Search(ByVal strTerm As String)
+    Private Sub Search(strTerm As String)
 
         ' No term? Abort
         If (String.IsNullOrWhiteSpace(strTerm)) Then Return
@@ -615,7 +615,7 @@ Public Class dlgDefineTaxonomy
     ''' <param name="term">The <see cref="ITaxonSearchData">taxonomoy data</see> 
     ''' search term to search for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub Search(ByVal term As ITaxonSearchData)
+    Private Sub Search(term As ITaxonSearchData)
 
         If (Me.SelectedDataProducer Is Nothing) Then Return
 
@@ -649,7 +649,7 @@ Public Class dlgDefineTaxonomy
 
     End Sub
 
-    Private Sub UpdateRecord(ByVal term As ITaxonSearchData)
+    Private Sub UpdateRecord(term As ITaxonSearchData)
 
         If (Me.SelectedDataProducer Is Nothing) Then Return
 

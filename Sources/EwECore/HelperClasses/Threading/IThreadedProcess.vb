@@ -26,7 +26,7 @@ Public Interface IThreadedProcess
     ''' <param name="WaitTimeInMillSec"></param>
     ''' <returns></returns>
     ''' ---------------------------------------------------------------------------
-    Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+    Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -41,7 +41,7 @@ Public Interface IThreadedProcess
     ''' <returns>True if the process was stop within the wait time, False if it timed out.</returns>
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
     ''' ---------------------------------------------------------------------------
-    Function Wait(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+    Function Wait(Optional WaitTimeInMillSec As Integer = -1) As Boolean
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

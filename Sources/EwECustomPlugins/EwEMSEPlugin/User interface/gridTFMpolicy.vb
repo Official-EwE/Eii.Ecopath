@@ -91,7 +91,7 @@ Public Class gridTargetFishingMortalityPolicy
             End If
             Return Nothing
         End Get
-        Set(ByVal value As HCR_Group)
+        Set(value As HCR_Group)
             For iRow As Integer = 1 To Me.RowsCount - 1
                 If ReferenceEquals(Me.Rows(iRow).Tag, value) Then
                     Me.SelectRow(iRow)
@@ -254,7 +254,7 @@ Public Class gridTargetFishingMortalityPolicy
         ' Mark: please revise this. I ran into a case where curHCR was nothing. Not sure how to make this work properly
         If (curHCR Is Nothing) Then Return
 
-        For Each row As RowInfo In Rows
+        For Each row As RowInfo In Me.Rows
             If row.Tag IsNot Nothing Then
 
                 Dim hcr As HCR_Group = DirectCast(row.Tag, HCR_Group)
@@ -291,11 +291,11 @@ Public Class gridTargetFishingMortalityPolicy
         Me.Columns(eColumnTypes.Index).Width = 20
     End Sub
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         Try
 
-            If Rows(p.Row).Tag Is Nothing Then
+            If Me.Rows(p.Row).Tag Is Nothing Then
                 'No HCR in this row
                 Return True
             End If
@@ -355,7 +355,7 @@ Public Class gridTargetFishingMortalityPolicy
                 Case eColumnTypes.MinF
                     Dim minf As Single = CSng(cell.GetValue(p))
                     If minf < 0 Then minf = 0
-                    If minf > HarvestControlRule.MaxF Then minf = HarvestControlRule.MaxF
+                    If minf > Me.HarvestControlRule.MaxF Then minf = Me.HarvestControlRule.MaxF
                     Me.HarvestControlRule.MinF = CSng(cell.GetValue(p))
 
                 Case eColumnTypes.MaxF

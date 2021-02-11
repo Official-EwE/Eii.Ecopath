@@ -49,7 +49,7 @@ Namespace Ecopath.Output
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -63,15 +63,15 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub llbGroups_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_lbGroups.SelectedIndexChanged
-            AddCurves(CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, SharedResources.HEADER_BODYWEIGHT_LOGg, _
+        Private Sub llbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles m_lbGroups.SelectedIndexChanged
+            Me.AddCurves(Me.CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, SharedResources.HEADER_BODYWEIGHT_LOGg, _
                      SharedResources.HEADER_BIOMASS_LOGg))
 
             'highlight group contribution in the histogram
-            UpdatePlot()
+            Me.UpdatePlot()
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
             Me.m_lbGroups.Detach()
@@ -82,14 +82,14 @@ Namespace Ecopath.Output
 
 #Region " Helper methods "
 
-        Private Function CreatePane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
-                                    ByVal strYAxisTitle As String) As GraphPane
+        Private Function CreatePane(strTitle As String, strXAxisTitle As String, _
+                                    strYAxisTitle As String) As GraphPane
             Dim pane As GraphPane = Me.m_graph.GraphPane
-            InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle)
+            Me.InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle)
             Return pane
         End Function
 
-        Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, ByVal strYAxisTitle As String)
+        Private Sub InitGraphPane(strTitle As String, strXAxisTitle As String, strYAxisTitle As String)
 
             Dim psd As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strTitle, strXAxisTitle, strYAxisTitle, False)
@@ -100,7 +100,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub AddCurves(ByVal pane As GraphPane)
+        Private Sub AddCurves(pane As GraphPane)
 
             Dim psd As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
@@ -114,10 +114,10 @@ Namespace Ecopath.Output
             Dim fmt As New cCoreInterfaceFormatter()
             Dim iNumSelected As Integer = Me.m_lbGroups.SelectedIndices.Count
 
-            InitLists(resultLists, Me.Core.nLivingGroups) '3)
+            Me.InitLists(resultLists, Me.Core.nLivingGroups) '3)
 
             'Find the system PSD by summing the group PSD
-            FindSystemPSD(sSystemPSD)
+            Me.FindSystemPSD(sSystemPSD)
 
             For igroup As Integer = 1 To Me.Core.nLivingGroups
                 'No need to check if group is selected. Generate the result list even for the not selected group. It will have zero Y values
@@ -160,7 +160,7 @@ Namespace Ecopath.Output
                     clrFore = Color.DarkGray
                     clrBack = Me.StyleGuide.GroupColor(Me.Core, iGroup)
                 End If
-                AddCurveToGraphPane(pane, fmt.ToString(group), resultLists(iGroup - 1), clrBack, clrFore)
+                Me.AddCurveToGraphPane(pane, fmt.ToString(group), resultLists(iGroup - 1), clrBack, clrFore)
             Next
 
             pane.XAxis.Scale.Min = sXMin * 1.1
@@ -171,7 +171,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
+        Private Sub InitLists(ByRef lists As List(Of PointPairList), size As Integer)
             ' Init the result lists
             For i As Integer = 1 To size
                 Dim list As New PointPairList()
@@ -179,8 +179,8 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Function AddCurveToGraphPane(ByVal pane As GraphPane, ByVal strName As String, ByVal list As PointPairList, _
-                                        ByVal clrFill As Color, ByVal clrBorder As Color) As BarItem
+        Private Function AddCurveToGraphPane(pane As GraphPane, strName As String, list As PointPairList, _
+                                        clrFill As Color, clrBorder As Color) As BarItem
             Dim curve As BarItem = Nothing
             curve = pane.AddBar(strName, list, clrFill)
             curve.Bar.Fill = New Fill(clrFill)
@@ -194,7 +194,7 @@ Namespace Ecopath.Output
             Me.m_graph.Refresh()
         End Sub
 
-        Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+        Private Sub FindSystemPSD(sSystemPSD() As Single)
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD

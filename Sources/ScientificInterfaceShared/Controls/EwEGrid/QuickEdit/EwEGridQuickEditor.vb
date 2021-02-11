@@ -87,10 +87,10 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="ts">The ToolStrip to connect to, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal grid As cEwEGrid,
-                          ByVal uic As cUIContext,
-                          ByVal ts As ToolStrip,
-                          Optional ByVal bIsOutputGrid As Boolean = True)
+        Public Sub Attach(grid As cEwEGrid,
+                          uic As cUIContext,
+                          ts As ToolStrip,
+                          Optional bIsOutputGrid As Boolean = True)
 
             ' Sanity checks
             Debug.Assert(grid IsNot Nothing)
@@ -105,7 +105,7 @@ Namespace Controls.EwEGrid
             Me.m_uic = uic
             Me.m_ts = ts
 
-            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
 
             ' Hide grip
             Me.m_ts.GripStyle = ToolStripGripStyle.Hidden
@@ -118,19 +118,19 @@ Namespace Controls.EwEGrid
             ' Create quick edit set button
             Me.m_btnSet = New ToolStripButton(My.Resources.GENERIC_LABEL_APPLY)
             Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_APPLYVALUE
-            AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+            AddHandler Me.m_btnSet.Click, AddressOf Me.OnBtnSetClick
 
             ' Create import button (input grids only)
             If Not bIsOutputGrid Then
                 Me.m_btnImport = New ToolStripButton(My.Resources.ImportHS)
                 Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
-                AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
+                AddHandler Me.m_btnImport.Click, AddressOf Me.OnImportGrid
             End If
 
             ' Create export button
             Me.m_btnExport = New ToolStripButton(My.Resources.ExportHS)
             Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
-            AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
+            AddHandler Me.m_btnExport.Click, AddressOf Me.OnExportGrid
 
             ' Add items to the toolstrip
             Dim align As ToolStripItemAlignment = If(cSystemUtils.IsRightToLeft, ToolStripItemAlignment.Left, ToolStripItemAlignment.Right)
@@ -174,27 +174,27 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub Detach()
 
-            If Not m_bAttached Then Return
+            If Not Me.m_bAttached Then Return
 
             Me.m_ts.Items.Remove(Me.m_ctrlValue)
 
             If Me.m_btnImport IsNot Nothing Then
-                RemoveHandler Me.m_btnImport.Click, AddressOf OnImportGrid
+                RemoveHandler Me.m_btnImport.Click, AddressOf Me.OnImportGrid
                 Me.m_btnImport.Dispose()
                 Me.m_btnImport = Nothing
             End If
 
-            RemoveHandler Me.m_btnExport.Click, AddressOf OnExportGrid
+            RemoveHandler Me.m_btnExport.Click, AddressOf Me.OnExportGrid
             Me.m_btnExport.Dispose()
             Me.m_btnExport = Nothing
 
             Me.SetEditControl(eControlType.NotSet)
 
-            RemoveHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+            RemoveHandler Me.m_btnSet.Click, AddressOf Me.OnBtnSetClick
             Me.m_btnSet.Dispose()
             Me.m_btnSet = Nothing
 
-            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
             Me.m_grid = Nothing
 
             Me.m_ts = Nothing
@@ -239,7 +239,7 @@ Namespace Controls.EwEGrid
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnSetBoxKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+        Private Sub OnSetBoxKeyDown(sender As Object, e As KeyEventArgs)
             ' Is [ENTER]?
             If e.KeyCode = Keys.Enter Then Me.ApplyValueToSelection(Me.m_ctrlValue.Text)
         End Sub
@@ -251,7 +251,7 @@ Namespace Controls.EwEGrid
         ''' a change has occurred that needs applying later.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnSetBoxEnter(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnSetBoxEnter(sender As Object, e As EventArgs)
             Me.m_strValueOrg = Me.m_ctrlValue.Text
         End Sub
 
@@ -262,7 +262,7 @@ Namespace Controls.EwEGrid
         ''' entered value has been modified.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnSetBoxLeave(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnSetBoxLeave(sender As Object, e As EventArgs)
             If String.Compare(Me.m_strValueOrg, Me.m_ctrlValue.Text) <> 0 Then
                 Me.ApplyValueToSelection(Me.m_ctrlValue.Text)
                 Me.m_strValueOrg = Me.m_ctrlValue.Text
@@ -278,7 +278,7 @@ Namespace Controls.EwEGrid
         ''' Event handler; called when the user changes the value of the combo box.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnSelectedValueChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnSelectedValueChanged(sender As Object, e As EventArgs)
             Me.ApplyValueToSelection(DirectCast(Me.m_ctrlValue, ToolStripComboBox).SelectedItem)
         End Sub
 
@@ -290,7 +290,7 @@ Namespace Controls.EwEGrid
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnBtnSetClick(sender As Object, e As EventArgs)
             Me.ApplyValueToSelection(Me.m_ctrlValue.Text)
             Me.m_strValueOrg = Me.m_ctrlValue.Text
         End Sub
@@ -301,7 +301,7 @@ Namespace Controls.EwEGrid
         ''' from a CSV file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnImportGrid(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnImportGrid(sender As Object, e As EventArgs)
             Me.ImportGridFromCSV()
         End Sub
 
@@ -311,7 +311,7 @@ Namespace Controls.EwEGrid
         ''' to a CSV file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnExportGrid(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnExportGrid(sender As Object, e As EventArgs)
             Me.ExportGridToCSV()
         End Sub
 
@@ -324,7 +324,7 @@ Namespace Controls.EwEGrid
         ' Buffer consecutive update requests to prevent flashing controls
         Private Sub OnGridSelectionChanged()
             Me.m_bUpdatePending = True
-            Me.m_grid.BeginInvoke(New MethodInvoker(AddressOf DoUpdateControls))
+            Me.m_grid.BeginInvoke(New MethodInvoker(AddressOf Me.DoUpdateControls))
         End Sub
 
         Private Sub DoUpdateControls()
@@ -491,7 +491,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="newval">The value to apply.</param>
         ''' -------------------------------------------------------------------
-        Private Sub ApplyValueToSelection(ByVal newval As Object)
+        Private Sub ApplyValueToSelection(newval As Object)
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
@@ -700,14 +700,14 @@ Namespace Controls.EwEGrid
 
                 Case eControlType.TextBox
                     Dim ctrl As ToolStripTextBox = DirectCast(Me.m_ctrlValue, ToolStripTextBox)
-                    RemoveHandler ctrl.KeyDown, AddressOf OnSetBoxKeyDown
-                    RemoveHandler ctrl.Enter, AddressOf OnSetBoxEnter
-                    RemoveHandler ctrl.Leave, AddressOf OnSetBoxLeave
+                    RemoveHandler ctrl.KeyDown, AddressOf Me.OnSetBoxKeyDown
+                    RemoveHandler ctrl.Enter, AddressOf Me.OnSetBoxEnter
+                    RemoveHandler ctrl.Leave, AddressOf Me.OnSetBoxLeave
                     ctrl.Dispose()
 
                 Case eControlType.ComboBox
                     Dim ctrl As ToolStripComboBox = DirectCast(Me.m_ctrlValue, ToolStripComboBox)
-                    RemoveHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
+                    RemoveHandler ctrl.SelectedIndexChanged, AddressOf Me.OnSelectedValueChanged
                     ctrl.Dispose()
 
             End Select
@@ -724,15 +724,15 @@ Namespace Controls.EwEGrid
                 Case eControlType.TextBox
                     Dim ctrl As New ToolStripTextBox("~tsqeValue")
                     ctrl.AcceptsReturn = True
-                    AddHandler ctrl.Enter, AddressOf OnSetBoxEnter
-                    AddHandler ctrl.Leave, AddressOf OnSetBoxLeave
-                    AddHandler ctrl.KeyDown, AddressOf OnSetBoxKeyDown
+                    AddHandler ctrl.Enter, AddressOf Me.OnSetBoxEnter
+                    AddHandler ctrl.Leave, AddressOf Me.OnSetBoxLeave
+                    AddHandler ctrl.KeyDown, AddressOf Me.OnSetBoxKeyDown
                     Me.m_ctrlValue = ctrl
 
                 Case eControlType.ComboBox
                     Dim ctrl As New ToolStripComboBox("~tsqeValue")
                     ctrl.DropDownStyle = ComboBoxStyle.DropDownList
-                    AddHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
+                    AddHandler ctrl.SelectedIndexChanged, AddressOf Me.OnSelectedValueChanged
                     Me.m_ctrlValue = ctrl
                     If (items IsNot Nothing) Then
                         For Each item As Object In items

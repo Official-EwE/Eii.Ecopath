@@ -74,7 +74,7 @@ Namespace Style
         ''' <returns>The colour for the given value.</returns>
         ''' <remarks>Override this method to implement a specific ColorRamp.</remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function GetColor(ByVal dValue As Double, Optional ByVal dValueMax As Double = 1.0) As Color
+        Public MustOverride Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -84,7 +84,7 @@ Namespace Style
         ''' <param name="dValueMax"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Function RecalcValue(ByVal dValue As Double, ByVal dValueMax As Double) As Double
+        Protected Function RecalcValue(dValue As Double, dValueMax As Double) As Double
 
             Dim dLow As Double = Math.Min(Me.ColorOffsetStart, Me.ColorOffsetEnd)
             Dim dHigh As Double = Math.Max(Me.ColorOffsetStart, Me.ColorOffsetEnd)
@@ -103,7 +103,7 @@ Namespace Style
 
         End Function
 
-        Protected Function Interpolate(ByVal nVal1 As Integer, ByVal nVal2 As Integer, ByVal dRatio As Double) As Integer
+        Protected Function Interpolate(nVal1 As Integer, nVal2 As Integer, dRatio As Double) As Integer
             Try
                 Return CInt(Math.Round(nVal1 + (nVal2 - nVal1) * dRatio))
             Catch ex As Exception

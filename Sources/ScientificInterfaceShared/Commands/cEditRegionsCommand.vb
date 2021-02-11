@@ -36,7 +36,7 @@ Namespace Commands
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "EditRegions"
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.new(cmdh, cEditRegionsCommand.cCOMMAND_NAME, My.Resources.COMMAND_DEFINEREGIONS)
         End Sub
 

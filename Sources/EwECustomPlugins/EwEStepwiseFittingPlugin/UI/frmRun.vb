@@ -56,7 +56,7 @@ Public Class frmRun
 
 #Region " Construction "
 
-    Public Sub New(ByVal uic As cUIContext, ByVal engine As cSFPManager)
+    Public Sub New(uic As cUIContext, engine As cSFPManager)
 
         MyBase.New()
 
@@ -71,7 +71,7 @@ Public Class frmRun
 
     End Sub
 
-    Public Sub New(ByVal uic As cUIContext, ByVal engine As cSFPManager, ByVal plugin As cSFPPluginPoint)
+    Public Sub New(uic As cUIContext, engine As cSFPManager, plugin As cSFPPluginPoint)
 
         Me.New(uic, engine)
 
@@ -84,7 +84,7 @@ Public Class frmRun
 
 #Region " Overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_grid.UIContext = Me.UIContext
@@ -99,6 +99,8 @@ Public Class frmRun
         Me.m_btnResetFolder.Text = ""
 
         ' Populate controls
+        Me.m_nudNoThreads.Maximum = Me.m_engine.Parameters.MaxThreads
+        Me.m_nudNoThreads.Value = Me.m_engine.Parameters.NumThreads
         Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
         Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
         Me.m_rbPredator.Checked = (Me.m_engine.Parameters.PredOrPredPreySSToV = True)
@@ -134,7 +136,7 @@ Public Class frmRun
 
         End Select
 
-        AddHandler Me.m_engine.OnIterationUpdated, AddressOf OnIterationUpdated
+        AddHandler Me.m_engine.OnIterationUpdated, AddressOf Me.OnIterationUpdated
 
         Me.UpdateControls()
 
@@ -142,10 +144,10 @@ Public Class frmRun
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Cleanup
-        RemoveHandler Me.m_engine.OnIterationUpdated, AddressOf OnIterationUpdated
+        RemoveHandler Me.m_engine.OnIterationUpdated, AddressOf Me.OnIterationUpdated
 
         'Detach time series load command from time series button
         If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.RemoveControl(Me.m_btnTS)
@@ -156,7 +158,7 @@ Public Class frmRun
 
     End Sub
 
-    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
         MyBase.OnFormClosing(e)
     End Sub
 
@@ -194,7 +196,7 @@ Public Class frmRun
         Dim bHasEnabledIterationSelected As Boolean = False
         Dim bHasCompletedIterationSelected As Boolean = False
         Dim bNeedsAnomalyShape As Boolean = False
-        Dim bHasAnomalyShape As Boolean = (Me.SelectedShape IsNot Nothing)
+        Dim bHasAnomalyShape As Boolean = (Me.SelectedShapeIndex >= 0)
         Dim bContainsAnomaly As Boolean = False
         Dim bContainsVul As Boolean = False
         Dim bIsRunning As Boolean = Me.m_engine.IsRunning
@@ -210,7 +212,7 @@ Public Class frmRun
 
         Try ' Just to make sure that m_bInUpdate is reset at any cost
 
-            Dim it As ISFPIterations = Nothing
+            Dim it As ISFPIteration = Nothing
             For Each it In Me.m_engine.Iterations
                 bContainsAnomaly = bContainsAnomaly Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
                                                (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
@@ -220,7 +222,7 @@ Public Class frmRun
 
             it = Me.SelectedIteration
             If (it IsNot Nothing) Then
-                bHasCompletedIterationSelected = (it.RunState = ISFPIterations.eRunState.Completed)
+                bHasCompletedIterationSelected = (it.RunState = ISFPIteration.eRunState.Completed)
                 bHasEnabledIterationSelected = it.Enabled
                 bNeedsAnomalyShape = bNeedsAnomalyShape Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
                                                (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
@@ -314,14 +316,14 @@ Public Class frmRun
 
 #Region " Control events "
 
-    Private Sub OnSelectModel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectModel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectModel.Click
 
         If (Me.m_runmode <> eRunMode.StandAlone) Then Return
 
         Try
             ' Get a model file name from the user
-            Dim strFileName As String = ShowSelectModelDialogue()
+            Dim strFileName As String = Me.ShowSelectModelDialogue()
             Me.m_engine.LoadModel(strFileName)
 
         Catch ex As Exception
@@ -412,11 +414,27 @@ Public Class frmRun
         Handles m_cmbAnomalyShape.SelectedIndexChanged
 
         Try
-            Me.m_engine.Parameters.AppliedShape = Me.SelectedShape
+            Me.m_engine.Parameters.AppliedShapeIndex = Me.SelectedShapeIndex
             Me.UpdateControls()
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub OnThreadCountChanged(sender As Object, e As System.EventArgs) _
+        Handles m_nudNoThreads.ValueChanged
+
+        ' Safety catch: Numeric updown controls throw events on creation. Aargh.
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
+
+        Try
+            Me.m_engine.Parameters.NumThreads = CInt(Me.m_nudNoThreads.Value)
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+        Me.UpdateControls()
+
     End Sub
 
     Private Sub OnSplinePointStepSizeChanged(sender As Object, e As System.EventArgs) _
@@ -454,7 +472,7 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnSearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSearchCheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbPredator.CheckedChanged,
                 m_rbPredPrey.CheckedChanged
 
@@ -484,12 +502,12 @@ Public Class frmRun
         End Try
     End Sub
 
-    Private Sub OnSelectAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectAll(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectAll.Click
 
         Try
             ' Enable all iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 it.Enabled = True
             Next
         Catch ex As Exception
@@ -499,12 +517,12 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnSelectNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectNone(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectNone.Click
 
         Try
             ' Disable all iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 it.Enabled = False
             Next
         Catch ex As Exception
@@ -514,11 +532,11 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnSelectVuls(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectVuls(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectV.Click
         Try
             ' Enable all Vulnerability iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVulnerabilitySearch) Then
                     it.Enabled = True
                     'Else
@@ -531,11 +549,11 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub OnSelectAnomaly(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectAnomaly(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectA.Click
         Try
             ' Enable all Anomaly iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch) Then
                     it.Enabled = True
                     'Else
@@ -548,11 +566,11 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub OnSelectVandA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectVandA(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectVandA.Click
         Try
             ' Enable all V and A iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch) Then
                     it.Enabled = True
                     'Else
@@ -565,11 +583,11 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub OnSelectBaseline(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectBaseline(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectBaseline.Click
         Try
             ' Enable Baseline iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.BaseorFishValue Then
                     it.Enabled = True
                 End If
@@ -580,11 +598,11 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub OnSelectFishin(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSelectFishin(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectFishing.Click
         Try
             ' Enable Fishing iterations for running
-            For Each it As ISFPIterations In Me.m_engine.Iterations
+            For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.BaseorFishValue <> True Then
                     it.Enabled = True
                 End If
@@ -599,7 +617,7 @@ Public Class frmRun
         Handles m_grid.OnSelectionChanged
 
         Try
-            BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
@@ -609,13 +627,13 @@ Public Class frmRun
     ''' <summary>
     ''' Load selected interation into the EwE user interface
     ''' </summary>
-    Private Sub OnApplyIteration(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnApplyIteration(sender As System.Object, e As System.EventArgs) _
         Handles m_btnApply.Click
 
         Try
-            Dim iteration As ISFPIterations = Me.SelectedIteration
+            Dim iteration As ISFPIteration = Me.SelectedIteration
             If (iteration IsNot Nothing) Then
-                iteration.Apply()
+                iteration.Apply(Me.Core)
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -623,7 +641,7 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnChooseOutputFolder(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnChooseOutputFolder(sender As Object, e As System.EventArgs) _
         Handles m_btnChooseFolder.Click
 
         Try
@@ -639,7 +657,7 @@ Public Class frmRun
         End Try
     End Sub
 
-    Private Sub OnResetOutputFolder(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnResetOutputFolder(sender As Object, e As System.EventArgs) _
         Handles m_btnResetFolder.Click
         Try
             Me.m_engine.Parameters.CustomOutputFolder = ""
@@ -649,7 +667,7 @@ Public Class frmRun
         End Try
     End Sub
 
-    Private Sub OnAutosaveOptionsChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAutosaveOptionsChanged(sender As Object, e As System.EventArgs) _
         Handles m_cmbAutoSave.SelectedIndexChanged
 
         ' Safety catch: some controls throw events on creation. Aargh.
@@ -663,7 +681,7 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnEnableAbBioforBaselineChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnEnableAbBioforBaselineChanged(sender As Object, e As System.EventArgs) _
         Handles m_cbEnableAbsBioforBaseline.CheckedChanged
 
         ' Safety catch: some controls throw events on creation. Aargh.
@@ -680,12 +698,12 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRun.Click
 
         Try
             ' Run the Stepwise Fitting Procedure
-            Me.m_engine.RunSFPIterationsThreaded()
+            Me.m_engine.Run()
             Me.m_grid.UpdateContent()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -693,7 +711,7 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnStop(sender As System.Object, e As System.EventArgs) _
         Handles m_btnStop.Click
 
         Try
@@ -704,15 +722,15 @@ Public Class frmRun
 
     End Sub
 
-    Private Delegate Sub OnIterationUpdatedDelegate(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
+    Private Delegate Sub OnIterationUpdatedDelegate(sender As cSFPManager, iteration As ISFPIteration)
 
-    Private Sub OnIterationUpdated(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
+    Private Sub OnIterationUpdated(sender As cSFPManager, iteration As ISFPIteration)
 
         If Me.InvokeRequired Then
-            Me.Invoke(New OnIterationUpdatedDelegate(AddressOf OnIterationUpdated), New Object() {sender, iteration})
+            Me.Invoke(New OnIterationUpdatedDelegate(AddressOf Me.OnIterationUpdated), New Object() {sender, iteration})
         Else
             ' Lazy update
-            BeginInvoke(New MethodInvoker(AddressOf Me.m_grid.UpdateContent))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.m_grid.UpdateContent))
         End If
 
     End Sub
@@ -790,7 +808,7 @@ Public Class frmRun
         Get
             Return DirectCast(Me.m_cmbScenario.SelectedItem, cEcoSimScenario)
         End Get
-        Set(ByVal scenario As cEcoSimScenario)
+        Set(scenario As cEcoSimScenario)
             Me.m_cmbScenario.SelectedItem = scenario
         End Set
     End Property
@@ -799,21 +817,28 @@ Public Class frmRun
         Get
             Return DirectCast(Me.m_cmbTimeSeries.SelectedItem, cTimeSeriesDataset)
         End Get
-        Set(ByVal dataset As cTimeSeriesDataset)
+        Set(dataset As cTimeSeriesDataset)
             Me.m_cmbTimeSeries.SelectedItem = dataset
         End Set
     End Property
 
-    Private Property SelectedShape As cShapeData
+    Private Property SelectedShapeIndex As Integer
         Get
-            Return DirectCast(Me.m_cmbAnomalyShape.SelectedItem, cShapeData)
+            Dim item As cShapeData = DirectCast(Me.m_cmbAnomalyShape.SelectedItem, cShapeData)
+            If item IsNot Nothing Then Return item.Index
+            Return -1
         End Get
-        Set(ByVal dataset As cShapeData)
-            Me.m_cmbAnomalyShape.SelectedItem = dataset
+        Set(index As Integer)
+            Dim iSel As Integer = -1
+            For i As Integer = 0 To Me.m_cmbAnomalyShape.Items.Count - 1
+                Dim item As cShapeData = DirectCast(Me.m_cmbAnomalyShape.Items(i), cShapeData)
+                If item.Index = index Then iSel = i
+            Next
+            Me.m_cmbAnomalyShape.SelectedIndex = iSel
         End Set
     End Property
 
-    Private ReadOnly Property SelectedIteration As ISFPIterations
+    Private ReadOnly Property SelectedIteration As ISFPIteration
         Get
             Return Me.m_grid.SelectedIteration
         End Get

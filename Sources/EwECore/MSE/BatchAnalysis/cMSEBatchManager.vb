@@ -55,8 +55,8 @@ Namespace MSEBatchManager
         Inherits cThreadWaitBase
         Implements ICoreInterface
 
-        Public Delegate Sub MSEBatchMessage(ByVal strMessage As String)
-        Public Delegate Sub onMSEBatchProgress(ByVal ProgressEnum As eMSEBatchProgress)
+        Public Delegate Sub MSEBatchMessage(strMessage As String)
+        Public Delegate Sub onMSEBatchProgress(ProgressEnum As eMSEBatchProgress)
 
 #Region "Private data"
 
@@ -105,7 +105,7 @@ Namespace MSEBatchManager
             If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
         End Sub
 
-        Public Sub Init(ByVal theCore As cCore, ByVal MSE As cMSE)
+        Public Sub Init(theCore As cCore, MSE As cMSE)
 
             If Me.m_SyncOb Is Nothing Then
                 Me.m_SyncOb = System.Threading.SynchronizationContext.Current
@@ -172,16 +172,16 @@ Namespace MSEBatchManager
                 End If
 
                 If Me.m_SyncOb IsNot Nothing Then
-                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.RunStarted)
+                    Me.m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.RunStarted)
                 End If
 
                 Me.SetWait()
 
                 Me.update()
 
-                m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
-                m_thrdRun.Name = "MSEBatch.Run"
-                m_thrdRun.Start()
+                Me.m_thrdRun = New System.Threading.Thread(AddressOf Me.RunThreaded)
+                Me.m_thrdRun.Name = "MSEBatch.Run"
+                Me.m_thrdRun.Start()
 
             Catch ex As Exception
 
@@ -347,7 +347,7 @@ Namespace MSEBatchManager
                 If VarName = eVarNameFlags.MSEBatchIterCalcType Then
                     'swap the Upper and Lower limits between Percentage and Values
                     Me.SwapCalcType()
-                    Load()
+                    Me.Load()
 
                     'maybe this will update the interface???? bitch....
                     Me.m_core.Messages.AddMessage(New cMessage("Update MSEBatch TFM.", eMessageType.DataModified, _
@@ -360,12 +360,12 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Private Sub OnMSEProgress(ByVal RunStateType As eMSERunStates)
+        Private Sub OnMSEProgress(RunStateType As eMSERunStates)
 
             If RunStateType = eMSERunStates.RunCompleted Then
                 System.Console.WriteLine("MSEBatch Calling Interface.")
                 If Me.m_SyncOb IsNot Nothing Then
-                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.MSEIteration)
+                    Me.m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.MSEIteration)
                 End If
                 System.Console.WriteLine("MSEBatch Interface completed.")
             End If
@@ -657,16 +657,16 @@ Namespace MSEBatchManager
 
         Private Sub SwapCalcType()
 
-            For igrp As Integer = 1 To nGroups
+            For igrp As Integer = 1 To Me.nGroups
 
                 If Me.m_BatchData.IterCalcType = eMSEBatchIterCalcTypes.Percent Then
-                    ToPercent(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
-                    ToPercent(Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp))
-                    ToPercent(Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp))
+                    Me.ToPercent(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
+                    Me.ToPercent(Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp))
+                    Me.ToPercent(Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp))
                 Else
-                    ToValue(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
-                    ToValue(Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp))
-                    ToValue(Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp))
+                    Me.ToValue(Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp))
+                    Me.ToValue(Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp))
+                    Me.ToValue(Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp))
                 End If
 
             Next
@@ -676,13 +676,13 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Private Sub ToValue(ByVal mean As Single, ByRef Lower As Single, ByRef Upper As Single)
+        Private Sub ToValue(mean As Single, ByRef Lower As Single, ByRef Upper As Single)
             Lower = mean - mean * Lower
             Upper = mean + mean * Upper
         End Sub
 
 
-        Private Sub ToPercent(ByVal mean As Single, ByRef Lower As Single, ByRef Upper As Single)
+        Private Sub ToPercent(mean As Single, ByRef Lower As Single, ByRef Upper As Single)
             Lower = (mean - Lower) / mean
             Upper = (Upper - mean) / mean
         End Sub
@@ -723,7 +723,7 @@ Namespace MSEBatchManager
         End Sub
 
 
-        Public Function ReadCommandFile(ByVal CommandFileName As String) As Boolean
+        Public Function ReadCommandFile(CommandFileName As String) As Boolean
 
             If Me.m_runState = eBatchRunState.Running Then
                 'message can't run
@@ -777,14 +777,14 @@ Namespace MSEBatchManager
         End Function
 
 
-        Private Sub setForcing(ByVal iForcing As Integer)
+        Private Sub setForcing(iForcing As Integer)
             If Me.BatchData.bForcingLoaded Then
                 Me.LoadPPForcing(Me.BatchData.ForcingIndexes(iForcing), Me.BatchData.ForcingGroup(iForcing))
             End If
 
         End Sub
 
-        Private Sub setControls(ByVal iControlIndex As Integer)
+        Private Sub setControls(iControlIndex As Integer)
 
             For iflt As Integer = 1 To Me.m_MSEdata.nFleets
                 Me.m_MSEdata.QuotaType(iflt) = Me.BatchData.ControlType(iControlIndex, iflt)
@@ -799,7 +799,7 @@ Namespace MSEBatchManager
         ''' <remarks>
         ''' If the RunType is Any then set any of the parameters to the values in the command file. 
         ''' For all other RunTypes set the other parameters to zero so they will not be used. </remarks>
-        Private Sub setParameters(ByVal iParIter As Integer)
+        Private Sub setParameters(iParIter As Integer)
             Dim igrp As Integer
             Dim blim As Single, bbase As Single, fmin As Single, fmax As Single
             Dim f As Single, tac As Single
@@ -1029,7 +1029,7 @@ Namespace MSEBatchManager
             Me.ReleaseWait()
 
             If Me.m_SyncOb IsNot Nothing Then
-                m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.RunCompleted)
+                Me.m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireProgress), eMSEBatchProgress.RunCompleted)
             End If
 
         End Sub
@@ -1121,10 +1121,10 @@ Namespace MSEBatchManager
         ''' <param name="iShapeIndex">Index of the Forcing Function shape</param>
         ''' <param name="iPPGroupIndex">Ecosim index of the Primary Production group this forcing function applies to</param>
         ''' <remarks></remarks>
-        Private Sub LoadPPForcing(ByVal iShapeIndex As Integer, ByVal iPPGroupIndex As Integer)
+        Private Sub LoadPPForcing(iShapeIndex As Integer, iPPGroupIndex As Integer)
 
             'no forcing data loaded from the command file
-            If Not BatchData.bForcingLoaded Then Exit Sub
+            If Not Me.BatchData.bForcingLoaded Then Exit Sub
 
             'shapes are held in a list Indexed from 0
             If iShapeIndex < 1 Or iPPGroupIndex < 1 Then
@@ -1153,25 +1153,25 @@ Namespace MSEBatchManager
         End Sub
 
         Public WriteOnly Property onMessageDelegate() As MSEBatchMessage
-            Set(ByVal value As MSEBatchMessage)
+            Set(value As MSEBatchMessage)
                 Me.m_msgDelegate = value
             End Set
         End Property
 
 
-        Public Sub MarshallMessage(ByVal message As String)
+        Public Sub MarshallMessage(message As String)
             Try
                 Debug.Assert((Me.m_msgDelegate IsNot Nothing) And (Me.m_SyncOb IsNot Nothing), Me.ToString & ".MarshallMessage() not initialized correctly")
                 If (Me.m_msgDelegate IsNot Nothing) And (Me.m_SyncOb IsNot Nothing) Then
                     'marshall the message onto the main thread
-                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf sendMessage), message)
+                    Me.m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.sendMessage), message)
                 End If
             Catch ex As Exception
 
             End Try
         End Sub
 
-        Private Sub sendMessage(ByVal obj As Object)
+        Private Sub sendMessage(obj As Object)
             Try
                 Dim message As String = DirectCast(obj, String)
                 Me.m_msgDelegate.Invoke(message)
@@ -1181,7 +1181,7 @@ Namespace MSEBatchManager
         End Sub
 
 
-        Public ReadOnly Property TFMInputs(ByVal iGroup As Integer) As cMSEBatchTFMGroup
+        Public ReadOnly Property TFMInputs(iGroup As Integer) As cMSEBatchTFMGroup
             Get
                 Return DirectCast(Me.m_lstTFMs(iGroup), cMSEBatchTFMGroup)
             End Get
@@ -1237,7 +1237,7 @@ Namespace MSEBatchManager
 
 #End Region
 
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
             Dim result As Boolean = True
 
             Try

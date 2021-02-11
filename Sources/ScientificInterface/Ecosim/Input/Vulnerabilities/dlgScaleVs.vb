@@ -60,8 +60,8 @@ Namespace Ecosim
 
             Dim metaMin As New cVariableMetaData(1, 1000000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 1.2!)
             Dim metaMax As New cVariableMetaData(2.1, 1000000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 1.2!)
-            Me.m_fpLow = New cEwEFormatProvider(Me.m_uic, m_tbxLow, GetType(Single), metaMin)
-            Me.m_fpHigh = New cEwEFormatProvider(Me.m_uic, m_tbxHigh, GetType(Single), metaMax)
+            Me.m_fpLow = New cEwEFormatProvider(Me.m_uic, Me.m_tbxLow, GetType(Single), metaMin)
+            Me.m_fpHigh = New cEwEFormatProvider(Me.m_uic, Me.m_tbxHigh, GetType(Single), metaMax)
 
             Me.m_fpLow.Value = 1.2
             Me.m_fpHigh.Value = 10

@@ -72,7 +72,7 @@ Namespace Auxiliary
         ''' values and values from objects that do not originate from the EwE core.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Sub New(ByVal core As cCore, ByVal strValueID As String)
+        Sub New(core As cCore, strValueID As String)
             Me.New(core, cValueID.FromString(strValueID))
         End Sub
 
@@ -84,14 +84,14 @@ Namespace Auxiliary
         ''' <param name="core"></param>
         ''' <param name="key"></param>
         ''' -------------------------------------------------------------------
-        Sub New(ByVal core As cCore, ByVal key As cValueID)
+        Sub New(core As cCore, key As cValueID)
             MyBase.New()
 
             Me.Key = key
             Me.m_core = core
             Me.Settings = New cXMLSettings()
 
-            AddHandler Me.Settings.OnSettingsChanged, AddressOf OnSettingsChanged
+            AddHandler Me.Settings.OnSettingsChanged, AddressOf Me.OnSettingsChanged
 
             Me.AllowValidation = False
             ' NOP
@@ -137,8 +137,8 @@ Namespace Auxiliary
             Get
                 Return Me.m_strRemark
             End Get
-            Set(ByVal value As String)
-                If (value <> m_strRemark) Then
+            Set(value As String)
+                If (value <> Me.m_strRemark) Then
                     Me.m_strRemark = value
                     Me.Update()
                 End If
@@ -154,7 +154,7 @@ Namespace Auxiliary
             Get
                 Return Me.m_visualstyle
             End Get
-            Set(ByVal value As cVisualStyle)
+            Set(value As cVisualStyle)
 
                 If ReferenceEquals(value, Me.VisualStyle) Then Return
 
@@ -260,7 +260,7 @@ Namespace Auxiliary
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 ' NOP
             End Set
         End Property
@@ -273,7 +273,7 @@ Namespace Auxiliary
             Get
                 Return Me.Remark
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.Remark = value
             End Set
         End Property

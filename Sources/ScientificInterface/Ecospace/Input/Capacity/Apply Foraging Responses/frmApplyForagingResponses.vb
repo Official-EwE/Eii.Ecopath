@@ -43,7 +43,7 @@ Namespace Ecospace
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             ' Hook up to core messages
@@ -57,7 +57,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditInputMaps")
             If (cmd IsNot Nothing) Then
                 cmd.RemoveControl(Me.m_tsbnDefineInputMaps)
@@ -72,7 +72,7 @@ Namespace Ecospace
             End Get
         End Property
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
             If (msg.Source = eCoreComponentType.EcospaceCapacityResponseInteractionManager) Then

@@ -45,7 +45,7 @@ Namespace DataSources
         ''' <param name="ds">The datasource to copy data to.</param>
         ''' <returns>True if sucessful.</returns>
         ''' -------------------------------------------------------------------
-        Overloads Function CopyTo(ByVal ds As IEcosimDatasource) As Boolean
+        Overloads Function CopyTo(ds As IEcosimDatasource) As Boolean
 
 #End Region ' Generic
 
@@ -72,7 +72,7 @@ Namespace DataSources
         ''' <remarks>An implementing class should ensure that this load will cascade to
         ''' load all information pertaining to a scenario.</remarks>
         ''' -------------------------------------------------------------------
-        Function LoadEcosimScenario(ByVal iScenarioID As Integer) As Boolean
+        Function LoadEcosimScenario(iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -82,7 +82,7 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID to save the current scenario to.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SaveEcosimScenario(ByVal iScenarioID As Integer) As Boolean
+        Function SaveEcosimScenario(iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -92,8 +92,8 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID to save the current scenario to.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SaveEcosimScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String, _
-                ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean
+        Function SaveEcosimScenarioAs(strScenarioName As String, strDescription As String, _
+                strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -106,8 +106,8 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID assigned to the new scenario.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendEcosimScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
-                ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean
+        Function AppendEcosimScenario(strScenarioName As String, strDescription As String, _
+                strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -116,7 +116,7 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID of the scenario to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveEcosimScenario(ByVal iScenarioID As Integer) As Boolean
+        Function RemoveEcosimScenario(iScenarioID As Integer) As Boolean
 
 #End Region ' Ecosim scenarios 
 
@@ -134,12 +134,12 @@ Namespace DataSources
         ''' <param name="parms">Parameters for the <paramref name="functiontype"/> </param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendShape(ByVal strShapeName As String,
-                             ByVal shapeDataType As eDataTypes,
+        Function AppendShape(strShapeName As String,
+                             shapeDataType As eDataTypes,
                              ByRef iDBID As Integer,
-                             ByVal asData As Single(),
-                             ByVal functionType As Long,
-                             ByVal parms As Single()) As Boolean
+                             asData As Single(),
+                             functionType As Long,
+                             parms As Single()) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -150,7 +150,7 @@ Namespace DataSources
         ''' <remarks>Note that an implementing datasource will have to ensure the
         ''' shape is removed from the correct scenario.</remarks>
         ''' -------------------------------------------------------------------
-        Function RemoveShape(ByVal iDBID As Integer) As Boolean
+        Function RemoveShape(iDBID As Integer) As Boolean
 
 #End Region ' Forcing and Mediation shapes
 
@@ -163,7 +163,7 @@ Namespace DataSources
         ''' <param name="iDataset">Index of the dataset to load.</param>
         ''' <returns>True if successful</returns>
         ''' -------------------------------------------------------------------
-        Function LoadTimeSeriesDataset(ByVal iDataset As Integer) As Boolean
+        Function LoadTimeSeriesDataset(iDataset As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -180,13 +180,13 @@ Namespace DataSources
         ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendTimeSeriesDataset(ByVal strDatasetName As String, _
-                                         ByVal strDescription As String, _
-                                         ByVal strAuthor As String, _
-                                         ByVal strContact As String, _
-                                         ByVal iFirstYear As Integer, _
-                                         ByVal iNumPoints As Integer, _
-                                         ByVal interval As eTSDataSetInterval, _
+        Function AppendTimeSeriesDataset(strDatasetName As String, _
+                                         strDescription As String, _
+                                         strAuthor As String, _
+                                         strContact As String, _
+                                         iFirstYear As Integer, _
+                                         iNumPoints As Integer, _
+                                         interval As eTSDataSetInterval, _
                                          ByRef iDatasetID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -196,7 +196,7 @@ Namespace DataSources
         ''' <param name="iDataset">Index of the dataset to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveTimeSeriesDataset(ByVal iDataset As Integer) As Boolean
+        Function RemoveTimeSeriesDataset(iDataset As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -207,7 +207,7 @@ Namespace DataSources
         ''' <param name="iDataset">Index of the dataset to add time series to.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function ImportTimeSeries(ByVal ts As cTimeSeriesImport, ByVal iDataset As Integer) As Boolean
+        Function ImportTimeSeries(ts As cTimeSeriesImport, iDataset As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -222,10 +222,10 @@ Namespace DataSources
         ''' <param name="sWeight"></param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendTimeSeries(ByVal strName As String,
-                                  ByVal iPool As Integer, ByVal iPoolSec As Integer,
-                                  ByVal timeSeriesType As eTimeSeriesType,
-                                  ByVal sWeight As Single, ByVal asValues() As Single,
+        Function AppendTimeSeries(strName As String,
+                                  iPool As Integer, iPoolSec As Integer,
+                                  timeSeriesType As eTimeSeriesType,
+                                  sWeight As Single, asValues() As Single,
                                   ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -235,7 +235,7 @@ Namespace DataSources
         ''' <param name="iTimeSeriesID">Database ID of the time series to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function RemoveTimeSeries(ByVal iTimeSeriesID As Integer) As Boolean
+        Function RemoveTimeSeries(iTimeSeriesID As Integer) As Boolean
 
 #End Region ' Time series
 

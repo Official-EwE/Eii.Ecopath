@@ -42,7 +42,7 @@ Namespace Controls
             Me.CustomColors = s_lCustomColors.ToArray
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             s_lCustomColors.Clear()
             s_lCustomColors.AddRange(Me.CustomColors)
             MyBase.Dispose(disposing)

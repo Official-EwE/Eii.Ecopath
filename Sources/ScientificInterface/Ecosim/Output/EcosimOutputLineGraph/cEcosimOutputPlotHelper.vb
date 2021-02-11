@@ -56,7 +56,7 @@ Namespace Controls
             Private m_strName As String = ""
             Private m_curvelist As CurveList = Nothing
 
-            Public Sub New(ByVal strName As String)
+            Public Sub New(strName As String)
                 Me.m_strName = strName
                 Me.m_curvelist = New CurveList()
             End Sub
@@ -90,9 +90,9 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Overrides Sub Attach(ByVal uic As cUIContext, _
-                                    ByVal zgc As ZedGraph.ZedGraphControl, _
-                                    Optional ByVal iNumPanes As Integer = 1)
+        Public Overrides Sub Attach(uic As cUIContext, _
+                                    zgc As ZedGraph.ZedGraphControl, _
+                                    Optional iNumPanes As Integer = 1)
 
             Debug.Assert(iNumPanes = 1)
 
@@ -136,7 +136,7 @@ Namespace Controls
         ''' Prepare a new run for display.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub CreateRun(ByVal strLabel As String)
+        Public Sub CreateRun(strLabel As String)
             If (Me.m_bShowMultipleRuns = False) Then
                 Me.Clear()
             End If
@@ -177,9 +177,9 @@ Namespace Controls
         ''' Note that this does NOT add the line to ZedGraph.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function CreateLine(ByVal src As ICoreInterface, _
-                                   ByVal list As PointPairList, _
-                                   Optional ByVal strLabel As String = "") As LineItem
+        Public Function CreateLine(src As ICoreInterface, _
+                                   list As PointPairList, _
+                                   Optional strLabel As String = "") As LineItem
 
             Dim crv As LineItem = Me.CreateLineItem(src, list, strLabel)
             Select Case Me.CurveType(crv)
@@ -205,9 +205,9 @@ Namespace Controls
         ''' <param name="iTimeStep"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function GetValueAt(ByVal iGroup As Integer, _
-                                   ByVal iRun As Integer, _
-                                   ByVal iTimeStep As Integer) As Double
+        Public Function GetValueAt(iGroup As Integer, _
+                                   iRun As Integer, _
+                                   iTimeStep As Integer) As Double
 
             Dim run As cRun = Nothing
             Dim line As CurveItem = Nothing
@@ -245,8 +245,8 @@ Namespace Controls
         ''' <param name="iGroup">Group index to select</param>
         ''' <param name="iRun">The run to highlight.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Highlight(ByVal iGroup As Integer, _
-                             ByVal iRun As Integer)
+        Public Sub Highlight(iGroup As Integer, _
+                             iRun As Integer)
 
             Dim run As cRun = Nothing
             Dim crv As CurveItem = Nothing
@@ -258,7 +258,7 @@ Namespace Controls
             ElseIf iGroup > 0 And iRun < 0 Then
 
                 ' Set only group for all runs
-                For iRunTest As Integer = 0 To m_lRuns.Count - 1
+                For iRunTest As Integer = 0 To Me.m_lRuns.Count - 1
 
                     run = Me.m_lRuns.Item(iRunTest)
                     If (run.Lines.Count >= iGroup) Then
@@ -309,7 +309,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowMultipleRuns
             End Get
-            Set(ByVal bShowMultipleRuns As Boolean)
+            Set(bShowMultipleRuns As Boolean)
                 ' Update flag
                 Me.m_bShowMultipleRuns = bShowMultipleRuns
                 ' Switched to single view?
@@ -336,7 +336,7 @@ Namespace Controls
         ''' Get the label of a run.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property RunLabel(ByVal iRun As Integer) As String
+        Public ReadOnly Property RunLabel(iRun As Integer) As String
             Get
                 If (iRun < 0 Or iRun >= Me.m_lRuns.Count) Then Return ""
                 Return Me.m_lRuns(iRun).Name
@@ -349,7 +349,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property DataName() As String
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_graphPane.Title.Text = value
                 Me.m_graphPane.YAxis.Title.Text = value
             End Set
@@ -364,7 +364,7 @@ Namespace Controls
         ''' Set all the colors either original or gray.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub SetAllToColors(Optional ByVal bUseOriginalColor As Boolean = True)
+        Private Sub SetAllToColors(Optional bUseOriginalColor As Boolean = True)
 
             Dim crv As CurveItem = Nothing
 
@@ -401,9 +401,9 @@ Namespace Controls
         ''' <param name="bUseColor">Flag stating whether the curve should be coloured.</param>
         ''' <param name="bUseHighlight">Flag stating whether curve should be higlighted.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetCurveAppearance(ByVal crv As CurveItem, _
-                                       Optional ByVal bUseColor As Boolean = True, _
-                                       Optional ByVal bUseHighlight As Boolean = False)
+        Private Sub SetCurveAppearance(crv As CurveItem, _
+                                       Optional bUseColor As Boolean = True, _
+                                       Optional bUseHighlight As Boolean = False)
 
             ' Safety first
             If Not TypeOf (crv) Is LineItem Then Return
