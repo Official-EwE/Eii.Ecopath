@@ -1147,7 +1147,7 @@ Description: {1}</value>
     <value>Fishing rate (relative)</value>
   </data>
   <data name="GENERIC_CAPTION" xml:space="preserve">
-    <value>Ecopath with Ecosim (STWF threading)</value>
+    <value>Ecopath with Ecosim</value>
   </data>
   <data name="LABEL_NAV_ECOPATH_OUTPUT_CONSUMPTION" xml:space="preserve">
     <value>Consumption</value>
