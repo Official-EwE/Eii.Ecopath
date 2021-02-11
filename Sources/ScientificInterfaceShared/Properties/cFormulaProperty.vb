@@ -74,7 +74,7 @@ Namespace Properties
         ''' <param name="formula">The formula that will feed the value and
         ''' status of this <see cref="cProperty">Property</see>.</param>
         ''' -------------------------------------------------------------------
-        Friend Sub New(ByVal formula As cExpression)
+        Friend Sub New(formula As cExpression)
             MyBase.New()
 
             ' Sanity check
@@ -82,14 +82,14 @@ Namespace Properties
             ' Store formula
             Me.m_formula = formula
             ' Listen to formula changes
-            AddHandler m_formula.OnValueChanged, AddressOf OnFormulaChanged
+            AddHandler Me.m_formula.OnValueChanged, AddressOf Me.OnFormulaChanged
             ' Initialize value
             Me.Calculate()
 
         End Sub
 
-        Protected Friend Overrides Sub Dispose(ByVal bDisposing As Boolean)
-            RemoveHandler m_formula.OnValueChanged, AddressOf OnFormulaChanged
+        Protected Friend Overrides Sub Dispose(bDisposing As Boolean)
+            RemoveHandler Me.m_formula.OnValueChanged, AddressOf Me.OnFormulaChanged
             Me.m_formula.Dispose()
             Me.m_formula = Nothing
             MyBase.Dispose(bDisposing)
@@ -107,7 +107,7 @@ Namespace Properties
         ''' <see cref="cSingleProperty">cSingleProperty</see> instances,
         ''' or <see cref="cExpression">cExpression-derived</see> objects.</remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetExpression(ByVal operand As Object) As cExpression
+        Public Shared Function GetExpression(operand As Object) As cExpression
 
             Dim s As Single = 0.0
 
@@ -203,7 +203,7 @@ Namespace Properties
         ''' the formula result.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnFormulaChanged(ByVal formula As cExpression)
+        Private Sub OnFormulaChanged(formula As cExpression)
             Me.Calculate()
         End Sub
 

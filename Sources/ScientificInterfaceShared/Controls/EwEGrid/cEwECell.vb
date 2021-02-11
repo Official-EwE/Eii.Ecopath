@@ -38,8 +38,8 @@ Namespace Controls.EwEGrid
 
 #Region " Construction "
 
-        Public Sub New(ByVal objVal As Object, ByVal t As Type,
-                       Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
+        Public Sub New(objVal As Object, t As Type,
+                       Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
             MyBase.New(objVal, t)
             ' Set value
             If objVal IsNot Nothing Then Me.Value = objVal
@@ -47,7 +47,7 @@ Namespace Controls.EwEGrid
             Me.Style = style
         End Sub
 
-        Public Sub New(ByVal objVal As Object, Optional ByVal style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
+        Public Sub New(objVal As Object, Optional style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK)
             Me.New(objVal, objVal.GetType(), style)
         End Sub
 
@@ -72,7 +72,7 @@ Namespace Controls.EwEGrid
         ''' Commonly called in response to end edit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub SetValue(ByVal p_Position As SourceGrid2.Position, ByVal p_Value As Object)
+        Public Overrides Sub SetValue(p_Position As SourceGrid2.Position, p_Value As Object)
             ' JS Jun 2011: Override this method to allow behaviour models to intercept a cell edit.
             For Each bm As BehaviorModels.IBehaviorModel In Me.Behaviors
                 Dim args As New PositionCancelEventArgs(p_Position, Me)
@@ -94,7 +94,7 @@ Namespace Controls.EwEGrid
             Get
                 Return Me.m_objValue
             End Get
-            Set(ByVal objValue As Object)
+            Set(objValue As Object)
                 If Not Object.Equals(objValue, Me.m_objValue) Then
                     Me.m_objValue = objValue
                     Dim pos As New Position(Me.Row, Me.Column)

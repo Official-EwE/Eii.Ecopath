@@ -161,18 +161,18 @@ Namespace Controls.Map
                     iIndex = Me.m_lItems(i)
                     iLocation = Me.m_lLocations(i)
                     Try
-                        DrawMap(iIndex, Me.RectList(iLocation), args)
+                        Me.DrawMap(iIndex, Me.RectList(iLocation), args)
                     Catch ex As Exception
 
                     End Try
                 Next
 
                 Me.AllowedToRun = True
-                SignalState.Set()
+                Me.SignalState.Set()
 
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                SignalState.Set()
+                Me.SignalState.Set()
             End Try
 
         End Sub
@@ -197,7 +197,7 @@ Namespace Controls.Map
                         For j As Integer = 1 To Me.InCol
                             If bm.IsModelledCell(i, j) Then
                                 For k As Integer = 1 To Me.m_core.nMPAs
-                                    Dim mpa As cEcospaceLayerMPA = m_core.EcospaceBasemap.LayerMPA(k)
+                                    Dim mpa As cEcospaceLayerMPA = Me.m_core.EcospaceBasemap.LayerMPA(k)
                                     If (CBool(mpa.Cell(i, j))) Then
                                         rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
                                                                      CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),

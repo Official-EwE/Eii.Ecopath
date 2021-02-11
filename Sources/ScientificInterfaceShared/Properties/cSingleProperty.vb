@@ -63,9 +63,9 @@ Namespace Properties
         ''' </para>
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As EwECore.cCoreInputOutputBase, ByVal VarName As eVarNameFlags, _
-                Optional ByVal SourceSec As EwECore.cCoreInputOutputBase = Nothing, _
-                Optional ByVal iSecIndexOffset As Integer = 0)
+        Public Sub New(Source As EwECore.cCoreInputOutputBase, VarName As eVarNameFlags, _
+                Optional SourceSec As EwECore.cCoreInputOutputBase = Nothing, _
+                Optional iSecIndexOffset As Integer = 0)
             MyBase.New(Source, VarName, SourceSec, iSecIndexOffset)
         End Sub
 
@@ -94,7 +94,7 @@ Namespace Properties
         ''' <param name="bHonourNull">Flag stating whether NULL status flags 
         ''' should return a NULL value.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Property Value(Optional ByVal bHonourNull As Boolean = True) As Object
+        Protected Overrides Property Value(Optional bHonourNull As Boolean = True) As Object
             Get
                 ' Is this a NULL value?
                 If bHonourNull And ((Me.m_Style And cStyleGuide.eStyleFlags.Null) = cStyleGuide.eStyleFlags.Null) Then
@@ -105,7 +105,7 @@ Namespace Properties
                 Return Me.m_sValue
             End Get
 
-            Set(ByVal objValue As Object)
+            Set(objValue As Object)
                 Try
                     Me.m_sValue = CSng(objValue)
                 Catch ex As Exception
@@ -127,8 +127,8 @@ Namespace Properties
         ''' Overridden to make sure a value is passed to the core as a true Single.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SetValue(ByVal newValue As Object, _
-                Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
+        Public Overrides Function SetValue(newValue As Object, _
+                Optional notify As TriState = TriState.UseDefault) As Boolean
 
             Dim val As cValue = Me.ValueDescriptor
             Dim meta As cVariableMetaData = Nothing
@@ -162,9 +162,9 @@ Namespace Properties
         ''' <param name="value">The value to compare against the value in the property.</param>
         ''' <returns>True if the values can be considered equal.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function IsValue(ByVal value As Object) As Boolean
+        Public Overrides Function IsValue(value As Object) As Boolean
             Try
-                Return m_sValue = CSng(value)
+                Return Me.m_sValue = CSng(value)
             Catch ex As Exception
                 Return False
             End Try
@@ -178,9 +178,9 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Protected Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
-                Return m_Style
+                Return Me.m_Style
             End Get
-            Set(ByVal val As cStyleGuide.eStyleFlags)
+            Set(val As cStyleGuide.eStyleFlags)
                 Me.m_Style = val
             End Set
         End Property
@@ -194,7 +194,7 @@ Namespace Properties
         ''' <returns>True if the Style equal</returns>
         ''' <remarks>This will need to change to StyleGuide.DisplayStyle</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function IsStyle(ByVal Style As cStyleGuide.eStyleFlags) As Boolean
+        Protected Overrides Function IsStyle(Style As cStyleGuide.eStyleFlags) As Boolean
             Return Me.m_Style = Style
         End Function
 

@@ -191,7 +191,7 @@ Public Class cEffortLimits
             ' Sanity check
             Debug.Assert(1 <= iFleet And iFleet <= Me.m_core.nFleets)
             If (value <> Me.m_data(iFleet - 1)) Then
-                m_bChanged = True
+                Me.m_bChanged = True
             End If
             Me.m_data(iFleet - 1) = value
         End Set
@@ -206,10 +206,10 @@ Public Class cEffortLimits
 
     Public Property decaying_max_effort As Boolean
         Get
-            Return m_decaying_max_effort
+            Return Me.m_decaying_max_effort
         End Get
-        Set(ByVal value As Boolean)
-            m_decaying_max_effort = value
+        Set(value As Boolean)
+            Me.m_decaying_max_effort = value
         End Set
     End Property
 

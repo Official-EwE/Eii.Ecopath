@@ -25,7 +25,7 @@ Public Class cEcospaceScenario
 
 #Region " Constructor "
 
-    Sub New(ByVal theCore As cCore)
+    Sub New(theCore As cCore)
         MyBase.New(theCore)
         Me.m_dataType = eDataTypes.EcoSpaceScenario
         Me.m_ValidationStatus.DataType = Me.m_dataType

@@ -30,16 +30,16 @@ Public Class cEcopathFleetInput
 
 #Region " Construction and Intialization "
 
-    Public Sub New(TheCore As cCore, DBID As Integer, iIndex As Integer)
-        MyBase.New(TheCore)
+    Public Sub New(core As cCore, DBID As Integer, iIndex As Integer)
+        MyBase.New(core)
 
         'stop the data validation for now
         'ToDo_jb add data validation for Fleets
-        AllowValidation = False
-        m_coreComponent = eCoreComponentType.EcoPath
-        m_dataType = eDataTypes.FleetInput
+        Me.AllowValidation = False
+        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_dataType = eDataTypes.FleetInput
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Me.Index = iIndex
         Me.DBID = DBID
@@ -49,42 +49,42 @@ Public Class cEcopathFleetInput
         'For fisheries data validation see EwE5 frmInputData.vaInput_Change(...)
 
         'FixedCost
-        val = New cValue(New Single, eVarNameFlags.FixedCost, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.FixedCost, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'CPUECost
-        val = New cValue(New Single, eVarNameFlags.CPUECost, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.CPUECost, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'SailCost
-        val = New cValue(New Single, eVarNameFlags.SailCost, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.SailCost, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'PoolColor
-        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(core, New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         'arrayed values
         'Landings
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Landings, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.Landings, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
         'Discards
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Discards, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.Discards, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
         'Off-vessel price (formerly known as MarketPrice)
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.OffVesselPrice, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.OffVesselPrice, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
         'DiscardFate
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardFate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.DiscardFate, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
         'DiscardMortality
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardMortality, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.DiscardMortality, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
 
     End Sub
 
@@ -92,7 +92,7 @@ Public Class cEcopathFleetInput
 
 #Region " Overrides "
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         If Not MyBase.ResetStatusFlags(bForceReset) Then Return False
         Return Me.m_core.Set_OffVesselValue_Flags(Me, False) And Me.m_core.Set_DiscardMort_Flags(Me, False)
     End Function
@@ -103,67 +103,67 @@ Public Class cEcopathFleetInput
 
     Public Property FixedCost() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.FixedCost))
+            Return CSng(Me.GetVariable(eVarNameFlags.FixedCost))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.FixedCost, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.FixedCost, value)
         End Set
     End Property
 
     Public Property SailCost() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.SailCost))
+            Return CSng(Me.GetVariable(eVarNameFlags.SailCost))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SailCost, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.SailCost, value)
         End Set
     End Property
 
     Public Property CPUECost() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.CPUECost))
+            Return CSng(Me.GetVariable(eVarNameFlags.CPUECost))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CPUECost, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CPUECost, value)
         End Set
     End Property
 
-    Public Property Landings(ByVal iGroup As Integer) As Single
+    Public Property Landings(iGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Landings, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.Landings, iGroup))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Landings, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Landings, value, iGroup)
         End Set
     End Property
 
     Public Property Landings() As Single()
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.Landings), Single())
+            Return DirectCast(Me.GetVariable(eVarNameFlags.Landings), Single())
         End Get
-        Set(ByVal value() As Single)
-            SetVariable(eVarNameFlags.Landings, value)
+        Set(value() As Single)
+            Me.SetVariable(eVarNameFlags.Landings, value)
         End Set
     End Property
 
     Public Property PoolColor() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.PoolColor))
+            Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.PoolColor, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.PoolColor, value)
         End Set
     End Property
 
 #Region "Indexed Variables"
 
-    Public Property OffVesselValue(ByVal iGroup As Integer) As Single
+    Public Property OffVesselValue(iGroup As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.OffVesselPrice, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.OffVesselPrice, iGroup))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.OffVesselPrice, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.OffVesselPrice, value, iGroup)
         End Set
 
     End Property
@@ -174,7 +174,7 @@ Public Class cEcopathFleetInput
         Get
             Return Me.OffVesselValue()
         End Get
-        Set(ByVal value() As Single)
+        Set(value() As Single)
             Me.OffVesselValue() = value
         End Set
 
@@ -183,22 +183,22 @@ Public Class cEcopathFleetInput
     Public Property OffVesselValue() As Single()
 
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.OffVesselPrice), Single())
+            Return DirectCast(Me.GetVariable(eVarNameFlags.OffVesselPrice), Single())
         End Get
-        Set(ByVal value() As Single)
-            SetVariable(eVarNameFlags.OffVesselPrice, value)
+        Set(value() As Single)
+            Me.SetVariable(eVarNameFlags.OffVesselPrice, value)
         End Set
 
     End Property
 
 
-    Public Property Discards(ByVal iGroup As Integer) As Single
+    Public Property Discards(iGroup As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.Discards, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.Discards, iGroup))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Discards, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Discards, value, iGroup)
         End Set
 
     End Property
@@ -206,32 +206,32 @@ Public Class cEcopathFleetInput
     Public Property Discards() As Single()
 
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.Discards), Single())
+            Return DirectCast(Me.GetVariable(eVarNameFlags.Discards), Single())
         End Get
-        Set(ByVal value() As Single)
-            SetVariable(eVarNameFlags.Discards, value)
+        Set(value() As Single)
+            Me.SetVariable(eVarNameFlags.Discards, value)
         End Set
 
     End Property
 
-    Public Property DiscardFate(ByVal iGroup As Integer) As Single
+    Public Property DiscardFate(iGroup As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.DiscardFate, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.DiscardFate, iGroup))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.DiscardFate, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.DiscardFate, value, iGroup)
         End Set
 
     End Property
 
-    Public Property DiscardMortality(ByVal iGroup As Integer) As Single
+    Public Property DiscardMortality(iGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.DiscardMortality, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.DiscardMortality, iGroup))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.DiscardMortality, value, iGroup)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.DiscardMortality, value, iGroup)
         End Set
     End Property
 
@@ -239,55 +239,55 @@ Public Class cEcopathFleetInput
 
     Public Property CPUECostStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.CPUECost)
+            Return Me.GetStatus(eVarNameFlags.CPUECost)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CPUECost, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CPUECost, value)
         End Set
     End Property
 
     Public Property DiscardFateStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.DiscardFate)
+            Return Me.GetStatus(eVarNameFlags.DiscardFate)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.DiscardFate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.DiscardFate, value)
         End Set
     End Property
 
     Public Property DiscardsStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Discards)
+            Return Me.GetStatus(eVarNameFlags.Discards)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Discards, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Discards, value)
         End Set
     End Property
 
     Public Property FixedCostStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.FixedCost)
+            Return Me.GetStatus(eVarNameFlags.FixedCost)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.FixedCost, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.FixedCost, value)
         End Set
     End Property
 
     Public Property iFleetStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Index)
+            Return Me.GetStatus(eVarNameFlags.Index)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Index, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Index, value)
         End Set
     End Property
 
     Public Property LandingsStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Landings)
+            Return Me.GetStatus(eVarNameFlags.Landings)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Landings, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Landings, value)
         End Set
     End Property
 
@@ -296,35 +296,35 @@ Public Class cEcopathFleetInput
         Get
             Return Me.OffVesselValueStatus
         End Get
-        Friend Set(ByVal value As eStatusFlags)
+        Friend Set(value As eStatusFlags)
             Me.OffVesselValueStatus = value
         End Set
     End Property
 
     Public Property OffVesselValueStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.OffVesselPrice)
+            Return Me.GetStatus(eVarNameFlags.OffVesselPrice)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.OffVesselPrice, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.OffVesselPrice, value)
         End Set
     End Property
 
     Public Property SailCostStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.SailCost)
+            Return Me.GetStatus(eVarNameFlags.SailCost)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.SailCost, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.SailCost, value)
         End Set
     End Property
 
-    Public Property DiscardMortalityStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property DiscardMortalityStatus(iGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.DiscardMortality, iGroup)
+            Return Me.GetStatus(eVarNameFlags.DiscardMortality, iGroup)
         End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.DiscardMortality, value, iGroup)
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.DiscardMortality, value, iGroup)
         End Set
     End Property
 

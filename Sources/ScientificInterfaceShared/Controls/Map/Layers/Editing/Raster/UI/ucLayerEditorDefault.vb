@@ -52,19 +52,19 @@ Namespace Controls.Map.Layers
             MyBase.Attach(uic, editor, layer)
             Me.m_fpName = New cEwEFormatProvider(uic, Me.m_tbxName, GetType(String))
             Me.m_fpUnits = New cEwEFormatProvider(uic, Me.m_tbxUnits, GetType(String))
-            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
-            AddHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
+            AddHandler Me.m_fpName.OnValueChanged, AddressOf Me.OnPropChanged
+            AddHandler Me.m_fpUnits.OnValueChanged, AddressOf Me.OnPropChanged
         End Sub
 
         Public Overrides Sub Detach()
-            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
-            RemoveHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
+            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf Me.OnPropChanged
+            RemoveHandler Me.m_fpUnits.OnValueChanged, AddressOf Me.OnPropChanged
             Me.m_fpName.Release()
             Me.m_fpUnits.Release()
             MyBase.Detach()
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             ' Sanity checks
@@ -105,7 +105,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Private Sub OnSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnSliderValueChanged(sender As Object, e As System.EventArgs) _
             Handles m_ucSlider.ValueChanged
 
             If (Me.Editor Is Nothing) Then Return
@@ -124,7 +124,7 @@ Namespace Controls.Map.Layers
             Handles m_plLegend.Paint
 
             If (Me.Layer IsNot Nothing) Then
-                Dim r As cLayerRenderer = Editor.Layer.Renderer
+                Dim r As cLayerRenderer = Me.Editor.Layer.Renderer
                 If (r IsNot Nothing) Then
                     r.RenderPreview(e.Graphics, e.ClipRectangle)
                 End If
@@ -164,7 +164,7 @@ Namespace Controls.Map.Layers
             Me.EditLayer(eLayerEditTypes.EditData)
         End Sub
 
-        Private Sub EditLayer(ByVal edittype As eLayerEditTypes)
+        Private Sub EditLayer(edittype As eLayerEditTypes)
             Try
                 Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
                 Dim cmd As cEditLayerCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)

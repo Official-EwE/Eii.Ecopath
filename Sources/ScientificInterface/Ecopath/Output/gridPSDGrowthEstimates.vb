@@ -65,19 +65,19 @@ Namespace Ecopath.Output
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(Core.nLivingGroups) As Integer 'Hold the stanza group index
+            Dim intStanzaGroupIndex(Me.Core.nLivingGroups) As Integer 'Hold the stanza group index
             Dim intStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As cEwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
-            For i As Integer = 1 To Core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Me.Core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(stanzaGroupIndex)
+            For stanzaGroupIndex As Integer = 0 To Me.Core.nStanzas - 1
+                sg = Me.Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.nLifeStages
-                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = Me.Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     intStanzaGroupIndex(source.Index) = stanzaGroupIndex
                 Next
             Next
@@ -86,14 +86,14 @@ Namespace Ecopath.Output
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For groupIndex As Integer = 1 To Core.nLivingGroups
-                source = Core.EcoPathGroupOutputs(groupIndex)
+            For groupIndex As Integer = 1 To Me.Core.nLivingGroups
+                source = Me.Core.EcoPathGroupOutputs(groupIndex)
 
                 If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
-                    FillInRows(iRow, source)
+                    Me.FillInRows(iRow, source)
                 Else 'Group is stanza
-                    sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
+                    sg = Me.Core.StanzaGroups(intStanzaGroupIndex(source.Index))
                     If intStanzaGroupIndex(source.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
                         hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
@@ -110,13 +110,13 @@ Namespace Ecopath.Output
                     End If
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, source, True)
+                    Me.FillInRows(iRow, source, True)
                 End If
             Next groupIndex
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, Optional isIndented As Boolean = False)
 
             Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
 
@@ -162,9 +162,9 @@ Namespace Ecopath.Output
 
         Private Function IsGroupSelected() As Boolean()
 
-            Dim bGroupSelected(Core.nLivingGroups) As Boolean
-            For i As Integer = 1 To Core.nLivingGroups
-                bGroupSelected(i) = StyleGuide.GroupVisible(i)
+            Dim bGroupSelected(Me.Core.nLivingGroups) As Boolean
+            For i As Integer = 1 To Me.Core.nLivingGroups
+                bGroupSelected(i) = Me.StyleGuide.GroupVisible(i)
             Next
             Return bGroupSelected
 

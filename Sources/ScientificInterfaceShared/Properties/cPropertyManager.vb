@@ -72,8 +72,8 @@ Namespace Properties
         ''' <param name="core">Core instance providing property data.</param>
         ''' <param name="so">Threading <see cref="SynchronizationContext"/>.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore,
-                       ByVal so As SynchronizationContext)
+        Public Sub New(core As cCore,
+                       so As SynchronizationContext)
 
             'Sanity checks
             Debug.Assert(core IsNot Nothing)
@@ -111,15 +111,15 @@ Namespace Properties
 
 #Region " Config "
 
-        Public Event OnPropertyAdded(ByVal prop As cProperty)
-        Public Event OnPropertyRemoved(ByVal prop As cProperty)
+        Public Event OnPropertyAdded(prop As cProperty)
+        Public Event OnPropertyRemoved(prop As cProperty)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Clears the properties cache, useful when loading new models.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Clear(ByVal msgSource As eCoreComponentType)
+        Public Sub Clear(msgSource As eCoreComponentType)
 
             Select Case msgSource
                 Case eCoreComponentType.EcoPath
@@ -162,7 +162,7 @@ Namespace Properties
         ''' <param name="strID">The ID of the property</param>
         ''' <returns>A cProperty instance, or Nothing if the instance could not be found.</returns>
         ''' -------------------------------------------------------------------
-        Public Function GetProperty(ByVal strID As String) As cProperty
+        Public Function GetProperty(strID As String) As cProperty
             If (String.IsNullOrEmpty(strID)) Then Return Nothing
             ' Return a property from the internal storage
             If (Me.m_htGeneric.ContainsKey(strID)) Then
@@ -191,7 +191,7 @@ Namespace Properties
         ''' <param name="astrIDs">The IDs of the propertiets to retrieve.</param>
         ''' <returns>An array of cProperty instances.</returns>
         ''' -------------------------------------------------------------------
-        Public Function GetProperties(ByVal astrIDs() As String) As cProperty()
+        Public Function GetProperties(astrIDs() As String) As cProperty()
 
             Dim lProps As New List(Of cProperty)
             Dim prop As cProperty = Nothing
@@ -213,11 +213,11 @@ Namespace Properties
         ''' <param name="bAllowedToCreate">States that the property should be created if it does not exist</param>
         ''' <remarks>The property is generated if it does not exist yet</remarks>
         ''' -------------------------------------------------------------------
-        Public Function GetProperty(ByVal src As cCoreInputOutputBase, _
-                                    ByVal varname As eVarNameFlags, _
-                                    Optional ByVal srcSec As cCoreInputOutputBase = Nothing, _
-                                    Optional ByVal bAllowedToCreate As Boolean = True, _
-                                    Optional ByVal iSecundaryIndexOffset As Integer = 0) As cProperty
+        Public Function GetProperty(src As cCoreInputOutputBase, _
+                                    varname As eVarNameFlags, _
+                                    Optional srcSec As cCoreInputOutputBase = Nothing, _
+                                    Optional bAllowedToCreate As Boolean = True, _
+                                    Optional iSecundaryIndexOffset As Integer = 0) As cProperty
 
             Dim strID As String = Nothing
             Dim prop As cProperty = Nothing
@@ -304,7 +304,7 @@ Namespace Properties
         ''' <param name="vs">VariableStatus to find the Property instance for.</param>
         ''' <returns>A property ID, or an empty string if unsuccesful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ExtractPropertyID(ByVal vs As cVariableStatus) As String
+        Public Function ExtractPropertyID(vs As cVariableStatus) As String
 
             Dim source As cCoreInputOutputBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
@@ -367,7 +367,7 @@ Namespace Properties
         ''' <param name="msg"><see cref="cMessage">Message</see> to analyze.</param>
         ''' <returns>An array of property IDs</returns>
         ''' -------------------------------------------------------------------
-        Public Function ExtractPropertyIDs(ByVal msg As cMessage) As String()
+        Public Function ExtractPropertyIDs(msg As cMessage) As String()
 
             Dim lstrIDs As New List(Of String)
             Dim strID As String = ""
@@ -413,7 +413,7 @@ Namespace Properties
         ''' Refresh the Me.m_core values of all properties
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Refresh(ByVal msgSource As eCoreComponentType)
+        Public Sub Refresh(msgSource As eCoreComponentType)
 
             For Each prop As cProperty In Me.m_htGeneric.Values
                 ' Refresh yourself

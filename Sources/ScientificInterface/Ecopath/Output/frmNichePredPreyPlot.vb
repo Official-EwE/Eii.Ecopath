@@ -86,7 +86,7 @@ Namespace Ecopath.Output
         ''' Form is about to appear; hook up to all dynamic bits, ect.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If Me.UIContext Is Nothing Then Return
@@ -113,7 +113,7 @@ Namespace Ecopath.Output
         ''' Form is about to close; clean up. Detach from all dynamic bits, etc.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If Me.UIContext Is Nothing Then Return
 
@@ -144,7 +144,7 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ScientificInterfaceShared.Forms.frmEwE.OnStyleGuideChanged"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
             MyBase.OnStyleGuideChanged(ct)
             ' Update graph whenever any style guide aspect has changed. Could have 
             ' anything really: graph bits, fonts, colours, group visiblity... Yes,
@@ -255,7 +255,7 @@ Namespace Ecopath.Output
         ''' Event handler to trap user colour behaviour changes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnColourOptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnColourOptionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbPredator.CheckedChanged, _
                     m_rbPrey.CheckedChanged, _
                     m_rbOverlap.CheckedChanged, _
@@ -283,7 +283,7 @@ Namespace Ecopath.Output
         ''' Event handler to trap user cut-off value changes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnCutOffValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnCutOffValueChanged(sender As Object, e As System.EventArgs) _
             Handles m_nudCutOff.ValueChanged
             If (Me.UIContext Is Nothing) Then Return
             Me.m_sCutOff = CSng(Me.m_nudCutOff.Value)
@@ -295,7 +295,7 @@ Namespace Ecopath.Output
         ''' Event handler to trap user label display changes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnShowLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowLabelsChanged(sender As System.Object, e As System.EventArgs) _
            Handles m_cbLabels.CheckedChanged
             Me.m_bShowLabels = Me.m_cbLabels.Checked
             Me.UpdatePlot()

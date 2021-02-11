@@ -670,8 +670,8 @@ Public Class cEcosimDatastructures
     Public Sub RedimVars()
 
         'jb I don't know why these where split up there may be some kind of a reason
-        RedimVariabs1()
-        RedimVariabs2()
+        Me.RedimVariabs1()
+        Me.RedimVariabs2()
         'jb added this was in ReadStanza
         '  redimStanza()
 
@@ -685,10 +685,10 @@ Public Class cEcosimDatastructures
     ''' </remarks>
     Public Sub RedimArenaLinks()
 
-        ReDim IlinkSet(NlinksSet)
-        ReDim JlinkSet(NlinksSet)
-        ReDim KlinkSet(NlinksSet)
-        ReDim PeatArena(Narena, nGroups)
+        ReDim Me.IlinkSet(Me.NlinksSet)
+        ReDim Me.JlinkSet(Me.NlinksSet)
+        ReDim Me.KlinkSet(Me.NlinksSet)
+        ReDim Me.PeatArena(Me.Narena, Me.nGroups)
 
     End Sub
 
@@ -707,9 +707,9 @@ Public Class cEcosimDatastructures
         Dim lInvalidLinks As New List(Of Integer)
 
         ' Count up all the dietary links for which one or more arena links are needed
-        For iPrey = 1 To nGroups
-            For iPred = 1 To nGroups
-                If (Consumption(iPrey, iPred) > 0.0F) Then
+        For iPrey = 1 To Me.nGroups
+            For iPred = 1 To Me.nGroups
+                If (Me.Consumption(iPrey, iPred) > 0.0F) Then
                     pending(iPrey, iPred) = True
                     nPending += 1
                 End If
@@ -721,12 +721,12 @@ Public Class cEcosimDatastructures
         ' Tick off all shared arenas that match a dietary link
         For i As Integer = 1 To Me.NlinksSet
             ' Is link invalid?
-            If (IlinkSet(i) = 0) Or (JlinkSet(i) = 0) Or (KlinkSet(i) = 0) Then
+            If (Me.IlinkSet(i) = 0) Or (Me.JlinkSet(i) = 0) Or (Me.KlinkSet(i) = 0) Then
                 ' #Yes: remember bad link, will be removed below
                 lInvalidLinks.Add(i)
-            ElseIf pending(IlinkSet(i), KlinkSet(i)) Then
+            ElseIf pending(Me.IlinkSet(i), Me.KlinkSet(i)) Then
                 ' #No: tick off a good link: this pred/prey link has been presented in at least one arena
-                pending(IlinkSet(i), JlinkSet(i)) = False
+                pending(Me.IlinkSet(i), Me.JlinkSet(i)) = False
                 nPending -= 1
             End If
         Next
@@ -766,8 +766,8 @@ Public Class cEcosimDatastructures
             Next
 
             ' Step 2: Complement missing defaults (and yes, this entire routine can be seriously optimized with dictionaries)
-            For iPrey = 1 To nGroups
-                For iPred = 1 To nGroups
+            For iPrey = 1 To Me.nGroups
+                For iPred = 1 To Me.nGroups
                     ' Is this a diet link that does not yet have an arena link?
                     If pending(iPrey, iPred) Then
                         ' #Yes: add a default
@@ -800,13 +800,13 @@ Public Class cEcosimDatastructures
 
     Private Sub RedimVariabs2()
 
-        ReDim Consumption(nGroups, nGroups)
-        ReDim Consumpt(nGroups, nGroups)
-        ReDim Eatenby(nGroups)
-        ReDim Eatenof(nGroups)
-        ReDim pred(nGroups)
-        ReDim simDCAtT(nGroups, nGroups)
-        ReDim DCPct(nGroups, 3) 'used for B1Round, B2Round, QB, derivt (BA)
+        ReDim Me.Consumption(Me.nGroups, Me.nGroups)
+        ReDim Me.Consumpt(Me.nGroups, Me.nGroups)
+        ReDim Me.Eatenby(Me.nGroups)
+        ReDim Me.Eatenof(Me.nGroups)
+        ReDim Me.pred(Me.nGroups)
+        ReDim Me.simDCAtT(Me.nGroups, Me.nGroups)
+        ReDim Me.DCPct(Me.nGroups, 3) 'used for B1Round, B2Round, QB, derivt (BA)
 
     End Sub
 
@@ -814,95 +814,95 @@ Public Class cEcosimDatastructures
     Private Sub RedimVariabs1()
         Dim i, j As Integer
 
-        ReDim GroupDBID(nGroups)
+        ReDim Me.GroupDBID(Me.nGroups)
 
         'ReDim BaseTimeSwitch(nGroups)
-        ReDim SwitchPower(nGroups)
-        NutBaseFreeProp = 0.9999
-        NutForceNumber = 0
-        NutPBmax = 1.5
+        ReDim Me.SwitchPower(Me.nGroups)
+        Me.NutBaseFreeProp = 0.9999
+        Me.NutForceNumber = 0
+        Me.NutPBmax = 1.5
 
-        ReDim Emig(nGroups)
-        ReDim QmQo(nGroups), Htime(nGroups) ', Hden(nGroups)
-        ReDim CmCo(nGroups)
+        ReDim Me.Emig(Me.nGroups)
+        ReDim Me.QmQo(Me.nGroups), Me.Htime(Me.nGroups) ', Hden(nGroups)
+        ReDim Me.CmCo(Me.nGroups)
 
-        ReDim Qmain(nGroups)
-        ReDim Qrisk(nGroups)
-        ReDim RiskTime(nGroups)
-        ReDim Consumption(nGroups, nGroups)
-        ReDim StartBiomass(nGroups)
+        ReDim Me.Qmain(Me.nGroups)
+        ReDim Me.Qrisk(Me.nGroups)
+        ReDim Me.RiskTime(Me.nGroups)
+        ReDim Me.Consumption(Me.nGroups, Me.nGroups)
+        ReDim Me.StartBiomass(Me.nGroups)
 
-        ReDim Eatenby(nGroups)
-        ReDim Eatenof(nGroups)
-        ReDim EggProdShape(CInt(nGroups / 2))
+        ReDim Me.Eatenby(Me.nGroups)
+        ReDim Me.Eatenof(Me.nGroups)
+        ReDim Me.EggProdShape(CInt(Me.nGroups / 2))
 
-        ReDim FtimeAdjust(nGroups)
-        ReDim MoPred(nGroups)
+        ReDim Me.FtimeAdjust(Me.nGroups)
+        ReDim Me.MoPred(Me.nGroups)
 
-        ReDim iadult(CInt(nGroups / 2))
-        ReDim ijuv(CInt(nGroups / 2))
+        ReDim Me.iadult(CInt(Me.nGroups / 2))
+        ReDim Me.ijuv(CInt(Me.nGroups / 2))
 
-        ReDim TimeJuv(CInt(nGroups / 2)) 'Time spent in juv stage
-        ReDim maxtimejuv(CInt(nGroups / 2))
-        ReDim mintimejuv(CInt(nGroups / 2))
-        ReDim NoIntegrate(nGroups)
-        ReDim pbm(nGroups)
-        ReDim PBmaxs(nGroups)
-        ReDim pred(nGroups)
-        ReDim RecPower(CInt(nGroups / 2))
+        ReDim Me.TimeJuv(CInt(Me.nGroups / 2)) 'Time spent in juv stage
+        ReDim Me.maxtimejuv(CInt(Me.nGroups / 2))
+        ReDim Me.mintimejuv(CInt(Me.nGroups / 2))
+        ReDim Me.NoIntegrate(Me.nGroups)
+        ReDim Me.pbm(Me.nGroups)
+        ReDim Me.PBmaxs(Me.nGroups)
+        ReDim Me.pred(Me.nGroups)
+        ReDim Me.RecPower(CInt(Me.nGroups / 2))
 
-        ReDim ilink(nGroups * nGroups)
-        ReDim jlink(nGroups * nGroups)
-        ReDim SimDC(nGroups, nGroups)
-        ReDim MPred(nGroups * nGroups)
+        ReDim Me.ilink(Me.nGroups * Me.nGroups)
+        ReDim Me.jlink(Me.nGroups * Me.nGroups)
+        ReDim Me.SimDC(Me.nGroups, Me.nGroups)
+        ReDim Me.MPred(Me.nGroups * Me.nGroups)
 
-        ReDim IlinkSet(nGroups * nGroups)
-        ReDim JlinkSet(nGroups * nGroups)
-        ReDim KlinkSet(nGroups * nGroups)
-        ReDim PeatArena(nGroups * nGroups, nGroups)
+        ReDim Me.IlinkSet(Me.nGroups * Me.nGroups)
+        ReDim Me.JlinkSet(Me.nGroups * Me.nGroups)
+        ReDim Me.KlinkSet(Me.nGroups * Me.nGroups)
+        ReDim Me.PeatArena(Me.nGroups * Me.nGroups, Me.nGroups)
 
-        ReDim vulrate(nGroups, nGroups)
-        ReDim VulMult(nGroups, nGroups)
-        For i = 1 To nGroups : For j = 1 To nGroups : vulrate(i, j) = 1.0! : VulMult(i, j) = 2.0! : Next j : Next i
-        ReDim VulnerabilityPredator(nGroups)
+        ReDim Me.vulrate(Me.nGroups, Me.nGroups)
+        ReDim Me.VulMult(Me.nGroups, Me.nGroups)
+        For i = 1 To Me.nGroups : For j = 1 To Me.nGroups : Me.vulrate(i, j) = 1.0! : Me.VulMult(i, j) = 2.0! : Next j : Next i
+        ReDim Me.VulnerabilityPredator(Me.nGroups)
 
-        ReDim Fish1(nGroups)
-        ReDim FishRateNoDBID(nGroups)
-        ReDim FishRateNoTitle(nGroups)
-        ReDim GroupFishRateNoDBID(nGroups)
+        ReDim Me.Fish1(Me.nGroups)
+        ReDim Me.FishRateNoDBID(Me.nGroups)
+        ReDim Me.FishRateNoTitle(Me.nGroups)
+        ReDim Me.GroupFishRateNoDBID(Me.nGroups)
 
         'the plus one is for combined fleets
-        ReDim FleetDBID(nGear + 1)
-        ReDim FishRateGearDBID(nGear + 1)
-        ReDim FishRateGearBasis(nGear + 1)
-        ReDim FishRateGearTitle(nGear + 1)
-        ReDim FishMGear(nGear + 1, nGroups)
+        ReDim Me.FleetDBID(Me.nGear + 1)
+        ReDim Me.FishRateGearDBID(Me.nGear + 1)
+        ReDim Me.FishRateGearBasis(Me.nGear + 1)
+        ReDim Me.FishRateGearTitle(Me.nGear + 1)
+        ReDim Me.FishMGear(Me.nGear + 1, Me.nGroups)
 
-        ReDim FishRateMax(nGroups)
+        ReDim Me.FishRateMax(Me.nGroups)
 
-        ReDim FisForced(nGroups)
+        ReDim Me.FisForced(Me.nGroups)
 
-        ReDim relQ(nGear, nGroups)
+        ReDim Me.relQ(Me.nGear, Me.nGroups)
 
-        ReDim SSGroup(nGroups)
+        ReDim Me.SSGroup(Me.nGroups)
 
-        ReDim TLSim(nGroups)
+        ReDim Me.TLSim(Me.nGroups)
 
-        ReDim GroupDetritus(nGroups)
+        ReDim Me.GroupDetritus(Me.nGroups)
 
-        ReDim Epower(nGear)
-        ReDim PcapBase(nGear)
-        ReDim CapDepreciate(nGear)
-        ReDim CapBaseGrowth(nGear)
+        ReDim Me.Epower(Me.nGear)
+        ReDim Me.PcapBase(Me.nGear)
+        ReDim Me.CapDepreciate(Me.nGear)
+        ReDim Me.CapBaseGrowth(Me.nGear)
 
-        ReDim PropLandedTime(nGear, nGroups)
-        ReDim Propdiscardtime(nGear, nGroups)
+        ReDim Me.PropLandedTime(Me.nGear, Me.nGroups)
+        ReDim Me.Propdiscardtime(Me.nGear, Me.nGroups)
 
-        ReDim PropDiscardMortTime(nGear, nGroups)
+        ReDim Me.PropDiscardMortTime(Me.nGear, Me.nGroups)
 
-        ReDim EffortConversionFactor(nGear)
+        ReDim Me.EffortConversionFactor(Me.nGear)
 
-        ReDim moTot(nGroups)
+        ReDim Me.moTot(Me.nGroups)
 
 
         ' JS 3May16: make sure there is no overhang from past scenarios
@@ -910,12 +910,12 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-    Public Sub RedimOutputsByTime(ByVal nTimesteps As Integer)
-        ReDim FIB(nTimesteps)
-        ReDim TLC(nTimesteps)     'TL of catch in Ecosim
-        ReDim Kemptons(nTimesteps)
-        ReDim ShannonDiversity(nTimesteps)
-        ReDim CatchSim(nTimesteps)
+    Public Sub RedimOutputsByTime(nTimesteps As Integer)
+        ReDim Me.FIB(nTimesteps)
+        ReDim Me.TLC(nTimesteps)     'TL of catch in Ecosim
+        ReDim Me.Kemptons(nTimesteps)
+        ReDim Me.ShannonDiversity(nTimesteps)
+        ReDim Me.CatchSim(nTimesteps)
 
     End Sub
 
@@ -925,8 +925,8 @@ Public Class cEcosimDatastructures
     ''' <remarks>This is called before loading forcing data (DoDatValCalulations())to clear out the old flags. 
     '''  EwE5 never clears this flag once set to True when forcing data is loaded this stays set and FishRateNo() is reset via a the interface, strange?</remarks>
     Public Sub clearFishForced()
-        For igrp As Integer = 1 To nGroups
-            FisForced(igrp) = False
+        For igrp As Integer = 1 To Me.nGroups
+            Me.FisForced(igrp) = False
         Next
     End Sub
 
@@ -1048,18 +1048,18 @@ Public Class cEcosimDatastructures
         'so that Forcing functions with valid values can be added from an interface and not get over written
         Try
 
-            ZmaxScale = 2
+            Me.ZmaxScale = 2
 
             'this will over write any values already in the shape arrays
             'so after this they must be repopulated
-            For i = 0 To NumForcingShapes
+            For i = 0 To Me.NumForcingShapes
 
-                tval(i) = 1      'For forcing functions
-                ForcingDBIDs(i) = cCore.NULL_VALUE 'default un-initialized database ID
+                Me.tval(i) = 1      'For forcing functions
+                Me.ForcingDBIDs(i) = cCore.NULL_VALUE 'default un-initialized database ID
 
-                For j = 0 To ForcePoints
+                For j = 0 To Me.ForcePoints
                     'this will make it so that a forcing function that has not had any values set will have no effect on the model
-                    zscale(j, i) = 1   'Default value is half the max
+                    Me.zscale(j, i) = 1   'Default value is half the max
                 Next
 
             Next
@@ -1082,7 +1082,7 @@ Public Class cEcosimDatastructures
     ''' <param name="newEcoSimIndex">optional Index of the last array element this is used for an AddShape functionality</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function ResizeForcingShapes(ByVal newNumberOfShapes As Integer, Optional ByRef newEcoSimIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Function ResizeForcingShapes(newNumberOfShapes As Integer, Optional ByRef newEcoSimIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         'this is still call by cEIIDataSource which is not used!!!! Hack hack hhhhhhhaaaa
         Debug.Assert(False, "ResizeForcingShapes() no longer implemented!")
@@ -1113,7 +1113,7 @@ Public Class cEcosimDatastructures
     ''' <param name="newEcoSimIndex">optional Index of the last array element this is used for an AddShape functionality</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function ResizeMediationShapes(ByVal newNumberOfShapes As Integer, Optional ByRef newEcoSimIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Function ResizeMediationShapes(newNumberOfShapes As Integer, Optional ByRef newEcoSimIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Try
 
@@ -1143,20 +1143,20 @@ Public Class cEcosimDatastructures
     Public Function DimForcingShapes() As Boolean
 
         Try
-            Debug.Assert(NumYears > 0, Me.ToString & ".redimForcingShapes() TotalTime must be set to redim Forcing Shapes.")
-            ReDim EnvRespFuncIndex(NumEnvResponseFunctions, nGroups)
-            ReDim MortalityRespFuncIndex(NumEnvResponseFunctions, nGroups)
+            Debug.Assert(Me.NumYears > 0, Me.ToString & ".redimForcingShapes() TotalTime must be set to redim Forcing Shapes.")
+            ReDim Me.EnvRespFuncIndex(Me.NumEnvResponseFunctions, Me.nGroups)
+            ReDim Me.MortalityRespFuncIndex(Me.NumEnvResponseFunctions, Me.nGroups)
 
-            ReDim zscale(ForcePoints, NumForcingShapes)
-            ReDim tval(NumForcingShapes)
-            ReDim ForcingTitles(NumForcingShapes)
+            ReDim Me.zscale(Me.ForcePoints, Me.NumForcingShapes)
+            ReDim Me.tval(Me.NumForcingShapes)
+            ReDim Me.ForcingTitles(Me.NumForcingShapes)
 
             'variable added for EwE6
-            ReDim ForcingShapeType(NumForcingShapes) 'Time or Egg Prod
-            ReDim ForcingShapeParams(NumForcingShapes)
-            ReDim ForcingDBIDs(NumForcingShapes)
+            ReDim Me.ForcingShapeType(Me.NumForcingShapes) 'Time or Egg Prod
+            ReDim Me.ForcingShapeParams(Me.NumForcingShapes)
+            ReDim Me.ForcingDBIDs(Me.NumForcingShapes)
 
-            ReDim isSeasonal(NumForcingShapes)
+            ReDim Me.isSeasonal(Me.NumForcingShapes)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimForcingShapes() Error: " & ex.Message)
@@ -1172,13 +1172,13 @@ Public Class cEcosimDatastructures
     ''' Resize and set time data to the new number of years set by a user
     ''' </summary>
     ''' <remarks></remarks>
-    Friend Sub redimTime(ByVal newNumberOfYears As Integer, ByVal nRefDataYears As Integer, ByVal bCopyLastShapePoint As Boolean)
+    Friend Sub redimTime(newNumberOfYears As Integer, nRefDataYears As Integer, bCopyLastShapePoint As Boolean)
         Dim ipt As Integer, ishape As Integer
         Dim orgNYears As Integer, orgNTimes As Integer
 
         'get the original number of years and time steps
-        orgNYears = NumYears
-        orgNTimes = NTimes
+        orgNYears = Me.NumYears
+        orgNTimes = Me.NTimes
 
         'set number of years to the new value this will also set NTimes (number of time steps)
         Me.NumYears = newNumberOfYears
@@ -1190,48 +1190,48 @@ Public Class cEcosimDatastructures
         End If
 
         'redim preserve the fishing rate and fishmortality data
-        redimFishingRates(ntimesteps)
+        Me.redimFishingRates(ntimesteps)
 
         'set the summary periods to the first and last year
-        DefaultSummaryPeriods()
+        Me.DefaultSummaryPeriods()
 
-        RedimOutputsByTime(ntimesteps)
+        Me.RedimOutputsByTime(ntimesteps)
 
         'Only resize the forcing data if the new run length is greater then the existing run length
         'on the database load ForcePoints was set to a min of DEFAULT_N_FORCINGPOINTS (100 years, 1200 points) or the number of years in database * 12 see DimForcingShapes
         'this preserves the originally loaded forcing data if the new number of years is less the data that is already loaded
-        If NTimes > ForcePoints Then
+        If Me.NTimes > Me.ForcePoints Then
 
             'this means ForcePoints is >=  DEFAULT_N_FORCINGPOINTS and can only grow
-            Dim orgPts As Single = ForcePoints
-            ForcePoints = NTimes
+            Dim orgPts As Single = Me.ForcePoints
+            Me.ForcePoints = Me.NTimes
 
             'Can't Redim Preserve the first dimension
             'so we need to copy the values back into the new zscale()
             Dim orgZscale(,) As Single
-            ReDim orgZscale(orgPts, NumForcingShapes)
-            Array.Copy(zscale, orgZscale, orgZscale.Length)
+            ReDim orgZscale(orgPts, Me.NumForcingShapes)
+            Array.Copy(Me.zscale, orgZscale, orgZscale.Length)
 
-            ReDim zscale(ForcePoints, NumForcingShapes)
-            ReDim tval(NumForcingShapes)
+            ReDim Me.zscale(Me.ForcePoints, Me.NumForcingShapes)
+            ReDim Me.tval(Me.NumForcingShapes)
 
-            For ishape = 0 To NumForcingShapes
-                tval(0) = 1      'For forcing functions
-                ZmaxScale = 2
+            For ishape = 0 To Me.NumForcingShapes
+                Me.tval(0) = 1      'For forcing functions
+                Me.ZmaxScale = 2
                 'copy the values from the original zscale() into the new zscale()
                 Dim sLast As Single = 1.0
                 For ipt = 0 To orgPts
                     sLast = orgZscale(ipt, ishape)
-                    zscale(ipt, ishape) = sLast
+                    Me.zscale(ipt, ishape) = sLast
                 Next
                 ' populate extra time (fixes #1427, #1557)
-                If isSeasonal(ishape) Then
-                    For ipt = orgPts + 1 To ForcePoints
-                        zscale(ipt, ishape) = orgZscale(1 + ((ipt - 1) Mod cCore.N_MONTHS), ishape)
+                If Me.isSeasonal(ishape) Then
+                    For ipt = orgPts + 1 To Me.ForcePoints
+                        Me.zscale(ipt, ishape) = orgZscale(1 + ((ipt - 1) Mod cCore.N_MONTHS), ishape)
                     Next
                 Else
-                    For ipt = orgPts + 1 To ForcePoints
-                        zscale(ipt, ishape) = sLast
+                    For ipt = orgPts + 1 To Me.ForcePoints
+                        Me.zscale(ipt, ishape) = sLast
                     Next
                 End If
             Next
@@ -1240,18 +1240,18 @@ Public Class cEcosimDatastructures
 
         'copy the last point from the original data to the end of the new data
         If bCopyLastShapePoint Then
-            If NumYears > orgNYears Then
+            If Me.NumYears > orgNYears Then
 
                 'for the fishing rate and fish mort data copy the last point into the new points
-                For igrp As Integer = 1 To nGroups
-                    For ipt = orgNTimes + 1 To NTimes
-                        FishRateNo(igrp, ipt) = FishRateNo(igrp, orgNTimes)
+                For igrp As Integer = 1 To Me.nGroups
+                    For ipt = orgNTimes + 1 To Me.NTimes
+                        Me.FishRateNo(igrp, ipt) = Me.FishRateNo(igrp, orgNTimes)
                     Next
                 Next
 
-                For iflt As Integer = 1 To nGear
-                    For ipt = orgNTimes + 1 To NTimes
-                        FishRateGear(iflt, ipt) = FishRateGear(iflt, orgNTimes)
+                For iflt As Integer = 1 To Me.nGear
+                    For ipt = orgNTimes + 1 To Me.NTimes
+                        Me.FishRateGear(iflt, ipt) = Me.FishRateGear(iflt, orgNTimes)
                     Next
                 Next
 
@@ -1330,64 +1330,64 @@ Public Class cEcosimDatastructures
         'see original code "SetupParametersRead()"
 
         'the commented out variables where in the original code but are not declared at this time
-        VulMultAll = 0.3
+        Me.VulMultAll = 0.3
         'StepsPerYear = 12
-        TimeJuv(0) = 1
-        mintimejuv(0) = 1
-        maxtimejuv(0) = 1.0001
-        RecPower(0) = 1
-        FtimeMax(0) = 2
-        FtimeAdjust(0) = 0.5
-        MoPred(0) = 0
+        Me.TimeJuv(0) = 1
+        Me.mintimejuv(0) = 1
+        Me.maxtimejuv(0) = 1.0001
+        Me.RecPower(0) = 1
+        Me.FtimeMax(0) = 2
+        Me.FtimeAdjust(0) = 0.5
+        Me.MoPred(0) = 0
         'Next other parameters
-        Discount = 5
-        NumYears = 20
-        StepSize = 100
-        SystemRecovery = 1
-        SorWt = 0.5
-        EquilibriumStepSize = 0.003
-        StepsPerMonth = 1
+        Me.Discount = 5
+        Me.NumYears = 20
+        Me.StepSize = 100
+        Me.SystemRecovery = 1
+        Me.SorWt = 0.5
+        Me.EquilibriumStepSize = 0.003
+        Me.StepsPerMonth = 1
         'StepsPerMonth = 30
         'MsgBox("Warning daily time step.")
 
         'Hack warning temp hard wire of summary time periods
-        SumStart(0) = 0
-        SumStart(1) = NumYears - 1
-        NumStep = NumStepsPerYear
+        Me.SumStart(0) = 0
+        Me.SumStart(1) = Me.NumYears - 1
+        Me.NumStep = Me.NumStepsPerYear
 
         'DoIntegrate=1 in the ini file 
-        Integrate = True
+        Me.Integrate = True
 
-        VulMultAll = 2
+        Me.VulMultAll = 2
 
         Dim i As Integer
 
-        For i = 1 To nGroups     'prey
-            QmQo(i) = 1
-            CmCo(i) = 1000
-            SwitchPower(i) = 0
-            PBmaxs(i) = 2
+        For i = 1 To Me.nGroups     'prey
+            Me.QmQo(i) = 1
+            Me.CmCo(i) = 1000
+            Me.SwitchPower(i) = 0
+            Me.PBmaxs(i) = 2
             'jb price(nGroups) is not used anywhere
             ' price(i) = 1
 
-            NoIntegrate(i) = i
-            FtimeMax(i) = FtimeMax(0)
-            FtimeAdjust(i) = FtimeAdjust(0)
-            MoPred(i) = MoPred(0)
-            RiskTime(i) = 0
+            Me.NoIntegrate(i) = i
+            Me.FtimeMax(i) = Me.FtimeMax(0)
+            Me.FtimeAdjust(i) = Me.FtimeAdjust(0)
+            Me.MoPred(i) = Me.MoPred(0)
+            Me.RiskTime(i) = 0
 
-            PaddP(i) = 1
+            Me.PaddP(i) = 1
 
         Next
 
         For iflt As Integer = 1 To Me.nGear
-            EffortConversionFactor(iflt) = 1
+            Me.EffortConversionFactor(iflt) = 1
         Next
 
         'Next from CJW's TemporaryRead
-        If FtimeMax(0) <= 0 Then FtimeMax(0) = 2
-        If FtimeAdjust(0) < 0 Then FtimeAdjust(0) = 0.5
-        If MoPred(0) <= 0 Then MoPred(0) = 1
+        If Me.FtimeMax(0) <= 0 Then Me.FtimeMax(0) = 2
+        If Me.FtimeAdjust(0) < 0 Then Me.FtimeAdjust(0) = 0.5
+        If Me.MoPred(0) <= 0 Then Me.MoPred(0) = 1
 
 
     End Sub
@@ -1399,17 +1399,17 @@ Public Class cEcosimDatastructures
             'The fishing Policy Search runs Ecosim for an extra 20 years
             'in this case driving data i.e. Fishing Effort and RelQ 
             'are set to the last year of the simulation
-            iTimestep = NTimes
+            iTimestep = Me.NTimes
 
         End If
 
-        For iflt As Integer = 1 To nGear
-            For igrp As Integer = 1 To nGroups
+        For iflt As Integer = 1 To Me.nGear
+            For igrp As Integer = 1 To Me.nGroups
                 If bUseNullValues Then
-                    Me.relQ(iflt, igrp) = relQt(iflt, igrp, iTimestep)
+                    Me.relQ(iflt, igrp) = Me.relQt(iflt, igrp, iTimestep)
                 Else
-                    If relQt(iflt, igrp, iTimestep) <> cCore.NULL_VALUE Then
-                        Me.relQ(iflt, igrp) = relQt(iflt, igrp, iTimestep)
+                    If Me.relQt(iflt, igrp, iTimestep) <> cCore.NULL_VALUE Then
+                        Me.relQ(iflt, igrp) = Me.relQt(iflt, igrp, iTimestep)
                     Else
                         Me.relQ(iflt, igrp) = 0
                     End If
@@ -1426,9 +1426,9 @@ Public Class cEcosimDatastructures
     ''' </summary>
     Public Sub DefaultSummaryPeriods()
         Try
-            Debug.Assert(NumYears <> 0 And NumStep <> 0 And NumStepsPerYear <> 0, "DefaultSummaryPeriods() could not be set!")
-            SumStart(0) = 0
-            SumStart(1) = NumYears - NumStep / NumStepsPerYear
+            Debug.Assert(Me.NumYears <> 0 And Me.NumStep <> 0 And Me.NumStepsPerYear <> 0, "DefaultSummaryPeriods() could not be set!")
+            Me.SumStart(0) = 0
+            Me.SumStart(1) = Me.NumYears - Me.NumStep / Me.NumStepsPerYear
         Catch ex As Exception
             cLog.Write(ex)
             'the model can still run if the summary time periods are messed up
@@ -1440,16 +1440,16 @@ Public Class cEcosimDatastructures
     Public Sub RedimTime()
         'Dim MaxTime As Integer
 
-        Debug.Assert(NumYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")
-        ReDim FishRateNo(nGroups, NTimes)  'was 1200
-        ReDim FishRateGear(nGear + 1, NTimes)  'was 1200
+        Debug.Assert(Me.NumYears <> 0, Me.ToString & ".RedimTotalTimeVariables() TotalTime = 0 Something is very wrong......")
+        ReDim Me.FishRateNo(Me.nGroups, Me.NTimes)  'was 1200
+        ReDim Me.FishRateGear(Me.nGear + 1, Me.NTimes)  'was 1200
 
-        RedimOutputsByTime(NTimes)
+        Me.RedimOutputsByTime(Me.NTimes)
 
         'reset some default values before the data is populated by an interface or a datasource
         'this worked differently in EwE5
-        DefaultFishMortalityRates()
-        DefaultFishingRates()
+        Me.DefaultFishMortalityRates()
+        Me.DefaultFishingRates()
 
         ' DefaultCatchabilities()
 
@@ -1459,11 +1459,11 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Redim preserve the Fishing Rate and Fish Mort arrays to the number of time steps the model will run for.
     ''' </summary>
-    Private Sub redimFishingRates(ByVal nTimeSteps As Integer)
+    Private Sub redimFishingRates(nTimeSteps As Integer)
 
         'NTimes is the number of time step for the current number of years
-        ReDim Preserve FishRateNo(nGroups, nTimeSteps)  'was 1200
-        ReDim Preserve FishRateGear(nGear + 1, nTimeSteps)  'was 1200
+        ReDim Preserve Me.FishRateNo(Me.nGroups, nTimeSteps)  'was 1200
+        ReDim Preserve Me.FishRateGear(Me.nGear + 1, nTimeSteps)  'was 1200
 
     End Sub
 
@@ -1475,59 +1475,59 @@ Public Class cEcosimDatastructures
     ''' Ecosim is initialized but not run when Ecospace is loaded.
     ''' This would also allow for a flag to turn of the saving of results over time.
     ''' </remarks>
-    Public Sub dimResults(ByVal NumberOfYears As Integer)
+    Public Sub dimResults(NumberOfYears As Integer)
 
         'reset the number of time steps in the summary data
-        nSumTimeSteps = 0
+        Me.nSumTimeSteps = 0
 
-        Dim nt As Integer = NumberOfYears * NumStepsPerYear
+        Dim nt As Integer = NumberOfYears * Me.NumStepsPerYear
 
         'jb 15-Nov-2010 force garbage collection on large blocks of memory
-        Erase ResultsOverTime
-        Erase PredPreyResultsOverTime
-        Erase ResultsAvgByPreyPred
-        Erase ResultsSumCatchByGroupGear
-        Erase ResultsSumFMortByGroupGear
-        Erase ResultsSumValueByGroupGear
-        Erase ResultsTimeLandingsGroupGear
-        Erase ResultsEffort
-        Erase Elect
+        Erase Me.ResultsOverTime
+        Erase Me.PredPreyResultsOverTime
+        Erase Me.ResultsAvgByPreyPred
+        Erase Me.ResultsSumCatchByGroupGear
+        Erase Me.ResultsSumFMortByGroupGear
+        Erase Me.ResultsSumValueByGroupGear
+        Erase Me.ResultsTimeLandingsGroupGear
+        Erase Me.ResultsEffort
+        Erase Me.Elect
 
-        Erase ResultsSumRelValueByGroup
-        Erase ResultsTimeDiscardsGroupGear
-        Erase ResultsTimeDiscardsMortGroupGear
-        Erase ResultsTimeDiscardsSurvivedGroupGear
+        Erase Me.ResultsSumRelValueByGroup
+        Erase Me.ResultsTimeDiscardsGroupGear
+        Erase Me.ResultsTimeDiscardsMortGroupGear
+        Erase Me.ResultsTimeDiscardsSurvivedGroupGear
 
         GC.Collect()
 
-        ReDim ResultsOverTime([Enum].GetValues(GetType(eEcosimResults)).Length - 1, nGroups, nt)
-        ReDim PredPreyResultsOverTime(2, nGroups, nGroups, nt)
-        ReDim ResultsAvgByPreyPred(1, nGroups, nGroups)
+        ReDim Me.ResultsOverTime([Enum].GetValues(GetType(eEcosimResults)).Length - 1, Me.nGroups, nt)
+        ReDim Me.PredPreyResultsOverTime(2, Me.nGroups, Me.nGroups, nt)
+        ReDim Me.ResultsAvgByPreyPred(1, Me.nGroups, Me.nGroups)
 
 
         'fisheries data
-        ReDim ResultsSumCatchByGroupGear(nGroups, nGear, nt) ' groups,fleets,time
-        ReDim ResultsSumFMortByGroupGear(nGroups, nGear, nt)
+        ReDim Me.ResultsSumCatchByGroupGear(Me.nGroups, Me.nGear, nt) ' groups,fleets,time
+        ReDim Me.ResultsSumFMortByGroupGear(Me.nGroups, Me.nGear, nt)
 
-        ReDim ResultsTimeLandingsGroupGear(nGroups, nGear, nt)
-        ReDim ResultsTimeDiscardsGroupGear(nGroups, nGear, nt)
-        ReDim ResultsTimeDiscardsMortGroupGear(nGroups, nGear, nt)
-        ReDim ResultsTimeDiscardsSurvivedGroupGear(nGroups, nGear, nt)
+        ReDim Me.ResultsTimeLandingsGroupGear(Me.nGroups, Me.nGear, nt)
+        ReDim Me.ResultsTimeDiscardsGroupGear(Me.nGroups, Me.nGear, nt)
+        ReDim Me.ResultsTimeDiscardsMortGroupGear(Me.nGroups, Me.nGear, nt)
+        ReDim Me.ResultsTimeDiscardsSurvivedGroupGear(Me.nGroups, Me.nGear, nt)
 
-        ReDim ResultsSumCatchByGear(nGear, nt)
-        ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
-        ReDim ResultsSumValueByGear(nGear, nt)
-        ReDim ResultsEffort(nGear, nt)
-        ReDim Elect(nGroups, nGroups, nt)
+        ReDim Me.ResultsSumCatchByGear(Me.nGear, nt)
+        ReDim Me.ResultsSumValueByGroupGear(Me.nGroups, Me.nGear, nt)
+        ReDim Me.ResultsSumValueByGear(Me.nGear, nt)
+        ReDim Me.ResultsEffort(Me.nGear, nt)
+        ReDim Me.Elect(Me.nGroups, Me.nGroups, nt)
 
-        ReDim ProfitByFleet(Me.nGear)
-        ReDim EmploymentValueByFleet(Me.nGear)
+        ReDim Me.ProfitByFleet(Me.nGear)
+        ReDim Me.EmploymentValueByFleet(Me.nGear)
 
-        ReDim ResultsLandings(Me.nGroups, Me.nGear)
-        ReDim ResultsSumRelValueByGroup(nGroups, nt)
+        ReDim Me.ResultsLandings(Me.nGroups, Me.nGear)
+        ReDim Me.ResultsSumRelValueByGroup(Me.nGroups, nt)
 
-        ReDim ResultsDiscardsMort(Me.nGroups, Me.nGear)
-        ReDim ResultsDiscardsSurvived(Me.nGroups, Me.nGear)
+        ReDim Me.ResultsDiscardsMort(Me.nGroups, Me.nGear)
+        ReDim Me.ResultsDiscardsSurvived(Me.nGroups, Me.nGear)
 
     End Sub
 
@@ -1537,18 +1537,18 @@ Public Class cEcosimDatastructures
     ''' </summary>
     Public Sub eraseResults()
 
-        Erase ResultsOverTime
-        Erase PredPreyResultsOverTime
-        Erase ResultsAvgByPreyPred
+        Erase Me.ResultsOverTime
+        Erase Me.PredPreyResultsOverTime
+        Erase Me.ResultsAvgByPreyPred
 
         'fisheries data
-        Erase ResultsSumCatchByGroupGear ' groups,fleets,time
-        Erase ResultsSumCatchByGear
-        Erase ResultsSumValueByGroupGear
-        Erase ResultsSumValueByGear
-        Erase ResultsEffort
-        Erase Elect
-        Erase ResultsSumFMortByGroupGear
+        Erase Me.ResultsSumCatchByGroupGear ' groups,fleets,time
+        Erase Me.ResultsSumCatchByGear
+        Erase Me.ResultsSumValueByGroupGear
+        Erase Me.ResultsSumValueByGear
+        Erase Me.ResultsEffort
+        Erase Me.Elect
+        Erase Me.ResultsSumFMortByGroupGear
 
     End Sub
 
@@ -1576,12 +1576,12 @@ Public Class cEcosimDatastructures
         Dim i As Integer
         Dim j As Integer
 
-        For i = 1 To nGear + 1
-            FishRateGearBasis(i) = 1
-            FishRateGear(i, 0) = 1
+        For i = 1 To Me.nGear + 1
+            Me.FishRateGearBasis(i) = 1
+            Me.FishRateGear(i, 0) = 1
 
-            For j = 0 To NTimes
-                FishRateGear(i, j) = 1
+            For j = 0 To Me.NTimes
+                Me.FishRateGear(i, j) = 1
             Next
         Next
 
@@ -1617,7 +1617,7 @@ Public Class cEcosimDatastructures
     ''' </summary>
     ''' <param name="lstFleetsIndexesToSet">List for fleets to set to default</param>
     ''' <remarks>Call when an effort timeseries has been unloaded to reset effort to default values</remarks>
-    Sub setEffortToDefault(ByVal lstFleetsIndexesToSet As List(Of Integer))
+    Sub setEffortToDefault(lstFleetsIndexesToSet As List(Of Integer))
         Try
             'reset effort to 1 for all fleets that where disabled
             For Each flt As Integer In lstFleetsIndexesToSet
@@ -1650,11 +1650,11 @@ Public Class cEcosimDatastructures
         'relQ() has a time component
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        For i = 1 To nGroups
-            For j = 1 To NTimes
+        For i = 1 To Me.nGroups
+            For j = 1 To Me.NTimes
                 'set FishRateNo(group,time) to CatchRate
                 'for the full run time
-                FishRateNo(i, j) = Fish1(i)
+                Me.FishRateNo(i, j) = Me.Fish1(i)
             Next
         Next
 
@@ -1667,103 +1667,103 @@ Public Class cEcosimDatastructures
     Public Sub CopyTo(ByRef d As cEcosimDatastructures)
         Try
 
-            d.GroupDBID = GroupDBID.Clone
-            d.nGroups = nGroups
-            d.nGear = nGear
+            d.GroupDBID = Me.GroupDBID.Clone
+            d.nGroups = Me.nGroups
+            d.nGear = Me.nGear
 
             'now we can redim
             d.RedimVars()
 
-            d.FirstTime = FirstTime
+            d.FirstTime = Me.FirstTime
             '    d.ConSimOn = ConSimOn
-            d.TrophicOff = TrophicOff
-            d.IndicesOn = IndicesOn
-            d.UseVarPQ = UseVarPQ
-            d.NudgeChecked = NudgeChecked
-            d.Integrate = Integrate
-            d.AbortRun = AbortRun
-            d.EvolveIsOn = EvolveIsOn
-            d.BiomassOn = BiomassOn
-            d.ActivePair = ActivePair
+            d.TrophicOff = Me.TrophicOff
+            d.IndicesOn = Me.IndicesOn
+            d.UseVarPQ = Me.UseVarPQ
+            d.NudgeChecked = Me.NudgeChecked
+            d.Integrate = Me.Integrate
+            d.AbortRun = Me.AbortRun
+            d.EvolveIsOn = Me.EvolveIsOn
+            d.BiomassOn = Me.BiomassOn
+            d.ActivePair = Me.ActivePair
             'd.CperFlag = CperFlag
-            d.NumYears = NumYears
-            d.NumStepsPerYear = NumStepsPerYear
-            d.StepSize = StepSize
-            d.SorWt = SorWt
-            d.Discount = Discount
-            d.EquilibriumStepSize = EquilibriumStepSize
-            d.EquilScaleMax = EquilScaleMax
-            d.NutBaseFreeProp = NutBaseFreeProp
-            d.NutMin = NutMin
-            d.NutBiom = NutBiom
-            d.NutTot = NutTot
-            d.NutFree = NutFree
-            d.NutFreeBase = NutFreeBase.Clone
-            d.VulMultAll = VulMultAll
-            d.VulMult = VulMult.Clone
-            d.vulrate = vulrate.Clone
-            d.maxflow = maxflow.Clone
-            d.FlowType = FlowType.Clone
+            d.NumYears = Me.NumYears
+            d.NumStepsPerYear = Me.NumStepsPerYear
+            d.StepSize = Me.StepSize
+            d.SorWt = Me.SorWt
+            d.Discount = Me.Discount
+            d.EquilibriumStepSize = Me.EquilibriumStepSize
+            d.EquilScaleMax = Me.EquilScaleMax
+            d.NutBaseFreeProp = Me.NutBaseFreeProp
+            d.NutMin = Me.NutMin
+            d.NutBiom = Me.NutBiom
+            d.NutTot = Me.NutTot
+            d.NutFree = Me.NutFree
+            d.NutFreeBase = Me.NutFreeBase.Clone
+            d.VulMultAll = Me.VulMultAll
+            d.VulMult = Me.VulMult.Clone
+            d.vulrate = Me.vulrate.Clone
+            d.maxflow = Me.maxflow.Clone
+            d.FlowType = Me.FlowType.Clone
             'd.PoolForceCatch = PoolForceCatch.Clone
-            d.Eatenof = Eatenof.Clone
-            d.Eatenby = Eatenby.Clone
-            d.NutForceNumber = NutForceNumber
-            d.NutPBmax = NutPBmax
-            d.SystemRecovery = SystemRecovery
-            d.FtimeMax = FtimeMax.Clone
-            d.FtimeAdjust = FtimeAdjust.Clone
-            d.MoPred = MoPred.Clone
-            d.mo = mo.Clone
-            d.RiskTime = RiskTime.Clone
-            d.QmQo = QmQo.Clone
-            d.CmCo = CmCo.Clone
-            d.SwitchPower = SwitchPower.Clone
-            d.BaseTimeSwitch = BaseTimeSwitch.Clone
-            d.PBmaxs = PBmaxs.Clone
-            d.RecPower = RecPower.Clone
-            d.Emig = Emig.Clone
-            d.Consumption = Consumption.Clone
-            d.Htime = Htime.Clone
-            d.SimDC = SimDC.Clone
-            d.iadult = iadult.Clone
-            d.ijuv = ijuv.Clone
-            d.TimeJuv = TimeJuv.Clone
-            d.maxtimejuv = maxtimejuv.Clone
-            d.mintimejuv = mintimejuv.Clone
-            d.NoIntegrate = NoIntegrate.Clone
-            d.Fish1 = Fish1.Clone
-            d.FishTime = FishTime.Clone
-            d.FishRateMax = FishRateMax.Clone
-            d.FishMGear = FishMGear.Clone
-            d.FishRateNo = FishRateNo.Clone
-            d.FishRateNoDBID = FishRateNoDBID.Clone
-            d.FishRateNoTitle = FishRateNoTitle.Clone
-            d.GroupFishRateNoDBID = GroupFishRateNoDBID.Clone
-            d.FishRateGear = FishRateGear.Clone
-            d.FishRateGearBasis = FishRateGearBasis.Clone
-            d.FishRateGearDBID = FishRateGearDBID.Clone
-            d.FishRateGearTitle = FishRateGearTitle.Clone
-            d.Ftime = Ftime.Clone
-            d.Hden = Hden.Clone
-            d.QBoutside = QBoutside.Clone
-            d.DetritusOut = DetritusOut.Clone
-            d.AssimEff = AssimEff.Clone
-            d.SimGE = SimGE.Clone
-            d.StartBiomass = StartBiomass.Clone
-            d.pbbiomass = pbbiomass.Clone
-            d.loss = loss.Clone
-            d.Cbase = Cbase.Clone
-            d.relQ = relQ.Clone
+            d.Eatenof = Me.Eatenof.Clone
+            d.Eatenby = Me.Eatenby.Clone
+            d.NutForceNumber = Me.NutForceNumber
+            d.NutPBmax = Me.NutPBmax
+            d.SystemRecovery = Me.SystemRecovery
+            d.FtimeMax = Me.FtimeMax.Clone
+            d.FtimeAdjust = Me.FtimeAdjust.Clone
+            d.MoPred = Me.MoPred.Clone
+            d.mo = Me.mo.Clone
+            d.RiskTime = Me.RiskTime.Clone
+            d.QmQo = Me.QmQo.Clone
+            d.CmCo = Me.CmCo.Clone
+            d.SwitchPower = Me.SwitchPower.Clone
+            d.BaseTimeSwitch = Me.BaseTimeSwitch.Clone
+            d.PBmaxs = Me.PBmaxs.Clone
+            d.RecPower = Me.RecPower.Clone
+            d.Emig = Me.Emig.Clone
+            d.Consumption = Me.Consumption.Clone
+            d.Htime = Me.Htime.Clone
+            d.SimDC = Me.SimDC.Clone
+            d.iadult = Me.iadult.Clone
+            d.ijuv = Me.ijuv.Clone
+            d.TimeJuv = Me.TimeJuv.Clone
+            d.maxtimejuv = Me.maxtimejuv.Clone
+            d.mintimejuv = Me.mintimejuv.Clone
+            d.NoIntegrate = Me.NoIntegrate.Clone
+            d.Fish1 = Me.Fish1.Clone
+            d.FishTime = Me.FishTime.Clone
+            d.FishRateMax = Me.FishRateMax.Clone
+            d.FishMGear = Me.FishMGear.Clone
+            d.FishRateNo = Me.FishRateNo.Clone
+            d.FishRateNoDBID = Me.FishRateNoDBID.Clone
+            d.FishRateNoTitle = Me.FishRateNoTitle.Clone
+            d.GroupFishRateNoDBID = Me.GroupFishRateNoDBID.Clone
+            d.FishRateGear = Me.FishRateGear.Clone
+            d.FishRateGearBasis = Me.FishRateGearBasis.Clone
+            d.FishRateGearDBID = Me.FishRateGearDBID.Clone
+            d.FishRateGearTitle = Me.FishRateGearTitle.Clone
+            d.Ftime = Me.Ftime.Clone
+            d.Hden = Me.Hden.Clone
+            d.QBoutside = Me.QBoutside.Clone
+            d.DetritusOut = Me.DetritusOut.Clone
+            d.AssimEff = Me.AssimEff.Clone
+            d.SimGE = Me.SimGE.Clone
+            d.StartBiomass = Me.StartBiomass.Clone
+            d.pbbiomass = Me.pbbiomass.Clone
+            d.loss = Me.loss.Clone
+            d.Cbase = Me.Cbase.Clone
+            d.relQ = Me.relQ.Clone
 
-            d.ForcingShapeType = ForcingShapeType.Clone
+            d.ForcingShapeType = Me.ForcingShapeType.Clone
             'ShapeParameters = ShapeParameters.clone
 
             '    d.MediationShapeParams = MediationShapeParams.Clone
-            d.ForcingShapeParams = ForcingShapeParams.Clone
+            d.ForcingShapeParams = Me.ForcingShapeParams.Clone
             '   d.MediationTitles = MediationTitles.Clone
             '   d.MediationDBIDs = MediationDBIDs.Clone
-            d.ForcingDBIDs = ForcingDBIDs.Clone
-            d.isSeasonal = isSeasonal.Clone
+            d.ForcingDBIDs = Me.ForcingDBIDs.Clone
+            d.isSeasonal = Me.isSeasonal.Clone
 
             ''Mediation vars 
             'd.MediationShapes = MediationShapes
@@ -1777,54 +1777,54 @@ Public Class cEcosimDatastructures
             'd.MedIsUsed = MedIsUsed.Clone  '
             'd.MedVal = MedVal.Clone
             'd.IMedBase = IMedBase.Clone
-            d.inlinks = inlinks
-            d.ilink = ilink.Clone
-            d.jlink = jlink.Clone
+            d.inlinks = Me.inlinks
+            d.ilink = Me.ilink.Clone
+            d.jlink = Me.jlink.Clone
 
             'Forcing
-            d.NumForcingShapes = NumForcingShapes
-            d.ForcingTitles = ForcingTitles.Clone
-            d.ForcePoints = ForcePoints
-            d.ZmaxScale = ZmaxScale
-            d.zscale = zscale.Clone
-            d.tval = tval.Clone
-            d.EggProdShape = EggProdShape.Clone
-            d.pbm = pbm.Clone
-            d.pred = pred.Clone
-            d.Qmain = Qmain.Clone
-            d.Qrisk = Qrisk.Clone
-            d.Consumpt = Consumpt.Clone
+            d.NumForcingShapes = Me.NumForcingShapes
+            d.ForcingTitles = Me.ForcingTitles.Clone
+            d.ForcePoints = Me.ForcePoints
+            d.ZmaxScale = Me.ZmaxScale
+            d.zscale = Me.zscale.Clone
+            d.tval = Me.tval.Clone
+            d.EggProdShape = Me.EggProdShape.Clone
+            d.pbm = Me.pbm.Clone
+            d.pred = Me.pred.Clone
+            d.Qmain = Me.Qmain.Clone
+            d.Qrisk = Me.Qrisk.Clone
+            d.Consumpt = Me.Consumpt.Clone
             'd.DCPct = DCPct.Clone
-            d.ResultsOverTime = ResultsOverTime.Clone
-            d.PredPreyResultsOverTime = PredPreyResultsOverTime.Clone
-            d.ResultsAvgByPreyPred = ResultsAvgByPreyPred.Clone
-            d.NumStep = NumStep
-            d.NumStep0 = NumStep0
-            d.NumStep1 = NumStep1
-            d.SumStart = SumStart.Clone
-            d.Narena = Narena
-            d.Iarena = Iarena.Clone
-            d.Jarena = Jarena.Clone
-            d.ArenaNo = ArenaNo.Clone
-            d.VulArena = VulArena.Clone
-            d.Alink = Alink.Clone
-            d.IlinkSet = IlinkSet.Clone
-            d.JlinkSet = JlinkSet.Clone
-            d.KlinkSet = KlinkSet.Clone
-            d.PeatArena = PeatArena.Clone
-            d.ArenaLink = ArenaLink.Clone
-            d.Qlink = Qlink.Clone
-            d.NlinksSet = NlinksSet
-            d.BoutFeeding = BoutFeeding
-            d.RelaSwitch = RelaSwitch.Clone
-            d.ToDetritus = ToDetritus.Clone
-            d.FisForced = FisForced.Clone
-            d.SS = SS
+            d.ResultsOverTime = Me.ResultsOverTime.Clone
+            d.PredPreyResultsOverTime = Me.PredPreyResultsOverTime.Clone
+            d.ResultsAvgByPreyPred = Me.ResultsAvgByPreyPred.Clone
+            d.NumStep = Me.NumStep
+            d.NumStep0 = Me.NumStep0
+            d.NumStep1 = Me.NumStep1
+            d.SumStart = Me.SumStart.Clone
+            d.Narena = Me.Narena
+            d.Iarena = Me.Iarena.Clone
+            d.Jarena = Me.Jarena.Clone
+            d.ArenaNo = Me.ArenaNo.Clone
+            d.VulArena = Me.VulArena.Clone
+            d.Alink = Me.Alink.Clone
+            d.IlinkSet = Me.IlinkSet.Clone
+            d.JlinkSet = Me.JlinkSet.Clone
+            d.KlinkSet = Me.KlinkSet.Clone
+            d.PeatArena = Me.PeatArena.Clone
+            d.ArenaLink = Me.ArenaLink.Clone
+            d.Qlink = Me.Qlink.Clone
+            d.NlinksSet = Me.NlinksSet
+            d.BoutFeeding = Me.BoutFeeding
+            d.RelaSwitch = Me.RelaSwitch.Clone
+            d.ToDetritus = Me.ToDetritus.Clone
+            d.FisForced = Me.FisForced.Clone
+            d.SS = Me.SS
 
-            d.Epower = Epower
-            d.PcapBase = PcapBase
-            d.CapDepreciate = CapDepreciate
-            d.CapBaseGrowth = CapBaseGrowth
+            d.Epower = Me.Epower
+            d.PcapBase = Me.PcapBase
+            d.CapDepreciate = Me.CapDepreciate
+            d.CapBaseGrowth = Me.CapBaseGrowth
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -1838,14 +1838,14 @@ Public Class cEcosimDatastructures
     ''' <param name="iSummary">0 = Start Summary Time Period. 1 = End Summary Time Period</param>
     ''' <returns>iTime Index</returns>
     ''' <remarks></remarks>
-    Private Function summaryTimeIndex(ByVal iSummary As Integer) As Integer
+    Private Function summaryTimeIndex(iSummary As Integer) As Integer
         Dim itime As Integer
-        itime = CInt(SumStart(iSummary) * NumStepsPerYear) + 1
-        If itime > NumYears * NumStepsPerYear Then itime = NumYears * NumStepsPerYear - NumStep
+        itime = CInt(Me.SumStart(iSummary) * Me.NumStepsPerYear) + 1
+        If itime > Me.NumYears * Me.NumStepsPerYear Then itime = Me.NumYears * Me.NumStepsPerYear - Me.NumStep
         Return itime
     End Function
 
-    Public Function getSummaryBioForGroup(ByVal iGroup As Integer, ByRef startBio As Single, ByRef endBio As Single) As Single
+    Public Function getSummaryBioForGroup(iGroup As Integer, ByRef startBio As Single, ByRef endBio As Single) As Single
         Dim bsum As Single, nbsum As Integer, stime As Integer, itime As Integer
         Dim bio(1) As Single
 
@@ -1855,10 +1855,10 @@ Public Class cEcosimDatastructures
                 bsum = 0
                 nbsum = 0
 
-                stime = summaryTimeIndex(isum)
+                stime = Me.summaryTimeIndex(isum)
 
-                For itime = stime To stime + NumStep - 1
-                    bsum = bsum + ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, itime)
+                For itime = stime To stime + Me.NumStep - 1
+                    bsum = bsum + Me.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, itime)
                     nbsum += 1
                 Next itime
 
@@ -1883,29 +1883,29 @@ Public Class cEcosimDatastructures
 
     End Function
 
-    Public Function getSummaryValueByGroup(ByVal iGroup As Integer, ByVal iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
+    Public Function getSummaryValueByGroup(iGroup As Integer, iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
         Return Me.getSummarybyGroupFleet(Me.ResultsSumValueByGroupGear, iGroup, iFleet, startCatch, endCatch)
     End Function
 
 
-    Public Function getSummaryCostByCatch(ByVal iFleet As Integer, ByRef startCost As Single, ByRef endcost As Single) As Boolean
+    Public Function getSummaryCostByCatch(iFleet As Integer, ByRef startCost As Single, ByRef endcost As Single) As Boolean
         Me.getSummaryByFleet(Me.ResultsEffort, iFleet, startCost, endcost)
     End Function
 
 
-    Public Function getSummaryCatchByGroup(ByVal iGroup As Integer, ByVal iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
-        Return Me.getSummarybyGroupFleet(ResultsSumCatchByGroupGear, iGroup, iFleet, startCatch, endCatch)
+    Public Function getSummaryCatchByGroup(iGroup As Integer, iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
+        Return Me.getSummarybyGroupFleet(Me.ResultsSumCatchByGroupGear, iGroup, iFleet, startCatch, endCatch)
     End Function
 
-    Public Function getSummaryBioOfCatch(ByVal iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
-        Return Me.getSummaryByFleet(ResultsSumCatchByGear, iFleet, startCatch, endCatch)
+    Public Function getSummaryBioOfCatch(iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
+        Return Me.getSummaryByFleet(Me.ResultsSumCatchByGear, iFleet, startCatch, endCatch)
     End Function
 
-    Public Function getSummaryValueOfCatch(ByVal iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
-        Return Me.getSummaryByFleet(ResultsSumValueByGear, iFleet, startCatch, endCatch)
+    Public Function getSummaryValueOfCatch(iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
+        Return Me.getSummaryByFleet(Me.ResultsSumValueByGear, iFleet, startCatch, endCatch)
     End Function
 
-    Private Function getSummarybyGroupFleet(ByRef values(,,) As Single, ByVal iGroup As Integer, ByVal iFleet As Integer, ByRef startVal As Single, ByRef endVal As Single) As Boolean
+    Private Function getSummarybyGroupFleet(ByRef values(,,) As Single, iGroup As Integer, iFleet As Integer, ByRef startVal As Single, ByRef endVal As Single) As Boolean
 
         Dim bsum As Single, nbsum As Integer, stime As Integer, itime As Integer
         Dim sumValues(1) As Single
@@ -1915,9 +1915,9 @@ Public Class cEcosimDatastructures
                 bsum = 0
                 nbsum = 0
 
-                stime = summaryTimeIndex(isum)
+                stime = Me.summaryTimeIndex(isum)
 
-                For itime = stime To stime + NumStep - 1
+                For itime = stime To stime + Me.NumStep - 1
                     bsum = bsum + values(iGroup, iFleet, itime)
                     nbsum += 1
                 Next itime
@@ -1943,7 +1943,7 @@ Public Class cEcosimDatastructures
     End Function
 
 
-    Private Function getSummaryByFleet(ByRef values(,) As Single, ByVal iFleet As Integer, ByRef startVal As Single, ByRef endVal As Single) As Boolean
+    Private Function getSummaryByFleet(ByRef values(,) As Single, iFleet As Integer, ByRef startVal As Single, ByRef endVal As Single) As Boolean
         Dim bsum As Single, nbsum As Integer, stime As Integer, itime As Integer
         Dim sumValues(1) As Single
 
@@ -1952,14 +1952,14 @@ Public Class cEcosimDatastructures
                 bsum = 0
                 nbsum = 0
 
-                stime = summaryTimeIndex(isum)
+                stime = Me.summaryTimeIndex(isum)
 
-                For itime = stime To stime + NumStep - 1
+                For itime = stime To stime + Me.NumStep - 1
                     bsum = bsum + values(iFleet, itime)
                     nbsum += 1
                 Next itime
 
-                sumValues(isum) = bsum / NumStep
+                sumValues(isum) = bsum / Me.NumStep
 
             Next isum
 
@@ -1986,7 +1986,7 @@ Public Class cEcosimDatastructures
     ''' <param name="EcopathCost">Ecopath precentage of Cost CostPct(3,nfleets)</param>
     ''' <param name="JobMultiplier">Jobs multiplier from the Search data</param>
     ''' <remarks>Computes ProfitByFleet(nFleets), JobsByFleet(nfleets), Prey Pred consumption</remarks>
-    Public Sub SummarizeResults(ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
+    Public Sub SummarizeResults(EcopathCost(,) As Single, JobMultiplier() As Single)
 
         For iPrey As Integer = 1 To Me.nGroups
             For iPred As Integer = 1 To Me.nGroups
@@ -1995,8 +1995,8 @@ Public Class cEcosimDatastructures
             Next
         Next
 
-        ReDim ProfitByFleet(Me.nGear)
-        ReDim EmploymentValueByFleet(Me.nGear)
+        ReDim Me.ProfitByFleet(Me.nGear)
+        ReDim Me.EmploymentValueByFleet(Me.nGear)
 
         Dim sumValue As Single, sumEffort As Single
         'number of years the data was summarized over
@@ -2014,11 +2014,11 @@ Public Class cEcosimDatastructures
 
             'average profit
             '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
-            ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) * sumEffort / nYears
+            Me.ProfitByFleet(iflt) = sumValue * (EcopathCost(iflt, eCostIndex.Profit) / 100) * sumEffort / nYears
 
             'TEMP just for something to work with until we have ECost up and running
             '[value of catch] * [Jobs(fleet) from the search forms]
-            EmploymentValueByFleet(iflt) = sumValue * JobMultiplier(iflt) / nYears 'Jobs(Fleet) percentage of value that goes to Jobs default=1
+            Me.EmploymentValueByFleet(iflt) = sumValue * JobMultiplier(iflt) / nYears 'Jobs(Fleet) percentage of value that goes to Jobs default=1
 
         Next iflt
 
@@ -2026,12 +2026,12 @@ Public Class cEcosimDatastructures
 
     Public Sub ClearSummaryResults()
 
-        NumStep0 = 0     'Actual number of steps for the zero element of the summary arrays Start summary time period
-        NumStep1 = 0  'Actual number of steps for the one element of the summary arrays end summary time peroid
+        Me.NumStep0 = 0     'Actual number of steps for the zero element of the summary arrays Start summary time period
+        Me.NumStep1 = 0  'Actual number of steps for the one element of the summary arrays end summary time peroid
         'storage for summary time period data
-        ReDim SumBiomass(2, nGroups) 'SumBiomass(iTimePeriod,iGroup)
+        ReDim Me.SumBiomass(2, Me.nGroups) 'SumBiomass(iTimePeriod,iGroup)
         'catch by group
-        ReDim SumCatch(2, nGroups)
+        ReDim Me.SumCatch(2, Me.nGroups)
 
     End Sub
 

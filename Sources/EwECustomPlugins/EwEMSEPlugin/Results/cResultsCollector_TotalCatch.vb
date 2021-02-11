@@ -37,7 +37,7 @@ Public Class cResultsCollector_TotalCatch
 
     Public Overloads Overrides ReadOnly Property ResultsThroughProjection(iGrp As Integer, iFleet As Integer, iTime As Integer) As Double
         Get
-            Return m_MSE.CatchesThroughoutProjection(iGrp, iFleet, iTime)
+            Return Me.m_MSE.CatchesThroughoutProjection(iGrp, iFleet, iTime)
         End Get
     End Property
 
@@ -49,7 +49,7 @@ Public Class cResultsCollector_TotalCatch
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return (m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear)
+            Return (Me.m_MSE.NYearsProject * Me.m_MSE.EcosimData.NumStepsPerYear)
         End Get
     End Property
 

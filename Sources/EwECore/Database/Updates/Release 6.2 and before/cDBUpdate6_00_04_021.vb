@@ -80,7 +80,7 @@ Friend Class cDBUpdate6_00_04_021
 
     End Function
 
-    Private Function AddMaxFishingMortality(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddMaxFishingMortality(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True
@@ -95,7 +95,7 @@ Friend Class cDBUpdate6_00_04_021
 
     End Function
 
-    Private Function SplitSDSal(ByVal db As cEwEDatabase) As Boolean
+    Private Function SplitSDSal(db As cEwEDatabase) As Boolean
 
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing

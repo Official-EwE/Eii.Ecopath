@@ -44,10 +44,10 @@ Public Class cProcessingUnit
 
 #Region " Calculations "
 
-    Protected Overrides Function Calculate(ByVal results As cResults, _
-            ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-            ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-            ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function Calculate(results As cResults, _
+            sInputBiomass As Single, sInputValue As Single, _
+            sOutputBiomass As Single, sOutputValue As Single, _
+            iTimeStep As Integer) As Boolean
 
         Dim bSucces As Boolean = MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
         ' ..but adds Agricultural costs
@@ -58,10 +58,10 @@ Public Class cProcessingUnit
 
     End Function
 
-    Protected Overridable Function CalcAgriculturalCost(ByVal result As cResults, _
-            ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-            ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-            ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcAgriculturalCost(result As cResults, _
+            sInputBiomass As Single, sInputValue As Single, _
+            sOutputBiomass As Single, sOutputValue As Single, _
+            iTimeStep As Integer) As Boolean
 
         Dim AgriCost As Single = sOutputBiomass * Me.AgriculturalInput
         result.Store(Me, cResults.eVariableType.CostAgriculture, AgriCost, iTimeStep)
@@ -69,10 +69,10 @@ Public Class cProcessingUnit
 
     End Function
 
-    Protected Overridable Function CalcAgriculturalProducts(ByVal result As cResults, _
-            ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-            ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-            ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcAgriculturalProducts(result As cResults, _
+            sInputBiomass As Single, sInputValue As Single, _
+            sOutputBiomass As Single, sOutputValue As Single, _
+            iTimeStep As Integer) As Boolean
 
         Dim AgriRevenue As Single = sOutputBiomass * Me.AgriculturalProducts
         result.Store(Me, cResults.eVariableType.RevenueAgriculture, AgriRevenue, iTimeStep)
@@ -92,11 +92,11 @@ Public Class cProcessingUnit
         cPropertySorter.PropertyOrder(101)> _
         Public Property AgriculturalProducts() As Single
         Get
-            Return m_AgriculturalProducts
+            Return Me.m_AgriculturalProducts
         End Get
-        Set(ByVal value As Single)
-            m_AgriculturalProducts = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_AgriculturalProducts = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -108,11 +108,11 @@ Public Class cProcessingUnit
         cPropertySorter.PropertyOrder(102)> _
         Public Property AgriculturalInput() As Single
         Get
-            Return m_AgriculturalInput
+            Return Me.m_AgriculturalInput
         End Get
-        Set(ByVal value As Single)
-            m_AgriculturalInput = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_AgriculturalInput = value
+            Me.SetChanged()
         End Set
     End Property
 

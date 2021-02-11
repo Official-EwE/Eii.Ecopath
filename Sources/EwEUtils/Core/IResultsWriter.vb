@@ -34,7 +34,7 @@ Namespace Core
         ''' Inititialize a writer.
         ''' </summary>
         ''' <param name="theCore">The core to initialize with.</param>
-        Sub Init(ByVal theCore As Object)
+        Sub Init(theCore As Object)
 
         ''' <summary>
         ''' Start writing.

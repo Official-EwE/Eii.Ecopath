@@ -50,7 +50,7 @@ Public Class cResultsCollector_RealisedLandedFs
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear
+            Return Me.m_MSE.NYearsProject * Me.m_MSE.EcosimData.NumStepsPerYear
         End Get
     End Property
 
@@ -62,7 +62,7 @@ Public Class cResultsCollector_RealisedLandedFs
 
     Protected Overrides ReadOnly Property RealisedF(iGrp As Integer, iTime As Integer) As Double
         Get
-            Return m_MSE.RealisedLandedFs(iGrp, iTime)
+            Return Me.m_MSE.RealisedLandedFs(iGrp, iTime)
         End Get
     End Property
 

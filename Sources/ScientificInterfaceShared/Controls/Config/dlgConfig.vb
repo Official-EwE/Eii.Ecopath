@@ -69,14 +69,14 @@ Namespace Controls
             Me.Size = New Size(Me.Width + szPage.Width - szPanel.Width, _
                                Me.Height + szPage.Height - szPanel.Height)
 
-            Me.MinimumSize = Size
+            Me.MinimumSize = Me.Size
 
             Me.m_ctrl.Dock = DockStyle.Fill
             Me.m_plContent.Controls.Add(Me.m_ctrl)
 
             If (TypeOf Me.m_ctrl Is IOptionsPage) Then
                 Dim opts As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
-                AddHandler opts.OnChanged, AddressOf OnOptionsPageChanged
+                AddHandler opts.OnChanged, AddressOf Me.OnOptionsPageChanged
                 Me.OnOptionsPageChanged(opts, New EventArgs)
             End If
 
@@ -90,7 +90,7 @@ Namespace Controls
             Me.m_ctrl.Dispose()
 
             If (TypeOf Me.m_ctrl Is IOptionsPage) Then
-                RemoveHandler DirectCast(Me.m_ctrl, IOptionsPage).OnChanged, AddressOf OnOptionsPageChanged
+                RemoveHandler DirectCast(Me.m_ctrl, IOptionsPage).OnChanged, AddressOf Me.OnOptionsPageChanged
             End If
 
             Me.UIContext = Nothing
@@ -136,9 +136,9 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnOptionsPageChanged(ByVal sender As IOptionsPage, ByVal args As EventArgs)
+        Private Sub OnOptionsPageChanged(sender As IOptionsPage, args As EventArgs)
             'Lazy reflect state
-            BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
         End Sub
 
         Private Sub OnSetDefaults(sender As System.Object, e As System.EventArgs) _

@@ -44,7 +44,7 @@ Namespace Core
         ''' <param name="iCol">One-based column index to access a value for.</param>
         ''' <param name="strField">Optional field to access a value for.</param>
         ''' -------------------------------------------------------------------
-        Property Value(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal strField As String = "") As Object
+        Property Value(iRow As Integer, iCol As Integer, Optional strField As String = "") As Object
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -54,7 +54,7 @@ Namespace Core
         ''' imported data is multi-dimensional.</param>
         ''' <returns>A raster.</returns>
         ''' -------------------------------------------------------------------
-        Function ToRaster(Optional ByVal strField As String = "") As ISpatialRaster
+        Function ToRaster(Optional strField As String = "") As ISpatialRaster
 
         ReadOnly Property CellSize As Double
         ReadOnly Property InCol As Integer

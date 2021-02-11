@@ -80,10 +80,10 @@ Public Class cMediationDataStructures
     Public XAxisMax() As Single
 
     Public Sub New()
-        NMedPoints = N_DEFAULT_MEDIATIONPOINTS
+        Me.NMedPoints = N_DEFAULT_MEDIATIONPOINTS
     End Sub
 
-    Public Overridable Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
+    Public Overridable Sub ReDimMediation(nGroups As Integer, nFleets As Integer)
         Dim i, j As Integer
         'following is for Mediation:
         Me.m_nGroups = nGroups
@@ -91,37 +91,37 @@ Public Class cMediationDataStructures
         ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
         '            I tested Ecosim without mediation shapes and both core and GUI behave well
         'If MediationShapes <= 0 Then MediationShapes = 9
-        ReDim Medpoints(NMedPoints, MediationShapes)
-        ReDim MedWeights(nGroups + nFleets, MediationShapes)
-        ReDim NMedXused(MediationShapes)
-        ReDim IMedUsed(nGroups + nFleets, MediationShapes)
-        ReDim MedXbase(MediationShapes)
-        ReDim MedYbase(MediationShapes)
-        ReDim MedIsUsed(MediationShapes)
-        ReDim MedVal(MediationShapes)
-        ReDim IMedBase(MediationShapes)
+        ReDim Me.Medpoints(Me.NMedPoints, Me.MediationShapes)
+        ReDim Me.MedWeights(nGroups + nFleets, Me.MediationShapes)
+        ReDim Me.NMedXused(Me.MediationShapes)
+        ReDim Me.IMedUsed(nGroups + nFleets, Me.MediationShapes)
+        ReDim Me.MedXbase(Me.MediationShapes)
+        ReDim Me.MedYbase(Me.MediationShapes)
+        ReDim Me.MedIsUsed(Me.MediationShapes)
+        ReDim Me.MedVal(Me.MediationShapes)
+        ReDim Me.IMedBase(Me.MediationShapes)
 
-        ReDim MedPriceWeights(nGroups, nFleets, MediationShapes)
-        ReDim IMedFltUsed(nGroups, MediationShapes)
+        ReDim Me.MedPriceWeights(nGroups, nFleets, Me.MediationShapes)
+        ReDim Me.IMedFltUsed(nGroups, Me.MediationShapes)
 
         'jb added
-        ReDim MediationTitles(MediationShapes)
-        ReDim MediationShapeParams(MediationShapes)
-        ReDim MediationDBIDs(MediationShapes)
+        ReDim Me.MediationTitles(Me.MediationShapes)
+        ReDim Me.MediationShapeParams(Me.MediationShapes)
+        ReDim Me.MediationDBIDs(Me.MediationShapes)
 
-        ReDim XAxisMin(MediationShapes)
-        ReDim XAxisMax(MediationShapes)
+        ReDim Me.XAxisMin(Me.MediationShapes)
+        ReDim Me.XAxisMax(Me.MediationShapes)
 
-        ReDim PriceMedFuncNum(nGroups, nFleets, MAXFUNCTIONS)
+        ReDim Me.PriceMedFuncNum(nGroups, nFleets, MAXFUNCTIONS)
 
-        ReDim FunctionNumber(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
-        ReDim IsMedFunction(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
-        ReDim ApplicationType(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
+        ReDim Me.FunctionNumber(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
+        ReDim Me.IsMedFunction(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
+        ReDim Me.ApplicationType(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
 
-        For i = 0 To MediationShapes
-            IMedBase(i) = NMedPoints \ 3
-            For j = 0 To NMedPoints
-                Medpoints(j, i) = 0.5
+        For i = 0 To Me.MediationShapes
+            Me.IMedBase(i) = Me.NMedPoints \ 3
+            For j = 0 To Me.NMedPoints
+                Me.Medpoints(j, i) = 0.5
             Next
         Next
 
@@ -138,7 +138,7 @@ Public Class cMediationDataStructures
     ''' Populates MedVal() argument with the current multiplier. This does NOT populate cMediationDataStructures.MedVal() with the values.
     ''' Used by Ecospace threads so each thread can set MedVal() independently.
     '''   </remarks>
-    Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal FishingEffort(,) As Single, ByVal iEffortTime As Integer, ByVal MedVal() As Single)
+    Friend Sub SetMedFunctions(Biom() As Single, FishingEffort(,) As Single, iEffortTime As Integer, MedVal() As Single)
         'called from derivt, derivtred if MedIsUsed(0)=true to set
         'current Y value of each active trophic mediation function
         Dim iShp As Integer, iGrp As Integer, MedX As Single ', ip As Long
@@ -174,7 +174,7 @@ Public Class cMediationDataStructures
     ''' <param name="Xvalue">Value on the X axis to compute the mediation value for</param>
     ''' <returns>Value(Y) on the mediation shape for the input(X)</returns>
     ''' <remarks></remarks>
-    Public Function getMedValue(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
+    Public Function getMedValue(iMedShapeIndex As Integer, Xvalue As Single) As Single
 
         Dim ip As Integer
 
@@ -208,7 +208,7 @@ Public Class cMediationDataStructures
     ''' Called be Ecosim to set the mediation function multiplier in cMediationDataStructures.
     ''' SetMedFunctions(...) has overloaded function definition so it can be called by both Ecosim and on multiple threads from Ecospace.
     ''' </remarks>
-    Friend Sub SetMedFunctions(ByVal Biom() As Single, ByVal FishingEffort(,) As Single, ByVal iEffortTime As Integer)
+    Friend Sub SetMedFunctions(Biom() As Single, FishingEffort(,) As Single, iEffortTime As Integer)
         'called from derivt, derivtred if MedIsUsed(0)=true to set
         'current Y value of each active trophic mediation function
 
@@ -224,7 +224,7 @@ Public Class cMediationDataStructures
     ''' <remarks>Price mediation function are initialized to Ecopath base values which are annual. 
     ''' This means that the catch must also be the Ecopath annual catch.
     '''  </remarks>
-    Friend Sub SetPriceMedFunctions(ByVal LandingsGroupFleet(,) As Single)
+    Friend Sub SetPriceMedFunctions(LandingsGroupFleet(,) As Single)
         Dim iShp As Integer, iGrp As Integer, MedX As Single ', ip As Long
         Dim iMedGrp As Integer
         Dim iMedFlt As Integer
@@ -246,7 +246,7 @@ Public Class cMediationDataStructures
                     Next
 
                     'Get the Y value from the mediation shape for this X
-                    MedVal(iShp) = Me.getMedValue(iShp, MedX)
+                    Me.MedVal(iShp) = Me.getMedValue(iShp, MedX)
                 End If
             Next
 
@@ -263,7 +263,7 @@ Public Class cMediationDataStructures
     ''' <param name="iFleet"></param>
     ''' <returns>Returns only the PES multiplier</returns>
     ''' <remarks>Value = cEcopathDataStructures.Market(Fleet,Group) * getPESMult(Group,Fleet)</remarks>
-    Public Function getPESMult(ByVal iGroup As Integer, ByVal iFleet As Integer) As Single
+    Public Function getPESMult(iGroup As Integer, iFleet As Integer) As Single
         Dim pMult As Single
         Dim bFoundMed As Boolean = False
 
@@ -286,7 +286,7 @@ Public Class cMediationDataStructures
 
     End Function
 
-    Public Function getEnviroResponse(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
+    Public Function getEnviroResponse(iMedShapeIndex As Integer, Xvalue As Single) As Single
         Dim ip As Integer
 
         'Debug.Assert(Xvalue <> cCore.NULL_VALUE, "Core NULL Passed to Response function.")
@@ -297,9 +297,9 @@ Public Class cMediationDataStructures
 
         'is the Xvalue in bounds
         If Xvalue <= Me.XAxisMin(iMedShapeIndex) Then Return Me.Medpoints(1, iMedShapeIndex)
-        If Xvalue >= Me.XAxisMax(iMedShapeIndex) Then Return Me.Medpoints(NMedPoints, iMedShapeIndex)
+        If Xvalue >= Me.XAxisMax(iMedShapeIndex) Then Return Me.Medpoints(Me.NMedPoints, iMedShapeIndex)
 
-        Dim dx As Double = NMedPoints / (Me.XAxisMax(iMedShapeIndex) - Me.XAxisMin(iMedShapeIndex) + 0.00001)
+        Dim dx As Double = Me.NMedPoints / (Me.XAxisMax(iMedShapeIndex) - Me.XAxisMin(iMedShapeIndex) + 0.00001)
         ip = 1 + CInt(Math.Truncate((Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx))
         'If iMedShapeIndex = 1 Then
         '    Debug.Print(Xvalue & ", " & Me.Medpoints(ip, iMedShapeIndex))

@@ -71,10 +71,10 @@ Public Class frmTransectSummary
         Me.m_zgh.ConfigurePane(My.Resources.CAPTION_CATCH, My.Resources.LABEL_CELL, cUnits.Currency, False, iPane:=4)
 
         For i As Integer = 1 To 4
-            AddHandler Me.m_zgh.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXScale
+            AddHandler Me.m_zgh.GetPane(i).XAxis.ScaleFormatEvent, AddressOf Me.OnFormatXScale
         Next
 
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
         Me.FillTransectBox()
         Me.UpdateGraph()
         Me.UpdateControls()
@@ -100,7 +100,7 @@ Public Class frmTransectSummary
         If (msg.Type = eMessageType.GlobalSettingsChanged) Then
             If Me.m_bNeedUpdateControls = False Then
                 Me.m_bNeedUpdateControls = True
-                BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
             End If
         End If
         MyBase.OnCoreMessage(msg)
@@ -131,7 +131,7 @@ Public Class frmTransectSummary
 
     End Sub
 
-    Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+    Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
         If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
             Me.UpdateGraph(True)
         End If
@@ -223,7 +223,7 @@ Public Class frmTransectSummary
     Private Sub OnTick(sender As Object, e As EventArgs) Handles m_timerPlay.Tick
         Try
             Me.m_tick += 1
-            If (Me.m_tick > Core.nEcospaceTimeSteps) Then Me.m_tick = 1
+            If (Me.m_tick > Me.Core.nEcospaceTimeSteps) Then Me.m_tick = 1
             Me.UpdateGraph()
             Me.UpdateControls()
         Catch ex As Exception
@@ -247,7 +247,7 @@ Public Class frmTransectSummary
 
         Dim w As cTransectResultWriterPlugin = Me.GetWriter()
         If (w IsNot Nothing) Then
-            w.Enabled = m_tsbnAutosave.Checked
+            w.Enabled = Me.m_tsbnAutosave.Checked
         End If
 
         Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters

@@ -89,7 +89,7 @@ Namespace Import
             ''' <param name="mi">The <see cref="cExternalModelInfo">importable model</see>
             ''' to create import settings for.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal mi As cExternalModelInfo)
+            Public Sub New(mi As cExternalModelInfo)
                 Me.m_mi = mi
                 Me.m_bImport = False
                 Me.m_strEwE6Name = mi.Name
@@ -116,7 +116,7 @@ Namespace Import
                 Get
                     Return Me.m_bImport
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     Me.m_bImport = value
                 End Set
             End Property
@@ -130,7 +130,7 @@ Namespace Import
                 Get
                     Return Me.m_strEwE6Name
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     Me.m_strEwE6Name = Me.ToEwE6ModelName(value)
                 End Set
             End Property
@@ -144,7 +144,7 @@ Namespace Import
                 Get
                     Return Me.m_strLogFile
                 End Get
-                Set(ByVal value As String)
+                Set(value As String)
                     Me.m_strLogFile = value
                 End Set
             End Property
@@ -156,7 +156,7 @@ Namespace Import
             ''' <param name="strexternalModel"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Private Function ToEwE6ModelName(ByVal strexternalModel As String) As String
+            Private Function ToEwE6ModelName(strexternalModel As String) As String
                 Return cFileUtils.ToValidFileName(strexternalModel, False)
             End Function
 
@@ -176,11 +176,11 @@ Namespace Import
         ''' <param name="content">The panel where this wizard can display its pages.</param>
         ''' <param name="nav">The navigation that controls this wizard.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal strSource As String, _
-                       ByVal parent As Form, _
-                       ByVal content As Panel, _
-                       ByVal nav As IWizardNavigation)
+        Public Sub New(uic As cUIContext, _
+                       strSource As String, _
+                       parent As Form, _
+                       content As Panel, _
+                       nav As IWizardNavigation)
 
             MyBase.New(uic, parent, content, nav)
 
@@ -189,7 +189,7 @@ Namespace Import
             Debug.Assert(uic.Core IsNot Nothing)
 
             ' Hook up with data
-            Me.m_dbImp = cModelImporterFactory.GetModelImporter(Core, strSource, uic.Core.PluginManager)
+            Me.m_dbImp = cModelImporterFactory.GetModelImporter(Me.Core, strSource, uic.Core.PluginManager)
             If Me.m_dbImp.Open(strSource) Then
                 Me.m_strDatabase = strSource
                 Me.m_strOutputFolder = Path.GetDirectoryName(strSource)
@@ -266,7 +266,7 @@ Namespace Import
             Get
                 Return Me.m_strOutputFolder
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strOutputFolder = value
             End Set
         End Property
@@ -280,7 +280,7 @@ Namespace Import
             Get
                 Return Me.m_outputFormat
             End Get
-            Set(ByVal value As eDataSourceTypes)
+            Set(value As eDataSourceTypes)
                 Me.m_outputFormat = value
             End Set
         End Property
@@ -332,7 +332,7 @@ Namespace Import
         ''' to import.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Import(ByVal setting As cImportSettings) As Boolean
+        Public Function Import(setting As cImportSettings) As Boolean
 
             Dim appl As frmEwE6 = CType(Me.UIContext.FormMain, frmEwE6)
             Dim db As cEwEDatabase = Nothing
@@ -381,8 +381,8 @@ Namespace Import
         ''' <param name="setting">The setting to create an EwE6 model path for.</param>
         ''' <returns>A valid EwE6 model path for an import setting.</returns>
         ''' -------------------------------------------------------------------
-        Private Function EwE6ModelName(ByVal setting As cImportSettings, _
-                                       ByVal format As eDataSourceTypes) As String
+        Private Function EwE6ModelName(setting As cImportSettings, _
+                                       format As eDataSourceTypes) As String
             Dim strModel As String = Path.Combine(Me.m_strOutputFolder, setting.EwE6ModelName)
             strModel += cDataSourceFactory.GetDefaultExtension(format)
             Return cFileUtils.ToValidFileName(strModel, True)

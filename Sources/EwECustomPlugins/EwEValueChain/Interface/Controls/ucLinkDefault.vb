@@ -41,16 +41,16 @@ Public Class ucLinkDefault
         Me.InitializeComponent()
     End Sub
 
-    Private Sub ucLink_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub ucLink_Disposed(sender As Object, e As System.EventArgs) _
         Handles Me.Disposed
         Me.LinkDefault(Nothing)
     End Sub
 
-    Public Sub LinkDefault(ByVal link As cLinkDefault)
+    Public Sub LinkDefault(link As cLinkDefault)
         Me.m_linkDefault = link
     End Sub
 
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+    Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
         MyBase.OnPaint(e)
 
         Dim clr As Color = Color.Black
@@ -65,13 +65,13 @@ Public Class ucLinkDefault
 
     End Sub
 
-    Protected Overrides Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType) 
+    Protected Overrides Sub OnStyleguideChanged(changeFlags As cStyleGuide.eChangeType) 
         If ((changeFlags And cStyleGuide.eChangeType.Colours) > 0) Then
             Me.Invalidate(True)
         End If
     End Sub
 
-    Private Sub m_link_OnChanged(ByVal obj As cOOPStorable) _
+    Private Sub m_link_OnChanged(obj As cOOPStorable) _
         Handles m_linkDefault.OnChanged
         Me.Invalidate()
     End Sub

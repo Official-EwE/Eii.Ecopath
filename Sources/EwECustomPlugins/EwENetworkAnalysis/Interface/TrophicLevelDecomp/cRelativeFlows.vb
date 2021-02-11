@@ -42,13 +42,13 @@ Public Class cRelativeFlows
         Return "Relative flows"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                         info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -58,57 +58,57 @@ Public Class cRelativeFlows
 
         Dim astrRowContent() As String
 
-        SetUpGridColumn(NetworkManager.nTrophicLevels)
+        Me.SetUpGridColumn(Me.NetworkManager.nTrophicLevels)
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nGroups + 1
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = Me.NetworkManager.nGroups + 1
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim astrRowContent(Grid.Columns.Count)
+        ReDim astrRowContent(Me.Grid.Columns.Count)
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME_TRP_LVL
-        For j As Integer = 1 To NetworkManager.nTrophicLevels
+        For j As Integer = 1 To Me.NetworkManager.nTrophicLevels
             astrRowContent(j + 1) = cStringUtils.ToRoman(j)
         Next
-        Grid.Rows(0).SetValues(astrRowContent)
-        Grid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(astrRowContent)
+        Me.Grid.Rows(0).Visible = True
 
-        For i As Integer = 1 To NetworkManager.nGroups
+        For i As Integer = 1 To Me.NetworkManager.nGroups
             astrRowContent(0) = CStr(i)
-            astrRowContent(1) = NetworkManager.GroupName(i)
-            For j As Integer = 1 To NetworkManager.nTrophicLevels
-                astrRowContent(j + 1) = Me.StyleGuide.FormatNumber(NetworkManager.RelativeFlow(i, j))
+            astrRowContent(1) = Me.NetworkManager.GroupName(i)
+            For j As Integer = 1 To Me.NetworkManager.nTrophicLevels
+                astrRowContent(j + 1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.RelativeFlow(i, j))
             Next
             'DataGrid.Rows.Add(strary)
-            Grid.Rows(i).SetValues(astrRowContent)
-            Grid.Rows(i).Visible = True
+            Me.Grid.Rows(i).SetValues(astrRowContent)
+            Me.Grid.Rows(i).Visible = True
 
             'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
             'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige
         Next
-        Grid.ClearSelection()
+        Me.Grid.ClearSelection()
 
     End Sub
 
-    Private Sub SetUpGridColumn(ByVal iNumTrophicLevels As Integer)
+    Private Sub SetUpGridColumn(iNumTrophicLevels As Integer)
 
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = iNumTrophicLevels + 2
+        Me.Grid.ColumnCount = iNumTrophicLevels + 2
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(0).Frozen = True
-        Grid.Columns(0).Width = ID_COL_WIDTH '55
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).Width = ID_COL_WIDTH '55
 
-        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(1).Frozen = True
-        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Me.Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Me.Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(1).Frozen = True
+        Me.Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
         'DataGrid.Rows(i - 1).HeaderCell.Value = CStr(i)
         'DataGrid.Rows(i - 1).HeaderCell.Style.BackColor = Drawing.Color.Beige

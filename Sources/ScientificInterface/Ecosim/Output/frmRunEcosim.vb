@@ -103,12 +103,12 @@ Namespace Ecosim
 
 #Region " Framework overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_params = Core.EcoSimModelParameters()
+            Me.m_params = Me.Core.EcoSimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
@@ -125,11 +125,11 @@ Namespace Ecosim
             Me.m_zgp.ShowPointValue = True
 
             ' Set the axis
-            Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
-            Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Me.Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
 
-            AddHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
-            AddHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged
+            AddHandler Me.m_zgp.OnCursorPos, AddressOf Me.OnSyncCursor
+            AddHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf Me.OnAxisChanged
 
             Me.m_tsmiShowEffortAndMortalities.Checked = My.Settings.ShowEffortMortalityInRunSim
             Me.m_scPlots.Panel2Collapsed = (Not My.Settings.ShowEffortMortalityInRunSim)
@@ -137,7 +137,7 @@ Namespace Ecosim
             Me.UpdateControls()
 
             ' Track core monitor changes
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             Me.PopulateGraph()
             Me.UpdateSS()
@@ -147,12 +147,12 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
             Me.OnStop(Nothing, Nothing)
-            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             ' Unplug
             Me.IsExploring = False
@@ -163,22 +163,22 @@ Namespace Ecosim
                 Me.m_shapeGUIHandler = Nothing
             End If
 
-            RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
-            RemoveHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged
+            RemoveHandler Me.m_zgp.OnCursorPos, AddressOf Me.OnSyncCursor
+            RemoveHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf Me.OnAxisChanged
             Me.m_zgp.Detach()
 
             MyBase.OnFormClosed(e)
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             Select Case msg.Source
 
                 Case eCoreComponentType.EcoSim
-                    HandleEcosimMessage(msg)
+                    Me.HandleEcosimMessage(msg)
 
                 Case eCoreComponentType.ShapesManager
-                    HandleShapeMessage(msg)
+                    Me.HandleShapeMessage(msg)
 
                 Case eCoreComponentType.Core
                     If (msg.Type = eMessageType.GlobalSettingsChanged) Then
@@ -186,7 +186,7 @@ Namespace Ecosim
                     End If
 
                 Case eCoreComponentType.TimeSeries
-                    HandleTimeseriesMessage(msg)
+                    Me.HandleTimeseriesMessage(msg)
 
             End Select
 
@@ -198,7 +198,7 @@ Namespace Ecosim
             End Get
         End Property
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
                 Me.PopulateGraph()
             End If
@@ -210,14 +210,14 @@ Namespace Ecosim
 
 #Region " Controls "
 
-        Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRun.Click
 
             Try
                 If Not Me.IsRunning Then
                     Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                     Me.m_graph.Refresh()
-                    Me.Core.RunEcoSim(AddressOf HandleEcosimTimeStep, True)
+                    Me.Core.RunEcoSim(AddressOf Me.HandleEcosimTimeStep, True)
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "form frmRunEcosim.OnRun")
@@ -225,7 +225,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnStop(sender As System.Object, e As System.EventArgs) _
             Handles m_btnStop.Click
             Try
                 If Me.IsRunning Then
@@ -236,7 +236,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub OnShowMultipleRuns(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowMultipleRuns(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnShowMultipleRuns.Click
 
             Me.m_zgp.ShowMultipleRuns = Me.m_tsbnShowMultipleRuns.Checked
@@ -250,7 +250,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub AnnualOutputToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub AnnualOutputToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiShowAnnualOutput.Click
 
             If Me.m_bInUpdate Then Return
@@ -269,49 +269,49 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShowBiomassAbs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowBiomassAbs(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiBiomassAbs.Click
             Me.ShowData(eMSEPlotData.Biomass, True)
         End Sub
 
-        Private Sub OnShowBiomassRel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowBiomassRel(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiBiomassRel.Click
             Me.ShowData(eMSEPlotData.Biomass, False)
         End Sub
 
-        Private Sub OnShowCatchAbs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowCatchAbs(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiCatchAbs.Click
             Me.ShowData(eMSEPlotData.GroupCatch, True)
         End Sub
 
-        Private Sub OnShowCatchRel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowCatchRel(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiCatchRel.Click
             Me.ShowData(eMSEPlotData.GroupCatch, False)
         End Sub
 
-        Private Sub OnShowValueAbs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowValueAbs(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiValueAbs.Click
             Me.ShowData(eMSEPlotData.Value, True)
         End Sub
 
-        Private Sub m_tsmiValueRel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tsmiValueRel_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiValueRel.Click
             Me.ShowData(eMSEPlotData.Value, False)
         End Sub
 
-        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub AutoScaleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiAutoscale.Click
             Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tstbxSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tstbxSet_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tstbMax.Click
-            m_tsmiAutoscale.Checked = False
-            m_tsmiCustomScaleLabel.Checked = True
+            Me.m_tsmiAutoscale.Checked = False
+            Me.m_tsmiCustomScaleLabel.Checked = True
         End Sub
 
-        Private Sub OnCustomScale(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCustomScale(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiCustomScaleLabel.Click
             Double.TryParse(Me.m_tstbMax.Text, Me.m_zgp.YScaleMax)
             Double.TryParse(Me.m_tstbMin.Text, Me.m_zgp.YScaleMin)
@@ -319,21 +319,21 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tstbxSetMax_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tstbxSetMax_LostFocus(sender As System.Object, e As System.EventArgs) _
             Handles m_tstbMax.LostFocus
             Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgp.YScaleMax)
             Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.None
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tstbxSetMin_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tstbxSetMin_LostFocus(sender As System.Object, e As System.EventArgs) _
             Handles m_tstbMin.LostFocus
             Double.TryParse(TryCast(sender, ToolStripTextBox).Text, Me.m_zgp.YScaleMin)
             Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.None
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tsmiSortMostChanged_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tsmiSortMostChanged_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnExplore.Click, m_tsmiSort.Click
 
             If Me.m_bInUpdate Then Return
@@ -344,7 +344,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_tstbChangeAmount_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_tstbChangeAmount_LostFocus(sender As System.Object, e As System.EventArgs) _
             Handles m_tstbChangeAmount.LostFocus
 
             Single.TryParse(Me.m_tstbChangeAmount.Text, Me.m_sChangeTrackSize)
@@ -360,7 +360,7 @@ Namespace Ecosim
         ''' Listbox selected index change handler
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub lb_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lbRuns.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
@@ -383,7 +383,7 @@ Namespace Ecosim
             Me.m_bInUpdate = False
         End Sub
 
-        Private Sub OnSyncCursor(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        Private Sub OnSyncCursor(zgh As cZedGraphHelper, iPane As Integer, sPos As Single)
             If Me.IsExploring Then
                 Try
                     ' Hmm, this logic fails when time series are loaded; in that case
@@ -400,16 +400,16 @@ Namespace Ecosim
 
 #Region " Core "
 
-        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+        Private Sub OnCoreExecutionStateChanged(csm As cCoreStateMonitor)
 
             ' Could be that we're closing
             If (Me.IsDisposed) Then Return
 
-            Dim bEcosimRunning As Boolean = Core.StateMonitor.IsEcosimRunning
-            Dim bHasEcosimResults As Boolean = Core.StateMonitor.HasEcosimRan
+            Dim bEcosimRunning As Boolean = Me.Core.StateMonitor.IsEcosimRunning
+            Dim bHasEcosimResults As Boolean = Me.Core.StateMonitor.HasEcosimRan
 
             ' Does not have ecosim results?
-            If (Not Core.StateMonitor.HasEcopathRan) Then
+            If (Not Me.Core.StateMonitor.HasEcopathRan) Then
                 ' #Yes: clear run results
                 Me.ResetGraph()
             End If
@@ -492,12 +492,12 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub HandleEcosimTimeStep(ByVal iTime As Long, ByVal results As cEcoSimResults)
+        Private Sub HandleEcosimTimeStep(iTime As Long, results As cEcoSimResults)
 
             Try
                 ' Status update only every 12 months
                 If (iTime Mod cCore.N_MONTHS) = 0 Then
-                    cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING, CSng(iTime / m_iTimeSteps))
+                    cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING, CSng(iTime / Me.m_iTimeSteps))
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "frmRunEcosim::HandleEcosimTimeStep")
@@ -509,9 +509,9 @@ Namespace Ecosim
 
 #Region " Forcing function "
 
-        Private Sub OnTargetSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnTargetSelectionChanged(sender As Object, e As System.EventArgs) _
             Handles m_tscbTarget.SelectedIndexChanged
-            Dim obj As ICoreInterface = GetSelectedGroupOrFleet()
+            Dim obj As ICoreInterface = Me.GetSelectedGroupOrFleet()
 
             Select Case Me.SelectionMode
                 Case eSelectionModeType.Fleets
@@ -523,7 +523,7 @@ Namespace Ecosim
             End Select
         End Sub
 
-        Private Sub OnFValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSetToValue.Click
+        Private Sub OnFValue_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnSetToValue.Click
 
             Dim strCaption As String = My.Resources.RUN_ECOSIM_F_VALUE_CAPTION
             Dim strMessage As String = My.Resources.RUN_ECOSIM_F_VALUE_MSG
@@ -580,7 +580,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnFReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnResetFs.Click
+        Private Sub OnFReset_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnResetFs.Click
 
             Dim ts As cTimeSeries = Nothing
 
@@ -596,7 +596,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnFZero_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSetTo0.Click
+        Private Sub OnFZero_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnSetTo0.Click
             If Me.m_shapeGUIHandler IsNot Nothing Then
                 Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
                                                     New cShapeData() {Me.m_sketchPad.Shape}, 0.0!)
@@ -605,7 +605,7 @@ Namespace Ecosim
 
 #End Region ' Forcing function
 
-        Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectTarget(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnFleet.Click, m_tsbnGroup.Click
             Try
                 If ReferenceEquals(sender, Me.m_tsbnFleet) Then
@@ -646,7 +646,7 @@ Namespace Ecosim
             Get
                 Return Me.m_bIsAnnual
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value = Me.m_bIsAnnual) Then Return
 
                 Me.m_bIsAnnual = value
@@ -664,7 +664,7 @@ Namespace Ecosim
             Get
                 Return Me.m_bIsExploring
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If (value = Me.m_bIsExploring) Then Return
 
                 Me.m_bIsExploring = value
@@ -681,7 +681,7 @@ Namespace Ecosim
         ''' Get/set type of data to plot.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ShowData(ByVal data As eMSEPlotData, ByVal bCumulative As Boolean)
+        Private Sub ShowData(data As eMSEPlotData, bCumulative As Boolean)
             ' Store props
             Me.m_plotData = data
             Me.m_bIsCumulative = bCumulative
@@ -740,21 +740,21 @@ Namespace Ecosim
             Select Case Me.m_plotData
                 Case eMSEPlotData.Biomass
                     If Me.m_bIsCumulative Then
-                        m_zgp.DataName = SharedResources.HEADER_BIOMASS_CUMULATIVE
+                        Me.m_zgp.DataName = SharedResources.HEADER_BIOMASS_CUMULATIVE
                     Else
-                        m_zgp.DataName = SharedResources.HEADER_RELATIVEBIOMASS
+                        Me.m_zgp.DataName = SharedResources.HEADER_RELATIVEBIOMASS
                     End If
                 Case eMSEPlotData.GroupCatch
                     If Me.m_bIsCumulative Then
-                        m_zgp.DataName = SharedResources.HEADER_CATCH_CUMULATIVE
+                        Me.m_zgp.DataName = SharedResources.HEADER_CATCH_CUMULATIVE
                     Else
-                        m_zgp.DataName = SharedResources.HEADER_RELATIVE_CATCH
+                        Me.m_zgp.DataName = SharedResources.HEADER_RELATIVE_CATCH
                     End If
                 Case eMSEPlotData.Value
                     If Me.m_bIsCumulative Then
-                        m_zgp.DataName = SharedResources.HEADER_VALUE_CUMULATIVE
+                        Me.m_zgp.DataName = SharedResources.HEADER_VALUE_CUMULATIVE
                     Else
-                        m_zgp.DataName = SharedResources.HEADER_RELATIVE_VALUE
+                        Me.m_zgp.DataName = SharedResources.HEADER_RELATIVE_VALUE
                     End If
                 Case Else
                     Debug.Assert(False, "Data " & Me.m_plotData.ToString & " not supported by this graph")
@@ -773,7 +773,7 @@ Namespace Ecosim
                     pplData.Add(Me.Core.EcosimFirstYear, Me.GetStartValue(iGroup))
                     src = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                    For iTimeStep As Integer = 1 To Core.nEcosimTimeSteps
+                    For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
 
                         dValue = CDbl(Me.GetEcosimValue(iGroup, iTimeStep))
 
@@ -783,7 +783,7 @@ Namespace Ecosim
                         ' Should datapoint be displayed?
                         If bIncludeDataPoint Then
                             ' #Yes: display it
-                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + Math.Max(1, Core.EcosimFirstYear), dValue)
+                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + Math.Max(1, Me.Core.EcosimFirstYear), dValue)
                         End If
 
                     Next iTimeStep
@@ -795,8 +795,8 @@ Namespace Ecosim
 
             Next iGroupItem
 
-            Me.m_graph.GraphPane.XAxis.Scale.Min = Math.Max(Core.EcosimFirstYear, 1)
-            Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Math.Max(Me.Core.EcosimFirstYear, 1)
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
 
             ' Draw timeseries 
             If Me.Core.nTimeSeriesEnabled > 0 Then
@@ -829,7 +829,7 @@ Namespace Ecosim
         ''' plot type.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub AddTimeSeriesLines(ByVal lLines As List(Of LineItem))
+        Private Sub AddTimeSeriesLines(lLines As List(Of LineItem))
 
             Dim ppl As New PointPairList()
             Dim ts As cTimeSeries = Nothing
@@ -844,15 +844,15 @@ Namespace Ecosim
             ' Only plot data when NOT showing cumulative data
             If (Me.m_bIsCumulative) Then Return
             ' Only if there is an Active Timeseries dataset
-            If Core.ActiveTimeSeriesDatasetIndex < 1 Then Return
+            If Me.Core.ActiveTimeSeriesDatasetIndex < 1 Then Return
 
             'Get the time series interval for the currently loaded dataset
-            tsInterval = Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex).TimeSeriesInterval
+            tsInterval = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex).TimeSeriesInterval
 
             ' For all time series
-            For iTS As Integer = 1 To Core.nTimeSeries
+            For iTS As Integer = 1 To Me.Core.nTimeSeries
                 ' Get TS
-                ts = Core.EcosimTimeSeries(iTS)
+                ts = Me.Core.EcosimTimeSeries(iTS)
                 ' Is ts usable?
                 If ((ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (ts.TimeSeriesType = eTimeSeriesType.BiomassAbs)) And _
                    (ts.Enabled = True) Then
@@ -873,14 +873,14 @@ Namespace Ecosim
                     Else
                         EDataQ = gts.eDataQ
                     End If
-                    StartBio = Core.StartBiomass(gts.GroupIndex)
+                    StartBio = Me.Core.StartBiomass(gts.GroupIndex)
 
                     'delta t for the monthly data
                     Dim Dt As Double = 1
                     Dim halfDt As Double = 0.5
                     Dim xpos As Double
                     Dim ndatapoints As Integer = 0
-                    Dim iYear As Integer = Core.EcosimFirstYear
+                    Dim iYear As Integer = Me.Core.EcosimFirstYear
 
                     'Set timestep variables based on the dataset interval
                     'number of data points 
@@ -888,11 +888,11 @@ Namespace Ecosim
                     'half delta t 
                     Select Case tsInterval
                         Case eTSDataSetInterval.Annual
-                            ndatapoints = Core.EcoSimModelParameters.NumberYears
+                            ndatapoints = Me.Core.EcoSimModelParameters.NumberYears
                             Dt = 1
                             halfDt = 0.5
                         Case eTSDataSetInterval.TimeStep
-                            ndatapoints = Core.nEcosimTimeSteps
+                            ndatapoints = Me.Core.nEcosimTimeSteps
                             Dt = 1 / cCore.N_MONTHS
                             halfDt = Dt * 0.5
                         Case Else
@@ -930,7 +930,7 @@ Namespace Ecosim
         ''' <param name="iGroup"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function GetStartValue(ByVal iGroup As Integer) As Single
+        Private Function GetStartValue(iGroup As Integer) As Single
 
             Dim src As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
 
@@ -957,7 +957,7 @@ Namespace Ecosim
         ''' <param name="iTimeStep"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function GetEcosimValue(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+        Private Function GetEcosimValue(iGroup As Integer, iTimeStep As Integer) As Single
 
             Dim src As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
 
@@ -975,7 +975,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Sub SortGroupsAtTimestep(ByVal iTimeStep As Integer)
+        Private Sub SortGroupsAtTimestep(iTimeStep As Integer)
 
             Dim iGroup As Integer = 0
             Dim sValue As Single = 0.0
@@ -1024,10 +1024,10 @@ Namespace Ecosim
             ' Mortality shapes are 0-base indexed, fleets are 1-base indexed
             If (item Is Nothing) Then
                 ' Get 'all fleets' effort shape
-                shape = Core.FishingEffortShapeManager.Item(Me.Core.nFleets)
+                shape = Me.Core.FishingEffortShapeManager.Item(Me.Core.nFleets)
             Else
                 ' Get individual effort shape
-                shape = Core.FishingEffortShapeManager.Item(item.Index - 1)
+                shape = Me.Core.FishingEffortShapeManager.Item(item.Index - 1)
             End If
 
             If (Not TypeOf Me.m_shapeGUIHandler Is cFishingEffortShapeGUIHandler) Then
@@ -1053,7 +1053,7 @@ Namespace Ecosim
             Dim shape As cShapeData = Nothing
 
             ' Mortality shapes are 0-base indexed, groups are 1-base indexed
-            shape = Core.FishMortShapeManager.Item(item.Index - 1)
+            shape = Me.Core.FishMortShapeManager.Item(item.Index - 1)
 
             If (Not TypeOf Me.m_shapeGUIHandler Is cFishingMortalityShapeGUIHandler) Then
                 If (Not Me.m_shapeGUIHandler Is Nothing) Then
@@ -1078,7 +1078,7 @@ Namespace Ecosim
             Get
                 Return Me.m_selectionMode
             End Get
-            Set(ByVal value As eSelectionModeType)
+            Set(value As eSelectionModeType)
 
                 If (value <> Me.SelectionMode) Then
                     Me.m_selectionMode = value
@@ -1113,7 +1113,7 @@ Namespace Ecosim
             Me.m_tsmiValueAbs.Checked = (Me.m_plotData = eMSEPlotData.Value) And Me.m_bIsCumulative
 
             Me.m_tsmiAutoscale.Checked = (Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly)
-            Me.m_tsmiCustomScaleLabel.Checked = Not m_tsmiAutoscale.Checked
+            Me.m_tsmiCustomScaleLabel.Checked = Not Me.m_tsmiAutoscale.Checked
             Me.m_tstbMax.Text = CStr(Me.m_zgp.YScaleMax)
             Me.m_tstbMin.Text = CStr(Me.m_zgp.YScaleMin)
 

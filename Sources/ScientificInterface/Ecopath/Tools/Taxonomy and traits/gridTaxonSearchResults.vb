@@ -70,7 +70,7 @@ Public Class gridTaxonSearchResults
 
     Public Delegate Function IsTaxonUsedDelegate(ti As ITaxonSearchData) As Boolean
 
-    Public Sub Init(ByVal uic As cUIContext, Optional dgt As IsTaxonUsedDelegate = Nothing)
+    Public Sub Init(uic As cUIContext, Optional dgt As IsTaxonUsedDelegate = Nothing)
 
         Me.UIContext = uic
         Me.m_dgtIsTaxonUseCallback = dgt
@@ -84,7 +84,7 @@ Public Class gridTaxonSearchResults
 
     End Sub
 
-    Public Sub AddResults(ByVal results As IDataSearchResults)
+    Public Sub AddResults(results As IDataSearchResults)
 
         Try
             Me.m_results = results
@@ -113,7 +113,7 @@ Public Class gridTaxonSearchResults
         End Set
     End Property
 
-    Public Event OnResultSelected(ByVal result As Object)
+    Public Event OnResultSelected(result As Object)
 
     Public Property TaxonAtRow(Optional iRow As Integer = -1) As ITaxonSearchData
         Get
@@ -213,7 +213,7 @@ Public Class gridTaxonSearchResults
 
     End Sub
 
-    Protected Overrides Sub OnCellDoubleClicked(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual)
+    Protected Overrides Sub OnCellDoubleClicked(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual)
         Try
             If (Me.m_dgtIsTaxonUseCallback IsNot Nothing) Then
                 If Me.m_dgtIsTaxonUseCallback.Invoke(Me.TaxonAtRow(p.Row)) Then
@@ -235,7 +235,7 @@ Public Class gridTaxonSearchResults
     ''' </summary>
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddResult(ByVal result As ITaxonSearchData)
+    Private Sub AddResult(result As ITaxonSearchData)
 
         ' Last line of defense
         If Me.IsNullOrEmpty(result) Then Return
@@ -255,7 +255,7 @@ Public Class gridTaxonSearchResults
 
     End Sub
 
-    Private Sub AddCell(ByVal result As ITaxonSearchData, ByVal iRow As Integer, ByVal col As eColumnTypes)
+    Private Sub AddCell(result As ITaxonSearchData, iRow As Integer, col As eColumnTypes)
 
         Dim value As Object = Nothing
         Dim cell As cEwECell = Nothing
@@ -284,7 +284,7 @@ Public Class gridTaxonSearchResults
         If (value Is Nothing) Then value = ""
 
         cell = New cEwECell(value, value.GetType(), style)
-        cell.Behaviors.Add(EwEEditHandler)
+        cell.Behaviors.Add(Me.EwEEditHandler)
         cell.SuppressZero(0) = True
         cell.EnableEdit = False
 

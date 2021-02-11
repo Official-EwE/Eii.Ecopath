@@ -33,31 +33,27 @@ Imports EwECore.FitToTimeSeries
 #End Region ' Imports
 
 Public Class cSFPAnomalySearch
-    Inherits cSFPGenericIterations
+    Inherits cSFPGenericIteration
 
-    Public Sub New(ByVal BOrF As Boolean, ByVal sps As Integer)
-        BaseorFish = BOrF
-        k = sps
-        SplinePoints = k
+    Public Sub New(BOrF As Boolean, sps As Integer)
+        Me.BaseorFish = BOrF
+        Me.k = sps
+        Me.SplinePoints = Me.k
     End Sub
 
-#Region " Implements ISFPIterations "
-
-    Public Overrides Function Load() As Boolean
+    Public Overrides Function Load(core As cCore) As Boolean
 
         'Enable specific time series for Baseline or Fishing
-        If Not MyBase.EnableTimeSeries() Then Return False
+        If Not Me.EnableTimeSeries(core) Then Return False
 
         'Reset vunerabilities
-        Return MyBase.ResetVs() And MyBase.ResetFF()
+        Return Me.ResetVs(core) And Me.ResetFF(core)
 
     End Function
 
-    Public Overrides Function Run() As Boolean
-        If Not MyBase.RunAnomalySearch() Then Return False
-        Return MyBase.Run()
+    Public Overrides Function Run(core As cCore) As Boolean
+        If Not Me.RunAnomalySearch(core) Then Return False
+        Return MyBase.Run(core)
     End Function
-
-#End Region
 
 End Class

@@ -54,15 +54,15 @@ Namespace Ecopath.Input
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            Me.Redim(Core.nFleets + 1, Core.nDetritusGroups + 4)
+            Me.Redim(Me.Core.nFleets + 1, Me.Core.nDetritusGroups + 4)
 
             ' Grid Cell (0, 0) - Fleet name
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
 
             ' Dynamic column header - Detritus groups
-            For columnIndex As Integer = 1 To Core.nDetritusGroups
-                source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + columnIndex)
+            For columnIndex As Integer = 1 To Me.Core.nDetritusGroups
+                source = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + columnIndex)
                 Me(0, columnIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
@@ -92,15 +92,15 @@ Namespace Ecopath.Input
             Dim propExport As cFormulaProperty = Nothing
 
             ' For each fleet
-            For iRow As Integer = 1 To core.nFleets
+            For iRow As Integer = 1 To Me.core.nFleets
                 'Get the fleet info
-                source = core.EcopathFleetInputs(iRow)
+                source = Me.core.EcopathFleetInputs(iRow)
                 ' Clear the arrayList for the sum of new row
                 alSumAll.Clear()
                 ' Fleet name As row header
                 Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                For columnIndex As Integer = 2 To core.nDetritusGroups + 1
+                For columnIndex As Integer = 2 To Me.core.nDetritusGroups + 1
                     ' Get the ecopath input
                     sourceSec = Me.Core.EcoPathGroupInputs(columnIndex - 1)
                     ' Dynamic indexed Discard fate property 

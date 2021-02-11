@@ -32,7 +32,7 @@ Namespace Core
         ''' all maintained layers.</param>
         ''' <returns>An array of all managed layers.</returns>
         ''' -----------------------------------------------------------------------
-        Function Layers(Optional ByVal varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer()
+        Function Layers(Optional varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer()
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -42,7 +42,7 @@ Namespace Core
         ''' <param name="iIndex">Optional one-based index of the layer to retrieve.</param>
         ''' <returns>A single layer.</returns>
         ''' -----------------------------------------------------------------------
-        Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer
+        Function Layer(varName As eVarNameFlags, Optional iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -52,7 +52,7 @@ Namespace Core
         ''' <param name="iIndex">Index of the layer to obtain data for.</param>
         ''' <returns>Data in a format that the layer should understand.</returns>
         ''' -----------------------------------------------------------------------
-        Function LayerData(ByVal varName As eVarNameFlags, iIndex As Integer) As Object
+        Function LayerData(varName As eVarNameFlags, iIndex As Integer) As Object
 
     End Interface
 

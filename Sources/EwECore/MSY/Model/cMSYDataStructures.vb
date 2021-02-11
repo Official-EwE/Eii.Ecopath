@@ -81,8 +81,8 @@ Namespace MSY
 #Region "Public Methods"
 
         Public Sub New(EcopathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
-            m_epData = EcopathData
-            m_simData = EcosimData
+            Me.m_epData = EcopathData
+            Me.m_simData = EcosimData
         End Sub
 
         Public Sub RedimVars()
@@ -106,11 +106,11 @@ Namespace MSY
         End Sub
 
         Public Sub SetDefaultParameters()
-            nYearsPerTrial = 40
-            AssessmentType = eMSYAssessmentTypes.StationarySystem
-            MaxRelF = F_MAX
-            FStepSize = F_STEPSIZE
-            FSelectionMode = eMSYFSelectionModeType.Groups
+            Me.nYearsPerTrial = 40
+            Me.AssessmentType = eMSYAssessmentTypes.StationarySystem
+            Me.MaxRelF = F_MAX
+            Me.FStepSize = F_STEPSIZE
+            Me.FSelectionMode = eMSYFSelectionModeType.Groups
         End Sub
 
 #End Region

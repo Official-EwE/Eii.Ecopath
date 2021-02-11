@@ -32,14 +32,14 @@ Public Interface IEcosimDataInitializedPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures">Ecosim datastructures instance.</param>
     ''' <remarks>This can be used prior to the initialization of Ecosim data to set variables that are used by Ecosim to set derived variables. </remarks>
-    Sub EcosimPreDataInitialized(ByVal EcosimDatastructures As Object)
+    Sub EcosimPreDataInitialized(EcosimDatastructures As Object)
 
     ''' <summary>
     ''' Ecosim is about to initailize for a run
     ''' </summary>
     ''' <param name="EcosimDatastructures">cEcosimDataStructures instance.</param>
     ''' <remarks>Call prior to initialization of run data.</remarks>
-    Sub EcosimPreRunInitialized(ByVal EcosimDatastructures As Object)
+    Sub EcosimPreRunInitialized(EcosimDatastructures As Object)
 
 
 End Interface

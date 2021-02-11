@@ -64,11 +64,11 @@ Friend Class cDBUpdate6_50_00_25
 
     End Function
 
-    Private Function AddMigField(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddMigField(db As cEwEDatabase) As Boolean
         Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN InMigAreaMovement Single")
     End Function
 
-    Private Function AddEcosimDriverTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcosimDriverTable(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = db.Execute("CREATE TABLE EcosimScenarioCapacityDrivers (ScenarioID LONG, GroupID LONG, DriverID LONG, ResponseID LONG)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioCapacityDrivers ADD CONSTRAINT pk PRIMARY KEY (ScenarioID, GroupID, DriverID, ResponseID)")

@@ -43,7 +43,7 @@ Namespace Properties
         Private m_propSpecies As cStringProperty = Nothing
         Private m_propGenus As cStringProperty = Nothing
 
-        Public Sub New(ByVal pm As cPropertyManager, ByVal src As cTaxon)
+        Public Sub New(pm As cPropertyManager, src As cTaxon)
             MyBase.New()
 
             ' Do not connect to baseclass PropertyManager; this property is totally superficial!
@@ -97,19 +97,19 @@ Namespace Properties
 
 #Region " Internals "
 
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, cf As cProperty.eChangeFlags)
+        Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
             ' Pass it on!
             Me.OnPropertyChanged(Me, cf)
         End Sub
 
         Private Function Register(vn As eVarNameFlags) As cStringProperty
             Dim prop As cStringProperty = DirectCast(Me.m_pm.GetProperty(Me.m_src, vn), cStringProperty)
-            AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+            AddHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
             Return prop
         End Function
 
         Private Sub Unregister(prop As cStringProperty)
-            RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+            RemoveHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
         End Sub
 
 #End Region ' Internals

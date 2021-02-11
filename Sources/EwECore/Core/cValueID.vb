@@ -54,11 +54,11 @@ Public Class cValueID
     ''' <param name="dtSec"></param>
     ''' <param name="iDBIDSec"></param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal dtPrim As eDataTypes,
-                   ByVal iDBIDPrim As Integer,
-                   ByVal strVarName As String,
-                   Optional ByVal dtSec As eDataTypes = eDataTypes.NotSet,
-                   Optional ByVal iDBIDSec As Integer = -1)
+    Public Sub New(dtPrim As eDataTypes,
+                   iDBIDPrim As Integer,
+                   strVarName As String,
+                   Optional dtSec As eDataTypes = eDataTypes.NotSet,
+                   Optional iDBIDSec As Integer = -1)
 
         ' Pre
         If (dtSec <> eDataTypes.NotSet) Then
@@ -73,19 +73,19 @@ Public Class cValueID
 
     End Sub
 
-    Public Sub New(ByVal dtPrim As eDataTypes,
-                   ByVal iDBIDPrim As Integer,
-                   ByVal varname As eVarNameFlags,
-                   Optional ByVal dtSec As eDataTypes = eDataTypes.NotSet,
-                   Optional ByVal iDBIDSec As Integer = -1)
+    Public Sub New(dtPrim As eDataTypes,
+                   iDBIDPrim As Integer,
+                   varname As eVarNameFlags,
+                   Optional dtSec As eDataTypes = eDataTypes.NotSet,
+                   Optional iDBIDSec As Integer = -1)
 
         Me.New(dtPrim, iDBIDPrim, s_cni.GetVarName(varname), dtSec, iDBIDSec)
 
     End Sub
 
-    Public Sub New(ByVal obj As ICoreInterface,
-                   ByVal strVarName As String,
-                   Optional ByVal objSec As ICoreInterface = Nothing)
+    Public Sub New(obj As ICoreInterface,
+                   strVarName As String,
+                   Optional objSec As ICoreInterface = Nothing)
 
         MyBase.New()
 
@@ -106,9 +106,9 @@ Public Class cValueID
         End If
     End Sub
 
-    Public Sub New(ByVal obj As ICoreInterface,
-                   ByVal varname As eVarNameFlags,
-                   Optional ByVal objSec As ICoreInterface = Nothing)
+    Public Sub New(obj As ICoreInterface,
+                   varname As eVarNameFlags,
+                   Optional objSec As ICoreInterface = Nothing)
 
         Me.New(obj, s_cni.GetVarName(varname), objSec)
 
@@ -132,7 +132,7 @@ Public Class cValueID
         Get
             Return Me.m_dtPrim
         End Get
-        Friend Set(ByVal dt As eDataTypes)
+        Friend Set(dt As eDataTypes)
             Me.m_dtPrim = dt
             Me.m_strCached = ""
         End Set
@@ -142,7 +142,7 @@ Public Class cValueID
         Get
             Return Me.m_dtSec
         End Get
-        Friend Set(ByVal dt As eDataTypes)
+        Friend Set(dt As eDataTypes)
             Me.m_dtSec = dt
             Me.m_strCached = ""
         End Set
@@ -152,7 +152,7 @@ Public Class cValueID
         Get
             Return Me.m_iDBIDPrim
         End Get
-        Friend Set(ByVal iDBID As Integer)
+        Friend Set(iDBID As Integer)
             Me.m_iDBIDPrim = iDBID
             Me.m_strCached = ""
         End Set
@@ -162,7 +162,7 @@ Public Class cValueID
         Get
             Return Me.m_iDBIDSec
         End Get
-        Friend Set(ByVal iDBID As Integer)
+        Friend Set(iDBID As Integer)
             Me.m_iDBIDSec = iDBID
             Me.m_strCached = ""
         End Set
@@ -172,7 +172,7 @@ Public Class cValueID
         Get
             Return Me.m_strVarName
         End Get
-        Friend Set(ByVal strVarName As String)
+        Friend Set(strVarName As String)
             Me.m_strVarName = strVarName
             Me.m_strCached = ""
         End Set
@@ -182,13 +182,13 @@ Public Class cValueID
         Get
             Return Me.m_varname
         End Get
-        Friend Set(ByVal vn As eVarNameFlags)
+        Friend Set(vn As eVarNameFlags)
             Me.m_varname = vn
             Me.m_strCached = ""
         End Set
     End Property
 
-    Public Shared Function FromString(ByVal strAuxKey As String) As cValueID
+    Public Shared Function FromString(strAuxKey As String) As cValueID
 
         Dim asBits() As String = strAuxKey.Split(":"c)
         Dim key As New cValueID()
@@ -208,7 +208,7 @@ Public Class cValueID
 
     End Function
 
-    Public Shared Function FromValueID(ByVal val As cValueID) As cValueID
+    Public Shared Function FromValueID(val As cValueID) As cValueID
         Return New cValueID(val.DataTypePrim, val.DBIDPrim, val.VarName, val.DataTypeSec, val.DBIDSec)
     End Function
 
@@ -220,7 +220,7 @@ Public Class cValueID
     ''' <param name="nID">The unique ID of the object to generate the ID for</param>
     ''' <returns>A computer ID</returns>
     ''' -------------------------------------------------------------------
-    Public Shared Function GetDataTypeID(ByVal dataType As eDataTypes, ByVal nID As Integer) As String
+    Public Shared Function GetDataTypeID(dataType As eDataTypes, nID As Integer) As String
         ' JS 06jul07: profiled, m3 runs the the fastest
         'Return String.Concat(cCoreEnumNamesIndex.GetInstance().GetDataTypeName(dataType), CChar("_"), CStr(nID)) ' m1
         'Return cCoreEnumNamesIndex.GetInstance().GetDataTypeName(dataType) & CChar("_") & CStr(nID)              ' m2

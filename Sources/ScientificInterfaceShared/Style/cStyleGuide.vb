@@ -68,12 +68,12 @@ Namespace Style
 
             Public Property IsDefault As Boolean
 
-            Public Property GroupVisible(ByVal iEcopathGroupID As Integer) As Boolean
+            Public Property GroupVisible(iEcopathGroupID As Integer) As Boolean
                 Get
                     ' Return whether group is not hidden
                     Return (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1)
                 End Get
-                Set(ByVal bVisible As Boolean)
+                Set(bVisible As Boolean)
 
                     Me.IsChanged = False
 
@@ -94,12 +94,12 @@ Namespace Style
                 End Set
             End Property
 
-            Public Property FleetVisible(ByVal iEcopathFleetID As Integer) As Boolean
+            Public Property FleetVisible(iEcopathFleetID As Integer) As Boolean
                 Get
                     ' Return whether fleet is not hidden
                     Return (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1)
                 End Get
-                Set(ByVal bVisible As Boolean)
+                Set(bVisible As Boolean)
 
                     Me.IsChanged = False
 
@@ -442,14 +442,14 @@ Namespace Style
         End Enum
 
         ''' <summary>Good old-fashioned (but slightly blunt) way</summary>
-        Public Event StyleGuideChanged(ByVal changeType As eChangeType)
+        Public Event StyleGuideChanged(changeType As eChangeType)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Notify listeners of StyleGuide changes
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub FireChangeEvent(ByVal changeType As eChangeType)
+        Private Sub FireChangeEvent(changeType As eChangeType)
             ' Are events locked?
             If (Me.m_nEventLock > 0) Then
                 ' #Yes: remember that an event is pending
@@ -486,10 +486,10 @@ Namespace Style
         Public Sub ResumeEvents(Optional bNotifyWorld As Boolean = True)
             Me.m_nEventLock -= 1
             ' Did this clear the event lock?
-            If (Me.m_nEventLock <= 0) And (m_pendingChangeEventTypes <> eChangeType.None) Then
+            If (Me.m_nEventLock <= 0) And (Me.m_pendingChangeEventTypes <> eChangeType.None) Then
                 ' Fire remaining event(s)
                 If (bNotifyWorld) Then
-                    FireChangeEvent(Me.m_pendingChangeEventTypes)
+                    Me.FireChangeEvent(Me.m_pendingChangeEventTypes)
                 End If
                 ' Clear cache
                 Me.m_pendingChangeEventTypes = eChangeType.None
@@ -531,7 +531,7 @@ Namespace Style
                 Return Me.m_iNumDigits
 
             End Get
-            Set(ByVal nNumDigits As Integer)
+            Set(nNumDigits As Integer)
 
                 ' Is this a change?
                 If (nNumDigits = Me.m_iNumDigits) Then
@@ -558,7 +558,7 @@ Namespace Style
                 Return Me.m_bGroupDigits
 
             End Get
-            Set(ByVal bGroupDigits As Boolean)
+            Set(bGroupDigits As Boolean)
 
                 ' Is this a change?
                 If (bGroupDigits = Me.m_bGroupDigits) Then
@@ -585,8 +585,8 @@ Namespace Style
         ''' of the </param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal iValue As Integer,
-                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK) As String
+        Public Function FormatNumber(iValue As Integer,
+                                     Optional style As eStyleFlags = eStyleFlags.OK) As String
             Return Me.FormatNumber(CDbl(iValue), style, 0)
         End Function
 
@@ -607,10 +607,10 @@ Namespace Style
         ''' of the </param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal sValue As Single,
-                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK,
-                                     Optional ByVal iNumDigits As Integer = -1,
-                                     Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
+        Public Function FormatNumber(sValue As Single,
+                                     Optional style As eStyleFlags = eStyleFlags.OK,
+                                     Optional iNumDigits As Integer = -1,
+                                     Optional tsGroupDigits As TriState = TriState.UseDefault) As String
             Return Me.FormatNumber(CDbl(sValue), style, iNumDigits, tsGroupDigits)
         End Function
 
@@ -630,10 +630,10 @@ Namespace Style
         ''' be represented with exactly the requested number of decimal digits.</param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal dValue As Double,
-                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK,
-                                     Optional ByVal iNumDigits As Integer = -1,
-                                     Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
+        Public Function FormatNumber(dValue As Double,
+                                     Optional style As eStyleFlags = eStyleFlags.OK,
+                                     Optional iNumDigits As Integer = -1,
+                                     Optional tsGroupDigits As TriState = TriState.UseDefault) As String
 
             ' Use styleguide numdigits setting if value not provided
             If (iNumDigits < 0) Then iNumDigits = Math.Max(0, Me.m_iNumDigits)
@@ -728,7 +728,7 @@ Namespace Style
         ''' <param name="strUnits">Units to format into the mask.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function FormatUnitString(ByVal strUnits As String) As String
+        Public Function FormatUnitString(strUnits As String) As String
             Dim units As New cUnits(Me.m_core)
             Return units.ToString(strUnits)
         End Function
@@ -741,7 +741,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property CurrencyUnit() As eUnitCurrencyType
-            Set(ByVal value As eUnitCurrencyType)
+            Set(value As eUnitCurrencyType)
                 If (Me.m_unitCurrency <> value) Then
                     Me.m_unitCurrency = value
                     Me.UnitsChanged()
@@ -755,7 +755,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property CustomCurrencyUnitText() As String
-            Set(ByVal value As String)
+            Set(value As String)
                 If (String.Compare(Me.m_strUnitCurrencyCustom, value) <> 0) Then
                     Me.m_strUnitCurrencyCustom = value
                     Me.UnitsChanged()
@@ -763,7 +763,7 @@ Namespace Style
             End Set
         End Property
 
-        Public ReadOnly Property CurrencyUnitText(ByVal unit As eUnitCurrencyType) As String
+        Public ReadOnly Property CurrencyUnitText(unit As eUnitCurrencyType) As String
             Get
                 Dim fmt As New cCurrencyUnitFormatter(Me.m_strUnitCurrencyCustom)
                 Return fmt.ToString(unit)
@@ -780,7 +780,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property TimeUnit() As eUnitTimeType
-            Set(ByVal value As eUnitTimeType)
+            Set(value As eUnitTimeType)
                 If (Me.m_unitTime <> value) Then
                     Me.m_unitTime = value
                     Me.UnitsChanged()
@@ -794,7 +794,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="unit">Time unit to represent.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property TimeUnitText(ByVal unit As eUnitTimeType) As String
+        Public ReadOnly Property TimeUnitText(unit As eUnitTimeType) As String
             Get
                 Dim fmt As New cTimeUnitFormatter(Me.m_strUnitTimeCustom)
                 Return fmt.ToString(unit)
@@ -807,7 +807,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property CustomTimeUnitText() As String
-            Set(ByVal value As String)
+            Set(value As String)
                 If (String.Compare(Me.m_strUnitTimeCustom, value) <> 0) Then
                     Me.m_strUnitTimeCustom = value
                     Me.UnitsChanged()
@@ -825,7 +825,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property MonetaryUnit() As String
-            Set(ByVal value As String)
+            Set(value As String)
                 If (Me.m_unitMonetary <> value) Then
                     Me.m_unitMonetary = value
                     Me.UnitsChanged()
@@ -843,7 +843,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property AreaUnit() As eUnitAreaType
-            Set(ByVal value As eUnitAreaType)
+            Set(value As eUnitAreaType)
                 If (Me.m_unitArea <> value) Then
                     Me.m_unitArea = value
                     Me.UnitsChanged()
@@ -856,7 +856,7 @@ Namespace Style
         ''' Helper method, get the area unit text to show in the application.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property AreaUnitText(ByVal unit As eUnitAreaType) As String
+        Public ReadOnly Property AreaUnitText(unit As eUnitAreaType) As String
             Get
                 Dim fmt As New cAreaUnitFormatter(Me.m_strUnitAreaCustom)
                 Return fmt.ToString(unit)
@@ -870,7 +870,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public WriteOnly Property CustomAreaUnitText() As String
-            Set(ByVal value As String)
+            Set(value As String)
                 If (String.Compare(Me.m_strUnitAreaCustom, value) <> 0) Then
                     Me.m_strUnitAreaCustom = value
                     Me.UnitsChanged()
@@ -908,7 +908,7 @@ Namespace Style
             Get
                 Return Me.m_tsShowLegends
             End Get
-            Set(ByVal value As TriState)
+            Set(value As TriState)
                 Me.m_tsShowLegends = value
                 Me.GraphStyleChanged()
             End Set
@@ -923,7 +923,7 @@ Namespace Style
             Get
                 Return Me.m_tsShowAxisLabels
             End Get
-            Set(ByVal value As TriState)
+            Set(value As TriState)
                 Me.m_tsShowAxisLabels = value
                 Me.GraphStyleChanged()
             End Set
@@ -951,7 +951,7 @@ Namespace Style
             Get
                 Return Me.m_bTransparentBackgrounds
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value <> Me.m_bTransparentBackgrounds Then
                     Me.m_bTransparentBackgrounds = value
                     Me.ColorsChanged()
@@ -986,7 +986,7 @@ Namespace Style
             Set(value As PointF)
                 If Not Point.Equals(Me.m_ptMapRefLayerTL, value) Then
                     Me.m_ptMapRefLayerTL = value
-                    MapStyleChanged()
+                    Me.MapStyleChanged()
                 End If
             End Set
         End Property
@@ -998,7 +998,7 @@ Namespace Style
             Set(value As PointF)
                 If Not Point.Equals(Me.m_ptMapRefLayerBR, value) Then
                     Me.m_ptMapRefLayerBR = value
-                    MapStyleChanged()
+                    Me.MapStyleChanged()
                 End If
             End Set
         End Property
@@ -1029,7 +1029,7 @@ Namespace Style
             Get
                 Return Me.m_bShowMapExcludedCells
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMapExcludedCells = value
                 Me.MapStyleChanged()
             End Set
@@ -1044,7 +1044,7 @@ Namespace Style
             Get
                 Return Me.m_bShowMapMPAs
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMapMPAs = value
                 Me.MapStyleChanged()
             End Set
@@ -1059,7 +1059,7 @@ Namespace Style
             Get
                 Return Me.m_bShowMapLabels
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMapLabels = value
                 Me.MapStyleChanged()
             End Set
@@ -1074,7 +1074,7 @@ Namespace Style
             Get
                 Return Me.m_bShowMapLabelDate
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMapLabelDate = value
                 Me.MapStyleChanged()
             End Set
@@ -1089,7 +1089,7 @@ Namespace Style
             Get
                 Return Me.m_bShowMapLabelIndex
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMapLabelIndex = value
                 Me.MapStyleChanged()
             End Set
@@ -1103,7 +1103,7 @@ Namespace Style
             Get
                 Return Me.m_bInvertMapLabelColor
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bInvertMapLabelColor = value
                 Me.MapStyleChanged()
             End Set
@@ -1118,7 +1118,7 @@ Namespace Style
             Get
                 Return Me.m_posMapLabelHorz
             End Get
-            Set(ByVal value As StringAlignment)
+            Set(value As StringAlignment)
                 Me.m_posMapLabelHorz = value
                 Me.MapStyleChanged()
             End Set
@@ -1133,7 +1133,7 @@ Namespace Style
             Get
                 Return Me.m_posMapLabelVert
             End Get
-            Set(ByVal value As StringAlignment)
+            Set(value As StringAlignment)
                 Me.m_posMapLabelVert = value
                 Me.MapStyleChanged()
             End Set
@@ -1183,7 +1183,7 @@ Namespace Style
         ''' trigger the style guide to issue default colours for groups.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property GroupColor(ByVal core As cCore, ByVal iGroup As Integer) As Color
+        Public Property GroupColor(core As cCore, iGroup As Integer) As Color
             Get
                 Dim clr As Color = Color.Transparent
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
@@ -1195,7 +1195,7 @@ Namespace Style
                 End If
                 Return clr
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
                     Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
                     ' Optimization
@@ -1218,8 +1218,8 @@ Namespace Style
         ''' Default group colours are picked from the Ecopath 5 group colour scheme.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(ByVal core As cCore,
-                                          ByVal iGroup As Integer) As Color
+        Public Function GroupColorDefault(core As cCore,
+                                          iGroup As Integer) As Color
             If (iGroup = 0) Then Return Color.Gray
             Return Me.GroupColorDefault(iGroup, core.nGroups)
         End Function
@@ -1234,8 +1234,8 @@ Namespace Style
         ''' Default group colours are picked from the Ecopath 5 group colour scheme.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(ByVal iGroup As Integer,
-                                          ByVal nGroups As Integer) As Color
+        Public Function GroupColorDefault(iGroup As Integer,
+                                          nGroups As Integer) As Color
             Return Me.GroupColorRamp.GetColor(iGroup, nGroups)
         End Function
 
@@ -1255,7 +1255,7 @@ Namespace Style
         ''' trigger the style guide to issue default colours for fleets.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property FleetColor(ByVal core As cCore, ByVal iFleet As Integer) As Color
+        Public Property FleetColor(core As cCore, iFleet As Integer) As Color
             Get
                 Dim clr As Color = Color.Transparent
                 If (0 <= iFleet) And (iFleet <= core.nFleets) Then
@@ -1267,7 +1267,7 @@ Namespace Style
                 End If
                 Return clr
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 If (0 <= iFleet) And (iFleet <= core.nFleets) Then
                     Dim flt As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                     ' Optimization
@@ -1292,8 +1292,8 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(ByVal iFleet As Integer,
-                                          ByVal nFleets As Integer) As Color
+        Public Function FleetColorDefault(iFleet As Integer,
+                                          nFleets As Integer) As Color
             If (iFleet = 0) Then Return Color.Gray
             Return Me.FleetColorRamp.GetColor(iFleet, nFleets)
         End Function
@@ -1309,9 +1309,9 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(ByVal core As cCore,
-                                          ByVal iFleet As Integer) As Color
-            Return FleetColorDefault(iFleet, core.nFleets)
+        Public Function FleetColorDefault(core As cCore,
+                                          iFleet As Integer) As Color
+            Return Me.FleetColorDefault(iFleet, core.nFleets)
         End Function
 
 #End Region ' Fleet 
@@ -1355,7 +1355,7 @@ Namespace Style
         ''' trigger the style guide to issue default colours for pedigree levels.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property PedigreeColor(ByVal core As cCore, ByVal vn As eVarNameFlags, ByVal iLevel As Integer) As Color
+        Public Property PedigreeColor(core As cCore, vn As eVarNameFlags, iLevel As Integer) As Color
             Get
                 Dim clr As Color = Color.Transparent
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
@@ -1369,7 +1369,7 @@ Namespace Style
                 End If
                 Return clr
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man IsNot Nothing) Then
                     If (0 < iLevel) And (iLevel <= man.NumLevels) Then
@@ -1395,8 +1395,8 @@ Namespace Style
         ''' Default pedigree colours are picked from a SAUP/EwE5 colour ramp.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function PedigreeColorDefault(ByVal iLevel As Integer,
-                                             ByVal nLevels As Integer) As Color
+        Public Function PedigreeColorDefault(iLevel As Integer,
+                                             nLevels As Integer) As Color
             Return Me.PedigreeColorRamp.GetColor(iLevel - 1, nLevels)
         End Function
 
@@ -1412,11 +1412,11 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function PedigreeColorDefault(ByVal core As cCore,
-                                             ByVal iLevel As Integer,
-                                             ByVal vn As eVarNameFlags) As Color
+        Public Function PedigreeColorDefault(core As cCore,
+                                             iLevel As Integer,
+                                             vn As eVarNameFlags) As Color
             Debug.Assert(core.IsPedigreeVariableSupported(vn))
-            Return PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
+            Return Me.PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
         End Function
 
 #End Region ' Pedigree
@@ -1492,7 +1492,7 @@ Namespace Style
         ''' mere informational style flags.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub GetStyleColors(ByVal eStatus As cStyleGuide.eStyleFlags,
+        Public Sub GetStyleColors(eStatus As cStyleGuide.eStyleFlags,
                                   ByRef colorText As Color,
                                   ByRef colorBackground As Color)
 
@@ -1581,15 +1581,15 @@ Namespace Style
         ''' <param name="colorType">The <see cref="eApplicationColorType">application feedback type</see>
         ''' to affect.</param>
         ''' -------------------------------------------------------------------
-        Public Property ApplicationColor(ByVal colorType As cStyleGuide.eApplicationColorType) As Color
+        Public Property ApplicationColor(colorType As cStyleGuide.eApplicationColorType) As Color
             Get
                 ' Sanity check
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
                     Return Me.m_dtApplicationColors(colorType)
                 End If
-                Return DefaultColor(colorType)
+                Return Me.DefaultColor(colorType)
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 ' Optimization
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
                     If Me.m_dtApplicationColors(colorType) = value Then Return
@@ -1606,12 +1606,12 @@ Namespace Style
 
 #Region " Shape "
 
-        Public Property ShapeColor(ByVal shapetype As eDataTypes) As Color
+        Public Property ShapeColor(shapetype As eDataTypes) As Color
             Get
                 If (Me.m_dtShapeColors.ContainsKey(shapetype)) Then
                     Return Me.m_dtShapeColors(shapetype)
                 End If
-                Return DefaultShapeColor(shapetype)
+                Return Me.DefaultShapeColor(shapetype)
             End Get
             Set(value As Color)
 
@@ -1637,7 +1637,7 @@ Namespace Style
         ''' scheme.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function GetEwE5ColorRamp(ByVal iNumLevels As Integer) As List(Of Color)
+        Public Function GetEwE5ColorRamp(iNumLevels As Integer) As List(Of Color)
             Dim lColors As New List(Of Color)
             For i As Integer = 0 To iNumLevels
                 Dim clr As Color = Me.GroupColorRamp.GetColor(i, iNumLevels)
@@ -1679,11 +1679,11 @@ Namespace Style
         ''' <param name="iValueRange"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function CalculateAlternatingColors(ByVal i As Integer,
-                                                          ByVal iLen As Integer,
-                                                          Optional ByVal iHueScale As Integer = 9,
-                                                          Optional ByVal iSaturationRange As Integer = 240,
-                                                          Optional ByVal iValueRange As Integer = 200) As HSV
+        Public Shared Function CalculateAlternatingColors(i As Integer,
+                                                          iLen As Integer,
+                                                          Optional iHueScale As Integer = 9,
+                                                          Optional iSaturationRange As Integer = 240,
+                                                          Optional iValueRange As Integer = 200) As HSV
 
             Dim nCount As Integer = CInt(Math.Ceiling(Math.Sqrt(iLen / iHueScale)))
             Dim iHueTick As Integer = 255 \ iHueScale
@@ -1702,7 +1702,7 @@ Namespace Style
 
         End Function
 
-        Public Shared Function CalculateAlternatingStanzaGroupColor(ByVal hsvGroup As HSV, ByVal iLifeStage As Integer, ByVal iNumLifeStages As Integer) As HSV
+        Public Shared Function CalculateAlternatingStanzaGroupColor(hsvGroup As HSV, iLifeStage As Integer, iNumLifeStages As Integer) As HSV
 
             Dim sRange As Integer = 255
             Dim vRange As Integer = 100
@@ -1728,7 +1728,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="ft">Font type indicator.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Font(ByVal ft As eApplicationFontType) As Font
+        Public ReadOnly Property Font(ft As eApplicationFontType) As Font
             Get
                 ' ToDo: use proper DPI scaling here
                 Return New Font(Me.FontFamilyName(ft), Me.FontSize(ft), Me.FontStyle(ft), GraphicsUnit.Point)
@@ -1742,7 +1742,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="ft"></param>
         ''' -------------------------------------------------------------------
-        Public Property FontFamilyName(ByVal ft As eApplicationFontType) As String
+        Public Property FontFamilyName(ft As eApplicationFontType) As String
             Get
                 If Me.m_dtFontFamilyName.ContainsKey(ft) Then
                     Dim strName As String = Me.m_dtFontFamilyName(ft)
@@ -1750,9 +1750,9 @@ Namespace Style
                         Return strName
                     End If
                 End If
-                Return DefaultFontFamilyName(ft)
+                Return Me.DefaultFontFamilyName(ft)
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_dtFontFamilyName(ft) = value
                 Me.FontsChanged()
             End Set
@@ -1765,14 +1765,14 @@ Namespace Style
         ''' </summary>
         ''' <param name="ft"></param>
         ''' -------------------------------------------------------------------
-        Public Property FontStyle(ByVal ft As eApplicationFontType) As FontStyle
+        Public Property FontStyle(ft As eApplicationFontType) As FontStyle
             Get
                 If Me.m_dtFontStye.ContainsKey(ft) Then
                     Return Me.m_dtFontStye(ft)
                 End If
-                Return DefaultFontStyle(ft)
+                Return Me.DefaultFontStyle(ft)
             End Get
-            Set(ByVal value As FontStyle)
+            Set(value As FontStyle)
                 If (value < 0) Then
                     If (Me.m_dtFontStye.ContainsKey(ft)) Then Me.m_dtFontStye.Remove(ft)
                 Else
@@ -1789,7 +1789,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="ft"></param>
         ''' -------------------------------------------------------------------
-        Public Property FontSize(ByVal ft As eApplicationFontType) As Single
+        Public Property FontSize(ft As eApplicationFontType) As Single
             Get
                 If Me.m_dtFontSize.ContainsKey(ft) Then
                     Dim sSize As Single = Me.m_dtFontSize(ft)
@@ -1797,9 +1797,9 @@ Namespace Style
                         Return sSize
                     End If
                 End If
-                Return DefaultFontSize(ft)
+                Return Me.DefaultFontSize(ft)
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 If (value < 0) Then
                     If (Me.m_dtFontSize.ContainsKey(ft)) Then Me.m_dtFontSize.Remove(ft)
                 Else
@@ -1832,7 +1832,7 @@ Namespace Style
                 If (Me.m_iThumbnailSize <= 0) Then Return 48 ' Default
                 Return Math.Max(0, Math.Min(512, Me.m_iThumbnailSize))
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iThumbnailSize = value
                 Me.ThumbnailsChanged()
             End Set
@@ -1896,7 +1896,7 @@ Namespace Style
             End Get
             Set(value As String)
                 Me.m_strPreset = value
-                Preset(value)
+                Me.Preset(value)
                 Me.ItemVisibilityChanged()
             End Set
         End Property
@@ -1918,14 +1918,14 @@ Namespace Style
         ''' </summary>
         ''' <param name="iGroup">One-based group index</param>
         ''' <returns></returns>
-        Public Property GroupVisible(ByVal iGroup As Integer, Optional strPreset As String = "") As Boolean
+        Public Property GroupVisible(iGroup As Integer, Optional strPreset As String = "") As Boolean
             Get
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset Is Nothing) Then Return True
                 Return preset.GroupVisible(Me.m_core.EcoPathGroupInputs(iGroup).DBID)
             End Get
-            Set(ByVal bVisible As Boolean)
+            Set(bVisible As Boolean)
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset IsNot Nothing) Then
@@ -1940,14 +1940,14 @@ Namespace Style
         ''' </summary>
         ''' <param name="iFleet">One-based fleet index.</param>
         ''' <returns></returns>
-        Public Property FleetVisible(ByVal iFleet As Integer, Optional strPreset As String = "") As Boolean
+        Public Property FleetVisible(iFleet As Integer, Optional strPreset As String = "") As Boolean
             Get
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset Is Nothing) Then Return True
                 Return preset.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID)
             End Get
-            Set(ByVal bVisible As Boolean)
+            Set(bVisible As Boolean)
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset IsNot Nothing) Then
@@ -1957,7 +1957,7 @@ Namespace Style
             End Set
         End Property
 
-        Public Sub ResetVisibleFlags(Optional ByVal bFireChangeEvent As Boolean = True, Optional strPreset As String = "")
+        Public Sub ResetVisibleFlags(Optional bFireChangeEvent As Boolean = True, Optional strPreset As String = "")
             Dim pr As cItemVisibilityPreset = Me.Preset(strPreset)
             pr.Reset()
             Me.m_bHideTotalCatch = False
@@ -1986,12 +1986,12 @@ Namespace Style
         ''' <returns>True if any groups or fleets are hidden.</returns>
         ''' -------------------------------------------------------------------
         Public Function HasHiddenItems() As Boolean
-            Dim preset As cItemVisibilityPreset = Me.Preset(SelectedItemVisibilityPresetName)
+            Dim preset As cItemVisibilityPreset = Me.Preset(Me.SelectedItemVisibilityPresetName)
             If (preset Is Nothing) Then Return False
             Return preset.HasHiddenItems
         End Function
 
-        Public Function LoadPeristentSettings(ByVal settings As cXMLSettings) As Boolean
+        Public Function LoadPeristentSettings(settings As cXMLSettings) As Boolean
 
             Me.SuspendEvents()
             Try
@@ -2050,7 +2050,7 @@ Namespace Style
 
         End Function
 
-        Public Function SavePeristentSettings(ByVal settings As cXMLSettings) As Boolean
+        Public Function SavePeristentSettings(settings As cXMLSettings) As Boolean
 
             Try
                 Dim sbNames As New StringBuilder()
@@ -2095,7 +2095,7 @@ Namespace Style
             Get
                 Return (Me.m_bHideTotalCatch = False)
             End Get
-            Set(ByVal bShow As Boolean)
+            Set(bShow As Boolean)
                 Me.m_bHideTotalCatch = (bShow = False)
             End Set
         End Property
@@ -2104,7 +2104,7 @@ Namespace Style
             Get
                 Return (Me.m_bHideTotalValue = False)
             End Get
-            Set(ByVal bShow As Boolean)
+            Set(bShow As Boolean)
                 Me.m_bHideTotalValue = (bShow = False)
             End Set
         End Property
@@ -2283,8 +2283,8 @@ Namespace Style
             Gradient
         End Enum
 
-        Public Function GetVisualStyles(ByVal nBrushes As Integer,
-                                        Optional ByVal brushType As eBrushType = eBrushType.Color) As cVisualStyle()
+        Public Function GetVisualStyles(nBrushes As Integer,
+                                        Optional brushType As eBrushType = eBrushType.Color) As cVisualStyle()
             Dim avs As cVisualStyle() = Nothing
 
             Select Case brushType
@@ -2294,14 +2294,14 @@ Namespace Style
                     Me.GetColors(avs)
 
                 Case eBrushType.Glyphs
-                    If (nBrushes <= 0) Then nBrushes = DefaultGlyphs.Length
+                    If (nBrushes <= 0) Then nBrushes = Me.DefaultGlyphs.Length
                     ReDim avs(nBrushes)
-                    Me.GetGlyphs(avs, DefaultGlyphs)
+                    Me.GetGlyphs(avs, Me.DefaultGlyphs)
 
                 Case eBrushType.HatchPattern
-                    If (nBrushes <= 0) Then nBrushes = DefaultHatchPatterns.Length
+                    If (nBrushes <= 0) Then nBrushes = Me.DefaultHatchPatterns.Length
                     ReDim avs(nBrushes)
-                    Me.GetPatterns(avs, DefaultHatchPatterns)
+                    Me.GetPatterns(avs, Me.DefaultHatchPatterns)
 
                 Case eBrushType.Gradient
                     If (nBrushes <= 0) Then nBrushes = DefaultArgbRamps.Length
@@ -2327,7 +2327,7 @@ Namespace Style
 
 #Region " Internal implementation "
 
-        Private Sub GetColors(ByVal avs() As cVisualStyle)
+        Private Sub GetColors(avs() As cVisualStyle)
 
             Dim vs As cVisualStyle = Nothing
             Dim clrramp As New cEwEColorRamp()
@@ -2342,7 +2342,7 @@ Namespace Style
             Next i
         End Sub
 
-        Private Sub GetGlyphs(ByVal avs() As cVisualStyle, ByVal images() As Image)
+        Private Sub GetGlyphs(avs() As cVisualStyle, images() As Image)
 
             Dim vs As cVisualStyle = Nothing
             Dim iGlyphIndex As Integer = 0
@@ -2364,7 +2364,7 @@ Namespace Style
 
         End Sub
 
-        Private Sub GetPatterns(ByVal avs() As cVisualStyle, ByVal hatches As HatchStyle())
+        Private Sub GetPatterns(avs() As cVisualStyle, hatches As HatchStyle())
 
             Dim vs As cVisualStyle = Nothing
             Dim iPatternIndex As Integer = 0
@@ -2383,7 +2383,7 @@ Namespace Style
 
         End Sub
 
-        Private Sub GetGradients(ByVal avs() As cVisualStyle, ByVal ramps As cARGBColorRamp())
+        Private Sub GetGradients(avs() As cVisualStyle, ramps As cARGBColorRamp())
 
             Dim vs As cVisualStyle = Nothing
             Dim iPatternIndex As Integer = 0
@@ -2546,9 +2546,9 @@ Namespace Style
         ''' <remarks>Windows Forms control labels are formatted to sentence case.</remarks>
         ''' <returns>A string that can be used as a Windows Forms Control label.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToControlLabel(ByVal strLabel As String,
-                                              Optional ByVal parent As Control = Nothing,
-                                              Optional ByVal bAssignShortcut As Boolean = True) As String
+        Public Shared Function ToControlLabel(strLabel As String,
+                                              Optional parent As Control = Nothing,
+                                              Optional bAssignShortcut As Boolean = True) As String
 
             Dim sb As New StringBuilder()
 
@@ -2580,9 +2580,9 @@ Namespace Style
         ''' <remarks>Windows Forms menu labels are formatted to title case.</remarks>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToMenuLabel(ByVal strLabel As String,
-                                           Optional ByVal parent As MenuItem = Nothing,
-                                           Optional ByVal bAssignShortcut As Boolean = True) As String
+        Public Shared Function ToMenuLabel(strLabel As String,
+                                           Optional parent As MenuItem = Nothing,
+                                           Optional bAssignShortcut As Boolean = True) As String
 
             Dim sb As New StringBuilder()
 
@@ -2623,9 +2623,9 @@ Namespace Style
                 End If
                 Select Case ft
                     Case eEcobaseFieldType.CountryName
-                        Return DefaultCountryNames()
+                        Return Me.DefaultCountryNames()
                     Case eEcobaseFieldType.EcosystemType
-                        Return DefaultEcosystemTypes()
+                        Return Me.DefaultEcosystemTypes()
                 End Select
                 Return New StringCollection()
             End Get
@@ -2639,7 +2639,7 @@ Namespace Style
         End Property
 
         Public Sub EcoBaseFieldsChanged()
-            FireChangeEvent(eChangeType.EcobaseLists)
+            Me.FireChangeEvent(eChangeType.EcobaseLists)
         End Sub
 
         Private Function DefaultCountryNames() As StringCollection
@@ -2676,7 +2676,7 @@ Namespace Style
 
 #Region " Internal implementation "
 
-        Private Function DefaultColor(ByVal colorType As eApplicationColorType) As Color
+        Private Function DefaultColor(colorType As eApplicationColorType) As Color
             Select Case colorType
                 Case eApplicationColorType.DEFAULT_TEXT : Return Color.Black
                 Case eApplicationColorType.DEFAULT_BACKGROUND : Return Color.White
@@ -2710,15 +2710,15 @@ Namespace Style
             Return Color.Black
         End Function
 
-        Private Function DefaultFontFamilyName(ByVal ft As eApplicationFontType) As String
+        Private Function DefaultFontFamilyName(ft As eApplicationFontType) As String
             Return "Microsoft Sans Serif"
         End Function
 
-        Private Function DefaultFontStyle(ByVal ft As eApplicationFontType) As FontStyle
+        Private Function DefaultFontStyle(ft As eApplicationFontType) As FontStyle
             Return Drawing.FontStyle.Regular
         End Function
 
-        Private Function DefaultFontSize(ByVal ft As eApplicationFontType) As Single
+        Private Function DefaultFontSize(ft As eApplicationFontType) As Single
             Select Case ft
                 Case eApplicationFontType.Title
                     Return 12
@@ -2732,7 +2732,7 @@ Namespace Style
             Return -1
         End Function
 
-        Private Function DefaultShapeColor(ByVal shapetype As eDataTypes) As Color
+        Private Function DefaultShapeColor(shapetype As eDataTypes) As Color
             Select Case shapetype
                 Case eDataTypes.Forcing : Return Color.FromArgb(255, 236, 55, 12)
                 Case eDataTypes.EggProd : Return Color.Orange

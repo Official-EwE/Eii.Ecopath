@@ -43,7 +43,7 @@ Namespace Ecospace
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.m_uic = uic
             Me.InitializeComponent()
         End Sub
@@ -52,7 +52,7 @@ Namespace Ecospace
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.m_grid.UIContext = Me.m_uic
             Me.UpdateControls()
@@ -68,7 +68,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(sender As System.Object, e As System.EventArgs) Handles OK_Button.Click
 
             ' Try to apply grid changes
             If Me.m_grid.Apply() = False Then
@@ -82,22 +82,22 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAddMPA.Click
+        Private Sub m_btnInsert_Click(sender As System.Object, e As System.EventArgs) Handles m_btnAddMPA.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveMPA.Click
+        Private Sub m_btnDelete_Click(sender As System.Object, e As System.EventArgs) Handles m_btnRemoveMPA.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+        Private Sub m_btnPreserve_Click(sender As System.Object, e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub

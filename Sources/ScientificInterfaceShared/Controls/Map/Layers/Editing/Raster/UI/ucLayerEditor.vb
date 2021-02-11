@@ -51,13 +51,13 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
-        Public Overridable Sub Attach(ByVal uic As cUIContext,
-                                      ByVal editor As cLayerEditor,
-                                      ByVal layer As cDisplayLayerRaster)
+        Public Overridable Sub Attach(uic As cUIContext,
+                                      editor As cLayerEditor,
+                                      layer As cDisplayLayerRaster)
             Me.UIContext = uic
             Me.Editor = CType(editor, cLayerEditorRaster)
             Me.Layer = layer
-            Me.Map = Map
+            Me.Map = Me.Map
         End Sub
 
         Public Overridable Sub Detach()
@@ -89,7 +89,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Initialize(ByVal editor As cLayerEditorRaster) _
+        Public Overridable Sub Initialize(editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.Initialize
             ' NOP
         End Sub
@@ -97,21 +97,21 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.StartEdit"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit(ByVal editor As cLayerEditorRaster) _
+        Public Overridable Sub StartEdit(editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.StartEdit
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.EndEdit"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub EndEdit(ByVal editor As cLayerEditorRaster) _
+        Public Overridable Sub EndEdit(editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.EndEdit
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.UpdateContent"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub UpdateContent(ByVal editor As cLayerEditorRaster) _
+        Public Overridable Sub UpdateContent(editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.UpdateContent
 
             Dim strLabel As String = ""
@@ -124,9 +124,9 @@ Namespace Controls.Map.Layers
                 Dim vn As eVarNameFlags = eVarNameFlags.NotSet
 
                 ' Get label text 
-                If (Layer.Data IsNot Nothing) Then
-                    md = Layer.Data.MetadataCell()
-                    vn = Layer.Data.VarName
+                If (Me.Layer.Data IsNot Nothing) Then
+                    md = Me.Layer.Data.MetadataCell()
+                    vn = Me.Layer.Data.VarName
                 End If
 
                 If (md.Units IsNot Nothing) Then
@@ -134,7 +134,7 @@ Namespace Controls.Map.Layers
                 End If
 
                 If (vn = eVarNameFlags.NotSet) Then
-                    strLabel = Layer.DisplayText()
+                    strLabel = Me.Layer.DisplayText()
                 Else
                     strLabel = fmtV.ToString(vn)
                 End If
@@ -167,7 +167,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="ucEditor">The editor that changed, e.g. moi.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnChanged(ByVal ucEditor As ucLayerEditor)
+        Public Event OnChanged(ucEditor As ucLayerEditor)
 
 #End Region ' Public events
 

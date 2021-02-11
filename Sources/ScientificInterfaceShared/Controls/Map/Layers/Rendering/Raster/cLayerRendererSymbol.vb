@@ -42,19 +42,19 @@ Namespace Controls.Map.Layers
             MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                            ByVal rc As RectangleF,
+        Public Overrides Sub RenderPreview(g As Graphics,
+                                            rc As RectangleF,
                                             Optional iSymbol As Integer = 0)
 
             Me.RenderSymbol(g, rc, Me.VisualStyle.ForeColour)
 
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
-                                        ByVal rc As System.Drawing.RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As System.Drawing.Graphics,
+                                        rc As System.Drawing.RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As cStyleGuide.eStyleFlags)
 
             If (CBool(value)) Then Me.RenderPreview(g, rc)
 
@@ -70,9 +70,9 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Protected Sub RenderSymbol(ByVal g As Graphics,
-                                   ByVal rc As RectangleF,
-                                   ByVal colorFill As Color)
+        Protected Sub RenderSymbol(g As Graphics,
+                                   rc As RectangleF,
+                                   colorFill As Color)
             If Me.IsStyleValid() Then
                 rc.Inflate(CInt(-rc.Width * 0.1), CInt(-rc.Height * 0.1))
 

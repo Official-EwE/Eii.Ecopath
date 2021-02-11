@@ -41,9 +41,9 @@ Public Class ucOptionsPluginDetails
     ''' showing details on a plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext,
-                   ByVal pi As IPlugin,
-                   ByVal pa As cPluginAssembly)
+    Public Sub New(uic As cUIContext,
+                   pi As IPlugin,
+                   pa As cPluginAssembly)
 
         Me.InitializeComponent()
 
@@ -66,7 +66,7 @@ Public Class ucOptionsPluginDetails
     Public Property UIContext() As cUIContext _
         Implements IUIElement.UIContext
 
-    Private Sub m_llContact_LinkClicked(ByVal sender As System.Object, ByVal e As LinkLabelLinkClickedEventArgs) _
+    Private Sub m_llContact_LinkClicked(sender As System.Object, e As LinkLabelLinkClickedEventArgs) _
         Handles m_llContact.LinkClicked
 
         Try

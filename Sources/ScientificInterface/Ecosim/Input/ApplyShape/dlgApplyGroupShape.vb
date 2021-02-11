@@ -68,7 +68,7 @@ Namespace Ecosim
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal iGroup As Integer)
+        Public Sub New(uic As cUIContext, iGroup As Integer)
             Try
                 Me.Init(uic, eEditMode.Group)
                 Me.m_iSelGroup = iGroup
@@ -83,12 +83,12 @@ Namespace Ecosim
         ''' Create the dialog for all pred/prey combinations
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.Init(uic, eEditMode.All)
 
             For iGroup As Integer = 1 To Me.m_uic.Core.nLivingGroups
-                Me.m_lInteractions.Add(m_InteractionManager.GroupInteraction(iGroup))
+                Me.m_lInteractions.Add(Me.m_InteractionManager.GroupInteraction(iGroup))
             Next
 
         End Sub
@@ -97,7 +97,7 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
@@ -111,7 +111,7 @@ Namespace Ecosim
             Me.LoadAppliedShapes()
 
             ' Load Prey and predator pair name
-            Select Case m_editMode
+            Select Case Me.m_editMode
                 Case eEditMode.Group
                     Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup)))
                 Case eEditMode.All
@@ -124,7 +124,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             For Each img As Image In Me.m_ilSmall.Images
                 img.Dispose()
@@ -142,10 +142,10 @@ Namespace Ecosim
 
 #Region " Termination "
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
-            Dim iNumApplied As Integer = m_lvAppliedShapes.Items.Count
+            Dim iNumApplied As Integer = Me.m_lvAppliedShapes.Items.Count
             Dim lvItem As ListViewItem = Nothing
             Dim shape As cForcingFunction = Nothing
             Dim iApplication As Integer = 0
@@ -197,7 +197,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles Cancel_Button.Click
             Me.DialogResult = DialogResult.Cancel
             Me.Close()
@@ -207,22 +207,22 @@ Namespace Ecosim
 
 #Region " Add and remove "
 
-        Private Sub lvAllShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvAllShapes_DoubleClick(sender As Object, e As System.EventArgs) _
             Handles m_lvAllShapes.DoubleClick
             Me.AddShapes()
         End Sub
 
-        Private Sub lvAppliedShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvAppliedShapes_DoubleClick(sender As Object, e As System.EventArgs) _
             Handles m_lvAppliedShapes.DoubleClick
             Me.RemoveShapes()
         End Sub
 
-        Private Sub OnAdd(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnAdd(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click
             Me.AddShapes()
         End Sub
 
-        Private Sub OnRemove(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRemove(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRemove.Click
             Me.RemoveShapes()
         End Sub
@@ -247,7 +247,7 @@ Namespace Ecosim
 
 #Region " Selections "
 
-        Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvAppliedShapes_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_lvAppliedShapes.SelectedIndexChanged, m_lvAllShapes.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
@@ -273,7 +273,7 @@ Namespace Ecosim
         ''' <param name="uic"></param>
         ''' <param name="editMode"></param>
         ''' -------------------------------------------------------------------
-        Private Sub Init(ByVal uic As cUIContext, ByVal editMode As eEditMode)
+        Private Sub Init(uic As cUIContext, editMode As eEditMode)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -290,7 +290,7 @@ Namespace Ecosim
             Next
 
             ' Generate thumbnails from shapes
-            Me.m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
+            Me.m_ilSmall.ImageSize = New Size(Me.SmallIconSize, Me.SmallIconSize)
             Me.GenerateShapeThumbnails()
 
             Me.m_nGroups = Me.m_uic.Core.nGroups
@@ -303,7 +303,7 @@ Namespace Ecosim
         ''' Change the default multiplier, and update all selected appls.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub SetMultiplier(ByVal appl As eForcingFunctionApplication)
+        Private Sub SetMultiplier(appl As eForcingFunctionApplication)
             ' Store appl mode
             Me.m_appl = appl
             ' Update all selected items
@@ -324,11 +324,11 @@ Namespace Ecosim
         ''' Get/set the selected shape for a list view item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Property Shape(ByVal lvi As ListViewItem) As cForcingFunction
+        Private Property Shape(lvi As ListViewItem) As cForcingFunction
             Get
                 Return DirectCast(lvi.Tag, cForcingFunction)
             End Get
-            Set(ByVal value As cForcingFunction)
+            Set(value As cForcingFunction)
                 lvi.Tag = value
             End Set
         End Property
@@ -340,7 +340,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub AddShapes()
 
-            Dim colSelected As ListView.SelectedIndexCollection = m_lvAllShapes.SelectedIndices
+            Dim colSelected As ListView.SelectedIndexCollection = Me.m_lvAllShapes.SelectedIndices
             Dim shapeSelected As cForcingFunction = Nothing
             Dim shapeTest As cForcingFunction = Nothing
             Dim iNumApplied As Integer = 0
@@ -353,7 +353,7 @@ Namespace Ecosim
             For Each itemSrc As ListViewItem In Me.m_lvAllShapes.SelectedItems
 
                 'Get the shape data
-                shapeSelected = Shape(itemSrc)
+                shapeSelected = Me.Shape(itemSrc)
 
                 ' Sanity check
                 Debug.Assert(shapeSelected IsNot Nothing, "Unable to locate applied forcing function")
@@ -361,7 +361,7 @@ Namespace Ecosim
                 ' Check if already used
                 bFound = False
                 For Each itemTest As ListViewItem In Me.m_lvAppliedShapes.Items
-                    shapeTest = Shape(itemTest)
+                    shapeTest = Me.Shape(itemTest)
                     If ReferenceEquals(shapeSelected, shapeTest) Then bFound = True
                 Next
 
@@ -424,7 +424,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
+        Private Sub UpdateAppliedShape(item As ListViewItem, appl As eForcingFunctionApplication)
 
             Dim fmt As New cFFApplicationTargetTypeFormatter()
             Dim shape As cForcingFunction = Me.Shape(item)
@@ -509,7 +509,7 @@ Namespace Ecosim
             Next
 
             Me.m_lvAppliedShapes.View = View.Details
-            Me.m_lvAppliedShapes.SmallImageList = m_ilSmall
+            Me.m_lvAppliedShapes.SmallImageList = Me.m_ilSmall
 
         End Sub
 

@@ -34,11 +34,11 @@ Public Class cEcospaceLayerDriver
 
 #Region " Constructor "
 
-    Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Sub New(core As cCore, manager As cEcospaceBasemap, iIndex As Integer)
 
         ' Layer has no name, because this layer is user-defined and users 
         ' are responsible for naming a layer of this type. There will be no default name.
-        MyBase.New(theCore, manager, "", eVarNameFlags.LayerDriver, iIndex)
+        MyBase.New(core, manager, "", eVarNameFlags.LayerDriver, iIndex)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
@@ -47,26 +47,26 @@ Public Class cEcospaceLayerDriver
         Me.AllowValidation = False
 
         Try
-            m_dataType = eDataTypes.EcospaceLayerDriver
-            m_coreComponent = eCoreComponentType.EcoSpace
-            Me.DBID = theCore.m_EcoSpaceData.EnvironmentalLayerDBID(iIndex)
+            Me.m_dataType = eDataTypes.EcospaceLayerDriver
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.DBID = core.m_EcoSpaceData.EnvironmentalLayerDBID(iIndex)
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Description
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK, eValueTypes.Str, meta)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Description, eStatusFlags.OK, eValueTypes.Str, meta)
+            Me.m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(50)
-            val = New cValue(New String(desc), eVarNameFlags.UnitEnvDriver, eStatusFlags.OK, eValueTypes.Str, meta)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.UnitEnvDriver, eStatusFlags.OK, eValueTypes.Str, meta)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(True, eVarNameFlags.EcospaceCapacityEnabled, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, True, eVarNameFlags.EcospaceCapacityEnabled, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
             Me.AllowValidation = True
 
@@ -88,7 +88,7 @@ Public Class cEcospaceLayerDriver
 
 #Region " Overrides "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Try
                 If Me.ValidateCellPosition(iRow, iCol) Then
@@ -100,7 +100,7 @@ Public Class cEcospaceLayerDriver
 
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             If Me.ValidateCellValue(value) Then
                 If Me.ValidateCellPosition(iRow, iCol) Then
                     DirectCast(Me.Data, Single()(,))(Me.Index)(iRow, iCol) = CSng(value)
@@ -115,14 +115,14 @@ Public Class cEcospaceLayerDriver
 
     Public Overrides Property Description() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Description))
+            Return CStr(Me.GetVariable(eVarNameFlags.Description))
         End Get
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.Description, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.Description, value)
         End Set
     End Property
 
-    Public Overrides Property Units(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name) As String
+    Public Overrides Property Units(Optional varName As eVarNameFlags = eVarNameFlags.Name) As String
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.UnitEnvDriver))
         End Get
@@ -142,10 +142,10 @@ Public Class cEcospaceLayerDriver
 
     Public Property IsCapacityEnabledStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceCapacityEnabled)
+            Return Me.GetStatus(eVarNameFlags.EcospaceCapacityEnabled)
         End Get
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceCapacityEnabled, value)
+            Me.SetStatus(eVarNameFlags.EcospaceCapacityEnabled, value)
         End Set
     End Property
 

@@ -26,7 +26,7 @@ Friend Class frmShapes
     Private m_grid As gridShapeBase = Nothing
     Private m_cmdTimeSeries As cCommand = Nothing
 
-    Public Sub New(ByVal typeGrid As Type)
+    Public Sub New(typeGrid As Type)
         MyBase.New()
 
         Me.InitializeComponent()
@@ -40,7 +40,7 @@ Friend Class frmShapes
 
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If Me.UIContext Is Nothing Then Return
@@ -51,7 +51,7 @@ Friend Class frmShapes
             If (Me.m_cmdTimeSeries IsNot Nothing) Then
 
                 Me.m_cmdTimeSeries.AddControl(Me.m_tsbnTimeSeries)
-                AddHandler Me.m_cmdTimeSeries.OnPostInvoke, AddressOf OnTimeSeriesLoaded
+                AddHandler Me.m_cmdTimeSeries.OnPostInvoke, AddressOf Me.OnTimeSeriesLoaded
 
                 ' Once hooked up, try to get TS if not here yet
                 If Not Me.UIContext.Core.HasTimeSeries Then
@@ -64,11 +64,11 @@ Friend Class frmShapes
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.m_cmdTimeSeries IsNot Nothing) Then
             Me.m_cmdTimeSeries.RemoveControl(Me.m_tsbnTimeSeries)
-            RemoveHandler Me.m_cmdTimeSeries.OnPostInvoke, AddressOf OnTimeSeriesLoaded
+            RemoveHandler Me.m_cmdTimeSeries.OnPostInvoke, AddressOf Me.OnTimeSeriesLoaded
             Me.m_cmdTimeSeries = Nothing
         End If
 
@@ -80,17 +80,17 @@ Friend Class frmShapes
 
     End Sub
 
-    Private Sub OnTimeSeriesLoaded(ByVal cmd As cCommand)
+    Private Sub OnTimeSeriesLoaded(cmd As cCommand)
         Me.m_grid.RefreshContent()
     End Sub
 
-    Private Sub OnViewSeasonal(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnViewSeasonal(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnSeasonal.Click
         Me.m_grid.IsSeasonal = True
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnViewLongTerm(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnViewLongTerm(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnLongTerm.Click
         Me.m_grid.IsSeasonal = False
         Me.UpdateControls()
@@ -118,7 +118,7 @@ Friend Class frmShapes
 
     Private Sub OnShowAllData(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnShowAllData.Click
-        Me.m_grid.ShowAllData = Not m_tsbnShowAllData.Checked
+        Me.m_grid.ShowAllData = Not Me.m_tsbnShowAllData.Checked
         Me.UpdateControls()
     End Sub
 

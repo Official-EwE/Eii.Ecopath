@@ -44,7 +44,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, cShowHideItemsCommand.COMMAND_NAME, My.Resources.COMMAND_DISPLAYGROUPS)
         End Sub
 

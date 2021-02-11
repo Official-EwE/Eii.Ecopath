@@ -220,9 +220,9 @@ Namespace Controls
                 Try
                     ' Store ref to Text box
                     Me.m_tb = DirectCast(ctrl, TextBoxBase)
-                    AddHandler Me.m_tb.Enter, AddressOf OnControlEntered
-                    AddHandler Me.m_tb.Leave, AddressOf OnControlLeft
-                    AddHandler Me.m_tb.KeyDown, AddressOf OnControlKeyDown
+                    AddHandler Me.m_tb.Enter, AddressOf Me.OnControlEntered
+                    AddHandler Me.m_tb.Leave, AddressOf Me.OnControlLeft
+                    AddHandler Me.m_tb.KeyDown, AddressOf Me.OnControlKeyDown
 
                     Me.m_provider = provider
                     Me.m_md = metadata
@@ -247,9 +247,9 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_tb IsNot Nothing) Then
-                    RemoveHandler Me.m_tb.Enter, AddressOf OnControlEntered
-                    RemoveHandler Me.m_tb.LostFocus, AddressOf OnControlLeft
-                    RemoveHandler Me.m_tb.KeyDown, AddressOf OnControlKeyDown
+                    RemoveHandler Me.m_tb.Enter, AddressOf Me.OnControlEntered
+                    RemoveHandler Me.m_tb.LostFocus, AddressOf Me.OnControlLeft
+                    RemoveHandler Me.m_tb.KeyDown, AddressOf Me.OnControlKeyDown
                     Me.m_tb = Nothing
                 End If
 
@@ -274,7 +274,7 @@ Namespace Controls
 
                 ' Apply metadata
                 If (Me.m_md IsNot Nothing) Then
-                    Me.m_tb.MaxLength = Metadata.Length
+                    Me.m_tb.MaxLength = Me.Metadata.Length
                 End If
 
                 If (cf And (Properties.cProperty.eChangeFlags.Value Or Properties.cProperty.eChangeFlags.CoreStatus)) > 0 Then
@@ -397,7 +397,7 @@ Namespace Controls
             '''' -----------------------------------------------------------------------
             Private Sub OnControlLeft(sender As Object, e As System.EventArgs)
 
-                ProcessChanges()
+                Me.ProcessChanges()
 
             End Sub
 
@@ -485,12 +485,12 @@ Namespace Controls
                 Try
                     ' Store ref to control
                     Me.m_ud = DirectCast(ctrl, NumericUpDown)
-                    AddHandler Me.m_ud.KeyDown, AddressOf OnKeyDown
-                    AddHandler Me.m_ud.LostFocus, AddressOf OnValidate
-                    AddHandler Me.m_ud.ValueChanged, AddressOf OnValidate
+                    AddHandler Me.m_ud.KeyDown, AddressOf Me.OnKeyDown
+                    AddHandler Me.m_ud.LostFocus, AddressOf Me.OnValidate
+                    AddHandler Me.m_ud.ValueChanged, AddressOf Me.OnValidate
 
                     Me.m_sg = Me.UIContext.StyleGuide
-                    AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
 
                     Me.m_provider = provider
                     Me.m_md = metadata
@@ -517,14 +517,14 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_ud IsNot Nothing) Then
-                    RemoveHandler Me.m_ud.KeyDown, AddressOf OnKeyDown
-                    RemoveHandler Me.m_ud.LostFocus, AddressOf OnValidate
-                    RemoveHandler Me.m_ud.ValueChanged, AddressOf OnValidate
+                    RemoveHandler Me.m_ud.KeyDown, AddressOf Me.OnKeyDown
+                    RemoveHandler Me.m_ud.LostFocus, AddressOf Me.OnValidate
+                    RemoveHandler Me.m_ud.ValueChanged, AddressOf Me.OnValidate
                     Me.m_ud = Nothing
                 End If
 
                 If (Me.m_sg IsNot Nothing) Then
-                    RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    RemoveHandler Me.m_sg.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                     Me.m_sg = Nothing
                 End If
 
@@ -543,9 +543,9 @@ Namespace Controls
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
                 ' Apply metadata
-                If (Metadata IsNot Nothing) Then
-                    Me.m_ud.Minimum = CDec(Math.Max(-10000000000, CSng(Metadata.Min)))
-                    Me.m_ud.Maximum = CDec(Math.Min(10000000000, CSng(Metadata.Max)))
+                If (Me.Metadata IsNot Nothing) Then
+                    Me.m_ud.Minimum = CDec(Math.Max(-10000000000, CSng(Me.Metadata.Min)))
+                    Me.m_ud.Maximum = CDec(Math.Min(10000000000, CSng(Me.Metadata.Max)))
                 End If
 
                 If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
@@ -746,10 +746,10 @@ Namespace Controls
                     Me.m_md = metadata
 
                     ' Add handlers
-                    AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
-                    AddHandler Me.m_cmb.TextChanged, AddressOf OnComboBoxValueChanged
+                    AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf Me.OnComboBoxValueChanged
+                    AddHandler Me.m_cmb.TextChanged, AddressOf Me.OnComboBoxValueChanged
                     ' Beware: This will fire off the Format event as soon as the handler is created! Be ready...
-                    AddHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
+                    AddHandler Me.m_cmb.Format, AddressOf Me.OnComboBoxFormat
 
                     ' Populate combo
                     If aItems IsNot Nothing Then
@@ -777,9 +777,9 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_cmb IsNot Nothing) Then
-                    RemoveHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
-                    RemoveHandler Me.m_cmb.TextChanged, AddressOf OnComboBoxValueChanged
-                    RemoveHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
+                    RemoveHandler Me.m_cmb.SelectedIndexChanged, AddressOf Me.OnComboBoxValueChanged
+                    RemoveHandler Me.m_cmb.TextChanged, AddressOf Me.OnComboBoxValueChanged
+                    RemoveHandler Me.m_cmb.Format, AddressOf Me.OnComboBoxFormat
                     Me.m_cmb = Nothing
                 End If
 
@@ -1033,7 +1033,7 @@ Namespace Controls
                 Try
                     ' Store ref to Text box
                     Me.m_cb = DirectCast(ctrl, CheckBox)
-                    AddHandler Me.m_cb.CheckedChanged, AddressOf OnControlValueChanged
+                    AddHandler Me.m_cb.CheckedChanged, AddressOf Me.OnControlValueChanged
 
                     Me.m_provider = provider
                     Me.m_md = metadata
@@ -1058,7 +1058,7 @@ Namespace Controls
                     Implements IControlWrapper.Release
 
                 If (Me.m_cb IsNot Nothing) Then
-                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf OnControlValueChanged
+                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf Me.OnControlValueChanged
                     Me.m_cb = Nothing
                 End If
 
@@ -1365,12 +1365,12 @@ Namespace Controls
             ' Connect to style guide
             Me.UIContext = uic
             ' Respond to styleguide changes
-            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             ' Respond to control closure events
-            AddHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf OnControlDisposed
+            AddHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf Me.OnControlDisposed
 
             If (TypeOf (Me.m_ctrl) Is Control) Then
-                AddHandler DirectCast(Me.m_ctrl, Control).Enter, AddressOf OnGotFocus
+                AddHandler DirectCast(Me.m_ctrl, Control).Enter, AddressOf Me.OnGotFocus
             End If
 
         End Sub
@@ -1421,7 +1421,7 @@ Namespace Controls
         Public Overridable Sub Release()
 
             If (Me.m_ctrlWrapper IsNot Nothing) Then
-                RemoveHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf OnControlDisposed
+                RemoveHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf Me.OnControlDisposed
                 Me.m_ctrlWrapper.Release()
                 Me.m_ctrlWrapper = Nothing
             End If
@@ -1429,7 +1429,7 @@ Namespace Controls
             Me.m_ctrl = Nothing
 
             If Me.UIContext IsNot Nothing Then
-                RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 Me.UIContext = Nothing
             End If
 

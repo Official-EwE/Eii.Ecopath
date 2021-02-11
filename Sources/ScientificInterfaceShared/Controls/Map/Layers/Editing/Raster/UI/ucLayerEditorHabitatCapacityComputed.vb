@@ -29,7 +29,7 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Not Me.IsAttached) Then Return
@@ -50,7 +50,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_cmbGroups.Enabled = Me.IsAttached
@@ -61,7 +61,7 @@ Namespace Controls.Map.Layers
             Get
                 Return DirectCast(MyBase.Editor, cLayerEditorGroup)
             End Get
-            Set(ByVal editor As cLayerEditorGroup)
+            Set(editor As cLayerEditorGroup)
                 ' Sanity check
                 Debug.Assert(TypeOf editor Is cLayerEditorGroup, "ucLayerEditorGroup connected to wrong editor class")
                 ' Configure editor
@@ -76,7 +76,7 @@ Namespace Controls.Map.Layers
                 If (Not Me.IsAttached) Then Return cCore.NULL_VALUE
                 Return Me.Editor.Group
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (Me.IsAttached) Then
                     If (Me.Editor.Group <> value) Then
                         Me.Editor.Group = value
@@ -87,7 +87,7 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnGroupSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbGroups.SelectedIndexChanged
             Me.GroupIndex = Me.m_cmbGroups.SelectedIndex + 1
         End Sub

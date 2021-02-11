@@ -67,7 +67,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.SupportCommand"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.ViewMode
                     Return False
@@ -82,16 +82,16 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
-                                          Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
-                                          Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
+                                          Optional ashapes() As EwECore.cShapeData = Nothing, _
+                                          Optional data As Object = Nothing)
 
             Try
                 Select Case cmd
 
                     Case eShapeCommandTypes.DefineMediation
                         Debug.Assert((TypeOf Me.SelectedShape Is EwECore.cEnviroResponseFunction), "OPPSSS...")
-                        Dim dlgDefBP As New dlgDefineEcospaceForagingResponse(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.CapacityMapInteractionManager)
+                        Dim dlgDefBP As New dlgDefineEcospaceForagingResponse(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), Me.UIContext.Core.CapacityMapInteractionManager)
                         If dlgDefBP.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
@@ -123,12 +123,12 @@ Namespace Controls
         ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
         ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Shadows Sub Attach(ByVal stb As ucShapeToolbox,
-                                  ByVal stbtb As ucShapeToolboxToolbar,
-                                  ByVal sp As ucSketchPad,
-                                  ByVal sptb As ucSketchPadToolbar,
-                                  ByVal ma As ucMediationAssignments,
-                                  ByVal mat As ucMediationAssignmentsToolbar)
+        Public Overridable Shadows Sub Attach(stb As ucShapeToolbox,
+                                  stbtb As ucShapeToolboxToolbar,
+                                  sp As ucSketchPad,
+                                  sptb As ucSketchPadToolbar,
+                                  ma As ucMediationAssignments,
+                                  mat As ucMediationAssignmentsToolbar)
 
             MyBase.Attach(stb, stbtb, sp, sptb, ma, mat)
 
@@ -160,7 +160,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.OnShapeSelected"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+        Public Overrides Sub OnShapeSelected(shape() As EwECore.cShapeData)
             MyBase.OnShapeSelected(shape)
             If (Me.MediationAssignments IsNot Nothing) Then
                 Dim strTitle As String = ""
@@ -177,7 +177,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.OnShapeFinalized"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+        Public Overrides Sub OnShapeFinalized(shape As EwECore.cShapeData, sketchpad As ucSketchPad)
             DirectCast(shape, cMediationBaseFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
             MyBase.OnShapeFinalized(shape, sketchpad)
 

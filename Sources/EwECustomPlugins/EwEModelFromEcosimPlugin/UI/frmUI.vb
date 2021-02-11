@@ -49,7 +49,7 @@ Friend Class frmUI
 
 #Region " Construction "
 
-    Public Sub New(ByVal data As cData)
+    Public Sub New(data As cData)
         MyBase.New()
         Me.InitializeComponent()
         Me.m_data = data
@@ -67,13 +67,13 @@ Friend Class frmUI
         Get
             Return MyBase.UIContext
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
             MyBase.UIContext = value
             Me.m_grid.UIContext = value
         End Set
     End Property
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
 
@@ -92,7 +92,7 @@ Friend Class frmUI
             Me.m_cmbFormat.Items.Add(eDataSourceTypes.Access2007)
 
             Me.m_nudNumYears.Minimum = 1
-            Me.m_nudNumYears.Maximum = Core.nEcosimYears
+            Me.m_nudNumYears.Maximum = Me.Core.nEcosimYears
             Me.m_nudNumYears.Value = Math.Max(1, Math.Min(Me.m_data.NumYears, Me.m_nudNumYears.Maximum))
 
             Me.m_tbxWeightPower.Text = Me.m_data.WPower.ToString
@@ -116,26 +116,26 @@ Friend Class frmUI
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.TimeSeries}
         Me.UpdateControls()
 
-        AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+        AddHandler My.Settings.PropertyChanged, AddressOf Me.OnSettingsChanged
 
         ' Populate form async
         Me.BeginInvoke(New MethodInvoker(AddressOf Me.m_grid.RefreshContent))
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_qeh.Detach()
         Me.m_qeh = Nothing
 
-        RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+        RemoveHandler My.Settings.PropertyChanged, AddressOf Me.OnSettingsChanged
 
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
 
     End Sub
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+    Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
         If (msg.Source = EwEUtils.Core.eCoreComponentType.EcoSim) And
@@ -154,7 +154,7 @@ Friend Class frmUI
 
 #Region " Control events "
 
-    Private Sub OnGenerateEnableChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnGenerateEnableChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbEnable.CheckedChanged
 
         If (Not Me.m_bReady) Then Return
@@ -166,7 +166,7 @@ Friend Class frmUI
 
     End Sub
 
-    'Private Sub OnBrowseOutputPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    'Private Sub OnBrowseOutputPath(sender As System.Object, e As System.EventArgs) _
     '    Handles m_btnChoose.Click
 
     '    If (Not Me.m_bReady) Then Return
@@ -183,7 +183,7 @@ Friend Class frmUI
 
     'End Sub
 
-    Private Sub OnOutputPathTextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOutputPathTextChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tbxOutputPath.TextChanged
 
         If (Not Me.m_bReady) Then Return

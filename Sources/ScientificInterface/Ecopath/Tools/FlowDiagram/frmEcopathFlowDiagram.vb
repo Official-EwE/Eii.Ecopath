@@ -83,7 +83,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Public Sub New(ByVal text As String)
+        Public Sub New(text As String)
             Me.New()
             'Set tab text
             Me.TabText = text
@@ -95,7 +95,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Me.m_tsbnImport.Image = SharedResources.ImportHS
@@ -122,7 +122,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
             Me.UpdateControls()
 
-            AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
+            AddHandler Me.m_tree.OnChanged, AddressOf Me.OnTreeChanged
 
             ' Fonts
             cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
@@ -139,8 +139,8 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+            RemoveHandler Me.m_tree.OnChanged, AddressOf Me.OnTreeChanged
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
@@ -155,7 +155,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
             ' Refresh the diagram data when ecopath data has changed
@@ -167,11 +167,11 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             Me.m_pbFlowDiagram.Invalidate()
         End Sub
 
-        Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+        Protected Overrides Function GetPrintContent(rcPrint As Rectangle) As Image
 
             Dim img As New Bitmap(rcPrint.Width, rcPrint.Height, PixelFormat.Format32bppArgb)
             img.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
@@ -188,14 +188,14 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Drawing "
 
-        Private Sub OnFlowDiagramResize(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnFlowDiagramResize(sender As Object, e As System.EventArgs) _
             Handles m_pbFlowDiagram.Resize
 
             Me.m_pbFlowDiagram.Invalidate()
 
         End Sub
 
-        Private Sub OnFlowDiagramPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnFlowDiagramPaint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_pbFlowDiagram.Paint
 
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
@@ -207,7 +207,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' Override the background paint routine to elimate flickering.
         ''' </summary>
         ''' <param name="pevent"></param>
-        Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
+        Protected Overrides Sub OnPaintBackground(pevent As PaintEventArgs)
             ' NOP
         End Sub
 
@@ -215,7 +215,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Mouse Events "
 
-        Private Sub OnFlowDiagramMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseDown(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseDown
 
             Using g As Graphics = Me.CreateGraphics()
@@ -224,13 +224,13 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Private Sub OnFlowDiagramMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseUp(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseUp
             Me.m_doodler.EndDrag(Me.m_data, e.Location)
             Me.OnTreeChanged(Me.m_tree)
         End Sub
 
-        Private Sub OnFlowDiagramMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseMove
 
             Using g As Graphics = Me.CreateGraphics()
@@ -244,7 +244,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Tree events "
 
-        Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Private Sub OnTreeChanged(sender As cTreeFlowDiagramRenderer)
 
             Me.m_pbFlowDiagram.Invalidate(True)
 
@@ -259,7 +259,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Commands "
 
-        Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadFromFile(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnImport.Click
 
             Dim ifData As cXMLSettings = Nothing
@@ -273,7 +273,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Try
                     ifData = New cXMLSettings()
                     ifData.LoadFromFile(cmdFO.FileName)
-                    m_doodler.Load(ifData, Me.m_pbFlowDiagram)
+                    Me.m_doodler.Load(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -283,7 +283,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveToFile(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnExport.Click
 
             Dim ifData As cXMLSettings = Nothing
@@ -296,7 +296,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Try
                     ifData = New cXMLSettings()
                     ifData.LoadFromFile(cmdFS.FileName)
-                    m_doodler.Save(ifData, Me.m_pbFlowDiagram)
+                    Me.m_doodler.Save(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -321,14 +321,14 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSettings(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSettings.Click
 
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub OnSaveToImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveToImage(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSaveToImage.Click
 
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp

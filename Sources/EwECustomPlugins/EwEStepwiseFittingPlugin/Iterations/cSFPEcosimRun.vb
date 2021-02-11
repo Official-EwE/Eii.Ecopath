@@ -33,24 +33,22 @@ Imports EwECore.FitToTimeSeries
 #End Region ' Imports
 
 Public Class cSFPEcosimRun
-    Inherits cSFPGenericIterations
+    Inherits cSFPGenericIteration
 
-    Public Sub New(ByVal BOrF As Boolean)
-        BaseorFish = BOrF
+    Public Sub New(BOrF As Boolean)
+        Me.BaseorFish = BOrF
     End Sub
 
-#Region " Implements ISFPIterations "
-
-    Public Overrides Function Load() As Boolean
+    Public Overrides Function Load(core As cCore) As Boolean
 
         Dim BSuccess As Boolean = False
 
         'Enable specific time series for Baseline or Fishing
-        If MyBase.EnableTimeSeries() Then
+        If Me.EnableTimeSeries(core) Then
             'Reset vunerabilities
-            If MyBase.ResetVs() And MyBase.ResetFF() Then
+            If MyBase.ResetVs(core) And MyBase.ResetFF(core) Then
                 'Run a sensitivity of SS to V search for baseline
-                If MyBase.RunSensitivityOfSSToV() Then
+                If MyBase.RunSensitivityOfSSToV(core) Then
                     BSuccess = True
                 End If
             End If
@@ -59,11 +57,5 @@ Public Class cSFPEcosimRun
         Return BSuccess
 
     End Function
-
-    Public Overrides Function Run() As Boolean
-        Return MyBase.Run()
-    End Function
-
-#End Region
 
 End Class

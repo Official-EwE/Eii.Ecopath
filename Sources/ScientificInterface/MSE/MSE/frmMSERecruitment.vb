@@ -55,7 +55,7 @@ Namespace Ecosim
             Public Recruitment() As Single
             Public NumSteps As Integer
 
-            Public Sub New(ByVal iStep As Integer)
+            Public Sub New(iStep As Integer)
                 Me.NumSteps = iStep
                 ReDim Me.Biomass(iStep)
                 ReDim Me.Recruitment(iStep)
@@ -72,7 +72,7 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Dim group As cMSEGroupInput = Nothing
@@ -91,7 +91,7 @@ Namespace Ecosim
             Me.m_grid.UIContext = Me.UIContext
 
             ' Select first group with likely values
-            For iGroup As Integer = 1 To Core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 ' Get group
                 group = Me.Core.MSEManager.GroupInputs(iGroup)
                 ' Has forcastgain value?
@@ -105,7 +105,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             If Me.m_zgh IsNot Nothing Then
                 Me.m_zgh.Detach()
@@ -122,7 +122,7 @@ Namespace Ecosim
             Me.Group = Me.m_grid.Group
         End Sub
 
-        Private Sub tsbtDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsbtDefaults_Click(sender As System.Object, e As System.EventArgs) _
             Handles tsbtDefaults.Click
             Try
                 Me.Core.SetDefaultMSERecruitment()
@@ -131,7 +131,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
+        Private Sub HandlePropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
             ' A relevant property has changed: redraw the graph
             Me.Redraw()
         End Sub
@@ -149,14 +149,14 @@ Namespace Ecosim
             Get
                 Return Me.m_group
             End Get
-            Set(ByVal value As cMSEGroupInput)
+            Set(value As cMSEGroupInput)
 
                 Dim pm As cPropertyManager = Me.PropertyManager
 
                 ' Unregister
                 If (Me.m_group IsNot Nothing) Then
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
-                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf Me.HandlePropertyChanged
+                    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf Me.HandlePropertyChanged
                 End If
 
                 ' Update
@@ -164,8 +164,8 @@ Namespace Ecosim
 
                 ' Register
                 If (Me.m_group IsNot Nothing) Then
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf HandlePropertyChanged
-                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.RHalfB0Ratio).PropertyChanged, AddressOf Me.HandlePropertyChanged
+                    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEForcastGain).PropertyChanged, AddressOf Me.HandlePropertyChanged
                 End If
 
                 ' Redraw the graph
@@ -207,8 +207,8 @@ Namespace Ecosim
 
                 'Let's just scale the x-axis to default 10 times the HalfRecruitmentBiomass
                 Dim maxXaxisValue As Single = 10
-                If CSng(1.1 / Group.RHalfB0Ratio) > maxXaxisValue Then
-                    maxXaxisValue = CSng(1.2 / Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
+                If CSng(1.1 / Me.Group.RHalfB0Ratio) > maxXaxisValue Then
+                    maxXaxisValue = CSng(1.2 / Me.Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
                 End If
 
 

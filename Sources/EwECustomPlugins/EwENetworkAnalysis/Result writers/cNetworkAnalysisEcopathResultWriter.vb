@@ -43,11 +43,11 @@ Public Class cNetworkAnalysisEcopathResultWriter
     ''' </summary>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal manager As cNetworkManager)
+    Public Sub New(manager As cNetworkManager)
         MyBase.New(manager)
     End Sub
 
-    Public Overrides Function WriteResults(ByVal strPath As String) As Boolean
+    Public Overrides Function WriteResults(strPath As String) As Boolean
 
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return False
 
@@ -59,13 +59,13 @@ Public Class cNetworkAnalysisEcopathResultWriter
 
         ' ToDo: write other ENA indicators to file when requested
 
-        Return Me.WriteFile(Me.GetMTIFileName(strPath), GetMTIData())
+        Return Me.WriteFile(Me.GetMTIFileName(strPath), Me.GetMTIData())
 
     End Function
 
 #Region " Internals "
 
-    Private Function GetNAIndicatorsFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
+    Private Function GetNAIndicatorsFileName(strPath As String, bWithPPR As Boolean, bAnnual As Boolean) As String
         Dim strFile As String = "NA_" &
                                 If(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY) & "_" &
                                 If(bWithPPR, "IndicesPPR", "IndicesWithoutPPR") &
@@ -73,7 +73,7 @@ Public Class cNetworkAnalysisEcopathResultWriter
         Return Path.Combine(strPath, strFile)
     End Function
 
-    Private Function GetMTIFileName(ByVal strPath As String) As String
+    Private Function GetMTIFileName(strPath As String) As String
         Return Path.Combine(strPath, "NA_MTI.csv")
     End Function
 

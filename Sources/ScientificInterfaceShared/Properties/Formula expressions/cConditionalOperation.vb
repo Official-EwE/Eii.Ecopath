@@ -73,7 +73,7 @@ Namespace Properties
         ''' </list>
         ''' </remarks>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal opTest As cBooleanOperand, ByVal opTrue As Object, ByVal opFalse As Object)
+        Public Sub New(opTest As cBooleanOperand, opTrue As Object, opFalse As Object)
             ' Store bits
             Me.m_opTest = opTest
             Me.m_opTrue = cFormulaProperty.GetExpression(opTrue)
@@ -82,16 +82,16 @@ Namespace Properties
             Me.m_sValue = Me.CalcValue()
             Me.m_style = Me.CalcStyle()
             ' Start listening for operand changes
-            AddHandler Me.m_opTest.OnValueChanged, AddressOf OnOperandValueChanged
-            AddHandler Me.m_opTrue.OnValueChanged, AddressOf OnOperandValueChanged
-            AddHandler Me.m_opFalse.OnValueChanged, AddressOf OnOperandValueChanged
+            AddHandler Me.m_opTest.OnValueChanged, AddressOf Me.OnOperandValueChanged
+            AddHandler Me.m_opTrue.OnValueChanged, AddressOf Me.OnOperandValueChanged
+            AddHandler Me.m_opFalse.OnValueChanged, AddressOf Me.OnOperandValueChanged
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' Stop listening for operand changes
-            RemoveHandler Me.m_opTest.OnValueChanged, AddressOf OnOperandValueChanged
-            RemoveHandler Me.m_opTrue.OnValueChanged, AddressOf OnOperandValueChanged
-            RemoveHandler Me.m_opFalse.OnValueChanged, AddressOf OnOperandValueChanged
+            RemoveHandler Me.m_opTest.OnValueChanged, AddressOf Me.OnOperandValueChanged
+            RemoveHandler Me.m_opTrue.OnValueChanged, AddressOf Me.OnOperandValueChanged
+            RemoveHandler Me.m_opFalse.OnValueChanged, AddressOf Me.OnOperandValueChanged
             Me.m_opTest.Dispose()
             Me.m_opTest = Nothing
             Me.m_opTrue.Dispose()
@@ -125,7 +125,7 @@ Namespace Properties
         ''' the outcome of the operation.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Private Sub OnOperandValueChanged(ByVal exp As cExpression)
+        Private Sub OnOperandValueChanged(exp As cExpression)
 
             ' Calc new value and style
             Dim sVal As Single = Me.CalcValue()
@@ -137,7 +137,7 @@ Namespace Properties
                 Me.m_style = style
 
                 ' Broadcast change notification
-                FireChangeNotification()
+                Me.FireChangeNotification()
             End If
 
         End Sub

@@ -40,7 +40,7 @@ Namespace Ecosim
         ''' that sent this event.
         ''' </param>
         ''' -------------------------------------------------------------------
-        Event OnNumBlocksChanged(ByVal sender As IBlockSelector)
+        Event OnNumBlocksChanged(sender As IBlockSelector)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -51,23 +51,23 @@ Namespace Ecosim
         ''' that sent this event.
         ''' </param>
         ''' -------------------------------------------------------------------
-        Event OnBlockSelected(ByVal sender As IBlockSelector)
+        Event OnBlockSelected(sender As IBlockSelector)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Value of a cell (CV) has changed
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer)
+        Event OnValueChanged(newValue As Single, Index As Integer)
 
         Property NumBlocks() As Integer
         Property SelectedBlock() As Integer
         ReadOnly Property BlockColors() As Color()
-        ReadOnly Property BlockColor(ByVal iBlock As Integer) As Color
+        ReadOnly Property BlockColor(iBlock As Integer) As Color
         ReadOnly Property SelectedBlockColor() As Color
 
-        Function ValuetoBlock(ByVal cv As Single) As Integer
-        Function BlocktoValue(ByVal iBlock As Integer) As Single
+        Function ValuetoBlock(cv As Single) As Integer
+        Function BlocktoValue(iBlock As Integer) As Single
 
     End Interface
 

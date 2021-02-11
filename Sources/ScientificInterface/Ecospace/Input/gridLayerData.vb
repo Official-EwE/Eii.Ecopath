@@ -56,7 +56,7 @@ Public Class gridLayerData
         Get
             Return MyBase.UIContext
         End Get
-        Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
             If (Me.UIContext IsNot Nothing) Then
                 Me.Layer = Nothing
                 Me.m_basemap = Nothing
@@ -178,7 +178,7 @@ Public Class gridLayerData
         Get
             Return Me.m_layer
         End Get
-        Set(ByVal value As cDisplayLayerRaster)
+        Set(value As cDisplayLayerRaster)
 
             'If Me.m_layer IsNot Nothing Then
             '    RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
@@ -234,7 +234,7 @@ Public Class gridLayerData
     ''' <param name="layTarget"></param>
     ''' <returns>True when the layer data was changed.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Apply(Optional ByVal layTarget As cDisplayLayerRaster = Nothing) As Boolean
+    Public Function Apply(Optional layTarget As cDisplayLayerRaster = Nothing) As Boolean
 
         Dim p As SourceGrid2.Position = Nothing
         Dim sNew As Single = 0.0!

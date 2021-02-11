@@ -44,7 +44,7 @@ Public Class cTimeSeriesClipboardReader
     ''' <param name="core">A reference to the <see cref="cCore">Core</see> that
     ''' this reader belongs to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         MyBase.New(core)
     End Sub
 
@@ -67,7 +67,7 @@ Public Class cTimeSeriesClipboardReader
     ''' <returns>A TextReader if the connection could be made, or
     ''' Nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ReleaseReader(ByVal reader As TextReader) As Boolean
+    Public Overrides Function ReleaseReader(reader As TextReader) As Boolean
         reader.Close()
         Return True
     End Function
@@ -92,7 +92,7 @@ Public Class cTimeSeriesClipboardReader
     ''' <param name="tdf"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetClipboardText(ByVal tdf As TextDataFormat) As String
+    Private Function GetClipboardText(tdf As TextDataFormat) As String
         Dim strText As String = ""
 
         If Clipboard.ContainsText(tdf) Then

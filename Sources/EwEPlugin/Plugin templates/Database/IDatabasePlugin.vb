@@ -39,7 +39,7 @@ Namespace Data
         ''' This is rather tricky; returning False here may stop EwE6 from being
         ''' </returns>
         ''' -----------------------------------------------------------------------
-        Function Open(ByVal strName As String) As Boolean
+        Function Open(strName As String) As Boolean
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

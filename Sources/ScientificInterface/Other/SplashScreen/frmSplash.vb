@@ -35,7 +35,7 @@ Friend Class frmSplash
 
     Public Sub UpdateStatus(message As String)
         If Me.InvokeRequired Then
-            Me.Invoke(New UpdateStatusDelegate(AddressOf UpdateStatus), message)
+            Me.Invoke(New UpdateStatusDelegate(AddressOf Me.UpdateStatus), message)
         Else
             Me.m_lblText.Text = message
         End If

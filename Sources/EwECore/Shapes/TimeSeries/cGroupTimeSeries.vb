@@ -37,7 +37,7 @@ Public Class cGroupTimeSeries
     ''' Constructor, initializes a new instance of this class.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer)
+    Friend Sub New(core As cCore, iDBID As Integer)
         MyBase.New(core, iDBID)
         Me.m_datatype = eDataTypes.GroupTimeSeries
     End Sub
@@ -52,7 +52,7 @@ Public Class cGroupTimeSeries
             Return Me.DatPool
         End Get
 
-        Set(ByVal iGroup As Integer)
+        Set(iGroup As Integer)
             Me.DatPool = iGroup
         End Set
     End Property

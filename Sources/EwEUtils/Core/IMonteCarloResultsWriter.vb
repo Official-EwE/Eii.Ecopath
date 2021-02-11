@@ -26,7 +26,7 @@ Namespace Core
 
         Sub Init()
 
-        Sub Save(ByVal iTrial As Integer)
+        Sub Save(iTrial As Integer)
 
         Sub Finish()
 

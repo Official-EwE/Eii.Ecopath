@@ -38,12 +38,12 @@ Namespace Ecosim
             Me.Grid = Me.m_grid
         End Sub
 
-        Private Sub OnSumSharesToOne(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSumSharesToOne(sender As System.Object, e As System.EventArgs) _
             Handles m_tsSumtoOneBtn.Click
             Me.Core.NormalizeQuotaShare()
         End Sub
 
-        Private Sub OnDefaultShares(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaultShares(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnDefaults.Click
             Me.Core.SetDefaultQuotaShare()
         End Sub

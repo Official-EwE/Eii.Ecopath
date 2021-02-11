@@ -56,7 +56,7 @@ Namespace Ecosim
         Public Sub New()
 
             ' This call is required by the Windows Form Designer.
-            InitializeComponent()
+            Me.InitializeComponent()
 
             ' Add any initialization after the InitializeComponent() call.
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
@@ -64,10 +64,10 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
                 Me.UIContext = Nothing
             Finally
@@ -90,7 +90,7 @@ Namespace Ecosim
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
                 If (Me.m_uic IsNot Nothing) Then
                     Me.RefreshContent()
@@ -123,13 +123,13 @@ Namespace Ecosim
             Get
                 Return Me.m_colors
             End Get
-            Set(ByVal value As Color())
+            Set(value As Color())
                 Me.m_colors = value
                 Me.Invalidate()
             End Set
         End Property
 
-        Public Event OnSelectedBlockChanged(ByVal sender As Object, ByVal block As Integer)
+        Public Event OnSelectedBlockChanged(sender As Object, block As Integer)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -247,7 +247,7 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Protected Overrides Sub OnMouseHover(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnMouseHover(e As System.EventArgs)
             MyBase.OnMouseHover(e)
             Me.UpdateToolTip(Me.PointToClient(Cursor.Position))
         End Sub
@@ -257,7 +257,7 @@ Namespace Ecosim
         ''' Start drawing
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseDown(e)
 
             If (Me.m_uic Is Nothing) Then Return
@@ -294,7 +294,7 @@ Namespace Ecosim
         ''' Process a draw step or hover information.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseMove(e)
 
             If (Me.m_uic Is Nothing) Then Return
@@ -314,7 +314,7 @@ Namespace Ecosim
         ''' Stop drawing.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseUp(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseUp(e)
 
             If (Me.m_uic Is Nothing) Then Return
@@ -330,7 +330,7 @@ Namespace Ecosim
         ''' Paint the control
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
 
             ' Possible performance boost:
@@ -404,7 +404,7 @@ Namespace Ecosim
         ''' Invalidate control when resized.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
             MyBase.OnSizeChanged(e)
             Me.Invalidate()
         End Sub
@@ -418,7 +418,7 @@ Namespace Ecosim
         ''' Process mouse input to affect colour blocks in this control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ProcessMouseInput(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Private Sub ProcessMouseInput(e As System.Windows.Forms.MouseEventArgs)
 
             If Not Me.Enabled Then Return
             If Not Me.Capture Then Return
@@ -463,7 +463,7 @@ Namespace Ecosim
                 ' End
             End If
 
-            m_ptPosPrevious = ptPosCurrent
+            Me.m_ptPosPrevious = ptPosCurrent
 
         End Sub
 
@@ -485,7 +485,7 @@ Namespace Ecosim
         ''' </list>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub FillBlocks(ByVal iPred As Integer, ByVal iPrey As Integer, ByVal iBlockCode As Integer)
+        Private Sub FillBlocks(iPred As Integer, iPrey As Integer, iBlockCode As Integer)
 
             Dim manager As cMediatedInteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
@@ -542,7 +542,7 @@ Namespace Ecosim
         ''' hover location indicates an invalid predator and prey index.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateToolTip(ByVal ptHover As Point)
+        Private Sub UpdateToolTip(ptHover As Point)
 
             Dim ptPredPrey As New Point(0, 0)
             Dim strToolTip As String = ""
@@ -593,7 +593,7 @@ Namespace Ecosim
         ''' <returns>A point holding the predator index (X) and prey index (Y) for the
         ''' requested point.</returns>
         ''' -------------------------------------------------------------------
-        Private Function PointToPredPrey(ByVal pt As Point) As Point
+        Private Function PointToPredPrey(pt As Point) As Point
             Dim szCell As SizeF = Me.CellSize()
             Return New Point(CInt(Math.Max(0, Math.Floor(pt.X / szCell.Width))), _
                              CInt(Math.Max(0, Math.Floor(pt.Y / szCell.Height))))

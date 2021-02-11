@@ -373,7 +373,7 @@ Public Class cEcopathDataStructures
         Get
             Select Case Me.DiversityIndexType
                 Case eDiversityIndexType.KemptonsQ
-                    Return KemptonsQ
+                    Return Me.KemptonsQ
                 Case eDiversityIndexType.Shannon
                     Return Me.Shannon
                 Case Else
@@ -405,8 +405,8 @@ Public Class cEcopathDataStructures
 
         Try
 
-            redimGroupVariables() 'just ngroup variables
-            RedimFleetVariables(True) 'fleets clear out the values
+            Me.redimGroupVariables() 'just ngroup variables
+            Me.RedimFleetVariables(True) 'fleets clear out the values
             Return True
 
         Catch ex As Exception
@@ -425,75 +425,75 @@ Public Class cEcopathDataStructures
     ''' <remarks></remarks>
     Public Function redimGroupVariables() As Boolean
         Dim i As Integer, j As Integer
-        NumDetrit = NumGroups - NumLiving
+        Me.NumDetrit = Me.NumGroups - Me.NumLiving
 
         ' EstimateWhat(NumGroups)
 
-        ReDim PB(NumGroups)
-        ReDim EE(NumGroups)
-        ReDim QB(NumGroups)
-        ReDim GE(NumGroups)
-        ReDim B(NumGroups)
-        ReDim BH(NumGroups)    'habitat biomass
+        ReDim Me.PB(Me.NumGroups)
+        ReDim Me.EE(Me.NumGroups)
+        ReDim Me.QB(Me.NumGroups)
+        ReDim Me.GE(Me.NumGroups)
+        ReDim Me.B(Me.NumGroups)
+        ReDim Me.BH(Me.NumGroups)    'habitat biomass
 
-        ReDim GEinput(NumGroups)
-        ReDim PBinput(NumGroups)
-        ReDim EEinput(NumGroups)
-        ReDim OtherMortinput(NumGroups)
-        ReDim QBinput(NumGroups)
-        ReDim Binput(NumGroups)
-        ReDim BHinput(NumGroups)
+        ReDim Me.GEinput(Me.NumGroups)
+        ReDim Me.PBinput(Me.NumGroups)
+        ReDim Me.EEinput(Me.NumGroups)
+        ReDim Me.OtherMortinput(Me.NumGroups)
+        ReDim Me.QBinput(Me.NumGroups)
+        ReDim Me.Binput(Me.NumGroups)
+        ReDim Me.BHinput(Me.NumGroups)
 
-        ReDim Ex(NumGroups)
-        ReDim fCatch(NumGroups)
-        ReDim Area(NumGroups)
-        For i = 1 To NumGroups
-            Area(i) = 1
+        ReDim Me.Ex(Me.NumGroups)
+        ReDim Me.fCatch(Me.NumGroups)
+        ReDim Me.Area(Me.NumGroups)
+        For i = 1 To Me.NumGroups
+            Me.Area(i) = 1
         Next
-        ReDim BAInput(NumGroups)
-        ReDim BaBi(NumGroups)
-        ReDim BA(NumGroups)
-        ReDim DCInput(NumGroups + 1, NumGroups + 1)
-        ReDim DC(NumGroups + 1, NumGroups + 1)
-        ReDim DCChanged(NumGroups + 1, NumGroups + 1) 'jb added to tell the core which diet comp values where changed
-        ReDim PP(NumGroups)
-        ReDim GroupName(NumGroups)
-        ReDim GroupDBID(NumGroups)
-        ReDim GS(NumGroups)
-        ReDim TTLX(NumGroups)     'Trophic levels in Ecopath
+        ReDim Me.BAInput(Me.NumGroups)
+        ReDim Me.BaBi(Me.NumGroups)
+        ReDim Me.BA(Me.NumGroups)
+        ReDim Me.DCInput(Me.NumGroups + 1, Me.NumGroups + 1)
+        ReDim Me.DC(Me.NumGroups + 1, Me.NumGroups + 1)
+        ReDim Me.DCChanged(Me.NumGroups + 1, Me.NumGroups + 1) 'jb added to tell the core which diet comp values where changed
+        ReDim Me.PP(Me.NumGroups)
+        ReDim Me.GroupName(Me.NumGroups)
+        ReDim Me.GroupDBID(Me.NumGroups)
+        ReDim Me.GS(Me.NumGroups)
+        ReDim Me.TTLX(Me.NumGroups)     'Trophic levels in Ecopath
         'JS 08Jan09: SumDC and LHS were a global scratch variable, changed to local scope
         'ReDim LHS(NumGroups, NumGroups)
         'ReDim SumDC(NumGroups)
-        ReDim BQB(NumGroups)
+        ReDim Me.BQB(Me.NumGroups)
 
-        ReDim Resp(NumGroups)
-        ReDim DF(NumGroups, NumGroups - NumLiving)
+        ReDim Me.Resp(Me.NumGroups)
+        ReDim Me.DF(Me.NumGroups, Me.NumGroups - Me.NumLiving)
 
-        ReDim DtImp(NumGroups)
-        ReDim DetEaten(NumGroups)
-        ReDim DetPassedOn(NumGroups)
-        ReDim DetPassedProp(NumGroups)
-        ReDim InputToDet(NumGroups)
-        ReDim M0(NumGroups)
-        ReDim M2(NumGroups)
-        ReDim Path(2 * NumGroups + 2)
-        ReDim LastComp(2 * NumGroups + 1)
-        ReDim Immig(NumGroups)
-        ReDim Emigration(NumGroups)
-        ReDim Emig(NumGroups)
-        ReDim Shadow(NumGroups)
-        ReDim GroupIsFish(NumGroups)
-        ReDim GroupIsInvert(NumGroups)
-        ReDim PropLanded(NumFleet, NumGroups)
+        ReDim Me.DtImp(Me.NumGroups)
+        ReDim Me.DetEaten(Me.NumGroups)
+        ReDim Me.DetPassedOn(Me.NumGroups)
+        ReDim Me.DetPassedProp(Me.NumGroups)
+        ReDim Me.InputToDet(Me.NumGroups)
+        ReDim Me.M0(Me.NumGroups)
+        ReDim Me.M2(Me.NumGroups)
+        ReDim Me.Path(2 * Me.NumGroups + 2)
+        ReDim Me.LastComp(2 * Me.NumGroups + 1)
+        ReDim Me.Immig(Me.NumGroups)
+        ReDim Me.Emigration(Me.NumGroups)
+        ReDim Me.Emig(Me.NumGroups)
+        ReDim Me.Shadow(Me.NumGroups)
+        ReDim Me.GroupIsFish(Me.NumGroups)
+        ReDim Me.GroupIsInvert(Me.NumGroups)
+        ReDim Me.PropLanded(Me.NumFleet, Me.NumGroups)
 
-        ReDim Host(NumGroups, NumGroups)
-        ReDim Hlap(NumGroups, NumGroups)
-        ReDim Plap(NumGroups, NumGroups)
-        ReDim GroupColor(NumGroups)
+        ReDim Me.Host(Me.NumGroups, Me.NumGroups)
+        ReDim Me.Hlap(Me.NumGroups, Me.NumGroups)
+        ReDim Me.Plap(Me.NumGroups, Me.NumGroups)
+        ReDim Me.GroupColor(Me.NumGroups)
 
-        ReDim SumR(NumGroups)
-        ReDim Alpha(NumGroups, NumGroups)
-        ReDim vbK(NumGroups)
+        ReDim Me.SumR(Me.NumGroups)
+        ReDim Me.Alpha(Me.NumGroups, Me.NumGroups)
+        ReDim Me.vbK(Me.NumGroups)
 
         'ReDim GrpsToShow(NumGroups + NumFleet + 2)
 
@@ -505,25 +505,25 @@ Public Class cEcopathDataStructures
         '    GrpsToShow(i) = False
         'Next
 
-        NumCatchCodes = 30
-        ReDim CatchCode(NumCatchCodes, NumGroups)
-        ReDim CVpar(5, NumGroups)
+        Me.NumCatchCodes = 30
+        ReDim Me.CatchCode(Me.NumCatchCodes, Me.NumGroups)
+        ReDim Me.CVpar(5, Me.NumGroups)
 
-        For i = 1 To NumGroups
+        For i = 1 To Me.NumGroups
             For j = 0 To 4
-                CVpar(j, i) = 0.1
+                Me.CVpar(j, i) = 0.1
             Next j
-            CVpar(5, i) = 0.05
+            Me.CVpar(5, i) = 0.05
         Next i
 
         'Stanzagroup  needed when importing eii files
-        ReDim StanzaGroup(NumGroups)
+        ReDim Me.StanzaGroup(Me.NumGroups)
 
-        ReDim mis(NumGroups)
+        ReDim Me.mis(Me.NumGroups)
 
         'is the Ecopath group the leading B or QB for a MultiStanza group
-        ReDim isGroupLeadingB(NumGroups)
-        ReDim isGroupLeadingCB(NumGroups)
+        ReDim Me.isGroupLeadingB(Me.NumGroups)
+        ReDim Me.isGroupLeadingCB(Me.NumGroups)
 
         ' GearVariables(True)
         '   CinfoDeclare()    'The variables for Ecotracer: all using numgroups
@@ -542,37 +542,37 @@ Public Class cEcopathDataStructures
     ''' </param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function RedimFleetVariables(ByVal NoPreserve As Boolean) As Boolean
+    Public Function RedimFleetVariables(NoPreserve As Boolean) As Boolean
 
         'det() is not saved to database
-        ReDim det(NumGroups + NumFleet, NumGroups + NumFleet)
+        ReDim Me.det(Me.NumGroups + Me.NumFleet, Me.NumGroups + Me.NumFleet)
         If NoPreserve Then
-            ReDim DCDet(NumGroups - NumLiving, NumFleet)        'Diet composition of detritus
-            ReDim FlowToDet(NumGroups + NumFleet)
+            ReDim Me.DCDet(Me.NumGroups - Me.NumLiving, Me.NumFleet)        'Diet composition of detritus
+            ReDim Me.FlowToDet(Me.NumGroups + Me.NumFleet)
         Else
-            ReDim Preserve DCDet(NumGroups - NumLiving, NumFleet)       'Diet composition of detritus
-            ReDim Preserve FlowToDet(NumGroups + NumFleet)
+            ReDim Preserve Me.DCDet(Me.NumGroups - Me.NumLiving, Me.NumFleet)       'Diet composition of detritus
+            ReDim Preserve Me.FlowToDet(Me.NumGroups + Me.NumFleet)
         End If
         'Next in Gear
-        ReDim cost(NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
-        ReDim CostPct(NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
-        ReDim FleetName(NumFleet + 1)
-        ReDim FleetDBID(NumFleet + 1)
+        ReDim Me.cost(Me.NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
+        ReDim Me.CostPct(Me.NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
+        ReDim Me.FleetName(Me.NumFleet + 1)
+        ReDim Me.FleetDBID(Me.NumFleet + 1)
         'Next in Catch
-        ReDim Landing(NumFleet, NumGroups)
-        ReDim Discard(NumFleet, NumGroups)
-        ReDim DiscardFate(NumFleet, NumGroups - NumLiving)
-        ReDim PropLanded(NumFleet, NumGroups)
-        ReDim PropDiscard(NumFleet, NumGroups)
-        ReDim PropDiscardMort(NumFleet, NumGroups)
-        ReDim Market(NumFleet, NumGroups)
-        ReDim FleetColor(NumFleet)
+        ReDim Me.Landing(Me.NumFleet, Me.NumGroups)
+        ReDim Me.Discard(Me.NumFleet, Me.NumGroups)
+        ReDim Me.DiscardFate(Me.NumFleet, Me.NumGroups - Me.NumLiving)
+        ReDim Me.PropLanded(Me.NumFleet, Me.NumGroups)
+        ReDim Me.PropDiscard(Me.NumFleet, Me.NumGroups)
+        ReDim Me.PropDiscardMort(Me.NumFleet, Me.NumGroups)
+        ReDim Me.Market(Me.NumFleet, Me.NumGroups)
+        ReDim Me.FleetColor(Me.NumFleet)
 
         ' Set default market (off-vessel) prices
-        For iFleet As Integer = 1 To NumFleet
-            For iGroup As Integer = 1 To NumGroups
-                Market(iFleet, iGroup) = 1.0!
-                PropDiscardMort(iFleet, iGroup) = 1.0!
+        For iFleet As Integer = 1 To Me.NumFleet
+            For iGroup As Integer = 1 To Me.NumGroups
+                Me.Market(iFleet, iGroup) = 1.0!
+                Me.PropDiscardMort(iFleet, iGroup) = 1.0!
             Next iGroup
         Next iFleet
 
@@ -657,13 +657,13 @@ Public Class cEcopathDataStructures
 
         Try
 
-            UpdateBH()
-            Compute_M2_Resp_and_Stats(fn)
-            ComputeFisheriesStats()
-            Compute_M2_Resp_and_Stats(fn)
-            ComputeMoreStats(fn)
-            ComputeProfit()
-            ComputePedigree()
+            Me.UpdateBH()
+            Me.Compute_M2_Resp_and_Stats(fn)
+            Me.ComputeFisheriesStats()
+            Me.Compute_M2_Resp_and_Stats(fn)
+            Me.ComputeMoreStats(fn)
+            Me.ComputeProfit()
+            Me.ComputePedigree()
 
             Return True
 
@@ -693,36 +693,36 @@ Public Class cEcopathDataStructures
         'Kount = 0
         'Total = 0
         'Mean = 0
-        For i = 1 To NumGroups
-            If TTLX(i) <> 0 And B(i) <> 0 Then
-                Total = Total + BQB(i) * B(i)
-                Mean = Mean + TTLX(i) * B(i)
-                Kount = Kount + B(i)
+        For i = 1 To Me.NumGroups
+            If Me.TTLX(i) <> 0 And Me.B(i) <> 0 Then
+                Total = Total + Me.BQB(i) * Me.B(i)
+                Mean = Mean + Me.TTLX(i) * Me.B(i)
+                Kount = Kount + Me.B(i)
             End If
         Next i
 
-        CatchSum = 0
+        Me.CatchSum = 0
         IMPT = 0
         Mean = 0
         Consu = 0
         TruPut = 0
 
-        For i = 1 To NumGroups
-            CatchSum = CatchSum + Landing(0, i) + Discard(0, i) 'Catch(i)
-            If PP(i) = 2 Then              'A detritus box
-                IMPT = IMPT + DtImp(i)
+        For i = 1 To Me.NumGroups
+            Me.CatchSum = Me.CatchSum + Me.Landing(0, i) + Me.Discard(0, i) 'Catch(i)
+            If Me.PP(i) = 2 Then              'A detritus box
+                IMPT = IMPT + Me.DtImp(i)
             Else
-                IMPT = IMPT + DC(i, 0) * QB(i) * B(i)
+                IMPT = IMPT + Me.DC(i, 0) * Me.QB(i) * Me.B(i)
             End If
             prod = 0
-            If QB(i) >= 0 Then
-                prod = B(i) * PB(i) * EE(i)
-                Consu = Consu + B(i) * QB(i)
+            If Me.QB(i) >= 0 Then
+                prod = Me.B(i) * Me.PB(i) * Me.EE(i)
+                Consu = Consu + Me.B(i) * Me.QB(i)
             End If
-            If PP(i) = 2 Then
-                Consu = Consu + Dt
-                For ii = 1 To NumGroups
-                    prod = prod + B(ii) * QB(ii) * DC(ii, NumGroups)
+            If Me.PP(i) = 2 Then
+                Consu = Consu + Me.Dt
+                For ii = 1 To Me.NumGroups
+                    prod = prod + Me.B(ii) * Me.QB(ii) * Me.DC(ii, Me.NumGroups)
                 Next ii
             End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -737,36 +737,36 @@ Public Class cEcopathDataStructures
             'jb Modified to not use the goto statment
             'the original intent was to NOT sum "prod" for non living groups that had negative "prod"
             'so 'TruPut' is the sum of all positive 'prod'
-            If (i > NumLiving And prod < 0) = False Then 'GoTo SkipTr
+            If (i > Me.NumLiving And prod < 0) = False Then 'GoTo SkipTr
                 TruPut = TruPut + prod
-                If QB(i) = 0 Then Mean = Mean + B(i) * PB(i)
+                If Me.QB(i) = 0 Then Mean = Mean + Me.B(i) * Me.PB(i)
             End If
 
         Next i
 
         'If NumGroups > NumLiving And EX(NumGroups) > 0 Then TruPut = TruPut + EX(NumGroups) '+ BA(NumGroups)
-        For i = NumLiving + 1 To NumGroups
-            TruPut = TruPut + Ex(i)
+        For i = Me.NumLiving + 1 To Me.NumGroups
+            TruPut = TruPut + Me.Ex(i)
         Next
-        If Totpp > 0 Then
-            GEff = CatchSum / Totpp
-        ElseIf PProd > 0 Then
-            GEff = CatchSum / PProd
+        If Me.Totpp > 0 Then
+            Me.GEff = Me.CatchSum / Me.Totpp
+        ElseIf Me.PProd > 0 Then
+            Me.GEff = Me.CatchSum / Me.PProd
         Else
-            GEff = 0
+            Me.GEff = 0
         End If
 
-        If GEff <> 0 Then
+        If Me.GEff <> 0 Then
             ' TLcatch gives trophic level of the fishery
             Kount = 0 : Total = 0
-            For i = 1 To NumGroups
-                Kount = Kount + fCatch(i)
-                Total = Total + TTLX(i) * fCatch(i)
+            For i = 1 To Me.NumGroups
+                Kount = Kount + Me.fCatch(i)
+                Total = Total + Me.TTLX(i) * Me.fCatch(i)
             Next i
             If Kount > 0 Then
-                TLcatch = Total / Kount
+                Me.TLcatch = Total / Kount
             Else
-                TLcatch = 0
+                Me.TLcatch = 0
             End If
         End If
 
@@ -786,7 +786,7 @@ Public Class cEcopathDataStructures
     ''' <remarks>
     ''' Was Public Sub ParamEstimate2() in original code
     ''' </remarks>
-    Friend Function Compute_M2_Resp_and_Stats(ByVal Functions As cEcoFunctions, Optional bQuiet As Boolean = False) As Boolean
+    Friend Function Compute_M2_Resp_and_Stats(Functions As cEcoFunctions, Optional bQuiet As Boolean = False) As Boolean
         Dim Prod As Single
         Dim Consump As Single, UnAssimConsump As Single
         Dim M2Sum As Single
@@ -794,34 +794,34 @@ Public Class cEcopathDataStructures
         Dim i As Integer, j As Integer
         Dim bRespOK As Boolean = True
 
-        RTZ = 0
-        Consum = 0
-        SumBio = 0
+        Me.RTZ = 0
+        Me.Consum = 0
+        Me.SumBio = 0
 
-        For i = 1 To NumGroups
-            If i <= NumLiving Then
-                SumBio = SumBio + B(i)
-                For j = 1 To NumLiving
-                    If DC(j, i) > 0 And B(i) > 0 Then M2Sum = M2Sum + B(j) * QB(j) * DC(j, i) / B(i)
+        For i = 1 To Me.NumGroups
+            If i <= Me.NumLiving Then
+                Me.SumBio = Me.SumBio + Me.B(i)
+                For j = 1 To Me.NumLiving
+                    If Me.DC(j, i) > 0 And Me.B(i) > 0 Then M2Sum = M2Sum + Me.B(j) * Me.QB(j) * Me.DC(j, i) / Me.B(i)
                 Next j
             End If
-            M2(i) = M2Sum
+            Me.M2(i) = M2Sum
             M2Sum = 0
 
-            If i <= NumLiving Then
-                If QB(i) > 0 Then
+            If i <= Me.NumLiving Then
+                If Me.QB(i) > 0 Then
 
-                    Prod = B(i) * PB(i)
-                    Consump = B(i) * QB(i)
-                    UnAssimConsump = GS(i) * Consump
+                    Prod = Me.B(i) * Me.PB(i)
+                    Consump = Me.B(i) * Me.QB(i)
+                    UnAssimConsump = Me.GS(i) * Consump
 
                     'sum consumption across all the groups for Ecopath Stats
-                    Consum += Consump
+                    Me.Consum += Consump
 
-                    Resp(i) = Consump - Prod - UnAssimConsump
+                    Me.Resp(i) = Consump - Prod - UnAssimConsump
                     'Respiration = zero if the units are nutrients
                     If Me.areUnitCurrencyNutrients() Then
-                        Resp(i) = 0.0F 'Nutrient    
+                        Me.Resp(i) = 0.0F 'Nutrient    
                     End If
 
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -842,30 +842,30 @@ Public Class cEcopathDataStructures
                 Else
                     'Primary producers
                     'vc resp of pp OK  RESP(i) = 0
-                    Resp(i) = 0.0F
+                    Me.Resp(i) = 0.0F
                 End If
             Else
                 'Detritus
                 'vc resp of detritus OK RESP(i) = 0
-                Resp(i) = 0.0F
+                Me.Resp(i) = 0.0F
             End If
 
             'Sum of respiration across all the groups
-            RTZ += Resp(i)
+            Me.RTZ += Me.Resp(i)
 
             'No respiration warning for multistanza groups
-            If Resp(i) < 0 And (Functions.getStanzaIndexForGroup(i) = cCore.NULL_VALUE) Then
+            If Me.Resp(i) < 0 And (Functions.getStanzaIndexForGroup(i) = cCore.NULL_VALUE) Then
                 bRespOK = False 'pt = 2
             End If
 
         Next i
 
         'jb min_B_QB was called min
-        min_B_QB = 0
-        For i = 1 To NumGroups
-            If QB(i) > 0 Then
-                If min_B_QB = 0 Then min_B_QB = B(i) * QB(i)
-                If min_B_QB > B(i) * QB(i) Then min_B_QB = B(i) * QB(i)
+        Me.min_B_QB = 0
+        For i = 1 To Me.NumGroups
+            If Me.QB(i) > 0 Then
+                If Me.min_B_QB = 0 Then Me.min_B_QB = Me.B(i) * Me.QB(i)
+                If Me.min_B_QB > Me.B(i) * Me.QB(i) Then Me.min_B_QB = Me.B(i) * Me.QB(i)
             End If
         Next i
 
@@ -894,37 +894,37 @@ Public Class cEcopathDataStructures
     Private Sub ComputeMoreStats(fn As cEcoFunctions)
         Dim i As Integer, j As Integer, SysOmDen As Single
 
-        For i = 1 To NumLiving
-            For j = 1 To NumGroups
-                If DC(i, j) > 0 Then Conn = Conn + 1
+        For i = 1 To Me.NumLiving
+            For j = 1 To Me.NumGroups
+                If Me.DC(i, j) > 0 Then Me.Conn = Me.Conn + 1
             Next j
         Next i
-        Conn = Conn / (NumLiving) ^ 2  'with detritus
+        Me.Conn = Me.Conn / (Me.NumLiving) ^ 2  'with detritus
 
         'system omnivory index
-        SysOm = 0
+        Me.SysOm = 0
         SysOmDen = 0
         'jb min_B_QB was min 
         'it is set in Compute_M2_Resp_and_Stats()
-        For i = 1 To NumLiving
-            If B(i) * QB(i) / min_B_QB > 0 Then    ' *** CONSUMERS ONLY
-                SysOm = SysOm + Math.Log(B(i) * QB(i) / min_B_QB) * BQB(i)
-                SysOmDen = SysOmDen + Math.Log(B(i) * QB(i) / min_B_QB)
+        For i = 1 To Me.NumLiving
+            If Me.B(i) * Me.QB(i) / Me.min_B_QB > 0 Then    ' *** CONSUMERS ONLY
+                Me.SysOm = Me.SysOm + Math.Log(Me.B(i) * Me.QB(i) / Me.min_B_QB) * Me.BQB(i)
+                SysOmDen = SysOmDen + Math.Log(Me.B(i) * Me.QB(i) / Me.min_B_QB)
             End If
         Next i
 
-        If SysOmDen > 0 Then SysOm = SysOm / SysOmDen
+        If SysOmDen > 0 Then Me.SysOm = Me.SysOm / SysOmDen
 
-        SumEx = 0
-        SumP = 0
-        For i = 1 To NumGroups
-            SumEx = SumEx + Ex(i)
-            If PB(i) > 0 And B(i) > 0 Then SumP = SumP + PB(i) * B(i)
+        Me.SumEx = 0
+        Me.SumP = 0
+        For i = 1 To Me.NumGroups
+            Me.SumEx = Me.SumEx + Me.Ex(i)
+            If Me.PB(i) > 0 And Me.B(i) > 0 Then Me.SumP = Me.SumP + Me.PB(i) * Me.B(i)
         Next i
 
         If (fn IsNot Nothing) Then
-            Me.KemptonsQ = fn.KemptonsQ(NumLiving, TTLX, B, 0.25)
-            Me.Shannon = fn.ShannonDiversityIndex(NumLiving, B)
+            Me.KemptonsQ = fn.KemptonsQ(Me.NumLiving, Me.TTLX, Me.B, 0.25)
+            Me.Shannon = fn.ShannonDiversityIndex(Me.NumLiving, Me.B)
         End If
 
     End Sub
@@ -934,23 +934,23 @@ Public Class cEcopathDataStructures
         Dim Grp As Integer
         Dim value As Single
 
-        LandingValue = 0
-        ShadowValue = 0
+        Me.LandingValue = 0
+        Me.ShadowValue = 0
 
-        For Grp = 1 To NumGroups
-            For Gear = 1 To NumFleet
-                value = Landing(Gear, Grp) * Market(Gear, Grp)
-                If value > 0 Then LandingValue = LandingValue + value
+        For Grp = 1 To Me.NumGroups
+            For Gear = 1 To Me.NumFleet
+                value = Me.Landing(Gear, Grp) * Me.Market(Gear, Grp)
+                If value > 0 Then Me.LandingValue = Me.LandingValue + value
             Next
-            value = Shadow(Grp) * B(Grp)
-            If value > 0 Then ShadowValue = ShadowValue + value
+            value = Me.Shadow(Grp) * Me.B(Grp)
+            If value > 0 Then Me.ShadowValue = Me.ShadowValue + value
         Next
 
-        Fixed = 0
-        Variab = 0
-        For Gear = 1 To NumFleet
-            Fixed = Fixed + cost(Gear, eCostIndex.Fixed)
-            Variab = Variab + cost(Gear, eCostIndex.CUPE) + cost(Gear, eCostIndex.Sail)
+        Me.Fixed = 0
+        Me.Variab = 0
+        For Gear = 1 To Me.NumFleet
+            Me.Fixed = Me.Fixed + Me.cost(Gear, eCostIndex.Fixed)
+            Me.Variab = Me.Variab + Me.cost(Gear, eCostIndex.CUPE) + Me.cost(Gear, eCostIndex.Sail)
         Next
 
     End Sub
@@ -1002,25 +1002,25 @@ Public Class cEcopathDataStructures
 
     End Sub
 
-    Public Sub DietWasChanged(ByVal pred As Integer, ByVal prey As Integer)
+    Public Sub DietWasChanged(pred As Integer, prey As Integer)
         Dim j As Integer, K As Integer
         Dim FoundPredPrey As Boolean
 
-        If (DietChanged Is Nothing) Then ReDim DietChanged(1, 0)
+        If (Me.DietChanged Is Nothing) Then ReDim Me.DietChanged(1, 0)
 
         ' j = UBound(DietChanged, 2)
-        j = DietChanged.GetUpperBound(1)
+        j = Me.DietChanged.GetUpperBound(1)
         For K = 0 To j
-            If DietChanged(0, K) = pred And DietChanged(1, K) = prey Then
+            If Me.DietChanged(0, K) = pred And Me.DietChanged(1, K) = prey Then
                 FoundPredPrey = True
                 Exit For
             End If
         Next
 
         If FoundPredPrey = False Then
-            ReDim Preserve DietChanged(1, j + 1)
-            DietChanged(0, j + 1) = pred
-            DietChanged(1, j + 1) = prey
+            ReDim Preserve Me.DietChanged(1, j + 1)
+            Me.DietChanged(0, j + 1) = pred
+            Me.DietChanged(1, j + 1) = prey
         End If
 
     End Sub
@@ -1036,27 +1036,27 @@ Public Class cEcopathDataStructures
         'Warning EwE5 also included input variables for BA, Immig, and Emigration 
         'See modEcosSense.MakeUnknownUnknown
         Try
-            Binput.CopyTo(B, 0)
-            BHinput.CopyTo(BH, 0)
-            PBinput.CopyTo(PB, 0)
-            QBinput.CopyTo(QB, 0)
-            GEinput.CopyTo(GE, 0)
-            BAInput.CopyTo(BA, 0)
+            Me.Binput.CopyTo(Me.B, 0)
+            Me.BHinput.CopyTo(Me.BH, 0)
+            Me.PBinput.CopyTo(Me.PB, 0)
+            Me.QBinput.CopyTo(Me.QB, 0)
+            Me.GEinput.CopyTo(Me.GE, 0)
+            Me.BAInput.CopyTo(Me.BA, 0)
 
             ' deal with EE and other mort (1-EE)
             'EEinput.CopyTo(EE, 0)
             For i As Integer = 0 To Me.NumGroups
                 If Me.OtherMortinput(i) > 0 Then
-                    EE(i) = 1 - Me.OtherMortinput(i)
+                    Me.EE(i) = 1 - Me.OtherMortinput(i)
                 Else
-                    EE(i) = EEinput(i)
+                    Me.EE(i) = Me.EEinput(i)
                 End If
             Next
 
             ' copy dc
             For i As Integer = 0 To Me.NumGroups
                 For j As Integer = 0 To Me.NumGroups
-                    DC(i, j) = DCInput(i, j)
+                    Me.DC(i, j) = Me.DCInput(i, j)
                 Next
             Next
             Return True
@@ -1076,9 +1076,9 @@ Public Class cEcopathDataStructures
     ''' and was computed in the interface for display. I hope this doesn't mess anything up.
     ''' </remarks>
     Private Function UpdateBH() As Boolean
-        For i As Integer = 1 To NumGroups
-            If BH(i) < 0 And B(i) > 0 And Area(i) > 0 Then
-                BH(i) = B(i) / Area(i)
+        For i As Integer = 1 To Me.NumGroups
+            If Me.BH(i) < 0 And Me.B(i) > 0 And Me.Area(i) > 0 Then
+                Me.BH(i) = Me.B(i) / Me.Area(i)
             End If
         Next
         Return True
@@ -1090,9 +1090,9 @@ Public Class cEcopathDataStructures
     Public Sub SumDCToOne()
 
         ' For each potential predator
-        For iPred As Integer = 1 To NumLiving
+        For iPred As Integer = 1 To Me.NumLiving
             ' Is a consumer?
-            If PP(iPred) < 1 Then
+            If Me.PP(iPred) < 1 Then
                 ' #Yes: calc sum
                 Dim sDCSum As Single = 0.0
                 ' For each of potential prey
@@ -1144,17 +1144,17 @@ Public Class cEcopathDataStructures
         Dim igrp As Integer
         Dim bGSWarning As Boolean = False
         'GS = zero if group is Primary producer
-        For igrp = 1 To NumGroups
-            If PP(igrp) = 1 Then
-                GS(igrp) = 0
+        For igrp = 1 To Me.NumGroups
+            If Me.PP(igrp) = 1 Then
+                Me.GS(igrp) = 0
             End If
 
             'Constrain GS to a percentage
             'This should not happen in EwE6 
             'This check was in a bunch of places in EwE5 it is centralized here
             'In EwE6 GS() should be constrained by the interface or the importer
-            If GS(igrp) > 1 Then
-                GS(igrp) = GS(igrp) / 100
+            If Me.GS(igrp) > 1 Then
+                Me.GS(igrp) = Me.GS(igrp) / 100
                 bGSWarning = True
             End If
 
@@ -1166,17 +1166,17 @@ Public Class cEcopathDataStructures
         If Me.areUnitCurrencyNutrients Then
             'Model Currency is Nurtient
             'set GSEng(0) to default values
-            For igrp = 1 To NumLiving
-                GSEng(igrp) = 0.2
-                If PP(igrp) = 1 Then
-                    GS(igrp) = 0
+            For igrp = 1 To Me.NumLiving
+                Me.GSEng(igrp) = 0.2
+                If Me.PP(igrp) = 1 Then
+                    Me.GS(igrp) = 0
                 End If
             Next
 
         Else
             'Energy Currency Units
             'Make a copy of the original GS values 
-            Array.Copy(GS, GSEng, GS.Length)
+            Array.Copy(Me.GS, Me.GSEng, Me.GS.Length)
 
         End If
 
@@ -1192,143 +1192,143 @@ Public Class cEcopathDataStructures
 
     End Sub
 
-    Friend Sub copyTo(ByRef dest As cEcopathDataStructures, Optional ByVal bRedim As Boolean = True)
+    Friend Sub copyTo(ByRef dest As cEcopathDataStructures, Optional bRedim As Boolean = True)
         Try
             'variables needed to redim
-            dest.NumGroups = NumGroups
-            dest.NumFleet = NumFleet
-            dest.NumDetrit = NumDetrit
-            dest.NumLiving = NumLiving
+            dest.NumGroups = Me.NumGroups
+            dest.NumFleet = Me.NumFleet
+            dest.NumDetrit = Me.NumDetrit
+            dest.NumLiving = Me.NumLiving
 
             If bRedim Then
                 dest.redimGroups()
             End If
 
-            dest.bInitialized = bInitialized
+            dest.bInitialized = Me.bInitialized
 
-            GroupName.CopyTo(dest.GroupName, 0)    'was Specie()
+            Me.GroupName.CopyTo(dest.GroupName, 0)    'was Specie()
             'GroupDBID.CopyTo(dest.GroupDBID, 0)        'Do not copy IDs!
 
-            dest.NumEcosimScenarios = NumEcosimScenarios
+            dest.NumEcosimScenarios = Me.NumEcosimScenarios
             'EcosimScenarioName.CopyTo(dest.EcosimScenarioName, 0)
             'EcosimScenarioDBID.CopyTo(dest.EcosimScenarioDBID, 0)
             'EcosimScenarioDescription.CopyTo(dest.EcosimScenarioDescription, 0)
-            dest.ActiveEcosimScenario = ActiveEcosimScenario
+            dest.ActiveEcosimScenario = Me.ActiveEcosimScenario
 
-            NumEcospaceScenarios = dest.NumEcospaceScenarios
+            Me.NumEcospaceScenarios = dest.NumEcospaceScenarios
             'EcospaceScenarioName.CopyTo(dest.EcospaceScenarioName, 0)
             'EcospaceScenarioDBID.CopyTo(dest.EcospaceScenarioDBID, 0)
             'EcospaceScenarioDescription.CopyTo(dest.EcospaceScenarioDescription, 0)
             'ActiveEcospaceScenario = cCore.NULL_VALUE
 
-            B.CopyTo(dest.B, 0)
-            BH.CopyTo(dest.BH, 0)
-            BA.CopyTo(dest.BA, 0)
-            BAInput.CopyTo(dest.BAInput, 0)
-            BaBi.CopyTo(dest.BaBi, 0)
-            PB.CopyTo(dest.PB, 0)
-            QB.CopyTo(dest.QB, 0)
-            EE.CopyTo(dest.EE, 0)
-            GE.CopyTo(dest.GE, 0)
-            GS.CopyTo(dest.GS, 0)
-            EEinput.CopyTo(dest.EEinput, 0)
-            OtherMortinput.CopyTo(dest.OtherMortinput, 0)
-            PBinput.CopyTo(dest.PBinput, 0)
-            QBinput.CopyTo(dest.QBinput, 0)
-            GEinput.CopyTo(dest.GEinput, 0)
+            Me.B.CopyTo(dest.B, 0)
+            Me.BH.CopyTo(dest.BH, 0)
+            Me.BA.CopyTo(dest.BA, 0)
+            Me.BAInput.CopyTo(dest.BAInput, 0)
+            Me.BaBi.CopyTo(dest.BaBi, 0)
+            Me.PB.CopyTo(dest.PB, 0)
+            Me.QB.CopyTo(dest.QB, 0)
+            Me.EE.CopyTo(dest.EE, 0)
+            Me.GE.CopyTo(dest.GE, 0)
+            Me.GS.CopyTo(dest.GS, 0)
+            Me.EEinput.CopyTo(dest.EEinput, 0)
+            Me.OtherMortinput.CopyTo(dest.OtherMortinput, 0)
+            Me.PBinput.CopyTo(dest.PBinput, 0)
+            Me.QBinput.CopyTo(dest.QBinput, 0)
+            Me.GEinput.CopyTo(dest.GEinput, 0)
 
-            Binput.CopyTo(dest.Binput, 0)
+            Me.Binput.CopyTo(dest.Binput, 0)
 
-            BHinput.CopyTo(dest.BHinput, 0)
+            Me.BHinput.CopyTo(dest.BHinput, 0)
 
             'min_B_QB = dest.min_B_QB 'minimum B*QB
-            dest.DCInput = DCInput.Clone
-            dest.DC = DC.Clone
+            dest.DCInput = Me.DCInput.Clone
+            dest.DC = Me.DC.Clone
 
             'dest.currUnitName = currUnitName
-            dest.ModelUnitCurrency = ModelUnitCurrency
-            dest.TimeUnitName = TimeUnitName
-            dest.TimeUnitIndex = TimeUnitIndex
-            dest.DietsModified = DietsModified
-            dest.PProd = PProd
+            dest.ModelUnitCurrency = Me.ModelUnitCurrency
+            dest.TimeUnitName = Me.TimeUnitName
+            dest.TimeUnitIndex = Me.TimeUnitIndex
+            dest.DietsModified = Me.DietsModified
+            dest.PProd = Me.PProd
 
             ''''DietChanged.CopyTo(dest.DietChanged, 0)
 
-            Ex.CopyTo(dest.Ex, 0)
+            Me.Ex.CopyTo(dest.Ex, 0)
 
-            fCatch.CopyTo(dest.fCatch, 0) 'was called Catch but this causes a naming conflict with Try Catch blocks
-            Array.Copy(DCInput, dest.DCInput, DCInput.Length)
-            dest.DCInput = DCInput.Clone
-            dest.DC = DC.Clone
-            dest.DF = DF.Clone
-            Area.CopyTo(dest.Area, 0)
-            dest.DCChanged = DCChanged.Clone
+            Me.fCatch.CopyTo(dest.fCatch, 0) 'was called Catch but this causes a naming conflict with Try Catch blocks
+            Array.Copy(Me.DCInput, dest.DCInput, Me.DCInput.Length)
+            dest.DCInput = Me.DCInput.Clone
+            dest.DC = Me.DC.Clone
+            dest.DF = Me.DF.Clone
+            Me.Area.CopyTo(dest.Area, 0)
+            dest.DCChanged = Me.DCChanged.Clone
 
-            BQB.CopyTo(dest.BQB, 0)
-            Resp.CopyTo(dest.Resp, 0)
-            PP.CopyTo(dest.PP, 0)           'TM Trophic Mode
-            dest.det = det.Clone
-            dest.DCDet = DCDet.Clone                 'Diet Composition of Detritus  for fishery            DetEaten.CopyTo(dest.DetEaten, 0)                 ' For multiple detritus
-            DetPassedOn.CopyTo(dest.DetPassedOn, 0)              ' For multiple detritus
-            DetPassedProp.CopyTo(dest.DetPassedProp, 0)              ' For multiple detritus
-            FlowToDet.CopyTo(dest.FlowToDet, 0)
-            InputToDet.CopyTo(dest.InputToDet, 0)
+            Me.BQB.CopyTo(dest.BQB, 0)
+            Me.Resp.CopyTo(dest.Resp, 0)
+            Me.PP.CopyTo(dest.PP, 0)           'TM Trophic Mode
+            dest.det = Me.det.Clone
+            dest.DCDet = Me.DCDet.Clone                 'Diet Composition of Detritus  for fishery            DetEaten.CopyTo(dest.DetEaten, 0)                 ' For multiple detritus
+            Me.DetPassedOn.CopyTo(dest.DetPassedOn, 0)              ' For multiple detritus
+            Me.DetPassedProp.CopyTo(dest.DetPassedProp, 0)              ' For multiple detritus
+            Me.FlowToDet.CopyTo(dest.FlowToDet, 0)
+            Me.InputToDet.CopyTo(dest.InputToDet, 0)
             'JS 08Jan09: SumDC was a global scratch variable, changed to local scope
             'SumDC.CopyTo(dest.SumDC, 0)
 
-            Immig.CopyTo(dest.Immig, 0)
-            Emigration.CopyTo(dest.Emigration, 0)
-            Emig.CopyTo(dest.Emig, 0)    'relative to biomass, used in Ecosim
-            Shadow.CopyTo(dest.Shadow, 0)
-            GroupIsFish.CopyTo(dest.GroupIsFish, 0)
-            GroupIsInvert.CopyTo(dest.GroupIsInvert, 0)
+            Me.Immig.CopyTo(dest.Immig, 0)
+            Me.Emigration.CopyTo(dest.Emigration, 0)
+            Me.Emig.CopyTo(dest.Emig, 0)    'relative to biomass, used in Ecosim
+            Me.Shadow.CopyTo(dest.Shadow, 0)
+            Me.GroupIsFish.CopyTo(dest.GroupIsFish, 0)
+            Me.GroupIsInvert.CopyTo(dest.GroupIsInvert, 0)
 
-            dest.NumCatchCodes = NumCatchCodes
-            dest.PropLanded = PropLanded.Clone
-            TTLX.CopyTo(dest.TTLX, 0)
+            dest.NumCatchCodes = Me.NumCatchCodes
+            dest.PropLanded = Me.PropLanded.Clone
+            Me.TTLX.CopyTo(dest.TTLX, 0)
             'JS 08Jan09: LHS was a global scratch variable, changed to local scope
             'dest.LHS = LHS.Clone
-            StanzaGroup.CopyTo(dest.StanzaGroup, 0)
-            dest.CatchCode = CatchCode.Clone
-            dest.CVpar = CVpar.Clone
-            M0.CopyTo(dest.M0, 0)
-            M2.CopyTo(dest.M2, 0)
-            dest.Path = Path.Clone
-            dest.LastComp = LastComp.Clone
-            DtImp.CopyTo(dest.DtImp, 0)
+            Me.StanzaGroup.CopyTo(dest.StanzaGroup, 0)
+            dest.CatchCode = Me.CatchCode.Clone
+            dest.CVpar = Me.CVpar.Clone
+            Me.M0.CopyTo(dest.M0, 0)
+            Me.M2.CopyTo(dest.M2, 0)
+            dest.Path = Me.Path.Clone
+            dest.LastComp = Me.LastComp.Clone
+            Me.DtImp.CopyTo(dest.DtImp, 0)
 
             ''fishing(variables)
-            dest.NoGearData = NoGearData
-            dest.cost = cost.Clone
-            dest.CostPct = CostPct.Clone
-            dest.Discard = Discard.Clone
-            dest.DiscardFate = DiscardFate.Clone
-            FleetName.CopyTo(dest.FleetName, 0)
+            dest.NoGearData = Me.NoGearData
+            dest.cost = Me.cost.Clone
+            dest.CostPct = Me.CostPct.Clone
+            dest.Discard = Me.Discard.Clone
+            dest.DiscardFate = Me.DiscardFate.Clone
+            Me.FleetName.CopyTo(dest.FleetName, 0)
             'FleetDBID.CopyTo(dest.FleetDBID, 0) ' Do NOT copy DBIDs
-            dest.Landing = Landing.Clone
-            dest.Market = Market.Clone
-            dest.PropDiscard = PropDiscard.Clone
+            dest.Landing = Me.Landing.Clone
+            dest.Market = Me.Market.Clone
+            dest.PropDiscard = Me.PropDiscard.Clone
 
-            dest.RTZ = RTZ
-            dest.Consum = Consum
-            dest.SumBio = SumBio
-            dest.CatchSum = CatchSum
-            dest.GEff = GEff
-            dest.Totpp = Totpp
-            dest.TLcatch = TLcatch
-            dest.Dt = Dt
-            dest.SumEx = SumEx
-            dest.SumP = SumP
-            dest.Conn = Conn
-            dest.SysOm = SysOm
+            dest.RTZ = Me.RTZ
+            dest.Consum = Me.Consum
+            dest.SumBio = Me.SumBio
+            dest.CatchSum = Me.CatchSum
+            dest.GEff = Me.GEff
+            dest.Totpp = Me.Totpp
+            dest.TLcatch = Me.TLcatch
+            dest.Dt = Me.Dt
+            dest.SumEx = Me.SumEx
+            dest.SumP = Me.SumP
+            dest.Conn = Me.Conn
+            dest.SysOm = Me.SysOm
 
-            vbK.CopyTo(dest.vbK, 0)
-            dest.Hlap = Hlap.Clone
-            dest.Plap = Plap.Clone
-            GroupColor.CopyTo(dest.GroupColor, 0)
-            FleetColor.CopyTo(dest.FleetColor, 0)
-            dest.Host = Host.Clone
-            mis.CopyTo(dest.mis, 0)
+            Me.vbK.CopyTo(dest.vbK, 0)
+            dest.Hlap = Me.Hlap.Clone
+            dest.Plap = Me.Plap.Clone
+            Me.GroupColor.CopyTo(dest.GroupColor, 0)
+            Me.FleetColor.CopyTo(dest.FleetColor, 0)
+            dest.Host = Me.Host.Clone
+            Me.mis.CopyTo(dest.mis, 0)
 
             ' Copy model data
             dest.ModelArea = Me.ModelArea
@@ -1337,8 +1337,8 @@ Public Class cEcopathDataStructures
             dest.ModelDescription = Me.ModelDescription
             dest.ModelEast = Me.ModelEast
             dest.ModelGroupDigits = Me.ModelGroupDigits
-            dest.ModelName = ModelName
-            dest.ModelNorth = ModelNorth
+            dest.ModelName = Me.ModelName
+            dest.ModelNorth = Me.ModelNorth
             dest.ModelNumDigits = Me.ModelNumDigits
             dest.ModelSouth = Me.ModelSouth
             dest.ModelUnitCurrency = Me.ModelUnitCurrency
@@ -1355,7 +1355,7 @@ Public Class cEcopathDataStructures
 
     End Sub
 
-    Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
+    Public Sub New(CoreMessagePublisher As cMessagePublisher)
         Me.m_messages = CoreMessagePublisher
 
         'No External coupling of Ecospace by default

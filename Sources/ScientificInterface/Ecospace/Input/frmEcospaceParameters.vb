@@ -153,7 +153,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             Try
 
@@ -257,9 +257,9 @@ Namespace Ecospace
             Me.m_tbxlOutputResidualsFile.Text = If(String.IsNullOrWhiteSpace(manager.OutputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OutputFileName)
 
             ' Ecosim forcing
-            Me.m_fpUseBiomassForcing.Enabled = Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
+            Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
             Me.m_cbUseEcosimDiscardForcing.Visible = True
-            Me.m_fpUseDiscardForcing.Enabled = Core.EcospaceModelParameters.IsEcosimDiscardForcingLoaded
+            Me.m_fpUseDiscardForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimDiscardForcingLoaded
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
@@ -279,7 +279,7 @@ Namespace Ecospace
         ''' <param name="prop">The property that changed.</param>
         ''' <param name="changeFlags">The extent of the change.</param>
         ''' -------------------------------------------------------------------
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
+        Private Sub OnPropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags) _
             Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged,
                     m_bpUseBiomassForcing.PropertyChanged, m_bpUseDiscardForcing.PropertyChanged
             Me.UpdateControls()
@@ -295,7 +295,7 @@ Namespace Ecospace
         ''' Event handler; called when the IBM mode radio button is checked.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnRunIBM(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnRunIBM(sender As Object, e As System.EventArgs) _
             Handles m_rbIBM.CheckedChanged, m_rbNewStanzaModel.CheckedChanged, m_rbOldSchool.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -314,7 +314,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnBiomassOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnBiomassOptionChanged(sender As Object, e As System.EventArgs) _
             Handles m_rbBaseBiomass.CheckedChanged, m_rbAdjustedBiomass.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -324,7 +324,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnEffortOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnEffortOptionChanged(sender As Object, e As System.EventArgs) _
             Handles m_rbPredictEffort.CheckedChanged, m_rbEcopathEffort.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -334,7 +334,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnConcTracingOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnConcTracingOptionChanged(sender As Object, e As System.EventArgs) _
             Handles m_cbContaminantTracing.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -375,7 +375,7 @@ Namespace Ecospace
             If Me.m_bInUpdate Then Return
 
             ' Delay the update, because the item state has not changed yet
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateResultWriters))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateResultWriters))
 
         End Sub
 
@@ -427,7 +427,7 @@ Namespace Ecospace
 
 #Region " Overrides "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             If ((msg.Source = eCoreComponentType.Core) And (msg.Type = eMessageType.GlobalSettingsChanged)) Then
                 Me.UpdateControls()
             End If
@@ -444,7 +444,7 @@ Namespace Ecospace
 
         Private Sub UpdateScenarioFormatProviders()
 
-            Dim scenarioDef As cEcospaceScenario = Core.EcospaceScenarios(Core.ActiveEcospaceScenarioIndex)
+            Dim scenarioDef As cEcospaceScenario = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
 
             ' Connect controls to core data
             Me.m_fpScenarioName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, scenarioDef, eVarNameFlags.Name)

@@ -75,13 +75,13 @@ Friend Class cDBUpdate6_01_00_004
 
     End Function
 
-    Private Function DiscardSpeciesTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function DiscardSpeciesTable(db As cEwEDatabase) As Boolean
 
         Return db.Execute("DROP TABLE SPECIES")
 
     End Function
 
-    Private Function CreateTaxonTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function CreateTaxonTable(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -93,13 +93,13 @@ Friend Class cDBUpdate6_01_00_004
 
     End Function
 
-    Private Function AddModelAreaName(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddModelAreaName(db As cEwEDatabase) As Boolean
 
         Return db.Execute("ALTER TABLE EcopathModel ADD COLUMN AreaName TEXT(255)")
 
     End Function
 
-    Private Function FixJulianDates(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixJulianDates(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

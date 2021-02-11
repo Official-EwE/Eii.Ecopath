@@ -58,7 +58,7 @@ Public Module Extensions
     ''' <param name="value">The value to fill the array with.</param>
     ''' -----------------------------------------------------------------------
     <Extension()>
-    Public Sub Fill(Of T)(ByRef arr As T(), ByVal value As T)
+    Public Sub Fill(Of T)(ByRef arr As T(), value As T)
         If (arr Is Nothing) Then Return
         For i As Integer = 0 To arr.Length - 1
             arr(i) = value
@@ -74,7 +74,7 @@ Public Module Extensions
     ''' <param name="b">The second array to check.</param>
     ''' -----------------------------------------------------------------------
     <Extension()>
-    Public Function IsIdenticalTo(Of T)(ByVal a As T(), ByVal b() As T) As Boolean
+    Public Function IsIdenticalTo(Of T)(a As T(), b() As T) As Boolean
 
         If (a Is Nothing) And (b Is Nothing) Then Return True
         If (a Is Nothing) Or (b Is Nothing) Then Return False
@@ -95,7 +95,7 @@ Public Module Extensions
     ''' <param name="value">The value to fill the array with.</param>
     ''' -----------------------------------------------------------------------
     <Extension()>
-    Public Sub Fill(Of T)(ByRef arr As T(,), ByVal value As T)
+    Public Sub Fill(Of T)(ByRef arr As T(,), value As T)
         If (arr Is Nothing) Then Return
         For i As Integer = 0 To arr.GetUpperBound(0)
             For j As Integer = 0 To arr.GetUpperBound(1)
@@ -113,7 +113,7 @@ Public Module Extensions
     ''' <param name="value">The value to fill the array with.</param>
     ''' -----------------------------------------------------------------------
     <Extension()>
-    Public Sub Fill(Of T)(ByRef arr As T(,,), ByVal value As T)
+    Public Sub Fill(Of T)(ByRef arr As T(,,), value As T)
         If (arr Is Nothing) Then Return
         For i As Integer = 0 To arr.GetUpperBound(0)
             For j As Integer = 0 To arr.GetUpperBound(1)
@@ -135,7 +135,7 @@ Public Module Extensions
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     <Extension()>
-    Public Function SubArray(Of T)(ByVal values() As T, ByVal iStart As Integer, ByVal iEnd As Integer) As T()
+    Public Function SubArray(Of T)(values() As T, iStart As Integer, iEnd As Integer) As T()
         Dim n As Integer = iEnd - iStart + 1
         Dim result(n - 1) As T
         Array.Copy(values, iStart, result, 0, n)
@@ -171,7 +171,7 @@ Public Module Extensions
     ''' <param name="arr2">The other array to compare to.</param>
     ''' -----------------------------------------------------------------------
     <Extension()>
-    Public Function EqualsArray(Of T)(ByRef arr As T(), ByVal arr2 As T()) As Boolean
+    Public Function EqualsArray(Of T)(ByRef arr As T(), arr2 As T()) As Boolean
         If (arr Is Nothing) And (arr2 Is Nothing) Then Return True
         If (arr Is Nothing) Or (arr2 Is Nothing) Then Return False
         If (arr.Length <> arr2.Length) Then Return False

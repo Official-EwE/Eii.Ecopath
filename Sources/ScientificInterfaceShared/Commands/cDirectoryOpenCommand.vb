@@ -44,7 +44,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
@@ -65,7 +65,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strDirectory">The directory to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strDirectory As String)
+        Public Overloads Sub Invoke(strDirectory As String)
             Me.Directory = strDirectory
             Me.Invoke()
         End Sub
@@ -77,7 +77,7 @@ Namespace Commands
         ''' <param name="strDirectory">Initial directory to open the dialog at.</param>
         ''' <param name="strDescription">The description to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strDirectory As String, ByVal strDescription As String)
+        Public Overloads Sub Invoke(strDirectory As String, strDescription As String)
             Me.Prompt = strDescription
             Me.Directory = strDirectory
             Me.Invoke()

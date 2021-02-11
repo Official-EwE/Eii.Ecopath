@@ -66,7 +66,7 @@ Public Class frmModelParameters
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
 
@@ -101,19 +101,19 @@ Public Class frmModelParameters
         Me.m_fpIsCoupled = New cPropertyFormatProvider(Me.UIContext, Me.m_chkIsCoupled, eweModel, eVarNameFlags.IsEcospaceModelCoupled)
 
         Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
-        AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
+        AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf Me.OnUnitCurrencyChanged
 
         Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
-        AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnUnitCurrencyTextChanged
+        AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf Me.OnUnitCurrencyTextChanged
 
         Me.m_propUnitTime = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
-        AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnUnitTimeChanged
+        AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf Me.OnUnitTimeChanged
 
         Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
-        AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnUnitTimeTextChanged
+        AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf Me.OnUnitTimeTextChanged
 
         Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.UIContext.Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
-        AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
+        AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf Me.OnUnitMonetaryChanged
 
         Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
         Me.CoreComponents = Nothing
@@ -150,7 +150,7 @@ Public Class frmModelParameters
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_fpName.Release() '
         Me.m_fpDescription.Release()
@@ -178,19 +178,19 @@ Public Class frmModelParameters
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
 
-        RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnUnitCurrencyChanged
+        RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf Me.OnUnitCurrencyChanged
         Me.m_propUnitCurrency = Nothing
 
-        RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnUnitCurrencyTextChanged
+        RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf Me.OnUnitCurrencyTextChanged
         Me.m_propUnitCurrencyText = Nothing
 
-        RemoveHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnUnitTimeChanged
+        RemoveHandler Me.m_propUnitTime.PropertyChanged, AddressOf Me.OnUnitTimeChanged
         Me.m_propUnitTime = Nothing
 
-        RemoveHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnUnitTimeTextChanged
+        RemoveHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf Me.OnUnitTimeTextChanged
         Me.m_propUnitTimeText = Nothing
 
-        RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
+        RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf Me.OnUnitMonetaryChanged
         Me.m_propUnitMonetary = Nothing
 
         MyBase.OnFormClosed(e)
@@ -212,11 +212,11 @@ Public Class frmModelParameters
 
 #Region " Currency "
 
-    Private Sub PatchCurrencyUnitRadioButtonText(ByVal rb As RadioButton, ByVal uct As eUnitCurrencyType)
+    Private Sub PatchCurrencyUnitRadioButtonText(rb As RadioButton, uct As eUnitCurrencyType)
         rb.Text = cStringUtils.Localize(rb.Text, Me.StyleGuide.CurrencyUnitText(uct))
     End Sub
 
-    Private Sub OnUnitCurrencyRadioChanged(ByVal sender As Object, ByVal eventargs As EventArgs) _
+    Private Sub OnUnitCurrencyRadioChanged(sender As Object, eventargs As EventArgs) _
         Handles rbWetWeight.CheckedChanged, rbJoules.CheckedChanged, rbCalorie.CheckedChanged, _
                 rbCarbon.CheckedChanged, rbDryWeight.CheckedChanged, rbNitrogen.CheckedChanged, rbPhosporus.CheckedChanged, _
                 rbCurrencyEnergyOther.CheckedChanged, rbNutrientOther.CheckedChanged, rbCurrencyEnergyOther.CheckedChanged
@@ -225,20 +225,20 @@ Public Class frmModelParameters
 
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
-        If Me.rbWetWeight.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.WetWeight)
-        If Me.rbJoules.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.Joules)
-        If Me.rbCalorie.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.Calorie)
-        If Me.rbCarbon.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.Carbon)
-        If Me.rbDryWeight.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.DryWeight)
-        If Me.rbNitrogen.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.Nitrogen)
-        If Me.rbPhosporus.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.Phosporous)
-        If Me.rbCurrencyEnergyOther.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.CustomEnergy)
-        If Me.rbNutrientOther.Checked Then m_propUnitCurrency.SetValue(eUnitCurrencyType.CustomNutrient)
+        If Me.rbWetWeight.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.WetWeight)
+        If Me.rbJoules.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.Joules)
+        If Me.rbCalorie.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.Calorie)
+        If Me.rbCarbon.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.Carbon)
+        If Me.rbDryWeight.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.DryWeight)
+        If Me.rbNitrogen.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.Nitrogen)
+        If Me.rbPhosporus.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.Phosporous)
+        If Me.rbCurrencyEnergyOther.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.CustomEnergy)
+        If Me.rbNutrientOther.Checked Then Me.m_propUnitCurrency.SetValue(eUnitCurrencyType.CustomNutrient)
         Me.m_bInUpdate = False
 
     End Sub
 
-    Private Sub OnUnitCurrencyChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnUnitCurrencyChanged(prop As cProperty, ct As cProperty.eChangeFlags)
 
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
@@ -258,7 +258,7 @@ Public Class frmModelParameters
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub OnUnitCurrencyTextChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnUnitCurrencyTextChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         If Me.rbCurrencyEnergyOther.Checked Then
             Me.tbCurrencyEnergyOther.Text = CStr(prop.GetValue())
             Me.tbCurrencyNutrientOther.Text = ""
@@ -268,19 +268,19 @@ Public Class frmModelParameters
         End If
     End Sub
 
-    Private Sub OnCustomEnergyTextValidated(ByVal sender As Object, ByVal eventargs As EventArgs) Handles tbCurrencyEnergyOther.Validated
-        Me.m_propUnitCurrencyText.SetValue(tbCurrencyEnergyOther.Text)
+    Private Sub OnCustomEnergyTextValidated(sender As Object, eventargs As EventArgs) Handles tbCurrencyEnergyOther.Validated
+        Me.m_propUnitCurrencyText.SetValue(Me.tbCurrencyEnergyOther.Text)
     End Sub
 
-    Private Sub OnCustomEnergySetFocus(ByVal sender As Object, ByVal eventargs As EventArgs) Handles tbCurrencyEnergyOther.GotFocus
+    Private Sub OnCustomEnergySetFocus(sender As Object, eventargs As EventArgs) Handles tbCurrencyEnergyOther.GotFocus
         Me.rbCurrencyEnergyOther.Checked = True
     End Sub
 
-    Private Sub OnCustomNutrientTextValidated(ByVal sender As Object, ByVal eventargs As EventArgs) Handles tbCurrencyNutrientOther.Validated
-        Me.m_propUnitCurrencyText.SetValue(tbCurrencyNutrientOther.Text)
+    Private Sub OnCustomNutrientTextValidated(sender As Object, eventargs As EventArgs) Handles tbCurrencyNutrientOther.Validated
+        Me.m_propUnitCurrencyText.SetValue(Me.tbCurrencyNutrientOther.Text)
     End Sub
 
-    Private Sub OnCustomNutrientSetFocus(ByVal sender As Object, ByVal eventargs As EventArgs) Handles tbCurrencyNutrientOther.GotFocus
+    Private Sub OnCustomNutrientSetFocus(sender As Object, eventargs As EventArgs) Handles tbCurrencyNutrientOther.GotFocus
         Me.rbNutrientOther.Checked = True
     End Sub
 
@@ -288,7 +288,7 @@ Public Class frmModelParameters
 
 #Region " Time "
 
-    Private Sub OnUnitTimeRadioChanged(ByVal sender As Object, ByVal eventargs As EventArgs) _
+    Private Sub OnUnitTimeRadioChanged(sender As Object, eventargs As EventArgs) _
         Handles rbYear.CheckedChanged, rbDay.CheckedChanged, rbTimeOther.CheckedChanged
 
         If (Me.m_propUnitCurrency Is Nothing) Then Return
@@ -296,15 +296,15 @@ Public Class frmModelParameters
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
 
-        If Me.rbYear.Checked Then m_propUnitTime.SetValue(eUnitTimeType.Year)
-        If Me.rbDay.Checked Then m_propUnitTime.SetValue(eUnitTimeType.Day)
-        If Me.rbTimeOther.Checked Then m_propUnitTime.SetValue(eUnitTimeType.Custom)
+        If Me.rbYear.Checked Then Me.m_propUnitTime.SetValue(eUnitTimeType.Year)
+        If Me.rbDay.Checked Then Me.m_propUnitTime.SetValue(eUnitTimeType.Day)
+        If Me.rbTimeOther.Checked Then Me.m_propUnitTime.SetValue(eUnitTimeType.Custom)
 
         Me.m_bInUpdate = False
 
     End Sub
 
-    Private Sub OnUnitTimeChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnUnitTimeChanged(prop As cProperty, ct As cProperty.eChangeFlags)
 
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
@@ -318,29 +318,29 @@ Public Class frmModelParameters
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub OnUnitTimeTextChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnUnitTimeTextChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         Me.txbTimeOther.Text = CStr(prop.GetValue())
     End Sub
 
-    Private Sub OnUnitTimeSetFocus(ByVal sender As Object, ByVal eventargs As EventArgs) Handles txbTimeOther.GotFocus
+    Private Sub OnUnitTimeSetFocus(sender As Object, eventargs As EventArgs) Handles txbTimeOther.GotFocus
         Me.rbTimeOther.Checked = True
     End Sub
 
-    Private Sub OnUnitTimeTextValidated(ByVal sender As Object, ByVal eventargs As EventArgs) Handles txbTimeOther.Validated
-        Me.m_propUnitTimeText.SetValue(txbTimeOther.Text)
+    Private Sub OnUnitTimeTextValidated(sender As Object, eventargs As EventArgs) Handles txbTimeOther.Validated
+        Me.m_propUnitTimeText.SetValue(Me.txbTimeOther.Text)
     End Sub
 
 #End Region ' Time
 
 #Region " Monetary "
 
-    Private Sub m_cmbMonetaryUnit_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub m_cmbMonetaryUnit_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
         Handles m_cmbMonetaryUnit.TextChanged
         If (Me.m_propUnitMonetary Is Nothing) Then Return
         Me.m_propUnitMonetary.SetValue(Me.m_cmbMonetaryUnit.Unit)
     End Sub
 
-    Private Sub OnUnitMonetaryChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnUnitMonetaryChanged(prop As cProperty, ct As cProperty.eChangeFlags)
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.m_cmbMonetaryUnit.Unit = DirectCast(prop.GetValue(), String)
@@ -377,7 +377,7 @@ Public Class frmModelParameters
         Me.m_gcmbAreaName.Search()
     End Sub
 
-    Private Sub OnSearchingLocation(ByVal sender As cGeocodeLookupComboBox, ByVal bSearching As Boolean) _
+    Private Sub OnSearchingLocation(sender As cGeocodeLookupComboBox, bSearching As Boolean) _
         Handles m_gcmbAreaName.OnSeaching
 
         If bSearching Then
@@ -387,7 +387,7 @@ Public Class frmModelParameters
         End If
     End Sub
 
-    Private Sub OnLocationSelected(ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub OnLocationSelected(sender As Object, e As EventArgs) _
         Handles m_gcmbAreaName.SelectedIndexChanged
 
         If (Me.IsDisposed) Then Return

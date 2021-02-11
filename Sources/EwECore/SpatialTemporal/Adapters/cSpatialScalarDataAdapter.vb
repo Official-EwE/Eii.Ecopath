@@ -42,7 +42,7 @@ Namespace SpatialData
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -55,11 +55,11 @@ Namespace SpatialData
         ''' <remarks>Overridden to scale values prior to being set in the 
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
-                                             ByVal conn As cSpatialDataConnection, _
-                                             ByVal iRow As Integer, _
-                                             ByVal iCol As Integer, _
-                                             ByVal sValueAtT As Double) As Boolean
+        Protected Overrides Function SetCell(layer As cEcospaceLayer, _
+                                             conn As cSpatialDataConnection, _
+                                             iRow As Integer, _
+                                             iCol As Integer, _
+                                             sValueAtT As Double) As Boolean
 
             If (conn.ScaleType = eScaleType.Relative) And (sValueAtT <> cCore.NULL_VALUE) Then
                 sValueAtT /= conn.Scale
@@ -92,7 +92,7 @@ Namespace SpatialData
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -133,9 +133,9 @@ Namespace SpatialData
         ''' <returns>A <see cref="cDatasetCompatilibity.Compatibility"/> result
         ''' indicating the outcome of the calculation.</returns>
         ''' -------------------------------------------------------------------
-        Public Function CalculateScaleFromEcopathTimePeriod(ByVal iLayerIndex As Integer,
-                                                            ByVal conn As cSpatialDataConnection,
-                                                            ByVal iFirstTimeStep As Integer,
+        Public Function CalculateScaleFromEcopathTimePeriod(iLayerIndex As Integer,
+                                                            conn As cSpatialDataConnection,
+                                                            iFirstTimeStep As Integer,
                                                             ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
             Dim manConn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
@@ -146,7 +146,7 @@ Namespace SpatialData
             If Not Me.IsConnected(iLayerIndex) Then Return result
             If Not Me.CanCalculateScalar() Then Return result
 
-            iScaleLayerIndex = iLayerIndex
+            Me.iScaleLayerIndex = iLayerIndex
 
             ' Suspend indexing
             manSets.SuspendIndexing()

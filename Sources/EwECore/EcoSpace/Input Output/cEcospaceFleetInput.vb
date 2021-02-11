@@ -26,8 +26,8 @@ Public Class cEcospaceFleetInput
 
 #Region " Constructor "
 
-    Sub New(ByVal theCore As cCore, ByVal iDBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, iDBID As Integer)
+        MyBase.New(core)
 
         Dim val As cValue = Nothing
 
@@ -40,25 +40,25 @@ Public Class cEcospaceFleetInput
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' EffectivePower
-            val = New cValue(New Single, eVarNameFlags.EffectivePower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.EffectivePower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' SEmult
-            val = New cValue(New Single, eVarNameFlags.SEmult, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.SEmult, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
             ' HabitatFishery
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.HabitatFishery, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.BoolArray, eVarNameFlags.HabitatFishery, eStatusFlags.Null, eCoreCounterTypes.nHabitats)
+            Me.m_values.Add(val.varName, val)
 
             ' MPAFishery
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.MPAFishery, eStatusFlags.Null, eCoreCounterTypes.nMPAs, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.BoolArray, eVarNameFlags.MPAFishery, eStatusFlags.Null, eCoreCounterTypes.nMPAs)
+            Me.m_values.Add(val.varName, val)
 
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceFleet.")
@@ -77,11 +77,11 @@ Public Class cEcospaceFleetInput
     ''' <returns></returns>
     Public Property EffectivePower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EffectivePower))
+            Return CSng(Me.GetVariable(eVarNameFlags.EffectivePower))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EffectivePower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EffectivePower, value)
         End Set
     End Property
 
@@ -89,13 +89,13 @@ Public Class cEcospaceFleetInput
     ''' Get/set whether this fleet is allowed to fish in a given habitat
     ''' </summary>
     ''' <param name="iHabitat"></param>
-    Public Property HabitatFishery(ByVal iHabitat As Integer) As Boolean
+    Public Property HabitatFishery(iHabitat As Integer) As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.HabitatFishery, iHabitat))
+            Return CBool(Me.GetVariable(eVarNameFlags.HabitatFishery, iHabitat))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.HabitatFishery, value, iHabitat)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.HabitatFishery, value, iHabitat)
         End Set
     End Property
 
@@ -105,22 +105,22 @@ Public Class cEcospaceFleetInput
     ''' <value>
     '''   <c>true</c> if [mpa fishery]; otherwise, <c>false</c>.
     ''' </value>
-    Public Property MPAFishery(ByVal iMPA As Integer) As Boolean
+    Public Property MPAFishery(iMPA As Integer) As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.MPAFishery, iMPA))
+            Return CBool(Me.GetVariable(eVarNameFlags.MPAFishery, iMPA))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.MPAFishery, value, iMPA)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.MPAFishery, value, iMPA)
         End Set
     End Property
 
     Public Property TotalEffMultiplier() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.SEmult))
+            Return CSng(Me.GetVariable(eVarNameFlags.SEmult))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SEmult, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.SEmult, value)
         End Set
     End Property
 
@@ -131,31 +131,31 @@ Public Class cEcospaceFleetInput
 
     Public Property EffectivePowerStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EffectivePower)
+            Return Me.GetStatus(eVarNameFlags.EffectivePower)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EffectivePower, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EffectivePower, value)
         End Set
     End Property
 
-    Public Property HabitatFisheryStatus(ByVal iHabitat As Integer) As eStatusFlags
+    Public Property HabitatFisheryStatus(iHabitat As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.HabitatFishery, iHabitat)
+            Return Me.GetStatus(eVarNameFlags.HabitatFishery, iHabitat)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.HabitatFishery, value, iHabitat)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.HabitatFishery, value, iHabitat)
         End Set
     End Property
 
-    Public Property MPAFisheryStatus(ByVal iMPA As Integer) As eStatusFlags
+    Public Property MPAFisheryStatus(iMPA As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.MPAFishery, iMPA)
+            Return Me.GetStatus(eVarNameFlags.MPAFishery, iMPA)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MPAFishery, value, iMPA)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.MPAFishery, value, iMPA)
         End Set
     End Property
 
@@ -169,7 +169,7 @@ End Class
 Public Class cEcospaceFleet
     Inherits cEcospaceFleetInput
 
-    Sub New(ByVal theCore As cCore, ByVal iDBID As Integer)
+    Sub New(theCore As cCore, iDBID As Integer)
         MyBase.New(theCore, iDBID)
     End Sub
 

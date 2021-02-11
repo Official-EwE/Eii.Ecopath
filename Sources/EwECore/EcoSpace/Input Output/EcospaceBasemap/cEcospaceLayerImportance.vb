@@ -34,10 +34,10 @@ Public Class cEcospaceLayerImportance
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore, ByVal idBID As Integer, ByRef manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Sub New(core As cCore, idBID As Integer, ByRef manager As cEcospaceBasemap, iIndex As Integer)
 
         ' Importance layers are user-defined, and will have user-provided names
-        MyBase.New(theCore, manager, "", eVarNameFlags.LayerImportance, iIndex)
+        MyBase.New(core, manager, "", eVarNameFlags.LayerImportance, iIndex)
 
         Dim val As cValue
         Dim desc As Char()
@@ -45,21 +45,21 @@ Public Class cEcospaceLayerImportance
         Me.AllowValidation = False
 
         Try
-            m_dataType = eDataTypes.EcospaceLayerImportance
-            m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_dataType = eDataTypes.EcospaceLayerImportance
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Weight
-            val = New cValue(0, eVarNameFlags.ImportanceWeight, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 0, eVarNameFlags.ImportanceWeight, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' Description
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
             Me.AllowValidation = True
 
@@ -78,14 +78,14 @@ Public Class cEcospaceLayerImportance
         Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_IMPORTANCE, Me.Index)
     End Function
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             If Me.ValidateCellPosition(iRow, iCol) Then
                 Return DirectCast(Me.Data, Single()(,))(Me.Index)(iRow, iCol)
             End If
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             If Me.ValidateCellPosition(iRow, iCol) Then
                 DirectCast(Me.Data, Single()(,))(Me.Index)(iRow, iCol) = CSng(value)
             End If
@@ -98,10 +98,10 @@ Public Class cEcospaceLayerImportance
 
     Public Property Weight() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.ImportanceWeight))
+            Return CSng(Me.GetVariable(eVarNameFlags.ImportanceWeight))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.ImportanceWeight, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.ImportanceWeight, value)
         End Set
     End Property
 

@@ -25,9 +25,9 @@ Imports EwEUtils.Core
 Public Class cValidatorNumericSetToNull
     Inherits cValidatorDefault
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ValueObject As cValue, MetaData As cVariableMetaData,
+                                         Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim fmt As New Style.cVarnameTypeFormatter()
 

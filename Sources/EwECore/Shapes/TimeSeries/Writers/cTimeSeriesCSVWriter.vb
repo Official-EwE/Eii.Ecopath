@@ -53,7 +53,7 @@ Public Class cTimeSeriesCSVWriter
     ''' <param name="core">A reference to the <see cref="cCore">Core</see> that
     ''' this reader belongs to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         Me.m_core = core
     End Sub
 
@@ -93,9 +93,9 @@ Public Class cTimeSeriesCSVWriter
     ''' interpreting floating point values in the text.</param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Write(ByVal strFileName As String, _
-                                      ByVal strDelimiter As String, _
-                                      ByVal strDecimalSeparator As String) As Boolean
+    Public Overridable Function Write(strFileName As String, _
+                                      strDelimiter As String, _
+                                      strDecimalSeparator As String) As Boolean
 
         Dim ds As cTimeSeriesDataset = Nothing
         Dim ts As cTimeSeries = Nothing

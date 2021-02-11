@@ -50,7 +50,7 @@ Namespace Ecopath.Tools
 
             Private m_level As cPedigreeLevel = Nothing
 
-            Public Sub New(ByVal level As cPedigreeLevel)
+            Public Sub New(level As cPedigreeLevel)
                 Me.m_level = level
             End Sub
 
@@ -86,7 +86,7 @@ Namespace Ecopath.Tools
 
 #Region " Form overloads "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
@@ -103,9 +103,9 @@ Namespace Ecopath.Tools
                 Me.m_cmbCategory.Items.Add(desc.ToString(var, eDescriptorTypes.Description))
             Next
 
-            AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
-            AddHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
-            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf Me.OnRenderStyleChanged
+            AddHandler Me.m_grid.OnVariableChanged, AddressOf Me.OnGridVariableChanged
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
 
             Dim cmd As cEditPedigreeCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditPedigreeCommand.cCOMMAND_NAME), cEditPedigreeCommand)
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditPedigree)
@@ -129,7 +129,7 @@ Namespace Ecopath.Tools
                                                  eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 fmsg.Reply = eMessageReply.YES
                 fmsg.Suppressable = True
-                Core.Messages.SendMessage(fmsg)
+                Me.Core.Messages.SendMessage(fmsg)
 
                 If fmsg.Reply = eMessageReply.YES Then
                     Try
@@ -142,11 +142,11 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
-            RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged
-            RemoveHandler Me.m_grid.OnVariableChanged, AddressOf OnGridVariableChanged
-            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+            RemoveHandler Me.m_psg.OnRenderStyleChanged, AddressOf Me.OnRenderStyleChanged
+            RemoveHandler Me.m_grid.OnVariableChanged, AddressOf Me.OnGridVariableChanged
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
 
             Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditPedigree")
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditPedigree)
@@ -167,7 +167,7 @@ Namespace Ecopath.Tools
         ''' <param name="msg">The <see cref="EwECore.cMessage">core message</see> 
         ''' to respond to.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
             If (msg.Source = eCoreComponentType.EcoPath) Then
@@ -186,7 +186,7 @@ Namespace Ecopath.Tools
 
 #Region " Events "
 
-        Private Sub OnViewAsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnViewAsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbViewAs.SelectedIndexChanged
 
             Dim iIndex As Integer = Me.m_cmbViewAs.SelectedIndex
@@ -196,14 +196,14 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Private Sub OnCategoryChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCategoryChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbCategory.SelectedIndexChanged
             Dim iIndex As Integer = Me.m_cmbCategory.SelectedIndex
             Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iIndex + 1)
             Me.SelectedVariable = var
         End Sub
 
-        Private Sub OnRenderStyleChanged(ByVal viz As cPedigreeStyleGuide)
+        Private Sub OnRenderStyleChanged(viz As cPedigreeStyleGuide)
 
             Me.m_lbLevels.Invalidate()
             Me.m_grid.Invalidate()
@@ -212,7 +212,7 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Private Sub OnDrawPedigreeListboxItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) _
+        Private Sub OnDrawPedigreeListboxItem(sender As Object, e As DrawItemEventArgs) _
             Handles m_lbLevels.DrawItem
 
             ' Sanity checks
@@ -242,7 +242,7 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Private Sub OnLevelClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
+        Private Sub OnLevelClick(sender As Object, e As MouseEventArgs) _
             Handles m_lbLevels.MouseClick
 
             Dim item As Object = Me.m_lbLevels.SelectedItem
@@ -261,11 +261,11 @@ Namespace Ecopath.Tools
 
         End Sub
 
-        Protected Sub OnGridVariableChanged(ByVal sender As Object, ByVal vn As eVarNameFlags)
+        Protected Sub OnGridVariableChanged(sender As Object, vn As eVarNameFlags)
             Me.SelectedVariable = vn
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Colours) > 0 Then
                 Me.Invalidate()
             End If
@@ -294,7 +294,7 @@ Namespace Ecopath.Tools
             Get
                 Return Me.m_varname
             End Get
-            Set(ByVal value As eVarNameFlags)
+            Set(value As eVarNameFlags)
 
                 ' Sanity checks and optimizations
                 If (Me.UIContext Is Nothing) Then Return
@@ -329,7 +329,7 @@ Namespace Ecopath.Tools
                 If (Me.m_lbLevels.SelectedItem Is Nothing) Then Return Nothing
                 Return DirectCast(Me.m_lbLevels.SelectedItem, cPedigreeLevelListboxItem).Level
             End Get
-            Set(ByVal value As cPedigreeLevel)
+            Set(value As cPedigreeLevel)
                 For i As Integer = 0 To Me.m_lbLevels.Items.Count - 1
                     Dim item As cPedigreeLevelListboxItem = DirectCast(Me.m_lbLevels.Items(i), cPedigreeLevelListboxItem)
                     If Object.ReferenceEquals(item.Level, value) Then
@@ -351,7 +351,7 @@ Namespace Ecopath.Tools
             Get
                 Return Me.m_psg.RenderStyle
             End Get
-            Set(ByVal value As cPedigreeStyleGuide.eRenderStyleTypes)
+            Set(value As cPedigreeStyleGuide.eRenderStyleTypes)
                 If (value = cPedigreeStyleGuide.eRenderStyleTypes.NotSet) Then Return
                 Me.m_psg.RenderStyle = value
             End Set

@@ -30,94 +30,94 @@ Namespace MSE
     Public Class cMSEGroupInput
         Inherits cCoreGroupBase
 
-        Public Sub New(ByRef theCore As cCore, ByVal theGroupDBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, theGroupDBID As Integer)
+            MyBase.New(core)
 
             Dim val As cValue
 
-            m_dataType = eDataTypes.MSEGroupInput
-            m_coreComponent = eCoreComponentType.MSE
+            Me.m_dataType = eDataTypes.MSEGroupInput
+            Me.m_coreComponent = eCoreComponentType.MSE
             Me.AllowValidation = False
             Me.DBID = theGroupDBID
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
 
             'MSEBioCV
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSEBioCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSEBioCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSELowerRisk, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSELowerRisk, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSEUpperRisk, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEUpperRisk, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Fixed Escapement
-            val = New cValue(New Single, eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEFixedEscapement, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ''Kalman Gain/Weight
             'meta = New cVariableMetadata(MSEKalmanGain ,0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            'val = New cValue(New Single, eVarNameFlags.MSEKalmanGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEKalmanGain))
+            'val = New cValue(core, New Single, eVarNameFlags.MSEKalmanGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEKalmanGain))
             'm_values.Add(val.varName, val)
 
             'Ref levels Groups
-            val = New cValue(New Single, eVarNameFlags.MSERefBioLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefBioLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Ref levels
-            val = New cValue(New Single, eVarNameFlags.MSERefBioUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefBioUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSERefBioEstLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefBioEstLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Ref levels
-            val = New cValue(New Single, eVarNameFlags.MSERefBioEstUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefBioEstUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
 
             'Fleets ref levels
-            val = New cValue(New Single, eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERefGroupCatchUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSEForcastGain, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEForcastGain, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.RHalfB0Ratio, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSEFixedF, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEFixedF, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSERecruitmentCV, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ''Quota per species
             'meta = New cVariableMetadata(QuotaSpecies ,0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            'val = New cValue(New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
+            'val = New cValue(core, New Single, eVarNameFlags.QuotaSpecies, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaSpecies))
             'm_values.Add(val.varName, val)
             'bBase
-            val = New cValue(New Single, eVarNameFlags.MSEBBase, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEBBase, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
             'bLim
-            val = New cValue(New Single, eVarNameFlags.MSEBLim, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEBLim, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
             'FOpt
-            val = New cValue(New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
             'Fmin
-            val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             Me.ResetStatusFlags()
             Me.AllowValidation = True
@@ -133,12 +133,12 @@ Namespace MSE
                 Return Not Me.AllowValidation
             End Get
 
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
 
                 'if turning the BatchEdit On after it has been OFF tell the core that the values has been edited
                 'this will allow the core to update the underlying data and send out a datamodified message
                 If Me.BatchEdit = True And value = False Then
-                    Me.m_core.OnValidated(m_values.Item(eVarNameFlags.MSEBioCV), Me)
+                    Me.m_core.OnValidated(Me.m_values.Item(eVarNameFlags.MSEBioCV), Me)
                 End If
                 Me.AllowValidation = Not value
 
@@ -147,294 +147,294 @@ Namespace MSE
         End Property
 
 
-        Public Property BiomassCV(ByVal TimeIndex As Integer) As Single
+        Public Property BiomassCV(TimeIndex As Integer) As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBioCV, TimeIndex))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBioCV, TimeIndex))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBioCV, value, TimeIndex)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBioCV, value, TimeIndex)
             End Set
         End Property
 
         Public Property LowerRisk() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSELowerRisk))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSELowerRisk))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSELowerRisk, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSELowerRisk, value)
             End Set
         End Property
 
 
         Public Property UpperRisk() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEUpperRisk))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEUpperRisk))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEUpperRisk, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEUpperRisk, value)
             End Set
         End Property
 
         Public Property BiomassRefLower() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefBioLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefBioLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefBioLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefBioLower, value)
             End Set
         End Property
 
         Public Property BiomassRefUpper() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefBioUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefBioUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefBioUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefBioUpper, value)
             End Set
         End Property
 
         Public Property BiomassEstRefUpper() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefBioEstUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefBioEstUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefBioEstUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefBioEstUpper, value)
             End Set
         End Property
 
 
         Public Property BiomassEstRefLower() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefBioEstLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefBioEstLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefBioEstLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefBioEstLower, value)
             End Set
         End Property
 
         Public Property CatchRefLower() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefGroupCatchLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefGroupCatchLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefGroupCatchLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefGroupCatchLower, value)
             End Set
         End Property
 
         Public Property CatchRefUpper() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERefGroupCatchUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERefGroupCatchUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERefGroupCatchUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERefGroupCatchUpper, value)
             End Set
         End Property
 
         Public Property FixedEscapement() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFixedEscapement))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFixedEscapement))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFixedEscapement, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFixedEscapement, value)
             End Set
         End Property
 
         Public Property ForcastGain() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEForcastGain))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEForcastGain))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEForcastGain, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEForcastGain, value)
             End Set
         End Property
 
 
         Public Property RHalfB0Ratio() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.RHalfB0Ratio))
+                Return CSng(Me.GetVariable(eVarNameFlags.RHalfB0Ratio))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.RHalfB0Ratio, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.RHalfB0Ratio, value)
             End Set
         End Property
 
         Public Property FixedF() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFixedF))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFixedF))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFixedF, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFixedF, value)
             End Set
         End Property
 
 
         Public Property RecruitmentCV() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSERecruitmentCV))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSERecruitmentCV))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSERecruitmentCV, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSERecruitmentCV, value)
             End Set
         End Property
 
 
         Public Property BLim() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBLim))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBLim))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBLim, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBLim, value)
             End Set
         End Property
 
         Public Property BBase() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBBase))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBBase))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBBase, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBBase, value)
             End Set
         End Property
 
         Public Property FOpt() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFmax))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFmax))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFmax, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFmax, value)
             End Set
         End Property
 
         Public Property Fmin() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFmin))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFmin))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFmin, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFmin, value)
             End Set
         End Property
 
         Public Property TAC() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETAC))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETAC))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETAC, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETAC, value)
             End Set
         End Property
 
         Public Property FixedFStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEFixedF)
+                Return Me.GetStatus(eVarNameFlags.MSEFixedF)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEFixedF, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEFixedF, value)
             End Set
         End Property
 
         Public Property FixedEscapementStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEFixedEscapement)
+                Return Me.GetStatus(eVarNameFlags.MSEFixedEscapement)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEFixedEscapement, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEFixedEscapement, value)
             End Set
         End Property
 
         Public Property BiomassCVStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEBioCV)
+                Return Me.GetStatus(eVarNameFlags.MSEBioCV)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEBioCV, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEBioCV, value)
             End Set
         End Property
 
         Public Property LowerRiskStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSELowerRisk)
+                Return Me.GetStatus(eVarNameFlags.MSELowerRisk)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSELowerRisk, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSELowerRisk, value)
             End Set
         End Property
 
         Public Property UpperRiskStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEUpperRisk)
+                Return Me.GetStatus(eVarNameFlags.MSEUpperRisk)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEUpperRisk, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEUpperRisk, value)
             End Set
         End Property
 
         Public Property BiomassRefLowerStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSERefBioLower)
+                Return Me.GetStatus(eVarNameFlags.MSERefBioLower)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSERefBioLower, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSERefBioLower, value)
             End Set
         End Property
 
         Public Property BiomassRefUpperStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSERefBioLower)
+                Return Me.GetStatus(eVarNameFlags.MSERefBioLower)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSERefBioLower, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSERefBioLower, value)
             End Set
         End Property
 
         Public Property ForcastGainStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.MSEForcastGain)
+                Return Me.GetStatus(eVarNameFlags.MSEForcastGain)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.MSEForcastGain, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.MSEForcastGain, value)
             End Set
         End Property
 
         Public Property RHalfB0RatioStatus() As eStatusFlags
             Get
-                Return GetStatus(eVarNameFlags.RHalfB0Ratio)
+                Return Me.GetStatus(eVarNameFlags.RHalfB0Ratio)
             End Get
 
-            Set(ByVal value As eStatusFlags)
-                SetStatus(eVarNameFlags.RHalfB0Ratio, value)
+            Set(value As eStatusFlags)
+                Me.SetStatus(eVarNameFlags.RHalfB0Ratio, value)
             End Set
         End Property
 
 #Region " Overrides "
 
-        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
             MyBase.ResetStatusFlags(bForceReset)
 
             Me.AllowValidation = False

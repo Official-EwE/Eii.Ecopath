@@ -46,9 +46,9 @@ Namespace Ecosim
 
         Public Property DisplayInputValue() As eMCRunDisplayInputValueTypes
             Get
-                Return m_value
+                Return Me.m_value
             End Get
-            Set(ByVal value As eMCRunDisplayInputValueTypes)
+            Set(value As eMCRunDisplayInputValueTypes)
                 Me.m_value = value
                 Me.RefreshContent()
             End Set
@@ -58,7 +58,7 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 If (value IsNot Nothing) Then
                     Me.m_mcmanager = value.Core.EcosimMonteCarlo
                 Else
@@ -86,7 +86,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Select Case m_value
+            Select Case Me.m_value
                 Case eMCRunDisplayInputValueTypes.B
                     Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcBcv, eVarNameFlags.mcBLower, eVarNameFlags.mcB, eVarNameFlags.mcBUpper})
                 Case eMCRunDisplayInputValueTypes.PB
@@ -116,7 +116,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub FillValues(ByVal flags() As eVarNameFlags)
+        Private Sub FillValues(flags() As eVarNameFlags)
 
             Dim mcGrp As cMonteCarloGroup = Nothing
 
@@ -139,7 +139,7 @@ Namespace Ecosim
 
             For igrp As Integer = 1 To Me.Core.nGroups
                 mcGrp = Me.m_mcmanager.Groups(igrp)
-                For iflt As Integer = 1 To Core.nFleets
+                For iflt As Integer = 1 To Me.Core.nFleets
                     Dim var As eVarNameFlags = If(Me.m_value = eMCRunDisplayInputValueTypes.Landings, eVarNameFlags.Landings, eVarNameFlags.Discards)
                     Dim vars() As eVarNameFlags = If(Me.m_value = eMCRunDisplayInputValueTypes.Landings,
                                                                    New eVarNameFlags() {eVarNameFlags.mcLandingscv, eVarNameFlags.mcLandingsLower, eVarNameFlags.mcLandings, eVarNameFlags.mcLandingsUpper},

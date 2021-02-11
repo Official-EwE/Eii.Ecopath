@@ -30,7 +30,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerSail
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerSail, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerSail
     End Sub
@@ -47,7 +47,7 @@ Public Class cEcospaceLayerSail
     ''' Note that cells will be accessed for the currently selected fleet index.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             If Me.ValidateCellPosition(iRow, iCol) Then
                 Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
@@ -55,7 +55,7 @@ Public Class cEcospaceLayerSail
             End If
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then
                 data(Me.Index)(iRow, iCol) = CSng(value)

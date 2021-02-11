@@ -49,7 +49,7 @@ Namespace MSEBatchManager
 
         Private Const EFFORT_FILENAME As String = "MSEBatch_Effort"
 
-        Public Sub New(ByVal theCore As cCore, ByVal MSEData As cMSEDataStructures, ByVal MSEBatchData As cMSEBatchDataStructures)
+        Public Sub New(theCore As cCore, MSEData As cMSEDataStructures, MSEBatchData As cMSEBatchDataStructures)
             Me.m_core = theCore
             Me.m_MSEdata = MSEData
             Me.m_BatchData = MSEBatchData
@@ -114,7 +114,7 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Public Sub WriteIterationHeader(ByVal iForcing As Integer, ByVal iControl As Integer, ByVal iParameter As Integer)
+        Public Sub WriteIterationHeader(iForcing As Integer, iControl As Integer, iParameter As Integer)
             Dim header As New StringBuilder
             Dim strm() As StreamWriter
             Dim iStrm As Integer
@@ -165,11 +165,11 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Public Function getOutputFileName(ByVal DataType As String, ByVal ModelName As String) As String
+        Public Function getOutputFileName(DataType As String, ModelName As String) As String
             Return Path.Combine(Me.DataDir, EwEUtils.Utilities.cFileUtils.ToValidFileName(DataType & "_" & Me.m_BatchData.RunType.ToString & "_" & ModelName & ".csv", False))
         End Function
 
-        Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+        Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
             Dim buff As StringBuilder
             Dim strm() As StreamWriter
@@ -278,7 +278,7 @@ Namespace MSEBatchManager
 
         End Function
 
-        Private Function OuputTypeToFileName(ByVal OutputType As eMSEBatchOuputTypes) As String
+        Private Function OuputTypeToFileName(OutputType As eMSEBatchOuputTypes) As String
             Select Case OutputType
 
                 Case eMSEBatchOuputTypes.Biomass
@@ -310,7 +310,7 @@ Namespace MSEBatchManager
         End Function
 
 
-        Private Function getOuputValue(ByVal OutputType As eMSEBatchOuputTypes, ByVal igrp As Integer, ByVal iTime As Integer) As String
+        Private Function getOuputValue(OutputType As eMSEBatchOuputTypes, igrp As Integer, iTime As Integer) As String
             Select Case OutputType
 
                 Case eMSEBatchOuputTypes.Biomass
@@ -373,7 +373,7 @@ Namespace MSEBatchManager
 
         End Function
 
-        Private Function getHarvestRuleValues(ByVal iGroup As Integer) As String
+        Private Function getHarvestRuleValues(iGroup As Integer) As String
             Dim ouputStr As String
 
             Select Case Me.m_BatchData.RunType
@@ -399,7 +399,7 @@ Namespace MSEBatchManager
 
         End Function
 
-        Private Function isGroupControlled(ByVal iGroup As Integer) As Boolean
+        Private Function isGroupControlled(iGroup As Integer) As Boolean
             Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
             For iflt As Integer = 1 To Me.m_MSEdata.nFleets
                 If epData.Landing(iflt, iGroup) > 0 And Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NoControls Then
@@ -444,7 +444,7 @@ Namespace MSEBatchManager
 
 
 
-        Public Sub New(ByVal theCore As cCore, ByVal MSEData As cMSEDataStructures, ByVal MSEBatchData As cMSEBatchDataStructures)
+        Public Sub New(theCore As cCore, MSEData As cMSEDataStructures, MSEBatchData As cMSEBatchDataStructures)
             Me.m_core = theCore
             Me.m_MSEdata = MSEData
             Me.m_BatchData = MSEBatchData
@@ -494,7 +494,7 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Public Sub WriteIterationHeader(ByVal iForcing As Integer, ByVal iControl As Integer, ByVal iParameter As Integer)
+        Public Sub WriteIterationHeader(iForcing As Integer, iControl As Integer, iParameter As Integer)
             Dim header As New StringBuilder
             Dim strm() As StreamWriter
             Dim iStrm As Integer
@@ -549,11 +549,11 @@ Namespace MSEBatchManager
 
         End Sub
 
-        Public Function getOutputFileName(ByVal DataType As String, ByVal GroupName As String, ByVal ModelName As String) As String
+        Public Function getOutputFileName(DataType As String, GroupName As String, ModelName As String) As String
             Return Path.Combine(Me.DataDir, EwEUtils.Utilities.cFileUtils.ToValidFileName(DataType & "_" & GroupName & "_" & Me.m_BatchData.RunType.ToString & "_" & ModelName & ".csv", False))
         End Function
 
-        Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+        Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
             Dim buff As StringBuilder
             Dim strm() As StreamWriter
@@ -629,7 +629,7 @@ Namespace MSEBatchManager
 
         End Function
 
-        Private Function OuputTypeToFileName(ByVal OutputType As eMSEBatchOuputTypes) As String
+        Private Function OuputTypeToFileName(OutputType As eMSEBatchOuputTypes) As String
             Select Case OutputType
 
                 Case eMSEBatchOuputTypes.Biomass
@@ -658,7 +658,7 @@ Namespace MSEBatchManager
         End Function
 
 
-        Private Function getOuputValue(ByVal OutputType As eMSEBatchOuputTypes, ByVal igrp As Integer, ByVal iTime As Integer) As String
+        Private Function getOuputValue(OutputType As eMSEBatchOuputTypes, igrp As Integer, iTime As Integer) As String
             Select Case OutputType
 
                 Case eMSEBatchOuputTypes.Biomass
@@ -722,7 +722,7 @@ Namespace MSEBatchManager
 
         End Function
 
-        Private Function getRunTypeValue(ByVal iGroup As Integer) As String
+        Private Function getRunTypeValue(iGroup As Integer) As String
             Dim ouputStr As String
 
             Select Case Me.m_BatchData.RunType

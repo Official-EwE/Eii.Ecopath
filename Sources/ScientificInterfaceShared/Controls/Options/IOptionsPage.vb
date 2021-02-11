@@ -30,7 +30,7 @@ Namespace Controls
     Public Interface IOptionsPage
         Inherits IUIElement
 
-        Event OnChanged(ByVal sender As IOptionsPage, ByVal args As EventArgs)
+        Event OnChanged(sender As IOptionsPage, args As EventArgs)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

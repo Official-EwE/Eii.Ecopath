@@ -32,6 +32,6 @@ Public Interface IEcospaceBeginTimestepPlugin
     ''' </summary>
     ''' <param name="EcospaceDatastructures">Ecospace data structures.</param>
     ''' <param name="iTime">Cumulative time step.</param>
-    Sub EcospaceBeginTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer)
+    Sub EcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer)
 
 End Interface

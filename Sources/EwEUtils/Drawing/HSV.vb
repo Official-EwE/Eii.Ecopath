@@ -33,7 +33,7 @@ Namespace Drawing
         Private m_iSaturation As Integer = 0
         Private m_iValue As Integer = 0
 
-        Public Sub New(ByVal h As Integer, ByVal s As Integer, ByVal v As Integer)
+        Public Sub New(h As Integer, s As Integer, v As Integer)
             Me.m_iHue = h
             Me.m_iSaturation = s
             Me.m_iValue = v
@@ -43,7 +43,7 @@ Namespace Drawing
             Get
                 Return Me.m_iHue
             End Get
-            Set(ByVal p_iHue As Integer)
+            Set(p_iHue As Integer)
                 Me.m_iHue = p_iHue
             End Set
         End Property
@@ -52,7 +52,7 @@ Namespace Drawing
             Get
                 Return Me.m_iSaturation
             End Get
-            Set(ByVal p_iSaturation As Integer)
+            Set(p_iSaturation As Integer)
                 Me.m_iSaturation = p_iSaturation
             End Set
         End Property
@@ -61,12 +61,12 @@ Namespace Drawing
             Get
                 Return Me.m_iValue
             End Get
-            Set(ByVal p_iValue As Integer)
+            Set(p_iValue As Integer)
                 Me.m_iValue = p_iValue
             End Set
         End Property
 
-        Public Shared Function ToColor(ByVal hsv As HSV) As Color
+        Public Shared Function ToColor(hsv As HSV) As Color
 
             Dim h As Decimal
             Dim s As Decimal

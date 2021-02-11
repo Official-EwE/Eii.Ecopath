@@ -60,7 +60,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="typeGUI">The class type for the GUI to attach to this editor, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal typeGUI As Type)
+        Public Sub New(typeGUI As Type)
             If typeGUI Is Nothing Then typeGUI = GetType(ucLayerEditorDefault)
             Me.m_typeGUI = typeGUI
         End Sub
@@ -72,7 +72,7 @@ Namespace Controls.Map.Layers
         ''' <param name="uic">UI context to attach.</param>
         ''' <param name="layer">Layer to attach.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayer)
+        Public Overridable Sub Initialize(uic As cUIContext, layer As cDisplayLayer)
             Me.UIContext = uic
             Me.Layer = layer
         End Sub
@@ -118,7 +118,7 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Protected Sub OnLayerChanged(ByVal layer As cDisplayLayer, ByVal cf As cDisplayLayer.eChangeFlags)
+        Protected Sub OnLayerChanged(layer As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
             If (Me.GUI IsNot Nothing) Then
                 Me.GUI.UpdateContent(CType(Me, cLayerEditorRaster))
             End If
@@ -191,7 +191,7 @@ Namespace Controls.Map.Layers
         ''' <param name="ptMouse">Mouse position over the map.</param>
         ''' <param name="map">The map that the mouse is moving over.</param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Cursor(ByVal ptMouse As Point, ByVal map As ucMap) As Cursor
+        Public MustOverride Function Cursor(ptMouse As Point, map As ucMap) As Cursor
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -247,7 +247,7 @@ Namespace Controls.Map.Layers
         ''' <param name="e">Click <see cref="MouseEventArgs">mouse state</see>
         ''' information.</param>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Sub StartEdit(ByVal e As MouseEventArgs, map As ucMap)
+        Protected MustOverride Sub StartEdit(e As MouseEventArgs, map As ucMap)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -299,7 +299,7 @@ Namespace Controls.Map.Layers
                 End If
                 Return bEditable
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Dim bEditable As Boolean = value
                 If (bEditable <> Me.m_bEditable) Then
                     Me.m_bEditable = bEditable
@@ -327,13 +327,13 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.m_layer
             End Get
-            Protected Set(ByVal value As cDisplayLayer)
+            Protected Set(value As cDisplayLayer)
                 If ReferenceEquals(value, Me.m_layer) Then Return
 
                 ' Already has a layer?
                 If (Me.m_layer IsNot Nothing) Then
                     ' #Yes: stop listening to layer changes
-                    RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+                    RemoveHandler Me.m_layer.LayerChanged, AddressOf Me.OnLayerChanged
                 End If
 
                 ' Store new layer
@@ -342,7 +342,7 @@ Namespace Controls.Map.Layers
                 ' Has a new layer?
                 If (Me.m_layer IsNot Nothing) Then
                     ' #Yes: start listening to layer changes
-                    AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+                    AddHandler Me.m_layer.LayerChanged, AddressOf Me.OnLayerChanged
                 End If
             End Set
         End Property

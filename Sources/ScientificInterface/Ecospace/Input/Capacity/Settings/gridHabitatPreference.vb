@@ -47,7 +47,7 @@ Namespace Ecospace
             MyBase.New()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             MyBase.Dispose(disposing)
         End Sub
 

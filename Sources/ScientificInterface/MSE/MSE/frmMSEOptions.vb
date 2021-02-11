@@ -72,7 +72,7 @@ Public Class frmMSEOptions
         End Set
     End Property
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -116,12 +116,12 @@ Public Class frmMSEOptions
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         Me.m_fpSBPower.Release()
         MyBase.OnFormClosed(e)
     End Sub
 
-    Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub rbFTracking_CheckedChanged(sender As System.Object, e As System.EventArgs)
 
         If Me.m_MSE Is Nothing Then Exit Sub
 
@@ -145,7 +145,7 @@ Public Class frmMSEOptions
     ''' <summary>
     ''' Change the biomass assessment method based on the selected radio button
     ''' </summary>
-    Private Sub onAssessmentMethodChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub onAssessmentMethodChanged(sender As System.Object, e As System.EventArgs)
 
         Try
 
@@ -213,7 +213,7 @@ Public Class frmMSEOptions
     End Sub
 
 
-    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub rbNoCap_CheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbEffortNoCap.CheckedChanged, m_rbEffortEcosim.CheckedChanged, m_rbEffortPredicted.CheckedChanged
 
         Try
@@ -267,7 +267,7 @@ Public Class frmMSEOptions
 
             If rb.Checked = True Then
                 Me.m_RegMode = DirectCast(rb.Tag, eMSERegulationMode)
-                Me.m_MSE.ModelParameters.RegulatoryMode = m_RegMode
+                Me.m_MSE.ModelParameters.RegulatoryMode = Me.m_RegMode
                 Me.UpdateControls()
             End If
 

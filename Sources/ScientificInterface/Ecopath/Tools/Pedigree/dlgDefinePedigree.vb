@@ -58,7 +58,7 @@ Namespace Ecopath
         ''' </summary>
         ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, Optional ByVal varInitial As eVarNameFlags = eVarNameFlags.NotSet)
+        Public Sub New(uic As cUIContext, Optional varInitial As eVarNameFlags = eVarNameFlags.NotSet)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -71,7 +71,7 @@ Namespace Ecopath
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
@@ -102,7 +102,7 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OK_Button_Click(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -117,36 +117,36 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub Cancel_Button_Click(sender As System.Object, e As System.EventArgs) _
             Handles Cancel_Button.Click
             Me.DialogResult = DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub OnVariableSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnVariableSelected(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbVariable.SelectedIndexChanged
             Dim iIndex As Integer = Me.m_cmbVariable.SelectedIndex
             Me.m_grid.VarName = Me.m_uic.Core.PedigreeVariable(iIndex + 1)
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnInsert_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnInsert.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnSort(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSort(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSort.Click
             Me.m_grid.Sort()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnDelete_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDelete.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnPreserve_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
@@ -157,22 +157,22 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tbDescription_Validated(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub m_tbDescription_Validated(sender As Object, e As System.EventArgs)
 
             Me.m_grid.SelectedLevelDescription = Me.m_tbDescription.Text
         End Sub
 
-        Private Sub OnDefaultAllColors(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaultAllColors(sender As System.Object, e As System.EventArgs) _
             Handles m_btnColorDefaultAll.Click
             Me.m_grid.SetDefaultColors()
         End Sub
 
-        Private Sub OnDefaultColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaultColor(sender As System.Object, e As System.EventArgs) _
             Handles m_btnColorDefaultCurrent.Click
             Me.m_grid.SetDefaultColor()
         End Sub
 
-        Private Sub OnSelectCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectCustomColor(sender As System.Object, e As System.EventArgs) _
             Handles m_btnColorCustom.Click
             Me.m_grid.SelectCustomColor()
         End Sub

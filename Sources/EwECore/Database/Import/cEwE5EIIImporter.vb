@@ -42,7 +42,7 @@ Namespace Database
         Private Class cImportData
             Inherits cEcopathDataStructures
 
-            Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
+            Public Sub New(CoreMessagePublisher As cMessagePublisher)
                 MyBase.New(CoreMessagePublisher)
             End Sub
 
@@ -69,7 +69,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="core">The core to import into.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(core As cCore)
             MyBase.New(core)
 
             Me.m_data = New cImportData(Me.m_core.Messages)
@@ -83,7 +83,7 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function Open(ByVal strSource As String) As Boolean
+        Public Overrides Function Open(strSource As String) As Boolean
             Debug.Assert(False, Me.ToString & ".Open() removed for Mono compatibility.")
             Return True
         End Function
@@ -474,7 +474,7 @@ Namespace Database
         ''' <param name="data">The input entries to scan.</param>
         ''' <param name="iNextIndex">The index of that string.</param>
         ''' <returns></returns>
-        Private Function GetNextValidValue(ByVal data() As String, ByRef iNextIndex As Integer) As String
+        Private Function GetNextValidValue(data() As String, ByRef iNextIndex As Integer) As String
             Dim str As String
             Do While String.IsNullOrWhiteSpace(str)
                 str = data(iNextIndex)
@@ -713,7 +713,7 @@ Namespace Database
             ' Clear table
             Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
 
-            writer = m_dbTarget.GetWriter("EcopathModel")
+            writer = Me.m_dbTarget.GetWriter("EcopathModel")
 
             drow = writer.NewRow()
             drow("ModelID") = 1
@@ -753,7 +753,7 @@ Namespace Database
 
             ' Clear table(s)
             Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
-            writer = m_dbTarget.GetWriter("EcopathGroup")
+            writer = Me.m_dbTarget.GetWriter("EcopathGroup")
 
             Try
                 For iGroup As Integer = 1 To Me.m_data.NumGroups

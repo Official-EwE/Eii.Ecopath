@@ -43,11 +43,11 @@ Public Class cResultsCollector_PredationMortality_PreyOnly
 
     Public Overrides Sub Populate()
 
-        Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
+        Dim StrategyIndex = Me.m_MSE.Strategies.IndexOf(Me.m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
 
-        For iPrey = 1 To m_MSE.Core.nGroups
-            For iTime = 1 To NumberOfTimeRecords
-                Me.SetValue(StrategyIndex, iPrey, iTime) = m_MSE.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, iPrey, iTime)
+        For iPrey = 1 To Me.m_MSE.Core.nGroups
+            For iTime = 1 To Me.NumberOfTimeRecords
+                Me.SetValue(StrategyIndex, iPrey, iTime) = Me.m_MSE.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, iPrey, iTime)
             Next
         Next
 
@@ -55,7 +55,7 @@ Public Class cResultsCollector_PredationMortality_PreyOnly
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear
+            Return Me.m_MSE.NYearsProject * Me.m_MSE.EcosimData.NumStepsPerYear
         End Get
     End Property
 
@@ -79,19 +79,19 @@ Public Class cResultsCollector_PredationMortality_PreyOnly
 
     Public Overrides ReadOnly Property nElements As Integer
         Get
-            Return m_MSE.Core.nGroups
+            Return Me.m_MSE.Core.nGroups
         End Get
     End Property
 
     Public Overrides ReadOnly Property ElementName(iElement As Integer) As String
         Get
-            Return m_MSE.Core.EcoPathGroupInputs(iElement).Name
+            Return Me.m_MSE.Core.EcoPathGroupInputs(iElement).Name
         End Get
     End Property
 
     Public Overrides ReadOnly Property GetValue_Formatted4CSV(iStrategy As Integer, iElement As Integer, iTime As Integer) As Object
         Get
-            Return cStringUtils.FormatNumber(GetValue(iStrategy, iElement, iTime))
+            Return cStringUtils.FormatNumber(Me.GetValue(iStrategy, iElement, iTime))
         End Get
     End Property
 End Class

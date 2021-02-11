@@ -72,7 +72,7 @@ Namespace Ecospace.Controls
                 If (Me.m_uic IsNot Nothing) Then
                     Me.m_manConn = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_manConn.DatasetManager
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "cSpatialDatasetListbox"
@@ -161,7 +161,7 @@ Namespace Ecospace.Controls
 
             If (ds Is Nothing) Then Return
 
-            Dim comp As cDatasetCompatilibity = m_manSets.Compatibility(ds)
+            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
             Dim img As Image = If(Me.m_manConn.IsApplied(ds), SharedResources.Database, SharedResources.database_NA)
             Dim clrText As Color = e.ForeColor
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)

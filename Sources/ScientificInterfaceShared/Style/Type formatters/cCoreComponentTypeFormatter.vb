@@ -41,7 +41,7 @@ Namespace Style
     Public Class cCoreComponentTypeFormatter
         Implements ITypeFormatter
 
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))

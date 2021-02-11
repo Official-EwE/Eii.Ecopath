@@ -75,14 +75,14 @@ Namespace Controls
         ''' <param name="help">The <see cref="cHelp">EwE help provider</see>, if available.</param>
         ''' <param name="syncObj">The <see cref="SynchronizationContext"/> for marshalling calls to the main EwE thread, if available.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore,
-                       ByVal sg As cStyleGuide,
-                       Optional ByVal propman As cPropertyManager = Nothing,
-                       Optional ByVal cmdhandler As cCommandHandler = Nothing,
-                       Optional ByVal frmMain As Form = Nothing,
-                       Optional ByVal formpos As cFormSettings = Nothing,
-                       Optional ByVal help As cHelp = Nothing,
-                       Optional ByVal syncObj As SynchronizationContext = Nothing)
+        Public Sub New(core As cCore,
+                       sg As cStyleGuide,
+                       Optional propman As cPropertyManager = Nothing,
+                       Optional cmdhandler As cCommandHandler = Nothing,
+                       Optional frmMain As Form = Nothing,
+                       Optional formpos As cFormSettings = Nothing,
+                       Optional help As cHelp = Nothing,
+                       Optional syncObj As SynchronizationContext = Nothing)
 
             Debug.Assert(core IsNot Nothing)
             Debug.Assert(sg IsNot Nothing)
@@ -141,7 +141,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
-                Return m_cmdhandler
+                Return Me.m_cmdhandler
             End Get
         End Property
 

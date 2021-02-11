@@ -92,12 +92,12 @@ Namespace Ecosim
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
 
                 Me.Detach()
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
                 MyBase.Dispose(disposing)
             Catch ex As Exception
@@ -122,7 +122,7 @@ Namespace Ecosim
         ''' <para>Remember to correctly <see cref="Detach">detach</see> the control when no longer needed.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal DataSource As IPolicyColorBlockDataSource, ByVal BlockSelector As IBlockSelector)
+        Public Sub Attach(DataSource As IPolicyColorBlockDataSource, BlockSelector As IBlockSelector)
 
             If Me.m_bInit Then Me.Detach()
 
@@ -143,7 +143,7 @@ Namespace Ecosim
                 '               Added ControlPanelVisible to provide user with design-time control.
                 Me.ControlPanelVisible = Me.m_DataSource.isControlPanelVisible
 
-                AddHandler BlockSelector.OnValueChanged, AddressOf onCVValuesChanged
+                AddHandler BlockSelector.OnValueChanged, AddressOf Me.onCVValuesChanged
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".Attach() Exception: " & ex.Message)
@@ -152,17 +152,17 @@ Namespace Ecosim
             Me.m_DataSource.Attach(Me.m_BlockSelector)
 
             Me.m_PropBaseYear = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
-            AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
+            AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf Me.OnPropChanged
 
             Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
-            AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
+            AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf Me.OnPropChanged
 
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
             Me.m_hoverMenu.Attach(Me.m_plScroll)
             Me.m_hoverMenu.AddItem(SharedResources.ZoomInHS, SharedResources.GENERIC_ZOOM_IN, eHoverCommands.ZoomIn)
             Me.m_hoverMenu.AddItem(SharedResources.ZoomOutHS, SharedResources.GENERIC_ZOOM_OUT, eHoverCommands.ZoomOut)
             Me.m_hoverMenu.AddItem(SharedResources.ZoomHS, SharedResources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
-            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
 
             Me.m_bInit = True
 
@@ -181,13 +181,13 @@ Namespace Ecosim
             If (Me.m_bInit) Then
 
                 RemoveHandler Me.m_BlockSelector.OnValueChanged, AddressOf Me.onCVValuesChanged
-                RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
+                RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf Me.OnPropChanged
                 Me.m_PropBaseYear = Nothing
 
-                RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
+                RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf Me.OnPropChanged
                 Me.m_PropEcosimNYears = Nothing
 
-                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
 
                 Me.m_hoverMenu.Detach()
                 'Me.Controls.Remove(Me.m_hoverMenu)
@@ -213,7 +213,7 @@ Namespace Ecosim
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
             End Set
         End Property
@@ -225,10 +225,10 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Property CurColor() As Color
             Get
-                Return m_clrCurrent
+                Return Me.m_clrCurrent
             End Get
-            Set(ByVal value As Color)
-                m_clrCurrent = value
+            Set(value As Color)
+                Me.m_clrCurrent = value
             End Set
         End Property
 
@@ -240,9 +240,9 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Property ParmBlockCodes() As IBlockSelector
             Get
-                Return m_BlockSelector
+                Return Me.m_BlockSelector
             End Get
-            Set(ByVal value As IBlockSelector)
+            Set(value As IBlockSelector)
                 Me.m_BlockSelector = value
             End Set
         End Property
@@ -256,7 +256,7 @@ Namespace Ecosim
             Get
                 Return Me.m_pnlControls.Visible
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_pnlControls.Visible = value
                 Me.m_hdrControls.Visible = value
             End Set
@@ -272,7 +272,7 @@ Namespace Ecosim
             Get
                 Return Me.m_bShowTooltip
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowTooltip = value
                 Me.ProcessMouseHover(Cursor.Position)
             End Set
@@ -294,18 +294,18 @@ Namespace Ecosim
 
 #Region " Events handlers "
 
-        Private Sub btnSetEveryGear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub btnSetEveryGear_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSetGear.Click
 
             Me.SetSeqColorCodes(2, Me.m_DataSource.TotalBlocks, CInt(Me.m_nudNumYearsPerBlock.Value))
 
         End Sub
 
-        Private Sub nupSeqStartYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub nupSeqStartYear_ValueChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudSeqStartYear.ValueChanged
 
-            Dim startYear As Integer = CInt(m_nudSeqStartYear.Value)
-            Dim endYear As Integer = CInt(m_nudSeqEndYear.Value)
+            Dim startYear As Integer = CInt(Me.m_nudSeqStartYear.Value)
+            Dim endYear As Integer = CInt(Me.m_nudSeqEndYear.Value)
 
             Me.m_nudSeqEndYear.Minimum = Me.m_nudSeqStartYear.Value
 
@@ -314,11 +314,11 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub nupSeqEndYear_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub nupSeqEndYear_ValueChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudSeqEndYear.ValueChanged
 
-            Dim startYear As Integer = CInt(m_nudSeqStartYear.Value)
-            Dim endYear As Integer = CInt(m_nudSeqEndYear.Value)
+            Dim startYear As Integer = CInt(Me.m_nudSeqStartYear.Value)
+            Dim endYear As Integer = CInt(Me.m_nudSeqEndYear.Value)
 
             Me.m_nudSeqStartYear.Maximum = Me.m_nudSeqEndYear.Value
 
@@ -328,7 +328,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnPaintBlocks(ByVal sender As System.Object, ByVal e As PaintEventArgs) _
+        Private Sub OnPaintBlocks(sender As System.Object, e As PaintEventArgs) _
             Handles m_pbFishingBlocks.Paint
 
             If (Me.UIContext Is Nothing) Then Return
@@ -341,7 +341,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnMouseDownBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMouseDownBlocks(sender As System.Object, e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseDown
 
             If (e.Button And System.Windows.Forms.MouseButtons.Right) > 0 Then
@@ -357,7 +357,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnMouseMoveBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMouseMoveBlocks(sender As System.Object, e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseMove
 
             If Me.m_bIsSketching Then
@@ -368,7 +368,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnMouseUpBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMouseUpBlocks(sender As System.Object, e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseUp
 
             Me.m_bIsSketching = False
@@ -377,7 +377,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnScrollAreaResized(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnScrollAreaResized(sender As Object, e As EventArgs) _
             Handles m_plScroll.SizeChanged
 
             If Not Me.m_bInit Then Return
@@ -391,7 +391,7 @@ Namespace Ecosim
 
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
-        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As Object)
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(cmd As Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -399,12 +399,12 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnHoverMenuCommand(ByVal cmd As Object)
+        Private Sub OnHoverMenuCommand(cmd As Object)
 
             If (Not TypeOf cmd Is eHoverCommands) Then Return
 
             If Me.InvokeRequired Then
-                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
+                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf Me.OnHoverMenuCommand), New Object() {cmd})
                 Return
             End If
 
@@ -424,7 +424,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnPropChanged(ByVal p As cProperty, ByVal cf As cProperty.eChangeFlags)
+        Private Sub OnPropChanged(p As cProperty, cf As cProperty.eChangeFlags)
             Me.Refresh()
         End Sub
 
@@ -436,7 +436,7 @@ Namespace Ecosim
         ''' <param name="Index"></param>
         ''' <remarks>Only the CV grid selector sends out this event.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub onCVValuesChanged(ByVal newValue As Single, ByVal Index As Integer)
+        Private Sub onCVValuesChanged(newValue As Single, Index As Integer)
             Try
                 ' Update the datasource
                 Me.m_DataSource.Update()
@@ -472,7 +472,7 @@ Namespace Ecosim
 
                 Dim sLenMax As Single = -1
                 For i As Integer = 0 To Me.m_DataSource.nRows - 1
-                    Dim tmpWidth As Single = g.MeasureString(Me.m_DataSource.RowLabel(i + 1), m_pbFishingBlocks.Font).Width
+                    Dim tmpWidth As Single = g.MeasureString(Me.m_DataSource.RowLabel(i + 1), Me.m_pbFishingBlocks.Font).Width
                     If sLenMax < tmpWidth Then sLenMax = tmpWidth
                 Next
 
@@ -523,7 +523,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub DrawBlocks(ByVal g As Graphics)
+        Private Sub DrawBlocks(g As Graphics)
 
             If Not Me.m_bInit Then Return
 
@@ -543,7 +543,7 @@ Namespace Ecosim
 
                 ' Draw names area in correct style guide colour
                 Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND))
-                    g.FillRectangle(br, 0, m_sRowHeight, Me.m_sFirstColWidth, Me.m_pbFishingBlocks.Height - m_sRowHeight)
+                    g.FillRectangle(br, 0, Me.m_sRowHeight, Me.m_sFirstColWidth, Me.m_pbFishingBlocks.Height - Me.m_sRowHeight)
                 End Using
 
                 'Now draw the grid lines on top of the blocks, so they show up
@@ -552,23 +552,23 @@ Namespace Ecosim
                 Dim gridPen As Pen = SystemPens.ControlDark
 
                 For i As Integer = 1 To Me.m_iRows - 1
-                    Dim yPos As Single = i * m_sRowHeight
-                    g.DrawLine(gridPen, 0, yPos, m_pbFishingBlocks.Width, yPos)
-                    g.DrawLine(gridPen, m_sFirstColWidth, yPos, m_pbFishingBlocks.Width, yPos)
+                    Dim yPos As Single = i * Me.m_sRowHeight
+                    g.DrawLine(gridPen, 0, yPos, Me.m_pbFishingBlocks.Width, yPos)
+                    g.DrawLine(gridPen, Me.m_sFirstColWidth, yPos, Me.m_pbFishingBlocks.Width, yPos)
                     'draw the label in the middle
-                    g.DrawString(Me.m_DataSource.RowLabel(i), m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + m_sRowHeight * 0.5F - tSize.Height * 0.5F)
+                    g.DrawString(Me.m_DataSource.RowLabel(i), Me.m_pbFishingBlocks.Font, Brushes.Black, 1, yPos + Me.m_sRowHeight * 0.5F - tSize.Height * 0.5F)
                 Next
                 g.DrawLine(gridPen, 0, Me.m_iRows * Me.m_sRowHeight, Me.m_pbFishingBlocks.Width, Me.m_iRows * Me.m_sRowHeight)
 
                 'Cols
-                For j As Integer = 1 To m_iCols
-                    Dim xPos As Single = m_sFirstColWidth + (j - 1) * m_sColWidth
-                    g.DrawLine(gridPen, xPos, 0, xPos, m_sRowHeight)
-                    g.DrawLine(gridPen, xPos, m_sRowHeight, xPos, m_pbFishingBlocks.Height)
+                For j As Integer = 1 To Me.m_iCols
+                    Dim xPos As Single = Me.m_sFirstColWidth + (j - 1) * Me.m_sColWidth
+                    g.DrawLine(gridPen, xPos, 0, xPos, Me.m_sRowHeight)
+                    g.DrawLine(gridPen, xPos, Me.m_sRowHeight, xPos, Me.m_pbFishingBlocks.Height)
                     Dim txt As String = j.ToString
-                    g.DrawString(txt, m_pbFishingBlocks.Font, Brushes.Black, New Rectangle(CInt(xPos), 0, CInt(xPos + Me.m_sColWidth), CInt(Me.m_sRowHeight)))
+                    g.DrawString(txt, Me.m_pbFishingBlocks.Font, Brushes.Black, New Rectangle(CInt(xPos), 0, CInt(xPos + Me.m_sColWidth), CInt(Me.m_sRowHeight)))
                 Next
-                g.DrawLine(gridPen, Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth, 0, Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth, m_pbFishingBlocks.Height)
+                g.DrawLine(gridPen, Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth, 0, Me.m_sFirstColWidth + Me.m_iCols * Me.m_sColWidth, Me.m_pbFishingBlocks.Height)
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -583,18 +583,18 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="ptCursor"></param>
         ''' -------------------------------------------------------------------
-        Private Sub ProcessMousePickup(ByVal ptCursor As Point)
+        Private Sub ProcessMousePickup(ptCursor As Point)
 
             Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
-            If ptBlock.Y < 0 Or ptBlock.Y > m_iRows - 1 Then Return
-            If ptBlock.X > m_iCols Then Return
+            If ptBlock.Y < 0 Or ptBlock.Y > Me.m_iRows - 1 Then Return
+            If ptBlock.X > Me.m_iCols Then Return
 
             Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
             Me.m_BlockSelector.SelectedBlock = iBlock
 
         End Sub
 
-        Private Sub ProcessMouseSketch(ByVal ptCursor As Point)
+        Private Sub ProcessMouseSketch(ptCursor As Point)
 
             If Not Me.m_bInit Then Return
 
@@ -643,7 +643,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ProcessMouseHover(ByVal ptCursor As Point)
+        Private Sub ProcessMouseHover(ptCursor As Point)
 
             Dim ptBlock As Point = Me.CursorToBlock(ptCursor)
 
@@ -674,24 +674,24 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer)
+        Private Sub FillBlock(iRow As Integer, iCol As Integer)
 
             If Not Me.m_bInit Then Return
             Me.m_DataSource.FillBlock(iRow, iCol)
 
         End Sub
 
-        Private Sub SetSeqColorCodes(ByVal startYear As Integer, ByVal endYear As Integer, ByVal yearPerBlock As Integer)
+        Private Sub SetSeqColorCodes(startYear As Integer, endYear As Integer, yearPerBlock As Integer)
 
             If Not Me.m_bInit Then Return
-            If m_bIsFirstTimeLoaded Then Return
+            If Me.m_bIsFirstTimeLoaded Then Return
 
             Me.m_DataSource.SetSeqColorCodes(startYear, endYear, yearPerBlock)
-            m_pbFishingBlocks.Invalidate()
+            Me.m_pbFishingBlocks.Invalidate()
 
         End Sub
 
-        Private Function CursorToBlock(ByVal ptCursor As Point) As Point
+        Private Function CursorToBlock(ptCursor As Point) As Point
             Try
                 If Me.m_sRowHeight > 0 And Me.m_sColWidth > 0 Then
                     Dim iRow As Integer = CInt(Math.Floor(ptCursor.Y / Me.m_sRowHeight))

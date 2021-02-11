@@ -32,7 +32,7 @@ Namespace Ecosim
         Private m_ts As cTimeSeries
         Private m_lSimData As New List(Of Single)
 
-        Public Sub New(ByVal ts As cTimeSeries, ByVal asSimData As Single())
+        Public Sub New(ts As cTimeSeries, asSimData As Single())
 
             ' Sanity check(s)
             Debug.Assert(ts IsNot Nothing)

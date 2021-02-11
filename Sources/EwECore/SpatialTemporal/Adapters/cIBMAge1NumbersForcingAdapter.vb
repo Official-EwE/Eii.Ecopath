@@ -45,7 +45,7 @@ Namespace SpatialData
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -58,21 +58,21 @@ Namespace SpatialData
         ''' <remarks>Overridden to scale values prior to being set in the 
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer,
-                                             ByVal conn As cSpatialDataConnection,
-                                             ByVal iRow As Integer,
-                                             ByVal iCol As Integer,
-                                             ByVal sValueAtT As Double) As Boolean
+        Protected Overrides Function SetCell(layer As cEcospaceLayer,
+                                             conn As cSpatialDataConnection,
+                                             iRow As Integer,
+                                             iCol As Integer,
+                                             sValueAtT As Double) As Boolean
 
             If (conn.ScaleType = eScaleType.Relative) Then
                 If sValueAtT <> cCore.NULL_VALUE Then
 
                     Dim iSt As Integer = layer.Index
-                    m_core.m_Stanza.isForcedIBMRecruits(iSt) = True
+                    Me.m_core.m_Stanza.isForcedIBMRecruits(iSt) = True
 
                     'Cells outside the modeled area can/will be -9999
                     sValueAtT *= conn.Scale
-                    Return ForceIBM(layer, conn, iRow, iCol, sValueAtT)
+                    Return Me.ForceIBM(layer, conn, iRow, iCol, sValueAtT)
                     'Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
                 End If
             End If
@@ -82,11 +82,11 @@ Namespace SpatialData
         End Function
 
 
-        Private Function ForceIBM(ByVal layer As cEcospaceLayer,
-                                             ByVal conn As cSpatialDataConnection,
-                                             ByVal iRow As Integer,
-                                             ByVal iCol As Integer,
-                                             ByVal sValueAtT As Double) As Boolean
+        Private Function ForceIBM(layer As cEcospaceLayer,
+                                             conn As cSpatialDataConnection,
+                                             iRow As Integer,
+                                             iCol As Integer,
+                                             sValueAtT As Double) As Boolean
             Try
 
                 'The layer index should be for this stanza group
@@ -94,7 +94,7 @@ Namespace SpatialData
                 Dim iSt As Integer = layer.Index
                 'save the full map 
                 'the IBM will figure out which packet and lifestage to put it in 
-                m_core.m_Stanza.IBMForcedCells(iSt)(iRow, iCol) = CSng(sValueAtT)
+                Me.m_core.m_Stanza.IBMForcedCells(iSt)(iRow, iCol) = CSng(sValueAtT)
 
             Catch ex As Exception
 
@@ -118,7 +118,7 @@ Namespace SpatialData
                 'RzeroS = Number of recruits at the ecopath base in one month
                 'ThabArea = total habitat area
                 'SumOverPeriod = total number of recruits over the first year
-                Return m_core.m_Stanza.RzeroS(iScaleLayerIndex) * m_core.m_EcoSpaceData.ThabArea * 12 / SumOverPeriod
+                Return Me.m_core.m_Stanza.RzeroS(Me.iScaleLayerIndex) * Me.m_core.m_EcoSpaceData.ThabArea * 12 / SumOverPeriod
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'NO SCALER
@@ -135,11 +135,11 @@ Namespace SpatialData
 
         Public Overrides Function RestoreForcing(SpaceData As cEcospaceDataStructures) As Boolean
             Try
-                If m_core.m_Stanza.IBMForcedCells Is Nothing Then Return True
+                If Me.m_core.m_Stanza.IBMForcedCells Is Nothing Then Return True
                 For iSt As Integer = 1 To Me.m_core.m_Stanza.Nsplit
                     'm_core.m_Stanza.IBMForcedCells(iSt)
-                    System.Array.Clear(m_core.m_Stanza.IBMForcedCells(iSt), 0, m_core.m_Stanza.IBMForcedCells(iSt).Length)
-                    m_core.m_Stanza.isForcedIBMRecruits(iSt) = False
+                    System.Array.Clear(Me.m_core.m_Stanza.IBMForcedCells(iSt), 0, Me.m_core.m_Stanza.IBMForcedCells(iSt).Length)
+                    Me.m_core.m_Stanza.isForcedIBMRecruits(iSt) = False
                 Next
 
             Catch ex As Exception

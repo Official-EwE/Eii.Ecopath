@@ -56,12 +56,12 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Private Sub tsBtnClearAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnClearAll_Click(sender As System.Object, e As System.EventArgs) _
             Handles tsBtnClearAll.Click
             Me.ClearAll()
         End Sub
 
-        Private Sub tsBtnSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnSetAll_Click(sender As System.Object, e As System.EventArgs) _
             Handles tsBtnSetAll.Click
             Me.SetAll()
         End Sub

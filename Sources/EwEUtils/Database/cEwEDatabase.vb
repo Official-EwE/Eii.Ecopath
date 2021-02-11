@@ -92,7 +92,7 @@ Namespace Database
             ''' by calling <see cref="IsConnected">IsConnected</see> prior to using it.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByRef db As cEwEDatabase, ByVal strTable As String)
+            Public Sub New(ByRef db As cEwEDatabase, strTable As String)
 #If DEBUG Then
                 Me.m_ID = s_IDnext
                 s_IDnext += 1
@@ -127,7 +127,7 @@ Namespace Database
             ''' <param name="strTable">The name of the table to link to.</param>
             ''' <returns>True if connected.</returns>
             ''' ---------------------------------------------------------------
-            Public Function Connect(ByRef db As cEwEDatabase, ByVal strTable As String) As Boolean
+            Public Function Connect(ByRef db As cEwEDatabase, strTable As String) As Boolean
 
                 ' Pre
                 Debug.Assert(db IsNot Nothing, "Need a valid database")
@@ -203,7 +203,7 @@ Namespace Database
             ''' <param name="bSaveChanges">States whether changes need to be saved (true)
             ''' or discarded (false).</param>
             ''' ---------------------------------------------------------------
-            Public Function Disconnect(Optional ByVal bSaveChanges As Boolean = True) As Boolean
+            Public Function Disconnect(Optional bSaveChanges As Boolean = True) As Boolean
 
                 Dim bSucces As Boolean = False
                 If Not Me.IsConnected Then Return bSucces
@@ -277,7 +277,7 @@ Namespace Database
             ''' row sequence during deletes.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Sub AddRow(ByVal drow As DataRow)
+            Public Sub AddRow(drow As DataRow)
                 'Me.FixStringLengths(drow)
                 Me.m_dt.Rows.Add(drow)
             End Sub
@@ -295,7 +295,7 @@ Namespace Database
             ''' row sequence during additions.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Function RemoveRow(ByVal drow As DataRow) As Boolean
+            Public Function RemoveRow(drow As DataRow) As Boolean
                 Me.m_dt.Rows.Remove(drow)
                 Return True
             End Function
@@ -308,7 +308,7 @@ Namespace Database
             ''' <returns>The row</returns>
             ''' <remarks>This method might not be necessary?</remarks>
             ''' ---------------------------------------------------------------
-            Public Function GetRow(ByVal nRow As Integer) As DataRow
+            Public Function GetRow(nRow As Integer) As DataRow
                 Return Me.m_dt.Rows(nRow)
             End Function
 
@@ -472,7 +472,7 @@ Namespace Database
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
             ''' ---------------------------------------------------------------
-            Private Sub FixStringLengths(ByVal drow As DataRow)
+            Private Sub FixStringLengths(drow As DataRow)
 
                 Debug.Assert(False, "This code does not work. iMaxLen will always be unknown due to a bug in Access according to MSDN")
                 Dim columnDataType As Data.OleDb.OleDbType = OleDbType.IUnknown
@@ -537,10 +537,10 @@ Namespace Database
         ''' <returns>True of created succesfully.</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Create(ByVal strDatabase As String,
-                ByVal strModelName As String,
-                Optional ByVal bOverwrite As Boolean = False,
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet,
+        Public MustOverride Function Create(strDatabase As String,
+                strModelName As String,
+                Optional bOverwrite As Boolean = False,
+                Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet,
                 Optional strAuthor As String = "") As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
@@ -552,9 +552,9 @@ Namespace Database
         ''' to 'NotSet' to auto-detect the database type.</param>
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Open(ByVal strDatabase As String,
-                                          Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet,
-                                          Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
+        Public MustOverride Function Open(strDatabase As String,
+                                          Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet,
+                                          Optional bReadOnly As Boolean = False) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -581,10 +581,10 @@ Namespace Database
         ''' <param name="bOverwrite">States whether any model in the way will be obliterated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function SaveAs(ByVal strDatabaseTo As String,
-                ByVal strModelName As String,
-                Optional ByVal bOverwrite As Boolean = False,
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+        Public MustOverride Function SaveAs(strDatabaseTo As String,
+                strModelName As String,
+                Optional bOverwrite As Boolean = False,
+                Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -595,7 +595,7 @@ Namespace Database
             Get
                 Return Me.m_bIsReadonly
             End Get
-            Protected Set(ByVal value As Boolean)
+            Protected Set(value As Boolean)
                 Me.m_bIsReadonly = value
             End Set
         End Property
@@ -653,8 +653,8 @@ Namespace Database
         ''' blank, the source database is replaced with a compacted version.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Compact(ByVal strFileFrom As String,
-                                             ByVal strFileTo As String) As eDatasourceAccessType
+        Public MustOverride Function Compact(strFileFrom As String,
+                                             strFileTo As String) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -665,8 +665,8 @@ Namespace Database
         ''' <returns>True if a compact engine is available for the underlying 
         ''' database.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function CanCompact(ByVal strConnectionFrom As String,
-                                                ByVal strConnectionTo As String) As Boolean
+        Public MustOverride Function CanCompact(strConnectionFrom As String,
+                                                strConnectionTo As String) As Boolean
 
 #End Region ' Maintenance
 
@@ -698,7 +698,7 @@ Namespace Database
         ''' <param name="dst">The datasource type to test.</param>
         ''' <returns>True if the OS can connect to a given datasource type.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function CanConnect(ByVal dst As eDataSourceTypes) As Boolean
+        Public MustOverride Function CanConnect(dst As eDataSourceTypes) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -769,7 +769,7 @@ Namespace Database
         ''' <seealso cref="BeginTransaction()"/>
         ''' <seealso cref="RollbackTransaction()"/>
         ''' -------------------------------------------------------------------
-        Public Function CommitTransaction(Optional ByVal bRollbackOnError As Boolean = True) As Boolean
+        Public Function CommitTransaction(Optional bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
             Try
                 Me.ReleaseCachedWriters()
@@ -847,7 +847,7 @@ Namespace Database
         ''' <param name="strSQL">Query to create the IDbCommand with.</param>
         ''' <returns>Nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateDBCommand(ByVal strSQL As String) As IDbCommand
+        Public Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim cmd As IDbCommand = Nothing
@@ -876,7 +876,7 @@ Namespace Database
         ''' <returns></returns>
         ''' <remarks>The obtained IDataReader should be released via <see cref="ReleaseReader"/>.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetReader(ByVal strSQL As String) As IDataReader
+        Public Overridable Function GetReader(strSQL As String) As IDataReader
 
             Dim reader As IDataReader = Nothing
             Try
@@ -903,7 +903,7 @@ Namespace Database
         ''' <param name="reader">The <see cref="IDataReader"/> to release.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ReleaseReader(ByVal reader As IDataReader) As Boolean
+        Public Overridable Function ReleaseReader(reader As IDataReader) As Boolean
             Try
                 reader.Close()
             Catch ex As Exception
@@ -922,7 +922,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strTable">The table to connect the EwEDbWriter to.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetWriter(ByVal strTable As String) As cEwEDbWriter
+        Public Overridable Function GetWriter(strTable As String) As cEwEDbWriter
 
             Dim key As String = strTable.ToLower()
             Dim writer As cEwEDbWriter = Nothing
@@ -998,7 +998,7 @@ Namespace Database
         ''' <param name="objDefault">A default to return in case a value could not be returned.</param>
         ''' <returns>The scalar value returned from the query.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetValue(ByVal strSQL As String, Optional objDefault As Object = Nothing) As Object
+        Public Overridable Function GetValue(strSQL As String, Optional objDefault As Object = Nothing) As Object
 
             Dim value As Object = objDefault
             Try
@@ -1029,7 +1029,7 @@ Namespace Database
         ''' <para>The obtained IDataAdapter should be released via 
         ''' <see cref="ReleaseAdapter"/>.</para></remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetAdapter(ByVal strSQL As String) As IDataAdapter
+        Public Overridable Function GetAdapter(strSQL As String) As IDataAdapter
 
             Dim cmd As IDbCommand = Me.CreateDBCommand(strSQL)
             Try
@@ -1066,7 +1066,7 @@ Namespace Database
         ''' <param name="strSQL">The query to execute.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Execute(ByVal strSQL As String) As Boolean
+        Public Overridable Function Execute(strSQL As String) As Boolean
 
             Dim bSucces As Boolean = True
             Try
@@ -1094,7 +1094,7 @@ Namespace Database
         ''' After http://www.koders.com/csharp/fidE6A0EFDE719732D025C3D41E95CC26214E50188C.aspx
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetPkKeyName(ByVal strTable As String) As String
+        Public Overridable Function GetPkKeyName(strTable As String) As String
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim dtKeys As DataTable = Nothing
@@ -1133,9 +1133,9 @@ Namespace Database
         ''' <param name="strTableTo">The table where the foreign key links to.</param>
         ''' <returns>A name, or an empty string when no foreign key was found.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetFkKeyName(ByVal strTableFrom As String,
-                                                 ByVal strTableTo As String,
-                                                 ByVal strColumn As String) As String
+        Public Overridable Function GetFkKeyName(strTableFrom As String,
+                                                 strTableTo As String,
+                                                 strColumn As String) As String
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim dtKeys As DataTable = Nothing
@@ -1179,8 +1179,8 @@ Namespace Database
         ''' <param name="strColumn">The column to remove the index from, if any.</param>
         ''' <returns>A name, or an empty string when no idnex was found.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetIndexName(ByVal strTable As String,
-                                                 ByVal strColumn As String) As String
+        Public Overridable Function GetIndexName(strTable As String,
+                                                 strColumn As String) As String
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim dtIndexes As DataTable = Nothing
@@ -1226,10 +1226,10 @@ Namespace Database
         ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
         ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function ReadSafe(ByVal reader As IDataReader,
-                                 ByVal strField As String,
-                                 Optional ByVal objValueDefault As Object = Nothing,
-                                 Optional ByVal objValueIgnore As Object = CSng(-9999)) As Object
+        Public Function ReadSafe(reader As IDataReader,
+                                 strField As String,
+                                 Optional objValueDefault As Object = Nothing,
+                                 Optional objValueIgnore As Object = CSng(-9999)) As Object
 
             Dim objResult As Object = Nothing
 
@@ -1321,7 +1321,7 @@ Namespace Database
         ''' <remarks>The obtained <see cref="DataSet">DataSet</see> should be released via <see cref="ReleaseDataSet">ReleaseWriter</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function GetDataSet(ByVal adapter As IDataAdapter, ByVal strTable As String) As DataSet
+        Protected Overridable Function GetDataSet(adapter As IDataAdapter, strTable As String) As DataSet
             Dim ds As New DataSet()
             Try
                 adapter.Fill(ds)
@@ -1342,7 +1342,7 @@ Namespace Database
         ''' <param name="strTable">The table to update</param>
         ''' <returns>True if successful</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function CommitDataSet(ByVal dset As DataSet, ByVal adapter As IDataAdapter, ByVal strTable As String) As Boolean
+        Protected Overridable Function CommitDataSet(dset As DataSet, adapter As IDataAdapter, strTable As String) As Boolean
             Dim bSucces As Boolean = True
 
             ' Is adapter specified?
@@ -1375,7 +1375,7 @@ Namespace Database
         ''' <param name="strTable">The name of the table to update.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function ReleaseDataSet(ByVal dset As DataSet, Optional ByVal adapter As IDataAdapter = Nothing, Optional ByVal strTable As String = "") As Boolean
+        Protected Overridable Function ReleaseDataSet(dset As DataSet, Optional adapter As IDataAdapter = Nothing, Optional strTable As String = "") As Boolean
             Return Me.CommitDataSet(dset, adapter, strTable)
         End Function
 
@@ -1465,7 +1465,7 @@ Namespace Database
             ''' <param name="obj">The <see cref="cOOPStorable">instance</see>
             ''' that changed</param>
             ''' ---------------------------------------------------------------
-            Public Event OnChanged(ByVal obj As cOOPStorable)
+            Public Event OnChanged(obj As cOOPStorable)
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -1479,7 +1479,7 @@ Namespace Database
                 Get
                     Return Me.m_iDBID
                 End Get
-                Friend Set(ByVal value As Integer)
+                Friend Set(value As Integer)
                     Me.m_iDBID = value
                 End Set
             End Property
@@ -1495,7 +1495,7 @@ Namespace Database
                 Get
                     Return Me.m_bAllowEvents
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     Me.m_bAllowEvents = value
                     If m_bAllowEvents Then Me.SetChanged()
                 End Set
@@ -1511,7 +1511,7 @@ Namespace Database
             ''' </summary>
             ''' <param name="objSrc">The source ofject to copy content from.</param>
             ''' ---------------------------------------------------------------
-            Public Overridable Sub CopyFrom(ByVal objSrc As cOOPStorable)
+            Public Overridable Sub CopyFrom(objSrc As cOOPStorable)
 
                 Dim apiSrc As PropertyInfo() = Nothing
                 Dim apiTgt As PropertyInfo() = Nothing
@@ -1583,7 +1583,7 @@ Namespace Database
                 Get
                     Return Me.m_bDeleted
                 End Get
-                Set(ByVal value As Boolean)
+                Set(value As Boolean)
                     Me.m_bDeleted = value
                 End Set
             End Property
@@ -1611,7 +1611,7 @@ Namespace Database
             ''' </summary>
             ''' <param name="item">The <see cref="cOOPStorable">object</see> to add.</param>
             ''' -------------------------------------------------------------------
-            Public Sub Add(ByVal item As cOOPStorable) _
+            Public Sub Add(item As cOOPStorable) _
                 Implements ICollection(Of cOOPStorable).Add
                 Debug.Assert(Not Me.Contains(item), "Item already present in list")
                 Me.m_list.Add(item)
@@ -1634,7 +1634,7 @@ Namespace Database
             ''' <param name="item">The <see cref="cOOPStorable">object</see> to find.</param>
             ''' <returns>True if the list contains this <see cref="cOOPStorable">object</see>.</returns>
             ''' -------------------------------------------------------------------
-            Public Function Contains(ByVal item As cOOPStorable) As Boolean _
+            Public Function Contains(item As cOOPStorable) As Boolean _
                 Implements ICollection(Of cOOPStorable).Contains
                 Return Me.m_list.Contains(item)
             End Function
@@ -1648,7 +1648,7 @@ Namespace Database
             ''' <remarks>Please make sure the receiving array is big enough 
             ''' to hold the list items.</remarks>
             ''' -------------------------------------------------------------------
-            Public Sub CopyTo(ByVal array() As cOOPStorable, ByVal arrayIndex As Integer) _
+            Public Sub CopyTo(array() As cOOPStorable, arrayIndex As Integer) _
                 Implements ICollection(Of cOOPStorable).CopyTo
                 Me.m_list.CopyTo(array, arrayIndex)
             End Sub
@@ -1686,7 +1686,7 @@ Namespace Database
             ''' <param name="item">The <see cref="cOOPStorable">object</see> to remove.</param>
             ''' <returns>True if successful.</returns>
             ''' -------------------------------------------------------------------
-            Public Function Remove(ByVal item As cOOPStorable) As Boolean _
+            Public Function Remove(item As cOOPStorable) As Boolean _
                 Implements ICollection(Of cOOPStorable).Remove
                 ' ToDo: remember this to actively erase item from DB?
                 Me.m_list.Remove(item)
@@ -1711,7 +1711,7 @@ Namespace Database
             ''' <see cref="cOOPStorable">object</see> in the list, or -1 if this item
             ''' was not found.</returns>
             ''' -------------------------------------------------------------------
-            Public Function IndexOf(ByVal item As cOOPStorable) As Integer _
+            Public Function IndexOf(item As cOOPStorable) As Integer _
                 Implements IList(Of cOOPStorable).IndexOf
                 Return Me.m_list.IndexOf(item)
             End Function
@@ -1723,7 +1723,7 @@ Namespace Database
             ''' <param name="index">The list position to insert the item at.</param>
             ''' <param name="item">The <see cref="cOOPStorable">object</see> to insert.</param>
             ''' -------------------------------------------------------------------
-            Public Sub Insert(ByVal index As Integer, ByVal item As cOOPStorable) _
+            Public Sub Insert(index As Integer, item As cOOPStorable) _
                 Implements IList(Of cOOPStorable).Insert
                 Debug.Assert(Not Me.Contains(item), "Item already present in list")
                 Me.m_list.Insert(index, item)
@@ -1736,12 +1736,12 @@ Namespace Database
             ''' <param name="index">The list index of the <see cref="cOOPStorable">object</see> to retrieve.</param>
             ''' -------------------------------------------------------------------
             <Browsable(False)>
-            Default Public Property Item(ByVal index As Integer) As cOOPStorable _
+            Default Public Property Item(index As Integer) As cOOPStorable _
                 Implements IList(Of cOOPStorable).Item
                 Get
                     Return Me.m_list.Item(index)
                 End Get
-                Set(ByVal value As cOOPStorable)
+                Set(value As cOOPStorable)
                     Me.m_list.Item(index) = value
                 End Set
             End Property
@@ -1752,7 +1752,7 @@ Namespace Database
             ''' </summary>
             ''' <param name="index">The position of the <see cref="cOOPStorable">object</see> to remove.</param>
             ''' -------------------------------------------------------------------
-            Public Sub RemoveAt(ByVal index As Integer) _
+            Public Sub RemoveAt(index As Integer) _
                 Implements IList(Of cOOPStorable).RemoveAt
                 Me.m_list.RemoveAt(index)
             End Sub
@@ -1796,7 +1796,7 @@ Namespace Database
             ''' <param name="t">The runtime type to generate the key for.</param>
             ''' <param name="iDBID">The unique ID that this key is generated for.</param>
             ''' ---------------------------------------------------------------
-            Friend Sub New(ByVal t As Type, ByVal iDBID As Integer)
+            Friend Sub New(t As Type, iDBID As Integer)
 
                 ' Sanity checks
                 Debug.Assert(t IsNot Nothing)
@@ -1856,7 +1856,7 @@ Namespace Database
         ''' type was not present in the current loaded set of assemblies.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Function ReadObjectKey(ByVal iDBID As Integer) As cOOPKey
+        Protected Function ReadObjectKey(iDBID As Integer) As cOOPKey
 
             ' Sanity check
             If Not Me.m_bOOPEnabled Then Return Nothing
@@ -1899,7 +1899,7 @@ Namespace Database
         ''' returned as well.</param>
         ''' <returns>An array of <see cref="cOOPKey">object keys</see>.</returns>
         ''' -------------------------------------------------------------------
-        Protected Function ReadObjectKeys(ByVal t As Type, Optional ByVal bIncludeInherited As Boolean = True) As cOOPKey()
+        Protected Function ReadObjectKeys(t As Type, Optional bIncludeInherited As Boolean = True) As cOOPKey()
 
             ' Sanity check
             If Not Me.m_bOOPEnabled Then Return Nothing
@@ -1969,7 +1969,7 @@ Namespace Database
         ''' <returns>A <see cref="cOOPStorable">cOOPStorable</see>-derived 
         ''' instance, or null if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ReadObject(ByVal key As cOOPKey) As cOOPStorable
+        Public Function ReadObject(key As cOOPKey) As cOOPStorable
             If (key Is Nothing) Then
                 Return Nothing
             End If
@@ -1985,7 +1985,7 @@ Namespace Database
         ''' <returns>A <see cref="cOOPStorable">cOOPStorable</see>-derived 
         ''' instance, or null if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ReadObject(ByVal t As Type, ByVal iDBID As Integer) As cOOPStorable
+        Public Function ReadObject(t As Type, iDBID As Integer) As cOOPStorable
             If Not Me.m_bOOPEnabled Then Return Nothing
             Dim piKey As PropertyInfo = Me.OOPGetKeyProperty(t)
             Return OOPReadObject(t, iDBID, piKey)
@@ -2004,8 +2004,8 @@ Namespace Database
         ''' instances.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function ReadObjects(ByVal t As Type,
-                                    Optional ByVal bIncludeInherited As Boolean = True) As cOOPStorable()
+        Public Function ReadObjects(t As Type,
+                                    Optional bIncludeInherited As Boolean = True) As cOOPStorable()
 
             Dim lObjs As New List(Of cOOPStorable)
 
@@ -2127,7 +2127,7 @@ Namespace Database
         ''' performance reasons.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function WriteObject(ByVal obj As cOOPStorable) As Boolean
+        Public Function WriteObject(obj As cOOPStorable) As Boolean
 
             ' Friendly sanity check
             If Not Me.m_bOOPEnabled Then Return False
@@ -2191,7 +2191,7 @@ Namespace Database
         ''' <param name="obj">The object to delete.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DeleteObject(ByVal obj As cOOPStorable) As Boolean
+        Public Function DeleteObject(obj As cOOPStorable) As Boolean
 
             Dim bSucces As Boolean = True
 
@@ -2224,7 +2224,7 @@ Namespace Database
         ''' <param name="t">The class level to delete from the database.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Private Function DeleteObjectRecursive(ByVal obj As cOOPStorable, ByVal t As Type) As Boolean
+        Private Function DeleteObjectRecursive(obj As cOOPStorable, t As Type) As Boolean
 
             Dim strSQL As String = String.Format("DELETE FROM {0} WHERE DBID={1}", Me.OOPGetTableName(t), obj.DBID)
             Dim bSucces As Boolean = True
@@ -2296,7 +2296,7 @@ Namespace Database
             Get
                 Return Me.m_bOOPEnabled
             End Get
-            Set(ByVal bEnable As Boolean)
+            Set(bEnable As Boolean)
 
                 ' Optimization
                 If (bEnable = Me.m_bOOPEnabled) Then Return
@@ -2363,7 +2363,7 @@ Namespace Database
             ''' <summary>Add an object to the cache.</summary>
             ''' <param name="obj">The object to add.</param>
             ''' ---------------------------------------------------------------
-            Public Sub AddObject(ByVal obj As cOOPStorable)
+            Public Sub AddObject(obj As cOOPStorable)
                 If Not HasObject(obj.DBID) Then
                     Me.m_dtObjectCache(obj.DBID) = obj
                 End If
@@ -2375,7 +2375,7 @@ Namespace Database
             ''' </summary>
             ''' <param name="obj">The object to remove.</param>
             ''' ---------------------------------------------------------------
-            Public Sub RemoveObject(ByVal obj As cOOPStorable)
+            Public Sub RemoveObject(obj As cOOPStorable)
                 If HasObject(obj.DBID) Then
                     Me.m_dtObjectCache.Remove(obj.DBID)
                 End If
@@ -2389,7 +2389,7 @@ Namespace Database
             ''' <returns>An object, or nothing if the object is not present
             ''' in the cache.</returns>
             ''' ---------------------------------------------------------------
-            Public Function GetObject(ByVal iDBID As Integer) As cOOPStorable
+            Public Function GetObject(iDBID As Integer) As cOOPStorable
                 If HasObject(iDBID) Then
                     Return Me.m_dtObjectCache(iDBID)
                 Else
@@ -2405,7 +2405,7 @@ Namespace Database
             ''' <param name="iDBID">The ID of the object to find.</param>
             ''' <returns>True if the object is present in the cache.</returns>
             ''' ---------------------------------------------------------------
-            Public Function HasObject(ByVal iDBID As Integer) As Boolean
+            Public Function HasObject(iDBID As Integer) As Boolean
                 Return Me.m_dtObjectCache.ContainsKey(iDBID)
             End Function
 
@@ -2430,7 +2430,7 @@ Namespace Database
         ''' </summary>
         ''' ---------------------------------------------------------------
         Private Structure OOP_sFKInfo
-            Public Sub New(ByVal strCol As String, ByVal strTable As String, ByVal bInherited As Boolean)
+            Public Sub New(strCol As String, strTable As String, bInherited As Boolean)
                 Me.ColumnName = strCol
                 Me.TableName = strTable
                 Me.Inherited = bInherited
@@ -2447,7 +2447,7 @@ Namespace Database
         ''' <param name="t">The <see cref="Type">type</see> to build the table for.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPCreateObjectTable(ByVal t As Type) As Boolean
+        Private Function OOPCreateObjectTable(t As Type) As Boolean
 
             ' Get all storable properties for type t
             Dim api As PropertyInfo() = Me.OOPGetStorableProperties(t)
@@ -2525,7 +2525,7 @@ Namespace Database
         ''' conversions; only mssing columns are added.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function OOPUpdateObjectTable(ByVal t As Type, ByVal conn As OleDbConnection) As Boolean
+        Private Function OOPUpdateObjectTable(t As Type, conn As OleDbConnection) As Boolean
 
             Dim dt As DataTable = Nothing
             Dim api As PropertyInfo() = Me.OOPGetStorableProperties(t)
@@ -2591,7 +2591,7 @@ Namespace Database
         ''' True if successful.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPUpdateObjectSchema(ByVal t As Type) As Boolean
+        Private Function OOPUpdateObjectSchema(t As Type) As Boolean
 
             Dim conn As OleDbConnection = DirectCast(Me.GetConnection(), OleDbConnection)
             Dim strTable As String = ""
@@ -2666,7 +2666,7 @@ Namespace Database
             ''' <param name="adapter">The database adapter that was returned for
             ''' this table.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal strTable As String, ByVal adapter As IDataAdapter)
+            Public Sub New(strTable As String, adapter As IDataAdapter)
                 Me.m_strTable = strTable
                 Me.m_adapter = adapter
                 Me.m_iRefCount = 0
@@ -2762,7 +2762,7 @@ Namespace Database
         ''' <see cref="OOPReleaseAdapter">OOPReleaseAdapter</see>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Function OOPGetAdapter(ByVal strTable As String) As IDataAdapter
+        Protected Function OOPGetAdapter(strTable As String) As IDataAdapter
             Dim wl As cOOPAdapterCacheEntry = Nothing
             If Not m_dtOOPAdapterCache.ContainsKey(strTable) Then
                 wl = New cOOPAdapterCacheEntry(strTable, Me.GetAdapter("SELECT * FROM " + strTable))
@@ -2783,7 +2783,7 @@ Namespace Database
         ''' <returns>True if the adapter was released succesfully, or False 
         ''' if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Protected Function OOPReleaseAdapter(ByVal strTable As String) As Boolean
+        Protected Function OOPReleaseAdapter(strTable As String) As Boolean
             Dim wl As cOOPAdapterCacheEntry = Nothing
             If m_dtOOPAdapterCache.ContainsKey(strTable) Then
                 wl = m_dtOOPAdapterCache(strTable)
@@ -2837,7 +2837,7 @@ Namespace Database
         ''' valid SQL table name characters.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function OOPGetTableName(ByVal t As Type) As String
+        Private Function OOPGetTableName(t As Type) As String
             ' Get class name (including namespaces)
             Dim strName As String = t.Name()
             ' Replace invalid SQL characters
@@ -2852,7 +2852,7 @@ Namespace Database
         ''' name for.</param>
         ''' <returns>A column name.</returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPGetColumnName(ByVal pi As PropertyInfo) As String
+        Private Function OOPGetColumnName(pi As PropertyInfo) As String
             Return pi.Name()
         End Function
 
@@ -2865,7 +2865,7 @@ Namespace Database
         ''' <returns>True if class <paramref name="t">t</paramref> is directly
         ''' inherited from Object.</returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPIsBaseClass(ByVal t As Type) As Boolean
+        Private Function OOPIsBaseClass(t As Type) As Boolean
             Return t.BaseType Is GetType(Object)
         End Function
 
@@ -2880,7 +2880,7 @@ Namespace Database
         ''' nothing if the primary key property was not found. Which is not good;
         ''' this will probably only occur when the class was not properly derived.</returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPGetKeyProperty(ByVal t As Type) As PropertyInfo
+        Private Function OOPGetKeyProperty(t As Type) As PropertyInfo
             Return t.GetProperty("DBID")
         End Function
 
@@ -2896,7 +2896,7 @@ Namespace Database
         ''' <see cref="Type">Type</see> to find storable properties for.</param>
         ''' <returns>An array of <see cref="PropertyInfo">PropertyInfo</see> instances.</returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPGetStorableProperties(ByVal t As Type) As PropertyInfo()
+        Private Function OOPGetStorableProperties(t As Type) As PropertyInfo()
             Dim lpi As New List(Of PropertyInfo)
             Dim bAllowed As Boolean = False
 
@@ -2929,7 +2929,7 @@ Namespace Database
         ''' extended.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPGetColumnType(ByVal pi As PropertyInfo) As String
+        Private Function OOPGetColumnType(pi As PropertyInfo) As String
             Dim strType As String = pi.PropertyType.ToString()
             Select Case strType
                 Case "System.Double"
@@ -2973,7 +2973,7 @@ Namespace Database
         ''' the actual 'Default' attribute.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function OOPGetPropertyDefaultValue(ByVal pi As PropertyInfo) As Object
+        Private Function OOPGetPropertyDefaultValue(pi As PropertyInfo) As Object
             Dim pd As PropertyDescriptor = cPropertyConverter.FindOrigPropertyDescriptor(pi)
             Return Nothing
         End Function
@@ -2996,7 +2996,7 @@ Namespace Database
         ''' can be used to find the originating type from a string.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function OOPTypeToString(ByVal t As Type) As String
+        Private Function OOPTypeToString(t As Type) As String
 
             ' Include assembly short name in the type name. This enables
             ' the OOP database logic to relocate the type from its original
@@ -3018,7 +3018,7 @@ Namespace Database
         ''' can be used to create the string for a type.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function OOPStringToType(ByVal strType As String) As Type
+        Private Function OOPStringToType(strType As String) As Type
 
             ' Split assembly short name from type name
             Dim astr As String() = strType.Split(CChar("!"))
@@ -3060,7 +3060,7 @@ Namespace Database
         ''' cOOPStorable.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPIsForeignKeyProperty(ByVal pi As PropertyInfo) As Boolean
+        Private Function OOPIsForeignKeyProperty(pi As PropertyInfo) As Boolean
             ' Is a ref to another cOOPStorable?
             If GetType(cOOPStorable).IsAssignableFrom(pi.PropertyType) Then
                 ' Is NOT an indexed prop
@@ -3085,7 +3085,7 @@ Namespace Database
         ''' A cOOPStorable-derived instance, or nothing if an error occurred.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPReadObject(ByVal t As Type, ByVal iDBID As Integer, ByVal piKey As PropertyInfo) As cOOPStorable
+        Private Function OOPReadObject(t As Type, iDBID As Integer, piKey As PropertyInfo) As cOOPStorable
 
             Dim objRead As cOOPStorable = Nothing
             Try
@@ -3120,7 +3120,7 @@ Namespace Database
         ''' <param name="iDBID">Database ID value of the object being read.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function OOPReadObjectRecursive(ByVal t As Type, ByVal objRead As cOOPStorable, ByVal piKey As PropertyInfo, ByVal iDBID As Integer) As Boolean
+        Private Function OOPReadObjectRecursive(t As Type, objRead As cOOPStorable, piKey As PropertyInfo, iDBID As Integer) As Boolean
 
             Dim api As PropertyInfo() = Me.OOPGetStorableProperties(t)
             Dim strTable As String = Me.OOPGetTableName(t)
@@ -3241,7 +3241,7 @@ Namespace Database
         ''' <param name="list"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function OOPReadListItems(ByVal list As cOOPStorableList) As Boolean
+        Private Function OOPReadListItems(list As cOOPStorableList) As Boolean
 
             Dim strTable As String = "cOOPStorableListItems"
             Dim strSQL As String = ""
@@ -3284,7 +3284,7 @@ Namespace Database
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Private Function OOPWriteListItems(ByVal list As cOOPStorableList) As Boolean
+        Private Function OOPWriteListItems(list As cOOPStorableList) As Boolean
 
             Dim adapter As IDataAdapter = Nothing
             Dim item As cOOPStorable = Nothing
@@ -3344,7 +3344,7 @@ Namespace Database
         ''' <param name="obj"></param>
         ''' <param name="piKey"></param>
         ''' <returns></returns>
-        Private Function OOPWriteObjectRecursive(ByVal t As Type, ByVal obj As cOOPStorable, ByVal piKey As PropertyInfo) As Boolean
+        Private Function OOPWriteObjectRecursive(t As Type, obj As cOOPStorable, piKey As PropertyInfo) As Boolean
 
             Dim api As PropertyInfo() = Me.OOPGetStorableProperties(t)
             Dim strTable As String = Me.OOPGetTableName(t)
@@ -3533,7 +3533,7 @@ Namespace Database
         ''' <returns>True if successful</returns>
         ''' <remarks>This method only allows setting the version on an EwE6 database.</remarks>
         ''' -------------------------------------------------------------------
-        Public Function SetVersion(ByVal sVersion As Single, ByVal strRemark As String) As Boolean
+        Public Function SetVersion(sVersion As Single, strRemark As String) As Boolean
 
             Dim version As Version = cAssemblyUtils.GetVersion()
             Dim dtNow As Date = Date.Now()
@@ -3569,7 +3569,7 @@ Namespace Database
         ''' <para>'-4.4' returns '4'</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetMajorVersion(ByVal sVersion As Single) As Single
+        Public Shared Function GetMajorVersion(sVersion As Single) As Single
             Return CSng(Math.Sign(sVersion) * Math.Floor(Math.Abs(sVersion)))
         End Function
 
@@ -3585,7 +3585,7 @@ Namespace Database
         ''' <para>'-4.4' returns '0.4'</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetMinorVersion(ByVal sVersion As Single) As Single
+        Public Shared Function GetMinorVersion(sVersion As Single) As Single
             Dim sAbsVersion As Single = Math.Abs(sVersion)
             Return CSng(sAbsVersion - Math.Floor(sAbsVersion))
         End Function
@@ -3607,7 +3607,7 @@ Namespace Database
             ''' <param name="strComments"></param>
             ''' <param name="strDate"></param>
             ''' <remarks></remarks>
-            Friend Sub New(ByVal strVersion As String, ByVal strComments As String, ByVal strDate As String)
+            Friend Sub New(strVersion As String, strComments As String, strDate As String)
                 Me.m_strVersion = strVersion
                 Me.m_strComments = strComments
                 Me.m_date = Date.Parse(strDate)

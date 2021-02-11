@@ -49,17 +49,17 @@ Public Class cTimeFrameRule
     Public Property NYears As Integer
 
     Public Sub New(ByRef EcosimDatastructures As cEcosimDatastructures, ByRef HCR As HCR_Group, ByRef MSE As cMSE)
-        m_EcosimData = EcosimDatastructures
-        m_HCR = HCR
-        m_nTimeStepsInHindcast = EcosimDatastructures.NTimes
-        m_MSE = MSE
+        Me.m_EcosimData = EcosimDatastructures
+        Me.m_HCR = HCR
+        Me.m_nTimeStepsInHindcast = EcosimDatastructures.NTimes
+        Me.m_MSE = MSE
     End Sub
 
-    Public Function F(ByVal iCurrentTimeStep As Integer, ByVal iYearProjecting As Integer, ByVal HCR_F As Single) As Single
+    Public Function F(iCurrentTimeStep As Integer, iYearProjecting As Integer, HCR_F As Single) As Single
 
         If iYearProjecting = 1 Then
-            init_F = calcAveragePrevYearF(iCurrentTimeStep)
-            If init_F < HCR_F Then init_F = HCR_F
+            Me.init_F = Me.calcAveragePrevYearF(iCurrentTimeStep)
+            If Me.init_F < HCR_F Then Me.init_F = HCR_F
         End If
 
         'Dim MeanPrevYearF As Double = calcAveragePrevYearF(iCurrentTimeStep)
@@ -68,27 +68,27 @@ Public Class cTimeFrameRule
         If iYearProjecting = 1 Then
             Dim strmWriter As StreamWriter
             Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_F_Steps.csv", False)
-            strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
-            strmWriter.WriteLine(m_MSE.CurrentModelID & "," & m_MSE.currentStrategy.Name & "," & Me.m_HCR.GroupF.Name & "," & init_F)
+            strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
+            strmWriter.WriteLine(Me.m_MSE.CurrentModelID & "," & Me.m_MSE.currentStrategy.Name & "," & Me.m_HCR.GroupF.Name & "," & Me.init_F)
             cMSEUtils.ReleaseWriter(strmWriter)
         End If
 #End If
 
         'Dim Distance_From_HCR_F As Single = MeanPrevYearF - HCR_F
 
-        Return CSng(init_F - (iYearProjecting / (NYears + 1)) * (init_F - HCR_F))
+        Return CSng(Me.init_F - (iYearProjecting / (Me.NYears + 1)) * (Me.init_F - HCR_F))
 
         'Return HCR_F + ((NYears + 1 - iYearProjecting) / (NYears + 1)) * Distance_From_HCR_F
 
 
     End Function
 
-    Public Function CheckValidRule(iYearProjecting As Integer, ByVal HCR_F As Single, ByVal CurrentTimeStep As Integer) As Boolean
+    Public Function CheckValidRule(iYearProjecting As Integer, HCR_F As Single, CurrentTimeStep As Integer) As Boolean
         'A time frame rule is valid only if the number of years field for it is >0 and the year into projection is 1 upto that number
         'and also the F during the last year of the hindcast is greater than the Fmsy
 
         'If NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= NYears And FGreaterThanHCRF(HCR_F, CurrentTimeStep) Then
-        If NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= NYears Then
+        If Me.NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= Me.NYears Then
             Return True
         Else
             Return False
@@ -101,22 +101,22 @@ Public Class cTimeFrameRule
         Dim MeanF As Single
         Dim BiomassAtT As Single
         Dim Q As Single
-        Dim GroupIndex As Integer = m_HCR.GroupF.Index
+        Dim GroupIndex As Integer = Me.m_HCR.GroupF.Index
 
         Debug.Assert(iCurrentTimestep > 12, "TimeFrameRules must have a hind cast period > 12 months. See cTimeFrameRule.calcAverageFLastYearHindCast()")
 
         'Get the average from the last year of the hindcast
         'iCurrentTimestep is the first time step of the forecast
         For iTimeStep = (iCurrentTimestep - 12) To (iCurrentTimestep - 1)
-            BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
+            BiomassAtT = Me.m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
 
             'time series include density dependent q implicity so dont need to multiply by it here (set Q =1). In all other cases do so.
-            If m_EcosimData.FisForced(GroupIndex) Then
+            If Me.m_EcosimData.FisForced(GroupIndex) Then
                 Q = 1
             Else
-                Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
+                Q = Me.m_EcosimData.QmQo(GroupIndex) / (1 + (Me.m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / Me.m_EcosimData.StartBiomass(GroupIndex))
             End If
-            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) * Q
+            MeanF += Me.m_EcosimData.FishRateNo(Me.m_HCR.GroupF.Index, iTimeStep) * Q
         Next
         MeanF /= 12
 
@@ -124,9 +124,9 @@ Public Class cTimeFrameRule
 
     End Function
 
-    Private Function FGreaterThanHCRF(ByVal HCR_F As Double, ByVal iCurrentTime As Integer) As Boolean
+    Private Function FGreaterThanHCRF(HCR_F As Double, iCurrentTime As Integer) As Boolean
 
-        Dim MeanPrevYearF As Double = calcAveragePrevYearF(iCurrentTime)
+        Dim MeanPrevYearF As Double = Me.calcAveragePrevYearF(iCurrentTime)
 
         If MeanPrevYearF > HCR_F Then
             Return True

@@ -25,6 +25,6 @@ Public Interface IEcosimRunInitializedPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures"></param>
     ''' <remarks></remarks>
-    Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object)
+    Sub EcosimRunInitialized(EcosimDatastructures As Object)
 
 End Interface

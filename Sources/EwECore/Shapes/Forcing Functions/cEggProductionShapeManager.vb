@@ -56,15 +56,15 @@ Public Class cEggProductionShapeManager
     Private Function LoadGroupShapeList() As Boolean
         Try
             Dim shape As cForcingFunction
-            m_grplist = New cGroupShapeList(m_SimData, MyBase.m_core.m_Stanza, Me)
+            Me.m_grplist = New cGroupShapeList(Me.m_SimData, MyBase.m_core.m_Stanza, Me)
 
             'EggProdShape data is only for Stanza groups data 
             'EggProdShapeSplit(iStanza) holds the forcing function shape index for this stanza group
-            For iStanza As Integer = 1 To m_core.m_Stanza.Nsplit 'nSplit is the number of stanza groups
+            For iStanza As Integer = 1 To Me.m_core.m_Stanza.Nsplit 'nSplit is the number of stanza groups
 
-                Me.getShapeForEcoSimArrayIndex(m_core.m_Stanza.EggProdShapeSplit(iStanza), shape)
+                Me.getShapeForEcoSimArrayIndex(Me.m_core.m_Stanza.EggProdShapeSplit(iStanza), shape)
                 'make the stanza index zero based 
-                m_grplist.Add(New cGroupShapePair(Me, shape, iStanza))
+                Me.m_grplist.Add(New cGroupShapePair(Me, shape, iStanza))
 
             Next iStanza
 
@@ -80,13 +80,13 @@ Public Class cEggProductionShapeManager
 
     Public ReadOnly Property GroupShapeList() As cGroupShapeList
         Get
-            Return m_grplist
+            Return Me.m_grplist
         End Get
     End Property
 
     Friend Sub validationFailedMessage()
         ' ToDo: globalize this
-        m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation,
+        Me.m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation,
                                     eCoreComponentType.ShapesManager, eMessageImportance.Information, eDataTypes.EggProd))
     End Sub
 
@@ -99,14 +99,14 @@ Public Class cEggProductionShapeManager
 
         Try
             'neither of these should ever happen 
-            Debug.Assert(GroupShapePair.iShape <= m_core.m_EcoSimData.NumForcingShapes, Me.ToString & ".OnChanged() shape index out of bounds.")
-            Debug.Assert(GroupShapePair.iCoreStanzaIndex <= m_core.m_Stanza.Nsplit, Me.ToString & ".OnChanged() stanza index out of bounds.")
+            Debug.Assert(GroupShapePair.iShape <= Me.m_core.m_EcoSimData.NumForcingShapes, Me.ToString & ".OnChanged() shape index out of bounds.")
+            Debug.Assert(GroupShapePair.iCoreStanzaIndex <= Me.m_core.m_Stanza.Nsplit, Me.ToString & ".OnChanged() stanza index out of bounds.")
 
             'update the cores data
-            m_core.m_Stanza.EggProdShapeSplit(GroupShapePair.iCoreStanzaIndex) = GroupShapePair.iShape
+            Me.m_core.m_Stanza.EggProdShapeSplit(GroupShapePair.iCoreStanzaIndex) = GroupShapePair.iShape
 
             'Tell the core that this data has changed
-            m_core.onChanged(Me, eMessageType.DataModified)
+            Me.m_core.onChanged(Me, eMessageType.DataModified)
             Return True
 
 

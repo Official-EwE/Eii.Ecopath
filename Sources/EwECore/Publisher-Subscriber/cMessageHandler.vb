@@ -69,10 +69,10 @@ Public Class cMessageHandler
     ''' <para>For a default handler set the MessageTypeToHandle flag to eMessageType.Any this will send any unhandled message to this delegate.</para>
     ''' <para>To have s single delegate handle multiple messages create a new cMessageHandler with this same 'DelegateToCall' argument and a different MessageTypeToHandle flag.</para>
     ''' </remarks>
-    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate,
-            ByVal SourceToHandle As eCoreComponentType,
-            ByVal MessageTypeToHandle As eMessageType,
-            ByVal syncobj As System.Threading.SynchronizationContext)
+    Sub New(DelegateToCall As EwECore.cCore.CoreMessageDelegate,
+            SourceToHandle As eCoreComponentType,
+            MessageTypeToHandle As eMessageType,
+            syncobj As System.Threading.SynchronizationContext)
 
         Debug.Assert(DelegateToCall IsNot Nothing, "Must specify a valid delegate")
         Debug.Assert(SourceToHandle <> eCoreComponentType.NotSet, "Must specify a valid source")
@@ -124,12 +124,12 @@ Public Class cMessageHandler
 
         Try
             'test for a NULL delegate this should not be possible but check anyway
-            If (Not m_DelegateNotifier Is Nothing) Then
+            If (Not Me.m_DelegateNotifier Is Nothing) Then
 
                 'test the type and source of the message
                 ' JS 15Mar06: test for MessageType.Any
-                If (message.Type = m_msgtype Or m_msgtype = eMessageType.Any) And _
-                   (message.Source = m_corecomponent) Then
+                If (message.Type = Me.m_msgtype Or Me.m_msgtype = eMessageType.Any) And _
+                   (message.Source = Me.m_corecomponent) Then
 
                     Try
                         If Me.m_syncobj Is Nothing Then
@@ -176,7 +176,7 @@ Public Class cMessageHandler
 
     End Function
 
-    Private Sub marshallSendMessage(ByVal Message As Object)
+    Private Sub marshallSendMessage(Message As Object)
         Debug.Assert(TypeOf Message Is cMessage, "Invalid type passed to cMessageHandler.SendMessage()!")
         If (Me.m_DelegateNotifier IsNot Nothing) Then
             Try
@@ -193,11 +193,11 @@ Public Class cMessageHandler
     ''' <param name="Handler">cMessageHandler object to test</param>
     ''' <returns>True if this Message Handlers delagate is equal to the one bing passed in. False otherwise</returns>
     ''' <remarks>This tests the underlying delegates for equality NOT the cMessageHandlers them selves.</remarks>
-    Public Overrides Function Equals(ByVal Handler As Object) As Boolean
+    Public Overrides Function Equals(Handler As Object) As Boolean
 
         Try
             Debug.Assert(TypeOf Handler Is cMessageHandler, "Invalid type passed to cMessageHandler.Equals()")
-            If m_DelegateNotifier.Equals(DirectCast(Handler, cMessageHandler).getDelegate) Then
+            If Me.m_DelegateNotifier.Equals(DirectCast(Handler, cMessageHandler).getDelegate) Then
                 Return True
             Else
                 Return False
@@ -215,7 +215,7 @@ Public Class cMessageHandler
     ''' <returns>CoreMessageDelegate delagate object.</returns>
     ''' <remarks>This is used by  Equals() to test for equality of two cMessageHandler objects.</remarks>
     Friend Function getDelegate() As cCore.CoreMessageDelegate
-        Return m_DelegateNotifier
+        Return Me.m_DelegateNotifier
     End Function
 
 End Class

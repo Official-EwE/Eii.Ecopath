@@ -80,29 +80,29 @@ Namespace Ecopath
 
         Public Sub Init(ecopathds As cEcopathDataStructures, stanzaDS As cStanzaDatastructures)
 
-            ReDim Discard(ecopathds.NumFleet)
-            ReDim Landing(ecopathds.NumFleet)
-            ReDim Market(ecopathds.NumFleet)
-            ReDim DiscardFate(ecopathds.NumGroups)
+            ReDim Me.Discard(ecopathds.NumFleet)
+            ReDim Me.Landing(ecopathds.NumFleet)
+            ReDim Me.Market(ecopathds.NumFleet)
+            ReDim Me.DiscardFate(ecopathds.NumGroups)
 
-            ReDim DCInput(ecopathds.NumGroups, ecopathds.NumGroups)
+            ReDim Me.DCInput(ecopathds.NumGroups, ecopathds.NumGroups)
             For iPred As Integer = 1 To ecopathds.NumLiving
                 For iPrey As Integer = 0 To ecopathds.NumGroups
-                    DCInput(iPred, iPrey) = ecopathds.DCInput(iPred, iPrey)
+                    Me.DCInput(iPred, iPrey) = ecopathds.DCInput(iPred, iPrey)
                 Next
             Next
 
-            ReDim BaseStanza(stanzaDS.Nsplit)
-            Array.Copy(stanzaDS.BaseStanza, BaseStanza, BaseStanza.Length)
+            ReDim Me.BaseStanza(stanzaDS.Nsplit)
+            Array.Copy(stanzaDS.BaseStanza, Me.BaseStanza, Me.BaseStanza.Length)
 
-            ReDim BaseStanzaCB(stanzaDS.Nsplit)
-            Array.Copy(stanzaDS.BaseStanzaCB, BaseStanzaCB, BaseStanzaCB.Length)
+            ReDim Me.BaseStanzaCB(stanzaDS.Nsplit)
+            Array.Copy(stanzaDS.BaseStanzaCB, Me.BaseStanzaCB, Me.BaseStanzaCB.Length)
 
-            ReDim Age1(stanzaDS.Nsplit, stanzaDS.MaxStanza)
-            Array.Copy(stanzaDS.Age1, Age1, Age1.Length)
+            ReDim Me.Age1(stanzaDS.Nsplit, stanzaDS.MaxStanza)
+            Array.Copy(stanzaDS.Age1, Me.Age1, Me.Age1.Length)
 
-            ReDim StanzaZ(stanzaDS.Nsplit, stanzaDS.MaxStanza)
-            Array.Copy(stanzaDS.Stanza_Z, StanzaZ, StanzaZ.Length)
+            ReDim Me.StanzaZ(stanzaDS.Nsplit, stanzaDS.MaxStanza)
+            Array.Copy(stanzaDS.Stanza_Z, Me.StanzaZ, Me.StanzaZ.Length)
 
             Me.TaxonPropBiomass.Clear()
             Me.TaxonPropCatch.Clear()

@@ -59,7 +59,7 @@ Namespace Ecotracer
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -80,7 +80,7 @@ Namespace Ecotracer
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             Me.m_fpCDecayEnv.Release()
             Me.m_fpCInflowEnv.Release()
@@ -94,7 +94,7 @@ Namespace Ecotracer
 
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             Me.UpdateForcingControls()
         End Sub
 

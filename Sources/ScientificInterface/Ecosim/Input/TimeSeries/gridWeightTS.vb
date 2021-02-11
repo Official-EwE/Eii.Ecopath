@@ -44,7 +44,7 @@ Public Class gridWeightTS
         Me.FixedColumnWidths = False
     End Sub
 
-    Public Sub CheckAll(ByVal bCheck As Boolean)
+    Public Sub CheckAll(bCheck As Boolean)
         Dim cbc As SourceGrid2.Cells.Real.CheckBox = Nothing
         For iRow As Integer = 1 To Me.RowsCount - 1
             cbc = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
@@ -52,7 +52,7 @@ Public Class gridWeightTS
         Next
     End Sub
 
-    Public Function Apply(ByVal bIsLoading As Boolean) As Boolean
+    Public Function Apply(bIsLoading As Boolean) As Boolean
 
         ' Make sure this method is executed only when allowed
         If (Me.Core.ActiveTimeSeriesDatasetIndex <= 0) Then Return True
@@ -129,7 +129,7 @@ Public Class gridWeightTS
 
     End Sub
 
-    Public Sub AddTimeSeriesRow(ByVal ts As cTimeSeries)
+    Public Sub AddTimeSeriesRow(ts As cTimeSeries)
 
         Dim iRow As Integer = Me.AddRow()
         Dim cell As SourceGrid2.Cells.ICell = Nothing
@@ -171,7 +171,7 @@ Public Class gridWeightTS
         MyBase.OnCellValueChanged(p, cell)
         If MyBase.OnCellEdited(p, cell) Then
             If p.Column = eColumnTypes.CV Then
-                UpdateRow(p.Row)
+                Me.UpdateRow(p.Row)
             End If
         End If
     End Function

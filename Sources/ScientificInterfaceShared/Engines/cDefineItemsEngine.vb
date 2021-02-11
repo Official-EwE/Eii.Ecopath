@@ -50,7 +50,7 @@ Namespace Controls
         ''' <param name="item">The <see cref="cCoreInputOutputBase"/> to create the item for</param>
         ''' <param name="vars">Optional collection of <see cref="eVarNameFlags"/> to include into object management.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal item As cCoreInputOutputBase, Optional vars As eVarNameFlags() = Nothing)
+        Public Sub New(item As cCoreInputOutputBase, Optional vars As eVarNameFlags() = Nothing)
 
             Debug.Assert(item IsNot Nothing)
 
@@ -75,7 +75,7 @@ Namespace Controls
         ''' <param name="strName">Name to assign to this item unit.</param>
         ''' <param name="vars">Optional collection of <see cref="eVarNameFlags"/> to include into object management.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strName As String, Optional vars As eVarNameFlags() = Nothing)
+        Public Sub New(strName As String, Optional vars As eVarNameFlags() = Nothing)
 
             If (vars IsNot Nothing) Then
                 For Each var As eVarNameFlags In vars
@@ -166,7 +166,7 @@ Namespace Controls
         ''' True when MPA <see cref="Name">Name</see> value has changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(ByVal item As cCoreInputOutputBase) As Boolean
+        Public Function IsChanged(item As cCoreInputOutputBase) As Boolean
             If Me.IsNew Then Return False
             If (String.Compare(item.Name, Me.Name, False) <> 0) Then Return True
             ' Check variables
@@ -198,7 +198,7 @@ Namespace Controls
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
-            Set(ByVal bDelete As Boolean)
+            Set(bDelete As Boolean)
                 If Not Me.IsNew() Then
                     If bDelete Then
                         Me.Status = eItemStatusTypes.Removed
@@ -594,7 +594,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function IsNameUnique(ByVal strName As String, ByVal item As cItemInfo) As Boolean
+        Public Function IsNameUnique(strName As String, item As cItemInfo) As Boolean
 
             ' Check if name is unique
             For i As Integer = 0 To Me.m_lItems.Count - 1

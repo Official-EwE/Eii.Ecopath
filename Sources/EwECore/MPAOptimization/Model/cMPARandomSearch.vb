@@ -72,10 +72,10 @@ Public Class cMPARandomSearch
 
             Me.m_watercells.Clear()
 
-            Dim iR As Integer = m_SpaceData.InRow
-            Dim iC As Integer = m_SpaceData.InCol
+            Dim iR As Integer = Me.m_SpaceData.InRow
+            Dim iC As Integer = Me.m_SpaceData.InCol
 
-            Array.Clear(Me.m_SpaceData.MPA(m_data.iMPAtoUse), 0, Me.m_SpaceData.MPA(m_data.iMPAtoUse).Length)
+            Array.Clear(Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse), 0, Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse).Length)
 
             'We need number of potential MPA cells, this is watercells 
             '  - (cells which are either not part of an active MPA or which already are the same kind of MPA.)
@@ -168,13 +168,13 @@ Public Class cMPARandomSearch
             Me.m_EcoSpace.TimeStepDelegate = Nothing
 
             'create a new list to store the results
-            m_lstObjectiveResults = New List(Of cObjectiveResult)
-            TargetSumMax = 0
+            Me.m_lstObjectiveResults = New List(Of cObjectiveResult)
+            Me.TargetSumMax = 0
 
             'Clear out any values from a previous ecoseed run
-            m_data.Clear()
+            Me.m_data.Clear()
 
-            RedimSeedVariables()
+            Me.RedimSeedVariables()
 
         Catch ex As Exception
             Me.WriteError(ex)
@@ -212,7 +212,7 @@ Public Class cMPARandomSearch
 
     Private Sub runSearch()
 
-        Debug.Assert(m_data.iMPAtoUse > 0, "Current MPA not set!!!.")
+        Debug.Assert(Me.m_data.iMPAtoUse > 0, "Current MPA not set!!!.")
 
         'VC changes
         'Main loop for running the Random MPA optimization
@@ -224,7 +224,7 @@ Public Class cMPARandomSearch
         If Me.m_bAutosaveResults Then
             If cFileUtils.IsDirectoryAvailable(Me.m_strOutputPath, True) Then
                 Try
-                    writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, m_OutputFilename))
+                    writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, Me.m_OutputFilename))
                 Catch ex As Exception
 
                 End Try
@@ -232,8 +232,8 @@ Public Class cMPARandomSearch
         End If
 
         Try
-            Debug.Assert(m_data IsNot Nothing, "Ecoseed: data not initialized")
-            Debug.Assert(m_EcoSpace IsNot Nothing, "Ecoseed: Ecospace not initialized")
+            Debug.Assert(Me.m_data IsNot Nothing, "Ecoseed: data not initialized")
+            Debug.Assert(Me.m_EcoSpace IsNot Nothing, "Ecoseed: Ecospace not initialized")
 #If DEBUG Then
             System.Console.WriteLine("-----------MPA Random Search --------------")
 #End If
@@ -243,35 +243,35 @@ Public Class cMPARandomSearch
             ' make snapshot of MPA cell occupation for quick lookup during computations
             Me.InitIsMPA()
 
-            m_search.SearchMode = eSearchModes.SpatialOpt
-            m_search.setMinSearchBlocks()
+            Me.m_search.SearchMode = eSearchModes.SpatialOpt
+            Me.m_search.setMinSearchBlocks()
             Me.getBaseValues()
 
             Me.WriteOutputFileHeader(writer)
 
-            CalculateCellWeightings()
+            Me.CalculateCellWeightings()
 
             Me.CellCount = Me.m_watercells.Count
 
             'Get the layer weights by percentage MPA coverage
-            sortLayersByCellWeight(CellCount)
+            Me.sortLayersByCellWeight(Me.CellCount)
 
             'Step from Min area(%) (= integer) to Max area(%) (= integer) stepsize = Step (%) (=integer)
-            Dim iStep As Integer = CInt((m_data.MaxArea - m_data.MinArea) / m_data.stepSize)
+            Dim iStep As Integer = CInt((Me.m_data.MaxArea - Me.m_data.MinArea) / Me.m_data.stepSize)
             Dim nStep As Integer = 0
 
             Me.setRunState(cMPAOptManager.eRunStates.Searching)
 
-            m_nIters = 0
+            Me.m_nIters = 0
 
-            For iPropMPA As Integer = m_data.MinArea To m_data.MaxArea Step m_data.stepSize
+            For iPropMPA As Integer = Me.m_data.MinArea To Me.m_data.MaxArea Step Me.m_data.stepSize
                 'keep track of how many times we've stepped: 
                 'calculate how many cells that should be closed:
                 'this is calculated based on number of water cells - number of other mpsa cells, not total number of cells:
-                Dim NumberMPA As Integer = CInt(iPropMPA * CellCount / 100)
+                Dim NumberMPA As Integer = CInt(iPropMPA * Me.CellCount / 100)
 
                 'Step through and do iterations:
-                For m_iIter As Integer = 1 To m_data.nIterations
+                For m_iIter As Integer = 1 To Me.m_data.nIterations
                     'select the MPA cells that are to be evaluated in this run
                     Me.selectRandomCells(NumberMPA)
 
@@ -279,7 +279,7 @@ Public Class cMPARandomSearch
 
                     'Run EcoSpace
                     Me.m_EcoSpace.Run()
-                    If m_data.StopRun Then Exit For
+                    If Me.m_data.StopRun Then Exit For
 
                     'Evaluate the current MPA cell selection
                     Me.EvaluateRun()
@@ -323,10 +323,10 @@ Public Class cMPARandomSearch
         Try
 
             'clear out the last set of cells
-            m_data.ClearCells()
+            Me.m_data.ClearCells()
 
             ' Clear data cells with the currently selected MPA
-            Array.Clear(Me.m_SpaceData.MPA(m_data.iMPAtoUse), 0, Me.m_SpaceData.MPA(m_data.iMPAtoUse).Length)
+            Array.Clear(Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse), 0, Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse).Length)
 
             If (Me.m_data.bUseRegions) Then
                 For i As Integer = 1 To Me.m_SpaceData.nRegions - 1
@@ -383,8 +383,8 @@ Public Class cMPARandomSearch
                 Dim ix As Integer
                 For jx As Integer = 0 To cells.Count - 1
                     ix = cells(jx)
-                    sum += CellWgt(ix)
-                    CumulativeCellWeight(ix) = sum
+                    sum += Me.CellWgt(ix)
+                    Me.CumulativeCellWeight(ix) = sum
                 Next
 
 
@@ -392,7 +392,7 @@ Public Class cMPARandomSearch
                     Dim RanVal As Double = Me.m_generator.NextDouble()
                     For j As Integer = 0 To cells.Count - 1
                         Dim i As Integer = cells(j)
-                        If CumulativeCellWeight(i) >= RanVal Then
+                        If Me.CumulativeCellWeight(i) >= RanVal Then
                             'use this one, if not taken already
                             If Not used.Contains(i) Then iThisCell = i
                             Exit For
@@ -408,10 +408,10 @@ Public Class cMPARandomSearch
                         'check that the cell hasn't been made into an mpa already
                         Debug.Assert(Me.m_SpaceData.Depth(GetRow, GetCol) > 0)
 
-                        If (m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
+                        If (Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
 
-                        m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = 1
-                        m_data.AddCell(GetRow, GetCol, m_data.iMPAtoUse)
+                        Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse)(GetRow, GetCol) = 1
+                        Me.m_data.AddCell(GetRow, GetCol, Me.m_data.iMPAtoUse)
                         Me.IsMPA(GetRow, GetCol) = True
 
                         If (Me.m_data.bUseRegions) Then
@@ -454,12 +454,12 @@ Public Class cMPARandomSearch
 
         Try
 
-            Dim inRow As Integer = m_SpaceData.InRow
-            Dim inCol As Integer = m_SpaceData.InCol
+            Dim inRow As Integer = Me.m_SpaceData.InRow
+            Dim inCol As Integer = Me.m_SpaceData.InCol
             Dim NoCells As Integer = inRow * inCol
 
-            ReDim CumulativeCellWeight(NoCells)
-            ReDim CellWgt(NoCells)
+            ReDim Me.CumulativeCellWeight(NoCells)
+            ReDim Me.CellWgt(NoCells)
             Dim CellWeight(inRow, inCol) As Double
 
             'If on the GUI the "Group weighting" is checked then calculate cellweight, otherwise, set to 1
@@ -553,7 +553,7 @@ Public Class cMPARandomSearch
                     If CellWeight(i, j) < 0 Then CellWeight(i, j) = 0
                     Sum += CellWeight(i, j)
                     'CumulativeCellWeight(iC) = Sum
-                    CellWgt(iC) = CellWeight(i, j)
+                    Me.CellWgt(iC) = CellWeight(i, j)
                 Next
             Next
 
@@ -561,7 +561,7 @@ Public Class cMPARandomSearch
             If Sum > 0 Then
                 For i As Integer = 1 To NoCells
                     'CumulativeCellWeight(i) /= Sum
-                    CellWgt(i) /= Sum
+                    Me.CellWgt(i) /= Sum
                 Next
             Else
                 'if there are no values in any of the importance layer
@@ -569,7 +569,7 @@ Public Class cMPARandomSearch
                 Dim g As Single = CSng(1 / NoCells)
                 For i As Integer = 1 To NoCells
                     'CumulativeCellWeight(i) += g * i
-                    CellWgt(i) += g * i
+                    Me.CellWgt(i) += g * i
                 Next
             End If
 
@@ -582,18 +582,18 @@ Public Class cMPARandomSearch
     End Sub
 
     Protected Sub sortLayersByCellWeight(CellCount As Integer)
-        Dim NoCells As Integer = m_SpaceData.InRow * m_SpaceData.InCol
-        ReDim MaxLayerSumByLayerAndPctMPA(m_SpaceData.nImportanceLayers, 100)
+        Dim NoCells As Integer = Me.m_SpaceData.InRow * Me.m_SpaceData.InCol
+        ReDim Me.MaxLayerSumByLayerAndPctMPA(Me.m_SpaceData.nImportanceLayers, 100)
 
         For iL As Integer = 1 To Me.m_SpaceData.nImportanceLayers
             Dim Cnt As Integer = 0
             Dim ArrayVal(NoCells) As Single
 
-            For i As Integer = 1 To m_SpaceData.InRow
-                For j As Integer = 1 To m_SpaceData.InCol
+            For i As Integer = 1 To Me.m_SpaceData.InRow
+                For j As Integer = 1 To Me.m_SpaceData.InCol
                     Cnt = Cnt + 1
                     'Make a copy of the data
-                    ArrayVal(Cnt) = m_SpaceData.ImportanceLayerMap(iL)(i, j)
+                    ArrayVal(Cnt) = Me.m_SpaceData.ImportanceLayerMap(iL)(i, j)
                 Next j
             Next i
             'now we have all the layer values in ArrayVal, so sort them:
@@ -603,7 +603,7 @@ Public Class cMPARandomSearch
             For iMPA As Integer = 1 To 100
                 'we want to store this for 100 levels (%) of protection
                 For iC As Integer = 0 To CInt(CellCount * iMPA / 100) - 1
-                    MaxLayerSumByLayerAndPctMPA(iL, iMPA) += ArrayVal(iC)
+                    Me.MaxLayerSumByLayerAndPctMPA(iL, iMPA) += ArrayVal(iC)
                 Next
             Next
         Next iL
@@ -611,13 +611,13 @@ Public Class cMPARandomSearch
 
     Protected Sub calcImportanceLayersCoverageInRun()
         Dim Data()(,) As Single = Me.m_SpaceData.ImportanceLayerMap
-        ReDim LayerSumInMPA(Me.m_SpaceData.nImportanceLayers)
+        ReDim Me.LayerSumInMPA(Me.m_SpaceData.nImportanceLayers)
 
         For iL As Integer = 1 To Me.m_SpaceData.nImportanceLayers
-            For iR As Integer = 1 To m_SpaceData.InRow
-                For iC As Integer = 1 To m_SpaceData.InCol
-                    If m_SpaceData.MPA(m_data.iMPAtoUse)(iR, iC) > 0 Then 'this is a protected cell, so check what 
-                        LayerSumInMPA(iL) += Data(iL)(iR, iC)
+            For iR As Integer = 1 To Me.m_SpaceData.InRow
+                For iC As Integer = 1 To Me.m_SpaceData.InCol
+                    If Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse)(iR, iC) > 0 Then 'this is a protected cell, so check what 
+                        Me.LayerSumInMPA(iL) += Data(iL)(iR, iC)
                     End If
                 Next iC
             Next iR
@@ -695,7 +695,7 @@ Public Class cMPARandomSearch
                             lPoints = dtMapSorted(iIndex)
                         End If
                         ' Add point as candidate cell
-                        lPoints.Add(RowColToCell(iRow, iCol))
+                        lPoints.Add(Me.RowColToCell(iRow, iCol))
 
                         ' Count water cells
                         iNumWaterCells += 1

@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 Public Class cEcosimStats
     Inherits cCoreInputOutputBase
 
-    Sub New(ByRef theCore As cCore)
-        MyBase.New(theCore)
+    Sub New(core As cCore)
+        MyBase.New(core)
 
         Dim val As cValue = Nothing
 
@@ -38,11 +38,11 @@ Public Class cEcosimStats
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'SS
-            val = New cValue(New Single, eVarNameFlags.EcosimSS, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.EcosimSS, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             'SSGroup
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcosimSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
             Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
@@ -55,7 +55,7 @@ Public Class cEcosimStats
 
     End Sub
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         Dim i As Integer
 
         'tell the base class to do the default values
@@ -63,7 +63,7 @@ Public Class cEcosimStats
 
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)
         Dim value As cValue
-        For Each keyvalue In m_values
+        For Each keyvalue In Me.m_values
             Try
                 value = keyvalue.Value
 
@@ -89,38 +89,38 @@ Public Class cEcosimStats
 
     Public Property SS() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimSS))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimSS))
         End Get
-        Friend Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimSS, value)
+        Friend Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimSS, value)
         End Set
     End Property
 
 
-    Public Property SSGroup(ByVal iGroup As Integer) As Single
+    Public Property SSGroup(iGroup As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcosimSSGroup, iGroup))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimSSGroup, iGroup))
         End Get
-        Friend Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcosimSSGroup, value, iGroup)
+        Friend Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimSSGroup, value, iGroup)
         End Set
     End Property
 
     Public Property SSStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcosimSS)
+            Return Me.GetStatus(eVarNameFlags.EcosimSS)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcosimSS, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcosimSS, value)
         End Set
     End Property
 
-    Public Property SSGroupStatus(ByVal iGroup As Integer) As eStatusFlags
+    Public Property SSGroupStatus(iGroup As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcosimSS, iGroup)
+            Return Me.GetStatus(eVarNameFlags.EcosimSS, iGroup)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcosimSS, value, iGroup)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcosimSS, value, iGroup)
         End Set
     End Property
 

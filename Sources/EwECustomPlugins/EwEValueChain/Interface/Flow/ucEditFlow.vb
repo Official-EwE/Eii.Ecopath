@@ -40,9 +40,9 @@ Public Class ucEditFlow
     Private m_data As cData = Nothing
     Private m_diagram As cFlowDiagram = Nothing
 
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal data As cData, _
-                   ByVal diagram As cFlowDiagram)
+    Public Sub New(uic As cUIContext, _
+                   data As cData, _
+                   diagram As cFlowDiagram)
 
         Me.InitializeComponent()
 
@@ -57,7 +57,7 @@ Public Class ucEditFlow
 
         Dim levels As Single() = Me.m_plFlow.ZoomLevels
         For i As Integer = 0 To levels.Length - 1
-            Dim ctrl As New ToolStripMenuItem(cStringUtils.Localize(ScientificInterfaceShared.My.Resources.GENERIC_VALUE_PERCENTAGE, levels(i) * 100), Nothing, AddressOf OnZoom)
+            Dim ctrl As New ToolStripMenuItem(cStringUtils.Localize(ScientificInterfaceShared.My.Resources.GENERIC_VALUE_PERCENTAGE, levels(i) * 100), Nothing, AddressOf Me.OnZoom)
             ctrl.Tag = levels(i)
             Me.m_tsddZoom.DropDownItems.Add(ctrl)
         Next
@@ -74,11 +74,11 @@ Public Class ucEditFlow
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             ' Store zoom factor
-            If (Data.Parameters IsNot Nothing) Then
-                Data.Parameters.ZoomFactor = Me.m_plFlow.ZoomFactor
+            If (Me.Data.Parameters IsNot Nothing) Then
+                Me.Data.Parameters.ZoomFactor = Me.m_plFlow.ZoomFactor
             End If
 
             My.Settings.ShowGrid = Me.m_plFlow.ShowGrid
@@ -87,13 +87,13 @@ Public Class ucEditFlow
             Me.m_uic = Nothing
 
             ' Disconnect
-            RemoveHandler Me.m_plFlow.EditModeChanged, AddressOf OnEditModeChanged
+            RemoveHandler Me.m_plFlow.EditModeChanged, AddressOf Me.OnEditModeChanged
             RemoveHandler Me.m_plFlow.ZoomChanged, AddressOf Me.OnZoomChanged
-            RemoveHandler Me.m_plFlow.SelectionChanged, AddressOf OnSelectionChanged
+            RemoveHandler Me.m_plFlow.SelectionChanged, AddressOf Me.OnSelectionChanged
 
             ' Default cleanup
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
         Finally
             MyBase.Dispose(disposing)
@@ -104,14 +104,14 @@ Public Class ucEditFlow
 
 #Region " Saving "
 
-    Private Sub m_tsmiSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_tsmiSave_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiSave.Click, m_tsbSave.ButtonClick
 
         Me.m_data.Save()
 
     End Sub
 
-    Private Sub m_tsmiExportToImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_tsmiExportToImage_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiExportToImage.Click
 
         Debug.Assert(False, "Image save functionality not yet implemented")
@@ -122,13 +122,13 @@ Public Class ucEditFlow
 
 #Region " Diagram controls "
 
-    'Private Sub OnDiagram(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    'Private Sub OnDiagram(sender As System.Object, e As System.EventArgs) _
     '    Handles m_tsddDiagram.Click
     '    ' ToDo: invoke add/remove diagram dialog
     '    Me.UpdateControls()
     'End Sub
 
-    'Private Sub OnSelectDiagram(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    'Private Sub OnSelectDiagram(sender As System.Object, e As System.EventArgs)
     '    Dim tsi As ToolStripItem = DirectCast(sender, ToolStripItem)
     '    Me.Diagram = DirectCast(tsi.Tag, cFlowDiagram)
     'End Sub
@@ -137,22 +137,22 @@ Public Class ucEditFlow
 
 #Region " Mode buttons "
 
-    Private Sub tsbMove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub tsbMove_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbMove.Click
         Me.m_plFlow.EditMode = plFlow.eEditMode.Move
     End Sub
 
-    Private Sub tsbLink_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub tsbLink_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbLink.Click
         Me.m_plFlow.EditMode = plFlow.eEditMode.Link
     End Sub
 
-    Private Sub tsbDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub tsbDelete_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbDelete.Click
         Me.m_plFlow.EditMode = plFlow.eEditMode.Delete
     End Sub
 
-    Private Sub OnEditModeChanged(ByVal pl As plFlow, ByVal mode As plFlow.eEditMode)
+    Private Sub OnEditModeChanged(pl As plFlow, mode As plFlow.eEditMode)
         Me.UpdateControls()
     End Sub
 
@@ -160,49 +160,49 @@ Public Class ucEditFlow
 
 #Region " Creation buttons "
 
-    Private Sub OnCreateProducersForFleet(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateProducersForFleet(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateProducersForFleets.Click
         Me.m_plFlow.CreateProducersForFleets()
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateProducer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateProducer(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateProducer.Click
         Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Producer)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateProcessing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateProcessing(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateProcessing.Click
         Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Processing)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateDistribution(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateDistribution(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateDistribution.Click
         Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Distribution)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateWholesaler(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateWholesaler(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateWholesaler.Click
         Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Wholesaler)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateRetailer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateRetailer(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateRetailer.Click
         Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Retailer)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCreateConsumer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCreateConsumer(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbCreateConsumer.Click
         Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Consumer)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnConvertSelection(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OnConvertSelection(sender As System.Object, e As System.EventArgs)
 
         If (Not TypeOf sender Is ToolStripItem) Then Return
         Dim item As ToolStripItem = DirectCast(sender, ToolStripItem)
@@ -217,7 +217,7 @@ Public Class ucEditFlow
 
 #Region " Control buttons "
 
-    Private Sub OnArrangeLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnArrangeLayout(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbArrange.Click
 
         Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_AUTOLAYOUT, EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
@@ -233,7 +233,7 @@ Public Class ucEditFlow
 
     End Sub
 
-    Private Sub OnShowGrid(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowGrid(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbShowGrid.Click
         Me.m_plFlow.ShowGrid = Not Me.m_plFlow.ShowGrid
         Me.UpdateControls()
@@ -250,7 +250,7 @@ Public Class ucEditFlow
 
 #Region " Zoomzoom "
 
-    Private Sub OnZoom(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OnZoom(sender As System.Object, e As System.EventArgs)
         Try
             Me.m_plFlow.ZoomFactor = CSng(DirectCast(sender, ToolStripMenuItem).Tag)
         Catch ex As Exception
@@ -321,7 +321,7 @@ Public Class ucEditFlow
             If (Not TypeOf unit Is cProducerUnit) Then
                 For ut As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Processing To cUnitFactory.eUnitType.Consumer
                     If (unit.UnitType <> ut) Then
-                        Dim item As New ToolStripMenuItem(fmt.ToString(ut), cUnitImageFactory.GetImage(ut), AddressOf OnConvertSelection)
+                        Dim item As New ToolStripMenuItem(fmt.ToString(ut), cUnitImageFactory.GetImage(ut), AddressOf Me.OnConvertSelection)
                         item.Tag = ut
                         Me.m_tssbConvert.DropDownItems.Add(item)
                         bCanConvert = True
@@ -340,7 +340,7 @@ Public Class ucEditFlow
         Get
             Return Me.m_diagram
         End Get
-        Set(ByVal value As cFlowDiagram)
+        Set(value As cFlowDiagram)
             If ReferenceEquals(value, Me.m_diagram) Then Return
 
             If (Me.m_diagram IsNot Nothing) Then
@@ -361,7 +361,7 @@ Public Class ucEditFlow
         Get
             Return Me.m_data
         End Get
-        Set(ByVal value As cData)
+        Set(value As cData)
             Me.m_data = value
         End Set
     End Property

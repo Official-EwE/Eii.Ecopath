@@ -29,8 +29,8 @@ Public Class cEcospaceModelParameters
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
         Dim val As cValue
 
@@ -38,188 +38,188 @@ Public Class cEcospaceModelParameters
 
             Me.DBID = DBID
 
-            m_dataType = eDataTypes.EcospaceModelParameter
-            m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_dataType = eDataTypes.EcospaceModelParameter
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.AllowValidation = False
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Number of time steps per year
-            val = New cValue(1, eVarNameFlags.NumTimeStepsPerYear, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.NumTimeStepsPerYear, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' Number of regions
-            val = New cValue(1, eVarNameFlags.EcospaceRegionNumber, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceRegionNumber, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' PredictEffort
-            val = New cValue(1, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             'AdjustSpace
-            val = New cValue(1, eVarNameFlags.AdjustSpace, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.AdjustSpace, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             'Total time
-            val = New cValue(1, eVarNameFlags.TotalTime, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.TotalTime, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' Tolerance
-            val = New cValue(1, eVarNameFlags.Tolerance, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.Tolerance, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' SOR (W)
-            val = New cValue(1, eVarNameFlags.SOR, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.SOR, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' Max num iterations
-            val = New cValue(1, eVarNameFlags.MaxIterations, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.MaxIterations, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' UseExact
-            val = New cValue(1, eVarNameFlags.UseExact, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.UseExact, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceMinForagingCapacity, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceMinForagingCapacity, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceAllowHabCapGradCorrections, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceAllowHabCapGradCorrections, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'Contaminant tracing
-            val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSpace, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.ConSimOnEcoSpace, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'Spinup
-            val = New cValue(New Boolean, eVarNameFlags.EcospaceSpinupEnabled, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, New Boolean, eVarNameFlags.EcospaceSpinupEnabled, eStatusFlags.Null, eValueTypes.Bool)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceSpinupYears, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceSpinupYears, eStatusFlags.Null, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             ' Multi threading vars
 
             'solver threads
-            val = New cValue(1, eVarNameFlags.nGridSolverThreads, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 1, eVarNameFlags.nGridSolverThreads, eStatusFlags.Null, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'space threads
-            val = New cValue(1, eVarNameFlags.nSpaceThreads, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 1, eVarNameFlags.nSpaceThreads, eStatusFlags.Null, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'Number of effort distribution threads
-            val = New cValue(1, eVarNameFlags.nEffortDistThreads, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 1, eVarNameFlags.nEffortDistThreads, eStatusFlags.Null, eValueTypes.Int)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'stanza packets multiplier
-            val = New cValue(0.5, eVarNameFlags.PacketsMultiplier, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0.5, eVarNameFlags.PacketsMultiplier, eStatusFlags.Null, eValueTypes.Sng)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             'summary data
             'StartSummaryTime
-            val = New cValue(1, eVarNameFlags.EcospaceSummaryTimeStart, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceSummaryTimeStart, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'EndSummaryTime 
-            val = New cValue(1, eVarNameFlags.EcospaceSummaryTimeEnd, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceSummaryTimeEnd, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'NumSummaryTimeSteps
-            val = New cValue(1, eVarNameFlags.EcospaceNumberSummaryTimeSteps, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceNumberSummaryTimeSteps, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.UseNewMultiStanza, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.UseNewMultiStanza, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.UseIBM, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.UseIBM, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(0.5, eVarNameFlags.IFDPower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 0.5, eVarNameFlags.IFDPower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceIBMMovePacketOnStanza, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceIBMMovePacketOnStanza, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             'Core Ouput Dir
-            val = New cValue(1, eVarNameFlags.EcospaceUseCoreOutputDir, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceUseCoreOutputDir, eStatusFlags.Null, eValueTypes.Bool)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Save Annual
-            val = New cValue(1, eVarNameFlags.EcospaceUseAnnualOutput, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceUseAnnualOutput, eStatusFlags.Null, eValueTypes.Bool)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.UseEffortDistThreshold, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.UseEffortDistThreshold, eStatusFlags.Null, eValueTypes.Bool)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EffortDistThreshold, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 1, eVarNameFlags.EffortDistThreshold, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceUseLocalMemory, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceUseLocalMemory, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue("", eVarNameFlags.EcospaceAreaOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, "", eVarNameFlags.EcospaceAreaOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue("", eVarNameFlags.EcospaceMapOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, "", eVarNameFlags.EcospaceMapOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceFirstOutputTimeStep, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceFirstOutputTimeStep, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceUseEcosimBiomassForcing, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceUseEcosimBiomassForcing, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceUseEcosimDiscardForcing, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceUseEcosimDiscardForcing, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
-            m_EcospaceResultsWriters.AddRange(cEcospaceResultWriterFactory.GetWriters(Me.m_core.PluginManager))
+            Me.m_EcospaceResultsWriters.AddRange(cEcospaceResultWriterFactory.GetWriters(Me.m_core.PluginManager))
 
             Me.AllowValidation = True
 
@@ -233,7 +233,7 @@ Public Class cEcospaceModelParameters
 
 #Region " Overrides "
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         MyBase.ResetStatusFlags(bForceReset)
         Me.m_core.Set_IBM_Flags(Me, False)
 
@@ -257,10 +257,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property NumberOfTimeStepsPerYear() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.NumTimeStepsPerYear))
+            Return CSng(Me.GetVariable(eVarNameFlags.NumTimeStepsPerYear))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.NumTimeStepsPerYear, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.NumTimeStepsPerYear, value)
         End Set
     End Property
 
@@ -271,10 +271,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property nRegions() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcospaceRegionNumber))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceRegionNumber))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcospaceRegionNumber, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceRegionNumber, value)
         End Set
     End Property
 
@@ -286,10 +286,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property AdjustSpace() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.AdjustSpace))
+            Return CBool(Me.GetVariable(eVarNameFlags.AdjustSpace))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.AdjustSpace, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.AdjustSpace, value)
         End Set
     End Property
 
@@ -300,10 +300,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property PredictEffort() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.PredictEffort))
+            Return CBool(Me.GetVariable(eVarNameFlags.PredictEffort))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.PredictEffort, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.PredictEffort, value)
         End Set
     End Property
 
@@ -315,10 +315,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property StartSummaryTime() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcospaceSummaryTimeStart))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceSummaryTimeStart))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcospaceSummaryTimeStart, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceSummaryTimeStart, value)
         End Set
     End Property
 
@@ -329,10 +329,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property EndSummaryTime() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcospaceSummaryTimeEnd))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceSummaryTimeEnd))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcospaceSummaryTimeEnd, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceSummaryTimeEnd, value)
         End Set
     End Property
 
@@ -343,19 +343,19 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property NumberSummaryTimeSteps() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcospaceNumberSummaryTimeSteps))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceNumberSummaryTimeSteps))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcospaceNumberSummaryTimeSteps, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceNumberSummaryTimeSteps, value)
         End Set
     End Property
 
     Public Property nGridSolverThreads() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.nGridSolverThreads))
+            Return CInt(Me.GetVariable(eVarNameFlags.nGridSolverThreads))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.nGridSolverThreads, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.nGridSolverThreads, value)
         End Set
     End Property
 
@@ -367,19 +367,19 @@ Public Class cEcospaceModelParameters
     ''' <remarks>Not used by the Scientific Interface provided here so it can be set via code.</remarks>
     Public Property nEffortDistThreads() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.nEffortDistThreads))
+            Return CInt(Me.GetVariable(eVarNameFlags.nEffortDistThreads))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.nEffortDistThreads, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.nEffortDistThreads, value)
         End Set
     End Property
 
     Public Property nSpaceThreads() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.nSpaceThreads))
+            Return CInt(Me.GetVariable(eVarNameFlags.nSpaceThreads))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.nSpaceThreads, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.nSpaceThreads, value)
         End Set
     End Property
 
@@ -390,10 +390,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property UseIBM() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.UseIBM))
+            Return CBool(Me.GetVariable(eVarNameFlags.UseIBM))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.UseIBM, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.UseIBM, value)
         End Set
     End Property
 
@@ -405,119 +405,119 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property UseNewMultiStanza() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.UseNewMultiStanza))
+            Return CBool(Me.GetVariable(eVarNameFlags.UseNewMultiStanza))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.UseNewMultiStanza, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.UseNewMultiStanza, value)
         End Set
     End Property
 
     Public Property IFDPower() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.IFDPower))
+            Return CSng(Me.GetVariable(eVarNameFlags.IFDPower))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.IFDPower, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.IFDPower, value)
         End Set
     End Property
 
     Public Property TotalTime() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.TotalTime))
+            Return CSng(Me.GetVariable(eVarNameFlags.TotalTime))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TotalTime, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.TotalTime, value)
         End Set
     End Property
 
     Public Property PacketsMultiplier() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.PacketsMultiplier))
+            Return CSng(Me.GetVariable(eVarNameFlags.PacketsMultiplier))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PacketsMultiplier, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.PacketsMultiplier, value)
         End Set
     End Property
 
     Public Property Tolerance() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Tolerance))
+            Return CSng(Me.GetVariable(eVarNameFlags.Tolerance))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Tolerance, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Tolerance, value)
         End Set
     End Property
 
     Public Property SOR() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.SOR))
+            Return CSng(Me.GetVariable(eVarNameFlags.SOR))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SOR, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.SOR, value)
         End Set
     End Property
 
     Public Property MaxNumberOfIterations() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.MaxIterations))
+            Return CInt(Me.GetVariable(eVarNameFlags.MaxIterations))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.MaxIterations, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.MaxIterations, value)
         End Set
     End Property
 
     Public Property ContaminantTracing() As Boolean
         Get
-            Return CType(GetVariable(eVarNameFlags.ConSimOnEcoSpace), Boolean)
+            Return CType(Me.GetVariable(eVarNameFlags.ConSimOnEcoSpace), Boolean)
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.ConSimOnEcoSpace, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.ConSimOnEcoSpace, value)
         End Set
     End Property
 
     Public Property ContaminantTracingStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.ConSimOnEcoSpace)
+            Return Me.GetStatus(eVarNameFlags.ConSimOnEcoSpace)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.ConSimOnEcoSpace, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.ConSimOnEcoSpace, value)
         End Set
     End Property
 
     Public Property SpinupEnabled() As Boolean
         Get
-            Return CType(GetVariable(eVarNameFlags.EcospaceSpinupEnabled), Boolean)
+            Return CType(Me.GetVariable(eVarNameFlags.EcospaceSpinupEnabled), Boolean)
         End Get
         Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceSpinupEnabled, value)
+            Me.SetVariable(eVarNameFlags.EcospaceSpinupEnabled, value)
         End Set
     End Property
 
     Public Property SpinupEnabledStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceSpinupEnabled)
+            Return Me.GetStatus(eVarNameFlags.EcospaceSpinupEnabled)
         End Get
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceSpinupEnabled, value)
+            Me.SetStatus(eVarNameFlags.EcospaceSpinupEnabled, value)
         End Set
     End Property
 
     Public Property SpinupYears() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.EcospaceSpinupYears), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.EcospaceSpinupYears), Single)
         End Get
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcospaceSpinupYears, value)
+            Me.SetVariable(eVarNameFlags.EcospaceSpinupYears, value)
         End Set
     End Property
 
     Public Property SpinupYearsStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceSpinupYears)
+            Return Me.GetStatus(eVarNameFlags.EcospaceSpinupYears)
         End Get
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceSpinupYears, value)
+            Me.SetStatus(eVarNameFlags.EcospaceSpinupYears, value)
         End Set
     End Property
 
@@ -528,37 +528,37 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property UseExact() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.UseExact))
+            Return CBool(Me.GetVariable(eVarNameFlags.UseExact))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.UseExact, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.UseExact, value)
         End Set
     End Property
 
     Public Property AllowHabCapGradientCorrections As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections, value)
         End Set
     End Property
 
     Public Property MinForagingCapacity As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceMinForagingCapacity))
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceMinForagingCapacity))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcospaceMinForagingCapacity, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospaceMinForagingCapacity, value)
         End Set
     End Property
 
     Public Property IBMMovePacketOnStanza() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza, value)
         End Set
     End Property
 
@@ -573,7 +573,7 @@ Public Class cEcospaceModelParameters
     '        Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
     '    End Get
 
-    '    Set(ByVal value As eEcospaceCapacityCalType)
+    '    Set(value As eEcospaceCapacityCalType)
     '        SetVariable(eVarNameFlags.EcospaceCapCalType, value)
     '    End Set
 
@@ -586,10 +586,10 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property UseAnnualOuput() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceUseAnnualOutput))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseAnnualOutput))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceUseAnnualOutput, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceUseAnnualOutput, value)
         End Set
     End Property
 
@@ -603,73 +603,73 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property UseCoreOutputDirectory() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceUseCoreOutputDir))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseCoreOutputDir))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceUseCoreOutputDir, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceUseCoreOutputDir, value)
         End Set
     End Property
 
     Public Property UseEffortDistThreshold() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.UseEffortDistThreshold))
+            Return CBool(Me.GetVariable(eVarNameFlags.UseEffortDistThreshold))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.UseEffortDistThreshold, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.UseEffortDistThreshold, value)
         End Set
     End Property
 
     Public Property EffortDistThreshold() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EffortDistThreshold))
+            Return CSng(Me.GetVariable(eVarNameFlags.EffortDistThreshold))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EffortDistThreshold, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EffortDistThreshold, value)
         End Set
     End Property
 
     Public Property UseLocalMemory() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceUseLocalMemory))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseLocalMemory))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceUseLocalMemory, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceUseLocalMemory, value)
         End Set
     End Property
 
     Public Property UseEcosimBiomassForcing() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing, value)
         End Set
     End Property
 
     Public Property IsEcosimBiomassForcingLoaded() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, value)
         End Set
     End Property
 
     Public Property UseEcosimDiscardForcing() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceUseEcosimDiscardForcing))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseEcosimDiscardForcing))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceUseEcosimDiscardForcing, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceUseEcosimDiscardForcing, value)
         End Set
     End Property
 
     Public Property IsEcosimDiscardForcingLoaded() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded))
         End Get
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded, value)
         End Set
     End Property
 
@@ -684,10 +684,10 @@ Public Class cEcospaceModelParameters
     ''' </remarks>
     Public Property EcospaceAreaOutputDir() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.EcospaceAreaOutputDir))
+            Return CStr(Me.GetVariable(eVarNameFlags.EcospaceAreaOutputDir))
         End Get
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.EcospaceAreaOutputDir, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.EcospaceAreaOutputDir, value)
         End Set
     End Property
 
@@ -702,19 +702,19 @@ Public Class cEcospaceModelParameters
     ''' </remarks>
     Public Property EcospaceMapOutputDir() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.EcospaceMapOutputDir))
+            Return CStr(Me.GetVariable(eVarNameFlags.EcospaceMapOutputDir))
         End Get
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.EcospaceMapOutputDir, value)
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.EcospaceMapOutputDir, value)
         End Set
     End Property
 
     Public Property FirstOutputTimeStep() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep, value)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep, value)
         End Set
     End Property
 

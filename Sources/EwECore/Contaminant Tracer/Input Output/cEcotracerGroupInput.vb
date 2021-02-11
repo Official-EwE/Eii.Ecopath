@@ -31,7 +31,7 @@ Public Class cEcotracerGroupInput
 
 #Region " Constructor "
 
-    Friend Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
+    Friend Sub New(ByRef theCore As cCore, iDBID As Integer)
         MyBase.New(theCore)
 
         Dim val As cValue
@@ -47,32 +47,32 @@ Public Class cEcotracerGroupInput
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' CZero
-            val = New cValue(New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(theCore, New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CImmig
-            val = New cValue(New Single, eVarNameFlags.CImmig, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(theCore, New Single, eVarNameFlags.CImmig, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CEnvironment
-            val = New cValue(New Single, eVarNameFlags.CEnvironment, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(theCore, New Single, eVarNameFlags.CEnvironment, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CDecay
-            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(theCore, New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CAssimilationProp
-            val = New cValue(New Single, eVarNameFlags.CAssimilationProp, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(theCore, New Single, eVarNameFlags.CAssimilationProp, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CMetablismRate
             Dim meta As cVariableMetaData = New cVariableMetaData(0.0, 1.0E+20, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng, meta)
+            val = New cValue(theCore, New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng, meta)
             Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -88,61 +88,61 @@ Public Class cEcotracerGroupInput
 
     Public Property CZero() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CZero), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.CZero), Single)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CZero, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CZero, value)
         End Set
     End Property
 
     Public Property CImmig() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CImmig), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.CImmig), Single)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CImmig, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CImmig, value)
         End Set
     End Property
 
     Public Property CEnvironment() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CEnvironment), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.CEnvironment), Single)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CEnvironment, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CEnvironment, value)
         End Set
     End Property
 
     Public Property CDecay() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CPhysicalDecayRate), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.CPhysicalDecayRate), Single)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CPhysicalDecayRate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
     End Property
 
     Public Property CAssimilationProp() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CAssimilationProp), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.CAssimilationProp), Single)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CAssimilationProp, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CAssimilationProp, value)
         End Set
     End Property
 
     Public Property CMetablismRate() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CMetablismRate), Single)
+            Return CType(Me.GetVariable(eVarNameFlags.CMetablismRate), Single)
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CMetablismRate, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.CMetablismRate, value)
         End Set
     End Property
 
@@ -153,11 +153,11 @@ Public Class cEcotracerGroupInput
     Public Property CZeroStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CZero)
+            Return Me.GetStatus(eVarNameFlags.CZero)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CZero, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CZero, value)
         End Set
 
     End Property
@@ -165,11 +165,11 @@ Public Class cEcotracerGroupInput
     Public Property CImmigStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CImmig)
+            Return Me.GetStatus(eVarNameFlags.CImmig)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CImmig, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CImmig, value)
         End Set
 
     End Property
@@ -177,11 +177,11 @@ Public Class cEcotracerGroupInput
     Public Property CEnvironmentStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CEnvironment)
+            Return Me.GetStatus(eVarNameFlags.CEnvironment)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CEnvironment, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CEnvironment, value)
         End Set
 
     End Property
@@ -189,11 +189,11 @@ Public Class cEcotracerGroupInput
     Public Property CDecayStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CPhysicalDecayRate)
+            Return Me.GetStatus(eVarNameFlags.CPhysicalDecayRate)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
 
     End Property
@@ -201,11 +201,11 @@ Public Class cEcotracerGroupInput
     Public Property CExcretionRateStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CAssimilationProp)
+            Return Me.GetStatus(eVarNameFlags.CAssimilationProp)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CAssimilationProp, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CAssimilationProp, value)
         End Set
 
     End Property

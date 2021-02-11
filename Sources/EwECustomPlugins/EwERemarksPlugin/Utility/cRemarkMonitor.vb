@@ -50,12 +50,12 @@ Friend Class cRemarkMonitor
 
         Me.m_bBatch = True
         For Each prop As cProperty In Me.m_pm.GetProperties
-            OnPropertyAdded(prop)
+            Me.OnPropertyAdded(prop)
         Next
         Me.m_bBatch = False
 
-        AddHandler Me.m_pm.OnPropertyRemoved, AddressOf OnPropertyRemoved
-        AddHandler Me.m_pm.OnPropertyAdded, AddressOf OnPropertyAdded
+        AddHandler Me.m_pm.OnPropertyRemoved, AddressOf Me.OnPropertyRemoved
+        AddHandler Me.m_pm.OnPropertyAdded, AddressOf Me.OnPropertyAdded
 
     End Sub
 
@@ -63,12 +63,12 @@ Friend Class cRemarkMonitor
 
         If (Me.m_pm IsNot Nothing) Then
 
-            RemoveHandler Me.m_pm.OnPropertyAdded, AddressOf OnPropertyAdded
-            RemoveHandler Me.m_pm.OnPropertyRemoved, AddressOf OnPropertyRemoved
+            RemoveHandler Me.m_pm.OnPropertyAdded, AddressOf Me.OnPropertyAdded
+            RemoveHandler Me.m_pm.OnPropertyRemoved, AddressOf Me.OnPropertyRemoved
 
             Me.m_bBatch = True
             For Each prop As cProperty In Me.m_pm.GetProperties
-                OnPropertyRemoved(prop)
+                Me.OnPropertyRemoved(prop)
             Next
             Me.m_bBatch = False
 
@@ -116,7 +116,7 @@ Friend Class cRemarkMonitor
 
 #Region " Internals "
 
-    Private Sub OnPropertyAdded(ByVal prop As cProperty)
+    Private Sub OnPropertyAdded(prop As cProperty)
 
         ' Add to internal admin, if applicable
         If prop.HasRemark() Then
@@ -125,14 +125,14 @@ Friend Class cRemarkMonitor
         End If
 
         ' Start monitoring for remark text changes
-        AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+        AddHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
 
     End Sub
 
-    Private Sub OnPropertyRemoved(ByVal prop As cProperty)
+    Private Sub OnPropertyRemoved(prop As cProperty)
 
         ' Stop monitoring for remark text changes
-        RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+        RemoveHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
 
         ' Remove from internal admin, if applicable
         If (Me.m_dtProps.Contains(prop)) Then
@@ -148,7 +148,7 @@ Friend Class cRemarkMonitor
     ''' <param name="prop">The property that changed.</param>
     ''' <param name="ct">The aspect of the property that changed.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal ct As cProperty.eChangeFlags)
+    Private Sub OnPropertyChanged(prop As cProperty, ct As cProperty.eChangeFlags)
 
         Dim bListChanged As Boolean = False
 

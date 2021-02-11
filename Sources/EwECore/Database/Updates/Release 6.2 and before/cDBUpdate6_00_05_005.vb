@@ -72,7 +72,7 @@ Friend Class cDBUpdate6_00_05_005
 
     End Function
 
-    Private Function AddPSDParameters(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddPSDParameters(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

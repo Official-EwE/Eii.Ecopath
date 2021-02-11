@@ -51,7 +51,7 @@ Namespace Ecosim
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
             Me.m_core = uic.Core
             Me.m_sg = uic.StyleGuide
@@ -99,7 +99,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.Value"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Value(ByVal iIndex As Integer) As Single _
+        Public ReadOnly Property Value(iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
                 Return Me.m_core.EcoSimGroupOutputs(iIndex).Biomass(Me.TimeStep)
@@ -109,7 +109,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueLabel"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ValueLabel(ByVal sBiomass As Single) As String _
+        Public ReadOnly Property ValueLabel(sBiomass As Single) As String _
               Implements IFlowDiagramData.ValueLabel
             Get
                 Return cStringUtils.Localize(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.m_sg.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
@@ -119,7 +119,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ItemName"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemName(ByVal iIndex As Integer) As String _
+        Public ReadOnly Property ItemName(iIndex As Integer) As String _
                 Implements IFlowDiagramData.ItemName
             Get
                 Return Me.m_core.EcoPathGroupInputs(iIndex).Name
@@ -129,7 +129,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ItemColor"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemColor(ByVal iGroup As Integer) As Color _
+        Public ReadOnly Property ItemColor(iGroup As Integer) As Color _
                 Implements IFlowDiagramData.ItemColor
             Get
                 Return Me.m_sg.GroupColor(Me.UIContext.Core, iGroup)
@@ -139,7 +139,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsItemVisible(ByVal iGroup As Integer) As Boolean _
+        Public ReadOnly Property IsItemVisible(iGroup As Integer) As Boolean _
                 Implements IFlowDiagramData.IsItemVisible
             Get
                 Return Me.m_sg.GroupVisible(iGroup)
@@ -149,7 +149,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValue"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
+        Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
                 ' ToDo: obtain this from Ecosim
@@ -161,7 +161,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.TrophicLevel"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single _
+        Public ReadOnly Property TrophicLevel(iIndex As Integer) As Single _
                 Implements IFlowDiagramData.TrophicLevel
             Get
                 Return Me.m_core.EcoPathGroupOutputs(iIndex).TTLX

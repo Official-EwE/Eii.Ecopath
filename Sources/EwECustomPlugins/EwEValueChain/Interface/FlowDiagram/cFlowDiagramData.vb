@@ -58,8 +58,8 @@ Public Class cFlowDiagramData
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal uic As cUIContext, ByVal model As cModel,
-                   ByVal data As cData, ByVal results As cResults)
+    Public Sub New(uic As cUIContext, model As cModel,
+                   data As cData, results As cResults)
 
         Me.m_uic = uic
         Me.m_model = model
@@ -289,15 +289,15 @@ Public Class cFlowDiagramData
         Dim strDCFile As String = Path.Combine(Path.GetDirectoryName(strModelFile), Path.GetFileNameWithoutExtension(strModelFile)) & "_VC_flowOrg.csv"
         Dim sw As New StreamWriter(strDCFile)
 
-        For iPred As Integer = 1 To m_nGroups
+        For iPred As Integer = 1 To Me.m_nGroups
             Dim unitPred As cUnit = Me.m_units(iPred)
             sw.Write("," & cStringUtils.ToCSVField(unitPred.Name))
         Next
         sw.WriteLine()
-        For iPrey As Integer = 1 To m_nGroups
+        For iPrey As Integer = 1 To Me.m_nGroups
             Dim unitPrey As cUnit = Me.m_units(iPrey)
             sw.Write(cStringUtils.ToCSVField(unitPrey.Name))
-            For iPred As Integer = 1 To m_nGroups
+            For iPred As Integer = 1 To Me.m_nGroups
                 Dim unitPred As cUnit = Me.m_units(iPred)
                 sw.Write("," & cStringUtils.FormatNumber(Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)))
             Next
@@ -361,15 +361,15 @@ Public Class cFlowDiagramData
         strDCFile = Path.Combine(Path.GetDirectoryName(strModelFile), Path.GetFileNameWithoutExtension(strModelFile)) & "_VC_flowDC.csv"
         sw = New StreamWriter(strDCFile)
 
-        For iPred As Integer = 1 To m_nGroups
+        For iPred As Integer = 1 To Me.m_nGroups
             Dim unitPred As cUnit = Me.m_units(iPred)
             sw.Write("," & cStringUtils.ToCSVField(unitPred.Name))
         Next
         sw.WriteLine()
-        For iPrey As Integer = 1 To m_nGroups
+        For iPrey As Integer = 1 To Me.m_nGroups
             Dim unitPrey As cUnit = Me.m_units(iPrey)
             sw.Write(cStringUtils.ToCSVField(unitPrey.Name))
-            For iPred As Integer = 1 To m_nGroups
+            For iPred As Integer = 1 To Me.m_nGroups
                 Dim unitPred As cUnit = Me.m_units(iPred)
                 sw.Write("," & cStringUtils.FormatNumber(Me.m_diets(iPred, iPrey)))
             Next

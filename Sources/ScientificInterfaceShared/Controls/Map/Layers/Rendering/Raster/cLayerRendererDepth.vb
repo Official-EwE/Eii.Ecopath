@@ -43,18 +43,18 @@ Namespace Controls.Map.Layers
             MyBase.New(uic, vs)
         End Sub
 
-        'Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-        '                                   ByVal rc As Rectangle)
+        'Public Overrides Sub RenderPreview(g As Graphics, _
+        '                                   rc As Rectangle)
         '    MyBase.RenderPreview(g, rc)
         '    If Me.ForeBrush Is Nothing Then Me.Update()
         '    g.DrawString("#", Me.Font, Me.ForeBrush, rc)
         'End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
-                                        ByVal rc As System.Drawing.RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As System.Drawing.Graphics,
+                                        rc As System.Drawing.RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As cStyleGuide.eStyleFlags)
 
             Try
                 Dim sValue As Single = CSng(value)

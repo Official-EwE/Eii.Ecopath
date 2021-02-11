@@ -61,13 +61,13 @@ Namespace Ecospace
                 End Get
             End Property
 
-            Default Public ReadOnly Property Item(ByVal index As Integer) As ZedGraph.PointPair Implements ZedGraph.IPointList.Item
+            Default Public ReadOnly Property Item(index As Integer) As ZedGraph.PointPair Implements ZedGraph.IPointList.Item
                 Get
                     Return Me.m_list(index)
                 End Get
             End Property
 
-            Public Sub AddItem(ByVal sValue As Single)
+            Public Sub AddItem(sValue As Single)
                 Me.m_list.Add(New ZedGraph.PointPair(Me.Count, sValue))
             End Sub
 
@@ -163,7 +163,7 @@ Namespace Ecospace
             End Get
         End Property
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -171,8 +171,8 @@ Namespace Ecospace
             Dim SpaceOpt As cCoreInputOutputBase = Me.UIContext.Core.EcospaceModelParameters
             Dim MPAOpt As cMPAOptParameters = Nothing
 
-            Me.m_manager = UIContext.Core.MPAOptimizationManager
-            Me.m_manager.Connect(Me, AddressOf Me.OnHandleSeedCellCallback, AddressOf OnRunStateChanged)
+            Me.m_manager = Me.UIContext.Core.MPAOptimizationManager
+            Me.m_manager.Connect(Me, AddressOf Me.OnHandleSeedCellCallback, AddressOf Me.OnRunStateChanged)
 
             MPAOpt = Me.m_manager.MPAOptimizationParameters
 
@@ -202,7 +202,7 @@ Namespace Ecospace
             Me.m_ucZoomBar.AddZoomContainer(Me.m_ucZoom)
 
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
-            AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
+            AddHandler Me.m_propSearchType.PropertyChanged, AddressOf Me.OnSearchTypeChanged
 
             ' Connect to controls
             Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudStartYear, MPAOpt, eVarNameFlags.MPAOptStartYear)
@@ -263,11 +263,11 @@ Namespace Ecospace
             Next
             Me.m_layers = Nothing
 
-            RemoveHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+            RemoveHandler Me.m_zghResults.OnCursorPos, AddressOf Me.OnResultCursorPos
             Me.m_zghResults.Detach()
             Me.m_zghProgress.Detach()
 
-            RemoveHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
+            RemoveHandler Me.m_propSearchType.PropertyChanged, AddressOf Me.OnSearchTypeChanged
             Me.m_propSearchType = Nothing
 
             Me.CoreComponents = Nothing
@@ -292,7 +292,7 @@ Namespace Ecospace
 
 #Region " Controls "
 
-        Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
                 Handles m_btnRun.Click
 
             ' Abort if not all inputs valid
@@ -301,7 +301,7 @@ Namespace Ecospace
             Me.m_manager.Run()
         End Sub
 
-        Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnStop(sender As System.Object, e As System.EventArgs) _
                 Handles m_btnStop.Click
 
             Me.RunMode = eFormModeTypes.Stopping
@@ -309,35 +309,35 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnClearSeedCells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClearSeedCells(sender As System.Object, e As System.EventArgs) _
                 Handles m_tsmClearSeed.Click
             Me.m_manager.clearSeedCells()
             ' Re-render the map
             Me.m_ucZoom.Map.Refresh()
         End Sub
 
-        Private Sub OnClearMPACells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClearMPACells(sender As System.Object, e As System.EventArgs) _
                 Handles m_tsmClearMPA.Click
             Me.m_manager.clearMPAs()
             ' Re-render the map
             Me.m_ucZoom.Map.Refresh()
         End Sub
 
-        Private Sub OnSetAllSeedCells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSetAllSeedCells(sender As System.Object, e As System.EventArgs) _
                 Handles m_tsmSetAllSeed.Click
             Me.m_manager.setAllCellsToSeed(Me.SelectedMPA())
             ' Re-render the map
             Me.m_ucZoom.Map.Refresh()
         End Sub
 
-        Private Sub OnSetAllMPACells(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSetAllMPACells(sender As System.Object, e As System.EventArgs) _
                 Handles m_tsmSetAllMPA.Click
             Me.m_manager.setAllCellsToMPA(Me.SelectedMPA())
             ' Re-render the map
             Me.m_ucZoom.Map.Refresh()
         End Sub
 
-        Private Sub OnEditLayers(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnEditLayers(sender As Object, e As System.EventArgs) _
                 Handles m_tsbEditLayers.Click
 
             ' Note that the command is invoked manually here because in THIS FORM only the command will be enabled when
@@ -349,7 +349,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnModeEcoseed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnModeEcoseed(sender As System.Object, e As System.EventArgs) _
                 Handles m_rbEcoseed.CheckedChanged
 
             If Me.m_rbEcoseed.Checked Then
@@ -359,7 +359,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnModeRandom(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnModeRandom(sender As System.Object, e As System.EventArgs) _
                 Handles m_rbRandom.CheckedChanged
 
             If Me.m_rbRandom.Checked Then
@@ -369,7 +369,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnResetMPAs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnResetMPAs(sender As System.Object, e As System.EventArgs) _
                 Handles m_btnResetMPAs.Click
 
             Me.m_ucZoom.SuspendLayout()
@@ -391,14 +391,14 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnReset(sender As System.Object, e As System.EventArgs)
 
 
             Me.RunMode = eFormModeTypes.Prepare
 
         End Sub
 
-        Private Sub OnSelectAreaClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectAreaClosed(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbAreaClosed.SelectedIndexChanged
 
             If (Me.m_propSearchType Is Nothing) Then Return
@@ -411,7 +411,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnBestPercentileChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnBestPercentileChanged(sender As System.Object, e As System.EventArgs) _
                 Handles m_nudBestPercentile.ValueChanged
 
             If (Me.m_propSearchType Is Nothing) Then Return
@@ -428,7 +428,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Event handler, responds to the user exploring the progress graph.
         ''' </summary>
-        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        Private Sub OnResultCursorPos(zgh As cZedGraphHelper, iPane As Integer, sPos As Single)
             Try
                 Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
             Catch ex As Exception
@@ -436,7 +436,7 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OnConvertToMPA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnConvertToMPA(sender As System.Object, e As System.EventArgs) _
             Handles m_btnConvertToMpa.Click
 
             Dim map As Integer(,) = Nothing
@@ -445,7 +445,7 @@ Namespace Ecospace
             Select Case Me.SearchType
 
                 Case eMPAOptimizationModels.EcoSeed
-                    Me.SetLayer(Me.m_mapFeedback, Me.m_basemap.LayerMPA(SelectedMPA()), Me.SelectedMPA())
+                    Me.SetLayer(Me.m_mapFeedback, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
 
                 Case eMPAOptimizationModels.RandomSearch
                     Me.m_manager.ConvertResultsToMPA(Me.SelectedBestPercentile(), Me.SelectedClosedPercentage())
@@ -463,7 +463,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSave(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSave.Click
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -510,7 +510,7 @@ Namespace Ecospace
 
 #Region " Search manager "
 
-        Private Sub OnRunStateChanged(ByVal runstate As cMPAOptManager.eRunStates)
+        Private Sub OnRunStateChanged(runstate As cMPAOptManager.eRunStates)
 
             Try
                 Select Case runstate
@@ -541,7 +541,7 @@ Namespace Ecospace
 
 #Region " Core "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
             Select Case msg.Source
@@ -573,7 +573,7 @@ Namespace Ecospace
 
         Private m_bInUpdate As Boolean = False
 
-        Private Sub OnSearchTypeChanged(ByVal prop As cProperty, ByVal change As cProperty.eChangeFlags)
+        Private Sub OnSearchTypeChanged(prop As cProperty, change As cProperty.eChangeFlags)
             Debug.Assert(Object.ReferenceEquals(prop, Me.m_propSearchType))
 
             If Me.m_bInUpdate Then Return
@@ -593,7 +593,7 @@ Namespace Ecospace
 
 #Region " Map "
 
-        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal changeFlags As cDisplayLayer.eChangeFlags)
+        Private Sub OnLayerChanged(l As cDisplayLayer, changeFlags As cDisplayLayer.eChangeFlags)
             If ((changeFlags And cDisplayLayer.eChangeFlags.Selected) > 0) Then
                 Me.UpdateControls()
             End If
@@ -680,7 +680,7 @@ Namespace Ecospace
             End With
 
             Me.m_zghResults.AutoscalePane = True
-            AddHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
+            AddHandler Me.m_zghResults.OnCursorPos, AddressOf Me.OnResultCursorPos
 
         End Sub
 
@@ -697,7 +697,7 @@ Namespace Ecospace
             Get
                 Return Me.m_mode
             End Get
-            Set(ByVal value As eFormModeTypes)
+            Set(value As eFormModeTypes)
                 ' Switching?
                 If value <> Me.m_mode Then
                     ' Exit previous mode
@@ -721,7 +721,7 @@ Namespace Ecospace
             Get
                 Return DirectCast(Me.m_propSearchType.GetValue(), eMPAOptimizationModels)
             End Get
-            Set(ByVal value As eMPAOptimizationModels)
+            Set(value As eMPAOptimizationModels)
                 ' Only valid while preparing a run
                 If (Me.RunMode <> eFormModeTypes.Prepare) Then Return
 
@@ -739,14 +739,14 @@ Namespace Ecospace
 
                 ' Update visible state of existing layers
                 Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed),
-                    SearchType = eMPAOptimizationModels.EcoSeed, SearchType = eMPAOptimizationModels.EcoSeed)
+                    Me.SearchType = eMPAOptimizationModels.EcoSeed, Me.SearchType = eMPAOptimizationModels.EcoSeed)
                 Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom),
-                    SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
+                    Me.SearchType = eMPAOptimizationModels.RandomSearch, Me.SearchType = eMPAOptimizationModels.RandomSearch)
                 Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance),
-                     SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
+                     Me.SearchType = eMPAOptimizationModels.RandomSearch, Me.SearchType = eMPAOptimizationModels.RandomSearch)
 
                 ' Update graph labels
-                Select Case SearchType
+                Select Case Me.SearchType
                     Case eMPAOptimizationModels.EcoSeed
                         Me.m_graphProgress.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_ECOSEED
                         Me.m_graphResults.GraphPane.XAxis.Title.Text = My.Resources.MPAOPT_AXISLABEL_ECOSEED
@@ -763,7 +763,7 @@ Namespace Ecospace
         Private Function SelectedClosedPercentage() As Integer
             Dim iPerc As Integer = 20
             Try
-                If (m_cmbAreaClosed.SelectedIndex >= 0) Then
+                If (Me.m_cmbAreaClosed.SelectedIndex >= 0) Then
                     iPerc = CInt(Me.m_cmbAreaClosed.Items(Me.m_cmbAreaClosed.SelectedIndex))
                 End If
             Catch ex As Exception
@@ -1066,7 +1066,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cDisplayLayerRaster()
+        Private Function AddBaseLayers(varName As eVarNameFlags) As cDisplayLayerRaster()
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
@@ -1217,10 +1217,10 @@ Namespace Ecospace
 
 #Region " Progress "
 
-        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single,
-                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single,
-                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single,
-                                     ByVal sTotalValue As Single, ByVal sAreaPercentageClosed As Single)
+        Private Sub LogProgress(sEconomicValue As Single, sSocialValue As Single,
+                                     sMandatedValue As Single, sEcologicalValue As Single,
+                                     sBiomassDiversityValue As Single, sBoundaryWeightValue As Single,
+                                     sTotalValue As Single, sAreaPercentageClosed As Single)
 
             ' Show this in the graph
             Dim strPerc As String = CStr(Math.Round(sAreaPercentageClosed))
@@ -1269,8 +1269,8 @@ Namespace Ecospace
             ''' <param name="y"></param>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function Compare(ByVal x As EwECore.cObjectiveResult,
-                                    ByVal y As EwECore.cObjectiveResult) As Integer _
+            Public Function Compare(x As EwECore.cObjectiveResult,
+                                    y As EwECore.cObjectiveResult) As Integer _
                                     Implements IComparer(Of EwECore.cObjectiveResult).Compare
                 ' DESCENDING ORDER! < 1, = 0, > -1 (instead of customary ascending order < -1, = 0, > 1)
                 If x.objFuncTotal > y.objFuncTotal Then Return -1
@@ -1284,7 +1284,7 @@ Namespace Ecospace
 
             Dim lResults As List(Of cObjectiveResult) = Nothing
 
-            Select Case SearchType
+            Select Case Me.SearchType
                 Case eMPAOptimizationModels.EcoSeed
                     ' Get all results
                     lResults = Me.m_manager.Results
@@ -1325,7 +1325,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub ShowIteration(ByVal iIteration As Integer)
+        Private Sub ShowIteration(iIteration As Integer)
 
             If (Me.UIContext Is Nothing) Then Return
             If (Me.m_manager Is Nothing) Then Return
@@ -1374,8 +1374,8 @@ Namespace Ecospace
             Me.UpdateBestCountMap()
         End Sub
 
-        Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult),
-                                         Optional ByVal iPercAreaClosed As Integer = -1) As List(Of cObjectiveResult)
+        Private Function FilteredResults(lIn As List(Of cObjectiveResult),
+                                         Optional iPercAreaClosed As Integer = -1) As List(Of cObjectiveResult)
 
             If iPercAreaClosed = -1 Then Return lIn
             Dim lOut As New List(Of cObjectiveResult)
@@ -1405,11 +1405,11 @@ Namespace Ecospace
         ''' <param name="strGroup">Group to add the layer to.</param>
         ''' <param name="layerPosition">Layer to position this layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, Optional ByVal layerPosition As cDisplayLayer = Nothing)
+        Private Sub AddLayer(l As cDisplayLayer, strGroup As String, Optional layerPosition As cDisplayLayer = Nothing)
             Me.m_layers.Add(l)
             Me.m_ucZoom.Map.AddLayer(l, layerPosition)
             Me.m_ucLayers.AddLayer(l, strGroup, "", layerPosition)
-            AddHandler l.LayerChanged, AddressOf OnLayerChanged
+            AddHandler l.LayerChanged, AddressOf Me.OnLayerChanged
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1418,18 +1418,18 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="l">Layer to remove.</param>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveLayer(ByVal l As cDisplayLayer)
+        Private Sub RemoveLayer(l As cDisplayLayer)
             Me.m_layers.Remove(l)
             Me.m_ucZoom.Map.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)
-            RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
+            RemoveHandler l.LayerChanged, AddressOf Me.OnLayerChanged
         End Sub
 
-        Private Sub ShowLayerGroup(ByVal strGroup As String, ByVal bShowLayers As Boolean, ByVal bShowGroup As Boolean)
+        Private Sub ShowLayerGroup(strGroup As String, bShowLayers As Boolean, bShowGroup As Boolean)
             Me.m_ucLayers.ShowGroup(strGroup, bShowLayers, bShowGroup)
         End Sub
 
-        Private Sub EnableLayerGroup(ByVal strGroup As String, ByVal bEditable As Boolean)
+        Private Sub EnableLayerGroup(strGroup As String, bEditable As Boolean)
             Me.m_ucLayers.EnableGroup(strGroup, bEditable)
         End Sub
 
@@ -1443,8 +1443,8 @@ Namespace Ecospace
         ''' to, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> to 
         ''' directly copy the values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Integer(,), ByVal lDest As cEcospaceLayer,
-            Optional ByVal iConvertTo As Integer = cCore.NULL_VALUE)
+        Private Sub SetLayer(src As Integer(,), lDest As cEcospaceLayer,
+            Optional iConvertTo As Integer = cCore.NULL_VALUE)
 
             Dim iValue As Integer = 0
             ' For all rows
@@ -1478,8 +1478,8 @@ Namespace Ecospace
         ''' to, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> to 
         ''' directly copy the values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Single(,), ByVal lDest As cEcospaceLayer,
-            Optional ByVal iConvertTo As Integer = cCore.NULL_VALUE)
+        Private Sub SetLayer(src As Single(,), lDest As cEcospaceLayer,
+            Optional iConvertTo As Integer = cCore.NULL_VALUE)
 
             Dim sValue As Single = 0
             ' For all rows

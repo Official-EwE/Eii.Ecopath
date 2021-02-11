@@ -20,6 +20,6 @@
 Public Interface IEcospaceRunCompletedPlugin
     Inherits IPlugin
 
-    Sub EcospaceRunCompleted(ByVal EcoSpaceDatastructures As Object)
+    Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object)
 
 End Interface

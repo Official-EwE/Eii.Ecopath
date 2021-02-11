@@ -95,7 +95,7 @@ Namespace Ecosim
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, Me.m_driverManager.nEnviroData + 2)
+            Me.Redim(Me.Core.nGroups + 1, Me.m_driverManager.nEnviroData + 2)
 
             For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
 
@@ -108,8 +108,8 @@ Namespace Ecosim
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
-            For iGroup As Integer = 1 To Core.nGroups
-                group = Core.EcoPathGroupInputs(iGroup)
+            For iGroup As Integer = 1 To Me.Core.nGroups
+                group = Me.Core.EcoPathGroupInputs(iGroup)
                 ' # Group index row header cells
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
@@ -124,7 +124,7 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
 
             Try
-                For igrp As Integer = 1 To Core.nGroups
+                For igrp As Integer = 1 To Me.Core.nGroups
                     For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
                         Me(igrp, iDriver + 1) = New cEwECell("", GetType(String))
                         Me(igrp, iDriver + 1).DataModel = Me.m_editor
@@ -157,7 +157,7 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Protected Overrides Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
+        Protected Overrides Sub CellClick(sender As Object, e As PositionEventArgs)
 
             Try
 
@@ -175,7 +175,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ShowSelectionDialog(ByVal SelectionType As eEnvironmentalResponseSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
+        Private Sub ShowSelectionDialog(SelectionType As eEnvironmentalResponseSelectionType, iGrp As Integer, iDriver As Integer)
             Try
                 Dim dlg As New dlgSelectEnvironmentalResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
                 dlg.ShowDialog()
@@ -190,7 +190,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overrides Sub OnRowColClicked(sender As Object, e As SourceGrid2.PositionEventArgs)
             Try
 
                 Dim igrp As Integer = e.Position.Row

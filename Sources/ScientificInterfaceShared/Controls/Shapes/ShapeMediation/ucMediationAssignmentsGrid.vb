@@ -59,7 +59,7 @@ Namespace Controls
             Get
                 Return Me.m_bLandings
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bLandings = value
                 Me.RefreshContent()
             End Set
@@ -72,7 +72,7 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <param name="sWeight"></param>
         ''' -------------------------------------------------------------------
-        Public Event OnWeightChanged(ByVal obj As cCoreInputOutputBase, ByVal sWeight As Single)
+        Public Event OnWeightChanged(obj As cCoreInputOutputBase, sWeight As Single)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -82,9 +82,9 @@ Namespace Controls
         ''' <param name="sWeight">Fleet if <paramref name="obj"/> refers to a group.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Add(ByVal obj As cCoreInputOutputBase, _
-                            ByVal objSec As cCoreInputOutputBase, _
-                            ByVal sWeight As Single) As Boolean
+        Public Function Add(obj As cCoreInputOutputBase, _
+                            objSec As cCoreInputOutputBase, _
+                            sWeight As Single) As Boolean
             If (Me.FindRow(obj, objSec) <> -1) Then Return False
 
             ' =====================
@@ -141,8 +141,8 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Remove(ByVal obj As cCoreInputOutputBase, _
-                               ByVal objSec As cCoreInputOutputBase) As Boolean
+        Public Function Remove(obj As cCoreInputOutputBase, _
+                               objSec As cCoreInputOutputBase) As Boolean
             Dim iRow As Integer = Me.FindRow(obj, objSec)
             If (iRow = -1) Then Return False
             Me.Rows.Remove(iRow)
@@ -156,8 +156,8 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Find(ByVal obj As cCoreInputOutputBase, _
-                             ByVal objSec As cCoreInputOutputBase) As Boolean
+        Public Function Find(obj As cCoreInputOutputBase, _
+                             objSec As cCoreInputOutputBase) As Boolean
             Return (Me.FindRow(obj, objSec) > -1)
         End Function
 
@@ -232,8 +232,8 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function FindRow(ByVal obj As cCoreInputOutputBase, _
-                                 ByVal objSec As cCoreInputOutputBase) As Integer
+        Private Function FindRow(obj As cCoreInputOutputBase, _
+                                 objSec As cCoreInputOutputBase) As Integer
             Dim objTest As cCoreInputOutputBase = Nothing
             Dim objTestSec As cCoreInputOutputBase = Nothing
             For iRow As Integer = 1 To Me.RowsCount - 1
@@ -252,12 +252,12 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' -------------------------------------------------------------------
-        Private Property RowItemPrim(ByVal iRow As Integer) As cCoreInputOutputBase
+        Private Property RowItemPrim(iRow As Integer) As cCoreInputOutputBase
             Get
                 If (iRow <= 0) Then Return Nothing
                 Return DirectCast(Me(iRow, 0).Tag, cCoreInputOutputBase)
             End Get
-            Set(ByVal value As cCoreInputOutputBase)
+            Set(value As cCoreInputOutputBase)
                 Me(iRow, 0).Tag = value
             End Set
         End Property
@@ -268,17 +268,17 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' -------------------------------------------------------------------
-        Private Property RowItemSec(ByVal iRow As Integer) As cCoreInputOutputBase
+        Private Property RowItemSec(iRow As Integer) As cCoreInputOutputBase
             Get
                 If (iRow <= 0) Then Return Nothing
                 Return DirectCast(Me(iRow, 1).Tag, cCoreInputOutputBase)
             End Get
-            Set(ByVal value As cCoreInputOutputBase)
+            Set(value As cCoreInputOutputBase)
                 Me(iRow, 1).Tag = value
             End Set
         End Property
 
-        'Private Sub ucDefBioPercentGrid_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        'Private Sub ucDefBioPercentGrid_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
         '    If Me.ColumnsCount = [Enum].GetValues(GetType(eColumnTypes)).Length Then
         '        Me.Columns(eColumnTypes.NamePrim).Width = Math.Max(150, Me.ClientRectangle.Width - 150)
         '    End If
@@ -347,7 +347,7 @@ Namespace Controls
         ''' True if the value change is allowed, False to block the value change.
         ''' </returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If (p.Column = Me.WeightCol()) Then
                 ' Parse value using UI number settings

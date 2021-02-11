@@ -28,9 +28,9 @@ Imports EwEUtils.Core
 
 Public Interface IGraphView
 
-    Sub SetData(ByVal strGraphTitle As String,
-                ByVal strXAxisLabel As String,
-                ByVal strYAxisLabel As String,
-                ByVal aVars() As cResults.eVariableType)
+    Sub SetData(strGraphTitle As String,
+                strXAxisLabel As String,
+                strYAxisLabel As String,
+                aVars() As cResults.eVariableType)
 
 End Interface

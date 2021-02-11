@@ -31,8 +31,8 @@ Public Class cTaxon
 
 #Region " Construction and Intialization "
 
-    Friend Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Friend Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
         Dim val As cValue = Nothing
         Dim cbuf() As Char
@@ -45,135 +45,135 @@ Public Class cTaxon
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         ' Taxon group
-        val = New cValue(New Integer, eVarNameFlags.TaxonGroup, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.TaxonGroup, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.TaxonStanza, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.TaxonStanza, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Class, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Order, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Family, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Family, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Genus, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Genus, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Species, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.OK, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.OK, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeFB, eStatusFlags.OK, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.CodeFB, eStatusFlags.OK, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.OK, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.CodeSLB, eStatusFlags.OK, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeAquaMaps, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.CodeAquaMaps, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeAphia, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.CodeAphia, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeOBIS, eStatusFlags.OK, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.CodeOBIS, eStatusFlags.OK, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Source, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.Source, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.OK, eValueTypes.Str)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.OK, eValueTypes.Str)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' Search fields
-        val = New cValue(New Long, eVarNameFlags.TaxonSearchFields, eStatusFlags.OK, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Long, eVarNameFlags.TaxonSearchFields, eStatusFlags.OK, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' Proportion of biomass
-        val = New cValue(New Single, eVarNameFlags.TaxonPropBiomass, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonPropBiomass, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' Proportion of catch
-        val = New cValue(New Single, eVarNameFlags.TaxonPropCatch, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonPropCatch, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' EcologyType
-        val = New cValue(New Integer, eVarNameFlags.EcologyType, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.EcologyType, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' OrganismType
-        val = New cValue(New Integer, eVarNameFlags.OrganismType, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.OrganismType, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' IUCNConservationStatus
-        val = New cValue(New Integer, eVarNameFlags.IUCNConservationStatus, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.IUCNConservationStatus, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' ExploitationStatus
-        val = New cValue(New Integer, eVarNameFlags.ExploitationStatus, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.ExploitationStatus, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' OccurrenceStatus
-        val = New cValue(New Integer, eVarNameFlags.OccurrenceStatus, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.OccurrenceStatus, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonMeanWeight
-        val = New cValue(New Single, eVarNameFlags.TaxonMeanWeight, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonMeanWeight, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonMeanLength
-        val = New cValue(New Single, eVarNameFlags.TaxonMeanLength, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonMeanLength, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonMaxLength
-        val = New cValue(New Single, eVarNameFlags.TaxonMaxLength, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonMaxLength, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonMeanLifespan
-        val = New cValue(New Single, eVarNameFlags.TaxonMeanLifespan, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonMeanLifespan, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonVulnerabiltyIndex
-        val = New cValue(New Integer, eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonWinf
-        val = New cValue(New Single, eVarNameFlags.TaxonWinf, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonWinf, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' TaxonvbgfK
-        val = New cValue(New Single, eVarNameFlags.TaxonvbgfK, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.TaxonvbgfK, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' Last updated julian date
-        val = New cValue(New Single, eVarNameFlags.LastUpdated, eStatusFlags.OK, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.LastUpdated, eStatusFlags.OK, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
 
@@ -183,7 +183,7 @@ Public Class cTaxon
 
 #Region " Overrides "
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
         MyBase.ResetStatusFlags(bForceReset)
         Me.m_core.Set_Taxon_Flags(Me, False)
@@ -206,7 +206,7 @@ Public Class cTaxon
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.TaxonGroup))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.TaxonGroup, value)
         End Set
     End Property
@@ -218,7 +218,7 @@ Public Class cTaxon
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.TaxonStanza))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.TaxonStanza, value)
         End Set
     End Property
@@ -230,7 +230,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonPropBiomass))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonPropBiomass, value)
         End Set
     End Property
@@ -243,7 +243,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Phylum))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Phylum, value)
         End Set
     End Property
@@ -256,7 +256,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Class))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Class, value)
         End Set
     End Property
@@ -269,7 +269,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Order))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Order, value)
         End Set
     End Property
@@ -282,7 +282,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Family))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Family, value)
         End Set
     End Property
@@ -295,7 +295,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Genus))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Genus, value)
         End Set
     End Property
@@ -308,7 +308,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Species))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Species, value)
         End Set
     End Property
@@ -321,7 +321,7 @@ Public Class cTaxon
         Get
             Return Me.Name
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.Name = value
         End Set
     End Property
@@ -334,7 +334,7 @@ Public Class cTaxon
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.TaxonSearchFields), eTaxonClassificationType)
         End Get
-        Set(ByVal value As eTaxonClassificationType)
+        Set(value As eTaxonClassificationType)
             Me.SetVariable(eVarNameFlags.TaxonSearchFields, value)
         End Set
     End Property
@@ -345,7 +345,7 @@ Public Class cTaxon
         Get
             Return CLng(Me.GetVariable(eVarNameFlags.CodeSAUP))
         End Get
-        Set(ByVal value As Long)
+        Set(value As Long)
             Me.SetVariable(eVarNameFlags.CodeSAUP, value)
         End Set
     End Property
@@ -356,7 +356,7 @@ Public Class cTaxon
         Get
             Return CLng(Me.GetVariable(eVarNameFlags.CodeFB))
         End Get
-        Set(ByVal value As Long)
+        Set(value As Long)
             Me.SetVariable(eVarNameFlags.CodeFB, value)
         End Set
     End Property
@@ -367,7 +367,7 @@ Public Class cTaxon
         Get
             Return CLng(Me.GetVariable(eVarNameFlags.CodeSLB))
         End Get
-        Set(ByVal value As Long)
+        Set(value As Long)
             Me.SetVariable(eVarNameFlags.CodeSLB, value)
         End Set
     End Property
@@ -408,7 +408,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.CodeFAO))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.CodeFAO, value)
         End Set
     End Property
@@ -419,7 +419,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.CodeLSID))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.CodeLSID, value)
         End Set
     End Property
@@ -432,7 +432,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.Source))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.Source, value)
         End Set
     End Property
@@ -445,7 +445,7 @@ Public Class cTaxon
         Get
             Return CStr(Me.GetVariable(eVarNameFlags.SourceKey))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.SetVariable(eVarNameFlags.SourceKey, value)
         End Set
     End Property
@@ -459,7 +459,7 @@ Public Class cTaxon
             Return CSng(Me.GetVariable(eVarNameFlags.South))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.South, value)
         End Set
     End Property
@@ -473,7 +473,7 @@ Public Class cTaxon
             Return CSng(Me.GetVariable(eVarNameFlags.North))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.North, value)
         End Set
     End Property
@@ -487,7 +487,7 @@ Public Class cTaxon
             Return CSng(Me.GetVariable(eVarNameFlags.West))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.West, value)
         End Set
     End Property
@@ -501,7 +501,7 @@ Public Class cTaxon
             Return CSng(Me.GetVariable(eVarNameFlags.East))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.East, value)
         End Set
     End Property
@@ -514,7 +514,7 @@ Public Class cTaxon
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.EcologyType), eEcologyTypes)
         End Get
-        Set(ByVal value As eEcologyTypes)
+        Set(value As eEcologyTypes)
             Me.SetVariable(eVarNameFlags.EcologyType, value)
         End Set
     End Property
@@ -527,7 +527,7 @@ Public Class cTaxon
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.OrganismType), eOrganismTypes)
         End Get
-        Set(ByVal value As eOrganismTypes)
+        Set(value As eOrganismTypes)
             Me.SetVariable(eVarNameFlags.OrganismType, value)
         End Set
     End Property
@@ -539,7 +539,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonPropCatch))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonPropCatch, value)
         End Set
     End Property
@@ -552,7 +552,7 @@ Public Class cTaxon
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.IUCNConservationStatus), eIUCNConservationStatusTypes)
         End Get
-        Set(ByVal value As eIUCNConservationStatusTypes)
+        Set(value As eIUCNConservationStatusTypes)
             Me.SetVariable(eVarNameFlags.IUCNConservationStatus, value)
         End Set
     End Property
@@ -565,7 +565,7 @@ Public Class cTaxon
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.ExploitationStatus), eExploitationTypes)
         End Get
-        Set(ByVal value As eExploitationTypes)
+        Set(value As eExploitationTypes)
             Me.SetVariable(eVarNameFlags.ExploitationStatus, value)
         End Set
     End Property
@@ -578,7 +578,7 @@ Public Class cTaxon
         Get
             Return DirectCast(Me.GetVariable(eVarNameFlags.OccurrenceStatus), eOccurrenceStatusTypes)
         End Get
-        Set(ByVal value As eOccurrenceStatusTypes)
+        Set(value As eOccurrenceStatusTypes)
             Me.SetVariable(eVarNameFlags.OccurrenceStatus, value)
         End Set
     End Property
@@ -591,7 +591,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanWeight))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonMeanWeight, value)
         End Set
     End Property
@@ -603,7 +603,7 @@ Public Class cTaxon
         Get
             Return Me.GetStatus(eVarNameFlags.TaxonMeanWeight)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.TaxonMeanWeight, value)
         End Set
     End Property
@@ -616,7 +616,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanLength))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonMeanLength, value)
         End Set
     End Property
@@ -628,7 +628,7 @@ Public Class cTaxon
         Get
             Return Me.GetStatus(eVarNameFlags.TaxonMeanLength)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.TaxonMeanLength, value)
         End Set
     End Property
@@ -641,7 +641,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMaxLength))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonMaxLength, value)
         End Set
     End Property
@@ -653,7 +653,7 @@ Public Class cTaxon
         Get
             Return Me.GetStatus(eVarNameFlags.TaxonMaxLength)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.TaxonMaxLength, value)
         End Set
     End Property
@@ -666,7 +666,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonMeanLifespan))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonMeanLifespan, value)
         End Set
     End Property
@@ -678,7 +678,7 @@ Public Class cTaxon
         Get
             Return Me.GetStatus(eVarNameFlags.TaxonMeanLifespan)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.TaxonMeanLifespan, value)
         End Set
     End Property
@@ -691,7 +691,7 @@ Public Class cTaxon
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.TaxonVulnerabilityIndex))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.TaxonVulnerabilityIndex, value)
         End Set
     End Property
@@ -703,7 +703,7 @@ Public Class cTaxon
         Get
             Return Me.GetStatus(eVarNameFlags.TaxonVulnerabilityIndex)
         End Get
-        Set(ByVal value As eStatusFlags)
+        Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.TaxonVulnerabilityIndex, value)
         End Set
     End Property
@@ -716,7 +716,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonWinf))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonWinf, value)
         End Set
     End Property
@@ -729,7 +729,7 @@ Public Class cTaxon
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonvbgfK))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.TaxonvbgfK, value)
         End Set
     End Property
@@ -740,11 +740,11 @@ Public Class cTaxon
     Public Property LastUpdated() As Double _
         Implements ITaxonDetailsData.LastUpdated
         Get
-            Return CDbl(GetVariable(eVarNameFlags.LastUpdated))
+            Return CDbl(Me.GetVariable(eVarNameFlags.LastUpdated))
         End Get
 
-        Set(ByVal value As Double)
-            SetVariable(eVarNameFlags.LastUpdated, value)
+        Set(value As Double)
+            Me.SetVariable(eVarNameFlags.LastUpdated, value)
         End Set
     End Property
 
@@ -758,7 +758,7 @@ Public Class cTaxon
         Get
             Return Me.iGroup
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.iGroup = value
         End Set
     End Property
@@ -771,7 +771,7 @@ Public Class cTaxon
         Get
             Return Me.iStanza
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.iStanza = value
         End Set
     End Property

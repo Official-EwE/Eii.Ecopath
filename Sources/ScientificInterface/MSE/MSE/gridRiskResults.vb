@@ -49,7 +49,7 @@ Public Class gridRiskResults
         Get
             Return Me.m_type
         End Get
-        Set(ByVal value As eGridType)
+        Set(value As eGridType)
             Me.m_type = value
             Me.Update()
         End Set
@@ -173,7 +173,7 @@ Public Class gridRiskResults
 
     End Sub
 
-    Private Sub InitCells(ByVal iRow As Integer, ByVal aSources As cCoreInputOutputBase())
+    Private Sub InitCells(iRow As Integer, aSources As cCoreInputOutputBase())
 
         Dim cell As cEwECell = Nothing
         Dim cnt As Integer = Me.RowsCount '- 1
@@ -214,7 +214,7 @@ Public Class gridRiskResults
 
     End Sub
 
-    Private Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValue As String)
+    Private Sub SetCellValue(iRow As Integer, iCol As Integer, sValue As String)
         Try
             Me(iRow, iCol).Value = sValue
         Catch ex As Exception
@@ -222,7 +222,7 @@ Public Class gridRiskResults
         End Try
     End Sub
 
-    Private Sub SetCellValue(ByVal iRow As Integer, ByVal iCol As Integer, ByVal sValue As Single)
+    Private Sub SetCellValue(iRow As Integer, iCol As Integer, sValue As Single)
         Try
             Me(iRow, iCol).Value = sValue
         Catch ex As Exception

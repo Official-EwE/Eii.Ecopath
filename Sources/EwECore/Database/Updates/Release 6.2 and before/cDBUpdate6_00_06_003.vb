@@ -86,7 +86,7 @@ Friend Class cDBUpdate6_00_06_003
     ''' <param name="db"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function FixEcosimFleets(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixEcosimFleets(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         Dim reader As IDataReader = Nothing
@@ -181,7 +181,7 @@ Friend Class cDBUpdate6_00_06_003
     ''' <param name="db"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function FixMultipleLinkedEffortShapes(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixMultipleLinkedEffortShapes(db As cEwEDatabase) As Boolean
 
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
@@ -219,7 +219,7 @@ Friend Class cDBUpdate6_00_06_003
     '''' <param name="db"></param>
     '''' <param name="strTable"></param>
     '''' -----------------------------------------------------------------------
-    'Private Sub TickleTable(ByRef db As cEwEDatabase, ByVal strTable As String)
+    'Private Sub TickleTable(ByRef db As cEwEDatabase, strTable As String)
     '    ' Sanity test
     '    Debug.Assert(db.Execute("ALTER TABLE " & strTable & " ADD COLUMN Ping SINGLE"))
     '    Debug.Assert(db.Execute("ALTER TABLE " & strTable & " DROP COLUMN Ping"))

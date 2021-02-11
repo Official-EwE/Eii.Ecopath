@@ -66,9 +66,9 @@ Public Class ucLinkGrid
     ''' </summary>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal data As cData, _
-                   ByVal t As Type)
+    Public Sub New(uic As cUIContext, _
+                   data As cData, _
+                   t As Type)
 
         'Sanity check
         Debug.Assert(GetType(cLink).IsAssignableFrom(t))
@@ -183,13 +183,13 @@ Public Class ucLinkGrid
     ''' <param name="link"></param>
     ''' <param name="iRow"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddLink(ByVal link As cLink, ByVal iRow As Integer)
+    Private Sub AddLink(link As cLink, iRow As Integer)
         For iCol As Integer = 0 To Me.ColumnsCount - 1
             Me.AddCell(link, iRow, iCol)
         Next
     End Sub
 
-    Protected Sub AddCell(ByVal link As cLink, ByVal iRow As Integer, ByVal iCol As Integer)
+    Protected Sub AddCell(link As cLink, iRow As Integer, iCol As Integer)
 
         Dim cell As Cells.Real.Cell = Nothing
 

@@ -55,22 +55,22 @@ Namespace Ecopath.Input
             Dim source As cCoreGroupBase = Nothing
 
             'Define grid dimensions
-            Me.Redim(Core.nGroups + 1, 4 + Core.nDetritusGroups)
+            Me.Redim(Me.Core.nGroups + 1, 4 + Me.Core.nDetritusGroups)
 
             'Header cell (0,0) Source \ fate
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_SOURCEFATE)
 
             ' Detritus column header cells
-            For i As Integer = 1 To Core.nDetritusGroups
-                source = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + i)
+            For i As Integer = 1 To Me.Core.nDetritusGroups
+                source = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + i)
                 Me(0, i + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
             ' The export header cell
-            Me(0, Core.nDetritusGroups + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
+            Me(0, Me.Core.nDetritusGroups + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
             ' The sum header cell
-            Me(0, Core.nDetritusGroups + 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, Me.Core.nDetritusGroups + 3) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
 
@@ -113,13 +113,13 @@ Namespace Ecopath.Input
 
                 If (Not group.IsMultiStanza) Then
                     iRow = Me.AddRow
-                    For iCol As Integer = 1 To Core.nDetritusGroups
+                    For iCol As Integer = 1 To Me.Core.nDetritusGroups
 
-                        groupSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
+                        groupSec = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + iCol)
 
                         Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                         Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                        prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Core.nGroups - Core.nDetritusGroups)
+                        prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Me.Core.nGroups - Me.Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New cPropertyCell(prop)
                         alProp.Add(prop)
                     Next
@@ -138,7 +138,7 @@ Namespace Ecopath.Input
 
                 Else ' Group is stanza
 
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
                     ' Entering a new stanza group?
                     If (group.iStanza <> iStanzaPrev) Then
                         iRow = Me.AddRow()
@@ -155,13 +155,13 @@ Namespace Ecopath.Input
 
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    For iCol As Integer = 1 To Core.nDetritusGroups
+                    For iCol As Integer = 1 To Me.Core.nDetritusGroups
 
-                        groupSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
+                        groupSec = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + iCol)
 
                         Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                         Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                        prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Core.nGroups - Core.nDetritusGroups)
+                        prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Me.Core.nGroups - Me.Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New cPropertyCell(prop)
                         alProp.Add(prop)
                     Next

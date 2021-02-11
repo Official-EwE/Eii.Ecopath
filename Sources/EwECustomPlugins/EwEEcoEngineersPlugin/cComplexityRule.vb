@@ -81,7 +81,7 @@ Public Class cComplexityRule
     Public Property C As Single
 
     Public Function IsValid() As Boolean
-        Return (Group > 0)
+        Return (Me.Group > 0)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -95,7 +95,7 @@ Public Class cComplexityRule
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Function ArchitecturalComplexity(Biomass As Single) As Single
-        Return CSng(Math.Max(A * (Biomass ^ 2) + B * Biomass + C, 0))
+        Return CSng(Math.Max(Me.A * (Biomass ^ 2) + Me.B * Biomass + Me.C, 0))
     End Function
 
 #End Region ' Public bits

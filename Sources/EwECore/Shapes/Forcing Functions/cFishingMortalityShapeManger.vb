@@ -39,18 +39,18 @@ Public Class cFishingMortalityShapeManger
         Dim shape As cFishingMortShape
 
         'clear out any existing data
-        m_shapes.Clear()
-        For iGroup As Integer = 1 To m_SimData.nGroups ' one shape for each group 
+        Me.m_shapes.Clear()
+        For iGroup As Integer = 1 To Me.m_SimData.nGroups ' one shape for each group 
             ' Fishing rate shapes are no longer loaded from the DB
-            m_SimData.FishRateNoDBID(iGroup) = Me.m_core.m_EcoSimData.GroupDBID(iGroup)
+            Me.m_SimData.FishRateNoDBID(iGroup) = Me.m_core.m_EcoSimData.GroupDBID(iGroup)
 
-            shape = New cFishingMortShape(m_SimData, Me, m_SimData.FishRateNoDBID(iGroup), m_core.m_EcoPathData.GroupName(iGroup))
+            shape = New cFishingMortShape(Me.m_SimData, Me, Me.m_SimData.FishRateNoDBID(iGroup), Me.m_core.m_EcoPathData.GroupName(iGroup))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
-            shape.ID = m_shapes.Count
+            shape.ID = Me.m_shapes.Count
             shape.Index = iGroup
             shape.Load()
-            m_shapes.Add(shape)
+            Me.m_shapes.Add(shape)
 
         Next iGroup
         Me.Load()

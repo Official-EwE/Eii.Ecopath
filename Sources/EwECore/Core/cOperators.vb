@@ -35,7 +35,7 @@ Public Class cOperatorManager
     ''' <returns>A cOperatorBase object of the type specified.</returns>
     ''' <remarks>Operators are stored in a dictionary that is populated on the first call. 
     ''' Calls to getOperator(eOperators) of the same type will return the same cOperatorBase reference.</remarks>
-    Public Shared Function getOperator(ByVal OperatorType As eOperators) As cOperatorBase
+    Public Shared Function getOperator(OperatorType As eOperators) As cOperatorBase
         Try
             'on the first call populate the dictionary with all the operators
             If m_operators Is Nothing Then
@@ -78,7 +78,7 @@ End Class
 ''' <remarks>Use for data validation</remarks>
 Public MustInherit Class cOperatorBase
 
-    Public MustOverride Function Compare(ByVal V1 As Single, ByVal V2 As Single) As Boolean
+    Public MustOverride Function Compare(V1 As Single, V2 As Single) As Boolean
 
 End Class
 
@@ -89,7 +89,7 @@ End Class
 Public Class cLessThan
     Inherits cOperatorBase
 
-    Public Overrides Function Compare(ByVal V1 As Single, ByVal V2 As Single) As Boolean
+    Public Overrides Function Compare(V1 As Single, V2 As Single) As Boolean
         Return V1 < V2
     End Function
 End Class
@@ -97,7 +97,7 @@ End Class
 Public Class cGreaterThan
     Inherits cOperatorBase
 
-    Public Overrides Function Compare(ByVal V1 As Single, ByVal V2 As Single) As Boolean
+    Public Overrides Function Compare(V1 As Single, V2 As Single) As Boolean
         Return V1 > V2
     End Function
 End Class
@@ -105,7 +105,7 @@ End Class
 Public Class cEqualTo
     Inherits cOperatorBase
 
-    Public Overrides Function Compare(ByVal V1 As Single, ByVal V2 As Single) As Boolean
+    Public Overrides Function Compare(V1 As Single, V2 As Single) As Boolean
         Return V1 = V2
     End Function
 End Class
@@ -113,7 +113,7 @@ End Class
 Public Class cLessThanOrEqualTo
     Inherits cOperatorBase
 
-    Public Overrides Function Compare(ByVal V1 As Single, ByVal V2 As Single) As Boolean
+    Public Overrides Function Compare(V1 As Single, V2 As Single) As Boolean
         Return V1 <= V2
     End Function
 End Class
@@ -121,7 +121,7 @@ End Class
 Public Class cGreaterThanOrEqualTo
     Inherits cOperatorBase
 
-    Public Overrides Function Compare(ByVal V1 As Single, ByVal V2 As Single) As Boolean
+    Public Overrides Function Compare(V1 As Single, V2 As Single) As Boolean
         Return V1 >= V2
     End Function
 End Class

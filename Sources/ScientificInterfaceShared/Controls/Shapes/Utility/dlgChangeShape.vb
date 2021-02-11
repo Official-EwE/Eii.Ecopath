@@ -57,7 +57,7 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal shape As cForcingFunction)
+        Public Sub New(uic As cUIContext, shape As cForcingFunction)
 
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
 
@@ -84,7 +84,7 @@ Namespace Controls
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             ' Add shape name 
@@ -101,7 +101,7 @@ Namespace Controls
             Me.UpdatePreview()
         End Sub
 
-        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaults(sender As System.Object, e As System.EventArgs) _
             Handles m_btDefaults.Click
 
             Me.m_controlpanel.Defaults()
@@ -109,7 +109,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOk(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOk.Click
 
             Dim fs As IShapeFunction = Me.m_controlpanel.SelectedShapeFunction()
@@ -125,7 +125,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
@@ -143,7 +143,7 @@ Namespace Controls
             Debug.Print("OnShapeFunctionChanged " + Me.m_shape.ToCSVString())
         End Sub
 
-        Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnPaintPreview(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_plPreview.Paint
 
             Try

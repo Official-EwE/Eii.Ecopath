@@ -48,18 +48,18 @@ Public MustInherit Class cShapeData
     Private m_bSeasonal As Boolean = False
     Protected m_timeresolution As eTSDataSetInterval = eTSDataSetInterval.TimeStep
 
-    Public Event OnChanged(ByVal sd As cShapeData)
+    Public Event OnChanged(sd As cShapeData)
 
 #End Region ' Private variables
 
 #Region " Constructors "
 
-    Sub New(ByVal NumberOfPoints As Integer)
-        Init(NumberOfPoints)
+    Sub New(NumberOfPoints As Integer)
+        Me.Init(NumberOfPoints)
     End Sub
 
-    Sub New(ByVal ArrayOfData() As Single)
-        Init(ArrayOfData)
+    Sub New(ArrayOfData() As Single)
+        Me.Init(ArrayOfData)
     End Sub
 
     ''' <summary>
@@ -89,9 +89,9 @@ Public MustInherit Class cShapeData
         Me.m_iLockCount += 1
     End Sub
 
-    Public Sub UnlockUpdates(Optional ByVal bUpdate As Boolean = True)
+    Public Sub UnlockUpdates(Optional bUpdate As Boolean = True)
         Me.m_iLockCount -= 1
-        If ((IsLockedUpdates() = False) And (bUpdate = True)) Then
+        If ((Me.IsLockedUpdates() = False) And (bUpdate = True)) Then
             Me.Update()
         End If
     End Sub
@@ -104,12 +104,12 @@ Public MustInherit Class cShapeData
 
 #Region " Private methods "
 
-    Protected Sub Init(ByVal NumberOfPoints As Integer)
+    Protected Sub Init(NumberOfPoints As Integer)
 
         Debug.Assert(NumberOfPoints >= 0, "You can not initialize cForcingData with less than zero points.")
-        m_nPoints = NumberOfPoints
+        Me.m_nPoints = NumberOfPoints
 
-        ReDim m_xdata(m_nPoints)
+        ReDim Me.m_xdata(Me.m_nPoints)
         Me.SetValue(1.0!)
         Me.setDefaultEditBlocks()
     End Sub
@@ -119,14 +119,14 @@ Public MustInherit Class cShapeData
     ''' </summary>
     ''' <param name="ArrayOfData"></param>
     ''' <returns>True if the internal point array changed.</returns>
-    Protected Function Init(ByVal ArrayOfData() As Single) As Boolean
+    Protected Function Init(ArrayOfData() As Single) As Boolean
 
         If ArrayOfData.IsIdenticalTo(Me.m_xdata) Then
             Return False
         End If
 
         Me.m_nPoints = ArrayOfData.GetUpperBound(0)
-        Debug.Assert(m_nPoints > 0, "You can not initialize cForcingData with zero points.")
+        Debug.Assert(Me.m_nPoints > 0, "You can not initialize cForcingData with zero points.")
 
         Me.m_xdata = ArrayOfData
         Me.setDefaultEditBlocks()
@@ -142,7 +142,7 @@ Public MustInherit Class cShapeData
     ''' </remarks>
     Public MustOverride Function Update() As Boolean
 
-    Public Sub SetValue(ByVal sValue As Single)
+    Public Sub SetValue(sValue As Single)
         For i As Integer = 0 To Me.m_nPoints
             Me.m_xdata(i) = sValue
         Next
@@ -152,7 +152,7 @@ Public MustInherit Class cShapeData
 
     Private Sub setDefaultEditBlocks()
         Me.m_x1 = 1
-        Me.m_x2 = m_nPoints
+        Me.m_x2 = Me.m_nPoints
     End Sub
 
 #End Region ' Private methods
@@ -168,7 +168,7 @@ Public MustInherit Class cShapeData
         Get
             Return DirectCast(Me.m_xdata.Clone(), Single())
         End Get
-        Set(ByVal value() As Single)
+        Set(value() As Single)
             If Me.Init(value) And Not Me.IsLockedUpdates Then
                 Me.Update()
             End If
@@ -179,21 +179,21 @@ Public MustInherit Class cShapeData
     ''' Get/set a value in the shape for a given point.
     ''' </summary>
     ''' <param name="iPoint">The point to access.</param>
-    Public Property ShapeData(ByVal iPoint As Integer) As Single
+    Public Property ShapeData(iPoint As Integer) As Single
         Get
             Try
                 If (iPoint < 0 Or iPoint > Me.m_nPoints) Then Return 0
-                Return m_xdata(iPoint)
+                Return Me.m_xdata(iPoint)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
             End Try
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
                 If (iPoint < 0 Or iPoint > Me.m_nPoints) Then Return
-                m_xdata(iPoint) = value
+                Me.m_xdata(iPoint) = value
 
                 If Not Me.IsLockedUpdates() Then Me.Update()
             Catch ex As Exception
@@ -213,7 +213,7 @@ Public MustInherit Class cShapeData
     ''' </remarks>
     Public ReadOnly Property nPoints() As Integer
         Get
-            Return m_nPoints
+            Return Me.m_nPoints
         End Get
     End Property
 
@@ -251,7 +251,7 @@ Public MustInherit Class cShapeData
             Return Me.m_timeresolution
         End Get
 
-        Set(ByVal timeresolution As eTSDataSetInterval)
+        Set(timeresolution As eTSDataSetInterval)
             Me.m_timeresolution = timeresolution
             Me.Update()
         End Set
@@ -265,7 +265,7 @@ Public MustInherit Class cShapeData
             Return Me.m_bSeasonal
         End Get
 
-        Set(ByVal bSeasonal As Boolean)
+        Set(bSeasonal As Boolean)
             Me.m_bSeasonal = bSeasonal
             Me.Update()
         End Set
@@ -294,7 +294,7 @@ Public MustInherit Class cShapeData
         Get
             Return Me.m_x1
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             'constrain the value
             If value < 1 Then value = 1
             If value > Me.m_nPoints Then value = Me.m_nPoints
@@ -312,7 +312,7 @@ Public MustInherit Class cShapeData
         Get
             Return Me.m_x2
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             'constrain the value
             If value < 1 Then value = 1
             If value > Me.m_nPoints Then value = Me.m_nPoints
@@ -334,21 +334,21 @@ Public MustInherit Class cShapeData
     ''' when it needs to update it's data or when the Shape has been added to the Manager. 
     ''' If this object has not been assigned to a Shape then this will not be called and it can hold any amount of data.
     ''' </remarks>
-    Friend Function ResizeData(ByVal newNumberOfPoints As Integer) As Boolean
+    Friend Function ResizeData(newNumberOfPoints As Integer) As Boolean
 
         Try
 
             Debug.Assert(newNumberOfPoints >= 0, Me.ToString & ".ResizeData() Must be greater then zero points.")
 
             'Does the data need resizing
-            If newNumberOfPoints = m_nPoints Then
+            If newNumberOfPoints = Me.m_nPoints Then
                 'No
                 Return False
             End If
 
-            ReDim Preserve m_xdata(newNumberOfPoints)
-            For i As Integer = m_nPoints + 1 To newNumberOfPoints
-                m_xdata(i) = 1 'give all the new points the value of one this means they will have no effect on the model
+            ReDim Preserve Me.m_xdata(newNumberOfPoints)
+            For i As Integer = Me.m_nPoints + 1 To newNumberOfPoints
+                Me.m_xdata(i) = 1 'give all the new points the value of one this means they will have no effect on the model
             Next i
 
             Me.m_nPoints = newNumberOfPoints
@@ -371,29 +371,29 @@ Public MustInherit Class cShapeData
     Public Property DBID() As Integer _
         Implements ICoreInterface.DBID
         Get
-            Return m_iDBID
+            Return Me.m_iDBID
         End Get
-        Friend Set(ByVal value As Integer)
-            m_iDBID = value
+        Friend Set(value As Integer)
+            Me.m_iDBID = value
         End Set
     End Property
 
     Public Function GetID() As String _
         Implements ICoreInterface.GetID
-        Return cValueID.GetDataTypeID(m_datatype, Me.DBID)
+        Return cValueID.GetDataTypeID(Me.m_datatype, Me.DBID)
     End Function
 
     Public ReadOnly Property DataType() As eDataTypes _
         Implements ICoreInterface.DataType
         Get
-            Return m_datatype 'datatype is set in the constructor of each class
+            Return Me.m_datatype 'datatype is set in the constructor of each class
         End Get
     End Property
 
     Public ReadOnly Property CoreComponent() As eCoreComponentType _
         Implements ICoreInterface.CoreComponent
         Get
-            Return m_coreComponent
+            Return Me.m_coreComponent
         End Get
     End Property
 
@@ -402,10 +402,10 @@ Public MustInherit Class cShapeData
     ''' </summary>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
-            Return m_iEcoSimIndex
+            Return Me.m_iEcoSimIndex
         End Get
-        Friend Set(ByVal value As Integer)
-            m_iEcoSimIndex = value
+        Friend Set(value As Integer)
+            Me.m_iEcoSimIndex = value
         End Set
     End Property
 
@@ -416,8 +416,8 @@ Public MustInherit Class cShapeData
         Get
             Return Me.m_strName
         End Get
-        Set(ByVal strName As String)
-            m_strName = strName
+        Set(strName As String)
+            Me.m_strName = strName
         End Set
     End Property
 

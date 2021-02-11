@@ -111,7 +111,7 @@ Public Class gridDistributionParameters
 #Region " Public access "
 
     Public Sub Init(Plugin As cMSE)
-        MSEPlugin = Plugin
+        Me.MSEPlugin = Plugin
     End Sub
 
     Public Property Mode As frmDistributionParameters.eParameterSet
@@ -206,10 +206,10 @@ Public Class gridDistributionParameters
                     Me(iRow, eEcopathColumnTypes.Name) = New cEwERowHeaderCell(CStr(data.GroupName))
 
                     If (bUse) Then
-                        Me(iRow, eEcopathColumnTypes.CV) = DataCell(data.CV)
-                        Me(iRow, eEcopathColumnTypes.Mean) = DataCell(data.Mean, cStyleGuide.eStyleFlags.NotEditable)
-                        Me(iRow, eEcopathColumnTypes.Lower) = DataCell(data.LowerBound)
-                        Me(iRow, eEcopathColumnTypes.Upper) = DataCell(data.UpperBound)
+                        Me(iRow, eEcopathColumnTypes.CV) = Me.DataCell(data.CV)
+                        Me(iRow, eEcopathColumnTypes.Mean) = Me.DataCell(data.Mean, cStyleGuide.eStyleFlags.NotEditable)
+                        Me(iRow, eEcopathColumnTypes.Lower) = Me.DataCell(data.LowerBound)
+                        Me(iRow, eEcopathColumnTypes.Upper) = Me.DataCell(data.UpperBound)
                     Else
                         Me(iRow, eEcopathColumnTypes.CV) = New cEwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
                         Me(iRow, eEcopathColumnTypes.Mean) = New cEwECell(cCore.NULL_VALUE, GetType(Single), cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
@@ -233,9 +233,9 @@ Public Class gridDistributionParameters
                     '    cbCell.DataModel.EnableEdit = False
                     'End If
 
-                    Me(iRow, eEcosimColumnTypes.Lower) = DataCell(data.LowerBound)
-                    Me(iRow, eEcosimColumnTypes.Upper) = DataCell(data.UpperBound)
-                    Me(iRow, eEcosimColumnTypes.MidPoint) = DataCell(data.MidPoint)
+                    Me(iRow, eEcosimColumnTypes.Lower) = Me.DataCell(data.LowerBound)
+                    Me(iRow, eEcosimColumnTypes.Upper) = Me.DataCell(data.UpperBound)
+                    Me(iRow, eEcosimColumnTypes.MidPoint) = Me.DataCell(data.MidPoint)
                     Me.Rows(iRow).Tag = data
 
             End Select

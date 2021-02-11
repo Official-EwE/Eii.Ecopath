@@ -75,13 +75,13 @@ Namespace Ecopath.Input
             propTotal.SetValue(100.0)
             propTotal.SetStyle(cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
-            For iRow As Integer = 1 To Core.nFleets
+            For iRow As Integer = 1 To Me.Core.nFleets
 
                 Me.Rows.Insert(iRow)
                 ' Clear the arrayList for the new row
                 alSumAll.Clear()
 
-                source = Core.EcopathFleetInputs(iRow)
+                source = Me.Core.EcopathFleetInputs(iRow)
                 Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
                 ' Fleet name column
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)

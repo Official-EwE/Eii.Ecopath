@@ -68,7 +68,7 @@ Namespace Core
         ''' <summary>Get total economic values.</summary>
         ReadOnly Property Total() As IEData
         ''' <summary>Get a subtotal block.</summary>
-        ReadOnly Property Subtotal(ByVal iFleet As Integer) As IEData
+        ReadOnly Property Subtotal(iFleet As Integer) As IEData
         ''' <summary>Get the number of subtotal blocks.</summary>
         ReadOnly Property NumSubtotals() As Integer
         ''' <summary>Get the core counter that represents the grouping of subtotals.</summary>

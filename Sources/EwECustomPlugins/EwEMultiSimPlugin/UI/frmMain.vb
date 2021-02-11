@@ -197,7 +197,7 @@ Public Class frmMain
     Private Sub OnItemChecking(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
         Handles m_clbValues.ItemCheck, m_clbFilesSrc.ItemCheck
         ' Call UpdateControls after check has been handled
-        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls), Nothing)
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls), Nothing)
     End Sub
 
     Private Sub OnGenerateSample(sender As System.Object, e As System.EventArgs) _
@@ -230,8 +230,8 @@ Public Class frmMain
                 lFiles.Add(CStr(item))
             Next
 
-            Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
-                                      New cEngine.DisableFileDelegate(AddressOf DisableFileCallback), _
+            Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf Me.RunDoneCallback), _
+                                      New cEngine.DisableFileDelegate(AddressOf Me.DisableFileCallback), _
                                       lFiles.ToArray(), _
                                       Me.m_tbxDest.Text, _
                                       Me.SelectedApplications)
@@ -264,8 +264,8 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf RunProgressCallback), _
-                            New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
+            Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf Me.RunProgressCallback), _
+                            New cEngine.RunCompletedDelegate(AddressOf Me.RunDoneCallback), _
                             lFiles.ToArray(), Me.m_tbxDest.Text, Me.SelectedApplications, _
                             Me.m_rbMonthly.Checked, lOptions.ToArray())
 
@@ -276,7 +276,7 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnFFTypeChecked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnFFTypeChecked(sender As System.Object, e As System.EventArgs) _
         Handles m_cbEffort.CheckedChanged, m_cbMort.CheckedChanged, m_cbEggProduction.CheckedChanged
 
         ' Premature event work-around
@@ -331,7 +331,7 @@ Public Class frmMain
     End Function
 
     Protected Overrides Sub OnDragOver(e As System.Windows.Forms.DragEventArgs)
-        If (Me.GetDragDropFiles(e.Data).Length > 0) Or Not String.IsNullOrWhiteSpace(GetDragDropFolder(e.Data)) Then
+        If (Me.GetDragDropFiles(e.Data).Length > 0) Or Not String.IsNullOrWhiteSpace(Me.GetDragDropFolder(e.Data)) Then
             e.Effect = DragDropEffects.All
         End If
         MyBase.OnDragOver(e)
@@ -339,7 +339,7 @@ Public Class frmMain
 
     Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
         Dim astrFiles As String() = Me.GetDragDropFiles(e.Data)
-        Dim strFolder As String = GetDragDropFolder(e.Data)
+        Dim strFolder As String = Me.GetDragDropFolder(e.Data)
 
         If (astrFiles.Length > 0) Then
             Me.m_tbxSource.Text = ""
@@ -363,7 +363,7 @@ Public Class frmMain
 
     Private Sub DisableFileCallback(strFile As String)
         If Me.InvokeRequired Then
-            Me.Invoke(New DisableFileMarshall(AddressOf DisableFileCallback), New Object() {strFile})
+            Me.Invoke(New DisableFileMarshall(AddressOf Me.DisableFileCallback), New Object() {strFile})
         Else
             Me.DisableFile(strFile)
         End If
@@ -373,7 +373,7 @@ Public Class frmMain
 
     Private Sub RunProgressCallback(strMessage As String)
         If Me.InvokeRequired Then
-            Me.Invoke(New RunProgressMarshall(AddressOf RunProgressCallback), New Object() {strMessage})
+            Me.Invoke(New RunProgressMarshall(AddressOf Me.RunProgressCallback), New Object() {strMessage})
         Else
             Try
                 Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
@@ -388,7 +388,7 @@ Public Class frmMain
 
     Private Sub RunDoneCallback()
         If Me.InvokeRequired Then
-            Me.Invoke(New RunDoneMarshall(AddressOf RunDoneCallback))
+            Me.Invoke(New RunDoneMarshall(AddressOf Me.RunDoneCallback))
         Else
             Me.UpdateControls()
         End If
@@ -408,7 +408,7 @@ Public Class frmMain
             End If
             Return appl
         End Get
-        Set(ByVal value As cEngine.eFunctionTypes)
+        Set(value As cEngine.eFunctionTypes)
 
         End Set
     End Property
@@ -446,13 +446,13 @@ Public Class frmMain
     ''' </summary>
     ''' <param name="clb"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub SetAllOptionsChecked(ByVal clb As CheckedListBox)
+    Private Sub SetAllOptionsChecked(clb As CheckedListBox)
         For i As Integer = 0 To clb.Items.Count - 1
             clb.SetItemChecked(i, True)
         Next
     End Sub
 
-    Private Sub BrowseToTextbox(ByVal tbx As TextBox, ByVal strPrompt As String)
+    Private Sub BrowseToTextbox(tbx As TextBox, strPrompt As String)
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFO As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         cmdFO.Invoke(tbx.Text, strPrompt)

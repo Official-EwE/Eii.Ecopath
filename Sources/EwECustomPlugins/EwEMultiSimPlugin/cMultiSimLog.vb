@@ -54,7 +54,7 @@ Friend Class cMultiSimLog
     ''' <param name="core">The <see cref="cCore"/> to operate against.</param>
     ''' <param name="eng">The <see cref="cEngine"/> to operate against.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, ByVal eng As cEngine)
+    Public Sub New(core As cCore, eng As cEngine)
         Me.m_core = core
         Me.m_eng = eng
     End Sub
@@ -132,7 +132,7 @@ Friend Class cMultiSimLog
     ''' <param name="strLine">The line to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Add(ByVal strLine As String) As Boolean
+    Public Function Add(strLine As String) As Boolean
         If (Not Me.IsOpen()) Then Return False
         Dim dt As DateTime = DateTime.Now
         Me.m_sw.WriteLine(dt.ToShortDateString & " " & dt.ToShortTimeString & ": " & strLine)
@@ -146,7 +146,7 @@ Friend Class cMultiSimLog
     ''' <param name="vs">The <see cref="cVariableStatus"/> to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Add(ByVal vs As cVariableStatus) As Boolean
+    Public Function Add(vs As cVariableStatus) As Boolean
         Return Me.Add(vs.Status.ToString & cStringUtils.vbTab & cStringUtils.ToCSVField(vs.Message))
     End Function
 
@@ -157,7 +157,7 @@ Friend Class cMultiSimLog
     ''' <param name="msg">The <see cref="cMessage"/> to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Add(ByVal msg As cMessage) As Boolean
+    Public Function Add(msg As cMessage) As Boolean
         Dim bSuccess As Boolean = Me.Add(cStringUtils.ToCSVField(msg.Message))
         For Each vs As cVariableStatus In msg.Variables
             bSuccess = bSuccess And Me.Add(vs)

@@ -47,7 +47,7 @@ Namespace DataSources
         ''' indicating what type of EwE datasource will be able to interact with
         ''' the provided file name.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetSupportedType(ByVal strFile As String) As eDataSourceTypes
+        Public Shared Function GetSupportedType(strFile As String) As eDataSourceTypes
 
             Select Case Path.GetExtension(strFile).ToLower
 
@@ -92,7 +92,7 @@ Namespace DataSources
         ''' <returns>A string providing a file extension, or an empty string if
         ''' the given datasource type is not supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetDefaultExtension(ByVal dst As eDataSourceTypes) As String
+        Public Shared Function GetDefaultExtension(dst As eDataSourceTypes) As String
             Select Case dst
                 Case eDataSourceTypes.Access2003 : Return ".ewemdb"
                 Case eDataSourceTypes.EII : Return ".eii"
@@ -111,7 +111,7 @@ Namespace DataSources
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetCompatibility(ByVal strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
+        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
 
             Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
             Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strDatabase)
@@ -190,7 +190,7 @@ Namespace DataSources
         ''' <returns>A <see cref="IEwEDataSource">IEwEDataSource</see> or 
         ''' Nothing if creation failed</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function Create(ByVal dst As eDataSourceTypes) As IEwEDataSource
+        Public Shared Function Create(dst As eDataSourceTypes) As IEwEDataSource
 
             Dim nResult As eStatusFlags = eStatusFlags.OK
 
@@ -227,7 +227,7 @@ Namespace DataSources
         ''' which <see cref="eDataSourceTypes">type of EwE datasource</see>
         ''' is requred.</remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Create(ByVal strFileName As String) As IEwEDataSource
+        Public Shared Function Create(strFileName As String) As IEwEDataSource
 
             Return Create(GetSupportedType(strFileName))
 
@@ -245,7 +245,7 @@ Namespace DataSources
         ''' Implementations can range from simple file checks to online driver 
         ''' validations.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean
+        Public Shared Function IsOSSupported(dst As eDataSourceTypes) As Boolean
 
             Dim ds As IEwEDataSource = cDataSourceFactory.Create(dst)
             If ds Is Nothing Then Return False

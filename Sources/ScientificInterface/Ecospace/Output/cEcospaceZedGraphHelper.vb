@@ -55,28 +55,28 @@ Namespace Ecospace
 
         Private m_useLogScale As Boolean = True
 
-        Public Overrides Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, ByVal zgc As ZedGraph.ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
+        Public Overrides Sub Attach(uic As ScientificInterfaceShared.Controls.cUIContext, zgc As ZedGraph.ZedGraphControl, Optional iNumPanels As Integer = 1)
             MyBase.Attach(uic, zgc, iNumPanels)
             For i As Integer = 0 To Me.NumPanes - 1
-                AddHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf XScaleFormatEvent
-                AddHandler Me.GetPane(i + 1).YAxis.ScaleFormatEvent, AddressOf YScaleFormatEvent
+                AddHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf Me.XScaleFormatEvent
+                AddHandler Me.GetPane(i + 1).YAxis.ScaleFormatEvent, AddressOf Me.YScaleFormatEvent
             Next
         End Sub
 
         Public Overrides Sub Detach()
             For i As Integer = 0 To Me.NumPanes - 1
-                RemoveHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf XScaleFormatEvent
-                RemoveHandler Me.GetPane(i + 1).YAxis.ScaleFormatEvent, AddressOf YScaleFormatEvent
+                RemoveHandler Me.GetPane(i + 1).XAxis.ScaleFormatEvent, AddressOf Me.XScaleFormatEvent
+                RemoveHandler Me.GetPane(i + 1).YAxis.ScaleFormatEvent, AddressOf Me.YScaleFormatEvent
             Next
             MyBase.Detach()
         End Sub
 
-        Public Sub Reset(ByVal strTitle As String, _
-                         ByVal strYAxisLabel As String, _
-                         ByVal nGroups As Integer, _
-                         ByVal nTotalSteps As Integer, _
-                         ByVal iFirstYear As Integer, _
-                         ByVal sNumStepsPerYear As Single)
+        Public Sub Reset(strTitle As String, _
+                         strYAxisLabel As String, _
+                         nGroups As Integer, _
+                         nTotalSteps As Integer, _
+                         iFirstYear As Integer, _
+                         sNumStepsPerYear As Single)
 
             Dim li As LineItem = Nothing
             Dim YMin As Single, YMax As Single
@@ -106,13 +106,13 @@ Namespace Ecospace
 
         End Sub
 
-        Public Sub Overlay(ByVal nGroups As Integer)
+        Public Sub Overlay(nGroups As Integer)
             'For igroup As Integer = 1 To nGroups
             '    Me.m_agpLines(igroup).StartFigure()
             'Next
         End Sub
 
-        Public Sub AddValue(ByVal iGroup As Integer, ByVal iTimeStep As Integer, ByVal sValue As Single)
+        Public Sub AddValue(iGroup As Integer, iTimeStep As Integer, sValue As Single)
 
             If Not cNumberUtils.IsFinite(sValue) Then
                 cNumberUtils.FixValue(sValue)
@@ -140,7 +140,7 @@ Namespace Ecospace
             Get
                 Return Me.m_showitemMode
             End Get
-            Set(ByVal value As frmRunEcospace.eShowItemType)
+            Set(value As frmRunEcospace.eShowItemType)
                 Me.m_showitemMode = value
             End Set
         End Property
@@ -155,7 +155,7 @@ Namespace Ecospace
             Get
                 Return Me.m_iItemToShow
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iItemToShow = value
             End Set
         End Property
@@ -164,13 +164,13 @@ Namespace Ecospace
             Get
                 Return Me.m_useLogScale
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_useLogScale = value
             End Set
         End Property
 
 
-        Protected Overrides Function IsCurveVisible(ByVal ci As ZedGraph.CurveItem) As Boolean
+        Protected Overrides Function IsCurveVisible(ci As ZedGraph.CurveItem) As Boolean
 
             Dim info As cCurveInfo = Me.CurveInfo(ci)
 
@@ -187,10 +187,10 @@ Namespace Ecospace
 
         End Function
 
-        Private Function XScaleFormatEvent(ByVal pane As GraphPane, _
-                                           ByVal axis As Axis, _
-                                           ByVal dValue As Double, _
-                                           ByVal iIndex As Integer) As String
+        Private Function XScaleFormatEvent(pane As GraphPane, _
+                                           axis As Axis, _
+                                           dValue As Double, _
+                                           iIndex As Integer) As String
             Dim sNumStepsPerYear As Single = Me.m_sNumStepsPerYear
             Dim sYear As Single = 0.0!
 
@@ -200,10 +200,10 @@ Namespace Ecospace
 
         End Function
 
-        Private Function YScaleFormatEvent(ByVal pane As GraphPane, _
-                                           ByVal axis As Axis, _
-                                           ByVal dValue As Double, _
-                                           ByVal iIndex As Integer) As String
+        Private Function YScaleFormatEvent(pane As GraphPane, _
+                                           axis As Axis, _
+                                           dValue As Double, _
+                                           iIndex As Integer) As String
             If Me.LogScale Then
                 Return Me.StyleGuide.FormatNumber(Math.Pow(10, dValue))
             Else

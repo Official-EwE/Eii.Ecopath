@@ -126,7 +126,7 @@ Public Class cEnviroInputMap
                 For ic As Integer = 1 To Me.m_spaceData.InCol
                     If Me.m_spaceData.Depth(ir, ic) > 0 Then
                         Dim cell As Single = CSng(Me.getCellValue(ir, ic))
-                        ipt = CInt(Math.Truncate((cell - Me.Min) / m_binWidth)) + 1
+                        ipt = CInt(Math.Truncate((cell - Me.Min) / Me.m_binWidth)) + 1
                         If ipt >= nBins Then ipt = nBins
                         If ipt <= 0 Then ipt = 1
                         pts(ipt).Y += 1
@@ -140,7 +140,7 @@ Public Class cEnviroInputMap
             'Normalize the histogram
             '29-Sept-2011 make it the percentage instead
             For i As Integer = 1 To nBins
-                pts(i).X = CSng(Me.Min + m_binWidth * i)
+                pts(i).X = CSng(Me.Min + Me.m_binWidth * i)
                 'normalize the data
                 'pts(i).Y = pts(i).Y / maxPts
                 pts(i).Y = pts(i).Y / ncells
@@ -290,14 +290,14 @@ Public Class cEnviroInputMap
 
         If (Me.m_bInvalid = False) Then Return
 
-        m_min = Single.MaxValue
-        m_max = Single.MinValue
+        Me.m_min = Single.MaxValue
+        Me.m_max = Single.MinValue
 
         Try
             For ir As Integer = 1 To Me.m_spaceData.InRow
                 For ic As Integer = 1 To Me.m_spaceData.InCol
                     ' JS 30May14: fixed #1343
-                    If Me.m_spaceData.Depth(ir, ic) > 0 And m_spaceData.Excluded(ir, ic) = False Then
+                    If Me.m_spaceData.Depth(ir, ic) > 0 And Me.m_spaceData.Excluded(ir, ic) = False Then
                         Dim sCell As Single = CSng(Me.getCellValue(ir, ic))
                         ' JS 30May14: fixed #1342
                         If (sCell <> cCore.NULL_VALUE) Then

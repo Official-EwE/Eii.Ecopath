@@ -56,7 +56,7 @@ Namespace Commands
         ''' Constructor, initializes a new instance of the NavigationCommand class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 

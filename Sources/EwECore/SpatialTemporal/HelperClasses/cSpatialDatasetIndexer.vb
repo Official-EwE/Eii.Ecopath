@@ -194,7 +194,7 @@ Namespace SpatialData
 
                     ' Clear queued data sets that are no longer there
                     For i As Integer = 0 To Me.m_queue.Count - 1
-                        If Not m_manSets.Contains(Me.m_queue(i)) Then
+                        If Not Me.m_manSets.Contains(Me.m_queue(i)) Then
                             Me.m_queue(i) = Nothing
                         End If
                     Next
@@ -202,7 +202,7 @@ Namespace SpatialData
                 End SyncLock
 
                 If (Me.m_threadIndex Is Nothing) And (Me.m_queue.Count > 0) Then
-                    Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                    Me.m_threadIndex = New Threading.Thread(AddressOf Me.IndexDatasetThread)
                     Me.m_threadIndex.IsBackground = True
                     Me.m_threadIndex.Start()
                 End If
@@ -285,9 +285,9 @@ Namespace SpatialData
 
         End Sub
 
-        Private Sub OnSpatialIndexUpdated(ByVal strMessage As String, _
-                                          ByVal state As eProgressState, _
-                                          ByVal sProgress As Single)
+        Private Sub OnSpatialIndexUpdated(strMessage As String, _
+                                          state As eProgressState, _
+                                          sProgress As Single)
 
             If (Me.m_core IsNot Nothing) Then
                 Try

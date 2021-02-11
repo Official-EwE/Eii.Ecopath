@@ -52,7 +52,7 @@ Public Class cTimeSeriesFactory
     ''' A time series category for the provided time series type.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function TimeSeriesCategory(ByVal timeSeriesType As eTimeSeriesType) As eTimeSeriesCategoryType
+    Public Shared Function TimeSeriesCategory(timeSeriesType As eTimeSeriesType) As eTimeSeriesCategoryType
 
         Select Case timeSeriesType
 
@@ -89,8 +89,8 @@ Public Class cTimeSeriesFactory
     ''' the time series.</param>
     ''' <returns>A Time Series instance, or nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function CreateTimeSeries(ByVal timeSeriesType As eTimeSeriesType,
-            ByVal core As cCore, ByVal iDBID As Integer) As cTimeSeries
+    Public Shared Function CreateTimeSeries(timeSeriesType As eTimeSeriesType,
+            core As cCore, iDBID As Integer) As cTimeSeries
 
         Dim ts As cTimeSeries = Nothing
 
@@ -122,7 +122,7 @@ Public Class cTimeSeriesFactory
     ''' <param name="type">The <see cref="eTimeSeriesType">type</see> to find others for.</param>
     ''' <returns>Well...</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function CompatibleTypes(ByVal type As eTimeSeriesType) As eTimeSeriesType()
+    Public Shared Function CompatibleTypes(type As eTimeSeriesType) As eTimeSeriesType()
         Return CompatibleTypes(TimeSeriesCategory(type))
     End Function
 
@@ -133,7 +133,7 @@ Public Class cTimeSeriesFactory
     ''' <param name="cat">The <see cref="eTimeSeriesCategoryType">category</see> to find others for.</param>
     ''' <returns>Well...</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function CompatibleTypes(ByVal cat As eTimeSeriesCategoryType) As eTimeSeriesType()
+    Public Shared Function CompatibleTypes(cat As eTimeSeriesCategoryType) As eTimeSeriesType()
         Dim lTypes As New List(Of eTimeSeriesType)
         For Each t As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
             If (TimeSeriesCategory(t) = cat) Or (cat = eTimeSeriesCategoryType.NotSet) Then

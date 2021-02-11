@@ -50,7 +50,7 @@ Public MustInherit Class cShapeFunction
         ReDim Me.m_points(1200)
         ReDim Me.m_parameters(Me.nParameters)
 
-        Defaults()
+        Me.Defaults()
 
     End Sub
 
@@ -195,7 +195,7 @@ Public MustInherit Class cShapeFunction
     ''' By default, the shape is filled to the end with the value at <paramref name="nPoints"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Shape(ByVal nPoints As Integer) As Single() _
+    Public Overridable Function Shape(nPoints As Integer) As Single() _
         Implements IShapeFunction.Shape
 
         If (Me.ParamsChanged) Then

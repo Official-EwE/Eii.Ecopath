@@ -42,9 +42,9 @@ Public Class cEcospaceBasemap
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore)
+    Sub New(core As cCore)
 
-        MyBase.New(theCore)
+        MyBase.New(core)
 
         Dim data As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim val As cValue = Nothing
@@ -52,160 +52,160 @@ Public Class cEcospaceBasemap
         Me.AllowValidation = False
 
         Try
-            Me.DBID = DBID
-            m_dataType = eDataTypes.EcospaceBasemap
-            m_coreComponent = eCoreComponentType.EcoSpace
+            Me.DBID = Me.DBID
+            Me.m_dataType = eDataTypes.EcospaceBasemap
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' InRow
-            val = New cValue(0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' InCol
-            val = New cValue(0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' CellLength
-            val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' CellSize
-            val = New cValue(1, eVarNameFlags.CellSize, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.CellSize, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' Latitude (top-left coord of layer)
-            val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' Longitude (top-left coord of layer)
-            val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' Assume square cells
-            val = New cValue(New Boolean, eVarNameFlags.AssumeSquareCells, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.AssumeSquareCells, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ' CoordinateSystem
-            val = New cValue("", eVarNameFlags.ProjectionString, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(core, "", eVarNameFlags.ProjectionString, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' ************************************************************************************************* '
             ' Variables for layers, providing metadata and an anchor point for remarks, visual styles, metadata '
             ' ************************************************************************************************* '
 
             ' LayerRelPP
-            val = New cValue(0, eVarNameFlags.LayerRelPP, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerRelPP, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerContaminantForcingRelative (was LayerRelCin)
-            val = New cValue(0, eVarNameFlags.LayerContaminantRelativeDistribution, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerContaminantRelativeDistribution, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerContaminantForcingAbsolute
-            val = New cValue(0, eVarNameFlags.LayerContaminantForcingAbsolute, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerContaminantForcingAbsolute, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerDepth
-            val = New cValue(0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerHabitat
-            val = New cValue(0, eVarNameFlags.LayerHabitat, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerHabitat, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerHabitatCapacity
-            val = New cValue(0, eVarNameFlags.LayerHabitatCapacity, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerHabitatCapacity, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerHabitatCapacityInput
-            val = New cValue(0, eVarNameFlags.LayerHabitatCapacityInput, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerHabitatCapacityInput, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerMPA
-            val = New cValue(0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerRegion
-            val = New cValue(0, eVarNameFlags.LayerRegion, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 0, eVarNameFlags.LayerRegion, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerMigration
-            val = New cValue(0, eVarNameFlags.LayerMigration, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerMigration, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerImportance
-            val = New cValue(0, eVarNameFlags.LayerImportance, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerImportance, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' MPASeed
-            val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, 0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerPort
-            val = New cValue(0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerSail
-            val = New cValue(0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' Advection interface
             ' LayerAdvection
-            val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerWind
-            val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerUpwelling
-            val = New cValue(0, eVarNameFlags.LayerUpwelling, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerUpwelling, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerDriver
-            val = New cValue(0, eVarNameFlags.LayerDriver, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerDriver, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' BiomassForcing
-            val = New cValue(0, eVarNameFlags.LayerBiomassForcing, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerBiomassForcing, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' RelativeBiomassForcing
-            val = New cValue(0, eVarNameFlags.LayerBiomassRelativeForcing, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.LayerBiomassRelativeForcing, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' LayerExclusion
-            val = New cValue(0, eVarNameFlags.LayerExclusion, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 0, eVarNameFlags.LayerExclusion, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
 
             ' LayerDepth
-            val = New cValue(0, eVarNameFlags.nCells, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, 0, eVarNameFlags.nCells, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
-            m_values.Add(val.varName, val)
+            Me.m_values.Add(val.varName, val)
 
             ' ----------------
             ' Init layers
@@ -214,19 +214,19 @@ Public Class cEcospaceBasemap
             Dim llayers As New List(Of cEcospaceLayer)
 
             ' Depth layer
-            Me.m_layers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, 1)}
+            Me.m_layers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(core, Me, 1)}
 
             ' Habitats
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NoHabitats - 1
-                llayers.Add(New cEcospaceLayerHabitat(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerHabitat(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerHabitat) = llayers.ToArray
 
             ' Habitat capacity input layer
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacityInput, i))
+                llayers.Add(New cEcospaceLayerHabitatCapacity(core, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacityInput, i))
             Next
             Me.m_layers(eVarNameFlags.LayerHabitatCapacityInput) = llayers.ToArray
 
@@ -234,45 +234,45 @@ Public Class cEcospaceBasemap
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
                 ' Hmm, does settings the datatype 'properly' screw up things?
-                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacity, i))
+                llayers.Add(New cEcospaceLayerHabitatCapacity(core, Me, eDataTypes.EcospaceLayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacity, i))
             Next
             Me.m_layers(eVarNameFlags.LayerHabitatCapacity) = llayers.ToArray
 
             ' Biomass Forcing
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerBiomassForcing(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerBiomassForcing(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerBiomassForcing) = llayers.ToArray
 
             ' Relative Biomass Forcing
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerBiomassRelativeForcing(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerBiomassRelativeForcing(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerBiomassRelativeForcing) = llayers.ToArray
 
             ' MPA layer
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.MPAno
-                llayers.Add(New cEcospaceLayerMPA(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerMPA(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerMPA) = llayers.ToArray
 
             ' Region layer
-            Me.m_layers(eVarNameFlags.LayerRegion) = New cEcospaceLayer() {New cEcospaceLayerRegion(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerRegion) = New cEcospaceLayer() {New cEcospaceLayerRegion(core, Me)}
 
             ' RelPP layer
-            Me.m_layers(eVarNameFlags.LayerRelPP) = New cEcospaceLayer() {New cEcospaceLayerRelPP(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerRelPP) = New cEcospaceLayer() {New cEcospaceLayerRelPP(core, Me)}
 
             ' Relative contaminant forcing layer (RelCin)
-            Me.m_layers(eVarNameFlags.LayerContaminantRelativeDistribution) = New cEcospaceLayer() {New cEcospaceLayerContaminantRelativeDistribution(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerContaminantRelativeDistribution) = New cEcospaceLayer() {New cEcospaceLayerContaminantRelativeDistribution(core, Me)}
 
             ' Absolute contaminant forcing layer
-            Me.m_layers(eVarNameFlags.LayerContaminantForcingAbsolute) = New cEcospaceLayer() {New cEcospaceLayerContaminantForcingAbsolute(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerContaminantForcingAbsolute) = New cEcospaceLayer() {New cEcospaceLayerContaminantForcingAbsolute(core, Me)}
 
             ' MPA Seed
-            Me.m_layers(eVarNameFlags.LayerMPASeed) = New cEcospaceLayer() {New cEcospaceLayerMPASeed(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerMPASeed) = New cEcospaceLayer() {New cEcospaceLayerMPASeed(core, Me)}
 
             ' Importance
             llayers.Clear()
@@ -289,43 +289,43 @@ Public Class cEcospaceBasemap
             Me.m_layers(eVarNameFlags.LayerDriver) = llayers.ToArray()
 
             ' Exclusion
-            Me.m_layers(eVarNameFlags.LayerExclusion) = New cEcospaceLayer() {New cEcospaceLayerExclusion(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerExclusion) = New cEcospaceLayer() {New cEcospaceLayerExclusion(core, Me)}
 
             ' Migration
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerMigration(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerMigration(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerMigration) = llayers.ToArray()
 
             ' Port
             llayers.Clear()
             For i As Integer = 0 To ecospaceDS.nFleets
-                llayers.Add(New cEcospaceLayerPort(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerPort(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerPort) = llayers.ToArray()
 
             ' Sailing cost
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.nFleets
-                llayers.Add(New cEcospaceLayerSail(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerSail(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerSail) = llayers.ToArray()
 
             ' Advection
             llayers.Clear()
-            llayers.Add(New cEcospaceLayerAdvection(theCore, Me, 1))
-            llayers.Add(New cEcospaceLayerAdvection(theCore, Me, 2))
+            llayers.Add(New cEcospaceLayerAdvection(core, Me, 1))
+            llayers.Add(New cEcospaceLayerAdvection(core, Me, 2))
             Me.m_layers(eVarNameFlags.LayerAdvection) = llayers.ToArray()
 
             ' Wind
             llayers.Clear()
-            llayers.Add(New cEcospaceLayerWind(theCore, Me, 1))
-            llayers.Add(New cEcospaceLayerWind(theCore, Me, 2))
+            llayers.Add(New cEcospaceLayerWind(core, Me, 1))
+            llayers.Add(New cEcospaceLayerWind(core, Me, 2))
             Me.m_layers(eVarNameFlags.LayerWind) = llayers.ToArray()
 
             ' Upwelling
-            Me.m_layers(eVarNameFlags.LayerUpwelling) = New cEcospaceLayer() {New cEcospaceLayerUpwelling(theCore, Me)}
+            Me.m_layers(eVarNameFlags.LayerUpwelling) = New cEcospaceLayer() {New cEcospaceLayerUpwelling(core, Me)}
 
             '' MLD
             'Me.m_dictLayers(eVarNameFlags.LayerMLD) = New cEcospaceLayer() {New cEcospaceLayerMLD(theCore, Me)}
@@ -333,12 +333,12 @@ Public Class cEcospaceBasemap
             'Me.m_dictLayers(eVarNameFlags.LayerIBMAge1NumbersForcing) = New cEcospaceLayer() {New cEcospaceLayer(theCore, Me)}
             llayers.Clear()
             For i As Integer = 1 To Me.m_core.nStanzas
-                llayers.Add(New cEcospaceLayerIBMAge1Forcing(theCore, Me, i))
+                llayers.Add(New cEcospaceLayerIBMAge1Forcing(core, Me, i))
             Next
             Me.m_layers(eVarNameFlags.LayerIBMAge1Forcing) = llayers.ToArray
 
             'set status flags to default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
             Me.AllowValidation = True
 
@@ -371,7 +371,7 @@ Public Class cEcospaceBasemap
 
         ' JS 07Jul14: cell size is now a derived value
         If (VarName = eVarNameFlags.CellSize) Then
-            Return SetVariable(eVarNameFlags.CellLength, Me.ToCellLength(CSng(newValue), Me.AssumeSquareCells))
+            Return Me.SetVariable(eVarNameFlags.CellLength, Me.ToCellLength(CSng(newValue), Me.AssumeSquareCells))
         End If
         Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
 
@@ -389,10 +389,10 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public Property InRow As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.InRow))
+            Return CInt(Me.GetVariable(eVarNameFlags.InRow))
         End Get
         Friend Set(value As Integer)
-            SetVariable(eVarNameFlags.InRow, value)
+            Me.SetVariable(eVarNameFlags.InRow, value)
         End Set
     End Property
 
@@ -404,10 +404,10 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public Property InCol() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.InCol))
+            Return CInt(Me.GetVariable(eVarNameFlags.InCol))
         End Get
         Friend Set(value As Integer)
-            SetVariable(eVarNameFlags.InCol, value)
+            Me.SetVariable(eVarNameFlags.InCol, value)
         End Set
     End Property
 
@@ -420,11 +420,11 @@ Public Class cEcospaceBasemap
     Public Property CellLength() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.CellLength))
+            Return CSng(Me.GetVariable(eVarNameFlags.CellLength))
         End Get
 
         Set(value As Single)
-            SetVariable(eVarNameFlags.CellLength, value)
+            Me.SetVariable(eVarNameFlags.CellLength, value)
         End Set
 
     End Property
@@ -444,11 +444,11 @@ Public Class cEcospaceBasemap
     Public Property CellSize() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.CellSize))
+            Return CSng(Me.GetVariable(eVarNameFlags.CellSize))
         End Get
 
         Set(value As Single)
-            SetVariable(eVarNameFlags.CellSize, value)
+            Me.SetVariable(eVarNameFlags.CellSize, value)
         End Set
 
     End Property
@@ -461,11 +461,11 @@ Public Class cEcospaceBasemap
     Public Property Latitude() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.Latitude))
+            Return CSng(Me.GetVariable(eVarNameFlags.Latitude))
         End Get
 
         Set(value As Single)
-            SetVariable(eVarNameFlags.Latitude, value)
+            Me.SetVariable(eVarNameFlags.Latitude, value)
         End Set
 
     End Property
@@ -478,11 +478,11 @@ Public Class cEcospaceBasemap
     Public Property Longitude() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.Longitude))
+            Return CSng(Me.GetVariable(eVarNameFlags.Longitude))
         End Get
 
         Set(value As Single)
-            SetVariable(eVarNameFlags.Longitude, value)
+            Me.SetVariable(eVarNameFlags.Longitude, value)
         End Set
 
     End Property
@@ -495,12 +495,12 @@ Public Class cEcospaceBasemap
     Public Property PosTopLeft() As Drawing.PointF
 
         Get
-            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)), CSng(GetVariable(eVarNameFlags.Latitude)))
+            Return New Drawing.PointF(CSng(Me.GetVariable(eVarNameFlags.Longitude)), CSng(Me.GetVariable(eVarNameFlags.Latitude)))
         End Get
 
         Set(value As Drawing.PointF)
-            SetVariable(eVarNameFlags.Longitude, value.X)
-            SetVariable(eVarNameFlags.Latitude, value.Y)
+            Me.SetVariable(eVarNameFlags.Longitude, value.X)
+            Me.SetVariable(eVarNameFlags.Latitude, value.Y)
         End Set
 
     End Property
@@ -513,13 +513,13 @@ Public Class cEcospaceBasemap
     Public Property PosBottomRight() As Drawing.PointF
 
         Get
-            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)) + Me.CellSize * Me.InCol,
-                                      CSng(GetVariable(eVarNameFlags.Latitude)) - Me.CellSize * Me.InRow)
+            Return New Drawing.PointF(CSng(Me.GetVariable(eVarNameFlags.Longitude)) + Me.CellSize * Me.InCol,
+                                      CSng(Me.GetVariable(eVarNameFlags.Latitude)) - Me.CellSize * Me.InRow)
         End Get
 
         Set(value As Drawing.PointF)
-            SetVariable(eVarNameFlags.Longitude, value.X - Me.CellSize * Me.InCol)
-            SetVariable(eVarNameFlags.Latitude, value.Y - Me.CellSize * Me.InRow)
+            Me.SetVariable(eVarNameFlags.Longitude, value.X - Me.CellSize * Me.InCol)
+            Me.SetVariable(eVarNameFlags.Latitude, value.Y - Me.CellSize * Me.InRow)
         End Set
 
     End Property
@@ -590,7 +590,7 @@ Public Class cEcospaceBasemap
     Public Property nCells() As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.nCells))
+            Return CSng(Me.GetVariable(eVarNameFlags.nCells))
         End Get
         Set(value As Single)
             Me.SetVariable(eVarNameFlags.nCells, value)
@@ -614,7 +614,7 @@ Public Class cEcospaceBasemap
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access importance layer of index:" & index & ". Error: " & ex.Message)
                 ' ToDo: globalize this
-                m_core.Messages.AddMessage(New cMessage("Unable to access importance layer with index" & index, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                Me.m_core.Messages.AddMessage(New cMessage("Unable to access importance layer with index" & index, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
                 Return Nothing
             End Try
         End Get
@@ -633,7 +633,7 @@ Public Class cEcospaceBasemap
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access driver layer of index:" & index & ". Error: " & ex.Message)
                 ' ToDo: globalize this
-                m_core.Messages.AddMessage(New cMessage("Unable to access driver layer of index " & index, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                Me.m_core.Messages.AddMessage(New cMessage("Unable to access driver layer of index " & index, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
                 Return Nothing
             End Try
         End Get

@@ -62,10 +62,10 @@ Public Class cEcosimGraphWrapper
     ''' <param name="zgc"><see cref="ZedGraphControl"/> to style and interact with.</param>
     ''' <param name="settings"><see cref="cIndicatorSettings"/> defined centrally in the plug-in.</param>
     ''' -------------------------------------------------------------------
-    Public Shadows Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, _
-                                ByVal zgc As ZedGraph.ZedGraphControl, _
-                                ByVal settings As cIndicatorSettings, _
-                                ByVal lind As List(Of cEcosimIndicators))
+    Public Shadows Sub Attach(uic As ScientificInterfaceShared.Controls.cUIContext, _
+                                zgc As ZedGraph.ZedGraphControl, _
+                                settings As cIndicatorSettings, _
+                                lind As List(Of cEcosimIndicators))
         MyBase.Attach(uic, zgc, 1)
         ' Store important bits
         Me.m_settings = settings

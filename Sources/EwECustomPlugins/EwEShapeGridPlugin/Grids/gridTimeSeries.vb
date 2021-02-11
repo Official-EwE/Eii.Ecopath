@@ -198,7 +198,7 @@ Public Class gridTimeSeries
 
     Dim m_bInEdit As Boolean = False
 
-    Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         Dim ts As cTimeSeries = DirectCast(Me.Shape(p.Column), cTimeSeries)
         Select Case DirectCast(p.Row, eRowType)
@@ -231,7 +231,7 @@ Public Class gridTimeSeries
         Return MyBase.OnCellEdited(p, cell)
     End Function
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
         Me.OnCellEdited(p, cell)
         Return MyBase.OnCellValueChanged(p, cell)
     End Function
@@ -240,7 +240,7 @@ Public Class gridTimeSeries
 
 #Region " Updates "
 
-    Protected Overrides Sub OnRefreshed(ByVal sender As ScientificInterfaceShared.Controls.cShapeGUIHandler)
+    Protected Overrides Sub OnRefreshed(sender As ScientificInterfaceShared.Controls.cShapeGUIHandler)
         ' Unpleasant: a refresh can be triggered from an external edit or by 
         ' this very interface in response to a cell edit. If a cell edit is in
         ' progress the grid content cannot be refreshed.
@@ -259,7 +259,7 @@ Public Class gridTimeSeries
 
 #Region " Helper methods "
 
-    Protected Overrides Function Label(ByVal iPoint As Integer) As String
+    Protected Overrides Function Label(iPoint As Integer) As String
         Dim ds As cTimeSeriesDataset = Nothing
         If (Me.Core.ActiveTimeSeriesDatasetIndex = -1) Then Return "?"
         ds = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)

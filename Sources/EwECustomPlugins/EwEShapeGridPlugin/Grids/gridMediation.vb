@@ -33,7 +33,7 @@ Imports EwECore
 Public MustInherit Class gridMediation
     Inherits gridForcingBase
 
-    Protected Overrides Function Label(ByVal iPoint As Integer) As String
+    Protected Overrides Function Label(iPoint As Integer) As String
         Return CStr(iPoint + 1)
     End Function
 

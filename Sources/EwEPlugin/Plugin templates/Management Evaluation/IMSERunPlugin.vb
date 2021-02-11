@@ -59,7 +59,7 @@ Public Interface IMSERunPlugin
     ''' cMSEDataStructures.BestimateLast(ngroups) estimated biomass for the previous year.
     ''' cMSEDataStructures.KalmanGain(ngroups) for this year.
     ''' </remarks>
-    Sub MSEDoAssessment(ByVal Biomass() As Single)
+    Sub MSEDoAssessment(Biomass() As Single)
 
     ''' <summary>
     ''' Update cMSEDataStructures.QuotaTime(ngroups) with the quota for a year.
@@ -68,7 +68,7 @@ Public Interface IMSERunPlugin
     ''' <remarks>
     ''' MSEUpdateQuotas() is called after cMSEDataStructures.QuotaTime(ngroups) has been updated and can be used to 
     ''' </remarks>
-    Sub MSEUpdateQuotas(ByVal Biomass() As Single)
+    Sub MSEUpdateQuotas(Biomass() As Single)
 
     ''' <summary>
     ''' Regulate effort based on Quota and user selected controls.
@@ -78,7 +78,7 @@ Public Interface IMSERunPlugin
     ''' <param name="QYear">Catchability increase over time due to improved fishing efficiency.</param>
     ''' <param name="iTimeIndex">Cumulative time index.</param>
     ''' <remarks>Sets effort in cEcosimDataStructures.FishRateGear(nfleet,ngroups) base on Quota and user selected controls.</remarks>
-    Sub MSERegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal iTimeIndex As Integer)
+    Sub MSERegulateEffort(Biomass() As Single, QMult() As Single, QYear() As Single, iTimeIndex As Integer)
 
 
 End Interface

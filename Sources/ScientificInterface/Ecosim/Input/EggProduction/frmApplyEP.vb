@@ -39,14 +39,14 @@ Namespace Ecosim
         Private m_bInUpdate As Boolean = False
 
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
 #End Region
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             ' Config manager
@@ -64,7 +64,7 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 MyBase.UIContext = value
                 Me.m_grid.UIContext = value
             End Set
@@ -74,7 +74,7 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Private Sub m_tscEggProdShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub m_tscEggProdShapes_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_tscEggProdShapes.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
@@ -84,7 +84,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub tsbSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsbSet_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbSet.Click
 
             If Me.m_bInUpdate Then Return
@@ -94,12 +94,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_lvShapes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_lvShapes_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lvShapes.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
-            If m_lvShapes.SelectedItems.Count = 1 Then
+            If Me.m_lvShapes.SelectedItems.Count = 1 Then
                 Me.m_grid.SelectShapeName(Me.m_lvShapes.SelectedItems(0).Text)
             Else
                 Me.m_grid.SelectShapeName("")
@@ -113,7 +113,7 @@ Namespace Ecosim
             Me.UpdateSetControls()
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             ' Respond to color changes and thumbnail size changes
             If (ct And (cStyleGuide.eChangeType.Thumbnails Or cStyleGuide.eChangeType.Colours)) > 0 Then
                 Me.LoadShapes()
@@ -158,13 +158,13 @@ Namespace Ecosim
             Try
 
                 'Clear the thumbnail list
-                m_lvShapes.Items.Clear()
+                Me.m_lvShapes.Items.Clear()
 
                 largeImageList.ImageSize = rcItem.Size
 
-                If m_EPManager.Count > 0 Then
+                If Me.m_EPManager.Count > 0 Then
 
-                    For Each shapeFunc As cForcingFunction In m_EPManager
+                    For Each shapeFunc As cForcingFunction In Me.m_EPManager
 
                         ' Create image
                         bmp = New Bitmap(rcItem.Width, rcItem.Height)
@@ -176,15 +176,15 @@ Namespace Ecosim
                         ' Create label
                         item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, (shapeFunc.ID + 1), shapeFunc.Name))
                         item.ImageIndex = iItemIndex
-                        m_lvShapes.Items.Add(item)
+                        Me.m_lvShapes.Items.Add(item)
 
                         iItemIndex += 1
 
                     Next shapeFunc
 
-                    m_lvShapes.View = View.LargeIcon
-                    m_lvShapes.Items(0).Selected = True
-                    m_lvShapes.LargeImageList = largeImageList
+                    Me.m_lvShapes.View = View.LargeIcon
+                    Me.m_lvShapes.Items(0).Selected = True
+                    Me.m_lvShapes.LargeImageList = largeImageList
 
                 End If
 
@@ -227,7 +227,7 @@ Namespace Ecosim
 
 #Region " Mandatory overrides "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             Dim bRefreshForm As Boolean = False
             Dim bRefreshShapes As Boolean = False

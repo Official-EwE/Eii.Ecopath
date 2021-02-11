@@ -82,12 +82,12 @@ Public Class dlgSelectEnvironmentalResponse
     ''' <param name="iDriver">Index of selected driver in the <paramref name="driverManager">driver manager</paramref>.</param>
     ''' <param name="iSelGroup"></param>
     ''' <param name="selection">Flag indicating <see cref="eEnvironmentalResponseSelectionType">how the dialog was invoked</see>.</param>
-    Public Sub New(ByVal uic As cUIContext,
-                   ByVal responseManager As cBaseShapeManager,
-                   ByVal driverManager As IEnvironmentalResponseManager,
-                   ByVal iDriver As Integer,
-                   ByVal iSelGroup As Integer,
-                   ByVal selection As eEnvironmentalResponseSelectionType)
+    Public Sub New(uic As cUIContext,
+                   responseManager As cBaseShapeManager,
+                   driverManager As IEnvironmentalResponseManager,
+                   iDriver As Integer,
+                   iSelGroup As Integer,
+                   selection As eEnvironmentalResponseSelectionType)
 
         Me.UIContext = uic
 
@@ -152,7 +152,7 @@ Public Class dlgSelectEnvironmentalResponse
 
 #Region " Overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
 
@@ -168,7 +168,7 @@ Public Class dlgSelectEnvironmentalResponse
         Next
 
         ' Generate thumbnails from shapes
-        Dim size As Integer = LargeIconSize
+        Dim size As Integer = Me.LargeIconSize
         Dim images As New ImageList()
         images.ImageSize = New Size(size, size)
         Me.GenerateShapeThumbnails(images)
@@ -251,7 +251,7 @@ Public Class dlgSelectEnvironmentalResponse
 
     End Sub
 
-    Private Sub OnAdd(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAdd(sender As Object, e As System.EventArgs) _
         Handles m_btnAdd.Click, m_lvAllShapes.DoubleClick
         Try
             Me.SelectShape()
@@ -261,7 +261,7 @@ Public Class dlgSelectEnvironmentalResponse
         End Try
     End Sub
 
-    Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemove(sender As Object, e As System.EventArgs) _
         Handles m_btnRemove.Click
         Try
             Me.RemoveShapes()
@@ -271,7 +271,7 @@ Public Class dlgSelectEnvironmentalResponse
         End Try
     End Sub
 
-    Private Sub OnAvailableShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAvailableShapesSelectionChanged(sender As Object, e As System.EventArgs) _
         Handles m_lvAllShapes.SelectedIndexChanged
         Try
             Me.UpdateControls()
@@ -293,7 +293,7 @@ Public Class dlgSelectEnvironmentalResponse
         Me.Invalidate()
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles OK_Button.Click
 
         Me.DialogResult = DialogResult.OK
@@ -314,7 +314,7 @@ Public Class dlgSelectEnvironmentalResponse
         Me.Close()
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -335,11 +335,11 @@ Public Class dlgSelectEnvironmentalResponse
     ''' Get/set the selected shape for a list view item.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Property Shape(ByVal lvi As ListViewItem) As cEnviroResponseFunction
+    Private Property Shape(lvi As ListViewItem) As cEnviroResponseFunction
         Get
             Return DirectCast(lvi.Tag, cEnviroResponseFunction)
         End Get
-        Set(ByVal value As cEnviroResponseFunction)
+        Set(value As cEnviroResponseFunction)
             lvi.Tag = value
         End Set
     End Property
@@ -352,7 +352,7 @@ Public Class dlgSelectEnvironmentalResponse
     Private Sub SelectShape()
 
         For Each itemSrc As ListViewItem In Me.m_lvAllShapes.SelectedItems
-            Me.Shape = Shape(itemSrc)
+            Me.Shape = Me.Shape(itemSrc)
             Exit For
         Next
 
@@ -380,7 +380,7 @@ Public Class dlgSelectEnvironmentalResponse
 
     Private ReadOnly Property Modeltype As eCoreComponentType = eCoreComponentType.NotSet
 
-    Private Sub GenerateShapeThumbnails(ByVal il As ImageList)
+    Private Sub GenerateShapeThumbnails(il As ImageList)
 
         Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
 
@@ -392,7 +392,7 @@ Public Class dlgSelectEnvironmentalResponse
 
     End Sub
 
-    Private Sub UpdateShapeImage(ByVal il As ImageList, shape As cEnviroResponseFunction)
+    Private Sub UpdateShapeImage(il As ImageList, shape As cEnviroResponseFunction)
         Dim iShape As Integer = Me.m_lFFs.IndexOf(shape)
         Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
         If (iShape < 0) Then Return
@@ -490,7 +490,7 @@ Public Class dlgSelectEnvironmentalResponse
                         'all other model types (Mortality, and EcoSim) can save all times
                         bCanCommit = True
                     End If
-                    If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(m_iSelGrp) = iSelResponseShape
+                    If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
                     Return True
                 End If
             ElseIf Me.m_seltype = eEnvironmentalResponseSelectionType.Driver Then

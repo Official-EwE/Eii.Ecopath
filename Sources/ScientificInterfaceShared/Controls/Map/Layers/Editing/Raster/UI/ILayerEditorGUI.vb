@@ -32,7 +32,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub Initialize(ByVal editor As cLayerEditorRaster)
+        Sub Initialize(editor As cLayerEditorRaster)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -41,7 +41,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub StartEdit(ByVal editor As cLayerEditorRaster)
+        Sub StartEdit(editor As cLayerEditorRaster)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -50,7 +50,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub EndEdit(ByVal editor As cLayerEditorRaster)
+        Sub EndEdit(editor As cLayerEditorRaster)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -60,7 +60,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Sub UpdateContent(editor As cLayerEditorRaster)
 
     End Interface
 

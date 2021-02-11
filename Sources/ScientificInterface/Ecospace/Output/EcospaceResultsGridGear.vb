@@ -105,28 +105,28 @@ Namespace Ecospace
 
                 source = core.EcospaceFleetOutput(fleetIndex)
 
-                SetCellValue(fleetIndex, 2, source.CatchStart, totalValue)
-                SetCellValue(fleetIndex, 3, source.CatchEnd, totalValue)
+                Me.SetCellValue(fleetIndex, 2, source.CatchStart, totalValue)
+                Me.SetCellValue(fleetIndex, 3, source.CatchEnd, totalValue)
 
                 If source.CatchStart > 0 And source.CatchEnd > 0 Then
-                    SetCellValue(fleetIndex, 4, CSng(source.CatchEnd / source.CatchStart), totalValue)
+                    Me.SetCellValue(fleetIndex, 4, CSng(source.CatchEnd / source.CatchStart), totalValue)
                 End If
 
-                SetCellValue(fleetIndex, 5, source.ValueStart, totalValue)
-                SetCellValue(fleetIndex, 6, source.ValueEnd, totalValue)
+                Me.SetCellValue(fleetIndex, 5, source.ValueStart, totalValue)
+                Me.SetCellValue(fleetIndex, 6, source.ValueEnd, totalValue)
 
                 If source.ValueStart > 0 And source.ValueEnd > 0 Then
-                    SetCellValue(fleetIndex, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
+                    Me.SetCellValue(fleetIndex, 7, CSng(source.ValueEnd / source.ValueStart), totalValue)
                 End If
 
-                SetCellValue(fleetIndex, 8, source.CostStart, totalValue)
-                SetCellValue(fleetIndex, 9, source.CostEnd, totalValue)
+                Me.SetCellValue(fleetIndex, 8, source.CostStart, totalValue)
+                Me.SetCellValue(fleetIndex, 9, source.CostEnd, totalValue)
 
                 If source.CostStart > 0 And source.CostEnd > 0 Then
-                    SetCellValue(fleetIndex, 10, CSng(source.CostEnd / source.CostStart), totalValue)
+                    Me.SetCellValue(fleetIndex, 10, CSng(source.CostEnd / source.CostStart), totalValue)
                 End If
 
-                SetCellValue(fleetIndex, 11, source.EffortES)
+                Me.SetCellValue(fleetIndex, 11, source.EffortES)
 
             Next
 

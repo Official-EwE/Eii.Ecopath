@@ -39,13 +39,13 @@ Namespace Controls.Map.Layers
 
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
-            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             Me.UpdateImage()
         End Sub
 
         Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' Stop listening
-            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             ' Base class cleanup
             MyBase.Dispose(bDisposing)
         End Sub

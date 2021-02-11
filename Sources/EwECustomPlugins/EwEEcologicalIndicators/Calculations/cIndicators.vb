@@ -146,11 +146,11 @@ Public MustInherit Class cIndicators
     ''' <param name="stanzaDS">The <see cref="cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
     ''' <param name="taxonDS">The <see cref="cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore,
-                   ByVal ecopathDS As cEcopathDataStructures,
-                   ByVal stanzaDS As cStanzaDatastructures,
-                   ByVal taxonDS As cTaxonDataStructures,
-                   ByVal lookup As cTaxonAnalysis)
+    Public Sub New(core As cCore,
+                   ecopathDS As cEcopathDataStructures,
+                   stanzaDS As cStanzaDatastructures,
+                   taxonDS As cTaxonDataStructures,
+                   lookup As cTaxonAnalysis)
 
         ' Sanity checks
         Debug.Assert(core IsNot Nothing, "aargh")
@@ -226,7 +226,7 @@ Public MustInherit Class cIndicators
     ''' underlying model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected MustOverride Function ModelBiomass(ByVal iGroup As Integer) As Single
+    Protected MustOverride Function ModelBiomass(iGroup As Integer) As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -234,7 +234,7 @@ Public MustInherit Class cIndicators
     ''' the underlying model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected MustOverride Function ModelTL(ByVal iGroup As Integer) As Single
+    Protected MustOverride Function ModelTL(iGroup As Integer) As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -250,7 +250,7 @@ Public MustInherit Class cIndicators
     ''' underlying model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected MustOverride Function ModelCatch(ByVal iGroup As Integer) As Single
+    Protected MustOverride Function ModelCatch(iGroup As Integer) As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -258,7 +258,7 @@ Public MustInherit Class cIndicators
     ''' underlying model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected MustOverride Function ModelDiscards(ByVal iGroup As Integer) As Single
+    Protected MustOverride Function ModelDiscards(iGroup As Integer) As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -954,7 +954,7 @@ Public MustInherit Class cIndicators
     ''' <returns>The 'Mean life span of the catch.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MLifeSpanC() As Single
-        Return m_sMLifeSc
+        Return Me.m_sMLifeSc
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -964,7 +964,7 @@ Public MustInherit Class cIndicators
     ''' <returns>The 'Mean life span of the community.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MLifeSpanB() As Single
-        Return m_sMLifeSb
+        Return Me.m_sMLifeSb
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -974,7 +974,7 @@ Public MustInherit Class cIndicators
     ''' <returns>The 'Mean lenght span of the catch.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MLengthC() As Single
-        Return m_sMLengthc
+        Return Me.m_sMLengthc
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -984,7 +984,7 @@ Public MustInherit Class cIndicators
     ''' <returns>The 'Mean lenght span of the community.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MLengthB() As Single
-        Return m_sMLengthb
+        Return Me.m_sMLengthb
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -994,7 +994,7 @@ Public MustInherit Class cIndicators
     ''' <returns>The 'Mean Weight of fish in the catch.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MWeightC() As Single
-        Return m_sMWeightc
+        Return Me.m_sMWeightc
     End Function
 
     '' -----------------------------------------------------------------------
@@ -1004,7 +1004,7 @@ Public MustInherit Class cIndicators
     ''' <returns>The 'Mean Weight of fish in the community.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MWeightB() As Single
-        Return m_sMWeightb
+        Return Me.m_sMWeightb
     End Function
 
 #End Region ' Size-based indicators

@@ -33,7 +33,7 @@ Public Interface ISearchPlugin
     ''' </summary>
     ''' <param name="SearchDatastructures">cSearchDataStructures</param>
     ''' -----------------------------------------------------------------------
-    Sub SearchInitialized(ByVal SearchDatastructures As Object)
+    Sub SearchInitialized(SearchDatastructures As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -42,7 +42,7 @@ Public Interface ISearchPlugin
     ''' </summary>
     ''' <param name="SearchDatastructures">cSearchDataStructures</param>
     ''' -----------------------------------------------------------------------
-    Sub PostRunSearchResults(ByVal SearchDatastructures As Object)
+    Sub PostRunSearchResults(SearchDatastructures As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -60,6 +60,6 @@ Public Interface ISearchPlugin
     ''' Search is completed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Sub SearchCompleted(ByVal SearchDatastructures As Object)
+    Sub SearchCompleted(SearchDatastructures As Object)
 
 End Interface

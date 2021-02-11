@@ -17,31 +17,7 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: cEcotracerRegionGroupOutput.vb,v $
-' Revision 1.2  2009/01/16 18:30:25  jeroens
-' eMessageSource renamed to eCoreComponentTypes
-'
-' Revision 1.1  2008/09/26 07:30:10  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.4  2008/05/29 22:22:46  jeroens
-' Moved eVarNameFlags to EwEUtils
-'
-' Revision 1.3  2008/03/26 21:00:56  joeb
-' Added CBEnvironment
-'
-' Revision 1.2  2007/12/08 00:55:50  jeroens
-' + Added time dimension
-'
-' Revision 1.1  2007/12/07 21:44:37  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 Public Class cEcotracerRegionGroupOutput
@@ -54,8 +30,8 @@ Public Class cEcotracerRegionGroupOutput
 
 #Region "Constructor"
 
-    Public Sub New(ByRef TheCore As cCore, ByVal TracerData As cContaminantTracerDataStructures)
-        MyBase.New(TheCore)
+    Public Sub New(core As cCore, TracerData As cContaminantTracerDataStructures)
+        MyBase.New(core)
 
         Me.m_dataType = eDataTypes.EcotracerSimOutput
         Me.m_coreComponent = eCoreComponentType.Ecotracer
@@ -71,7 +47,7 @@ Public Class cEcotracerRegionGroupOutput
 
 #Region "Implementation of GetVariable() GetVariable() GetStatus() SetStatus()"
 
-    Public Overloads Function GetVariable(ByVal varName As eVarNameFlags, ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public Overloads Function GetVariable(varName As eVarNameFlags, iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As Single
 
         Try
             Select Case varName
@@ -96,7 +72,7 @@ Public Class cEcotracerRegionGroupOutput
 
     End Function
 
-    Public Overloads Function SetVariable(ByVal varName As eVarNameFlags, ByVal newValue As Single, ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
+    Public Overloads Function SetVariable(varName As eVarNameFlags, newValue As Single, iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As Boolean
 
         Try
             Debug.Assert(False, "cEcotracerRegionGroupOutput.setVaraible() not supported at this time.")
@@ -108,21 +84,21 @@ Public Class cEcotracerRegionGroupOutput
 
     End Function
 
-    Public Overloads Function GetStatus(ByVal varName As eVarNameFlags, ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As eStatusFlags
+    Public Overloads Function GetStatus(varName As eVarNameFlags, iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As eStatusFlags
         Return eStatusFlags.OK Or eStatusFlags.NotEditable
     End Function
 
-    Public Overloads Function SetStatus(ByVal varName As eVarNameFlags, ByVal newValue As eStatusFlags, ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Boolean
+    Public Overloads Function SetStatus(varName As eVarNameFlags, newValue As eStatusFlags, iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As Boolean
         Debug.Assert(False, "Not implemented yet.")
     End Function
 #End Region
 
 #Region "Variable via dot '.' operator"
 
-    Public Property Concentration(ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public Property Concentration(iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return GetVariable(eVarNameFlags.Concentration, iRegion, iGroup, iTimeStep)
+                Return Me.GetVariable(eVarNameFlags.Concentration, iRegion, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -130,9 +106,9 @@ Public Class cEcotracerRegionGroupOutput
 
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
-                SetVariable(eVarNameFlags.Concentration, value, iRegion, iGroup, iTimeStep)
+                Me.SetVariable(eVarNameFlags.Concentration, value, iRegion, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -140,10 +116,10 @@ Public Class cEcotracerRegionGroupOutput
     End Property
 
 
-    Public Property CB(ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+    Public Property CB(iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return GetVariable(eVarNameFlags.ConcBio, iRegion, iGroup, iTimeStep)
+                Return Me.GetVariable(eVarNameFlags.ConcBio, iRegion, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -151,19 +127,19 @@ Public Class cEcotracerRegionGroupOutput
 
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
-                SetVariable(eVarNameFlags.ConcBio, value, iRegion, iGroup, iTimeStep)
+                Me.SetVariable(eVarNameFlags.ConcBio, value, iRegion, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
         End Set
     End Property
 
-    Public Property CEnvironment(ByVal iRegion As Integer, ByVal iTimeStep As Integer) As Single
+    Public Property CEnvironment(iRegion As Integer, iTimeStep As Integer) As Single
         Get
             Try
-                Return GetVariable(eVarNameFlags.CEnvironment, iRegion, 0, iTimeStep)
+                Return Me.GetVariable(eVarNameFlags.CEnvironment, iRegion, 0, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
@@ -171,9 +147,9 @@ Public Class cEcotracerRegionGroupOutput
 
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
-                SetVariable(eVarNameFlags.CEnvironment, value, iRegion, 0, iTimeStep)
+                Me.SetVariable(eVarNameFlags.CEnvironment, value, iRegion, 0, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -181,20 +157,20 @@ Public Class cEcotracerRegionGroupOutput
     End Property
 
 
-    Public Property CBEnvironment(ByVal iRegion As Integer, ByVal iTimeStep As Integer) As Single
+    Public Property CBEnvironment(iRegion As Integer, iTimeStep As Integer) As Single
 
         Get
             Try
-                Return GetVariable(eVarNameFlags.CBEnvironment, iRegion, 0, iTimeStep)
+                Return Me.GetVariable(eVarNameFlags.CBEnvironment, iRegion, 0, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Return cCore.NULL_VALUE
             End Try
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             Try
-                SetVariable(eVarNameFlags.CBEnvironment, value, iRegion, 0, iTimeStep)
+                Me.SetVariable(eVarNameFlags.CBEnvironment, value, iRegion, 0, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -206,33 +182,33 @@ Public Class cEcotracerRegionGroupOutput
 
 #Region "Status Flags via dot '.' operator"
 
-    Public Property ConcentrationStatus(ByVal iRegion As Integer, ByVal iGroup As Integer, ByVal iTimeStep As Integer) As eStatusFlags
+    Public Property ConcentrationStatus(iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.Concentration, iRegion, iGroup, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.Concentration, iRegion, iGroup, iTimeStep)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Concentration, value, iRegion, iGroup, iTimeStep)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Concentration, value, iRegion, iGroup, iTimeStep)
         End Set
     End Property
 
-    Public Property CEnvironmentStatus(ByVal iRegion As Integer, ByVal iTimeStep As Integer) As eStatusFlags
+    Public Property CEnvironmentStatus(iRegion As Integer, iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.CEnvironment, iRegion, 0, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.CEnvironment, iRegion, 0, iTimeStep)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CEnvironment, value, iRegion, 0, iTimeStep)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CEnvironment, value, iRegion, 0, iTimeStep)
         End Set
     End Property
 
-    Public Property CSumStatus(ByVal iRegion As Integer, ByVal iTimeStep As Integer) As eStatusFlags
+    Public Property CSumStatus(iRegion As Integer, iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.CSum, iRegion, Me.m_nGroups + 1, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.CSum, iRegion, Me.m_nGroups + 1, iTimeStep)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CSum, value, iRegion, Me.m_nGroups + 1, iTimeStep)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.CSum, value, iRegion, Me.m_nGroups + 1, iTimeStep)
         End Set
     End Property
 

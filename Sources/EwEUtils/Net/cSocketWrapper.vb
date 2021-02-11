@@ -74,12 +74,12 @@ Namespace NetUtilities
             Private m_bRelayed As Boolean = False
             Private m_strClientMachineName As String = ""
 
-            Public Sub New(ByVal iHandshake As Int32)
+            Public Sub New(iHandshake As Int32)
                 MyBase.New()
                 Me.m_iHandshake = iHandshake
             End Sub
 
-            Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+            Protected Sub New(info As SerializationInfo, context As StreamingContext)
                 MyBase.New(info, context)
                 Try
                     Me.m_iHandshake = info.GetInt32("m_iHandshake")
@@ -90,7 +90,7 @@ Namespace NetUtilities
                 End Try
             End Sub
 
-            Protected Overrides Sub GetObjectData(ByVal info As System.Runtime.Serialization.SerializationInfo, ByVal context As System.Runtime.Serialization.StreamingContext)
+            Protected Overrides Sub GetObjectData(info As System.Runtime.Serialization.SerializationInfo, context As System.Runtime.Serialization.StreamingContext)
                 MyBase.GetObjectData(info, context)
                 info.AddValue("m_iHandshake", Me.m_iHandshake, GetType(Int32))
                 info.AddValue("m_bRelayed", Me.m_bRelayed, GetType(Boolean))
@@ -103,7 +103,7 @@ Namespace NetUtilities
                 End Get
             End Property
 
-            Public Function Relay(ByVal strClientMachineName As String) As Boolean
+            Public Function Relay(strClientMachineName As String) As Boolean
                 If Me.m_bRelayed Then Return False
                 Me.m_strClientMachineName = strClientMachineName
                 Me.m_bRelayed = True
@@ -216,7 +216,7 @@ Namespace NetUtilities
         ''' </summary>
         ''' <param name="s">The <see cref="Socket">socket</see> to wrap.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal iID As Integer, ByVal s As Socket)
+        Public Sub New(iID As Integer, s As Socket)
 
             ' Sanity checks (googoogoojoob)
             Debug.Assert(s IsNot Nothing, "Need valid socket")
@@ -264,7 +264,7 @@ Namespace NetUtilities
         ''' of the socket wrapper that sent the event.</param>
         ''' <param name="strData">The data that accompanies the event.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnStatus(ByVal sw As cSocketWrapper, ByVal status As eStatusTypes, ByVal strData As String)
+        Public Event OnStatus(sw As cSocketWrapper, status As eStatusTypes, strData As String)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -275,7 +275,7 @@ Namespace NetUtilities
         ''' <param name="data">The <see cref="cSerializableObject">data</see>
         ''' that was received.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnData(ByVal sw As cSocketWrapper, ByVal data As cSerializableObject)
+        Public Event OnData(sw As cSocketWrapper, data As cSerializableObject)
 
         Private Class cEventInfo
 
@@ -284,7 +284,7 @@ Namespace NetUtilities
                 Data
             End Enum
 
-            Public Sub New(ByVal eventType As eEventType, ByVal data As Object)
+            Public Sub New(eventType As eEventType, data As Object)
                 Me.EventType = eventType
                 Me.Data = data
             End Sub
@@ -294,7 +294,7 @@ Namespace NetUtilities
 
         End Class
 
-        Private Sub SendEvent(ByVal obj As Object)
+        Private Sub SendEvent(obj As Object)
 
             Dim info As cEventInfo = DirectCast(obj, cEventInfo)
 
@@ -324,7 +324,7 @@ Namespace NetUtilities
         ''' <param name="iPort">The IP port to connect to.</param>
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Connect(ByVal strURI As String, ByVal iPort As Integer) As Boolean
+        Public Function Connect(strURI As String, iPort As Integer) As Boolean
             Dim aIP As IPAddress() = Nothing
             Try
                 Dim ipEntry As IPHostEntry = Dns.GetHostEntry(strURI)
@@ -355,7 +355,7 @@ Namespace NetUtilities
         ''' <param name="iPort">The IP port to connect to.</param>
         ''' <returns>True if connected succesfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Connect(ByVal ip As IPAddress, ByVal iPort As Integer) As Boolean
+        Public Function Connect(ip As IPAddress, iPort As Integer) As Boolean
 
             Try
 #If VERBOSE_LEVEL >= 2 Then
@@ -440,7 +440,7 @@ Namespace NetUtilities
             Get
                 Return Me.m_strRemoteMachineName
             End Get
-            Protected Set(ByVal strRemoteMachineName As String)
+            Protected Set(strRemoteMachineName As String)
                 Me.m_strRemoteMachineName = strRemoteMachineName
             End Set
         End Property
@@ -470,7 +470,7 @@ Namespace NetUtilities
             Get
                 Return Me.m_bAuthorized
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bAuthorized = value
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("sw {0} authorized {1}", Me.ToString(), CStr(value))
@@ -499,9 +499,9 @@ Namespace NetUtilities
         ''' needs to be <see cref="Authorized">Authorized</see> to send this data.</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function Send(ByVal obj As cSerializableObject, _
-            Optional ByVal bRequiresAuthorization As Boolean = True, _
-            Optional ByVal bSendImmediately As Boolean = False) As Boolean
+        Public Function Send(obj As cSerializableObject, _
+            Optional bRequiresAuthorization As Boolean = True, _
+            Optional bSendImmediately As Boolean = False) As Boolean
 
             ' Sanity check(s)
             If (obj Is Nothing) Then Return False
@@ -550,7 +550,7 @@ Namespace NetUtilities
 
         Private m_iHandshake As Int32 = 0
 
-        Private Function IsHandshake(ByVal iHandshake As Int32) As Boolean
+        Private Function IsHandshake(iHandshake As Int32) As Boolean
             ' External handshake?
             If (Me.m_iID = 0) Then Return True
             Return (Me.m_iHandshake = iHandshake)
@@ -583,7 +583,7 @@ Namespace NetUtilities
         ''' <param name="hs"></param>
         ''' <remarks>Messages can be relayed only once.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub RelayHandshake(ByVal hs As cHandShake)
+        Private Sub RelayHandshake(hs As cHandShake)
 
             Try
                 If hs.Relayed = False Then
@@ -627,7 +627,7 @@ Namespace NetUtilities
         ''' </summary>
         ''' <param name="iNumBytes">The number of bytes that were received.</param>
         ''' -------------------------------------------------------------------
-        Private Function ReadBuffer(ByVal iNumBytes As Integer) As List(Of cSerializableObject)
+        Private Function ReadBuffer(iNumBytes As Integer) As List(Of cSerializableObject)
 
             Dim objData As cSerializableObject = Nothing
             Dim bf As BinaryFormatter = Nothing
@@ -753,7 +753,7 @@ Namespace NetUtilities
         ''' </summary>
         ''' <param name="ar"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub ReceiveCallBack(ByVal ar As IAsyncResult)
+        Private Sub ReceiveCallBack(ar As IAsyncResult)
 
             ' Retrieve SocketData
             Dim sw As cSocketWrapper = CType(ar.AsyncState, cSocketWrapper)
@@ -862,7 +862,7 @@ Namespace NetUtilities
         ''' <param name="sw">SocketWrapper object the handshake was recieved on</param>
         ''' <param name="handshake">cHandshake to process</param>
         ''' <remarks></remarks>
-        Private Sub ReceiveHandShake(ByVal sw As cSocketWrapper, ByVal handshake As cHandShake)
+        Private Sub ReceiveHandShake(sw As cSocketWrapper, handshake As cHandShake)
             Dim bSendAuthorization As Boolean = False
 
 #If VERBOSE_LEVEL >= 2 Then
@@ -927,9 +927,9 @@ Namespace NetUtilities
         ''' end to deduct whether all packets for incoming data have arrived.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function SendBinary(ByVal byMessage As Byte(), _
-            Optional ByVal bRequiresAuthorization As Boolean = True, _
-            Optional ByVal bSendImmedately As Boolean = False) As Boolean
+        Private Function SendBinary(byMessage As Byte(), _
+            Optional bRequiresAuthorization As Boolean = True, _
+            Optional bSendImmedately As Boolean = False) As Boolean
 
             ' Sanity checks
             If (Not Me.Connected) Then Return False
@@ -976,7 +976,7 @@ Namespace NetUtilities
 
         End Function
 
-        Private Sub SendCallback(ByVal ar As IAsyncResult)
+        Private Sub SendCallback(ar As IAsyncResult)
             ' Dim sw As cSocketWrapper = DirectCast(ar, Socket)
             '
             Dim s As Socket = CType(ar.AsyncState, Socket)

@@ -42,7 +42,7 @@ Namespace Commands
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~EditLayer"
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, cEditLayerCommand.cCOMMAND_NAME)
         End Sub
 
@@ -52,7 +52,7 @@ Namespace Commands
         ''' <param name="layerDepth">Depth reference layer.</param>
         ''' <param name="edittype">Type of <see cref="eLayerEditTypes">edit operation</see>.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal layer As cDisplayLayerRaster, ByVal layerDepth As cDisplayLayerRaster, ByVal edittype As eLayerEditTypes)
+        Public Overloads Sub Invoke(layer As cDisplayLayerRaster, layerDepth As cDisplayLayerRaster, edittype As eLayerEditTypes)
             Me.m_layer = layer
             Me.m_layerDepth = layerDepth
             Me.m_edittype = edittype

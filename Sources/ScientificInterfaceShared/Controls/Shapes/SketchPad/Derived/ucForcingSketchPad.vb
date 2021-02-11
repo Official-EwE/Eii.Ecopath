@@ -53,7 +53,7 @@ Namespace Controls
             Get
                 Return Me.m_AxisYMarks
             End Get
-            Set(ByVal value As eAxisTickmarkDisplayModeTypes)
+            Set(value As eAxisTickmarkDisplayModeTypes)
                 Me.m_AxisYMarks = value
             End Set
         End Property
@@ -65,7 +65,7 @@ Namespace Controls
         ''' <param name="iWidth">Width of the X axis for the labels.</param>
         ''' <param name="sScale">Label placement scale factor along the X axis.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub GetXAxisLabels(ByVal iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
+        Protected Overridable Sub GetXAxisLabels(iWidth As Integer, ByRef astrLabels As String(), ByRef sScale As Single)
 
             Dim lstrLabels As New List(Of String)
 
@@ -92,19 +92,19 @@ Namespace Controls
             astrLabels = lstrLabels.ToArray
         End Sub
 
-        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnResize(e As System.EventArgs)
             MyBase.OnResize(e)
             Me.OnShapeChanged()
         End Sub
 
-        Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
-                ByVal rcImage As System.Drawing.Rectangle, _
-                ByVal g As System.Drawing.Graphics, _
-                ByVal clr As System.Drawing.Color, _
-                ByVal bDrawLabels As Boolean, _
-                ByVal drawMode As eSketchDrawModeTypes, _
-                ByVal iXMax As Integer, _
-                ByVal sYMax As Single)
+        Protected Overrides Sub DrawShape(shape As EwECore.cShapeData, _
+                rcImage As System.Drawing.Rectangle, _
+                g As System.Drawing.Graphics, _
+                clr As System.Drawing.Color, _
+                bDrawLabels As Boolean, _
+                drawMode As eSketchDrawModeTypes, _
+                iXMax As Integer, _
+                sYMax As Single)
 
             ' ToDo: localize this
 
@@ -167,7 +167,7 @@ Namespace Controls
                     Dim yPos As Integer = CInt(cShapeImage.ToImagePoint(New PointF(0, CSng(j)), rcImage, 0, sYMax).Y)
 
                     strLabel = j.ToString
-                    If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
+                    If Me.m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
                         strLabel = cStringUtils.Localize("x{0}", strLabel)
                     End If
                     g.DrawString(strLabel, Me.Font, brTmp, rcImage.Left + 5, yPos)
@@ -180,7 +180,7 @@ Namespace Controls
 
                         strLabel = sg.FormatNumber(sYMax * (3 - j) / 3)
 
-                        If m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
+                        If Me.m_AxisYMarks = eAxisTickmarkDisplayModeTypes.Relative Then
                             strLabel = cStringUtils.Localize("x{0}", strLabel)
                         End If
                         g.DrawString(strLabel, Me.Font, brTmp, rcImage.Left + 5, yPos)

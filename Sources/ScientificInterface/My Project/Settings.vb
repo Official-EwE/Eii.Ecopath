@@ -52,7 +52,7 @@ Partial Friend NotInheritable Class Settings
     ''' <param name="strName">The name of the property to access. This name is not case-sensitive.</param>
     ''' <returns>A value, or Nothing if a property by this name does not exist.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetDefaultValue(ByVal strName As String) As Object
+    Public Function GetDefaultValue(strName As String) As Object
         Dim prop As SettingsProperty = Me.Properties(strName)
         If prop IsNot Nothing Then Return prop.DefaultValue
         Return Nothing

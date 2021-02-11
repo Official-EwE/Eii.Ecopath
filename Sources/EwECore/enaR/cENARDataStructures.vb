@@ -40,13 +40,13 @@ Public Class cENARDataStructures
 
     Public Sub New(NumberOfGroups As Integer)
 
-        nGroups = NumberOfGroups
+        Me.nGroups = NumberOfGroups
 
-        b = New Single(nGroups) {}
-        Resp = New Single(nGroups) {}
-        CatchExport = New Single(nGroups) {}
-        Import = New Single(nGroups) {}
-        Consumpt = New Single(nGroups, nGroups) {}
+        Me.b = New Single(Me.nGroups) {}
+        Me.Resp = New Single(Me.nGroups) {}
+        Me.CatchExport = New Single(Me.nGroups) {}
+        Me.Import = New Single(Me.nGroups) {}
+        Me.Consumpt = New Single(Me.nGroups, Me.nGroups) {}
 
     End Sub
 

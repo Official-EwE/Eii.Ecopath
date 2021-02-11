@@ -146,7 +146,7 @@ Public Class cMessage
     ''' </remarks>
     Public ReadOnly Property Variables() As List(Of cVariableStatus)
         Get
-            Return m_variables
+            Return Me.m_variables
         End Get
     End Property
 

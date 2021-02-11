@@ -86,7 +86,7 @@ Public MustInherit Class cUnit
         Return Me.m_llinkOutput.Count
     End Function
 
-    Public Function LinkOut(ByVal iIndex As Integer) As cLink
+    Public Function LinkOut(iIndex As Integer) As cLink
         Return Me.m_llinkOutput(iIndex)
     End Function
 
@@ -95,7 +95,7 @@ Public MustInherit Class cUnit
     ''' </summary>
     ''' <param name="unitTarget"></param>
     ''' <returns></returns>
-    Public Function Links(ByVal unitTarget As cUnit) As cLink()
+    Public Function Links(unitTarget As cUnit) As cLink()
         Dim lLinks As New List(Of cLink)
         For Each link As cLink In Me.m_llinkOutput
             If ReferenceEquals(link.Target, unitTarget) Then
@@ -105,7 +105,7 @@ Public MustInherit Class cUnit
         Return lLinks.ToArray
     End Function
 
-    Public Sub AddLink(ByVal link As cLink)
+    Public Sub AddLink(link As cLink)
 
         ' Sanity check
         Debug.Assert(ReferenceEquals(link.Source, Me))
@@ -114,7 +114,7 @@ Public MustInherit Class cUnit
         link.Target.AddInputLink(link)
     End Sub
 
-    Public Sub RemoveLink(ByVal link As cLink)
+    Public Sub RemoveLink(link As cLink)
         Me.m_llinkOutput.Remove(link)
         link.Target.RemoveInputLink(link)
     End Sub
@@ -123,23 +123,23 @@ Public MustInherit Class cUnit
         Return Me.m_llinkInput.Count
     End Function
 
-    Public Function LinkIn(ByVal iIndex As Integer) As cLink
+    Public Function LinkIn(iIndex As Integer) As cLink
         Return Me.m_llinkInput(iIndex)
     End Function
 
-    Protected Sub AddInputLink(ByVal link As cLink)
+    Protected Sub AddInputLink(link As cLink)
         ' Sanity check
         Debug.Assert(ReferenceEquals(link.Target, Me))
         Me.m_llinkInput.Add(link)
         Me.UpdateComputeStatus()
     End Sub
 
-    Protected Sub RemoveInputLink(ByVal link As cLink)
+    Protected Sub RemoveInputLink(link As cLink)
         Me.m_llinkInput.Remove(link)
         Me.UpdateComputeStatus()
     End Sub
 
-    Public Function IsLoop(ByVal unit As cUnit) As Boolean
+    Public Function IsLoop(unit As cUnit) As Boolean
 
         ' Linked to self?
         Dim bIsLoop As Boolean = ReferenceEquals(unit, Me)
@@ -156,7 +156,7 @@ Public MustInherit Class cUnit
         Return bIsLoop
     End Function
 
-    'Public Overridable Function HasTarget(ByVal unit As cUnit) As Boolean
+    'Public Overridable Function HasTarget(unit As cUnit) As Boolean
 
     '    ' Follow each output link
     '    For Each link As cLink In Me.m_llinkOutput
@@ -177,7 +177,7 @@ Public MustInherit Class cUnit
     ''' </summary>
     ''' <param name="iSequence">The sequence number to assign to this unit for the run.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub InitRun(ByVal iSequence As Integer)
+    Public Overridable Sub InitRun(iSequence As Integer)
         Me.Sequence = iSequence
         Me.m_bRunStarted = True
     End Sub
@@ -201,10 +201,10 @@ Public MustInherit Class cUnit
     ''' <param name="iTimeStep"></param>
     ''' <param name="iUnit">The unit to aggregate by.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub Process(ByVal results As cResults, _
-                                   ByVal input As cInput, _
-                                   ByVal iTimeStep As Integer, _
-                                   ByVal iUnit As Integer)
+    Public Overridable Sub Process(results As cResults, _
+                                   input As cInput, _
+                                   iTimeStep As Integer, _
+                                   iUnit As Integer)
 
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0
@@ -253,7 +253,7 @@ Public MustInherit Class cUnit
 
     End Sub
 
-    Protected Function ProcessAndSumInputs(ByVal lInputs As List(Of cInput), results As cResults) As cInput
+    Protected Function ProcessAndSumInputs(lInputs As List(Of cInput), results As cResults) As cInput
 
         Dim sTonsTotal As Single = 0.0
         Dim sValueTotal As Single = 0.0
@@ -276,10 +276,10 @@ Public MustInherit Class cUnit
     ''' Make all calculations.
     ''' </summary>
     ''' <param name="results">The results object to store calculation results in.</param>
-    Protected Overridable Function Calculate(ByVal results As cResults, _
-            ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-            ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-            ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function Calculate(results As cResults, _
+            sInputBiomass As Single, sInputValue As Single, _
+            sOutputBiomass As Single, sOutputValue As Single, _
+            iTimeStep As Integer) As Boolean
 
         ' All good
         Return True
@@ -316,7 +316,7 @@ Public MustInherit Class cUnit
 
 #Region " Copy / paste "
 
-    Public Overrides Sub CopyFrom(ByVal obj As cEwEDatabase.cOOPStorable)
+    Public Overrides Sub CopyFrom(obj As cEwEDatabase.cOOPStorable)
         Me.AllowEvents = False
         MyBase.CopyFrom(obj)
         Me.AllowEvents = True
@@ -335,7 +335,7 @@ Public MustInherit Class cUnit
         Get
             Return Me.m_iSequence
         End Get
-        Private Set(ByVal value As Integer)
+        Private Set(value As Integer)
             Me.m_iSequence = value
         End Set
     End Property
@@ -345,7 +345,7 @@ Public MustInherit Class cUnit
         Get
             Return Me.m_core
         End Get
-        Set(ByVal value As cCore)
+        Set(value As cCore)
             Me.m_core = value
         End Set
     End Property
@@ -391,9 +391,9 @@ Public MustInherit Class cUnit
         cPropertySorter.PropertyOrder(1)> _
     Public Overridable Property Name() As String
         Get
-            Return m_strName
+            Return Me.m_strName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.m_strName = value
             Me.SetChanged()
         End Set
@@ -430,7 +430,7 @@ Public MustInherit Class cUnit
         Get
             Return Me.m_iNationality
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iNationality = value
             Me.SetChanged()
         End Set
@@ -443,9 +443,9 @@ Public MustInherit Class cUnit
         cPropertySorter.PropertyOrder(5)> _
     Public Overridable Property NameLocal() As String
         Get
-            Return m_strNameLocal
+            Return Me.m_strNameLocal
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.m_strNameLocal = value
             Me.SetChanged()
         End Set

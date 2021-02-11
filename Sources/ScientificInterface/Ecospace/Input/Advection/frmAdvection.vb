@@ -61,7 +61,7 @@ Namespace Ecospace.Advection
 
 #Region " Form overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             ' Design time bypasses
@@ -77,7 +77,7 @@ Namespace Ecospace.Advection
 
             ' Initialize editors
             Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVelocity)
-            AddHandler Me.m_edtWind.OnFilterChanged, AddressOf OnMonthChanged
+            AddHandler Me.m_edtWind.OnFilterChanged, AddressOf Me.OnMonthChanged
 
             Me.m_tlpControls.SuspendLayout()
             Dim ctrl As UserControl = Me.m_edtWind.CreateEditorControl()
@@ -89,9 +89,9 @@ Namespace Ecospace.Advection
             Me.m_tlpControls.Controls.Add(ctrl, iCol, iRow)
             Me.m_tlpControls.ResumeLayout()
 
-            Me.m_dlgtStarted = New cAdvectionManager.ComputationStartedDelegate(AddressOf OnCalcStarted)
-            Me.m_dlgtProgress = New cAdvectionManager.ComputationProgressDelegate(AddressOf OnCalcProgress)
-            Me.m_dlgtStopped = New cAdvectionManager.ComputationCompletedDelegate(AddressOf OnCalcStopped)
+            Me.m_dlgtStarted = New cAdvectionManager.ComputationStartedDelegate(AddressOf Me.OnCalcStarted)
+            Me.m_dlgtProgress = New cAdvectionManager.ComputationProgressDelegate(AddressOf Me.OnCalcProgress)
+            Me.m_dlgtStopped = New cAdvectionManager.ComputationCompletedDelegate(AddressOf Me.OnCalcStopped)
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
 
             ' Config EwEForm
@@ -104,7 +104,7 @@ Namespace Ecospace.Advection
             Me.PopulateMonthsCombo()
 
             ' Add map control buttons
-            If Me.m_ucZoomToolbar.Toolstrip.Merge(m_tsAdvection) Then
+            If Me.m_ucZoomToolbar.Toolstrip.Merge(Me.m_tsAdvection) Then
                 Me.m_tsAdvection.Visible = False
 
                 ' Do not dispose temporary toolstrip until EwEToolStrip.Merge fully clones menu strip items.
@@ -117,13 +117,13 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             ' Stop any pending run, just in case
             Me.StopRun()
 
             ' Unplug editor
-            RemoveHandler Me.m_edtWind.OnFilterChanged, AddressOf OnMonthChanged
+            RemoveHandler Me.m_edtWind.OnFilterChanged, AddressOf Me.OnMonthChanged
             Me.m_edtWind = Nothing
 
             For Each uc As ucAdvectionMap In Me.Maps
@@ -142,7 +142,7 @@ Namespace Ecospace.Advection
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
                 Me.m_ucZoomToolbar.UIContext = Me.UIContext
                 For Each uc As ucAdvectionMap In Me.Maps
@@ -167,11 +167,11 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStart.Click
+        Private Sub OnComputeVels(sender As System.Object, e As System.EventArgs) Handles m_btnStart.Click
             Me.StartRun()
         End Sub
 
-        Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
+        Private Sub OnStopComputing(sender As System.Object, e As System.EventArgs) Handles m_btnStop.Click
             Me.m_manager.StopRun()
         End Sub
 
@@ -221,7 +221,7 @@ Namespace Ecospace.Advection
 
 #Region " Event handlers "
 
-        'Private Sub OnVelocityChanged(ByVal sender As Object, args As EventArgs)
+        'Private Sub OnVelocityChanged(sender As Object, args As EventArgs)
         '    Me.UpdateTransportVelocity()
         'End Sub
 
@@ -230,7 +230,7 @@ Namespace Ecospace.Advection
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnCalcProgress(ByVal iIter As Integer)
+        Private Sub OnCalcProgress(iIter As Integer)
 
             'In the new mdoel
             'iIter will be the month that was just calculated
@@ -244,7 +244,7 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnCalcStopped(ByVal iIter As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
+        Private Sub OnCalcStopped(iIter As Integer, bInterrupted As Boolean, bBadFlow As Boolean)
             Me.StopRun()
             Me.m_ucAdvection.Invalidate()
 
@@ -312,7 +312,7 @@ Namespace Ecospace.Advection
             If Not Me.m_manager.IsRunning Then Me.m_manager.RunPhysicsModel(Me)
             Me.m_bSearching = Me.m_manager.IsRunning
 
-            If m_bSearching Then
+            If Me.m_bSearching Then
                 Me.UpdateControls()
             End If
 

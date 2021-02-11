@@ -57,7 +57,7 @@ Public Class cCoreController
     ''' Constructor, initializes a new instance of a EwECoreController.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal monitor As cCoreStateMonitor, ByVal manager As cCoreStateManager, ui As frmEwE6)
+    Public Sub New(monitor As cCoreStateMonitor, manager As cCoreStateManager, ui As frmEwE6)
         Me.m_manager = manager
         Me.m_monitor = monitor
         Me.m_ui = ui
@@ -76,8 +76,8 @@ Public Class cCoreController
     ''' results.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadState(ByVal iState As eCoreExecutionState,
-            Optional ByVal bForceState As Boolean = False) As Boolean
+    Public Function LoadState(iState As eCoreExecutionState,
+            Optional bForceState As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -95,26 +95,26 @@ Public Class cCoreController
 
             Case eCoreExecutionState.EcopathLoaded,
                  eCoreExecutionState.EcopathInitialized
-                bSucces = TryLoadEcopathModel()
+                bSucces = Me.TryLoadEcopathModel()
 
             Case eCoreExecutionState.EcopathCompleted
-                bSucces = TryCompleteEcopath()
+                bSucces = Me.TryCompleteEcopath()
 
             Case eCoreExecutionState.EcosimLoaded
-                bSucces = TryLoadEcosimScenario()
+                bSucces = Me.TryLoadEcosimScenario()
 
             Case eCoreExecutionState.EcosimInitialized
-                bSucces = TryInitializeEcosim()
+                bSucces = Me.TryInitializeEcosim()
 
             Case eCoreExecutionState.EcosimCompleted
-                bSucces = TryCompleteEcosim()
+                bSucces = Me.TryCompleteEcosim()
 
             Case eCoreExecutionState.EcotracerLoaded
-                bSucces = TryLoadEcotracerScenario()
+                bSucces = Me.TryLoadEcotracerScenario()
 
             Case eCoreExecutionState.EcospaceLoaded,
                  eCoreExecutionState.EcospaceInitialized
-                bSucces = TryLoadEcospaceScenario()
+                bSucces = Me.TryLoadEcospaceScenario()
 
             Case Else
                 bSucces = False
@@ -127,17 +127,17 @@ Public Class cCoreController
 
     Public Sub LoadEcosimScenario()
         ' Force this core state
-        LoadState(eCoreExecutionState.EcosimLoaded, True)
+        Me.LoadState(eCoreExecutionState.EcosimLoaded, True)
     End Sub
 
     Public Sub LoadEcospaceScenario()
         ' Force this core state
-        LoadState(eCoreExecutionState.EcospaceLoaded, True)
+        Me.LoadState(eCoreExecutionState.EcospaceLoaded, True)
     End Sub
 
     Public Sub LoadEcotracerScenario()
         ' Force this core state
-        LoadState(eCoreExecutionState.EcotracerLoaded, True)
+        Me.LoadState(eCoreExecutionState.EcotracerLoaded, True)
     End Sub
 
     ''' <summary>
@@ -153,7 +153,7 @@ Public Class cCoreController
         Get
             Return Me.m_bEnabled
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bEnabled = value
         End Set
     End Property
@@ -181,7 +181,7 @@ Public Class cCoreController
     Private Function TryCompleteEcopath() As Boolean
 
         ' Is ecopath model loaded?
-        If LoadState(eCoreExecutionState.EcopathLoaded) Then
+        If Me.LoadState(eCoreExecutionState.EcopathLoaded) Then
             ' #Yes: get ecopath up to par
             Return Me.m_manager.LoadState(eCoreExecutionState.EcopathCompleted)
         End If
@@ -192,7 +192,7 @@ Public Class cCoreController
     Private Function TryInitializeEcosim() As Boolean
 
         ' Is Ecosim scenario loaded?
-        If LoadState(eCoreExecutionState.EcosimLoaded) Then
+        If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
             Return Me.m_manager.LoadState(eCoreExecutionState.EcosimInitialized)
         End If
 
@@ -203,7 +203,7 @@ Public Class cCoreController
     Private Function TryCompleteEcosim() As Boolean
 
         ' Is Ecosim scenario loaded?
-        If LoadState(eCoreExecutionState.EcosimLoaded) Then
+        If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
             Return Me.m_manager.LoadState(eCoreExecutionState.EcosimCompleted)
         End If
 
@@ -242,7 +242,7 @@ Public Class cCoreController
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
         ' JS 07may18: (11 years on) Ecosim should run, otherwise the core will misinform the world
         '             This fixes issue #1572
-        If LoadState(eCoreExecutionState.EcosimCompleted) Then
+        If Me.LoadState(eCoreExecutionState.EcosimCompleted) Then
             ' Let AppLauncher perform the load as it sees fit
             bSuccess = Me.m_ui.LoadEcospaceScenario()
         End If

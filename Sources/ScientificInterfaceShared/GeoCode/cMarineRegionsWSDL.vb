@@ -104,150 +104,150 @@ Public Class cMarineRegionsWSDL
     Public Event getGazetteerNamesByMRGIDCompleted As getGazetteerNamesByMRGIDCompletedEventHandler
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRecordsByName", RequestNamespace:="http://gazetteer/v1.0/gazetteerRecords", ResponseNamespace:="http://gazetteer/v1.0/gazetteerRecords")>
-    Public Function getGazetteerRecordsByName(ByVal GazetteerName As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean) As gazetteerRecord()
+    Public Function getGazetteerRecordsByName(GazetteerName As String, bLike As Boolean, fuzzy As Boolean) As gazetteerRecord()
         Dim results() As Object = Me.Invoke("getGazetteerRecordsByName", New Object() {GazetteerName, bLike, fuzzy})
         Return CType(results(0), gazetteerRecord())
     End Function
 
-    Public Function BegingetGazetteerRecordsByName(ByVal GazetteerName As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerRecordsByName(GazetteerName As String, bLike As Boolean, fuzzy As Boolean, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerRecordsByName", New Object() {GazetteerName, bLike, fuzzy}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerRecordsByName(ByVal asyncResult As System.IAsyncResult) As gazetteerRecord()
+    Public Function EndgetGazetteerRecordsByName(asyncResult As System.IAsyncResult) As gazetteerRecord()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerRecord())
     End Function
 
-    Public Overloads Sub getGazetteerRecordsByNameAsync(ByVal GazetteerName As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean)
+    Public Overloads Sub getGazetteerRecordsByNameAsync(GazetteerName As String, bLike As Boolean, fuzzy As Boolean)
         Me.getGazetteerRecordsByNameAsync(GazetteerName, bLike, fuzzy, Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerRecordsByNameAsync(ByVal GazetteerName As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean, ByVal userState As Object)
+    Public Overloads Sub getGazetteerRecordsByNameAsync(GazetteerName As String, bLike As Boolean, fuzzy As Boolean, userState As Object)
         If (Me.getGazetteerRecordsByNameOperationCompleted Is Nothing) Then
             Me.getGazetteerRecordsByNameOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRecordsByNameOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerRecordsByName", New Object() {GazetteerName, bLike, fuzzy}, Me.getGazetteerRecordsByNameOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerRecordsByNameOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerRecordsByNameOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerRecordsByNameCompleted(Me, New getGazetteerRecordsByNameCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
     '<System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRecordsByNames", RequestNamespace:="http://gazetteer/v1.0/gazetteerMatches", ResponseNamespace:="http://gazetteer/v1.0/gazetteerMatches")>
-    'Public Function getGazetteerRecordsByNames(ByVal gazetteerNames() As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean) As gazetteerRecord(,)
+    'Public Function getGazetteerRecordsByNames(gazetteerNames() As String, bLike As Boolean, fuzzy As Boolean) As gazetteerRecord(,)
     '    Dim results() As Object = Me.Invoke("getGazetteerRecordsByNames", New Object() {gazetteerNames, bLike, fuzzy})
     '    Return CType(results(0), gazetteerRecord(,))
     'End Function
 
-    'Public Function BegingetGazetteerRecordsByNames(ByVal gazetteerNames() As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    'Public Function BegingetGazetteerRecordsByNames(gazetteerNames() As String, bLike As Boolean, fuzzy As Boolean, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
     '    Return Me.BeginInvoke("getGazetteerRecordsByNames", New Object() {gazetteerNames, bLike, fuzzy}, callback, asyncState)
     'End Function
 
-    'Public Function EndgetGazetteerRecordsByNames(ByVal asyncResult As System.IAsyncResult) As gazetteerRecord(,)
+    'Public Function EndgetGazetteerRecordsByNames(asyncResult As System.IAsyncResult) As gazetteerRecord(,)
     '    Dim results() As Object = Me.EndInvoke(asyncResult)
     '    Return CType(results(0), gazetteerRecord(,))
     'End Function
 
-    'Public Overloads Sub getGazetteerRecordsByNamesAsync(ByVal gazetteerNames() As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean)
+    'Public Overloads Sub getGazetteerRecordsByNamesAsync(gazetteerNames() As String, bLike As Boolean, fuzzy As Boolean)
     '    Me.getGazetteerRecordsByNamesAsync(gazetteerNames, bLike, fuzzy, Nothing)
     'End Sub
 
-    'Public Overloads Sub getGazetteerRecordsByNamesAsync(ByVal gazetteerNames() As String, ByVal bLike As Boolean, ByVal fuzzy As Boolean, ByVal userState As Object)
+    'Public Overloads Sub getGazetteerRecordsByNamesAsync(gazetteerNames() As String, bLike As Boolean, fuzzy As Boolean, userState As Object)
     '    If (Me.getGazetteerRecordsByNamesOperationCompleted Is Nothing) Then
     '        Me.getGazetteerRecordsByNamesOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRecordsByNamesOperationCompleted)
     '    End If
     '    Me.InvokeAsync("getGazetteerRecordsByNames", New Object() {gazetteerNames, bLike, fuzzy}, Me.getGazetteerRecordsByNamesOperationCompleted, userState)
     'End Sub
 
-    'Private Sub OngetGazetteerRecordsByNamesOperationCompleted(ByVal arg As Object)
+    'Private Sub OngetGazetteerRecordsByNamesOperationCompleted(arg As Object)
     '    Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
     '    RaiseEvent getGazetteerRecordsByNamesCompleted(Me, New getGazetteerRecordsByNamesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     'End Sub
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRecordsBySource", RequestNamespace:="http://gazetteer/v1.0/gazetteerRecords", ResponseNamespace:="http://gazetteer/v1.0/gazetteerRecords")>
-    Public Function getGazetteerRecordsBySource(ByVal gazetteerSource As String) As gazetteerRecord()
+    Public Function getGazetteerRecordsBySource(gazetteerSource As String) As gazetteerRecord()
         Dim results() As Object = Me.Invoke("getGazetteerRecordsBySource", New Object() {gazetteerSource})
         Return CType(results(0), gazetteerRecord())
     End Function
 
-    Public Function BegingetGazetteerRecordsBySource(ByVal gazetteerSource As String, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerRecordsBySource(gazetteerSource As String, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerRecordsBySource", New Object() {gazetteerSource}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerRecordsBySource(ByVal asyncResult As System.IAsyncResult) As gazetteerRecord()
+    Public Function EndgetGazetteerRecordsBySource(asyncResult As System.IAsyncResult) As gazetteerRecord()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerRecord())
     End Function
 
 
-    Public Overloads Sub getGazetteerRecordsBySourceAsync(ByVal gazetteerSource As String)
+    Public Overloads Sub getGazetteerRecordsBySourceAsync(gazetteerSource As String)
         Me.getGazetteerRecordsBySourceAsync(gazetteerSource, Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerRecordsBySourceAsync(ByVal gazetteerSource As String, ByVal userState As Object)
+    Public Overloads Sub getGazetteerRecordsBySourceAsync(gazetteerSource As String, userState As Object)
         If (Me.getGazetteerRecordsBySourceOperationCompleted Is Nothing) Then
             Me.getGazetteerRecordsBySourceOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRecordsBySourceOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerRecordsBySource", New Object() {gazetteerSource}, Me.getGazetteerRecordsBySourceOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerRecordsBySourceOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerRecordsBySourceOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerRecordsBySourceCompleted(Me, New getGazetteerRecordsBySourceCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRecordsByType", RequestNamespace:="http://gazetteer/v1.0/gazetteerRecords", ResponseNamespace:="http://gazetteer/v1.0/gazetteerRecords")>
-    Public Function getGazetteerRecordsByType(ByVal gazetteerType As String, ByVal offset As Integer) As gazetteerRecord()
+    Public Function getGazetteerRecordsByType(gazetteerType As String, offset As Integer) As gazetteerRecord()
         Dim results() As Object = Me.Invoke("getGazetteerRecordsByType", New Object() {gazetteerType, offset})
         Return CType(results(0), gazetteerRecord())
     End Function
 
-    Public Function BegingetGazetteerRecordsByType(ByVal gazetteerType As String, ByVal offset As Integer, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerRecordsByType(gazetteerType As String, offset As Integer, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerRecordsByType", New Object() {gazetteerType, offset}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerRecordsByType(ByVal asyncResult As System.IAsyncResult) As gazetteerRecord()
+    Public Function EndgetGazetteerRecordsByType(asyncResult As System.IAsyncResult) As gazetteerRecord()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerRecord())
     End Function
 
-    Public Overloads Sub getGazetteerRecordsByTypeAsync(ByVal gazetteerType As String, ByVal offset As Integer)
+    Public Overloads Sub getGazetteerRecordsByTypeAsync(gazetteerType As String, offset As Integer)
         Me.getGazetteerRecordsByTypeAsync(gazetteerType, offset, Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerRecordsByTypeAsync(ByVal gazetteerType As String, ByVal offset As Integer, ByVal userState As Object)
+    Public Overloads Sub getGazetteerRecordsByTypeAsync(gazetteerType As String, offset As Integer, userState As Object)
         If (Me.getGazetteerRecordsByTypeOperationCompleted Is Nothing) Then
             Me.getGazetteerRecordsByTypeOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRecordsByTypeOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerRecordsByType", New Object() {gazetteerType, offset}, Me.getGazetteerRecordsByTypeOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerRecordsByTypeOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerRecordsByTypeOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerRecordsByTypeCompleted(Me, New getGazetteerRecordsByTypeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRecordByMRGID", RequestNamespace:="http://gazetteer/v1.0/gazetteerRecord", ResponseNamespace:="http://gazetteer/v1.0/gazetteerRecord")>
-    Public Function getGazetteerRecordByMRGID(ByVal MRGID As Integer) As gazetteerRecord
+    Public Function getGazetteerRecordByMRGID(MRGID As Integer) As gazetteerRecord
         Dim results() As Object = Me.Invoke("getGazetteerRecordByMRGID", New Object() {MRGID})
         Return CType(results(0), gazetteerRecord)
     End Function
 
-    Public Function BegingetGazetteerRecordByMRGID(ByVal MRGID As Integer, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerRecordByMRGID(MRGID As Integer, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerRecordByMRGID", New Object() {MRGID}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerRecordByMRGID(ByVal asyncResult As System.IAsyncResult) As gazetteerRecord
+    Public Function EndgetGazetteerRecordByMRGID(asyncResult As System.IAsyncResult) As gazetteerRecord
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerRecord)
     End Function
 
-    Public Overloads Sub getGazetteerRecordByMRGIDAsync(ByVal MRGID As Integer)
+    Public Overloads Sub getGazetteerRecordByMRGIDAsync(MRGID As Integer)
         Me.getGazetteerRecordByMRGIDAsync(MRGID, Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerRecordByMRGIDAsync(ByVal MRGID As Integer, ByVal userState As Object)
+    Public Overloads Sub getGazetteerRecordByMRGIDAsync(MRGID As Integer, userState As Object)
         If (Me.getGazetteerRecordByMRGIDOperationCompleted Is Nothing) Then
             Me.getGazetteerRecordByMRGIDOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRecordByMRGIDOperationCompleted)
         End If
@@ -255,105 +255,105 @@ Public Class cMarineRegionsWSDL
         Me.InvokeAsync("getGazetteerRecordByMRGID", New Object() {MRGID}, Me.getGazetteerRecordByMRGIDOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerRecordByMRGIDOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerRecordByMRGIDOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerRecordByMRGIDCompleted(Me, New getGazetteerRecordByMRGIDCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRelationsByMRGID", RequestNamespace:="http://gazetteer/v1.0/gazetteerRelations", ResponseNamespace:="http://gazetteer/v1.0/gazetteerRelations")>
-    Public Function getGazetteerRelationsByMRGID(ByVal MRGID As Integer, ByVal direction As String, ByVal type As String) As gazetteerRelation()
+    Public Function getGazetteerRelationsByMRGID(MRGID As Integer, direction As String, type As String) As gazetteerRelation()
         Dim results() As Object = Me.Invoke("getGazetteerRelationsByMRGID", New Object() {MRGID, direction, type})
         Return CType(results(0), gazetteerRelation())
     End Function
 
-    Public Function BegingetGazetteerRelationsByMRGID(ByVal MRGID As Integer, ByVal direction As String, ByVal type As String, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerRelationsByMRGID(MRGID As Integer, direction As String, type As String, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerRelationsByMRGID", New Object() {MRGID, direction, type}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerRelationsByMRGID(ByVal asyncResult As System.IAsyncResult) As gazetteerRelation()
+    Public Function EndgetGazetteerRelationsByMRGID(asyncResult As System.IAsyncResult) As gazetteerRelation()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerRelation())
     End Function
 
-    Public Overloads Sub getGazetteerRelationsByMRGIDAsync(ByVal MRGID As Integer, ByVal direction As String, ByVal type As String)
+    Public Overloads Sub getGazetteerRelationsByMRGIDAsync(MRGID As Integer, direction As String, type As String)
         Me.getGazetteerRelationsByMRGIDAsync(MRGID, direction, type, Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerRelationsByMRGIDAsync(ByVal MRGID As Integer, ByVal direction As String, ByVal type As String, ByVal userState As Object)
+    Public Overloads Sub getGazetteerRelationsByMRGIDAsync(MRGID As Integer, direction As String, type As String, userState As Object)
         If (Me.getGazetteerRelationsByMRGIDOperationCompleted Is Nothing) Then
             Me.getGazetteerRelationsByMRGIDOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRelationsByMRGIDOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerRelationsByMRGID", New Object() {MRGID, direction, type}, Me.getGazetteerRelationsByMRGIDOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerRelationsByMRGIDOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerRelationsByMRGIDOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerRelationsByMRGIDCompleted(Me, New getGazetteerRelationsByMRGIDCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerWMSes", RequestNamespace:="http://gazetteer/v1.0/gazetteerWMSes", ResponseNamespace:="http://gazetteer/v1.0/gazetteerWMSes")>
-    Public Function getGazetteerWMSes(ByVal MRGID As Integer) As gazetteerWMS()
+    Public Function getGazetteerWMSes(MRGID As Integer) As gazetteerWMS()
         Dim results() As Object = Me.Invoke("getGazetteerWMSes", New Object() {MRGID})
         Return CType(results(0), gazetteerWMS())
     End Function
 
 
-    Public Function BegingetGazetteerWMSes(ByVal MRGID As Integer, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerWMSes(MRGID As Integer, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerWMSes", New Object() {MRGID}, callback, asyncState)
     End Function
 
 
-    Public Function EndgetGazetteerWMSes(ByVal asyncResult As System.IAsyncResult) As gazetteerWMS()
+    Public Function EndgetGazetteerWMSes(asyncResult As System.IAsyncResult) As gazetteerWMS()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerWMS())
     End Function
 
 
-    Public Overloads Sub getGazetteerWMSesAsync(ByVal MRGID As Integer)
+    Public Overloads Sub getGazetteerWMSesAsync(MRGID As Integer)
         Me.getGazetteerWMSesAsync(MRGID, Nothing)
     End Sub
 
 
-    Public Overloads Sub getGazetteerWMSesAsync(ByVal MRGID As Integer, ByVal userState As Object)
+    Public Overloads Sub getGazetteerWMSesAsync(MRGID As Integer, userState As Object)
         If (Me.getGazetteerWMSesOperationCompleted Is Nothing) Then
             Me.getGazetteerWMSesOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerWMSesOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerWMSes", New Object() {MRGID}, Me.getGazetteerWMSesOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerWMSesOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerWMSesOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerWMSesCompleted(Me, New getGazetteerWMSesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerRecordsByLatLong", RequestNamespace:="http://gazetteer/v1.0/gazetteerRecord", ResponseNamespace:="http://gazetteer/v1.0/gazetteerRecord")>
-    Public Function getGazetteerRecordsByLatLong(ByVal Latitude As Single, ByVal Longitude As Single, ByVal LatitudeRadius As Single, ByVal LongitudeRadius As Single) As gazetteerRecord
+    Public Function getGazetteerRecordsByLatLong(Latitude As Single, Longitude As Single, LatitudeRadius As Single, LongitudeRadius As Single) As gazetteerRecord
         Dim results() As Object = Me.Invoke("getGazetteerRecordsByLatLong", New Object() {Latitude, Longitude, LatitudeRadius, LongitudeRadius})
         Return CType(results(0), gazetteerRecord)
     End Function
 
-    Public Function BegingetGazetteerRecordsByLatLong(ByVal Latitude As Single, ByVal Longitude As Single, ByVal LatitudeRadius As Single, ByVal LongitudeRadius As Single, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerRecordsByLatLong(Latitude As Single, Longitude As Single, LatitudeRadius As Single, LongitudeRadius As Single, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerRecordsByLatLong", New Object() {Latitude, Longitude, LatitudeRadius, LongitudeRadius}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerRecordsByLatLong(ByVal asyncResult As System.IAsyncResult) As gazetteerRecord
+    Public Function EndgetGazetteerRecordsByLatLong(asyncResult As System.IAsyncResult) As gazetteerRecord
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerRecord)
     End Function
 
-    Public Overloads Sub getGazetteerRecordsByLatLongAsync(ByVal Latitude As Single, ByVal Longitude As Single, ByVal LatitudeRadius As Single, ByVal LongitudeRadius As Single)
+    Public Overloads Sub getGazetteerRecordsByLatLongAsync(Latitude As Single, Longitude As Single, LatitudeRadius As Single, LongitudeRadius As Single)
         Me.getGazetteerRecordsByLatLongAsync(Latitude, Longitude, LatitudeRadius, LongitudeRadius, Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerRecordsByLatLongAsync(ByVal Latitude As Single, ByVal Longitude As Single, ByVal LatitudeRadius As Single, ByVal LongitudeRadius As Single, ByVal userState As Object)
+    Public Overloads Sub getGazetteerRecordsByLatLongAsync(Latitude As Single, Longitude As Single, LatitudeRadius As Single, LongitudeRadius As Single, userState As Object)
         If (Me.getGazetteerRecordsByLatLongOperationCompleted Is Nothing) Then
             Me.getGazetteerRecordsByLatLongOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerRecordsByLatLongOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerRecordsByLatLong", New Object() {Latitude, Longitude, LatitudeRadius, LongitudeRadius}, Me.getGazetteerRecordsByLatLongOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerRecordsByLatLongOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerRecordsByLatLongOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerRecordsByLatLongCompleted(Me, New getGazetteerRecordsByLatLongCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
@@ -364,11 +364,11 @@ Public Class cMarineRegionsWSDL
         Return CType(results(0), gazetteerType())
     End Function
 
-    Public Function BegingetGazetteerTypes(ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerTypes(callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerTypes", New Object((0) - 1) {}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerTypes(ByVal asyncResult As System.IAsyncResult) As gazetteerType()
+    Public Function EndgetGazetteerTypes(asyncResult As System.IAsyncResult) As gazetteerType()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerType())
     End Function
@@ -377,7 +377,7 @@ Public Class cMarineRegionsWSDL
         Me.getGazetteerTypesAsync(Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerTypesAsync(ByVal userState As Object)
+    Public Overloads Sub getGazetteerTypesAsync(userState As Object)
         If (Me.getGazetteerTypesOperationCompleted Is Nothing) Then
             Me.getGazetteerTypesOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerTypesOperationCompleted)
         End If
@@ -385,7 +385,7 @@ Public Class cMarineRegionsWSDL
         Me.InvokeAsync("getGazetteerTypes", New Object((0) - 1) {}, Me.getGazetteerTypesOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerTypesOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerTypesOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerTypesCompleted(Me, New getGazetteerTypesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
@@ -396,11 +396,11 @@ Public Class cMarineRegionsWSDL
         Return CType(results(0), gazetteerSource())
     End Function
 
-    Public Function BegingetGazetteerSources(ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerSources(callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerSources", New Object((0) - 1) {}, callback, asyncState)
     End Function
 
-    Public Function EndgetGazetteerSources(ByVal asyncResult As System.IAsyncResult) As gazetteerSource()
+    Public Function EndgetGazetteerSources(asyncResult As System.IAsyncResult) As gazetteerSource()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerSource())
     End Function
@@ -409,43 +409,43 @@ Public Class cMarineRegionsWSDL
         Me.getGazetteerSourcesAsync(Nothing)
     End Sub
 
-    Public Overloads Sub getGazetteerSourcesAsync(ByVal userState As Object)
+    Public Overloads Sub getGazetteerSourcesAsync(userState As Object)
         If (Me.getGazetteerSourcesOperationCompleted Is Nothing) Then
             Me.getGazetteerSourcesOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerSourcesOperationCompleted)
         End If
         Me.InvokeAsync("getGazetteerSources", New Object((0) - 1) {}, Me.getGazetteerSourcesOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerSourcesOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerSourcesOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerSourcesCompleted(Me, New getGazetteerSourcesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerNamesByMRGID", RequestNamespace:="http://gazetteer/v1.0/gazetteerNames", ResponseNamespace:="http://gazetteer/v1.0/gazetteerNames")>
-    Public Function getGazetteerNamesByMRGID(ByVal MRGID As Integer) As String()
+    Public Function getGazetteerNamesByMRGID(MRGID As Integer) As String()
         Dim results() As Object = Me.Invoke("getGazetteerNamesByMRGID", New Object() {MRGID})
         Return CType(results(0), String())
     End Function
 
 
-    Public Function BegingetGazetteerNamesByMRGID(ByVal MRGID As Integer, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+    Public Function BegingetGazetteerNamesByMRGID(MRGID As Integer, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerNamesByMRGID", New Object() {MRGID}, callback, asyncState)
     End Function
 
 
-    Public Function EndgetGazetteerNamesByMRGID(ByVal asyncResult As System.IAsyncResult) As String()
+    Public Function EndgetGazetteerNamesByMRGID(asyncResult As System.IAsyncResult) As String()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), String())
     End Function
 
 
-    Public Overloads Sub getGazetteerNamesByMRGIDAsync(ByVal MRGID As Integer)
+    Public Overloads Sub getGazetteerNamesByMRGIDAsync(MRGID As Integer)
         Me.getGazetteerNamesByMRGIDAsync(MRGID, Nothing)
     End Sub
 
 
-    Public Overloads Sub getGazetteerNamesByMRGIDAsync(ByVal MRGID As Integer, ByVal userState As Object)
+    Public Overloads Sub getGazetteerNamesByMRGIDAsync(MRGID As Integer, userState As Object)
         If (Me.getGazetteerNamesByMRGIDOperationCompleted Is Nothing) Then
             Me.getGazetteerNamesByMRGIDOperationCompleted = New System.Threading.SendOrPostCallback(AddressOf OngetGazetteerNamesByMRGIDOperationCompleted)
         End If
@@ -453,13 +453,13 @@ Public Class cMarineRegionsWSDL
         Me.InvokeAsync("getGazetteerNamesByMRGID", New Object() {MRGID}, Me.getGazetteerNamesByMRGIDOperationCompleted, userState)
     End Sub
 
-    Private Sub OngetGazetteerNamesByMRGIDOperationCompleted(ByVal arg As Object)
+    Private Sub OngetGazetteerNamesByMRGIDOperationCompleted(arg As Object)
         Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
         RaiseEvent getGazetteerNamesByMRGIDCompleted(Me, New getGazetteerNamesByMRGIDCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
 
-    Public Shadows Sub CancelAsync(ByVal userState As Object)
+    Public Shadows Sub CancelAsync(userState As Object)
         MyBase.CancelAsync(userState)
     End Sub
 
@@ -829,7 +829,7 @@ Public Class gazetteerRelation
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRecordsByNameCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRecordsByNameCompletedEventArgs)
+Public Delegate Sub getGazetteerRecordsByNameCompletedEventHandler(sender As Object, e As getGazetteerRecordsByNameCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -838,7 +838,7 @@ Public Class getGazetteerRecordsByNameCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -852,7 +852,7 @@ Public Class getGazetteerRecordsByNameCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRecordsByNamesCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRecordsByNamesCompletedEventArgs)
+Public Delegate Sub getGazetteerRecordsByNamesCompletedEventHandler(sender As Object, e As getGazetteerRecordsByNamesCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -861,7 +861,7 @@ Public Class getGazetteerRecordsByNamesCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -875,7 +875,7 @@ Public Class getGazetteerRecordsByNamesCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRecordsBySourceCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRecordsBySourceCompletedEventArgs)
+Public Delegate Sub getGazetteerRecordsBySourceCompletedEventHandler(sender As Object, e As getGazetteerRecordsBySourceCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -884,7 +884,7 @@ Public Class getGazetteerRecordsBySourceCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -898,7 +898,7 @@ Public Class getGazetteerRecordsBySourceCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRecordsByTypeCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRecordsByTypeCompletedEventArgs)
+Public Delegate Sub getGazetteerRecordsByTypeCompletedEventHandler(sender As Object, e As getGazetteerRecordsByTypeCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -907,7 +907,7 @@ Public Class getGazetteerRecordsByTypeCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -921,7 +921,7 @@ Public Class getGazetteerRecordsByTypeCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRecordByMRGIDCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRecordByMRGIDCompletedEventArgs)
+Public Delegate Sub getGazetteerRecordByMRGIDCompletedEventHandler(sender As Object, e As getGazetteerRecordByMRGIDCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -930,7 +930,7 @@ Public Class getGazetteerRecordByMRGIDCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -944,7 +944,7 @@ Public Class getGazetteerRecordByMRGIDCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRelationsByMRGIDCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRelationsByMRGIDCompletedEventArgs)
+Public Delegate Sub getGazetteerRelationsByMRGIDCompletedEventHandler(sender As Object, e As getGazetteerRelationsByMRGIDCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -953,7 +953,7 @@ Public Class getGazetteerRelationsByMRGIDCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -968,7 +968,7 @@ Public Class getGazetteerRelationsByMRGIDCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerWMSesCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerWMSesCompletedEventArgs)
+Public Delegate Sub getGazetteerWMSesCompletedEventHandler(sender As Object, e As getGazetteerWMSesCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -977,7 +977,7 @@ Public Class getGazetteerWMSesCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -991,7 +991,7 @@ Public Class getGazetteerWMSesCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerRecordsByLatLongCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerRecordsByLatLongCompletedEventArgs)
+Public Delegate Sub getGazetteerRecordsByLatLongCompletedEventHandler(sender As Object, e As getGazetteerRecordsByLatLongCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -1000,7 +1000,7 @@ Public Class getGazetteerRecordsByLatLongCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -1014,7 +1014,7 @@ Public Class getGazetteerRecordsByLatLongCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerTypesCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerTypesCompletedEventArgs)
+Public Delegate Sub getGazetteerTypesCompletedEventHandler(sender As Object, e As getGazetteerTypesCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -1023,7 +1023,7 @@ Public Class getGazetteerTypesCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -1037,7 +1037,7 @@ Public Class getGazetteerTypesCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerSourcesCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerSourcesCompletedEventArgs)
+Public Delegate Sub getGazetteerSourcesCompletedEventHandler(sender As Object, e As getGazetteerSourcesCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -1046,7 +1046,7 @@ Public Class getGazetteerSourcesCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
@@ -1060,7 +1060,7 @@ Public Class getGazetteerSourcesCompletedEventArgs
 End Class
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0")>
-Public Delegate Sub getGazetteerNamesByMRGIDCompletedEventHandler(ByVal sender As Object, ByVal e As getGazetteerNamesByMRGIDCompletedEventArgs)
+Public Delegate Sub getGazetteerNamesByMRGIDCompletedEventHandler(sender As Object, e As getGazetteerNamesByMRGIDCompletedEventArgs)
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.Diagnostics.DebuggerStepThroughAttribute(),
  System.ComponentModel.DesignerCategoryAttribute("code")>
@@ -1069,7 +1069,7 @@ Public Class getGazetteerNamesByMRGIDCompletedEventArgs
 
     Private results() As Object
 
-    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+    Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub

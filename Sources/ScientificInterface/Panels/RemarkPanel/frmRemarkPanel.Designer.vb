@@ -24,7 +24,7 @@ Partial Class frmRemarkPanel
 
     Private components As System.ComponentModel.IContainer
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
         End If

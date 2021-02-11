@@ -31,8 +31,8 @@ Public Class cEcotracerScenario
 
 #Region " Constructor "
 
-    Sub New(ByVal theCore As cCore)
-        MyBase.New(theCore)
+    Sub New(core As cCore)
+        MyBase.New(core)
         Me.m_dataType = eDataTypes.EcotracerScenario
         Me.m_ValidationStatus.DataType = Me.m_dataType
     End Sub

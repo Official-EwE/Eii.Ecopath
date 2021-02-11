@@ -38,7 +38,7 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererExclusion
         Inherits cLayerRendererHatch
 
-        Public Sub New(uic As cUIContext, ByVal vs As cVisualStyle)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle)
             MyBase.New(uic, vs)
         End Sub
 
@@ -53,11 +53,11 @@ Namespace Controls.Map.Layers
         ''' [0, 1] as the second index.</param>
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub RenderCell(ByVal g As Graphics,
-                                        ByVal rc As RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As Graphics,
+                                        rc As RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As cStyleGuide.eStyleFlags)
 
             If CBool(value) Then Me.RenderPreview(g, rc)
 

@@ -64,7 +64,7 @@ Friend Class cPropertySorter
     ''' </summary>
     ''' <param name="sortorder">The <see cref="ePropertySortOrderTypes"/> to sort by.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal sortorder As ePropertySortOrderTypes)
+    Public Sub New(sortorder As ePropertySortOrderTypes)
         Me.m_sortorder = sortorder
     End Sub
 
@@ -154,7 +154,7 @@ Friend Class cPropertySorter
     ''' <param name="y"><see cref="cCoreInputOutputBase"/> y to compare.</param>
     ''' <returns>-1 if x less than y, 0 if x equals y, 1 if x greater than y.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function Compare(ByVal x As cCoreInputOutputBase, ByVal y As cCoreInputOutputBase) As Integer
+    Private Function Compare(x As cCoreInputOutputBase, y As cCoreInputOutputBase) As Integer
 
         ' Handle missing data
         If (x Is Nothing) And (y Is Nothing) Then Return 0

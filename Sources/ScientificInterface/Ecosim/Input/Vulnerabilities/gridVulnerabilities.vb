@@ -40,8 +40,8 @@ Namespace Ecosim
 
         Public Sub New()
             MyBase.New()
-            m_VisDiagonal.BackColor = Color.LightGray
-            m_VisDiagonal.TextAlignment = ContentAlignment.MiddleCenter
+            Me.m_VisDiagonal.BackColor = Color.LightGray
+            Me.m_VisDiagonal.TextAlignment = ContentAlignment.MiddleCenter
             Me.FixedColumnWidths = False
         End Sub
 
@@ -107,7 +107,7 @@ Namespace Ecosim
                         cell.SuppressZero = True
 
                         If iPrey = (iCol - 1) Then
-                            cell.VisualModel = m_VisDiagonal
+                            cell.VisualModel = Me.m_VisDiagonal
                         End If
 
                         ' Store cell

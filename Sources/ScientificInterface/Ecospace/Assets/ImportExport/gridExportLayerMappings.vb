@@ -61,7 +61,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_aLayers
             End Get
-            Set(ByVal value As cEcospaceLayer())
+            Set(value As cEcospaceLayer())
                 Me.m_aLayers = value
                 Me.RefreshContent()
             End Set
@@ -226,14 +226,14 @@ Namespace Ecospace.Basemap
 
         End Function
 
-        Private Function LayerAtRow(ByVal iRow As Integer) As cEcospaceLayer
+        Private Function LayerAtRow(iRow As Integer) As cEcospaceLayer
             If iRow > 0 And iRow < Me.RowsCount Then
                 Return DirectCast(Me.Rows(iRow).Tag, cEcospaceLayer)
             End If
             Return Nothing
         End Function
 
-        Private Function FieldAtRow(ByVal iRow As Integer) As String
+        Private Function FieldAtRow(iRow As Integer) As String
             If iRow > 0 And iRow < Me.RowsCount Then
                 If CBool(Me(iRow, eColumnTypes.ColumnExport).Value) Then
                     Return CStr(Me(iRow, eColumnTypes.ColumnField).Value).Trim

@@ -133,7 +133,7 @@ Namespace Ecopath.Input
 
                 Else 'Group is stanza
 
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
 
                     ' Create hierarchy cell if entering a new stanza config
                     If group.iStanza <> iStanzaPrev Then
@@ -191,7 +191,7 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Protected Overrides Sub OnCellDoubleClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        Protected Overrides Sub OnCellDoubleClicked(p As Position, cell As Cells.ICellVirtual)
             Dim dlg As EditMultiStanza = Nothing
             Dim prop As cProperty = Nothing
             Dim group As cEcoPathGroupInput = Nothing

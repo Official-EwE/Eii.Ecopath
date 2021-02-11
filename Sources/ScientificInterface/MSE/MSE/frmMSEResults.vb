@@ -34,11 +34,11 @@ Public Class frmMSEResults
 
     Public Sub New()
         MyBase.New()
-        InitializeComponent()
-        m_EventSource = New cMSEEventSource
+        Me.InitializeComponent()
+        Me.m_EventSource = New cMSEEventSource
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.rbFleet.Tag = ScientificInterface.gridRiskResults.eGridType.Fleet
@@ -53,7 +53,7 @@ Public Class frmMSEResults
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
         RemoveHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         RemoveHandler Me.m_EventSource.onRunCompleted, AddressOf Me.onRunCompleted
@@ -73,7 +73,7 @@ Public Class frmMSEResults
         End Try
     End Sub
 
-    Private Sub onGridTypeCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub onGridTypeCheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles rbGroup.CheckedChanged, rbFleet.CheckedChanged
         Try
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
@@ -100,7 +100,7 @@ Public Class frmMSEResults
 
 #Region " Core interactions "
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+    Public Overrides Sub OnCoreMessage(msg As cMessage)
         Try
             Me.m_EventSource.HandleCoreMessage(msg)
         Catch ex As Exception

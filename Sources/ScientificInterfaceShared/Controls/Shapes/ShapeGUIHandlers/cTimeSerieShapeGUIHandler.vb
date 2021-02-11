@@ -57,7 +57,7 @@ Namespace Controls
             Private m_strName As String
             Private m_type As eTimeSeriesType
 
-            Public Sub New(ByVal t As eTimeSeriesType)
+            Public Sub New(t As eTimeSeriesType)
                 Me.m_type = t
                 Dim fmt As New cTimeSeriesTypeFormatter
                 Me.m_strName = fmt.ToString(t, eDescriptorTypes.Abbreviation)
@@ -82,7 +82,7 @@ Namespace Controls
         Private Class cTypeAdminComparer
             Implements IComparer(Of cTypeAdmin)
 
-            Public Function Compare(ByVal x As cTypeAdmin, ByVal y As cTypeAdmin) As Integer _
+            Public Function Compare(x As cTypeAdmin, y As cTypeAdmin) As Integer _
                 Implements System.Collections.Generic.IComparer(Of cTypeAdmin).Compare
                 Return String.Compare(x.Name, y.Name)
             End Function
@@ -106,10 +106,10 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overloads Sub Attach(ByVal stb As ucShapeToolbox, _
-                                    ByVal stbtb As ucShapeToolboxToolbar, _
-                                    ByVal sp As ucSketchPad, _
-                                    ByVal sptb As ucSketchPadToolbar)
+        Public Overloads Sub Attach(stb As ucShapeToolbox, _
+                                    stbtb As ucShapeToolboxToolbar, _
+                                    sp As ucSketchPad, _
+                                    sptb As ucSketchPadToolbar)
 
             MyBase.Attach(stb, stbtb, sp, sptb)
 
@@ -125,7 +125,7 @@ Namespace Controls
 
             Me.UpdateShapeList(New cShapeData() {sp.Shape}, eAutoSelectMode.SelectFirstShape)
 
-            Me.m_mhShapes = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.DataModified, Me.UIContext.SyncObject)
+            Me.m_mhShapes = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.DataModified, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
 
         End Sub
@@ -149,7 +149,7 @@ Namespace Controls
         ''' <param name="cmd">The command to test.</param>
         ''' <returns>True if command is supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(cmd As eShapeCommandTypes) As Boolean
 
             Select Case cmd
                 Case eShapeCommandTypes.Add
@@ -195,7 +195,7 @@ Namespace Controls
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <returns>True if enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
             Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
@@ -243,8 +243,8 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
-             Optional ByVal ashapes As cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As eShapeCommandTypes, _
+             Optional ashapes As cShapeData() = Nothing, Optional data As Object = Nothing)
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
 
@@ -299,7 +299,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The newly selected shape.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeChanged(ByVal shape As EwECore.cShapeData)
+        Public Overrides Sub OnShapeChanged(shape As EwECore.cShapeData)
             If (Me.ShapeToolBox Is Nothing) Then Return
             If Me.m_bInUpdate Then Return
 
@@ -314,7 +314,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+        Public Overrides Sub OnShapeFinalized(shape As EwECore.cShapeData, sketchpad As ucSketchPad)
             Debug.Assert(False)
         End Sub
 
@@ -324,7 +324,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="ashapes">The newly selected shapes.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal ashapes As EwECore.cShapeData())
+        Public Overrides Sub OnShapeSelected(ashapes As EwECore.cShapeData())
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             If Me.SketchPad IsNot Nothing Then
@@ -428,7 +428,7 @@ Namespace Controls
             Get
                 Return Me.m_iTSTypeFilter
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Dim iFilterNew As Integer = Math.Max(0, Math.Min(value, Me.m_types.Length - 1))
                 If (iFilterNew <> Me.m_iTSTypeFilter) Then
                     Me.m_iTSTypeFilter = iFilterNew
@@ -487,7 +487,7 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Duplicate">Duplicate</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub DuplicateTimeSeries(ByVal ashapes As cShapeData())
+        Private Sub DuplicateTimeSeries(ashapes As cShapeData())
 
             ' Sanity check
             Debug.Assert(ashapes IsNot Nothing, "Need valid TS")
@@ -555,7 +555,7 @@ Namespace Controls
         ''' Implementation of the <see cref="eShapeCommandTypes.Remove">Remove</see> commmand.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub RemoveTimeSeries(ByVal ashapes As cShapeData())
+        Private Sub RemoveTimeSeries(ashapes As cShapeData())
 
             Dim fms As cFeedbackMessage = Nothing
             Dim strMessage As String = ""
@@ -598,7 +598,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub ModifyTimeSeries(ByVal shape As cShapeData)
+        Private Sub ModifyTimeSeries(shape As cShapeData)
 
             ' Sanity check
             Debug.Assert(shape IsNot Nothing, "Need valid TS")
@@ -613,7 +613,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub SetWeight(ByVal shape As cShapeData, ByVal sWeight As Single)
+        Private Sub SetWeight(shape As cShapeData, sWeight As Single)
 
             ' Sanity check
             Debug.Assert(shape IsNot Nothing, "Need valid TS")
@@ -650,8 +650,8 @@ Namespace Controls
         ''' has been provided, this mode indicates how the new selection should 
         ''' be made.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateShapeList(Optional ByVal ashapeSelect As cShapeData() = Nothing, _
-                Optional ByVal selectMode As eAutoSelectMode = eAutoSelectMode.SelectCurrentShape)
+        Private Sub UpdateShapeList(Optional ashapeSelect As cShapeData() = Nothing, _
+                Optional selectMode As eAutoSelectMode = eAutoSelectMode.SelectCurrentShape)
 
             Dim ts As cTimeSeries = Nothing
             Dim bIncludeShape As Boolean = False

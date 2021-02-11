@@ -34,7 +34,7 @@ Namespace Utilities
     ''' =======================================================================
     Public Class cRegistryUtils
 
-        Public Shared Function ReadKey(ByVal keyParent As RegistryKey, ByVal strSubKey As String, ByVal strValueName As String) As String
+        Public Shared Function ReadKey(keyParent As RegistryKey, strSubKey As String, strValueName As String) As String
 
             Dim Key As RegistryKey = Nothing
             Dim strValue As String = ""

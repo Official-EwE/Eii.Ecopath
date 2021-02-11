@@ -41,7 +41,7 @@ Public Class ucEcosimGraph
     Private m_data As cData = Nothing
     Private m_aVars() As cResults.eVariableType = Nothing
 
-    Public Sub New(ByVal data As cData, ByVal uic As cUIContext)
+    Public Sub New(data As cData, uic As cUIContext)
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(uic, Me)
         Me.m_zgh.ShowPointValue = True
@@ -55,8 +55,8 @@ Public Class ucEcosimGraph
         MyBase.Finalize()
     End Sub
 
-    Public Sub ShowResults(ByVal iFleet As Integer, ByVal lUnits As cUnit(), ByVal result As cResults, _
-                           ByVal iTimeStep As Integer) _
+    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cResults, _
+                           iTimeStep As Integer) _
              Implements IResultView.ShowResults
 
         Dim cr As New ZedGraph.ColorSymbolRotator()
@@ -93,10 +93,10 @@ Public Class ucEcosimGraph
 
     End Sub
 
-    Public Sub SetData(ByVal strGraphTitle As String,
-                       ByVal strXAxisLabel As String,
-                       ByVal strYAxisLabel As String,
-                       ByVal aVars() As cResults.eVariableType) Implements IGraphView.SetData
+    Public Sub SetData(strGraphTitle As String,
+                       strXAxisLabel As String,
+                       strYAxisLabel As String,
+                       aVars() As cResults.eVariableType) Implements IGraphView.SetData
 
         Me.m_zgh.ConfigurePane(strGraphTitle, strXAxisLabel, strYAxisLabel, True)
         Me.m_aVars = aVars

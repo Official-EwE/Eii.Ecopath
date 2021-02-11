@@ -2990,6 +2990,21 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set the default number of threads for the use of EwE.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ThreatCount As Integer
+        Get
+            Return Me.m_settings.ThreatCount
+        End Get
+        Set(value As Integer)
+            Me.m_settings.ThreatCount = value
+            Me.Messages.SendMessage(New cMessage("Default threat count has changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Check wether a means to stop any running process is in place.
     ''' </summary>
     ''' <returns>True if any current running process can be stopped.</returns>

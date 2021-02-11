@@ -32,9 +32,6 @@ Imports EwEUtils.Utilities
 Public Class cStanzaGroup
     Inherits cCoreInputOutputBase
 
-    ''' <summary>Core Counter interface for MaxAge</summary>
-    Private m_CoreCounter As CoreIndexedCounterDelegate
-
 #Region "Constuction"
 
     ''' <summary>
@@ -44,21 +41,18 @@ Public Class cStanzaGroup
     ''' <param name="DBID"></param>
     ''' <param name="nStanzas"></param>
     ''' <remarks></remarks>
-    Public Sub New(ByRef core As cCore, ByVal DBID As Integer, ByVal nStanzas As Integer, ByVal iStanza As Integer)
+    Public Sub New(ByRef core As cCore, DBID As Integer, nStanzas As Integer, iStanza As Integer)
         MyBase.New(core)
 
         Dim val As cValue = Nothing
 
         Me.DBID = DBID
         Me.Index = iStanza
-        m_core = core
-        m_dataType = eDataTypes.Stanza
-        m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_core = core
+        Me.m_dataType = eDataTypes.Stanza
+        Me.m_coreComponent = eCoreComponentType.EcoPath
 
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
-
-        'get the core counter interface for the MaxAge (max age) and NStanza (number of stanza) counters
-        m_CoreCounter = AddressOf m_core.GetCoreCounter
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         ' EwE5 variables mirrored here:
         ' ReDim Bio(Stanza)             ' Biomass values for groups within a stanza cfg
@@ -75,93 +69,93 @@ Public Class cStanzaGroup
 
         ''vbgfK
         'meta = New cVariableMetadata(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        'val = New cValue(New Single, eVarNameFlags.StanzaVBGF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.StanzaVBGF))
+        'val = New cValue(core, New Single, eVarNameFlags.StanzaVBGF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.StanzaVBGF))
         'm_values.Add(val.varName, val)
 
         'LeadingBiomass
-        val = New cValue(New Integer, eVarNameFlags.LeadingBiomass, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.LeadingBiomass, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         'LeadingQB
-        val = New cValue(New Integer, eVarNameFlags.LeadingCB, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.LeadingCB, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' RecruitmentPower
-        val = New cValue(New Single, eVarNameFlags.RecPowerSplit, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.RecPowerSplit, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' Relative biomass accumulation rate (BaB)
-        val = New cValue(New Single, eVarNameFlags.BABsplit, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.BABsplit, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' Weight maturity over Weight infancy (WmatWinf)
-        val = New cValue(New Single, eVarNameFlags.WmatWinf, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.WmatWinf, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' Forcing function for hatchery stocking
-        val = New cValue(New Integer, eVarNameFlags.HatchCode, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.HatchCode, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' Fixed fecundity
-        val = New cValue(New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
         ' Recruit where spawned (Ecospace)
-        val = New cValue(New Boolean, eVarNameFlags.EggAtSpawn, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Boolean, eVarNameFlags.EggAtSpawn, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
         ' IsFished
-        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
+        val = New cValue(core, New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
         val.AffectsRunState = False
 
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         ' Weight maturity over Weight infancy (WmatWinf)
-        val = New cValue(New Single, eVarNameFlags.MultiStanzaAge0Numbers, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.MultiStanzaAge0Numbers, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         ' === Array variables for groups within a stanza config ===
 
         ' Bat
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Bat, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.Bat, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza)
+        Me.m_values.Add(val.varName, val)
 
         ' Ages
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.StartAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.IntArray, eVarNameFlags.StartAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza)
+        Me.m_values.Add(val.varName, val)
 
         'number at age
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaNumberAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaNumberAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         'weight at age
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaWeightAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaWeightAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         'biomass at age
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaBiomassAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaBiomassAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         'iGroup dimensioned by nStanza(iLifeStage)
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaGroup, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaGroup, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         'Bio by nStanza(iLifeStage)
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaBiomass, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaBiomass, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         'CB by nStanza(iLifeStage)
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaCB, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaCB, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         'Z Mort by nStanza(iLifeStage)
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         ' Spawming
-        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.SpawnProp, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
+        val = New cValueArrayIndexed(core, eValueTypes.SingleArray, eVarNameFlags.SpawnProp, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index, eDataTypes.Stanza)
+        Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = False ' Why?
 
@@ -180,10 +174,10 @@ Public Class cStanzaGroup
     Public Function CalculateParameters() As Boolean
 
         Try
-            Return m_core.CalculateStanza(Me)
+            Return Me.m_core.CalculateStanza(Me)
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message),
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message),
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -221,11 +215,11 @@ Public Class cStanzaGroup
     Public Function Cancel() As Boolean
 
         Try
-            m_core.LoadStanza(Me)
-            Return CalculateParameters()
+            Me.m_core.LoadStanza(Me)
+            Return Me.CalculateParameters()
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message),
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message),
                 eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -239,7 +233,7 @@ Public Class cStanzaGroup
     ''' <returns>True if it is Ok to calculate the stanza parameters on the Stanza Group</returns>
     ''' <remarks>When a new stanza group is first created its leading parameters (oldest group) and z will be NULL_VALUE (-9999). 
     ''' The leading B and CB and Mortality need to be set by the user before calculateParameter can be called. </remarks>
-    Public ReadOnly Property OkToCalculate(Optional ByVal msg As cMessage = Nothing) As Boolean
+    Public ReadOnly Property OkToCalculate(Optional msg As cMessage = Nothing) As Boolean
 
         Get
             Dim bOk As Boolean = True
@@ -286,7 +280,7 @@ Public Class cStanzaGroup
     ''' <param name="newValue"></param>
     ''' <param name="iSecondaryIndex"></param>
     ''' <returns></returns>
-    Public Overrides Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+    Public Overrides Function SetVariable(VarName As eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As Boolean
         Dim bSucces As Boolean = MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
         Me.isDirty = Me.isDirty Or bSucces
         Return bSucces
@@ -307,7 +301,7 @@ Public Class cStanzaGroup
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.LeadingBiomass))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.LeadingBiomass, value)
         End Set
     End Property
@@ -321,7 +315,7 @@ Public Class cStanzaGroup
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.LeadingCB))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.LeadingCB, value)
         End Set
     End Property
@@ -336,7 +330,7 @@ Public Class cStanzaGroup
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.RecPowerSplit))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.RecPowerSplit, value)
         End Set
     End Property
@@ -351,7 +345,7 @@ Public Class cStanzaGroup
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.BABsplit))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.BABsplit, value)
         End Set
     End Property
@@ -366,7 +360,7 @@ Public Class cStanzaGroup
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.WmatWinf))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.WmatWinf, value)
         End Set
     End Property
@@ -381,7 +375,7 @@ Public Class cStanzaGroup
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.HatchCode))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.HatchCode, value)
         End Set
     End Property
@@ -390,7 +384,7 @@ Public Class cStanzaGroup
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.FixedFecundity))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.FixedFecundity, value)
         End Set
     End Property
@@ -399,18 +393,18 @@ Public Class cStanzaGroup
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.EggAtSpawn))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.EggAtSpawn, value)
         End Set
     End Property
 
     '### ARRAY VARIABLES ###
 
-    Public Property StartAge(ByVal iLifeStage As Integer) As Integer
+    Public Property StartAge(iLifeStage As Integer) As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.StartAge, iLifeStage))
         End Get
-        Set(ByVal iValue As Integer)
+        Set(iValue As Integer)
             Me.SetVariable(eVarNameFlags.StartAge, iValue, iLifeStage)
         End Set
     End Property
@@ -423,9 +417,9 @@ Public Class cStanzaGroup
     ''' -----------------------------------------------------------------------
     Public Property IsFished() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsFished))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsFished))
         End Get
-        Friend Set(ByVal value As Boolean)
+        Friend Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
     End Property
@@ -440,7 +434,6 @@ Public Class cStanzaGroup
         End Set
     End Property
 
-
 #Region "Variable by Stanza iGroup & NStanza"
 
     ''' <summary>
@@ -448,7 +441,7 @@ Public Class cStanzaGroup
     ''' </summary>
     Public ReadOnly Property nLifeStages As Integer
         Get
-            Return m_CoreCounter(eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index)
+            Return Me.m_core.GetCoreCounter(eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index)
         End Get
     End Property
 
@@ -477,12 +470,12 @@ Public Class cStanzaGroup
     ''' </code>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Property iGroups(ByVal iLifeStage As Integer) As Integer
+    Public Property iGroups(iLifeStage As Integer) As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.StanzaGroup, iLifeStage))
+            Return CInt(Me.GetVariable(eVarNameFlags.StanzaGroup, iLifeStage))
         End Get
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.StanzaGroup, value, iLifeStage)
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.StanzaGroup, value, iLifeStage)
         End Set
     End Property
 
@@ -495,7 +488,7 @@ Public Class cStanzaGroup
     ''' <returns>A one-based index of a life stage, or <see cref="cCore.NULL_VALUE"/> 
     ''' if the group was not found.</returns>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property iLifeStage(ByVal iGroup As Integer) As Integer
+    Public ReadOnly Property iLifeStage(iGroup As Integer) As Integer
         Get
             For i As Integer = 1 To Me.nLifeStages
                 If (Me.iGroups(i) = iGroup) Then
@@ -506,38 +499,38 @@ Public Class cStanzaGroup
         End Get
     End Property
 
-    Public Property Biomass(ByVal iLifeStage As Integer) As Single
+    Public Property Biomass(iLifeStage As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.StanzaBiomass, iLifeStage))
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaBiomass, iLifeStage))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StanzaBiomass, value, iLifeStage)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaBiomass, value, iLifeStage)
         End Set
     End Property
 
-    Public Property Mortality(ByVal iLifeStage As Integer) As Single
+    Public Property Mortality(iLifeStage As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.StanzaMortaility, iLifeStage))
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaMortaility, iLifeStage))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StanzaMortaility, value, iLifeStage)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaMortaility, value, iLifeStage)
         End Set
     End Property
 
-    Public Property CB(ByVal iLifeStage As Integer) As Single
+    Public Property CB(iLifeStage As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.StanzaCB, iLifeStage))
+            Return CSng(Me.GetVariable(eVarNameFlags.StanzaCB, iLifeStage))
         End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StanzaCB, value, iLifeStage)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.StanzaCB, value, iLifeStage)
         End Set
     End Property
 
-    Public Property SpawnProp(ByVal iLifeStage As Integer) As Single
+    Public Property SpawnProp(iLifeStage As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.SpawnProp, iLifeStage))
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.SetVariable(eVarNameFlags.SpawnProp, value, iLifeStage)
         End Set
     End Property
@@ -547,36 +540,34 @@ Public Class cStanzaGroup
 #Region "Age arrayed variables"
 
     Public ReadOnly Property MaxAge() As Integer
-
         Get
-            Return m_CoreCounter(eCoreCounterTypes.nMaxStanzaAge, Me.Index)
+            Return Me.m_core.GetCoreCounter(eCoreCounterTypes.nMaxStanzaAge, Me.Index)
         End Get
-
     End Property
 
-    Public Property NumberAtAge(ByVal iAge As Integer) As Single
+    Public Property NumberAtAge(iAge As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.StanzaNumberAtAge, iAge))
         End Get
-        Friend Set(ByVal Value As Single)
+        Friend Set(Value As Single)
             Me.SetVariable(eVarNameFlags.StanzaNumberAtAge, Value, iAge)
         End Set
     End Property
 
-    Public Property WeightAtAge(ByVal iAge As Integer) As Single
+    Public Property WeightAtAge(iAge As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.StanzaWeightAtAge, iAge))
         End Get
-        Friend Set(ByVal Value As Single)
+        Friend Set(Value As Single)
             Me.SetVariable(eVarNameFlags.StanzaWeightAtAge, Value, iAge)
         End Set
     End Property
 
-    Public Property BiomassAtAge(ByVal iAge As Integer) As Single
+    Public Property BiomassAtAge(iAge As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.StanzaBiomassAtAge, iAge))
         End Get
-        Friend Set(ByVal Value As Single)
+        Friend Set(Value As Single)
             Me.SetVariable(eVarNameFlags.StanzaBiomassAtAge, Value, iAge)
         End Set
     End Property
@@ -595,7 +586,7 @@ Public Class cStanzaGroup
             Return Me.GetStatus(eVarNameFlags.WmatWinf)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
+        Friend Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.WmatWinf, value)
         End Set
 
@@ -607,7 +598,7 @@ Public Class cStanzaGroup
 
 #End Region 'Status by dot (.) operator
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         MyBase.ResetStatusFlags() 'for name and other default status flags
 
         Dim i As Integer
@@ -619,7 +610,7 @@ Public Class cStanzaGroup
             Status = eStatusFlags.OK
         End If
 
-        For Each keyvalue In m_values
+        For Each keyvalue In Me.m_values
             Try
                 value = keyvalue.Value
 
@@ -649,7 +640,7 @@ Public Class cStanzaGroup
         Get
             Return Me.nLifeStages
         End Get
-        Private Set(ByVal value As Integer)
+        Private Set(value As Integer)
             'I don't see how this can work from here
             'if the number of stanzas has changed all the data will need to be reloaded 
             Debug.Assert(False, Me.ToString & ".NStanzas() What are you trying to do here!!!!!")

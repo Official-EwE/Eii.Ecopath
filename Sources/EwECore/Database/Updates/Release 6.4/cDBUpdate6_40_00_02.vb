@@ -62,7 +62,7 @@ Friend Class cDBUpdate6_40_00_02
 
     End Function
 
-    Private Function AddCapacityMapAssignmentTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddCapacityMapAssignmentTable(db As cEwEDatabase) As Boolean
         Dim bSuccess As Boolean = True
 
         bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacityDrivers (ScenarioID LONG, GroupID LONG, VarName TEXT(50), VarDBID LONG, ShapeID LONG)")
@@ -76,7 +76,7 @@ Friend Class cDBUpdate6_40_00_02
 
     End Function
 
-    Private Function TransferData(ByVal db As cEwEDatabase) As Boolean
+    Private Function TransferData(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM EcospaceScenarioCapacitDrivers")
         Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenarioCapacityDrivers")
@@ -113,7 +113,7 @@ Friend Class cDBUpdate6_40_00_02
 
     End Function
 
-    Private Function Cleanup(ByVal db As cEwEDatabase) As Boolean
+    Private Function Cleanup(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = db.Execute("DROP TABLE EcospaceScenarioCapacitDrivers")
         Me.LogProgress("Dropped Table CapacitDriver", bSuccess)
@@ -128,9 +128,9 @@ Friend Class cDBUpdate6_40_00_02
     ''' <param name="lScenarioID">Ecospace scenario ID</param>
     ''' <param name="lGroupID">Ecopath group ID</param>
     ''' <returns>An Ecospace group ID.</returns>
-    Private Function GetEcospaceGroupID(ByVal db As cEwEDatabase, _
-                                        ByVal lScenarioID As Long, _
-                                        ByVal lGroupID As Long) As Integer
+    Private Function GetEcospaceGroupID(db As cEwEDatabase, _
+                                        lScenarioID As Long, _
+                                        lGroupID As Long) As Integer
         Dim strSQL As String = String.Format("SELECT GroupID FROM EcospaceScenarioGroup WHERE ScenarioID={0} AND EcopathGroupID={1}", lScenarioID, lGroupID)
         Return CInt(db.GetValue(strSQL))
 

@@ -5,7 +5,7 @@ Partial Class frmRun
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -21,7 +21,7 @@ Partial Class frmRun
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRun))
         Me.m_lblModel = New System.Windows.Forms.Label()
@@ -55,12 +55,14 @@ Partial Class frmRun
         Me.m_btnSelectVandA = New System.Windows.Forms.Button()
         Me.m_btnSelectA = New System.Windows.Forms.Button()
         Me.m_btnSelectV = New System.Windows.Forms.Button()
+        Me.m_grid = New EwEStepwiseFittingPlugin.gridRun()
         Me.m_plRun = New System.Windows.Forms.Panel()
         Me.m_cmbAutoSave = New System.Windows.Forms.ComboBox()
         Me.m_lblAutoSave = New System.Windows.Forms.Label()
         Me.m_btnStop = New System.Windows.Forms.Button()
         Me.m_btnResetFolder = New System.Windows.Forms.Button()
         Me.m_plSettings = New System.Windows.Forms.Panel()
+        Me.m_lblNoRuns = New System.Windows.Forms.Label()
         Me.m_btnExport = New System.Windows.Forms.Button()
         Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
         Me.m_lblAnomalyShape = New System.Windows.Forms.Label()
@@ -68,7 +70,7 @@ Partial Class frmRun
         Me.m_btnTS = New System.Windows.Forms.Button()
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
-        Me.m_grid = New EwEStepwiseFittingPlugin.gridRun()
+        Me.m_nudNoThreads = New System.Windows.Forms.NumericUpDown()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -76,6 +78,7 @@ Partial Class frmRun
         Me.m_plRun.SuspendLayout()
         Me.m_plSettings.SuspendLayout()
         CType(Me.m_nudK, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudNoThreads, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -291,6 +294,38 @@ Partial Class frmRun
         Me.m_btnSelectV.Name = "m_btnSelectV"
         Me.m_btnSelectV.UseVisualStyleBackColor = True
         '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = True
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
+        '
         'm_plRun
         '
         resources.ApplyResources(Me.m_plRun, "m_plRun")
@@ -332,6 +367,7 @@ Partial Class frmRun
         '
         'm_plSettings
         '
+        Me.m_plSettings.Controls.Add(Me.m_lblNoRuns)
         Me.m_plSettings.Controls.Add(Me.m_btnExport)
         Me.m_plSettings.Controls.Add(Me.m_cmbAnomalyShape)
         Me.m_plSettings.Controls.Add(Me.m_lblAnomalyShape)
@@ -343,10 +379,16 @@ Partial Class frmRun
         Me.m_plSettings.Controls.Add(Me.m_lblSearchBy)
         Me.m_plSettings.Controls.Add(Me.m_nudK)
         Me.m_plSettings.Controls.Add(Me.m_lblNumVars)
+        Me.m_plSettings.Controls.Add(Me.m_nudNoThreads)
         Me.m_plSettings.Controls.Add(Me.m_nudStepSize)
         Me.m_plSettings.Controls.Add(Me.m_lblStepSize)
         resources.ApplyResources(Me.m_plSettings, "m_plSettings")
         Me.m_plSettings.Name = "m_plSettings"
+        '
+        'm_lblNoRuns
+        '
+        resources.ApplyResources(Me.m_lblNoRuns, "m_lblNoRuns")
+        Me.m_lblNoRuns.Name = "m_lblNoRuns"
         '
         'm_btnExport
         '
@@ -391,37 +433,13 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_lblNumVars, "m_lblNumVars")
         Me.m_lblNumVars.Name = "m_lblNumVars"
         '
-        'm_grid
+        'm_nudNoThreads
         '
-        Me.m_grid.AllowBlockSelect = False
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BackColor = System.Drawing.Color.White
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = True
-        Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.IsOutputGrid = True
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.UIContext = Nothing
+        resources.ApplyResources(Me.m_nudNoThreads, "m_nudNoThreads")
+        Me.m_nudNoThreads.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
+        Me.m_nudNoThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudNoThreads.Name = "m_nudNoThreads"
+        Me.m_nudNoThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'frmRun
         '
@@ -442,9 +460,11 @@ Partial Class frmRun
         Me.m_plSettings.ResumeLayout(False)
         Me.m_plSettings.PerformLayout()
         CType(Me.m_nudK, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudNoThreads, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
+
     Private WithEvents m_lblModel As System.Windows.Forms.Label
     Private WithEvents m_tbxModel As System.Windows.Forms.TextBox
     Private WithEvents m_btnSelectModel As System.Windows.Forms.Button
@@ -484,11 +504,13 @@ Partial Class frmRun
     Private WithEvents m_btnSelectBaseline As System.Windows.Forms.Button
     Private WithEvents m_btnSelectFishing As System.Windows.Forms.Button
     Private WithEvents m_cmbAnomalyShape As System.Windows.Forms.ComboBox
-    Friend WithEvents m_lblAnomalyShape As System.Windows.Forms.Label
+    Private WithEvents m_lblAnomalyShape As System.Windows.Forms.Label
     Private WithEvents m_plSettings As System.Windows.Forms.Panel
     Private WithEvents m_nudK As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNumVars As System.Windows.Forms.Label
     Private WithEvents m_btnExport As System.Windows.Forms.Button
     Private WithEvents m_btnResetFolder As System.Windows.Forms.Button
     Private WithEvents m_btnStop As System.Windows.Forms.Button
+    Private WithEvents m_lblNoRuns As System.Windows.Forms.Label
+    Private WithEvents m_nudNoThreads As System.Windows.Forms.NumericUpDown
 End Class

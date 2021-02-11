@@ -38,67 +38,67 @@ Public Class cEcosimOutput
     ''' <summary>
     ''' Get/set the fishing in-balance (FIB) index.
     ''' </summary>
-    Public ReadOnly Property FIB(ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property FIB(iTimeStep As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.FIB, iTimeStep))
+            Return CSng(Me.GetVariable(eVarNameFlags.FIB, iTimeStep))
         End Get
     End Property
 
-    Public ReadOnly Property FIBStatus(ByVal iTimeStep As Integer) As eStatusFlags
+    Public ReadOnly Property FIBStatus(iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.FIB, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.FIB, iTimeStep)
         End Get
     End Property
 
-    Public ReadOnly Property TLCatch(ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property TLCatch(iTimeStep As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.TLCatch, iTimeStep))
+            Return CSng(Me.GetVariable(eVarNameFlags.TLCatch, iTimeStep))
         End Get
     End Property
 
-    Public ReadOnly Property TLCatchStatus(ByVal iTimeStep As Integer) As eStatusFlags
+    Public ReadOnly Property TLCatchStatus(iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.TLCatch, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.TLCatch, iTimeStep)
         End Get
     End Property
 
-    Public ReadOnly Property TotalCatch(ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property TotalCatch(iTimeStep As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.TotalCatch, iTimeStep))
+            Return CSng(Me.GetVariable(eVarNameFlags.TotalCatch, iTimeStep))
         End Get
     End Property
 
-    Public ReadOnly Property TotalCatchStatus(ByVal iTimeStep As Integer) As eStatusFlags
+    Public ReadOnly Property TotalCatchStatus(iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.TotalCatch, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.TotalCatch, iTimeStep)
         End Get
     End Property
 
-    Public ReadOnly Property KemptonsQ(ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property KemptonsQ(iTimeStep As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.KemptonsQ, iTimeStep))
+            Return CSng(Me.GetVariable(eVarNameFlags.KemptonsQ, iTimeStep))
         End Get
     End Property
 
-    Public ReadOnly Property KemptonsQStatus(ByVal iTimeStep As Integer) As eStatusFlags
+    Public ReadOnly Property KemptonsQStatus(iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.KemptonsQ, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.KemptonsQ, iTimeStep)
         End Get
     End Property
 
-    Public ReadOnly Property ShannonDiversity(ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property ShannonDiversity(iTimeStep As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.ShannonDiversity, iTimeStep))
+            Return CSng(Me.GetVariable(eVarNameFlags.ShannonDiversity, iTimeStep))
         End Get
     End Property
 
-    Public ReadOnly Property ShannonDiversityStatus(ByVal iTimeStep As Integer) As eStatusFlags
+    Public ReadOnly Property ShannonDiversityStatus(iTimeStep As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.ShannonDiversity, iTimeStep)
+            Return Me.GetStatus(eVarNameFlags.ShannonDiversity, iTimeStep)
         End Get
     End Property
 
-    Public ReadOnly Property DiversityIndex(ByVal iTimeStep As Integer) As Single
+    Public ReadOnly Property DiversityIndex(iTimeStep As Integer) As Single
         Get
             Select Case Me.m_core.m_EcoPathData.DiversityIndexType
                 Case eDiversityIndexType.Shannon
@@ -112,7 +112,7 @@ Public Class cEcosimOutput
         End Get
     End Property
 
-    Public ReadOnly Property DiversityIndexStatus(ByVal iTimeStep As Integer) As eStatusFlags
+    Public ReadOnly Property DiversityIndexStatus(iTimeStep As Integer) As eStatusFlags
         Get
             Select Case Me.m_core.m_EcoPathData.DiversityIndexType
                 Case eDiversityIndexType.Shannon
@@ -127,10 +127,10 @@ Public Class cEcosimOutput
     End Property
 
 
-    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags,
-                                          Optional ByVal iIndex As Integer = -9999,
-                                          Optional ByVal iIndex2 As Integer = -9999,
-                                          Optional ByVal iIndex3 As Integer = -9999) As Object
+    Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags,
+                                          Optional iIndex As Integer = -9999,
+                                          Optional iIndex2 As Integer = -9999,
+                                          Optional iIndex3 As Integer = -9999) As Object
 
         Try
 
@@ -156,7 +156,7 @@ Public Class cEcosimOutput
 
     End Function
 
-    Public Overrides Function GetStatus(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags
+    Public Overrides Function GetStatus(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As eStatusFlags
         Return eStatusFlags.NotEditable And eStatusFlags.ValueComputed
     End Function
 

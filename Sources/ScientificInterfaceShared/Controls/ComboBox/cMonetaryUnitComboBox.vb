@@ -50,7 +50,7 @@ Namespace Controls
             ''' <param name="m_strISOSymbol"></param>
             ''' <param name="strDescription"></param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal m_strISOSymbol As String, ByVal strDescription As String)
+            Public Sub New(m_strISOSymbol As String, strDescription As String)
                 Me.ISOSymbol = m_strISOSymbol
                 Me.m_strDescription = strDescription
             End Sub
@@ -81,7 +81,7 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
                 Me.Populate()
             End Set
@@ -122,7 +122,7 @@ Namespace Controls
                     Return Me.Text
                 End If
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Dim i As Integer = Me.GetUnitIndex(value)
                 If (i < 0) Then
                     Me.Text = value
@@ -132,7 +132,7 @@ Namespace Controls
             End Set
         End Property
 
-        Public Function GetUnitIndex(ByVal strUnit As String) As Integer
+        Public Function GetUnitIndex(strUnit As String) As Integer
             For iItem As Integer = 0 To Me.Items.Count - 1
                 If TypeOf Me.Items(iItem) Is MonetaryUnitItem Then
                     If DirectCast(Me.Items(iItem), MonetaryUnitItem).ISOSymbol = strUnit Then

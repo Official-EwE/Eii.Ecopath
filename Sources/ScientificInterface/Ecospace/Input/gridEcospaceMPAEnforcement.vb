@@ -88,7 +88,7 @@ Namespace Ecospace
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            Me.Redim(1 + Core.nFleets, 3 + Me.Core.nMPAs)
+            Me.Redim(1 + Me.Core.nFleets, 3 + Me.Core.nMPAs)
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
             Me(0, eColumnTypes.All) = New cEwEColumnHeaderCell(My.Resources.HEADER_ALL_REGULATIONS_APPLY)
@@ -181,7 +181,7 @@ Namespace Ecospace
             Handles m_bpEffort.PropertyChanged
 
             Try
-                BeginInvoke(New MethodInvoker(AddressOf RefreshContent))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.RefreshContent))
             Catch ex As Exception
 
             End Try

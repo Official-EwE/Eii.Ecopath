@@ -52,7 +52,7 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="NetworkAnalysisData">The data that is available.</param>
         ''' -----------------------------------------------------------------------
-        Public Event onNetworkAnalysisData(ByVal NetworkAnalysisData As INetworkAnalysisData)
+        Public Event onNetworkAnalysisData(NetworkAnalysisData As INetworkAnalysisData)
 
 #End Region ' Public events
 
@@ -107,12 +107,12 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="runtype"></param>
         ''' -----------------------------------------------------------------------
-        Public Property EnableData(ByVal runtype As IRunType) As Boolean _
+        Public Property EnableData(runtype As IRunType) As Boolean _
             Implements IExternalDataSource.EnableData
             Get
                 Return s_core.PluginManager.EnableData(GetType(INetworkAnalysisData), runtype)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 s_core.PluginManager.EnableData(GetType(INetworkAnalysisData), runtype) = value
             End Set
         End Property
@@ -124,7 +124,7 @@ Namespace ExternalData
         ''' <param name="runtype">The core run type to check availability for.</param>
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function IsDataAvailable(ByVal runtype As EwEUtils.Core.IRunType) As Boolean _
+        Public Function IsDataAvailable(runtype As EwEUtils.Core.IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
             Return s_core.PluginManager.IsDataAvailable(GetType(IEconomicData), runtype)
         End Function
@@ -133,7 +133,7 @@ Namespace ExternalData
 
 #Region " Private methods "
 
-        Private Sub FireonNetworkAnalysisData(ByVal data As INetworkAnalysisData)
+        Private Sub FireonNetworkAnalysisData(data As INetworkAnalysisData)
             Try
                 RaiseEvent onNetworkAnalysisData(data)
             Catch ex As Exception
@@ -151,7 +151,7 @@ Namespace ExternalData
 
 #Region " IDataConsumerPlugin implementation "
 
-        Public Function ReceiveData(ByVal strDataName As String, ByVal data As EwEPlugin.Data.IPluginData) As Boolean _
+        Public Function ReceiveData(strDataName As String, data As EwEPlugin.Data.IPluginData) As Boolean _
             Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
 
             Try
@@ -187,7 +187,7 @@ Namespace ExternalData
             End Get
         End Property
 
-        Public Sub Initialize(ByVal core As Object) _
+        Public Sub Initialize(core As Object) _
             Implements EwEPlugin.IPlugin.Initialize
             cNetworkAnalysisDataSource.s_core = DirectCast(core, cCore)
         End Sub

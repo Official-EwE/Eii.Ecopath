@@ -37,7 +37,7 @@ Public Interface IEcospacePlugin
     ''' <remarks>This plugin point is non-exclusive; each implementation 
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub LoadEcospaceScenario(ByVal dataSource As Object)
+    Sub LoadEcospaceScenario(dataSource As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -49,7 +49,7 @@ Public Interface IEcospacePlugin
     ''' <remarks>This plugin point is non-exclusive; each implementation 
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
-    Sub SaveEcospaceScenario(ByVal dataSource As Object)
+    Sub SaveEcospaceScenario(dataSource As Object)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

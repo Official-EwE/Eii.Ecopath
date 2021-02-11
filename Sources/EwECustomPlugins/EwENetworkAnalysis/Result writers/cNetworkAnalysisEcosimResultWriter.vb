@@ -108,11 +108,11 @@ Public Class cNetworkAnalysisEcosimResultWriter
     ''' </summary>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal manager As cNetworkManager)
+    Public Sub New(manager As cNetworkManager)
         MyBase.New(manager)
     End Sub
 
-    Public Overrides Function WriteResults(ByVal strPath As String) As Boolean
+    Public Overrides Function WriteResults(strPath As String) As Boolean
 
         If Not Me.Manager.IsEcosimNetworkRun Then
             Return False
@@ -130,21 +130,21 @@ Public Class cNetworkAnalysisEcosimResultWriter
 
 #Region " Internals "
 
-    Private Function WriteIndicesWithoutPPR(ByVal strPath As String) As Boolean
+    Private Function WriteIndicesWithoutPPR(strPath As String) As Boolean
 
         Return Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, False, True), Me.GetIndicesWithoutPPRData(True)) And
                Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, False, False), Me.GetIndicesWithoutPPRData(False))
 
     End Function
 
-    Private Function WriteIndicesWithPPR(ByVal strPath As String) As Boolean
+    Private Function WriteIndicesWithPPR(strPath As String) As Boolean
 
         Return Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, True, True), Me.GetIndicesWithPPRData(True)) And
                Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, True, False), Me.GetIndicesWithPPRData(False))
 
     End Function
 
-    Private Function GetNAIndicatorsFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
+    Private Function GetNAIndicatorsFileName(strPath As String, bWithPPR As Boolean, bAnnual As Boolean) As String
         Dim strFile As String = "NA_" &
                                 If(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY) & "_" &
                                 If(bWithPPR, "IndicesPPR", "IndicesWithoutPPR") &
@@ -152,7 +152,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
         Return Path.Combine(strPath, strFile)
     End Function
 
-    Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
+    Private Function GetIndicesWithoutPPRData(bAnnualAverage As Boolean) As String
 
         Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
         Dim iNumCols As Integer = cols.Length - 3 ' Exclude PPR columns
@@ -269,7 +269,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
         Return sb.ToString()
     End Function
 
-    Private Function GetIndicesWithPPRData(ByVal bAnnualAverage As Boolean) As String
+    Private Function GetIndicesWithPPRData(bAnnualAverage As Boolean) As String
 
         Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
         Dim iNumCols As Integer = cols.Length ' Include PPR columns

@@ -39,7 +39,7 @@ Public Class cTrapezoidShapeFunction
     ''' Returns the points for a trapezoid shape.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
+    Public Overrides Function Shape(nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
             Dim LeftBot As Single = Me.LeftBottom
@@ -48,7 +48,7 @@ Public Class cTrapezoidShapeFunction
             Dim RightTop As Single = Me.RightTop
 
             Dim xpt As Single
-            Dim width As Single = RightBottom - LeftBottom
+            Dim width As Single = Me.RightBottom - Me.LeftBottom
             Dim x0 As Single = LeftBot
             Dim dx As Single = width / nPoints
 
@@ -233,10 +233,10 @@ Public Class cTrapezoidShapeFunction
         'In this case we are interpolating the number of data points Xvalue is along the line
         'x0 and x1 are the first and last values of the x axis
         '0 and TotalNPoints are the number of data points/array indexes
-        Return CInt(LinearInterp(Xvalue, x0, x1, 0, TotalNPoints))
+        Return CInt(Me.LinearInterp(Xvalue, x0, x1, 0, TotalNPoints))
     End Function
 
-    Private Function LinearInterp(ByVal x As Single, x0 As Single, x1 As Single, y0 As Single, y1 As Single) As Single
+    Private Function LinearInterp(x As Single, x0 As Single, x1 As Single, y0 As Single, y1 As Single) As Single
         If ((x1 - x0) = 0) Then
             'mid point on the y axis
             Return (y0 + y1) / 2.0F

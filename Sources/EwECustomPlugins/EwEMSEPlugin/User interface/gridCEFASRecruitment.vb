@@ -71,8 +71,8 @@ Public Class gridCEFASRecruitment
 
     End Sub
 
-    Public Sub Init(ByVal StockAssessmentModel As cStockAssessmentModel)
-        m_Assessment = StockAssessmentModel
+    Public Sub Init(StockAssessmentModel As cStockAssessmentModel)
+        Me.m_Assessment = StockAssessmentModel
     End Sub
 
 #End Region ' Constructor
@@ -93,7 +93,7 @@ Public Class gridCEFASRecruitment
             Return Nothing
 
         End Get
-        Set(ByVal value As cStockAssessmentParameters)
+        Set(value As cStockAssessmentParameters)
             Me.Selection.Clear()
             If value IsNot Nothing Then
                 Me.Selection.Add(New Position(value.iGroupIndex, 0))
@@ -132,7 +132,7 @@ Public Class gridCEFASRecruitment
         Dim style As cStyleGuide.eStyleFlags
 
         ' For each group
-        For iGroup As Integer = 1 To Core.nLivingGroups
+        For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
             'Get the group info!!!!
             group = Me.m_Assessment.Parameter(iGroup)
@@ -190,7 +190,7 @@ Public Class gridCEFASRecruitment
 
     Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-        If Rows(p.Row).Tag Is Nothing Then
+        If Me.Rows(p.Row).Tag Is Nothing Then
             'No Group in this row
             Return True
         End If
@@ -201,7 +201,7 @@ Public Class gridCEFASRecruitment
             'forces the model to init to the new value
             'and redraws the interface
             'so only update if the value is actually new 
-            Dim param As cStockAssessmentParameters = DirectCast(Rows(p.Row).Tag, cStockAssessmentParameters)
+            Dim param As cStockAssessmentParameters = DirectCast(Me.Rows(p.Row).Tag, cStockAssessmentParameters)
             Dim newValue As Single = CSng(cell.GetValue(p))
 
             Select Case p.Column

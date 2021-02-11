@@ -34,7 +34,7 @@ Public Class cResultsCollector_RealisedLandedFs_Yearly
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return m_MSE.NYearsProject
+            Return Me.m_MSE.NYearsProject
         End Get
     End Property
 
@@ -42,7 +42,7 @@ Public Class cResultsCollector_RealisedLandedFs_Yearly
         Get
             Dim TempTotalGroupRealisedF As Double = 0
             For iMonth = 1 To 12
-                TempTotalGroupRealisedF += m_MSE.RealisedLandedFs(iGrp, (iTime - 1) * 12 + iMonth)
+                TempTotalGroupRealisedF += Me.m_MSE.RealisedLandedFs(iGrp, (iTime - 1) * 12 + iMonth)
             Next
             TempTotalGroupRealisedF /= 12
             Return TempTotalGroupRealisedF

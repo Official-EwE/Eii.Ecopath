@@ -51,7 +51,7 @@ Public Class cConverterPickedArgs
     ''' </summary>
     ''' <param name="cv">The selected <see cref="ISpatialDataConverter"/>.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub New(ByVal cv As ISpatialDataConverter, ByVal tag As Object)
+    Friend Sub New(cv As ISpatialDataConverter, tag As Object)
         Me.m_converter = cv
         Me.m_tag = tag
     End Sub
@@ -118,7 +118,7 @@ Public Class cConverterPicker
     ''' <param name="sender">The source of the event.</param>
     ''' <param name="args">Yippee.</param>
     ''' -----------------------------------------------------------------------
-    Public Event OnPicked(ByVal sender As Object, ByVal args As cConverterPickedArgs)
+    Public Event OnPicked(sender As Object, args As cConverterPickedArgs)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -126,7 +126,7 @@ Public Class cConverterPicker
     ''' </summary>
     ''' <param name="uic"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
         Me.m_cmsData = New ContextMenuStrip()
         Me.m_man = uic.Core.SpatialDataConnectionManager
         Me.m_uic = uic
@@ -140,9 +140,9 @@ Public Class cConverterPicker
     ''' <param name="dataset">The <see cref="ISpatialDataSet"/> to pick a <see cref="ISpatialDataConverter"/> for.</param>
     ''' <param name="converterCurrent">The currently selected <see cref="ISpatialDataConverter"/>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(ByVal control As Control, _
-                    ByVal dataset As ISpatialDataSet, _
-                    ByVal converterCurrent As ISpatialDataConverter, _
+    Public Sub Pick(control As Control, _
+                    dataset As ISpatialDataSet, _
+                    converterCurrent As ISpatialDataConverter, _
                     Optional tag As Object = Nothing)
 
         Me.BuildMenu(dataset, converterCurrent)
@@ -159,9 +159,9 @@ Public Class cConverterPicker
     ''' <param name="dataset">The <see cref="ISpatialDataSet"/> to pick a <see cref="ISpatialDataConverter"/> for.</param>
     ''' <param name="converterCurrent">The currently selected <see cref="ISpatialDataConverter"/>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(ByVal pt As Point, _
-                    ByVal dataset As ISpatialDataSet, _
-                    ByVal converterCurrent As ISpatialDataConverter, _
+    Public Sub Pick(pt As Point, _
+                    dataset As ISpatialDataSet, _
+                    converterCurrent As ISpatialDataConverter, _
                     Optional tag As Object = Nothing)
 
         Me.BuildMenu(dataset, converterCurrent)
@@ -172,8 +172,8 @@ Public Class cConverterPicker
 
 #Region " Internals "
 
-    Private Sub BuildMenu(ByVal dataset As ISpatialDataSet, _
-                          ByVal converterCurrent As ISpatialDataConverter)
+    Private Sub BuildMenu(dataset As ISpatialDataSet, _
+                          converterCurrent As ISpatialDataConverter)
 
         Dim tsi As ToolStripMenuItem = Nothing
         Dim iNumAdded As Integer = 0
@@ -183,7 +183,7 @@ Public Class cConverterPicker
 
         Array.Sort(templates, New cConverterSorter())
         For Each conv As ISpatialDataConverter In templates
-            tsi = New ToolStripMenuItem("", Nothing, AddressOf OnUseConverter)
+            tsi = New ToolStripMenuItem("", Nothing, AddressOf Me.OnUseConverter)
 
             If (converterCurrent IsNot Nothing) Then
                 If (conv.GetType().Equals(converterCurrent.GetType())) Then
@@ -213,7 +213,7 @@ Public Class cConverterPicker
     ''' Event handler, called in response to a converter selection.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnUseDefault(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OnUseDefault(sender As System.Object, e As System.EventArgs)
         Me.ConverterPicked(Nothing)
     End Sub
 
@@ -246,7 +246,7 @@ Public Class cConverterPicker
     ''' <param name="strTitle">The title to provide.</param>
     ''' <returns>True if successfully configured.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function Configure(ByVal cfg As IConfigurable, ByVal strTitle As String) As Boolean
+    Private Function Configure(cfg As IConfigurable, strTitle As String) As Boolean
 
         Try
             Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)

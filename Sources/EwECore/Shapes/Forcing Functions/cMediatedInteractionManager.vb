@@ -37,7 +37,7 @@ Public Class cMediatedInteractionManager
 
 #Region "Private functions"
 
-    Friend Function getHashKey(ByVal iIndex1 As Integer, ByVal iIndex2 As Integer) As String
+    Friend Function getHashKey(iIndex1 As Integer, iIndex2 As Integer) As String
         Return iIndex1.ToString & "_" & iIndex2.ToString
     End Function
 
@@ -47,12 +47,12 @@ Public Class cMediatedInteractionManager
 
     Friend Sub New(ByRef EcoPathData As cEcopathDataStructures, ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore)
 
-        m_EPData = EcoPathData
-        m_ESData = EcoSimData
-        m_core = theCore
+        Me.m_EPData = EcoPathData
+        Me.m_ESData = EcoSimData
+        Me.m_core = theCore
 
-        Init()
-        Load()
+        Me.Init()
+        Me.Load()
 
     End Sub
 
@@ -66,12 +66,12 @@ Public Class cMediatedInteractionManager
                                                                            eForcingFunctionApplication.ProductionRate, eForcingFunctionApplication.SearchRate,
                                                                            eForcingFunctionApplication.VulAndArea, eForcingFunctionApplication.Vulnerability, eForcingFunctionApplication.ArenaArea})
 
-        For ipred As Integer = 1 To m_EPData.NumGroups
-            For iprey As Integer = 1 To m_EPData.NumGroups
+        For ipred As Integer = 1 To Me.m_EPData.NumGroups
+            For iprey As Integer = 1 To Me.m_EPData.NumGroups
 
                 If Me.isPredPrey(ipred, iprey) Then
                     Dim interaction As New cPredPreyInteraction(ipred, iprey, Me, lstPredPreyApTypes)
-                    Me.m_interactionsPredPrey.Add(getHashKey(ipred, iprey), interaction)
+                    Me.m_interactionsPredPrey.Add(Me.getHashKey(ipred, iprey), interaction)
                 End If
 
             Next iprey
@@ -79,23 +79,23 @@ Public Class cMediatedInteractionManager
 
 
         Dim lstLandingApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.OffVesselPrice})
-        For iFleet As Integer = 1 To m_EPData.NumFleet
+        For iFleet As Integer = 1 To Me.m_EPData.NumFleet
             For iGroup As Integer = 1 To Me.m_EPData.NumGroups
 
                 If Me.isLandings(iFleet, iGroup) Then
                     Dim interaction As New cLandingsInteraction(iFleet, iGroup, Me, lstLandingApTypes)
-                    Me.m_interactionsLandings.Add(getHashKey(iFleet, iGroup), interaction)
+                    Me.m_interactionsLandings.Add(Me.getHashKey(iFleet, iGroup), interaction)
                 End If
 
             Next
         Next
 
         Dim lstMortApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.MortOther})
-        For ipred As Integer = 1 To m_EPData.NumLiving
+        For ipred As Integer = 1 To Me.m_EPData.NumLiving
 
             'Stored Group x Group
             Dim interaction As New cPredPreyInteraction(ipred, ipred, Me, lstMortApTypes)
-            Me.m_interactionGroup.Add(getHashKey(ipred, ipred), interaction)
+            Me.m_interactionGroup.Add(Me.getHashKey(ipred, ipred), interaction)
 
         Next ipred
 
@@ -143,16 +143,16 @@ Public Class cMediatedInteractionManager
 
 #Region "Public Properties"
 
-    Public ReadOnly Property isPredPrey(ByVal PredIndex As Integer, ByVal PreyIndex As Integer) As Boolean
+    Public ReadOnly Property isPredPrey(PredIndex As Integer, PreyIndex As Integer) As Boolean
         Get
             Try
                 'True for primary producer pairs
-                If (PredIndex = PreyIndex) And m_EPData.PP(PreyIndex) = 1 Then
+                If (PredIndex = PreyIndex) And Me.m_EPData.PP(PreyIndex) = 1 Then
                     Return True
                 End If
 
                 'Detritus Groups
-                If (PredIndex > m_EPData.NumLiving) Then
+                If (PredIndex > Me.m_EPData.NumLiving) Then
                     If PredIndex = PreyIndex Then
                         'this is the detritus diagonal that appears in the grids
                         Return True
@@ -163,7 +163,7 @@ Public Class cMediatedInteractionManager
                 End If
 
                 ' Return whether there is a predation interaction
-                Return (m_EPData.DC(PredIndex, PreyIndex) > 0)
+                Return (Me.m_EPData.DC(PredIndex, PreyIndex) > 0)
 
             Catch ex As Exception
                 Return False
@@ -172,11 +172,11 @@ Public Class cMediatedInteractionManager
         End Get
     End Property
 
-    Public ReadOnly Property PredPreyInteraction(ByVal PredIndex As Integer, ByVal PreyIndex As Integer) As cPredPreyInteraction
+    Public ReadOnly Property PredPreyInteraction(PredIndex As Integer, PreyIndex As Integer) As cPredPreyInteraction
         Get
             Try
-                Dim key As String = getHashKey(PredIndex, PreyIndex)
-                If m_interactionsPredPrey.ContainsKey(key) Then
+                Dim key As String = Me.getHashKey(PredIndex, PreyIndex)
+                If Me.m_interactionsPredPrey.ContainsKey(key) Then
                     Return Me.m_interactionsPredPrey.Item(key)
                 Else
                     Return Nothing
@@ -191,10 +191,10 @@ Public Class cMediatedInteractionManager
 
 
 
-    Public ReadOnly Property GroupInteraction(ByVal PredIndex As Integer) As cPredPreyInteraction
+    Public ReadOnly Property GroupInteraction(PredIndex As Integer) As cPredPreyInteraction
         Get
             Try
-                Dim key As String = getHashKey(PredIndex, PredIndex)
+                Dim key As String = Me.getHashKey(PredIndex, PredIndex)
                 If Me.m_interactionGroup.ContainsKey(key) Then
                     Return Me.m_interactionGroup.Item(key)
                 Else
@@ -208,7 +208,7 @@ Public Class cMediatedInteractionManager
     End Property
 
 
-    Public ReadOnly Property isLandings(ByVal iFleet As Integer, ByVal iGroup As Integer) As Boolean
+    Public ReadOnly Property isLandings(iFleet As Integer, iGroup As Integer) As Boolean
         Get
             Try
                 Return (Me.m_EPData.Landing(iFleet, iGroup) > 0)
@@ -218,11 +218,11 @@ Public Class cMediatedInteractionManager
         End Get
     End Property
 
-    Public ReadOnly Property LandingInteraction(ByVal iFleet As Integer, ByVal iGroup As Integer) As cLandingsInteraction
+    Public ReadOnly Property LandingInteraction(iFleet As Integer, iGroup As Integer) As cLandingsInteraction
         Get
             Try
-                Dim key As String = getHashKey(iFleet, iGroup)
-                If m_interactionsLandings.ContainsKey(key) Then
+                Dim key As String = Me.getHashKey(iFleet, iGroup)
+                If Me.m_interactionsLandings.ContainsKey(key) Then
                     Return Me.m_interactionsLandings.Item(key)
                 Else
                     Return Nothing
@@ -250,15 +250,15 @@ Public Class cMediatedInteractionManager
 #Region "Friend functions "
 
     Friend Function getEcoPathData() As cEcopathDataStructures
-        Return m_EPData
+        Return Me.m_EPData
     End Function
 
     Friend Function getEcoSimData() As cEcosimDatastructures
-        Return m_ESData
+        Return Me.m_ESData
     End Function
 
     Friend Function getCore() As cCore
-        Return m_core
+        Return Me.m_core
     End Function
 
 #End Region

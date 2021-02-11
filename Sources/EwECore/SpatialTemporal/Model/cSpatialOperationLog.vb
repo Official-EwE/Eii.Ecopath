@@ -76,14 +76,14 @@ Namespace SpatialData
         Public Sub New(core As cCore)
 
             Me.m_core = core
-            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
 
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
 
             If (Me.m_core IsNot Nothing) Then
-                RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+                RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
                 Me.m_core = Nothing
             End If
             GC.SuppressFinalize(Me)
@@ -113,7 +113,7 @@ Namespace SpatialData
         ''' <param name="dt">The absolute time represented by this time step.</param>
         ''' <param name="layer">The layer that is being processed.</param>
         ''' -------------------------------------------------------------------
-        Friend Sub BeginLayerLog(ByVal timestep As Integer, ByVal dt As DateTime, varname As eVarNameFlags, ByVal layer As cEcospaceLayer)
+        Friend Sub BeginLayerLog(timestep As Integer, dt As DateTime, varname As eVarNameFlags, layer As cEcospaceLayer)
 
             If (Me.m_msgCurrent IsNot Nothing) Then
                 Me.EndLayerLog()

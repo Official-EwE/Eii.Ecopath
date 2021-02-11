@@ -57,7 +57,7 @@ Friend Class cRemarksGrid
 
 #Region " Public access "
 
-    Public Sub SetData(ByVal data() As cProperty)
+    Public Sub SetData(data() As cProperty)
 
         Me.m_data = data
         Me.FillData()

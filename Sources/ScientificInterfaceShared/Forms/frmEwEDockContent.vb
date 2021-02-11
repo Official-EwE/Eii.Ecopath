@@ -180,7 +180,7 @@ Namespace Forms
                     Me.m_timerPulse.Interval = 500
                     Me.m_timerPulse.Start()
 
-                    AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+                    AddHandler Me.m_timerPulse.Tick, AddressOf Me.OnPulseIcon
                 End If
 
                 Me.m_iNumPulses = iNumPulses * 2
@@ -278,7 +278,7 @@ Namespace Forms
             If (Me.m_timerPulse Is Nothing) Then Return
 
             ' Stop timer
-            RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+            RemoveHandler Me.m_timerPulse.Tick, AddressOf Me.OnPulseIcon
             Me.m_timerPulse.Stop()
             Me.m_timerPulse.Dispose()
             Me.m_timerPulse = Nothing

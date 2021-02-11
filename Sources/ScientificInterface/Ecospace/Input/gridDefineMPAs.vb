@@ -186,7 +186,7 @@ Namespace Ecospace
 
             ' Populate rows
             For iRow As Integer = 1 To Me.m_engine.Items.Count
-                UpdateRow(iRow)
+                Me.UpdateRow(iRow)
             Next iRow
 
             Me.StretchColumnsToFitWidth()
@@ -199,7 +199,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow">The index of the row to refresh.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateRow(ByVal iRow As Integer)
+        Private Sub UpdateRow(iRow As Integer)
 
             Dim item As cItemInfo = Me.m_engine.Items(iRow - iFIRSTMPAROW)
 
@@ -227,7 +227,7 @@ Namespace Ecospace
         ''' just edited for text and combo box controls. *sigh*
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If Not Me.AllowUpdates Then Return True
 
@@ -281,7 +281,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsMPARow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsMPARow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (iRow >= iFIRSTMPAROW) And (iRow < Me.RowsCount)
         End Function
@@ -289,9 +289,9 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether the MPA on a row is flagged for deletion.
         ''' </summary>
-        Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsMPARow(iRow) Then Return False
+            If Not Me.IsMPARow(iRow) Then Return False
 
             Dim iMPA As Integer = iRow - iFIRSTMPAROW
             Dim item As cItemInfo = Me.m_engine.Items(iMPA)
@@ -338,7 +338,7 @@ Namespace Ecospace
             If (rows.Count = 0) Then Return
 
             For i As Integer = 0 To rows.Count - 1
-                Dim bCanMove As Boolean = CanMoveRowUp(rows(i))
+                Dim bCanMove As Boolean = Me.CanMoveRowUp(rows(i))
                 If (i > 0) Then
                     bCanMove = bCanMove And (rows(i) - 1 > rows(i - 1))
                 End If
@@ -357,13 +357,13 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether row(s) can be moved up.
         ''' </summary>
-        Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanMoveRowUp(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then
                 Dim rows As New List(Of Integer)
                 rows.AddRange(Me.SelectedRows())
                 rows.Sort()
                 For i As Integer = 0 To rows.Count - 1
-                    Dim bCanMove As Boolean = CanMoveRowUp(rows(i))
+                    Dim bCanMove As Boolean = Me.CanMoveRowUp(rows(i))
                     If (i > 0) Then
                         bCanMove = bCanMove And (rows(i) - 1 > rows(i - 1))
                     End If
@@ -385,7 +385,7 @@ Namespace Ecospace
             If (rows.Count = 0) Then Return
 
             For i As Integer = rows.Count - 1 To 0 Step -1
-                Dim bCanMove As Boolean = CanMoveRowDown(rows(i))
+                Dim bCanMove As Boolean = Me.CanMoveRowDown(rows(i))
                 If (i < rows.Count - 1) Then
                     bCanMove = bCanMove And (rows(i) + 1 < rows(i + 1))
                 End If
@@ -403,13 +403,13 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether row(s) can be moved down.
         ''' </summary>
-        Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanMoveRowDown(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then
                 Dim rows As New List(Of Integer)
                 rows.AddRange(Me.SelectedRows())
                 rows.Sort()
                 For i As Integer = 0 To rows.Count - 1
-                    Dim bCanMove As Boolean = CanMoveRowDown(rows(i))
+                    Dim bCanMove As Boolean = Me.CanMoveRowDown(rows(i))
                     If (i < rows.Count - 1) Then
                         bCanMove = bCanMove And (rows(i) + 1 < rows(i + 1))
                     End If
@@ -423,7 +423,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Move one row to another position.
         ''' </summary>
-        Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+        Private Sub MoveRow(iFromRow As Integer, iToRow As Integer)
 
             Dim item As cItemInfo = Me.m_engine.Items(iFromRow - iFIRSTMPAROW)
             Me.m_engine.MoveItem(item, iToRow - iFIRSTMPAROW)
@@ -453,7 +453,7 @@ Namespace Ecospace
             Get
                 Return (Me.m_iUpdateLock = 0)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value Then
                     Me.m_iUpdateLock += 1
                 Else
@@ -464,7 +464,7 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal item As cItemInfo)
+        Private Overloads Sub SelectRow(item As cItemInfo)
             For iMPA As Integer = 0 To Me.m_engine.Items.Count - 1
                 If ReferenceEquals(Me.m_engine.Items(iMPA), item) Then
                     Me.SelectRow(iMPA + iFIRSTMPAROW)

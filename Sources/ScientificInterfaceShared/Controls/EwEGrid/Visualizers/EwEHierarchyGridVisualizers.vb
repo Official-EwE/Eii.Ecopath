@@ -42,7 +42,7 @@ Namespace Controls.EwEGrid
             Me.ImageAlignment = ContentAlignment.MiddleCenter
         End Sub
 
-        Public Sub SetCollapsedState(ByVal state As eCollapsedState)
+        Public Sub SetCollapsedState(state As eCollapsedState)
             Select Case state
                 Case eCollapsedState.Collapsed
                     Me.Image = My.Resources.Collapsed

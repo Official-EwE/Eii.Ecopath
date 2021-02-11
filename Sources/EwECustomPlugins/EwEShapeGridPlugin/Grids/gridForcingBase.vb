@@ -162,8 +162,8 @@ Public MustInherit Class gridForcingBase
 
     Dim m_bInLocalEdit As Boolean = False
 
-    Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, _
-                                              ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, _
+                                              cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         ' Encapsulate cell edit in a safety net to prevent grid update loops
         Dim shape As cShapeData = Me.Shape(p.Column)
@@ -182,14 +182,14 @@ Public MustInherit Class gridForcingBase
         Return MyBase.OnCellEdited(p, cell)
     End Function
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, _
-                                                    ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, _
+                                                    cell As SourceGrid2.Cells.ICellVirtual) As Boolean
         Me.OnCellEdited(p, cell)
         Return MyBase.OnCellValueChanged(p, cell)
     End Function
 
-    Protected Overridable Function SafeCellEdit(ByVal p As SourceGrid2.Position, _
-                                              ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overridable Function SafeCellEdit(p As SourceGrid2.Position, _
+                                              cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         Dim shape As cShapeData = Me.Shape(p.Column)
         Select Case DirectCast(p.Row, eRowType)
@@ -207,7 +207,7 @@ Public MustInherit Class gridForcingBase
 
 #Region " Updates "
 
-    Protected Overrides Sub OnRefreshed(ByVal sender As cShapeGUIHandler)
+    Protected Overrides Sub OnRefreshed(sender As cShapeGUIHandler)
 
         If Me.IsInBatchEdit Then
             Return
@@ -230,7 +230,7 @@ Public MustInherit Class gridForcingBase
 
 #End Region ' Updates
 
-    Protected Overrides Function Label(ByVal iPoint As Integer) As String
+    Protected Overrides Function Label(iPoint As Integer) As String
 
         Dim iMonth As Integer = (iPoint Mod 12) + 1
         If Not Me.IsSeasonal And (iMonth = 1) Then

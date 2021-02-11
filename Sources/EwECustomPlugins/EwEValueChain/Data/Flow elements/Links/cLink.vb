@@ -53,12 +53,12 @@ Public Class cLink
     Public Class cStaticUnitConverter
         Inherits TypeConverter
 
-        Public Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesSupported(context As ITypeDescriptorContext) As Boolean
             ' Do not show combo
             Return False
         End Function
 
-        Public Overrides Function GetStandardValuesExclusive(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesExclusive(context As ITypeDescriptorContext) As Boolean
             ' Do not edit combo
             Return True
         End Function
@@ -67,16 +67,16 @@ Public Class cLink
         ''' Override the GetStandardValues method and return a 
         ''' StandardValuesCollection filled with your standard values
         ''' </summary>
-        Public Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
+        Public Overrides Function GetStandardValues(context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
             Return New StandardValuesCollection(Nothing)
         End Function
 
-        Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext, ByVal sourceType As System.Type) As Boolean
+        Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, sourceType As System.Type) As Boolean
             ' Can only convert FROM unit
             Return sourceType Is GetType(cUnit)
         End Function
 
-        Public Overrides Function CanConvertTo(ByVal context As ITypeDescriptorContext, ByVal destinationType As System.Type) As Boolean
+        Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, destinationType As System.Type) As Boolean
             ' Can only convert TO unit name
             Return destinationType Is GetType(String)
         End Function
@@ -84,19 +84,19 @@ Public Class cLink
         ''' <summary>
         ''' Convert unit to unit
         ''' </summary>
-        Public Overrides Function ConvertFrom(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object) As Object
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object) As Object
             Return MyBase.ConvertFrom(context, culture, value)
         End Function
 
         ''' <summary>
         ''' Convert unit to unit name
         ''' </summary>
-        Public Overrides Function ConvertTo(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object, _
-                ByVal destinationType As System.Type) As Object
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object, _
+                destinationType As System.Type) As Object
 
             If TypeOf value Is cUnit Then
                 Return DirectCast(value, cUnit).Name
@@ -139,7 +139,7 @@ Public Class cLink
             End If
             Return Me.m_strName
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.m_strName = value
             Me.SetChanged()
         End Set
@@ -155,7 +155,7 @@ Public Class cLink
         Get
             Return Me.m_source
         End Get
-        Set(ByVal value As cUnit)
+        Set(value As cUnit)
             Debug.Assert(value IsNot Nothing)
             Me.m_source = value
         End Set
@@ -171,7 +171,7 @@ Public Class cLink
         Get
             Return Me.m_target
         End Get
-        Set(ByVal value As cUnit)
+        Set(value As cUnit)
             Debug.Assert(value IsNot Nothing)
             Me.m_target = value
         End Set

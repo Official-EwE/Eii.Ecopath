@@ -86,7 +86,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iItem">The index of the item to get a color for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property ItemColor(ByVal iItem As Integer) As Color
+        ReadOnly Property ItemColor(iItem As Integer) As Color
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -94,7 +94,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iItem">The index of the item to get the name for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property ItemName(ByVal iItem As Integer) As String
+        ReadOnly Property ItemName(iItem As Integer) As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -102,7 +102,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iItem">The index of the item to get the category for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property ItemCategory(ByVal iItem As Integer) As String
+        ReadOnly Property ItemCategory(iItem As Integer) As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -110,7 +110,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iIndex">The index of the item to get the visibility state for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property IsItemVisible(ByVal iIndex As Integer) As Boolean
+        ReadOnly Property IsItemVisible(iIndex As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -118,7 +118,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iItem">The index of the item to get the value for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property Value(ByVal iItem As Integer) As Single
+        ReadOnly Property Value(iItem As Integer) As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -126,7 +126,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="sValue">The value to format.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property ValueLabel(ByVal sValue As Single) As String
+        ReadOnly Property ValueLabel(sValue As Single) As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -135,7 +135,7 @@ Namespace Controls
         ''' <param name="iPred">The index of the predatory source of the link.</param>
         ''' <param name="iPrey">The index of the prey target of the link.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
+        ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -144,7 +144,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iItem">The index of the item to get the rank for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property TrophicLevel(ByVal iItem As Integer) As Single
+        ReadOnly Property TrophicLevel(iItem As Integer) As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>

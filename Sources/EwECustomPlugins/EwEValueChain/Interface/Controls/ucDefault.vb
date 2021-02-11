@@ -35,7 +35,7 @@ Public Class ucDefault
         Get
             Return Me.m_bSelected
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bSelected = value
             Me.Invalidate()
         End Set
@@ -45,7 +45,7 @@ Public Class ucDefault
         Get
             Return Me.m_obj
         End Get
-        Set(ByVal value As cOOPStorable)
+        Set(value As cOOPStorable)
             Me.m_obj = value
             Me.Invalidate()
         End Set
@@ -56,13 +56,13 @@ Public Class ucDefault
         Get
             Return Me.m_uic
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
             If (Me.m_uic IsNot Nothing) Then
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             End If
             Me.m_uic = value
             If (Me.m_uic IsNot Nothing) Then
-                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             End If
         End Set
     End Property
@@ -73,7 +73,7 @@ Public Class ucDefault
         End Get
     End Property
 
-    Protected Overridable Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+    Protected Overridable Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
         ' NOP
     End Sub
 

@@ -26,26 +26,26 @@ Public Class frmSelectParentOnly
     Private Shared theInstance As frmSelectParentOnly
     Public Event FormExited()
 
-    Public Sub New(ByVal i As cSelectionData, ByVal p As cCore)
+    Public Sub New(i As cSelectionData, p As cCore)
         MyBase.New(i, p)
 
         ' This call is required by the Windows Form Designer.
-        InitializeComponent()
+        Me.InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         Me.Width = 380
-        chklstAttached.Hide()
-        btnAttachAll.Hide()
-        btnAttachNone.Hide()
-        btnOk.Left = 280
+        Me.chklstAttached.Hide()
+        Me.btnAttachAll.Hide()
+        Me.btnAttachNone.Hide()
+        Me.btnOk.Left = 280
 
     End Sub
 
-    Public Overrides Sub PopulateAttachedList(ByVal i As String)
+    Public Overrides Sub PopulateAttachedList(i As String)
 
     End Sub
 
-    Public Shared ReadOnly Property GetInstance(ByVal i As cSelectionData, ByVal p As cCore) As frmSelectParentOnly
+    Public Shared ReadOnly Property GetInstance(i As cSelectionData, p As cCore) As frmSelectParentOnly
         Get
             If theInstance Is Nothing Then
                 theInstance = New frmSelectParentOnly(i, p)
@@ -54,7 +54,7 @@ Public Class frmSelectParentOnly
         End Get
     End Property
 
-    Private Sub frmSelectParentOnly_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+    Private Sub frmSelectParentOnly_FormClosed(sender As Object, e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         If frmResults.FireChecked = False Then
             frmResults.NextAction()
         End If

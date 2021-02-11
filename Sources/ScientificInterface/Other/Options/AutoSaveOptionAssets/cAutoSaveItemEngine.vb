@@ -70,7 +70,7 @@ Namespace Other
         ''' </summary>
         ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
             Me.m_lControls = New List(Of ucAutosaveOption)
         End Sub
@@ -162,7 +162,7 @@ Namespace Other
         ''' </summary>
         ''' <param name="strMask">The mask to set.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SetOutputMask(ByVal strMask As String)
+        Public Sub SetOutputMask(strMask As String)
             For Each uc As ucAutosaveOption In Me.m_lControls
                 uc.SetOutputMask(strMask)
             Next
@@ -194,10 +194,10 @@ Namespace Other
         ''' <param name="iIndent">Control indentation.</param>
         ''' <param name="lPlugins">2-dimensional list of autosaving plug-ins.</param>
         ''' -------------------------------------------------------------------
-        Private Sub BuildControlTree(ByVal t As eAutosaveTypes,
-                                     ByVal cbParent As CheckBox,
-                                     ByVal iIndent As Integer,
-                                     ByVal lPlugins() As List(Of IAutoSavePlugin))
+        Private Sub BuildControlTree(t As eAutosaveTypes,
+                                     cbParent As CheckBox,
+                                     iIndent As Integer,
+                                     lPlugins() As List(Of IAutoSavePlugin))
 
             Dim core As cCore = Me.UIContext.Core
             Dim ctrl As ucAutosaveOption = Nothing
@@ -291,7 +291,7 @@ Namespace Other
         ''' <param name="uc">The control to add.</param>
         ''' <param name="parent">The parent checkbox for this control, if any.</param>
         ''' -------------------------------------------------------------------
-        Private Sub Add(ByVal uc As ucAutosaveOption, ByVal parent As CheckBox)
+        Private Sub Add(uc As ucAutosaveOption, parent As CheckBox)
 
             Me.m_pl.Controls.Add(uc)
             uc.Location = New Point(0, (Me.m_pl.Controls.Count - 1) * uc.Height)
@@ -315,9 +315,9 @@ Namespace Other
         ''' <param name="parent"></param>
         ''' <param name="iIndent"></param>
         ''' -------------------------------------------------------------------
-        Private Sub Add(ByVal l As List(Of IAutoSavePlugin),
-                        ByVal parent As CheckBox,
-                        ByVal iIndent As Integer)
+        Private Sub Add(l As List(Of IAutoSavePlugin),
+                        parent As CheckBox,
+                        iIndent As Integer)
 
             Dim api As IAutoSavePlugin() = l.ToArray
             Array.Sort(api, New cPluginSorter())

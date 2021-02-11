@@ -176,7 +176,7 @@ Namespace Ecospace
             ' Populate rows
             If (bEnable) Then
                 For iRow As Integer = 1 To Me.RowsCount - 1
-                    UpdateRow(iRow)
+                    Me.UpdateRow(iRow)
                 Next iRow
             End If
 
@@ -198,7 +198,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow">The index of the row to refresh.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateRow(ByVal iRow As Integer)
+        Private Sub UpdateRow(iRow As Integer)
 
             Dim mpa As cEcospaceMPA = Me.Core.EcospaceMPAs(iRow)
             Dim aCells() As Cells.ICellVirtual = Me.Rows(iRow).GetCells()
@@ -237,7 +237,7 @@ Namespace Ecospace
         ''' makes this method mandatory. We once again apologize for the confusion; )
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If Me.m_bInUpdate Then Return True
 
@@ -270,7 +270,7 @@ Namespace Ecospace
             Handles m_bpEffort.PropertyChanged
 
             Try
-                BeginInvoke(New MethodInvoker(AddressOf RefreshContent))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.RefreshContent))
             Catch ex As Exception
 
             End Try

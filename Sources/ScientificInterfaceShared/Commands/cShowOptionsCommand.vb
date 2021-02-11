@@ -59,7 +59,7 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Const cCOMMAND_NAME As String = "~showoptions~"
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, cCOMMAND_NAME)
         End Sub
 
@@ -67,7 +67,7 @@ Namespace Commands
             Me.Invoke(opt.ToString())
         End Sub
 
-        Public Overloads Sub Invoke(Optional ByVal strVerb As String = "")
+        Public Overloads Sub Invoke(Optional strVerb As String = "")
             ' Set option
             Me.m_strVerb = strVerb
             MyBase.Invoke()

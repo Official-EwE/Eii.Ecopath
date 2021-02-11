@@ -121,6 +121,9 @@
   <data name="m_sep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
+  <data name="m_sep.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_sep.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 318</value>
@@ -136,7 +139,7 @@
     <value>m_sep</value>
   </data>
   <data name="&gt;&gt;m_sep.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sep.Parent" xml:space="preserve">
     <value>$this</value>
@@ -146,6 +149,9 @@
   </data>
   <data name="m_navigator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_navigator.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="m_navigator.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 324</value>
@@ -160,7 +166,7 @@
     <value>m_navigator</value>
   </data>
   <data name="&gt;&gt;m_navigator.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_navigator.Parent" xml:space="preserve">
     <value>$this</value>

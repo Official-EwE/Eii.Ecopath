@@ -79,7 +79,7 @@ Public Class cLinkDefault
         Get
             Return ""
         End Get
-        Set(ByVal strName As String)
+        Set(strName As String)
             '
         End Set
     End Property
@@ -89,7 +89,7 @@ Public Class cLinkDefault
         Get
             Return Me.m_linkType
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_linkType = DirectCast(value, cLinkFactory.eLinkType)
         End Set
     End Property
@@ -104,7 +104,7 @@ Public Class cLinkDefault
         Get
             Return Me.m_sBiomassRatio
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_sBiomassRatio = value
             Me.SetChanged()
         End Set
@@ -120,7 +120,7 @@ Public Class cLinkDefault
         Get
             Return Me.m_sValuePerTon
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_sValuePerTon = value
             Me.SetChanged()
         End Set
@@ -136,7 +136,7 @@ Public Class cLinkDefault
         Get
             Return Me.m_sValueRatio
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_sValueRatio = value
             Me.SetChanged()
         End Set

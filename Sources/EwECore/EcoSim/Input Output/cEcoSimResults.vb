@@ -93,12 +93,12 @@ Public Class cEcoSimResults
     ''' Is there stock recruitment data for Multi stanza , Life stage pair
     ''' </summary>
     ''' <remarks></remarks>
-    Public Property hasSRData(ByVal iMulitStanzaGroup As Integer, ByVal iLifeStage As Integer) As Boolean
+    Public Property hasSRData(iMulitStanzaGroup As Integer, iLifeStage As Integer) As Boolean
         Get
-            Return m_hasSRData(iMulitStanzaGroup, iLifeStage)
+            Return Me.m_hasSRData(iMulitStanzaGroup, iLifeStage)
         End Get
-        Set(ByVal value As Boolean)
-            m_hasSRData(iMulitStanzaGroup, iLifeStage) = value
+        Set(value As Boolean)
+            Me.m_hasSRData(iMulitStanzaGroup, iLifeStage) = value
         End Set
     End Property
 
@@ -108,45 +108,45 @@ Public Class cEcoSimResults
     ''' </summary>
     Public Property hasSRData() As Boolean
         Get
-            Return m_hasData
+            Return Me.m_hasData
         End Get
-        Set(ByVal value As Boolean)
-            m_hasData = value
+        Set(value As Boolean)
+            Me.m_hasData = value
         End Set
     End Property
 
-    Public Sub New(ByVal nGroups As Integer, ByVal nStanzas As Integer, ByVal nMaxLifeStages As Integer, ByVal nFleets As Integer)
+    Public Sub New(nGroups As Integer, nStanzas As Integer, nMaxLifeStages As Integer, nFleets As Integer)
 
         Me.nGroups = nGroups
         Me.nStanza = nStanzas
         Me.nFleets = nFleets
         Me.nMaxLifeStages = nMaxLifeStages
 
-        ReDim Biomass(nGroups)
-        ReDim Yield(nGroups)
-        ReDim BCatch(nGroups, nFleets)
-        ReDim Landings(nGroups, nFleets)
+        ReDim Me.Biomass(nGroups)
+        ReDim Me.Yield(nGroups)
+        ReDim Me.BCatch(nGroups, nFleets)
+        ReDim Me.Landings(nGroups, nFleets)
 
-        ReDim m_hasSRData(nStanza, nMaxLifeStages)
-        ReDim BStock(nStanza, nMaxLifeStages)
-        ReDim BRecruitment(nStanza, nMaxLifeStages)
-        ReDim Effort(nFleets)
+        ReDim Me.m_hasSRData(Me.nStanza, nMaxLifeStages)
+        ReDim Me.BStock(Me.nStanza, nMaxLifeStages)
+        ReDim Me.BRecruitment(Me.nStanza, nMaxLifeStages)
+        ReDim Me.Effort(nFleets)
 
     End Sub
 
 
     Public Sub clear()
 
-        Array.Clear(Me.Biomass, 0, nGroups)
-        Array.Clear(Me.Yield, 0, nGroups)
+        Array.Clear(Me.Biomass, 0, Me.nGroups)
+        Array.Clear(Me.Yield, 0, Me.nGroups)
 
-        Array.Clear(Me.BCatch, 0, BCatch.Length)
+        Array.Clear(Me.BCatch, 0, Me.BCatch.Length)
 
-        Array.Clear(Me.Landings, 0, Landings.Length)
-        Array.Clear(Me.m_hasSRData, 0, m_hasSRData.Length)
-        Array.Clear(Me.BRecruitment, 0, BRecruitment.Length)
-        Array.Clear(Me.BStock, 0, BStock.Length)
-        Array.Clear(Me.Effort, 0, nFleets)
+        Array.Clear(Me.Landings, 0, Me.Landings.Length)
+        Array.Clear(Me.m_hasSRData, 0, Me.m_hasSRData.Length)
+        Array.Clear(Me.BRecruitment, 0, Me.BRecruitment.Length)
+        Array.Clear(Me.BStock, 0, Me.BStock.Length)
+        Array.Clear(Me.Effort, 0, Me.nFleets)
 
     End Sub
 

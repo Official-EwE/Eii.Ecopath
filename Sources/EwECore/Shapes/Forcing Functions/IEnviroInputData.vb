@@ -31,14 +31,14 @@ Public Interface IEnviroInputData
     ''' <param name="iGroup">Index of the Group that this Response is for</param>
     ''' <param name="iRow">Row of the map</param>
     ''' <param name="iCol">Column of the map</param>
-    Function ResponseFunction(ByVal iGroup As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Single
+    Function ResponseFunction(iGroup As Integer, iRow As Integer, iCol As Integer) As Single
 
     ''' <summary>
     ''' Initialize from the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
     ''' </summary>
     ''' <param name="MediationData">cMediationDataStructures that contains the Response Function (mediation functions) that can be used by this Map</param>
     ''' <param name="SpaceData"></param>
-    Function Init(ByVal MediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean
+    Function Init(MediationData As cMediationDataStructures, SpaceData As cEcospaceDataStructures) As Boolean
 
     ''' <summary>
     ''' Get / set the index of the Response function applied to a Group
@@ -58,7 +58,7 @@ Public Interface IEnviroInputData
     ''' ResponseIndex = IEnviroInputMap.ResponseIndexForGroup(iGroup) 
     ''' </code>
     ''' </remarks>
-    Property ResponseIndexForGroup(ByVal iGroup As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer
+    Property ResponseIndexForGroup(iGroup As Integer, Optional bUpdateMaps As Boolean = True) As Integer
 
     ''' <summary>
     ''' Response function for Ecosim
@@ -66,14 +66,14 @@ Public Interface IEnviroInputData
     ''' <param name="iGroup"></param>
     ''' <param name="iTimeStep"></param>
     ''' <returns></returns>
-    Function ResponseFunction(ByVal iGroup As Integer, iTimeStep As Integer) As Single
+    Function ResponseFunction(iGroup As Integer, iTimeStep As Integer) As Single
 
     ''' <summary>
     ''' Initialize from cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
     ''' </summary>
     ''' <param name="MediationData">cMediationDataStructures that contains the Response Function (mediation functions) that can be used by this environmental driver</param>
     ''' <param name="EcosimData"></param>
-    Function Init(ByVal MediationData As cMediationDataStructures, ByVal EcosimData As cEcosimDatastructures) As Boolean
+    Function Init(MediationData As cMediationDataStructures, EcosimData As cEcosimDatastructures) As Boolean
 
     ''' <summary>
     ''' Max value of the driver
@@ -119,11 +119,10 @@ Public Interface IEnviroInputData
     ''' Set the cMapResponseInteractionManager that this map uses
     ''' </summary>
     ''' <param name="theManager"></param>
-    Sub SetManager(ByVal theManager As IEnvironmentalResponseManager)
+    Sub SetManager(theManager As IEnvironmentalResponseManager)
 
     Property IsCapacityEnabled As Boolean
 
     ReadOnly Property Name As String
-
 
 End Interface

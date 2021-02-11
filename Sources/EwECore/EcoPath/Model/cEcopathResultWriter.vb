@@ -48,7 +48,7 @@ Public Class cEcopathResultWriter
     ''' </summary>
     ''' <param name="core">The core instance to write result for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         Me.m_core = core
         Me.m_data = core.m_EcoPathData
     End Sub

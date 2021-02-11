@@ -58,10 +58,10 @@ Public Class cEcospaceASCMapEffortWriter
         End Get
     End Property
 
-    Protected Overrides Function GetFileName(ByVal varname As eVarNameFlags,
-                                             ByVal iGrp As Integer,
-                                             ByVal strExt As String,
-                                             Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Protected Overrides Function GetFileName(varname As eVarNameFlags,
+                                             iGrp As Integer,
+                                             strExt As String,
+                                             Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
         Return MyBase.GetFleetFileName(varname, iGrp, strExt, iModelTimeStep)
     End Function
 

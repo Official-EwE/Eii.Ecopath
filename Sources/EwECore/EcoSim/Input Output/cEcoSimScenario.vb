@@ -30,7 +30,7 @@ Public Class cEcoSimScenario
 
 #Region "Constructor"
 
-    Sub New(ByVal theCore As cCore)
+    Sub New(theCore As cCore)
         MyBase.New(theCore)
         Me.m_dataType = eDataTypes.EcoSimScenario
         Me.m_ValidationStatus.DataType = Me.m_dataType

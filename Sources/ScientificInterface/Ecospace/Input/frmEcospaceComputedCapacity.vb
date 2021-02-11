@@ -54,7 +54,7 @@ Namespace Ecospace.Basemap
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
                 Me.m_zoomContainer.UIContext = value
             End Set
@@ -64,7 +64,7 @@ Namespace Ecospace.Basemap
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -104,7 +104,7 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             Me.Visible = False
             Me.SelectedLayer = Nothing
@@ -121,17 +121,17 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnPreIvokeEditcommand(ByVal cmd As cCommand)
+        Private Sub OnPreIvokeEditcommand(cmd As cCommand)
             Me.m_ucLayers.LockUpdates()
         End Sub
 
-        Private Sub OnPostIvokeEditcommand(ByVal cmd As cCommand)
+        Private Sub OnPostIvokeEditcommand(cmd As cCommand)
             Me.m_ucLayers.UnlockUpdates()
             ' Update map
             Me.m_ucBasemap.Refresh()
         End Sub
 
-        Private Sub OnLayerChanged(ByVal layer As cDisplayLayer, ByVal changeFlag As cDisplayLayer.eChangeFlags)
+        Private Sub OnLayerChanged(layer As cDisplayLayer, changeFlag As cDisplayLayer.eChangeFlags)
             Dim layerSelect As cDisplayLayer = Nothing
             ' Is selection change?
             If ((changeFlag And cDisplayLayer.eChangeFlags.Selected) > 0) Then
@@ -193,7 +193,7 @@ Namespace Ecospace.Basemap
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddData(ByVal varName As eVarNameFlags, Optional ByVal bClearGroup As Boolean = True)
+        Private Sub AddData(varName As eVarNameFlags, Optional bClearGroup As Boolean = True)
 
             Dim factory As New cLayerFactoryInternal()
             Dim alayers As cDisplayLayer() = factory.GetLayers(Me.UIContext, varName)
@@ -234,13 +234,13 @@ Namespace Ecospace.Basemap
         ''' Add a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, strCommand As String)
+        Private Sub AddLayer(l As cDisplayLayer, strGroup As String, strCommand As String)
 
             Me.m_layers.Add(l)
             Me.m_ucBasemap.AddLayer(l)
             Me.m_ucLayers.AddLayer(l, strGroup, strCommand)
 
-            AddHandler l.LayerChanged, AddressOf OnLayerChanged
+            AddHandler l.LayerChanged, AddressOf Me.OnLayerChanged
 
         End Sub
 
@@ -249,7 +249,7 @@ Namespace Ecospace.Basemap
         ''' Remove a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveLayer(ByVal l As cDisplayLayer)
+        Private Sub RemoveLayer(l As cDisplayLayer)
 
             Me.m_layers.Remove(l)
             Me.m_ucBasemap.RemoveLayer(l)
@@ -259,7 +259,7 @@ Namespace Ecospace.Basemap
                 Me.SelectedLayer = Nothing
             End If
 
-            RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
+            RemoveHandler l.LayerChanged, AddressOf Me.OnLayerChanged
             l.Dispose()
         End Sub
 
@@ -276,7 +276,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_layerSelected
             End Get
-            Set(ByVal layer As cDisplayLayer)
+            Set(layer As cDisplayLayer)
 
                 If ReferenceEquals(layer, Me.m_layerSelected) Then Return
 
@@ -286,7 +286,7 @@ Namespace Ecospace.Basemap
                     ' Has editor GUI?
                     If (Me.m_editorGUISelected IsNot Nothing) Then
                         ' #Yes: remove layer editor GUI
-                        RemoveHandler Me.m_editorGUISelected.OnChanged, AddressOf OnLayerEditorChanged
+                        RemoveHandler Me.m_editorGUISelected.OnChanged, AddressOf Me.OnLayerEditorChanged
                         Me.m_plEditor.Controls.Remove(Me.m_editorGUISelected)
                         Me.m_editorGUISelected = Nothing
                     End If
@@ -309,7 +309,7 @@ Namespace Ecospace.Basemap
                         Me.m_plEditor.Height = Me.m_editorGUISelected.Height
                         Me.m_editorGUISelected.Dock = DockStyle.Fill
                         Me.m_plEditor.Controls.Add(Me.m_editorGUISelected)
-                        AddHandler Me.m_editorGUISelected.OnChanged, AddressOf OnLayerEditorChanged
+                        AddHandler Me.m_editorGUISelected.OnChanged, AddressOf Me.OnLayerEditorChanged
                     End If
                 End If
 
@@ -320,7 +320,7 @@ Namespace Ecospace.Basemap
             End Set
         End Property
 
-        Private Sub OnLayerEditorChanged(ByVal editor As ucLayerEditor)
+        Private Sub OnLayerEditorChanged(editor As ucLayerEditor)
             ' NOP
         End Sub
 
@@ -328,7 +328,7 @@ Namespace Ecospace.Basemap
 
 #Region " Mandatory overrides "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             If Me.IsDisposed Then Return
 

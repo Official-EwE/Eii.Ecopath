@@ -44,7 +44,7 @@ Namespace Ecopath.Input
             Me.Grid = Me.m_grid
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If Me.UIContext Is Nothing Then Return
@@ -74,7 +74,7 @@ Namespace Ecopath.Input
                         If (TypeOf dpi Is IGUIPlugin) Then
                             img = DirectCast(dpi, IGUIPlugin).ControlImage
                         End If
-                        Dim tsi As ToolStripItem = Me.m_tscmbUpdate.DropDownItems.Add(dpi.DisplayName, img, AddressOf OnClickEngine)
+                        Dim tsi As ToolStripItem = Me.m_tscmbUpdate.DropDownItems.Add(dpi.DisplayName, img, AddressOf Me.OnClickEngine)
                         tsi.Tag = dpi
                         Me.m_bHasSearchEngines = True
                     End If
@@ -85,7 +85,7 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If Me.UIContext Is Nothing Then Return
 
@@ -170,7 +170,7 @@ Namespace Ecopath.Input
             If (taxa Is Nothing) Then Return
             If (taxa.Count = 0) Then Return
 
-            Me.m_thread = New Threading.Thread(AddressOf RefreshTaxaThreaded)
+            Me.m_thread = New Threading.Thread(AddressOf Me.RefreshTaxaThreaded)
             Me.m_thread.Start()
 
         End Sub
@@ -179,7 +179,7 @@ Namespace Ecopath.Input
 
             Dim i As Integer = 1
 
-            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopRefreshTaxa))
+            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRefreshTaxa))
             Try
                 ' ToDo: globalize this
                 cApplicationStatusNotifier.StartProgress(Me.Core, "Refreshing taxa...")

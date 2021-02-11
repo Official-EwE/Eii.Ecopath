@@ -93,7 +93,7 @@ Public Class gridDefineGroups
     Private Class StanzaAgeComparer
         Implements IComparer(Of cGroupInfo)
 
-        Public Function Compare(ByVal x As cGroupInfo, ByVal y As cGroupInfo) As Integer _
+        Public Function Compare(x As cGroupInfo, y As cGroupInfo) As Integer _
                 Implements System.Collections.Generic.IComparer(Of cGroupInfo).Compare
             If x.StanzaAge < y.StanzaAge Then Return -1
             If x.StanzaAge = y.StanzaAge Then Return 0
@@ -133,7 +133,7 @@ Public Class gridDefineGroups
         ''' initialize this instance from. If set, this instance represents a
         ''' group currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal group As cEcoPathGroupInput)
+        Public Sub New(group As cEcoPathGroupInput)
             Me.GroupDBID = group.DBID
             Me.m_iGroupIndex = group.Index
             Me.m_sVBK = group.VBK
@@ -150,7 +150,7 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strName As String)
+        Public Sub New(strName As String)
             Me.Name = strName
             Me.PP = CSng(ePrimaryProductionTypes.Consumer)
             Me.PoolColor = 0
@@ -209,7 +209,7 @@ Public Class gridDefineGroups
             Get
                 Return Me.m_stanza
             End Get
-            Set(ByVal value As cStanzaInfo)
+            Set(value As cStanzaInfo)
                 Me.m_stanza = value
                 If (value IsNot Nothing) Then Me.m_sVBKStanza = value.VBK
             End Set
@@ -250,7 +250,7 @@ Public Class gridDefineGroups
         ''' values or <see cref="Color">Color </see> has changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(ByVal group As cEcoPathGroupInput) As Boolean
+        Public Function IsChanged(group As cEcoPathGroupInput) As Boolean
 
             If (Me.IsNew()) Then Return False
 
@@ -335,7 +335,7 @@ Public Class gridDefineGroups
             Get
                 Return Me.m_status = eItemStatusTypes.Removed
             End Get
-            Set(ByVal bDelete As Boolean)
+            Set(bDelete As Boolean)
                 If Not Me.IsNew() Then
                     If bDelete Then
                         Me.m_status = eItemStatusTypes.Removed
@@ -382,7 +382,7 @@ Public Class gridDefineGroups
         ''' to initialize this instance from. If set, this instance represents a
         ''' stanza configuration currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal sg As cStanzaGroup, ByVal sVBK As Single)
+        Public Sub New(sg As cStanzaGroup, sVBK As Single)
 
             ' Sanity check
             Debug.Assert(sg IsNot Nothing)
@@ -399,7 +399,7 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strName As String)
+        Public Sub New(strName As String)
             Me.m_sg = Nothing
             Me.m_strName = strName
             Me.m_sVBK = gridDefineGroups.sVBK
@@ -411,7 +411,7 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' <param name="gi"><see cref="cGroupInfo">Group</see> to add.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGroup(ByVal gi As cGroupInfo)
+        Public Sub AddGroup(gi As cGroupInfo)
             Dim iPos As Integer = Me.FindGroups(gi)
             ' Group not in this SI yet
             Debug.Assert(iPos = -1)
@@ -429,7 +429,7 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' <param name="gi"><see cref="cGroupInfo">Group</see> to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveGroup(ByVal gi As cGroupInfo)
+        Public Sub RemoveGroup(gi As cGroupInfo)
             Dim iPos As Integer = Me.FindGroups(gi)
 
             Debug.Assert(iPos <> -1)
@@ -446,7 +446,7 @@ Public Class gridDefineGroups
         ''' <param name="giMove"></param>
         ''' <param name="iTo"></param>
         ''' -------------------------------------------------------------------
-        Public Sub MoveGroup(ByVal giMove As cGroupInfo, ByVal iTo As Integer)
+        Public Sub MoveGroup(giMove As cGroupInfo, iTo As Integer)
 
             Dim objTemp As cGroupInfo = Nothing
             Dim iFrom As Integer = Me.FindGroups(giMove)
@@ -488,7 +488,7 @@ Public Class gridDefineGroups
             Get
                 Return Me.m_strName
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strName = value
             End Set
         End Property
@@ -521,7 +521,7 @@ Public Class gridDefineGroups
         ''' <param name="gi">The <see cref="cGroupInfo">group</see> to find.</param>
         ''' <returns>A zero-based index or -1 if the group was not found.</returns>
         ''' -------------------------------------------------------------------
-        Public Function FindGroups(ByVal gi As cGroupInfo) As Integer
+        Public Function FindGroups(gi As cGroupInfo) As Integer
             For i As Integer = 0 To Me.m_alGroups.Count - 1
                 If ReferenceEquals(Me.m_alGroups(i), gi) Then
                     Return i
@@ -537,7 +537,7 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' <returns>True if changed.</returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(ByVal core As cCore) As Boolean
+        Public Function IsChanged(core As cCore) As Boolean
             Dim gi As cGroupInfo = Nothing
             Dim group As cEcoPathGroupInput = Nothing
 
@@ -674,19 +674,19 @@ Public Class gridDefineGroups
         Me.m_lgiGroups.Clear()
 
         ' Make snapshot of group configuration
-        For iGroup As Integer = 1 To Core.nGroups
-            group = Core.EcoPathGroupInputs(iGroup)
+        For iGroup As Integer = 1 To Me.Core.nGroups
+            group = Me.Core.EcoPathGroupInputs(iGroup)
             gi = New cGroupInfo(group)
             Me.m_lgiGroups.Add(gi)
         Next
 
         ' Make snapshot of stanza configuration
-        For iStanza As Integer = 0 To Core.nStanzas - 1
-            stanza = Core.StanzaGroups(iStanza)
+        For iStanza As Integer = 0 To Me.Core.nStanzas - 1
+            stanza = Me.Core.StanzaGroups(iStanza)
             ' Is complete stanza config?
             If stanza.nLifeStages > 0 Then
                 ' #Yes: add full stanza set-up
-                si = New cStanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
+                si = New cStanzaInfo(stanza, Me.Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
             Else
                 ' #No: add with invalid vBK
                 si = New cStanzaInfo(stanza, -1)
@@ -715,7 +715,7 @@ Public Class gridDefineGroups
         'Next
 
         ' Brute-force update grid
-        UpdateGrid()
+        Me.UpdateGrid()
 
     End Sub
 
@@ -734,7 +734,7 @@ Public Class gridDefineGroups
     ''' our parent that the selection has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellGotFocus(ByVal e As SourceGrid2.PositionCancelEventArgs)
+    Protected Overrides Sub OnCellGotFocus(e As SourceGrid2.PositionCancelEventArgs)
         MyBase.OnCellGotFocus(e)
         Me.RaiseSelectionChangeEvent()
     End Sub
@@ -745,7 +745,7 @@ Public Class gridDefineGroups
     ''' our parent that the selection has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellLostFocus(ByVal e As SourceGrid2.PositionCancelEventArgs)
+    Protected Overrides Sub OnCellLostFocus(e As SourceGrid2.PositionCancelEventArgs)
         MyBase.OnCellLostFocus(e)
         Me.Selection.Clear()
         Me.RaiseSelectionChangeEvent()
@@ -813,7 +813,7 @@ Public Class gridDefineGroups
 
         ' Populate rows
         For iRow As Integer = 1 To Me.m_lgiGroups.Count
-            UpdateRow(iRow)
+            Me.UpdateRow(iRow)
         Next iRow
 
     End Sub
@@ -824,7 +824,7 @@ Public Class gridDefineGroups
     ''' </summary>
     ''' <param name="iRow">The index of the row to refresh.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateRow(ByVal iRow As Integer)
+    Private Sub UpdateRow(iRow As Integer)
 
         Dim gi As cGroupInfo = Nothing
         Dim ri As RowInfo = Nothing
@@ -894,13 +894,13 @@ Public Class gridDefineGroups
     ''' </summary>
     ''' <param name="astrStanzaNames">Optional array of stanza names.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateStanzaColumns(Optional ByVal astrStanzaNames As String() = Nothing)
+    Private Sub UpdateStanzaColumns(Optional astrStanzaNames As String() = Nothing)
 
         Me.AllowUpdates = False
 
         ' Populate rows
         For iRow As Integer = 1 To Me.m_lgiGroups.Count
-            UpdateStanzaCells(iRow, astrStanzaNames)
+            Me.UpdateStanzaCells(iRow, astrStanzaNames)
         Next iRow
 
         Me.AllowUpdates = True
@@ -914,7 +914,7 @@ Public Class gridDefineGroups
     ''' <param name="iRow">Index of the Row to update.</param>
     ''' <param name="astrStanzaNames">Optional array of stanza names.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateStanzaCells(ByVal iRow As Integer, Optional ByVal astrStanzaNames As String() = Nothing)
+    Private Sub UpdateStanzaCells(iRow As Integer, Optional astrStanzaNames As String() = Nothing)
 
         Dim pos As SourceGrid2.Position = Nothing
         Dim aCells() As Cells.ICellVirtual = Nothing
@@ -981,7 +981,7 @@ Public Class gridDefineGroups
     ''' makes this method mandatory. We once again apologize for the confusion; )
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         If Not Me.AllowUpdates Then Return True
 
@@ -1050,7 +1050,7 @@ Public Class gridDefineGroups
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         If Not Me.AllowUpdates Then Return True
 
@@ -1111,7 +1111,7 @@ Public Class gridDefineGroups
     ''' Cell click handler, called in response to clicking button-like cells.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+    Protected Overrides Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.GroupColor
@@ -1179,14 +1179,14 @@ Public Class gridDefineGroups
 
     End Sub
 
-    Public Function IsGroupRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsGroupRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (iRow >= iFIRSTGROUPROW) And (iRow < Me.RowsCount)
     End Function
 
-    Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not IsGroupRow(iRow) Then Return False
+        If Not Me.IsGroupRow(iRow) Then Return False
 
         Dim iGroup As Integer = iRow - iFIRSTGROUPROW
         Dim gi As cGroupInfo = Nothing
@@ -1197,7 +1197,7 @@ Public Class gridDefineGroups
         Return gi.FlaggedForDeletion
     End Function
 
-    Public Sub InsertRow(Optional ByVal iRow As Integer = -1)
+    Public Sub InsertRow(Optional iRow As Integer = -1)
 
         Dim iGroup As Integer = -1
         Dim gi As cGroupInfo = Nothing
@@ -1225,16 +1225,16 @@ Public Class gridDefineGroups
         Me.UpdateGrid()
     End Sub
 
-    Public Function CanInsertRow(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanInsertRow(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Math.Max(iFIRSTGROUPROW, Me.SelectedRow())
         Return (iRow >= iFIRSTGROUPROW) And (iRow < Me.RowsCount)
     End Function
 
-    Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
+    Public Sub MoveRowUp(Optional iRow As Integer = -1)
         Dim bMoveSelection As Boolean = (iRow = -1)
 
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not CanMoveRowUp(iRow) Then Return
+        If Not Me.CanMoveRowUp(iRow) Then Return
         Me.MoveRow(iRow, iRow - 1)
 
         If bMoveSelection Then
@@ -1242,16 +1242,16 @@ Public Class gridDefineGroups
         End If
     End Sub
 
-    Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanMoveRowUp(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (Me.RowsCount > (iFIRSTGROUPROW + 1)) And (iRow > iFIRSTGROUPROW)
     End Function
 
-    Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
+    Public Sub MoveRowDown(Optional iRow As Integer = -1)
         Dim bMoveSelection As Boolean = (iRow = -1)
 
         If iRow = -1 Then iRow = Me.SelectedRow()
-        If Not CanMoveRowDown(iRow) Then Return
+        If Not Me.CanMoveRowDown(iRow) Then Return
         Me.MoveRow(iRow, iRow + 1)
 
         If bMoveSelection Then
@@ -1259,12 +1259,12 @@ Public Class gridDefineGroups
         End If
     End Sub
 
-    Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+    Public Function CanMoveRowDown(Optional iRow As Integer = -1) As Boolean
         If iRow = -1 Then iRow = Me.SelectedRow()
         Return (Me.RowsCount > (iFIRSTGROUPROW + 1)) And (iRow >= iFIRSTGROUPROW) And (iRow < Me.RowsCount - 1)
     End Function
 
-    Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+    Private Sub MoveRow(iFromRow As Integer, iToRow As Integer)
 
         Dim objTemp As cGroupInfo = Nothing
         Dim iStep As Integer = 1
@@ -1395,7 +1395,7 @@ Public Class gridDefineGroups
 
 #Region " Admin "
 
-    Public Sub SelectGroup(ByVal group As cEcoPathGroupInput)
+    Public Sub SelectGroup(group As cEcoPathGroupInput)
 
         Dim gi As cGroupInfo = Nothing
 
@@ -1420,7 +1420,7 @@ Public Class gridDefineGroups
     ''' <returns>A StanzaInfo instance or Nothing if this could not be found.</returns>
     ''' <remarks>The name search is case independent.</remarks>
     ''' -----------------------------------------------------------------------
-    Private Function FindStanzaInfo(ByVal strName As String) As cStanzaInfo
+    Private Function FindStanzaInfo(strName As String) As cStanzaInfo
         Dim si As cStanzaInfo = Nothing
         For i As Integer = 0 To Me.m_lsiStanza.Count - 1
             si = DirectCast(Me.m_lsiStanza(i), cStanzaInfo)
@@ -1465,7 +1465,7 @@ Public Class gridDefineGroups
         Get
             Return (Me.m_iUpdateLock = 0)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If value Then
                 Me.m_iUpdateLock += 1
             Else
@@ -1698,7 +1698,7 @@ Public Class gridDefineGroups
         Return True
     End Function
 
-    Private Function IsNameUnique(ByVal strName As String, ByVal gi As cGroupInfo) As Boolean
+    Private Function IsNameUnique(strName As String, gi As cGroupInfo) As Boolean
 
         ' Check if name is unique
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1

@@ -75,7 +75,7 @@ Namespace Ecosim
 
             Public Property IsDefault As Boolean = False
             Public Overrides Function ToString() As String
-                Return Name
+                Return Me.Name
             End Function
 
         End Class
@@ -99,7 +99,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="uic">The UI context to connect to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
             Debug.Assert(uic IsNot Nothing)
             Me.m_uic = uic
@@ -109,7 +109,7 @@ Namespace Ecosim
 
 #Region " Form overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.m_uic Is Nothing) Then Return
@@ -218,7 +218,7 @@ Namespace Ecosim
             If Me.m_bInSync Then Return
 
             ' Delay invoke until check state has been processed
-            Me.BeginInvoke(New ProcessChecksDelegate(AddressOf ProcessChecks), New Object() {e.Index + 1, e.NewValue = CheckState.Checked, 0})
+            Me.BeginInvoke(New ProcessChecksDelegate(AddressOf Me.ProcessChecks), New Object() {e.Index + 1, e.NewValue = CheckState.Checked, 0})
         End Sub
 
         Private Sub OnFleetChecked(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
@@ -227,11 +227,11 @@ Namespace Ecosim
             ' Abort if triggered by a sync call
             If Me.m_bInSync Then Return
             ' Delay invoke until check state has been processed
-            Me.BeginInvoke(New ProcessChecksDelegate(AddressOf ProcessChecks), New Object() {0, False, e.Index + 1})
+            Me.BeginInvoke(New ProcessChecksDelegate(AddressOf Me.ProcessChecks), New Object() {0, False, e.Index + 1})
 
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
             Dim core As cCore = Me.m_uic.Core
@@ -268,13 +268,13 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles Cancel_Button.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub OnSelectAllGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectAllGroups(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAllGroups.Click
 
             ' Check all items
@@ -287,7 +287,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectNoneGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectNoneGroups(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNoneGroups.Click
 
             ' Uncheck all items
@@ -300,7 +300,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectProducers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectProducers(sender As System.Object, e As System.EventArgs) _
             Handles m_btnProducers.Click
 
             Dim grp As cCoreGroupBase = Nothing
@@ -320,7 +320,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectConsumers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectConsumers(sender As System.Object, e As System.EventArgs) _
             Handles m_btnConsumers.Click
 
             Dim grp As cCoreGroupBase = Nothing
@@ -340,7 +340,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectDetritus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectDetritus(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNonLiving.Click
 
             Dim grp As cCoreGroupBase = Nothing
@@ -362,7 +362,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectLiving(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectLiving(sender As System.Object, e As System.EventArgs) _
             Handles m_btnLiving.Click
 
             Dim grp As cCoreGroupBase = Nothing
@@ -379,7 +379,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectFished(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectFished(sender As System.Object, e As System.EventArgs) _
             Handles m_btnFished.Click
 
             Dim core As cCore = Me.m_uic.Core
@@ -410,7 +410,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectNonFished(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectNonFished(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNonFished.Click
 
             Dim core As cCore = Me.m_uic.Core
@@ -440,7 +440,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectStanza(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectStanza(sender As System.Object, e As System.EventArgs) _
             Handles m_btnStanza.Click
 
             Dim grp As cCoreGroupBase = Nothing
@@ -460,7 +460,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectNonStanza(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectNonStanza(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNonStanza.Click
 
             Dim grp As cCoreGroupBase = Nothing
@@ -480,7 +480,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectAllFleets(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectAllFleets(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAllFleets.Click
 
             ' Check all items
@@ -493,7 +493,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectNoneFleets(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectNoneFleets(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNoneFleets.Click
 
             ' Uncheck all items

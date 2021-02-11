@@ -24,7 +24,7 @@ Partial Class dlgSelectEnvironmentalResponse
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()>
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -213,7 +213,6 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.CancelButton = Me.Cancel_Button
         Me.Controls.Add(Me.m_tlMain)
         Me.DoubleBuffered = True
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSelectEnvironmentalResponse"

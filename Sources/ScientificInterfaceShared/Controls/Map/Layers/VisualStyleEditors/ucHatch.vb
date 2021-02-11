@@ -36,13 +36,13 @@ Namespace Controls
         Private m_clrFore As Color = Color.Black
         Private m_clrBack As Color = Color.Transparent
 
-        Public Sub New(ByVal parent As ucHatchSelect, ByVal hbs As HatchStyle)
+        Public Sub New(parent As ucHatchSelect, hbs As HatchStyle)
             Me.m_parent = parent
             Me.m_hbs = hbs
-            InitializeComponent()
+            Me.InitializeComponent()
         End Sub
 
-        Private Sub ucHatch_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+        Private Sub ucHatch_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
 
             Dim rcHatch As Rectangle = New Rectangle(Me.ClientRectangle.X + 2, Me.ClientRectangle.Y + 2, Me.ClientRectangle.Width - 4, Me.ClientRectangle.Height - 4)
 
@@ -65,13 +65,13 @@ Namespace Controls
             Get
                 Return Me.m_bSelected
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bSelected = value
                 Me.Invalidate()
             End Set
         End Property
 
-        Public Sub Colours(ByVal clrFore As Color, ByVal clrBack As Color)
+        Public Sub Colours(clrFore As Color, clrBack As Color)
             Me.m_clrFore = clrFore
             Me.m_clrBack = clrBack
             Me.Invalidate()

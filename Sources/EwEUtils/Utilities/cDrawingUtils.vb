@@ -42,7 +42,7 @@ Namespace Utilities
         ''' <param name="ca">Content alignment flag to convert.</param>
         ''' <returns>A StringFormat value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ContentAlignmentToStringFormat(ByVal ca As System.Drawing.ContentAlignment) As StringFormat
+        Public Shared Function ContentAlignmentToStringFormat(ca As System.Drawing.ContentAlignment) As StringFormat
             Dim style As New StringFormat()
 
             Select Case ca

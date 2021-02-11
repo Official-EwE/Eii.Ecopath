@@ -66,11 +66,11 @@ Friend Class cDBUpdate6_01_00_006
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return Me.AddPedigreeName(db) And AddEcospaceAdvectionFields(db)
+        Return Me.AddPedigreeName(db) And Me.AddEcospaceAdvectionFields(db)
 
     End Function
 
-    Private Function AddPedigreeName(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddPedigreeName(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -117,7 +117,7 @@ Friend Class cDBUpdate6_01_00_006
 
     End Function
 
-    Private Function AddEcospaceAdvectionFields(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddEcospaceAdvectionFields(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioBasemap ADD COLUMN XVel SINGLE")

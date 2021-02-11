@@ -48,7 +48,7 @@ Public Class cLindemanSpineDiagram
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal manager As cNetworkManager, ByVal sg As cStyleGuide)
+    Public Sub New(manager As cNetworkManager, sg As cStyleGuide)
         Me.m_manager = manager
         Me.m_sg = sg
     End Sub
@@ -59,7 +59,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Math.Min(Me.m_iNumTL, Me.NetworkManager.nTrophicLevels)
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iNumTL = value
         End Set
     End Property
@@ -68,7 +68,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_bCollapseDetritus
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bCollapseDetritus = value
         End Set
     End Property
@@ -77,7 +77,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_bShowImport
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bShowImport = value
         End Set
     End Property
@@ -86,7 +86,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_bShowTST
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bShowTST = value
         End Set
     End Property
@@ -95,7 +95,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_bShowB
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bShowB = value
         End Set
     End Property
@@ -104,7 +104,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_bShowAccum
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bShowAccum = value
         End Set
     End Property
@@ -113,7 +113,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_iColWidth
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iColWidth = value
         End Set
     End Property
@@ -122,7 +122,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_iColHeight
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iColHeight = value
         End Set
     End Property
@@ -131,7 +131,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_iBoxWidth
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iBoxWidth = value
         End Set
     End Property
@@ -140,7 +140,7 @@ Public Class cLindemanSpineDiagram
         Get
             Return Me.m_iBoxHeight
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.m_iBoxHeight = value
         End Set
     End Property
@@ -155,12 +155,12 @@ Public Class cLindemanSpineDiagram
 
             If Me.NetworkManager Is Nothing Then Return New Size(0, 0)
             rcBoxFar = Me.GetBoxRectangle(3, Me.NumTrophicLevels)
-            Return New Size(GetMargin() * 2 + rcBoxFar.X + rcBoxFar.Width, _
-                            GetMargin() * 2 + rcBoxFar.Y + rcBoxFar.Height)
+            Return New Size(Me.GetMargin() * 2 + rcBoxFar.X + rcBoxFar.Width, _
+                            Me.GetMargin() * 2 + rcBoxFar.Y + rcBoxFar.Height)
         End Get
     End Property
 
-    Public Sub Draw(ByVal g As Graphics)
+    Public Sub Draw(g As Graphics)
 
         Dim strTL As String = ""
         Dim sImp As Single = 0
@@ -322,7 +322,7 @@ Public Class cLindemanSpineDiagram
     ''' <param name="iTL"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetBoxRectangle(ByVal iRow As Integer, ByVal iTL As Integer) As Rectangle
+    Private Function GetBoxRectangle(iRow As Integer, iTL As Integer) As Rectangle
         Return New Rectangle( _
                 Me.GetMargin() + Math.Max(0, iTL - 1) * Me.m_iColWidth, _
                 Me.GetMargin() + Math.Max(0, iRow - 1) * Me.m_iColHeight, _
@@ -355,18 +355,18 @@ Public Class cLindemanSpineDiagram
     ''' <param name="strExport">Value to display in the export section of the box.</param>
     ''' <param name="strResp">Value to display in the respiration section of the box.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub RenderBox(ByVal g As Graphics, _
-                          ByVal pen As Pen, _
-                          ByVal font As Font, _
-                          ByVal brFore As Brush, ByVal brBack As Brush, _
-                          ByVal iRow As Integer, ByVal iTL As Integer, _
-                          ByVal strTL As String, _
-                          ByVal strImport As String, _
-                          ByVal strTST As String, _
-                          ByVal strBiomass As String, _
-                          ByVal strBiomAccum As String, _
-                          ByVal strExport As String, _
-                          ByVal strResp As String)
+    Private Sub RenderBox(g As Graphics, _
+                          pen As Pen, _
+                          font As Font, _
+                          brFore As Brush, brBack As Brush, _
+                          iRow As Integer, iTL As Integer, _
+                          strTL As String, _
+                          strImport As String, _
+                          strTST As String, _
+                          strBiomass As String, _
+                          strBiomAccum As String, _
+                          strExport As String, _
+                          strResp As String)
 
         If Me.m_bCollapseDetritus Then
             ' Only allow one detritus box when detritus is collapsed
@@ -442,12 +442,12 @@ Public Class cLindemanSpineDiagram
     ''' <param name="strPredation"></param>
     ''' <param name="strTE"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub DrawPredAndTE(ByVal g As Graphics, _
-                              ByVal pen As Pen, _
-                              ByVal font As Font, _
-                              ByVal brText As Brush, _
-                              ByVal iRowFrom As Integer, ByVal iColFrom As Integer, _
-                              ByVal strPredation As String, ByVal strTE As String)
+    Private Sub DrawPredAndTE(g As Graphics, _
+                              pen As Pen, _
+                              font As Font, _
+                              brText As Brush, _
+                              iRowFrom As Integer, iColFrom As Integer, _
+                              strPredation As String, strTE As String)
 
 
         If (iColFrom < 1) Or (iColFrom >= Me.NumTrophicLevels) Then Return
@@ -492,14 +492,14 @@ Public Class cLindemanSpineDiagram
     ''' <param name="strFlowD">Flow from Detritus to Detritus.</param>
     ''' <param name="strFlowTotal"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub DrawFlowToDetritus(ByVal g As Graphics, _
-                                   ByVal pen As Pen, _
-                                   ByVal font As Font, _
-                                   ByVal brText As Brush, _
-                                   ByVal iTL As Integer, _
-                                   ByVal strFlowP As String, _
-                                   ByVal strFlowD As String, _
-                                   ByVal strFlowTotal As String)
+    Private Sub DrawFlowToDetritus(g As Graphics, _
+                                   pen As Pen, _
+                                   font As Font, _
+                                   brText As Brush, _
+                                   iTL As Integer, _
+                                   strFlowP As String, _
+                                   strFlowD As String, _
+                                   strFlowTotal As String)
 
         Dim rcBoxFrom As Rectangle = Me.GetBoxRectangle(1, iTL)
         Dim rcBoxRight As Rectangle = Me.GetBoxRectangle(1, iTL + 1)
@@ -516,7 +516,7 @@ Public Class cLindemanSpineDiagram
             If iTL = 1 Then
                 ' Flow to Det rendered on left to make room for consumption of detritus
                 Dim pt1 As New Point(rcBoxFrom.X, rcBoxFrom.Y + CInt(rcBoxFrom.Height * 0.8))
-                Dim pt2 As New Point(rcBoxFrom.X - CInt(GetMargin() * 0.5), pt1.Y)
+                Dim pt2 As New Point(rcBoxFrom.X - CInt(Me.GetMargin() * 0.5), pt1.Y)
                 Dim pt3 As New Point(pt2.X, rcBoxD.Y + CInt(rcBoxD.Height * 0.2))
                 Dim pt4 As New Point(rcBoxD.X, pt3.Y)
 
@@ -531,8 +531,8 @@ Public Class cLindemanSpineDiagram
             Else
                 Dim pt1 As New Point(rcBoxFrom.X + rcBoxFrom.Width, rcBoxFrom.Y + CInt(rcBoxFrom.Height * 0.8))
                 Dim pt2 As New Point(pt1.X + CInt(iBoxSpacer * 0.5), pt1.Y)
-                Dim pt3 As New Point(pt1.X + CInt(iBoxSpacer * 0.5), rcBoxD.Y + rcBoxD.Height + CInt(GetMargin() * 0.5))
-                Dim pt4 As New Point(rcBoxD.X - CInt(GetMargin() * 0.5), pt3.Y)
+                Dim pt3 As New Point(pt1.X + CInt(iBoxSpacer * 0.5), rcBoxD.Y + rcBoxD.Height + CInt(Me.GetMargin() * 0.5))
+                Dim pt4 As New Point(rcBoxD.X - CInt(Me.GetMargin() * 0.5), pt3.Y)
                 Dim pt5 As New Point(pt4.X, rcBoxD.Y + CInt(rcBoxD.Height * 0.8))
                 Dim pt6 As New Point(rcBoxD.X, pt5.Y)
 
@@ -610,11 +610,11 @@ Public Class cLindemanSpineDiagram
     ''' This connector only applies to collapsed detritus diagrams for TL II.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub DrawConsumptionOfDetritus(ByVal g As Graphics, _
-                                          ByVal pen As Pen, _
-                                          ByVal font As Font, _
-                                          ByVal brText As Brush, _
-                                          ByVal strConsumption As String)
+    Private Sub DrawConsumptionOfDetritus(g As Graphics, _
+                                          pen As Pen, _
+                                          font As Font, _
+                                          brText As Brush, _
+                                          strConsumption As String)
 
         Dim rcBoxTo As Rectangle = Me.GetBoxRectangle(1, 2)
         Dim rcBoxDetritus As Rectangle = Me.GetBoxRectangle(2, 1)
@@ -653,9 +653,9 @@ Public Class cLindemanSpineDiagram
     ''' if this box could be repositioned.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub RenderLegend(ByVal g As Graphics, _
-                             ByVal pen As Pen, ByVal font As Font, _
-                             ByVal brText As Brush, ByVal brBack As Brush)
+    Private Sub RenderLegend(g As Graphics, _
+                             pen As Pen, font As Font, _
+                             brText As Brush, brBack As Brush)
 
         Dim rcBox As Rectangle = Me.GetBoxRectangle(3, 2)
         Dim rcBoxRight As Rectangle = Me.GetBoxRectangle(3, 3)
@@ -706,8 +706,8 @@ Public Class cLindemanSpineDiagram
 
     End Sub
 
-    Private Function FormatNumber(ByVal sVal As Single, _
-                                  Optional ByVal bIsValid As Boolean = True) As String
+    Private Function FormatNumber(sVal As Single, _
+                                  Optional bIsValid As Boolean = True) As String
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         If Not bIsValid Then style = cStyleGuide.eStyleFlags.Null

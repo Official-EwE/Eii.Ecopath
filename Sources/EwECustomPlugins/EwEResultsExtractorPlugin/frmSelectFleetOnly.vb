@@ -24,26 +24,26 @@ Public Class frmSelectFleetOnly
 
     Public Event FormExited()
 
-    Public Sub New(ByVal i As cSelectionData, ByVal m_core As cCore)
+    Public Sub New(i As cSelectionData, m_core As cCore)
         MyBase.New(i, m_core)
 
         ' This call is required by the Windows Form Designer.
-        InitializeComponent()
+        Me.InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         Me.Width = 380
-        chklstAttached.Hide()
-        btnAttachAll.Hide()
-        btnAttachNone.Hide()
-        btnOk.Left = 280
+        Me.chklstAttached.Hide()
+        Me.btnAttachAll.Hide()
+        Me.btnAttachNone.Hide()
+        Me.btnOk.Left = 280
         Me.Show()
 
     End Sub
-    Public Overrides Sub PopulateAttachedList(ByVal i As String)
+    Public Overrides Sub PopulateAttachedList(i As String)
 
     End Sub
 
-    Private Sub frmSelectFleetOnly_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+    Private Sub frmSelectFleetOnly_Disposed(sender As Object, e As System.EventArgs) Handles Me.Disposed
         If frmResults.FireChecked = False Then
             frmResults.NextAction()
         End If

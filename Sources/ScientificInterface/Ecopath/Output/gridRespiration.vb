@@ -81,11 +81,11 @@ Namespace Ecopath.Output
                 If Not group.IsMultiStanza Then
 
                     iRow = Me.AddRow
-                    FillInRows(iRow, group)
+                    Me.FillInRows(iRow, group)
 
                 Else
                     ' Group is stanza
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
                     If group.iStanza <> iStanzaPrev Then
 
                         ' Complete row with dummy cells
@@ -104,13 +104,13 @@ Namespace Ecopath.Output
 
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, True)
+                    Me.FillInRows(iRow, group, True)
                 End If
             Next i
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, Optional isIndented As Boolean = False)
             Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
                 Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)

@@ -94,7 +94,7 @@ Public Class cCoreEnumNamesIndex
     ''' <param name="dict1">A dictionary to store the value/name pairs in.</param>
     ''' <param name="dict2">A dictionary to store the name/value pairs in.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub IndexEnum(ByVal t As Type, ByRef dict1 As Dictionary(Of Integer, String), ByRef dict2 As Dictionary(Of String, Integer))
+    Private Sub IndexEnum(t As Type, ByRef dict1 As Dictionary(Of Integer, String), ByRef dict2 As Dictionary(Of String, Integer))
 
         Dim aEnum As Array = System.Enum.GetValues(t)
         Dim strName As String = ""
@@ -117,7 +117,7 @@ Public Class cCoreEnumNamesIndex
     ''' <param name="e">The <see cref="eVarNameFlags">eVarNameFlags</see> 
     ''' enumerated value to retrieve the name for.</param>
     ''' -----------------------------------------------------------------------
-    Public Function GetVarName(ByVal e As eVarNameFlags) As String
+    Public Function GetVarName(e As eVarNameFlags) As String
         Return Me.m_dictVarEnumToName(e)
     End Function
 
@@ -127,7 +127,7 @@ Public Class cCoreEnumNamesIndex
     ''' </summary>
     ''' <param name="strVarName">The string representation for a variable name.</param>
     ''' -----------------------------------------------------------------------
-    Public Function GetVarName(ByVal strVarName As String) As eVarNameFlags
+    Public Function GetVarName(strVarName As String) As eVarNameFlags
         If Me.m_dictVarNameToEnum.ContainsKey(strVarName) Then
             Return DirectCast(Me.m_dictVarNameToEnum(strVarName), eVarNameFlags)
         End If
@@ -141,7 +141,7 @@ Public Class cCoreEnumNamesIndex
     ''' <param name="e">The <see cref="eDataTypes">eDataTypes</see> 
     ''' enumerated value to retrieve the name for.</param>
     ''' -----------------------------------------------------------------------
-    Public Function GetDataTypeName(ByVal e As eDataTypes) As String
+    Public Function GetDataTypeName(e As eDataTypes) As String
         Return Me.m_dictDataTypeEnumToName(e)
     End Function
 
@@ -151,7 +151,7 @@ Public Class cCoreEnumNamesIndex
     ''' </summary>
     ''' <param name="strDataType">The string representation for a data type.</param>
     ''' -----------------------------------------------------------------------
-    Public Function GetDataType(ByVal strDataType As String) As eDataTypes
+    Public Function GetDataType(strDataType As String) As eDataTypes
         If Me.m_dictDataTypeNameToEnum.ContainsKey(strDataType) Then
             Return DirectCast(Me.m_dictDataTypeNameToEnum(strDataType), eDataTypes)
         Else

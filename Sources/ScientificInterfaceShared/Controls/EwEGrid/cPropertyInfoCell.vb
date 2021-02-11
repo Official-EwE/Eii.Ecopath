@@ -55,7 +55,7 @@ Namespace Controls.EwEGrid
         ''' <param name="obj">The object instance to manage the property value for.</param>
         ''' <param name="pi">The PropertyInfo instance to manage the value for.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal obj As Object, ByVal pi As PropertyInfo)
+        Public Sub New(obj As Object, pi As PropertyInfo)
 
             ' Set the cell value to the intial property value and type
             MyBase.New(pi.GetValue(obj, Nothing),
@@ -87,7 +87,7 @@ Namespace Controls.EwEGrid
         ''' <param name="pos"></param>
         ''' <param name="objValue"></param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub SetValue(ByVal pos As SourceGrid2.Position, ByVal objValue As Object)
+        Public Overrides Sub SetValue(pos As SourceGrid2.Position, objValue As Object)
 
             ' Update the cell value
             MyBase.SetValue(pos, objValue)

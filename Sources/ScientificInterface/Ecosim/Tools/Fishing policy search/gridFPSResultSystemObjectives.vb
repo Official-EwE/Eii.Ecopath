@@ -71,7 +71,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub InsertOneIterResult(ByRef results As cFPSSearchResults, ByVal nSearchBlocks As Integer, ByRef pbc As ucParmBlockCodes)
+        Public Sub InsertOneIterResult(ByRef results As cFPSSearchResults, nSearchBlocks As Integer, ByRef pbc As ucParmBlockCodes)
 
             Dim aiBlocks() As Integer = results.BlockNumber
             Dim asResults() As Single = results.BlockResults
@@ -114,7 +114,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub InsertColumns(ByVal colCnt As Integer)
+        Public Sub InsertColumns(colCnt As Integer)
 
             Me.m_iColDynamic = Me.ColumnsCount
 

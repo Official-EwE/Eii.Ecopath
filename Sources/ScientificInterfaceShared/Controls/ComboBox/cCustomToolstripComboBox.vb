@@ -64,19 +64,19 @@ Namespace Controls
             Me.DropDownHeight = 1
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 ' Clean up
                 Me.DropdownControl = Nothing
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
             End Try
         End Sub
 
-        Protected Overrides Sub OnDropDown(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnDropDown(e As System.EventArgs)
             MyBase.OnDropDown(e)
 
             If Not Me.m_form.Visible Then
@@ -100,12 +100,12 @@ Namespace Controls
             Get
                 Return Me.m_control
             End Get
-            Set(ByVal value As Control)
+            Set(value As Control)
                 'Remove the existing control
                 If (Not Me.m_control Is Nothing) Then
                     Me.m_form.Controls.Remove(Me.m_control)
-                    RemoveHandler m_control.LostFocus, AddressOf Me.OnControlLostFocus
-                    RemoveHandler m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
+                    RemoveHandler Me.m_control.LostFocus, AddressOf Me.OnControlLostFocus
+                    RemoveHandler Me.m_control.DoubleClick, AddressOf Me.OnControlDoubleClick
                 End If
 
                 Me.m_control = value
@@ -121,20 +121,20 @@ Namespace Controls
             End Set
         End Property
 
-        Private Sub OnControlLostFocus(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnControlLostFocus(sender As Object, e As EventArgs)
             Me.m_form.Hide()
         End Sub
 
-        Private Sub OnControlDoubleClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnControlDoubleClick(sender As Object, e As EventArgs)
             Me.m_form.Hide()
         End Sub
 
-        Private Sub CustomToolstripComboBox_LocationChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub CustomToolstripComboBox_LocationChanged(sender As Object, e As System.EventArgs) _
             Handles Me.LocationChanged
             Me.m_form.Hide()
         End Sub
 
-        Private Sub cCustomToolstripComboBox_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub cCustomToolstripComboBox_TextChanged(sender As Object, e As System.EventArgs) _
             Handles Me.TextChanged
             Me.m_form.Hide()
         End Sub

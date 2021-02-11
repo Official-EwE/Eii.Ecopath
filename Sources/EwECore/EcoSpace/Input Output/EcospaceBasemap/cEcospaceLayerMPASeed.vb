@@ -30,7 +30,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerMPASeed
     Inherits cEcospaceLayerInteger
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerMPASeed, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerMPASeed
     End Sub

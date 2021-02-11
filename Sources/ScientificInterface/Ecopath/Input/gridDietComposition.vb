@@ -55,7 +55,7 @@ Namespace Ecopath.Input
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 4, 2)
+            Me.Redim(Me.Core.nGroups + 4, 2)
 
             Dim rowCnt As Integer = Me.RowsCount
             ' Set header cells
@@ -65,8 +65,8 @@ Namespace Ecopath.Input
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To Core.nGroups
-                source = Core.EcoPathGroupInputs(i)
+            For i As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcoPathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
@@ -116,9 +116,9 @@ Namespace Ecopath.Input
             Dim iCol As Integer = 2
             Dim nRows As Integer = Me.RowsCount
             ' For each column
-            For iGroup As Integer = 1 To Core.nLivingGroups
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 ' Get the group
-                source = Core.EcoPathGroupInputs(iGroup)
+                source = Me.Core.EcoPathGroupInputs(iGroup)
 
                 If source.PP < 1 Then
 
@@ -126,9 +126,9 @@ Namespace Ecopath.Input
                     alPropSumAll.Clear()
 
                     ' For each row
-                    For iRow As Integer = 1 To Core.nGroups
+                    For iRow As Integer = 1 To Me.Core.nGroups
                         ' Get index group
-                        sourceSec = Core.EcoPathGroupInputs(iRow)
+                        sourceSec = Me.Core.EcoPathGroupInputs(iRow)
 
                         ' Get the indexed dietcomp property
                         prop = pm.GetProperty(source, eVarNameFlags.DietComp, sourceSec)

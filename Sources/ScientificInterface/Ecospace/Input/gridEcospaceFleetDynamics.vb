@@ -153,7 +153,7 @@ Namespace Ecospace
             Handles m_bpEffort.PropertyChanged
 
             Try
-                BeginInvoke(New MethodInvoker(AddressOf UpdateEnabledState))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateEnabledState))
             Catch ex As Exception
 
             End Try

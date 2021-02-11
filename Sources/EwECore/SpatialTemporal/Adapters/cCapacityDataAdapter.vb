@@ -46,7 +46,7 @@ Namespace SpatialData
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -72,13 +72,13 @@ Namespace SpatialData
         ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap,
-                                                  ByVal layer As cEcospaceLayer,
-                                                  ByVal conn As cSpatialDataConnection,
-                                                  ByVal iTime As Integer,
-                                                  ByVal dt As Date,
-                                                  ByVal dataExternal As ISpatialRaster,
-                                                  ByVal dNoData As Double) As Boolean
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap,
+                                                  layer As cEcospaceLayer,
+                                                  conn As cSpatialDataConnection,
+                                                  iTime As Integer,
+                                                  dt As Date,
+                                                  dataExternal As ISpatialRaster,
+                                                  dNoData As Double) As Boolean
 
             If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then Return False
 

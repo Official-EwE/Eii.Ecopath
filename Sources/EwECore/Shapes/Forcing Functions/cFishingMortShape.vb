@@ -28,19 +28,19 @@ Public Class cFishingMortShape
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, _
                    ByRef Manager As cBaseShapeManager, _
-                   ByVal DBID As Integer, _
-                   ByVal GroupName As String)
+                   DBID As Integer, _
+                   GroupName As String)
 
         MyBase.New(EcoSimData, Manager, DBID, eDataTypes.FishMort)
-        m_bInInit = True
+        Me.m_bInInit = True
 
         'iEcoSimIndex is the array index in the underlying EcoSim data
-        m_iEcoSimIndex = Array.IndexOf(m_data.FishRateNoDBID, Me.DBID)
+        Me.m_iEcoSimIndex = Array.IndexOf(Me.m_data.FishRateNoDBID, Me.DBID)
 
         Me.Name = GroupName 'groupname is part of the Ecopath data so it can not be retrieved from the Ecosim data and must be passed in
         Me.Load()
 
-        m_bInInit = False
+        Me.m_bInInit = False
 
     End Sub
 
@@ -52,20 +52,20 @@ Public Class cFishingMortShape
     ''' <remarks>This seperates creation from initialization so that an existing object can be repopluated from its underlying data</remarks>
     Protected Friend Overrides Function Load() As Boolean
 
-        m_bInInit = True
+        Me.m_bInInit = True
 
-        Me.m_iEcoSimIndex = Array.IndexOf(m_data.FishRateNoDBID, m_iDBID)
-        Debug.Assert(m_iEcoSimIndex <> -1, Me.ToString & ".Load() invalid database ID.")
-        If m_iEcoSimIndex = -1 Then Return False
+        Me.m_iEcoSimIndex = Array.IndexOf(Me.m_data.FishRateNoDBID, Me.m_iDBID)
+        Debug.Assert(Me.m_iEcoSimIndex <> -1, Me.ToString & ".Load() invalid database ID.")
+        If Me.m_iEcoSimIndex = -1 Then Return False
 
-        Me.ResizeData(m_data.NTimes)
-        For ipt As Integer = 1 To m_data.NTimes
-            Me.ShapeData(ipt) = m_data.FishRateNo(Me.m_iEcoSimIndex, ipt) 'FishRateNo(nGroups,nTime)
+        Me.ResizeData(Me.m_data.NTimes)
+        For ipt As Integer = 1 To Me.m_data.NTimes
+            Me.ShapeData(ipt) = Me.m_data.FishRateNo(Me.m_iEcoSimIndex, ipt) 'FishRateNo(nGroups,nTime)
         Next ipt
 
-        m_nYears = m_data.NumYears
+        Me.m_nYears = Me.m_data.NumYears
 
-        m_bInInit = False
+        Me.m_bInInit = False
 
         Return True
 
@@ -79,12 +79,12 @@ Public Class cFishingMortShape
     Public Overrides Function Update() As Boolean
 
         'do not update during initialization
-        If m_bInInit Then
+        If Me.m_bInInit Then
             Return False
         End If
 
         'can not update if there is not an index to the underlying data structures
-        If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_data.nGroups) Then
+        If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_data.nGroups) Then
             cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
             Return False
         End If
@@ -92,15 +92,15 @@ Public Class cFishingMortShape
         'make sure the shape data is the same size as the EcoSim Shape data
         'this is a double check as the data size was check when the forcing function was added to the Shape Manager
         'however it could have been changed be an interface at a later date
-        Me.ResizeData(m_data.NTimes)
+        Me.ResizeData(Me.m_data.NTimes)
 
         'populate the raw shape data
-        For ipt As Integer = 1 To m_data.NTimes
-            m_data.FishRateNo(m_iEcoSimIndex, ipt) = Me.ShapeData(ipt) 'FishRateNo(nGroups,nTime)
+        For ipt As Integer = 1 To Me.m_data.NTimes
+            Me.m_data.FishRateNo(Me.m_iEcoSimIndex, ipt) = Me.ShapeData(ipt) 'FishRateNo(nGroups,nTime)
         Next ipt
 
         'tell the manager that a shape has changed it's data
-        ShapeChanged()
+        Me.ShapeChanged()
 
         Return True
 

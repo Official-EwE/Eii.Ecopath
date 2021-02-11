@@ -30,7 +30,7 @@ Namespace SearchObjectives
     Public Interface ISearchObjective
 
         Function Init(ByRef theCore As cCore) As Boolean
-        Function Update(ByVal DataType As eDataTypes) As Boolean
+        Function Update(DataType As eDataTypes) As Boolean
         Function Load() As Boolean
         Sub Clear()
 
@@ -40,11 +40,11 @@ Namespace SearchObjectives
         '''' <param name="WaitTimeinMillSec">Length of time in milliseconds to wait for the process to complete, -1 wait indefinitely.  </param>
         '''' <returns>True if the process was stop within the wait time, False if it timed out.</returns>
         '''' <remarks></remarks>
-        'Function StopRun(Optional ByVal WaitTimeinMillSec As Integer = -1) As Boolean
+        'Function StopRun(Optional WaitTimeinMillSec As Integer = -1) As Boolean
 
         ReadOnly Property ValueWeights() As cSearchObjectiveWeights
-        ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput
-        ReadOnly Property FleetObjectives(ByVal iGroup As Integer) As cSearchObjectiveFleetInput
+        ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput
+        ReadOnly Property FleetObjectives(iGroup As Integer) As cSearchObjectiveFleetInput
         ReadOnly Property ObjectiveParameters() As cSearchObjectiveParameters
 
     End Interface
@@ -78,37 +78,37 @@ Namespace SearchObjectives
         Friend Overridable Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
             Try
 
-                m_core = theCore
+                Me.m_core = theCore
 
-                m_valWeights = New cSearchObjectiveWeights(m_core)
-                m_parameters = New cSearchObjectiveParameters(m_core)
+                Me.m_valWeights = New cSearchObjectiveWeights(Me.m_core)
+                Me.m_parameters = New cSearchObjectiveParameters(Me.m_core)
 
                 'Init the search data
-                Dim search As cSearchDatastructures = m_core.m_SearchData
+                Dim search As cSearchDatastructures = Me.m_core.m_SearchData
 
                 'sets BGoalValue() as a function of PB from last ecopath run
-                search.setDefaultBGoal(m_core.m_EcoPathData.PB)
+                search.setDefaultBGoal(Me.m_core.m_EcoPathData.PB)
                 'discount factor, FLimit, Default F rates
                 search.setDefaultOptimizationValues()
 
                 'default weights
                 search.ValWeight(eValueWeightTypes.NetEcomValue) = 1
 
-                m_lstGroups.Clear()
+                Me.m_lstGroups.Clear()
                 Dim grp As cSearchObjectiveGroupInput
-                For igrp As Integer = 1 To m_core.nGroups
+                For igrp As Integer = 1 To Me.m_core.nGroups
                     'use the database ID for the Ecopath Groups
-                    grp = New cSearchObjectiveGroupInput(m_core, m_core.m_EcoPathData.GroupDBID(igrp))
-                    m_lstGroups.Add(grp)
+                    grp = New cSearchObjectiveGroupInput(Me.m_core, Me.m_core.m_EcoPathData.GroupDBID(igrp))
+                    Me.m_lstGroups.Add(grp)
                 Next
 
 
-                m_lstFleets.Clear()
+                Me.m_lstFleets.Clear()
                 Dim flt As cSearchObjectiveFleetInput
-                For iflt As Integer = 1 To m_core.nFleets
+                For iflt As Integer = 1 To Me.m_core.nFleets
                     'use the database ID for the Fleets
-                    flt = New cSearchObjectiveFleetInput(m_core, m_core.m_EcoPathData.FleetDBID(iflt))
-                    m_lstFleets.Add(flt)
+                    flt = New cSearchObjectiveFleetInput(Me.m_core, Me.m_core.m_EcoPathData.FleetDBID(iflt))
+                    Me.m_lstFleets.Add(flt)
                 Next
 
                 'set the search back to false 
@@ -129,41 +129,41 @@ Namespace SearchObjectives
                 Dim igrp As Integer
                 Dim iflt As Integer
 
-                Dim coreData As cSearchDatastructures = m_core.m_SearchData
+                Dim coreData As cSearchDatastructures = Me.m_core.m_SearchData
 
                 'values weights
-                m_valWeights.AllowValidation = False
-                m_valWeights.EconomicWeight = coreData.ValWeight(eValueWeightTypes.NetEcomValue)
-                m_valWeights.EcoSystemWeight = coreData.ValWeight(eValueWeightTypes.EcoStructure)
-                m_valWeights.MandatedRebuildingWeight = coreData.ValWeight(eValueWeightTypes.MandatedRebuilding)
-                m_valWeights.SocialWeight = coreData.ValWeight(eValueWeightTypes.SocialValue)
+                Me.m_valWeights.AllowValidation = False
+                Me.m_valWeights.EconomicWeight = coreData.ValWeight(eValueWeightTypes.NetEcomValue)
+                Me.m_valWeights.EcoSystemWeight = coreData.ValWeight(eValueWeightTypes.EcoStructure)
+                Me.m_valWeights.MandatedRebuildingWeight = coreData.ValWeight(eValueWeightTypes.MandatedRebuilding)
+                Me.m_valWeights.SocialWeight = coreData.ValWeight(eValueWeightTypes.SocialValue)
 
-                m_valWeights.BiomassDiversityWeight = coreData.ValWeight(eValueWeightTypes.BiomassDiversity)
+                Me.m_valWeights.BiomassDiversityWeight = coreData.ValWeight(eValueWeightTypes.BiomassDiversity)
 
-                m_valWeights.PredictionVariance = coreData.ValWeight(eValueWeightTypes.PredictionVariance)
-                m_valWeights.ExistenceValue = coreData.ValWeight(eValueWeightTypes.ExistenceValue)
+                Me.m_valWeights.PredictionVariance = coreData.ValWeight(eValueWeightTypes.PredictionVariance)
+                Me.m_valWeights.ExistenceValue = coreData.ValWeight(eValueWeightTypes.ExistenceValue)
 
-                m_valWeights.AllowValidation = True
+                Me.m_valWeights.AllowValidation = True
 
-                m_valWeights.ResetStatusFlags()
+                Me.m_valWeights.ResetStatusFlags()
 
-                m_parameters.AllowValidation = False
-                m_parameters.BaseYear = coreData.BaseYear
-                m_parameters.GenDiscRate = coreData.GenDiscountFactor
-                m_parameters.DiscountRate = coreData.DiscountFactor
-                m_parameters.FishingMortalityPenalty = coreData.bUseFishingMortalityPenality
+                Me.m_parameters.AllowValidation = False
+                Me.m_parameters.BaseYear = coreData.BaseYear
+                Me.m_parameters.GenDiscRate = coreData.GenDiscountFactor
+                Me.m_parameters.DiscountRate = coreData.DiscountFactor
+                Me.m_parameters.FishingMortalityPenalty = coreData.bUseFishingMortalityPenality
 
-                m_parameters.PrevCostEarning = coreData.UseCostPenalty
+                Me.m_parameters.PrevCostEarning = coreData.UseCostPenalty
 
-                m_parameters.ResetStatusFlags()
+                Me.m_parameters.ResetStatusFlags()
 
-                m_parameters.AllowValidation = True
+                Me.m_parameters.AllowValidation = True
 
-                For Each grp As cSearchObjectiveGroupInput In m_lstGroups
+                For Each grp As cSearchObjectiveGroupInput In Me.m_lstGroups
                     grp.AllowValidation = False
-                    igrp = Array.IndexOf(m_core.m_EcoPathData.GroupDBID, grp.DBID)
+                    igrp = Array.IndexOf(Me.m_core.m_EcoPathData.GroupDBID, grp.DBID)
                     grp.Index = igrp
-                    grp.Name = m_core.m_EcoPathData.GroupName(igrp)
+                    grp.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
 
                     grp.MandRelBiom = coreData.MGoalValue(grp.Index)
                     grp.StrucRelWeight = coreData.BGoalValue(grp.Index)
@@ -173,14 +173,14 @@ Namespace SearchObjectives
 
                 Next
 
-                For Each flt As cSearchObjectiveFleetInput In m_lstFleets
+                For Each flt As cSearchObjectiveFleetInput In Me.m_lstFleets
                     flt.AllowValidation = False
 
-                    iflt = Array.IndexOf(m_core.m_EcoPathData.FleetDBID, flt.DBID)
+                    iflt = Array.IndexOf(Me.m_core.m_EcoPathData.FleetDBID, flt.DBID)
                     flt.Index = iflt
 
                     flt.Resize()
-                    flt.Name = m_core.m_EcoPathData.FleetName(iflt)
+                    flt.Name = Me.m_core.m_EcoPathData.FleetName(iflt)
                     'pop variables.....
 
                     flt.JobCatchValue = coreData.Jobs(flt.Index)
@@ -207,23 +207,23 @@ Namespace SearchObjectives
             Me.m_lstGroups.Clear()
         End Sub
 
-        Public Overridable Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
-            Dim coreData As cSearchDatastructures = m_core.m_SearchData
+        Public Overridable Function Update(DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+            Dim coreData As cSearchDatastructures = Me.m_core.m_SearchData
 
             Select Case DataType
 
                 Case eDataTypes.SearchObjectiveParameters
 
-                    coreData.UseCostPenalty = m_parameters.PrevCostEarning
-                    coreData.BaseYear = m_parameters.BaseYear
-                    coreData.GenDiscountFactor = m_parameters.GenDiscRate
-                    coreData.DiscountFactor = m_parameters.DiscountRate
-                    coreData.bUseFishingMortalityPenality = m_parameters.FishingMortalityPenalty
+                    coreData.UseCostPenalty = Me.m_parameters.PrevCostEarning
+                    coreData.BaseYear = Me.m_parameters.BaseYear
+                    coreData.GenDiscountFactor = Me.m_parameters.GenDiscRate
+                    coreData.DiscountFactor = Me.m_parameters.DiscountRate
+                    coreData.bUseFishingMortalityPenality = Me.m_parameters.FishingMortalityPenalty
 
                 Case eDataTypes.SearchObjectiveFleetInput
 
                     'load the code blocks
-                    For Each flt As cSearchObjectiveFleetInput In m_lstFleets
+                    For Each flt As cSearchObjectiveFleetInput In Me.m_lstFleets
 
                         coreData.Jobs(flt.Index) = flt.JobCatchValue
                         coreData.TargetProfitability(flt.Index) = flt.TargetProfitability
@@ -245,10 +245,10 @@ Namespace SearchObjectives
 
                 Case eDataTypes.SearchObjectiveWeights
                     'Value Weights
-                    coreData.ValWeight(eValueWeightTypes.NetEcomValue) = m_valWeights.EconomicWeight
-                    coreData.ValWeight(eValueWeightTypes.EcoStructure) = m_valWeights.EcoSystemWeight
+                    coreData.ValWeight(eValueWeightTypes.NetEcomValue) = Me.m_valWeights.EconomicWeight
+                    coreData.ValWeight(eValueWeightTypes.EcoStructure) = Me.m_valWeights.EcoSystemWeight
 
-                    coreData.ValWeight(eValueWeightTypes.BiomassDiversity) = m_valWeights.BiomassDiversityWeight
+                    coreData.ValWeight(eValueWeightTypes.BiomassDiversity) = Me.m_valWeights.BiomassDiversityWeight
 
                     'ValWeight() shares indexes for different values based on the search.PortFolio flag
                     'SocialValue = 2
@@ -256,11 +256,11 @@ Namespace SearchObjectives
                     'MandatedRebuilding = 3
                     'ExistenceValue = 3
                     If coreData.PortFolio Then
-                        coreData.ValWeight(eValueWeightTypes.PredictionVariance) = m_valWeights.PredictionVariance
-                        coreData.ValWeight(eValueWeightTypes.ExistenceValue) = m_valWeights.ExistenceValue
+                        coreData.ValWeight(eValueWeightTypes.PredictionVariance) = Me.m_valWeights.PredictionVariance
+                        coreData.ValWeight(eValueWeightTypes.ExistenceValue) = Me.m_valWeights.ExistenceValue
                     Else
-                        coreData.ValWeight(eValueWeightTypes.MandatedRebuilding) = m_valWeights.MandatedRebuildingWeight
-                        coreData.ValWeight(eValueWeightTypes.SocialValue) = m_valWeights.SocialWeight
+                        coreData.ValWeight(eValueWeightTypes.MandatedRebuilding) = Me.m_valWeights.MandatedRebuildingWeight
+                        coreData.ValWeight(eValueWeightTypes.SocialValue) = Me.m_valWeights.SocialWeight
                     End If
 
             End Select
@@ -276,21 +276,21 @@ Namespace SearchObjectives
             End Get
         End Property
 
-        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+        Public ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
             Get
-                Return m_lstGroups(iGroup)
+                Return Me.m_lstGroups(iGroup)
             End Get
         End Property
 
-        Public ReadOnly Property FleetObjectives(ByVal iGroup As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+        Public ReadOnly Property FleetObjectives(iGroup As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
             Get
-                Return m_lstFleets(iGroup)
+                Return Me.m_lstFleets(iGroup)
             End Get
         End Property
 
         Public ReadOnly Property ObjectiveParameters() As cSearchObjectiveParameters Implements ISearchObjective.ObjectiveParameters
             Get
-                Return m_parameters
+                Return Me.m_parameters
             End Get
         End Property
 

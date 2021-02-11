@@ -66,7 +66,7 @@ Public Class frmDistributionParameters
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, ByVal Plugin As cMSEPluginPoint)
+    Public Sub Init(uic As cUIContext, Plugin As cMSEPluginPoint)
 
         Me.m_grid.UIContext = uic
         Me.UIContext = uic
@@ -74,7 +74,7 @@ Public Class frmDistributionParameters
         Me.Grid = Me.m_grid
 
         For i As Integer = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupInputs(i).IsProducer Then nPPers += 1
+            If Me.Core.EcoPathGroupInputs(i).IsProducer Then Me.nPPers += 1
         Next
 
         ' JS: Item indexes should obviously correspond to eParameterSet enum values
@@ -96,7 +96,7 @@ Public Class frmDistributionParameters
         ' JS 30Sep13: globalized this method
         MyBase.OnLoad(e)
 
-        AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        AddHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
 
         Me.m_ecopathdist = New cEcopathDistributionParams(Me.MSE, Me.Core)
         Me.m_ecosimdist = New cEcosimDistributionParams(Me.MSE, Me.Core)
@@ -136,7 +136,7 @@ Public Class frmDistributionParameters
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-        RemoveHandler Me.m_grid.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_grid.onEdited, AddressOf Me.OnGridEdited
         Me.m_grid.UIContext = Nothing
         MyBase.OnFormClosed(e)
 
@@ -166,7 +166,7 @@ Public Class frmDistributionParameters
     ''' change all the options in the combobox used to specify the parameter 
     ''' name.
     ''' </summary>
-    Private Sub OnModelSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnModelSelectionChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tscmPathOrSim.SelectedIndexChanged
 
         ' JS 02Oct13: preserve unsaved changes flag
@@ -175,7 +175,7 @@ Public Class frmDistributionParameters
         ' JS 02Oct13: globalized this method
         ' JS 02Oct13: used a class to encapsulate param instead of relying on item text
 
-        If m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecopath Then
+        If Me.m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecopath Then
             Me.m_grid.Mode = eParameterSet.Ecopath
             Me.m_tscmParamName.Items.Clear()
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.B, SharedResources.HEADER_BIOMASS, Me.m_ecopathdist.B))
@@ -184,7 +184,7 @@ Public Class frmDistributionParameters
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.PB, SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, Me.m_ecopathdist.PB))
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.EE, "EE", Me.m_ecopathdist.EE))
             Me.m_tscmParamName.SelectedIndex = 0
-        ElseIf m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecosim Then
+        ElseIf Me.m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecosim Then
             Me.m_grid.Mode = eParameterSet.Ecosim
             Me.m_tscmParamName.Items.Clear()
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.DenDepCatchability, SharedResources.HEADER_DENDEPCATCHABILITY_ABBR, Me.m_ecosimdist.DenDepCatchability))
@@ -204,10 +204,10 @@ Public Class frmDistributionParameters
 
     Private Sub OnGridEdited()
         Me.m_bIsDirty = True
-        Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
+        Me.Invoke(New MethodInvoker(AddressOf Me.UpdateControls))
     End Sub
 
-    Private Sub OnParamSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnParamSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_tscmParamName.SelectedIndexChanged
 
         Try
@@ -219,7 +219,7 @@ Public Class frmDistributionParameters
 
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -227,7 +227,7 @@ Public Class frmDistributionParameters
 
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSave.Click
 
         Dim lstrSubMessages As New List(Of String)

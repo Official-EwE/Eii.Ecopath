@@ -63,7 +63,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.Init"/>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub Init(ByVal theCore As Object) _
+    Public Overridable Sub Init(theCore As Object) _
         Implements IEcospaceResultsWriter.Init
         Me.m_core = DirectCast(theCore, cCore)
 
@@ -82,7 +82,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.WriteResults"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Sub WriteResults(ByVal SpaceTimeStepResults As Object) _
+    Public MustOverride Sub WriteResults(SpaceTimeStepResults As Object) _
         Implements IEcospaceResultsWriter.WriteResults
 
     ''' -----------------------------------------------------------------------
@@ -167,10 +167,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' not supplied then no time stamp will appear in the filename.</param>
     ''' <returns>A file name.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags,
-                                                    ByVal iGrp As Integer,
-                                                    ByVal strExt As String,
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Public Overridable Function GetGroupFileName(varname As eVarNameFlags,
+                                                    iGrp As Integer,
+                                                    strExt As String,
+                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim Filename As String
         If Me.m_core.PluginManager.EcospaceResultsMapGroupFileName(Filename, varname, iGrp, strExt, iModelTimeStep) Then
@@ -201,7 +201,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Sub setAllGroupsSelected()
         Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
         For igrp As Integer = 1 To Me.EcopathData.NumGroups
-            m_selGroups(igrp) = True
+            Me.m_selGroups(igrp) = True
         Next igrp
 
     End Sub
@@ -211,7 +211,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         For igrp As Integer = 1 To Me.EcopathData.NumGroups
             For iflt As Integer = 1 To Me.EcopathData.NumFleet
                 If (Me.EcopathData.Discard(iflt, igrp) + Me.EcopathData.Landing(iflt, igrp)) > 0 Then
-                    m_selGroups(igrp) = True
+                    Me.m_selGroups(igrp) = True
                 End If
             Next iflt
         Next igrp
@@ -220,7 +220,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Sub setAllFleetsSelected()
         Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
         For iflt As Integer = 1 To Me.EcopathData.NumFleet
-            m_selGroups(iflt) = True
+            Me.m_selGroups(iflt) = True
         Next iflt
     End Sub
 
@@ -236,10 +236,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' not supplied then no time stamp will appear in the filename.</param>
     ''' <returns>A file name.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags,
-                                                    ByVal iFlt As Integer,
-                                                    ByVal strExt As String,
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Public Overridable Function GetFleetFileName(varname As eVarNameFlags,
+                                                    iFlt As Integer,
+                                                    strExt As String,
+                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
 
         Dim Filename As String
@@ -287,7 +287,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Get
     End Property
 
-    Protected Sub WriteRunInfo(ByVal strm As StreamWriter)
+    Protected Sub WriteRunInfo(strm As StreamWriter)
         strm.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
     End Sub
 
@@ -300,10 +300,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <param name="iIndex"></param>
     ''' <param name="varname"></param>
     ''' <returns></returns>
-    Protected Overridable Function ScaleValue(ByVal value As Double,
-                                              ByVal SpaceTSData As cEcospaceTimestep,
-                                              ByVal iIndex As Integer,
-                                              ByVal varname As eVarNameFlags) As Double
+    Protected Overridable Function ScaleValue(value As Double,
+                                              SpaceTSData As cEcospaceTimestep,
+                                              iIndex As Integer,
+                                              varname As eVarNameFlags) As Double
         Return value
     End Function
 
@@ -315,7 +315,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
     Public ReadOnly Property FirstOutputTimeStep As Integer
         Get
-            Return m_FirstStep
+            Return Me.m_FirstStep
         End Get
     End Property
 

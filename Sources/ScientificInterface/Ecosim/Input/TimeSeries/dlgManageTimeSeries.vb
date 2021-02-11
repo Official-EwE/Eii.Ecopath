@@ -36,7 +36,7 @@ Public Class dlgManageTimeSeries
 
         Private m_ts As cTimeSeries = Nothing
 
-        Public Sub New(ByVal ts As cTimeSeries)
+        Public Sub New(ts As cTimeSeries)
             Me.m_ts = ts
         End Sub
 
@@ -77,7 +77,7 @@ Public Class dlgManageTimeSeries
     Private m_tr As cTimeSeriesTextReader = Nothing
     Private m_strImportFileName As String = ""
 
-    Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
+    Public Sub New(uic As cUIContext, mode As eModeType)
 
         Debug.Assert(uic IsNot Nothing)
 
@@ -118,7 +118,7 @@ Public Class dlgManageTimeSeries
 
 #Region " Generic "
 
-    Private Sub dlgTimeSeries_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgTimeSeries_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Me.UpdateLoadPage()
         Me.UpdateWeightsPage()
         Me.UpdateDeletePage()
@@ -127,7 +127,7 @@ Public Class dlgManageTimeSeries
         Me.Mode = Me.m_mode
     End Sub
 
-    Private Sub OnTabSelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnTabSelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_tcMain.SelectedIndexChanged
 
         Select Case Me.m_tcMain.SelectedIndex
@@ -144,7 +144,7 @@ Public Class dlgManageTimeSeries
         End Select
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) Handles m_btnOk.Click
 
         Select Case Me.m_mode
             Case eModeType.Load
@@ -170,7 +170,7 @@ Public Class dlgManageTimeSeries
         Me.Close()
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -179,12 +179,12 @@ Public Class dlgManageTimeSeries
 
 #Region " Load "
 
-    Private Sub m_lvLoadDatasets_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub m_lvLoadDatasets_DoubleClick(sender As Object, e As System.EventArgs) _
          Handles m_lvLoadDatasets.DoubleClick
         Me.OnOK(sender, e)
     End Sub
 
-    Private Sub m_lvLoadDatasets_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub m_lvLoadDatasets_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_lvLoadDatasets.SelectedIndexChanged
         Dim ds As cTimeSeriesDataset = Me.GetLoadSelectedDataset()
         If (ds IsNot Nothing) Then
@@ -197,11 +197,11 @@ Public Class dlgManageTimeSeries
 
 #Region " Apply "
 
-    Private Sub OnApplyCheckAll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApplyCheckAll.Click
+    Private Sub OnApplyCheckAll(sender As System.Object, e As System.EventArgs) Handles m_btnApplyCheckAll.Click
         Me.m_gridWeights.CheckAll(True)
     End Sub
 
-    Private Sub OnApplyCheckNone(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApplyCheckNone.Click
+    Private Sub OnApplyCheckNone(sender As System.Object, e As System.EventArgs) Handles m_btnApplyCheckNone.Click
         Me.m_gridWeights.CheckAll(False)
     End Sub
 
@@ -211,7 +211,7 @@ Public Class dlgManageTimeSeries
 
     ' -- SOURCE --
 
-    Private Sub OnImportBrowseSource(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnImportBrowseSource(sender As System.Object, e As System.EventArgs) _
             Handles m_btnImportBrowse.Click
 
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
@@ -227,25 +227,25 @@ Public Class dlgManageTimeSeries
 
     End Sub
 
-    Private Sub OnImportSourceFileNameEntered(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tbImportFileName.TextChanged
+    Private Sub OnImportSourceFileNameEntered(sender As System.Object, e As System.EventArgs) Handles m_tbImportFileName.TextChanged
         Me.m_strImportFileName = Me.m_tbImportFileName.Text
     End Sub
 
-    Private Sub OnImportSourceFileNameFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_tbImportFileName.GotFocus
+    Private Sub OnImportSourceFileNameFocus(sender As Object, e As System.EventArgs) Handles m_tbImportFileName.GotFocus
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV)
     End Sub
 
-    Private Sub OnImportSetTextFileSource(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnImportSetTextFileSource(sender As System.Object, e As System.EventArgs) _
             Handles m_rbImportSourceTextFile.CheckedChanged
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV)
     End Sub
 
-    Private Sub OnImportSetClipboardSource(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnImportSetClipboardSource(sender As System.Object, e As System.EventArgs) _
             Handles m_rbImportSourceClipboard.CheckedChanged
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard)
     End Sub
 
-    Private Sub OnImportFormatInterval(ByVal sender As System.Object, ByVal e As ListControlConvertEventArgs) _
+    Private Sub OnImportFormatInterval(sender As System.Object, e As ListControlConvertEventArgs) _
             Handles m_cmbImportInterval.Format
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
         e.Value = fmt.ToString(e.ListItem)
@@ -253,26 +253,26 @@ Public Class dlgManageTimeSeries
 
     ' -- DESTINATION --
 
-    Private Sub m_cmbImportDataset_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_cmbImportDataset_TextChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbImportDataset.TextChanged
         Me.UpdateControls()
     End Sub
 
-    Private Sub m_cmbImportDataset_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_cmbImportDataset_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbImportDataset.SelectedIndexChanged
-        Me.DatasetName = m_cmbImportDataset.Text
+        Me.DatasetName = Me.m_cmbImportDataset.Text
     End Sub
 
     ' -- Delimiters and separators --
 
-    Private Sub OnImportDelimiterOrSeparatorChanged(ByVal sender As Object, ByVal arg As EventArgs) _
+    Private Sub OnImportDelimiterOrSeparatorChanged(sender As Object, arg As EventArgs) _
             Handles m_tbImportDelimiter.TextChanged, m_tbImportSeparator.TextChanged
         Me.ReloadTimeSeries()
     End Sub
 
     ' -- Interval --
 
-    Private Sub m_cmbIntervalChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub m_cmbIntervalChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cmbImportInterval.SelectedIndexChanged
         Me.ReloadTimeSeries()
     End Sub
@@ -285,12 +285,12 @@ Public Class dlgManageTimeSeries
 
 #Region " Delete "
 
-    Private Sub m_lvDeleteDatasets_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub m_lvDeleteDatasets_DoubleClick(sender As Object, e As System.EventArgs) _
          Handles m_lvDeleteDatasets.DoubleClick
         Me.OnOK(sender, e)
     End Sub
 
-    Private Sub m_lvDeleteDatasets_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub m_lvDeleteDatasets_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_lvDeleteDatasets.SelectedIndexChanged
         Me.UpdateControls()
     End Sub
@@ -340,7 +340,7 @@ Public Class dlgManageTimeSeries
         Get
             Return Me.m_mode
         End Get
-        Set(ByVal mode As eModeType)
+        Set(mode As eModeType)
             Me.m_mode = mode
             Select Case mode
                 Case eModeType.Load
@@ -484,7 +484,7 @@ Public Class dlgManageTimeSeries
 
 #Region " Weight "
 
-    Private Function UpdateWeightsPage(Optional ByVal bAutoApply As Boolean = False) As Boolean
+    Private Function UpdateWeightsPage(Optional bAutoApply As Boolean = False) As Boolean
         Me.m_gridWeights.RefreshContent()
         Return True
     End Function
@@ -494,7 +494,7 @@ Public Class dlgManageTimeSeries
     ''' Apply selected TS
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Function ApplyTimeSeries(ByVal bIsLoading As Boolean) As Boolean
+    Private Function ApplyTimeSeries(bIsLoading As Boolean) As Boolean
         Return Me.m_gridWeights.Apply(bIsLoading)
     End Function
 
@@ -542,7 +542,7 @@ Public Class dlgManageTimeSeries
     ''' to import from
     ''' </param>
     ''' -------------------------------------------------------------------
-    Private Sub SetSource(ByVal src As cTimeSeriesReaderFactory.eTimeSeriesReaderTypes)
+    Private Sub SetSource(src As cTimeSeriesReaderFactory.eTimeSeriesReaderTypes)
         Select Case src
 
             Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV
@@ -843,7 +843,7 @@ Public Class dlgManageTimeSeries
         Get
             Return Me.m_strDataset
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.m_strDataset = value
         End Set
     End Property

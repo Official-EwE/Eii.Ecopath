@@ -129,7 +129,7 @@ Public Class gridAboutEwE
     ''' Grid resize: resize the columns
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnResize(e As System.EventArgs)
         MyBase.OnResize(e)
         Me.FitColumns()
     End Sub

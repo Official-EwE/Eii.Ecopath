@@ -43,11 +43,11 @@ Namespace Properties
         ''' </summary>
         ''' <param name="s">The value of this expression</param>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal s As Single)
+        Public Sub New(s As Single)
             Me.m_sValue = s
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' NOP
         End Sub
 

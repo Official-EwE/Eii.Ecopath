@@ -203,7 +203,7 @@ Namespace Ecospace.Controls
 
             ' Problem with CheckedListBox: event is thrown before event is processed.
             ' Therefore, perform a delayed response:
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
 
         End Sub
 
@@ -218,7 +218,7 @@ Namespace Ecospace.Controls
             Return Path.Combine(strPath, Path.ChangeExtension(strFile, ".xml"))
         End Function
 
-        Private Sub SelectDatasets(ByVal mode As eSelectionMode)
+        Private Sub SelectDatasets(mode As eSelectionMode)
 
             For i As Integer = 0 To Me.m_clbDatsets.Items.Count - 1
 

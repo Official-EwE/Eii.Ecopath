@@ -76,8 +76,8 @@ Namespace SpatialData
         ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
         ''' column are invalid, or if the cell does not hold any data.</returns>
         ''' -------------------------------------------------------------------
-        Function Cell(ByVal iRow As Integer, ByVal iCol As Integer, _
-                      Optional ByVal dNoDataValue As Double = -9999) As Double
+        Function Cell(iRow As Integer, iCol As Integer, _
+                      Optional dNoDataValue As Double = -9999) As Double
 
 #End Region ' Data access
 

@@ -115,10 +115,10 @@ Namespace Controls
         ''' <param name="asValue"></param>
         ''' <remarks></remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal strModel As String, _
-                       ByVal pyramidtype As cPyramid.ePyramidTypes, _
-                       ByVal strUnit As String, ByVal iNumTL As Integer, _
-                       ByVal sTotalB As Single, ByVal asBiomass() As Single, ByVal asValue() As Single)
+        Public Sub New(strModel As String, _
+                       pyramidtype As cPyramid.ePyramidTypes, _
+                       strUnit As String, iNumTL As Integer, _
+                       sTotalB As Single, asBiomass() As Single, asValue() As Single)
 
             Me.m_strModel = strModel
             Me.m_pyramidtype = pyramidtype
@@ -185,7 +185,7 @@ Namespace Controls
             Get
                 Return Math.Min(Me.m_iNumTL, Me.m_iNumTLMax)
             End Get
-            Set(ByVal iNumTL As Integer)
+            Set(iNumTL As Integer)
                 Me.m_iNumTL = iNumTL
                 Me.Calculate()
             End Set
@@ -197,7 +197,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iTL"></param>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Value(ByVal iTL As Integer) As Single
+        Public ReadOnly Property Value(iTL As Integer) As Single
             Get
                 If (iTL < 0 Or iTL > Me.m_iNumTL) Then Return 0.0!
                 Return Me.m_asValues(iTL)
@@ -292,7 +292,7 @@ Namespace Controls
         ''' thousands separators.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Function ToXML(ByVal strFilename As String) As Boolean
+        Public Function ToXML(strFilename As String) As Boolean
 
             Dim doc As XmlDocument = New XmlDocument()
             Dim nodePyramid As XmlNode = Nothing
@@ -372,8 +372,8 @@ Namespace Controls
         ''' defined by the language settings in Windows (False).</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Function FromXML(ByVal strFilename As String, _
-                                Optional ByVal bFixedFormatting As Boolean = True) As Boolean
+        Public Function FromXML(strFilename As String, _
+                                Optional bFixedFormatting As Boolean = True) As Boolean
 
             Dim doc As XmlDocument = New XmlDocument()
             Dim iTL As Integer = 0
@@ -474,8 +474,8 @@ Namespace Controls
         ''' defined by the language settings in Windows (False).</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FromEwE5TextFile(ByVal strFileName As String, _
-                                         Optional ByVal bFixedFormatting As Boolean = True) As Boolean
+        Public Function FromEwE5TextFile(strFileName As String, _
+                                         Optional bFixedFormatting As Boolean = True) As Boolean
 
             Dim tr As TextReader = Nothing
             Dim strLine As String = ""

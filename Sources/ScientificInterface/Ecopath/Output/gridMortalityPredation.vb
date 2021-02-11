@@ -61,10 +61,10 @@ Namespace Ecopath.Output
             ''' <param name="varname">Source variable name.</param>
             ''' <param name="sourceSec">Secundary index.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal pm As cPropertyManager, _
-                            ByVal source As cCoreInputOutputBase, _
-                            ByVal varname As eVarNameFlags, _
-                            Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+            Public Sub New(pm As cPropertyManager, _
+                            source As cCoreInputOutputBase, _
+                            varname As eVarNameFlags, _
+                            Optional sourceSec As cCoreInputOutputBase = Nothing)
                 MyBase.New(pm, source, varname, sourceSec)
 
                 Me.PB = DirectCast(pm.GetProperty(source, eVarNameFlags.PBOutput, sourceSec), cSingleProperty)
@@ -79,16 +79,16 @@ Namespace Ecopath.Output
                 Get
                     Return Me.m_propPB
                 End Get
-                Set(ByVal value As cSingleProperty)
+                Set(value As cSingleProperty)
 
                     If (Me.m_propPB IsNot Nothing) Then
-                        RemoveHandler Me.m_propPB.PropertyChanged, AddressOf OnPBChanged
+                        RemoveHandler Me.m_propPB.PropertyChanged, AddressOf Me.OnPBChanged
                     End If
 
                     Me.m_propPB = value
 
                     If (Me.m_propPB IsNot Nothing) Then
-                        AddHandler Me.m_propPB.PropertyChanged, AddressOf OnPBChanged
+                        AddHandler Me.m_propPB.PropertyChanged, AddressOf Me.OnPBChanged
                         Me.UpdateStyle()
                     End If
 
@@ -115,12 +115,12 @@ Namespace Ecopath.Output
 
             End Sub
 
-            Protected Overridable Sub OnPBChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+            Protected Overridable Sub OnPBChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
                 Me.UpdateStyle()
                 Me.Invalidate()
             End Sub
 
-            Protected Overrides Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+            Protected Overrides Sub OnPropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
                 Me.UpdateStyle()
                 MyBase.OnPropertyChanged(prop, changeFlags)
             End Sub
@@ -143,7 +143,7 @@ Namespace Ecopath.Output
             Dim source As cCoreGroupBase = Nothing
             Dim iGroup As Integer
 
-            Me.Redim(core.nLivingGroups + 1, 2)
+            Me.Redim(Me.core.nLivingGroups + 1, 2)
 
             Dim rowCnt As Integer = Me.RowsCount
 
@@ -152,9 +152,9 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
 
-            For iGroup = 1 To core.nLivingGroups
+            For iGroup = 1 To Me.core.nLivingGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = core.EcoPathGroupOutputs(iGroup)
+                source = Me.core.EcoPathGroupOutputs(iGroup)
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 1) = New cEwERowHeaderCell(source.Name)
 
@@ -177,11 +177,11 @@ Namespace Ecopath.Output
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim cell As cPropertyCell = Nothing
 
-            For rowIndex As Integer = 1 To core.nLivingGroups
-                source = core.EcoPathGroupOutputs(rowIndex)
+            For rowIndex As Integer = 1 To Me.core.nLivingGroups
+                source = Me.core.EcoPathGroupOutputs(rowIndex)
                 Dim columnIndex As Integer = 2
-                For groupIndex As Integer = 1 To core.nLivingGroups
-                    sourceSec = core.EcoPathGroupOutputs(groupIndex)
+                For groupIndex As Integer = 1 To Me.core.nLivingGroups
+                    sourceSec = Me.core.EcoPathGroupOutputs(groupIndex)
                     If sourceSec.PP < 1 Then
                         ' Create cell
                         cell = New MortalityGridCell(Me.PropertyManager, source, eVarNameFlags.PredMort, sourceSec)

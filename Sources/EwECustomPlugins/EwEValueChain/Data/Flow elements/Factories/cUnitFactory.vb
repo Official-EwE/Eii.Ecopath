@@ -35,16 +35,16 @@ Public Class cUnitFactory
         Consumer
     End Enum
 
-    Public Shared Function CreateUnit(ByVal tClass As Type) As cUnit
+    Public Shared Function CreateUnit(tClass As Type) As cUnit
         If Not GetType(cUnit).IsAssignableFrom(tClass) Then Return Nothing
         Return CType(System.Activator.CreateInstance(tClass), cUnit)
     End Function
 
-    Public Shared Function CreateUnit(ByVal unitType As eUnitType) As cUnit
+    Public Shared Function CreateUnit(unitType As eUnitType) As cUnit
         Return CreateUnit(MapType(unitType))
     End Function
 
-    Public Shared Function MapType(ByVal unitType As eUnitType) As Type
+    Public Shared Function MapType(unitType As eUnitType) As Type
         Dim t As Type = Nothing
         Select Case unitType
             Case eUnitType.Producer : t = GetType(cProducerUnit)
@@ -57,7 +57,7 @@ Public Class cUnitFactory
         Return t
     End Function
 
-    Public Shared Function CreateUnitDefault(ByVal unitType As eUnitType) As cUnit
+    Public Shared Function CreateUnitDefault(unitType As eUnitType) As cUnit
         Dim t As Type = Nothing
         Select Case unitType
             Case eUnitType.Producer : t = GetType(cProducerUnitDefault)

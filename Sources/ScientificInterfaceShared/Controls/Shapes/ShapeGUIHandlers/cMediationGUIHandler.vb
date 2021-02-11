@@ -62,12 +62,12 @@ Namespace Controls
         ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
         ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Shadows Sub Attach(ByVal stb As ucShapeToolbox, _
-                                  ByVal stbtb As ucShapeToolboxToolbar, _
-                                  ByVal sp As ucSketchPad, _
-                                  ByVal sptb As ucSketchPadToolbar, _
-                                  ByVal ma As ucMediationAssignments, _
-                                  ByVal mat As ucMediationAssignmentsToolbar)
+        Public Overridable Shadows Sub Attach(stb As ucShapeToolbox, _
+                                  stbtb As ucShapeToolboxToolbar, _
+                                  sp As ucSketchPad, _
+                                  sptb As ucSketchPadToolbar, _
+                                  ma As ucMediationAssignments, _
+                                  mat As ucMediationAssignmentsToolbar)
 
             MyBase.Attach(stb, stbtb, sp, sptb)
 
@@ -105,7 +105,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.SetSeasonal"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub SetSeasonal(ByVal shape As EwECore.cShapeData, ByVal bSeasonal As Boolean)
+        Public Overrides Sub SetSeasonal(shape As EwECore.cShapeData, bSeasonal As Boolean)
             ' Not allowed to do this; it makes absolutely no sense for Mediation shapes
             Debug.Assert(False)
         End Sub
@@ -130,7 +130,7 @@ Namespace Controls
             Get
                 Return Me.m_medass
             End Get
-            Protected Set(ByVal value As ucMediationAssignments)
+            Protected Set(value As ucMediationAssignments)
 
                 If (Me.m_medass IsNot Nothing) Then
                     'Me.m_bp.Handler = Nothing
@@ -155,7 +155,7 @@ Namespace Controls
             Get
                 Return Me.m_medasstoolbar
             End Get
-            Protected Set(ByVal value As ucMediationAssignmentsToolbar)
+            Protected Set(value As ucMediationAssignmentsToolbar)
 
                 If (Me.m_medasstoolbar IsNot Nothing) Then
                     Me.m_medasstoolbar.Handler = Nothing
@@ -213,7 +213,7 @@ Namespace Controls
             Get
                 Return MyBase.SelectedShapes
             End Get
-            Set(ByVal value As EwECore.cShapeData())
+            Set(value As EwECore.cShapeData())
 
                 MyBase.SelectedShapes = value
 
@@ -255,7 +255,7 @@ Namespace Controls
         ''' Overridden to suppress Seasonal command.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function SupportCommand(cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.Seasonal
                     Return False
@@ -274,7 +274,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.EnableCommand"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function EnableCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
+        Public Overrides Function EnableCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
                 Case eShapeCommandTypes.DefineMediation, _
                      eShapeCommandTypes.ViewMode
@@ -288,9 +288,9 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
-                                             Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
-                                             Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
+                                             Optional ashapes() As EwECore.cShapeData = Nothing, _
+                                             Optional data As Object = Nothing)
 
             Try
                 Select Case cmd
@@ -323,7 +323,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.OnShapeFinalized"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+        Public Overrides Sub OnShapeFinalized(shape As EwECore.cShapeData, sketchpad As ucSketchPad)
             DirectCast(shape, cMediationBaseFunction).XBaseIndex = CInt(Math.Round(sketchpad.XMarkValue))
             MyBase.OnShapeFinalized(shape, sketchpad)
         End Sub
@@ -331,7 +331,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.OnShapeSelected"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+        Public Overrides Sub OnShapeSelected(shape() As EwECore.cShapeData)
             MyBase.OnShapeSelected(shape)
             If (Me.MediationAssignments IsNot Nothing) Then
                 Me.MediationAssignments.Title = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS

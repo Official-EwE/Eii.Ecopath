@@ -28,12 +28,12 @@ Public MustInherit Class cFishingBaseShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
-        Init()
+        Me.Init()
     End Sub
 
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
-            Return m_SimData.NTimes
+            Return Me.m_SimData.NTimes
         End Get
     End Property
 

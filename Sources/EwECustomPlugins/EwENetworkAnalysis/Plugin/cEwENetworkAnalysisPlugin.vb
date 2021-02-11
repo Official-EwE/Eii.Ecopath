@@ -76,7 +76,7 @@ Public Class cEwENetworkAnalysisPlugin
         End If
     End Sub
 
-    Public Shared Function SwitchForm(ByVal page As frmNetworkAnalysis.eNetworkAnalysisPageTypes) As frmNetworkAnalysis
+    Public Shared Function SwitchForm(page As frmNetworkAnalysis.eNetworkAnalysisPageTypes) As frmNetworkAnalysis
 
         ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
         Dim bIsFormReady As Boolean = False
@@ -150,9 +150,9 @@ Public Class cEwENetworkAnalysisPlugin
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
     ''' <param name="core"></param>
-    Public Overrides Sub Initialize(ByVal core As Object)
+    Public Overrides Sub Initialize(core As Object)
 
-        m_bInitOK = False
+        Me.m_bInitOK = False
         Try
             Me.m_core = DirectCast(core, EwECore.cCore)
 
@@ -261,7 +261,7 @@ Public Class cEwENetworkAnalysisPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures"></param>
     ''' <remarks></remarks>
-    Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
 
         Debug.Assert(TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures, Me.ToString &
                             ".EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
@@ -274,7 +274,7 @@ Public Class cEwENetworkAnalysisPlugin
         End If
 
         'Only proceed if Ecosim Network Analysis is turned on
-        If Not m_manager.UseEcosimNetwork Then Return
+        If Not Me.m_manager.UseEcosimNetwork Then Return
 
         Try
             If Not Me.m_manager.IsMainNetworkRun Then
@@ -304,13 +304,13 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="Ecosimresults"></param>
     ''' <remarks></remarks>
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
-                                 ByVal EcosimDatastructures As Object,
-                                 ByVal iTime As Integer, ByVal Ecosimresults As Object) _
+                                 EcosimDatastructures As Object,
+                                 iTime As Integer, Ecosimresults As Object) _
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
             'Only run the Ecosim Network Analysis if it is turned on
-            If Not m_manager.UseEcosimNetwork Then
+            If Not Me.m_manager.UseEcosimNetwork Then
                 Return
             End If
 
@@ -318,7 +318,7 @@ Public Class cEwENetworkAnalysisPlugin
                 'set the EcosimData data in the network manager object
                 'this is the data the Network analysis will be run on
                 Dim esData As cEcosimDatastructures = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
-                m_manager.EcosimTimeStep(BiomassAtTimestep, esData, iTime)
+                Me.m_manager.EcosimTimeStep(BiomassAtTimestep, esData, iTime)
             Else
                 Debug.Assert(False, Me.ToString & ".EcosimEndTimeStep() ")
             End If
@@ -330,7 +330,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Sub
 
-    Public Sub EcosimRunCompleted(ByVal EcosimDatastructures As Object) _
+    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
 
         Try
@@ -361,25 +361,25 @@ Public Class cEwENetworkAnalysisPlugin
 
     Private m_broadcaster As IDataBroadcaster = Nothing
 
-    Public Sub Broadcaster(ByVal broadcaster As IDataBroadcaster) _
+    Public Sub Broadcaster(broadcaster As IDataBroadcaster) _
         Implements IDataProducerPlugin.Broadcaster
         Me.m_broadcaster = broadcaster
     End Sub
 
-    Public Function ProducesData(ByVal typeData As System.Type, Optional ByVal runType As IRunType = Nothing) As Boolean _
+    Public Function ProducesData(typeData As System.Type, Optional runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (typeData Is GetType(INetworkAnalysisData))
     End Function
 
     Public Function IsEnabled1() As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
-        Return m_bDataEnabled
+        Return Me.m_bDataEnabled
     End Function
 
-    Public Function SetEnabled(ByVal bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+    Public Function SetEnabled(bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
         Me.m_bDataEnabled = bEnable
     End Function
 
-    Public Sub SetEnabled(ByVal typeData As System.Type, ByVal runType As IRunType, ByVal bEnabled As Boolean) _
+    Public Sub SetEnabled(typeData As System.Type, runType As IRunType, bEnabled As Boolean) _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
 
         If Not (typeData Is GetType(INetworkAnalysisData)) Then Return
@@ -394,7 +394,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Sub
 
-    Public Function IsEnabled(ByVal typeData As System.Type, ByVal runType As IRunType) As Boolean _
+    Public Function IsEnabled(typeData As System.Type, runType As IRunType) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
 
         If Not (typeData Is GetType(INetworkAnalysisData)) Then Return False
@@ -409,7 +409,7 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Function
 
-    Public Function GetDataByType(ByVal typeData As System.Type, ByRef data As IPluginData) As Boolean _
+    Public Function GetDataByType(typeData As System.Type, ByRef data As IPluginData) As Boolean _
         Implements IDataProducerPlugin.GetDataByType
 
         Try
@@ -433,40 +433,40 @@ Public Class cEwENetworkAnalysisPlugin
 
         Me.m_ddx.Resize(Me.m_core)
 
-        Me.m_ddx.Ascendancy(1, 1) = m_manager.AscendancyImportTotal
-        Me.m_ddx.Ascendancy(2, 1) = m_manager.AscendancyImportPer
-        Me.m_ddx.Ascendancy(3, 1) = m_manager.OverheadImportTotal
-        Me.m_ddx.Ascendancy(4, 1) = m_manager.OverheadImportPer
-        Me.m_ddx.Ascendancy(5, 1) = m_manager.CapacityImportTotal
-        Me.m_ddx.Ascendancy(6, 1) = m_manager.CapacityImportPer
+        Me.m_ddx.Ascendancy(1, 1) = Me.m_manager.AscendancyImportTotal
+        Me.m_ddx.Ascendancy(2, 1) = Me.m_manager.AscendancyImportPer
+        Me.m_ddx.Ascendancy(3, 1) = Me.m_manager.OverheadImportTotal
+        Me.m_ddx.Ascendancy(4, 1) = Me.m_manager.OverheadImportPer
+        Me.m_ddx.Ascendancy(5, 1) = Me.m_manager.CapacityImportTotal
+        Me.m_ddx.Ascendancy(6, 1) = Me.m_manager.CapacityImportPer
 
-        Me.m_ddx.Ascendancy(1, 2) = m_manager.AscendancyInternalFlowTotal
-        Me.m_ddx.Ascendancy(2, 2) = m_manager.AscendancyInternalFlowPer
-        Me.m_ddx.Ascendancy(3, 2) = m_manager.OverheadFlowTotal
-        Me.m_ddx.Ascendancy(4, 2) = m_manager.OverheadFlowPer
-        Me.m_ddx.Ascendancy(5, 2) = m_manager.CapacityFlowTotal
-        Me.m_ddx.Ascendancy(6, 2) = m_manager.CapacityFlowPer
+        Me.m_ddx.Ascendancy(1, 2) = Me.m_manager.AscendancyInternalFlowTotal
+        Me.m_ddx.Ascendancy(2, 2) = Me.m_manager.AscendancyInternalFlowPer
+        Me.m_ddx.Ascendancy(3, 2) = Me.m_manager.OverheadFlowTotal
+        Me.m_ddx.Ascendancy(4, 2) = Me.m_manager.OverheadFlowPer
+        Me.m_ddx.Ascendancy(5, 2) = Me.m_manager.CapacityFlowTotal
+        Me.m_ddx.Ascendancy(6, 2) = Me.m_manager.CapacityFlowPer
 
-        Me.m_ddx.Ascendancy(1, 3) = m_manager.AscendancyExportTotal
-        Me.m_ddx.Ascendancy(2, 3) = m_manager.AscendancyExportPer
-        Me.m_ddx.Ascendancy(3, 3) = m_manager.OverheadExportTotal
-        Me.m_ddx.Ascendancy(4, 3) = m_manager.OverheadExportPer
-        Me.m_ddx.Ascendancy(5, 3) = m_manager.CapacityExportTotal
-        Me.m_ddx.Ascendancy(6, 3) = m_manager.CapacityExportPer
+        Me.m_ddx.Ascendancy(1, 3) = Me.m_manager.AscendancyExportTotal
+        Me.m_ddx.Ascendancy(2, 3) = Me.m_manager.AscendancyExportPer
+        Me.m_ddx.Ascendancy(3, 3) = Me.m_manager.OverheadExportTotal
+        Me.m_ddx.Ascendancy(4, 3) = Me.m_manager.OverheadExportPer
+        Me.m_ddx.Ascendancy(5, 3) = Me.m_manager.CapacityExportTotal
+        Me.m_ddx.Ascendancy(6, 3) = Me.m_manager.CapacityExportPer
 
-        Me.m_ddx.Ascendancy(1, 4) = m_manager.AscendancyRespTotal
-        Me.m_ddx.Ascendancy(2, 4) = m_manager.AscendancyRespPer
-        Me.m_ddx.Ascendancy(3, 4) = m_manager.OverheadRespTotal
-        Me.m_ddx.Ascendancy(4, 4) = m_manager.OverheadRespPer
-        Me.m_ddx.Ascendancy(5, 4) = m_manager.CapacityRespTotal
-        Me.m_ddx.Ascendancy(6, 4) = m_manager.CapacityRespPer
+        Me.m_ddx.Ascendancy(1, 4) = Me.m_manager.AscendancyRespTotal
+        Me.m_ddx.Ascendancy(2, 4) = Me.m_manager.AscendancyRespPer
+        Me.m_ddx.Ascendancy(3, 4) = Me.m_manager.OverheadRespTotal
+        Me.m_ddx.Ascendancy(4, 4) = Me.m_manager.OverheadRespPer
+        Me.m_ddx.Ascendancy(5, 4) = Me.m_manager.CapacityRespTotal
+        Me.m_ddx.Ascendancy(6, 4) = Me.m_manager.CapacityRespPer
 
-        Me.m_ddx.Ascendancy(1, 5) = m_manager.AscendancyTotalsTotal
-        Me.m_ddx.Ascendancy(2, 5) = m_manager.AscendancyTotalsPer
-        Me.m_ddx.Ascendancy(3, 5) = m_manager.OverheadTotalsTotal
-        Me.m_ddx.Ascendancy(4, 5) = m_manager.OverheadTotalsPer
-        Me.m_ddx.Ascendancy(5, 5) = m_manager.CapacityTotalsTotal
-        Me.m_ddx.Ascendancy(6, 5) = m_manager.CapacityTotalsPer
+        Me.m_ddx.Ascendancy(1, 5) = Me.m_manager.AscendancyTotalsTotal
+        Me.m_ddx.Ascendancy(2, 5) = Me.m_manager.AscendancyTotalsPer
+        Me.m_ddx.Ascendancy(3, 5) = Me.m_manager.OverheadTotalsTotal
+        Me.m_ddx.Ascendancy(4, 5) = Me.m_manager.OverheadTotalsPer
+        Me.m_ddx.Ascendancy(5, 5) = Me.m_manager.CapacityTotalsTotal
+        Me.m_ddx.Ascendancy(6, 5) = Me.m_manager.CapacityTotalsPer
 
         For i As Integer = 1 To Me.Manager.nGroups
             'Me.m_ddx.OmnivoryIndex(i) = m_manager.o
@@ -503,7 +503,7 @@ Public Class cEwENetworkAnalysisPlugin
             Return False
         End Get
         Set(value As Boolean)
-            If (value <> Autosave(savetype)) Then
+            If (value <> Me.Autosave(savetype)) Then
                 Select Case savetype
                     Case eAutosaveType.Ecopath
                         My.Settings.AutosaveEcopath = value

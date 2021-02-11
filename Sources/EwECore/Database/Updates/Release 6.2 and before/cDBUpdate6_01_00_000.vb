@@ -74,7 +74,7 @@ Friend Class cDBUpdate6_01_00_000
 
     End Function
 
-    Private Function AddSimFleetID(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddSimFleetID(db As cEwEDatabase) As Boolean
 
         Dim iNextFleetID As Integer = 1
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -120,7 +120,7 @@ Friend Class cDBUpdate6_01_00_000
 
     End Function
 
-    Private Function UpdateMSETables(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateMSETables(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = db.Execute("CREATE TABLE EcosimScenarioGroupYear (ScenarioID LONG, GroupID LONG, TimeYear INTEGER, CVBiom SINGLE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcosimScenarioGroupYear ADD PRIMARY KEY (ScenarioID, GroupID, TimeYear)")

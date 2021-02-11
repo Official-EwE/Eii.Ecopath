@@ -46,7 +46,7 @@ Namespace Style
         ''' <remarks>Note that descriptor <see cref="eDescriptorTypes.Symbol"/>
         ''' will return the file extension for the datasource type.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))

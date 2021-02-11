@@ -225,7 +225,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub CalcMapDimension(ByVal iTotal As Integer, ByRef iNumPlotsVert As Integer, ByRef iNumPlotsHorz As Integer)
+        Private Sub CalcMapDimension(iTotal As Integer, ByRef iNumPlotsVert As Integer, ByRef iNumPlotsHorz As Integer)
             iNumPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iTotal) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
             If iNumPlotsHorz = 0 Then
                 iNumPlotsVert = iTotal
@@ -278,11 +278,11 @@ Namespace Ecospace
         Private Sub InitOutputBitmaps()
             Me.m_bmpMap = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height)
             For Each drawer As cMapDrawerBase In Me.m_drawers
-                drawer.Graphics = Graphics.FromImage(m_bmpMap)
+                drawer.Graphics = Graphics.FromImage(Me.m_bmpMap)
             Next
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
             If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateStyleColors()
             End If
@@ -308,7 +308,7 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -340,7 +340,7 @@ Namespace Ecospace
             Me.m_cmdDisplayGroups = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If (Me.m_cmdDisplayGroups IsNot Nothing) Then
                 Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups1)
-                AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
+                AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf Me.OnDisplayGroupsInvoked
             End If
 
             Me.ShowItemMode = eShowItemType.ShowAll
@@ -370,14 +370,14 @@ Namespace Ecospace
             Me.m_hoverMenu.Attach(Me.m_pbMap)
             Me.m_hoverMenu.AddItem(SharedResources.InsertPictureHS, SharedResources.TOOLTIP_SAVETOIMAGE, eHoverCommands.SaveImage)
             Me.m_hoverMenu.AddItem(SharedResources.map, SharedResources.TOOLTIP_SAVETOMAP, eHoverCommands.SaveImageGeoRef)
-            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
 
             Me.m_bInUpdate = False
 
             'Start tracking ConcTracing setting
-            AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+            AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf Me.OnPropertyChanged
             ' Start tracking core state monitor for Ecospace run states
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
 
             Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
@@ -395,7 +395,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             Me.m_bpUseIBM = Nothing
             Me.m_bpUseNewStanza = Nothing
@@ -404,11 +404,11 @@ Namespace Ecospace
 
                 If (Me.m_cmdDisplayGroups IsNot Nothing) Then
                     Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups1)
-                    RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
+                    RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf Me.OnDisplayGroupsInvoked
                     Me.m_cmdDisplayGroups = Nothing
                 End If
 
-                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
                 Me.m_hoverMenu.Detach()
 
                 Me.Core.StopEcospace()
@@ -418,9 +418,9 @@ Namespace Ecospace
                 Me.m_zgh = Nothing
 
                 ' Stop tracking core state monitor for Ecospace run states
-                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
                 ' Stop tracking ConcTracing setting
-                RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+                RemoveHandler Me.m_bpConTracing.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Me.m_bpConTracing = Nothing
 
             Catch ex As Exception
@@ -432,7 +432,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnResizeEnd(ByVal e As EventArgs)
+        Protected Overrides Sub OnResizeEnd(e As EventArgs)
             Me.InitOutputBitmaps()
         End Sub
 
@@ -442,19 +442,19 @@ Namespace Ecospace
             End Get
         End Property
 
-        Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnMapMouseDouble(sender As Object, e As EventArgs) _
             Handles m_pbMap.DoubleClick
             Me.OnHoverMenuCommand(eHoverCommands.SaveImage)
         End Sub
 
-        Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
+        Private Sub OnMapMouseClick(sender As Object, e As MouseEventArgs) _
             Handles m_pbMap.MouseClick
             If e.Button = System.Windows.Forms.MouseButtons.Right Then
                 Me.OnHoverMenuCommand(eHoverCommands.SaveImage)
             End If
         End Sub
 
-        Private Sub OnPaintMap(ByVal sender As Object, ByVal e As PaintEventArgs) _
+        Private Sub OnPaintMap(sender As Object, e As PaintEventArgs) _
             Handles m_pbMap.Paint
             Me.PlotMap(e.Graphics)
         End Sub
@@ -467,7 +467,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnDisplayGroupsInvoked(ByVal cmd As cCommand)
+        Private Sub OnDisplayGroupsInvoked(cmd As cCommand)
             Me.m_showitemMode = eShowItemType.ShowCustom
             Me.UpdateControls()
         End Sub
@@ -480,7 +480,7 @@ Namespace Ecospace
             Try
                 'get the data from the dictionary of graph plot types
                 Dim data(,) As Single = Me.m_graphData.Item(Me.m_graphPlotType)
-                For iGroup As Integer = 1 To Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
                     For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
                         Me.m_zgh.AddValue(iGroup, iTimeStep, data(iGroup, iTimeStep + 1))
                     Next
@@ -495,17 +495,17 @@ Namespace Ecospace
 
 #Region " Map "
 
-        Private Sub PlotMap(ByVal g As Graphics)
+        Private Sub PlotMap(g As Graphics)
             Try
-                Select Case m_mapPlotType
+                Select Case Me.m_mapPlotType
                     Case ePlotTypes.Effort
-                        PlotFleetMap(g)
+                        Me.PlotFleetMap(g)
                     Case ePlotTypes.Driver
-                        PlotLayerMap(g, eVarNameFlags.LayerDriver)
+                        Me.PlotLayerMap(g, eVarNameFlags.LayerDriver)
                     Case ePlotTypes.ComputedCapacity
-                        PlotLayerMap(g, eVarNameFlags.LayerHabitatCapacity)
+                        Me.PlotLayerMap(g, eVarNameFlags.LayerHabitatCapacity)
                     Case Else
-                        PlotGroupMap(g)
+                        Me.PlotGroupMap(g)
                 End Select
             Catch ex As Exception
                 ' Whoah!
@@ -518,7 +518,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="g"></param>
         ''' -------------------------------------------------------------------
-        Private Sub PlotGroupMap(ByVal g As Graphics)
+        Private Sub PlotGroupMap(g As Graphics)
 
             ' Sanity check
             If (Me.m_dataTimeStep Is Nothing) Then Return
@@ -568,7 +568,7 @@ Namespace Ecospace
                 Dim ilast As Integer = 0
                 Dim strDate As String = dtTime.ToShortDateString()
 
-                For Each drawer In m_drawers
+                For Each drawer In Me.m_drawers
 
                     If drawer.AllowedToRun Then
 
@@ -646,15 +646,15 @@ Namespace Ecospace
                         drawer.AllowedToRun = False
                         ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, mapArgs)
 
-                        ifirst += m_nMapsPerThread
+                        ifirst += Me.m_nMapsPerThread
                     End If
                 Next
 
-                For Each drawer In m_drawers
+                For Each drawer In Me.m_drawers
                     drawer.SignalState.WaitOne()
                 Next
 
-                g.DrawImage(m_bmpMap, 0, 0)
+                g.DrawImage(Me.m_bmpMap, 0, 0)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -667,7 +667,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="g"></param>
         ''' -------------------------------------------------------------------
-        Private Sub PlotLayerMap(ByVal g As Graphics, varname As eVarNameFlags)
+        Private Sub PlotLayerMap(g As Graphics, varname As eVarNameFlags)
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
@@ -715,7 +715,7 @@ Namespace Ecospace
                 Dim iTo As Integer = 0
                 Dim strDate As String = dtTime.ToShortDateString()
 
-                For Each drawer As cMapDrawerBase In m_drawers
+                For Each drawer As cMapDrawerBase In Me.m_drawers
 
                     If drawer.AllowedToRun Then
 
@@ -743,15 +743,15 @@ Namespace Ecospace
                         drawer.AllowedToRun = False
                         ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, Nothing)
 
-                        iFrom += m_nMapsPerThread
+                        iFrom += Me.m_nMapsPerThread
                     End If
                 Next
 
-                For Each drawer As cMapDrawerBase In m_drawers
+                For Each drawer As cMapDrawerBase In Me.m_drawers
                     drawer.SignalState.WaitOne()
                 Next
 
-                g.DrawImage(m_bmpMap, 0, 0)
+                g.DrawImage(Me.m_bmpMap, 0, 0)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -779,7 +779,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub PlotFleetMap(ByVal g As Graphics)
+        Private Sub PlotFleetMap(g As Graphics)
 
             Dim iNumVizFleets As Integer = 0
             Dim lVizFleets As New List(Of Integer)
@@ -788,7 +788,7 @@ Namespace Ecospace
 
             Debug.Assert(Me.m_mapPlotType = ePlotTypes.Effort, "Only allowed for effort maps due to limitations in cMapDrawer. Ugh!")
 
-            If m_iTimeStepCur > 0 Then
+            If Me.m_iTimeStepCur > 0 Then
 
                 If Me.m_showitemMode = eShowItemType.ShowSingle Then
                     lVizFleets.Add(Me.m_cmbDisplayItem.SelectedIndex() + 1)
@@ -808,7 +808,7 @@ Namespace Ecospace
 
                 For i As Integer = 0 To iNumVizFleets - 1
                     Try
-                        DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(i), lMaps(i), g)
+                        Me.DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(i), lMaps(i), g)
                     Catch ex As Exception
 
                     End Try
@@ -818,8 +818,8 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub DrawFishingBaseMap(ByVal mapFishing(,,) As Single,
-                                       iFleet As Integer, ByVal rcPos As Rectangle, ByVal g As Graphics)
+        Private Sub DrawFishingBaseMap(mapFishing(,,) As Single,
+                                       iFleet As Integer, rcPos As Rectangle, g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
@@ -838,13 +838,13 @@ Namespace Ecospace
                 g.FillRectangle(br, rcPos)
             End Using
 
-            For i As Integer = 1 To m_iInRow
-                For j As Integer = 1 To m_iInCol
+            For i As Integer = 1 To Me.m_iInRow
+                For j As Integer = 1 To Me.m_iInCol
 
-                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol),
-                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow),
-                        CSng(rcPos.Width() / m_iInCol),
-                        CSng(rcPos.Height() / m_iInRow))
+                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.m_iInCol),
+                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.m_iInRow),
+                        CSng(rcPos.Width() / Me.m_iInCol),
+                        CSng(rcPos.Height() / Me.m_iInRow))
                     Dim tmpBrush As SolidBrush = Nothing
 
                     If (depth.IsWaterCell(i, j) = True) Then
@@ -907,9 +907,9 @@ Namespace Ecospace
                 Dim strName As String = ""
 
                 If Me.StyleGuide.ShowMapsIndexInLabels Then
-                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, Core.EcospaceFleetInputs(iFleet).Name)
+                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, Me.Core.EcospaceFleetInputs(iFleet).Name)
                 Else
-                    strName = Core.EcospaceFleetInputs(iFleet).Name
+                    strName = Me.Core.EcospaceFleetInputs(iFleet).Name
                 End If
 
 
@@ -943,7 +943,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnRun(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
+        Private Sub OnRun(sender As Object, e As EventArgs) Handles m_btnRun.Click
 
             Me.ClearResults()
 
@@ -952,7 +952,7 @@ Namespace Ecospace
             'Me.IsRunning = True
             Me.m_iTimeStepCur = 0
             Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.Core.StopEcospace))
-            Me.IsRunning = Me.Core.RunEcoSpace(AddressOf OnEcospaceTimeStep)
+            Me.IsRunning = Me.Core.RunEcoSpace(AddressOf Me.OnEcospaceTimeStep)
 
             ' Hack: make a once-per-run assessment for which time steps to save images
 
@@ -966,7 +966,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnStop(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnStop(sender As Object, e As EventArgs) _
             Handles m_btnStop.Click
 
             Me.Core.StopEcospace()
@@ -976,7 +976,7 @@ Namespace Ecospace
             'Me.UpdateControls()
         End Sub
 
-        Private Sub OnSelectDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectDataChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbDisplayRelBiomass.CheckedChanged,
                     m_rbDisplayFishingEffort.CheckedChanged,
                     m_rbDisplayCoverB.CheckedChanged,
@@ -1003,7 +1003,7 @@ Namespace Ecospace
                 Me.m_mapPlotType = ePlotTypes.FOverB
             ElseIf Me.m_rbDisplayEnvDriver.Checked Then
                 Me.m_mapPlotType = ePlotTypes.Driver
-            ElseIf m_rbDisplayDiscards.Checked Then
+            ElseIf Me.m_rbDisplayDiscards.Checked Then
                 Me.m_mapPlotType = ePlotTypes.Discards
             ElseIf Me.m_rbDisplayComputedHabitatCapacity.Checked Then
                 Me.m_mapPlotType = ePlotTypes.ComputedCapacity
@@ -1017,12 +1017,12 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnOverlay(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnOverlay(sender As Object, e As EventArgs) _
             Handles m_cbOverlay.Click
-            Me.m_bOverlay = m_cbOverlay.Checked
+            Me.m_bOverlay = Me.m_cbOverlay.Checked
         End Sub
 
-        Private Sub OnSelectItemToDisplay(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnSelectItemToDisplay(sender As Object, e As EventArgs) _
             Handles m_cmbDisplayItem.SelectedIndexChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1034,7 +1034,7 @@ Namespace Ecospace
             End Try
         End Sub
 
-        'Private Sub OnSelectDriverToShow(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        'Private Sub OnSelectDriverToShow(sender As System.Object, e As System.EventArgs)
 
         '    Dim iSel As Integer = Math.Max(Math.Min(9, Me.m_cmbLabelPos.SelectedIndex), 0)
         '    Me.m_labelposHorz = DirectCast(CInt(iSel Mod 3), StringAlignment)
@@ -1052,7 +1052,7 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OnDisplayOptionCheckChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnDisplayOptionCheckChanged(sender As Object, e As EventArgs) _
                 Handles m_rbShowAll.CheckedChanged, m_rbShowNonHidden.CheckedChanged, m_rbShowSingle.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1067,29 +1067,29 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub m_cbMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_cbMPA_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbMPA.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
 
-            Me.StyleGuide.ShowMapsMPAs = m_cbMPA.Checked
+            Me.StyleGuide.ShowMapsMPAs = Me.m_cbMPA.Checked
             Me.UpdateControls()
             Me.RefreshMap()
 
         End Sub
 
-        Private Sub m_cbShowIBMPackets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_cbShowIBMPackets_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbShowIBMPackets.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
 
-            Me.m_bShowIBM = m_cbShowIBMPackets.Checked
+            Me.m_bShowIBM = Me.m_cbShowIBMPackets.Checked
             Me.UpdateControls()
             Me.RefreshMap()
 
         End Sub
 
-        Private Sub OnShowLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowLabelsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbShowLabels.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1100,7 +1100,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub ShowDateInLabelChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub ShowDateInLabelChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbShowDateInLabel.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1110,7 +1110,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnShowIndexInLabelChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowIndexInLabelChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbShowIndexInLabel.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1120,7 +1120,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnInvertLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnInvertLabelsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbInvertColor.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1130,7 +1130,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnChangeLabelPos(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnChangeLabelPos(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbLabelPos.SelectedIndexChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -1142,7 +1142,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnRunTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRunTypeSelected(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbRunType.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
@@ -1160,7 +1160,7 @@ Namespace Ecospace
             End Select
         End Sub
 
-        Private Sub OnPause(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnPause(sender As System.Object, e As System.EventArgs) _
             Handles m_btnPause.Click
 
             Me.Core.EcospacePaused = Not Me.Core.EcospacePaused
@@ -1190,10 +1190,10 @@ Namespace Ecospace
 
         'Added for the EcoOcean model to scale Catch/Bio legend
         'if there is some way to scale legends then this will go
-        Private Sub m_txFMax_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_txFMax.KeyUp
+        Private Sub m_txFMax_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles m_txFMax.KeyUp
             If e.KeyCode = Keys.Enter Then
                 Dim newMax As Single = CSng(Val(Me.m_txFMax.Text))
-                If ValidateFMax(newMax) Then
+                If Me.ValidateFMax(newMax) Then
                     Me.m_FishingMortMax = newMax
                     Me.RefreshPlot()
                     Me.RefreshMap()
@@ -1201,11 +1201,11 @@ Namespace Ecospace
             End If
         End Sub
 
-        Private Function ValidateFMax(ByVal newFMax As Single) As Boolean
+        Private Function ValidateFMax(newFMax As Single) As Boolean
             Return (newFMax > 0 And newFMax < 10)
         End Function
 
-        Private Sub OntxFMaxValidated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_txFMax.Validated
+        Private Sub OntxFMaxValidated(sender As Object, e As System.EventArgs) Handles m_txFMax.Validated
             Try
                 Dim newMax As Single = CSng(Val(Me.m_txFMax.Text))
                 If newMax <> Me.m_FishingMortMax Then
@@ -1218,7 +1218,7 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OntxFMaxValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles m_txFMax.Validating
+        Private Sub OntxFMaxValidating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles m_txFMax.Validating
             Dim newVal As Single = CSng(Val(Me.m_txFMax.Text))
             If Me.ValidateFMax(newVal) Then
                 e.Cancel = False
@@ -1234,14 +1234,14 @@ Namespace Ecospace
 
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
-        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As Object)
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(cmd As Object)
 
         Private Sub OnHoverMenuCommand(cmd As Object)
 
             If (Not TypeOf cmd Is eHoverCommands) Then Return
 
             If Me.InvokeRequired Then
-                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
+                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf Me.OnHoverMenuCommand), New Object() {cmd})
                 Return
             End If
 
@@ -1272,7 +1272,7 @@ Namespace Ecospace
         ''' <param name="prop">The property that changed.</param>
         ''' <param name="changeFlags">The extent of the change.</param>
         ''' -------------------------------------------------------------------
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
+        Private Sub OnPropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags) _
                 Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged
             Me.UpdateControls()
         End Sub
@@ -1302,12 +1302,12 @@ Namespace Ecospace
             ' Biomass plotting
             ' For each time step, we get the Biomass from the core and store it into our array
             ' The following algorithm was extracted from EwE5. Biomass Log plotting, the value between 0.1 to 10. 
-            For groupIndex As Integer = 1 To Core.nGroups
+            For groupIndex As Integer = 1 To Me.Core.nGroups
                 If TimeStepData.iTimeStep = 1 Then
-                    m_BaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
-                    m_RelBiomassResults(groupIndex, 1) = 0
+                    Me.m_BaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
+                    Me.m_RelBiomassResults(groupIndex, 1) = 0
                 Else
-                    m_RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
+                    Me.m_RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
                 End If
 
                 Me.m_graphData.Item(ePlotTypes.RelB)(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
@@ -1327,11 +1327,11 @@ Namespace Ecospace
             Next
 
             'Temporary variables to store the timesteps for plotting. 
-            m_iTimeStepPrev = m_iTimeStepCur
-            m_iTimeStepCur = TimeStepData.iTimeStep
+            Me.m_iTimeStepPrev = Me.m_iTimeStepCur
+            Me.m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label
-            Dim dt As Date = Me.Core.EcospaceTimestepToAbsoluteTime(m_iTimeStepCur)
+            Dim dt As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
             cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_RUNNING, dt.ToShortDateString()), TimeStepData.RunProgress)
             Me.m_dataTimeStep = TimeStepData
 
@@ -1351,13 +1351,13 @@ Namespace Ecospace
             Next iRow
 
             'if the size of the map has changed reset the interface
-            If m_iInRow <> TimeStepData.inRows Or m_iInCol <> TimeStepData.inCols Then
+            If Me.m_iInRow <> TimeStepData.inRows Or Me.m_iInCol <> TimeStepData.inCols Then
                 'set the map dims these are passed to the drawing threads in PlotBiomassMapThreaded()
-                m_iInRow = TimeStepData.inRows
-                m_iInCol = TimeStepData.inCols
+                Me.m_iInRow = TimeStepData.inRows
+                Me.m_iInCol = TimeStepData.inCols
 
-                CalcMapDimension(Core.nGroups, m_iNumPlotsVert, m_iNumPlotsHorz)
-                CalcMapDimension(Core.nFleets, m_iNumPlotsVert, m_iNumPlotsHorz)
+                Me.CalcMapDimension(Me.Core.nGroups, Me.m_iNumPlotsVert, Me.m_iNumPlotsHorz)
+                Me.CalcMapDimension(Me.Core.nFleets, Me.m_iNumPlotsVert, Me.m_iNumPlotsHorz)
             End If
 
 
@@ -1391,7 +1391,7 @@ Namespace Ecospace
 
 #Region " Overrides "
 
-        Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
+        Private Sub OnCoreStateChanged(cms As cCoreStateMonitor)
 
             If cms.IsEcospaceRunning <> Me.IsRunning Then
 
@@ -1412,7 +1412,7 @@ Namespace Ecospace
             End If
         End Sub
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             Dim bHasRunInit As Boolean
 
             Try
@@ -1546,7 +1546,7 @@ Namespace Ecospace
             Get
                 Return Me.m_showitemMode
             End Get
-            Set(ByVal value As eShowItemType)
+            Set(value As eShowItemType)
                 If (value <> Me.m_showitemMode) Then
                     Me.m_showitemMode = value
                     Me.UpdateControls()
@@ -1560,7 +1560,7 @@ Namespace Ecospace
             Get
                 Return Me.m_iItemToShow
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 If (value <> Me.m_iItemToShow) Then
                     Me.m_iItemToShow = value
                     Me.RefreshMap()
@@ -1738,7 +1738,7 @@ Namespace Ecospace
             Dim bAllocNew As Boolean = False
 
             'Has the memory already been allocated
-            If (m_ConcOverB Is Nothing) Or (Me.m_FoverB Is Nothing) Then
+            If (Me.m_ConcOverB Is Nothing) Or (Me.m_FoverB Is Nothing) Then
                 'nope we need to allocate new memory
                 bAllocNew = True
             End If
@@ -1746,7 +1746,7 @@ Namespace Ecospace
             'Memory has already been allocated 
             'make sure it's the correct size
             If Not bAllocNew Then
-                If (m_ConcOverB.Length <> size) Or (m_FoverB.Length <> size) Then
+                If (Me.m_ConcOverB.Length <> size) Or (Me.m_FoverB.Length <> size) Then
                     'Nope allocate new memory
                     bAllocNew = True
                 End If

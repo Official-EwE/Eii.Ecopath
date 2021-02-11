@@ -73,31 +73,31 @@ Public Class cMonteCarloManager
     Friend Sub init(ByRef theCore As cCore)
 
         Try
-            m_core = theCore
+            Me.m_core = theCore
 
-            m_mc = New cEcosimMonteCarlo(m_core)
+            Me.m_mc = New cEcosimMonteCarlo(Me.m_core)
             'set all the delegates to handle events/messages from the monte carlo
-            m_mc.dlgMonteCarloCompletedHandler = AddressOf Me.MCCompletedHandler
-            m_mc.dlgEcopathIterationHandler = AddressOf Me.MCEcopathInterationHandler
-            m_mc.dlgTrialStepHandler = AddressOf Me.MCTrialProgressHandler
-            m_mc.dlgMonteCarloMessageHandler = AddressOf Me.MCSendMessageHandler
+            Me.m_mc.dlgMonteCarloCompletedHandler = AddressOf Me.MCCompletedHandler
+            Me.m_mc.dlgEcopathIterationHandler = AddressOf Me.MCEcopathInterationHandler
+            Me.m_mc.dlgTrialStepHandler = AddressOf Me.MCTrialProgressHandler
+            Me.m_mc.dlgMonteCarloMessageHandler = AddressOf Me.MCSendMessageHandler
 
-            m_mc.Init()
+            Me.m_mc.Init()
 
-            m_ResultsWriters.Clear()
-            m_ResultsWriters.Add(New cMonteCarloResultsWriterOneFile(Me.m_mc, Me.m_core))
-            m_ResultsWriters.Add(New cMonteCarloResultsWriterMultipleFiles(Me.m_mc, Me.m_core))
+            Me.m_ResultsWriters.Clear()
+            Me.m_ResultsWriters.Add(New cMonteCarloResultsWriterOneFile(Me.m_mc, Me.m_core))
+            Me.m_ResultsWriters.Add(New cMonteCarloResultsWriterMultipleFiles(Me.m_mc, Me.m_core))
 
             ' Plug-in manager provided?
-            If (m_core.PluginManager IsNot Nothing) Then
+            If (Me.m_core.PluginManager IsNot Nothing) Then
                 ' #Yes: see if a plug-in based writer supports the requested format
-                For Each ip As IMonteCarloResultWriterPlugin In m_core.PluginManager.GetPlugins(GetType(IMonteCarloResultWriterPlugin))
-                    m_ResultsWriters.Add(ip)
+                For Each ip As IMonteCarloResultWriterPlugin In Me.m_core.PluginManager.GetPlugins(GetType(IMonteCarloResultWriterPlugin))
+                    Me.m_ResultsWriters.Add(ip)
                 Next
             End If
 
-            InitGroups()
-            LoadGroups()
+            Me.InitGroups()
+            Me.LoadGroups()
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -203,29 +203,29 @@ Public Class cMonteCarloManager
         Dim thrdMC As Thread
 
         Try
-            If m_core.StateMonitor.HasEcosimLoaded Then
+            If Me.m_core.StateMonitor.HasEcosimLoaded Then
 
                 Me.SetWait()
                 Me.Update()
 
-                thrdMC = New Thread(AddressOf m_mc.Run)
+                thrdMC = New Thread(AddressOf Me.m_mc.Run)
                 thrdMC.Start()
 
             Else 'If m_core.StateMonitor.HasEcosimLoaded Then
 
                 'no ecosim scenario loaded
-                m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOSIM_MISSING, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOSIM_MISSING, eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
 
             End If
 
         Catch ex As Exception
             cLog.Write(ex)
             Me.ReleaseWait()
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RUN_ERROR, ex.Message),
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RUN_ERROR, ex.Message),
                                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
         End Try
 
-        m_core.Messages.sendAllMessages()
+        Me.m_core.Messages.sendAllMessages()
 
         Return
 
@@ -236,8 +236,8 @@ Public Class cMonteCarloManager
     ''' </summary>
     Public Sub Load()
 
-        m_mc.Init()
-        m_mc.initForRun()
+        Me.m_mc.Init()
+        Me.m_mc.initForRun()
 
         ' Let MC know which variables can be varied
         ' MC used to figure this out, but the MC manager does a much more thorough job
@@ -247,12 +247,12 @@ Public Class cMonteCarloManager
 
         For igroup As Integer = 1 To Me.m_core.nGroups
             Dim grp As cMonteCarloGroup = Me.Groups(igroup)
-            Me.m_mc.SetIsVariable(igroup, eMCParams.Biomass, IsMCVariable(grp, eVarNameFlags.mcB))
-            Me.m_mc.SetIsVariable(igroup, eMCParams.PB, IsMCVariable(grp, eVarNameFlags.mcPB))
-            Me.m_mc.SetIsVariable(igroup, eMCParams.QB, IsMCVariable(grp, eVarNameFlags.mcQB))
-            Me.m_mc.SetIsVariable(igroup, eMCParams.BA, IsMCVariable(grp, eVarNameFlags.mcBA))
-            Me.m_mc.SetIsVariable(igroup, eMCParams.BaBi, IsMCVariable(grp, eVarNameFlags.mcBaBi))
-            Me.m_mc.SetIsVariable(igroup, eMCParams.EE, IsMCVariable(grp, eVarNameFlags.mcEE))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.Biomass, Me.IsMCVariable(grp, eVarNameFlags.mcB))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.PB, Me.IsMCVariable(grp, eVarNameFlags.mcPB))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.QB, Me.IsMCVariable(grp, eVarNameFlags.mcQB))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.BA, Me.IsMCVariable(grp, eVarNameFlags.mcBA))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.BaBi, Me.IsMCVariable(grp, eVarNameFlags.mcBaBi))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.EE, Me.IsMCVariable(grp, eVarNameFlags.mcEE))
             ' Cannot disable diet perturbation per group
             'Me.m_mc.SetIsVariable(iGroup, eMCParams.Diets, IsMCVariable(grp, eVarNameFlags.mcDC))
 
@@ -280,12 +280,12 @@ Public Class cMonteCarloManager
             'send all the messages that the MonteCarlo model added to the manager via the Syncronization object (m_SyncObject)
             'this way the messages are sent on the interfaces thread not the models
             Dim dlgsendmsgs As dlgSendMessages = AddressOf Me.sendmessages
-            m_SyncObject.BeginInvoke(dlgsendmsgs, Nothing)
+            Me.m_SyncObject.BeginInvoke(dlgsendmsgs, Nothing)
 
             'tell the interface
-            If m_SyncObject IsNot Nothing And m_dlgMCCompletedHandler IsNot Nothing Then
+            If Me.m_SyncObject IsNot Nothing And Me.m_dlgMCCompletedHandler IsNot Nothing Then
                 'use the SyncObject provided by the interface to call the completed handler in the interface
-                m_SyncObject.BeginInvoke(m_dlgMCCompletedHandler, Nothing)
+                Me.m_SyncObject.BeginInvoke(Me.m_dlgMCCompletedHandler, Nothing)
             End If
 
         Catch ex As Exception
@@ -303,11 +303,11 @@ Public Class cMonteCarloManager
 
         Try
             'send any messages created by the monte carlo
-            For Each msg As cMessage In m_lstMessages
-                m_core.Messages.AddMessage(msg)
+            For Each msg As cMessage In Me.m_lstMessages
+                Me.m_core.Messages.AddMessage(msg)
             Next
-            m_core.Messages.sendAllMessages()
-            m_lstMessages.Clear()
+            Me.m_core.Messages.sendAllMessages()
+            Me.m_lstMessages.Clear()
         Catch ex As Exception
             cLog.Write(ex)
             Throw New ApplicationException(Me.ToString & ".sendmessage()", ex)
@@ -325,9 +325,9 @@ Public Class cMonteCarloManager
             'Debug.Assert(Me.m_dlgMCEcopathStepHandler IsNot Nothing)
 
             'tell the interface
-            If m_SyncObject IsNot Nothing And m_dlgMCEcopathStepHandler IsNot Nothing Then
+            If Me.m_SyncObject IsNot Nothing And Me.m_dlgMCEcopathStepHandler IsNot Nothing Then
                 'use the SyncObject provided by the interface to call the completed handler in the interface
-                m_SyncObject.BeginInvoke(m_dlgMCEcopathStepHandler, Nothing)
+                Me.m_SyncObject.BeginInvoke(Me.m_dlgMCEcopathStepHandler, Nothing)
             End If
         Catch ex As Exception
 
@@ -342,9 +342,9 @@ Public Class cMonteCarloManager
 
 
             'tell the interface
-            If m_SyncObject IsNot Nothing And m_dlgMCTrialStepHandler IsNot Nothing Then
+            If Me.m_SyncObject IsNot Nothing And Me.m_dlgMCTrialStepHandler IsNot Nothing Then
                 'use the SyncObject provided by the interface to call the completed handler in the interface
-                m_SyncObject.Invoke(m_dlgMCTrialStepHandler, Nothing)
+                Me.m_SyncObject.Invoke(Me.m_dlgMCTrialStepHandler, Nothing)
             End If
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".MCTrialProgressHandler() " & ex.Message)
@@ -382,29 +382,29 @@ Public Class cMonteCarloManager
 
         Try
 
-            m_mc.ApplyBestFits()
+            Me.m_mc.ApplyBestFits()
 
             '#Hack: Tell the core that Ecopath inputs have changed
             '       cCore.OnChanged(me) does not support the granularity to invalidate Ecopath data in response to only this event
-            m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
+            Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
 
             'tell the core to reload groups from modified Ecopath inputs
-            m_core.onChanged(Me, eMessageType.DataModified)
+            Me.m_core.onChanged(Me, eMessageType.DataModified)
 
             Me.LoadGroups()
 
             'run ecopath with the new parameters
-            m_core.RunEcoPath()
+            Me.m_core.RunEcoPath()
             'initialize ecosim with the new data
-            m_core.m_EcoSim.Init(True)
+            Me.m_core.m_EcoSim.Init(True)
 
-            m_core.RunEcoSim()
-            Dim ss As Single = m_core.EcosimStats.SS
+            Me.m_core.RunEcoSim()
+            Dim ss As Single = Me.m_core.EcosimStats.SS
 
         Catch ex As Exception
             Debug.Assert(False)
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message),
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message),
                                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
         End Try
 
@@ -430,7 +430,7 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Friend Sub AddMessage(ByRef theMessage As cMessage)
         Try
-            m_lstMessages.Add(theMessage)
+            Me.m_lstMessages.Add(theMessage)
         Catch ex As Exception
             Debug.Assert(False, "AddMessage error " & ex.Message)
         End Try
@@ -442,14 +442,14 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+    Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
         Dim result As Boolean = True
 
         If (Me.m_core Is Nothing) Then Return result
         If (Me.m_mc Is Nothing) Then Return result
 
         Try
-            m_mc.StopTrial = True
+            Me.m_mc.StopTrial = True
             Me.m_core.StopEcoSim()
 
             result = Me.Wait(WaitTimeInMillSec)
@@ -471,7 +471,7 @@ Public Class cMonteCarloManager
             If (Me.m_mc Is Nothing) Then Return 0
             Return Me.m_mc.Ntrials
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.Ntrials = value
             End If
@@ -495,9 +495,9 @@ Public Class cMonteCarloManager
     Public Property RetainFits() As Boolean
         Get
             If (Me.m_mc Is Nothing) Then Return False
-            Return m_mc.RetainBiomass
+            Return Me.m_mc.RetainBiomass
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (Me.m_mc IsNot Nothing) Then
                 If value Then
                     'EwE5 code
@@ -526,7 +526,7 @@ Public Class cMonteCarloManager
             If (Me.m_mc Is Nothing) Then Return False
             Return Me.m_mc.IncludeFpenalty
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.IncludeFpenalty = value
             End If
@@ -560,7 +560,7 @@ Public Class cMonteCarloManager
             Throw New NotImplementedException("MonteCarlo UseFishingPattern Not implemented yet")
             Return False
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Throw New NotImplementedException("MonteCarlo UseFishingPattern Not implemented yet")
         End Set
     End Property
@@ -576,7 +576,7 @@ Public Class cMonteCarloManager
             'Sum of Squares fit to the currently loaded reference data 
             'compute by Ecosim into its cEcosimDatastructures object for each trial
             If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
-            Return m_core.m_EcoSimData.SS
+            Return Me.m_core.m_EcoSimData.SS
         End Get
     End Property
 
@@ -590,7 +590,7 @@ Public Class cMonteCarloManager
         Get
             'Sum of Squares fit to the currently loaded reference data 
             If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
-            Return m_mc.SSorg
+            Return Me.m_mc.SSorg
         End Get
     End Property
 
@@ -604,7 +604,7 @@ Public Class cMonteCarloManager
         Get
             'Sum of Squares fit to the currently loaded reference data 
             If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
-            Return m_mc.SSBestFit
+            Return Me.m_mc.SSBestFit
         End Get
     End Property
 
@@ -617,7 +617,7 @@ Public Class cMonteCarloManager
     Public ReadOnly Property nEcopathIterations() As Integer
         Get
             If (Me.m_mc Is Nothing) Then Return 0
-            Return m_mc.nEcopathIterations
+            Return Me.m_mc.nEcopathIterations
         End Get
     End Property
 
@@ -641,7 +641,7 @@ Public Class cMonteCarloManager
     ''' <remarks>Call to update an interface when Ecopath has been run</remarks>
     ''' -----------------------------------------------------------------------
     Public WriteOnly Property MonteCarloEcopathStepHandler() As MonteCarloEcopathProgressDelegate
-        Set(ByVal value As MonteCarloEcopathProgressDelegate)
+        Set(value As MonteCarloEcopathProgressDelegate)
             Me.m_dlgMCEcopathStepHandler = value
         End Set
     End Property
@@ -655,7 +655,7 @@ Public Class cMonteCarloManager
     ''' It will tell an interface that a single trial has completed. </remarks>
     ''' -----------------------------------------------------------------------
     Public WriteOnly Property MonteCarloStepHandler() As MonteCarloTrialProgressDelegate
-        Set(ByVal value As MonteCarloTrialProgressDelegate)
+        Set(value As MonteCarloTrialProgressDelegate)
             Me.m_dlgMCTrialStepHandler = value
         End Set
     End Property
@@ -666,7 +666,7 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public WriteOnly Property MonteCarloCompletedHandler() As MonteCarloCompletedDelegate
-        Set(ByVal value As MonteCarloCompletedDelegate)
+        Set(value As MonteCarloCompletedDelegate)
             'the Monte Carlo object will call the manger and the manager will call the interface with this delegate
             'see MCCompletedHandler()
             Me.m_dlgMCCompletedHandler = value
@@ -680,19 +680,19 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public WriteOnly Property SyncObject() As System.ComponentModel.ISynchronizeInvoke
-        Set(ByVal value As System.ComponentModel.ISynchronizeInvoke)
-            m_SyncObject = value
+        Set(value As System.ComponentModel.ISynchronizeInvoke)
+            Me.m_SyncObject = value
         End Set
     End Property
 
     Public WriteOnly Property EcosimTimeStepHandler() As EcoSimTimeStepDelegate
-        Set(ByVal value As EcoSimTimeStepDelegate)
+        Set(value As EcoSimTimeStepDelegate)
             Debug.Assert(Me.m_mc IsNot Nothing)
             'save the delegate for use with the bShowPlot flag
             '  m_EcosimTimeStepHandler = value
             'Changed this to pass the delegate directly to the monte carlo model
             'it will decide when to turn the plotting on or off
-            m_mc.EcosimTimeStep = value
+            Me.m_mc.EcosimTimeStep = value
         End Set
     End Property
 
@@ -714,9 +714,9 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' <param name="iGroup">The one-based group index to obtain the group for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Groups(ByVal iGroup As Integer) As cMonteCarloGroup
+    Public ReadOnly Property Groups(iGroup As Integer) As cMonteCarloGroup
         Get
-            Return m_groups.Item(iGroup - 1)
+            Return Me.m_groups.Item(iGroup - 1)
         End Get
     End Property
 
@@ -730,7 +730,7 @@ Public Class cMonteCarloManager
             If (Me.m_mc Is Nothing) Then Return False
             Return Me.m_mc.SaveOutput
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.SaveOutput = value
             End If
@@ -767,7 +767,7 @@ Public Class cMonteCarloManager
             If (Me.m_mc Is Nothing) Then Return cCore.NULL_VALUE
             Return Me.m_mc.EcopathEETol
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.EcopathEETol = value
             End If
@@ -784,7 +784,7 @@ Public Class cMonteCarloManager
             If (Me.m_mc Is Nothing) Then Return False
             Return Me.m_mc.ValidateRespiration
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.ValidateRespiration = value
             End If
@@ -802,7 +802,7 @@ Public Class cMonteCarloManager
             If (Me.m_mc Is Nothing) Then Return eMCDietSamplingMethod.Dirichlets
             Return Me.m_mc.DietSamplingMethod
         End Get
-        Set(ByVal value As eMCDietSamplingMethod)
+        Set(value As eMCDietSamplingMethod)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.DietSamplingMethod = value
             End If
@@ -899,11 +899,11 @@ Public Class cMonteCarloManager
     Friend Sub LoadGroups()
 
         Try
-            Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
-            Dim m_esdata As cEcosimDatastructures = m_core.m_EcoSimData
+            Dim m_epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim m_esdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iGroup As Integer = 0
 
-            For Each grp As cMonteCarloGroup In m_groups
+            For Each grp As cMonteCarloGroup In Me.m_groups
 
                 grp.AllowValidation = False
 
@@ -928,68 +928,68 @@ Public Class cMonteCarloManager
                     grp.Discards(iflt) = m_epdata.Discard(iflt, iGroup)
                 Next
 
-                For iPrey As Integer = 0 To m_core.nGroups
+                For iPrey As Integer = 0 To Me.m_core.nGroups
                     grp.Diets(iPrey) = m_epdata.DC(iGroup, iPrey)
                 Next
 
-                grp.Bcv = m_mc.CVpar(eMCParams.Biomass, iGroup)
-                grp.PBcv = m_mc.CVpar(eMCParams.PB, iGroup)
-                grp.QBcv = m_mc.CVpar(eMCParams.QB, iGroup)
-                grp.BAcv = m_mc.CVpar(eMCParams.BA, iGroup)
-                grp.BaBicv = m_mc.CVpar(eMCParams.BaBi, iGroup)
-                grp.EEcv = m_mc.CVpar(eMCParams.EE, iGroup)
-                grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, iGroup)
+                grp.Bcv = Me.m_mc.CVpar(eMCParams.Biomass, iGroup)
+                grp.PBcv = Me.m_mc.CVpar(eMCParams.PB, iGroup)
+                grp.QBcv = Me.m_mc.CVpar(eMCParams.QB, iGroup)
+                grp.BAcv = Me.m_mc.CVpar(eMCParams.BA, iGroup)
+                grp.BaBicv = Me.m_mc.CVpar(eMCParams.BaBi, iGroup)
+                grp.EEcv = Me.m_mc.CVpar(eMCParams.EE, iGroup)
+                grp.VUcv = Me.m_mc.CVpar(eMCParams.Vulnerability, iGroup)
 
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    grp.Landingscv(iFleet) = m_mc.CVparLanding(iFleet, iGroup)
-                    grp.Discardscv(iFleet) = m_mc.CVparDiscard(iFleet, iGroup)
+                    grp.Landingscv(iFleet) = Me.m_mc.CVparLanding(iFleet, iGroup)
+                    grp.Discardscv(iFleet) = Me.m_mc.CVparDiscard(iFleet, iGroup)
                 Next
 
-                grp.DietMultiplier = m_mc.CVParDC(eMCDietSamplingMethod.Dirichlets, iGroup)
-                grp.Dietcv = m_mc.CVParDC(eMCDietSamplingMethod.NormalDistribution, iGroup)
+                grp.DietMultiplier = Me.m_mc.CVParDC(eMCDietSamplingMethod.Dirichlets, iGroup)
+                grp.Dietcv = Me.m_mc.CVParDC(eMCDietSamplingMethod.NormalDistribution, iGroup)
 
-                grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, iGroup)
-                grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, iGroup)
-                grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, iGroup)
-                grp.BALower = m_mc.ParLimit(0, eMCParams.BA, iGroup)
-                grp.BaBiLower = m_mc.ParLimit(0, eMCParams.BaBi, iGroup)
-                grp.EELower = m_mc.ParLimit(0, eMCParams.EE, iGroup)
-                grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, iGroup)
+                grp.BLower = Me.m_mc.ParLimit(0, eMCParams.Biomass, iGroup)
+                grp.PBLower = Me.m_mc.ParLimit(0, eMCParams.PB, iGroup)
+                grp.QBLower = Me.m_mc.ParLimit(0, eMCParams.QB, iGroup)
+                grp.BALower = Me.m_mc.ParLimit(0, eMCParams.BA, iGroup)
+                grp.BaBiLower = Me.m_mc.ParLimit(0, eMCParams.BaBi, iGroup)
+                grp.EELower = Me.m_mc.ParLimit(0, eMCParams.EE, iGroup)
+                grp.VULower = Me.m_mc.ParLimit(0, eMCParams.Vulnerability, iGroup)
 
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    grp.LandingsLower(iFleet) = m_mc.ParLimitLanding(0, iFleet, iGroup)
-                    grp.DiscardsLower(iFleet) = m_mc.ParLimitDiscard(0, iFleet, iGroup)
+                    grp.LandingsLower(iFleet) = Me.m_mc.ParLimitLanding(0, iFleet, iGroup)
+                    grp.DiscardsLower(iFleet) = Me.m_mc.ParLimitDiscard(0, iFleet, iGroup)
                 Next
 
-                grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, iGroup)
-                grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, iGroup)
-                grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, iGroup)
-                grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, iGroup)
-                grp.BaBiUpper = m_mc.ParLimit(1, eMCParams.BaBi, iGroup)
-                grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, iGroup)
-                grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, iGroup)
+                grp.BUpper = Me.m_mc.ParLimit(1, eMCParams.Biomass, iGroup)
+                grp.PBUpper = Me.m_mc.ParLimit(1, eMCParams.PB, iGroup)
+                grp.QBUpper = Me.m_mc.ParLimit(1, eMCParams.QB, iGroup)
+                grp.BAUpper = Me.m_mc.ParLimit(1, eMCParams.BA, iGroup)
+                grp.BaBiUpper = Me.m_mc.ParLimit(1, eMCParams.BaBi, iGroup)
+                grp.EEUpper = Me.m_mc.ParLimit(1, eMCParams.EE, iGroup)
+                grp.VUUpper = Me.m_mc.ParLimit(1, eMCParams.Vulnerability, iGroup)
 
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    grp.LandingsUpper(iFleet) = m_mc.ParLimitLanding(1, iFleet, iGroup)
-                    grp.DiscardsUpper(iFleet) = m_mc.ParLimitDiscard(1, iFleet, iGroup)
+                    grp.LandingsUpper(iFleet) = Me.m_mc.ParLimitLanding(1, iFleet, iGroup)
+                    grp.DiscardsUpper(iFleet) = Me.m_mc.ParLimitDiscard(1, iFleet, iGroup)
                 Next
 
                 'best fit data from the monte carlo trials, if any
-                grp.Bbf = m_mc.BestFit(eMCParams.Biomass, iGroup)
-                grp.PBbf = m_mc.BestFit(eMCParams.PB, iGroup)
-                grp.QBbf = m_mc.BestFit(eMCParams.QB, iGroup)
-                grp.BAbf = m_mc.BestFit(eMCParams.BA, iGroup)
-                grp.BaBibf = m_mc.BestFit(eMCParams.BaBi, iGroup)
-                grp.EEbf = m_mc.BestFit(eMCParams.EE, iGroup)
-                grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, iGroup)
+                grp.Bbf = Me.m_mc.BestFit(eMCParams.Biomass, iGroup)
+                grp.PBbf = Me.m_mc.BestFit(eMCParams.PB, iGroup)
+                grp.QBbf = Me.m_mc.BestFit(eMCParams.QB, iGroup)
+                grp.BAbf = Me.m_mc.BestFit(eMCParams.BA, iGroup)
+                grp.BaBibf = Me.m_mc.BestFit(eMCParams.BaBi, iGroup)
+                grp.EEbf = Me.m_mc.BestFit(eMCParams.EE, iGroup)
+                grp.VUbf = Me.m_mc.BestFit(eMCParams.Vulnerability, iGroup)
 
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    grp.Landingsbf(iFleet) = m_mc.BestFit(eMCParams.Landings, iGroup)
-                    grp.Discardsbf(iFleet) = m_mc.BestFit(eMCParams.Discards, iGroup)
+                    grp.Landingsbf(iFleet) = Me.m_mc.BestFit(eMCParams.Landings, iGroup)
+                    grp.Discardsbf(iFleet) = Me.m_mc.BestFit(eMCParams.Discards, iGroup)
                 Next
 
-                For iPrey As Integer = 1 To m_core.nGroups
-                    grp.Dietsbf = m_mc.BestFitDiets(iGroup, iPrey)
+                For iPrey As Integer = 1 To Me.m_core.nGroups
+                    grp.Dietsbf = Me.m_mc.BestFitDiets(iGroup, iPrey)
                 Next
 
                 grp.ResetStatusFlags()
@@ -1071,8 +1071,8 @@ Public Class cMonteCarloManager
     ''' <param name="var">The varname of the status to read.</param>
     ''' <returns>A montecarlified status flag.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ToMCStatus(ByVal grp As cEcoPathGroupInput, ByVal var As eVarNameFlags,
-                                Optional ByVal bIsBestFit As Boolean = False) As eStatusFlags
+    Private Function ToMCStatus(grp As cEcoPathGroupInput, var As eVarNameFlags,
+                                Optional bIsBestFit As Boolean = False) As eStatusFlags
 
         Dim status As eStatusFlags = grp.GetStatus(var)
 
@@ -1128,11 +1128,11 @@ Public Class cMonteCarloManager
     Private Sub InitGroups()
 
         Try
-            m_groups = Nothing
-            m_groups = New List(Of cMonteCarloGroup)
+            Me.m_groups = Nothing
+            Me.m_groups = New List(Of cMonteCarloGroup)
 
-            For igrp As Integer = 1 To m_core.nGroups
-                m_groups.Add(New cMonteCarloGroup(m_core, m_core.m_EcoPathData.GroupDBID(igrp)))
+            For igrp As Integer = 1 To Me.m_core.nGroups
+                Me.m_groups.Add(New cMonteCarloGroup(Me.m_core, Me.m_core.m_EcoPathData.GroupDBID(igrp)))
             Next
 
         Catch ex As Exception
@@ -1151,66 +1151,66 @@ Public Class cMonteCarloManager
 
         Try
 
-            For Each MCGroup As cMonteCarloGroup In m_groups
+            For Each MCGroup As cMonteCarloGroup In Me.m_groups
                 'convert the Database ID into an iGroup
-                MCGroup.Index = Array.IndexOf(m_core.m_EcoPathData.GroupDBID, MCGroup.DBID)
+                MCGroup.Index = Array.IndexOf(Me.m_core.m_EcoPathData.GroupDBID, MCGroup.DBID)
                 MCGroup.Resize()
 
-                m_mc.Pmean(eMCParams.Biomass, MCGroup.Index) = MCGroup.B
-                m_mc.Pmean(eMCParams.PB, MCGroup.Index) = MCGroup.PB
-                m_mc.Pmean(eMCParams.QB, MCGroup.Index) = MCGroup.QB
-                m_mc.Pmean(eMCParams.BA, MCGroup.Index) = MCGroup.BA
-                m_mc.Pmean(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBi
-                m_mc.Pmean(eMCParams.EE, MCGroup.Index) = MCGroup.EE
-                m_mc.Pmean(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VU
+                Me.m_mc.Pmean(eMCParams.Biomass, MCGroup.Index) = MCGroup.B
+                Me.m_mc.Pmean(eMCParams.PB, MCGroup.Index) = MCGroup.PB
+                Me.m_mc.Pmean(eMCParams.QB, MCGroup.Index) = MCGroup.QB
+                Me.m_mc.Pmean(eMCParams.BA, MCGroup.Index) = MCGroup.BA
+                Me.m_mc.Pmean(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBi
+                Me.m_mc.Pmean(eMCParams.EE, MCGroup.Index) = MCGroup.EE
+                Me.m_mc.Pmean(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VU
 
                 For ifleet As Integer = 1 To Me.m_core.nFleets
-                    m_mc.PMeanLanding(ifleet, MCGroup.Index) = MCGroup.Landings(ifleet)
-                    m_mc.PMeanDiscard(ifleet, MCGroup.Index) = MCGroup.Discards(ifleet)
+                    Me.m_mc.PMeanLanding(ifleet, MCGroup.Index) = MCGroup.Landings(ifleet)
+                    Me.m_mc.PMeanDiscard(ifleet, MCGroup.Index) = MCGroup.Discards(ifleet)
                 Next
 
-                For iPrey As Integer = 0 To m_core.nGroups
-                    m_mc.PMeanDC(MCGroup.Index, iPrey) = MCGroup.Diets(iPrey)
+                For iPrey As Integer = 0 To Me.m_core.nGroups
+                    Me.m_mc.PMeanDC(MCGroup.Index, iPrey) = MCGroup.Diets(iPrey)
                 Next
 
-                m_mc.CVpar(eMCParams.Biomass, MCGroup.Index) = MCGroup.Bcv
-                m_mc.CVpar(eMCParams.PB, MCGroup.Index) = MCGroup.PBcv
-                m_mc.CVpar(eMCParams.QB, MCGroup.Index) = MCGroup.QBcv
-                m_mc.CVpar(eMCParams.BA, MCGroup.Index) = MCGroup.BAcv
-                m_mc.CVpar(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBicv
-                m_mc.CVpar(eMCParams.EE, MCGroup.Index) = MCGroup.EEcv
-                m_mc.CVpar(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUcv
+                Me.m_mc.CVpar(eMCParams.Biomass, MCGroup.Index) = MCGroup.Bcv
+                Me.m_mc.CVpar(eMCParams.PB, MCGroup.Index) = MCGroup.PBcv
+                Me.m_mc.CVpar(eMCParams.QB, MCGroup.Index) = MCGroup.QBcv
+                Me.m_mc.CVpar(eMCParams.BA, MCGroup.Index) = MCGroup.BAcv
+                Me.m_mc.CVpar(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBicv
+                Me.m_mc.CVpar(eMCParams.EE, MCGroup.Index) = MCGroup.EEcv
+                Me.m_mc.CVpar(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUcv
 
                 For ifleet As Integer = 1 To Me.m_core.nFleets
-                    m_mc.CVparLanding(ifleet, MCGroup.Index) = MCGroup.Landingscv(ifleet)
-                    m_mc.CVparDiscard(ifleet, MCGroup.Index) = MCGroup.Discardscv(ifleet)
+                    Me.m_mc.CVparLanding(ifleet, MCGroup.Index) = MCGroup.Landingscv(ifleet)
+                    Me.m_mc.CVparDiscard(ifleet, MCGroup.Index) = MCGroup.Discardscv(ifleet)
                 Next
-                m_mc.CVpar(eMCParams.Diets, MCGroup.Index) = MCGroup.DietMultiplier
+                Me.m_mc.CVpar(eMCParams.Diets, MCGroup.Index) = MCGroup.DietMultiplier
 
-                m_mc.ParLimit(0, eMCParams.Biomass, MCGroup.Index) = MCGroup.BLower
-                m_mc.ParLimit(0, eMCParams.PB, MCGroup.Index) = MCGroup.PBLower
-                m_mc.ParLimit(0, eMCParams.QB, MCGroup.Index) = MCGroup.QBLower
-                m_mc.ParLimit(0, eMCParams.BA, MCGroup.Index) = MCGroup.BALower
-                m_mc.ParLimit(0, eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBiLower
-                m_mc.ParLimit(0, eMCParams.EE, MCGroup.Index) = MCGroup.EELower
-                m_mc.ParLimit(0, eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VULower
+                Me.m_mc.ParLimit(0, eMCParams.Biomass, MCGroup.Index) = MCGroup.BLower
+                Me.m_mc.ParLimit(0, eMCParams.PB, MCGroup.Index) = MCGroup.PBLower
+                Me.m_mc.ParLimit(0, eMCParams.QB, MCGroup.Index) = MCGroup.QBLower
+                Me.m_mc.ParLimit(0, eMCParams.BA, MCGroup.Index) = MCGroup.BALower
+                Me.m_mc.ParLimit(0, eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBiLower
+                Me.m_mc.ParLimit(0, eMCParams.EE, MCGroup.Index) = MCGroup.EELower
+                Me.m_mc.ParLimit(0, eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VULower
 
-                For iFleet As Integer = 1 To m_core.nFleets
-                    m_mc.ParLimitLanding(0, iFleet, MCGroup.Index) = MCGroup.LandingsLower(iFleet)
-                    m_mc.ParLimitDiscard(0, iFleet, MCGroup.Index) = MCGroup.DiscardsLower(iFleet)
+                For iFleet As Integer = 1 To Me.m_core.nFleets
+                    Me.m_mc.ParLimitLanding(0, iFleet, MCGroup.Index) = MCGroup.LandingsLower(iFleet)
+                    Me.m_mc.ParLimitDiscard(0, iFleet, MCGroup.Index) = MCGroup.DiscardsLower(iFleet)
                 Next
 
-                m_mc.ParLimit(1, eMCParams.Biomass, MCGroup.Index) = MCGroup.BUpper
-                m_mc.ParLimit(1, eMCParams.PB, MCGroup.Index) = MCGroup.PBUpper
-                m_mc.ParLimit(1, eMCParams.QB, MCGroup.Index) = MCGroup.QBUpper
-                m_mc.ParLimit(1, eMCParams.BA, MCGroup.Index) = MCGroup.BAUpper
-                m_mc.ParLimit(1, eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBiUpper
-                m_mc.ParLimit(1, eMCParams.EE, MCGroup.Index) = MCGroup.EEUpper
-                m_mc.ParLimit(1, eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUUpper
+                Me.m_mc.ParLimit(1, eMCParams.Biomass, MCGroup.Index) = MCGroup.BUpper
+                Me.m_mc.ParLimit(1, eMCParams.PB, MCGroup.Index) = MCGroup.PBUpper
+                Me.m_mc.ParLimit(1, eMCParams.QB, MCGroup.Index) = MCGroup.QBUpper
+                Me.m_mc.ParLimit(1, eMCParams.BA, MCGroup.Index) = MCGroup.BAUpper
+                Me.m_mc.ParLimit(1, eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBiUpper
+                Me.m_mc.ParLimit(1, eMCParams.EE, MCGroup.Index) = MCGroup.EEUpper
+                Me.m_mc.ParLimit(1, eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUUpper
 
-                For iFleet As Integer = 1 To m_core.nFleets
-                    m_mc.ParLimitLanding(1, iFleet, MCGroup.Index) = MCGroup.LandingsUpper(iFleet)
-                    m_mc.ParLimitDiscard(1, iFleet, MCGroup.Index) = MCGroup.DiscardsUpper(iFleet)
+                For iFleet As Integer = 1 To Me.m_core.nFleets
+                    Me.m_mc.ParLimitLanding(1, iFleet, MCGroup.Index) = MCGroup.LandingsUpper(iFleet)
+                    Me.m_mc.ParLimitDiscard(1, iFleet, MCGroup.Index) = MCGroup.DiscardsUpper(iFleet)
                 Next
             Next MCGroup
 

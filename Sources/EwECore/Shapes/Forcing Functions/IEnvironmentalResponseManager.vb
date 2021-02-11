@@ -30,9 +30,9 @@ Public Interface IEnvironmentalResponseManager
 
     ReadOnly Property nEnviroData As Integer
 
-    ReadOnly Property EnviroData(ByVal MapIndex As Integer) As IEnviroInputData
+    ReadOnly Property EnviroData(iIndex As Integer) As IEnviroInputData
 
-    ReadOnly Property EnviroData(ByVal layer As cEcospaceLayer) As IEnviroInputData
+    ReadOnly Property EnviroData(layer As cEcospaceLayer) As IEnviroInputData
 
     ReadOnly Property MediationData() As cMediationDataStructures
 

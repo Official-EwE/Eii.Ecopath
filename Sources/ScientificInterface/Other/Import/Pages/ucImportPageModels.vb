@@ -52,7 +52,7 @@ Namespace Import
 
             Private m_dst As eDataSourceTypes = eDataSourceTypes.NotSet
 
-            Public Sub New(ByVal dst As eDataSourceTypes)
+            Public Sub New(dst As eDataSourceTypes)
                 Me.m_dst = dst
             End Sub
 
@@ -99,7 +99,7 @@ Namespace Import
         ''' Initialize the model selection page with the wizard content.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Init(ByVal wizard As cWizard, ByVal uic As cUIContext) _
+        Public Sub Init(wizard As cWizard, uic As cUIContext) _
              Implements IWizardPage.Init
 
             ' Sanity checks
@@ -116,7 +116,7 @@ Namespace Import
             Me.m_grid.UIContext = uic
             Me.m_grid.Init(Me.m_wizard)
 
-            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnModelSelectionChanged
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnModelSelectionChanged
 
             ' Initialize the database targets combo box
             Me.InitDatabaseFormatsCombo()
@@ -133,7 +133,7 @@ Namespace Import
               Implements IWizardPage.Close
 
             ' Clean-up
-            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnModelSelectionChanged
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnModelSelectionChanged
             Me.m_wizard = Nothing
 
         End Sub
@@ -187,7 +187,7 @@ Namespace Import
         ''' </summary>
         ''' <param name="grid"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnGridEdited(ByVal grid As cImportGrid) _
+        Private Sub OnGridEdited(grid As cImportGrid) _
             Handles m_grid.OnEdited
             Me.m_wizard.PageChanged(Me)
         End Sub
@@ -198,8 +198,8 @@ Namespace Import
         ''' folder.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBrowsePath(ByVal sender As System.Object, _
-                                  ByVal e As EventArgs) _
+        Private Sub OnBrowsePath(sender As System.Object, _
+                                  e As EventArgs) _
              Handles m_btnBrowse.Click
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
@@ -218,7 +218,7 @@ Namespace Import
         ''' Event handler, called when the output folder has been modified.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnOutputPathChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnOutputPathChanged(sender As Object, e As System.EventArgs) _
             Handles m_tbxOutputFolder.TextChanged
             Me.m_wizard.OutputFolder = Me.m_tbxOutputFolder.Text
             Me.m_wizard.PageChanged(Me)
@@ -229,7 +229,7 @@ Namespace Import
         ''' Event handler, called when the output format has been modified.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnDBFormatChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnDBFormatChanged(sender As Object, e As System.EventArgs) _
             Handles m_cmbDatabaseFormat.SelectedIndexChanged
             Me.m_wizard.OutputFormat = DirectCast(Me.m_cmbDatabaseFormat.SelectedItem, cDatabaseTypeItem).DataSourceType
             Me.m_wizard.PageChanged(Me)

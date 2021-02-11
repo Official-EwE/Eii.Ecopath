@@ -75,7 +75,7 @@ Public Class cSFPio
 
         xa = doc.CreateAttribute("anomalyshape")
         xa.InnerText = ""
-        If (Me.m_man.Parameters.AppliedShape IsNot Nothing) Then xa.InnerText = Me.m_man.Parameters.AppliedShape.Name
+        If (Me.m_man.Parameters.AppliedShapeIndex > 0) Then xa.InnerText = CStr(Me.m_man.Parameters.AppliedShapeIndex)
         xnSettings.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("search")
@@ -93,8 +93,8 @@ Public Class cSFPio
         xnRoot.AppendChild(xnSettings)
 
         Dim xnIts As XmlElement = doc.CreateElement("iterations")
-        For Each it As ISFPIterations In Me.m_man.Iterations
-            xnIts.AppendChild(IterationNode(it, core, doc))
+        For Each it As ISFPIteration In Me.m_man.Iterations
+            xnIts.AppendChild(Me.IterationNode(it, core, doc))
         Next
         xnRoot.AppendChild(xnIts)
 
@@ -108,7 +108,7 @@ Public Class cSFPio
 
     End Function
 
-    Private Function IterationNode(it As ISFPIterations, core As cCore, doc As XmlDocument) As XmlNode
+    Private Function IterationNode(it As ISFPIteration, core As cCore, doc As XmlDocument) As XmlNode
 
         Dim ndIteration As XmlElement = doc.CreateElement("iteration")
         Dim xa As XmlAttribute = Nothing
@@ -189,7 +189,7 @@ Public Class cSFPio
 
     End Function
 
-    Private m_iterations As New List(Of ISFPIterations)
+    Private m_iterations As New List(Of ISFPIteration)
 
     ''' <summary>
     ''' Read stepwise fitting results from file.
@@ -243,9 +243,9 @@ Public Class cSFPio
 
             If (Not String.IsNullOrWhiteSpace(WantedShape)) Then
                 bValidShape = TriState.False
-                If (parms.AppliedShape IsNot Nothing) Then bValidShape = If(String.Compare(parms.AppliedShape.Name, WantedShape, True) = 0, TriState.True, TriState.False)
+                If (parms.AppliedShapeIndex > 0) Then bValidShape = If(String.Compare(CStr(parms.AppliedShapeIndex), WantedShape, True) = 0, TriState.True, TriState.False)
             Else
-                bValidShape = If(parms.AppliedShape Is Nothing, TriState.True, TriState.False)
+                bValidShape = If(parms.AppliedShapeIndex > 0, TriState.True, TriState.False)
             End If
 
             If (bValidModel <> TriState.True) Or (bValidEcosim <> TriState.True) Or (bValidTS <> TriState.True) or (bValidShape <> TriState.True) Then
@@ -268,7 +268,7 @@ Public Class cSFPio
 
             parms.PredOrPredPreySSToV = bPredOrPredPreySSToV
             parms.AnomalySearchSplineStepSize = nSplineStep
-            parms.AppliedShape = parms.AppliedShape ' Todo: resolve this
+            parms.AppliedShapeIndex = parms.AppliedShapeIndex ' Todo: resolve this
             parms.EnableAbsoluteBiomass = bAbsB
             Me.m_man.Refresh(nK)
 

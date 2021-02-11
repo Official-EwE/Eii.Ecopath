@@ -60,7 +60,7 @@ Friend Class cDBUpdate6_40_00_01
         Return Me.UpdateEcospaceTables(db) 
     End Function
 
-    Private Function UpdateEcospaceTables(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateEcospaceTables(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = True
 

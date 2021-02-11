@@ -40,7 +40,7 @@ Namespace Controls.Map.Layers
             Me.New(GetType(ucLayerEditorRange))
         End Sub
 
-        Public Sub New(ByVal typeGUI As Type)
+        Public Sub New(typeGUI As Type)
             MyBase.New(typeGUI)
         End Sub
 

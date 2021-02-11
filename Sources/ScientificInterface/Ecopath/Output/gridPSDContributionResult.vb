@@ -51,19 +51,19 @@ Namespace Ecopath.Output
             If (Me.UIContext Is Nothing) Then Return
 
             'Define grid dimensions
-            Dim parms As cPSDParameters = Core.ParticleSizeDistributionParameters
-            Me.Redim(1, Core.nWeightClasses + 3)
+            Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
+            Me.Redim(1, Me.Core.nWeightClasses + 3)
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAMEWEIGHT)
 
             ' Dynamic column header - weight class
-            For wtClassIndex As Integer = 1 To Core.nWeightClasses
+            For wtClassIndex As Integer = 1 To Me.Core.nWeightClasses
                 Me(0, wtClassIndex + 1) = New cEwEColumnHeaderCell((parms.FirstWeightClass * 2 ^ (wtClassIndex - 1)).ToString)
             Next
 
             ' Sum value column
-            Me(0, Core.nWeightClasses + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, Me.Core.nWeightClasses + 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
@@ -83,20 +83,20 @@ Namespace Ecopath.Output
             'If core.nWeightClasses = 0 Then Return
 
             ' Create rows for groups and sum values in each row
-            For iGroup As Integer = 1 To Core.nLivingGroups
-                If IsGroupSelected(iGroup) Then
-                    groupOutput = Core.EcoPathGroupOutputs(iGroup)
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                If Me.IsGroupSelected(iGroup) Then
+                    groupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
                     iRow = Me.AddRow()
-                    FillRows(iRow, groupOutput)
+                    Me.FillRows(iRow, groupOutput)
                 End If
             Next iGroup
 
             'Create "Sum" row (sum values in each column)
-            FillTotalValueRow()
+            Me.FillTotalValueRow()
 
         End Sub
 
-        Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreGroupBase)
+        Private Sub FillRows(iRow As Integer, source As cCoreGroupBase)
 
             Dim sValue As Single = 0.0!
             Dim sTotal As Single = 0.0!
@@ -106,7 +106,7 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             ' For each weight class (each column) 
-            For wtClassIndex As Integer = 1 To Core.nWeightClasses
+            For wtClassIndex As Integer = 1 To Me.Core.nWeightClasses
                 sValue = CSng(source.GetVariable(eVarNameFlags.PSD, wtClassIndex))
                 cell = New cEwECell(sValue, GetType(Single))
                 cell.SuppressZero = True
@@ -129,21 +129,21 @@ Namespace Ecopath.Output
             Dim iRow As Integer
             Dim source As cCoreGroupBase = Nothing
             Dim sValue As Single = 0.0!
-            Dim sTotal(Core.nWeightClasses) As Single
+            Dim sTotal(Me.Core.nWeightClasses) As Single
             Dim sSumTotal As Single = 0.0!
             Dim cell As cEwECell = Nothing
 
-            For iWtClass As Integer = 1 To Core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 sTotal(iWtClass) = 0.0!
             Next
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New cEwERowHeaderCell("")
             Me(iRow, 1) = New cEwERowHeaderCell(sharedResources.HEADER_SUM)
-            For iGroup As Integer = 1 To Core.nLivingGroups
-                If IsGroupSelected(iGroup) Then
-                    source = Core.EcoPathGroupOutputs(iGroup)
-                    For iWtClass As Integer = 1 To Core.nWeightClasses
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                If Me.IsGroupSelected(iGroup) Then
+                    source = Me.Core.EcoPathGroupOutputs(iGroup)
+                    For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                         sValue = CSng(source.GetVariable(eVarNameFlags.PSD, iWtClass))
                         sTotal(iWtClass) = sTotal(iWtClass) + sValue
                     Next
@@ -151,7 +151,7 @@ Namespace Ecopath.Output
             Next
 
             'Display the sum of values in a column
-            For iWtClass As Integer = 1 To Core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 cell = New cEwECell(sTotal(iWtClass), GetType(Single))
                 cell.SuppressZero = True
                 cell.Style = cStyleGuide.eStyleFlags.Sum
@@ -159,7 +159,7 @@ Namespace Ecopath.Output
             Next
 
             'Display the sum of all values
-            For iWtClass As Integer = 1 To Core.nWeightClasses
+            For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                 sSumTotal = sSumTotal + sTotal(iWtClass)
             Next
             cell = New cEwECell(sSumTotal, GetType(Single))
@@ -170,9 +170,9 @@ Namespace Ecopath.Output
         End Sub
 
         Private Function IsGroupSelected() As Boolean()
-            Dim bGroupSelected(Core.nLivingGroups) As Boolean
+            Dim bGroupSelected(Me.Core.nLivingGroups) As Boolean
 
-            For i As Integer = 1 To Core.nLivingGroups
+            For i As Integer = 1 To Me.Core.nLivingGroups
                 bGroupSelected(i) = Me.StyleGuide.GroupVisible(i)
             Next
             Return bGroupSelected

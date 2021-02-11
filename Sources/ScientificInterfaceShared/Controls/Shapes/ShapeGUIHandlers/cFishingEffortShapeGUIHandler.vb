@@ -61,7 +61,7 @@ Namespace Controls
         ''' <param name="shape"></param>
         ''' <param name="sketchpad"></param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub OnShapeFinalized(ByVal shape As EwECore.cShapeData, ByVal sketchpad As ucSketchPad)
+        Public Overrides Sub OnShapeFinalized(shape As EwECore.cShapeData, sketchpad As ucSketchPad)
             MyBase.OnShapeFinalized(shape, sketchpad)
             Me.Refresh()
         End Sub

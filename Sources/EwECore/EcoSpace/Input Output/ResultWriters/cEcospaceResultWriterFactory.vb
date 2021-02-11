@@ -39,7 +39,7 @@ Public Class cEcospaceResultWriterFactory
     ''' <param name="pm">The plug-in manager instance to consult, if any.</param>
     ''' <returns>An array of all avaliable result writers.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Shared Function GetWriters(ByVal pm As cPluginManager) As IEcospaceResultsWriter()
+    Friend Shared Function GetWriters(pm As cPluginManager) As IEcospaceResultsWriter()
 
         Dim writers As New List(Of IEcospaceResultsWriter)
 

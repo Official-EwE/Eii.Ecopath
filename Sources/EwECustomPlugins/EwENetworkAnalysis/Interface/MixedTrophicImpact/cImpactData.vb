@@ -41,13 +41,13 @@ Public Class cImpactData
         Return "Mixed tropic level impacts"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                    ByVal datagrid As DataGridView,
-                                    ByVal graph As ZedGraphControl,
-                                    ByVal plot As ucPlot,
-                                    ByVal toolstrip As ToolStrip,
-                                    ByVal info As Control,
-                                    ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                    datagrid As DataGridView,
+                                    graph As ZedGraphControl,
+                                    plot As ucPlot,
+                                    toolstrip As ToolStrip,
+                                    info As Control,
+                                    uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Toolstrip.Visible = bSucces
         Me.Grid.Visible = bSucces
@@ -60,60 +60,60 @@ Public Class cImpactData
 
         Dim astrRowContent() As String
 
-        SetUpGridColumn(NetworkManager.nGroups, NetworkManager.nFleets)
+        Me.SetUpGridColumn(Me.NetworkManager.nGroups, Me.NetworkManager.nFleets)
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nGroups + NetworkManager.nFleets + 1
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = Me.NetworkManager.nGroups + Me.NetworkManager.nFleets + 1
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim astrRowContent(Grid.Columns.Count)
+        ReDim astrRowContent(Me.Grid.Columns.Count)
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_IMPACTING_IMPACTED
-        For intIndex As Integer = 1 To NetworkManager.nGroups
-            astrRowContent(intIndex + 1) = NetworkManager.GroupName(intIndex)
+        For intIndex As Integer = 1 To Me.NetworkManager.nGroups
+            astrRowContent(intIndex + 1) = Me.NetworkManager.GroupName(intIndex)
         Next
-        For intIndex As Integer = 1 To NetworkManager.nFleets
-            astrRowContent(NetworkManager.nGroups + intIndex + 1) = NetworkManager.FleetName(intIndex)
+        For intIndex As Integer = 1 To Me.NetworkManager.nFleets
+            astrRowContent(Me.NetworkManager.nGroups + intIndex + 1) = Me.NetworkManager.FleetName(intIndex)
         Next
-        Grid.Rows(0).SetValues(astrRowContent)
-        Grid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(astrRowContent)
+        Me.Grid.Rows(0).Visible = True
 
-        For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+        For i As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
             astrRowContent(0) = CStr(i)
-            If i <= NetworkManager.nGroups Then
-                astrRowContent(1) = NetworkManager.GroupName(i)
+            If i <= Me.NetworkManager.nGroups Then
+                astrRowContent(1) = Me.NetworkManager.GroupName(i)
             Else
-                astrRowContent(1) = NetworkManager.FleetName(i - NetworkManager.nGroups)
+                astrRowContent(1) = Me.NetworkManager.FleetName(i - Me.NetworkManager.nGroups)
             End If
-            For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
-                astrRowContent(j + 1) = Me.StyleGuide.FormatNumber(NetworkManager.MixedTrophicImpacts(i, j))
+            For j As Integer = 1 To Me.NetworkManager.nGroups + Me.NetworkManager.nFleets
+                astrRowContent(j + 1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.MixedTrophicImpacts(i, j))
             Next
-            Grid.Rows(i).SetValues(astrRowContent)
-            Grid.Rows(i).Visible = True
+            Me.Grid.Rows(i).SetValues(astrRowContent)
+            Me.Grid.Rows(i).Visible = True
         Next
-        Grid.ClearSelection()
+        Me.Grid.ClearSelection()
     End Sub
 
-    Private Sub SetUpGridColumn(ByVal iNumGroups As Integer, ByVal iNumFleets As Integer)
+    Private Sub SetUpGridColumn(iNumGroups As Integer, iNumFleets As Integer)
 
-        Grid.ReadOnly = True
+        Me.Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = iNumGroups + iNumFleets + 2
+        Me.Grid.ColumnCount = iNumGroups + iNumFleets + 2
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(0).Frozen = True
-        Grid.Columns(0).Width = ID_COL_WIDTH
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).Width = ID_COL_WIDTH
 
-        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(1).Frozen = True
-        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Me.Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Me.Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(1).Frozen = True
+        Me.Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
     End Sub
 

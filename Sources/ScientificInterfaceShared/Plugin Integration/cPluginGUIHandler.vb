@@ -53,8 +53,8 @@ Namespace Integration
         ''' <param name="pm"></param>
         ''' <param name="cmdh"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPluginManager, _
-                       ByVal cmdh As cCommandHandler)
+        Public Sub New(pm As cPluginManager, _
+                       cmdh As cCommandHandler)
             Me.PluginManager = pm
             Me.CommandHandler = cmdh
         End Sub
@@ -86,17 +86,17 @@ Namespace Integration
             Get
                 Return Me.m_pm
             End Get
-            Set(ByVal pm As cPluginManager)
+            Set(pm As cPluginManager)
                 If (pm Is Me.m_pm) Then Return
 
                 If (Me.m_pm IsNot Nothing) Then
                     ' Stop observing events originating from current plugin manager:
                     ' - Assemblies added event
-                    RemoveHandler m_pm.AssemblyAdded, AddressOf OnAssemblyAdded
+                    RemoveHandler Me.m_pm.AssemblyAdded, AddressOf Me.OnAssemblyAdded
                     ' - Assemblies removed event
-                    RemoveHandler m_pm.AssemblyRemoved, AddressOf OnAssemblyRemoved
+                    RemoveHandler Me.m_pm.AssemblyRemoved, AddressOf Me.OnAssemblyRemoved
                     ' - Plugin enabled state event
-                    RemoveHandler m_pm.PluginEnabled, AddressOf EnablePlugin
+                    RemoveHandler Me.m_pm.PluginEnabled, AddressOf Me.EnablePlugin
                     ' Manually remove existing assemblies
                     For Each pa As cPluginAssembly In Me.m_pm.PluginAssemblies
                         Me.OnAssemblyRemoved(pa)
@@ -112,11 +112,11 @@ Namespace Integration
                     Next
                     ' Start observing events originating from new plugin manager
                     ' - Assemblies added event
-                    AddHandler m_pm.AssemblyAdded, AddressOf OnAssemblyAdded
+                    AddHandler Me.m_pm.AssemblyAdded, AddressOf Me.OnAssemblyAdded
                     ' - Assemblies removed event
-                    AddHandler m_pm.AssemblyRemoved, AddressOf OnAssemblyRemoved
+                    AddHandler Me.m_pm.AssemblyRemoved, AddressOf Me.OnAssemblyRemoved
                     ' - Plugin enabled state event
-                    AddHandler m_pm.PluginEnabled, AddressOf EnablePlugin
+                    AddHandler Me.m_pm.PluginEnabled, AddressOf Me.EnablePlugin
                 End If
 
             End Set
@@ -132,7 +132,7 @@ Namespace Integration
             Get
                 Return Me.m_cmdh
             End Get
-            Set(ByVal value As cCommandHandler)
+            Set(value As cCommandHandler)
                 Me.m_cmdh = value
             End Set
         End Property
@@ -144,7 +144,7 @@ Namespace Integration
         ''' </summary>
         ''' <param name="pa">The added plugin assembly.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnAssemblyAdded(ByVal pa As cPluginAssembly)
+        Private Sub OnAssemblyAdded(pa As cPluginAssembly)
             If pa.CanRun Then Me.ActivateAssembly(pa, True)
         End Sub
 
@@ -155,7 +155,7 @@ Namespace Integration
         ''' </summary>
         ''' <param name="pa">The removed plugin assembly.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnAssemblyRemoved(ByVal pa As cPluginAssembly)
+        Private Sub OnAssemblyRemoved(pa As cPluginAssembly)
             ' Remove the assembly
             Me.ActivateAssembly(pa, False)
         End Sub
@@ -169,7 +169,7 @@ Namespace Integration
         ''' <param name="bEnabled">The new <see cref="cPluginAssembly.Enabled">Enabled</see>
         ''' state.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub ActivateAssembly(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+        Private Sub ActivateAssembly(pa As cPluginAssembly, bEnabled As Boolean)
 
             Dim ctrl As Control = Nothing
             Dim lPlugins As New List(Of IGUIPlugin)
@@ -212,7 +212,7 @@ Namespace Integration
         ''' <param name="bPlace">States whether the item for the plugin should be placed (True)
         ''' or removed (False).</param>
         ''' -----------------------------------------------------------------------
-        Protected MustOverride Sub PlacePlugin(ByVal ip As IGUIPlugin, ByVal bPlace As Boolean)
+        Protected MustOverride Sub PlacePlugin(ip As IGUIPlugin, bPlace As Boolean)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -222,7 +222,7 @@ Namespace Integration
         ''' <param name="bEnable">States whether the plugin should be enabled (True) or
         ''' or disabled (False).</param>
         ''' -----------------------------------------------------------------------
-        Protected MustOverride Sub EnablePlugin(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
+        Protected MustOverride Sub EnablePlugin(ip As IGUIPlugin, bEnable As Boolean)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -236,7 +236,7 @@ Namespace Integration
         ''' tree nodes.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Function SortPlugins(ByVal aip() As IGUIPlugin) As IGUIPlugin()
+        Protected Overridable Function SortPlugins(aip() As IGUIPlugin) As IGUIPlugin()
             Return aip
         End Function
 
@@ -244,7 +244,7 @@ Namespace Integration
 
 #Region " Plugin execution "
 
-        Protected Sub RunPlugin(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
+        Protected Sub RunPlugin(ip As IGUIPlugin, sender As Object, e As EventArgs)
 
             Dim cmd As cCommand = Nothing
             Dim pcmd As cPluginGUICommand = Nothing

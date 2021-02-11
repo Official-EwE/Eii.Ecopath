@@ -70,7 +70,7 @@ Friend Class ucGridView
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If (Me.m_qe IsNot Nothing) Then
                 Me.m_qe.Detach()
@@ -83,8 +83,8 @@ Friend Class ucGridView
                 Me.m_grid.Dispose()
                 Me.m_grid = Nothing
             End If
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
         Finally
             MyBase.Dispose(disposing)

@@ -66,7 +66,7 @@ Namespace Controls.Map.Layers
                 Dim layerMig As cEcospaceLayerMigration = CType((Me.Layer.Data), cEcospaceLayerMigration)
                 Return layerMig.SecundaryIndex
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Dim layerMig As cEcospaceLayerMigration = CType((Me.Layer.Data), cEcospaceLayerMigration)
                 ' Will month index change?
                 If (value <> layerMig.SecundaryIndex) Then

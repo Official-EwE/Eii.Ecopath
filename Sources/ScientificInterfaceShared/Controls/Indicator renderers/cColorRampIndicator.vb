@@ -41,10 +41,10 @@ Namespace Controls
         ''' <param name="ramp">The <see cref="cColorRamp"/> to draw.</param>
         ''' <param name="rc">Area to draw ramp onto.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawColorRamp(ByVal g As Graphics,
-                                        ByVal ramp As cColorRamp,
-                                        ByVal rc As RectangleF,
-                                        Optional ByVal bHorizontal As Boolean = True)
+        Public Shared Sub DrawColorRamp(g As Graphics,
+                                        ramp As cColorRamp,
+                                        rc As RectangleF,
+                                        Optional bHorizontal As Boolean = True)
 
             If (ramp Is Nothing) Then Return
             If (rc.Width <= 0) Or (rc.Height <= 0) Then Return

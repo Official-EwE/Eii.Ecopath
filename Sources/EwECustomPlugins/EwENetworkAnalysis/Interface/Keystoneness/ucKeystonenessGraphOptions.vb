@@ -31,7 +31,7 @@ Public Class ucKeystonenessGraphOptions
     Private WithEvents m_rbNumbers As System.Windows.Forms.RadioButton
     Private m_content As cKeystonenessGraph = Nothing
 
-    Public Sub New(ByVal content As cKeystonenessGraph)
+    Public Sub New(content As cKeystonenessGraph)
         Me.InitializeComponent()
         Me.m_content = content
     End Sub
@@ -136,7 +136,7 @@ Public Class ucKeystonenessGraphOptions
 
     Private m_bInUpdate As Boolean = False
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_bInUpdate = True
@@ -154,7 +154,7 @@ Public Class ucKeystonenessGraphOptions
 
     End Sub
 
-    Private Sub OnDrawModeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDrawModeChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbCircles.CheckedChanged, m_rbCircleScaled.CheckedChanged, m_rbNumbers.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return

@@ -45,7 +45,7 @@ Public Class frmRemarkUI
         Private m_sort As ePropertySortOrderTypes
         Private m_strDisplay As String = ""
 
-        Public Sub New(ByVal strDisplay As String, ByVal sort As ePropertySortOrderTypes)
+        Public Sub New(strDisplay As String, sort As ePropertySortOrderTypes)
             Me.m_strDisplay = strDisplay
             Me.m_sort = sort
         End Sub
@@ -85,7 +85,7 @@ Public Class frmRemarkUI
 
 #Region " Form overloads "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -97,11 +97,11 @@ Public Class frmRemarkUI
         Me.m_tscmbSort.SelectedIndex = 0
 
         ' Start tracking core state
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
 
         ' Create selection monitor, start tracking the monitor
         Me.m_monitor = New cRemarkMonitor(Me.PropertyManager)
-        AddHandler Me.m_monitor.OnRemarksListChanged, AddressOf OnRemarkListChanged
+        AddHandler Me.m_monitor.OnRemarksListChanged, AddressOf Me.OnRemarkListChanged
 
         ' Chop chop
         Me.Icon = Drawing.Icon.FromHandle(DirectCast(SharedResources.CommentHS, Bitmap).GetHicon)
@@ -109,13 +109,13 @@ Public Class frmRemarkUI
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Stop tracking core state
-        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
 
         ' Get rid of monitor
-        RemoveHandler Me.m_monitor.OnRemarksListChanged, AddressOf OnRemarkListChanged
+        RemoveHandler Me.m_monitor.OnRemarksListChanged, AddressOf Me.OnRemarkListChanged
         Me.m_monitor.Dispose()
         Me.m_monitor = Nothing
 
@@ -138,7 +138,7 @@ Public Class frmRemarkUI
 
 #Region " Events "
 
-    Private Sub OnSortChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSortChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tscmbSort.SelectedIndexChanged
         Me.InvalidateGrid()
     End Sub
@@ -154,7 +154,7 @@ Public Class frmRemarkUI
         Me.InvalidateGrid()
     End Sub
 
-    Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
+    Private Sub OnCoreStateChanged(cms As cCoreStateMonitor)
         Me.UpdateControls()
     End Sub
 
@@ -167,7 +167,7 @@ Public Class frmRemarkUI
     ''' </summary>
     ''' <param name="strDisplay"></param>
     ''' <param name="sort"></param>
-    Private Sub AddSortOption(ByVal strDisplay As String, ByVal sort As ePropertySortOrderTypes)
+    Private Sub AddSortOption(strDisplay As String, sort As ePropertySortOrderTypes)
         Me.m_tscmbSort.Items.Add(New cSortItem(strDisplay, sort))
     End Sub
 
@@ -181,7 +181,7 @@ Public Class frmRemarkUI
         SyncLock Me
             Me.m_bDataInvalidated = True
         End SyncLock
-        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateGrid))
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateGrid))
 
     End Sub
 

@@ -71,7 +71,7 @@ Public Class cParameters
         Get
             Return Me.m_bRunWithEcopath
         End Get
-        Set(ByVal bRunWithEcopath As Boolean)
+        Set(bRunWithEcopath As Boolean)
             If (bRunWithEcopath <> Me.m_bRunWithEcopath) Then
                 Me.m_bRunWithEcopath = bRunWithEcopath
                 Me.SetChanged()
@@ -83,7 +83,7 @@ Public Class cParameters
         Get
             Return Me.m_bRunWithEcosim
         End Get
-        Set(ByVal bRunWithEcosim As Boolean)
+        Set(bRunWithEcosim As Boolean)
             If (Me.m_bRunWithEcosim <> bRunWithEcosim) Then
                 Me.m_bRunWithEcosim = bRunWithEcosim
                 Me.SetChanged()
@@ -95,7 +95,7 @@ Public Class cParameters
         Get
             Return Me.m_bRunSearches
         End Get
-        Set(ByVal bRunWithFishingPolicySearch As Boolean)
+        Set(bRunWithFishingPolicySearch As Boolean)
             If (Me.m_bRunSearches <> bRunWithFishingPolicySearch) Then
                 Me.m_bRunSearches = bRunWithFishingPolicySearch
                 Me.SetChanged()

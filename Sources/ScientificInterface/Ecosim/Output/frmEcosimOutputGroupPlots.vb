@@ -52,7 +52,7 @@ Namespace Ecosim
                 Return GetType(ePlot)
             End Function
 
-            Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
+            Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
 
                 Select Case DirectCast(value, ePlot)
                     Case ePlot.AvgWeightOrProdCons : Return SharedResources.HEADER_PRODCONS
@@ -150,7 +150,7 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -180,7 +180,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.ConfigurePlots(False)
 
@@ -193,7 +193,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
             If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateColors()
             End If
@@ -202,14 +202,14 @@ Namespace Ecosim
         ''' <summary>
         ''' Event hander to display results for another group
         ''' </summary>
-        Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnGroupSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
 
             Me.UpdatePlots()
 
         End Sub
 
-        Private Sub OnSaveData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveData(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSaveData.Click
 
             Dim cmd As cEcosimSaveDataCommand = DirectCast(Me.CommandHandler.GetCommand("ExportEcosimResultsToCSV"), cEcosimSaveDataCommand)
@@ -260,7 +260,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShowHidePlots(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowHidePlots(sender As System.Object, e As System.EventArgs) _
             Handles m_btnChoosePlots.Click
 
             Dim dlg As New dlgSelectItems(GetType(ePlot), New cSimPlotFormatter())
@@ -297,7 +297,7 @@ Namespace Ecosim
                 Next
                 Return sbSettings.ToString()
             End Get
-            Set(ByVal strSettings As String)
+            Set(strSettings As String)
                 If String.IsNullOrEmpty(strSettings) Then Return
 
                 Dim iNumPlots As Integer = Math.Min([Enum].GetValues(GetType(ePlot)).Length, strSettings.Length)
@@ -307,7 +307,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Protected Sub ConfigurePlots(Optional ByVal bFormOpen As Boolean = True)
+        Protected Sub ConfigurePlots(Optional bFormOpen As Boolean = True)
 
             Dim iPane As Integer = 1
             Dim iMaxPanes As Integer = [Enum].GetValues(GetType(ePlot)).Length - 1
@@ -344,7 +344,7 @@ Namespace Ecosim
         ''' Configure a plot on the main graph
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(ByVal plot As ePlot, ByVal strTitle As String, strYAxisLabel As String, Optional ByVal dYAxisMax As Double = 0)
+        Private Sub ConfigurePane(plot As ePlot, strTitle As String, strYAxisLabel As String, Optional dYAxisMax As Double = 0)
 
             If Not Me.m_plotVisible(plot) Then Return
             ' Sanity check
@@ -365,7 +365,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iNumLists">Number of lists to create.</param>
         ''' -------------------------------------------------------------------
-        Private Function InitLists(ByVal iNumLists As Integer) As List(Of PointPairList)
+        Private Function InitLists(iNumLists As Integer) As List(Of PointPairList)
 
             Dim lPPL As New List(Of PointPairList)
             For i As Integer = 1 To iNumLists
@@ -647,7 +647,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Function ToTimeSeriesLineItem(ByVal ts As cTimeSeries, ByVal clr As Color) As LineItem
+        Private Function ToTimeSeriesLineItem(ts As cTimeSeries, clr As Color) As LineItem
 
             Dim ppt As New PointPairList
             Dim dScale As Single = 1.0F
@@ -695,7 +695,7 @@ Namespace Ecosim
 
         Private Sub ShowGroup()
 
-            Dim iGroup As Integer = m_lbGroups.SelectedIndex + 1
+            Dim iGroup As Integer = Me.m_lbGroups.SelectedIndex + 1
             Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
             Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
 
@@ -754,9 +754,9 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiGroupIndex">Array of group index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox,
-                                         ByVal aiGroupIndex() As Integer,
-                                         ByVal asValues() As Single)
+        Private Sub PopulateGroupListBox(l As cGroupListBox,
+                                         aiGroupIndex() As Integer,
+                                         asValues() As Single)
 
             l.VisibleGroups = aiGroupIndex
             l.Populate()
@@ -775,9 +775,9 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiFleetIndex">Array of fleet index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateFleetListBox(ByVal l As cFleetListBox,
-                                         ByVal aiFleetIndex() As Integer,
-                                         ByVal asValues() As Single)
+        Private Sub PopulateFleetListBox(l As cFleetListBox,
+                                         aiFleetIndex() As Integer,
+                                         asValues() As Single)
 
             l.Populate(aiFleetIndex)
             For i As Integer = 0 To aiFleetIndex.Count - 1
@@ -788,7 +788,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateGraphPaneTitle(ByVal paneType As ePlot, ByVal strTitle As String)
+        Private Sub UpdateGraphPaneTitle(paneType As ePlot, strTitle As String)
             If Not Me.m_plotVisible(paneType) Then Return
             ' Sanity check
             Debug.Assert(Me.m_plotPanel(paneType) > 0)
@@ -808,9 +808,9 @@ Namespace Ecosim
         ''' <param name="paneType">Index of the graph pane</param>
         ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePlot,
-                                        ByVal li As LineItem,
-                                        Optional ByVal bCumulative As Boolean = False)
+        Private Sub AddCurveToGraphPane(paneType As ePlot,
+                                        li As LineItem,
+                                        Optional bCumulative As Boolean = False)
             Dim lli As New List(Of ZedGraph.LineItem)
             lli.Add(li)
             Me.AddCurvesToGraphPane(paneType, lli, bCumulative)
@@ -824,9 +824,9 @@ Namespace Ecosim
         ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePlot,
-                                         ByVal lli As List(Of LineItem),
-                                         Optional ByVal bCumulative As Boolean = False)
+        Private Sub AddCurvesToGraphPane(paneType As ePlot,
+                                         lli As List(Of LineItem),
+                                         Optional bCumulative As Boolean = False)
 
             If Not Me.m_plotVisible(paneType) Then Return
             ' Sanity check
@@ -840,13 +840,13 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateColors()
-            m_paneMaster.Fill = New Fill(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+            Me.m_paneMaster.Fill = New Fill(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             For Each p As GraphPane In Me.m_paneMaster.PaneList
                 p.Chart.Fill = New Fill(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             Next
         End Sub
 
-        Private Function GetPlotTitle(ByVal data As ePlot) As String
+        Private Function GetPlotTitle(data As ePlot) As String
 
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
             Dim group As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
@@ -874,13 +874,13 @@ Namespace Ecosim
 
                 Case ePlot.AvgWeightOrProdCons
                     If group.IsMultiStanza() Then
-                        Return StyleGuide.FormatUnitString(cUnits.Currency)
+                        Return Me.StyleGuide.FormatUnitString(cUnits.Currency)
                     Else
                         Return ""
                     End If
 
                 Case ePlot.Biomass
-                    Return StyleGuide.FormatUnitString(cUnits.Currency)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.Currency)
 
                 Case ePlot.FeedingTime
                     Return ""
@@ -889,23 +889,23 @@ Namespace Ecosim
                      ePlot.FleetFishingMortality,
                      ePlot.Mortality,
                      ePlot.PredationMortality
-                    Return StyleGuide.FormatUnitString(cUnits.OverTime)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.OverTime)
 
                 Case ePlot.Prey
                     Return SharedResources.HEADER_PREY_PERCENTAGE
 
                 Case ePlot.Value
-                    Return StyleGuide.FormatUnitString(cUnits.MonetaryOverBiomass)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.MonetaryOverBiomass)
 
                 Case ePlot.[Catch]
-                    Return StyleGuide.FormatUnitString(cUnits.CurrencyOverTime)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.CurrencyOverTime)
             End Select
 
             Return ""
 
         End Function
 
-        Private Function GetPlotAxisMax(ByVal data As ePlot) As Double
+        Private Function GetPlotAxisMax(data As ePlot) As Double
             Select Case data
                 Case ePlot.Prey : Return 100
             End Select

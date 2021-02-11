@@ -46,7 +46,7 @@ Namespace Ecopath.Output
 
 #Region " Form overloads "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -61,7 +61,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -71,7 +71,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
             MyBase.OnStyleGuideChanged(ct)
             Me.UpdatePlot()
         End Sub

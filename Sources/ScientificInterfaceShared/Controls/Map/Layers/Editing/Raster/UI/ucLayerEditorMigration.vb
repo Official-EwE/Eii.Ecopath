@@ -34,7 +34,7 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -45,10 +45,10 @@ Namespace Controls.Map.Layers
             Me.UpdateContent(Me.Editor)
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -56,7 +56,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -81,7 +81,7 @@ Namespace Controls.Map.Layers
             Get
                 Return DirectCast(MyBase.Editor, cLayerEditorMigration)
             End Get
-            Set(ByVal editor As cLayerEditorMigration)
+            Set(editor As cLayerEditorMigration)
                 ' Sanity check
                 Debug.Assert(TypeOf editor Is cLayerEditorMigration, "ucLayerEditorMigration connected to wrong editor class")
                 ' Set
@@ -91,7 +91,7 @@ Namespace Controls.Map.Layers
 
 #Region " Event handlers "
 
-        Private Sub OnMonthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnMonthChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbMonth.SelectedIndexChanged
             Try
                 Me.Editor.Month = Me.m_cmbMonth.SelectedIndex + 1

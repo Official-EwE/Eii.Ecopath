@@ -32,7 +32,7 @@ Public Class cResultsCollector_TotalCatch_Yearly
         Get
             Dim TempTotalGroupFleetDiscardRate As Double = 0
             For iMonth = 1 To 12
-                TempTotalGroupFleetDiscardRate += m_MSE.CatchesThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
+                TempTotalGroupFleetDiscardRate += Me.m_MSE.CatchesThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
             Next
             TempTotalGroupFleetDiscardRate /= 12
             Return TempTotalGroupFleetDiscardRate
@@ -48,7 +48,7 @@ Public Class cResultsCollector_TotalCatch_Yearly
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return m_MSE.NYearsProject
+            Return Me.m_MSE.NYearsProject
         End Get
     End Property
 

@@ -86,7 +86,7 @@ Public Class cModelFromEcosimPluginPoint
         End Get
     End Property
 
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
 
         Debug.Assert(Me.m_core Is Nothing)
         Debug.Assert(Me.m_data Is Nothing)
@@ -107,7 +107,7 @@ Public Class cModelFromEcosimPluginPoint
 
 #Region " UI integration "
 
-    Public Sub UIContext(ByVal uic As Object) _
+    Public Sub UIContext(uic As Object) _
         Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
@@ -126,8 +126,8 @@ Public Class cModelFromEcosimPluginPoint
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object,
-                              ByVal e As System.EventArgs,
+    Public Sub OnControlClick(sender As Object,
+                              e As System.EventArgs,
                               ByRef frmPlugin As System.Windows.Forms.Form) _
                               Implements EwEPlugin.IGUIPlugin.OnControlClick
         If (Me.m_uic IsNot Nothing) Then
@@ -276,9 +276,9 @@ Public Class cModelFromEcosimPluginPoint
     End Sub
 
     Public Sub EcosimEndTimeStepPost(ByRef BiomassAtTimestep() As Single,
-                                     ByVal EcosimDatastructures As Object,
-                                     ByVal iTime As Integer,
-                                     ByVal Ecosimresults As Object) _
+                                     EcosimDatastructures As Object,
+                                     iTime As Integer,
+                                     Ecosimresults As Object) _
                                      Implements EwEPlugin.IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
 
         If (Not Me.m_bAutosaving) Then Return

@@ -40,8 +40,8 @@ Public Class frmEditAssessmentError
         Public Property Text As String
 
         Public Sub New(ItemTest As String, ErorrTypeEnum As eErrorDataType)
-            ErrorDataType = ErorrTypeEnum
-            Text = ItemTest
+            Me.ErrorDataType = ErorrTypeEnum
+            Me.Text = ItemTest
         End Sub
 
         Public Overrides Function ToString() As String
@@ -68,7 +68,7 @@ Public Class frmEditAssessmentError
 
 #Region "Construction, Initialization and Destruction"
 
-    Public Sub New(ByVal uic As cUIContext, MSE As cMSE)
+    Public Sub New(uic As cUIContext, MSE As cMSE)
         Me.m_mse = MSE
         Me.UIContext = uic
         Me.InitializeComponent()
@@ -119,7 +119,7 @@ Public Class frmEditAssessmentError
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.QuickEditHandler.Detach()
-        RemoveHandler Me.m_grdError.onEdited, AddressOf OnGridEdited
+        RemoveHandler Me.m_grdError.onEdited, AddressOf Me.OnGridEdited
         Me.m_grdError.UIContext = Nothing
 
         MyBase.OnFormClosed(e)
@@ -152,7 +152,7 @@ Public Class frmEditAssessmentError
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel

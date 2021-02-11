@@ -160,9 +160,9 @@ Public Class frmMPADynamics
 
     Private Sub InvalidateGrid()
         ' Bundle multiple messages into one update
-        If (m_bGridInvalid = False) Then
+        If (Me.m_bGridInvalid = False) Then
             Me.m_bGridInvalid = True
-            Me.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf UpdateGrid))
+            Me.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf Me.UpdateGrid))
         End If
     End Sub
 
@@ -206,10 +206,10 @@ Public Class frmMPADynamics
                 End If
                 row.Cells("m_colMPA").Value = fmt.ToString(mpa)
                 For j As Integer = 1 To cCore.N_MONTHS
-                    row.Cells("m_colM" & j).Value = ToCellValue(state.IsClosed(j))
+                    row.Cells("m_colM" & j).Value = Me.ToCellValue(state.IsClosed(j))
                 Next
                 For j As Integer = 1 To Me.Core.nFleets
-                    row.Cells("m_colF" & j).Value = ToCellValue(state.IsEnforced(j))
+                    row.Cells("m_colF" & j).Value = Me.ToCellValue(state.IsEnforced(j))
                 Next
             Next
         End If

@@ -50,7 +50,7 @@ Namespace Utilities
         ''' <param name="dt">The date to return the Julian date for.</param>
         ''' <returns>A Julian date.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function DateToJulian(Optional ByVal dt As Date = Nothing) As Double
+        Public Shared Function DateToJulian(Optional dt As Date = Nothing) As Double
             If dt = Nothing Then dt = Date.Now
             Return dt.ToOADate()
         End Function
@@ -62,7 +62,7 @@ Namespace Utilities
         ''' <param name="dJulian">The Julian date to return a Date instance for.</param>
         ''' <returns>A Date instance.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function JulianToDate(ByVal dJulian As Double) As Date
+        Public Shared Function JulianToDate(dJulian As Double) As Date
             Return Date.FromOADate(dJulian)
         End Function
 
@@ -73,8 +73,8 @@ Namespace Utilities
         ''' <param name="iMonth">The month to format [1, 12]</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetMonthName(ByVal iMonth As Integer,
-                                            Optional ByVal bFullName As Boolean = True) As String
+        Public Shared Function GetMonthName(iMonth As Integer,
+                                            Optional bFullName As Boolean = True) As String
             Try
                 If (iMonth < 1 Or iMonth > 12) Then Return ""
 
@@ -106,7 +106,7 @@ Namespace Utilities
         ''' P. Kenneth Seidelmann, editor.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Easter(ByVal y As Integer) As Date
+        Public Shared Function Easter(y As Integer) As Date
 
             Debug.Assert(y >= 1583 And y <= 4099, "Gregorian calendar Easters apply for years 1583 to 4099 only")
 
@@ -143,7 +143,7 @@ Namespace Utilities
             DagVanDeLiefde
         End Enum
 
-        Public Shared Function GetNextEvent(ByVal iNumDays As Integer) As eNextEvent
+        Public Shared Function GetNextEvent(iNumDays As Integer) As eNextEvent
 
             Dim dtNow As DateTime = New Date(Date.Now.Year, Date.Now.Month, Date.Now.Day)
             Dim dtEaster As DateTime = cDateUtils.Easter(dtNow.Year)
@@ -169,7 +169,7 @@ Namespace Utilities
         ''' http://stackoverflow.com/questions/3249968/calculating-number-of-months-between-2-dates
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function MonthDifference(ByVal first As DateTime, ByVal second As DateTime) As Integer
+        Public Shared Function MonthDifference(first As DateTime, second As DateTime) As Integer
             Return Math.Abs((first.Month - second.Month) + 12 * (first.Year - second.Year))
         End Function
 

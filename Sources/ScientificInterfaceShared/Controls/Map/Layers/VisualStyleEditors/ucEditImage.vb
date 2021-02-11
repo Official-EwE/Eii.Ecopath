@@ -48,9 +48,9 @@ Namespace Controls
         ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal vs As cVisualStyle, _
-                       ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(uic As cUIContext, _
+                       vs As cVisualStyle, _
+                       style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(uic, vs, style)
             Me.InitializeComponent()
         End Sub
@@ -59,7 +59,7 @@ Namespace Controls
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -77,7 +77,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnAddImage(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnImport.Click
+        Private Sub OnAddImage(sender As System.Object, e As System.EventArgs) Handles m_btnImport.Click
 
             Dim img As Image = Nothing
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
@@ -104,7 +104,7 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub m_glyphSelect_OnSelectionChanged(ByVal sender As ucGlyphSelect, ByVal e As System.EventArgs) _
+        Private Sub m_glyphSelect_OnSelectionChanged(sender As ucGlyphSelect, e As System.EventArgs) _
             Handles m_glyphSelect.OnSelectionChanged
             Me.FireStyleChangedEvent()
         End Sub
@@ -125,7 +125,7 @@ Namespace Controls
             End Set
         End Property
 
-        Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
+        Public Overrides Function Apply(vs As cVisualStyle) As Boolean
             Dim img As Image = Me.m_glyphSelect.SelectedImage
             If (img IsNot Nothing) Then
                 vs.Image = Me.m_glyphSelect.SelectedImage

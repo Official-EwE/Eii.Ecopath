@@ -109,14 +109,14 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Sub New(uic As cUIContext,
                        vs As cVisualStyle,
-                       Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
+                       Optional layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
             Me.UIContext = uic
             Me.m_vs = vs
             Me.VisualStyleFlags = layerStyleFlags
             Me.Update()
         End Sub
 
-        Protected Overridable Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overridable Sub Dispose(bDisposing As Boolean)
             Me.m_vs = Nothing
         End Sub
 
@@ -128,8 +128,8 @@ Namespace Controls.Map.Layers
         ' This code added by Visual Basic to correctly implement the disposable pattern.
         Public Sub Dispose() Implements IDisposable.Dispose
             ' Haha I modified it
-            If m_bDisposed = False Then
-                Dispose(True)
+            If Me.m_bDisposed = False Then
+                Me.Dispose(True)
                 GC.SuppressFinalize(Me)
                 Me.m_bDisposed = True
             End If
@@ -150,7 +150,7 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.m_vs
             End Get
-            Set(ByVal value As cVisualStyle)
+            Set(value As cVisualStyle)
                 Me.m_vs = value
                 Me.Update()
             End Set
@@ -181,8 +181,8 @@ Namespace Controls.Map.Layers
         ''' <param name="iSymbol">The <see cref="nSymbols">symbol</see> to render.
         ''' If left at 0 the default cell value should be drawn.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderPreview(ByVal g As Graphics,
-                                              ByVal rc As RectangleF,
+        Public MustOverride Sub RenderPreview(g As Graphics,
+                                              rc As RectangleF,
                                               Optional iSymbol As Integer = 0)
 
         ''' -----------------------------------------------------------------------
@@ -196,12 +196,12 @@ Namespace Controls.Map.Layers
         ''' <param name="ptfBR">Bottom-right coordinate represented by the device area.</param>
         ''' <param name="style">Layer style to use when rendering/</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub Render(ByVal g As Graphics,
-                                       ByVal layer As cDisplayLayer,
-                                       ByVal rc As RectangleF,
-                                       ByVal ptfTL As PointF,
-                                       ByVal ptfBR As PointF,
-                                       ByVal style As cStyleGuide.eStyleFlags)
+        Public MustOverride Sub Render(g As Graphics,
+                                       layer As cDisplayLayer,
+                                       rc As RectangleF,
+                                       ptfTL As PointF,
+                                       ptfBR As PointF,
+                                       style As cStyleGuide.eStyleFlags)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -219,7 +219,7 @@ Namespace Controls.Map.Layers
         ''' <param name="g">Graphics device to render onto.</param>
         ''' <param name="rc">Area to render to.</param>
         ''' -----------------------------------------------------------------------
-        Protected Sub RenderError(ByVal g As Graphics, ByVal rc As RectangleF)
+        Protected Sub RenderError(g As Graphics, rc As RectangleF)
             'g.FillRectangle(Brushes.White, rc)
             g.DrawLine(Pens.Red, rc.Left, rc.Top, rc.Right, rc.Bottom)
             g.DrawLine(Pens.Red, rc.Left, rc.Bottom, rc.Right, rc.Top)
@@ -322,7 +322,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property nSymbols As Integer
             Get
-                If Not bSymbolsValid Then Me.UpdateSymbols()
+                If Not Me.bSymbolsValid Then Me.UpdateSymbols()
                 Return Me.m_lSymbols.Count
             End Get
         End Property
@@ -336,7 +336,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public ReadOnly Property SymbolName(iSymbol As Integer) As String
             Get
-                If Not bSymbolsValid Then Me.UpdateSymbols()
+                If Not Me.bSymbolsValid Then Me.UpdateSymbols()
                 If (iSymbol < 1) Or iSymbol > Me.m_lSymbols.Count Then Return ""
                 Return Me.m_lSymbols(iSymbol - 1).Name
             End Get
@@ -351,7 +351,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public ReadOnly Property SymbolKey(iSymbol As Integer) As Integer
             Get
-                If Not bSymbolsValid Then Me.UpdateSymbols()
+                If Not Me.bSymbolsValid Then Me.UpdateSymbols()
                 If (iSymbol < 1) Or iSymbol > Me.m_lSymbols.Count Then Return 0
                 Return Me.m_lSymbols(iSymbol - 1).Key
             End Get

@@ -83,7 +83,7 @@ Namespace Ecospace
             ''' initialize this instance from. If set, this instance represents a
             ''' Habitat currently active in the EwE model.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal habitat As cEcospaceHabitat)
+            Public Sub New(habitat As cEcospaceHabitat)
                 Debug.Assert(habitat IsNot Nothing)
                 Me.DBID = habitat.DBID
                 Me.Index = habitat.Index
@@ -97,7 +97,7 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String)
+            Public Sub New(strName As String)
                 Me.Name = strName
                 Me.Status = eItemStatusTypes.Added
             End Sub
@@ -155,7 +155,7 @@ Namespace Ecospace
             ''' True when Habitat <see cref="Name">Name</see> value has changed.
             ''' </returns>
             ''' -------------------------------------------------------------------
-            Public Function IsChanged(ByVal habitat As cEcospaceHabitat) As Boolean
+            Public Function IsChanged(habitat As cEcospaceHabitat) As Boolean
                 If (Me.IsNew()) Then Return False
                 If (habitat.DBID <> Me.DBID) Then Return False
                 Return (habitat.Name <> Me.Name)
@@ -183,7 +183,7 @@ Namespace Ecospace
                 Get
                     Return Me.Status = eItemStatusTypes.Removed
                 End Get
-                Set(ByVal bDelete As Boolean)
+                Set(bDelete As Boolean)
                     If Not Me.IsNew() Then
                         If bDelete Then
                             Me.Status = eItemStatusTypes.Removed
@@ -269,7 +269,7 @@ Namespace Ecospace
             Next
 
             ' Brute-force update grid
-            UpdateGrid()
+            Me.UpdateGrid()
 
         End Sub
 
@@ -311,7 +311,7 @@ Namespace Ecospace
 
             ' Populate rows
             For iRow As Integer = 1 To Me.m_habitats.Count
-                UpdateRow(iRow)
+                Me.UpdateRow(iRow)
             Next iRow
 
             Me.StretchColumnsToFitWidth()
@@ -324,7 +324,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow">The index of the row to refresh.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub UpdateRow(ByVal iRow As Integer)
+        Private Sub UpdateRow(iRow As Integer)
 
             Dim hi As cHabitatInfo = Nothing
             Dim ri As RowInfo = Nothing
@@ -365,7 +365,7 @@ Namespace Ecospace
         ''' just edited for text and combo box controls. *sigh*
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
             If Not Me.AllowUpdates Then Return True
 
@@ -402,7 +402,7 @@ Namespace Ecospace
         '''' Cell click handler, called in response to clicking button-like cells.
         '''' </summary>
         '''' -----------------------------------------------------------------------
-        'Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        'Protected Overrides Sub OnCellClicked(p As Position, cell As Cells.ICellVirtual)
 
         '    Select Case DirectCast(p.Column, eColumnTypes)
         '    End Select
@@ -460,7 +460,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <returns></returns>
-        Public Function IsHabitatRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsHabitatRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (iRow >= iFIRSTHABITATROW) And (iRow < Me.RowsCount)
         End Function
@@ -468,9 +468,9 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether the habitat on a row is flagged for deletion.
         ''' </summary>
-        Public Function IsFlaggedForDeletionRow(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function IsFlaggedForDeletionRow(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not IsHabitatRow(iRow) Then Return False
+            If Not Me.IsHabitatRow(iRow) Then Return False
 
             Dim iHabitat As Integer = iRow - iFIRSTHABITATROW
             Dim hi As cHabitatInfo = DirectCast(Me.m_habitats(iHabitat), cHabitatInfo)
@@ -526,11 +526,11 @@ Namespace Ecospace
         ''' <summary>
         ''' Move row up, switching positions with the row above it.
         ''' </summary>
-        Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
+        Public Sub MoveRowUp(Optional iRow As Integer = -1)
             Dim bMoveSelection As Boolean = (iRow = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not CanMoveRowUp(iRow) Then Return
+            If Not Me.CanMoveRowUp(iRow) Then Return
             Me.MoveRow(iRow, iRow - 1)
 
             If bMoveSelection Then
@@ -541,7 +541,7 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether a row can be moved up.
         ''' </summary>
-        Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanMoveRowUp(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (Me.RowsCount > (iFIRSTHABITATROW + 1)) And (iRow > iFIRSTHABITATROW)
         End Function
@@ -549,11 +549,11 @@ Namespace Ecospace
         ''' <summary>
         ''' Move row down, switching positions with the row below it.
         ''' </summary>
-        Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
+        Public Sub MoveRowDown(Optional iRow As Integer = -1)
             Dim bMoveSelection As Boolean = (iRow = -1)
 
             If iRow = -1 Then iRow = Me.SelectedRow()
-            If Not CanMoveRowDown(iRow) Then Return
+            If Not Me.CanMoveRowDown(iRow) Then Return
             Me.MoveRow(iRow, iRow + 1)
 
             If bMoveSelection Then
@@ -564,7 +564,7 @@ Namespace Ecospace
         ''' <summary>
         ''' States whether a row can be moved down.
         ''' </summary>
-        Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+        Public Function CanMoveRowDown(Optional iRow As Integer = -1) As Boolean
             If iRow = -1 Then iRow = Me.SelectedRow()
             Return (Me.RowsCount > (iFIRSTHABITATROW + 1)) And (iRow >= iFIRSTHABITATROW) And (iRow < Me.RowsCount - 1)
         End Function
@@ -572,7 +572,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Move one row to another position.
         ''' </summary>
-        Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+        Private Sub MoveRow(iFromRow As Integer, iToRow As Integer)
 
             Dim t As cHabitatInfo = Nothing
             Dim iStep As Integer = 1
@@ -618,7 +618,7 @@ Namespace Ecospace
             Get
                 Return (Me.m_iUpdateLock = 0)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value Then
                     Me.m_iUpdateLock += 1
                 Else
@@ -629,7 +629,7 @@ Namespace Ecospace
 
 #Region " Selection extension "
 
-        Private Overloads Sub SelectRow(ByVal hi As cHabitatInfo)
+        Private Overloads Sub SelectRow(hi As cHabitatInfo)
             For iHabitat As Integer = 0 To Me.m_habitats.Count - 1
                 If ReferenceEquals(Me.m_habitats(iHabitat), hi) Then
                     Me.SelectRow(iHabitat + iFIRSTHABITATROW)
@@ -691,7 +691,7 @@ Namespace Ecospace
 
         End Function
 
-        Private Function IsNameUnique(ByVal strName As String, ByVal info As cHabitatInfo) As Boolean
+        Private Function IsNameUnique(strName As String, info As cHabitatInfo) As Boolean
 
             ' Check if name is unique
             For i As Integer = 0 To Me.m_habitats.Count - 1

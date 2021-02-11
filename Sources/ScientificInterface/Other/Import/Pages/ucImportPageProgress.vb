@@ -66,7 +66,7 @@ Namespace Import
         ''' import messages and immediately starting the import process.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub Init(ByVal wizard As cWizard, ByVal uic As cUIContext) _
+        Public Sub Init(wizard As cWizard, uic As cUIContext) _
                Implements IWizardPage.Init
 
             ' Sanity checks
@@ -162,15 +162,15 @@ Namespace Import
 
             ' Update progress bar
             If Me.InvokeRequired Then
-                Me.Invoke(New UpdateProgressDelegate(AddressOf UpdateProgress), New Object() {CInt(100 * pmsg.Progress), pmsg.Message})
+                Me.Invoke(New UpdateProgressDelegate(AddressOf Me.UpdateProgress), New Object() {CInt(100 * pmsg.Progress), pmsg.Message})
             Else
                 Me.UpdateProgress(CInt(100 * pmsg.Progress), pmsg.Message)
             End If
         End Sub
 
-        Private Delegate Sub UpdateProgressDelegate(ByVal iProgress As Integer, ByVal strMsg As String)
+        Private Delegate Sub UpdateProgressDelegate(iProgress As Integer, strMsg As String)
 
-        Private Sub UpdateProgress(ByVal iProgress As Integer, ByVal strMsg As String)
+        Private Sub UpdateProgress(iProgress As Integer, strMsg As String)
 
             ' Update progress bar
             Me.m_pb.Value = Math.Max(0, Math.Min(100, iProgress))
@@ -193,7 +193,7 @@ Namespace Import
             Get
                 Return Me.m_bImporting
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 ' Optimization
                 If (Me.m_bImporting <> value) Then
                     ' Update importing status
@@ -214,7 +214,7 @@ Namespace Import
         ''' -------------------------------------------------------------------
         Private Sub StartImport()
 
-            Me.m_threadImport = New Thread(AddressOf PerformImportThread)
+            Me.m_threadImport = New Thread(AddressOf Me.PerformImportThread)
             Me.m_threadImport.Start()
 
         End Sub
@@ -273,7 +273,7 @@ Namespace Import
         ''' <param name="bImporting">Flag stating whether busy importing.</param>
         ''' <param name="strStatus">Optional message attached to status.</param>
         ''' -------------------------------------------------------------------
-        Private Delegate Sub SetImportStatusDelegate(ByVal bImporting As Boolean, ByVal strStatus As String)
+        Private Delegate Sub SetImportStatusDelegate(bImporting As Boolean, strStatus As String)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -282,7 +282,7 @@ Namespace Import
         ''' <param name="bImporting">Flag stating whether busy importing.</param>
         ''' <param name="strStatus">Optional message attached to status.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetImportStatus(ByVal bImporting As Boolean, ByVal strStatus As String)
+        Private Sub SetImportStatus(bImporting As Boolean, strStatus As String)
             Try
                 If Me.InvokeRequired Then
                     Me.Invoke(New SetImportStatusDelegate(AddressOf Me.SetImportStatus), New Object() {bImporting, strStatus})

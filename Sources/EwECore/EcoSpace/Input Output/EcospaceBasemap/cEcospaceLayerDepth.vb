@@ -31,13 +31,13 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerDepth
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+    Public Sub New(core As cCore, manager As cEcospaceBasemap, iIndex As Integer)
 
-        MyBase.New(theCore, manager, "", eVarNameFlags.LayerDepth, iIndex)
+        MyBase.New(core, manager, "", eVarNameFlags.LayerDepth, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
 
-        Dim val As New cValue(True, eVarNameFlags.EcospaceCapacityEnabled, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        Dim val As New cValue(Core, True, eVarNameFlags.EcospaceCapacityEnabled, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
     End Sub
 
@@ -49,7 +49,7 @@ Public Class cEcospaceLayerDepth
     ''' <param name="iCol">The column of the cell to check.</param>
     ''' <returns>True if the given cell is a water cell.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsWaterCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+    Public Function IsWaterCell(iRow As Integer, iCol As Integer) As Boolean
         If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
         Return CSng(Me.Cell(iRow, iCol)) > 0
     End Function
@@ -62,7 +62,7 @@ Public Class cEcospaceLayerDepth
     ''' <param name="iCol">The column of the cell to check.</param>
     ''' <returns>True if the given cell is a land cell.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsLandCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+    Public Function IsLandCell(iRow As Integer, iCol As Integer) As Boolean
         If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
         Return CSng(Me.Cell(iRow, iCol)) <= 0
     End Function
@@ -75,11 +75,11 @@ Public Class cEcospaceLayerDepth
     ''' <param name="iCol">The column of the cell to check.</param>
     ''' <returns>True if the given cell is a coastal cell.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsCoastalCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+    Public Function IsCoastalCell(iRow As Integer, iCol As Integer) As Boolean
         If Not Me.IsLandCell(iRow, iCol) Then Return False
         For i As Integer = iRow - 1 To iRow + 1
             For j As Integer = iCol - 1 To iCol + 1
-                If IsWaterCell(i, j) Then Return True
+                If Me.IsWaterCell(i, j) Then Return True
             Next
         Next
         Return False
@@ -122,10 +122,10 @@ Public Class cEcospaceLayerDepth
 
     Public Property IsCapacityEnabledStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcospaceCapacityEnabled)
+            Return Me.GetStatus(eVarNameFlags.EcospaceCapacityEnabled)
         End Get
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcospaceCapacityEnabled, value)
+            Me.SetStatus(eVarNameFlags.EcospaceCapacityEnabled, value)
         End Set
     End Property
 

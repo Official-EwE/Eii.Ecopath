@@ -59,7 +59,7 @@ Namespace Ecospace.Advection
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 If Me.m_uic IsNot Nothing Then
                     Me.ClearMap()
                 End If
@@ -159,19 +159,19 @@ Namespace Ecospace.Advection
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.DesignMode = True) Then Return
             Me.PopulateMap()
             Me.UpdateControls()
         End Sub
 
-        Protected Overrides Sub OnEnabledChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnEnabledChanged(e As System.EventArgs)
             MyBase.OnEnabledChanged(e)
             Me.UpdateControls()
         End Sub
 
-        Protected Overridable Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal changeFlags As cDisplayLayer.eChangeFlags)
+        Protected Overridable Sub OnLayerChanged(l As cDisplayLayer, changeFlags As cDisplayLayer.eChangeFlags)
             If ((changeFlags And cDisplayLayer.eChangeFlags.Editable) > 0) Then Me.UpdateControls()
         End Sub
 
@@ -199,14 +199,14 @@ Namespace Ecospace.Advection
             End If
 
             ' Start observing data layer changes
-            AddHandler Me.m_layerData.LayerChanged, AddressOf OnLayerChanged
+            AddHandler Me.m_layerData.LayerChanged, AddressOf Me.OnLayerChanged
 
         End Sub
 
         Protected Overridable Sub ClearMap()
 
             If (Me.m_layerData IsNot Nothing) Then
-                RemoveHandler Me.m_layerData.LayerChanged, AddressOf OnLayerChanged
+                RemoveHandler Me.m_layerData.LayerChanged, AddressOf Me.OnLayerChanged
                 Me.m_layerData = Nothing
             End If
 
@@ -214,7 +214,7 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cDisplayLayerRaster
+        Private Function AddLayer(vn As eVarNameFlags, bEditable As Boolean) As cDisplayLayerRaster
 
             Dim factory As New cLayerFactoryInternal()
             Dim layers() As cDisplayLayerRaster = factory.GetLayers(Me.m_uic, vn)

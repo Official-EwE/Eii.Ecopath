@@ -66,11 +66,11 @@ Friend Class cDBUpdate6_01_01_011
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return AddLandingsMediationTable(db) And AddLandingsMediationWeightsTable(db)
+        Return Me.AddLandingsMediationTable(db) And Me.AddLandingsMediationWeightsTable(db)
 
     End Function
 
-    Private Function AddLandingsMediationTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddLandingsMediationTable(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioLandingsShape (ScenarioID LONG, FleetID LONG, GroupID LONG, ShapeID LONG, FunctionType SHORT)")
@@ -84,7 +84,7 @@ Friend Class cDBUpdate6_01_01_011
 
     End Function
 
-    Private Function AddLandingsMediationWeightsTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddLandingsMediationWeightsTable(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("CREATE TABLE EcosimScenarioshapeMedWeightsLandings (ScenarioID LONG, GroupID LONG, FleetID LONG, ShapeID LONG, MedWeights SINGLE)")

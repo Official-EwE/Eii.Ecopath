@@ -95,7 +95,7 @@ Namespace Ecosim
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, Me.m_driverManager.nEnviroData + 2)
+            Me.Redim(Me.Core.nGroups + 1, Me.m_driverManager.nEnviroData + 2)
 
             For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
 
@@ -108,8 +108,8 @@ Namespace Ecosim
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
-            For iGroup As Integer = 1 To Core.nGroups
-                group = Core.EcoPathGroupInputs(iGroup)
+            For iGroup As Integer = 1 To Me.Core.nGroups
+                group = Me.Core.EcoPathGroupInputs(iGroup)
                 ' # Group index row header cells
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
@@ -124,7 +124,7 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
 
             Try
-                For igrp As Integer = 1 To Core.nGroups
+                For igrp As Integer = 1 To Me.Core.nGroups
                     For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
                         Me(igrp, iDriver + 1) = New cEwECell("", GetType(String))
                         Me(igrp, iDriver + 1).DataModel = Me.m_editor

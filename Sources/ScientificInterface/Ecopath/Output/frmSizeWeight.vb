@@ -51,7 +51,7 @@ Namespace Ecopath.Output
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             'Dim parms As cPSDParameters = Nothing
             'Dim str As String = ""
@@ -60,9 +60,9 @@ Namespace Ecopath.Output
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.zgcZedGraphCntl)
 
-            AddCurves(CreatePane(My.Resources.CAPTION_SIZEWT, SharedResources.HEADER_SIZECLASS, ""))
+            Me.AddCurves(Me.CreatePane(My.Resources.CAPTION_SIZEWT, SharedResources.HEADER_SIZECLASS, ""))
 
-            UpdatePlot()
+            Me.UpdatePlot()
 
             'parms = Me.me.UIContext.Core.ParticleSizeDistributionParameters
             'If parms.PSDEnabled = False Then
@@ -72,14 +72,14 @@ Namespace Ecopath.Output
             'End If
         End Sub
 
-        'Private Sub SizeWeightPlot_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        'Private Sub SizeWeightPlot_Shown(sender As Object, e As System.EventArgs) Handles Me.Shown
         '    Dim parms As cPSDParameters = Nothing
 
         '    parms = Me.me.UIContext.Core.ParticleSizeDistributionParameters
         '    If parms.PSDEnabled = False Then Me.Close()
         'End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_zgh.Detach()
             Me.m_zgh = Nothing
             MyBase.OnFormClosed(e)
@@ -88,16 +88,16 @@ Namespace Ecopath.Output
 
 #Region " Helper methods "
 
-        Private Function CreatePane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
-                                    ByVal strYAxisTitle As String) As GraphPane
+        Private Function CreatePane(strTitle As String, strXAxisTitle As String, _
+                                    strYAxisTitle As String) As GraphPane
             Dim pane As GraphPane = Me.zgcZedGraphCntl.GraphPane
 
-            InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle, pane)
+            Me.InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle, pane)
             Return pane
         End Function
 
-        Private Sub InitGraphPane(ByVal strTitle As String, ByVal strXAxisTitle As String, _
-                                    ByVal strYAxisTitle As String, ByVal pane As GraphPane)
+        Private Sub InitGraphPane(strTitle As String, strXAxisTitle As String, _
+                                    strYAxisTitle As String, pane As GraphPane)
             pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = False
             pane.Title.FontSpec.Size = 16
@@ -120,11 +120,11 @@ Namespace Ecopath.Output
             'Me.UpdateColors()
         End Sub
 
-        Private Sub AddCurves(ByVal pane As GraphPane)
+        Private Sub AddCurves(pane As GraphPane)
             Dim resultLists As New List(Of PointPairList)
             Dim grpOutput As cEcoPathGroupOutput = Nothing
 
-            InitLists(resultLists, 2)
+            Me.InitLists(resultLists, 2)
 
             For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
                 grpOutput = Me.UIContext.Core.EcoPathGroupOutputs(iGroup)
@@ -135,11 +135,11 @@ Namespace Ecopath.Output
             ' Clear pane
             pane.CurveList.Clear()
 
-            AddCurveToGraphPane(pane, My.Resources.LEGEND_BYNUM, resultLists(0), Color.Blue)
-            AddCurveToGraphPane(pane, My.Resources.LEGEND_BYBIOMASS, resultLists(1), Color.Brown)
+            Me.AddCurveToGraphPane(pane, My.Resources.LEGEND_BYNUM, resultLists(0), Color.Blue)
+            Me.AddCurveToGraphPane(pane, My.Resources.LEGEND_BYBIOMASS, resultLists(1), Color.Brown)
         End Sub
 
-        Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
+        Private Sub InitLists(ByRef lists As List(Of PointPairList), size As Integer)
             ' Init the result lists
             For i As Integer = 1 To size
                 Dim list As New PointPairList()
@@ -147,8 +147,8 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal legend As String, ByVal list As PointPairList, _
-                                        ByVal clr As Color)
+        Private Sub AddCurveToGraphPane(pane As GraphPane, legend As String, list As PointPairList, _
+                                        clr As Color)
             pane.AddCurve(legend, list, clr, SymbolType.None)
         End Sub
 

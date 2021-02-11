@@ -49,7 +49,7 @@ Namespace Other
             Private m_ctBack As cStyleGuide.eApplicationColorType
             Private m_clrBack As Color = Nothing
 
-            Public Sub New(ByVal strText As String, ByVal ctFore As cStyleGuide.eApplicationColorType, ByVal ctBack As cStyleGuide.eApplicationColorType, ByVal sg As cStyleGuide)
+            Public Sub New(strText As String, ctFore As cStyleGuide.eApplicationColorType, ctBack As cStyleGuide.eApplicationColorType, sg As cStyleGuide)
 
                 Dim astrBits As String() = strText.Split("|"c)
                 Me.m_strName = astrBits(0)
@@ -93,7 +93,7 @@ Namespace Other
                 Get
                     Return Me.m_clrFore
                 End Get
-                Set(ByVal value As Color)
+                Set(value As Color)
                     If Me.m_ctFore <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_clrFore = value
                 End Set
             End Property
@@ -102,7 +102,7 @@ Namespace Other
                 Get
                     Return Me.m_clrBack
                 End Get
-                Set(ByVal value As Color)
+                Set(value As Color)
                     If Me.m_ctBack <> cStyleGuide.eApplicationColorType.NotSet Then Me.m_clrBack = value
                 End Set
             End Property
@@ -118,7 +118,7 @@ Namespace Other
             Private m_strName As String = ""
             Private m_clr As Color
 
-            Public Sub New(ByVal strName As String, ByVal clr As Color)
+            Public Sub New(strName As String, clr As Color)
                 Me.m_strName = strName
                 Me.m_clr = clr
             End Sub
@@ -133,7 +133,7 @@ Namespace Other
                 Get
                     Return Me.m_clr
                 End Get
-                Set(ByVal value As Color)
+                Set(value As Color)
                     Me.m_clr = value
                 End Set
             End Property
@@ -155,7 +155,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.UIContext = uic
             Me.InitializeComponent()
@@ -178,7 +178,7 @@ Namespace Other
             Dim astrNames() As String = [Enum].GetNames(GetType(KnownColor))
             Dim kcColor As KnownColor = Nothing
 
-            m_lciKnownColors.Clear()
+            Me.m_lciKnownColors.Clear()
 
             ' Iterate through each known color name
             For Each strName As String In astrNames
@@ -187,12 +187,12 @@ Namespace Other
                 ' Check if this is a System color (system color names have no ARGB values)
                 If (kcColor > KnownColor.Transparent) Then
                     ' Add it to the internal list of colours
-                    m_lciKnownColors.Add(New cKnownColorItem(strName, Color.FromName(strName)))
+                    Me.m_lciKnownColors.Add(New cKnownColorItem(strName, Color.FromName(strName)))
                 End If
             Next strName
 
-            FillColourComboBox(Me.m_cmbItemForeground, m_lciKnownColors)
-            FillColourComboBox(Me.m_cmbItemBackground, m_lciKnownColors)
+            Me.FillColourComboBox(Me.m_cmbItemForeground, Me.m_lciKnownColors)
+            Me.FillColourComboBox(Me.m_cmbItemBackground, Me.m_lciKnownColors)
 
         End Sub
 
@@ -203,7 +203,7 @@ Namespace Other
         ''' <param name="clr">the color to find.</param>
         ''' <returns>The name of a known color, or and empty string if no match was not found.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetColorName(ByVal clr As Color) As String
+        Private Function GetColorName(clr As Color) As String
 
             Dim ciTest As cKnownColorItem = Nothing
             For iKnown As Integer = 0 To Me.m_lciKnownColors.Count - 1
@@ -249,8 +249,8 @@ Namespace Other
 
         End Sub
 
-        Private Sub AddColorTypeItem(ByVal strName As String, ByVal ctFore As cStyleGuide.eApplicationColorType, _
-                Optional ByVal ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
+        Private Sub AddColorTypeItem(strName As String, ctFore As cStyleGuide.eApplicationColorType, _
+                Optional ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
             Dim ci As New cColorItem(strName, ctFore, ctBack, Me.UIContext.StyleGuide)
             Dim lvi As New ListViewItem(ci.Name)
             lvi.SubItems.Add(ci.Description)
@@ -266,7 +266,7 @@ Namespace Other
         ''' <param name="lColors">The list of <see cref="cKnownColorItem">color items</see> 
         ''' to be added into the combobox</param>
         ''' -------------------------------------------------------------------
-        Private Sub FillColourComboBox(ByVal cb As ComboBox, ByVal lColors As List(Of cKnownColorItem))
+        Private Sub FillColourComboBox(cb As ComboBox, lColors As List(Of cKnownColorItem))
 
             cb.Items.Clear()
 
@@ -288,7 +288,7 @@ Namespace Other
         ''' <param name="cb">The comboxbox to update.</param>
         ''' <param name="clr">The color to update.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateColorComboboxItem(ByVal cb As ComboBox, ByVal clr As Color)
+        Private Sub UpdateColorComboboxItem(cb As ComboBox, clr As Color)
 
             Dim ciTest As cKnownColorItem = Nothing
 
@@ -375,7 +375,7 @@ Namespace Other
         ''' Helper method to update the color in an item. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateForeColor(ByVal ci As cColorItem, ByVal clr As Color)
+        Private Sub UpdateForeColor(ci As cColorItem, clr As Color)
 
             ' Sanity check
             If ci Is Nothing Then Return
@@ -393,7 +393,7 @@ Namespace Other
         ''' </summary>
         ''' <param name="clr">The item reference whose color gets updated.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateBackColor(ByVal ci As cColorItem, ByVal clr As Color)
+        Private Sub UpdateBackColor(ci As cColorItem, clr As Color)
 
             ' Sanity check
             If (ci Is Nothing) Then Return
@@ -415,10 +415,10 @@ Namespace Other
         ''' <param name="txt">The text beside the colorbox</param>
         ''' <remarks>This method is called by both Listbox and Combobox drawItem event handlers</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub DrawCustomItem(ByVal e As System.Windows.Forms.DrawItemEventArgs, _
-                                   ByVal clr As Color, _
-                                   ByVal txt As String, _
-                                   ByVal rect As Rectangle)
+        Private Sub DrawCustomItem(e As System.Windows.Forms.DrawItemEventArgs, _
+                                   clr As Color, _
+                                   txt As String, _
+                                   rect As Rectangle)
 
 
             ' Do nothing if there is no data
@@ -449,9 +449,9 @@ Namespace Other
         ''' <param name="txt">The text beside the colorbox</param>
         ''' <remarks>This method is called by both Listbox drawItem event handlers</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub DrawCustomText(ByVal e As System.Windows.Forms.DrawItemEventArgs, _
-                                   ByVal txt As String, _
-                                   ByVal rect As Rectangle)
+        Private Sub DrawCustomText(e As System.Windows.Forms.DrawItemEventArgs, _
+                                   txt As String, _
+                                   rect As Rectangle)
             ' Do nothing if there is no data
             If e.Index = -1 Then Return
 
@@ -472,7 +472,7 @@ Namespace Other
         ''' </summary>
         ''' <returns>The chosen color, nothing if no color was chosen.</returns>
         ''' -------------------------------------------------------------------
-        Private Function SelectColorByDialog(ByVal clr As Color) As Color
+        Private Function SelectColorByDialog(clr As Color) As Color
 
             Dim dlg As New ColorDialog
             Dim iCustomColor As Integer = 0
@@ -501,14 +501,14 @@ Namespace Other
         ''' Control's load event which gets called every time the control gets loaded. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Me.FillColorItemsList()
 
         End Sub
 
-        Private Sub OnColorSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnColorSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lvItems.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
@@ -519,7 +519,7 @@ Namespace Other
         ''' </summary>
         ''' <remarks>To customize drawing so we can draw colorbox next to text</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub cbItemForeground_DrawItem(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DrawItemEventArgs) _
+        Private Sub cbItemForeground_DrawItem(sender As System.Object, e As System.Windows.Forms.DrawItemEventArgs) _
             Handles m_cmbItemForeground.DrawItem, m_cmbItemBackground.DrawItem
 
             Dim cmb As ComboBox = DirectCast(sender, ComboBox)
@@ -547,15 +547,15 @@ Namespace Other
         ''' </summary>
         ''' <remarks>For foreground color</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub btnCustomForeColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub btnCustomForeColor_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCustomForeColor.Click
 
             Dim ci As cColorItem = Me.SelectedColor()
             Dim clrSelected As Color = Nothing
 
             If (ci IsNot Nothing) Then
-                clrSelected = SelectColorByDialog(ci.ForeColor)
-                Me.UpdateColorComboboxItem(m_cmbItemForeground, clrSelected)
+                clrSelected = Me.SelectColorByDialog(ci.ForeColor)
+                Me.UpdateColorComboboxItem(Me.m_cmbItemForeground, clrSelected)
                 Me.UpdateForeColor(ci, clrSelected)
             End If
 
@@ -568,7 +568,7 @@ Namespace Other
         ''' </summary>
         ''' <remarks>For background color</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub btnCustomBackColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub btnCustomBackColor_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCustomBackColor.Click
 
             Dim ci As cColorItem = Me.SelectedColor()
@@ -576,7 +576,7 @@ Namespace Other
 
             If (ci IsNot Nothing) Then
                 clrSelected = Me.SelectColorByDialog(ci.BackColor)
-                Me.UpdateColorComboboxItem(m_cmbItemBackground, clrSelected)
+                Me.UpdateColorComboboxItem(Me.m_cmbItemBackground, clrSelected)
                 Me.UpdateBackColor(ci, clrSelected)
             End If
 
@@ -587,7 +587,7 @@ Namespace Other
         ' ''' Event handler to set the color preference to default colors. 
         ' ''' </summary>
         ' ''' -------------------------------------------------------------------
-        'Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        'Private Sub btnUseDefault_Click(sender As System.Object, e As System.EventArgs)
 
         '    Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
         '    Me.UIContext.StyleGuide.ResetApplicationColors()
@@ -603,7 +603,7 @@ Namespace Other
         ''' Event handler to set the new color for an item. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub cbItemForeground_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub cbItemForeground_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbItemForeground.SelectedIndexChanged
 
             If (Me.m_bInUpdate) Then Return
@@ -623,7 +623,7 @@ Namespace Other
         ''' Event handler to set the new color for an item. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub cbItemBackground_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub cbItemBackground_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbItemBackground.SelectedIndexChanged
 
             If (Me.m_bInUpdate) Then Return

@@ -39,7 +39,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
@@ -59,7 +59,7 @@ Namespace Commands
         ''' description.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal clr As Color)
+        Public Overloads Sub Invoke(clr As Color)
             Me.Color = clr
             Me.Invoke()
         End Sub

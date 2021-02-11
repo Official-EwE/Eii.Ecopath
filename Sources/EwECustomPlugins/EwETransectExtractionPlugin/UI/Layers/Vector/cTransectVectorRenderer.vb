@@ -65,9 +65,9 @@ Public Class cTransectVectorRenderer
         Dim sScaleY As Single = (rc.Height / (ptfTL.Y - ptfBR.Y))
 
         For Each t As cTransect In m_data.Transects
-            Me.RenderTransect(t, g, rc, ptfTL, sScaleX, sScaleY, m_sg.ApplicationColor(eApplicationColorType.READONLY_BACKGROUND))
+            Me.RenderTransect(t, g, rc, ptfTL, sScaleX, sScaleY, Me.m_sg.ApplicationColor(eApplicationColorType.READONLY_BACKGROUND))
         Next
-        Me.RenderTransect(m_data.Selection, g, rc, ptfTL, sScaleX, sScaleY, m_sg.ApplicationColor(eApplicationColorType.HIGHLIGHT))
+        Me.RenderTransect(m_data.Selection, g, rc, ptfTL, sScaleX, sScaleY, Me.m_sg.ApplicationColor(eApplicationColorType.HIGHLIGHT))
 
     End Sub
 

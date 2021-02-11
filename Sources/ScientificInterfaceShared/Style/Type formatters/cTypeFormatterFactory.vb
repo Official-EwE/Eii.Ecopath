@@ -36,7 +36,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="t"></param>
         ''' <returns></returns>
-        Public Shared Function GetTypeFormatter(ByVal t As Type) As ITypeFormatter
+        Public Shared Function GetTypeFormatter(t As Type) As ITypeFormatter
 
             ' For Each ass As Assembly In AppDomain.CurrentDomain.GetAssemblies()
             Dim ass As Assembly = Assembly.GetAssembly(GetType(ITypeFormatter))

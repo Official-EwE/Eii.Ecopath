@@ -45,55 +45,55 @@ Public Class cResultsWriter_2DArray_Group_Group
         Dim PredName As String
         Dim PreyName As String
 
-        m_ResultsArray = Results_Array
+        Me.m_ResultsArray = Results_Array
 
-        m_MSE = MSE
-        m_Core = MSE.Core
+        Me.m_MSE = MSE
+        Me.m_Core = MSE.Core
 
-        If m_ResultsArray.TotalAcrossPred = True Then
-            Start_index_for_iPred = 0
+        If Me.m_ResultsArray.TotalAcrossPred = True Then
+            Me.Start_index_for_iPred = 0
         Else
-            Start_index_for_iPred = 1
+            Me.Start_index_for_iPred = 1
         End If
 
-        If m_ResultsArray.TotalAcrossPrey = True Then
-            Start_index_for_iPrey = 0
+        If Me.m_ResultsArray.TotalAcrossPrey = True Then
+            Me.Start_index_for_iPrey = 0
         Else
-            Start_index_for_iPrey = 1
+            Me.Start_index_for_iPrey = 1
         End If
 
 
-        ReDim m_StreamWriters(m_ResultsArray.nPrey, m_ResultsArray.nPred)
+        ReDim Me.m_StreamWriters(Me.m_ResultsArray.nPrey, Me.m_ResultsArray.nPred)
 
-        For iPred As Integer = Start_index_for_iPred To m_Core.nGroups
+        For iPred As Integer = Me.Start_index_for_iPred To Me.m_Core.nGroups
 
-            For iPrey As Integer = Start_index_for_iPrey To m_Core.nGroups
+            For iPrey As Integer = Me.Start_index_for_iPrey To Me.m_Core.nGroups
                 If iPred = 0 Then
                     PredName = "AllPred"
                 Else
-                    PredName = m_Core.EcoPathGroupInputs(iPred).Name & "PredNo" & iPred
+                    PredName = Me.m_Core.EcoPathGroupInputs(iPred).Name & "PredNo" & iPred
                 End If
                 If iPrey = 0 Then
                     PreyName = "AllPrey"
                 Else
-                    PreyName = m_Core.EcoPathGroupInputs(iPrey).Name & "PreyNo" & iPrey
+                    PreyName = Me.m_Core.EcoPathGroupInputs(iPrey).Name & "PreyNo" & iPrey
                 End If
-                strFile = cFileUtils.ToValidFileName(m_ResultsArray.FileNamePrefix & PredName & "__" & PreyName & ".csv", False)
+                strFile = cFileUtils.ToValidFileName(Me.m_ResultsArray.FileNamePrefix & PredName & "__" & PreyName & ".csv", False)
 
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, FolderPath, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
                 Debug.Assert(writer IsNot Nothing)
 
-                m_StreamWriters(iPrey, iPred) = writer
+                Me.m_StreamWriters(iPrey, iPred) = writer
 
                 'Setup the HCR F Targ file for igrp
-                If Me.m_Core.SaveWithFileHeader Then m_StreamWriters(iPrey, iPred).WriteLine(Me.m_Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                m_StreamWriters(iPrey, iPred).Write("PredName,PreyName,ModelID,StrategyName,ResultType")
-                For iTime As Integer = 1 To m_ResultsArray.NumberOfTimeRecords
-                    m_StreamWriters(iPrey, iPred).Write("," & cStringUtils.FormatNumber(iTime))
+                If Me.m_Core.SaveWithFileHeader Then Me.m_StreamWriters(iPrey, iPred).WriteLine(Me.m_Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                Me.m_StreamWriters(iPrey, iPred).Write("PredName,PreyName,ModelID,StrategyName,ResultType")
+                For iTime As Integer = 1 To Me.m_ResultsArray.NumberOfTimeRecords
+                    Me.m_StreamWriters(iPrey, iPred).Write("," & cStringUtils.FormatNumber(iTime))
                 Next
-                m_StreamWriters(iPrey, iPred).WriteLine()
+                Me.m_StreamWriters(iPrey, iPred).WriteLine()
 
             Next iPrey
 
@@ -102,9 +102,9 @@ Public Class cResultsWriter_2DArray_Group_Group
     End Sub
 
     Public Overrides Sub ReleaseWriters()
-        For iPred As Integer = Start_index_for_iPred To m_Core.nGroups
-            For iPrey As Integer = Start_index_for_iPrey To m_Core.nFleets
-                cMSEUtils.ReleaseWriter(m_StreamWriters(iPrey, iPred))
+        For iPred As Integer = Me.Start_index_for_iPred To Me.m_Core.nGroups
+            For iPrey As Integer = Me.Start_index_for_iPrey To Me.m_Core.nFleets
+                cMSEUtils.ReleaseWriter(Me.m_StreamWriters(iPrey, iPred))
             Next
         Next
     End Sub
@@ -114,33 +114,33 @@ Public Class cResultsWriter_2DArray_Group_Group
         Dim PredName As String
         Dim PreyName As String
 
-        For iPred As Integer = Start_index_for_iPred To m_Core.nGroups
-            For iPrey As Integer = Start_index_for_iPrey To m_Core.nGroups
+        For iPred As Integer = Me.Start_index_for_iPred To Me.m_Core.nGroups
+            For iPrey As Integer = Me.Start_index_for_iPrey To Me.m_Core.nGroups
 
                 If iPred = 0 Then
                     PredName = "AllGroups"
                 Else
-                    PredName = m_Core.EcoPathGroupInputs(iPred).Name
+                    PredName = Me.m_Core.EcoPathGroupInputs(iPred).Name
                 End If
                 If iPrey = 0 Then
                     PreyName = "AllGroups"
                 Else
-                    PreyName = m_Core.EcoPathGroupInputs(iPrey).Name
+                    PreyName = Me.m_Core.EcoPathGroupInputs(iPrey).Name
                 End If
 
-                For iStrategy = 1 To m_ResultsArray.nStrategies
+                For iStrategy = 1 To Me.m_ResultsArray.nStrategies
                     'Output the Landings to file
-                    If m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
-                    m_StreamWriters(iPrey, iPred).Write("{0},{1},{2},{3},{4}",
+                    If Me.m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
+                    Me.m_StreamWriters(iPrey, iPred).Write("{0},{1},{2},{3},{4}",
                                                                   cStringUtils.ToCSVField(PredName),
                                                                   cStringUtils.ToCSVField(PreyName),
-                                                                  cStringUtils.FormatNumber(m_ResultsArray.ModelID),
-                                                                  cStringUtils.ToCSVField(StrategyName(iStrategy)),
-                                                                  cStringUtils.ToCSVField(m_ResultsArray.DataName))
-                    For iTime = 1 To m_ResultsArray.NumberOfTimeRecords
-                        m_StreamWriters(iPrey, iPred).Write("," & cStringUtils.FormatNumber(m_ResultsArray.GetValue(iStrategy, iPred, iPrey, iTime)))
+                                                                  cStringUtils.FormatNumber(Me.m_ResultsArray.ModelID),
+                                                                  cStringUtils.ToCSVField(Me.StrategyName(iStrategy)),
+                                                                  cStringUtils.ToCSVField(Me.m_ResultsArray.DataName))
+                    For iTime = 1 To Me.m_ResultsArray.NumberOfTimeRecords
+                        Me.m_StreamWriters(iPrey, iPred).Write("," & cStringUtils.FormatNumber(Me.m_ResultsArray.GetValue(iStrategy, iPred, iPrey, iTime)))
                     Next
-                    m_StreamWriters(iPrey, iPred).WriteLine()
+                    Me.m_StreamWriters(iPrey, iPred).WriteLine()
                 Next iStrategy
             Next iPrey
         Next iPred

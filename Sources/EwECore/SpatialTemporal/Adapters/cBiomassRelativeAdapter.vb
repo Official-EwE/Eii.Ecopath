@@ -51,7 +51,7 @@ Namespace SpatialData
 
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+        Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -64,12 +64,12 @@ Namespace SpatialData
 
             'Called at the start of each run
             'Allocate arrays for the base layers and boolean flags 
-            Dim n As Integer = Me.m_core.GetCoreCounter(m_coreCounter)
+            Dim n As Integer = Me.m_core.GetCoreCounter(Me.m_coreCounter)
             'Just allocate the layers array 
             'Each map will be initialized once on the first call
-            m_baseLayers = New Single(n)(,) {}
-            m_IsBaseInitialized = New Boolean(n) {}
-            m_baseMeanBio = New Single(n) {}
+            Me.m_baseLayers = New Single(n)(,) {}
+            Me.m_IsBaseInitialized = New Boolean(n) {}
+            Me.m_baseMeanBio = New Single(n) {}
 
         End Sub
 
@@ -79,11 +79,11 @@ Namespace SpatialData
         ''' <remarks>Overridden to scale values prior to being set in the 
         ''' Ecospace data structures.</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
-                                             ByVal conn As cSpatialDataConnection, _
-                                             ByVal iRow As Integer, _
-                                             ByVal iCol As Integer, _
-                                             ByVal sValueAtT As Double) As Boolean
+        Protected Overrides Function SetCell(layer As cEcospaceLayer, _
+                                             conn As cSpatialDataConnection, _
+                                             iRow As Integer, _
+                                             iCol As Integer, _
+                                             sValueAtT As Double) As Boolean
             Try
 
                 Dim value As Double
@@ -118,9 +118,9 @@ Namespace SpatialData
         End Function
 
 
-        Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer,
-                                                  ByVal conn As cSpatialDataConnection, ByVal iTime As Integer, ByVal dt As Date,
-                                                  ByVal dataExternal As ISpatialRaster, ByVal dNoData As Double) As Boolean
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer,
+                                                  conn As cSpatialDataConnection, iTime As Integer, dt As Date,
+                                                  dataExternal As ISpatialRaster, dNoData As Double) As Boolean
 
             'This is a "First Chance" initialization of the base layers 
             Me.InitializeBaseLayer(layer.Index)
@@ -150,18 +150,18 @@ Namespace SpatialData
             Try
                 'If this Assert fires something is wrong in the code
                 'InitializeBaseLayer() should only be called once at the start of each run and cleared between runs
-                Debug.Assert(m_baseLayers(iLayer) Is Nothing, Me.ToString + ".InitializeBaseLayer() Trying to initialize a layer that has already been initialized.")
+                Debug.Assert(Me.m_baseLayers(iLayer) Is Nothing, Me.ToString + ".InitializeBaseLayer() Trying to initialize a layer that has already been initialized.")
 
                 Dim n As Integer
                 Dim layer() As cEcospaceLayer = Me.m_core.EcospaceBasemap.Layers(Me.m_varName)
 
                 'Allocate base map storeage for this layer
-                m_baseLayers(iLayer) = New Single(m_spaceData.InRow, m_spaceData.InCol) {}
+                Me.m_baseLayers(iLayer) = New Single(Me.m_spaceData.InRow, Me.m_spaceData.InCol) {}
                 'Copy the data from the layer into the base layers
                 'used to scale the values relative to the Ecospace base
-                For ir As Integer = 1 To m_spaceData.InRow
-                    For ic As Integer = 1 To m_spaceData.InCol
-                        m_baseLayers(iLayer)(ir, ic) = CSng(layer(iLayer - 1).Cell(ir, ic))
+                For ir As Integer = 1 To Me.m_spaceData.InRow
+                    For ic As Integer = 1 To Me.m_spaceData.InCol
+                        Me.m_baseLayers(iLayer)(ir, ic) = CSng(layer(iLayer - 1).Cell(ir, ic))
                         If Me.m_spaceData.Depth(ir, ic) > 0 Then
                             Me.m_baseMeanBio(iLayer) += CSng(layer(iLayer - 1).Cell(ir, ic))
                             n += 1

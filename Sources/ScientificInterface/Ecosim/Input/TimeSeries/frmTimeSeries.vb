@@ -63,7 +63,7 @@ Namespace Ecosim
         ''' The Form's Load event. This method initialized the value of the controls in
         ''' the interface
         ''' </summary>
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -86,7 +86,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_handler.Detach()
             MyBase.OnFormClosed(e)
         End Sub
@@ -95,7 +95,7 @@ Namespace Ecosim
 
 #Region " Internal implementation "
 
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             If ((msg.Source = eCoreComponentType.TimeSeries) And _
                 (msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataModified)) Then
                 ' Refresh content

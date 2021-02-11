@@ -45,10 +45,10 @@ Namespace Controls
         ''' <param name="sPedigreeLevel">Pedigree level to render [0, 1]. A value of
         ''' 0 will not render a pedigree indicator.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Paint(ByVal sg As cStyleGuide,
-                                ByVal rcClip As Rectangle,
-                                ByVal g As Graphics,
-                                ByVal sPedigreeLevel As Single)
+        Public Shared Sub Paint(sg As cStyleGuide,
+                                rcClip As Rectangle,
+                                g As Graphics,
+                                sPedigreeLevel As Single)
 
             If (sPedigreeLevel > 0) Then
 
@@ -76,7 +76,7 @@ Namespace Controls
         ''' <param name="rcClip">Coordinates of the area to get the remarks indicator bounding box for.</param>
         ''' <returns>The bounding box that fully encapsulates the Remarks indicator.</returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetBounds(ByVal sg As cStyleGuide, ByVal rcClip As Rectangle) As Rectangle
+        Private Shared Function GetBounds(sg As cStyleGuide, rcClip As Rectangle) As Rectangle
             Return GetPedigreeArea(sg, rcClip)
         End Function
 
@@ -88,8 +88,8 @@ Namespace Controls
         ''' <param name="rcClip">Clip boundary to calculate the indicator area for.</param>
         ''' <returns>A rectangle.</returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetPedigreeArea(ByVal sg As cStyleGuide, _
-                                                ByVal rcClip As Rectangle) As Rectangle
+        Private Shared Function GetPedigreeArea(sg As cStyleGuide, _
+                                                rcClip As Rectangle) As Rectangle
 
             If (cSystemUtils.IsRightToLeft) Then
                 ' ------.

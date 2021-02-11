@@ -42,9 +42,9 @@ Public Class cEcosimArena
         Me.DBID = iDBID
 
         'arrayed values
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimArenaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcosimArenaShare, eStatusFlags.Null, eCoreCounterTypes.nGroups)
         val.AffectsRunState = False
-        m_values.Add(val.varName, val)
+        Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
 

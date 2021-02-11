@@ -34,21 +34,21 @@ Public Class cMediatingGroup
     ''' <param name="iGroup">Index to the EcoPath/EcoSIm group this is the iGroup</param>
     ''' <param name="theWeight">Weight that is applied to this group 0-1</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal iGroup As Integer, ByVal theWeight As Single)
+    Public Sub New(iGroup As Integer, theWeight As Single)
 
-        iGroupIndex = iGroup
+        Me.iGroupIndex = iGroup
         'weight does not have to one or zero it can be any value it 
-        Weight = theWeight
+        Me.Weight = theWeight
 
     End Sub
 
     Public Sub New()
-        iGroupIndex = 0
-        Weight = 0
+        Me.iGroupIndex = 0
+        Me.Weight = 0
     End Sub
 
     Public Overrides Function ToString() As String
-        Return "Group Index=" & iGroupIndex.ToString & " Weight=" & Weight.ToString
+        Return "Group Index=" & Me.iGroupIndex.ToString & " Weight=" & Me.Weight.ToString
     End Function
 
 End Class

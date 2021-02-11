@@ -72,7 +72,7 @@ Public Class frmEcotroph
 
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Debug.Assert(Me.UIContext IsNot Nothing)
@@ -95,7 +95,7 @@ Public Class frmEcotroph
         test(4) = "Etat[Etat$Package=='EcoTroph','Status']"
         test(5) = "installed.packages()['EcoTroph','Version']"
 
-        bSucces = execute_r(test, result)
+        bSucces = Me.execute_r(test, result)
         result_tab = Split(result(1), vbCr)
 
         If (bSucces = False) Then
@@ -139,13 +139,13 @@ Public Class frmEcotroph
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
                 ' Test R version again to see if package needs updating
-                bSucces = execute_r(test, result)
+                bSucces = Me.execute_r(test, result)
                 result_tab = Split(result(1), vbCr)
 
             End If
         Else
             ' Scary
-            ecotroph_version.Text = result_tab(6)
+            Me.ecotroph_version.Text = result_tab(6)
         End If
 
         If (result_tab.Length > 3) Then
@@ -161,7 +161,7 @@ Public Class frmEcotroph
                         test(2) = ""
                         test(3) = ""
                         test(4) = ""
-                        execute_r(test, result)
+                        Me.execute_r(test, result)
                     Catch ex As Exception
                         cLog.Write(ex, "frmEcotroph.OnLoad(upgrade_r)")
                     End Try
@@ -172,14 +172,14 @@ Public Class frmEcotroph
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        smooth_pdf = Nothing
-        result_pdf = Nothing
-        result_pdf_et_diag = Nothing
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+        Me.smooth_pdf = Nothing
+        Me.result_pdf = Nothing
+        Me.result_pdf_et_diag = Nothing
         MyBase.OnFormClosed(e)
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Load_from_ecopath.Click
+    Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Load_from_ecopath.Click
 
         ' Try to load a model
         If Not Me.Core.StateMonitor.HasEcopathLoaded Then
@@ -198,7 +198,7 @@ Public Class frmEcotroph
         'a retester ou alors tester si les données sont dispo
         EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
 
-        ETgridinput.BringToFront()
+        Me.ETgridinput.BringToFront()
 
         If Not (IsNothing(ETinputdatafromEP.TL)) Then
 
@@ -217,7 +217,7 @@ Public Class frmEcotroph
                 DataGrid.Item(4, igrp).Value() = ETinputdatafromEP.accessibility(igrp + 1)
                 DataGrid.Item(5, igrp).Value() = ETinputdatafromEP.OI(igrp + 1)
             Next
-            commentaires.Text = ETinputdata.NumFleet
+            Me.commentaires.Text = ETinputdata.NumFleet
 
             DataGrid.ColumnCount = 6 + ETinputdatafromEP.NumFleet
             For ifleet As Integer = 0 To ETinputdatafromEP.NumFleet - 1
@@ -231,11 +231,11 @@ Public Class frmEcotroph
             'ETinputdata = ETinputdatafromEP
             ETinputdata.NumFleet = ETinputdatafromEP.NumFleet
             'If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
-            If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-            If Not (IsNothing(ETinputdata.ModelDescription)) Then modeldescription.Text = ETinputdata.ModelDescription Else modeldescription.Text = ""
-            Button2.Enabled = True
-            Button3.Enabled = True
-            Button4.Enabled = True
+            If Not (IsNothing(ETinputdata.ModelName)) Then Me.Modelname.Text = ETinputdata.ModelName Else Me.Modelname.Text = ""
+            If Not (IsNothing(ETinputdata.ModelDescription)) Then Me.modeldescription.Text = ETinputdata.ModelDescription Else Me.modeldescription.Text = ""
+            Me.Button2.Enabled = True
+            Me.Button3.Enabled = True
+            Me.Button4.Enabled = True
         Else
             Me.NotifyUser(My.Resources.NO_MODEL_DATA, eMessageImportance.Critical)
         End If
@@ -245,15 +245,15 @@ Public Class frmEcotroph
     End Sub
 
 
-    Private Sub Save_ETdata_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_ETdata.Click
+    Private Sub Save_ETdata_Click(sender As System.Object, e As System.EventArgs) Handles Save_ETdata.Click
         Dim saveFileDialog1 As New SaveFileDialog()
 
         saveFileDialog1.Filter = My.Resources.FILEFILTER_XML
         saveFileDialog1.Title = My.Resources.SAVE_ECOTROPH
         saveFileDialog1.ShowDialog()
-        ETinputdata.Comments = commentaires.Text
-        ETinputdata.ModelName = Modelname.Text
-        ETinputdata.ModelDescription = modeldescription.Text
+        ETinputdata.Comments = Me.commentaires.Text
+        ETinputdata.ModelName = Me.Modelname.Text
+        ETinputdata.ModelDescription = Me.modeldescription.Text
 
         ' If the file name is not an empty string open it for saving.
         If saveFileDialog1.FileName <> "" Then
@@ -279,7 +279,7 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click_1(sender As System.Object, e As System.EventArgs) Handles Button1.Click
         Dim myStream As Stream = Nothing
         Dim openFileDialog1 As New OpenFileDialog()
         Dim reader As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
@@ -287,7 +287,7 @@ Public Class frmEcotroph
         openFileDialog1.Filter = My.Resources.FILEFILTER_XML
         openFileDialog1.FilterIndex = 2
         openFileDialog1.RestoreDirectory = True
-        ETgridinput.BringToFront()
+        Me.ETgridinput.BringToFront()
 
         If openFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Try
@@ -325,9 +325,9 @@ Public Class frmEcotroph
                 If Not (IsNothing(ETinputdata.OI)) Then DataGrid.Item(5, igrp).Value() = ETinputdata.OI(igrp + 1)
 
             Next
-            If Not (IsNothing(ETinputdata.Comments)) Then commentaires.Text = ETinputdata.Comments Else commentaires.Text = ""
-            If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-            If Not (IsNothing(ETinputdata.ModelDescription)) Then modeldescription.Text = ETinputdata.ModelDescription Else modeldescription.Text = ""
+            If Not (IsNothing(ETinputdata.Comments)) Then Me.commentaires.Text = ETinputdata.Comments Else Me.commentaires.Text = ""
+            If Not (IsNothing(ETinputdata.ModelName)) Then Me.Modelname.Text = ETinputdata.ModelName Else Me.Modelname.Text = ""
+            If Not (IsNothing(ETinputdata.ModelDescription)) Then Me.modeldescription.Text = ETinputdata.ModelDescription Else Me.modeldescription.Text = ""
             DataGrid.ColumnCount = 6 + ETinputdata.NumFleet
             For ifleet As Integer = 0 To ETinputdata.NumFleet - 1
                 DataGrid.Columns(6 + ifleet).Name = ETinputdata.FleetName(ifleet)
@@ -338,12 +338,12 @@ Public Class frmEcotroph
             Next
             DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
         End If
-        Button2.Enabled = True
-        Button3.Enabled = True
-        Button4.Enabled = True
+        Me.Button2.Enabled = True
+        Me.Button3.Enabled = True
+        Me.Button4.Enabled = True
     End Sub
 
-    Private Sub ETgridinput_CellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellValueChanged
+    Private Sub ETgridinput_CellValueChanged(sender As Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellValueChanged
         'MsgBox("on est sur " & e.ColumnIndex & e.ColumnIndex)
         If (e.ColumnIndex >= 0 And e.RowIndex >= 0) Then
             '  MsgBox(Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).ToString)
@@ -378,23 +378,23 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub RadioButton1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles type_smooth1.CheckedChanged
+    Private Sub RadioButton1_CheckedChanged_1(sender As System.Object, e As System.EventArgs) Handles type_smooth1.CheckedChanged
         Me.GroupBox2.Visible = False
         Me.parameters_cst.Visible = True
 
     End Sub
 
-    Private Sub RadioButton2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles type_smooth2.CheckedChanged
+    Private Sub RadioButton2_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles type_smooth2.CheckedChanged
         Me.GroupBox2.Visible = True
         Me.parameters_cst.Visible = False
     End Sub
 
-    Private Sub RadioButton3_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles type_smooth3.CheckedChanged
+    Private Sub RadioButton3_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles type_smooth3.CheckedChanged
         Me.GroupBox2.Visible = False
         Me.parameters_cst.Visible = False
     End Sub
 
-    Public Function execute_r(ByVal code As String(), ByRef result As String()) As Boolean
+    Public Function execute_r(code As String(), ByRef result As String()) As Boolean
 
         ' ToDo: use EwE messaging system instead of MsgBox, please
 
@@ -449,7 +449,7 @@ Public Class frmEcotroph
 
     End Function
 
-    Public Function execute_rplot(ByVal code As String()) As String
+    Public Function execute_rplot(code As String()) As String
         'Cette fonction execute un code R et renvoie le nom d'un fichier resultat
         Dim myProcess As New Process()
         myProcess.StartInfo.RedirectStandardInput = False
@@ -481,7 +481,7 @@ Public Class frmEcotroph
 
     End Function
 
-    Public Shared Function sauve_datagrid_xml(ByVal grille As ETinputtot, ByVal filename As String) As Boolean
+    Public Shared Function sauve_datagrid_xml(grille As ETinputtot, filename As String) As Boolean
 
         Dim serializer As New XmlSerializer(GetType(ETinputtot))
         Dim fs As New FileStream(filename, FileMode.Create)
@@ -501,7 +501,7 @@ Public Class frmEcotroph
     End Function
 
 
-    Public Shared Function charge_grid(ByVal donnees As String(), ByRef grille As DataGridView) As Integer
+    Public Shared Function charge_grid(donnees As String(), ByRef grille As DataGridView) As Integer
 
         Dim tab_trans(,) As String
         Dim uneligne() As String
@@ -555,7 +555,7 @@ Public Class frmEcotroph
     End Function
 
 
-    Public Shared Function get_params(ByVal type_smooth As Integer, Optional ByVal smooth_parameter As Double = Nothing, Optional ByVal decalage As Double = Nothing) As String
+    Public Shared Function get_params(type_smooth As Integer, Optional smooth_parameter As Double = Nothing, Optional decalage As Double = Nothing) As String
         'Cette fonction doit récupérer les paramètre du smooth
         Dim output2 As String = ""
 
@@ -571,7 +571,7 @@ Public Class frmEcotroph
 
     End Function
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
         'On commence par sauver le fichier de données 
 
         Dim commandes() As String
@@ -584,9 +584,9 @@ Public Class frmEcotroph
         'on charge les différents paramètres du create.smooth
         Dim param_pas As String = ""
 
-        If (type_smooth1.Checked) Then param_pas = get_params(1, smooth_param_1.Text)
-        If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
-        If (type_smooth3.Checked) Then param_pas = get_params(3)
+        If (Me.type_smooth1.Checked) Then param_pas = get_params(1, Me.smooth_param_1.Text)
+        If (Me.type_smooth2.Checked) Then param_pas = get_params(2, Me.smooth_param.Text, Me.decalage.Text)
+        If (Me.type_smooth3.Checked) Then param_pas = get_params(3)
 
 
         'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
@@ -629,7 +629,7 @@ Public Class frmEcotroph
 
         Try
             Dim output2() As String = Nothing
-            execute_r(commandes, output2)
+            Me.execute_r(commandes, output2)
             ' If Len(output2) > 0 Then MsgBox(output2)
 
         Catch ex As Exception
@@ -637,7 +637,7 @@ Public Class frmEcotroph
         End Try
 
 
-        smooth_pdf.Navigate(fichierpdf)
+        Me.smooth_pdf.Navigate(fichierpdf)
 
 
         'smooth_pdf.Refresh()
@@ -645,7 +645,7 @@ Public Class frmEcotroph
             Dim recup() As String = File.ReadAllLines(fichier)
             Try
 
-                charge_grid(recup, datasmooth)
+                charge_grid(recup, Me.datasmooth)
             Catch ex As Exception
                 Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
                 cLog.Write(ex, "frmEcoTroph.Button2_Click(read_pdf)")
@@ -661,7 +661,7 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+    Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
         Dim commandes() As String
 
 
@@ -673,19 +673,19 @@ Public Class frmEcotroph
 
 
 
-        result_pdf.GoHome()
+        Me.result_pdf.GoHome()
 
         Cursor.Current = Cursors.WaitCursor
 
 
         'Juste pour attendre que le composant web ne bloque pas le fichier qui doit être mis à jour
         Dim param_pas As String = ""
-        If (type_smooth1.Checked) Then param_pas = get_params(1, smooth_param_1.Text)
+        If (Me.type_smooth1.Checked) Then param_pas = get_params(1, Me.smooth_param_1.Text)
 
-        If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
-        If (type_smooth3.Checked) Then param_pas = get_params(3)
+        If (Me.type_smooth2.Checked) Then param_pas = get_params(2, Me.smooth_param.Text, Me.decalage.Text)
+        If (Me.type_smooth3.Checked) Then param_pas = get_params(3)
         ' MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
-        If (Log_scale.Checked) Then log_ech = ",scale1=log,scale2=log,scale3=log" Else log_ech = ""
+        If (Me.Log_scale.Checked) Then log_ech = ",scale1=log,scale2=log,scale3=log" Else log_ech = ""
 
         sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
 
@@ -747,7 +747,7 @@ Public Class frmEcotroph
 
         Try
             Dim output2() As String = Nothing
-            execute_r(commandes, output2)
+            Me.execute_r(commandes, output2)
             ' If Len(output2) > 0 Then MsgBox(output2)
 
         Catch ex As Exception
@@ -756,7 +756,7 @@ Public Class frmEcotroph
         End Try
 
 
-        result_pdf.Navigate(fichierpdf)
+        Me.result_pdf.Navigate(fichierpdf)
 
         If My.Computer.FileSystem.FileExists(fichier) Then
 
@@ -774,23 +774,23 @@ Public Class frmEcotroph
             Dim Ctr() As Control = Me.Controls.Find("Catch." & (ETinputdata.FleetName(0)), True)
             Try
 
-                charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main)
-                charge_grid(matrices(1).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_biomass)
-                charge_grid(matrices(2).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_biomass_acc)
-                charge_grid(matrices(3).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p)
-                charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p_acc)
-                charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_y)
+                charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_ET_main)
+                charge_grid(matrices(1).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_biomass)
+                charge_grid(matrices(2).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_biomass_acc)
+                charge_grid(matrices(3).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_flow_p)
+                charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_flow_p_acc)
+                charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_y)
                 '    If panel_result.TabPages.Count = 6 Then
                 For compteur_fleet As Integer = 0 To ETinputdata.NumFleet - 1
 
-                    Dim ctrl() As Control = panel_result.Controls.Find("Catch." & (ETinputdata.FleetName(compteur_fleet)), True)
+                    Dim ctrl() As Control = Me.panel_result.Controls.Find("Catch." & (ETinputdata.FleetName(compteur_fleet)), True)
 
                     If ctrl.Length = 0 Then
 
                         Dim myTabPage As New TabPage()
                         myTabPage.Text = "Catch." & (ETinputdata.FleetName(compteur_fleet))
                         myTabPage.Name = "tabCatch." & (ETinputdata.FleetName(compteur_fleet))
-                        panel_result.TabPages.Add(myTabPage)
+                        Me.panel_result.TabPages.Add(myTabPage)
                         Dim dtg As New DataGridView
                         dtg.Name = "Catch." & (ETinputdata.FleetName(compteur_fleet))
                         dtg.Height = 391
@@ -798,7 +798,7 @@ Public Class frmEcotroph
                         dtg.Top = 6
                         dtg.Left = 3
                         dtg.Dock = DockStyle.Fill
-                        panel_result.TabPages(compteur_fleet + 6).Controls.Add(dtg)
+                        Me.panel_result.TabPages(compteur_fleet + 6).Controls.Add(dtg)
                         charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
                     Else
                         charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
@@ -822,77 +822,77 @@ Public Class frmEcotroph
     End Sub
 
 
-    Private Sub getgraphs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles getgraphs.CheckedChanged
-        If getgraphs.Checked = True Then
-            result_pdf.BringToFront()
+    Private Sub getgraphs_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles getgraphs.CheckedChanged
+        If Me.getgraphs.Checked = True Then
+            Me.result_pdf.BringToFront()
 
-            result_pdf.Visible = True
-        Else : result_pdf.Visible = False
+            Me.result_pdf.Visible = True
+        Else : Me.result_pdf.Visible = False
         End If
 
     End Sub
 
-    Private Sub Button4_Click_3(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub Button4_Click_3(sender As System.Object, e As System.EventArgs)
 
     End Sub
 
-    Private Sub Button4_Click_4(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub Button4_Click_4(sender As System.Object, e As System.EventArgs)
 
 
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        If getgraph_diag.Checked = True Then
-            result_pdf_et_diag.Visible = True
+    Private Sub CheckBox1_CheckedChanged(sender As System.Object, e As System.EventArgs)
+        If Me.getgraph_diag.Checked = True Then
+            Me.result_pdf_et_diag.Visible = True
         Else
-            result_pdf_et_diag.Visible = False
+            Me.result_pdf_et_diag.Visible = False
         End If
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles smooth_graph.CheckedChanged
-        If smooth_graph.Checked = True Then
-            smooth_pdf.BringToFront()
-            smooth_pdf.Visible = True
+    Private Sub CheckBox1_CheckedChanged_1(sender As System.Object, e As System.EventArgs) Handles smooth_graph.CheckedChanged
+        If Me.smooth_graph.Checked = True Then
+            Me.smooth_pdf.BringToFront()
+            Me.smooth_pdf.Visible = True
         Else
-            smooth_pdf.Visible = False
+            Me.smooth_pdf.Visible = False
         End If
     End Sub
 
-    Private Sub Reset_smooth_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Reset_smooth.Click
-        smooth_param_1.Text = "0.12"
-        decalage.Text = "0.95"
-        smooth_param.Text = "0.07"
+    Private Sub Reset_smooth_Click(sender As System.Object, e As System.EventArgs) Handles Reset_smooth.Click
+        Me.smooth_param_1.Text = "0.12"
+        Me.decalage.Text = "0.95"
+        Me.smooth_param.Text = "0.07"
     End Sub
 
-    Private Sub reset_param_diag_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        TopD.Text = "0.2"
-        formd.Text = "0.5"
-        beta.Text = "0.1"
+    Private Sub reset_param_diag_Click(sender As System.Object, e As System.EventArgs)
+        Me.TopD.Text = "0.2"
+        Me.formd.Text = "0.5"
+        Me.beta.Text = "0.1"
     End Sub
 
-    Private Sub b_input_check_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles b_input_check.CheckedChanged
-        If b_input_check.Checked Then
-            beta.Enabled = True
-            Forag.Checked = False
+    Private Sub b_input_check_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles b_input_check.CheckedChanged
+        If Me.b_input_check.Checked Then
+            Me.beta.Enabled = True
+            Me.Forag.Checked = False
         Else
-            beta.Enabled = False
+            Me.beta.Enabled = False
         End If
     End Sub
 
-    Private Sub Ponto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles diagnosis_page.Click
+    Private Sub Ponto_Click(sender As System.Object, e As System.EventArgs) Handles diagnosis_page.Click
 
     End Sub
 
-    Private Sub getgraph_diag_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles getgraph_diag.CheckedChanged
-        If getgraph_diag.Checked = True Then
-            result_pdf_et_diag.BringToFront()
+    Private Sub getgraph_diag_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles getgraph_diag.CheckedChanged
+        If Me.getgraph_diag.Checked = True Then
+            Me.result_pdf_et_diag.BringToFront()
 
-            result_pdf_et_diag.Visible = True
-        Else : result_pdf_et_diag.Visible = False
+            Me.result_pdf_et_diag.Visible = True
+        Else : Me.result_pdf_et_diag.Visible = False
         End If
     End Sub
 
-    Private Sub Button4_Click_2(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
+    Private Sub Button4_Click_2(sender As System.Object, e As System.EventArgs) Handles Button4.Click
         Dim commandes() As String
         Dim fichierpdf As String = cFileUtils.MakeTempFile(".pdf")
         Dim fichier_data_transfert As String = cFileUtils.MakeTempFile(".xml")
@@ -910,14 +910,14 @@ Public Class frmEcotroph
 
         'on charge les différents paramètres du create.smooth
         Dim param_pas As String = ""
-        If (type_smooth1.Checked) Then param_pas = get_params(1, smooth_param_1.Text)
+        If (Me.type_smooth1.Checked) Then param_pas = get_params(1, Me.smooth_param_1.Text)
 
-        If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
-        If (type_smooth3.Checked) Then param_pas = get_params(3)
-        If (log_scale_diagnose.Checked) Then log_ech_diag = ",scale=log" Else log_ech_diag = ""
-        Dim param_pas2 As String = ", TopD = " & Replace(TopD.Text, ",", ".") & ", FormD = " & Replace(formd.Text, ",", ".")
+        If (Me.type_smooth2.Checked) Then param_pas = get_params(2, Me.smooth_param.Text, Me.decalage.Text)
+        If (Me.type_smooth3.Checked) Then param_pas = get_params(3)
+        If (Me.log_scale_diagnose.Checked) Then log_ech_diag = ",scale=log" Else log_ech_diag = ""
+        Dim param_pas2 As String = ", TopD = " & Replace(Me.TopD.Text, ",", ".") & ", FormD = " & Replace(Me.formd.Text, ",", ".")
 
-        If (b_input_check.Checked) Then param_pas2 = param_pas2 & ",B.Input=TRUE, Beta = " & Replace(beta.Text, ",", ".")
+        If (Me.b_input_check.Checked) Then param_pas2 = param_pas2 & ",B.Input=TRUE, Beta = " & Replace(Me.beta.Text, ",", ".")
         'Au 20 Juillet 2013, la foraiging arena est retirée du package, pas mure .....+ tard
         'If (Forag.Checked) Then
         'param_pas2 = param_pas2 & ",Forag.A=TRUE, Kfeed = " & Replace(Kfeed.Text, ",", ".") & ", Ponto = " & Replace(Ponto.Text, ",", ".")
@@ -926,12 +926,12 @@ Public Class frmEcotroph
         'End If
         Dim param_EMSY As String = param_pas2
 
-        If (same_mf.Checked) Then param_pas2 = param_pas2 & ",same.mE=TRUE"
-        If (Not All_group.Checked) Then
+        If (Me.same_mf.Checked) Then param_pas2 = param_pas2 & ",same.mE=TRUE"
+        If (Not Me.All_group.Checked) Then
 
             Dim liste_group As String = ""
 
-            For Each item As Object In list_group_diag.SelectedItems
+            For Each item As Object In Me.list_group_diag.SelectedItems
 
                 liste_group = liste_group & "'" & item.ToString & "',"
             Next
@@ -941,17 +941,17 @@ Public Class frmEcotroph
 
         End If
 
-        If (Not same_mf.Checked) Then
+        If (Not Me.same_mf.Checked) Then
             Dim liste_group As String = ""
 
-            If List_fleet1.SelectedItems.Count = 0 Then
+            If Me.List_fleet1.SelectedItems.Count = 0 Then
 
                 param_pas2 = param_pas2 & ",same.mE=TRUE"
                 Me.NotifyUser(My.Resources.NO_SELECTED_FLEET, eMessageImportance.Warning)
-                same_mf.Checked = True
+                Me.same_mf.Checked = True
             Else
 
-                For Each item As Object In List_fleet1.SelectedItems
+                For Each item As Object In Me.List_fleet1.SelectedItems
 
                     liste_group = liste_group & "'catch." & item.ToString().Replace(" ", ".") & "',"
                 Next
@@ -1009,12 +1009,12 @@ Public Class frmEcotroph
         'commandes(18) = "plot_ETdiagnosis(A)"
         commandes(18) = "plot(A" & log_ech_diag & ")"
         commandes(19) = ""
-        If Not same_mf.Checked Then
+        If Not Me.same_mf.Checked Then
             'commandes(19) = "B<-plot_ETdiagnosis_isopleth(A)"
             commandes(19) = "B<-plot_ETdiagnosis_isopleth(A)"
             commandes(20) = "for (pecheries in names(B)) {write.table(B[[pecheries]], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)}"
         Else
-            If All_group.Checked Then
+            If Me.All_group.Checked Then
                 commandes(21) = "A<-E_MSY_0.1(ETM" & param_EMSY & ")"
                 commandes(22) = "write.table(A, file ='" & fichier & "', sep = '\t',quote=FALSE,append=TRUE);" & "cat('-----\n', file ='" & fichier & "',append=TRUE);"
                 commandes(23) = "par(mar=c(5,4,1,8));plot(row.names(A),A[,'E_0.1'],ylim=range(range(A[,'E_0.1'],na.rm=T,finite=T),range(A[,'E_MSY'],na.rm=T,finite=T),na.rm=T,finite=T),type='l',lwd=2,col='blue',xlab='Trophic levels',ylab='E');abline(h = 1)"
@@ -1037,7 +1037,7 @@ Public Class frmEcotroph
         'on execute ce code R
         Try
             Dim output2() As String = Nothing
-            execute_r(commandes, output2)
+            Me.execute_r(commandes, output2)
 
         Catch ex As Exception
             'MessageBox.Show("Problem in R script: " & ex.Message)
@@ -1046,7 +1046,7 @@ Public Class frmEcotroph
 
 
 
-        result_pdf_et_diag.Navigate(fichierpdf)
+        Me.result_pdf_et_diag.Navigate(fichierpdf)
 
         If My.Computer.FileSystem.FileExists(fichier) Then
 
@@ -1058,16 +1058,16 @@ Public Class frmEcotroph
             Dim matrices() As String = Split(totales, "-----")
             Try
 
-                charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main_diagnose)
-                charge_grid(matrices(1).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_B)
-                charge_grid(matrices(2).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_B_acc)
-                charge_grid(matrices(3).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_FL_P)
-                charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_FL_P_acc)
-                charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Kin)
-                charge_grid(matrices(6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Kin_acc)
-                charge_grid(matrices(7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F)
-                charge_grid(matrices(8).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F_acc)
-                charge_grid(matrices(9).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Y)
+                charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.grille_ET_main_diagnose)
+                charge_grid(matrices(1).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_B)
+                charge_grid(matrices(2).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_B_acc)
+                charge_grid(matrices(3).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_FL_P)
+                charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_FL_P_acc)
+                charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_Kin)
+                charge_grid(matrices(6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_Kin_acc)
+                charge_grid(matrices(7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_F)
+                charge_grid(matrices(8).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_F_acc)
+                charge_grid(matrices(9).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_D_Y)
             Catch ex As Exception
                 Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
             End Try
@@ -1076,19 +1076,19 @@ Public Class frmEcotroph
 
             Dim isopleth_output() As String = {"TOT_biomass", "TOT_biomass_acc", "TOT_P", "TOT_P_acc", "Y", "Y_fleet1", "Y_fleet2", "TL_TOT_biomass", "TL_TOT_biomass_acc", "TL_Catches", "TL_Catches_fleet1", "TL_Catches_fleet2"}
 
-            If Not same_mf.Checked Then
+            If Not Me.same_mf.Checked Then
 
                 For compteur_output As Integer = 0 To isopleth_output.Length - 1
 
 
-                    Dim ctrl() As Control = panel_result_diag.Controls.Find(isopleth_output(compteur_output), True)
+                    Dim ctrl() As Control = Me.panel_result_diag.Controls.Find(isopleth_output(compteur_output), True)
 
                     If ctrl.Length = 0 Then
 
                         Dim myTabPage As New TabPage()
                         myTabPage.Text = isopleth_output(compteur_output)
                         myTabPage.Name = "Tab" & isopleth_output(compteur_output)
-                        panel_result_diag.TabPages.Add(myTabPage)
+                        Me.panel_result_diag.TabPages.Add(myTabPage)
                         Dim dtg As New DataGridView
                         dtg.Name = isopleth_output(compteur_output)
                         dtg.Height = 391
@@ -1096,7 +1096,7 @@ Public Class frmEcotroph
                         dtg.Top = 6
                         dtg.Left = 3
                         dtg.Dock = DockStyle.Fill
-                        panel_result_diag.TabPages(panel_result_diag.TabCount - 1).Controls.Add(dtg)
+                        Me.panel_result_diag.TabPages(Me.panel_result_diag.TabCount - 1).Controls.Add(dtg)
                         charge_grid(matrices(compteur_output + 10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
                     Else
                         charge_grid(matrices(compteur_output + 10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
@@ -1110,7 +1110,7 @@ Public Class frmEcotroph
                 For compteur_output As Integer = 0 To isopleth_output.Length - 1
 
 
-                    Dim ctrl() As Control = panel_result_diag.Controls.Find(isopleth_output(compteur_output), True)
+                    Dim ctrl() As Control = Me.panel_result_diag.Controls.Find(isopleth_output(compteur_output), True)
 
                     If ctrl.Length > 0 Then
                         ctrl(0).Enabled = False
@@ -1120,10 +1120,10 @@ Public Class frmEcotroph
 
 
             End If
-            If (same_mf.Checked And All_group.Checked) Then
-                charge_grid(matrices(10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_EMSY)
+            If (Me.same_mf.Checked And Me.All_group.Checked) Then
+                charge_grid(matrices(10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), Me.ET_M_EMSY)
             Else
-                ET_M_EMSY.RowCount = 1
+                Me.ET_M_EMSY.RowCount = 1
 
             End If
 
@@ -1134,42 +1134,42 @@ Public Class frmEcotroph
         Cursor.Current = Cursors.Default
     End Sub
 
-    Private Sub reset_param_diag_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles reset_param_diag.Click
-        TopD.Text = "0.2"
-        formd.Text = "0.5"
-        beta.Text = "0.1"
+    Private Sub reset_param_diag_Click_1(sender As System.Object, e As System.EventArgs) Handles reset_param_diag.Click
+        Me.TopD.Text = "0.2"
+        Me.formd.Text = "0.5"
+        Me.beta.Text = "0.1"
 
-        Kfeed.Text = "05"
-        Ponto.Text = "0.3"
-        same_mf.Checked = True
-        Forag.Checked = True
+        Me.Kfeed.Text = "05"
+        Me.Ponto.Text = "0.3"
+        Me.same_mf.Checked = True
+        Me.Forag.Checked = True
 
 
-        b_input_check.Checked = False
+        Me.b_input_check.Checked = False
 
 
     End Sub
 
-    Private Sub Forag_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Forag.CheckedChanged
-        If Forag.Checked Then
-            Kfeed.Enabled = True
-            Ponto.Enabled = True
-            b_input_check.Checked = False
+    Private Sub Forag_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles Forag.CheckedChanged
+        If Me.Forag.Checked Then
+            Me.Kfeed.Enabled = True
+            Me.Ponto.Enabled = True
+            Me.b_input_check.Checked = False
         Else
-            Kfeed.Enabled = False
-            Ponto.Enabled = False
+            Me.Kfeed.Enabled = False
+            Me.Ponto.Enabled = False
         End If
     End Sub
 
-    Private Sub group_param_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub group_param_CheckedChanged(sender As System.Object, e As System.EventArgs)
 
     End Sub
 
 
-    Private Sub List_fleet1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles List_fleet1.SelectedIndexChanged
+    Private Sub List_fleet1_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles List_fleet1.SelectedIndexChanged
 
-        Dim compteur_fin As Integer = List_fleet1.SelectedItems.Count
-        If compteur_fin = List_fleet1.Items.Count Then
+        Dim compteur_fin As Integer = Me.List_fleet1.SelectedItems.Count
+        If compteur_fin = Me.List_fleet1.Items.Count Then
             Me.NotifyUser(My.Resources.TOO_SELECTED_FLEET, eMessageImportance.Warning)
         End If
 
@@ -1177,47 +1177,47 @@ Public Class frmEcotroph
 
 
 
-    Private Sub mull_eff_EMSY_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub mull_eff_EMSY_TextChanged(sender As System.Object, e As System.EventArgs)
 
     End Sub
 
-    Private Sub same_mf_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles same_mf.CheckedChanged
-        If Not same_mf.Checked Then
-            List_fleet1.Enabled = True
+    Private Sub same_mf_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles same_mf.CheckedChanged
+        If Not Me.same_mf.Checked Then
+            Me.List_fleet1.Enabled = True
 
             Dim compteur As Integer
 
             If (ETinputdata.NumFleet < 2) Then
                 Me.NotifyUser(My.Resources.NOT_ENOUGH_FLEET, eMessageImportance.Warning)
-                same_mf.Checked = True
-                List_fleet1.Enabled = False
+                Me.same_mf.Checked = True
+                Me.List_fleet1.Enabled = False
             Else
 
 
-                If (ETinputdata.NumFleet > 1 And List_fleet1.Items.Count = 0) Then
+                If (ETinputdata.NumFleet > 1 And Me.List_fleet1.Items.Count = 0) Then
 
 
                     For compteur = 0 To ETinputdata.NumFleet - 1
-                        List_fleet1.Items.Add(ETinputdata.FleetName(compteur))
+                        Me.List_fleet1.Items.Add(ETinputdata.FleetName(compteur))
 
                     Next
                 End If
             End If
 
         Else
-            List_fleet1.Enabled = False
+            Me.List_fleet1.Enabled = False
         End If
 
 
     End Sub
 
-    Private Sub Label19_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub Label19_Click(sender As System.Object, e As System.EventArgs)
 
     End Sub
 
 
 
-    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
+    Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
 
 
 
@@ -1227,11 +1227,11 @@ Public Class frmEcotroph
             Dim myresult_xml As New XmlDocument()
 
             Cursor.Current = Cursors.WaitCursor
-            panel_webservi.Visible = True
-            panel_webservi.BringToFront()
+            Me.panel_webservi.Visible = True
+            Me.panel_webservi.BringToFront()
 
 
-            If models_list.Items.Count = 0 Then
+            If Me.models_list.Items.Count = 0 Then
 
 
                 Try
@@ -1246,7 +1246,7 @@ Public Class frmEcotroph
                 End Try
 
 
-                ReDim num_model(myresult_xml.GetElementsByTagName("element").Count)
+                ReDim Me.num_model(myresult_xml.GetElementsByTagName("element").Count)
                 Dim compteur As Integer = 0
 
                 For Each node As XmlNode In myresult_xml.GetElementsByTagName("element")
@@ -1254,8 +1254,8 @@ Public Class frmEcotroph
                     If Not (IsNothing(node("model_name"))) Then
 
 
-                        models_list.Items.Add(node("model_name").InnerText)
-                        num_model(compteur) = node("model_number").InnerText
+                        Me.models_list.Items.Add(node("model_name").InnerText)
+                        Me.num_model(compteur) = node("model_number").InnerText
                         compteur = compteur + 1
                     End If
                 Next
@@ -1269,11 +1269,11 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub models_list_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles models_list.DoubleClick
+    Private Sub models_list_DoubleClick(sender As Object, e As System.EventArgs) Handles models_list.DoubleClick
 
         Dim myStream As Stream = Nothing
         Dim openFileDialog1 As New OpenFileDialog()
-        panel_webservi.Visible = False
+        Me.panel_webservi.Visible = False
 
 
         openFileDialog1.InitialDirectory = "c:\"
@@ -1285,7 +1285,7 @@ Public Class frmEcotroph
 
         Dim url_eco As String
 
-        url_eco = "http://ecobase.ecopath.org/php/extract_model.php?model=" & num_model(models_list.SelectedIndex)
+        url_eco = "http://ecobase.ecopath.org/php/extract_model.php?model=" & Me.num_model(Me.models_list.SelectedIndex)
 
 
         Try
@@ -1342,7 +1342,7 @@ Public Class frmEcotroph
 
 
 
-            ETinputdata = CType(reader.Deserialize(New StringReader(myservice.getModel("input_data", num_model(models_list.SelectedIndex)))), ETinputtot)
+            ETinputdata = CType(reader.Deserialize(New StringReader(myservice.getModel("input_data", Me.num_model(Me.models_list.SelectedIndex)))), ETinputtot)
 
 
 
@@ -1362,9 +1362,9 @@ Public Class frmEcotroph
                 If Not (IsNothing(ETinputdata.OI)) Then DataGrid.Item(5, igrp).Value() = ETinputdata.OI(igrp + 1)
 
             Next
-            If Not (IsNothing(ETinputdata.Comments)) Then commentaires.Text = ETinputdata.Comments Else commentaires.Text = ""
-            If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-            If Not (IsNothing(ETinputdata.ModelDescription)) Then modeldescription.Text = ETinputdata.ModelDescription Else modeldescription.Text = ""
+            If Not (IsNothing(ETinputdata.Comments)) Then Me.commentaires.Text = ETinputdata.Comments Else Me.commentaires.Text = ""
+            If Not (IsNothing(ETinputdata.ModelName)) Then Me.Modelname.Text = ETinputdata.ModelName Else Me.Modelname.Text = ""
+            If Not (IsNothing(ETinputdata.ModelDescription)) Then Me.modeldescription.Text = ETinputdata.ModelDescription Else Me.modeldescription.Text = ""
             DataGrid.ColumnCount = 6 + ETinputdata.NumFleet
             For ifleet As Integer = 0 To ETinputdata.NumFleet - 1
                 DataGrid.Columns(6 + ifleet).Name = ETinputdata.FleetName(ifleet)
@@ -1374,9 +1374,9 @@ Public Class frmEcotroph
 
             Next
             DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
-            Button2.Enabled = True
-            Button3.Enabled = True
-            Button4.Enabled = True
+            Me.Button2.Enabled = True
+            Me.Button3.Enabled = True
+            Me.Button4.Enabled = True
 
         Catch Ex As Exception
             cLog.Write(Ex, "Ecotroph::models_list")
@@ -1390,28 +1390,28 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub models_list_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles models_list.SelectedIndexChanged
+    Private Sub models_list_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles models_list.SelectedIndexChanged
 
         Dim url_eco As String
-        url_eco = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & num_model(models_list.SelectedIndex)
-        site_eco.Navigate(New Uri(url_eco))
+        url_eco = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & Me.num_model(Me.models_list.SelectedIndex)
+        Me.site_eco.Navigate(New Uri(url_eco))
 
     End Sub
 
-    Private Sub All_group_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles All_group.CheckedChanged
-        If All_group.Checked Then
-            list_group_diag.Enabled = False
+    Private Sub All_group_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles All_group.CheckedChanged
+        If Me.All_group.Checked Then
+            Me.list_group_diag.Enabled = False
 
         Else
-            list_group_diag.Enabled = True
+            Me.list_group_diag.Enabled = True
             Dim compteur As Integer
 
 
-            If (ETgridinput.RowCount > 1 And list_group_diag.Items.Count = 0) Then
+            If (Me.ETgridinput.RowCount > 1 And Me.list_group_diag.Items.Count = 0) Then
 
 
-                For compteur = 1 To ETgridinput.RowCount - 2
-                    If (DirectCast(ETgridinput.Item(4, compteur).Value, Single) > 0) Then list_group_diag.Items.Add(ETgridinput.Item(0, compteur).Value)
+                For compteur = 1 To Me.ETgridinput.RowCount - 2
+                    If (DirectCast(Me.ETgridinput.Item(4, compteur).Value, Single) > 0) Then Me.list_group_diag.Items.Add(Me.ETgridinput.Item(0, compteur).Value)
 
                 Next
             End If
@@ -1420,20 +1420,20 @@ Public Class frmEcotroph
         End If
     End Sub
 
-    Private Sub list_group_diag_old_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub list_group_diag_old_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
 
     End Sub
 
-    Private Sub list_group_diag_SelectedIndexChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles list_group_diag.SelectedIndexChanged
+    Private Sub list_group_diag_SelectedIndexChanged_1(sender As System.Object, e As System.EventArgs) Handles list_group_diag.SelectedIndexChanged
 
     End Sub
 
-    Private Sub Log_scale_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Log_scale.CheckedChanged
+    Private Sub Log_scale_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles Log_scale.CheckedChanged
 
     End Sub
 
-    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
-        panel_webservi.Visible = False
+    Private Sub Button8_Click(sender As System.Object, e As System.EventArgs) Handles Button8.Click
+        Me.panel_webservi.Visible = False
 
 
     End Sub
@@ -1444,32 +1444,32 @@ Public Class frmEcotroph
 
 
 
-    Private Sub PictureBox3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox3.Click
-        System.Diagnostics.Process.Start(aide & "#smooth1")
+    Private Sub PictureBox3_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox3.Click
+        System.Diagnostics.Process.Start(Me.aide & "#smooth1")
     End Sub
 
-    Private Sub PictureBox4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox4.Click
-        System.Diagnostics.Process.Start(aide & "#transpose")
+    Private Sub PictureBox4_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox4.Click
+        System.Diagnostics.Process.Start(Me.aide & "#transpose")
     End Sub
 
-    Private Sub PictureBox5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox5.Click
-        System.Diagnostics.Process.Start(aide & "#diagnose")
+    Private Sub PictureBox5_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox5.Click
+        System.Diagnostics.Process.Start(Me.aide & "#diagnose")
     End Sub
 
 
-    Private Sub result_pdf_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles result_pdf.DocumentCompleted
-
-    End Sub
-
-    Private Sub frmEcotroph_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub result_pdf_DocumentCompleted(sender As System.Object, e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles result_pdf.DocumentCompleted
 
     End Sub
 
-    Private Sub TopD_MaskInputRejected(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MaskInputRejectedEventArgs) Handles TopD.MaskInputRejected
+    Private Sub frmEcotroph_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
     End Sub
 
-    Private Sub ETgridinput_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellContentClick
+    Private Sub TopD_MaskInputRejected(sender As System.Object, e As System.Windows.Forms.MaskInputRejectedEventArgs) Handles TopD.MaskInputRejected
+
+    End Sub
+
+    Private Sub ETgridinput_CellContentClick(sender As System.Object, e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellContentClick
 
     End Sub
 

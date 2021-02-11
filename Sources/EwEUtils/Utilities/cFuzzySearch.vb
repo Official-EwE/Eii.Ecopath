@@ -69,9 +69,9 @@ Namespace Utilities
         ''' <param name="iThreshold">Search difference tolerance threshold [1, <see cref="Integer.MaxValue"/>>.</param>
         ''' <returns>An array of <see cref="cBaseSearchResult">fuzzy search results</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Find(ByVal strSearchTerm As String, _
-                             ByVal data As String(), _
-                             ByVal iThreshold As Integer) As cArraySearchResult()
+        Public Function Find(strSearchTerm As String, _
+                             data As String(), _
+                             iThreshold As Integer) As cArraySearchResult()
 
             ' Analyze options
             Dim bOptNoCase As Boolean = ((Me.Options And eSearchOptions.IngoreCase) = eSearchOptions.IngoreCase)
@@ -203,7 +203,7 @@ Namespace Utilities
             ''' where 0 denotes an identical match.</param>
             ''' <param name="term">The matching term.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal iSimilarity As Integer, ByVal term As Object)
+            Public Sub New(iSimilarity As Integer, term As Object)
                 Me.m_iSimilarity = iSimilarity
                 Me.m_term = term
             End Sub
@@ -251,7 +251,7 @@ Namespace Utilities
             ''' <inheritdocs cref="cBaseSearchResult"/>.
             ''' <param name="iIndex">The array index of the search result.</param>
             ''' -------------------------------------------------------------------
-            Protected Friend Sub New(ByVal iIndex As Integer, ByVal iSimilarity As Integer, term As Object)
+            Protected Friend Sub New(iIndex As Integer, iSimilarity As Integer, term As Object)
                 MyBase.New(iSimilarity, term)
                 Me.m_iIndex = iIndex
             End Sub
@@ -281,7 +281,7 @@ Namespace Utilities
         Private Class cSearchResultComparer
             Implements IComparer(Of cBaseSearchResult)
 
-            Public Function Compare(ByVal x As cBaseSearchResult, ByVal y As cBaseSearchResult) As Integer _
+            Public Function Compare(x As cBaseSearchResult, y As cBaseSearchResult) As Integer _
                 Implements System.Collections.Generic.IComparer(Of cBaseSearchResult).Compare
                 If x.Similarity < y.Similarity Then Return -1
                 If x.Similarity = y.Similarity Then Return 0

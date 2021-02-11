@@ -39,7 +39,7 @@ Public Class cPluginException
     ''' <param name="exception"></param>
     ''' <param name="assembly"></param>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal assembly As cPluginAssembly, ByVal strMessage As String, ByVal exception As Exception)
+    Public Sub New(assembly As cPluginAssembly, strMessage As String, exception As Exception)
         MyBase.New(strMessage, exception)
         Me.m_assembly = assembly
     End Sub
@@ -51,7 +51,7 @@ Public Class cPluginException
     ''' <param name="strMessage"></param>
     ''' <param name="assembly"></param>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal assembly As cPluginAssembly, ByVal strMessage As String)
+    Public Sub New(assembly As cPluginAssembly, strMessage As String)
         Me.New(assembly, strMessage, Nothing)
     End Sub
 
@@ -62,7 +62,7 @@ Public Class cPluginException
     ''' <param name="exception"></param>
     ''' <param name="assembly"></param>
     ''' ---------------------------------------------------------------------------
-    Public Sub New(ByVal assembly As cPluginAssembly, ByVal exception As Exception)
+    Public Sub New(assembly As cPluginAssembly, exception As Exception)
         Me.New(assembly, exception.Message)
     End Sub
 

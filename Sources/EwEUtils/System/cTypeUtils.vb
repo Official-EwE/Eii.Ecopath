@@ -24,7 +24,7 @@ Namespace Utilities
 
     Public Class cTypeUtils
 
-        Public Shared Function TypeToString(ByVal t As Type) As String
+        Public Shared Function TypeToString(t As Type) As String
 
             ' Include assembly short name in the type name. This enables
             ' the OOP database logic to relocate the type from its original
@@ -46,7 +46,7 @@ Namespace Utilities
         ''' can be used to create the string for a type.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function StringToType(ByVal strType As String) As Type
+        Public Shared Function StringToType(strType As String) As Type
 
             ' Split assembly short name from type name
             Dim astr As String() = strType.Split(CChar("!"))

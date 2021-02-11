@@ -73,22 +73,22 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasForm As Boolean = False
 
-        If ResultsForm IsNot Nothing Then
-            bHasForm = Not ResultsForm.IsDisposed
+        If Me.ResultsForm IsNot Nothing Then
+            bHasForm = Not Me.ResultsForm.IsDisposed
         End If
 
         If Not bHasForm Then
-            ResultsForm = New frmResults
-            ResultsForm.Initialize(m_uic)
-            ResultsForm.StartForm(sender, e, frmPlugin, logdiff, mTimeSeries, mEcosimModel)
+            Me.ResultsForm = New frmResults
+            Me.ResultsForm.Initialize(Me.m_uic)
+            Me.ResultsForm.StartForm(sender, e, frmPlugin, Me.logdiff, Me.mTimeSeries, Me.mEcosimModel)
         End If
 
-        ResultsForm.DataStructure = mDataStructure
+        Me.ResultsForm.DataStructure = Me.mDataStructure
 
         ' JS 04 Mar 2011: Let EwE framework deal with this
         'ResultsForm.Show()
@@ -119,8 +119,8 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        m_core = core
+    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+        Me.m_core = core
     End Sub
 
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
@@ -129,11 +129,11 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object) Implements EwEPlugin.IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
-        mTimeSeries = TimeSeriesDataStructures
+    Public Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object) Implements EwEPlugin.IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
+        Me.mTimeSeries = TimeSeriesDataStructures
     End Sub
 
-    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Dim iDyear As Integer
         Dim DataStructure As cEcosimDatastructures = EcosimDatastructures
@@ -145,36 +145,36 @@ Public Class cResultsHolder
         iYear = Int((iTime + 7) / 12) - 1
 
         'Check whether data exists for this year
-        For i = 1 To mTimeSeries.nDatPoints
-            If mTimeSeries.DatYear(i) - mTimeSeries.DatYear(1) = iYear Then iDyear = i : Exit For
+        For i = 1 To Me.mTimeSeries.nDatPoints
+            If Me.mTimeSeries.DatYear(i) - Me.mTimeSeries.DatYear(1) = iYear Then iDyear = i : Exit For
         Next
 
         If iDyear <> 0 Then
 
-            For j = 1 To mTimeSeries.NdatType
+            For j = 1 To Me.mTimeSeries.NdatType
 
-                If mTimeSeries.DatVal(iDyear, j) > 0 And _
-                                (mTimeSeries.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                                 mTimeSeries.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                                 mTimeSeries.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                                 mTimeSeries.DatType(j) = eTimeSeriesType.AverageWeight Or _
-                                 mTimeSeries.DatType(j) = eTimeSeriesType.Catches Or _
-                                 mTimeSeries.DatType(j) = eTimeSeriesType.CatchesRel Or _
-                                 mTimeSeries.DatType(j) = eTimeSeriesType.CatchesForcing) Then
+                If Me.mTimeSeries.DatVal(iDyear, j) > 0 And _
+                                (Me.mTimeSeries.DatType(j) = eTimeSeriesType.BiomassRel Or _
+                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.BiomassAbs Or _
+                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.TotalMortality Or _
+                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.AverageWeight Or _
+                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.Catches Or _
+                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.CatchesRel Or _
+                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.CatchesForcing) Then
 
-                    Select Case mTimeSeries.DatType(j)
+                    Select Case Me.mTimeSeries.DatType(j)
 
                         '0,1    
                         Case eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassRel
-                            ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / BiomassAtTimestep(mTimeSeries.DatPool(j))))
+                            Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / BiomassAtTimestep(Me.mTimeSeries.DatPool(j))))
 
                         Case eTimeSeriesType.TotalMortality
-                            zest = DataStructure.loss(mTimeSeries.DatPool(j)) / BiomassAtTimestep(mTimeSeries.DatPool(j))
-                            ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / zest))
+                            zest = DataStructure.loss(Me.mTimeSeries.DatPool(j)) / BiomassAtTimestep(Me.mTimeSeries.DatPool(j))
+                            Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / zest))
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel
-                            If DataStructure.FishTime(mTimeSeries.DatPool(j)) > 0 Then
-                                ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / (BiomassAtTimestep(mTimeSeries.DatPool(j)) * DataStructure.FishTime(mTimeSeries.DatPool(j)))))
+                            If DataStructure.FishTime(Me.mTimeSeries.DatPool(j)) > 0 Then
+                                Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / (BiomassAtTimestep(Me.mTimeSeries.DatPool(j)) * DataStructure.FishTime(Me.mTimeSeries.DatPool(j)))))
                             End If
 
                         Case eTimeSeriesType.AverageWeight
@@ -183,10 +183,10 @@ Public Class cResultsHolder
                             'and is treated as a relative index
                             If DataStructure.ResultsOverTime IsNot Nothing Then
                                 Dim iti As Integer = iDyear * 12 - 7
-                                Dim iGroup As Integer = mTimeSeries.DatPool(j)
-                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, mTimeSeries.DatPool(j), iti)
+                                Dim iGroup As Integer = Me.mTimeSeries.DatPool(j)
+                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, Me.mTimeSeries.DatPool(j), iti)
                                 If zest > 0 Then
-                                    ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / zest))
+                                    Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / zest))
                                 End If
                             End If
 
@@ -200,18 +200,18 @@ Public Class cResultsHolder
 
     End Sub
 
-    Public Sub EcosimRunCompleted(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
         Dim iYear As Integer
 
-        mDataStructure = EcosimDatastructures
+        Me.mDataStructure = EcosimDatastructures
 
-        For i = 1 To mTimeSeries.nDatPoints
-            iYear = mTimeSeries.DatYear(i) - mTimeSeries.DatYear(1)
-            For j = 1 To mTimeSeries.NdatType
-                If mTimeSeries.DatVal(i, j) = 0 Then
-                    logdiff(j, i) = 0
+        For i = 1 To Me.mTimeSeries.nDatPoints
+            iYear = Me.mTimeSeries.DatYear(i) - Me.mTimeSeries.DatYear(1)
+            For j = 1 To Me.mTimeSeries.NdatType
+                If Me.mTimeSeries.DatVal(i, j) = 0 Then
+                    Me.logdiff(j, i) = 0
                 Else
-                    logdiff(j, i) = ZStat(j, i) - mTimeSeries.DatQ(j)
+                    Me.logdiff(j, i) = Me.ZStat(j, i) - Me.mTimeSeries.DatQ(j)
                 End If
             Next
         Next
@@ -220,17 +220,17 @@ Public Class cResultsHolder
 
 
 
-    Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
-        ReDim ZStat(mTimeSeries.NdatType, mTimeSeries.nDatPoints)
-        ReDim logdiff(mTimeSeries.NdatType, mTimeSeries.nDatPoints)
-        ReDim sumSS(mTimeSeries.NdatType)
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        ReDim Me.ZStat(Me.mTimeSeries.NdatType, Me.mTimeSeries.nDatPoints)
+        ReDim Me.logdiff(Me.mTimeSeries.NdatType, Me.mTimeSeries.nDatPoints)
+        ReDim Me.sumSS(Me.mTimeSeries.NdatType)
     End Sub
 
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
-        mEcosimModel = objEcoSim
+        Me.mEcosimModel = objEcoSim
     End Sub
 
-    Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 

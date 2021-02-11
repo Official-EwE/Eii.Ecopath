@@ -55,7 +55,7 @@ Namespace Controls
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Me.m_iExpandedHeight = Me.Parent.Height
@@ -63,7 +63,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
             MyBase.OnPaint(e)
 
             Dim xImg As Integer = Me.Padding.Left
@@ -90,7 +90,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Overrides Sub OnClick(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnClick(e As System.EventArgs)
             Me.Collapsed = (Not Me.Collapsed)
             MyBase.OnClick(e)
         End Sub
@@ -105,7 +105,7 @@ Namespace Controls
                 If String.IsNullOrEmpty(Me.Text) Then Return Me.Name
                 Return Me.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.Text = value
                 Me.Invalidate()
             End Set
@@ -119,7 +119,7 @@ Namespace Controls
             Get
                 Return Me.m_iAnimationRate
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iAnimationRate = value
             End Set
         End Property
@@ -129,7 +129,7 @@ Namespace Controls
             Get
                 Return Me.m_bCollapsed
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value <> Me.m_bCollapsed Then
                     Me.m_bCollapsed = value
                     Me.Invalidate()
@@ -143,7 +143,7 @@ Namespace Controls
             Get
                 Return MyBase.Dock
             End Get
-            Set(ByVal value As DockStyle)
+            Set(value As DockStyle)
                 MyBase.Dock = value
             End Set
         End Property
@@ -161,7 +161,7 @@ Namespace Controls
 
                 While Me.Parent.Height > Me.Height + iHeightOffset
                     Application.DoEvents()
-                    Me.Parent.Height -= AnimationRate
+                    Me.Parent.Height -= Me.AnimationRate
                 End While
                 Me.Parent.Height = Me.Height + iHeightOffset
 
@@ -169,7 +169,7 @@ Namespace Controls
 
                 While Me.Parent.Height < Me.m_iExpandedHeight
                     Application.DoEvents()
-                    Me.Parent.Height += AnimationRate
+                    Me.Parent.Height += Me.AnimationRate
                 End While
                 Me.Parent.Height = Me.m_iExpandedHeight
 

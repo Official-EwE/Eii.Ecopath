@@ -36,12 +36,12 @@ Public Class frmStrategiesOverview
         Me.InitializeComponent()
     End Sub
 
-    Public Sub Init(ByVal uic As cUIContext, ByVal mse As cMSE)
+    Public Sub Init(uic As cUIContext, mse As cMSE)
         Me.m_mse = mse
         Me.m_data = mse.Strategies
         'Me.m_data = New Strategies(mse, mse.Core)
         Me.m_data.Load()
-        Me.Grid = m_grid
+        Me.Grid = Me.m_grid
         'Me.m_grid.Init(Me.m_data)
         Me.UIContext = uic
     End Sub
@@ -90,13 +90,13 @@ Public Class frmStrategiesOverview
 
     Private Sub m_btnCheckAll_Click(sender As Object, e As EventArgs) Handles m_btnCheckAll.Click
 
-        m_grid.CheckAll()
+        Me.m_grid.CheckAll()
 
     End Sub
 
     Private Sub m_btnCheckNone_Click(sender As Object, e As EventArgs) Handles m_btnCheckNone.Click
 
-        m_grid.UncheckAll()
+        Me.m_grid.UncheckAll()
 
     End Sub
 End Class

@@ -73,7 +73,7 @@ Namespace Ecopath.Output
             End Get
         End Property
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -90,7 +90,7 @@ Namespace Ecopath.Output
             ' Connect to show/hide groups command
             Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME), cShowHideItemsCommand)
             If Me.m_cmdShowGroups IsNot Nothing Then
-                AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
+                AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf Me.OnAfterShowGroups
             End If
 
             ' Connect format providers
@@ -101,7 +101,7 @@ Namespace Ecopath.Output
             Me.m_fpClimateType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMeanLat, parms, eVarNameFlags.NumPtsMovAvg, Nothing, New cClimateTypeFormatter())
 
             ' Connect to core state monitor events
-            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            AddHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             Try
                 Me.SynchronizePSDGroups()
@@ -114,7 +114,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Detach format providers
             Me.m_fpNoOfPointsPSD.Release()
@@ -127,11 +127,11 @@ Namespace Ecopath.Output
 
             ' Detach from show/hide groups command
             If Me.m_cmdShowGroups IsNot Nothing Then
-                RemoveHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
+                RemoveHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf Me.OnAfterShowGroups
             End If
 
             ' Detach from core state monitor events
-            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_coreStateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
             MyBase.OnFormClosed(e)
 
@@ -141,7 +141,7 @@ Namespace Ecopath.Output
 
 #Region " Event handlers "
 
-        Private Sub OnMortalityTypeSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnMortalityTypeSelected(sender As Object, e As System.EventArgs) _
             Handles m_rbGroupPB.CheckedChanged, m_rbLorenzen.CheckedChanged
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
@@ -158,7 +158,7 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRun.Click
 
             'PSD Enabled needs to be true for Ecopath to run the PSD 
@@ -176,21 +176,21 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+        Private Sub OnCoreExecutionStateChanged(csm As cCoreStateMonitor)
             Try
                 Me.SynchronizePlot()
             Catch ex As Exception
             End Try
         End Sub
 
-        Private Sub OnAfterShowGroups(ByVal cmd As cCommand)
+        Private Sub OnAfterShowGroups(cmd As cCommand)
             Try
                 Me.SynchronizePSDGroups()
             Catch ex As Exception
             End Try
         End Sub
 
-        Private Sub OnLatChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnLatChanged(sender As Object, e As System.EventArgs) _
             Handles m_cmbMeanLat.SelectedIndexChanged
             Try
                 Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
@@ -284,7 +284,7 @@ Namespace Ecopath.Output
 
         End Function
 
-        Private Sub AddCurves(ByVal pane As GraphPane)
+        Private Sub AddCurves(pane As GraphPane)
 
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
@@ -339,7 +339,7 @@ Namespace Ecopath.Output
             Me.AddCurveToGraphPane(pane, resultLists(1), strLabel, Color.Black)
         End Sub
 
-        Private Sub InitLists(ByRef lists As List(Of PointPairList), ByVal size As Integer)
+        Private Sub InitLists(ByRef lists As List(Of PointPairList), size As Integer)
             ' Init the result lists
             For i As Integer = 1 To size
                 Dim list As New PointPairList()
@@ -347,8 +347,8 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(ByVal pane As GraphPane, ByVal list As PointPairList, _
-                                        ByVal strLabel As String, ByVal lineClr As Color)
+        Private Sub AddCurveToGraphPane(pane As GraphPane, list As PointPairList, _
+                                        strLabel As String, lineClr As Color)
             Dim lnItem As LineItem
 
             lnItem = pane.AddCurve(strLabel, list, lineClr)
@@ -403,7 +403,7 @@ Namespace Ecopath.Output
             Me.UpdatePlot()
         End Sub
 
-        Private Sub FindSystemPSD(ByVal sSystemPSD() As Single)
+        Private Sub FindSystemPSD(sSystemPSD() As Single)
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim grpOutput As cEcoPathGroupOutput = Nothing
@@ -423,7 +423,7 @@ Namespace Ecopath.Output
         Private Sub FindRegression(ByRef sSlope As Single, ByRef sSlopeStdErr As Single, _
                                    ByRef sIntercept As Single, ByRef sInterceptStdErr As Single, _
                                    ByRef sCorrelation As Single, ByRef sLowWtClass As Single, ByRef sHighWtClass As Single, _
-                                   ByRef iSampleSize As Integer, ByVal sSystemPSD() As Single)
+                                   ByRef iSampleSize As Integer, sSystemPSD() As Single)
 
             Dim sXValue As Single = 0
             Dim dSumX As Double = 0

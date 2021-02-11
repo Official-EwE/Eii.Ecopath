@@ -67,7 +67,7 @@ Public Class ucDriverResponseView
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
 
         Try
 
@@ -83,8 +83,8 @@ Public Class ucDriverResponseView
                 Me.UIContext = Nothing
             End If
 
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
+            If disposing AndAlso Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
         Catch e As Exception
             'NOP
@@ -192,11 +192,11 @@ Public Class ucDriverResponseView
 
 #Region " Control Event Handlers "
 
-    Private Sub OnMinMaxValueChanged(ByVal sender As Object, args As EventArgs)
+    Private Sub OnMinMaxValueChanged(sender As Object, args As EventArgs)
         Me.ApplyMinMax()
     End Sub
 
-    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As EventArgs) _
+    Private Sub OnSetDefaultMinMax(sender As Object, e As EventArgs) _
         Handles m_btnDefaultMinMax.Click
         Me.SetDefaultMinMax()
     End Sub
@@ -243,12 +243,12 @@ Public Class ucDriverResponseView
         Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(Me.m_shape)
 
         If (Me.ShowMinMax) Then
-            RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
-            RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
+            RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf Me.OnMinMaxValueChanged
+            RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf Me.OnMinMaxValueChanged
         End If
 
         If (Me.CanEditMean) Then
-            RemoveHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
+            RemoveHandler Me.m_fpMean.OnValueChanged, AddressOf Me.OnMeanValueChanged
         End If
 
         If (Me.m_shape Is Nothing) Then Return
@@ -259,8 +259,8 @@ Public Class ucDriverResponseView
             Me.m_fpMin.Value = Me.m_shape.ResponseLeftLimit
             Me.m_fpMax.Value = Me.m_shape.ResponseRightLimit
 
-            AddHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
-            AddHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
+            AddHandler Me.m_fpMin.OnValueChanged, AddressOf Me.OnMinMaxValueChanged
+            AddHandler Me.m_fpMax.OnValueChanged, AddressOf Me.OnMinMaxValueChanged
 
         End If
 
@@ -269,7 +269,7 @@ Public Class ucDriverResponseView
             Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
             Me.m_fpMean.Value = normdist.Mean
 
-            AddHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
+            AddHandler Me.m_fpMean.OnValueChanged, AddressOf Me.OnMeanValueChanged
         End If
 
     End Sub

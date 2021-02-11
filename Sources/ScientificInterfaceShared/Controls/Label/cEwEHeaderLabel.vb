@@ -83,7 +83,7 @@ Namespace Controls
             Get
                 Return MyBase.BackColor
             End Get
-            Set(ByVal value As System.Drawing.Color)
+            Set(value As System.Drawing.Color)
                 ' NOP
             End Set
         End Property
@@ -103,7 +103,7 @@ Namespace Controls
                 End If
                 Return clr
             End Get
-            Set(ByVal value As System.Drawing.Color)
+            Set(value As System.Drawing.Color)
                 ' NOP
             End Set
         End Property
@@ -118,7 +118,7 @@ Namespace Controls
             Get
                 Return MyBase.Font
             End Get
-            Set(ByVal value As System.Drawing.Font)
+            Set(value As System.Drawing.Font)
                 ' NOP
             End Set
         End Property
@@ -134,7 +134,7 @@ Namespace Controls
             Get
                 Return False
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 ' NOP
             End Set
         End Property
@@ -158,7 +158,7 @@ Namespace Controls
                     Return ContentAlignment.MiddleLeft
                 End If
             End Get
-            Set(ByVal value As System.Drawing.ContentAlignment)
+            Set(value As System.Drawing.ContentAlignment)
                 ' NOP
             End Set
         End Property
@@ -174,7 +174,7 @@ Namespace Controls
             Get
                 Return BorderStyle.None
             End Get
-            Set(ByVal value As System.Windows.Forms.BorderStyle)
+            Set(value As System.Windows.Forms.BorderStyle)
                 ' NOP
             End Set
         End Property
@@ -197,7 +197,7 @@ Namespace Controls
             Get
                 Return Me.m_bCanCollapseParent
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bCanCollapseParent = value
                 Me.Invalidate()
             End Set
@@ -209,7 +209,7 @@ Namespace Controls
             Get
                 Return Me.m_iCollapsedParentHeight
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iCollapsedParentHeight = value
             End Set
         End Property
@@ -236,7 +236,7 @@ Namespace Controls
             End Property
         End Class
 
-        Public Event OnCollapsed(ByVal sender As Object, ByVal args As cCollapsedEventArgs)
+        Public Event OnCollapsed(sender As Object, args As cCollapsedEventArgs)
 
         <Browsable(True), _
          Category("Expand/collapse")> _
@@ -245,7 +245,7 @@ Namespace Controls
                 If Not Me.CanCollapseParent Then Return False
                 Return Me.m_bIsCollapsed
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bIsCollapsed = value
 
                 If Me.IsCollapsed Then
@@ -265,7 +265,7 @@ Namespace Controls
 
 #Region " Events "
 
-        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
             ' ToDo: implement this properly, use right-to-left order into account
             If e.X < 16 Then
                 If Me.CanCollapseParent Then Me.IsCollapsed = Not Me.IsCollapsed
@@ -273,7 +273,7 @@ Namespace Controls
             MyBase.OnMouseDown(e)
         End Sub
 
-        Protected Overrides Sub OnMouseDoubleClick(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDoubleClick(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseDoubleClick(e)
             If e.X >= 16 Then
                 If Me.CanCollapseParent Then Me.IsCollapsed = Not Me.IsCollapsed
@@ -289,7 +289,7 @@ Namespace Controls
         ''' Doodledidoodle.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
 
             Dim rcText As Rectangle = Me.ClientRectangle
             Dim rcImage As Rectangle = Me.ClientRectangle

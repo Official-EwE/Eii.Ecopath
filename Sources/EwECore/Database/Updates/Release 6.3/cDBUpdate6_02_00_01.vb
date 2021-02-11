@@ -62,7 +62,7 @@ Friend Class cDBUpdate6_02_00_01
                Me.DropObsoleteTables(db)
     End Function
 
-    Private Function UpdateEcospaceTables(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateEcospaceTables(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = True
 
@@ -97,7 +97,7 @@ Friend Class cDBUpdate6_02_00_01
 
     End Function
 
-    Private Function ConvertAll(ByVal db As cEwEDatabase) As Boolean
+    Private Function ConvertAll(db As cEwEDatabase) As Boolean
 
         Dim readerScenario As IDataReader = db.GetReader("SELECT ScenarioID, InRow, InCol FROM EcospaceScenario")
         Dim lScenarioID As New List(Of Integer)
@@ -120,7 +120,7 @@ Friend Class cDBUpdate6_02_00_01
 
     End Function
 
-    Private Function DropObsoleteTables(ByVal db As cEwEDatabase) As Boolean
+    Private Function DropObsoleteTables(db As cEwEDatabase) As Boolean
 
         Dim bSuccess As Boolean = db.Execute("DROP TABLE EcospaceScenarioBasemap")
         bSuccess = bSuccess And db.Execute("DROP TABLE EcospaceScenarioFleetMap")
@@ -139,8 +139,8 @@ Friend Class cDBUpdate6_02_00_01
 
     End Function
 
-    Private Function ConvertScenario(ByVal db As cEwEDatabase, ByVal iScenarioID As Integer, _
-                                     ByVal InRow As Integer, ByVal InCol As Integer) As Boolean
+    Private Function ConvertScenario(db As cEwEDatabase, iScenarioID As Integer, _
+                                     InRow As Integer, InCol As Integer) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -220,11 +220,11 @@ Friend Class cDBUpdate6_02_00_01
         ReDim dataMPA(InRow, InCol)
         ReDim dataRegion(InRow, InCol)
 
-        Allocate(dataHabitat, lHabitatID.Count, InRow, InCol)
-        Allocate(dataPort, lFleetID.Count, InRow, InCol)
-        Allocate(dataSailingCost, lFleetID.Count, InRow, InCol)
-        Allocate(dataHabCap, lGroupID.Count, InRow, InCol)
-        Allocate(dataImportance, lImportanceLayerID.Count, InRow, InCol)
+        Me.Allocate(dataHabitat, lHabitatID.Count, InRow, InCol)
+        Me.Allocate(dataPort, lFleetID.Count, InRow, InCol)
+        Me.Allocate(dataSailingCost, lFleetID.Count, InRow, InCol)
+        Me.Allocate(dataHabCap, lGroupID.Count, InRow, InCol)
+        Me.Allocate(dataImportance, lImportanceLayerID.Count, InRow, InCol)
 
         ' Read basemap data
         reader = db.GetReader("SELECT * FROM EcospaceScenarioBasemap WHERE ScenarioID=" & iScenarioID)

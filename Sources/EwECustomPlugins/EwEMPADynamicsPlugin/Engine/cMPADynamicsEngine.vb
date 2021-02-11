@@ -74,7 +74,7 @@ Public Class cMPADynamicsEngine
         If (Me.m_dtStates.ContainsKey(timestamp)) Then
             For Each state As cMPAState In Me.m_dtStates(timestamp)
                 state.Apply()
-                SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_MPA_CHANGED,
+                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_MPA_CHANGED,
                                                         timestamp.ToShortDateString(),
                                                         state.ToString(),
                                                         state.ClosureState(),
@@ -126,11 +126,11 @@ Public Class cMPADynamicsEngine
                 If (iMPA >= 1) And bSucces Then
                     Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
                     For i As Integer = 1 To cCore.N_MONTHS
-                        state.IsClosed(i) = IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
+                        state.IsClosed(i) = Me.IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
                     Next
 
                     For i As Integer = 1 To Me.m_core.nFleets
-                        state.IsEnforced(i) = IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
+                        state.IsEnforced(i) = Me.IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
                     Next
 
                     If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
@@ -147,14 +147,14 @@ Public Class cMPADynamicsEngine
             Next
 
             If (bSucces) Then
-                SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
+                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
             Else
-                SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
+                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
                 Me.m_dtStates.Clear()
             End If
 
         Catch ex As Exception
-            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Critical)
+            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Critical)
             bSucces = False
         End Try
 
@@ -186,10 +186,10 @@ Public Class cMPADynamicsEngine
                 sw.Flush()
                 sw.Close()
             End Using
-            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_SAVE_SUCCESS, strFile), eMessageImportance.Information, hyperlink:=Path.GetDirectoryName(strFile))
+            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_SAVE_SUCCESS, strFile), eMessageImportance.Information, hyperlink:=Path.GetDirectoryName(strFile))
 
         Catch ex As Exception
-            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strFile, ex.Message), eMessageImportance.Critical)
+            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strFile, ex.Message), eMessageImportance.Critical)
             bSucces = False
         End Try
         Return bSucces
@@ -302,7 +302,7 @@ Public Class cMPADynamicsEngine
             Return dt
 
         Catch ex As Exception
-            SendStatusMessage(ex.Message, eMessageImportance.Critical)
+            Me.SendStatusMessage(ex.Message, eMessageImportance.Critical)
         End Try
         Return Nothing
 

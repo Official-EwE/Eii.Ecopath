@@ -90,18 +90,18 @@ Namespace Properties
         ''' <param name="operand">Operand to perform operator onto.</param>
         ''' <remarks>For supported operand types, see <see cref="cFormulaProperty.GetExpression">cFormulaProperty.GetExpression</see>.</remarks>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal nOperator As eOperatorType, ByVal operand As Object)
+        Public Sub New(nOperator As eOperatorType, operand As Object)
             Me.m_nOperator = nOperator
             Me.m_operand = cFormulaProperty.GetExpression(operand)
             Me.m_sValue = Me.CalcValue()
             Me.m_style = Me.CalcStyle()
             ' Start listening for operand changes
-            AddHandler Me.m_operand.OnValueChanged, AddressOf OnOperandValueChanged
+            AddHandler Me.m_operand.OnValueChanged, AddressOf Me.OnOperandValueChanged
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             ' Stop listening for operand changes
-            RemoveHandler Me.m_operand.OnValueChanged, AddressOf OnOperandValueChanged
+            RemoveHandler Me.m_operand.OnValueChanged, AddressOf Me.OnOperandValueChanged
             Me.m_operand.Dispose()
             Me.m_operand = Nothing
         End Sub
@@ -131,7 +131,7 @@ Namespace Properties
         ''' the outcome of the operation.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        Private Sub OnOperandValueChanged(ByVal exp As cExpression)
+        Private Sub OnOperandValueChanged(exp As cExpression)
 
             ' Calc new value and style
             Dim sVal As Single = Me.CalcValue()
@@ -143,7 +143,7 @@ Namespace Properties
                 Me.m_style = style
 
                 ' Broadcast change notification
-                FireChangeNotification()
+                Me.FireChangeNotification()
             End If
 
         End Sub

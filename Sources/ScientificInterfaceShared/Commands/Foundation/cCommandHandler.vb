@@ -81,7 +81,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="c">The command to add.</param>
         ''' -----------------------------------------------------------------------
-        Friend Sub Add(ByVal c As cCommand)
+        Friend Sub Add(c As cCommand)
             Try
                 Me.m_dictCommands.Add(c.Name.ToLower(), c)
             Catch ex As Exception
@@ -96,7 +96,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="c">The command to remove.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Remove(ByVal c As cCommand)
+        Public Sub Remove(c As cCommand)
             Try
                 If (c IsNot Nothing) Then
                     c.Clear()
@@ -118,7 +118,7 @@ Namespace Commands
         ''' be found.
         ''' </returns>
         ''' -----------------------------------------------------------------------
-        Public Function GetCommand(ByVal strName As String) As cCommand
+        Public Function GetCommand(strName As String) As cCommand
             strName = strName.ToLower
             If Me.m_dictCommands.ContainsKey(strName) Then
                 Return Me.m_dictCommands(strName.ToLower())
@@ -152,7 +152,7 @@ Namespace Commands
         ''' This method should be invoked in response to the .NET Idle event.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub OnIdle(ByVal sender As Object, ByVal e As EventArgs)
+        Public Sub OnIdle(sender As Object, e As EventArgs)
             For Each cmd As cCommand In Me.m_dictCommands.Values
                 cmd.Update()
             Next
@@ -173,7 +173,7 @@ Namespace Commands
         ''' <param name="t">The handler type that will handle events for GUI objects
         ''' of the same type.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub AddControlHandlerType(ByVal obj As Object, ByVal t As Type)
+        Public Sub AddControlHandlerType(obj As Object, t As Type)
             Try
                 Me.AddControlHandlerType(obj.GetType().ToString(), t)
             Catch ex As Exception
@@ -190,7 +190,7 @@ Namespace Commands
         ''' <param name="t">The handler type that will handle events for GUI objects
         ''' of the same type.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub AddControlHandlerType(ByVal str As String, ByVal t As Type)
+        Public Sub AddControlHandlerType(str As String, t As Type)
             Try
                 Me.m_dictHandlerTypes.Add(str, t)
             Catch ex As Exception
@@ -205,10 +205,10 @@ Namespace Commands
         ''' </summary>
         ''' <param name="obj">An instance of a GUI object to return the handler type for.</param>
         ''' -----------------------------------------------------------------------
-        Public Function GetControlHandlerType(ByVal obj As Object) As Type
+        Public Function GetControlHandlerType(obj As Object) As Type
             Try
                 Debug.Assert(obj IsNot Nothing)
-                Return GetControlHandlerType(obj.GetType().ToString())
+                Return Me.GetControlHandlerType(obj.GetType().ToString())
             Catch ex As Exception
                 ' Kaboom
                 Debug.Assert(False, "Unable to get control handler for this control type")
@@ -223,7 +223,7 @@ Namespace Commands
         ''' <param name="str">A Type indicator of a GUI object to return 
         ''' the handler type for.</param>
         ''' -----------------------------------------------------------------------
-        Public Function GetControlHandlerType(ByVal str As String) As Type
+        Public Function GetControlHandlerType(str As String) As Type
             Try
                 Return Me.m_dictHandlerTypes(str)
             Catch ex As Exception

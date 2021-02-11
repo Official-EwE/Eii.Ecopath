@@ -26,6 +26,6 @@
 Public Interface IEcospacePostFishingEffortModTimestepPlugin
     Inherits IPlugin
 
-    Sub EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer)
+    Sub EcospacePostFishingEffortModTimestep(EcospaceDatastructures As Object, iTime As Integer)
 
 End Interface

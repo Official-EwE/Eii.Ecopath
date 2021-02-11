@@ -35,7 +35,7 @@ Namespace Core
         ''' Save time step data to file.
         ''' </summary>
         ''' <param name="SpaceTimeStepResults">cEcospaceTimestep as object containing the data to save.</param>
-        Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+        Sub WriteResults(SpaceTimeStepResults As Object)
 
     End Interface
 

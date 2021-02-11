@@ -791,19 +791,19 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Function Panel(ByVal strPanelName As String) As frmEwEDockContent
+    Private Function Panel(strPanelName As String) As frmEwEDockContent
         Return Me.m_dtPanels(strPanelName)
     End Function
 
     Private Sub InitDockPanelPositions()
 
         If cSystemUtils.IsRightToLeft Then
-            Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockRight)
+            Me.Panel(cPANEL_NAV).Show(Me.m_DockPanel, DockState.DockRight)
         Else
-            Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)
+            Me.Panel(cPANEL_NAV).Show(Me.m_DockPanel, DockState.DockLeft)
         End If
-        Me.Panel(cPANEL_STATUS).Show(m_DockPanel, DockState.DockBottomAutoHide)
-        Me.Panel(cPANEL_REMARKS).Show(m_DockPanel, DockState.DockBottomAutoHide)
+        Me.Panel(cPANEL_STATUS).Show(Me.m_DockPanel, DockState.DockBottomAutoHide)
+        Me.Panel(cPANEL_REMARKS).Show(Me.m_DockPanel, DockState.DockBottomAutoHide)
 
     End Sub
 
@@ -827,11 +827,11 @@ Public Class frmEwE6
 
         ' Configure state monitor
         Me.Core.StateMonitor.SyncObject = Me
-        Me.m_mhProgress = New cMessageHandler(AddressOf OnProgressMessage, eCoreComponentType.External, eMessageType.Progress, Me.SyncObject)
-        Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
-        Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.SyncObject)
-        Me.m_mhEcotracer = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.SyncObject)
-        Me.m_mhTimeseries = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhProgress = New cMessageHandler(AddressOf Me.OnProgressMessage, eCoreComponentType.External, eMessageType.Progress, Me.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhEcotracer = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhTimeseries = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
 
 #If DEBUG Then
         Me.m_mhProgress.Name = "frmEwE6:Progress"
@@ -896,12 +896,12 @@ Public Class frmEwE6
 
     Private Sub InitEventHandlers()
 
-        AddHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
-        AddHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
-        AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+        AddHandler My.Settings.SettingsLoaded, AddressOf Me.OnSettingsLoaded
+        AddHandler My.Settings.SettingsSaving, AddressOf Me.OnSettingsSaving
+        AddHandler My.Settings.PropertyChanged, AddressOf Me.OnSettingsChanged
 
         ' JS 27Apr10: ActiveContent seems to track much more accurately than ActiveDocument
-        AddHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
+        AddHandler Me.m_DockPanel.ActiveContentChanged, AddressOf Me.OnTabFocusChanged
 
     End Sub
 
@@ -921,7 +921,7 @@ Public Class frmEwE6
 
     Private Sub OnServerTimeObtained(sender As Object, e As RunWorkerCompletedEventArgs) Handles m_bgw.RunWorkerCompleted
         If (Me.InvokeRequired()) Then
-            Me.Invoke(New MethodInvoker(AddressOf DoValidateSetup))
+            Me.Invoke(New MethodInvoker(AddressOf Me.DoValidateSetup))
         Else
             Me.DoValidateSetup()
         End If
@@ -950,7 +950,7 @@ Public Class frmEwE6
     ''' <param name="bFullPath">Flag stating thether the full path needs to be 
     ''' returned.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
+    Public ReadOnly Property SelectedFileName(Optional bFullPath As Boolean = True) As String
         Get
             If (Me.Core Is Nothing) Then Return ""
             Dim ds As IEwEDataSource = Me.Core.DataSource
@@ -970,7 +970,7 @@ Public Class frmEwE6
 
 #Region " Messages "
 
-    Private Delegate Sub SendMessageDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType)
+    Private Delegate Sub SendMessageDelegate(strMsg As String, importance As eMessageImportance, component As eCoreComponentType)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -980,9 +980,9 @@ Public Class frmEwE6
     ''' <param name="importance">Message importance.</param>
     ''' <param name="component">Core component to represent as message origin.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub SendMessage(ByVal strMsg As String,
-                           Optional ByVal importance As eMessageImportance = eMessageImportance.Warning,
-                           Optional ByVal component As eCoreComponentType = eCoreComponentType.External,
+    Public Sub SendMessage(strMsg As String,
+                           Optional importance As eMessageImportance = eMessageImportance.Warning,
+                           Optional component As eCoreComponentType = eCoreComponentType.External,
                            Optional strHyperlink As String = "")
 
         If Me.InvokeRequired() Then
@@ -998,7 +998,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType, ByVal replies As eMessageReplyStyle, ByVal defaultReply As eMessageReply, ByVal strHyperlink As String, ByVal vars As cVariableStatus()) As eMessageReply
+    Private Delegate Function AskFeedbackDelegate(strMsg As String, importance As eMessageImportance, component As eCoreComponentType, replies As eMessageReplyStyle, defaultReply As eMessageReply, strHyperlink As String, vars As cVariableStatus()) As eMessageReply
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1008,11 +1008,11 @@ Public Class frmEwE6
     ''' <param name="importance">Message importance.</param>
     ''' <param name="component">Core component to represent as message origin.</param>
     ''' -----------------------------------------------------------------------
-    Public Function AskFeedback(ByVal strMsg As String,
-                                Optional ByVal importance As eMessageImportance = eMessageImportance.Warning,
-                                Optional ByVal component As eCoreComponentType = eCoreComponentType.Core,
-                                Optional ByVal replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL,
-                                Optional ByVal defaultreply As eMessageReply = eMessageReply.YES,
+    Public Function AskFeedback(strMsg As String,
+                                Optional importance As eMessageImportance = eMessageImportance.Warning,
+                                Optional component As eCoreComponentType = eCoreComponentType.Core,
+                                Optional replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL,
+                                Optional defaultreply As eMessageReply = eMessageReply.YES,
                                 Optional strHyperlink As String = "",
                                 Optional vars As cVariableStatus() = Nothing) As eMessageReply
 
@@ -1041,7 +1041,7 @@ Public Class frmEwE6
     ''' Overridden to initialize the app launcer form.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         Me.SuspendLayout()
 
@@ -1085,7 +1085,7 @@ Public Class frmEwE6
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
 
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
         Me.ResumeLayout()
 
@@ -1107,7 +1107,7 @@ Public Class frmEwE6
     ''' Application shut-down is cancelled if the core does not finalize correctly.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
+    Protected Overrides Sub OnFormClosing(e As FormClosingEventArgs)
 
         Try
             ' Cancel application shut down if the core does not terminate succesfully.
@@ -1129,7 +1129,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.UIContext IsNot Nothing) Then
 
@@ -1139,11 +1139,11 @@ Public Class frmEwE6
                 RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
                 RemoveHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle
 
-                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-                RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
-                RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
-                RemoveHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
-                RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
+                RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf Me.OnTabFocusChanged
+                RemoveHandler My.Settings.SettingsLoaded, AddressOf Me.OnSettingsLoaded
+                RemoveHandler My.Settings.SettingsSaving, AddressOf Me.OnSettingsSaving
+                RemoveHandler My.Settings.PropertyChanged, AddressOf Me.OnSettingsChanged
 
                 Me.m_formstatemanager.Dispose()
                 Me.m_formstatemanager = Nothing
@@ -1214,7 +1214,7 @@ Public Class frmEwE6
     ''' Cluck?
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnKeyDown(ByVal e As KeyEventArgs)
+    Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
 
         Try
             ' Restore menu and full screen mode on 'Escape'
@@ -1302,7 +1302,7 @@ Public Class frmEwE6
     ''' and is cleared when this counter reaches zero.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub ShowProgress(ByVal state As eProgressState, ByVal strText As String, ByVal sProgress As Single)
+    Private Sub ShowProgress(state As eProgressState, strText As String, sProgress As Single)
 
         ' Should have been handled
         If Me.InvokeRequired() Then Return
@@ -1509,7 +1509,7 @@ Public Class frmEwE6
 
     End Function
 
-    Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
+    Private Sub ReportFileAccessError(atResult As eDatasourceAccessType, strFileName As String)
 
         Dim strMessage As String = ""
         Dim strHyperlink As String = ""
@@ -1593,7 +1593,7 @@ Public Class frmEwE6
                 tsi = New ToolStripMenuItem()
                 tsi.Tag = Me.Core.EcosimScenarios(i)
                 tsi.Checked = (Me.Core.ActiveEcosimScenarioIndex = i)
-                AddHandler tsi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+                AddHandler tsi.Click, AddressOf Me.OnLoadEcosimScenarioOrDataset
                 Me.m_tsbEcosim.DropDownItems.Add(tsi)
             Next
 
@@ -1610,7 +1610,7 @@ Public Class frmEwE6
                 tsi.Tag = Me.Core.TimeSeriesDataset(i)
                 tsi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
 
-                AddHandler tsi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+                AddHandler tsi.Click, AddressOf Me.OnLoadEcosimScenarioOrDataset
                 Me.m_tsbEcosim.DropDownItems.Add(tsi)
 
             Next i
@@ -1620,7 +1620,7 @@ Public Class frmEwE6
                 tsi = New ToolStripMenuItem()
                 tsi.Tag = Me.Core.EcospaceScenarios(i)
                 tsi.Checked = (Me.Core.ActiveEcospaceScenarioIndex = i)
-                AddHandler tsi.Click, AddressOf OnLoadEcospaceScenario
+                AddHandler tsi.Click, AddressOf Me.OnLoadEcospaceScenario
                 Me.m_tsbEcospace.DropDownItems.Add(tsi)
             Next
 
@@ -1657,7 +1657,7 @@ Public Class frmEwE6
                 tsi = New ToolStripMenuItem()
                 tsi.Tag = Me.Core.EcotracerScenarios(i)
                 tsi.Checked = (Me.Core.ActiveEcotracerScenarioIndex = i)
-                AddHandler tsi.Click, AddressOf OnLoadEcotracerScenario
+                AddHandler tsi.Click, AddressOf Me.OnLoadEcotracerScenario
                 Me.m_tsbEcotracer.DropDownItems.Add(tsi)
             Next
 
@@ -1677,7 +1677,7 @@ Public Class frmEwE6
         ' Properly release sim menu items
         For Each tsi In Me.m_tsbEcosim.DropDownItems
             If Not (TypeOf tsi Is ToolStripSeparator) Then
-                RemoveHandler tsi.Click, AddressOf OnLoadEcosimScenarioOrDataset
+                RemoveHandler tsi.Click, AddressOf Me.OnLoadEcosimScenarioOrDataset
             End If
         Next
         Me.m_tsbEcosim.DropDownItems.Clear()
@@ -1685,14 +1685,14 @@ Public Class frmEwE6
         ' Properly release space menu items
         For Each tsi In Me.m_tsbEcospace.DropDownItems
             If Not (TypeOf tsi Is ToolStripSeparator) Then
-                RemoveHandler tsi.Click, AddressOf OnLoadEcospaceScenario
+                RemoveHandler tsi.Click, AddressOf Me.OnLoadEcospaceScenario
             End If
         Next
         Me.m_tsbEcospace.DropDownItems.Clear()
 
         ' Properly release tracer menu items
         For Each tsi In Me.m_tsbEcotracer.DropDownItems
-            RemoveHandler tsi.Click, AddressOf OnLoadEcotracerScenario
+            RemoveHandler tsi.Click, AddressOf Me.OnLoadEcotracerScenario
         Next
         Me.m_tsbEcotracer.DropDownItems.Clear()
 
@@ -1743,7 +1743,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">Name of the file to add.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddModelMRU(ByVal strFileName As String)
+    Private Sub AddModelMRU(strFileName As String)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
 
@@ -1772,8 +1772,8 @@ Public Class frmEwE6
     ''' the item to remove. If not provided, the search will start at the 
     ''' beginning of the list.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub RemoveModelMRU(ByVal strFileName As String,
-                               Optional ByVal iStartPos As Integer = 0)
+    Private Sub RemoveModelMRU(strFileName As String,
+                               Optional iStartPos As Integer = 0)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
 
@@ -1835,7 +1835,7 @@ Public Class frmEwE6
             item.Tag = str(0)
 
             'Add event handler to invoke the model
-            AddHandler item.Click, AddressOf OnModelMRUItemClicked
+            AddHandler item.Click, AddressOf Me.OnModelMRUItemClicked
 
             Me.m_tsmiFileRecent.DropDownItems.Add(item)
 
@@ -1845,7 +1845,7 @@ Public Class frmEwE6
             item.Checked = (String.Compare(str(0), Me.SelectedFileName, True) = 0)
 
             'Add event handler to invoke the model
-            AddHandler item.Click, AddressOf OnModelMRUItemClicked
+            AddHandler item.Click, AddressOf Me.OnModelMRUItemClicked
 
             Me.m_tsbEcopath.DropDownItems.Add(item)
         Next
@@ -1864,7 +1864,7 @@ Public Class frmEwE6
         For Each item In Me.m_tsmiFileRecent.DropDownItems
             If (item.Tag IsNot Nothing) Then
                 ' Remove dangling event handler
-                RemoveHandler item.Click, AddressOf OnModelMRUItemClicked
+                RemoveHandler item.Click, AddressOf Me.OnModelMRUItemClicked
             End If
         Next
         ' Eradicate menu items
@@ -1874,7 +1874,7 @@ Public Class frmEwE6
         For Each item In Me.m_tsbEcopath.DropDownItems
             If (item.Tag IsNot Nothing) Then
                 ' Remove dangling event handler
-                RemoveHandler item.Click, AddressOf OnModelMRUItemClicked
+                RemoveHandler item.Click, AddressOf Me.OnModelMRUItemClicked
             End If
         Next
         Me.m_tsbEcopath.DropDownItems.Clear()
@@ -1897,9 +1897,9 @@ Public Class frmEwE6
     ''' form could not be created.
     ''' </returns>
     ''' ---------------------------------------------------------------------------
-    Private Function LoadFormFromType(ByVal strNavLink As String,
-                                      ByVal t As Type,
-                                      ByVal state As eCoreExecutionState) As Form
+    Private Function LoadFormFromType(strNavLink As String,
+                                      t As Type,
+                                      state As eCoreExecutionState) As Form
 
         Dim classObject As Object
         Dim frmNew As Form = Nothing
@@ -1972,12 +1972,12 @@ Public Class frmEwE6
     ''' <param name="strNavLink">Navigation descriptor to find the panel with.</param>
     ''' <returns>True if an existing panel was found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ActivateForm(ByVal strNavLink As String) As Boolean
+    Private Function ActivateForm(strNavLink As String) As Boolean
 
         Dim bFound As Boolean = False
 
         ' Dock settings, loop through current opened 
-        For Each cnt As DockContent In m_DockPanel.Contents
+        For Each cnt As DockContent In Me.m_DockPanel.Contents
 
             If (TypeOf cnt.Tag Is String) Then
                 bFound = String.Compare(CStr(cnt.Tag), strNavLink, True) = 0
@@ -2015,8 +2015,8 @@ Public Class frmEwE6
     Private m_bNavigating As Boolean = False
     Private m_strLastActiveContent As String = ""
 
-    Private Sub UpdateSelectedNode(ByVal strNodeName As String,
-                                   Optional ByVal bAllowDefault As Boolean = False)
+    Private Sub UpdateSelectedNode(strNodeName As String,
+                                   Optional bAllowDefault As Boolean = False)
 
         If Me.m_bNavigating Then Return
 
@@ -2088,8 +2088,8 @@ Public Class frmEwE6
     ''' <remarks>This code is designed for strFileName to indicate a path. It should 
     ''' be possible to indicate a database as well. One day...</remarks>
     ''' ---------------------------------------------------------------------------
-    Private Function LoadEcopathModel(ByVal strFileName As String,
-                                      ByVal loadsource As eLoadSourceType) As Boolean
+    Private Function LoadEcopathModel(strFileName As String,
+                                      loadsource As eLoadSourceType) As Boolean
 
         Dim ds As IEwEDataSource = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
@@ -2135,12 +2135,12 @@ Public Class frmEwE6
         End Select
 
         ' Can close the current open model, if any?
-        If Not CloseEcopathModel() Then
+        If Not Me.CloseEcopathModel() Then
             ' #No: cannot close - abort
             Return False
         End If
 
-        Select Case CovertToEwE6(strFileName)
+        Select Case Me.CovertToEwE6(strFileName)
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' EwE6 database? OK
             Case cEwEDatabase.eCompatibilityTypes.Future
@@ -2192,7 +2192,7 @@ Public Class frmEwE6
             Me.UpdateCorePaths(True)
 
             Me.m_propModelName = Me.PropertyManager.GetProperty(Me.Core.EwEModel, eVarNameFlags.Name)
-            AddHandler Me.m_propModelName.PropertyChanged, AddressOf OnModelNameChanged
+            AddHandler Me.m_propModelName.PropertyChanged, AddressOf Me.OnModelNameChanged
 
             ' Remember last used model directory
             My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
@@ -2215,7 +2215,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">Full path + extension of the file to save.</param>
     ''' ---------------------------------------------------------------------------
-    Private Function SaveEcopathModelAs(ByVal strFileName As String) As Boolean
+    Private Function SaveEcopathModelAs(strFileName As String) As Boolean
 
         If (Me.Core.Save(strFileName)) Then
             Me.AddModelMRU(strFileName)
@@ -2238,9 +2238,9 @@ Public Class frmEwE6
     ''' <see cref="LoadEcopathModel"/> will need to be called.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Friend Function CreateEcopathModel(ByVal strFileName As String,
-                                        ByVal strModelName As String,
-                                        ByVal format As eDataSourceTypes) As cEwEDatabase
+    Friend Function CreateEcopathModel(strFileName As String,
+                                        strModelName As String,
+                                        format As eDataSourceTypes) As cEwEDatabase
 
         Dim db As cEwEDatabase = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
@@ -2324,8 +2324,8 @@ Public Class frmEwE6
     ''' <para>This method distills the database type from the provided file name.</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Friend Function CreateEcopathModel(ByVal strFileName As String,
-                                        ByVal strModelName As String) As cEwEDatabase
+    Friend Function CreateEcopathModel(strFileName As String,
+                                        strModelName As String) As cEwEDatabase
         Return Me.CreateEcopathModel(strFileName,
                                      strModelName,
                                      cDataSourceFactory.GetSupportedType(strFileName))
@@ -2351,7 +2351,7 @@ Public Class frmEwE6
                 Return False
             End If
 
-            RemoveHandler Me.m_propModelName.PropertyChanged, AddressOf OnModelNameChanged
+            RemoveHandler Me.m_propModelName.PropertyChanged, AddressOf Me.OnModelNameChanged
             Me.m_propModelName = Nothing
 
             ' Close all open documents
@@ -2394,7 +2394,7 @@ Public Class frmEwE6
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadEcosimScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+    Friend Function LoadEcosimScenario(Optional bTryReuse As Boolean = False) As Boolean
 
         Dim dlg As EcosimScenarioDlg = Nothing
         Dim bSucces As Boolean = False
@@ -2434,7 +2434,7 @@ Public Class frmEwE6
             End If
         End If
 
-        Return LoadEcosimScenario(es)
+        Return Me.LoadEcosimScenario(es)
 
     End Function
 
@@ -2445,7 +2445,7 @@ Public Class frmEwE6
     ''' <param name="es">The <see cref="cEcoSimScenario">Scenario</see> to load.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadEcosimScenario(ByVal es As cEcoSimScenario) As Boolean
+    Private Function LoadEcosimScenario(es As cEcoSimScenario) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2468,7 +2468,7 @@ Public Class frmEwE6
     ''' <param name="strDescription"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CreateEcosimScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String) As Boolean
+    Private Function CreateEcosimScenario(strName As String, strDescription As String, strAuthor As String, strContact As String) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2486,7 +2486,7 @@ Public Class frmEwE6
     ''' <param name="mode"><see cref="dlgManageTimeSeries.eModeType">Mode</see>
     ''' specifying how to open the interface.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub ManageTimeSeries(ByVal mode As dlgManageTimeSeries.eModeType)
+    Private Sub ManageTimeSeries(mode As dlgManageTimeSeries.eModeType)
 
         Dim dlg As New dlgManageTimeSeries(Me.UIContext, mode)
 
@@ -2508,7 +2508,7 @@ Public Class frmEwE6
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadEcospaceScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+    Friend Function LoadEcospaceScenario(Optional bTryReuse As Boolean = False) As Boolean
 
         Dim dlg As dlgEcospaceScenario = Nothing
         Dim bSucces As Boolean = False
@@ -2561,10 +2561,10 @@ Public Class frmEwE6
     ''' <param name="strDescription"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CreateEcospaceScenario(ByVal strName As String, ByVal strDescription As String,
-            ByVal strAuthor As String, ByVal strContact As String,
-            ByVal iNumRows As Integer, ByVal iNumCols As Integer,
-            ByVal sLatTL As Single, ByVal sLonTL As Single, ByVal sCellSize As Single) As Boolean
+    Private Function CreateEcospaceScenario(strName As String, strDescription As String,
+            strAuthor As String, strContact As String,
+            iNumRows As Integer, iNumCols As Integer,
+            sLatTL As Single, sLonTL As Single, sCellSize As Single) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2583,7 +2583,7 @@ Public Class frmEwE6
     ''' <param name="es"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadEcospaceScenario(ByVal es As cEcospaceScenario) As Boolean
+    Private Function LoadEcospaceScenario(es As cEcospaceScenario) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2609,7 +2609,7 @@ Public Class frmEwE6
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadEcotracerScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+    Friend Function LoadEcotracerScenario(Optional bTryReuse As Boolean = False) As Boolean
 
         Dim dlg As dlgEcotracerScenario = Nothing
         Dim bSucces As Boolean = False
@@ -2654,7 +2654,7 @@ Public Class frmEwE6
             End If
         End If
 
-        Return LoadEcotracerScenario(es)
+        Return Me.LoadEcotracerScenario(es)
 
     End Function
 
@@ -2666,7 +2666,7 @@ Public Class frmEwE6
     ''' <param name="strDescription"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CreateEcotracerScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String) As Boolean
+    Private Function CreateEcotracerScenario(strName As String, strDescription As String, strAuthor As String, strContact As String) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2684,7 +2684,7 @@ Public Class frmEwE6
     ''' <param name="es"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadEcotracerScenario(ByVal es As cEcotracerScenario) As Boolean
+    Private Function LoadEcotracerScenario(es As cEcotracerScenario) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2705,7 +2705,7 @@ Public Class frmEwE6
 
 #Region " Generic commands "
 
-    Private Sub OnFileOpen(ByVal cmd As cCommand) Handles m_cmdFileOpen.OnInvoke
+    Private Sub OnFileOpen(cmd As cCommand) Handles m_cmdFileOpen.OnInvoke
 
         Dim dlgLoad As OpenFileDialog = Nothing
         Dim foc As cFileOpenCommand = DirectCast(cmd, cFileOpenCommand)
@@ -2727,7 +2727,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnFileSave(ByVal cmd As cCommand) Handles m_cmdFileSave.OnInvoke
+    Private Sub OnFileSave(cmd As cCommand) Handles m_cmdFileSave.OnInvoke
 
         Dim dlgSave As SaveFileDialog = Nothing
         Dim fsc As cFileSaveCommand = DirectCast(cmd, cFileSaveCommand)
@@ -2745,7 +2745,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnDirectoryOpen(ByVal cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
+    Private Sub OnDirectoryOpen(cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
 
         ' JS 19Nov13: Restored old path if something went wrong
         Dim doc As cDirectoryOpenCommand = Me.m_cmdDirectoryOpen
@@ -2766,7 +2766,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnPickColor(ByVal cmd As cCommand) Handles m_cmdPickColor.OnInvoke
+    Private Sub OnPickColor(cmd As cCommand) Handles m_cmdPickColor.OnInvoke
 
         Try
             Dim dlg As New ColorDialog()
@@ -2793,7 +2793,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnOpenDocument(ByVal cmd As cCommand) Handles m_cmdNavigate.OnInvoke
+    Private Sub OnOpenDocument(cmd As cCommand) Handles m_cmdNavigate.OnInvoke
 
         Dim nc As cNavigationCommand = Nothing
         Dim frm As Form = Nothing
@@ -2817,12 +2817,12 @@ Public Class frmEwE6
         iNavCoreState = nc.CoreExecutionState
 
         If strNavPageID = "ndScenario" Then
-            m_coreController.LoadEcosimScenario()
+            Me.m_coreController.LoadEcosimScenario()
             Return
         End If
 
         If strNavPageID = "ndEcospaceScenario" Then
-            m_coreController.LoadEcospaceScenario()
+            Me.m_coreController.LoadEcospaceScenario()
             Return
         End If
 
@@ -2834,7 +2834,7 @@ Public Class frmEwE6
         ' Check if core can be brought up to par
         If Me.CoreController.LoadState(iNavCoreState) Then
             ' Is form already loaded?
-            If Not ActivateForm(strNavPageName) Then
+            If Not Me.ActivateForm(strNavPageName) Then
 
                 'cApplicationStatusNotifier.StartProgress(Me.Core)
 
@@ -2879,7 +2879,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Close the current active document.
     ''' </summary>
-    Private Sub OnCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnInvoke
+    Private Sub OnCloseDocument(cmd As cCommand) Handles m_cmdCloseDocument.OnInvoke
         ' Is the window docked?
         ' Check whether an active document exists; this will occur when all panels are already closed.
         If Me.m_DockPanel.ActiveDocument IsNot Nothing Then
@@ -2892,7 +2892,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; update the 'close document' command state
     ''' </summary>
-    Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate, m_cmdCloseAllForms.OnUpdate
+    Private Sub OnUpdateCloseDocument(cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate, m_cmdCloseAllForms.OnUpdate
         cmd.Enabled = False
         ' Is the window docked?
         cmd.Enabled = Me.m_DockPanel.ActiveDocument IsNot Nothing
@@ -2901,7 +2901,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; closes all closable child forms.
     ''' </summary>
-    Private Sub OnCloseAllForms(ByVal cmd As cCommand) Handles m_cmdCloseAllForms.OnInvoke
+    Private Sub OnCloseAllForms(cmd As cCommand) Handles m_cmdCloseAllForms.OnInvoke
         ' Close all child forms of the parent
         Me.CloseAllDocuments()
     End Sub
@@ -2911,7 +2911,7 @@ Public Class frmEwE6
     ''' Event handler, called when the MRU dropdown menu is about to open.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnMRUOpening(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnMRUOpening(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiFileRecent.DropDownOpening
         Me.PopulateModelMRUDropdown()
     End Sub
@@ -2921,7 +2921,7 @@ Public Class frmEwE6
     ''' Event handler, called when the MRU dropdown menu has closed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnMRUClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnMRUClosed(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiFileRecent.DropDownClosed
         ' Ok, do NOT do this here; the dropdown is closed BEFORE a MRU invoke is called. Lovely!
         'Me.ResetMRU()
@@ -2954,7 +2954,7 @@ Public Class frmEwE6
     ''' Event handler, called when the Exit menu item is selected.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnExit(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnExit(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiFileExit.Click
         Me.Close()
     End Sub
@@ -2966,7 +2966,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Create new Ecopath model
     ''' </summary>
-    Private Sub OnNewModel(ByVal cmd As cCommand) Handles m_cmdNewModel.OnInvoke
+    Private Sub OnNewModel(cmd As cCommand) Handles m_cmdNewModel.OnInvoke
 
         Dim db As cEwEDatabase = Nothing
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
@@ -2988,14 +2988,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Update new model command state
     ''' </summary>
-    Private Sub OnUpdateNewModel(ByVal cmd As cCommand) Handles m_cmdNewModel.OnUpdate
+    Private Sub OnUpdateNewModel(cmd As cCommand) Handles m_cmdNewModel.OnUpdate
         cmd.Enabled = True
     End Sub
 
     ''' <summary>
     ''' Open Ecopath model from a given location
     ''' </summary>
-    Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
+    Private Sub OnLoadModel(cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
 
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
@@ -3025,14 +3025,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Update Load Ecopath model command state
     ''' </summary>
-    Private Sub OnUpdateLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnUpdate
+    Private Sub OnUpdateLoadModel(cmd As cCommand) Handles m_cmdLoadModel.OnUpdate
         cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
     End Sub
 
     ''' <summary>
     ''' Save the model
     ''' </summary>
-    Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
+    Private Sub OnSave(cmd As cCommand) Handles m_cmdSave.OnInvoke
         cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_SAVING)
         Try
             Me.Core.Save()
@@ -3046,14 +3046,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Update save model command state
     ''' </summary>
-    Private Sub OnUpdateSave(ByVal cmd As cCommand) Handles m_cmdSave.OnUpdate
+    Private Sub OnUpdateSave(cmd As cCommand) Handles m_cmdSave.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.IsModified And Not Me.Core.StateMonitor.IsBusy
     End Sub
 
     ''' <summary>
     ''' Save model under a different name
     ''' </summary>
-    Private Sub OnSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnInvoke
+    Private Sub OnSaveModelAs(cmd As cCommand) Handles m_cmdSaveModelAs.OnInvoke
 
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
@@ -3085,7 +3085,7 @@ Public Class frmEwE6
             ' Save the model
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_SAVING)
             Try
-                SaveEcopathModelAs(cmdFS.FileName)
+                Me.SaveEcopathModelAs(cmdFS.FileName)
             Catch ex As Exception
 
             End Try
@@ -3098,7 +3098,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Update save model command state
     ''' </summary>
-    Private Sub OnUpdateSaveModelAs(ByVal cmd As cCommand) Handles m_cmdSaveModelAs.OnUpdate
+    Private Sub OnUpdateSaveModelAs(cmd As cCommand) Handles m_cmdSaveModelAs.OnUpdate
 
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
@@ -3118,14 +3118,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Close the current open model
     ''' </summary>
-    Private Sub OnCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnInvoke
+    Private Sub OnCloseModel(cmd As cCommand) Handles m_cmdCloseModel.OnInvoke
         Me.CloseEcopathModel()
     End Sub
 
     ''' <summary>
     ''' Update close model command state
     ''' </summary>
-    Private Sub OnUpdateCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
+    Private Sub OnUpdateCloseModel(cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
@@ -3133,14 +3133,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Compact a model
     ''' </summary>
-    Private Sub OnCompactModel(ByVal cmd As cCommand) Handles m_cmdCompactModel.OnInvoke
+    Private Sub OnCompactModel(cmd As cCommand) Handles m_cmdCompactModel.OnInvoke
         Me.CompactModel()
     End Sub
 
     ''' <summary>
     ''' Update compact model command state
     ''' </summary>
-    Private Sub OnUpdateCompactModel(ByVal cmd As cCommand) Handles m_cmdCompactModel.OnUpdate
+    Private Sub OnUpdateCompactModel(cmd As cCommand) Handles m_cmdCompactModel.OnUpdate
         Dim ds As IEwEDataSource = Me.Core.DataSource
         If (ds Is Nothing) Then
             cmd.Enabled = False
@@ -3152,7 +3152,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Open the output file location
     ''' </summary>
-    Private Sub OnOpenOutputLocation(ByVal cmd As cCommand) Handles m_cmdOpenOutput.OnInvoke
+    Private Sub OnOpenOutputLocation(cmd As cCommand) Handles m_cmdOpenOutput.OnInvoke
         Try
             Process.Start("explorer.exe", Me.Core.OutputPath)
         Catch ex As Exception
@@ -3160,7 +3160,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnPrintInvoke(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
+    Private Sub OnPrintInvoke(cmd As cCommand) Handles m_cmdPrint.OnInvoke
 
         Dim dlg As New PrintPreviewDialog()
         Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
@@ -3174,7 +3174,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnPrintEnable(ByVal cmd As cCommand) Handles m_cmdPrint.OnUpdate
+    Private Sub OnPrintEnable(cmd As cCommand) Handles m_cmdPrint.OnUpdate
 
         Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
         Dim bEnable As Boolean = False
@@ -3187,7 +3187,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnEcobaseImportInvoke(ByVal cmd As cCommand) Handles m_cmdEcobaseImport.OnInvoke
+    Private Sub OnEcobaseImportInvoke(cmd As cCommand) Handles m_cmdEcobaseImport.OnInvoke
 
         Dim strModel As String = ""
 
@@ -3205,11 +3205,11 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnEcobaseImportEnable(ByVal cmd As cCommand) Handles m_cmdEcobaseImport.OnUpdate
+    Private Sub OnEcobaseImportEnable(cmd As cCommand) Handles m_cmdEcobaseImport.OnUpdate
         cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
     End Sub
 
-    Private Sub OnEcobaseExportInvoke(ByVal cmd As cCommand) _
+    Private Sub OnEcobaseExportInvoke(cmd As cCommand) _
         Handles m_cmdEcobaseExport.OnInvoke
 
         Try
@@ -3234,11 +3234,11 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnEcobaseExportEnable(ByVal cmd As cCommand) Handles m_cmdEcobaseExport.OnUpdate
+    Private Sub OnEcobaseExportEnable(cmd As cCommand) Handles m_cmdEcobaseExport.OnUpdate
         cmd.Enabled = Not Me.Core.StateMonitor.IsBusy And Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    Private Sub OnEIIXMLExportInvoke(ByVal cmd As cCommand) _
+    Private Sub OnEIIXMLExportInvoke(cmd As cCommand) _
         Handles m_cmdEIIXMLExport.OnInvoke
 
         Dim ds As IEwEDataSource = Me.Core.DataSource
@@ -3280,7 +3280,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnEIIXMLExportEnable(ByVal cmd As cCommand) Handles m_cmdEIIXMLExport.OnUpdate
+    Private Sub OnEIIXMLExportEnable(cmd As cCommand) Handles m_cmdEIIXMLExport.OnUpdate
 
         Dim bEnabled As Boolean = False
 
@@ -3304,7 +3304,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; toggles presentation mode
     ''' </summary>
-    Private Sub OnViewPresentationMode(ByVal cmd As cCommand) Handles m_cmdViewPresentationMode.OnInvoke
+    Private Sub OnViewPresentationMode(cmd As cCommand) Handles m_cmdViewPresentationMode.OnInvoke
 
         Me.m_presentationmode.TogglePresentationMode()
 
@@ -3314,7 +3314,7 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdViewPresentationMode">View Presentation Mode command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewPresentationMode(ByVal cmd As cCommand) _
+    Private Sub OnUpdateViewPresentationMode(cmd As cCommand) _
         Handles m_cmdViewPresentationMode.OnUpdate
         Me.m_cmdViewPresentationMode.Checked = Me.m_presentationmode.IsPresentationModeActive
     End Sub
@@ -3322,42 +3322,42 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; toggles main statusbar visibility
     ''' </summary>
-    Private Sub OnViewMainStatusbar(ByVal cmd As cCommand) Handles m_cmdViewStatusbar.OnInvoke
+    Private Sub OnViewMainStatusbar(cmd As cCommand) Handles m_cmdViewStatusbar.OnInvoke
         Me.m_ssMain.Visible = Not cmd.Checked
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdViewStatusbar">View Statusbar command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewMainStatusbar(ByVal cmd As cCommand) Handles m_cmdViewStatusbar.OnUpdate
+    Private Sub OnUpdateViewMainStatusbar(cmd As cCommand) Handles m_cmdViewStatusbar.OnUpdate
         cmd.Checked = Me.m_ssMain.Visible
     End Sub
 
     ''' <summary>
     ''' Command handler; toggles main menu visibility
     ''' </summary>
-    Private Sub OnViewMenu(ByVal cmd As cCommand) Handles m_cmdViewMenu.OnInvoke
+    Private Sub OnViewMenu(cmd As cCommand) Handles m_cmdViewMenu.OnInvoke
         Me.m_menuMain.Visible = Not cmd.Checked
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdViewMenu">View menu command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewMenu(ByVal cmd As cCommand) Handles m_cmdViewMenu.OnUpdate
+    Private Sub OnUpdateViewMenu(cmd As cCommand) Handles m_cmdViewMenu.OnUpdate
         cmd.Checked = Me.m_menuMain.Visible
     End Sub
 
     ''' <summary>
     ''' Command handler; toggles auto save results
     ''' </summary>
-    Private Sub OnAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveConfig.OnInvoke
+    Private Sub OnAutosaveResults(cmd As cCommand) Handles m_cmdAutosaveConfig.OnInvoke
         Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.Autosave)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdAutosaveConfig">Auto save results command</see>.
     ''' </summary>
-    Private Sub OnUpdateAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveConfig.OnUpdate
+    Private Sub OnUpdateAutosaveResults(cmd As cCommand) Handles m_cmdAutosaveConfig.OnUpdate
         ' Check if any autosave option set
         Dim bAutoSaving As Boolean = False
         Dim nodes As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecopath, eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
@@ -3382,14 +3382,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; toggles auto run results
     ''' </summary>
-    Private Sub OnAutorunConfig(ByVal cmd As cCommand) Handles m_cmdAutorunConfig.OnInvoke
+    Private Sub OnAutorunConfig(cmd As cCommand) Handles m_cmdAutorunConfig.OnInvoke
         Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.AutoRun)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdAutorunConfig">Auto run results command</see>.
     ''' </summary>
-    Private Sub OnUpdateAutorunConfig(ByVal cmd As cCommand) Handles m_cmdAutorunConfig.OnUpdate
+    Private Sub OnUpdateAutorunConfig(cmd As cCommand) Handles m_cmdAutorunConfig.OnUpdate
         ' Check if any autosave option set
         Dim bAutoRunning As Boolean = False
         If (Me.m_pluginManager IsNot Nothing) Then
@@ -3408,7 +3408,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; shows the start page.
     ''' </summary>
-    Private Sub OnBrowseURI(ByVal cmd As cCommand) Handles m_cmdBrowseURI.OnInvoke
+    Private Sub OnBrowseURI(cmd As cCommand) Handles m_cmdBrowseURI.OnInvoke
 
         Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
         Dim strURL As String = bcmd.URL(New cWebLinks(Me.Core))
@@ -3481,59 +3481,59 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; shows the navigation panel.
     ''' </summary>
-    Private Sub OnViewNavPane(ByVal cmd As cCommand) Handles m_cmdViewNavPane.OnInvoke
+    Private Sub OnViewNavPane(cmd As cCommand) Handles m_cmdViewNavPane.OnInvoke
         If cmd.Checked Then
             Me.Panel(cPANEL_NAV).DockState = DockState.Hidden
         Else
-            Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)
+            Me.Panel(cPANEL_NAV).Show(Me.m_DockPanel, DockState.DockLeft)
         End If
     End Sub
 
     ''' <summary>
     ''' Command update handler; manages the <see cref="m_cmdViewNavPane">View Navigation Panel command</see> state.
     ''' </summary>
-    Private Sub OnUpdateViewNavPane(ByVal cmd As cCommand) Handles m_cmdViewNavPane.OnUpdate
+    Private Sub OnUpdateViewNavPane(cmd As cCommand) Handles m_cmdViewNavPane.OnUpdate
         cmd.Checked = (Me.Panel(cPANEL_NAV).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
     ''' Show the remark pane
     ''' </summary>
-    Private Sub OnViewRemarkPane(ByVal cmd As cCommand) Handles m_cmdViewRemarkPane.OnInvoke
+    Private Sub OnViewRemarkPane(cmd As cCommand) Handles m_cmdViewRemarkPane.OnInvoke
         If cmd.Checked Then
             Me.Panel(cPANEL_REMARKS).DockState = DockState.Hidden
         Else
-            Me.Panel(cPANEL_REMARKS).Show(m_DockPanel, DockState.DockBottomAutoHide)
+            Me.Panel(cPANEL_REMARKS).Show(Me.m_DockPanel, DockState.DockBottomAutoHide)
         End If
     End Sub
 
-    Private Sub OnUpdateViewRemarkPane(ByVal cmd As cCommand) Handles m_cmdViewRemarkPane.OnUpdate
+    Private Sub OnUpdateViewRemarkPane(cmd As cCommand) Handles m_cmdViewRemarkPane.OnUpdate
         cmd.Checked = (Me.Panel(cPANEL_REMARKS).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
     ''' Show the status panel
     ''' </summary>
-    Private Sub OnViewStatusPane(ByVal cmd As cCommand) Handles m_cmdViewStatusPane.OnInvoke
+    Private Sub OnViewStatusPane(cmd As cCommand) Handles m_cmdViewStatusPane.OnInvoke
         If cmd.Checked Then
             Me.Panel(cPANEL_STATUS).DockState = DockState.Hidden
         Else
-            Me.Panel(cPANEL_STATUS).Show(m_DockPanel, DockState.DockBottomAutoHide)
+            Me.Panel(cPANEL_STATUS).Show(Me.m_DockPanel, DockState.DockBottomAutoHide)
         End If
     End Sub
 
-    Private Sub OnUpdateViewStatusPane(ByVal cmd As cCommand) Handles m_cmdViewStatusPane.OnUpdate
+    Private Sub OnUpdateViewStatusPane(cmd As cCommand) Handles m_cmdViewStatusPane.OnUpdate
         cmd.Checked = (Me.Panel(cPANEL_STATUS).DockState <> DockState.Hidden)
     End Sub
 
     ''' <summary>
     ''' Show the button bar
     ''' </summary>
-    Private Sub OnViewModelBar(ByVal cmd As cCommand) Handles m_cmdViewModelBar.OnInvoke
+    Private Sub OnViewModelBar(cmd As cCommand) Handles m_cmdViewModelBar.OnInvoke
         Me.m_tsModel.Visible = Not cmd.Checked
     End Sub
 
-    Private Sub OnUpdateViewModelBar(ByVal cmd As cCommand) Handles m_cmdViewModelBar.OnUpdate
+    Private Sub OnUpdateViewModelBar(cmd As cCommand) Handles m_cmdViewModelBar.OnUpdate
         cmd.Checked = Me.m_tsModel.Visible
     End Sub
 
@@ -3541,7 +3541,7 @@ Public Class frmEwE6
 
 #Region " Tools commands "
 
-    Private Sub OnShowOptions(ByVal cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
+    Private Sub OnShowOptions(cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
         Try
             Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Verb)
             cmd.UserHandled = (dlgOptions.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK)
@@ -3551,7 +3551,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnShowTools(ByVal cmd As cCommand) Handles m_cmdShowTools.OnInvoke
+    Private Sub OnShowTools(cmd As cCommand) Handles m_cmdShowTools.OnInvoke
         Try
             Dim strPath As String = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Tools")
             Me.m_cmdBrowseURI.Invoke(strPath)
@@ -3560,7 +3560,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnEditRefMap(ByVal cmd As cCommand) Handles m_cmdEditReferenceMap.OnInvoke
+    Private Sub OnEditRefMap(cmd As cCommand) Handles m_cmdEditReferenceMap.OnInvoke
         Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.ReferenceMaps)
     End Sub
 
@@ -3571,21 +3571,21 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the About... dialog.
     ''' </summary>
-    Private Sub OnShowAboutDialog(ByVal cmd As cCommand) Handles m_cmdHelpAbout.OnInvoke
+    Private Sub OnShowAboutDialog(cmd As cCommand) Handles m_cmdHelpAbout.OnInvoke
         Dim dlgAbout As New frmAboutEwE(Me.UIContext)
         Me.Help.HelpTopic(dlgAbout) = ""
         dlgAbout.ShowDialog(Me)
     End Sub
 
-    Private Sub OnHelpTOC(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpContents.Click
+    Private Sub OnHelpTOC(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpContents.Click
         Me.Help.ShowHelp(HelpNavigator.TableOfContents)
     End Sub
 
-    Private Sub OnHelpIndex(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpIndex.Click
+    Private Sub OnHelpIndex(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpIndex.Click
         Me.Help.ShowHelp(HelpNavigator.KeywordIndex)
     End Sub
 
-    Private Sub OnHelpSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpSearch.Click
+    Private Sub OnHelpSearch(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpSearch.Click
         Me.Help.ShowHelp(HelpNavigator.Find)
     End Sub
 
@@ -3638,7 +3638,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the edit groups interface
     ''' </summary>
-    Private Sub OnEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
+    Private Sub OnEditGroups(cmd As cCommand) Handles m_cmdEditGroups.OnInvoke
         Dim dlg As New dlgDefineGroups(Me.UIContext, DirectCast(cmd.Tag, cEcoPathGroupInput))
         Me.Help.HelpTopic(dlg) = "Edit groups.htm"
         dlg.ShowDialog(Me)
@@ -3647,7 +3647,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnUpdate
+    Private Sub OnUpdateEditGroups(cmd As cCommand) Handles m_cmdEditGroups.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
@@ -3655,7 +3655,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the edit multi stanza interface
     ''' </summary>
-    Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
+    Private Sub OnEditMultiStanza(cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
 
         ' Test if all stanza groups have at least one life stage
         Dim vars As New List(Of cVariableStatus)
@@ -3684,7 +3684,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditMultiStanza">Edit Multi-stanza command</see>.
     ''' </summary>
-    Private Sub OnUpdateMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnUpdate
+    Private Sub OnUpdateMultiStanza(cmd As cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
         cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded() = True) And
                       (Me.Core.nStanzas > 0) And
@@ -3694,7 +3694,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the edit fleets interface
     ''' </summary>
-    Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
+    Private Sub OnEditFleets(cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
         Try
             Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cEcopathFleetInput))
             Me.Help.HelpTopic(dlg) = "Edit fleets.htm"
@@ -3708,13 +3708,13 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditFleets(ByVal cmd As cCommand) _
+    Private Sub OnUpdateEditFleets(cmd As cCommand) _
         Handles m_cmdEditFleets.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
-    Private Sub OnEditPedigreeLevels(ByVal cmd As cCommand) _
+    Private Sub OnEditPedigreeLevels(cmd As cCommand) _
         Handles m_cmdEditPedigree.OnInvoke
         Try
             Dim dlg As New dlgEditPedigree(Me.UIContext, DirectCast(cmd, cEditPedigreeCommand).Variable)
@@ -3724,32 +3724,32 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnUpdateEditPedigreeLevels(ByVal cmd As cCommand) _
+    Private Sub OnUpdateEditPedigreeLevels(cmd As cCommand) _
         Handles m_cmdEditPedigree.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
-    Private Sub OnEditTaxonomy(ByVal cmd As cCommand) _
+    Private Sub OnEditTaxonomy(cmd As cCommand) _
         Handles m_cmdEditTaxonomy.OnInvoke
         Dim dlg As New dlgDefineTaxonomy(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
-    Private Sub OnUpdateEditTaxonomy(ByVal cmd As cCommand) _
+    Private Sub OnUpdateEditTaxonomy(cmd As cCommand) _
         Handles m_cmdEditTaxonomy.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
-    Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
+    Private Sub OnDisplayShowHideItems(cmd As cCommand) _
         Handles m_cmdShowHideItems.OnInvoke
         Dim dlg As New dlgShowHideItems(Me.UIContext)
         dlg.ShowDialog()
         cmd.Checked = Me.UIContext.StyleGuide.HasHiddenItems()
     End Sub
 
-    Private Sub OnUpdateShowHideItems(ByVal cmd As cCommand) _
+    Private Sub OnUpdateShowHideItems(cmd As cCommand) _
         Handles m_cmdShowHideItems.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
     End Sub
@@ -3761,7 +3761,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; creates a new Ecosim scenario
     ''' </summary>
-    Private Sub OnNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnInvoke
+    Private Sub OnNewEcosimScenario(cmd As cCommand) Handles m_cmdNewEcosimScenario.OnInvoke
 
         Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.CreateScenario)
 
@@ -3784,7 +3784,7 @@ Public Class frmEwE6
     ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdNewEcosimScenario">New Ecosim Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnUpdate
+    Private Sub OnUpdateNewEcosimScenario(cmd As cCommand) Handles m_cmdNewEcosimScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
@@ -3792,7 +3792,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; loads a new Ecosim scenario
     ''' </summary>
-    Private Sub OnLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnInvoke
+    Private Sub OnLoadEcosimScenario(cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnInvoke
         Me.CoreController.LoadEcosimScenario()
     End Sub
 
@@ -3800,7 +3800,7 @@ Public Class frmEwE6
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdLoadEcosimScenario">Load Ecosim Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
+    Private Sub OnUpdateLoadEcosimScenario(cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
@@ -3808,7 +3808,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; closes the current Ecosim scenario
     ''' </summary>
-    Private Sub OnCloseEcosimScenario(ByVal cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnInvoke
+    Private Sub OnCloseEcosimScenario(cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnInvoke
         Me.m_autosavemanager.GatherSettings()
         Me.Core.CloseEcosimScenario()
     End Sub
@@ -3817,7 +3817,7 @@ Public Class frmEwE6
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdCloseEcosimScenario">Close Ecosim Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateCloseEcosimScenario(ByVal cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnUpdate
+    Private Sub OnUpdateCloseEcosimScenario(cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded And Not m.IsBusy
     End Sub
@@ -3825,7 +3825,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; saves an Ecosim scenario to a new name
     ''' </summary>
-    Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
+    Private Sub OnSaveEcosimScenarioAs(cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
 
         Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.SaveScenario,
                 Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex))
@@ -3868,7 +3868,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecosim scenario as' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcosimScenarioAs(ByVal cmd As cCommand) _
+    Private Sub OnUpdateSaveEcosimScenarioAs(cmd As cCommand) _
         Handles m_cmdSaveEcosimScenarioAs.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
     End Sub
@@ -3876,7 +3876,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; deletes an Ecosim scenario 
     ''' </summary>
-    Private Sub OnInvokeDeleteEcosimScenario(ByVal cmd As cCommand) _
+    Private Sub OnInvokeDeleteEcosimScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcosimScenario.OnInvoke
         Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.DeleteScenario)
         dlg.ShowDialog(Me)
@@ -3885,7 +3885,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the 'delete ecosim scenario' command
     ''' </summary>
-    Private Sub OnUpdateDeleteEcosimScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateDeleteEcosimScenario(cmd As cCommand) _
            Handles m_cmdDeleteEcosimScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = (m.HasEcopathLoaded) And
@@ -3896,7 +3896,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the import time series dialog.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As cCommand) _
+    Private Sub m_cmdImportTimeSeries_OnInvoke(cmd As cCommand) _
         Handles m_cmdImportTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Import)
     End Sub
@@ -3904,7 +3904,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As cCommand) Handles m_cmdImportTimeSeries.OnUpdate
+    Private Sub m_cmdImportTimeSeries_OnUpdate(cmd As cCommand) Handles m_cmdImportTimeSeries.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded() And Not m.IsBusy
     End Sub
@@ -3912,7 +3912,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; exports the currently loaded time series dataset to a CSV file.
     ''' </summary>
-    Private Sub m_cmdExportTimeSeries_OnInvoke(ByVal cmd As cCommand) _
+    Private Sub m_cmdExportTimeSeries_OnInvoke(cmd As cCommand) _
         Handles m_cmdExportTimeSeries.OnInvoke
 
         Dim sfd As New SaveFileDialog()
@@ -3933,7 +3933,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdExportTimeSeries">Export TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdExportTimeSeries_OnUpdate(ByVal cmd As cCommand) _
+    Private Sub m_cmdExportTimeSeries_OnUpdate(cmd As cCommand) _
         Handles m_cmdExportTimeSeries.OnUpdate
         cmd.Enabled = (Me.Core.ActiveTimeSeriesDatasetIndex >= 1)
     End Sub
@@ -3941,14 +3941,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the apply time series dialog.
     ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As cCommand) Handles m_cmdWeightTimeSeries.OnInvoke
+    Private Sub m_cmdWeightTimeSeries_OnInvoke(cmd As cCommand) Handles m_cmdWeightTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Weight)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdWeightTimeSeries">Apply TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
+    Private Sub m_cmdWeightTimeSeries_OnUpdate(cmd As cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
         ' JS 23sept08: dialog will switch to load mode if no ts present
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded() And
@@ -3959,7 +3959,7 @@ Public Class frmEwE6
     ''' Command handler; invokes the load time series dialog, or loads a time
     ''' series dataset if this dataset is provided as a tag to the command.
     ''' </summary>
-    Private Sub m_cmdEcosimLoadTimeSeries_OnInvoke(ByVal cmd As cCommand) _
+    Private Sub m_cmdEcosimLoadTimeSeries_OnInvoke(cmd As cCommand) _
         Handles m_cmdEcosimLoadTimeSeries.OnInvoke
 
         If Not Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded) Then Return
@@ -3978,7 +3978,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEcosimLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdEcosimLoadTimeSeries_OnUpdate(ByVal cmd As cCommand) _
+    Private Sub m_cmdEcosimLoadTimeSeries_OnUpdate(cmd As cCommand) _
         Handles m_cmdEcosimLoadTimeSeries.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -3986,7 +3986,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnExportEcosimResultsToCSV(ByVal cmd As cCommand) _
+    Private Sub OnExportEcosimResultsToCSV(cmd As cCommand) _
         Handles m_cmdExportEcosimResultsToCSV.OnInvoke
 
         Dim writer As EwECore.Ecosim.cEcosimResultWriter = Nothing
@@ -4002,18 +4002,18 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnExportEcosimResultsToCSVUpdate(ByVal cmd As cCommand) _
+    Private Sub OnExportEcosimResultsToCSVUpdate(cmd As cCommand) _
         Handles m_cmdExportEcosimResultsToCSV.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimRan
     End Sub
 
-    Private Sub OnEstimateVsInvoke(ByVal cmd As cCommand) _
+    Private Sub OnEstimateVsInvoke(cmd As cCommand) _
         Handles m_cmdEstimateVs.OnInvoke
         Dim dlg As New dlgEstimateVs(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
-    Private Sub OnEstimateVsUpdate(ByVal cmd As cCommand) _
+    Private Sub OnEstimateVsUpdate(cmd As cCommand) _
         Handles m_cmdEstimateVs.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded() And Not m.IsBusy
@@ -4059,7 +4059,7 @@ Public Class frmEwE6
 
 #Region " Ecospace commands "
 
-    Private Sub OnNewEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnNewEcospaceScenario(cmd As cCommand) _
         Handles m_cmdNewEcospaceScenario.OnInvoke
 
         Dim dlg As New dlgEcospaceScenario(Me.UIContext, dlgEcospaceScenario.eDialogModeType.CreateScenario)
@@ -4083,30 +4083,30 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateNewEcospaceScenario(cmd As cCommand) _
         Handles m_cmdNewEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded And Not m.IsBusy
     End Sub
 
-    Private Sub OnLoadEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnLoadEcospaceScenario(cmd As cCommand) _
         Handles m_cmdLoadEcospaceScenario.OnInvoke
         Me.CoreController.LoadEcospaceScenario()
     End Sub
 
-    Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateLoadEcospaceScenario(cmd As cCommand) _
         Handles m_cmdLoadEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
-    Private Sub OnCloseEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnCloseEcospaceScenario(cmd As cCommand) _
         Handles m_cmdCloseEcospaceScenario.OnInvoke
         Me.m_autosavemanager.GatherSettings()
         Me.Core.CloseEcospaceScenario()
     End Sub
 
-    Private Sub OnUpdateCloseEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateCloseEcospaceScenario(cmd As cCommand) _
         Handles m_cmdCloseEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
@@ -4115,7 +4115,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; saves the current active Ecospace scenario under a new name.
     ''' </summary>
-    Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) _
+    Private Sub OnSaveEcospaceScenarioAs(cmd As cCommand) _
         Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
 
         Dim dlg As New dlgEcospaceScenario(Me.UIContext,
@@ -4174,14 +4174,14 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdSaveEcospaceScenarioAs">Save Ecospace Scenario As</see> command.
     ''' </summary>
-    Private Sub OnUpdateSaveEcospaceScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
+    Private Sub OnUpdateSaveEcospaceScenarioAs(cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
     ''' <summary>
     ''' Command handler; deletes an Ecosim scenario 
     ''' </summary>
-    Private Sub OnInvokeDeleteEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnInvokeDeleteEcospaceScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcospaceScenario.OnInvoke
         Dim dlg As New dlgEcospaceScenario(Me.UIContext, dlgScenario.eDialogModeType.DeleteScenario)
         dlg.ShowDialog(Me)
@@ -4190,7 +4190,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the 'delete ecospace scenario' command
     ''' </summary>
-    Private Sub OnUpdateDeleteEcospaceScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateDeleteEcospaceScenario(cmd As cCommand) _
            Handles m_cmdDeleteEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And
@@ -4201,7 +4201,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; loads an Ecospace spatial temporal data set
     ''' </summary>
-    Private Sub m_cmdEcospaceLoadTimeSeries_OnInvoke(ByVal cmd As cCommand) _
+    Private Sub m_cmdEcospaceLoadTimeSeries_OnInvoke(cmd As cCommand) _
         Handles m_cmdEcospaceLoadTimeSeries.OnInvoke
 
         If Not Me.m_coreController.LoadState(eCoreExecutionState.EcospaceLoaded) Then Return
@@ -4217,7 +4217,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEcosimLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdEcospaceLoadTimeSeries_OnUpdate(ByVal cmd As cCommand) _
+    Private Sub m_cmdEcospaceLoadTimeSeries_OnUpdate(cmd As cCommand) _
         Handles m_cmdEcospaceLoadTimeSeries.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -4228,7 +4228,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit basemap dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnInvoke
+    Private Sub OnEditEcospaceBasemap(cmd As cCommand) Handles m_cmdEditBasemap.OnInvoke
         Dim dlg As New dlgEditBasemap(Me.UIContext)
         Me.Help.HelpTopic(dlg) = "Edit basemap.htm"
         dlg.ShowDialog(Me)
@@ -4237,7 +4237,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit basemap dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnUpdate
+    Private Sub OnUpdateEditEcospaceBasemap(cmd As cCommand) Handles m_cmdEditBasemap.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
@@ -4245,7 +4245,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit habitats dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnInvoke
+    Private Sub OnEditEcospaceHabitats(cmd As cCommand) Handles m_cmdEditHabitats.OnInvoke
         Dim dlg As New dlgEditHabitats(Me.UIContext)
         Me.Help.HelpTopic(dlg) = "Edit habitats.htm"
         dlg.ShowDialog(Me)
@@ -4254,7 +4254,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit habitats dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnUpdate
+    Private Sub OnUpdateEditEcospaceHabitats(cmd As cCommand) Handles m_cmdEditHabitats.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
@@ -4262,7 +4262,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit regions dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
+    Private Sub OnUpdateEditEcospaceRegions(cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
@@ -4270,7 +4270,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit regions dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
+    Private Sub OnEditEcospaceRegions(cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
         Dim dlg As New dlgDefineRegions(Me.UIContext)
         Me.Help.HelpTopic(dlg) = "Edit regions.htm"
         dlg.ShowDialog(Me)
@@ -4279,7 +4279,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit MPAs dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnInvoke
+    Private Sub OnEditEcospaceMPAs(cmd As cCommand) Handles m_cmdEditMPAs.OnInvoke
         Dim dlg As New dlgEditMPAs(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
@@ -4287,7 +4287,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit MPAs dialog.
     ''' </summary>
-    Private Sub OnUpdateEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnUpdate
+    Private Sub OnUpdateEditEcospaceMPAs(cmd As cCommand) Handles m_cmdEditMPAs.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
@@ -4295,7 +4295,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit importance layers dialog.
     ''' </summary>
-    Private Sub OnEditEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnInvoke
+    Private Sub OnEditEcospaceImportanceLayers(cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnInvoke
         Dim dlg As New dlgDefineImportanceMaps(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
@@ -4303,7 +4303,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; updates the Ecospace edit importance layers command.
     ''' </summary>
-    Private Sub OnUpdateEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnUpdate
+    Private Sub OnUpdateEcospaceImportanceLayers(cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
@@ -4311,7 +4311,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; handles access to the Ecospace define input layers dialog.
     ''' </summary>
-    Private Sub OnUpdateDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnUpdate
+    Private Sub OnUpdateDefineInputLayers(cmd As cCommand) Handles m_cmdDefineInputLayers.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
@@ -4319,7 +4319,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the Ecospace define input dialog.
     ''' </summary>
-    Private Sub OnInvokeDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
+    Private Sub OnInvokeDefineInputLayers(cmd As cCommand) Handles m_cmdDefineInputLayers.OnInvoke
         Try
             Dim dlg As New dlgDefineEnvDriverMaps(Me.UIContext)
             dlg.ShowDialog(Me)
@@ -4445,7 +4445,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnImportLayerData(ByVal cmd As cCommand) _
+    Private Sub OnImportLayerData(cmd As cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
 
         Dim msg As cMessage = Nothing
@@ -4510,7 +4510,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler
     ''' </summary>
-    Private Sub OnUpdateImportLayer(ByVal cmd As cCommand) _
+    Private Sub OnUpdateImportLayer(cmd As cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
@@ -4519,7 +4519,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the export layers dialog to export data in XYZ format.
     ''' </summary>
-    Private Sub OnExportLayerData(ByVal cmd As cCommand) _
+    Private Sub OnExportLayerData(cmd As cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
         Try
             Select Case Me.m_cmdExportLayerData.Format
@@ -4558,7 +4558,7 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
-    Private Sub OnUpdateExportLayerData(ByVal cmd As cCommand) _
+    Private Sub OnUpdateExportLayerData(cmd As cCommand) _
         Handles m_cmdExportLayerData.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -4569,7 +4569,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the edit layers dialog.
     ''' </summary>
-    Private Sub OnInvokeEditLayer(ByVal cmd As cCommand) _
+    Private Sub OnInvokeEditLayer(cmd As cCommand) _
         Handles m_cmdEditLayer.OnInvoke
 
         Try
@@ -4586,7 +4586,7 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditLayer(ByVal cmd As cCommand) _
+    Private Sub OnUpdateEditLayer(cmd As cCommand) _
         Handles m_cmdEditLayer.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -4620,7 +4620,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; creates a new Ecotracer scenario
     ''' </summary>
-    Private Sub OnNewEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnNewEcotracerScenario(cmd As cCommand) _
         Handles m_cmdNewEcotracerScenario.OnInvoke
 
         ' Prerequesite: Ecosim needs to be loaded
@@ -4649,7 +4649,7 @@ Public Class frmEwE6
     ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdNewEcotracerScenario">New Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateNewEcotracerScenario(cmd As cCommand) _
         Handles m_cmdNewEcotracerScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
@@ -4658,7 +4658,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; loads a new Ecotracer scenario
     ''' </summary>
-    Private Sub OnLoadEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnLoadEcotracerScenario(cmd As cCommand) _
         Handles m_cmdLoadEcotracerScenario.OnInvoke
         Me.LoadEcotracerScenario()
     End Sub
@@ -4667,7 +4667,7 @@ Public Class frmEwE6
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdLoadEcotracerScenario">Load Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateLoadEcotracerScenario(cmd As cCommand) _
         Handles m_cmdLoadEcotracerScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
@@ -4676,7 +4676,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; closes the current Ecotracer scenario
     ''' </summary>
-    Private Sub OnCloseEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnCloseEcotracerScenario(cmd As cCommand) _
         Handles m_cmdCloseEcotracerScenario.OnInvoke
         Me.m_autosavemanager.GatherSettings()
         Me.Core.CloseEcotracerScenario()
@@ -4686,13 +4686,13 @@ Public Class frmEwE6
     ''' Command update handler; takes care of enabling and disabling the 
     ''' <see cref="m_cmdCloseEcotracerScenario">Close Ecotracer Scenario</see> command.
     ''' </summary>
-    Private Sub OnUpdateCloseEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateCloseEcotracerScenario(cmd As cCommand) _
         Handles m_cmdCloseEcotracerScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcotracerLoaded And Not m.IsBusy
     End Sub
 
-    Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
+    Private Sub OnSaveEcotracerScenarioAs(cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
         Dim dlg As New dlgEcotracerScenario(Me.UIContext,
@@ -4732,7 +4732,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the 'save ecotracer scenario as' command
     ''' </summary>
-    Private Sub OnUpdateSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
+    Private Sub OnUpdateSaveEcotracerScenarioAs(cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenarioAS.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcotracerLoaded()
     End Sub
@@ -4740,7 +4740,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; invokes the 'delete ecotracer scenario' command
     ''' </summary>
-    Private Sub OnDeleteEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnDeleteEcotracerScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcotracerScenario.OnInvoke
         Dim dlg As New dlgEcotracerScenario(Me.UIContext, dlgScenario.eDialogModeType.DeleteScenario)
         dlg.ShowDialog(Me)
@@ -4749,7 +4749,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the 'delete ecotracer scenario' command
     ''' </summary>
-    Private Sub OnUpdateDeleteEcotracerScenario(ByVal cmd As cCommand) _
+    Private Sub OnUpdateDeleteEcotracerScenario(cmd As cCommand) _
         Handles m_cmdDeleteEcotracerScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And
@@ -4757,7 +4757,7 @@ Public Class frmEwE6
                       Me.Core.nEcotracerScenarios > 0
     End Sub
 
-    Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _
+    Private Sub OnEnableEcotracer(cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnInvoke
 
         Dim ecosimModelParams As cEcoSimModelParameters = Nothing
@@ -4809,7 +4809,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnUpdateEnableEcotracer(ByVal cmd As cCommand) _
+    Private Sub OnUpdateEnableEcotracer(cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
@@ -4819,7 +4819,7 @@ Public Class frmEwE6
 
 #Region " Plug-in commands "
 
-    Private Sub OnRunGUIPlugin(ByVal cmd As cCommand) Handles m_cmdPluginGUICommand.OnInvoke
+    Private Sub OnRunGUIPlugin(cmd As cCommand) Handles m_cmdPluginGUICommand.OnInvoke
 
         ' Sanity checks
         If Not (TypeOf cmd Is cPluginGUICommand) Then Return
@@ -4856,7 +4856,7 @@ Public Class frmEwE6
                 End If
 
                 ' Able to activate this form from the open tabs?
-                If Not ActivateForm(pgcmd.Form.Text) Then
+                If Not Me.ActivateForm(pgcmd.Form.Text) Then
                     ' #No: form is not currently integrated in the dock panel, it must be nested in the GUI.
 
                     ' Make sure it is not already shown; a visible form cannot be docked.
@@ -4865,7 +4865,7 @@ Public Class frmEwE6
                     End If
 
                     ' Is this a dockable form? 
-                    If (TypeOf pgcmd.Form Is DockContent) And (m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
+                    If (TypeOf pgcmd.Form Is DockContent) And (Me.m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                         ' #Yes
                         ' Fix dockstyle
                         iDockState = pgcmd.DockState
@@ -4900,20 +4900,20 @@ Public Class frmEwE6
 
 #Region " License commands "
 
-    Private Sub OnEnterLicense(ByVal cmd As cCommand) Handles m_cmdEnterLicense.OnInvoke
+    Private Sub OnEnterLicense(cmd As cCommand) Handles m_cmdEnterLicense.OnInvoke
         Dim l As New cWebLinks(Me.Core)
         If Me.Core.License.ShowRegistrationForm(Me, Me.Text, l.GetURL(cWebLinks.eLinkType.GoPro), SharedResources.Ecopath_install) = DialogResult.OK Then
             Me.UpdateModelControls()
         End If
     End Sub
 
-    Private Sub OnClearLicense(ByVal cmd As cCommand) Handles m_cmdClearLicense.OnInvoke
+    Private Sub OnClearLicense(cmd As cCommand) Handles m_cmdClearLicense.OnInvoke
         If (Not Me.Core.License.IsRegistered) Then Return
         Me.Core.License.Unregister()
         Me.UpdateModelControls()
     End Sub
 
-    Private Sub OnClearLicenseUpdate(ByVal cmd As cCommand) Handles m_cmdClearLicense.OnUpdate
+    Private Sub OnClearLicenseUpdate(cmd As cCommand) Handles m_cmdClearLicense.OnUpdate
         cmd.Enabled = Me.Core.License.IsRegistered()
     End Sub
 
@@ -4923,7 +4923,7 @@ Public Class frmEwE6
 
 #Region " Event handlers "
 
-    Private Sub OnModelMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnModelMRUItemClicked(sender As Object, e As System.EventArgs)
         Try
             Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim strFileName As String = CStr(mnuItem.Tag)
@@ -4935,7 +4935,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnSpatialTempMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnSpatialTempMRUItemClicked(sender As Object, e As System.EventArgs)
         Try
             Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Me.m_cmdEcospaceLoadTimeSeries.Tag = mnuItem.Tag
@@ -4946,7 +4946,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnLoadEcosimScenarioOrDataset(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcosimScenarioOrDataset(sender As Object, e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
 
         If (mnuItem.Tag Is Nothing) Then Return
@@ -4963,7 +4963,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnLoadEcospaceScenario(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcospaceScenario(sender As Object, e As System.EventArgs)
 
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
 
@@ -4975,7 +4975,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnLoadEcotracerScenario(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcotracerScenario(sender As Object, e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
         Me.m_cmdLoadEcotracerScenario.Tag = mnuItem.Tag
         Me.m_cmdLoadEcotracerScenario.Invoke()
@@ -4986,8 +4986,8 @@ Public Class frmEwE6
 
         Me.m_tsmiViewItems.DropDownItems.Clear()
         If Me.Core.StateMonitor.HasEcopathLoaded Then
-            For Each preset As String In StyleGuide.ItemVisibilityPresetNames
-                Me.m_tsmiViewItems.DropDownItems.Add(preset, Nothing, AddressOf OnClickItemVisibilityPreset)
+            For Each preset As String In Me.StyleGuide.ItemVisibilityPresetNames
+                Me.m_tsmiViewItems.DropDownItems.Add(preset, Nothing, AddressOf Me.OnClickItemVisibilityPreset)
             Next
         End If
 
@@ -4997,8 +4997,8 @@ Public Class frmEwE6
 
         Me.m_tsddViewItems.DropDownItems.Clear()
         If Me.Core.StateMonitor.HasEcopathLoaded Then
-            For Each preset As String In StyleGuide.ItemVisibilityPresetNames
-                Me.m_tsddViewItems.DropDownItems.Add(preset, Nothing, AddressOf OnClickItemVisibilityPreset)
+            For Each preset As String In Me.StyleGuide.ItemVisibilityPresetNames
+                Me.m_tsddViewItems.DropDownItems.Add(preset, Nothing, AddressOf Me.OnClickItemVisibilityPreset)
             Next
         End If
 
@@ -5014,7 +5014,7 @@ Public Class frmEwE6
 
 #Region " Settings handling "
 
-    Private Sub OnSettingsLoaded(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
+    Private Sub OnSettingsLoaded(sender As Object, e As System.Configuration.SettingsLoadedEventArgs)
 
         Try
 
@@ -5062,7 +5062,7 @@ Public Class frmEwE6
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+    Private Sub OnSettingsChanged(sender As Object, e As PropertyChangedEventArgs)
 
         Try
 
@@ -5115,7 +5115,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnSettingsSaving(ByVal sender As Object, args As CancelEventArgs)
+    Private Sub OnSettingsSaving(sender As Object, args As CancelEventArgs)
 
         My.Settings.AutosaveResults = Me.m_autosavemanager.Settings()
         My.Settings.SpatialTempAllowIndexing = Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingEnabled
@@ -5133,7 +5133,7 @@ Public Class frmEwE6
     ''' <see cref="m_cmdFileOpen"/> and <see cref="m_cmdDirectoryOpen"/>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateCorePaths(Optional ByVal bResetUI As Boolean = False)
+    Private Sub UpdateCorePaths(Optional bResetUI As Boolean = False)
 
         Dim strPath As String = ""
 
@@ -5166,9 +5166,9 @@ Public Class frmEwE6
 
 #End Region ' Settings handling
 
-    Private Sub OnTabFocusChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OnTabFocusChanged(sender As System.Object, e As System.EventArgs)
 
-        Dim idc As IDockContent = m_DockPanel.ActiveDocument
+        Dim idc As IDockContent = Me.m_DockPanel.ActiveDocument
         Dim dch As DockContentHandler = Nothing
         Dim strNewNodeName As String = String.Empty
         Dim stateNew As eCoreExecutionState = eCoreExecutionState.Idle
@@ -5199,20 +5199,20 @@ Public Class frmEwE6
             ' Update core state if possible
             Me.CoreController.LoadState(stateNew)
             ' Update help
-            Me.Help.ActiveHelpControl = CType(m_DockPanel.ActiveDocument, Control)
+            Me.Help.ActiveHelpControl = CType(Me.m_DockPanel.ActiveDocument, Control)
             ' Switch
             Me.UpdateSelectedNode(strNewNodeName)
         End If
     End Sub
 
-    Private Sub OnModelPathAreaClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnModelPathAreaClicked(sender As System.Object, e As System.EventArgs) _
         Handles m_tsModel.OnPathAreaClicked
         Me.m_cmdLoadModel.Tag = Me.m_tsModel.Path
         Me.m_cmdLoadModel.Invoke()
         Me.m_cmdLoadModel.Tag = Nothing
     End Sub
 
-    Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreExecutionStateChanged(csm As cCoreStateMonitor)
 
         Try
             ' Busy loading or unloading Ecopath?

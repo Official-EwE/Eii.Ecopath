@@ -41,7 +41,7 @@ Public Class cHelp
         Private m_strTopic As String = ""
         Private m_strAltURL As String = ""
 
-        Public Sub New(ByVal strTopic As String, ByVal strAltURL As String)
+        Public Sub New(strTopic As String, strAltURL As String)
             Me.m_strTopic = strTopic
             Me.m_strAltURL = strAltURL
         End Sub
@@ -83,10 +83,10 @@ Public Class cHelp
     ''' <param name="strDefaultHelpURL">Default help page URL.</param>
     ''' <param name="strHelpRoot">In-help subdirectory for help content pages.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal ctlOwner As Control, _
-                   ByVal strHelpFile As String, _
-                   Optional ByVal strDefaultHelpURL As String = "", _
-                   Optional ByVal strHelpRoot As String = "")
+    Public Sub New(ctlOwner As Control, _
+                   strHelpFile As String, _
+                   Optional strDefaultHelpURL As String = "", _
+                   Optional strHelpRoot As String = "")
 
         ' Remember owner
         Me.m_ctlOwner = ctlOwner
@@ -110,9 +110,9 @@ Public Class cHelp
     ''' <param name="strAltURL">Alternate master help file URL, if any.</param>
     ''' <remarks>Note that this method does NOT capture the help focus.</remarks>
     ''' -----------------------------------------------------------------------
-    Public WriteOnly Property HelpTopic(ByVal ctl As Control, _
-                                        Optional ByVal strAltURL As String = "") As String
-        Set(ByVal strURL As String)
+    Public WriteOnly Property HelpTopic(ctl As Control, _
+                                        Optional strAltURL As String = "") As String
+        Set(strURL As String)
             ' Safety check
             If (ctl Is Nothing) Then Return
             ' Clear
@@ -131,7 +131,7 @@ Public Class cHelp
         Get
             Return Me.m_ctlContext
         End Get
-        Set(ByVal ctl As Control)
+        Set(ctl As Control)
             Me.m_ctlContext = ctl
             Me.RemoveDeadWood()
         End Set
@@ -143,7 +143,7 @@ Public Class cHelp
     ''' </summary>
     ''' <param name="navType"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub ShowHelp(ByVal navType As HelpNavigator)
+    Public Sub ShowHelp(navType As HelpNavigator)
 
         Dim ctl As Control = Me.m_ctlContext
         Dim topic As cHelpTopic = Nothing

@@ -43,7 +43,7 @@ Namespace Ecospace
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.m_uic = uic
             Me.InitializeComponent()
         End Sub
@@ -52,14 +52,14 @@ Namespace Ecospace
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.CenterToScreen()
             Me.m_grid.UIContext = Me.m_uic
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -74,22 +74,22 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub OnInsert(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAddHabitat.Click
+        Private Sub OnInsert(sender As System.Object, e As System.EventArgs) Handles m_btnAddHabitat.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnDelete(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveHabitat.Click
+        Private Sub OnDelete(sender As System.Object, e As System.EventArgs) Handles m_btnRemoveHabitat.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnKeep(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+        Private Sub OnKeep(sender As System.Object, e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub

@@ -62,7 +62,7 @@ Public Class cPluginManager
         ''' <param name="plugin"></param>
         ''' <param name="assembly"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal plugin As IPlugin, ByVal assembly As cPluginAssembly)
+        Public Sub New(plugin As IPlugin, assembly As cPluginAssembly)
             Me.Plugin = plugin
             Me.Assembly = assembly
         End Sub
@@ -90,11 +90,11 @@ Public Class cPluginManager
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Class cInvokeMethodInfo
-        Public Sub New(ByVal typePlugin As Type,
-                       ByVal strMethod As String,
-                       ByVal aArgs() As Object,
-                       ByVal invocation As eInvocationType,
-                       ByVal coll As ICollection(Of cPluginContext))
+        Public Sub New(typePlugin As Type,
+                       strMethod As String,
+                       aArgs() As Object,
+                       invocation As eInvocationType,
+                       coll As ICollection(Of cPluginContext))
 
             Me.PluginType = typePlugin
             Me.MethodName = strMethod
@@ -157,9 +157,9 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Property Core() As Object
         Get
-            Return m_core
+            Return Me.m_core
         End Get
-        Set(ByVal core As Object)
+        Set(core As Object)
             If ReferenceEquals(core, Me.m_core) Then Return
             ' Remember core
             Me.m_core = core
@@ -182,7 +182,7 @@ Public Class cPluginManager
         Get
             Return Me.m_uic
         End Get
-        Set(ByVal uic As Object)
+        Set(uic As Object)
             ' Remember core
             Me.m_uic = uic
             ' Initialize active plugins
@@ -200,7 +200,7 @@ Public Class cPluginManager
         Get
             Return Me.m_dlgtCoreState
         End Get
-        Set(ByVal dlgtCoreState As CanExecutePlugin)
+        Set(dlgtCoreState As CanExecutePlugin)
             ' Remember delegate
             Me.m_dlgtCoreState = dlgtCoreState
             ' Update all current plugins
@@ -217,7 +217,7 @@ Public Class cPluginManager
         Get
             Return Me.m_sync
         End Get
-        Set(ByVal value As System.Threading.SynchronizationContext)
+        Set(value As System.Threading.SynchronizationContext)
             Me.m_sync = value
         End Set
     End Property
@@ -264,7 +264,7 @@ Public Class cPluginManager
     ''' <param name="strPlugin">The short name of the plug-in to overwrite.</param>
     ''' <returns>True if the plug-in can be overwritten.</returns>
     ''' -----------------------------------------------------------------------
-    Public Delegate Function OnConfirmOverwrite(ByVal strPlugin As String) As Boolean
+    Public Delegate Function OnConfirmOverwrite(strPlugin As String) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -276,8 +276,8 @@ Public Class cPluginManager
     ''' conflicts.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function UpdatePlugins(ByVal iTimeOut As Integer,
-                                  Optional ByVal dlgOverwrite As OnConfirmOverwrite = Nothing) As eAutoUpdateResultTypes
+    Public Function UpdatePlugins(iTimeOut As Integer,
+                                  Optional dlgOverwrite As OnConfirmOverwrite = Nothing) As eAutoUpdateResultTypes
 
         Dim updater As cAutoUpdate = New cAutoUpdate(Me.m_core, iTimeOut)
         Dim pluginAssembly As Assembly = Nothing
@@ -414,9 +414,9 @@ Public Class cPluginManager
     ''' the EwE startup folder.</param>
     ''' <param name="option">See <see cref="SearchOption"/>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins(Optional ByVal alDisabledPlugins As ArrayList = Nothing,
-                           Optional ByVal strSubfolder As String = "",
-                           Optional ByVal [option] As SearchOption = SearchOption.AllDirectories)
+    Public Sub LoadPlugins(Optional alDisabledPlugins As ArrayList = Nothing,
+                           Optional strSubfolder As String = "",
+                           Optional [option] As SearchOption = SearchOption.AllDirectories)
 
         ' Sanity checks - load only once
         If (Me.m_bLoaded) Then Return
@@ -471,7 +471,7 @@ Public Class cPluginManager
     ''' <param name="strFileName">The file name to load plugins from.</param>
     ''' <returns>True if this assembly was loaded and contained plugins.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadPluginAssembly(ByVal strFileName As String, bEnabled As Boolean) As Boolean
+    Private Function LoadPluginAssembly(strFileName As String, bEnabled As Boolean) As Boolean
 
         Dim clsType As Type = Nothing
         Dim clsInterface As Type = Nothing
@@ -531,7 +531,7 @@ Public Class cPluginManager
                             If (plugAssem.Enabled) Then
 
                                 ' Try to get the plugin
-                                ip = LoadPlugin(plugAssem, strFileName, clsType.FullName)
+                                ip = Me.LoadPlugin(plugAssem, strFileName, clsType.FullName)
 
                                 ' Sanity check
                                 If (ip Is Nothing) Then
@@ -604,11 +604,11 @@ Public Class cPluginManager
 
             If (bHasPlugins) Then
 
-                Dim company As AssemblyCompanyAttribute = DirectCast(ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyCompanyAttribute)), AssemblyCompanyAttribute)
+                Dim company As AssemblyCompanyAttribute = DirectCast(Me.ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyCompanyAttribute)), AssemblyCompanyAttribute)
                 If company IsNot Nothing Then plugAssem.Company = company.Company.ToString
-                Dim copyright As AssemblyCopyrightAttribute = DirectCast(ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyCopyrightAttribute)), AssemblyCopyrightAttribute)
+                Dim copyright As AssemblyCopyrightAttribute = DirectCast(Me.ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyCopyrightAttribute)), AssemblyCopyrightAttribute)
                 If copyright IsNot Nothing Then plugAssem.Copyright = copyright.Copyright.ToString
-                Dim description As AssemblyDescriptionAttribute = DirectCast(ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyDescriptionAttribute)), AssemblyDescriptionAttribute)
+                Dim description As AssemblyDescriptionAttribute = DirectCast(Me.ExtractAssemblyAttribute(clsAssembly, GetType(AssemblyDescriptionAttribute)), AssemblyDescriptionAttribute)
                 If description IsNot Nothing Then plugAssem.Description = description.Description.ToString
                 ' Okay, let's keep at least THIS one simple...
                 plugAssem.Version = plugAssem.AssemblyName.Version.ToString()
@@ -670,7 +670,7 @@ Public Class cPluginManager
     ''' <param name="strFileName">The file name to unload.</param>
     ''' <returns>True if unloaded succesfully.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function UnloadPluginAssembly(ByVal strFileName As String) As Boolean
+    Private Function UnloadPluginAssembly(strFileName As String) As Boolean
 
         Dim collPlugins As ICollection(Of cPluginContext) = Nothing
         Dim pa As cPluginAssembly = Nothing
@@ -717,7 +717,7 @@ Public Class cPluginManager
     ''' <param name="strName">The name of the plugin that was  updated.</param>
     ''' <param name="result">Update <see cref="eAutoUpdateResultTypes">result</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyUpdatedHandler(ByVal strName As String, ByVal result As eAutoUpdateResultTypes)
+    Public Delegate Sub AssemblyUpdatedHandler(strName As String, result As eAutoUpdateResultTypes)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -734,7 +734,7 @@ Public Class cPluginManager
     ''' <param name="status">Update status.</param>
     ''' <param name="sProgress">Update progress.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyUpdatingHandler(ByVal strName As String, ByVal status As eAutoUpdateTypes, ByVal sProgress As Single)
+    Public Delegate Sub AssemblyUpdatingHandler(strName As String, status As eAutoUpdateTypes, sProgress As Single)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -751,7 +751,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="paAdded">The plugin assembly that was added.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyAddedHandler(ByVal paAdded As cPluginAssembly)
+    Public Delegate Sub AssemblyAddedHandler(paAdded As cPluginAssembly)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -766,7 +766,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="paRemoved">The plugin assembly that was removed.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyRemovedHandler(ByVal paRemoved As cPluginAssembly)
+    Public Delegate Sub AssemblyRemovedHandler(paRemoved As cPluginAssembly)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -781,7 +781,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="PluginException">The exception that was thrown.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub PluginExceptionHandler(ByVal PluginException As cPluginException)
+    Public Delegate Sub PluginExceptionHandler(PluginException As cPluginException)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -797,7 +797,7 @@ Public Class cPluginManager
     ''' <param name="ip">The GUI plug-in that changed enabled state.</param>
     ''' <param name="bEnable">The new enabled state of the plug-in.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub PluginEnabledHandler(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
+    Public Delegate Sub PluginEnabledHandler(ip As IGUIPlugin, bEnable As Boolean)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -813,7 +813,7 @@ Public Class cPluginManager
     ''' <param name="strPluginName">The name of the plug-in that was not loaded
     ''' because user settings prohibited this.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyUserDisabledHandler(ByVal strPluginName As String)
+    Public Delegate Sub AssemblyUserDisabledHandler(strPluginName As String)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -838,7 +838,7 @@ Public Class cPluginManager
     ''' <param name="objEcoSpace"></param>
     ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
-    Public Function CoreInitialized(ByVal objEcoPath As Object, ByVal objEcoSim As Object, ByVal objEcoSpace As Object) As Boolean
+    Public Function CoreInitialized(objEcoPath As Object, objEcoSim As Object, objEcoSpace As Object) As Boolean
 
         ' Invokes ICorePlugin.CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
         Return Me.TryInvokeMethod(GetType(ICorePlugin),
@@ -912,7 +912,7 @@ Public Class cPluginManager
     ''' <param name="datatype"></param>
     ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
-    Public Function DataValidated(ByVal varname As eVarNameFlags, ByVal datatype As eDataTypes) As Boolean
+    Public Function DataValidated(varname As eVarNameFlags, datatype As eDataTypes) As Boolean
 
         ' Invokes IDataValidatedPlugin.DataValidated(varname, datatype)
         Return Me.TryInvokeMethod(GetType(IDataValidatedPlugin),
@@ -939,7 +939,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="pa">cPluginAssembly to check, if any.</param>
     ''' ---------------------------------------------------------------------------
-    Public Function IsDatabaseModified(Optional ByVal pa As cPluginAssembly = Nothing) As Boolean
+    Public Function IsDatabaseModified(Optional pa As cPluginAssembly = Nothing) As Boolean
 
         ' Invokes IDatabasePlugin.IsModified()
         Return Me.TryInvokeMethod(GetType(IDatabasePlugin), "IsModified", Nothing, eInvocationType.Any)
@@ -966,7 +966,7 @@ Public Class cPluginManager
     ''' <param name="bCancelMessage">Flag, stating whether the message should be
     ''' cancelled.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub PreProcessMessage(ByVal msg As IMessage, ByRef bCancelMessage As Boolean)
+    Public Sub PreProcessMessage(msg As IMessage, ByRef bCancelMessage As Boolean)
         Dim args() As Object = New Object() {msg, bCancelMessage}
         Me.TryInvokeMethod(GetType(IMessageFilterPlugin), "PreProcessMessage", args)
         'Update bCancelMessage with the values from the plugin 
@@ -1000,7 +1000,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function LoadModel(ByVal dataSource As Object) As Boolean
+    Public Function LoadModel(dataSource As Object) As Boolean
 
         ' Invokes IEcopathPlugin.LoadModel(dataSource)
         Return Me.TryInvokeMethod(GetType(IEcopathPlugin),
@@ -1020,7 +1020,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function SaveModel(ByVal dataSource As Object) As Boolean
+    Public Function SaveModel(dataSource As Object) As Boolean
 
         ' Invokes IEcopathPlugin.SaveModel(dataSource)
         Return Me.TryInvokeMethod(GetType(IEcopathPlugin),
@@ -1062,7 +1062,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Core MassBalance documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function MassBalance(ByVal EcoPathDataStructures As Object, ByVal EstimateFor As Integer, ByRef iResult As Integer) As Boolean
+    Public Function MassBalance(EcoPathDataStructures As Object, EstimateFor As Integer, ByRef iResult As Integer) As Boolean
 
         ' Invoke IEcopathMassBalancePlugin.EcopathMassBalance(EcoPathDataStructures, EstimateFor, iResult)
         Return Me.TryInvokeMethod(GetType(IEcopathMassBalancePlugin),
@@ -1072,9 +1072,9 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcopathRunCompleted(ByVal EcoPathDataStructures As Object,
-                                        ByVal TaxonDataStructures As Object,
-                                        ByVal StanzaDataStructures As Object) As Boolean
+    Public Function EcopathRunCompleted(EcoPathDataStructures As Object,
+                                        TaxonDataStructures As Object,
+                                        StanzaDataStructures As Object) As Boolean
 
         ' Invoke IEcopathRunCompletedPlugin.EcopathRunCompleted(EcoPathDataStructures)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcopathRunCompletedPlugin),
@@ -1095,9 +1095,9 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcopathRunInitialized(ByVal EcoPathDataStructures As Object,
-                                          ByVal TaxonDataStructures As Object,
-                                          ByVal StanzaDataStructures As Object) As Boolean
+    Public Function EcopathRunInitialized(EcoPathDataStructures As Object,
+                                          TaxonDataStructures As Object,
+                                          StanzaDataStructures As Object) As Boolean
 
         ' Invoke IEcopathRunInitializedPlugin.EcopathRunInitialized(EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcopathRunInitializedPlugin),
@@ -1134,7 +1134,7 @@ Public Class cPluginManager
     ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
     ''' <param name="scenarioID">The database ID of the scanerio that was just added.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcosimScenarioAdded(ByVal datasource As Object, ByVal scenarioID As Integer)
+    Public Sub EcosimScenarioAdded(datasource As Object, scenarioID As Integer)
 
         ' Invoke IEcosimScenarioAddedOrRemovedPlugin.EcosimScenarioAdded(datasource, scenarioID)
         Me.TryInvokeMethod(GetType(IEcosimScenarioAddedOrRemovedPlugin), "EcosimScenarioAdded", New Object() {datasource, scenarioID})
@@ -1149,7 +1149,7 @@ Public Class cPluginManager
     ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
     ''' <param name="scenarioID">The database ID of the scanerio that was just removed.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcosimScenarioRemoved(ByVal datasource As Object, ByVal scenarioID As Integer)
+    Public Sub EcosimScenarioRemoved(datasource As Object, scenarioID As Integer)
 
         ' Invoke IEcosimScenarioAddedOrRemovedPlugin.EcosimScenarioRemoved(datasource, scenarioID)
         Me.TryInvokeMethod(GetType(IEcosimScenarioAddedOrRemovedPlugin), "EcosimScenarioRemoved", New Object() {datasource, scenarioID})
@@ -1167,7 +1167,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcosimLoadScenario(ByVal dataSource As Object)
+    Public Sub EcosimLoadScenario(dataSource As Object)
 
         ' Invoke IEcosimPlugin.LoadEcosimScenario(datasource)
         Me.TryInvokeMethod(GetType(IEcosimPlugin), "LoadEcosimScenario", New Object() {dataSource})
@@ -1185,7 +1185,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub SaveEcosimScenario(ByVal dataSource As Object)
+    Public Sub SaveEcosimScenario(dataSource As Object)
 
         ' Invoke IEcosimPlugin.SaveEcosimScenario(datasource)
         Me.TryInvokeMethod(GetType(IEcosimPlugin), "SaveEcosimScenario", New Object() {dataSource})
@@ -1204,7 +1204,7 @@ Public Class cPluginManager
 
     End Sub
 
-    Public Function EcosimPreDataInitialized(ByVal EcosimDatastructures As Object) As Boolean
+    Public Function EcosimPreDataInitialized(EcosimDatastructures As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin),
                                   "EcosimPreDataInitialized",
@@ -1212,7 +1212,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimPreRunInitialized(ByVal EcosimDatastructures As Object) As Boolean
+    Public Function EcosimPreRunInitialized(EcosimDatastructures As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IEcosimDataInitializedPlugin),
                                   "EcosimPreRunInitialized",
@@ -1220,7 +1220,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimInitialized(ByVal EcosimDatastructures As Object) As Boolean
+    Public Function EcosimInitialized(EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimInitializedPlugin.EcosimInitialized(datasource)
         Return Me.TryInvokeMethod(GetType(IEcosimInitializedPlugin),
@@ -1229,7 +1229,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimModifyTimeseries(ByVal TimeSeriesDataStructures As Object) As Boolean
+    Public Function EcosimModifyTimeseries(TimeSeriesDataStructures As Object) As Boolean
 
         ' Invoke IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries(TimeSeriesDataStructures)
         Return Me.TryInvokeMethod(GetType(IEcosimModifyTimeseriesPlugin),
@@ -1238,7 +1238,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimModifyFGear(ByVal FGear() As Single, ByVal BB() As Single, ByVal EcosimDataStructures As Object, ByVal CurrentTimeIndex As Integer) As Boolean
+    Public Function EcosimModifyFGear(FGear() As Single, BB() As Single, EcosimDataStructures As Object, CurrentTimeIndex As Integer) As Boolean
 
         ' Invoke IEcosimModifyFGearPlugin.EcosimModifyFGear(FGear, BB, EcosimDataStructures, CurrentTime)
         Return Me.TryInvokeMethod(GetType(IEcosimModifyFGearPlugin),
@@ -1247,7 +1247,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimModifyEffort(ByRef bEffortModified As Boolean, ByVal Effort() As Single, ByVal BB() As Single, ByVal iTimeIndex As Integer, iYearIndex As Integer, ByVal EcosimDataStructures As Object) As Boolean
+    Public Function EcosimModifyEffort(ByRef bEffortModified As Boolean, Effort() As Single, BB() As Single, iTimeIndex As Integer, iYearIndex As Integer, EcosimDataStructures As Object) As Boolean
 
         Try
             Dim bsuccess As Boolean
@@ -1266,8 +1266,8 @@ Public Class cPluginManager
     End Function
 
     Public Function EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single,
-                                        ByVal EcosimDataStructures As Object,
-                                        ByVal iTimeStep As Integer) As Boolean
+                                        EcosimDataStructures As Object,
+                                        iTimeStep As Integer) As Boolean
 
         ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStep(iTimeStep)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimBeginTimestepPlugin),
@@ -1284,10 +1284,10 @@ Public Class cPluginManager
     End Function
 
     Public Function EcosimSubTimestepBegin(ByRef BiomassAtTimestep() As Single,
-                                           ByVal TimeInYears As Single,
-                                           ByVal DeltaT As Single,
-                                           ByVal SubTimestepIndex As Integer,
-                                           ByVal EcosimDatastructures As Object) As Boolean
+                                           TimeInYears As Single,
+                                           DeltaT As Single,
+                                           SubTimestepIndex As Integer,
+                                           EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStep(iTimeStep)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimSubTimestepsPlugin),
@@ -1299,10 +1299,10 @@ Public Class cPluginManager
     End Function
 
     Public Function EcosimSubTimestepEnd(ByRef BiomassAtTimestep() As Single,
-                                         ByVal TimeInYears As Single,
-                                         ByVal DeltaT As Single,
-                                         ByVal SubTimestepIndex As Integer,
-                                         ByVal EcosimDatastructures As Object) As Boolean
+                                         TimeInYears As Single,
+                                         DeltaT As Single,
+                                         SubTimestepIndex As Integer,
+                                         EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimBeginTimestepPlugin.EcosimBeginTimeStep(iTimeStep)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimSubTimestepsPlugin),
@@ -1314,9 +1314,9 @@ Public Class cPluginManager
     End Function
 
     Public Function EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
-                                      ByVal EcosimDatastructures As Object,
-                                      ByVal iTimeStep As Integer,
-                                      ByVal Ecosimresults As Object) As Boolean
+                                      EcosimDatastructures As Object,
+                                      iTimeStep As Integer,
+                                      Ecosimresults As Object) As Boolean
 
         ' Invoke IEcosimEndTimestepPlugin.EcosimEndTimeStep(BiomassAtTimestep, EcosimDatastructures, iTimeStep, Ecosimresults)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimEndTimestepPlugin),
@@ -1330,7 +1330,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimRunInitialized(ByVal EcosimDatastructures As Object) As Boolean
+    Public Function EcosimRunInitialized(EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimRunInitializedPlugin.EcosimRunInitialized(EcosimDatastructures)
         Return Me.TryInvokeMethod(GetType(IEcosimRunInitializedPlugin),
@@ -1339,7 +1339,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcosimRunCompleted(ByVal EcosimDatastructures As Object) As Boolean
+    Public Function EcosimRunCompleted(EcosimDatastructures As Object) As Boolean
 
         ' Invoke IEcosimRunCompletedPlugin.EcosimRunCompleted(EcosimDatastructures)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimRunCompletedPlugin),
@@ -1409,7 +1409,7 @@ Public Class cPluginManager
     ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
     ''' <param name="scenarioID">The database ID of the scanerio that was just added.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcospaceScenarioAdded(ByVal datasource As Object, ByVal scenarioID As Integer)
+    Public Sub EcospaceScenarioAdded(datasource As Object, scenarioID As Integer)
 
         ' Invoke IEcospaceScenarioAddedOrRemovedPlugin.EcospaceScenarioAdded(datasource, scenarioID)
         Me.TryInvokeMethod(GetType(IEcospaceScenarioAddedOrRemovedPlugin), "EcospaceScenarioAdded", New Object() {datasource, scenarioID})
@@ -1424,7 +1424,7 @@ Public Class cPluginManager
     ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
     ''' <param name="scenarioID">The database ID of the scanerio that was just removed.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcospaceScenarioRemoved(ByVal datasource As Object, ByVal scenarioID As Integer)
+    Public Sub EcospaceScenarioRemoved(datasource As Object, scenarioID As Integer)
 
         ' Invoke IEcospaceScenarioAddedOrRemovedPlugin.EcospaceScenarioRemoved(datasource, scenarioID)
         Me.TryInvokeMethod(GetType(IEcospaceScenarioAddedOrRemovedPlugin), "EcospaceScenarioRemoved", New Object() {datasource, scenarioID})
@@ -1442,7 +1442,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcospaceLoadScenario(ByVal dataSource As Object)
+    Public Sub EcospaceLoadScenario(dataSource As Object)
 
         ' Invoke IEcospacePlugin.LoadEcospaceScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcospacePlugin), "LoadEcospaceScenario", New Object() {dataSource})
@@ -1460,14 +1460,14 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function EcospaceInitialized(ByVal EcospaceDatastructures As Object) As Boolean
+    Public Function EcospaceInitialized(EcospaceDatastructures As Object) As Boolean
 
         ' Invoke IEcospaceInitializedPlugin.EcospaceInitialized(EcospaceDatastructures)
         Me.TryInvokeMethod(GetType(IEcospaceInitializedPlugin), "EcospaceInitialized", New Object() {EcospaceDatastructures})
 
     End Function
 
-    Public Function EcospaceRunCompleted(ByVal EcospaceDatastructures As Object) As Boolean
+    Public Function EcospaceRunCompleted(EcospaceDatastructures As Object) As Boolean
 
         ' Invoke IEcospaceInitializedPlugin.EcospaceInitialized(EcospaceDatastructures)
         Me.TryInvokeMethod(GetType(IEcospaceRunCompletedPlugin), "EcospaceRunCompleted", New Object() {EcospaceDatastructures})
@@ -1485,7 +1485,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub SaveEcospaceScenario(ByVal dataSource As Object)
+    Public Sub SaveEcospaceScenario(dataSource As Object)
 
         ' Invoke IEcospacePlugin.SaveEcospaceScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcospacePlugin), "SaveEcospaceScenario", New Object() {dataSource})
@@ -1504,7 +1504,7 @@ Public Class cPluginManager
 
     End Sub
 
-    Public Function EcospaceBeginTimeStep(ByVal EcospaceDataStructures As Object, ByVal iTimeStep As Integer) As Boolean
+    Public Function EcospaceBeginTimeStep(EcospaceDataStructures As Object, iTimeStep As Integer) As Boolean
 
         ' Invoke IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep(EcospaceDataStructures, iTimeStep)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceBeginTimestepPlugin),
@@ -1518,7 +1518,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcospacePostFishingEffortModTimestep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
+    Public Function EcospacePostFishingEffortModTimestep(EcospaceDatastructures As Object, iTimeStep As Integer) As Boolean
 
         ' Invoke IEcospacePostFishingEffortModTimestepPlugin.EcospacePostFishingEffortModTimestep(EcospaceDataStructures, iTimeStep)
         Return Me.TryInvokeMethod(GetType(IEcospacePostFishingEffortModTimestepPlugin),
@@ -1527,7 +1527,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcospaceEndTimeStep(ByVal EcospaceDatastructures As Object, ByVal iTimeStep As Integer) As Boolean
+    Public Function EcospaceEndTimeStep(EcospaceDatastructures As Object, iTimeStep As Integer) As Boolean
 
         ' Invoke IEcospaceEndTimestepPlugin.EcospaceEndTimeStep(EcospaceDataStructures, iTimeStep)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceEndTimestepPlugin),
@@ -1541,10 +1541,10 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcospaceCalculateCostOfSailing(ByVal EcospaceDataStructures As Object,
-                                                   ByVal Depth(,) As Single,
-                                                   ByVal Port()(,) As Boolean,
-                                                   ByVal Sail()(,) As Single) As Boolean
+    Public Function EcospaceCalculateCostOfSailing(EcospaceDataStructures As Object,
+                                                   Depth(,) As Single,
+                                                   Port()(,) As Boolean,
+                                                   Sail()(,) As Single) As Boolean
 
         ' Invoke IEcospacePostFishingEffortModTimestepPlugin.EcospacePostFishingEffortModTimestep(EcospaceDataStructures, iTimeStep)
         Return Me.TryInvokeMethod(GetType(IEcospaceCalcCostOfSailingPlugin),
@@ -1572,7 +1572,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="EcospaceDataStructures"></param>
     ''' ---------------------------------------------------------------------------
-    Public Function EcospaceInitRunStarted(ByVal EcospaceDataStructures As Object) As Boolean
+    Public Function EcospaceInitRunStarted(EcospaceDataStructures As Object) As Boolean
         Return Me.TryInvokeMethod(GetType(IEcospaceInitRunStartedPlugin), "EcospaceInitRunStarted", New Object() {EcospaceDataStructures})
     End Function
 
@@ -1583,7 +1583,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="EcospaceDataStructures"></param>
     ''' ---------------------------------------------------------------------------
-    Public Function EcospaceInitRunCompleted(ByVal EcospaceDataStructures As Object) As Boolean
+    Public Function EcospaceInitRunCompleted(EcospaceDataStructures As Object) As Boolean
         Return Me.TryInvokeMethod(GetType(IEcospaceInitRunCompletedPlugin), "EcospaceInitRunCompleted", New Object() {EcospaceDataStructures})
     End Function
 
@@ -1596,7 +1596,7 @@ Public Class cPluginManager
     ''' <param name="dt"></param>
     ''' <param name="layer"></param>
     ''' ---------------------------------------------------------------------------
-    Public Function EcospaceBeginLayerChange(ByVal iTime As Integer, dt As Date, layer As Object) As Boolean
+    Public Function EcospaceBeginLayerChange(iTime As Integer, dt As Date, layer As Object) As Boolean
         Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceBeginLayerChange", New Object() {iTime, dt, layer})
     End Function
 
@@ -1606,12 +1606,12 @@ Public Class cPluginManager
     ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Function EcospaceEndLayerChange(ByVal iTime As Integer, dt As Date, layer As Object) As Boolean
+    Public Function EcospaceEndLayerChange(iTime As Integer, dt As Date, layer As Object) As Boolean
         Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceEndLayerChange", New Object() {iTime, dt, layer})
     End Function
 
 
-    Public Function EcospaceResultsModelAreaFileName(ByRef FileName As String, ByVal DataSourceAsObject As Object, ByVal AvgType As eEcospaceResultsAverageType) As Boolean
+    Public Function EcospaceResultsModelAreaFileName(ByRef FileName As String, DataSourceAsObject As Object, AvgType As eEcospaceResultsAverageType) As Boolean
 
         Dim args() As Object = New Object() {FileName, DataSourceAsObject, AvgType}
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceResultWriterUtils),
@@ -1626,8 +1626,8 @@ Public Class cPluginManager
     End Function
 
 
-    Public Function EcospaceResultsMapGroupFileName(ByRef FileName As String, ByVal varname As EwEUtils.Core.eVarNameFlags,
-                                                    ByVal iGrp As Integer, ByVal strExt As String, ByVal iModelTimeStep As Integer) As Boolean
+    Public Function EcospaceResultsMapGroupFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
+                                                    iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean
 
         Dim args() As Object = New Object() {FileName, varname, iGrp, strExt, iModelTimeStep}
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceResultWriterUtils),
@@ -1641,8 +1641,8 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function EcospaceResultsMapFleetFileName(ByRef FileName As String, ByVal varname As EwEUtils.Core.eVarNameFlags,
-                                                    ByVal iFlt As Integer, ByVal strExt As String, ByVal iModelTimeStep As Integer) As Boolean
+    Public Function EcospaceResultsMapFleetFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
+                                                    iFlt As Integer, strExt As String, iModelTimeStep As Integer) As Boolean
 
         Dim args() As Object = New Object() {FileName, varname, iFlt, strExt, iModelTimeStep}
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceResultWriterUtils),
@@ -1668,7 +1668,7 @@ Public Class cPluginManager
     ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
     ''' <param name="scenarioID">The database ID of the scanerio that was just added.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcotracerScenarioAdded(ByVal datasource As Object, ByVal scenarioID As Integer)
+    Public Sub EcotracerScenarioAdded(datasource As Object, scenarioID As Integer)
 
         ' Invoke IEcotracerScenarioAddedOrRemovedPlugin.EcotracerScenarioAdded(datasource, scenarioID)
         Me.TryInvokeMethod(GetType(IEcotracerScenarioAddedOrRemovedPlugin), "EcotracerScenarioAdded", New Object() {datasource, scenarioID})
@@ -1683,7 +1683,7 @@ Public Class cPluginManager
     ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
     ''' <param name="scenarioID">The database ID of the scanerio that was just removed.</param>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcotracerScenarioRemoved(ByVal datasource As Object, ByVal scenarioID As Integer)
+    Public Sub EcotracerScenarioRemoved(datasource As Object, scenarioID As Integer)
 
         ' Invoke IEcotracerScenarioAddedOrRemovedPlugin.EcotracerScenarioRemoved(datasource, scenarioID)
         Me.TryInvokeMethod(GetType(IEcotracerScenarioAddedOrRemovedPlugin), "EcotracerScenarioRemoved", New Object() {datasource, scenarioID})
@@ -1701,7 +1701,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub EcotracerLoadScenario(ByVal dataSource As Object)
+    Public Sub EcotracerLoadScenario(dataSource As Object)
 
         ' Invoke IEcotracerPlugin.LoadEcotracerScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcotracerPlugin), "LoadEcotracerScenario", New Object() {dataSource})
@@ -1716,7 +1716,7 @@ Public Class cPluginManager
     ''' <returns></returns>
     ''' <remarks></remarks>
     ''' ---------------------------------------------------------------------------
-    Public Function EcotracerInitialized(ByVal EcotracerDatastructures As Object) As Boolean
+    Public Function EcotracerInitialized(EcotracerDatastructures As Object) As Boolean
 
         ' Invoke IEcotracerInitializedPlugin.EcotracerInitialized(EcotracerDatastructures)
         Return Me.TryInvokeMethod(GetType(IEcotracerInitializedPlugin),
@@ -1736,7 +1736,7 @@ Public Class cPluginManager
     ''' Refer to the EwE Datasource documentation for calling conventions and 
     ''' proper parameter usage.</remarks>
     ''' ---------------------------------------------------------------------------
-    Public Sub SaveEcotracerScenario(ByVal dataSource As Object)
+    Public Sub SaveEcotracerScenario(dataSource As Object)
 
         ' Invoke IEcotracerPlugin.SaveEcotracerScenario(dataSource)
         Me.TryInvokeMethod(GetType(IEcotracerPlugin), "SaveEcotracerScenario", New Object() {dataSource})
@@ -1767,7 +1767,7 @@ Public Class cPluginManager
     ''' <param name="data">The <see cref="IPluginData">data</see> to exchange.</param>
     ''' <returns>True if broadcast succeeded.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function BroadcastData(ByVal strDataName As String, ByVal data As IPluginData) As Boolean _
+    Public Function BroadcastData(strDataName As String, data As IPluginData) As Boolean _
         Implements IDataBroadcaster.BroadcastData
 
         ' Invoke IDataConsumerPlugin.ReceiveData(strDataName, data)
@@ -1788,7 +1788,7 @@ Public Class cPluginManager
     ''' Null if the run type is irrelevant.</param>
     ''' <returns>True if the requested data is available.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsDataAvailable(ByVal strDataName As String, Optional ByVal runType As IRunType = Nothing) As Boolean
+    Public Function IsDataAvailable(strDataName As String, Optional runType As IRunType = Nothing) As Boolean
 
         ' Invoke IDataProducerPlugin.IsDataAvailable(strDataName, runType)
         Return Me.TryInvokeMethod(GetType(IDataProducerPlugin),
@@ -1808,7 +1808,7 @@ Public Class cPluginManager
     ''' Null if the run type is irrelevant.</param>
     ''' <returns>True if the requested data is available.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsDataAvailable(ByVal dataType As Type, Optional ByVal runType As IRunType = Nothing) As Boolean
+    Public Function IsDataAvailable(dataType As Type, Optional runType As IRunType = Nothing) As Boolean
 
         ' Invoke IDataProducerPlugin.IsDataAvailable(dataType, runType)
         Return Me.TryInvokeMethod(GetType(IDataProducerPlugin),
@@ -1828,7 +1828,7 @@ Public Class cPluginManager
     ''' <returns>An array of data, or an empty array if an error occurred.</returns>
     ''' <remarks>This method is not thread-safe.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Function GetData(ByVal dataType As Type) As IPluginData()
+    Public Function GetData(dataType As Type) As IPluginData()
 
         Dim coll As ICollection(Of cPluginContext) = Me.GetPluginDefs(GetType(IDataProducerPlugin))
         Dim data As IPluginData = Nothing
@@ -1866,14 +1866,14 @@ Public Class cPluginManager
     ''' Null if the run type is irrelevant.</param>
     ''' <returns>True if the requested data is available.</returns>
     ''' -----------------------------------------------------------------------
-    Public Property EnableData(ByVal dataType As Type, ByVal runType As IRunType) As Boolean
+    Public Property EnableData(dataType As Type, runType As IRunType) As Boolean
         Get
             Return Me.TryInvokeMethod(GetType(IDataProducerPlugin),
                                       "IsEnabled",
                                       New Object() {dataType, runType},
                                       eInvocationType.Any)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.TryInvokeMethod(GetType(IDataProducerPlugin),
                                "SetEnabled",
                                New Object() {dataType, runType, value},
@@ -1889,7 +1889,7 @@ Public Class cPluginManager
     ''' <param name="bEnable">Enable flag.</param>
     ''' <returns>True if the requested producer is enabled.</returns>
     ''' -----------------------------------------------------------------------
-    Public Property EnableDataProducer(ByVal strProducer As String, ByVal bEnable As Boolean) As Boolean
+    Public Property EnableDataProducer(strProducer As String, bEnable As Boolean) As Boolean
         Get
 
             Return Me.TryInvokeMethod(GetType(IDataProducerPlugin),
@@ -1898,7 +1898,7 @@ Public Class cPluginManager
                                       eInvocationType.Any,
                                       Me.GetPluginDefs(strProducer))
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.TryInvokeMethod(GetType(IDataProducerPlugin),
                                "SetEnabled",
                                New Object() {strProducer, bEnable},
@@ -1911,7 +1911,7 @@ Public Class cPluginManager
 
 #Region " Search "
 
-    Public Function SearchInitialized(ByVal SearchDS As Object) As Boolean
+    Public Function SearchInitialized(SearchDS As Object) As Boolean
 
         ' Invoke ISearchPlugin.SearchInitialized(SearchDS)
         Return Me.TryInvokeMethod(GetType(ISearchPlugin), "SearchInitialized", New Object() {SearchDS})
@@ -1927,7 +1927,7 @@ Public Class cPluginManager
     ''' search results.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function PostRunSearchResults(ByVal SearchDS As Object) As Boolean
+    Public Function PostRunSearchResults(SearchDS As Object) As Boolean
 
         ' Invoke ISearchPlugin.PostRunSearchResults(SearchDS)
         Return Me.TryInvokeMethod(GetType(ISearchPlugin), "PostRunSearchResults", New Object() {SearchDS})
@@ -1941,7 +1941,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function SearchCompleted(ByVal searchDS As Object) As Boolean
+    Public Function SearchCompleted(searchDS As Object) As Boolean
 
         ' Invoke ISearchPlugin.SearchCompleted()
         Return Me.TryInvokeMethod(GetType(ISearchPlugin), "SearchCompleted", New Object() {searchDS})
@@ -1978,54 +1978,54 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function MSEDoAssessment(ByVal Biomass() As Single) As Boolean
+    Public Function MSEDoAssessment(Biomass() As Single) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEDoAssessment", New Object() {Biomass})
 
     End Function
 
-    Public Function MSEUpdateQuotas(ByVal Biomass() As Single) As Boolean
+    Public Function MSEUpdateQuotas(Biomass() As Single) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEUpdateQuotas", New Object() {Biomass})
 
     End Function
 
-    Public Function MSERegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer) As Boolean
+    Public Function MSERegulateEffort(Biomass() As Single, QMult() As Single, QYear() As Single, t As Integer) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSERegulateEffort", New Object() {Biomass, QMult, QYear, t})
 
     End Function
 
-    Public Function MSEInitialized(ByVal MSEModel As Object,
-                                   ByVal MSEDataStructure As Object,
-                                   ByVal EcosimDatastructures As Object) As Boolean
+    Public Function MSEInitialized(MSEModel As Object,
+                                   MSEDataStructure As Object,
+                                   EcosimDatastructures As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSEInitialized), "MSEInitialized", New Object() {MSEModel, MSEDataStructure, EcosimDatastructures})
 
     End Function
 
-    Public Function MSYInitialized(ByVal MSEDataStructure As Object,
-                                   ByVal EcosimDatastructures As Object) As Boolean
+    Public Function MSYInitialized(MSEDataStructure As Object,
+                                   EcosimDatastructures As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYInitialized", New Object() {MSEDataStructure, EcosimDatastructures})
 
     End Function
 
-    Public Function MSEBatchInitialized(ByVal MSEBatchManager As Object,
-                                        ByVal MSEBatchDataStructure As Object) As Boolean
+    Public Function MSEBatchInitialized(MSEBatchManager As Object,
+                                        MSEBatchDataStructure As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSEBatch), "MSEBatchInitialized", New Object() {MSEBatchManager, MSEBatchDataStructure})
 
     End Function
 
-    Public Function MSYRunStarted(ByVal MSEDataStructure As Object,
-                                  ByVal EcosimDatastructures As Object) As Boolean
+    Public Function MSYRunStarted(MSEDataStructure As Object,
+                                  EcosimDatastructures As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYRunStarted", New Object() {MSEDataStructure, EcosimDatastructures})
 
     End Function
 
-    Public Function MSYEffortCompleted(ByVal MSYEffortByFleet() As Single, ByVal MSYFbyGroup() As Single) As Boolean
+    Public Function MSYEffortCompleted(MSYEffortByFleet() As Single, MSYFbyGroup() As Single) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMSYPlugin), "MSYEffortCompleted", New Object() {MSYEffortByFleet, MSYFbyGroup})
 
@@ -2041,7 +2041,7 @@ Public Class cPluginManager
 
 #Region " Monte Carlo "
 
-    Public Function MontCarloInitialized(ByVal MonteCarloAsObject As Object) As Boolean
+    Public Function MontCarloInitialized(MonteCarloAsObject As Object) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MontCarloInitialized", New Object() {MonteCarloAsObject})
 
@@ -2053,7 +2053,7 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function MonteCarloBalancedEcopathModel(TrialNumber As Integer, ByVal nIterations As Integer) As Boolean
+    Public Function MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloBalancedEcopathModel", New Object() {TrialNumber, nIterations})
 
@@ -2114,8 +2114,8 @@ Public Class cPluginManager
     ''' <returns>A collection of <see cref="cPluginContext">plug-in contexts</see>
     ''' linking to plug-ins of the given type.</returns>
     ''' ---------------------------------------------------------------------------
-    Public Function GetPluginDefs(ByVal t As Type,
-                                  Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
+    Public Function GetPluginDefs(t As Type,
+                                  Optional pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
 
         Dim collPlugins As New List(Of cPluginContext)
         Dim lpa As New List(Of cPluginAssembly)
@@ -2141,8 +2141,8 @@ Public Class cPluginManager
     ''' <returns>A collection of <see cref="cPluginContext">plug-in contexts</see>
     ''' linking to plug-ins of the given type.</returns>
     ''' ---------------------------------------------------------------------------
-    Friend Function GetPluginDefs(ByVal strName As String,
-                                  Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
+    Friend Function GetPluginDefs(strName As String,
+                                  Optional pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
 
         Dim collPlugins As New List(Of cPluginContext)
         Dim lpa As New List(Of cPluginAssembly)
@@ -2167,8 +2167,8 @@ Public Class cPluginManager
     ''' <returns>A collection of <see cref="IPlugin">plug-ins</see> with the 
     ''' given name.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetPlugins(ByVal strName As String,
-                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
+    Public Function GetPlugins(strName As String,
+                               Optional pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
 
         Dim collPlugins As New List(Of IPlugin)
         Dim lpa As New List(Of cPluginAssembly)
@@ -2192,8 +2192,8 @@ Public Class cPluginManager
     ''' <returns>A collection of <see cref="IPlugin">plug-ins</see> with the 
     ''' given name.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetPlugins(ByVal t As Type,
-                               Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
+    Public Function GetPlugins(t As Type,
+                               Optional pa As cPluginAssembly = Nothing) As ICollection(Of IPlugin)
 
         Dim collPlugins As New List(Of IPlugin)
         Dim lpa As New List(Of cPluginAssembly)
@@ -2216,7 +2216,7 @@ Public Class cPluginManager
     ''' <param name="typeData">The <see cref="Type">type</see> of data to test.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function DataProducers(ByVal typeData As Type) As ICollection(Of IDataProducerPlugin)
+    Public Function DataProducers(typeData As Type) As ICollection(Of IDataProducerPlugin)
 
         Dim pa As cPluginAssembly = Nothing
         Dim pi As IPlugin = Nothing
@@ -2244,8 +2244,8 @@ Public Class cPluginManager
     ''' <value></value>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property PluginAssembly(ByVal strName As String,
-                                            Optional ByVal ver As Version = Nothing) As cPluginAssembly
+    Public ReadOnly Property PluginAssembly(strName As String,
+                                            Optional ver As Version = Nothing) As cPluginAssembly
         Get
             Dim an As AssemblyName = Nothing
             Dim bFound As Boolean = False
@@ -2320,7 +2320,7 @@ Public Class cPluginManager
     ''' <param name="coreExectionState">The state to verify.</param>
     ''' <returns>True if a plugin can execute for this state, false otherwise.</returns>
     ''' -----------------------------------------------------------------------
-    Public Delegate Function CanExecutePlugin(ByVal coreExectionState As eCoreExecutionState) As Boolean
+    Public Delegate Function CanExecutePlugin(coreExectionState As eCoreExecutionState) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -2330,7 +2330,7 @@ Public Class cPluginManager
     ''' enabled state for (optional). If this parameter is omitted, the enabled
     ''' state of all currently loaded IGUIPlugin instances is checked.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdatePluginEnabledStates(Optional ByVal ip As IGUIPlugin = Nothing)
+    Public Sub UpdatePluginEnabledStates(Optional ip As IGUIPlugin = Nothing)
 
         If Me.m_dlgtCoreState = Nothing Then Return
 
@@ -2359,7 +2359,7 @@ Public Class cPluginManager
 
 #Region " Plugin exception "
 
-    Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal ex As Exception)
+    Friend Sub RaisePluginException(assembly As cPluginAssembly, ex As Exception)
 
         Dim strAssembly As String = My.Resources.GENERIC_VALUE_UNKNOWN
 
@@ -2371,8 +2371,8 @@ Public Class cPluginManager
 
     End Sub
 
-    Friend Sub RaisePluginException(ByVal assembly As cPluginAssembly, ByVal plugin As IPlugin,
-      ByVal strMethodName As String, ByVal ex As Exception)
+    Friend Sub RaisePluginException(assembly As cPluginAssembly, plugin As IPlugin,
+      strMethodName As String, ex As Exception)
 
         Dim strAssembly As String = My.Resources.GENERIC_VALUE_UNKNOWN
         Dim strPlugin As String = My.Resources.GENERIC_VALUE_UNKNOWN
@@ -2389,7 +2389,7 @@ Public Class cPluginManager
 
     End Sub
 
-    Friend Sub RaisePluginException(ByVal pex As cPluginException)
+    Friend Sub RaisePluginException(pex As cPluginException)
 
         'Debug.Assert(False, strMessage & Environment.NewLine  & ex.Message)
         RaiseEvent PluginException(pex)
@@ -2453,11 +2453,11 @@ Public Class cPluginManager
     ''' instead.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Function TryInvokeMethod(ByVal typePlugin As Type,
-                                     ByVal strMethod As String,
-                                     Optional ByVal aArgs() As Object = Nothing,
-                                     Optional ByVal invocation As eInvocationType = eInvocationType.All,
-                                     Optional ByVal coll As ICollection(Of cPluginContext) = Nothing) As Boolean
+    Private Function TryInvokeMethod(typePlugin As Type,
+                                     strMethod As String,
+                                     Optional aArgs() As Object = Nothing,
+                                     Optional invocation As eInvocationType = eInvocationType.All,
+                                     Optional coll As ICollection(Of cPluginContext) = Nothing) As Boolean
 
         ' Fix arguments
         If (aArgs Is Nothing) Then aArgs = New Object() {}
@@ -2517,7 +2517,7 @@ Public Class cPluginManager
     ''' Marshall bridge for <see cref="InvokeMethod">InvokeMethod</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub MarshallInvokeMethod(ByVal state As Object)
+    Private Sub MarshallInvokeMethod(state As Object)
         ' Sanity check
         Debug.Assert(TypeOf (state) Is cInvokeMethodInfo)
 
@@ -2543,11 +2543,11 @@ Public Class cPluginManager
     ''' <param name="collPlugins">Collection of plugins to test, if any.</param>
     ''' <returns>True if the method could be found for the given type.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function InvokeMethod(ByVal typePlugin As Type,
-                                  ByVal strMethod As String,
-                                  ByVal aArgs() As Object,
-                                  ByVal invocation As eInvocationType,
-                                  ByVal collPlugins As ICollection(Of cPluginContext)) As Boolean
+    Private Function InvokeMethod(typePlugin As Type,
+                                  strMethod As String,
+                                  aArgs() As Object,
+                                  invocation As eInvocationType,
+                                  collPlugins As ICollection(Of cPluginContext)) As Boolean
 
         If (collPlugins Is Nothing) Then
             collPlugins = Me.GetPluginDefs(typePlugin)
@@ -2629,10 +2629,10 @@ Public Class cPluginManager
     ''' <returns>A successfully created <see cref="IPlugin"/> instance, or Nothing
     ''' if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadPlugin(ByVal assem As cPluginAssembly,
-                                ByVal strAssemblyPath As String,
-                                ByVal strClassName As String,
-                                Optional ByVal args() As Object = Nothing) As IPlugin
+    Private Function LoadPlugin(assem As cPluginAssembly,
+                                strAssemblyPath As String,
+                                strClassName As String,
+                                Optional args() As Object = Nothing) As IPlugin
 
         Dim clsRet As Object = Nothing
         Dim clsAssembly As Assembly = assem.Assembly
@@ -2663,7 +2663,7 @@ Public Class cPluginManager
     ''' <param name="t">The Type of the attribute to obtain.</param>
     ''' <returns>An object, or Nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ExtractAssemblyAttribute(ByVal assem As Assembly, ByVal t As Type) As Object
+    Private Function ExtractAssemblyAttribute(assem As Assembly, t As Type) As Object
         Dim oValues() As Object = assem.GetCustomAttributes(t, False)
         If oValues Is Nothing Then Return Nothing
         If oValues.Length = 0 Then Return Nothing
@@ -2678,7 +2678,7 @@ Public Class cPluginManager
     ''' <param name="assemPlugin">The assembly to test</param>
     ''' <returns>True if compatible.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetCompatibility(ByVal assemPlugin As Assembly) As cPluginAssembly.ePluginCompatibilityTypes
+    Private Function GetCompatibility(assemPlugin As Assembly) As cPluginAssembly.ePluginCompatibilityTypes
 
         ' List of assemblies that the specified assembly is EXPECTING. 
         ' This list includes assembly version numbers.

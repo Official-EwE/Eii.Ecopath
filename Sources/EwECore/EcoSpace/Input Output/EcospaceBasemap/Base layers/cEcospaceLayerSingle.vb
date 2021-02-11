@@ -56,11 +56,11 @@ Public Class cEcospaceLayerSingle
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore,
-                   ByVal manager As IEcospaceLayerManager,
-                   ByVal strName As String,
-                   ByVal varName As eVarNameFlags,
-                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
+    Public Sub New(core As cCore,
+                   manager As IEcospaceLayerManager,
+                   strName As String,
+                   varName As eVarNameFlags,
+                   Optional iIndex As Integer = cCore.NULL_VALUE)
         MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Single))
     End Sub
 
@@ -71,11 +71,11 @@ Public Class cEcospaceLayerSingle
     ''' <param name="core"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore,
-                   ByVal data As Single(,),
-                   ByVal strName As String,
-                   Optional ByVal meta As cVariableMetaData = Nothing,
-                   Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
+    Public Sub New(core As cCore,
+                   data As Single(,),
+                   strName As String,
+                   Optional meta As cVariableMetaData = Nothing,
+                   Optional vn As eVarNameFlags = eVarNameFlags.NotSet)
 
         MyBase.New(core, CObj(data), strName, GetType(Single), meta, vn)
 
@@ -86,11 +86,11 @@ Public Class cEcospaceLayerSingle
 #Region " Cell interaction "
 
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Return DirectCast(Me.Data, Single(,))(iRow, iCol)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim d As Single(,) = DirectCast(Me.Data, Single(,))
             Dim s As Single = Convert.ToSingle(value)
             If Me.ValidateCellValue(value) Then
@@ -143,7 +143,7 @@ Public Class cEcospaceLayerSingle
 
 #Region " Internals "
 
-    Protected Overrides Function ValidateCellValue(ByVal value As Object) As Boolean
+    Protected Overrides Function ValidateCellValue(value As Object) As Boolean
 
         If (Convert.IsDBNull(value)) Then Return False
         Dim sValue As Single = Convert.ToSingle(value)
@@ -188,7 +188,7 @@ Public Class cEcospaceLayerSingle
         '    Me.m_sMinValue = 0
         'End If
 
-        If (m_iNumValueCells > 0) Then
+        If (Me.m_iNumValueCells > 0) Then
             Me.m_sMeanValue = sTot / Me.m_iNumValueCells
         Else
             Me.m_sMeanValue = cCore.NULL_VALUE

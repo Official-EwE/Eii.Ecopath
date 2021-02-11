@@ -77,7 +77,7 @@ Namespace Style
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal aColors() As Color, ByVal adPositions() As Double)
+        Public Sub New(aColors() As Color, adPositions() As Double)
 
             MyBase.New(cCore.NULL_VALUE, False)
 
@@ -102,7 +102,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(ByVal dValue As Double, Optional ByVal dValueMax As Double = 1.0) As Color
+        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
 
             ' Pre
             Debug.Assert(Me.m_relbreaks.Length = Me.m_colors.Length)
@@ -164,7 +164,7 @@ Namespace Style
             Get
                 Return Me.m_colors
             End Get
-            Set(ByVal value As Color())
+            Set(value As Color())
                 Me.m_colors = value
             End Set
         End Property
@@ -182,7 +182,7 @@ Namespace Style
             Get
                 Return Me.m_relbreaks
             End Get
-            Set(ByVal value As Double())
+            Set(value As Double())
                 ReDim Me.m_absbreaks(value.Length - 1)
                 ReDim Me.m_relbreaks(value.Length - 1)
                 Dim dTotalPos As Double = 0.0#

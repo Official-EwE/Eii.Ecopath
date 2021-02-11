@@ -41,11 +41,11 @@ Public Class cEcopathIndicators
     ''' <param name="stanzaDS">The <see cref="cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
     ''' <param name="taxonDS">The <see cref="cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore,
-                   ByVal ecopathDS As cEcopathDataStructures,
-                   ByVal stanzaDS As cStanzaDatastructures,
-                   ByVal taxonDS As cTaxonDataStructures,
-                   ByVal lookup As cTaxonAnalysis)
+    Public Sub New(core As cCore,
+                   ecopathDS As cEcopathDataStructures,
+                   stanzaDS As cStanzaDatastructures,
+                   taxonDS As cTaxonDataStructures,
+                   lookup As cTaxonAnalysis)
         MyBase.New(core, ecopathDS, stanzaDS, taxonDS, lookup)
     End Sub
 

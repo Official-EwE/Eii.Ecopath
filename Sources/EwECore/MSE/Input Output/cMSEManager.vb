@@ -91,6 +91,10 @@ Namespace MSE
 
         Private m_VarToStat As New Dictionary(Of eVarNameFlags, eMSEStatNames)
 
+        ''' <summary>Messing with the setting of m_core somehow cripples Fit2Timeseries. Why? Dunno. 
+        ''' Still need a solid check when running multiple cores in parallel</summary>
+        Private m_debug As cCore = Nothing
+
 #End Region
 
 #Region "Connection and Disconnection"
@@ -110,7 +114,7 @@ Namespace MSE
 
             'm_MSECallback = Nothing
             'm_MSYCallback = Nothing
-            m_bConnected = False
+            Me.m_bConnected = False
 
         End Sub
 
@@ -124,13 +128,13 @@ Namespace MSE
 
         End Sub
 
-        Public ReadOnly Property EcopathFleetInputs(ByVal iFleet As Integer) As cMSEFleetInput
+        Public ReadOnly Property EcopathFleetInputs(iFleet As Integer) As cMSEFleetInput
             Get
                 Return DirectCast(Me.m_lstEcopathFleetInputs(iFleet), cMSEFleetInput)
             End Get
         End Property
 
-        Public ReadOnly Property FleetOutputs(ByVal iFleet As Integer) As cMSEFleetOutput
+        Public ReadOnly Property FleetOutputs(iFleet As Integer) As cMSEFleetOutput
             Get
                 Return DirectCast(Me.m_lstFleetOutputs(iFleet), cMSEFleetOutput)
             End Get
@@ -142,7 +146,7 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property GroupInputs(ByVal iGroup As Integer) As cMSEGroupInput
+        Public ReadOnly Property GroupInputs(iGroup As Integer) As cMSEGroupInput
             Get
                 Return DirectCast(Me.m_lstGroupInputs(iGroup), cMSEGroupInput)
             End Get
@@ -183,7 +187,7 @@ Namespace MSE
         End Property
 
 
-        Public ReadOnly Property GroupOutputs(ByVal iGroupIndex As Integer) As cMSEGroupOutput
+        Public ReadOnly Property GroupOutputs(iGroupIndex As Integer) As cMSEGroupOutput
             Get
                 Return DirectCast(Me.m_lstGroupOutputs(iGroupIndex), cMSEGroupOutput)
             End Get
@@ -216,7 +220,7 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property EffortStats(ByVal iGroupIndex As Integer) As cMSEStats
+        Public ReadOnly Property EffortStats(iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstEffortStats(iGroupIndex), cMSEStats)
             End Get
@@ -235,7 +239,7 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property FleetStats(ByVal iGroupIndex As Integer) As cMSEStats
+        Public ReadOnly Property FleetStats(iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstFleetStats(iGroupIndex), cMSEStats)
             End Get
@@ -243,26 +247,26 @@ Namespace MSE
 
         'm_lstFleetStats
 
-        Public ReadOnly Property GroupCatchStats(ByVal iGroupIndex As Integer) As cMSEStats
+        Public ReadOnly Property GroupCatchStats(iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstGroupCatchStats(iGroupIndex), cMSEStats)
             End Get
         End Property
 
-        Public ReadOnly Property BiomassStats(ByVal iGroupIndex As Integer) As cMSEStats
+        Public ReadOnly Property BiomassStats(iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstBiomassStats(iGroupIndex), cMSEStats)
             End Get
         End Property
 
 
-        Public ReadOnly Property BioEstimatesStats(ByVal iGroupIndex As Integer) As cMSEStats
+        Public ReadOnly Property BioEstimatesStats(iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstBioEstStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
             End Get
         End Property
 
-        Public ReadOnly Property FCompare(ByVal iGroupIndex As Integer) As cMSEStats
+        Public ReadOnly Property FCompare(iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstFStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
             End Get
@@ -297,7 +301,10 @@ Namespace MSE
 
 #Region "Construction Initialization and Running of the model"
 
-        Public Sub New(ByVal theCore As cCore, ByVal data As cMSEDataStructures)
+        Public Sub New(theCore As cCore, data As cMSEDataStructures)
+
+            Me.m_debug = theCore
+
             Me.m_output = New cMSEOutput(theCore)
             Me.m_parameters = New cMSEParameters(theCore)
             Me.m_MSE = New cMSE(theCore)
@@ -371,7 +378,7 @@ Namespace MSE
             Try
 
                 If Me.IsRunning Then
-                    Me.m_core.Messages.SendMessage(New cMessage("A Management Strategy Evaluation is already running. Only one evaluation can be run at a time.", _
+                    Me.m_core.Messages.SendMessage(New cMessage("A Management Strategy Evaluation is already running. Only one evaluation can be run at a time.",
                                                                 eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical, eDataTypes.MSEManager))
                     Return False
                 End If
@@ -385,15 +392,15 @@ Namespace MSE
                 End Try
 
 
-                m_thrdRunMSE = New Thread(AddressOf m_MSE.Run)
-                m_thrdRunMSE.Name = "MSE"
+                Me.m_thrdRunMSE = New Thread(AddressOf Me.m_MSE.Run)
+                Me.m_thrdRunMSE.Name = "MSE"
 
                 'set the wait object to block all calling threads
                 'this will set isRunning to True
                 Me.SetWait()
 
                 '  m_thrdRunMSE.Priority = ThreadPriority.Lowest
-                m_thrdRunMSE.Start()
+                Me.m_thrdRunMSE.Start()
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -408,10 +415,10 @@ Namespace MSE
         Public Function ValidateRun() As Boolean
             Dim bOK As Boolean = True
 
-            For iTimeSeries As Integer = 1 To m_core.nTimeSeries
-                If m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
-                    If m_core.EcosimTimeSeries(iTimeSeries).Enabled Then
-                        Dim sTypeTimeSeries2Check As String = m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType.ToString
+            For iTimeSeries As Integer = 1 To Me.m_core.nTimeSeries
+                If Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
+                    If Me.m_core.EcosimTimeSeries(iTimeSeries).Enabled Then
+                        Dim sTypeTimeSeries2Check As String = Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType.ToString
                         Dim fbMess As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.MSE_DISCARD_TIMESERIES_WARNING, sTypeTimeSeries2Check),
                                                    eCoreComponentType.MSE, eMessageType.DataValidation,
                                                    eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
@@ -535,7 +542,7 @@ Namespace MSE
 
         End Function
 
-        Public Sub RunMSYSearch(ByVal byFleet As Boolean)
+        Public Sub RunMSYSearch(byFleet As Boolean)
 
             Dim orgSearchMode As eSearchModes = Me.m_search.SearchMode
             Me.m_search.SearchMode = eSearchModes.NotInSearch
@@ -567,9 +574,13 @@ Namespace MSE
 
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
-            m_core = theCore
-            m_searchObjective = m_core.SearchObjective
-            m_search = theCore.m_SearchData
+            If (Not Object.ReferenceEquals(Me.m_debug, theCore)) Then
+                Debug.Assert(False, "Switching cores on the MSE?")
+            End If
+
+            Me.m_core = theCore
+            Me.m_searchObjective = Me.m_core.SearchObjective
+            Me.m_search = theCore.m_SearchData
 
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
             'if there is no current context then create a new one on this thread. I'm not sure why this can happen but it was in all the samples...
@@ -580,7 +591,7 @@ Namespace MSE
             'this may have to change when the input/output object are created
             Me.m_MSEdata.Init(theCore)
 
-            Me.m_MSE.Init(m_MSEdata, m_core.m_EcoSim, m_core.m_SearchData, m_core.m_EcoPathData, m_core.m_TSData, Me.m_core.PluginManager)
+            Me.m_MSE.Init(Me.m_MSEdata, Me.m_core.m_EcoSim, Me.m_core.m_SearchData, Me.m_core.m_EcoPathData, Me.m_core.m_TSData, Me.m_core.PluginManager)
 
             'Initialize the Batch manager
             Me.m_Batch.Init(Me.m_core, Me.m_MSE)
@@ -595,22 +606,22 @@ Namespace MSE
 
             'set the MSE model in Ecosim
             'Ecosim calls MSE.AssessFs() if the Search is turned On
-            Me.m_core.m_EcoSim.InitMSE(m_MSE)
+            Me.m_core.m_EcoSim.InitMSE(Me.m_MSE)
 
             Me.m_TotFleetValue = New cMSEStats(Me.m_core, Me.m_MSEdata.ValueFleetStats, eDataTypes.MSEValueTotalStats, Me.m_VarToStat, -9999, 1)
 
             'build the Input and Output objects
             Me.m_lstGroupInputs.Clear()
-            For igrp As Integer = 1 To m_core.nLivingGroups
-                Me.m_lstGroupInputs.Add(New cMSEGroupInput(m_core, m_core.m_EcoPathData.GroupDBID(igrp)))
+            For igrp As Integer = 1 To Me.m_core.nLivingGroups
+                Me.m_lstGroupInputs.Add(New cMSEGroupInput(Me.m_core, Me.m_core.m_EcoPathData.GroupDBID(igrp)))
             Next
 
             Me.m_lstEcopathFleetInputs.Clear()
             Me.m_lstFleetOutputs.Clear()
             Me.m_lstEffortStats.Clear()
             Me.m_lstFleetStats.Clear()
-            For iflt As Integer = 1 To m_core.nFleets
-                Me.m_lstEcopathFleetInputs.Add(New cMSEFleetInput(m_core, m_core.m_EcoPathData.FleetDBID(iflt)))
+            For iflt As Integer = 1 To Me.m_core.nFleets
+                Me.m_lstEcopathFleetInputs.Add(New cMSEFleetInput(Me.m_core, Me.m_core.m_EcoPathData.FleetDBID(iflt)))
                 Me.m_lstFleetOutputs.Add(New cMSEFleetOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
                 Me.m_lstEffortStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.EffortStats, eDataTypes.MSEEffortStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
                 Me.m_lstFleetStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchFleetStats, eDataTypes.MSECatchByFleetStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
@@ -622,7 +633,7 @@ Namespace MSE
             Me.m_lstBioEstStats.Clear()
             Me.m_lstFStats.Clear()
 
-            For igrp As Integer = 1 To m_core.nLivingGroups
+            For igrp As Integer = 1 To Me.m_core.nLivingGroups
                 'BioEst
                 Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
 
@@ -772,7 +783,7 @@ Namespace MSE
                     mseFlt.EffortRefLower = Me.m_MSEdata.EffortFleetBounds(iFleet).Lower
                     mseFlt.EffortRefUpper = Me.m_MSEdata.EffortFleetBounds(iFleet).Upper
 
-                    For igrp As Integer = 1 To m_core.nLivingGroups
+                    For igrp As Integer = 1 To Me.m_core.nLivingGroups
                         mseFlt.FleetWeight(igrp) = Me.m_MSEdata.Fweight(iFleet, igrp)
                     Next
 
@@ -786,17 +797,17 @@ Namespace MSE
                     mseFlt.LowerLPEffortBound = Me.m_MSEdata.LowLPEffort(iFleet)
                     mseFlt.UpperLPEffortBound = Me.m_MSEdata.UpperLPEffort(iFleet)
 
-                    For iGroup = 1 To m_core.nGroups
-                        mseFlt.QuotaShare(iGroup) = m_MSEdata.Quotashare(iFleet, iGroup)
+                    For iGroup = 1 To Me.m_core.nGroups
+                        mseFlt.QuotaShare(iGroup) = Me.m_MSEdata.Quotashare(iFleet, iGroup)
                     Next
 
                     mseFlt.ResetStatusFlags()
                     mseFlt.AllowValidation = True
                 Next
 
-                m_parameters.AllowValidation = False
-                m_parameters.AssessmentMethod = Me.m_MSEdata.AssessMethod
-                m_parameters.AssessPower = Me.m_MSEdata.AssessPower
+                Me.m_parameters.AllowValidation = False
+                Me.m_parameters.AssessmentMethod = Me.m_MSEdata.AssessMethod
+                Me.m_parameters.AssessPower = Me.m_MSEdata.AssessPower
 
                 'Use the first array element as the interface value
                 'Copied from EwE5
@@ -809,24 +820,24 @@ Namespace MSE
 
                 End Try
 
-                m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
-                m_parameters.NTrials = Me.m_MSEdata.NTrials
-                m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
-                m_parameters.EffortSource = Me.m_MSEdata.EffortSource
+                Me.m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
+                Me.m_parameters.NTrials = Me.m_MSEdata.NTrials
+                Me.m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
+                Me.m_parameters.EffortSource = Me.m_MSEdata.EffortSource
 
-                m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
-                m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
-                m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
-                m_parameters.MSEStartYear = Me.m_MSEdata.StartYear
+                Me.m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
+                Me.m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
+                Me.m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
+                Me.m_parameters.MSEStartYear = Me.m_MSEdata.StartYear
 
-                m_parameters.MSEResultsEndYear = Me.m_MSEdata.ResultsEndYear
+                Me.m_parameters.MSEResultsEndYear = Me.m_MSEdata.ResultsEndYear
 
-                m_parameters.MaxEffort = Me.m_MSEdata.MSEMaxEffort
-                m_parameters.UseLPSolution = Me.m_MSEdata.UseLPSolution
+                Me.m_parameters.MaxEffort = Me.m_MSEdata.MSEMaxEffort
+                Me.m_parameters.UseLPSolution = Me.m_MSEdata.UseLPSolution
 
-                m_parameters.ResetStatusFlags()
+                Me.m_parameters.ResetStatusFlags()
 
-                m_parameters.AllowValidation = True
+                Me.m_parameters.AllowValidation = True
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -900,7 +911,7 @@ Namespace MSE
         ''' Update the underlying core data with edits from the interface
         ''' </summary>
         ''' <remarks>This is called by the core when a variable passes validation via cCore.OnValidated()</remarks>
-        Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+        Public Function Update(DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
 
             Try
                 Select Case DataType
@@ -933,7 +944,7 @@ Namespace MSE
                             Me.m_MSEdata.Bbase(iGroup) = mseGrp.BBase
                             Me.m_MSEdata.Fopt(iGroup) = mseGrp.FOpt
                             Me.m_MSEdata.Fmin(iGroup) = mseGrp.Fmin
-                            Me.m_MSEdata.UseLPSolution = m_parameters.UseLPSolution
+                            Me.m_MSEdata.UseLPSolution = Me.m_parameters.UseLPSolution
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
                                 Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)
@@ -956,7 +967,7 @@ Namespace MSE
                             Me.m_MSEdata.EffortFleetBounds(iFleet).Upper = mseFlt.EffortRefUpper
                             Me.m_MSEdata.MSYEvaluateFleet(iFleet) = mseFlt.MSYEvaluateFleet
 
-                            For igrp As Integer = 1 To m_core.nLivingGroups
+                            For igrp As Integer = 1 To Me.m_core.nLivingGroups
                                 Me.m_MSEdata.Fweight(iFleet, igrp) = mseFlt.FleetWeight(igrp)
                             Next igrp
 
@@ -970,8 +981,8 @@ Namespace MSE
                             Me.m_MSEdata.LowLPEffort(iFleet) = mseFlt.LowerLPEffortBound
                             Me.m_MSEdata.UpperLPEffort(iFleet) = mseFlt.UpperLPEffortBound
 
-                            For iGroup As Integer = 1 To m_core.nGroups
-                                m_MSEdata.Quotashare(iFleet, iGroup) = mseFlt.QuotaShare(iGroup)
+                            For iGroup As Integer = 1 To Me.m_core.nGroups
+                                Me.m_MSEdata.Quotashare(iFleet, iGroup) = mseFlt.QuotaShare(iGroup)
                             Next
 
                         Next mseFlt
@@ -1099,7 +1110,7 @@ Namespace MSE
         ''' </summary>
         ''' <param name="CallBackType"></param>
         ''' <remarks></remarks>
-        Private Sub OnMSECallBack(ByVal CallBackType As eMSERunStates)
+        Private Sub OnMSECallBack(CallBackType As eMSERunStates)
             'this is called on the MSE worker thread
             'so even if the main thread has called Wait() and is blocking this code will be processed and the MSE can continue 
 
@@ -1110,14 +1121,14 @@ Namespace MSE
 
                 'At this time it is possible to run the manager without it being connected to an interface
                 'This is so it can be run as a TOOL or as part of a Plugin process without calling an interface
-                If m_bConnected Then
+                If Me.m_bConnected Then
 
                     'make sure something didn't screwup
-                    Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                    Debug.Assert(Me.m_SyncOb IsNot Nothing And Me.m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
 
                     'Connected so call the interface
                     'm_SyncOb.Post(New System.Threading.SendOrPostCallback(AddressOf fireCallBack), CallBackType)
-                    m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf fireCallBack), CallBackType)
+                    Me.m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireCallBack), CallBackType)
 
                 End If
 
@@ -1128,12 +1139,12 @@ Namespace MSE
         End Sub
 
 
-        Private Sub fireCallBack(ByVal obj As Object)
+        Private Sub fireCallBack(obj As Object)
             Try
                 'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
-                If m_MSECallback IsNot Nothing Then
+                If Me.m_MSECallback IsNot Nothing Then
                     Dim cbType As eMSERunStates = DirectCast(obj, eMSERunStates)
-                    m_MSECallback.Invoke(cbType)
+                    Me.m_MSECallback.Invoke(cbType)
                 End If
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
@@ -1141,7 +1152,7 @@ Namespace MSE
         End Sub
 
 
-        Private Sub ProcessCallBack(ByVal CallBackType As eMSERunStates)
+        Private Sub ProcessCallBack(CallBackType As eMSERunStates)
 
             ' System.Console.WriteLine(Me.ToString & " Callback type = " & CallBackType.ToString)
 
@@ -1212,7 +1223,7 @@ Namespace MSE
         ''' Callback handler called by the MSY search 
         ''' </summary>
         ''' <remarks></remarks>
-        Private Sub OnMSYCallBack(ByVal MYSProgress As cMSYProgressArgs)
+        Private Sub OnMSYCallBack(MYSProgress As cMSYProgressArgs)
             'this is called on the MSE worker thread
             'so even if the main thread has called Wait() and is blocking this code will be processed and the MSE can continue 
 
@@ -1220,11 +1231,11 @@ Namespace MSE
 
                 'At this time it is possible to run the manager without it being connected to an interface
                 'This is so it can be run as a TOOL or as part of a Plugin process without calling an interface
-                If m_bConnected Then
+                If Me.m_bConnected Then
 
                     'make sure something didn't screwup
-                    Debug.Assert(m_SyncOb IsNot Nothing And Me.m_MSYCallback IsNot Nothing, Me.ToString & ".OnMSYCallBack() not connected properly.")
-                    m_SyncOb.Post(New System.Threading.SendOrPostCallback(AddressOf fireMSYCallBack), MYSProgress)
+                    Debug.Assert(Me.m_SyncOb IsNot Nothing And Me.m_MSYCallback IsNot Nothing, Me.ToString & ".OnMSYCallBack() not connected properly.")
+                    Me.m_SyncOb.Post(New System.Threading.SendOrPostCallback(AddressOf Me.fireMSYCallBack), MYSProgress)
 
                 End If
 
@@ -1235,10 +1246,10 @@ Namespace MSE
         End Sub
 
 
-        Private Sub fireMSYCallBack(ByVal obj As Object)
+        Private Sub fireMSYCallBack(obj As Object)
             Try
-                Debug.Assert(m_SyncOb IsNot Nothing And m_MSYCallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
-                m_MSYCallback(DirectCast(obj, cMSYProgressArgs))
+                Debug.Assert(Me.m_SyncOb IsNot Nothing And Me.m_MSYCallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                Me.m_MSYCallback(DirectCast(obj, cMSYProgressArgs))
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
             End Try
@@ -1285,7 +1296,7 @@ Namespace MSE
             Me.m_output.EmployValue = Me.m_MSEdata.BaseEmployVal
             Me.m_output.MandatedValue = Me.m_MSEdata.BaseManValue
 
-            Dim nt As Integer = m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
+            Dim nt As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
             For Each grp As cMSEGroupOutput In Me.m_lstGroupOutputs
                 Dim igrp As Integer = grp.Index
                 grp.Init()
@@ -1319,7 +1330,7 @@ Namespace MSE
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
 
             End Set
         End Property
@@ -1332,7 +1343,7 @@ Namespace MSE
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
 
             End Set
         End Property
@@ -1341,7 +1352,7 @@ Namespace MSE
             Get
                 Return Me.ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
 
             End Set
         End Property
@@ -1350,13 +1361,13 @@ Namespace MSE
 
 #Region "ISearchObjective"
 
-        Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+        Public ReadOnly Property FleetObjectives(iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
             Get
                 Return Me.m_searchObjective.FleetObjectives(iFleet)
             End Get
         End Property
 
-        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+        Public ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
             Get
                 Return Me.m_searchObjective.GroupObjectives(iGroup)
             End Get
@@ -1380,7 +1391,7 @@ Namespace MSE
             MyBase.Finalize()
         End Sub
 
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
             Dim result As Boolean = True
 
             If (Me.m_core Is Nothing) Then Return True

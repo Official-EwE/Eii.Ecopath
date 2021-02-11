@@ -79,7 +79,7 @@ Friend Class cDBUpdate6_00_04_022
 
     End Function
 
-    Private Function AddDiscardMortality(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddDiscardMortality(db As cEwEDatabase) As Boolean
 
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
@@ -105,7 +105,7 @@ Friend Class cDBUpdate6_00_04_022
 
     End Function
 
-    Private Function UpdateEcosimFleets(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateEcosimFleets(db As cEwEDatabase) As Boolean
 
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
@@ -134,7 +134,7 @@ Friend Class cDBUpdate6_00_04_022
 
     End Function
 
-    Private Function AddQuotaTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddQuotaTable(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -161,7 +161,7 @@ Friend Class cDBUpdate6_00_04_022
         Public m_sVulnerability As Single
     End Structure
 
-    Private Function FlipVulMult(ByVal db As cEwEDatabase) As Boolean
+    Private Function FlipVulMult(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -220,7 +220,7 @@ Friend Class cDBUpdate6_00_04_022
         Public m_iFunctionType As eForcingFunctionApplication
     End Structure
 
-    Private Function FlipPredPreyShapes(ByVal db As cEwEDatabase) As Boolean
+    Private Function FlipPredPreyShapes(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim writer As cEwEDatabase.cEwEDbWriter = Nothing

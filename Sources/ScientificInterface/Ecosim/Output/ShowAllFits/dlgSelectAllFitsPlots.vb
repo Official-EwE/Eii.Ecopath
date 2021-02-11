@@ -39,7 +39,7 @@ Namespace Ecosim
 
         Private m_lplots As cShowAllFitsPlotData()
 
-        Public Sub New(ByVal lplots() As cShowAllFitsPlotData)
+        Public Sub New(lplots() As cShowAllFitsPlotData)
 
             Me.InitializeComponent()
             Me.m_lplots = lplots
@@ -52,32 +52,32 @@ Namespace Ecosim
             Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
 
-            clbAllPlots.Items.Clear()
+            Me.clbAllPlots.Items.Clear()
 
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
-                clbAllPlots.Items.Add(plot, plot.Selected)
+                Me.clbAllPlots.Items.Add(plot, plot.Selected)
             Next
 
         End Sub
 
-        Private Sub btnCheckAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCheckAll.Click
+        Private Sub btnCheckAll_Click(sender As System.Object, e As System.EventArgs) Handles btnCheckAll.Click
 
-            For i As Integer = 0 To clbAllPlots.Items.Count - 1
-                clbAllPlots.SetItemChecked(i, True)
+            For i As Integer = 0 To Me.clbAllPlots.Items.Count - 1
+                Me.clbAllPlots.SetItemChecked(i, True)
             Next
 
         End Sub
 
-        Private Sub btnUnCheckAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUnCheckAll.Click
+        Private Sub btnUnCheckAll_Click(sender As System.Object, e As System.EventArgs) Handles btnUnCheckAll.Click
 
-            For i As Integer = 0 To clbAllPlots.Items.Count - 1
-                clbAllPlots.SetItemChecked(i, False)
+            For i As Integer = 0 To Me.clbAllPlots.Items.Count - 1
+                Me.clbAllPlots.SetItemChecked(i, False)
             Next
 
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Private Sub OK_Button_Click(sender As System.Object, e As System.EventArgs) Handles OK_Button.Click
 
             Dim plot As cShowAllFitsPlotData = Nothing
 
@@ -91,7 +91,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub Cancel_Button_Click(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
 
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()

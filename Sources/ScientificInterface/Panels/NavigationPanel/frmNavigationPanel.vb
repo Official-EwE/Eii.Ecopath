@@ -78,8 +78,8 @@ Public Class frmNavigationPanel
     ''' <param name="pluginManager">The plug-in manager to obtain tree 
     ''' extensions for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext,
-                   ByVal pluginManager As EwEPlugin.cPluginManager)
+    Public Sub New(uic As cUIContext,
+                   pluginManager As EwEPlugin.cPluginManager)
 
         ' Sanity check
         Debug.Assert(uic IsNot Nothing)
@@ -97,11 +97,11 @@ Public Class frmNavigationPanel
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+    Protected Overrides Sub Dispose(bDisposing As Boolean)
 
         If bDisposing Then
-            If components IsNot Nothing Then
-                components.Dispose()
+            If Me.components IsNot Nothing Then
+                Me.components.Dispose()
             End If
         End If
         MyBase.Dispose(bDisposing)
@@ -112,7 +112,7 @@ Public Class frmNavigationPanel
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Dim nodeModel As TreeNode = Nothing
@@ -397,13 +397,13 @@ Public Class frmNavigationPanel
             Me.m_ntPluginHandler = New cPluginNavTreeHandler(Me.m_tvNavigation, Me.m_pluginManager, Me.m_uic.CommandHandler)
         End If
 
-        AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
+        AddHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreEcecutionStateChanged
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreEcecutionStateChanged
+        RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreEcecutionStateChanged
 
         Me.Icon.Dispose()
 
@@ -432,14 +432,14 @@ Public Class frmNavigationPanel
     ''' </summary>
     ''' <param name="bUseDefault">States whether default node may be considered.</param>
     ''' <remarks>In order to highlight the selection</remarks>
-    Public Property SelectedNodeName(Optional ByVal bUseDefault As Boolean = False) As String
+    Public Property SelectedNodeName(Optional bUseDefault As Boolean = False) As String
 
         Get
             If Me.m_tvNavigation.SelectedNode Is Nothing Then Return ""
             Return Me.m_tvNavigation.SelectedNode.Name
         End Get
 
-        Set(ByVal value As String)
+        Set(value As String)
 
             Dim bSelected As Boolean = False
             Dim nd As TreeNode = Nothing
@@ -473,7 +473,7 @@ Public Class frmNavigationPanel
 
 #Region " Event handlers "
 
-    Private Sub OnCoreEcecutionStateChanged(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreEcecutionStateChanged(csm As cCoreStateMonitor)
         With Me.m_tvNavigation
             If csm.HasEcopathLoaded Then
                 .Visible = True
@@ -492,7 +492,7 @@ Public Class frmNavigationPanel
 #Region " Internals "
 
     Protected Sub RemoveNode(strNode As String)
-        Dim tn As TreeNode = Me.FindNode(m_tvNavigation.Nodes, strNode)
+        Dim tn As TreeNode = Me.FindNode(Me.m_tvNavigation.Nodes, strNode)
         If (tn IsNot Nothing) Then
             Me.m_tvNavigation.Nodes.Remove(tn)
             cLog.Write(String.Format("NavPanel: Removed BETA node '{0}' from navigation tree", strNode))
@@ -505,7 +505,7 @@ Public Class frmNavigationPanel
     ''' <see cref="TreeNode.Text">node text</see> as the key.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Function FindNode(ByVal nodes As TreeNodeCollection, ByVal strText As String) As TreeNode
+    Private Function FindNode(nodes As TreeNodeCollection, strText As String) As TreeNode
 
         Dim nodeFound As TreeNode = Nothing
 
@@ -520,7 +520,7 @@ Public Class frmNavigationPanel
 
             ' Search all child nodes
             If nodeSearch.GetNodeCount(False) <> 0 Then
-                nodeFound = FindNode(nodeSearch.Nodes, strText)
+                nodeFound = Me.FindNode(nodeSearch.Nodes, strText)
                 If Not nodeFound Is Nothing Then Exit For
             End If
         Next

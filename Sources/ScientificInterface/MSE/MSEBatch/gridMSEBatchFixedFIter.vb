@@ -80,10 +80,10 @@ Public Class gridMSEBatchFixedFIter
         Dim group As MSE.cMSEBatchFGroup = Nothing
 
         ' For each group
-        For iParIter As Integer = 1 To Core.MSEBatchManager.Parameters.nFixedFIteration
+        For iParIter As Integer = 1 To Me.Core.MSEBatchManager.Parameters.nFixedFIteration
 
             'Get the group info
-            group = Core.MSEBatchManager.FixedFGroups(iSelGroup)
+            group = Me.Core.MSEBatchManager.FixedFGroups(Me.iSelGroup)
 
 
             Me.AddRow()
@@ -112,14 +112,14 @@ Public Class gridMSEBatchFixedFIter
 
     Public Property iSelGroup As Integer
         Get
-            Return m_iSelGroup
+            Return Me.m_iSelGroup
         End Get
 
         Set(value As Integer)
 
             If Me.UIContext IsNot Nothing Then
                 If value <= Me.UIContext.Core.nGroups Then
-                    m_iSelGroup = value
+                    Me.m_iSelGroup = value
                     Me.RefreshContent()
                 End If
             End If
@@ -145,7 +145,7 @@ Public Class gridMSEBatchFixedFIter
     ''' just edited for text and combo box controls. *sigh*
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         Try
 
@@ -153,7 +153,7 @@ Public Class gridMSEBatchFixedFIter
             Dim iIter As Integer = p.Row
             Dim igrp As Integer = Me.iSelGroup
 
-            Dim group As MSE.cMSEBatchFGroup = Core.MSEBatchManager.FixedFGroups(iSelGroup)
+            Dim group As MSE.cMSEBatchFGroup = Me.Core.MSEBatchManager.FixedFGroups(Me.iSelGroup)
             group.FixedFValue(iIter) = CSng(val)
 
         Catch ex As Exception

@@ -140,10 +140,10 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Attach(ByVal stb As ucShapeToolbox, _
-                                      ByVal stbtb As ucShapeToolboxToolbar, _
-                                      ByVal sp As ucSketchPad, _
-                                      ByVal sptb As ucSketchPadToolbar)
+        Public Overridable Sub Attach(stb As ucShapeToolbox, _
+                                      stbtb As ucShapeToolboxToolbar, _
+                                      sp As ucSketchPad, _
+                                      sptb As ucSketchPadToolbar)
 
             Me.ShapeToolBox = stb
             Me.ShapeToolBoxToolbar = stbtb
@@ -196,7 +196,7 @@ Namespace Controls
         ''' <param name="shape">Forcing function to evaluate.</param>
         ''' <returns>True if forcing function should be included in the list.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function IncludeShape(ByVal shape As cShapeData) As Boolean
+        Protected Overridable Function IncludeShape(shape As cShapeData) As Boolean
 
             Dim bUseShape As Boolean = True
 
@@ -235,7 +235,7 @@ Namespace Controls
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <returns>True if supported.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function SupportCommand(ByVal cmd As eShapeCommandTypes) As Boolean
+        Public MustOverride Function SupportCommand(cmd As eShapeCommandTypes) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -244,7 +244,7 @@ Namespace Controls
         ''' <param name="cmd">The <see cref="eShapeCommandTypes">command</see> to test.</param>
         ''' <returns>True if enabled.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function EnableCommand(ByVal cmd As eShapeCommandTypes) As Boolean
+        Public MustOverride Function EnableCommand(cmd As eShapeCommandTypes) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -254,9 +254,9 @@ Namespace Controls
         ''' <param name="shape">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
-                Optional ByVal shape As cShapeData() = Nothing, _
-                Optional ByVal data As Object = Nothing)
+        Public MustOverride Sub ExecuteCommand(cmd As eShapeCommandTypes, _
+                Optional shape As cShapeData() = Nothing, _
+                Optional data As Object = Nothing)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -273,7 +273,7 @@ Namespace Controls
         ''' <param name="shape">The newly selected shape, or Nothing when no 
         ''' shape is selected.</param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub OnShapeSelected(ByVal shape() As cShapeData)
+        Public MustOverride Sub OnShapeSelected(shape() As cShapeData)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -281,7 +281,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape">The shape that changed.</param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub OnShapeChanged(ByVal shape As cShapeData)
+        Public MustOverride Sub OnShapeChanged(shape As cShapeData)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -289,7 +289,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="shape"></param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub OnShapeFinalized(ByVal shape As cShapeData, ByVal sketchpad As ucSketchPad)
+        Public MustOverride Sub OnShapeFinalized(shape As cShapeData, sketchpad As ucSketchPad)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -344,7 +344,7 @@ Namespace Controls
             Get
                 Return Me.m_ashapeSelected
             End Get
-            Set(ByVal value As cShapeData())
+            Set(value As cShapeData())
 
                 'If (Me.m_bInUpdate) Then Return
                 'Me.m_bInUpdate = True
@@ -386,7 +386,7 @@ Namespace Controls
                 End If
                 Return Nothing
             End Get
-            Set(ByVal value As cShapeData)
+            Set(value As cShapeData)
 
                 If value Is Nothing Then
                     Me.SelectedShapes = Nothing
@@ -424,7 +424,7 @@ Namespace Controls
 
 #Region " Tools "
 
-        Protected Overridable Sub SaveAsImage(ByVal shape As cShapeData, ByVal sp As ucSketchPad)
+        Protected Overridable Sub SaveAsImage(shape As cShapeData, sp As ucSketchPad)
 
             Dim msg As cMessage = Nothing
             Dim strError As String = ""
@@ -479,7 +479,7 @@ Namespace Controls
         ''' the seasonal pattern across the entire length of the shape.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub SetSeasonal(ByVal shape As cShapeData, ByVal bSeasonal As Boolean)
+        Public Overridable Sub SetSeasonal(shape As cShapeData, bSeasonal As Boolean)
 
             Dim fms As cFeedbackMessage = Nothing
 
@@ -539,7 +539,7 @@ Namespace Controls
             Get
                 Return -1
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 ' NOP
             End Set
         End Property
@@ -572,7 +572,7 @@ Namespace Controls
 
 #Region " Public access "
 
-        Public Event OnRefreshed(ByVal sender As cShapeGUIHandler)
+        Public Event OnRefreshed(sender As cShapeGUIHandler)
 
         Public ReadOnly Property Core() As cCore
             Get
@@ -590,19 +590,19 @@ Namespace Controls
             Get
                 Return Me.m_sketchPad
             End Get
-            Set(ByVal value As ucSketchPad)
+            Set(value As ucSketchPad)
 
                 If (Me.m_sketchPad IsNot Nothing) Then
                     If (ReferenceEquals(Me.m_sketchPad.Handler, Me)) Then Me.m_sketchPad.Handler = Nothing
-                    RemoveHandler Me.m_sketchPad.ShapeChanged, AddressOf OnShapeChanged
-                    RemoveHandler Me.m_sketchPad.ShapeFinalized, AddressOf OnShapeFinalized
+                    RemoveHandler Me.m_sketchPad.ShapeChanged, AddressOf Me.OnShapeChanged
+                    RemoveHandler Me.m_sketchPad.ShapeFinalized, AddressOf Me.OnShapeFinalized
                 End If
 
                 Me.m_sketchPad = value
 
                 If (Me.m_sketchPad IsNot Nothing) Then
-                    AddHandler Me.m_sketchPad.ShapeChanged, AddressOf OnShapeChanged
-                    AddHandler Me.m_sketchPad.ShapeFinalized, AddressOf OnShapeFinalized
+                    AddHandler Me.m_sketchPad.ShapeChanged, AddressOf Me.OnShapeChanged
+                    AddHandler Me.m_sketchPad.ShapeFinalized, AddressOf Me.OnShapeFinalized
                     Me.m_sketchPad.ShapeColor = Me.Color
                     Me.m_sketchPad.YAxisMinValue = Me.MinYScale
                     Me.m_sketchPad.NumDataPoints = Me.NumDataYears
@@ -622,17 +622,17 @@ Namespace Controls
             Get
                 Return Me.m_shapeToolBox
             End Get
-            Set(ByVal value As ucShapeToolbox)
+            Set(value As ucShapeToolbox)
 
                 If (Me.m_shapeToolBox IsNot Nothing) Then
                     Me.m_shapeToolBox.Handler = Nothing
-                    RemoveHandler Me.m_shapeToolBox.OnSelectionChanged, AddressOf OnShapeSelected
+                    RemoveHandler Me.m_shapeToolBox.OnSelectionChanged, AddressOf Me.OnShapeSelected
                 End If
 
                 Me.m_shapeToolBox = value
 
                 If (Me.m_shapeToolBox IsNot Nothing) Then
-                    AddHandler Me.m_shapeToolBox.OnSelectionChanged, AddressOf OnShapeSelected
+                    AddHandler Me.m_shapeToolBox.OnSelectionChanged, AddressOf Me.OnShapeSelected
                     Me.m_shapeToolBox.Handler = Me
                     Me.m_shapeToolBox.UIContext = Me.UIContext
                     Me.m_shapeToolBox.Color = Me.Color
@@ -652,7 +652,7 @@ Namespace Controls
             Get
                 Return Me.m_shapeToolBoxToolbar
             End Get
-            Set(ByVal value As ucShapeToolboxToolbar)
+            Set(value As ucShapeToolboxToolbar)
 
                 If (Me.m_shapeToolBoxToolbar IsNot Nothing) Then
                     Me.m_shapeToolBoxToolbar.Handler = Nothing
@@ -676,7 +676,7 @@ Namespace Controls
             Get
                 Return Me.m_sketchPadToolbar
             End Get
-            Set(ByVal value As ucSketchPadToolbar)
+            Set(value As ucSketchPadToolbar)
 
                 If (Me.m_sketchPadToolbar IsNot Nothing) Then
                     Me.m_sketchPadToolbar.Handler = Nothing
@@ -714,7 +714,7 @@ Namespace Controls
         ''' <returns>A shape gui handler, or nothing if the data type did not 
         ''' denote a shape type.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetShapeUIHandler(ByVal dt As eDataTypes, uic As cUIContext) As cShapeGUIHandler
+        Public Shared Function GetShapeUIHandler(dt As eDataTypes, uic As cUIContext) As cShapeGUIHandler
             Select Case dt
                 Case eDataTypes.Forcing : Return New cForcingShapeGUIHandler(uic)
                 Case eDataTypes.FishingEffort : Return New cFishingEffortShapeGUIHandler(uic)
@@ -737,7 +737,7 @@ Namespace Controls
         ''' <returns>A shape gui handler, or nothing if the shape is of a new type
         ''' that is not yet supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetShapeUIHandler(ByVal shape As cShapeData, uic As cUIContext) As cShapeGUIHandler
+        Public Shared Function GetShapeUIHandler(shape As cShapeData, uic As cUIContext) As cShapeGUIHandler
             If (shape Is Nothing) Then Return Nothing
             Dim handler As cShapeGUIHandler = cShapeGUIHandler.GetShapeUIHandler(shape.DataType, uic)
             Debug.Assert(handler IsNot Nothing, "Unknown shape type")

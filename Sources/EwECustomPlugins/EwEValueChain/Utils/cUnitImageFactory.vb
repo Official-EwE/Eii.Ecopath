@@ -26,7 +26,7 @@ Imports System.Drawing
 
 Public Class cUnitImageFactory
 
-    Public Shared Function GetImage(ByVal unitType As cUnitFactory.eUnitType) As Image
+    Public Shared Function GetImage(unitType As cUnitFactory.eUnitType) As Image
 
         Select Case unitType
             Case cUnitFactory.eUnitType.Producer

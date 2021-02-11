@@ -47,6 +47,6 @@ Public Interface IEcopathMassBalancePlugin
     ''' of this type that successfully executes blocks the execution of any other
     ''' plug-in of this type.</remarks>
     ''' -----------------------------------------------------------------------
-    Function EcopathMassBalance(ByVal EcoPathDataStructures As Object, ByVal eEstimateFor As Integer, ByRef iResult As Integer) As Boolean
+    Function EcopathMassBalance(EcoPathDataStructures As Object, eEstimateFor As Integer, ByRef iResult As Integer) As Boolean
 
 End Interface

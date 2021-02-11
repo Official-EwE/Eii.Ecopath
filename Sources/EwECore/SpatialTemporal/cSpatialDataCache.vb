@@ -280,7 +280,7 @@ Namespace SpatialData
                                           strExt As String,
                                           bCreateIfMissing As Boolean) As String
 
-            Dim strPath As String = GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
+            Dim strPath As String = Me.GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
             Dim strFileName As String = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}[{1}]{2}", dt.ToString("yyyy-MM-dd"), strFilter, strExt), bCreateIfMissing)
 
             Return System.IO.Path.Combine(strPath, strFileName)

@@ -61,8 +61,8 @@ Public Class cF2TSManager
     Private m_nonBlockingWait As cNonBlockingWaitHandle
 
 
-    Friend Sub New(ByRef theCore As cCore)
-        MyBase.New(theCore)
+    Friend Sub New(core As cCore)
+        MyBase.New(core)
 
         Me.m_lstMessages = New List(Of cMessage)
 
@@ -72,75 +72,74 @@ Public Class cF2TSManager
         Me.m_coreComponent = eCoreComponentType.EcoSimFitToTimeSeries
         Me.m_dataType = eDataTypes.FitToTimeSeries
 
-        Me.m_core = theCore
-        Me.m_EPData = theCore.m_EcoPathData
-        Me.m_ESData = theCore.m_EcoSimData
+        Me.m_EPData = core.m_EcoPathData
+        Me.m_ESData = core.m_EcoSimData
 
-        m_searchObjective = theCore.SearchObjective
+        Me.m_searchObjective = core.SearchObjective
         Me.m_nonBlockingWait = New cNonBlockingWaitHandle
 
         'default OK status used for setVariable
-        m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+        Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'boolean
         ' F2TSVulnerabilitySearch
-        val = New cValue(New Boolean, eVarNameFlags.F2TSVulnerabilitySearch, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Boolean, eVarNameFlags.F2TSVulnerabilitySearch, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
         'boolean
         ' AnomalySearch
-        val = New cValue(New Boolean, eVarNameFlags.F2TSAnomalySearch, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Boolean, eVarNameFlags.F2TSAnomalySearch, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
         ' UseDefaultVs
-        val = New cValue(New Boolean, eVarNameFlags.F2TSUseDefaultV, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Boolean, eVarNameFlags.F2TSUseDefaultV, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
         ' F2TSCatchAnomaly
-        val = New cValue(New Boolean, eVarNameFlags.F2TSCatchAnomaly, eStatusFlags.Null, eValueTypes.Bool)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Boolean, eVarNameFlags.F2TSCatchAnomaly, eStatusFlags.Null, eValueTypes.Bool)
+        Me.m_values.Add(val.varName, val)
 
         'singles
         ' F2TSFirstYear
-        val = New cValue(New Integer, eVarNameFlags.F2TSFirstYear, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.F2TSFirstYear, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' F2TSLastYear
-        val = New cValue(New Integer, eVarNameFlags.F2TSLastYear, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.F2TSLastYear, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' F2TSVulnerabilityVariance
-        val = New cValue(New Single, eVarNameFlags.F2TSVulnerabilityVariance, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.F2TSVulnerabilityVariance, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' F2TSPPVariance
-        val = New cValue(New Single, eVarNameFlags.F2TSPPVariance, eStatusFlags.Null, eValueTypes.Sng)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Single, eVarNameFlags.F2TSPPVariance, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         'integers
         ' F2TSCatchAnomalySearchShape
-        val = New cValue(New Integer, eVarNameFlags.F2TSCatchAnomalySearchShapeNumber, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.F2TSCatchAnomalySearchShapeNumber, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         ' F2TSNumSplinePoints
-        val = New cValue(New Integer, eVarNameFlags.F2TSNumSplinePoints, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.F2TSNumSplinePoints, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         'Singlearray
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.F2TSAppliedWeights, eStatusFlags.Null, eCoreCounterTypes.nTimeSeriesApplied, AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.F2TSAppliedWeights, eStatusFlags.Null, eCoreCounterTypes.nTimeSeriesApplied)
+        Me.m_values.Add(val.varName, val)
 
         ' AIC N Data points
-        val = New cValue(New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int)
-        m_values.Add(val.varName, val)
+        val = New cValue(core, New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
 
         Me.ResetStatusFlags()
         Me.AllowValidation = True
 
         ' Create and configure model
         Me.m_model = New cF2TSModel(Me.m_core, Me.m_core.m_EcoSim, Me.m_EPData, Me.m_ESData)
-        Me.m_model.Init(AddressOf RunStartedCallback, AddressOf RunStepCallback, AddressOf RunStoppedCallback, _
-                        AddressOf AddMessageCallback, AddressOf RunModelCallBack, AddressOf Me.SendMessageCallback)
+        Me.m_model.Init(AddressOf Me.RunStartedCallback, AddressOf Me.RunStepCallback, AddressOf Me.RunStoppedCallback,
+                        AddressOf Me.AddMessageCallback, AddressOf Me.RunModelCallBack, AddressOf Me.SendMessageCallback)
 
     End Sub
 
@@ -211,7 +210,7 @@ Public Class cF2TSManager
                         runStoppedCallback As RunStoppedDelegate,
                         RunModelCallBack As RunModelDelegate)
 
-        Debug.Assert(m_runstartedHandler = Nothing, "Manager already connected?")
+        Debug.Assert(Me.m_runstartedHandler = Nothing, "Manager already connected?")
 
         Try
             Me.m_SyncObject = syncObject
@@ -353,7 +352,7 @@ Public Class cF2TSManager
 
     Public Property AnomalySearchShapeNumber() As Integer
         Get
-            Return CInt(GetVariable(eVarNameFlags.F2TSCatchAnomalySearchShapeNumber))
+            Return CInt(Me.GetVariable(eVarNameFlags.F2TSCatchAnomalySearchShapeNumber))
         End Get
         Set(value As Integer)
             Me.SetVariable(eVarNameFlags.F2TSCatchAnomalySearchShapeNumber, value)
@@ -462,10 +461,10 @@ Public Class cF2TSManager
     ''' </summary>
     Public Property nBlockCodes() As Integer
         Get
-            Return m_model.nBlockCodes
+            Return Me.m_model.nBlockCodes
         End Get
         Set(value As Integer)
-            m_model.nBlockCodes = value
+            Me.m_model.nBlockCodes = value
         End Set
     End Property
 
@@ -493,7 +492,7 @@ Public Class cF2TSManager
 
             If (Me.AnomalySearch) Then bCanRun = bCanRun And (Me.AnomalySearchShapeNumber > 0)
             'isRefDataLoaded() will send a message if there is not data loaded
-            bCanRun = bCanRun And isRefDataLoaded()
+            bCanRun = bCanRun And Me.isRefDataLoaded()
             ' bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
 
         Catch ex As Exception
@@ -503,7 +502,7 @@ Public Class cF2TSManager
 
         If Not bCanRun Then
             ' ToDo: globalize this
-            m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+            Me.m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End If
 
         Return bCanRun
@@ -543,12 +542,12 @@ Public Class cF2TSManager
 
     Private Function isRefDataLoaded() As Boolean
 
-        If m_core.m_TSData.NdatType > 0 Then
+        If Me.m_core.m_TSData.NdatType > 0 Then
             Return True
         End If
 
         'jb this should never happen but if it does we better tell the interface why this could not be run
-        m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_NO_TS,
+        Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_NO_TS,
                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
 
         Return False
@@ -565,7 +564,7 @@ Public Class cF2TSManager
             'the model will keep running until it hits the StopRun flag
             'at which point it will call the RunStoppedDelegate(eRunType)
             'this lets it die gracefully
-            m_model.StopRun = True
+            Me.m_model.StopRun = True
 
             result = Me.Wait(WaitTimeInMillSec)
 
@@ -606,7 +605,7 @@ Public Class cF2TSManager
                                                  Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
-        If Not CanRun() Then Return False
+        If Not Me.CanRun() Then Return False
 
         Try
             Me.SetWait()
@@ -623,8 +622,8 @@ Public Class cF2TSManager
 
             ' Launch requested analysis model 
             If (Me.m_SyncObject IsNot Nothing) And (RunThreaded <> TriState.False) Then
-                m_thrdRun = New Thread(AddressOf Me.m_model.RunSensitivitySS2VByPredPrey)
-                m_thrdRun.Start()
+                Me.m_thrdRun = New Thread(AddressOf Me.m_model.RunSensitivitySS2VByPredPrey)
+                Me.m_thrdRun.Start()
             Else
                 Me.m_model.RunSensitivitySS2VByPredPrey()
                 Me.ReleaseWait()
@@ -663,7 +662,7 @@ Public Class cF2TSManager
                                                  Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
-        If Not CanRun() Then Return False
+        If Not Me.CanRun() Then Return False
 
         Me.m_core.CheckResetDefaultVulnerabilities(bRunSilent)
 
@@ -678,8 +677,8 @@ Public Class cF2TSManager
 
             ' Launch requested analysis model 
             If (Me.m_SyncObject IsNot Nothing) And (RunThreaded <> TriState.False) Then
-                m_thrdRun = New Thread(AddressOf Me.m_model.RunSensitivitySS2VByPredator)
-                m_thrdRun.Start()
+                Me.m_thrdRun = New Thread(AddressOf Me.m_model.RunSensitivitySS2VByPredator)
+                Me.m_thrdRun.Start()
             Else
                 Me.m_model.RunSensitivitySS2VByPredator()
                 Me.ReleaseWait()
@@ -720,7 +719,7 @@ Public Class cF2TSManager
         Dim bSucces As Boolean = True
 
         ' Safety check
-        If Not CanRun() Then Return False
+        If Not Me.CanRun() Then Return False
 
         Me.m_core.m_FitToTimeSeriesData.RunSilent = bRunSilent
 
@@ -874,7 +873,7 @@ Public Class cF2TSManager
                     Dim parms(1) As Object
                     parms(0) = runType
                     parms(1) = nSteps
-                    m_SyncObject.Invoke(Me.m_runstartedHandler, parms)
+                    Me.m_SyncObject.Invoke(Me.m_runstartedHandler, parms)
                 Else
                     Me.m_runstartedHandler.Invoke(runType, nSteps)
                 End If
@@ -895,7 +894,7 @@ Public Class cF2TSManager
         Try
 
             'keep a reference
-            m_results = m_model.Results
+            Me.m_results = Me.m_model.Results
 
             'jb For debugging
             'If m_model.RunState = eRunType.Search Then
@@ -909,7 +908,7 @@ Public Class cF2TSManager
             ' Notify the world
             If (Me.m_runstartedHandler IsNot Nothing) Then
                 If (Me.m_SyncObject IsNot Nothing) Then
-                    m_SyncObject.Invoke(Me.m_runstepHandler, Nothing)
+                    Me.m_SyncObject.Invoke(Me.m_runstepHandler, Nothing)
                 Else
                     Me.m_runstepHandler.Invoke()
                 End If
@@ -932,7 +931,7 @@ Public Class cF2TSManager
 
         Try
             'keep a reference
-            m_results = m_model.Results
+            Me.m_results = Me.m_model.Results
 
             'System.Console.WriteLine("F2TS: Run Stopped.")
 
@@ -942,7 +941,7 @@ Public Class cF2TSManager
             If (Me.m_SyncObject IsNot Nothing) Then
                 Dim parms(0) As Object
                 parms(0) = runType
-                m_SyncObject.Invoke(dlgRunStopped, parms)
+                Me.m_SyncObject.Invoke(dlgRunStopped, parms)
             Else
                 dlgRunStopped.Invoke(runType)
             End If
@@ -965,18 +964,18 @@ Public Class cF2TSManager
     Private Sub ThreadSafeRunStopped(runType As eRunType)
 
         Try
-            m_core.VulnerabilitiesChanged()
-            m_core.LoadEcosimStats()
+            Me.m_core.VulnerabilitiesChanged()
+            Me.m_core.LoadEcosimStats()
             Me.m_thrdRun = Nothing
 
             If Not Me.m_core.m_FitToTimeSeriesData.RunSilent Then
 
                 'send any messages created by the fit to time series
-                For Each msg As cMessage In m_lstMessages
-                    m_core.Messages.AddMessage(msg)
+                For Each msg As cMessage In Me.m_lstMessages
+                    Me.m_core.Messages.AddMessage(msg)
                 Next
-                m_core.Messages.sendAllMessages()
-                m_lstMessages.Clear()
+                Me.m_core.Messages.sendAllMessages()
+                Me.m_lstMessages.Clear()
             End If
 
             ' Notify world
@@ -984,7 +983,7 @@ Public Class cF2TSManager
                 If (Me.m_SyncObject IsNot Nothing) Then
                     Dim objs(0) As Object
                     objs(0) = runType
-                    m_SyncObject.Invoke(Me.m_runstoppedHandler, objs)
+                    Me.m_SyncObject.Invoke(Me.m_runstoppedHandler, objs)
                 Else
                     Me.m_runstoppedHandler.Invoke(runType)
                 End If
@@ -992,7 +991,7 @@ Public Class cF2TSManager
 
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
                                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End Try
 
@@ -1011,7 +1010,7 @@ Public Class cF2TSManager
                 parms(0) = runType
                 parms(1) = iCurrentIterationStep
                 parms(2) = nTotalInterationSteps
-                m_SyncObject.Invoke(Me.m_runModelHandler, parms)
+                Me.m_SyncObject.Invoke(Me.m_runModelHandler, parms)
             Else
                 Me.m_runModelHandler.Invoke(runType, iCurrentIterationStep, nTotalInterationSteps)
             End If
@@ -1054,9 +1053,9 @@ Public Class cF2TSManager
 
             'call ThreadSafeSendMessage() via the m_SyncObject 
             'this will put ThreadSafeSendMessage() on the interface thread
-            If (m_SyncObject IsNot Nothing) Then
+            If (Me.m_SyncObject IsNot Nothing) Then
                 Dim dlgSenMessage As RunMessageDelegate = AddressOf Me.SendMessage
-                m_SyncObject.Invoke(dlgSenMessage, objs)
+                Me.m_SyncObject.Invoke(dlgSenMessage, objs)
             Else
                 Me.SendMessage(msg)
             End If
@@ -1069,7 +1068,7 @@ Public Class cF2TSManager
 
     Private Sub SendMessage(msg As cMessage)
         Try
-            m_core.Messages.SendMessage(msg)
+            Me.m_core.Messages.SendMessage(msg)
         Catch ex As Exception
             cLog.Write(ex)
         End Try

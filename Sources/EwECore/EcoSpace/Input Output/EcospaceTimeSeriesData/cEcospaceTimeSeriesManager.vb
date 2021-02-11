@@ -162,7 +162,7 @@ Namespace EcospaceTimeSeries
 
                 'Clear out the results
                 Me.m_ss = New Double(Me.m_core.nGroups) {}
-                Erpred = New List(Of Double)
+                Me.Erpred = New List(Of Double)
 
                 Me.DatSumZ = 0.0
                 Me.DatSumZ2 = 0.0
@@ -196,7 +196,7 @@ Namespace EcospaceTimeSeries
             table.Columns.Add("Date", GetType(Date))
             table.Columns.Add("Rec", GetType(Object))
 
-            m_dataSets.Tables.Add(table)
+            Me.m_dataSets.Tables.Add(table)
         End Sub
 
         Public Sub Clear()
@@ -622,7 +622,7 @@ Namespace EcospaceTimeSeries
         Public Function getDefaultOutputFileName(InputFileName As String) As String
             If (String.IsNullOrWhiteSpace(InputFileName)) Then Return ""
             Dim tempFileName As String = IO.Path.GetFileNameWithoutExtension(InputFileName) + "_Residuals.csv"
-            Return Path.Combine(Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
+            Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
         End Function
 
 

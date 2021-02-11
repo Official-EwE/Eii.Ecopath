@@ -69,7 +69,7 @@ Namespace Ecosim
 
 #Region " Public properties "
 
-        Public Event OnSelectedVulnerabilitiesChanged(ByVal sender As gridEstimateVs)
+        Public Event OnSelectedVulnerabilitiesChanged(sender As gridEstimateVs)
 
         Public Property SelectedGroupIndex() As Integer
             Get
@@ -84,7 +84,7 @@ Namespace Ecosim
                 iSelectedRow = arSelection.Start.Row
                 Return iSelectedRow
             End Get
-            Set(ByVal iRow As Integer)
+            Set(iRow As Integer)
                 ' Clear current selection
                 If Me.Selection IsNot Nothing Then
                     Dim r As SourceGrid2.Range = Me.Selection.GetRange()
@@ -227,7 +227,7 @@ Namespace Ecosim
             Me.FixedColumns = 2
         End Sub
 
-        Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As ICellVirtual)
+        Protected Overrides Sub OnCellClicked(p As Position, cell As ICellVirtual)
             MyBase.OnCellClicked(p, cell)
 
             Select Case DirectCast(p.Column, eColumnTypes)
@@ -248,7 +248,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Function OnCellEdited(ByVal p As Position, ByVal cell As ICellVirtual) As Boolean
+        Protected Overrides Function OnCellEdited(p As Position, cell As ICellVirtual) As Boolean
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -269,7 +269,7 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Private Sub RecalcVulnerabilities(ByVal iRow As Integer)
+        Private Sub RecalcVulnerabilities(iRow As Integer)
 
             Dim sPotGrowth As Single = CSng(Me(iRow, eColumnTypes.PotGrowth).Value)
             Dim sFMax As Single = CSng(Me(iRow, eColumnTypes.FMax).Value)
@@ -284,7 +284,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub SetVulCell(ByVal iRow As Integer, ByVal iCol As eColumnTypes, ByVal sValue As Single)
+        Private Sub SetVulCell(iRow As Integer, iCol As eColumnTypes, sValue As Single)
 
             Dim cell As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)
             Dim style As cStyleGuide.eStyleFlags = cell.Style
@@ -311,7 +311,7 @@ Namespace Ecosim
         ''' <param name="col"></param>
         ''' <returns>True if a vulnerability selection was changed.</returns>
         ''' -------------------------------------------------------------------
-        Private Function UpdateVulSelection(ByVal iRow As Integer, ByVal col As eColumnTypes) As Boolean
+        Private Function UpdateVulSelection(iRow As Integer, col As eColumnTypes) As Boolean
 
             If Array.IndexOf(gridEstimateVs.c_vulcols, col) = -1 Then Return False
 
@@ -343,7 +343,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Property IsVulCellSelected(ByVal iRow As Integer, ByVal col As eColumnTypes) As Boolean
+        Private Property IsVulCellSelected(iRow As Integer, col As eColumnTypes) As Boolean
             Get
 
                 If (iRow < 1) Or (iRow >= Me.RowsCount) Then Return False
@@ -353,7 +353,7 @@ Namespace Ecosim
                 Return ((cell.Style And gridEstimateVs.c_styleSelect) = gridEstimateVs.c_styleSelect)
 
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
 
                 If (iRow < 1) Or (iRow >= Me.RowsCount) Then Return
                 If (Array.IndexOf(c_vulcols, col) = -1) Then Return

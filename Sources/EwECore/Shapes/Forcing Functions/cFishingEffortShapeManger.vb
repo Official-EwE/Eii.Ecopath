@@ -42,29 +42,29 @@ Public Class cFishingEffortShapeManger
         Dim iFleet As Integer
 
         'clear out any existing data
-        m_shapes.Clear()
-        For iFleet = 1 To m_SimData.nGear ' number of fishing fleets
+        Me.m_shapes.Clear()
+        For iFleet = 1 To Me.m_SimData.nGear ' number of fishing fleets
 
-            shape = New cFishingRateShape(m_SimData, Me, m_SimData.FishRateGearDBID(iFleet), m_core.m_EcoPathData.FleetName(iFleet))
+            shape = New cFishingRateShape(Me.m_SimData, Me, Me.m_SimData.FishRateGearDBID(iFleet), Me.m_core.m_EcoPathData.FleetName(iFleet))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
-            shape.ID = m_shapes.Count
+            shape.ID = Me.m_shapes.Count
             shape.Index = iFleet
             shape.Load()
-            m_shapes.Add(shape)
+            Me.m_shapes.Add(shape)
 
         Next iFleet
 
-        If m_SimData.nGear > 0 Then
+        If Me.m_SimData.nGear > 0 Then
             'Add the Combined Gear types shape to the end of the list
             'Its iFleet index is m_Data.nGear + 1 
             'this is critical as that is how the shape itself decides that it the Combined Fleets shape
             'the Combined Fleets shape updates all the other fleets as well as the FishMort shapes
-            shape = New cFishingRateShape(m_SimData, Me, cCore.NULL_VALUE, My.Resources.CoreDefaults.CORE_ALL_FLEETS)
-            shape.ID = m_shapes.Count
-            shape.Index = m_SimData.nGear + 1
+            shape = New cFishingRateShape(Me.m_SimData, Me, cCore.NULL_VALUE, My.Resources.CoreDefaults.CORE_ALL_FLEETS)
+            shape.ID = Me.m_shapes.Count
+            shape.Index = Me.m_SimData.nGear + 1
             shape.Load()
-            m_shapes.Add(shape)
+            Me.m_shapes.Add(shape)
         End If
 
         Me.Load()

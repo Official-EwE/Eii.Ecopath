@@ -52,11 +52,11 @@ Namespace Controls
         ''' <param name="varName"></param>
         ''' <param name="sourceSec"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal ctrl As Control,
-                       ByVal source As cCoreInputOutputBase,
-                       ByVal varName As eVarNameFlags,
-                       Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       source As cCoreInputOutputBase,
+                       varName As eVarNameFlags,
+                       Optional sourceSec As cCoreInputOutputBase = Nothing)
             Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec))
         End Sub
 
@@ -69,12 +69,12 @@ Namespace Controls
         ''' <param name="varName"></param>
         ''' <param name="sourceSec"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal source As cCoreInputOutputBase, _
-                       ByVal varName As eVarNameFlags, _
-                       ByVal sourceSec As cCoreInputOutputBase, _
-                       ByVal formatter As ITypeFormatter)
+        Public Sub New(uic As cUIContext, _
+                       ctrl As Control, _
+                       source As cCoreInputOutputBase, _
+                       varName As eVarNameFlags, _
+                       sourceSec As cCoreInputOutputBase, _
+                       formatter As ITypeFormatter)
             Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec), formatter)
         End Sub
 
@@ -86,10 +86,10 @@ Namespace Controls
         ''' <param name="prop"></param>
         ''' <param name="formatter">Formatter to obtain values from</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal prop As cProperty, _
-                       ByVal formatter As ITypeFormatter)
+        Public Sub New(uic As cUIContext, _
+                       ctrl As Control, _
+                       prop As cProperty, _
+                       formatter As ITypeFormatter)
             Me.New(uic, ctrl, prop, DirectCast(ExtractEnumValues(formatter), Object()), formatter)
         End Sub
 
@@ -100,17 +100,17 @@ Namespace Controls
         ''' <param name="ctrl"></param>
         ''' <param name="prop"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal ctrl As Control,
-                       ByVal prop As cProperty,
-                       Optional ByVal aItems As Object() = Nothing,
-                       Optional ByVal formatter As ITypeFormatter = Nothing)
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       prop As cProperty,
+                       Optional aItems As Object() = Nothing,
+                       Optional formatter As ITypeFormatter = Nothing)
 
             MyBase.New(uic, ctrl, prop.GetValueType(), aItems, prop.GetVariableMetadata(), formatter)
 
             ' Store relevant bits
             Me.m_prop = prop
-            AddHandler Me.m_prop.PropertyChanged, AddressOf OnPropertyChanged
+            AddHandler Me.m_prop.PropertyChanged, AddressOf Me.OnPropertyChanged
 
             ' Fire change event manually to immediately show the property value
             Me.OnPropertyChanged(Me.m_prop, cProperty.eChangeFlags.All)
@@ -124,7 +124,7 @@ Namespace Controls
         Public Overrides Sub Release()
 
             If Me.m_prop IsNot Nothing Then
-                RemoveHandler Me.m_prop.PropertyChanged, AddressOf OnPropertyChanged
+                RemoveHandler Me.m_prop.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Me.m_prop = Nothing
             End If
 
@@ -151,7 +151,7 @@ Namespace Controls
                 If Me.m_prop Is Nothing Then Return Nothing
                 Return Me.m_prop.GetStyle()
             End Get
-            Set(ByVal eStyle As cStyleGuide.eStyleFlags)
+            Set(eStyle As cStyleGuide.eStyleFlags)
                 MyBase.Style = eStyle
             End Set
         End Property
@@ -166,7 +166,7 @@ Namespace Controls
                 If Me.m_prop Is Nothing Then Return Nothing
                 Return Me.m_prop.GetValue()
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 If Me.m_prop Is Nothing Then Return
                 If Me.m_prop.SetValue(value, TriState.UseDefault) Then
                     ' Ok, this is odd. Proper code should consult the underlying 
@@ -196,7 +196,7 @@ Namespace Controls
         ''' <param name="prop">The property that changed.</param>
         ''' <param name="changeFlags">The type of change.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Private Sub OnPropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
 
             ' Sanity check
             Debug.Assert(ReferenceEquals(prop, Me.m_prop))
@@ -222,7 +222,7 @@ Namespace Controls
         ''' an application-wide <see cref="cPropertySelectionCommand">PropertySelectionCommand</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Overrides Sub OnGotFocus(sender As Object, e As System.EventArgs)
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 

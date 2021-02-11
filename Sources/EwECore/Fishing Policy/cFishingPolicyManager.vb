@@ -64,23 +64,23 @@ Namespace FishingPolicy
         ''' <param name="ProgressCallBack">Callback reports progress of the search</param>
         ''' <param name="SearchCompletedCallBack">Calback all search runs have completed.</param>
         ''' <remarks></remarks>
-        Public Sub Connect(ByVal RunStartedCallBack As RunStartedDelegate, ByVal RunCompletedBack As RunCompletedDelegate, _
-                            ByVal ProgressCallBack As ProgressDelegate, ByVal SearchCompletedCallBack As SearchCompletedDelegate)
+        Public Sub Connect(RunStartedCallBack As RunStartedDelegate, RunCompletedBack As RunCompletedDelegate, _
+                            ProgressCallBack As ProgressDelegate, SearchCompletedCallBack As SearchCompletedDelegate)
 
-            m_StartRunDelegate = RunStartedCallBack
-            m_RunCompletedDelegate = RunCompletedBack
-            m_ProgressDelegate = ProgressCallBack
-            m_SearchCompletedDelegate = SearchCompletedCallBack
+            Me.m_StartRunDelegate = RunStartedCallBack
+            Me.m_RunCompletedDelegate = RunCompletedBack
+            Me.m_ProgressDelegate = ProgressCallBack
+            Me.m_SearchCompletedDelegate = SearchCompletedCallBack
 
         End Sub
 
 
         Public Sub DisConnect()
 
-            m_StartRunDelegate = Nothing
-            m_RunCompletedDelegate = Nothing
-            m_ProgressDelegate = Nothing
-            m_SearchCompletedDelegate = Nothing
+            Me.m_StartRunDelegate = Nothing
+            Me.m_RunCompletedDelegate = Nothing
+            Me.m_ProgressDelegate = Nothing
+            Me.m_SearchCompletedDelegate = Nothing
 
 
 
@@ -100,26 +100,26 @@ Namespace FishingPolicy
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
             Try
 
-                m_core = theCore
+                Me.m_core = theCore
 
                 'init the Fihsing Policy Search model
-                m_FPsearch = New cFishingPolicySearch
-                m_FPsearch.init(m_core)
-                m_FPsearch.SearchCompletedCallBack = AddressOf Me.OnFPSCompletedHandler
-                m_FPsearch.AddMessageCallBack = AddressOf Me.OnFPSAddMessageHandler
-                m_FPsearch.ProgressCallBack = AddressOf OnFPSProgressHandler
-                m_FPsearch.SearchStartedCallBack = AddressOf OnFPSRunStartedHandler
-                m_FPsearch.RunCompletedCallBack = AddressOf OnFPSRunCompletedHandler
+                Me.m_FPsearch = New cFishingPolicySearch
+                Me.m_FPsearch.init(Me.m_core)
+                Me.m_FPsearch.SearchCompletedCallBack = AddressOf Me.OnFPSCompletedHandler
+                Me.m_FPsearch.AddMessageCallBack = AddressOf Me.OnFPSAddMessageHandler
+                Me.m_FPsearch.ProgressCallBack = AddressOf Me.OnFPSProgressHandler
+                Me.m_FPsearch.SearchStartedCallBack = AddressOf Me.OnFPSRunStartedHandler
+                Me.m_FPsearch.RunCompletedCallBack = AddressOf Me.OnFPSRunCompletedHandler
 
                 'init object for interface
-                m_parameters = New cFishingPolicyParameters(m_core, cCore.NULL_VALUE)
+                Me.m_parameters = New cFishingPolicyParameters(Me.m_core, cCore.NULL_VALUE)
 
                 'get the search objective object from the core
                 'this is Group, Fleet and Parameters for the shared search interface ISearchObjective
-                m_searchObjective = m_core.SearchObjective
+                Me.m_searchObjective = Me.m_core.SearchObjective
 
                 'Init the search data
-                Dim search As cSearchDatastructures = m_core.m_SearchData
+                Dim search As cSearchDatastructures = Me.m_core.m_SearchData
 
                 'redims and sets frate, Jobs and TargetProfitability to default values
                 'search.bInSearch = True
@@ -134,12 +134,12 @@ Namespace FishingPolicy
                 'this will set ParNumber() and BlockNumber() based on the defaults set above
                 search.SetFletchPars()
 
-                m_lstFleets.Clear()
+                Me.m_lstFleets.Clear()
                 Dim flt As cFishingPolicySearchBlock
-                For iflt As Integer = 1 To m_core.nFleets
+                For iflt As Integer = 1 To Me.m_core.nFleets
                     'use the database ID for the Fleets
-                    flt = New cFishingPolicySearchBlock(m_core, m_core.m_EcoPathData.FleetDBID(iflt))
-                    m_lstFleets.Add(flt)
+                    flt = New cFishingPolicySearchBlock(Me.m_core, Me.m_core.m_EcoPathData.FleetDBID(iflt))
+                    Me.m_lstFleets.Add(flt)
                 Next
 
                 'set the search back to false 
@@ -164,32 +164,32 @@ Namespace FishingPolicy
             Try
                 Dim iflt As Integer
 
-                Dim coreData As cSearchDatastructures = m_core.m_SearchData
+                Dim coreData As cSearchDatastructures = Me.m_core.m_SearchData
 
                 'Model Parameters
-                m_parameters.AllowValidation = False
-                m_parameters.InitOption = eInitOption.EcopathBaseF
+                Me.m_parameters.AllowValidation = False
+                Me.m_parameters.InitOption = eInitOption.EcopathBaseF
 
-                m_parameters.MaxNumEval = coreData.nInterations
-                m_parameters.nRuns = coreData.nRuns
-                m_parameters.IncludeComp = coreData.IncludeCompetitiveImpact
-                m_parameters.MaxEffChange = coreData.MaxEffortChange
-                m_parameters.UseEconomicPlugin = coreData.FPSUseEconomicPlugin
+                Me.m_parameters.MaxNumEval = coreData.nInterations
+                Me.m_parameters.nRuns = coreData.nRuns
+                Me.m_parameters.IncludeComp = coreData.IncludeCompetitiveImpact
+                Me.m_parameters.MaxEffChange = coreData.MaxEffortChange
+                Me.m_parameters.UseEconomicPlugin = coreData.FPSUseEconomicPlugin
 
-                m_parameters.ResetStatusFlags()
+                Me.m_parameters.ResetStatusFlags()
 
-                m_parameters.AllowValidation = True
+                Me.m_parameters.AllowValidation = True
 
-                For Each flt As cFishingPolicySearchBlock In m_lstFleets
+                For Each flt As cFishingPolicySearchBlock In Me.m_lstFleets
                     flt.AllowValidation = False
 
-                    iflt = Array.IndexOf(m_core.m_EcoPathData.FleetDBID, flt.DBID)
+                    iflt = Array.IndexOf(Me.m_core.m_EcoPathData.FleetDBID, flt.DBID)
                     flt.Index = iflt
 
                     flt.Resize()
-                    flt.Name = m_core.m_EcoPathData.FleetName(iflt)
+                    flt.Name = Me.m_core.m_EcoPathData.FleetName(iflt)
 
-                    For it As Integer = 1 To m_core.nEcosimYears
+                    For it As Integer = 1 To Me.m_core.nEcosimYears
                         flt.SearchBlocks(it) = coreData.FblockCode(iflt, it)
                     Next it
 
@@ -230,20 +230,20 @@ Namespace FishingPolicy
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
-            Dim coreData As cSearchDatastructures = m_core.m_SearchData
+        Public Function Update(DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+            Dim coreData As cSearchDatastructures = Me.m_core.m_SearchData
 
             'this will set the number of Frate() dimensions and populate it with default values
             'updating Frates() with FblockCode() for a time step is done by the model 
             coreData.nBlocks = Me.nSearchBlocks
 
             'load the code blocks
-            For Each flt As cFishingPolicySearchBlock In m_lstFleets
+            For Each flt As cFishingPolicySearchBlock In Me.m_lstFleets
 
                 'coreData.Jobs(flt.Index) = flt.JobCatchValue
                 'coreData.TargetProfitability(flt.Index) = flt.TargetProfitability
 
-                For it As Integer = 1 To m_core.nEcosimYears
+                For it As Integer = 1 To Me.m_core.nEcosimYears
                     coreData.FblockCode(flt.Index, it) = flt.SearchBlocks(it)
                 Next it
             Next
@@ -258,11 +258,11 @@ Namespace FishingPolicy
 
             coreData.PortFolio = Me.m_parameters.MaxPortUtil
 
-            coreData.nInterations = CInt(m_parameters.MaxNumEval)
-            coreData.nRuns = m_parameters.nRuns
+            coreData.nInterations = CInt(Me.m_parameters.MaxNumEval)
+            coreData.nRuns = Me.m_parameters.nRuns
 
-            coreData.MaxEffortChange = m_parameters.MaxEffChange
-            If m_parameters.MaxEffChange > 0 Then
+            coreData.MaxEffortChange = Me.m_parameters.MaxEffChange
+            If Me.m_parameters.MaxEffChange > 0 Then
                 coreData.MinimizeEffortChange = True
             Else
                 coreData.MinimizeEffortChange = False
@@ -272,7 +272,7 @@ Namespace FishingPolicy
             'if OptimizeApproach is 'System Objective' then the SearchMethod is flet or dfpmin
             'if  OptimizeApproach is 'Base profitability' then SearchMethod is eSearchOption.BaseProfitability
             'this comes from EwE5
-            If m_parameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues Then
+            If Me.m_parameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues Then
                 coreData.SearchMethod = eSearchOptionTypes.BaseProfitability
             End If
 
@@ -326,15 +326,15 @@ Namespace FishingPolicy
 
 #Region "Public Properties"
 
-        Public ReadOnly Property SearchBlocks(ByVal iFleet As Integer) As cFishingPolicySearchBlock
+        Public ReadOnly Property SearchBlocks(iFleet As Integer) As cFishingPolicySearchBlock
             Get
-                Return m_lstFleets(iFleet)
+                Return Me.m_lstFleets(iFleet)
             End Get
         End Property
 
         Public ReadOnly Property ModelParameters() As cFishingPolicyParameters
             Get
-                Return m_parameters
+                Return Me.m_parameters
             End Get
         End Property
 
@@ -346,9 +346,9 @@ Namespace FishingPolicy
                 Dim nblocks As New List(Of Integer)
                 Dim bindex As Integer
                 Dim value As Integer
-                For Each flt As cFishingPolicySearchBlock In m_lstFleets
+                For Each flt As cFishingPolicySearchBlock In Me.m_lstFleets
 
-                    For i As Integer = 1 To m_core.nEcosimYears
+                    For i As Integer = 1 To Me.m_core.nEcosimYears
                         value = flt.SearchBlocks(i)
                         ' Only count search (non-zero) blocks
                         If (value > 0) Then
@@ -370,7 +370,7 @@ Namespace FishingPolicy
         ''' <remarks>This object will be populated at for each call to the ProgressHandler() delegate</remarks>
         Public ReadOnly Property SearchResults() As cFPSSearchResults
             Get
-                Return m_FPsearch.Results
+                Return Me.m_FPsearch.Results
             End Get
         End Property
 
@@ -389,7 +389,7 @@ Namespace FishingPolicy
         ''' Stop the Fishing Policy Search run
         ''' </summary>
         ''' <remarks>This will not do anything if the search is not running</remarks>
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean 'Implements SearchObjectives.ISearchObjective.StopRun
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean 'Implements SearchObjectives.ISearchObjective.StopRun
 
             Dim result As Boolean = True
             Try
@@ -416,7 +416,7 @@ Namespace FishingPolicy
 
             Try
 
-                m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
 
                 'release any waiting threads
                 Me.ReleaseWait()
@@ -424,14 +424,14 @@ Namespace FishingPolicy
                 'send any messages that the model added to the managers list of messages
                 'by using the m_syncObject the messages will be sent on the Interfaces thread not the FPS thread
                 Dim ctd As CallingThreadDelegate = AddressOf Me.OnSendCoreMessages
-                m_syncObject.BeginInvoke(ctd, Nothing)
+                Me.m_syncObject.BeginInvoke(ctd, Nothing)
 
                 ctd = AddressOf Me.OnChanged
-                m_syncObject.BeginInvoke(ctd, Nothing)
+                Me.m_syncObject.BeginInvoke(ctd, Nothing)
 
-                If m_SearchCompletedDelegate IsNot Nothing Then
+                If Me.m_SearchCompletedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(m_SearchCompletedDelegate, Nothing)
+                    Me.m_syncObject.BeginInvoke(Me.m_SearchCompletedDelegate, Nothing)
                 End If
 
                 ctd = Nothing
@@ -439,7 +439,7 @@ Namespace FishingPolicy
 
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
                 Me.ReleaseWait()
             End Try
 
@@ -450,11 +450,11 @@ Namespace FishingPolicy
 
             Try
 
-                m_results = Me.m_FPsearch.Results
+                Me.m_results = Me.m_FPsearch.Results
 
-                If m_ProgressDelegate IsNot Nothing Then
+                If Me.m_ProgressDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(Me.m_ProgressDelegate, Nothing)
+                    Me.m_syncObject.BeginInvoke(Me.m_ProgressDelegate, Nothing)
                 End If
 
             Catch ex As Exception
@@ -467,11 +467,11 @@ Namespace FishingPolicy
 
             Try
 
-                m_results = Me.m_FPsearch.Results
+                Me.m_results = Me.m_FPsearch.Results
 
-                If m_RunCompletedDelegate IsNot Nothing Then
+                If Me.m_RunCompletedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.Invoke(Me.m_RunCompletedDelegate, Nothing)
+                    Me.m_syncObject.Invoke(Me.m_RunCompletedDelegate, Nothing)
                 End If
 
             Catch ex As Exception
@@ -484,7 +484,7 @@ Namespace FishingPolicy
         Private Sub OnFPSAddMessageHandler(ByRef message As cMessage)
             'add the message to the managers list of mesasges
             'these messages will be sent at the end of the run
-            m_lstMessages.Add(message)
+            Me.m_lstMessages.Add(message)
 
         End Sub
 
@@ -494,9 +494,9 @@ Namespace FishingPolicy
             Try
 
                 ' Debug.Assert(Me.m_StartRunDelegate IsNot Nothing, "Fishing Policy Manager SearchStarted() has not been set.")
-                If m_StartRunDelegate IsNot Nothing Then
+                If Me.m_StartRunDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(Me.m_StartRunDelegate, Nothing)
+                    Me.m_syncObject.BeginInvoke(Me.m_StartRunDelegate, Nothing)
                 End If
 
             Catch ex As Exception
@@ -507,11 +507,11 @@ Namespace FishingPolicy
 
         Private Sub OnSendCoreMessages()
             Try
-                For Each msg As cMessage In m_lstMessages
-                    m_core.Messages.AddMessage(msg)
+                For Each msg As cMessage In Me.m_lstMessages
+                    Me.m_core.Messages.AddMessage(msg)
                 Next
-                m_core.Messages.sendAllMessages()
-                m_lstMessages.Clear()
+                Me.m_core.Messages.sendAllMessages()
+                Me.m_lstMessages.Clear()
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
                 cLog.Write(ex)
@@ -520,7 +520,7 @@ Namespace FishingPolicy
 
         Private Sub OnChanged()
             Try
-                m_core.onChanged(Me)
+                Me.m_core.onChanged(Me)
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
                 cLog.Write(ex)
@@ -531,18 +531,18 @@ Namespace FishingPolicy
 
 #Region "Running the model"
 
-        Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+        Public Function Run(SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
-            m_syncObject = SyncObject
+            Me.m_syncObject = SyncObject
             Dim FPSthread As Thread
-            Dim search As cSearchDatastructures = m_core.m_SearchData
+            Dim search As cSearchDatastructures = Me.m_core.m_SearchData
             Dim bsuccess As Boolean
 
             Try
 
                 If Me.IsRunning Then
                     ' ToDo: globalize this
-                    m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
+                    Me.m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
                                                 eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.MonteCarlo))
                     Return False
                 End If
@@ -564,12 +564,12 @@ Namespace FishingPolicy
 
                 search.SearchMode = eSearchModes.NotInSearch
                 ' ToDo: globalize this
-                m_core.Messages.SendMessage(New cMessage("Error running the Fishing Policy Search.", eMessageType.ErrorEncountered, _
+                Me.m_core.Messages.SendMessage(New cMessage("Error running the Fishing Policy Search.", eMessageType.ErrorEncountered, _
                                             eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
 
                 'if an error has been thrown make sure the SearchCompletedCallBack delegate is called
                 'this way an interface can responded 
-                OnFPSCompletedHandler()
+                Me.OnFPSCompletedHandler()
                 bsuccess = False
 
             End Try
@@ -600,7 +600,7 @@ Namespace FishingPolicy
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
 
             End Set
         End Property
@@ -613,7 +613,7 @@ Namespace FishingPolicy
             Get
 
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Debug.Assert(False, "Can not set the Index of " & Me.ToString)
             End Set
         End Property
@@ -622,7 +622,7 @@ Namespace FishingPolicy
             Get
                 Return Me.ToString
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Debug.Assert(False, "Can not set the Name of " & Me.ToString)
             End Set
         End Property
@@ -631,13 +631,13 @@ Namespace FishingPolicy
 
 #Region "ISearchObjective implementation"
 
-        Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+        Public ReadOnly Property FleetObjectives(iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
             Get
                 Return Me.m_searchObjective.FleetObjectives(iFleet)
             End Get
         End Property
 
-        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+        Public ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
             Get
                 Return Me.m_searchObjective.GroupObjectives(iGroup)
             End Get

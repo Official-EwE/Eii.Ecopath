@@ -26,12 +26,12 @@ Public Class cEcospaceGroupInput
 
 #Region " Constructor "
 
-    Sub New(ByVal theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Sub New(core As cCore, DBID As Integer)
+        MyBase.New(core)
 
         Me.DBID = DBID
-        m_dataType = eDataTypes.EcospaceGroup
-        m_coreComponent = eCoreComponentType.EcoSpace
+        Me.m_dataType = eDataTypes.EcospaceGroup
+        Me.m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
 
@@ -40,54 +40,54 @@ Public Class cEcospaceGroupInput
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Mvel
-            val = New cValue(New Single, eVarNameFlags.MVel, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MVel, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' RelMoveBad
-            val = New cValue(New Single, eVarNameFlags.RelMoveBad, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.RelMoveBad, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' RelVulBad
-            val = New cValue(New Single, eVarNameFlags.RelVulBad, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.RelVulBad, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' IsAdvected
-            val = New cValue(New Boolean, eVarNameFlags.IsAdvected, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.IsAdvected, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ' IsMigratory
-            val = New cValue(New Boolean, eVarNameFlags.IsMigratory, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.IsMigratory, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ' PredictEffort
-            val = New cValue(New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ' Barrier avoidance weight
-            val = New cValue(New Single, eVarNameFlags.BarrierAvoidanceWeight, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.BarrierAvoidanceWeight, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' Capacity calculations
-            val = New cValue(1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             'inMigAreaMoveWeight
-            val = New cValue(New Single, eVarNameFlags.InMigAreaMoveWeight, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.InMigAreaMoveWeight, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' KMoveFitness
-            val = New cValue(New Single, eVarNameFlags.KMoveFitness, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.KMoveFitness, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
             'PreferredHabitat()
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PreferredHabitat, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.PreferredHabitat, eStatusFlags.Null, eCoreCounterTypes.nHabitats)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceGroup.")
@@ -119,11 +119,11 @@ Public Class cEcospaceGroupInput
     Public Property CapacityCalculationType() As eEcospaceCapacityCalType
 
         Get
-            Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
+            Return CType(Me.GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
         End Get
 
-        Set(ByVal value As eEcospaceCapacityCalType)
-            SetVariable(eVarNameFlags.EcospaceCapCalType, value)
+        Set(value As eEcospaceCapacityCalType)
+            Me.SetVariable(eVarNameFlags.EcospaceCapCalType, value)
         End Set
 
     End Property
@@ -131,53 +131,53 @@ Public Class cEcospaceGroupInput
     ''' <summary>Base dispersal</summary>
     Public Property MVel() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.MVel))
+            Return CSng(Me.GetVariable(eVarNameFlags.MVel))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MVel, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.MVel, value)
         End Set
     End Property
 
     ''' <summary>Relative dispersal in bad habitat</summary>
     Public Property RelMoveBad() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.RelMoveBad))
+            Return CSng(Me.GetVariable(eVarNameFlags.RelMoveBad))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.RelMoveBad, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.RelMoveBad, value)
         End Set
     End Property
 
     ''' <summary>Relative vulnerability in bad habitat</summary>
     Public Property RelVulBad() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.RelVulBad))
+            Return CSng(Me.GetVariable(eVarNameFlags.RelVulBad))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.RelVulBad, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.RelVulBad, value)
         End Set
     End Property
 
     Public Property IsAdvected() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsAdvected))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsAdvected))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsAdvected, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.IsAdvected, value)
         End Set
     End Property
 
     Public Property IsMigratory() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.IsMigratory))
+            Return CBool(Me.GetVariable(eVarNameFlags.IsMigratory))
         End Get
 
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsMigratory, value)
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.IsMigratory, value)
         End Set
     End Property
 
@@ -185,45 +185,45 @@ Public Class cEcospaceGroupInput
     ''' Get/set the fraction that a group can use a habitat.
     ''' </summary>
     ''' <param name="iHabitat">One-based haitat index.</param>
-    Public Property PreferredHabitat(ByVal iHabitat As Integer) As Single
+    Public Property PreferredHabitat(iHabitat As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.PreferredHabitat, iHabitat))
+            Return CSng(Me.GetVariable(eVarNameFlags.PreferredHabitat, iHabitat))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.PreferredHabitat, value, iHabitat)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.PreferredHabitat, value, iHabitat)
         End Set
     End Property
 
     Public Property BarrierAvoidanceWeight() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.BarrierAvoidanceWeight))
+            Return CSng(Me.GetVariable(eVarNameFlags.BarrierAvoidanceWeight))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BarrierAvoidanceWeight, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.BarrierAvoidanceWeight, value)
         End Set
     End Property
 
 
     Public Property InMigrationAreaMovement() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.InMigAreaMoveWeight))
+            Return CSng(Me.GetVariable(eVarNameFlags.InMigAreaMoveWeight))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.InMigAreaMoveWeight, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.InMigAreaMoveWeight, value)
         End Set
     End Property
 
     ''' <summary>Relative vulnerability in bad habitat</summary>
     Public Property KMoveFitness() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.KMoveFitness))
+            Return CSng(Me.GetVariable(eVarNameFlags.KMoveFitness))
         End Get
 
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.KMoveFitness, value)
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.KMoveFitness, value)
         End Set
     End Property
 
@@ -233,81 +233,81 @@ Public Class cEcospaceGroupInput
 
     Public Property MVelStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.MVel)
+            Return Me.GetStatus(eVarNameFlags.MVel)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MVel, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.MVel, value)
         End Set
     End Property
 
     Public Property RelMoveBadStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.RelMoveBad)
+            Return Me.GetStatus(eVarNameFlags.RelMoveBad)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.RelMoveBad, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.RelMoveBad, value)
         End Set
     End Property
 
     Public Property RelVulBadStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.RelVulBad)
+            Return Me.GetStatus(eVarNameFlags.RelVulBad)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.RelVulBad, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.RelVulBad, value)
         End Set
     End Property
 
     Public Property IsAdvectedStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.IsAdvected)
+            Return Me.GetStatus(eVarNameFlags.IsAdvected)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.IsAdvected, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.IsAdvected, value)
         End Set
     End Property
 
     Public Property IsMigratoryStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.IsMigratory)
+            Return Me.GetStatus(eVarNameFlags.IsMigratory)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.IsMigratory, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.IsMigratory, value)
         End Set
     End Property
 
-    Public Property PreferredHabitatStatus(ByVal iHabitat As Integer) As eStatusFlags
+    Public Property PreferredHabitatStatus(iHabitat As Integer) As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.PreferredHabitat, iHabitat)
+            Return Me.GetStatus(eVarNameFlags.PreferredHabitat, iHabitat)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.PreferredHabitat, value, iHabitat)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.PreferredHabitat, value, iHabitat)
         End Set
     End Property
 
     Public Property InMigrationAreaMovementStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.InMigAreaMoveWeight)
+            Return Me.GetStatus(eVarNameFlags.InMigAreaMoveWeight)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.InMigAreaMoveWeight, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.InMigAreaMoveWeight, value)
         End Set
     End Property
 
     Public Property KMoveFitnessStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.KMoveFitness)
+            Return Me.GetStatus(eVarNameFlags.KMoveFitness)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.KMoveFitness, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.KMoveFitness, value)
         End Set
     End Property
 
@@ -319,7 +319,7 @@ End Class
 Public Class cEcospaceGroup
     Inherits cEcospaceGroupInput
 
-    Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
+    Sub New(ByRef theCore As cCore, DBID As Integer)
         MyBase.New(theCore, DBID)
     End Sub
 

@@ -46,7 +46,7 @@ Namespace MSY
         ''' </summary>
         ''' <param name="nGroups"></param>
         ''' -------------------------------------------------------------------
-        Friend Sub New(ByVal nGroups As Integer)
+        Friend Sub New(nGroups As Integer)
             ReDim Me.m_FMSY(nGroups)
             ReDim Me.m_CMSY(nGroups)
             ReDim Me.m_CMSYBase(nGroups)
@@ -205,7 +205,7 @@ Namespace MSY
         ''' <param name="nGroups"></param>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal nGroups As Integer)
+        Public Sub New(nGroups As Integer)
             ReDim Me.m_Fopt(nGroups)
             ReDim Me.m_IsFopt(nGroups)
         End Sub
@@ -269,7 +269,7 @@ Namespace MSY
         ''' <param name="F"></param>
         ''' <param name="Value"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal nGroups As Integer, ByVal F As Single, Value As Single)
+        Public Sub New(nGroups As Integer, F As Single, Value As Single)
             Me.m_FCur = F
             Me.m_TotalValue = Value
             ReDim Me.m_B(nGroups)

@@ -44,7 +44,7 @@ Public Class cWoRMSTaxonData
 
 #Region " Constructor "
 
-    Public Sub New(ByVal strPluginName As String)
+    Public Sub New(strPluginName As String)
         MyBase.New(strPluginName)
         Me.m_strPluginName = strPluginName
     End Sub

@@ -64,7 +64,7 @@ Public Class frmSamples
         MyBase.OnLoad(e)
 
         If (Me.UIContext IsNot Nothing) Then
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcopathSample}
 
             Dim man As cEcopathSampleManager = Me.Core.SampleManager
@@ -84,7 +84,7 @@ Public Class frmSamples
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.UIContext IsNot Nothing) Then
-            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
             Me.CoreComponents = New eCoreComponentType() {}
         End If
 
@@ -247,7 +247,7 @@ Public Class frmSamples
             ' ToDo: globalize this
             Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_BATCHRUN, CInt(Me.m_nudNumSamples.Value)),
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO, defaultReply:=eMessageReply.NO)
-            Core.Messages.SendMessage(fmsg)
+            Me.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.YES) Then
                 Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value), CInt(Me.m_nudStartAt.Value), Me.m_rbRandom.Checked)
             End If
@@ -257,7 +257,7 @@ Public Class frmSamples
         End Try
     End Sub
 
-    Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
+    Private Sub OnCoreStateChanged(cms As cCoreStateMonitor)
         Try
             Me.UpdateControls()
         Catch ex As Exception

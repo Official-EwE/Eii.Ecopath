@@ -74,25 +74,25 @@ Namespace Ecosim
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(Core.nLivingGroups + 1, 3)
+            Me.Redim(Me.Core.nLivingGroups + 1, 3)
 
             ' Set header cells
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUP)
             Me(0, 2) = New cEwEColumnHeaderCell(My.Resources.HEADER_FORCINGNUMBER)
-            Me(0, 2).Behaviors.Add(m_bmRowCol)
+            Me(0, 2).Behaviors.Add(Me.m_bmRowCol)
 
             Dim iCol As Integer = 2
 
-            For i As Integer = 1 To Core.nLivingGroups
-                source = Core.EcoPathGroupInputs(i)
+            For i As Integer = 1 To Me.Core.nLivingGroups
+                source = Me.Core.EcoPathGroupInputs(i)
                 ' # Group name row header cells
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
-                Me(i, 0).Behaviors.Add(m_bmRowCol)
+                Me(i, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
                 Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                Me(i, 1).Behaviors.Add(m_bmRowCol)
+                Me(i, 1).Behaviors.Add(Me.m_bmRowCol)
 
             Next
 
@@ -109,7 +109,7 @@ Namespace Ecosim
             For iRow As Integer = 1 To Me.Rows.Count - 1
                 Dim iGrp As Integer = iRow
 
-                Dim PPI As cMediatedInteraction = m_interactionManager.GroupInteraction(iGrp)
+                Dim PPI As cMediatedInteraction = Me.m_interactionManager.GroupInteraction(iGrp)
                 Dim shape As cForcingFunction = Nothing
                 Dim aplType As eForcingFunctionApplication
                 Dim sb As New StringBuilder()
@@ -128,8 +128,8 @@ Namespace Ecosim
                 End If
 
                 Me(iRow, iCol) = New Cells.Real.Cell(sb.ToString)
-                Me(iRow, iCol).DataModel = m_editor
-                Me(iRow, iCol).Behaviors.Add(m_bmCell)
+                Me(iRow, iCol).DataModel = Me.m_editor
+                Me(iRow, iCol).Behaviors.Add(Me.m_bmCell)
 
             Next iRow
 
@@ -144,14 +144,14 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Protected Overrides Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
+        Protected Overrides Sub CellClick(sender As Object, e As PositionEventArgs)
 
             Dim dlg As New dlgApplyGroupShape(Me.UIContext, e.Position.Row)
             dlg.ShowDialog()
 
         End Sub
 
-        Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overrides Sub OnRowColClicked(sender As Object, e As SourceGrid2.PositionEventArgs)
             If (e.Position.Row = 0) Then
                 If (e.Position.Column = 2) Then
                     Me.SetAllPairs()

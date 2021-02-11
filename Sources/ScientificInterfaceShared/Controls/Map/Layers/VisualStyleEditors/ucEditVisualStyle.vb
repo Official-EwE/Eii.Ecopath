@@ -46,9 +46,9 @@ Namespace Controls
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetEditor(ByVal uic As cUIContext,
-                                         ByVal vs As cVisualStyle,
-                                         ByVal style As cVisualStyle.eVisualStyleTypes) As ucEditVisualStyle
+        Public Shared Function GetEditor(uic As cUIContext,
+                                         vs As cVisualStyle,
+                                         style As cVisualStyle.eVisualStyleTypes) As ucEditVisualStyle
             ' Sanity checks
             Debug.Assert(vs IsNot Nothing)
 
@@ -86,7 +86,7 @@ Namespace Controls
         ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal vs As cVisualStyle, ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle, style As cVisualStyle.eVisualStyleTypes)
 
             ' Sanity checks
             Debug.Assert(uic IsNot Nothing)
@@ -103,7 +103,7 @@ Namespace Controls
 
 #Region " Events "
 
-        Public Event OnVisualStyleChanged(ByVal sender As ucEditVisualStyle)
+        Public Event OnVisualStyleChanged(sender As ucEditVisualStyle)
 
         Protected Sub FireStyleChangedEvent()
 
@@ -144,7 +144,7 @@ Namespace Controls
 
 #Region " Overridables "
 
-        Public Overridable Function Apply(ByVal vs As cVisualStyle) As Boolean
+        Public Overridable Function Apply(vs As cVisualStyle) As Boolean
             Return True
         End Function
 

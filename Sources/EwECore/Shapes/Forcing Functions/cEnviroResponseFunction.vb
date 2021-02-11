@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 Public Class cEnviroResponseFunction
     Inherits cMediationBaseFunction
 
-    Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager,
-                   ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
+    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager,
+                   data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         MyBase.New(EcoSimData, Manager, data, DBID, DataType)
 
     End Sub
@@ -35,12 +35,12 @@ Public Class cEnviroResponseFunction
         MyBase.Update()
 
         'do not update during initialization
-        If m_bInInit Then
+        If Me.m_bInInit Then
             Return False
         End If
 
         'tell the manager that a shape has changed its data
-        ShapeChanged()
+        Me.ShapeChanged()
         Return True
 
     End Function
@@ -57,12 +57,12 @@ Public Class cEnviroResponseFunction
     ''' </remarks>
     Public Property ResponseLeftLimit() As Single
         Get
-            Return m_medData.XAxisMin(Me.Index)
+            Return Me.m_medData.XAxisMin(Me.Index)
         End Get
-        Set(ByVal value As Single)
-            m_medData.XAxisMin(Me.Index) = value
+        Set(value As Single)
+            Me.m_medData.XAxisMin(Me.Index) = value
             'tell the manager that a shape has changed its data
-            ShapeChanged()
+            Me.ShapeChanged()
         End Set
 
     End Property
@@ -77,19 +77,19 @@ Public Class cEnviroResponseFunction
     ''' </remarks>
     Public Property ResponseRightLimit() As Single
         Get
-            Return m_medData.XAxisMax(Me.Index)
+            Return Me.m_medData.XAxisMax(Me.Index)
         End Get
-        Set(ByVal value As Single)
-            m_medData.XAxisMax(Me.Index) = value
+        Set(value As Single)
+            Me.m_medData.XAxisMax(Me.Index) = value
             'tell the manager that a shape has changed its data
-            ShapeChanged()
+            Me.ShapeChanged()
         End Set
 
     End Property
 
     Public ReadOnly Property ResponseMean() As Single
         Get
-            Return (m_medData.XAxisMin(Me.Index) + m_medData.XAxisMax(Me.Index)) * 0.5F
+            Return (Me.m_medData.XAxisMin(Me.Index) + Me.m_medData.XAxisMax(Me.Index)) * 0.5F
         End Get
     End Property
 
@@ -97,32 +97,32 @@ Public Class cEnviroResponseFunction
 
 #Region "Groups and Fleets interfaces not used by a cEnviroResponseFunction "
 
-    Public Overrides Function AddFleet(ByVal iFleet As Integer, ByVal weight As Single) As Boolean
+    Public Overrides Function AddFleet(iFleet As Integer, weight As Single) As Boolean
         Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
         Return False
     End Function
 
-    Public Overrides Function AddGroup(ByVal iGroup As Integer, ByVal weight As Single, Optional ByVal iFleetIndex As Integer = -9999) As Boolean
+    Public Overrides Function AddGroup(iGroup As Integer, weight As Single, Optional iFleetIndex As Integer = -9999) As Boolean
         Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
         Return False
     End Function
 
-    Public Overrides Property Fleet(ByVal iIndex As Integer) As cMediatingFleet
+    Public Overrides Property Fleet(iIndex As Integer) As cMediatingFleet
         Get
             Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
             Return Nothing
         End Get
-        Set(ByVal value As cMediatingFleet)
+        Set(value As cMediatingFleet)
             Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
         End Set
     End Property
 
-    Public Overrides Property Group(ByVal iIndex As Integer) As cMediatingGroup
+    Public Overrides Property Group(iIndex As Integer) As cMediatingGroup
         Get
             Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
             Return Nothing
         End Get
-        Set(ByVal value As cMediatingGroup)
+        Set(value As cMediatingGroup)
             Debug.Assert(False, "Not implemented by cEnviroResponseFunction.")
         End Set
     End Property

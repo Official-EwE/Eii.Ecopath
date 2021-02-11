@@ -67,7 +67,7 @@ Public Class cData
 
 #End Region ' Private vars 
 
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         MyBase.New(core)
 
         cData.s_inst = Me
@@ -90,7 +90,7 @@ Public Class cData
             Me.RemoveUnit(Me.m_lUnits(0))
         End While
         While Me.m_lUnitDefaults.Count > 0
-            Me.RemoveUnitDefault(m_lUnitDefaults(0))
+            Me.RemoveUnitDefault(Me.m_lUnitDefaults(0))
         End While
         While Me.m_lLinks.Count > 0
             Me.RemoveLink(Me.m_lLinks(0))
@@ -111,7 +111,7 @@ Public Class cData
 
 #Region " Database access "
 
-    Public Function Load(ByVal strModelName As String) As Boolean
+    Public Function Load(strModelName As String) As Boolean
 
         Dim strOldDBName As String = cData.GetDatabaseFileName(strModelName)
         Dim strDBName As String = ""
@@ -207,7 +207,7 @@ Public Class cData
         Get
             Return Me.m_bChanged
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             ' Update changed value
             Me.m_bChanged = value
             ' Notify core (under strict set of circumstances)
@@ -217,13 +217,13 @@ Public Class cData
         End Set
     End Property
 
-    Private Sub OnElementChanged(ByVal element As cEwEDatabase.cOOPStorable)
+    Private Sub OnElementChanged(element As cEwEDatabase.cOOPStorable)
         Me.IsChanged = True
     End Sub
 
 #Region " Database helpers "
 
-    Private Shared Function GetDatabaseFileName(ByVal strModelName As String) As String
+    Private Shared Function GetDatabaseFileName(strModelName As String) As String
         Dim strPath As String = Path.GetDirectoryName(strModelName)
         Dim strFileName As String = Path.GetFileNameWithoutExtension(strModelName) + ".ewevcmdb"
         Return Path.Combine(strPath, strFileName)
@@ -408,24 +408,24 @@ Public Class cData
         End Get
     End Property
 
-    Public Sub AddParameters(ByVal parms As cParameters)
+    Public Sub AddParameters(parms As cParameters)
 
         ' Detach
         If Me.m_parameters IsNot Nothing Then Me.RemoveParameters(Me.m_parameters)
         ' Store
         Me.m_parameters = parms
         ' Start listening for generic change events
-        AddHandler parms.OnChanged, AddressOf OnElementChanged
+        AddHandler parms.OnChanged, AddressOf Me.OnElementChanged
 
     End Sub
 
-    Public Sub RemoveParameters(ByVal parms As cParameters)
+    Public Sub RemoveParameters(parms As cParameters)
 
         If Me.m_parameters Is Nothing Then Return
         Debug.Assert(ReferenceEquals(Me.m_parameters, parms))
 
         ' Stop listening for generic change events
-        RemoveHandler parms.OnChanged, AddressOf OnElementChanged
+        RemoveHandler parms.OnChanged, AddressOf Me.OnElementChanged
         ' Release
         Me.m_parameters = Nothing
 
@@ -435,7 +435,7 @@ Public Class cData
 
 #Region " Defaults "
 
-    Public Function GetUnitDefault(ByVal unitType As cUnitFactory.eUnitType) As cUnit
+    Public Function GetUnitDefault(unitType As cUnitFactory.eUnitType) As cUnit
         Dim unit As cUnit = Nothing
         ' Try to find
         For Each unit In Me.m_lUnitDefaults
@@ -443,27 +443,27 @@ Public Class cData
         Next
         ' Not found: create it
         unit = cUnitFactory.CreateUnitDefault(unitType)
-        AddUnitDefault(unit)
+        Me.AddUnitDefault(unit)
         Return unit
     End Function
 
-    Public Sub AddUnitDefault(ByVal unit As cUnit)
+    Public Sub AddUnitDefault(unit As cUnit)
         If unit IsNot Nothing Then
             Me.m_lUnitDefaults.Add(unit)
             ' Start listening for generic change events
-            AddHandler unit.OnChanged, AddressOf OnElementChanged
+            AddHandler unit.OnChanged, AddressOf Me.OnElementChanged
         End If
     End Sub
 
-    Public Sub RemoveUnitDefault(ByVal unit As cUnit)
+    Public Sub RemoveUnitDefault(unit As cUnit)
         If unit IsNot Nothing Then
             Me.m_lUnitDefaults.Remove(unit)
             ' Start listening for generic change events
-            RemoveHandler unit.OnChanged, AddressOf OnElementChanged
+            RemoveHandler unit.OnChanged, AddressOf Me.OnElementChanged
         End If
     End Sub
 
-    Public Function GetLinkDefault(ByVal linkType As cLinkFactory.eLinkType) As cLinkDefault
+    Public Function GetLinkDefault(linkType As cLinkFactory.eLinkType) As cLinkDefault
         Dim link As cLinkDefault = Nothing
         ' Try to find
         For Each link In Me.m_lLinkDefaults
@@ -475,19 +475,19 @@ Public Class cData
         Return link
     End Function
 
-    Public Sub AddLinkDefault(ByVal link As cLinkDefault)
+    Public Sub AddLinkDefault(link As cLinkDefault)
         If link IsNot Nothing Then
             Me.m_lLinkDefaults.Add(link)
             ' Start listening for generic change events
-            AddHandler link.OnChanged, AddressOf OnElementChanged
+            AddHandler link.OnChanged, AddressOf Me.OnElementChanged
         End If
     End Sub
 
-    Public Sub RemoveLinkDefault(ByVal link As cLinkDefault)
+    Public Sub RemoveLinkDefault(link As cLinkDefault)
         If link IsNot Nothing Then
             Me.m_lLinkDefaults.Remove(link)
             ' Stop listening for generic change events
-            RemoveHandler link.OnChanged, AddressOf OnElementChanged
+            RemoveHandler link.OnChanged, AddressOf Me.OnElementChanged
         End If
     End Sub
 
@@ -499,7 +499,7 @@ Public Class cData
         Return Me.m_lUnits.Count
     End Function
 
-    Public Function UnitByID(ByVal iDBID As Integer) As cUnit
+    Public Function UnitByID(iDBID As Integer) As cUnit
         For Each unit As cUnit In Me.m_lUnits
             If unit.DBID = iDBID Then Return unit
         Next
@@ -513,11 +513,11 @@ Public Class cData
     ''' <param name="iIndex">Zero-based unit index.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Unit(ByVal iIndex As Integer) As cUnit
+    Public Function Unit(iIndex As Integer) As cUnit
         Return Me.m_lUnits(iIndex)
     End Function
 
-    Public Function GetUnits(ByVal unitType As cUnitFactory.eUnitType) As cUnit()
+    Public Function GetUnits(unitType As cUnitFactory.eUnitType) As cUnit()
         Dim lUnits As New List(Of cUnit)
         Dim unit As cUnit = Nothing
         Dim tUnit As Type = cUnitFactory.MapType(unitType)
@@ -556,7 +556,7 @@ Public Class cData
     ''' <param name="strName"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CreateUnit(ByVal unitType As cUnitFactory.eUnitType, ByVal strName As String) As cUnit
+    Public Function CreateUnit(unitType As cUnitFactory.eUnitType, strName As String) As cUnit
         Dim unit As cUnit = cUnitFactory.CreateUnit(unitType)
         If unit IsNot Nothing Then
             ' Populate unit with defaults
@@ -575,7 +575,7 @@ Public Class cData
     ''' <param name="unit"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function DeleteUnit(ByVal unit As cUnit) As Boolean
+    Public Function DeleteUnit(unit As cUnit) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -627,7 +627,7 @@ Public Class cData
     ''' </summary>
     ''' <param name="unit"></param>
     ''' <remarks></remarks>
-    Public Sub AddUnit(ByVal unit As cUnit)
+    Public Sub AddUnit(unit As cUnit)
 
         If (unit Is Nothing) Then Return
 
@@ -643,11 +643,11 @@ Public Class cData
             ' Prepare production unit
             Me.OnChanged(unit)
             ' Start listening for further metier events
-            AddHandler unit.OnChanged, AddressOf OnChanged
+            AddHandler unit.OnChanged, AddressOf Me.OnChanged
         End If
 
         ' Start listening for generic change events
-        AddHandler unit.OnChanged, AddressOf OnElementChanged
+        AddHandler unit.OnChanged, AddressOf Me.OnElementChanged
 
     End Sub
 
@@ -656,12 +656,12 @@ Public Class cData
     ''' </summary>
     ''' <param name="unit"></param>
     ''' <remarks></remarks>
-    Public Sub RemoveUnit(ByVal unit As cUnit)
+    Public Sub RemoveUnit(unit As cUnit)
 
         If unit Is Nothing Then Return
 
         ' Stop listening for generic change events
-        RemoveHandler unit.OnChanged, AddressOf OnElementChanged
+        RemoveHandler unit.OnChanged, AddressOf Me.OnElementChanged
 
         Try
             Me.m_lUnits.Remove(unit)
@@ -669,7 +669,7 @@ Public Class cData
             ' Perform the "Metier special"
             If TypeOf unit Is cProducerUnit Then
                 ' Stop listening for further metier events
-                RemoveHandler unit.OnChanged, AddressOf OnChanged
+                RemoveHandler unit.OnChanged, AddressOf Me.OnChanged
             End If
 
         Catch ex As Exception
@@ -701,7 +701,7 @@ Public Class cData
     ''' Helper: connect producer unit fleet from DBID
     ''' </summary>
     ''' <param name="obj"></param>
-    Private Sub OnChanged(ByVal obj As cEwEDatabase.cOOPStorable)
+    Private Sub OnChanged(obj As cEwEDatabase.cOOPStorable)
         If TypeOf obj Is cProducerUnit Then
             Dim prod As cProducerUnit = DirectCast(obj, cProducerUnit)
             prod.Fleet = Me.FindEcopathFleetByID(prod.EcopathFleetID)
@@ -714,7 +714,7 @@ Public Class cData
         End If
     End Sub
 
-    Private Function FindEcopathGroupByID(ByVal iDBID As Integer) As cEcoPathGroupInput
+    Private Function FindEcopathGroupByID(iDBID As Integer) As cEcoPathGroupInput
         Dim group As cEcoPathGroupInput = Nothing
         For i As Integer = 1 To Me.m_core.nGroups
             group = Me.m_core.EcoPathGroupInputs(i)
@@ -723,7 +723,7 @@ Public Class cData
         Return Nothing
     End Function
 
-    Private Function FindEcopathFleetByID(ByVal iDBID As Integer) As cEcopathFleetInput
+    Private Function FindEcopathFleetByID(iDBID As Integer) As cEcopathFleetInput
         Dim fleet As cEcopathFleetInput = Nothing
         For i As Integer = 1 To Me.m_core.nFleets
             fleet = Me.m_core.EcopathFleetInputs(i)
@@ -747,7 +747,7 @@ Public Class cData
     ''' <see cref="cLink.IsVisible">visible</see> may be included.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetLinks(ByVal t As Type, Optional bIncludeInvisible As Boolean = False) As cLink()
+    Public Function GetLinks(t As Type, Optional bIncludeInvisible As Boolean = False) As cLink()
 
         Dim lLinks As New List(Of cLink)
         Dim link As cLink = Nothing
@@ -775,18 +775,18 @@ Public Class cData
         Return Me.m_lLinks.Count
     End Function
 
-    Public Function LinkByID(ByVal iDBID As Integer) As cLink
+    Public Function LinkByID(iDBID As Integer) As cLink
         For Each link As cLink In Me.m_lLinks
             If link.DBID = iDBID Then Return link
         Next
         Return Nothing
     End Function
 
-    Public Function Link(ByVal iIndex As Integer) As cLink
+    Public Function Link(iIndex As Integer) As cLink
         Return Me.m_lLinks(iIndex)
     End Function
 
-    Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput, ByRef bError As Boolean) As cLinkLandings
+    Public Function CreateLandingsLink(unitSource As cProducerUnit, unitTarget As cUnit, group As cEcoPathGroupInput, ByRef bError As Boolean) As cLinkLandings
 
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
@@ -840,7 +840,7 @@ Public Class cData
     ''' <param name="unitSource"></param>
     ''' <param name="unitTarget"></param>
     ''' <returns></returns>
-    Public Function CreateLink(ByVal unitSource As cUnit, ByVal unitTarget As cUnit) As cLink
+    Public Function CreateLink(unitSource As cUnit, unitTarget As cUnit) As cLink
 
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
@@ -880,7 +880,7 @@ Public Class cData
     ''' </summary>
     ''' <param name="link"></param>
     ''' <returns></returns>
-    Public Function DeleteLink(ByVal link As cLink) As Boolean
+    Public Function DeleteLink(link As cLink) As Boolean
         If Me.m_db.DeleteObject(link) Then
             Me.RemoveLink(link)
             Me.IsChanged = True
@@ -893,7 +893,7 @@ Public Class cData
     ''' Add an output link to the local administration
     ''' </summary>
     ''' <param name="link"></param>
-    Public Sub AddLink(ByVal link As cLink)
+    Public Sub AddLink(link As cLink)
 
         ' Sanity check
         Debug.Assert(link IsNot Nothing)
@@ -908,7 +908,7 @@ Public Class cData
             ' Prepare link
             Me.OnChanged(link)
             ' Start listening for further link events
-            AddHandler link.OnChanged, AddressOf OnChanged
+            AddHandler link.OnChanged, AddressOf Me.OnChanged
         End If
 
         ' Start listening for link change events
@@ -920,7 +920,7 @@ Public Class cData
     ''' Remove an output link from the local administration
     ''' </summary>
     ''' <param name="link"></param>
-    Public Sub RemoveLink(ByVal link As cLink)
+    Public Sub RemoveLink(link As cLink)
 
         ' Sanity check
         Debug.Assert(link IsNot Nothing)
@@ -931,14 +931,14 @@ Public Class cData
         ' Perform the "Species link special"
         If TypeOf link Is cLinkLandings Then
             ' Start listening for further link events
-            RemoveHandler link.OnChanged, AddressOf OnChanged
+            RemoveHandler link.OnChanged, AddressOf Me.OnChanged
         End If
 
         Me.m_lLinks.Remove(link)
         link.Source.RemoveLink(link)
     End Sub
 
-    Public Sub OnGroupLinkChanged(ByVal unit As cEwEDatabase.cOOPStorable)
+    Public Sub OnGroupLinkChanged(unit As cEwEDatabase.cOOPStorable)
         If TypeOf unit Is cLinkLandings Then
             Dim mu As cLinkLandings = DirectCast(unit, cLinkLandings)
             mu.Group = Me.FindEcopathGroupByID(mu.EcopathGroupID)
@@ -954,28 +954,28 @@ Public Class cData
         Return Me.m_lFlowDiagrams.Count
     End Function
 
-    Public Function FlowDiagram(ByVal iIndex As Integer) As cFlowDiagram
+    Public Function FlowDiagram(iIndex As Integer) As cFlowDiagram
         If Me.m_lFlowDiagrams.Count = 0 Then
             Me.CreateFlowDiagram(New cFlowDiagram())
         End If
         Return Me.m_lFlowDiagrams(iIndex)
     End Function
 
-    Public Sub CreateFlowDiagram(ByVal diagram As cFlowDiagram)
+    Public Sub CreateFlowDiagram(diagram As cFlowDiagram)
         Me.AddFlowDiagram(diagram)
         Me.IsChanged = True
     End Sub
 
-    Public Sub DeleteFlowDiagram(ByVal diagram As cFlowDiagram)
+    Public Sub DeleteFlowDiagram(diagram As cFlowDiagram)
         Me.AddFlowDiagram(diagram)
         Me.IsChanged = True
     End Sub
 
-    Public Sub AddFlowDiagram(ByVal diagram As cFlowDiagram)
+    Public Sub AddFlowDiagram(diagram As cFlowDiagram)
         Me.m_lFlowDiagrams.Add(diagram)
     End Sub
 
-    Public Sub RemoveFlowDiagram(ByVal diagram As cFlowDiagram)
+    Public Sub RemoveFlowDiagram(diagram As cFlowDiagram)
         Me.m_lFlowDiagrams.Remove(diagram)
     End Sub
 
@@ -987,14 +987,14 @@ Public Class cData
         Return Me.m_lFlowPositions.Count
     End Function
 
-    Public Function FlowPosition(ByVal iIndex As Integer) As cFlowPosition
+    Public Function FlowPosition(iIndex As Integer) As cFlowPosition
         If Me.m_lFlowDiagrams.Count = 0 Then
             Me.CreateFlowDiagram(New cFlowDiagram())
         End If
         Return Me.m_lFlowPositions(iIndex)
     End Function
 
-    Public Function CreateFlowPosition(ByVal unit As cUnit, ByVal diagram As cFlowDiagram) As cFlowPosition
+    Public Function CreateFlowPosition(unit As cUnit, diagram As cFlowDiagram) As cFlowPosition
 
         ' Sanity checks
         Debug.Assert(unit IsNot Nothing)
@@ -1011,19 +1011,19 @@ Public Class cData
 
     End Function
 
-    Public Sub AddFlowPosition(ByVal pos As cFlowPosition)
+    Public Sub AddFlowPosition(pos As cFlowPosition)
 
         ' Sanity check
         Debug.Assert(pos IsNot Nothing)
         Debug.Assert(pos.Unit IsNot Nothing)
 
         ' Start listening for generic change events
-        AddHandler pos.OnChanged, AddressOf OnElementChanged
+        AddHandler pos.OnChanged, AddressOf Me.OnElementChanged
 
         Me.m_lFlowPositions.Add(pos)
     End Sub
 
-    Public Sub DeleteFlowPosition(ByVal pos As cFlowPosition)
+    Public Sub DeleteFlowPosition(pos As cFlowPosition)
 
         ' Sanity check
         Debug.Assert(pos IsNot Nothing)
@@ -1034,18 +1034,18 @@ Public Class cData
         End If
     End Sub
 
-    Public Sub RemoveFlowPosition(ByVal pos As cFlowPosition)
+    Public Sub RemoveFlowPosition(pos As cFlowPosition)
 
         ' Sanity check
         Debug.Assert(pos IsNot Nothing)
 
         ' Stop listening for generic change events
-        RemoveHandler pos.OnChanged, AddressOf OnElementChanged
+        RemoveHandler pos.OnChanged, AddressOf Me.OnElementChanged
 
         Me.m_lFlowPositions.Remove(pos)
     End Sub
 
-    Public Function FlowPositions(ByVal unit As cUnit) As cFlowPosition()
+    Public Function FlowPositions(unit As cUnit) As cFlowPosition()
         Dim lfp As New List(Of cFlowPosition)
         Dim fp As cFlowPosition = Nothing
         For i As Integer = 0 To Me.m_lFlowPositions.Count - 1
@@ -1056,7 +1056,7 @@ Public Class cData
         Return lfp.ToArray()
     End Function
 
-    Public Function FlowPositions(ByVal diagram As cFlowDiagram) As cFlowPosition()
+    Public Function FlowPositions(diagram As cFlowDiagram) As cFlowPosition()
         Dim lfp As New List(Of cFlowPosition)
         Dim fp As cFlowPosition = Nothing
         For i As Integer = 0 To Me.m_lFlowPositions.Count - 1
@@ -1067,7 +1067,7 @@ Public Class cData
         Return lfp.ToArray()
     End Function
 
-    Public Function FlowPosition(ByVal unit As cUnit, ByVal diagram As cFlowDiagram) As cFlowPosition
+    Public Function FlowPosition(unit As cUnit, diagram As cFlowDiagram) As cFlowPosition
         Dim fp As cFlowPosition = Nothing
         For i As Integer = 0 To Me.m_lFlowPositions.Count - 1
             fp = Me.m_lFlowPositions(i)
@@ -1102,7 +1102,7 @@ Public Class cData
     ''' <param name="unit"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetConnectedUnits(ByVal unit As cUnit) As List(Of cUnit)
+    Public Function GetConnectedUnits(unit As cUnit) As List(Of cUnit)
 
         Dim lUnits As New List(Of cUnit)
 
@@ -1130,7 +1130,7 @@ Public Class cData
     ''' <param name="item"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetUnits(ByVal item As cCoreInputOutputBase) As cUnit()
+    Public Function GetUnits(item As cCoreInputOutputBase) As cUnit()
 
         Dim lUnits As New List(Of cUnit)
         Dim pu As cProducerUnit = Nothing
@@ -1179,7 +1179,7 @@ Public Class cData
     ''' <param name="unit">The unit to test incoming links for.</param>
     ''' <param name="lUnits">The list that will receive the linked units.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub GetSourceUnits(ByVal unit As cUnit, ByVal lUnits As List(Of cUnit))
+    Private Sub GetSourceUnits(unit As cUnit, lUnits As List(Of cUnit))
         Dim unitSource As cUnit = Nothing
         For iLink As Integer = 0 To unit.LinkInCount - 1
             unitSource = unit.LinkIn(iLink).Source
@@ -1197,7 +1197,7 @@ Public Class cData
     ''' <param name="unit">The unit to test outgoing links for.</param>
     ''' <param name="lUnits">The list that will receive the linked units.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub GetTargetUnits(ByVal unit As cUnit, ByVal lUnits As List(Of cUnit))
+    Private Sub GetTargetUnits(unit As cUnit, lUnits As List(Of cUnit))
         Dim unitTarget As cUnit = Nothing
         For iLink As Integer = 0 To unit.LinkOutCount - 1
             unitTarget = unit.LinkOut(iLink).Target

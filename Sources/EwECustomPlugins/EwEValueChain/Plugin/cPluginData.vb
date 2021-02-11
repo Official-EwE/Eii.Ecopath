@@ -221,7 +221,7 @@ Public Class cPluginData
 
 #Region " Constructor "
 
-    Public Sub New(ByVal strPluginName As String)
+    Public Sub New(strPluginName As String)
         Me.m_strPluginName = strPluginName
     End Sub
 
@@ -229,7 +229,7 @@ Public Class cPluginData
 
 #Region " Helper methods "
 
-    Friend Sub Resize(ByVal nFleets As Integer)
+    Friend Sub Resize(nFleets As Integer)
         Me.m_subtotals.Clear()
         For iFleet As Integer = 0 To nFleets - 1
             Me.m_subtotals.Add(New cVCEconomicData)
@@ -250,7 +250,7 @@ Public Class cPluginData
     Public ReadOnly Property RunType() As IRunType _
         Implements IPluginData.RunType
         Get
-            Return m_runType
+            Return Me.m_runType
         End Get
     End Property
 
@@ -275,7 +275,7 @@ Public Class cPluginData
     ''' Get a subtotal block.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Subtotal(ByVal iFleet As Integer) As IEData _
+    Public ReadOnly Property Subtotal(iFleet As Integer) As IEData _
         Implements IEconomicData.Subtotal
         Get
             Debug.Assert(iFleet >= 0 And iFleet < Me.m_subtotals.Count)

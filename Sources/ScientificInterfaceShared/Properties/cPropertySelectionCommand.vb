@@ -52,7 +52,7 @@ Namespace Properties
         ''' Constructor, initializes and names an instance of this class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
@@ -69,11 +69,11 @@ Namespace Properties
         ''' object that acts as secundary index to the selection.</param>
         ''' <param name="strStatus">Optional status message to include.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal pm As cPropertyManager, _
-                                    ByVal source As cCoreInputOutputBase, _
-                                    ByVal varName As eVarNameFlags, _
-                                    Optional ByVal sourceSec As cCoreInputOutputBase = Nothing, _
-                                    Optional ByVal strStatus As String = "")
+        Public Overloads Sub Invoke(pm As cPropertyManager, _
+                                    source As cCoreInputOutputBase, _
+                                    varName As eVarNameFlags, _
+                                    Optional sourceSec As cCoreInputOutputBase = Nothing, _
+                                    Optional strStatus As String = "")
 
             Dim prop As cProperty = Nothing
 
@@ -109,7 +109,7 @@ Namespace Properties
         ''' was selected.</param>
         ''' <param name="strStatus">Optional status message to include.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal prop As cProperty, _
+        Public Overloads Sub Invoke(prop As cProperty, _
                                     Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
@@ -127,7 +127,7 @@ Namespace Properties
         ''' <param name="aprop">Array of <see cref="cProperty">cProperty</see> 
         ''' instances that were selected.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal aprop() As cProperty, _
+        Public Overloads Sub Invoke(aprop() As cProperty, _
                                     Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
@@ -146,9 +146,9 @@ Namespace Properties
         ''' instances that were selected.</param>
         ''' <param name="event">The <see cref="SelectionChangeEventType">event</see> that fired this command.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal lprop As List(Of cProperty), _
-                                    ByVal [event] As SelectionChangeEventType, _
-                                    Optional ByVal strStatus As String = "")
+        Public Overloads Sub Invoke(lprop As List(Of cProperty), _
+                                    [event] As SelectionChangeEventType, _
+                                    Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
             ' Store prop

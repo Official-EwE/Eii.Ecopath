@@ -63,7 +63,7 @@ Friend Class cAutosaveSettingsManager
     Public Property Settings() As XmlDocument
         Get
             ' Just in case
-            GatherSettings()
+            Me.GatherSettings()
 
             Dim doc As New XmlDocument()
             Dim node As XmlNode = Nothing
@@ -82,7 +82,7 @@ Friend Class cAutosaveSettingsManager
                     nodeChild = doc.CreateElement(t.ToString)
 
                     att = doc.CreateAttribute("Enabled")
-                    att.InnerText = m_core.Autosave(t).ToString
+                    att.InnerText = Me.m_core.Autosave(t).ToString
                     nodeChild.Attributes.Append(att)
 
                     Select Case t
@@ -149,8 +149,8 @@ Friend Class cAutosaveSettingsManager
 
         ' Ecosim
         If (Me.m_core.ActiveEcosimScenarioIndex > 0) And (Me.m_core.Autosave(eAutosaveTypes.MonteCarlo) = True) Then
-            Dim man As cMonteCarloManager = m_core.EcosimMonteCarlo
-            Dim strFormat As String = m_formats(eAutosaveTypes.MonteCarlo)
+            Dim man As cMonteCarloManager = Me.m_core.EcosimMonteCarlo
+            Dim strFormat As String = Me.m_formats(eAutosaveTypes.MonteCarlo)
             For n As Integer = 1 To man.nResultWriters
                 Dim writer As IMonteCarloResultsWriter = man.ResultWriter(n)
                 If (strFormat = cTypeUtils.TypeToString(writer.GetType())) Or
@@ -161,9 +161,9 @@ Friend Class cAutosaveSettingsManager
         End If
 
         ' Ecospace
-        If (m_core.ActiveEcospaceScenarioIndex > 0) And (m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) Then
-            Dim parms As cEcospaceModelParameters = m_core.EcospaceModelParameters
-            Dim strFormat As String = m_formats(eAutosaveTypes.EcospaceResults)
+        If (Me.m_core.ActiveEcospaceScenarioIndex > 0) And (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) Then
+            Dim parms As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters
+            Dim strFormat As String = Me.m_formats(eAutosaveTypes.EcospaceResults)
             Dim bits As String() = strFormat.Split(";"c)
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)

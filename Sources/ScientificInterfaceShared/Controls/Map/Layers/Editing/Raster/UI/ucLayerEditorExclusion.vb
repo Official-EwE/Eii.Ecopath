@@ -34,12 +34,12 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
+        Protected Overrides Sub Dispose(bDisposing As Boolean)
             Try
                 If bDisposing Then
                     If (Me.UIContext Is Nothing) Then Return
-                    If components IsNot Nothing Then
-                        components.Dispose()
+                    If Me.components IsNot Nothing Then
+                        Me.components.Dispose()
                     End If
                 End If
             Finally
@@ -51,7 +51,7 @@ Namespace Controls.Map.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub Initialize(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub Initialize(editor As cLayerEditorRaster)
             MyBase.Initialize(editor)
 
             Me.m_nudDepth.DecimalPlaces = 0
@@ -68,7 +68,7 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
         End Sub
 
@@ -103,7 +103,7 @@ Namespace Controls.Map.Layers
             Handles m_cbAlwaysShowExcluded.CheckedChanged
 
             Try
-                Dim sg As cStyleGuide = Editor.UIContext.StyleGuide
+                Dim sg As cStyleGuide = Me.Editor.UIContext.StyleGuide
                 sg.ShowMapsExcludedCells = Me.m_cbAlwaysShowExcluded.Checked
             Catch ex As Exception
                 cLog.Write(ex, "ucLayerEditorExclusion:OnShowExcludedCellsToggled()")
@@ -115,7 +115,7 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_btnClear.Enabled = (Me.IsAttached)

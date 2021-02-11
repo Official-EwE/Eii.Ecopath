@@ -42,7 +42,7 @@ Public Class ucPlotOfMTIOptions
     Private WithEvents m_rbColors As System.Windows.Forms.RadioButton
     Private m_content As cPlotOfMixedTrophicImpact = Nothing
 
-    Public Sub New(ByVal content As cPlotOfMixedTrophicImpact)
+    Public Sub New(content As cPlotOfMixedTrophicImpact)
         Me.InitializeComponent()
         Me.m_content = content
     End Sub
@@ -296,7 +296,7 @@ Public Class ucPlotOfMTIOptions
 
     Private m_bInUpdate As Boolean = False
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_bInUpdate = True
@@ -325,7 +325,7 @@ Public Class ucPlotOfMTIOptions
 
     End Sub
 
-    Private Sub OnDrawModeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDrawModeChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbCircles.CheckedChanged, m_rbRectangles.CheckedChanged, m_rbColors.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return
@@ -341,7 +341,7 @@ Public Class ucPlotOfMTIOptions
 
     End Sub
 
-    Private Sub OnShowGridChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowGridChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbShowGrid.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return
@@ -351,7 +351,7 @@ Public Class ucPlotOfMTIOptions
 
     End Sub
 
-    Private Sub OnSlantLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSlantLabelsChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbSlantingLabels.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return
@@ -361,7 +361,7 @@ Public Class ucPlotOfMTIOptions
 
     End Sub
 
-    Private Sub OnFitToScreenChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnFitToScreenChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbFitToScreen.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return
@@ -371,7 +371,7 @@ Public Class ucPlotOfMTIOptions
 
     End Sub
 
-    Private Sub OnLabelDrawModeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnLabelDrawModeChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbShowName.CheckedChanged, m_rbShowNo.CheckedChanged, m_rbShowNameNum.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return
@@ -386,7 +386,7 @@ Public Class ucPlotOfMTIOptions
         End If
     End Sub
 
-    Private Sub OnDrawLegendChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDrawLegendChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbShowLegend.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return

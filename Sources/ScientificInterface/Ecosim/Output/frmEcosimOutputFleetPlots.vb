@@ -52,7 +52,7 @@ Namespace Ecosim
                 Return GetType(ePlot)
             End Function
 
-            Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
+            Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
 
                 Select Case DirectCast(value, ePlot)
                     Case ePlot.FleetFishingMortality : Return SharedResources.HEADER_FISHINGMORTALITY
@@ -131,7 +131,7 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -161,7 +161,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             Me.ConfigurePlots(False)
 
@@ -174,13 +174,13 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
             If ((changeType And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
                 Me.UpdateColors()
             End If
         End Sub
 
-        Private Sub OnSaveData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveData(sender As System.Object, e As System.EventArgs) _
             Handles m_btnSaveData.Click
 
             Dim cmd As cEcosimSaveDataCommand = DirectCast(Me.CommandHandler.GetCommand("ExportEcosimResultsToCSV"), cEcosimSaveDataCommand)
@@ -215,7 +215,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShowHidePlots(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowHidePlots(sender As System.Object, e As System.EventArgs) _
             Handles m_btnChoosePlots.Click
 
             Dim dlg As New dlgSelectItems(GetType(ePlot), New cSimPlotFormatter())
@@ -262,7 +262,7 @@ Namespace Ecosim
                 Next
                 Return sbSettings.ToString()
             End Get
-            Set(ByVal strSettings As String)
+            Set(strSettings As String)
                 If String.IsNullOrEmpty(strSettings) Then Return
 
                 Dim iNumPlots As Integer = Math.Min([Enum].GetValues(GetType(ePlot)).Length, strSettings.Length)
@@ -272,7 +272,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Protected Sub ConfigurePlots(Optional ByVal bFormOpen As Boolean = True)
+        Protected Sub ConfigurePlots(Optional bFormOpen As Boolean = True)
 
             Dim iPane As Integer = 1
             Dim iMaxPanes As Integer = [Enum].GetValues(GetType(ePlot)).Length - 1
@@ -306,7 +306,7 @@ Namespace Ecosim
         ''' Configure a plot on the main graph
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(ByVal plot As ePlot, ByVal strTitle As String, strYAxisLabel As String)
+        Private Sub ConfigurePane(plot As ePlot, strTitle As String, strYAxisLabel As String)
 
             If Not Me.m_plotVisible(plot) Then Return
             ' Sanity check
@@ -327,7 +327,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iNumLists">Number of lists to create.</param>
         ''' -------------------------------------------------------------------
-        Private Function InitLists(ByVal iNumLists As Integer) As List(Of PointPairList)
+        Private Function InitLists(iNumLists As Integer) As List(Of PointPairList)
 
             Dim lPPL As New List(Of PointPairList)
             For i As Integer = 1 To iNumLists
@@ -459,9 +459,9 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiGroupIndex">Array of group index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox,
-                                         ByVal aiGroupIndex() As Integer,
-                                         ByVal asValues() As Single)
+        Private Sub PopulateGroupListBox(l As cGroupListBox,
+                                         aiGroupIndex() As Integer,
+                                         asValues() As Single)
 
             l.VisibleGroups = aiGroupIndex
             l.Populate()
@@ -473,7 +473,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateGraphPaneTitle(ByVal paneType As ePlot, ByVal strTitle As String)
+        Private Sub UpdateGraphPaneTitle(paneType As ePlot, strTitle As String)
             If Not Me.m_plotVisible(paneType) Then Return
             ' Sanity check
             Debug.Assert(Me.m_plotPanel(paneType) > 0)
@@ -493,8 +493,8 @@ Namespace Ecosim
         ''' <param name="paneType">Index of the graph pane</param>
         ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePlot,
-                                        ByVal li As LineItem)
+        Private Sub AddCurveToGraphPane(paneType As ePlot,
+                                        li As LineItem)
             Dim lli As New List(Of ZedGraph.LineItem)
             lli.Add(li)
             Me.AddCurvesToGraphPane(paneType, lli)
@@ -508,8 +508,8 @@ Namespace Ecosim
         ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePlot,
-                                         ByVal lli As List(Of LineItem))
+        Private Sub AddCurvesToGraphPane(paneType As ePlot,
+                                         lli As List(Of LineItem))
 
             If Not Me.m_plotVisible(paneType) Then Return
             ' Sanity check
@@ -523,13 +523,13 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateColors()
-            m_paneMaster.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+            Me.m_paneMaster.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             For Each p As GraphPane In Me.m_paneMaster.PaneList
                 p.Chart.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
             Next
         End Sub
 
-        Private Function GetPlotTitle(ByVal data As ePlot) As String
+        Private Function GetPlotTitle(data As ePlot) As String
 
             Dim fmt As New cSimPlotFormatter()
             Return fmt.ToString(data)
@@ -541,13 +541,13 @@ Namespace Ecosim
             Select Case data
 
                 Case ePlot.FleetFishingMortality
-                    Return StyleGuide.FormatUnitString(cUnits.OverTime)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.OverTime)
 
                 Case ePlot.Value
-                    Return StyleGuide.FormatUnitString(cUnits.MonetaryOverBiomass)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.MonetaryOverBiomass)
 
                 Case ePlot.[Catch]
-                    Return StyleGuide.FormatUnitString(cUnits.CurrencyOverTime)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.CurrencyOverTime)
             End Select
 
             Return ""
@@ -577,7 +577,7 @@ Namespace Ecosim
 
         End Function
 
-        Private Function ToTimeSeriesLineItem(ByVal ts As cTimeSeries, ByVal clr As Color) As LineItem
+        Private Function ToTimeSeriesLineItem(ts As cTimeSeries, clr As Color) As LineItem
 
             Dim ppt As New PointPairList()
             Dim li As LineItem = Nothing

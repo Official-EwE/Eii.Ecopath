@@ -35,7 +35,7 @@ Namespace DataSources
         ''' <param name="dt"><see cref="eDataTypes"/> to obtain a description for.</param>
         ''' <param name="iDBID">Unique ID of this datatype to obtain a description for.</param>
         ''' <returns>A textual description, or an empty string if the request could not be honoured.</returns>
-        Function GetDescription(ByVal dt As eDataTypes, ByVal iDBID As Integer) As String
+        Function GetDescription(dt As eDataTypes, iDBID As Integer) As String
 
     End Interface
 

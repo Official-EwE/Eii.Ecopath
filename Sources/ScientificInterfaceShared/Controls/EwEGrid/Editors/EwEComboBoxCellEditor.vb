@@ -39,7 +39,7 @@ Namespace Controls.EwEGrid
         ''' <param name="formatter">The <see cref="ITypeFormatter">type formatter</see> to link to.</param>
         ''' <param name="standardvalues">An optional (sub)set of values to present in the combo box.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal formatter As ITypeFormatter, Optional ByVal standardvalues As ICollection = Nothing)
+        Public Sub New(formatter As ITypeFormatter, Optional standardvalues As ICollection = Nothing)
 
             MyBase.New(formatter.GetDescribedType)
 
@@ -76,7 +76,7 @@ Namespace Controls.EwEGrid
 
         End Sub
 
-        Protected Overrides Sub OnConvertingObjectToValue(ByVal e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
+        Protected Overrides Sub OnConvertingObjectToValue(e As SourceLibrary.ComponentModel.ConvertingObjectEventArgs)
 
             If (e.Value IsNot Nothing) Then
                 If Not Me.ValueType.UnderlyingSystemType.IsAssignableFrom(e.Value.GetType) Then

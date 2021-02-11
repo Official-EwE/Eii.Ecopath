@@ -50,7 +50,7 @@ Namespace Controls
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             MyBase.New()
             Me.m_uic = uic
             Me.InitializeComponent()
@@ -60,16 +60,16 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
             End Set
         End Property
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 Me.Detach()
-                If disposing AndAlso components IsNot Nothing Then
-                    components.Dispose()
+                If disposing AndAlso Me.components IsNot Nothing Then
+                    Me.components.Dispose()
                 End If
             Finally
                 MyBase.Dispose(disposing)
@@ -86,7 +86,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="data">The tag data that an item was created with.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnUserCommand(ByVal data As Object)
+        Public Event OnUserCommand(data As Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -102,7 +102,7 @@ Namespace Controls
         ''' <param name="target">The windows control to attach the hover menu
         ''' to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal target As Control)
+        Public Sub Attach(target As Control)
 
             Me.Detach()
 
@@ -154,11 +154,11 @@ Namespace Controls
         ''' <param name="handler">Optional handler for click events.</param>
         ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Function AddItem(ByVal img As Image, ByVal strTooltip As String, _
-                                Optional ByVal tag As Object = Nothing, _
+        Public Function AddItem(img As Image, strTooltip As String, _
+                                Optional tag As Object = Nothing, _
                                 Optional handler As System.EventHandler = Nothing) As ToolStripButton
 
-            Dim item As New ToolStripButton(strTooltip, img, If(handler Is Nothing, AddressOf OnItemClicked, handler))
+            Dim item As New ToolStripButton(strTooltip, img, If(handler Is Nothing, AddressOf Me.OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Image
             item.ToolTipText = strTooltip
@@ -179,11 +179,11 @@ Namespace Controls
         ''' <param name="handler">Optional handler for click events.</param>
         ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Function AddItem(ByVal strText As String, ByVal img As Image, ByVal strTooltip As String,
+        Public Function AddItem(strText As String, img As Image, strTooltip As String,
                                 Optional tag As Object = Nothing,
                                 Optional handler As System.EventHandler = Nothing) As ToolStripButton
 
-            Dim item As New ToolStripButton(strText, img, If(handler Is Nothing, AddressOf OnItemClicked, handler))
+            Dim item As New ToolStripButton(strText, img, If(handler Is Nothing, AddressOf Me.OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
             item.TextImageRelation = TextImageRelation.ImageAboveText
@@ -207,7 +207,7 @@ Namespace Controls
         Public Function AddItem(strText As String, strTooltip As String, tag As Object,
                                 Optional handler As System.EventHandler = Nothing) As ToolStripButton
 
-            Dim item As New ToolStripButton(strText, Nothing, If(handler Is Nothing, AddressOf OnItemClicked, handler))
+            Dim item As New ToolStripButton(strText, Nothing, If(handler Is Nothing, AddressOf Me.OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Text
             item.ToolTipText = strTooltip
@@ -249,13 +249,13 @@ Namespace Controls
         ''' </summary>
         ''' <param name="tag">The tag to access the enabled state for.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsEnabled(ByVal tag As Object) As Boolean
+        Public Property IsEnabled(tag As Object) As Boolean
             Get
                 Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then Return tsi.Enabled
                 Return False
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then tsi.Enabled = value
             End Set
@@ -268,7 +268,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="tag">The tag to access the enabled state for.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsChecked(ByVal tag As Object) As Boolean
+        Public Property IsChecked(tag As Object) As Boolean
             Get
                 Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then
@@ -278,7 +278,7 @@ Namespace Controls
                 End If
                 Return False
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then
                     If (TypeOf tsi Is ToolStripButton) Then
@@ -297,7 +297,7 @@ Namespace Controls
         ''' Button callback handler.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnItemClicked(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnItemClicked(sender As System.Object, e As System.EventArgs)
             Try
                 Me.InvokeCallback(DirectCast(sender, ToolStripItem).Tag)
             Catch ex As Exception
@@ -338,7 +338,7 @@ Namespace Controls
         ''' <param name="bShow">Flag stating whether the hover menu should be 
         ''' shown (True) or hidden (False).</param>
         ''' -------------------------------------------------------------------
-        Private Sub ShowHover(ByVal bShow As Boolean)
+        Private Sub ShowHover(bShow As Boolean)
 
             ' Optimization
             If bShow = Me.Visible Then Return
@@ -377,7 +377,7 @@ Namespace Controls
 
             ' Update visuals
             Me.Location = ptHover
-            Me.Visible = (bShow Or IsMouseOverMyself())
+            Me.Visible = (bShow Or Me.IsMouseOverMyself())
 
         End Sub
 
@@ -403,7 +403,7 @@ Namespace Controls
             Return Me.m_ctrlTarget.ClientRectangle.Contains(pt)
         End Function
 
-        Private Sub InvokeCallback(ByVal tag As Object)
+        Private Sub InvokeCallback(tag As Object)
             Try
                 RaiseEvent OnUserCommand(tag)
             Catch ex As Exception
@@ -411,7 +411,7 @@ Namespace Controls
             End Try
         End Sub
 
-        Private ReadOnly Property GetToolStripItem(ByVal data As Object) As ToolStripItem
+        Private ReadOnly Property GetToolStripItem(data As Object) As ToolStripItem
             Get
                 For Each item As ToolStripItem In Me.m_ts.Items
                     If Object.Equals(data, item.Tag) Then Return item
@@ -437,7 +437,7 @@ Namespace Controls
 
             Private m_hovermenu As ucHoverMenu = Nothing
 
-            Public Sub New(ByVal hovermenu As ucHoverMenu)
+            Public Sub New(hovermenu As ucHoverMenu)
                 Me.m_hovermenu = hovermenu
             End Sub
 

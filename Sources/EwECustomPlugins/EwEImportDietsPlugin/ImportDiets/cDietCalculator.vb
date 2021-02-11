@@ -61,16 +61,16 @@ Public Class cDietCalculator
 
     Public Function DietsFromPreferences(ExternalDietPrefs As cDietPreferences) As Boolean
         Dim igrp As Integer
-        Dim Alpha(,) As Single = New Single(nGroups, nGroups) {}
+        Dim Alpha(,) As Single = New Single(Me.nGroups, Me.nGroups) {}
 
-        Me.SumR = New Single(nGroups) {}
+        Me.SumR = New Single(Me.nGroups) {}
 
         'sum biomass calculated on internal biomasses
         'This is the total biomass abundance in the ecosystem
         'Used to scale to the available biomass
         For igrp = 1 To Me.nGroups
             If Me.m_EcopathData.Binput(igrp) > 0 Then
-                SumBio = SumBio + Me.m_EcopathData.B(igrp)
+                Me.SumBio = Me.SumBio + Me.m_EcopathData.B(igrp)
             End If
         Next
 
@@ -78,7 +78,7 @@ Public Class cDietCalculator
         'Scaled to SumBio (calcualted above) calculated on the internal biomass
         'This is used to scale the imported diets to internal biomass
         For igrp = 1 To Me.nGroups
-            CalcChessonAlpha(igrp, Alpha, ExternalDietPrefs.Biomass, ExternalDietPrefs.DietPref)
+            Me.CalcChessonAlpha(igrp, Alpha, ExternalDietPrefs.Biomass, ExternalDietPrefs.DietPref)
         Next
 
         Me.IterateForDiet(Alpha, ExternalDietPrefs)
@@ -106,19 +106,19 @@ Public Class cDietCalculator
         'where ri is the DC and Pn the proportion the biomass of a group constitutes of the total biomass
         Dim j As Integer
 
-        Debug.Assert(SumBio <> 0, "Opps SumBio not set!")
-        If SumBio = 0 Then SumBio = 1
-        SumR(i) = 0
+        Debug.Assert(Me.SumBio <> 0, "Opps SumBio not set!")
+        If Me.SumBio = 0 Then Me.SumBio = 1
+        Me.SumR(i) = 0
         For j = 1 To Me.nGroups              'FOLLOWING CHESSON (1983)
             If B(j) > 0.0 Then
-                Alpha(i, j) = DCij(i, j) / (B(j) / SumBio)
-                SumR(i) = SumR(i) + Alpha(i, j)
+                Alpha(i, j) = DCij(i, j) / (B(j) / Me.SumBio)
+                Me.SumR(i) = Me.SumR(i) + Alpha(i, j)
             End If
         Next j
 
         For j = 1 To Me.nGroups
-            If SumR(i) > 0 Then
-                Alpha(i, j) = Alpha(i, j) / SumR(i)
+            If Me.SumR(i) > 0 Then
+                Alpha(i, j) = Alpha(i, j) / Me.SumR(i)
             End If
         Next j               'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
 
@@ -176,7 +176,7 @@ Public Class cDietCalculator
 
                 'Si() is internal(current model) biomass and eternal diets
                 'si = ri/pi / sum(rn/pn) pi and pn calcualted on internal biomass
-                CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
+                Me.CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
 
                 Do While Diff > 10 ^ -6 And Cnt < 30000
                     Diff = 0
@@ -198,7 +198,7 @@ Public Class cDietCalculator
 
                                     Diet(iPred, i) = Diet(iPred, i) * Ratio
                                     Me.RescaleDietsToDietSum(iPred, Diet, DietSum)
-                                    CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
+                                    Me.CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
 
                                     ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                     ''For Debugging

@@ -32,32 +32,30 @@ Namespace ValueWrapper
 
         Public Property iThirdIndex As Integer
 
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags,
-                ByVal CounterType As eCoreCounterTypes, ByVal CounterType2 As eCoreCounterTypes,
-                ByRef CounterDelegate As CoreCounterDelegate, ByVal iFixedIndex1 As Integer, ByVal DataType As eDataTypes)
+        Sub New(core As cCore, theValueType As eValueTypes, VarName As eVarNameFlags, Status As eStatusFlags,
+                CounterType As eCoreCounterTypes, CounterType2 As eCoreCounterTypes, iFixedIndex1 As Integer, DataType As eDataTypes)
 
-            MyBase.New(theValueType, VarName, Status, CounterType2, Nothing, iFixedIndex1, DataType)
+            MyBase.New(core, theValueType, VarName, Status, CounterType2, iFixedIndex1, DataType)
 
-            m_Countertype = CounterType
-            m_counter2 = CounterType2
+            Me.m_Countertype = CounterType
+            Me.m_counter2 = CounterType2
 
-            m_CounterDelegate = CounterDelegate
             'm_counter3 = CounterType3
 
-            varType = theValueType
-            m_varName = VarName
+            Me.varType = theValueType
+            Me.m_varName = VarName
             'm_dataType = DataType
-            m_iArrayIndex = iFixedIndex1
+            Me.m_iArrayIndex = iFixedIndex1
             Me.Index = iFixedIndex1
 
 
-            If SetSize() Then 'this will redim the arrays and set m_nObjects
+            If Me.SetSize() Then 'this will redim the arrays and set m_nObjects
 
-                Dim n1 As Integer = m_CounterDelegate(m_Countertype)
-                Dim n2 As Integer = m_CounterDelegate(m_counter2)
+                Dim n1 As Integer = Me.m_core.GetCoreCounter(Me.m_Countertype)
+                Dim n2 As Integer = Me.m_core.GetCoreCounter(Me.m_counter2)
                 For i As Integer = 1 To n1
                     For j As Integer = 1 To n2
-                        m_statusarray(i, j) = Status
+                        Me.m_statusarray(i, j) = Status
                     Next
                 Next
 
@@ -67,8 +65,6 @@ Namespace ValueWrapper
 
         End Sub
 
-
-
         ''' <summary>
         ''' Set the size of the array to the value in the cores data counter i.e. nGroups
         ''' </summary>
@@ -77,28 +73,28 @@ Namespace ValueWrapper
         '''  Once the data has been resized it will need to be repopulated.</remarks>
         Public Overrides Function SetSize() As Boolean
 
-            Dim bCountersSet As Boolean = Not (m_Countertype = eCoreCounterTypes.NotSet Or m_counter2 = eCoreCounterTypes.NotSet)
-            If m_CounterDelegate IsNot Nothing And bCountersSet Then
+            Dim bCountersSet As Boolean = Not (Me.m_Countertype = eCoreCounterTypes.NotSet Or Me.m_counter2 = eCoreCounterTypes.NotSet)
+            If Me.m_Countertype <> eCoreCounterTypes.NotSet And bCountersSet Then
 
-                Dim index1 As Integer = m_CounterDelegate(m_Countertype)
-                Dim index2 As Integer = m_CounterDelegate(m_counter2)
+                Dim index1 As Integer = Me.m_core.GetCoreCounter(Me.m_Countertype)
+                Dim index2 As Integer = Me.m_core.GetCoreCounter(Me.m_counter2)
 
                 'only resize the data if it is different
-                If index1 <> m_nObjects Then
-                    m_nObjects = index1
+                If index1 <> Me.m_nObjects Then
+                    Me.m_nObjects = index1
                     Select Case Me.varType
                         Case eValueTypes.BoolArray
                             Dim b(,) As Boolean = New Boolean(index1, index2) {}
-                            m_values = b
+                            Me.m_values = b
                         Case eValueTypes.IntArray
                             Dim i(,) As Integer = New Integer(index1, index2) {}
-                            m_values = i
+                            Me.m_values = i
                         Case eValueTypes.SingleArray
                             Dim s(,) As Single = New Single(index1, index2) {}
-                            m_values = s
+                            Me.m_values = s
                     End Select
 
-                    m_statusarray = New eStatusFlags(index1, index2) {}
+                    Me.m_statusarray = New eStatusFlags(index1, index2) {}
 
                 End If
 
@@ -113,12 +109,11 @@ Namespace ValueWrapper
 
         End Function
 
-
         ''' <summary>
         ''' Get/set the actual value of a Value.
         ''' </summary>
         ''' <param name="iIndex2">Optional value index.</param>
-        Public Overrides Property Value(Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Property Value(Optional iIndex2 As Integer = cCore.NULL_VALUE, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
             Get
                 'Return m_values(Me.Index, iIndex, iIndex2)
 
@@ -128,28 +123,26 @@ Namespace ValueWrapper
                 Else
                     'Index 1 is implied
                     'It's the Me.Index property of this group or fleet the object was created for
-                    Return DirectCast(m_values, Array).GetValue(iIndex2, iIndex3)
+                    Return DirectCast(Me.m_values, Array).GetValue(iIndex2, iIndex3)
                 End If
 
 
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
 
                 If iIndex2 = cCore.NULL_VALUE And iIndex3 = cCore.NULL_VALUE Then
                     'pass it on down the chain
-                    Validate(value)
+                    Me.Validate(value)
                 Else
                     Me.iSecondIndex = iIndex2
                     Me.iThirdIndex = iIndex3
                     'Index 1 is implied
                     'It's the Me.Index property of this group or fleet the object was created for
-                    Validate(value, iIndex2, iIndex3)
+                    Me.Validate(value, iIndex2, iIndex3)
                 End If
 
             End Set
         End Property
-
-
 
         ''' <summary>
         ''' Validate an array value object
@@ -159,8 +152,8 @@ Namespace ValueWrapper
         ''' <returns></returns>
         ''' <remarks>This can not be handled by the cValue base class because the underlying data is handled differently. Array values are stored in an array (duh...)</remarks>
         Protected Overrides Function Validate(ByRef NewValue As Object,
-                                            Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                            Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+                                            Optional iSecondIndex As Integer = cCore.NULL_VALUE,
+                                            Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
             'convert null or empty inputs into something that can be used
             NewValue = Me.convertEmptyInputs(NewValue)
@@ -170,7 +163,7 @@ Namespace ValueWrapper
             '             A dynamic type conversion will prevent this problem.
 
             ' Determine the type that this array accepts
-            Dim arr As Array = DirectCast(m_values, Array)
+            Dim arr As Array = DirectCast(Me.m_values, Array)
             Dim tArr As Type = arr.GetType.GetElementType
 
             'set the value to the newvalue 
@@ -185,9 +178,9 @@ Namespace ValueWrapper
             End If
 
             'Ok run the validator
-            If m_validator.Validate(Me, m_metadata, iSecondIndex, iThirdIndex) Then
+            If Me.m_validator.Validate(Me, Me.m_metadata, iSecondIndex, iThirdIndex) Then
 
-                If m_validationstatus = eStatusFlags.FailedValidation Then
+                If Me.m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to it's original value
                     Try
                         arr.SetValue(Me.m_orgvalue, iSecondIndex, iThirdIndex)
@@ -196,10 +189,10 @@ Namespace ValueWrapper
                     End Try
                 End If
 
-                If m_statusarray(iSecondIndex, iThirdIndex) = eStatusFlags.Null Then
+                If Me.m_statusarray(iSecondIndex, iThirdIndex) = eStatusFlags.Null Then
                     ' m_values(iSecondaryIndex) = m_metadata.NullValue
                     Try
-                        arr.SetValue(Convert.ChangeType(m_metadata.NullValue, tArr), iSecondIndex, iThirdIndex)
+                        arr.SetValue(Convert.ChangeType(Me.m_metadata.NullValue, tArr), iSecondIndex, iThirdIndex)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to set default value")
                     End Try
@@ -211,26 +204,24 @@ Namespace ValueWrapper
 
         End Function
 
-
-
         ''' <summary>
         ''' Run the validator to set the status flag without setting the value
         ''' </summary>
         ''' <param name="iSecondIndex"></param>
         ''' <remarks>This is use be the cCoreInputOutputBase to set the status flags of all its values </remarks>
-        Public Overrides Sub setStatusFlag(Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                            Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE)
+        Public Overrides Sub setStatusFlag(Optional iSecondIndex As Integer = cCore.NULL_VALUE,
+                                            Optional iThirdIndex As Integer = cCore.NULL_VALUE)
 
-            If m_validator IsNot Nothing Then
+            If Me.m_validator IsNot Nothing Then
                 '  Me.Status(iSecondIndex, iThirdIndex) = eStatusFlags.OK
 
                 Dim iGrp As Integer = iSecondIndex
                 ' Dim n1 As Integer = m_CounterDelegate(m_counter2)
-                Dim nTimeSteps As Integer = m_CounterDelegate(m_counter2)
+                Dim nTimeSteps As Integer = Me.m_core.GetCoreCounter(Me.m_counter2)
                 ' For i As Integer = 1 To n1
                 For its As Integer = 1 To nTimeSteps
                     'm_statusarray(i, j) = eStatusFlags.OK
-                    m_validator.Validate(Me, m_metadata, iGrp, its)
+                    Me.m_validator.Validate(Me, Me.m_metadata, iGrp, its)
                 Next
                 '   Next
 
@@ -245,33 +236,21 @@ Namespace ValueWrapper
         ''' Get/set the status flag for a Value.
         ''' </summary>
         ''' <param name="iSecondIndex">Optional value index.</param>
-        Public Overrides Property Status(Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+        Public Overrides Property Status(Optional iSecondIndex As Integer = cCore.NULL_VALUE, Optional iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
-                Return m_statusarray(iSecondIndex, iThirdIndex)
+                Return Me.m_statusarray(iSecondIndex, iThirdIndex)
             End Get
-            Friend Set(ByVal value As eStatusFlags)
-                m_statusarray(iSecondIndex, iThirdIndex) = value
+            Friend Set(value As eStatusFlags)
+                Me.m_statusarray(iSecondIndex, iThirdIndex) = value
             End Set
         End Property
 
-
-
         Public Overrides ReadOnly Property Length() As Integer
             Get
-                Return m_CounterDelegate(m_Countertype)
+                Return Me.m_core.GetCoreCounter(Me.m_Countertype)
             End Get
         End Property
 
-
-
-        Public Overrides Sub Dispose()
-            MyBase.Dispose()
-
-            Me.m_CounterDelegate = Nothing
-
-        End Sub
-
     End Class
-
 
 End Namespace

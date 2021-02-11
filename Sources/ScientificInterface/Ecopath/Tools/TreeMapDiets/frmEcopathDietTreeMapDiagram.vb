@@ -101,14 +101,14 @@ Public Class frmEcopathDietTreeMapDiagram
 
 #Region " Drawing "
 
-    Private Sub OnDiagramResize(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnDiagramResize(sender As Object, e As System.EventArgs) _
             Handles m_pbDiagram.Resize
 
         Me.m_pbDiagram.Invalidate()
 
     End Sub
 
-    Private Sub OnDiagramPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+    Private Sub OnDiagramPaint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_pbDiagram.Paint
 
         If (Me.UIContext Is Nothing) Then Return
@@ -122,7 +122,7 @@ Public Class frmEcopathDietTreeMapDiagram
     ''' Override the background paint routine to elimate flickering.
     ''' </summary>
     ''' <param name="pevent"></param>
-    Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
+    Protected Overrides Sub OnPaintBackground(pevent As PaintEventArgs)
         ' NOP
     End Sub
 
@@ -130,7 +130,7 @@ Public Class frmEcopathDietTreeMapDiagram
 
 #Region " Event handlers "
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+    Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
         ' Refresh the diagram data when ecopath data has changed
@@ -145,16 +145,16 @@ Public Class frmEcopathDietTreeMapDiagram
         Me.m_pbDiagram.Invalidate()
     End Sub
 
-    Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+    Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
         Me.m_pbDiagram.Invalidate()
     End Sub
 
-    Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSettings(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSettings.CheckedChanged
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnSaveToImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnSaveToImage(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSaveToImage.Click
 
         Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp

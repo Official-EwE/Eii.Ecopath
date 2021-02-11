@@ -53,21 +53,21 @@ Friend Class cEwEFormStateManager
 
 #Region " Construction "
 
-    Public Sub New(ByVal csm As cCoreStateMonitor,
-                   ByVal cc As cCoreController,
-                   ByVal dp As DockPanel)
+    Public Sub New(csm As cCoreStateMonitor,
+                   cc As cCoreController,
+                   dp As DockPanel)
         Me.m_dp = dp
         Me.m_cc = cc
         Me.m_csm = csm
 
-        AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+        AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
     End Sub
 
     Public Sub Dispose() _
         Implements IDisposable.Dispose
 
         If (Me.m_csm IsNot Nothing) Then
-            RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+            RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
             Me.m_dp = Nothing
             Me.m_cc = Nothing
             Me.m_csm = Nothing
@@ -86,7 +86,7 @@ Friend Class cEwEFormStateManager
     ''' </summary>
     ''' <param name="csm">Core state monitor that threw the event.</param>
     ''' -------------------------------------------------------------------
-    Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreExecutionStateChanged(csm As cCoreStateMonitor)
         Me.UpdateFormStates()
     End Sub
 

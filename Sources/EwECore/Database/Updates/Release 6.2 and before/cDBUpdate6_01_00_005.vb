@@ -69,7 +69,7 @@ Friend Class cDBUpdate6_01_00_005
 
     End Function
 
-    Private Function CleanUpTimeSeries(ByVal db As cEwEDatabase) As Boolean
+    Private Function CleanUpTimeSeries(db As cEwEDatabase) As Boolean
 
         Return db.Execute("ALTER TABLE EcosimTimeSeriesGroup DROP COLUMN VariableName")
 

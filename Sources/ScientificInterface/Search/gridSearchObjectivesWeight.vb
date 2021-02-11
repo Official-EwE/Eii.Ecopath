@@ -59,7 +59,7 @@ Namespace Ecosim
             Get
                 Return Me.m_manager
             End Get
-            Set(ByVal value As ISearchObjective)
+            Set(value As ISearchObjective)
                 Me.m_manager = value
                 Me.RefreshContent()
             End Set
@@ -69,7 +69,7 @@ Namespace Ecosim
             Get
                 Return Me.m_bShowMaxPortUtil
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMaxPortUtil = value
                 Me.RefreshContent()
             End Set
@@ -79,7 +79,7 @@ Namespace Ecosim
             Get
                 Return Me.m_bShowMPAOptParams
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowMPAOptParams = value
                 Me.RefreshContent()
             End Set
@@ -90,7 +90,7 @@ Namespace Ecosim
         '    Get
         '        Return Me.m_bIsBatchRun
         '    End Get
-        '    Set(ByVal value As Boolean)
+        '    Set(value As Boolean)
         '        Me.m_bIsBatchRun = value
         '        Me.RefreshContent
         '    End Set
@@ -127,7 +127,7 @@ Namespace Ecosim
             If (Me.Manager Is Nothing) Then Return
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim source As cCoreInputOutputBase = m_manager.ValueWeights
+            Dim source As cCoreInputOutputBase = Me.m_manager.ValueWeights
             Dim iRow As Integer = 0
 
             ' == POPULATE ROWS (for details refer to NumRows) ==
@@ -139,7 +139,7 @@ Namespace Ecosim
             Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSEconomicWeight)
 
             ' MaxPortUtil rows
-            If m_bShowMaxPortUtil Then
+            If Me.m_bShowMaxPortUtil Then
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New cEwERowHeaderCell(SharedResources.HEADER_PREDICTIONVARIANCE)
                 Me(iRow, 1) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSPredictionVariance)

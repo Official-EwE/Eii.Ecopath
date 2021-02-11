@@ -52,7 +52,7 @@ Public Class cLinkLandings
     Public Class cGroupConverter
         Inherits TypeConverter
 
-        Private Function GroupName(ByVal group As cCoreInputOutputBase) As String
+        Private Function GroupName(group As cCoreInputOutputBase) As String
             Dim fmt As New cCoreInterfaceFormatter()
             Return fmt.ToString(group, eDescriptorTypes.Name)
         End Function
@@ -66,12 +66,12 @@ Public Class cLinkLandings
             Return lGroups
         End Function
 
-        Public Overrides Function GetStandardValuesSupported(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesSupported(context As ITypeDescriptorContext) As Boolean
             ' Show combo
             Return True
         End Function
 
-        Public Overrides Function GetStandardValuesExclusive(ByVal context As ITypeDescriptorContext) As Boolean
+        Public Overrides Function GetStandardValuesExclusive(context As ITypeDescriptorContext) As Boolean
             ' Do not edit combo
             Return True
         End Function
@@ -80,7 +80,7 @@ Public Class cLinkLandings
         ''' Override the GetStandardValues method and return a 
         ''' StandardValuesCollection filled with your standard values
         ''' </summary>
-        Public Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
+        Public Overrides Function GetStandardValues(context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
             Dim lGroups As List(Of cEcoPathGroupInput) = Me.GroupList
             Dim lGroupNames As New List(Of String)
             Dim group As cEcoPathGroupInput = Nothing
@@ -92,20 +92,20 @@ Public Class cLinkLandings
             Return New StandardValuesCollection(lGroupNames)
         End Function
 
-        Public Overrides Function CanConvertFrom(ByVal context As ITypeDescriptorContext, ByVal sourceType As System.Type) As Boolean
+        Public Overrides Function CanConvertFrom(context As ITypeDescriptorContext, sourceType As System.Type) As Boolean
             Return sourceType Is GetType(String)
         End Function
 
-        Public Overrides Function CanConvertTo(ByVal context As ITypeDescriptorContext, ByVal destinationType As System.Type) As Boolean
+        Public Overrides Function CanConvertTo(context As ITypeDescriptorContext, destinationType As System.Type) As Boolean
             Return destinationType Is GetType(Integer)
         End Function
 
         ''' <summary>
         ''' Convert group name to DBID
         ''' </summary>
-        Public Overrides Function ConvertFrom(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object) As Object
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object) As Object
 
             If TypeOf value Is String Then
                 If Not String.IsNullOrEmpty(CStr(value)) Then
@@ -128,10 +128,10 @@ Public Class cLinkLandings
         ''' <summary>
         ''' Convert DBID to group name
         ''' </summary>
-        Public Overrides Function ConvertTo(ByVal context As ITypeDescriptorContext, _
-                ByVal culture As System.Globalization.CultureInfo, _
-                ByVal value As Object, _
-                ByVal destinationType As System.Type) As Object
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object, _
+                destinationType As System.Type) As Object
 
             If TypeOf value Is Integer Then
                 Dim lGroups As List(Of cEcoPathGroupInput) = Me.GroupList
@@ -174,7 +174,7 @@ Public Class cLinkLandings
             Dim fmt As New cCoreInterfaceFormatter()
             Return cStringUtils.Localize("Landings of {0}", fmt.ToString(Me.m_group, eDescriptorTypes.Name))
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             ' NOP
         End Set
     End Property
@@ -185,7 +185,7 @@ Public Class cLinkLandings
         Get
             Return Me.m_iEcopathGroupID
         End Get
-        Set(ByVal id As Integer)
+        Set(id As Integer)
             Me.m_iEcopathGroupID = id
         End Set
     End Property
@@ -212,7 +212,7 @@ Public Class cLinkLandings
         Get
             Return 0
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             ' nop
         End Set
     End Property
@@ -222,10 +222,10 @@ Public Class cLinkLandings
         Get
             Return Me.m_group
         End Get
-        Friend Set(ByVal value As cEcoPathGroupInput)
+        Friend Set(value As cEcoPathGroupInput)
             Me.m_group = value
-            If (Group IsNot Nothing) Then
-                Me.m_iEcopathGroupID = CInt(Group.GetVariable(eVarNameFlags.DBID))
+            If (Me.Group IsNot Nothing) Then
+                Me.m_iEcopathGroupID = CInt(Me.Group.GetVariable(eVarNameFlags.DBID))
             Else
                 Me.m_iEcopathGroupID = 0
             End If

@@ -64,15 +64,15 @@ Namespace Controls
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal value As cShapeGUIHandler)
+            Set(value As cShapeGUIHandler)
                 Me.m_handler = value
                 Me.UpdateControls()
             End Set
         End Property
 
         Public WriteOnly Property IsMenuVisible() As Boolean
-            Set(ByVal value As Boolean)
-                m_tsMenus.Visible = value
+            Set(value As Boolean)
+                Me.m_tsMenus.Visible = value
             End Set
         End Property
 
@@ -81,13 +81,13 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
                 Me.m_uic = value
                 If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
                 End If
             End Set
         End Property
@@ -105,45 +105,45 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnVisibleChanged(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnVisibleChanged(e As System.EventArgs)
             Me.UpdateControls()
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             Me.UpdateControls()
         End Sub
 
-        Private Sub SketchPadWithMenus_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub SketchPadWithMenus_Disposed(sender As Object, e As System.EventArgs) Handles Me.Disposed
             ' Release event hooks
             Me.Handler = Nothing
         End Sub
 
-        Private Sub ResetShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnReset.Click
+        Private Sub ResetShape_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnReset.Click
             If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
         End Sub
 
-        Private Sub ShapeValue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnValues.Click
+        Private Sub ShapeValue_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnValues.Click
             If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
         End Sub
 
-        Private Sub LoadShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub LoadShape_Click(sender As System.Object, e As System.EventArgs)
             If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Load)
         End Sub
 
-        Private Sub SaveShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnSaveAsImage.Click
+        Private Sub SaveShape_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnSaveAsImage.Click
             If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.SaveAsImage)
         End Sub
 
-        Private Sub tsbChangeShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbnChangeShape.Click
+        Private Sub tsbChangeShape_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnChangeShape.Click
             If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
         End Sub
 
-        Private Sub ShapeOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub ShapeOptions_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnOptions.Click
             If (Me.Handler IsNot Nothing) Then Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
         End Sub
 
-        Private Sub OnConvertToLongTerm(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnConvertToLongTerm(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnLongTerm.Click
             If Me.m_bInUpdate Then Return
             If (Me.Handler IsNot Nothing) Then
@@ -151,7 +151,7 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub OnConvertToSeasonal(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnConvertToSeasonal(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnSeasonal.Click
             If Me.m_bInUpdate Then Return
             If (Me.Handler IsNot Nothing) Then
@@ -165,14 +165,14 @@ Namespace Controls
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_tstbWeight_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_tstbWeight.KeyDown
+        Private Sub m_tstbWeight_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles m_tstbWeight.KeyDown
             ' Is [ENTER]?
             If e.KeyCode = Keys.Enter Then
                 If (Me.Handler IsNot Nothing) Then
                     Dim sWeight As Single = 1.0!
                     Try
                         ' Parse value using UI number settings
-                        sWeight = Single.Parse(m_tstbWeight.Text)
+                        sWeight = Single.Parse(Me.m_tstbWeight.Text)
                     Catch ex As Exception
                         sWeight = 1.0!
                     End Try
@@ -187,14 +187,14 @@ Namespace Controls
         ''' to the grid selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_tstbMaxValue_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_tstbMaxValue.KeyDown
+        Private Sub m_tstbMaxValue_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles m_tstbMaxValue.KeyDown
             ' Is [ENTER]?
             If e.KeyCode = Keys.Enter Then
                 If (Me.Handler IsNot Nothing) Then
                     Dim sValue As Single = 1.0!
                     Try
                         ' Parse value using UI number settings
-                        sValue = Single.Parse(m_tstbMaxValue.Text)
+                        sValue = Single.Parse(Me.m_tstbMaxValue.Text)
                     Catch ex As Exception
                         sValue = 1.0!
                     End Try
@@ -253,19 +253,19 @@ Namespace Controls
 
         End Sub
 
-        Private Sub UpdateCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, ByVal tsi As ToolStripItem)
+        Private Sub UpdateCommand(cmd As cShapeGUIHandler.eShapeCommandTypes, tsi As ToolStripItem)
 
             If (Me.m_handler Is Nothing) Then Return
             If Me.m_handler.SupportCommand(cmd) Then
                 tsi.Visible = True
-                tsi.Enabled = (m_handler.EnableCommand(cmd))
+                tsi.Enabled = (Me.m_handler.EnableCommand(cmd))
             Else
                 tsi.Visible = False
             End If
 
         End Sub
 
-        Private Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             Try
                 Me.UpdateControls()
             Catch ex As Exception

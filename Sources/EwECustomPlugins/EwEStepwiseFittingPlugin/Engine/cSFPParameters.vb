@@ -28,7 +28,7 @@
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -62,7 +62,7 @@ Public Class cSFPParameters
 
     Public Sub New(ByVal c As EwECore.cCore)
         Me.m_core = c
-        'Console.WriteLine("New SFPParameters instance created")
+        Me.NumThreads = cSystemUtils.ProcessorCount
     End Sub
 
     ''' <summary>
@@ -78,10 +78,10 @@ Public Class cSFPParameters
             'Console.WriteLine("SFPParameters now has reference to SFPManager time series")
         End If
 
-        CalculateOptimalK(iPrefK)
-        CalculateMaxSplinePoints()
-        CalculateNumberOfObservations()
-        CalculateMaxK()
+        Me.CalculateOptimalK(iPrefK)
+        Me.CalculateMaxSplinePoints()
+        Me.CalculateNumberOfObservations()
+        Me.CalculateMaxK()
 
         'Console.WriteLine("SFPParameters calculated estimated parameters")
 
@@ -104,8 +104,8 @@ Public Class cSFPParameters
         Dim tsType As eTimeSeriesType
         Dim count As Integer = 0
 
-        For i As Integer = 1 To m_ts.nTimeSeries
-            ts = m_ts.TimeSeries(i)
+        For i As Integer = 1 To Me.m_ts.nTimeSeries
+            ts = Me.m_ts.TimeSeries(i)
             tsType = ts.TimeSeriesType
 
             Select Case tsType
@@ -119,7 +119,7 @@ Public Class cSFPParameters
                     count += 1
 
                 Case eTimeSeriesType.BiomassAbs
-                    If EnableAbsoluteBiomass Then
+                    If Me.EnableAbsoluteBiomass Then
                         count += 1
                     End If
 
@@ -149,7 +149,7 @@ Public Class cSFPParameters
         ' Make fail-safe
         If (Me.m_ts Is Nothing) Then Return
 
-        Dim years As Integer = m_ts.NumPoints - 1
+        Dim years As Integer = Me.m_ts.NumPoints - 1
         'Console.WriteLine("Number of years in time series: " & years.ToString)
         Me.m_iMaxSplinePoints = Math.Min(Me.m_iK, years)
 
@@ -172,9 +172,9 @@ Public Class cSFPParameters
         Dim ts As cTimeSeries
         Dim tsType As eTimeSeriesType
         'Go through each time series of the time series dataset
-        For i As Integer = 1 To m_ts.nTimeSeries
+        For i As Integer = 1 To Me.m_ts.nTimeSeries
             'Get a time series
-            ts = m_ts.TimeSeries(i)
+            ts = Me.m_ts.TimeSeries(i)
             'Get the time series type
             tsType = ts.TimeSeriesType
             'If the time series type is 0,1,5,6 or 7 add its datapoints to the total number of observations
@@ -188,12 +188,12 @@ Public Class cSFPParameters
                     eTimeSeriesType.Landings
                     'If the weight type is not 0 add datapoints of time series to the total number of observations
                     If ts.WtType > 0 Then
-                        AddToObservations(ts)
+                        Me.AddToObservations(ts)
                         'Num += TimeSeries.NumPoints
                     End If
                 Case eTimeSeriesType.BiomassAbs
-                    If EnableAbsoluteBiomass And ts.WtType > 0 Then
-                        AddToObservations(ts)
+                    If Me.EnableAbsoluteBiomass And ts.WtType > 0 Then
+                        Me.AddToObservations(ts)
                         'Num += TimeSeries.NumPoints
                     End If
             End Select
@@ -230,7 +230,7 @@ Public Class cSFPParameters
             End If
         Next
         'Add number of data points from this time seires to the total number of observations
-        m_iObservations += count
+        Me.m_iObservations += count
 
         'Console.WriteLine("Number of Observations from : " & ts.Name & " = " & count.ToString)
 
@@ -276,11 +276,19 @@ Public Class cSFPParameters
     End Property
 
     ''' <summary>
-    ''' Get/set the selected anomaly shape
+    ''' Get/set the index of the selected anomaly shape
     ''' </summary>
-    Public Property AppliedShape() As cShapeData
+    Public Property AppliedShapeIndex As Integer
 
     Public Property EnableAbsoluteBiomass As Boolean
+
+    Public Property NumThreads As Integer
+
+    Public ReadOnly Property MaxThreads As Integer
+        Get
+            Return cSystemUtils.ProcessorCount * 4
+        End Get
+    End Property
 
 #Region " Persistent configuration "
 

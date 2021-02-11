@@ -55,8 +55,8 @@ Namespace Ecopath
         ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
         ''' <param name="fleet">A fleet to select, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       Optional ByVal fleet As cEcopathFleetInput = Nothing)
+        Public Sub New(uic As cUIContext,
+                       Optional fleet As cEcopathFleetInput = Nothing)
 
             Me.InitializeComponent()
 
@@ -69,12 +69,12 @@ Namespace Ecopath
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OK_Button_Click(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -89,37 +89,37 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub Cancel_Button_Click(sender As System.Object, e As System.EventArgs) _
             Handles Cancel_Button.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnInsert_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnInsert.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnMoveUp_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnMoveUp.Click
             Me.m_grid.MoveRowUp()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnMoveDown_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnMoveDown.Click
             Me.m_grid.MoveRowDown()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnDelete_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDelete.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_btnPreserve_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
@@ -130,17 +130,17 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnDefaultAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaultAll(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDefaultAll.Click
             Me.m_grid.SetDefaultFleetColors()
         End Sub
 
-        Private Sub OnDefaultCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDefaultCurrent(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDefaultCurrent.Click
             Me.m_grid.SetDefaultFleetColor(Me.m_grid.SelectedRow)
         End Sub
 
-        Private Sub OnCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCustomColor(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCustom.Click
             Me.m_grid.SelectCustomFleetColor(Me.m_grid.SelectedRow)
         End Sub

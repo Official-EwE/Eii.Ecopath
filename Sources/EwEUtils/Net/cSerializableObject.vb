@@ -52,7 +52,7 @@ Namespace NetUtilities
             Me.m_bValid = True
         End Sub
 
-        Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+        Protected Sub New(info As SerializationInfo, context As StreamingContext)
             Me.m_bValid = True
         End Sub
 
@@ -71,7 +71,7 @@ Namespace NetUtilities
         ''' should only override this method to add extra data.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub GetObjectData(ByVal info As SerializationInfo, ByVal context As StreamingContext) _
+        Protected Overridable Sub GetObjectData(info As SerializationInfo, context As StreamingContext) _
             Implements ISerializable.GetObjectData
         End Sub
 

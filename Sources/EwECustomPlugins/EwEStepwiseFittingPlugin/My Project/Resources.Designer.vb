@@ -198,32 +198,59 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Error.
         '''</summary>
-        Friend ReadOnly Property STATE_ERROR() As String
+        Friend ReadOnly Property STATE_ITERATION_ERROR() As String
             Get
-                Return ResourceManager.GetString("STATE_ERROR", resourceCulture)
+                Return ResourceManager.GetString("STATE_ITERATION_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (initializing).
+        '''</summary>
+        Friend ReadOnly Property STATE_ITERATION_INITIALIZING() As String
+            Get
+                Return ResourceManager.GetString("STATE_ITERATION_INITIALIZING", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to OK.
         '''</summary>
-        Friend ReadOnly Property STATE_OK() As String
+        Friend ReadOnly Property STATE_ITERATION_OK() As String
             Get
-                Return ResourceManager.GetString("STATE_OK", resourceCulture)
+                Return ResourceManager.GetString("STATE_ITERATION_OK", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to (running).
         '''</summary>
-        Friend ReadOnly Property STATE_RUNNING() As String
+        Friend ReadOnly Property STATE_ITERATION_RUNNING() As String
             Get
-                Return ResourceManager.GetString("STATE_RUNNING", resourceCulture)
+                Return ResourceManager.GetString("STATE_ITERATION_RUNNING", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} running {1}....
+        '''  Looks up a localized string similar to (stopping).
+        '''</summary>
+        Friend ReadOnly Property STATE_ITERATION_STOPPING() As String
+            Get
+                Return ResourceManager.GetString("STATE_ITERATION_STOPPING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} initializing.
+        '''</summary>
+        Friend ReadOnly Property STATUS_INITIALIZING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_INITIALIZING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} in progress.
         '''</summary>
         Friend ReadOnly Property STATUS_RUNNING() As String
             Get

@@ -52,7 +52,7 @@ Public Class cTimeSeriesReaderFactory
     ''' or Nothing/Null/Nada/Zip if an error occurred.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetTimeSeriesReader(ByVal core As cCore, ByVal readerType As eTimeSeriesReaderTypes) As cTimeSeriesTextReader
+    Public Shared Function GetTimeSeriesReader(core As cCore, readerType As eTimeSeriesReaderTypes) As cTimeSeriesTextReader
         Dim reader As cTimeSeriesTextReader = Nothing
         Select Case readerType
             Case eTimeSeriesReaderTypes.CSV

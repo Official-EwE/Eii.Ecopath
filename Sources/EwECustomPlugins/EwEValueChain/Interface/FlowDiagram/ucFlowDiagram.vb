@@ -76,10 +76,10 @@ Public Class ucFlowDiagram
 
 #End Region ' Private bits
 
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal data As cData, _
-                   ByVal model As cModel, _
-                   ByVal result As cResults)
+    Public Sub New(uic As cUIContext, _
+                   data As cData, _
+                   model As cModel, _
+                   result As cResults)
 
         Me.InitializeComponent()
 
@@ -93,7 +93,7 @@ Public Class ucFlowDiagram
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing And (Me.components IsNot Nothing) Then
                 Me.components.Dispose()
@@ -123,13 +123,13 @@ Public Class ucFlowDiagram
         Get
             Return Me.m_uic
         End Get
-        Set(ByVal value As cUIContext)
+        Set(value As cUIContext)
             If (Me.m_uic IsNot Nothing) Then
-                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             End If
             Me.m_uic = value
             If (Me.m_uic IsNot Nothing) Then
-                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
             End If
         End Set
     End Property
@@ -140,7 +140,7 @@ Public Class ucFlowDiagram
         End Get
     End Property
 
-    Protected Overridable Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+    Protected Overridable Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
         ' Yo!
         Me.m_pbFlowDiagram.Invalidate()
     End Sub
@@ -160,7 +160,7 @@ Public Class ucFlowDiagram
     ''' <summary>
     ''' Overridden to elimate flickering.
     ''' </summary>
-    Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
+    Protected Overrides Sub OnPaintBackground(pevent As PaintEventArgs)
         ' NOP
     End Sub
 
@@ -181,19 +181,19 @@ Public Class ucFlowDiagram
 
 #Region " Mouse Events "
 
-    Private Sub OnFDMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnFDMouseDown(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
         Handles m_pbFlowDiagram.MouseDown
         Using g As Graphics = Me.CreateGraphics()
             Me.m_doodler.BeginDrag(Me.m_pbFlowDiagram.ClientRectangle, e.Location, g)
         End Using
     End Sub
 
-    Private Sub OnFDMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnFDMouseUp(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
         Handles m_pbFlowDiagram.MouseUp
         Me.m_doodler.EndDrag(Me.m_data, e.Location)
     End Sub
 
-    Private Sub OnFDMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnFDMouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
         Handles m_pbFlowDiagram.MouseMove
         Using g As Graphics = Me.CreateGraphics()
             Me.m_doodler.ProcessMouseMove(g, Me.m_pbFlowDiagram.ClientRectangle, e.Location)
@@ -220,7 +220,7 @@ Public Class ucFlowDiagram
             Try
                 ifData = New cXMLSettings()
                 ifData.LoadFromFile(cmdFO.FileName)
-                m_doodler.Load(ifData, Me.m_pbFlowDiagram)
+                Me.m_doodler.Load(ifData, Me.m_pbFlowDiagram)
             Catch ex As Exception
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -246,7 +246,7 @@ Public Class ucFlowDiagram
             Try
                 ifData = New cXMLSettings()
                 ifData.LoadFromFile(cmdFS.FileName)
-                m_doodler.Save(ifData, Me.m_pbFlowDiagram)
+                Me.m_doodler.Save(ifData, Me.m_pbFlowDiagram)
             Catch ex As Exception
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)

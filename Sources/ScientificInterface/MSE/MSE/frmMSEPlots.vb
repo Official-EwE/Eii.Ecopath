@@ -45,7 +45,7 @@ Public Class frmMSEPlots
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Debug.Assert(Me.UIContext IsNot Nothing)
@@ -89,7 +89,7 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_plotter.Detach()
 
@@ -114,8 +114,8 @@ Public Class frmMSEPlots
         Me.DrawPlots()
     End Sub
 
-    Private Sub PlotGroupData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
-                              ByVal PlotType As eMSEPlotTypes, ByVal DataType As eMSEPlotData)
+    Private Sub PlotGroupData(lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
+                              PlotType As eMSEPlotTypes, DataType As eMSEPlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -139,8 +139,8 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub PlotFleetData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
-                              ByVal PlotType As eMSEPlotTypes, ByVal DataType As eMSEPlotData)
+    Private Sub PlotFleetData(lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
+                              PlotType As eMSEPlotTypes, DataType As eMSEPlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -161,7 +161,7 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub PlotFleetTotValData(ByVal TotFleetValue As cMSEStats, ByVal PlotType As eMSEPlotTypes, ByVal DataType As eMSEPlotData)
+    Private Sub PlotFleetTotValData(TotFleetValue As cMSEStats, PlotType As eMSEPlotTypes, DataType As eMSEPlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -182,24 +182,24 @@ Public Class frmMSEPlots
 
         Select Case Me.m_curPlotData
             Case eMSEPlotData.Biomass
-                PlotGroupData(Me.m_MSE.BiomassStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotGroupData(Me.m_MSE.BiomassStats, Me.m_curPlotType, Me.m_curPlotData)
             Case eMSEPlotData.BioEst
-                PlotGroupData(Me.m_MSE.BioEstimatesStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotGroupData(Me.m_MSE.BioEstimatesStats, Me.m_curPlotType, Me.m_curPlotData)
             Case eMSEPlotData.GroupCatch
-                PlotGroupData(Me.m_MSE.GroupCatchStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotGroupData(Me.m_MSE.GroupCatchStats, Me.m_curPlotType, Me.m_curPlotData)
             Case eMSEPlotData.FleetValue
-                PlotFleetData(Me.m_MSE.FleetStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotFleetData(Me.m_MSE.FleetStats, Me.m_curPlotType, Me.m_curPlotData)
             Case eMSEPlotData.Effort
-                PlotFleetData(Me.m_MSE.EffortStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotFleetData(Me.m_MSE.EffortStats, Me.m_curPlotType, Me.m_curPlotData)
             Case eMSEPlotData.FleetTotValue
-                PlotFleetTotValData(Me.m_MSE.TotalFleetValueStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotFleetTotValData(Me.m_MSE.TotalFleetValueStats, Me.m_curPlotType, Me.m_curPlotData)
             Case eMSEPlotData.FishingMortalityComparison
-                PlotGroupData(Me.m_MSE.FCompareStats, Me.m_curPlotType, Me.m_curPlotData)
+                Me.PlotGroupData(Me.m_MSE.FCompareStats, Me.m_curPlotType, Me.m_curPlotData)
         End Select
 
     End Sub
 
-    Private Sub onDataTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub onDataTypeCheckedChanged(sender As Object, e As System.EventArgs) _
                 Handles m_rbGroupBiomass.CheckedChanged, m_rbGroupCatch.CheckedChanged,
                         m_rbFleetValue.CheckedChanged, m_rbEffort.CheckedChanged, m_rbBioEst.CheckedChanged,
                         m_rbTotFleetValue.CheckedChanged, m_rbFComparison.CheckedChanged
@@ -231,13 +231,13 @@ Public Class frmMSEPlots
     End Sub
 
 
-    Private Sub onPlotTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbHisto.CheckedChanged, m_rbValues.CheckedChanged
+    Private Sub onPlotTypeCheckedChanged(sender As Object, e As System.EventArgs) Handles m_rbHisto.CheckedChanged, m_rbValues.CheckedChanged
 
         Try
             If DirectCast(sender, RadioButton).Checked Then
                 Dim tag As Object = DirectCast(sender, RadioButton).Tag
                 If tag Is Nothing Then Exit Sub
-                m_curPlotType = DirectCast(tag, eMSEPlotTypes)
+                Me.m_curPlotType = DirectCast(tag, eMSEPlotTypes)
                 Me.Cursor = Cursors.WaitCursor
                 Me.m_plotter.PlotType = Me.m_curPlotType
                 Me.DrawPlots()
@@ -250,7 +250,7 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub OnShowHideGroups(ByVal cmd As cCommand)
+    Private Sub OnShowHideGroups(cmd As cCommand)
 
         Me.m_plotter.Clear()
         Me.DrawPlots()
@@ -259,7 +259,7 @@ Public Class frmMSEPlots
 
 #Region "Core interactions"
 
-    Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
+    Public Overrides Sub OnCoreMessage(msg As cMessage)
         Try
             Me.m_MSEEvents.HandleCoreMessage(msg)
         Catch ex As Exception

@@ -49,7 +49,7 @@ Namespace Ecosim
             MyBase.New()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             MyBase.Dispose(disposing)
         End Sub
 
@@ -59,7 +59,7 @@ Namespace Ecosim
             Get
                 Return Me.m_applyShapeMode
             End Get
-            Set(ByVal value As eShapeCategoryTypes)
+            Set(value As eShapeCategoryTypes)
                 If (Me.m_applyShapeMode <> value) Then
                     Me.m_applyShapeMode = value
                     Me.RefreshContent()
@@ -71,7 +71,7 @@ Namespace Ecosim
             Get
                 Return Me.m_groupfilter
             End Get
-            Set(ByVal value As eGroupFilter)
+            Set(value As eGroupFilter)
                 If (value <> Me.m_groupfilter) Then
                     Me.m_groupfilter = value
                     Me.RefreshContent()
@@ -89,14 +89,14 @@ Namespace Ecosim
             Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
             ' For each column (groupIndex - Predator)
-            For iPred As Integer = 1 To Core.nLivingGroups
+            For iPred As Integer = 1 To Me.Core.nLivingGroups
                 ' For each row (rowIndex - Prey)
-                For iPrey As Integer = 1 To Core.nGroups
+                For iPrey As Integer = 1 To Me.Core.nGroups
 
                     ' Can assign FF at this spot in the matrix?
-                    If m_interactionManager.isPredPrey(iPred, iPrey) Then
+                    If Me.m_interactionManager.isPredPrey(iPred, iPrey) Then
 
-                        interaction = m_interactionManager.PredPreyInteraction(iPred, iPrey)
+                        interaction = Me.m_interactionManager.PredPreyInteraction(iPred, iPrey)
                         interaction.LockUpdates = True
 
                         For i As Integer = 1 To Me.m_interactionManager.MaxNShapes
@@ -146,7 +146,7 @@ Namespace Ecosim
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, 2)
+            Me.Redim(Me.Core.nGroups + 1, 2)
 
             ' Set header cells  'Prey \Predator '
             Me(0, 0) = New cEwEColumnHeaderCell("")
@@ -154,15 +154,15 @@ Namespace Ecosim
 
             Dim iCol As Integer = 2
 
-            For i As Integer = 1 To Core.nGroups
-                source = Core.EcoPathGroupInputs(i)
+            For i As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcoPathGroupInputs(i)
                 ' # Group name row header cells
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
-                Me(i, 0).Behaviors.Add(m_bmRowCol)
+                Me(i, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
                 Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                Me(i, 1).Behaviors.Add(m_bmRowCol)
+                Me(i, 1).Behaviors.Add(Me.m_bmRowCol)
 
                 If ((Me.m_groupfilter = eGroupFilter.Consumer) And (source.IsConsumer)) Or _
                    ((Me.m_groupfilter = eGroupFilter.Producer) And (source.IsProducer)) Or _
@@ -192,9 +192,9 @@ Namespace Ecosim
                     Dim iPrey As Integer = iRow
 
                     ' Can assign FF at this spot in the matrix?
-                    If m_interactionManager.isPredPrey(iPred, iPrey) Then
+                    If Me.m_interactionManager.isPredPrey(iPred, iPrey) Then
 
-                        PPI = m_interactionManager.PredPreyInteraction(iPred, iPrey)
+                        PPI = Me.m_interactionManager.PredPreyInteraction(iPred, iPrey)
                         Dim shape As cForcingFunction = Nothing
                         Dim aplType As eForcingFunctionApplication
                         Dim sb As New StringBuilder()
@@ -222,8 +222,8 @@ Namespace Ecosim
                         End If
 
                         Me(iRow, iCol) = New Cells.Real.Cell(sb.ToString)
-                        Me(iRow, iCol).DataModel = m_editor
-                        Me(iRow, iCol).Behaviors.Add(m_bmCell)
+                        Me(iRow, iCol).DataModel = Me.m_editor
+                        Me(iRow, iCol).Behaviors.Add(Me.m_bmCell)
 
                     Else
                         ' #No: cannot assign FF to this pred/prey combo
@@ -249,7 +249,7 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Protected Overrides Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
+        Protected Overrides Sub CellClick(sender As Object, e As PositionEventArgs)
 
             'Row num, column num starts from one, which is consistent with group index scheme (from one)
             Dim iPred As Integer = CInt(Me(0, e.Position.Column).Value)
@@ -259,7 +259,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        Protected Overrides Sub OnRowColClicked(sender As Object, e As SourceGrid2.PositionEventArgs)
 
             Dim iRow As Integer = e.Position.Row
             Dim iCol As Integer = e.Position.Column
@@ -298,10 +298,10 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Sub AddColumn(ByVal iCol As Integer, ByVal source As cCoreGroupBase)
+        Protected Sub AddColumn(iCol As Integer, source As cCoreGroupBase)
             Me.Columns.Insert(iCol)
             Me(0, iCol) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-            Me(0, iCol).Behaviors.Add(m_bmRowCol)
+            Me(0, iCol).Behaviors.Add(Me.m_bmRowCol)
             Me.Columns(iCol).Tag = source.Index
         End Sub
 

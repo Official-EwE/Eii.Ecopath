@@ -50,8 +50,8 @@ Namespace Integration
         Private Class MenuItemPluginComparer
             Implements IComparer(Of IMenuItemPlugin)
 
-            Public Function Compare(ByVal x As IMenuItemPlugin,
-                                    ByVal y As IMenuItemPlugin) As Integer _
+            Public Function Compare(x As IMenuItemPlugin,
+                                    y As IMenuItemPlugin) As Integer _
                                     Implements IComparer(Of IMenuItemPlugin).Compare
 
                 Return String.Compare(x.MenuItemLocation, y.MenuItemLocation, True)
@@ -80,9 +80,9 @@ Namespace Integration
         ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
         ''' that holds the plugins to place in the main menu.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal menu As MenuStrip,
-                       ByVal pm As cPluginManager,
-                       ByVal cmdh As cCommandHandler)
+        Public Sub New(menu As MenuStrip,
+                       pm As cPluginManager,
+                       cmdh As cCommandHandler)
 
             MyBase.New(pm, cmdh)
             Me.m_menu = menu
@@ -102,7 +102,7 @@ Namespace Integration
         ''' This method should be invoked in response to the .NET Idle event.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub OnIdle(ByVal sender As Object, ByVal e As EventArgs)
+        Public Sub OnIdle(sender As Object, e As EventArgs)
             For Each tsi As ToolStripMenuItem In Me.m_lItems
                 If (TypeOf tsi.Tag Is IMenuItemTogglePlugin) Then
                     Try
@@ -126,7 +126,7 @@ Namespace Integration
         ''' <param name="aip">The plug-ins to sort.</param>
         ''' <returns>An array of sorted plug-ins.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function SortPlugins(ByVal aip() As IGUIPlugin) As IGUIPlugin()
+        Protected Overrides Function SortPlugins(aip() As IGUIPlugin) As IGUIPlugin()
 
             Dim lPlugins As New List(Of IMenuItemPlugin)
 
@@ -151,7 +151,7 @@ Namespace Integration
         ''' <param name="bPlace">States whether the menu item should be placed (True)
         ''' or removed (False).</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub PlacePlugin(ByVal p_ip As IGUIPlugin, ByVal bPlace As Boolean)
+        Protected Overrides Sub PlacePlugin(p_ip As IGUIPlugin, bPlace As Boolean)
 
             Dim tsic As ToolStripItemCollection = Me.m_menu.Items
             Dim tsi As ToolStripMenuItem = Nothing
@@ -208,7 +208,7 @@ Namespace Integration
                 If Not bError Then
                     If (bPlace) Then
                         ' Create menu item and add it
-                        tsi = New ToolStripMenuItem(ip.DisplayName, ip.ControlImage, AddressOf OnPluginMenuItemClick)
+                        tsi = New ToolStripMenuItem(ip.DisplayName, ip.ControlImage, AddressOf Me.OnPluginMenuItemClick)
                         ' Set name
                         tsi.Name = ip.DisplayName
                         ' Set tooltip text
@@ -256,7 +256,7 @@ Namespace Integration
         ''' a <see cref="ToolStripMenuItem">ToolStripMenuItem</see>.</param>
         ''' <param name="e">Additional <see cref="EventArgs">event arguments</see>.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnPluginMenuItemClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnPluginMenuItemClick(sender As Object, e As EventArgs)
 
             Debug.Assert(TypeOf sender Is ToolStripMenuItem)
 
@@ -269,7 +269,7 @@ Namespace Integration
 
         End Sub
 
-        Protected Overrides Sub EnablePlugin(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
+        Protected Overrides Sub EnablePlugin(ip As IGUIPlugin, bEnable As Boolean)
 
             Dim tsic As ToolStripItemCollection = Me.m_menu.Items
             Dim atsi As ToolStripItem() = Nothing

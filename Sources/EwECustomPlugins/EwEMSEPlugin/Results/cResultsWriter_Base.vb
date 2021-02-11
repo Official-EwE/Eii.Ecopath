@@ -41,7 +41,7 @@ Public MustInherit Class cResultsWriter_Base
 
     Protected ReadOnly Property StrategyName(iStrategy As Integer) As String
         Get
-            Return m_MSE.Strategies(iStrategy - 1).Name
+            Return Me.m_MSE.Strategies(iStrategy - 1).Name
         End Get
     End Property
 

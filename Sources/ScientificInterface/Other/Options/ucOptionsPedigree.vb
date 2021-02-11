@@ -43,7 +43,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.UIContext = uic
             Me.InitializeComponent()
@@ -62,7 +62,7 @@ Namespace Other
         ''' Control's load event which gets called every time the control gets loaded. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
         End Sub
 

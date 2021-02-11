@@ -46,7 +46,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="alignment">Alignment to choose. If not specified content will
         ''' be aligned <see cref="ContentAlignment.MiddleCenter"/>.</param>
-        Public Sub New(Optional ByVal alignment As ContentAlignment = ContentAlignment.MiddleCenter)
+        Public Sub New(Optional alignment As ContentAlignment = ContentAlignment.MiddleCenter)
             MyBase.New()
             Me.TextAlignment = alignment
             Me.AlignTextToImage = True

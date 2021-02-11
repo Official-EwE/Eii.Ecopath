@@ -43,9 +43,9 @@ Public Interface IEcospaceCalcCostOfSailingPlugin
     ''' invoked in an arbitrairy order until a plug-in returns True. If this
     ''' happens, Ecospace will not attempt to calculate cost of sailing.</remarks>
     ''' -----------------------------------------------------------------------
-    Function CalculateCostOfSailing(ByVal EcospaceData As Object, _
-                                    ByVal Depth(,) As Single, _
-                                    ByVal Port(,)(,) As Boolean, _
-                                    ByVal Sail()(,) As Single) As Boolean
+    Function CalculateCostOfSailing(EcospaceData As Object, _
+                                    Depth(,) As Single, _
+                                    Port(,)(,) As Boolean, _
+                                    Sail()(,) As Single) As Boolean
 
 End Interface

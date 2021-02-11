@@ -53,27 +53,27 @@ Public Class gridSelectColorBlock
 
         Private m_parent As gridSelectColorBlock = Nothing
 
-        Public Sub New(ByVal parent As gridSelectColorBlock)
+        Public Sub New(parent As gridSelectColorBlock)
             Debug.Assert(parent IsNot Nothing)
             Me.m_parent = parent
         End Sub
 
-        Protected Overrides Sub DrawCell_Background(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                                                    ByVal p_CellPosition As SourceGrid2.Position, _
-                                                    ByVal e As PaintEventArgs, _
-                                                    ByVal p_ClientRectangle As System.Drawing.Rectangle, _
-                                                    ByVal p_Status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_Background(p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                                                    p_CellPosition As SourceGrid2.Position, _
+                                                    e As PaintEventArgs, _
+                                                    p_ClientRectangle As System.Drawing.Rectangle, _
+                                                    p_Status As SourceGrid2.DrawCellStatus)
 
             Me.BackColor = Me.m_parent.BlockColor(p_CellPosition.Column)
             MyBase.DrawCell_Background(p_Cell, p_CellPosition, e, p_ClientRectangle, DrawCellStatus.Normal)
 
         End Sub
 
-        Protected Overrides Sub DrawCell_Border(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                                                ByVal p_CellPosition As SourceGrid2.Position, _
-                                                ByVal e As PaintEventArgs, _
-                                                ByVal p_ClientRectangle As Rectangle, _
-                                                ByVal p_Status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_Border(p_Cell As SourceGrid2.Cells.ICellVirtual, _
+                                                p_CellPosition As SourceGrid2.Position, _
+                                                e As PaintEventArgs, _
+                                                p_ClientRectangle As Rectangle, _
+                                                p_Status As SourceGrid2.DrawCellStatus)
 
             Dim border As Border = Nothing
 
@@ -108,7 +108,7 @@ Public Class gridSelectColorBlock
     ''' <summary>=Event, informing the world that the selected block has changed.</summary>
     ''' <param name="sNewValue">The value of the selected block.</param>
     ''' <param name="iBlock">The index of the newly selected block.</param>
-    Public Event OnValueChanged(ByVal sNewValue As Single, ByVal iBlock As Integer)
+    Public Event OnValueChanged(sNewValue As Single, iBlock As Integer)
 
 #End Region ' Private vars
 
@@ -122,7 +122,7 @@ Public Class gridSelectColorBlock
 
 #Region " Public "
 
-    Public Sub Attach(ByVal parentSelector As ucCVBlockSelector)
+    Public Sub Attach(parentSelector As ucCVBlockSelector)
         Me.m_parentSelector = parentSelector
         Me.RefreshContent()
     End Sub
@@ -135,7 +135,7 @@ Public Class gridSelectColorBlock
         Get
             Return Me.m_iBlock
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.m_iBlock) Then
                 Me.m_iBlock = value
                 Me.InvalidateCells()
@@ -147,7 +147,7 @@ Public Class gridSelectColorBlock
 
 #Region " Events "
 
-    Private Sub gridSelectColorBlock_CellGotFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
+    Private Sub gridSelectColorBlock_CellGotFocus(sender As Object, e As SourceGrid2.PositionCancelEventArgs) _
         Handles Me.CellGotFocus
 
         'Don't set the value if this is not a valid value column
@@ -260,7 +260,7 @@ Public Class gridSelectColorBlock
     ''' <param name="i">The one-based index of the block.</param>
     ''' <returns>The colour of the block.</returns>
     ''' -----------------------------------------------------------------------
-    Protected Function BlockColor(ByVal i As Integer) As Color
+    Protected Function BlockColor(i As Integer) As Color
         If (i <= Me.m_parentSelector.NumBlocks) Then
             Return Me.m_parentSelector.BlockColor(i)
         End If

@@ -24,7 +24,7 @@ Partial Class dlgSelectResponse
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -159,8 +159,8 @@ Partial Class dlgSelectResponse
         'm_tstbFilter
         '
         Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tstbFilter.Name = "m_tstbFilter"
         resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
+        Me.m_tstbFilter.Name = "m_tstbFilter"
         '
         'm_tslbFilter
         '
@@ -178,12 +178,11 @@ Partial Class dlgSelectResponse
         Me.Controls.Add(Me.m_tlMain)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSelectResponse"
         Me.ShowInTaskbar = False
-        Me.TabText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
+        Me.TabText = ""
         Me.m_tlMain.ResumeLayout(False)
         Me.m_plButtons.ResumeLayout(False)
         Me.m_tsMain.ResumeLayout(False)

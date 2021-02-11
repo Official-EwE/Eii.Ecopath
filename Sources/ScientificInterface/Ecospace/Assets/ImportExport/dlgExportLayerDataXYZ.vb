@@ -51,7 +51,7 @@ Namespace Ecospace.Basemap
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
             Me.m_uic = uic
         End Sub
@@ -64,7 +64,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_lLayers.ToArray()
             End Get
-            Set(ByVal aLayers As cEcospaceLayer())
+            Set(aLayers As cEcospaceLayer())
 
                 Me.m_lLayers.Clear()
                 If (aLayers Is Nothing) Then Return
@@ -78,7 +78,7 @@ Namespace Ecospace.Basemap
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             MyBase.OnLoad(e)
 
@@ -119,12 +119,12 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_lLayers = Nothing
             MyBase.OnFormClosed(e)
         End Sub
 
-        Private Sub OnBrowseTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnBrowseTarget(sender As System.Object, e As System.EventArgs) _
             Handles m_btnBrowseTarget.Click
 
             ' Browse via EwE6 open file dialog 
@@ -147,7 +147,7 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_bntOK.Click
 
             If Not Me.SaveMappedLayers() Then Return
@@ -232,7 +232,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_tbRow.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_tbRow.Text = value
             End Set
         End Property
@@ -241,7 +241,7 @@ Namespace Ecospace.Basemap
             Get
                 Return Me.m_tbCol.Text
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_tbCol.Text = value
             End Set
         End Property

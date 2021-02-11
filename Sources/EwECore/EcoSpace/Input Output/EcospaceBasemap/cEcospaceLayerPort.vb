@@ -30,14 +30,14 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerPort
     Inherits cEcospaceLayerBoolean
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerPort, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerPort
     End Sub
 
 #Region " Cell interaction "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim data As Boolean()(,) = DirectCast(Me.Data, Boolean()(,))
             If (Me.Index = 0) Then
@@ -49,7 +49,7 @@ Public Class cEcospaceLayerPort
                 Return data(Me.Index)(iRow, iCol)
             End If
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim data As Boolean()(,) = DirectCast(Me.Data, Boolean()(,))
             ' ToDo: only allow coastal cells to be set
             If (Me.Index = 0) Then

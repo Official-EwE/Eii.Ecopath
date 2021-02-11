@@ -34,7 +34,7 @@ Public Class dlgSelectItems
         Private m_strText As String = ""
         Private m_data As Integer = Nothing
 
-        Public Sub New(ByVal strText As String, ByVal data As Integer)
+        Public Sub New(strText As String, data As Integer)
             Me.m_strText = strText
             Me.m_data = data
         End Sub
@@ -64,7 +64,7 @@ Public Class dlgSelectItems
 
 #Region " Constructor "
 
-    Public Sub New(ByVal tdata As Type, ByVal fmt As ITypeFormatter)
+    Public Sub New(tdata As Type, fmt As ITypeFormatter)
 
         Me.InitializeComponent()
 
@@ -88,9 +88,9 @@ Public Class dlgSelectItems
     ''' <param name="Defaults">Default selection to use when the user pressed 'Default'. Provide nothing to omit the defaults option.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Overloads Function ShowDialog(ByVal owner As IWin32Window, _
-                                         Optional ByVal Selected As Integer() = Nothing, _
-                                         Optional ByVal Defaults As Integer() = Nothing) As DialogResult
+    Public Overloads Function ShowDialog(owner As IWin32Window, _
+                                         Optional Selected As Integer() = Nothing, _
+                                         Optional Defaults As Integer() = Nothing) As DialogResult
 
         Me.m_aobjSelection = Selected
         Me.m_aobjDefaults = Defaults
@@ -98,7 +98,7 @@ Public Class dlgSelectItems
         Return MyBase.ShowDialog(owner)
     End Function
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         For Each obj As Integer In [Enum].GetValues(Me.m_tdata)
@@ -117,7 +117,7 @@ Public Class dlgSelectItems
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Dim lSel As New List(Of Integer)
         For Each obj As Object In Me.m_clbItems.CheckedItems
@@ -221,34 +221,34 @@ Public Class dlgSelectItems
 
 #Region " Events "
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOK.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
         Me.m_aobjSelection = New Integer() {}
     End Sub
 
-    Private Sub OnAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnAll(sender As System.Object, e As System.EventArgs) _
         Handles m_btnAll.Click
         For i As Integer = 0 To Me.m_clbItems.Items.Count - 1
             Me.m_clbItems.SetItemChecked(i, True)
         Next
     End Sub
 
-    Private Sub OnNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnNone(sender As System.Object, e As System.EventArgs) _
         Handles m_btnNone.Click
         For i As Integer = 0 To Me.m_clbItems.Items.Count - 1
             Me.m_clbItems.SetItemChecked(i, False)
         Next
     End Sub
 
-    Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDefaults(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDefaults.Click
         For i As Integer = 0 To Me.m_clbItems.Items.Count - 1
             Dim obj As cItem = DirectCast(Me.m_clbItems.Items(i), cItem)

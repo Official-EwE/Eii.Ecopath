@@ -52,7 +52,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -75,9 +75,9 @@ Namespace Ecospace
             Me.m_GridRegion.Dock = DockStyle.Fill
 
             ' Add the result grids. 
-            Me.m_plResultsGrid.Controls.Add(m_GridGear)
-            Me.m_plResultsGrid.Controls.Add(m_GridGroup)
-            Me.m_plResultsGrid.Controls.Add(m_GridRegion)
+            Me.m_plResultsGrid.Controls.Add(Me.m_GridGear)
+            Me.m_plResultsGrid.Controls.Add(Me.m_GridGroup)
+            Me.m_plResultsGrid.Controls.Add(Me.m_GridRegion)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
@@ -86,7 +86,7 @@ Namespace Ecospace
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_fpSumStartTime.Release()
             Me.m_fpSumEndTime.Release()
             Me.m_fpSumLength.Release()
@@ -97,7 +97,7 @@ Namespace Ecospace
         ''' Populate gear, region combo boxes.
         ''' </summary>
         Private Sub FillFilterCombos()
-            m_rbFleet.Checked = True
+            Me.m_rbFleet.Checked = True
 
             Me.m_cmbGears.Items.Clear()
             Dim fleet As cEcospaceFleetOutput = Nothing
@@ -111,42 +111,42 @@ Namespace Ecospace
             Next
             Me.m_cmbGears.SelectedIndex = 0
 
-            m_cmbRegions.Items.Clear()
+            Me.m_cmbRegions.Items.Clear()
             Dim region As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To Me.Core.nRegions
                 region = Me.Core.EcospaceRegionOutput(i)
                 If (i = 0) Then
-                    m_cmbRegions.Items.Add(region.Name)
+                    Me.m_cmbRegions.Items.Add(region.Name)
                 Else
-                    m_cmbRegions.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, i, region.Name))
+                    Me.m_cmbRegions.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, i, region.Name))
                 End If
             Next
-            m_cmbRegions.SelectedIndex = 0
+            Me.m_cmbRegions.SelectedIndex = 0
 
         End Sub
 
-        Private Sub rbResults_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub rbResults_CheckedChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbFleet.CheckedChanged, m_rbGroup.CheckedChanged, m_rbRegion.CheckedChanged
 
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub OnSelectGear(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectGear(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbGears.SelectedIndexChanged
 
             'fleets are zero based so the zero index is ok
-            m_GridGroup.SelFleetIndex = m_cmbGears.SelectedIndex
-            m_GridGroup.RefreshContent()
+            Me.m_GridGroup.SelFleetIndex = Me.m_cmbGears.SelectedIndex
+            Me.m_GridGroup.RefreshContent()
 
         End Sub
 
-        Private Sub OnSelectRegion(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSelectRegion(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbRegions.SelectedIndexChanged
 
             'regions are zero based so the zero index is ok
-            m_GridRegion.SelRegionIndex = m_cmbRegions.SelectedIndex
-            m_GridRegion.RefreshContent()
+            Me.m_GridRegion.SelRegionIndex = Me.m_cmbRegions.SelectedIndex
+            Me.m_GridRegion.RefreshContent()
 
         End Sub
 
@@ -167,14 +167,14 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="msg"></param>
         ''' <remarks>This updates the grids with the results if the user changed the time periods</remarks>
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             If msg.DataType = eDataTypes.EcospaceModelParameter Then
                 For Each var As cVariableStatus In msg.Variables
                     If var.VarName = eVarNameFlags.EcospaceSummaryTimeStart Or var.VarName = eVarNameFlags.EcospaceSummaryTimeEnd Or var.VarName = eVarNameFlags.EcospaceNumberSummaryTimeSteps Then
 
-                        If m_GridGroup.Visible Then m_GridGroup.RefreshContent()
-                        If m_GridRegion.Visible Then m_GridRegion.RefreshContent()
-                        If m_GridGear.Visible Then m_GridGear.RefreshContent()
+                        If Me.m_GridGroup.Visible Then Me.m_GridGroup.RefreshContent()
+                        If Me.m_GridRegion.Visible Then Me.m_GridRegion.RefreshContent()
+                        If Me.m_GridGear.Visible Then Me.m_GridGear.RefreshContent()
 
                         Exit Sub
                     End If

@@ -52,18 +52,18 @@ Namespace Ecosim
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(1, 2 + Core.nFleets + 1) ' Include sum column
+            Me.Redim(1, 2 + Me.Core.nFleets + 1) ' Include sum column
 
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
-            For iFleet As Integer = 1 To Core.nFleets
-                src = Core.EcopathFleetInputs(iFleet)
+            For iFleet As Integer = 1 To Me.Core.nFleets
+                src = Me.Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager,
                                                                  src, eVarNameFlags.Name, Nothing,
                                                                  cUnits.Currency)
             Next
-            Me(0, 1 + Core.nFleets + 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
+            Me(0, 1 + Me.Core.nFleets + 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_SUM)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -79,12 +79,12 @@ Namespace Ecosim
             Dim alPropSum As New ArrayList()
 
             ' For each group
-            For iGroup As Integer = 1 To Core.nLivingGroups
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
                 Me.AddRow()
 
                 'Get the group info
-                group = Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcoPathGroupInputs(iGroup)
 
                 ' Fleet name As row header
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
@@ -95,7 +95,7 @@ Namespace Ecosim
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
-                    fleet = Core.MSEManager.EcopathFleetInputs(iFleet)
+                    fleet = Me.Core.MSEManager.EcopathFleetInputs(iFleet)
                     prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.QuotaShare, group)
                     Me(iGroup, 1 + iFleet) = New cPropertyCell(prop)
 

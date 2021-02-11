@@ -58,10 +58,10 @@ Namespace Controls
                     Dim irect As System.Drawing.Rectangle = Me.GetItemRectangle(i)
                     If e.ClipRectangle.IntersectsWith(irect) Then
                         If (Me.SelectionMode = SelectionMode.One AndAlso Me.SelectedIndex = i) OrElse (Me.SelectionMode = SelectionMode.MultiSimple AndAlso Me.SelectedIndices.Contains(i)) OrElse (Me.SelectionMode = SelectionMode.MultiExtended AndAlso Me.SelectedIndices.Contains(i)) Then
-                            OnDrawItem(New DrawItemEventArgs(e.Graphics, Me.Font, irect, i, DrawItemState.Selected, Me.ForeColor, _
+                            Me.OnDrawItem(New DrawItemEventArgs(e.Graphics, Me.Font, irect, i, DrawItemState.Selected, Me.ForeColor, _
                              Me.BackColor))
                         Else
-                            OnDrawItem(New DrawItemEventArgs(e.Graphics, Me.Font, irect, i, DrawItemState.[Default], Me.ForeColor, _
+                            Me.OnDrawItem(New DrawItemEventArgs(e.Graphics, Me.Font, irect, i, DrawItemState.[Default], Me.ForeColor, _
                              Me.BackColor))
                         End If
                         iRegion.Complement(irect)

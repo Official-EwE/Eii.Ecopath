@@ -54,8 +54,8 @@ Namespace MSY
 
 #Region "Construction Initialization"
 
-        Public Sub New(ByVal theCore As cCore, MSYData As cMSYDataStructures)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, MSYData As cMSYDataStructures)
+            MyBase.New(core)
 
             Dim val As cValue = Nothing
 
@@ -72,32 +72,32 @@ Namespace MSY
             Me.m_msyData = MSYData
 
             ' FSelection
-            val = New cValue(New Integer, eVarNameFlags.MSYFSelection, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.MSYFSelection, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' FSelectionMode
-            val = New cValue(New Integer, eVarNameFlags.MSYFSelectionMode, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.MSYFSelectionMode, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' Assessment (frozen pools or not)
-            val = New cValue(New Boolean, eVarNameFlags.MSYAssessment, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.MSYAssessment, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             ' RunLengthMode
-            val = New cValue(New Integer, eVarNameFlags.MSYRunLengthMode, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.MSYRunLengthMode, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' MaxFishingRate
-            val = New cValue(New Single, eVarNameFlags.MSYMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSYMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             ' NumTrialYears
-            val = New cValue(New Integer, eVarNameFlags.MSYNumTrialYears, eStatusFlags.Null, eValueTypes.Int)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Integer, eVarNameFlags.MSYNumTrialYears, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
 
             ' EquilibriumStepSize
-            val = New cValue(New Single, eVarNameFlags.MSYEquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSYEquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
         End Sub
 

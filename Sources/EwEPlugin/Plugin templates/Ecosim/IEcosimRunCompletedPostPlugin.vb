@@ -35,6 +35,6 @@ Public Interface IEcosimRunCompletedPostPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures">Ecosim data structires.</param>
     ''' -----------------------------------------------------------------------
-    Sub EcosimRunCompletedPost(ByVal EcosimDatastructures As Object)
+    Sub EcosimRunCompletedPost(EcosimDatastructures As Object)
 
 End Interface

@@ -32,6 +32,6 @@ Public Interface IEcospaceInitRunCompletedPlugin
     ''' </summary>
     ''' <param name="EcospaceDatastructures">The ecospace datastructures.</param>
     ''' -----------------------------------------------------------------------
-    Sub EcospaceInitRunCompleted(ByVal EcospaceDatastructures As Object)
+    Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object)
 
 End Interface

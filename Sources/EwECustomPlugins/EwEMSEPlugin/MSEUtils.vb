@@ -283,9 +283,9 @@ Public Class cMSEUtils
     ''' <param name="strMsg"></param>
     ''' <param name="status"></param>
     ''' <remarks></remarks>
-    Public Shared Sub LogError(ByVal msg As cMessage, _
-                               ByVal strMsg As String, _
-                               Optional ByVal status As eStatusFlags = eStatusFlags.ErrorEncountered)
+    Public Shared Sub LogError(msg As cMessage, _
+                               strMsg As String, _
+                               Optional status As eStatusFlags = eStatusFlags.ErrorEncountered)
         If (msg IsNot Nothing) Then
             msg.AddVariable(New cVariableStatus(status, strMsg, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
         End If

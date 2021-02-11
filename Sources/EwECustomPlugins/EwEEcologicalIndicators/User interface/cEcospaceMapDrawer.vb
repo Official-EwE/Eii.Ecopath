@@ -46,7 +46,7 @@ Public Class cEcospaceMapDrawer
 
     Public Property Indicator As cIndicatorInfo
 
-    Public Overrides Sub DrawMap(ByVal iItem As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
+    Public Overrides Sub DrawMap(iItem As Integer, rcPos As Rectangle, Args As cMapDrawerArgs)
 
         If Me.Map Is Nothing Then Return
 
@@ -69,7 +69,7 @@ Public Class cEcospaceMapDrawer
                         Dim brCell As Brush = Nothing
 
                         'If it is water
-                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        If Me.m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
                             ' Water Cell
                             sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
 
@@ -115,7 +115,7 @@ Public Class cEcospaceMapDrawer
 
             If Me.m_sg.InvertMapLabelColor Then br = Brushes.White
 
-            Me.Graphics.DrawString(Labels(iItem), font, br, rcPos, fmt)
+            Me.Graphics.DrawString(Me.Labels(iItem), font, br, rcPos, fmt)
         End If
 
         font.Dispose()

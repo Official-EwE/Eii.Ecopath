@@ -40,6 +40,6 @@ Public Interface IUIContextPlugin
     ''' </summary>
     ''' <param name="uic"></param>
     ''' -----------------------------------------------------------------------
-    Sub UIContext(ByVal uic As Object)
+    Sub UIContext(uic As Object)
 
 End Interface

@@ -32,19 +32,19 @@ Public Class cValidatorCounter
     Private m_core As cCore
     Private m_counter As eCoreCounterTypes
 
-    Public Sub New(ByRef theCore As cCore, ByVal counterType As eCoreCounterTypes)
-        m_core = theCore
-        m_counter = counterType
+    Public Sub New(ByRef theCore As cCore, counterType As eCoreCounterTypes)
+        Me.m_core = theCore
+        Me.m_counter = counterType
     End Sub
 
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ValueObject As cValue, MetaData As cVariableMetaData,
+                                         Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Try
             Dim fmt As New Style.cVarnameTypeFormatter()
-            Dim n As Integer = m_core.GetCoreCounter(m_counter)
+            Dim n As Integer = Me.m_core.GetCoreCounter(Me.m_counter)
 
             If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), 0) And
              MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), n) Then

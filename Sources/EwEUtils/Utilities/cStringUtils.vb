@@ -66,9 +66,9 @@ Namespace Utilities
         ''' segments will not be subdivided by delimiting characters.</param>
         ''' <returns>An array of strings.</returns>
         ''' ---------------------------------------------------------------------------
-        Public Shared Function SplitQualified(ByVal strExpression As String,
-                                              ByVal strDelimiter As String,
-                                              Optional ByVal strQualifier As String = """") As String()
+        Public Shared Function SplitQualified(strExpression As String,
+                                              strDelimiter As String,
+                                              Optional strQualifier As String = """") As String()
 
             ' Sanity check
             If String.IsNullOrEmpty(strExpression) Then Return New String() {String.Empty}
@@ -123,9 +123,9 @@ Namespace Utilities
         ''' <para>Support for "" to indicate " is needed!</para>
         ''' </remarks>
         ''' ---------------------------------------------------------------------------
-        Public Shared Function SplitQualified(ByVal strExpression As String,
-                                              ByVal cDelimiter As Char,
-                                              Optional ByVal cQualifier As Char = """"c) As String()
+        Public Shared Function SplitQualified(strExpression As String,
+                                              cDelimiter As Char,
+                                              Optional cQualifier As Char = """"c) As String()
             Return cStringUtils.SplitQualified(strExpression, CStr(cDelimiter), CStr(cQualifier))
         End Function
 
@@ -137,7 +137,7 @@ Namespace Utilities
         ''' <param name="text">The text to split</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function SplitLines(ByVal text As String) As String()
+        Public Shared Function SplitLines(text As String) As String()
             If (String.IsNullOrWhiteSpace(text)) Then Return New String() {String.Empty}
             text = text.Replace(vbCrLf, vbLf)
             text = text.Replace(vbCr, vbLf)
@@ -157,9 +157,9 @@ Namespace Utilities
         ''' <remarks>This code is very simple, and does not use regular expressions 
         ''' for performance reasons. Detection is limited to the direct sequence 'a href=' only.</remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Hyperlink(ByVal strIn As String,
+        Public Shared Function Hyperlink(strIn As String,
                                          ByRef strOut As String, ByRef iStart As Integer, ByRef iEnd As Integer,
-                                         Optional ByVal bStripLink As Boolean = True) As String
+                                         Optional bStripLink As Boolean = True) As String
 
             Dim strLink As String = ""
             Dim i, j As Integer
@@ -217,8 +217,8 @@ Namespace Utilities
         ''' alternative to this maybe clumsy mothodology. Feel free to improve.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetNextNumber(ByVal items As ICollection(Of String), ByVal strMask As String,
-                Optional ByVal strMaskNumberPlaceholder As String = "{0}") As Integer
+        Public Shared Function GetNextNumber(items As ICollection(Of String), strMask As String,
+                Optional strMaskNumberPlaceholder As String = "{0}") As Integer
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrEmpty(strMask), "Mask cannot be emtpy")
@@ -284,14 +284,14 @@ Namespace Utilities
 
         End Function
 
-        Public Shared Function BeginsWithOneOf(ByVal strSrc As String, ByVal astrCompareTo() As String, Optional ByVal bIgnoreCase As Boolean = True) As Boolean
+        Public Shared Function BeginsWithOneOf(strSrc As String, astrCompareTo() As String, Optional bIgnoreCase As Boolean = True) As Boolean
             For Each strCompareTo As String In astrCompareTo
                 If BeginsWith(strSrc, strCompareTo, bIgnoreCase) Then Return True
             Next
             Return False
         End Function
 
-        Public Shared Function BeginsWith(ByVal strSrc As String, ByVal strCompareTo As String, Optional ByVal bIgnoreCase As Boolean = True) As Boolean
+        Public Shared Function BeginsWith(strSrc As String, strCompareTo As String, Optional bIgnoreCase As Boolean = True) As Boolean
             If (strSrc.Length < strCompareTo.Length) Then Return False
             Dim iLen As Integer = Math.Min(strSrc.Length, strCompareTo.Length)
 
@@ -301,7 +301,7 @@ Namespace Utilities
 
         End Function
 
-        Public Shared Function EndsWith(ByVal strSrc As String, ByVal strCompareTo As String, Optional ByVal bIgnoreCase As Boolean = True) As Boolean
+        Public Shared Function EndsWith(strSrc As String, strCompareTo As String, Optional bIgnoreCase As Boolean = True) As Boolean
             Dim iLen As Integer = Math.Min(strSrc.Length, strCompareTo.Length)
 
             strSrc = strSrc.Substring(strSrc.Length - iLen, iLen)
@@ -310,7 +310,7 @@ Namespace Utilities
 
         End Function
 
-        Public Shared Function Shift(ByVal strIn As String) As String
+        Public Shared Function Shift(strIn As String) As String
             Dim strOut As String = ""
             For Each c As Char In strIn.ToCharArray
                 strOut += Convert.ToChar(Convert.ToByte(c) - 1)
@@ -329,7 +329,7 @@ Namespace Utilities
         ''' <returns>A string of no more than <paramref name="iNumChars"/> 
         ''' characters in length.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function SubString(ByVal strIn As String, iStart As Integer, iNumChars As Integer) As String
+        Public Shared Function SubString(strIn As String, iStart As Integer, iNumChars As Integer) As String
             Return strIn.Substring(iStart, Math.Max(0, Math.Min(strIn.Length - iStart, iNumChars - iStart)))
         End Function
 
@@ -340,7 +340,7 @@ Namespace Utilities
         ''' <param name="nArabicValue">The value to convert.</param>
         ''' <returns>A number in roman format, in upper case.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToRoman(ByVal nArabicValue As Integer) As String
+        Public Shared Function ToRoman(nArabicValue As Integer) As String
 
             Dim nThousands As Integer
             Dim nFiveHundreds As Integer
@@ -425,11 +425,11 @@ Namespace Utilities
         ''' <param name="objNullValue">Value to return in case parse failed.</param>
         ''' <returns>An number.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToNumber(ByVal strNumber As String,
-                                                ByVal typeTarget As Type,
-                                                Optional ByVal objNullValue As Object = -9999,
-                                                Optional ByVal strDecimalSeparator As String = ".",
-                                                Optional ByVal strThousandsSeparator As String = "") As Object
+        Public Shared Function ConvertToNumber(strNumber As String,
+                                                typeTarget As Type,
+                                                Optional objNullValue As Object = -9999,
+                                                Optional strDecimalSeparator As String = ".",
+                                                Optional strThousandsSeparator As String = "") As Object
             If typeTarget Is GetType(Single) Then
                 Return ConvertToSingle(strNumber, CSng(objNullValue), strDecimalSeparator, strThousandsSeparator)
             ElseIf typeTarget Is GetType(Double) Then
@@ -451,10 +451,10 @@ Namespace Utilities
         ''' <param name="iNullValue">Value to return in case parse failed.</param>
         ''' <returns>An integer value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToInteger(ByVal strNumber As String,
-                                                Optional ByVal iNullValue As Integer = -9999,
-                                                Optional ByVal strDecimalSeparator As String = ".",
-                                                Optional ByVal strThousandsSeparator As String = "") As Integer
+        Public Shared Function ConvertToInteger(strNumber As String,
+                                                Optional iNullValue As Integer = -9999,
+                                                Optional strDecimalSeparator As String = ".",
+                                                Optional strThousandsSeparator As String = "") As Integer
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -496,10 +496,10 @@ Namespace Utilities
         ''' <param name="sNullValue">Value to return in case parse failed.</param>
         ''' <returns>A single value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToSingle(ByVal strNumber As String,
-                                               Optional ByVal sNullValue As Single = -9999.0!,
-                                               Optional ByVal strDecimalSeparator As String = ".",
-                                               Optional ByVal strThousandsSeparator As String = "") As Single
+        Public Shared Function ConvertToSingle(strNumber As String,
+                                               Optional sNullValue As Single = -9999.0!,
+                                               Optional strDecimalSeparator As String = ".",
+                                               Optional strThousandsSeparator As String = "") As Single
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -540,10 +540,10 @@ Namespace Utilities
         ''' <param name="dNullValue">Value to return in case parse failed.</param>
         ''' <returns>A double value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToDouble(ByVal strNumber As String,
-                                               Optional ByVal dNullValue As Double = -9999.0#,
-                                               Optional ByVal strDecimalSeparator As String = ".",
-                                               Optional ByVal strThousandsSeparator As String = "") As Double
+        Public Shared Function ConvertToDouble(strNumber As String,
+                                               Optional dNullValue As Double = -9999.0#,
+                                               Optional strDecimalSeparator As String = ".",
+                                               Optional strThousandsSeparator As String = "") As Double
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -583,10 +583,10 @@ Namespace Utilities
         ''' <param name="dNullValue">Value to return in case parse failed.</param>
         ''' <returns>A decimal value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToDecimal(ByVal strNumber As String,
-                                               Optional ByVal dNullValue As Decimal = -9999D,
-                                               Optional ByVal strDecimalSeparator As String = ".",
-                                               Optional ByVal strThousandsSeparator As String = "") As Decimal
+        Public Shared Function ConvertToDecimal(strNumber As String,
+                                               Optional dNullValue As Decimal = -9999D,
+                                               Optional strDecimalSeparator As String = ".",
+                                               Optional strThousandsSeparator As String = "") As Decimal
 
             Select Case strNumber.Trim
                 Case "-", "_" : strNumber = ""
@@ -624,10 +624,10 @@ Namespace Utilities
         ''' <param name="value"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatNumber(ByVal value As Object,
-                                            Optional ByVal strDecimalSeparator As String = ".",
-                                            Optional ByVal strThousandsSeparator As String = "",
-                                            Optional ByVal iNumDigits As Integer = -9999) As String
+        Public Shared Function FormatNumber(value As Object,
+                                            Optional strDecimalSeparator As String = ".",
+                                            Optional strThousandsSeparator As String = "",
+                                            Optional iNumDigits As Integer = -9999) As String
 
             If (Convert.IsDBNull(value)) Then Return ""
 
@@ -655,9 +655,9 @@ Namespace Utilities
         ''' this separator is not used.</param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatInteger(ByVal iValue As Integer,
-                                             Optional ByVal strDecimalSeparator As String = ".",
-                                             Optional ByVal strThousandsSeparator As String = "") As String
+        Public Shared Function FormatInteger(iValue As Integer,
+                                             Optional strDecimalSeparator As String = ".",
+                                             Optional strThousandsSeparator As String = "") As String
 
             Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
@@ -687,10 +687,10 @@ Namespace Utilities
         ''' formatting should show as many digits as needed.</param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatDecimal(ByVal decValue As Decimal,
-                                             Optional ByVal strDecimalSeparator As String = ".",
-                                             Optional ByVal strThousandsSeparator As String = "",
-                                             Optional ByVal iNumDigits As Integer = -9999) As String
+        Public Shared Function FormatDecimal(decValue As Decimal,
+                                             Optional strDecimalSeparator As String = ".",
+                                             Optional strThousandsSeparator As String = "",
+                                             Optional iNumDigits As Integer = -9999) As String
 
             Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
@@ -725,10 +725,10 @@ Namespace Utilities
         ''' formatting should show as many digits as needed.</param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatSingle(ByVal sValue As Single,
-                                            Optional ByVal strDecimalSeparator As String = ".",
-                                            Optional ByVal strThousandsSeparator As String = "",
-                                            Optional ByVal iNumDigits As Integer = -9999) As String
+        Public Shared Function FormatSingle(sValue As Single,
+                                            Optional strDecimalSeparator As String = ".",
+                                            Optional strThousandsSeparator As String = "",
+                                            Optional iNumDigits As Integer = -9999) As String
 
             Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
@@ -764,10 +764,10 @@ Namespace Utilities
         ''' <seealso cref="cNumberUtils.NumRelevantDecimals"/>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatDouble(ByVal dValue As Double,
-                                            Optional ByVal strDecimalSeparator As String = ".",
-                                            Optional ByVal strThousandsSeparator As String = "",
-                                            Optional ByVal iNumDigits As Integer = -9999) As String
+        Public Shared Function FormatDouble(dValue As Double,
+                                            Optional strDecimalSeparator As String = ".",
+                                            Optional strThousandsSeparator As String = "",
+                                            Optional iNumDigits As Integer = -9999) As String
 
             Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
@@ -794,7 +794,7 @@ Namespace Utilities
         ''' http://www.freevbcode.com/ShowCode.asp?ID=8179
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatDegrees(ByVal dValue As Double,
+        Public Shared Function FormatDegrees(dValue As Double,
                                              Optional strDegreeSymbol As String = "°",
                                              Optional strMinuteSymbol As String = "’",
                                              Optional strSeconds As String = """") As String
@@ -826,8 +826,8 @@ Namespace Utilities
         ''' http://www.w3.org/TR/NOTE-datetime
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatDate(ByVal dtValue As DateTime,
-                                          Optional ByVal strFormat As String = "yyyy-MM-dd") As String
+        Public Shared Function FormatDate(dtValue As DateTime,
+                                          Optional strFormat As String = "yyyy-MM-dd") As String
             Return dtValue.ToString(strFormat)
         End Function
 
@@ -839,8 +839,8 @@ Namespace Utilities
         ''' <param name="strFormat">Optional date formatting flag (http://msdn.microsoft.com/en-us/library/zdtaw1bw%28v=vs.110%29.aspx)</param>
         ''' <returns>The date, of Date.MinValue if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ConvertToDate(ByVal strDate As String,
-                                             Optional ByVal strFormat As String = "yyyy-MM-dd") As DateTime
+        Public Shared Function ConvertToDate(strDate As String,
+                                             Optional strFormat As String = "yyyy-MM-dd") As DateTime
             Dim dt As DateTime
             If (DateTime.TryParseExact(strDate, strFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, dt)) Then
                 Return dt
@@ -859,7 +859,7 @@ Namespace Utilities
         ''' way of checking an address provided.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function IsEmail(ByVal strEmail As String) As Boolean
+        Public Shared Function IsEmail(strEmail As String) As Boolean
             'regular expression pattern for valid email
             'addresses, allows for the following domains:
             'com,edu,info,gov,int,mil,net,org,biz,name,museum,coop,aero,pro,tv
@@ -882,7 +882,7 @@ Namespace Utilities
         ''' <param name="strValue">The string to check.</param>
         ''' <returns>True if the string could be parsed into a double value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function IsNumber(ByVal strValue As String) As Boolean
+        Public Shared Function IsNumber(strValue As String) As Boolean
             Dim dDummy As Double = 0
             Return Double.TryParse(strValue, dDummy)
         End Function
@@ -894,7 +894,7 @@ Namespace Utilities
         ''' <param name="bytes"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToHexString(ByVal bytes() As Byte) As String
+        Public Shared Function ToHexString(bytes() As Byte) As String
             Dim sbHex As New StringBuilder()
             If (bytes IsNot Nothing) Then
                 ' Convert public token to string
@@ -912,7 +912,7 @@ Namespace Utilities
         ''' <param name="strSrc">The string to hash.</param>
         ''' <returns>A base64 MD5 hash.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GenerateHash(ByVal strSrc As String) As String
+        Public Shared Function GenerateHash(strSrc As String) As String
             ' Create an encoding object to ensure the encoding standard for the source text
             Dim enc As New UnicodeEncoding
             ' Retrieve a byte array based on the source text
@@ -937,10 +937,10 @@ Namespace Utilities
         ''' <returns>A truncated string.</returns>
         ''' <remarks>Note that this method does not modify the original string.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function CompactString(ByVal strSrc As String,
-                                             ByVal iWidth As Integer,
-                                             ByVal ft As Font,
-                                             Optional ByVal tfFlags As TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
+        Public Shared Function CompactString(strSrc As String,
+                                             iWidth As Integer,
+                                             ft As Font,
+                                             Optional tfFlags As TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
 
             If (String.IsNullOrWhiteSpace(strSrc)) Then Return ""
 
@@ -966,8 +966,8 @@ Namespace Utilities
         ''' <para>Values containing potential CSV separator characters will be encapsulated in double quotes.</para>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ToCSVField(ByVal objValue As Object,
-                                          Optional ByVal cQuote As Char = """"c,
+        Public Shared Function ToCSVField(objValue As Object,
+                                          Optional cQuote As Char = """"c,
                                           Optional iNumDigits As Integer = -9999) As String
 
             Dim strValue As String = ""
@@ -1014,8 +1014,8 @@ Namespace Utilities
         ''' <param name="encIn">The current encoding of <paramref name="strIn"/>.</param>
         ''' <returns>A UTF-8 encoded version of the string.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToUTF8(ByVal strIn As String,
-                                      ByVal encIn As Encoding) As String
+        Public Shared Function ToUTF8(strIn As String,
+                                      encIn As Encoding) As String
             ' Special cases
             strIn = strIn.Replace("²"c, "2"c)
             strIn = strIn.Replace("³"c, "3"c)
@@ -1032,7 +1032,7 @@ Namespace Utilities
         ''' <param name="strIn">The string to convert.</param>
         ''' <returns>A UTF-8 encoded version of the string.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToUTF8(ByVal strIn As String) As String
+        Public Shared Function ToUTF8(strIn As String) As String
             Return cStringUtils.ToUTF8(strIn, Encoding.ASCII)
         End Function
 
@@ -1074,7 +1074,7 @@ Namespace Utilities
         ''' https://stackoverflow.com/questions/2512781/winforms-big-paragraph-tooltip
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToTooltip(ByVal strIn As String, Optional iMaxChars As Integer = 80) As String
+        Public Shared Function ToTooltip(strIn As String, Optional iMaxChars As Integer = 80) As String
 
             If (String.IsNullOrWhiteSpace(strIn)) Then Return String.Empty
             If (strIn.Length < iMaxChars) Then Return strIn
@@ -1126,9 +1126,9 @@ Namespace Utilities
         ''' If no split was possible the default comma character is returned.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindStringDelimiter(ByVal strIn As String,
-                                                   Optional ByVal cQualifier As Char = """"c,
-                                                   Optional ByVal candidates As Char() = Nothing) As Char
+        Public Shared Function FindStringDelimiter(strIn As String,
+                                                   Optional cQualifier As Char = """"c,
+                                                   Optional candidates As Char() = Nothing) As Char
 
             ' Ensure that there are candidate delimiters
             If (candidates Is Nothing) Then
@@ -1187,9 +1187,9 @@ Namespace Utilities
         ''' http://stackoverflow.com/questions/9453731/how-to-calculate-distance-similarity-measure-of-given-2-strings/9454016#9454016
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function DamerauLevenshteinDistance(ByVal strSrc As String,
-                                                          ByVal strTarget As String,
-                                                          Optional ByVal iThreshold As Integer = Integer.MaxValue) As Integer
+        Public Shared Function DamerauLevenshteinDistance(strSrc As String,
+                                                          strTarget As String,
+                                                          Optional iThreshold As Integer = Integer.MaxValue) As Integer
 
             Dim length1 As Integer = strSrc.Length
             Dim length2 As Integer = strTarget.Length
@@ -1283,7 +1283,7 @@ Namespace Utilities
         ''' <param name="ex"></param>
         ''' <returns>A string</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function UnravelException(ByVal ex As Exception) As String
+        Public Shared Function UnravelException(ex As Exception) As String
 
             Dim sb As New StringBuilder()
             Dim trace As StackTrace = New StackTrace(ex, True)
@@ -1325,7 +1325,7 @@ Namespace Utilities
         ''' " ." (l2r reading order). There is no support (yet) for custom
         ''' sentence seaprators.</remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToTitleCase(ByVal strExpression As String) As String
+        Public Shared Function ToTitleCase(strExpression As String) As String
 
             Dim bR2L As Boolean = cSystemUtils.IsRightToLeft()
             Dim astrSentences() As String = Nothing
@@ -1390,7 +1390,7 @@ Namespace Utilities
         ''' <param name="strExpression">The string to convert.</param>
         ''' <returns>A string in proper sentence case.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToSentenceCase(ByVal strExpression As String) As String
+        Public Shared Function ToSentenceCase(strExpression As String) As String
 
             Dim bR2L As Boolean = cSystemUtils.IsRightToLeft()
             Dim astrSentences() As String = Nothing
@@ -1465,7 +1465,7 @@ Namespace Utilities
         ''' outsourced to more dedicated logic that performs Locale aware hyphenation
         ''' etc. Perhaps NHunSpell? Ugh, that is for later.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function Wrap(ByVal str As String, Optional iNumChars As Integer = 100) As String
+        Public Shared Function Wrap(str As String, Optional iNumChars As Integer = 100) As String
 
             If (String.IsNullOrWhiteSpace(str)) Then Return ""
 
@@ -1577,7 +1577,7 @@ Namespace Utilities
         ''' <param name="strExpression">The string to convert.</param>
         ''' <returns>A string in proper sentence case.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ControlTextToSentence(ByVal strExpression As String) As String
+        Public Shared Function ControlTextToSentence(strExpression As String) As String
 
             If (String.IsNullOrWhiteSpace(strExpression)) Then Return ""
 
@@ -1658,7 +1658,7 @@ Namespace Utilities
         ''' <param name="iMatchPos">The index in the string where the result was found.</param>
         ''' <returns>True if either date format was found.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetDateBruteForce(ByVal strText As String,
+        Public Shared Function GetDateBruteForce(strText As String,
                                                  ByRef dt As DateTime,
                                                  Optional ByRef strFormat As String = "",
                                                  Optional ByRef iMatchPos As Integer = -1) As Boolean
@@ -1760,9 +1760,9 @@ Namespace Utilities
         ''' <param name="strReplacement">The search pattern replacement string.</param>
         ''' <returns>An amphetamine-addicted monk seal.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ReplaceAll(ByVal strSrc As String,
-                                          ByVal strPattern As String,
-                                          ByVal strReplacement As String) As String
+        Public Shared Function ReplaceAll(strSrc As String,
+                                          strPattern As String,
+                                          strReplacement As String) As String
 
             ' Rerouted
             Return cStringUtils.Replace(strSrc, strPattern, strReplacement, StringComparison.CurrentCulture)
@@ -1781,8 +1781,8 @@ Namespace Utilities
         ''' <param name="comparisonType">The <see cref="StringComparison"/> option to use.</param>
         ''' <returns>A string.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function Replace(ByVal strSrc As String, ByVal strPattern As String,
-                                       ByVal strReplacement As String, ByVal comparisonType As StringComparison) As String
+        Public Shared Function Replace(strSrc As String, strPattern As String,
+                                       strReplacement As String, comparisonType As StringComparison) As String
 
             If String.IsNullOrWhiteSpace(strSrc) Then Return String.Empty
 
@@ -1827,13 +1827,13 @@ Namespace Utilities
         ''' in the output string without having to revert to run-length encoding.
         ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ArrayToString(ByVal data As Array,
-                                             ByVal InRow As Integer,
-                                             ByVal InCol As Integer,
-                                             Optional ByVal dataDepth As Single(,) = Nothing,
-                                             Optional ByVal bWaterOnly As Boolean = True,
-                                             Optional ByVal valueFilter As Object = Nothing,
-                                             Optional ByVal valueSet As Object = Nothing) As String
+        Public Shared Function ArrayToString(data As Array,
+                                             InRow As Integer,
+                                             InCol As Integer,
+                                             Optional dataDepth As Single(,) = Nothing,
+                                             Optional bWaterOnly As Boolean = True,
+                                             Optional valueFilter As Object = Nothing,
+                                             Optional valueSet As Object = Nothing) As String
 
             ' Can only handle 2-dimensional arrays
             Debug.Assert(data.Rank = 2)
@@ -1915,12 +1915,12 @@ Namespace Utilities
         ''' <param name="valueSet">Value to set, if any.</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function StringToArray(ByVal strData As String, ByVal data As Array,
-                                             ByVal InRow As Integer, ByVal InCol As Integer,
-                                             Optional ByVal land As Single(,) = Nothing,
-                                             Optional ByVal bWaterOnly As Boolean = True,
-                                             Optional ByVal valueFilter As Object = Nothing,
-                                             Optional ByVal valueSet As Object = Nothing) As Boolean
+        Public Shared Function StringToArray(strData As String, data As Array,
+                                             InRow As Integer, InCol As Integer,
+                                             Optional land As Single(,) = Nothing,
+                                             Optional bWaterOnly As Boolean = True,
+                                             Optional valueFilter As Object = Nothing,
+                                             Optional valueSet As Object = Nothing) As Boolean
 
             ' Need 2 dim array
             Debug.Assert(data.Rank = 2)
@@ -2012,14 +2012,14 @@ Namespace Utilities
         ''' in the output string without having to revert to run-length encoding.
         ''' Rows without any values will be left empty and are only marked by a semi-colon.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ArrayToString(ByVal data As Array,
-                                             ByVal iFilter As Integer,
-                                             ByVal filterIndex As eFilterIndexTypes,
-                                             ByVal InRow As Integer,
-                                             ByVal InCol As Integer,
-                                             Optional ByVal dataDepth As Single(,) = Nothing,
-                                             Optional ByVal bWaterOnly As Boolean = True,
-                                             Optional ByVal valueSet As Object = Nothing) As String
+        Public Shared Function ArrayToString(data As Array,
+                                             iFilter As Integer,
+                                             filterIndex As eFilterIndexTypes,
+                                             InRow As Integer,
+                                             InCol As Integer,
+                                             Optional dataDepth As Single(,) = Nothing,
+                                             Optional bWaterOnly As Boolean = True,
+                                             Optional valueSet As Object = Nothing) As String
 
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
@@ -2108,16 +2108,16 @@ Namespace Utilities
         ''' filter value will be copied to the data array.</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function StringToArray(ByVal strData As String,
-                                            ByVal iFilter As Integer,
-                                            ByVal filterIndex As eFilterIndexTypes,
-                                            ByVal data As Array,
-                                            ByVal InRow As Integer,
-                                            ByVal InCol As Integer,
-                                            Optional ByVal land As Single(,) = Nothing,
-                                            Optional ByVal bWaterOnly As Boolean = True,
-                                            Optional ByVal valueGet As Object = Nothing,
-                                            Optional ByVal sMax As Single = Single.MaxValue) As Boolean
+        Public Shared Function StringToArray(strData As String,
+                                            iFilter As Integer,
+                                            filterIndex As eFilterIndexTypes,
+                                            data As Array,
+                                            InRow As Integer,
+                                            InCol As Integer,
+                                            Optional land As Single(,) = Nothing,
+                                            Optional bWaterOnly As Boolean = True,
+                                            Optional valueGet As Object = Nothing,
+                                            Optional sMax As Single = Single.MaxValue) As Boolean
 
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
@@ -2225,11 +2225,11 @@ Namespace Utilities
 
 #Region " Shape data conversions "
 
-        Public Shared Function StringToShape(ByVal strMemo As String,
-                                             ByVal nItems As Integer,
-                                             ByVal sDefault As Single,
-                                             ByVal sData As Single(,),
-                                             ByVal iIndex As Integer) As Boolean
+        Public Shared Function StringToShape(strMemo As String,
+                                             nItems As Integer,
+                                             sDefault As Single,
+                                             sData As Single(,),
+                                             iIndex As Integer) As Boolean
 
             Dim astrBits As String() = Nothing
             Dim iPts As Integer = 1
@@ -2355,7 +2355,7 @@ Namespace Utilities
         ''' <param name="vals">The value(s) to substitute into the mask.</param>
         ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String, ByVal ParamArray vals As Object()) As String
+        Public Shared Function Localize(strMask As String, ParamArray vals As Object()) As String
             Try
                 Return String.Format(strMask, vals)
             Catch ex As Exception
@@ -2377,7 +2377,7 @@ Namespace Utilities
         ''' <param name="vals">The value(s) to substitute into the mask.</param>
         ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function LocalizeSentence(ByVal strMask As String, ByVal ParamArray vals As Object()) As String
+        Public Shared Function LocalizeSentence(strMask As String, ParamArray vals As Object()) As String
             Try
                 Return cStringUtils.ToSentenceCase(String.Format(strMask, vals))
             Catch ex As Exception
@@ -2405,7 +2405,7 @@ Namespace Utilities
         ''' <para>If <paramref name="strValue"> equals * then all values from 1 to iMax are returned.</paramref>.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Range(ByVal strValue As String,
+        Public Shared Function Range(strValue As String,
                                      Optional iMax As Integer = -1) As Integer()
 
             ' RegEx are too confusing for users.
@@ -2550,7 +2550,7 @@ Namespace Utilities
         Public Class cAlphanumComparer
             Implements IComparer(Of String)
 
-            Public Function Compare(ByVal s1 As String, ByVal s2 As String) As Integer _
+            Public Function Compare(s1 As String, s2 As String) As Integer _
                 Implements System.Collections.Generic.IComparer(Of String).Compare
 
                 ' [1] Validate the arguments

@@ -42,34 +42,34 @@ Public Class cDataOutputer
     End Enum
 
     Public Sub New()
-        mFunctionalGroupData = New List(Of cDataSheet)
-        mFisheriesData = New List(Of cDataSheet)
-        mIndicators = New List(Of cDataSheet)
-        mDiagnostics = New List(Of cDataSheet)
+        Me.mFunctionalGroupData = New List(Of cDataSheet)
+        Me.mFisheriesData = New List(Of cDataSheet)
+        Me.mIndicators = New List(Of cDataSheet)
+        Me.mDiagnostics = New List(Of cDataSheet)
         Me.mExcelInteropEnabled = Me.IsExcelAccessible()
     End Sub
 
     'List containing all objects for each option selected that is a functional group
     Public Sub AddFunctionalGroup(ByRef Group As cDataSheet)
-        mFunctionalGroupData.Add(Group)
-        mNDataItems += 1
+        Me.mFunctionalGroupData.Add(Group)
+        Me.mNDataItems += 1
     End Sub
 
     'List containing all objects for each option selected that is a Fishery group
     Public Sub AddFisheries(ByRef Fisheries As cDataSheet)
-        mFisheriesData.Add(Fisheries)
-        mNDataItems += 1
+        Me.mFisheriesData.Add(Fisheries)
+        Me.mNDataItems += 1
     End Sub
 
     'List containing all objects for each option selected that is a indicator group
     Public Sub AddIndicators(ByRef Indicator As cDataSheet)
-        mIndicators.Add(Indicator)
-        mNDataItems += 1
+        Me.mIndicators.Add(Indicator)
+        Me.mNDataItems += 1
     End Sub
 
     Public Sub AddDiagnostics(ByRef Diagnostics As cDataSheet)
-        mDiagnostics.Add(Diagnostics)
-        mNDataItems += 1
+        Me.mDiagnostics.Add(Diagnostics)
+        Me.mNDataItems += 1
     End Sub
 
     ''' <summary>
@@ -84,11 +84,11 @@ Public Class cDataOutputer
     'Property that sets what file type to output
     Public Property POutputType() As eOutputTypes
         Get
-            Return mOutputType
+            Return Me.mOutputType
         End Get
-        Set(ByVal value As eOutputTypes)
-            If value = eOutputTypes.Excel And Not mExcelInteropEnabled Then value = eOutputTypes.CSV
-            mOutputType = value
+        Set(value As eOutputTypes)
+            If value = eOutputTypes.Excel And Not Me.mExcelInteropEnabled Then value = eOutputTypes.CSV
+            Me.mOutputType = value
         End Set
     End Property
 
@@ -97,10 +97,10 @@ Public Class cDataOutputer
     ''' </summary>
     Public Property PPath() As String
         Get
-            Return mStrPath
+            Return Me.mStrPath
         End Get
-        Set(ByVal value As String)
-            mStrPath = value
+        Set(value As String)
+            Me.mStrPath = value
         End Set
     End Property
 
@@ -109,7 +109,7 @@ Public Class cDataOutputer
     ''' </summary>
     Public ReadOnly Property GetNumDataItems() As Integer
         Get
-            Return mNDataItems
+            Return Me.mNDataItems
         End Get
     End Property
 
@@ -126,9 +126,9 @@ Public Class cDataOutputer
         Try
             Select Case Me.mOutputType
                 Case eOutputTypes.CSV
-                    CreateCSVFiles()
+                    Me.CreateCSVFiles()
                 Case eOutputTypes.Excel
-                    CreateExcelFiles()
+                    Me.CreateExcelFiles()
                 Case Else
                     Debug.Assert(False, "Unsupported output format " & Me.mOutputType.ToString & " specified")
             End Select
@@ -151,10 +151,10 @@ Public Class cDataOutputer
         Dim DataItem As String
 
         'Create the functional group files
-        If mFunctionalGroupData.Count > 0 Then
-            For Each i In mFunctionalGroupData
+        If Me.mFunctionalGroupData.Count > 0 Then
+            For Each i In Me.mFunctionalGroupData
                 fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
-                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(Me.mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -170,10 +170,10 @@ Public Class cDataOutputer
         End If
 
         'Create the fishery group files
-        If mFisheriesData.Count > 0 Then
-            For Each i In mFisheriesData
+        If Me.mFisheriesData.Count > 0 Then
+            For Each i In Me.mFisheriesData
                 fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
-                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(Me.mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -189,10 +189,10 @@ Public Class cDataOutputer
         End If
 
         'Create the indicator files
-        If mIndicators.Count > 0 Then
-            For Each i In mIndicators
+        If Me.mIndicators.Count > 0 Then
+            For Each i In Me.mIndicators
                 fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
-                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(Me.mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -208,10 +208,10 @@ Public Class cDataOutputer
         End If
 
         'Create the indicator files
-        If mDiagnostics.Count > 0 Then
-            For Each i In mDiagnostics
+        If Me.mDiagnostics.Count > 0 Then
+            For Each i In Me.mDiagnostics
                 fileName = cFileUtils.ToValidFileName(cStringUtils.Localize(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
-                Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
+                Dim sw As StreamWriter = New StreamWriter(Path.Combine(Me.mStrPath, fileName), False)
                 ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
@@ -232,7 +232,7 @@ Public Class cDataOutputer
 
         Dim ex As New Excel.Application
         Dim FileExists As Boolean = False
-        Dim DirectInfo As New DirectoryInfo(mStrPath)
+        Dim DirectInfo As New DirectoryInfo(Me.mStrPath)
         Dim files As FileInfo() = DirectInfo.GetFiles
         Dim FunctionalWB As Excel.Workbook
         Dim FisheriesWB As Excel.Workbook
@@ -248,10 +248,10 @@ Public Class cDataOutputer
                 & fDateTime.Second.ToString & ")"
 
 
-        If mFunctionalGroupData.Count > 0 Then
+        If Me.mFunctionalGroupData.Count > 0 Then
             fileName = My.Resources.FUNC_GROUP & CurrentTime
             FunctionalWB = ex.Workbooks.Add()
-            For Each i In mFunctionalGroupData
+            For Each i In Me.mFunctionalGroupData
                 sheet = CType(FunctionalWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
                 ArrayData = CType(i.Data, Object(,))
@@ -262,13 +262,13 @@ Public Class cDataOutputer
                 Next
                 Me.LogExport(CStr(i.Name), fileName)
             Next
-            FunctionalWB.SaveAs(Path.Combine(mStrPath, fileName))
+            FunctionalWB.SaveAs(Path.Combine(Me.mStrPath, fileName))
         End If
 
-        If mFisheriesData.Count > 0 Then
+        If Me.mFisheriesData.Count > 0 Then
             fileName = My.Resources.FISHERIES & CurrentTime
             FisheriesWB = ex.Workbooks.Add()
-            For Each i In mFisheriesData
+            For Each i In Me.mFisheriesData
                 sheet = CType(FisheriesWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
                 ArrayData = CType(i.Data, Object(,))
@@ -279,13 +279,13 @@ Public Class cDataOutputer
                 Next
                 Me.LogExport(CStr(i.Name), fileName)
             Next
-            FisheriesWB.SaveAs(Path.Combine(mStrPath, fileName))
+            FisheriesWB.SaveAs(Path.Combine(Me.mStrPath, fileName))
         End If
 
-        If mIndicators.Count > 0 Then
+        If Me.mIndicators.Count > 0 Then
             fileName = My.Resources.INDICATORS & CurrentTime
             IndicatorsWB = ex.Workbooks.Add()
-            For Each i In mIndicators
+            For Each i In Me.mIndicators
                 sheet = CType(IndicatorsWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
                 ArrayData = CType(i.Data, Object(,))
@@ -296,13 +296,13 @@ Public Class cDataOutputer
                 Next
                 Me.LogExport(CStr(i.Name), fileName)
             Next
-            IndicatorsWB.SaveAs(Path.Combine(mStrPath, fileName))
+            IndicatorsWB.SaveAs(Path.Combine(Me.mStrPath, fileName))
         End If
 
-        If mDiagnostics.Count > 0 Then
+        If Me.mDiagnostics.Count > 0 Then
             fileName = My.Resources.DIAGNOSTICS & CurrentTime
             DiagnosticsWB = ex.Workbooks.Add()
-            For Each i In mDiagnostics
+            For Each i In Me.mDiagnostics
                 sheet = CType(DiagnosticsWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
                 ArrayData = CType(i.Data, Object(,))
@@ -313,7 +313,7 @@ Public Class cDataOutputer
                 Next
                 Me.LogExport(CStr(i.Name), fileName)
             Next
-            DiagnosticsWB.SaveAs(Path.Combine(mStrPath, fileName))
+            DiagnosticsWB.SaveAs(Path.Combine(Me.mStrPath, fileName))
         End If
 
         FunctionalWB = Nothing
@@ -330,10 +330,10 @@ Public Class cDataOutputer
     Private Sub PrepareExportMessage()
         Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE, Me.PPath), _
                                         eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
-        Me.mMsg.Hyperlink = PPath
+        Me.mMsg.Hyperlink = Me.PPath
     End Sub
 
-    Private Sub LogException(ByVal strError As String)
+    Private Sub LogException(strError As String)
         Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError), _
                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
     End Sub
@@ -344,9 +344,9 @@ Public Class cDataOutputer
     ''' <param name="strName">The data was exported for.</param>
     ''' <param name="strFile">The file the data was exported to.</param>
     ''' <param name="status">Export succes status.</param>
-    Private Sub LogExport(ByVal strName As String, _
-                          ByVal strFile As String, _
-                          Optional ByVal status As eStatusFlags = eStatusFlags.OK)
+    Private Sub LogExport(strName As String, _
+                          strFile As String, _
+                          Optional status As eStatusFlags = eStatusFlags.OK)
         If (Me.mMsg Is Nothing) Then Return
         Dim vs As cVariableStatus = Nothing
         Select Case Me.mOutputType

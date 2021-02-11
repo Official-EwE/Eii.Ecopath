@@ -69,7 +69,7 @@ Public Class cEcospaceXYZTResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.WriteResults"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+    Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
         Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
@@ -163,7 +163,7 @@ Public Class cEcospaceXYZTResultsWriter
     ''' <param name="igrp">The group to write the header for.</param>
     ''' <param name="varname">The variable name to write the header for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal varname As eVarNameFlags, TypeLabel As String, Type As String)
+    Private Sub WriteHeader(ByRef strm As StreamWriter, igrp As Integer, varname As eVarNameFlags, TypeLabel As String, Type As String)
 
         Try
             Me.WriteRunInfo(strm)
@@ -185,10 +185,10 @@ Public Class cEcospaceXYZTResultsWriter
     ''' <param name="iIndex"></param>
     ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub SaveCSV(ByVal strm As StreamWriter,
-                        ByVal timestep As cEcospaceTimestep,
-                        ByVal iIndex As Integer,
-                        ByVal varname As eVarNameFlags)
+    Private Sub SaveCSV(strm As StreamWriter,
+                        timestep As cEcospaceTimestep,
+                        iIndex As Integer,
+                        varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = timestep.Layer(varname, iIndex)
         Dim sbBuff As New StringBuilder()
@@ -222,10 +222,10 @@ Public Class cEcospaceXYZTResultsWriter
     ''' <param name="SpaceTSData"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub saveXYZ(ByVal strm As StreamWriter,
-                        ByVal SpaceTSData As cEcospaceTimestep,
-                        ByVal iIndex As Integer,
-                        ByVal varname As eVarNameFlags)
+    Private Sub saveXYZ(strm As StreamWriter,
+                        SpaceTSData As cEcospaceTimestep,
+                        iIndex As Integer,
+                        varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
 
@@ -248,7 +248,7 @@ Public Class cEcospaceXYZTResultsWriter
     ''' </summary>
     ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteGroupFileHeaders(ByVal varname As eVarNameFlags)
+    Private Sub WriteGroupFileHeaders(varname As eVarNameFlags)
 
         Dim strm As StreamWriter
         Dim strFN As String
@@ -273,7 +273,7 @@ Public Class cEcospaceXYZTResultsWriter
     ''' </summary>
     ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteFleetFileHeaders(ByVal varname As eVarNameFlags)
+    Private Sub WriteFleetFileHeaders(varname As eVarNameFlags)
 
         Dim strm As StreamWriter
         Dim strFN As String

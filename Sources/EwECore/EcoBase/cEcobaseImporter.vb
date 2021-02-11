@@ -56,7 +56,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="core">The core to import into.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(core As cCore)
             MyBase.New(core)
         End Sub
 
@@ -68,7 +68,7 @@ Namespace Database
         ''' <inheritdoc cref="cEwE5ModelImporter.Open"/>
         ''' <param name="strSource">The key of the Ecobase model to open.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function Open(ByVal strSource As String) As Boolean
+        Public Overrides Function Open(strSource As String) As Boolean
 
             If strSource.ToLower().StartsWith("ewe-ecobase:") Then
                 strSource = strSource.Substring(strSource.IndexOf(":"c) + 1)
@@ -125,7 +125,7 @@ Namespace Database
 
         End Function
 
-        Public Overrides Function CanImportFrom(ByVal strSource As String) As Boolean
+        Public Overrides Function CanImportFrom(strSource As String) As Boolean
             ' Obtain model from source URL here
             Return True
         End Function
@@ -221,7 +221,7 @@ Namespace Database
             Dim bSucces As Boolean = True
 
             Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
-            writer = m_dbTarget.GetWriter("EcopathModel")
+            writer = Me.m_dbTarget.GetWriter("EcopathModel")
 
             Try
 
@@ -291,7 +291,7 @@ Namespace Database
             Dim bSucces As Boolean = True
 
             Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
-            writer = m_dbTarget.GetWriter("EcopathGroup")
+            writer = Me.m_dbTarget.GetWriter("EcopathGroup")
 
             Try
                 For i As Integer = 1 To Me.m_data.NumGroups
@@ -361,8 +361,8 @@ Namespace Database
 
             Me.m_dbTarget.Execute("DELETE * FROM Stanza")
 
-            writerStanza = m_dbTarget.GetWriter("Stanza")
-            writerLifeStages = m_dbTarget.GetWriter("StanzaLifeStage")
+            writerStanza = Me.m_dbTarget.GetWriter("Stanza")
+            writerLifeStages = Me.m_dbTarget.GetWriter("StanzaLifeStage")
 
             Try
 
@@ -422,7 +422,7 @@ Namespace Database
             Dim bSucces As Boolean = True
 
             Me.m_dbTarget.Execute("DELETE * FROM EcopathDietComp")
-            writer = m_dbTarget.GetWriter("EcopathDietComp")
+            writer = Me.m_dbTarget.GetWriter("EcopathDietComp")
 
             Try
                 For i As Integer = 1 To Me.m_data.NumGroups

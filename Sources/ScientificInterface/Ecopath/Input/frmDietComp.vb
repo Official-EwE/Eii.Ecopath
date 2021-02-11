@@ -39,7 +39,7 @@ Namespace Ecopath.Input
             Me.Grid = Me.m_grid
         End Sub
 
-        Private Sub tsSumtoOneBtn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsSumtoOneBtn_Click(sender As System.Object, e As System.EventArgs) _
             Handles tsSumtoOneBtn.Click
             Me.Core.NormalizeDietInput()
         End Sub

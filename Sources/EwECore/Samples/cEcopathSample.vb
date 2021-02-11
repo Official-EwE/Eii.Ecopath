@@ -53,7 +53,7 @@ Namespace Samples
         Private m_bStatsCalculated As Boolean = False
         Private m_dtPerturbed As New Dictionary(Of eVarNameFlags, Boolean)
 
-        Public Sub New(core As cCore, ByVal DBID As Integer, ByVal iIndex As Integer)
+        Public Sub New(core As cCore, DBID As Integer, iIndex As Integer)
 
             MyBase.New(core)
 
@@ -70,10 +70,10 @@ Namespace Samples
             Me.Name = "Sample " & iIndex
 
             'Rating
-            val = New cValue(New Integer, eVarNameFlags.SampleRating, eStatusFlags.Null, eValueTypes.Int)
+            val = New cValue(core, New Integer, eVarNameFlags.SampleRating, eStatusFlags.Null, eValueTypes.Int)
             Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.SampleSS, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(core, New Single, eVarNameFlags.SampleSS, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
@@ -211,10 +211,10 @@ Namespace Samples
         ''' -----------------------------------------------------------------------
         Public Property Rating() As Integer
             Get
-                Return CInt(GetVariable(eVarNameFlags.SampleRating))
+                Return CInt(Me.GetVariable(eVarNameFlags.SampleRating))
             End Get
-            Set(ByVal value As Integer)
-                SetVariable(eVarNameFlags.SampleRating, value)
+            Set(value As Integer)
+                Me.SetVariable(eVarNameFlags.SampleRating, value)
             End Set
         End Property
 
@@ -229,10 +229,10 @@ Namespace Samples
 
         Public Property SS() As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.SampleSS))
+                Return CSng(Me.GetVariable(eVarNameFlags.SampleSS))
             End Get
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.SampleSS, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.SampleSS, value)
             End Set
         End Property
 

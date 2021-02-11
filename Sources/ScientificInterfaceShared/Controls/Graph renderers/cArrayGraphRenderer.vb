@@ -75,13 +75,13 @@ Namespace Controls
         ''' <param name="sLabelAngle">Top label angle to use.</param>
         ''' <returns>A size giving the minimum dimensions required to draw the graph.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function MeasureGraph(ByVal sg As cStyleGuide, _
-                        ByVal g As Graphics, ByVal style As eRenderStyle, _
-                        ByVal asData As Single(,), ByVal strTitleX As String, ByVal astrLabelsX As String(), _
-                        Optional ByVal strTitleY As String = Nothing, Optional ByVal astrLabelsY As String() = Nothing, _
-                        Optional ByVal astrLegends As String() = Nothing, _
-                        Optional ByVal bShowGrid As Boolean = False, _
-                        Optional ByVal sLabelAngle As Single = 0) As Size
+        Public Function MeasureGraph(sg As cStyleGuide, _
+                        g As Graphics, style As eRenderStyle, _
+                        asData As Single(,), strTitleX As String, astrLabelsX As String(), _
+                        Optional strTitleY As String = Nothing, Optional astrLabelsY As String() = Nothing, _
+                        Optional astrLegends As String() = Nothing, _
+                        Optional bShowGrid As Boolean = False, _
+                        Optional sLabelAngle As Single = 0) As Size
 
             ' Use system fonts
             Dim ftScale As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
@@ -141,14 +141,14 @@ Namespace Controls
         ''' <param name="bShowGrid">Flag, indicating whether grid lines should be rendered.</param>
         ''' <param name="sLabelAngle">Top label angle to use.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Draw(ByVal sg As cStyleGuide, _
-                        ByVal g As Graphics, ByVal rcRender As Rectangle, _
-                        ByVal style As eRenderStyle, _
-                        ByVal asData As Single(,), ByVal strTitleX As String, ByVal astrLabelsX As String(), _
-                        Optional ByVal strTitleY As String = Nothing, Optional ByVal astrLabelsY As String() = Nothing, _
-                        Optional ByVal astrLegends As String() = Nothing, _
-                        Optional ByVal bShowGrid As Boolean = False, _
-                        Optional ByVal sLabelAngle As Single = 0)
+        Public Sub Draw(sg As cStyleGuide, _
+                        g As Graphics, rcRender As Rectangle, _
+                        style As eRenderStyle, _
+                        asData As Single(,), strTitleX As String, astrLabelsX As String(), _
+                        Optional strTitleY As String = Nothing, Optional astrLabelsY As String() = Nothing, _
+                        Optional astrLegends As String() = Nothing, _
+                        Optional bShowGrid As Boolean = False, _
+                        Optional sLabelAngle As Single = 0)
 
             rcRender.Height -= 1
 
@@ -199,19 +199,19 @@ Namespace Controls
             g.FillRectangle(Brushes.White, rcRender)
 
             ' Figure out where to draw the graphs
-            szCellSize = CalcGridSize(rcArea2, asData.GetUpperBound(0) + 1, asData.GetUpperBound(1) + 1)
+            szCellSize = Me.CalcGridSize(rcArea2, asData.GetUpperBound(0) + 1, asData.GetUpperBound(1) + 1)
             ' Top text
-            DrawLabelsTop(g, ftScale, ftSubtitle, rcArea1, szCellSize, strTitleX, astrLabelsX, szLabelTopMaxSize, -90 + sLabelAngle)
+            Me.DrawLabelsTop(g, ftScale, ftSubtitle, rcArea1, szCellSize, strTitleX, astrLabelsX, szLabelTopMaxSize, -90 + sLabelAngle)
             ' Side text
-            DrawLabelsSide(g, ftScale, ftSubtitle, rcArea3, szCellSize, strTitleY, astrLabelsY)
+            Me.DrawLabelsSide(g, ftScale, ftSubtitle, rcArea3, szCellSize, strTitleY, astrLabelsY)
             ' Graph legends
-            DrawLegends(g, ftLegend, rcArea4, c_LEGENDCELLSIZE, astrLegends, style)
+            Me.DrawLegends(g, ftLegend, rcArea4, c_LEGENDCELLSIZE, astrLegends, style)
             ' Grid
-            If bShowGrid Then DrawGridBack(g, rcArea2, szCellSize, asData, style)
+            If bShowGrid Then Me.DrawGridBack(g, rcArea2, szCellSize, asData, style)
             ' Graph
-            DrawGraph(g, rcArea2, szCellSize, asData, style)
+            Me.DrawGraph(g, rcArea2, szCellSize, asData, style)
             ' Grid
-            If bShowGrid Then DrawGridFront(g, rcArea2, szCellSize, asData, style)
+            If bShowGrid Then Me.DrawGridFront(g, rcArea2, szCellSize, asData, style)
 
             ftScale.Dispose()
             ftScale = Nothing
@@ -233,9 +233,9 @@ Namespace Controls
         ''' <param name="iNumItemsOnYAxis"></param>
         ''' <returns>Size of a single grid cell (in pixels).</returns>
         ''' -----------------------------------------------------------------------
-        Private Function CalcGridSize(ByVal rect As Rectangle, _
-                                      ByVal iNumItemsOnXAxis As Integer, _
-                                      ByVal iNumItemsOnYAxis As Integer) As SizeF
+        Private Function CalcGridSize(rect As Rectangle, _
+                                      iNumItemsOnXAxis As Integer, _
+                                      iNumItemsOnYAxis As Integer) As SizeF
 
             Return New SizeF(CSng(rect.Width / Math.Max(1, iNumItemsOnXAxis)), _
                              CSng(rect.Height / Math.Max(1, iNumItemsOnYAxis)))
@@ -284,7 +284,7 @@ Namespace Controls
         ''' <param name="astrLabels">Labels to check.</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Private Function CalcLabelMaxSize(ByVal g As Graphics, ByVal ft As Font, ByVal astrLabels As String()) As Size
+        Private Function CalcLabelMaxSize(g As Graphics, ft As Font, astrLabels As String()) As Size
 
             Dim szMax As New Size(0, 0)
             Dim szfLabel As SizeF = Nothing
@@ -298,7 +298,7 @@ Namespace Controls
             Return szMax
         End Function
 
-        Private Function CalcTitleMaxSize(ByVal g As Graphics, ByVal ft As Font, ByVal strLegend As String) As Size
+        Private Function CalcTitleMaxSize(g As Graphics, ft As Font, strLegend As String) As Size
 
             Dim szLegend As New Size(0, 0)
             Dim szfLegend As SizeF = Nothing
@@ -310,7 +310,7 @@ Namespace Controls
             Return szLegend
         End Function
 
-        Private Function CalcLegendSize(ByVal g As Graphics, ByVal ft As Font, ByVal astrLegends As String(), ByVal sCellSize As Single) As Size
+        Private Function CalcLegendSize(g As Graphics, ft As Font, astrLegends As String(), sCellSize As Single) As Size
 
             Dim szLegend As New Size(0, 0)
 
@@ -347,10 +347,10 @@ Namespace Controls
         ''' <param name="szLabelMaxSize">Max dimensions (in pixels) of a label.</param>
         ''' <param name="sAngle">Text rotation angle.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub DrawLabelsTop(ByVal g As Graphics, ByVal ftScale As Font, ByVal ftSubtitle As Font, _
-                                  ByVal rect As Rectangle, ByVal szCellSize As SizeF, _
-                                  ByVal strLegend As String, ByVal astrLabels As String(), ByVal szLabelMaxSize As Size, _
-                                  Optional ByVal sAngle As Single = 0.0!)
+        Private Sub DrawLabelsTop(g As Graphics, ftScale As Font, ftSubtitle As Font, _
+                                  rect As Rectangle, szCellSize As SizeF, _
+                                  strLegend As String, astrLabels As String(), szLabelMaxSize As Size, _
+                                  Optional sAngle As Single = 0.0!)
             Dim szLegendTop As Size = Me.CalcTitleMaxSize(g, ftScale, strLegend)
 
             ' Label
@@ -374,7 +374,7 @@ Namespace Controls
             ' must be moved by {szLabelMaxSize.height} * Math.Cos(sAngle)
 
             For i As Integer = 0 To astrLabels.GetUpperBound(0)
-                DrawAngledText(g, ftScale, astrLabels(i), _
+                Me.DrawAngledText(g, ftScale, astrLabels(i), _
                     rect.X + CInt(i * szCellSize.Width), _
                     rect.Y + CInt(rect.Height + Math.Cos(sAngle) * szLabelMaxSize.Height), sAngle)
             Next
@@ -394,13 +394,13 @@ Namespace Controls
         ''' <param name="astrLabels"></param>
         ''' <param name="sAngle">Text rotation angle.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub DrawLabelsSide(ByVal g As Graphics, ByVal ftScale As Font, ByVal ftSubtitle As Font, _
-                                   ByVal rect As Rectangle, ByVal szCellSize As SizeF, _
-                                   ByVal strLegend As String, ByVal astrLabels As String(), _
-                                   Optional ByVal sAngle As Single = 0.0!)
+        Private Sub DrawLabelsSide(g As Graphics, ftScale As Font, ftSubtitle As Font, _
+                                   rect As Rectangle, szCellSize As SizeF, _
+                                   strLegend As String, astrLabels As String(), _
+                                   Optional sAngle As Single = 0.0!)
             Dim szLegendSide As Size = Me.CalcTitleMaxSize(g, ftScale, strLegend)
 
-            DrawAngledText(g, ftScale, strLegend, rect.Width - szLegendSide.Height + rect.X, _
+            Me.DrawAngledText(g, ftScale, strLegend, rect.Width - szLegendSide.Height + rect.X, _
                            CInt(rect.Height - (rect.Height - szLegendSide.Width) / 2) + rect.Y, _
                            -90)
 
@@ -410,11 +410,11 @@ Namespace Controls
             Next
         End Sub
 
-        Private Sub DrawLegends(ByVal g As Graphics, ByVal ft As Font, ByVal rect As Rectangle,
-                                ByVal sCellSize As Single,
-                                ByVal astrLegends As String(),
-                                ByVal style As eRenderStyle,
-                                Optional ByVal sAngle As Single = 0.0!)
+        Private Sub DrawLegends(g As Graphics, ft As Font, rect As Rectangle,
+                                sCellSize As Single,
+                                astrLegends As String(),
+                                style As eRenderStyle,
+                                Optional sAngle As Single = 0.0!)
 
             If (astrLegends Is Nothing) Then Return
 
@@ -453,11 +453,11 @@ Namespace Controls
 
         End Sub
 
-        Private Sub DrawGridBack(ByVal g As Graphics, _
-                                 ByVal rect As Rectangle, _
-                                 ByVal szCellSize As SizeF, _
-                                 ByVal asData As Single(,), _
-                                 ByVal style As eRenderStyle)
+        Private Sub DrawGridBack(g As Graphics, _
+                                 rect As Rectangle, _
+                                 szCellSize As SizeF, _
+                                 asData As Single(,), _
+                                 style As eRenderStyle)
 
             Select Case style
                    Case eRenderStyle.Bars
@@ -478,11 +478,11 @@ Namespace Controls
         End Sub
 
 
-        Private Sub DrawGridFront(ByVal g As Graphics, _
-                                  ByVal rect As Rectangle, _
-                                  ByVal szCellSize As SizeF, _
-                                  ByVal asData As Single(,), _
-                                  ByVal style As eRenderStyle)
+        Private Sub DrawGridFront(g As Graphics, _
+                                  rect As Rectangle, _
+                                  szCellSize As SizeF, _
+                                  asData As Single(,), _
+                                  style As eRenderStyle)
 
             Select Case style
                 Case eRenderStyle.Circles, eRenderStyle.Colours
@@ -500,11 +500,11 @@ Namespace Controls
 
         End Sub
 
-        Private Sub DrawGraph(ByVal g As Graphics, _
-                              ByVal rect As Rectangle, _
-                              ByVal szCellSize As SizeF, _
-                              ByVal asData As Single(,), _
-                              ByVal style As eRenderStyle)
+        Private Sub DrawGraph(g As Graphics, _
+                              rect As Rectangle, _
+                              szCellSize As SizeF, _
+                              asData As Single(,), _
+                              style As eRenderStyle)
 
             ' Normalize the data
             asData = Me.GetNormalizedArray(asData)
@@ -554,9 +554,9 @@ Namespace Controls
 
         End Sub
 
-        Private Sub DrawAngledText(ByVal g As Graphics, ByVal ft As Font, _
-                ByVal strLabel As String, ByVal x As Integer, ByVal y As Integer, _
-                ByVal sAngleDegrees As Single)
+        Private Sub DrawAngledText(g As Graphics, ft As Font, _
+                strLabel As String, x As Integer, y As Integer, _
+                sAngleDegrees As Single)
 
             g.TranslateTransform(x, y)
             g.RotateTransform(sAngleDegrees)

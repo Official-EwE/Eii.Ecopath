@@ -80,13 +80,13 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="iIndex">Secundary index for obtaining the data.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByVal core As cCore,
-                      ByVal iDBID As Integer,
-                      ByVal manager As IEcospaceLayerManager,
-                      ByVal strName As String,
-                      ByVal vnData As eVarNameFlags,
-                      ByVal iIndex As Integer,
-                      ByVal typeValue As Type)
+    Protected Sub New(core As cCore,
+                      iDBID As Integer,
+                      manager As IEcospaceLayerManager,
+                      strName As String,
+                      vnData As eVarNameFlags,
+                      iIndex As Integer,
+                      typeValue As Type)
 
         Me.New(core, iDBID, strName, typeValue, Nothing)
 
@@ -117,12 +117,12 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="data">The data to link to this layer.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByVal core As cCore,
-                      ByVal data As Object,
-                      ByVal strName As String,
-                      ByVal typeValue As Type,
-                      Optional ByVal meta As cVariableMetaData = Nothing,
-                      Optional ByVal vn As eVarNameFlags = Nothing)
+    Protected Sub New(core As cCore,
+                      data As Object,
+                      strName As String,
+                      typeValue As Type,
+                      Optional meta As cVariableMetaData = Nothing,
+                      Optional vn As eVarNameFlags = Nothing)
 
         Me.New(core, cCore.NULL_VALUE, strName, typeValue, meta)
 
@@ -132,11 +132,11 @@ Public MustInherit Class cEcospaceLayer
 
     End Sub
 
-    Private Sub New(ByVal core As cCore,
-                    ByVal iDBID As Integer,
-                    ByVal strName As String,
-                    ByVal typeValue As Type,
-                    ByVal meta As cVariableMetaData)
+    Private Sub New(core As cCore,
+                    iDBID As Integer,
+                    strName As String,
+                    typeValue As Type,
+                    meta As cVariableMetaData)
 
         MyBase.New(core)
 
@@ -166,12 +166,12 @@ Public MustInherit Class cEcospaceLayer
 
 #Region " Cell manipulation "
 
-    Protected Function ValidateCellPosition(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+    Protected Function ValidateCellPosition(iRow As Integer, iCol As Integer) As Boolean
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Return iRow > 0 And iRow <= bm.InRow And iCol > 0 And iCol <= bm.InCol
     End Function
 
-    Protected MustOverride Function ValidateCellValue(ByVal value As Object) As Boolean
+    Protected MustOverride Function ValidateCellValue(value As Object) As Boolean
 
     Protected ReadOnly Property Data() As Object
         Get
@@ -226,7 +226,7 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="iIndexSec"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public MustOverride Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -287,7 +287,7 @@ Public MustInherit Class cEcospaceLayer
         Get
             Return Me.m_iSecundaryIndex
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             value = Math.Max(1, Math.Min(Me.m_core.GetCoreCounter(Me.SecundaryIndexCounter), value))
             If (value <> Me.m_iSecundaryIndex) Then
                 Me.m_iSecundaryIndex = value
@@ -379,7 +379,7 @@ Public MustInherit Class cEcospaceLayer
     End Function
 
     Public Overrides Function SetVariable(VarName As eVarNameFlags,
-                                          newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+                                          newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As Boolean
         If (VarName = eVarNameFlags.Name) Then
             If (Me.Index > 0) Then
                 Try

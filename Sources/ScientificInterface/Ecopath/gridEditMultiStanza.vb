@@ -66,7 +66,7 @@ Public Class gridEditMultiStanza
         Get
             Return Me.m_stanzagroup
         End Get
-        Set(ByVal value As cStanzaGroup)
+        Set(value As cStanzaGroup)
             Me.m_stanzagroup = value
             Me.RefreshContent()
         End Set
@@ -110,7 +110,7 @@ Public Class gridEditMultiStanza
         Dim source As cEcoPathGroupInput = Nothing
         Dim ewec As cEwECell = Nothing
         Dim iRow As Integer
-        Dim bIsEcosimLoaded As Boolean = (Core.ActiveEcosimScenarioIndex > -1)
+        Dim bIsEcosimLoaded As Boolean = (Me.Core.ActiveEcosimScenarioIndex > -1)
 
         ' Remove existing rows
         Me.RowsCount = 1
@@ -119,7 +119,7 @@ Public Class gridEditMultiStanza
 
         For iLifeStage As Integer = 1 To Me.m_stanzagroup.nLifeStages
 
-            source = Core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iLifeStage))
+            source = Me.Core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iLifeStage))
             iRow = Me.AddRow
 
             'Index
@@ -178,7 +178,7 @@ Public Class gridEditMultiStanza
 
     End Sub
 
-    Public Sub SetStanzaGroupValues(ByVal bApplyToCore As Boolean)
+    Public Sub SetStanzaGroupValues(bApplyToCore As Boolean)
 
         Dim iLeadingB As Integer = Me.m_stanzagroup.LeadingB
         Dim iLeadingCB As Integer = Me.m_stanzagroup.LeadingCB
@@ -210,8 +210,8 @@ Public Class gridEditMultiStanza
 
         If bApplyToCore Then
             ' JS 090816: apply changes for all stanza groups, not only the last used stanza group
-            For iIndex As Integer = 0 To Core.nStanzas - 1
-                Core.StanzaGroups(iIndex).Apply()
+            For iIndex As Integer = 0 To Me.Core.nStanzas - 1
+                Me.Core.StanzaGroups(iIndex).Apply()
             Next
         End If
 
@@ -223,7 +223,7 @@ Public Class gridEditMultiStanza
 
     Private m_bInUpdate As Boolean = False
 
-    Private Sub SetLeadingGroup(ByVal iRow As Integer, col As eColumnTypes)
+    Private Sub SetLeadingGroup(iRow As Integer, col As eColumnTypes)
 
         Me.m_bInUpdate = True
 
@@ -243,7 +243,7 @@ Public Class gridEditMultiStanza
 
     End Sub
 
-    Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         Dim bOK As Boolean = MyBase.OnCellEdited(p, cell)
 
@@ -264,7 +264,7 @@ Public Class gridEditMultiStanza
 
     End Function
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         If Me.m_bInUpdate Then Return True
 

@@ -28,7 +28,7 @@ Namespace MSE
 
 
 
-    Public Delegate Function MSECounterDelegate(ByVal SizeType As eCoreCounterTypes) As Integer
+    Public Delegate Function MSECounterDelegate(SizeType As eCoreCounterTypes) As Integer
 
     ''' <summary>
     ''' Regulatory mode for MSE
@@ -322,8 +322,8 @@ Namespace MSE
 #Region " Constructor "
 
 
-        Public Sub New(ByVal EPdata As cEcopathDataStructures, _
-                       ByVal ESdata As cEcosimDatastructures)
+        Public Sub New(EPdata As cEcopathDataStructures, _
+                       ESdata As cEcosimDatastructures)
 
             Me.m_EPData = EPdata
             Me.m_ESData = ESdata
@@ -356,28 +356,28 @@ Namespace MSE
 
         Public Property CurrentIteration() As Integer
             Get
-                Return m_curIter
+                Return Me.m_curIter
             End Get
-            Friend Set(ByVal value As Integer)
-                m_curIter = value
+            Friend Set(value As Integer)
+                Me.m_curIter = value
             End Set
         End Property
 
         Public Sub clearBioRisk()
-            ReDim BioRiskCount(NGroups, 1)
+            ReDim Me.BioRiskCount(Me.NGroups, 1)
         End Sub
 
         ''' <summary>
         ''' Set default values for the Management Strategy Evaluation model cMSE
         ''' </summary>
-        Public Sub Init(ByVal theCore As cCore)
+        Public Sub Init(theCore As cCore)
 
             Try
 
-                Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
-                Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
-                Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
-                Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.BioStats = New cMSESummaryStats(Me, Me.BioBounds, Me.nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.CatchGroupStats = New cMSESummaryStats(Me, Me.CatchGroupBounds, Me.nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.CatchFleetStats = New cMSESummaryStats(Me, Me.CatchFleetBounds, Me.nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.EffortStats = New cMSESummaryStats(Me, Me.EffortFleetBounds, Me.nFleets, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
                 Me.ValueFleetStats = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
@@ -385,11 +385,11 @@ Namespace MSE
                 Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.CostSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
-                Me.FLPDualValue = New cMSESummaryStats(Me, Nothing, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.FLPDualValue = New cMSESummaryStats(Me, Nothing, Me.nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 ' Me.FActualStats = New cMSESummaryStats(Me, Nothing, 1, nLiving, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
                 'yearly time steps
-                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, nLiving, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
+                Me.BioEstStats = New cMSESummaryStats(Me, Me.BioEstBounds, Me.nLiving, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
 
                 'default values for MSY 
                 'these values can be overridden by an MSE or MSY plugin
@@ -497,103 +497,103 @@ Namespace MSE
         ''' </summary>
         Public Sub RedimVars()
 
-            ReDim GstockPred(NGroups)
-            ReDim RstockRatio(NGroups)
-            ReDim RStock0(NGroups)
-            ReDim KalmanGain(NGroups)
-            ReDim VarQest(nFleets), KalGainQ(nFleets), VarQyear(nFleets)
-            ReDim VarQgrow(nFleets)
-            ReDim Wftot(nFleets)
+            ReDim Me.GstockPred(Me.NGroups)
+            ReDim Me.RstockRatio(Me.NGroups)
+            ReDim Me.RStock0(Me.NGroups)
+            ReDim Me.KalmanGain(Me.NGroups)
+            ReDim Me.VarQest(Me.nFleets), Me.KalGainQ(Me.nFleets), Me.VarQyear(Me.nFleets)
+            ReDim Me.VarQgrow(Me.nFleets)
+            ReDim Me.Wftot(Me.nFleets)
 
-            ReDim BhalfT(NGroups)
-            ReDim Rmax(NGroups)
-            ReDim RHalfB0Ratio(NGroups)
-            ReDim cvRec(NGroups)
+            ReDim Me.BhalfT(Me.NGroups)
+            ReDim Me.Rmax(Me.NGroups)
+            ReDim Me.RHalfB0Ratio(Me.NGroups)
+            ReDim Me.cvRec(Me.NGroups)
 
-            ReDim Fweight(nFleets, NGroups)
-            ReDim Qgrow(nFleets)
-            ReDim Fwc(nFleets, 1)
+            ReDim Me.Fweight(Me.nFleets, Me.NGroups)
+            ReDim Me.Qgrow(Me.nFleets)
+            ReDim Me.Fwc(Me.nFleets, 1)
 
-            ReDim BioR0(NGroups)
-            ReDim BioR1(NGroups)
-            ReDim BioRiskValue(NGroups, 1)
-            ReDim BioRiskCount(NGroups, 1)
+            ReDim Me.BioR0(Me.NGroups)
+            ReDim Me.BioR1(Me.NGroups)
+            ReDim Me.BioRiskValue(Me.NGroups, 1)
+            ReDim Me.BioRiskCount(Me.NGroups, 1)
 
-            ReDim CVbiomEst(NGroups)
-            ReDim CVFest(nFleets)
+            ReDim Me.CVbiomEst(Me.NGroups)
+            ReDim Me.CVFest(Me.nFleets)
 
-            ReDim QGrowUsed(nFleets)
+            ReDim Me.QGrowUsed(Me.nFleets)
 
-            ReDim Bestimate(NGroups)
-            ReDim BestimateLast(NGroups)
-            ReDim QestLast(NGroups)
+            ReDim Me.Bestimate(Me.NGroups)
+            ReDim Me.BestimateLast(Me.NGroups)
+            ReDim Me.QestLast(Me.NGroups)
 
-            ReDim MSYGroupWeight(NGroups)
-            For iGrp As Integer = 1 To NGroups
-                MSYGroupWeight(iGrp) = 1
+            ReDim Me.MSYGroupWeight(Me.NGroups)
+            For iGrp As Integer = 1 To Me.NGroups
+                Me.MSYGroupWeight(iGrp) = 1
             Next
 
-            ReDim Me.BioBounds(NGroups)
-            ReDim Me.BioEstBounds(NGroups)
-            ReDim Me.CatchGroupBounds(NGroups)
+            ReDim Me.BioBounds(Me.NGroups)
+            ReDim Me.BioEstBounds(Me.NGroups)
+            ReDim Me.CatchGroupBounds(Me.NGroups)
             ReDim Me.CatchFleetBounds(Me.nFleets)
             ReDim Me.EffortFleetBounds(Me.nFleets)
 
             'default assessment method
             ' Fs from biomass estimates by pool
-            AssessMethod = eAssessmentMethods.CatchEstmBio
+            Me.AssessMethod = eAssessmentMethods.CatchEstmBio
 
-            AssessPower = 1
+            Me.AssessPower = 1
 
             'set default values
-            For iGrp As Integer = 1 To NGroups
+            For iGrp As Integer = 1 To Me.NGroups
 
                 Me.BioEstBounds(iGrp) = New cMSEBounds(iGrp, 1, 1)
 
-                KalmanGain(iGrp) = 0.65
-                BioRiskValue(iGrp, 0) = 0.5 'lower
-                BioRiskValue(iGrp, 1) = 2 'upper
+                Me.KalmanGain(iGrp) = 0.65
+                Me.BioRiskValue(iGrp, 0) = 0.5 'lower
+                Me.BioRiskValue(iGrp, 1) = 2 'upper
 
-                For iFlt As Integer = 1 To nFleets
+                For iFlt As Integer = 1 To Me.nFleets
                     If Me.m_ESData.relQ(iFlt, iGrp) > 0 Then
-                        Fweight(iFlt, iGrp) = 1
+                        Me.Fweight(iFlt, iGrp) = 1
                     End If
                 Next
             Next
 
-            For iFlt As Integer = 1 To nFleets
-                Qgrow(iFlt) = 0.03
+            For iFlt As Integer = 1 To Me.nFleets
+                Me.Qgrow(iFlt) = 0.03
             Next iFlt
 
-            ReDim QuotaType(nFleets)
-            ReDim RegDiscard(nFleets, NGroups)
-            ReDim MaxEffort(nFleets)
-            ReDim Quota(nFleets, NGroups)
+            ReDim Me.QuotaType(Me.nFleets)
+            ReDim Me.RegDiscard(Me.nFleets, Me.NGroups)
+            ReDim Me.MaxEffort(Me.nFleets)
+            ReDim Me.Quota(Me.nFleets, Me.NGroups)
 
-            ReDim Quotashare(nFleets, NGroups)
-            ReDim QuotaTime(nFleets, NGroups)
-            ReDim FTarget(NGroups)
-            ReDim Blim(NGroups)
-            ReDim Bbase(NGroups)
-            ReDim Fopt(NGroups)
-            ReDim Fmin(NGroups)
-            ReDim FixedEscapement(NGroups)
-            ReDim FixedF(NGroups)
-            ReDim TAC(NGroups)
+            ReDim Me.Quotashare(Me.nFleets, Me.NGroups)
+            ReDim Me.QuotaTime(Me.nFleets, Me.NGroups)
+            ReDim Me.FTarget(Me.NGroups)
+            ReDim Me.Blim(Me.NGroups)
+            ReDim Me.Bbase(Me.NGroups)
+            ReDim Me.Fopt(Me.NGroups)
+            ReDim Me.Fmin(Me.NGroups)
+            ReDim Me.FixedEscapement(Me.NGroups)
+            ReDim Me.FixedF(Me.NGroups)
+            ReDim Me.TAC(Me.NGroups)
 
-            ReDim LowLPEffort(nFleets)
-            ReDim UpperLPEffort(nFleets)
+            ReDim Me.LowLPEffort(Me.nFleets)
+            ReDim Me.UpperLPEffort(Me.nFleets)
 
             'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain values
             'see cEcosimModel.setDefaultValues
-            For iflt As Integer = 1 To nFleets
+            For iflt As Integer = 1 To Me.nFleets
 
-                MaxEffort(iflt) = cCore.NULL_VALUE
-                LowLPEffort(iflt) = 0.01F
-                UpperLPEffort(iflt) = MSE_DEFAULT_MAXEFFORT
+                Me.MaxEffort(iflt) = cCore.NULL_VALUE
+                Me.LowLPEffort(iflt) = 0.01F
+                Me.UpperLPEffort(iflt) = MSE_DEFAULT_MAXEFFORT
 
-                For igrp As Integer = 1 To NGroups
-                    Quota(iflt, igrp) = cCore.NULL_VALUE
+                For igrp As Integer = 1 To Me.NGroups
+                    Me.Quota(iflt, igrp) = cCore.NULL_VALUE
                 Next
             Next
 
@@ -604,17 +604,17 @@ Namespace MSE
         End Sub
 
 
-        Public Sub redimTime(Optional ByVal originalNumberOfYears As Integer = cCore.NULL_VALUE)
+        Public Sub redimTime(Optional originalNumberOfYears As Integer = cCore.NULL_VALUE)
 
             Try
                 'if time has changed then try to preserve the values
                 'if not or Preserve fails then set to defaults
                 Dim bFullRedim As Boolean = True
-                If CVBiomT IsNot Nothing Then
+                If Me.CVBiomT IsNot Nothing Then
 
                     Try
-                        ReDim Preserve CVBiomT(NGroups, Me.nYears) 'groups,time
-                        ReDim Preserve CVFT(nFleets, Me.nYears)  ' fleets,time
+                        ReDim Preserve Me.CVBiomT(Me.NGroups, Me.nYears) 'groups,time
+                        ReDim Preserve Me.CVFT(Me.nFleets, Me.nYears)  ' fleets,time
                         bFullRedim = False
                     Catch ex As Exception
                         bFullRedim = True
@@ -623,8 +623,8 @@ Namespace MSE
                 End If
 
                 If bFullRedim Then
-                    ReDim CVBiomT(NGroups, Me.nYears) 'groups,time
-                    ReDim CVFT(nFleets, Me.nYears)  ' fleets,time
+                    ReDim Me.CVBiomT(Me.NGroups, Me.nYears) 'groups,time
+                    ReDim Me.CVFT(Me.nFleets, Me.nYears)  ' fleets,time
                 End If 'bFullRedim
 
                 Dim firstYear As Integer = 1
@@ -635,13 +635,13 @@ Namespace MSE
                 End If
 
                 'set default values
-                For iGrp As Integer = 1 To NGroups
+                For iGrp As Integer = 1 To Me.NGroups
                     For it As Integer = firstYear To Me.nYears
                         Me.CVBiomT(iGrp, it) = 0.2
                     Next
                 Next
 
-                For iFlt As Integer = 1 To nFleets
+                For iFlt As Integer = 1 To Me.nFleets
                     For it As Integer = firstYear To Me.nYears
                         Me.CVFT(iFlt, it) = 0.3
                     Next
@@ -658,7 +658,7 @@ Namespace MSE
         ''' Load the Bounds/Traffic light objects with the values from the Quota data Blim and Bbase
         ''' </summary>
         ''' <remarks></remarks>
-        Public Sub DefaultBioBounds(ByVal igrp As Integer)
+        Public Sub DefaultBioBounds(igrp As Integer)
 
             Try
                 If Me.Blim(igrp) >= 0 Then
@@ -673,7 +673,7 @@ Namespace MSE
 
         End Sub
 
-        Public Sub DefaultCatchBoundsGroup(ByVal igrp As Integer)
+        Public Sub DefaultCatchBoundsGroup(igrp As Integer)
 
             Dim LB As Single = 0.5F
             Dim UB As Single = 2.0F
@@ -695,7 +695,7 @@ Namespace MSE
 
         End Sub
 
-        Public Sub DefaultCatchBoundsFleet(ByVal iflt As Integer)
+        Public Sub DefaultCatchBoundsFleet(iflt As Integer)
 
             Dim LB As Single = 0.5F
             Dim UB As Single = 2.0F
@@ -704,7 +704,7 @@ Namespace MSE
             Try
                 sumCatch = 0
                 'sum the ecopath catch for this fleet
-                For igrp As Integer = 1 To NGroups
+                For igrp As Integer = 1 To Me.NGroups
                     sumCatch += Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)
                 Next
                 Me.CatchFleetBounds(iflt) = New cMSEBounds(iflt, sumCatch * LB, sumCatch * UB)
@@ -724,25 +724,25 @@ Namespace MSE
         Friend Sub InitForTrial()
             Dim iFlt As Integer, iGrp As Integer
 
-            Array.Clear(BioR0, 0, BioR0.Length)
-            Array.Clear(BioR1, 0, BioR1.Length)
-            Array.Clear(Wftot, 0, Wftot.Length)
-            Array.Clear(Fwc, 0, Fwc.Length)
+            Array.Clear(Me.BioR0, 0, Me.BioR0.Length)
+            Array.Clear(Me.BioR1, 0, Me.BioR1.Length)
+            Array.Clear(Me.Wftot, 0, Me.Wftot.Length)
+            Array.Clear(Me.Fwc, 0, Me.Fwc.Length)
 
             For iFlt = 1 To Me.nFleets
                 For iGrp = 1 To Me.m_EPData.NumGroups
-                    Wftot(iFlt) = Wftot(iFlt) + Fweight(iFlt, iGrp)
-                    Fwc(iFlt, 0) = Fwc(iFlt, 0) + Fweight(iFlt, iGrp) * Me.m_ESData.relQ(iFlt, iGrp)
-                    Qest(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
-                    QStar(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
+                    Me.Wftot(iFlt) = Me.Wftot(iFlt) + Me.Fweight(iFlt, iGrp)
+                    Me.Fwc(iFlt, 0) = Me.Fwc(iFlt, 0) + Me.Fweight(iFlt, iGrp) * Me.m_ESData.relQ(iFlt, iGrp)
+                    Me.Qest(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
+                    Me.QStar(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
 
-                    Me.m_ESData.PropLandedTime(iFlt, iGrp) = m_EPData.PropLanded(iFlt, iGrp)
-                    Me.m_ESData.Propdiscardtime(iFlt, iGrp) = m_EPData.PropDiscard(iFlt, iGrp)
-                    Me.m_ESData.PropDiscardMortTime(iFlt, iGrp) = m_EPData.PropDiscardMort(iFlt, iGrp)
+                    Me.m_ESData.PropLandedTime(iFlt, iGrp) = Me.m_EPData.PropLanded(iFlt, iGrp)
+                    Me.m_ESData.Propdiscardtime(iFlt, iGrp) = Me.m_EPData.PropDiscard(iFlt, iGrp)
+                    Me.m_ESData.PropDiscardMortTime(iFlt, iGrp) = Me.m_EPData.PropDiscardMort(iFlt, iGrp)
 
                 Next
-                If Wftot(iFlt) > 0 Then Fwc(iFlt, 0) = Fwc(iFlt, 0) / Wftot(iFlt)
-                Fwc(iFlt, 1) = Fwc(iFlt, 0)
+                If Me.Wftot(iFlt) > 0 Then Me.Fwc(iFlt, 0) = Me.Fwc(iFlt, 0) / Me.Wftot(iFlt)
+                Me.Fwc(iFlt, 1) = Me.Fwc(iFlt, 0)
             Next iFlt
 
             For iFlt = 1 To Me.nFleets
@@ -750,12 +750,12 @@ Namespace MSE
                 'If AssessMethod = 1 Then
                 '    VarQyear(iFlt) = CSng((Fwc(iFlt, 0) * CVbiomEst(iFlt)) ^ 2.0F)
                 'Else
-                VarQyear(iFlt) = CSng((Fwc(iFlt, 0) * CVFest(iFlt)) ^ 2)
+                Me.VarQyear(iFlt) = CSng((Me.Fwc(iFlt, 0) * Me.CVFest(iFlt)) ^ 2)
                 'End If
-                VarQgrow(iFlt) = CSng((1 / 3 - 1 / 4) * Qgrow(iFlt) ^ 2) ' var of uniform 0-qgrow
-                If VarQgrow(iFlt) = 0 Then VarQgrow(iFlt) = 0.0001
-                VarQest(iFlt) = VarQgrow(iFlt) * CSng((1 + Math.Sqrt(1 + 4 * VarQyear(iFlt) / VarQgrow(iFlt))) / 2)
-                KalGainQ(iFlt) = VarQest(iFlt) / (VarQest(iFlt) + VarQyear(iFlt))
+                Me.VarQgrow(iFlt) = CSng((1 / 3 - 1 / 4) * Me.Qgrow(iFlt) ^ 2) ' var of uniform 0-qgrow
+                If Me.VarQgrow(iFlt) = 0 Then Me.VarQgrow(iFlt) = 0.0001
+                Me.VarQest(iFlt) = Me.VarQgrow(iFlt) * CSng((1 + Math.Sqrt(1 + 4 * Me.VarQyear(iFlt) / Me.VarQgrow(iFlt))) / 2)
+                Me.KalGainQ(iFlt) = Me.VarQest(iFlt) / (Me.VarQest(iFlt) + Me.VarQyear(iFlt))
 
                 'Me.EffortYear(iFlt) = 1
 
@@ -794,8 +794,8 @@ Namespace MSE
                 Me.CostSum.Init()
                 Me.JobsSum.Init()
 
-                ReDim QStar(Me.NGroups, Me.nFleets)
-                ReDim Qest(Me.NGroups, Me.nFleets)
+                ReDim Me.QStar(Me.NGroups, Me.nFleets)
+                ReDim Me.Qest(Me.NGroups, Me.nFleets)
 
                 Me.lstNonOptSolutions = New List(Of Integer)
 
@@ -838,7 +838,7 @@ Namespace MSE
 
 
         Public Sub setDefaultRecruitmentCV()
-            For igrp As Integer = 1 To NGroups
+            For igrp As Integer = 1 To Me.NGroups
                 Me.cvRec(igrp) = 0.8
             Next
         End Sub
@@ -883,15 +883,15 @@ Namespace MSE
 
             For igrp As Integer = 1 To Me.NGroups
                 If Me.m_EPData.fCatch(igrp) > 0 Then
-                    Blim(igrp) = Me.m_EPData.B(igrp) * 0.1F
-                    Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4F
-                    Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
-                    Fmin(igrp) = 0.0F
+                    Me.Blim(igrp) = Me.m_EPData.B(igrp) * 0.1F
+                    Me.Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4F
+                    Me.Fopt(igrp) = Me.m_EPData.fCatch(igrp) / (Me.m_EPData.B(igrp) + 1.0E-10F) 'Ecopath base F
+                    Me.Fmin(igrp) = 0.0F
                 Else
-                    Blim(igrp) = 0.0F
-                    Bbase(igrp) = 0.0F
-                    Fopt(igrp) = 0.0F
-                    Fmin(igrp) = 0.0F
+                    Me.Blim(igrp) = 0.0F
+                    Me.Bbase(igrp) = 0.0F
+                    Me.Fopt(igrp) = 0.0F
+                    Me.Fmin(igrp) = 0.0F
                 End If
 
             Next igrp
@@ -922,7 +922,7 @@ Namespace MSE
 
             Try
 
-                If Quotashare Is Nothing Then
+                If Me.Quotashare Is Nothing Then
                     System.Console.WriteLine("Quota data can not set QuotaShare(fleets,groups) because an Ecosim scenario has not been loaded yet!")
                     Exit Sub
                 End If
@@ -961,7 +961,7 @@ Namespace MSE
         Public Lower As Single
         Public Index As Single
 
-        Public Sub New(ByVal ObjectIndex As Integer, ByVal LowerBound As Single, ByVal UpperBound As Single)
+        Public Sub New(ObjectIndex As Integer, LowerBound As Single, UpperBound As Single)
             Me.Lower = LowerBound
             Me.Upper = UpperBound
             Me.Index = ObjectIndex
@@ -1019,14 +1019,14 @@ Namespace MSE
         Private m_CounterDelegate As MSECounterDelegate
         Private m_CounterType As eCoreCounterTypes
 
-        Public Sub New(ByVal MSEData As cMSEDataStructures, ByVal Bounds() As cMSEBounds, ByVal NumberOfData As Integer, ByVal StepsPerYear As Integer, ByVal CounterType As eCoreCounterTypes, ByVal CounterDelegate As MSECounterDelegate)
+        Public Sub New(MSEData As cMSEDataStructures, Bounds() As cMSEBounds, NumberOfData As Integer, StepsPerYear As Integer, CounterType As eCoreCounterTypes, CounterDelegate As MSECounterDelegate)
 
-            m_mseData = MSEData
-            m_count = NumberOfData - 1
-            m_bounds = Bounds
-            m_CounterType = CounterType
-            m_nStepsPerYear = StepsPerYear
-            m_CounterDelegate = CounterDelegate
+            Me.m_mseData = MSEData
+            Me.m_count = NumberOfData - 1
+            Me.m_bounds = Bounds
+            Me.m_CounterType = CounterType
+            Me.m_nStepsPerYear = StepsPerYear
+            Me.m_CounterDelegate = CounterDelegate
         End Sub
 
 
@@ -1056,7 +1056,7 @@ Namespace MSE
 
             Try
 
-                m_curIter = 0
+                Me.m_curIter = 0
 
                 ReDim Me.m_data(3, Me.m_count)
                 ReDim Me.m_n(Me.m_count)
@@ -1096,7 +1096,7 @@ Namespace MSE
 
         End Sub
 
-        Private Function TimeToYearIndex(ByVal Timeindex As Integer) As Integer
+        Private Function TimeToYearIndex(Timeindex As Integer) As Integer
             If Me.m_nStepsPerYear = 1 Then
                 'yearly time steps the index is the year
                 Return Timeindex
@@ -1104,7 +1104,7 @@ Namespace MSE
             Return CInt(Math.Ceiling(Timeindex / Me.m_nStepsPerYear))
         End Function
 
-        Public Sub AddValue(ByVal index As Integer, ByVal TimeIndex As Integer, ByVal Value As Single)
+        Public Sub AddValue(index As Integer, TimeIndex As Integer, Value As Single)
             Try
                 'Results start year not implemented yet
                 'The problem is Mean and STD need to be computed for both results start year and full run
@@ -1188,28 +1188,28 @@ Namespace MSE
 
         End Sub
 
-        Public ReadOnly Property Mean(ByVal Index As Integer) As Single
+        Public ReadOnly Property Mean(Index As Integer) As Single
             Get
                 Index -= 1
                 Return Me.m_data(eSumIndexes.Sum, Index) / Me.m_n(Index)
             End Get
         End Property
 
-        Public ReadOnly Property Min(ByVal Index As Integer) As Single
+        Public ReadOnly Property Min(Index As Integer) As Single
             Get
                 Index -= 1
                 Return Me.m_data(eSumIndexes.Min, Index)
             End Get
         End Property
 
-        Public ReadOnly Property Max(ByVal Index As Integer) As Single
+        Public ReadOnly Property Max(Index As Integer) As Single
             Get
                 Index -= 1
                 Return Me.m_data(eSumIndexes.Max, Index)
             End Get
         End Property
 
-        Public ReadOnly Property Variance(ByVal Index As Integer) As Single
+        Public ReadOnly Property Variance(Index As Integer) As Single
             Get
                 Dim ss As Single = 0
                 Dim n As Single = 0
@@ -1228,7 +1228,7 @@ Namespace MSE
                     'during run, sum of x, sum of x^2
                     'variance s = [Sum of x^2 - (sum of x)^2 / n] / (n - 1)
                     'where n is the number of x's
-                    Dim Vari As Single = CSng((m_data(eSumIndexes.SumOfSquares, Index) - m_data(eSumIndexes.Sum, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
+                    Dim Vari As Single = CSng((Me.m_data(eSumIndexes.SumOfSquares, Index) - Me.m_data(eSumIndexes.Sum, Index) ^ 2 / iCnt)) / CSng(iCnt - 1)
                     Return Vari
 
                 Catch ex As Exception
@@ -1240,19 +1240,19 @@ Namespace MSE
 
         End Property
 
-        Public ReadOnly Property Std(ByVal Index As Integer) As Single
+        Public ReadOnly Property Std(Index As Integer) As Single
             Get
                 Return CSng(Math.Sqrt(Me.Variance(Index)))
             End Get
         End Property
 
-        Public ReadOnly Property CV(ByVal Index As Integer) As Single
+        Public ReadOnly Property CV(Index As Integer) As Single
             Get
                 Return Me.Std(Index) / Me.Mean(Index)
             End Get
         End Property
 
-        Public Function PercentageBelow(ByVal index As Integer, ByVal value As Single) As Single
+        Public Function PercentageBelow(index As Integer, value As Single) As Single
 
             Dim hist() As Single = Me.Histogram(index)
             Dim min As Single = Me.Min(index)
@@ -1277,7 +1277,7 @@ Namespace MSE
 
         End Function
 
-        Public Function PercentageAbove(ByVal index As Integer, ByVal value As Single) As Single
+        Public Function PercentageAbove(index As Integer, value As Single) As Single
 
             Dim hist() As Single = Me.Histogram(index)
             Dim min As Single = Me.Min(index)
@@ -1299,7 +1299,7 @@ Namespace MSE
 
         End Function
 
-        Public ReadOnly Property BelowLimit(ByVal index As Integer) As Single
+        Public ReadOnly Property BelowLimit(index As Integer) As Single
             Get
                 If Me.m_bounds IsNot Nothing Then
                     Return Me.PercentageBelow(index, Me.m_bounds(index).Lower)
@@ -1309,7 +1309,7 @@ Namespace MSE
         End Property
 
 
-        Public ReadOnly Property AboveLimit(ByVal index As Integer) As Single
+        Public ReadOnly Property AboveLimit(index As Integer) As Single
             Get
                 If Me.m_bounds IsNot Nothing Then
                     Return Me.PercentageAbove(index, Me.m_bounds(index).Upper)
@@ -1318,7 +1318,7 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property Histogram(ByVal Index As Integer) As Single()
+        Public ReadOnly Property Histogram(Index As Integer) As Single()
             Get
                 Try
                     Return Me.m_lstHist(Index - 1)
@@ -1330,7 +1330,7 @@ Namespace MSE
         End Property
 
 
-        Public ReadOnly Property MeanValues(ByVal Index As Integer) As Single()
+        Public ReadOnly Property MeanValues(Index As Integer) As Single()
             Get
                 Try
                     Return Me.m_lstMeans(Index - 1)
@@ -1343,7 +1343,7 @@ Namespace MSE
 
 
 
-        Private ReadOnly Property calcHistogram(ByVal GroupingIndex As Integer) As Single()
+        Private ReadOnly Property calcHistogram(GroupingIndex As Integer) As Single()
             Get
 
                 Dim n As Single
@@ -1357,14 +1357,14 @@ Namespace MSE
 
                 Try
 
-                    m_nBins(GroupingIndex) = 100 'CInt(Me.m_n(GroupingIndex) / 100.0F) 'number of bins 
-                    m_binWidth(GroupingIndex) = (max - min) / m_nBins(GroupingIndex) 'bin width
-                    If m_binWidth(GroupingIndex) = 0 Then m_binWidth(GroupingIndex) = Single.Epsilon
+                    Me.m_nBins(GroupingIndex) = 100 'CInt(Me.m_n(GroupingIndex) / 100.0F) 'number of bins 
+                    Me.m_binWidth(GroupingIndex) = (max - min) / Me.m_nBins(GroupingIndex) 'bin width
+                    If Me.m_binWidth(GroupingIndex) = 0 Then Me.m_binWidth(GroupingIndex) = Single.Epsilon
                     'alternative bin width algo some number of bins (10) for one standard deviation
                     'm_binWidth(GroupingIndex) = CSng(Me.Std(GroupingIndex + 1) / 10)
                     'm_nBins(GroupingIndex) = CInt((max - min) / m_binWidth(GroupingIndex))
 
-                    ReDim hist(m_nBins(GroupingIndex) - 1)
+                    ReDim hist(Me.m_nBins(GroupingIndex) - 1)
 
                     'only calculate the histogram if there are values
                     If (max - min) > 0 Then
@@ -1374,11 +1374,11 @@ Namespace MSE
 
                             'all the data points for this iteration
                             For it As Integer = 1 To Me.nTimeSteps
-                                ibin = CInt(Math.Truncate((iterVals(it) - min) / m_binWidth(GroupingIndex)))
-                                If ibin >= m_nBins(GroupingIndex) Then
+                                ibin = CInt(Math.Truncate((iterVals(it) - min) / Me.m_binWidth(GroupingIndex)))
+                                If ibin >= Me.m_nBins(GroupingIndex) Then
                                     'this value must be the max bump it down into the last bin
                                     'Debug.Assert(val = max, "MSE histogram caluclation binning problem!")
-                                    ibin = m_nBins(GroupingIndex) - 1
+                                    ibin = Me.m_nBins(GroupingIndex) - 1
                                 End If
                                 If ibin < 0 Then ibin = 0
                                 hist(ibin) += 1
@@ -1389,7 +1389,7 @@ Namespace MSE
 
                         Dim pTot As Single
                         'normalize the counts
-                        For i As Integer = 0 To m_nBins(GroupingIndex) - 1
+                        For i As Integer = 0 To Me.m_nBins(GroupingIndex) - 1
                             hist(i) /= n
                             pTot += hist(i)
                         Next
@@ -1409,14 +1409,14 @@ Namespace MSE
 
         End Property
 
-        Public ReadOnly Property HistoBinWidths(ByVal Index As Integer) As Single
+        Public ReadOnly Property HistoBinWidths(Index As Integer) As Single
             Get
                 Index -= 1
-                Return m_binWidth(Index)
+                Return Me.m_binWidth(Index)
             End Get
         End Property
 
-        Public ReadOnly Property HistoNBins(ByVal Index As Integer) As Integer
+        Public ReadOnly Property HistoNBins(Index As Integer) As Integer
             Get
                 Index -= 1
                 Return Me.m_nBins(Index)
@@ -1432,7 +1432,7 @@ Namespace MSE
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property Values(ByVal Index As Integer, ByVal Iteration As Integer) As Single()
+        Public ReadOnly Property Values(Index As Integer, Iteration As Integer) As Single()
             Get
                 Dim vals() As Single
                 Try
@@ -1456,7 +1456,7 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property nIterations(ByVal index As Integer) As Integer
+        Public ReadOnly Property nIterations(index As Integer) As Integer
             Get
                 Return Me.m_lstValues.Item(index - 1).Count
             End Get

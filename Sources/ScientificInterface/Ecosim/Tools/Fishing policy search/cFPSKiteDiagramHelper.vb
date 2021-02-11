@@ -32,7 +32,7 @@ Namespace Ecosim
     Public Class cFPSKiteDiagramHelper
         Inherits cZedGraphKiteHelper
 
-        Public Sub UpdateDiagram(ByVal fpsr As cFPSSearchResults)
+        Public Sub UpdateDiagram(fpsr As cFPSSearchResults)
 
             Dim lLines As New List(Of LineItem)
             Dim asValKite(3) As Single

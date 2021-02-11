@@ -82,9 +82,9 @@ Namespace DataSources
         ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Function Open(ByVal strName As String, ByVal core As cCore, _
-                      Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
-                      Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
+        Function Open(strName As String, core As cCore, _
+                      Optional datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                      Optional bReadOnly As Boolean = False) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -96,7 +96,7 @@ Namespace DataSources
         ''' datastructures to read to, and write from.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType
+        Function Create(strName As String, strModelName As String, core As cCore) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -122,7 +122,7 @@ Namespace DataSources
         ''' <param name="cc">The <see cref="eCoreComponentType">core component</see>
         ''' that changed.</param>
         ''' -------------------------------------------------------------------
-        Sub SetChanged(ByVal cc As eCoreComponentType)
+        Sub SetChanged(cc As eCoreComponentType)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -195,7 +195,7 @@ Namespace DataSources
         ''' Transactions cannot be nested.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Function EndTransaction(ByVal bCommit As Boolean) As Boolean
+        Function EndTransaction(bCommit As Boolean) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -206,7 +206,7 @@ Namespace DataSources
         ''' and no new database is generated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function Compact(ByVal strTarget As String) As eDatasourceAccessType
+        Function Compact(strTarget As String) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -217,7 +217,7 @@ Namespace DataSources
         ''' and no new database is generated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function CanCompact(ByVal strTarget As String) As Boolean
+        Function CanCompact(strTarget As String) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -228,7 +228,7 @@ Namespace DataSources
         ''' to test.</param>
         ''' <returns>True if the system appears to support the type of EwE datas source.</returns>
         ''' -------------------------------------------------------------------
-        Function IsOSSupported(ByVal dst As eDataSourceTypes) As Boolean
+        Function IsOSSupported(dst As eDataSourceTypes) As Boolean
 
 #End Region ' Generic
 

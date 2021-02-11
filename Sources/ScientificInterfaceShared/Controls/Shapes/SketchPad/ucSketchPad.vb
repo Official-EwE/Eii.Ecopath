@@ -114,12 +114,12 @@ Namespace Controls
         Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         ''' <summary></summary>
-        Public Delegate Sub ShapeChangedDelegate(ByVal shape As cShapeData)
+        Public Delegate Sub ShapeChangedDelegate(shape As cShapeData)
         ''' <summary></summary>
         Public Event ShapeChanged As ShapeChangedDelegate
 
         ''' <summary></summary>
-        Public Delegate Sub ShapeFinalizedDelegate(ByVal shape As cShapeData, ByVal sketchpad As ucSketchPad)
+        Public Delegate Sub ShapeFinalizedDelegate(shape As cShapeData, sketchpad As ucSketchPad)
         ''' <summary></summary>
         Public Event ShapeFinalized As ShapeFinalizedDelegate
 
@@ -159,7 +159,7 @@ Namespace Controls
             Get
                 Return Me.m_handler
             End Get
-            Set(ByVal value As cShapeGUIHandler)
+            Set(value As cShapeGUIHandler)
                 Me.m_handler = value
                 Me.UpdateMenuItemStates()
             End Set
@@ -177,7 +177,7 @@ Namespace Controls
                 Return Me.m_shape
             End Get
 
-            Set(ByVal value As cShapeData)
+            Set(value As cShapeData)
                 ' Store new shape ref
                 Me.m_shape = value
                 ' Respond to this major event
@@ -203,10 +203,10 @@ Namespace Controls
                 Return Me.m_shape.IsSeasonal
             End Get
 
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If Me.m_shape IsNot Nothing Then
                     Me.m_shape.IsSeasonal = value
-                    If Me.m_shape.IsSeasonal Then RepeatSeasonalPattern()
+                    If Me.m_shape.IsSeasonal Then Me.RepeatSeasonalPattern()
                     Me.OnShapeChanged()
                 End If
             End Set
@@ -226,7 +226,7 @@ Namespace Controls
                 Return Me.m_sketchDrawMode
             End Get
 
-            Set(ByVal value As eSketchDrawModeTypes)
+            Set(value As eSketchDrawModeTypes)
                 Me.m_sketchDrawMode = value
                 Me.Invalidate()
             End Set
@@ -246,7 +246,7 @@ Namespace Controls
                 Return Me.m_bShowAxis
             End Get
 
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowAxis = value
                 Me.Invalidate()
             End Set
@@ -267,7 +267,7 @@ Namespace Controls
                 Return Me.m_scalemodeYAxis
             End Get
 
-            Set(ByVal value As eAxisAutoScaleModeTypes)
+            Set(value As eAxisAutoScaleModeTypes)
                 Me.m_scalemodeYAxis = value
                 Me.Invalidate()
             End Set
@@ -286,7 +286,7 @@ Namespace Controls
                 If (Me.m_iXMax <= 0) And (Me.Handler IsNot Nothing) Then Return Me.Handler.XAxisMaxValue
                 Return Me.m_iXMax
             End Get
-            Set(ByVal iValue As Integer)
+            Set(iValue As Integer)
                 Me.m_iXMax = iValue
                 Me.Invalidate()
             End Set
@@ -314,7 +314,7 @@ Namespace Controls
                         Return Math.Max(0, Me.m_sYMax * 1.25!)
                 End Select
             End Get
-            Set(ByVal sValue As Single)
+            Set(sValue As Single)
                 Me.m_sYMax = sValue
                 Me.Invalidate()
             End Set
@@ -331,7 +331,7 @@ Namespace Controls
             Get
                 Return Me.m_sYMin
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Me.m_sYMin = value
                 Me.Invalidate()
             End Set
@@ -348,7 +348,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowYMark
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowYMark = value
                 Me.Invalidate()
             End Set
@@ -366,7 +366,7 @@ Namespace Controls
                 If Not Me.ShowYMark Then Return cCore.NULL_VALUE
                 Return Me.m_sYMarkValue
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Me.m_sYMarkValue = value
                 Me.Invalidate()
             End Set
@@ -383,7 +383,7 @@ Namespace Controls
             Get
                 Return Me.m_strYMarkLabel
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strYMarkLabel = value
                 Me.Invalidate()
             End Set
@@ -400,7 +400,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowXMark
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowXMark = value
                 Me.Invalidate()
             End Set
@@ -427,7 +427,7 @@ Namespace Controls
                 If Not Me.ShowXMark Then Return cCore.NULL_VALUE
                 Return Me.m_sXMarkValue
             End Get
-            Set(ByVal value As Single)
+            Set(value As Single)
                 Me.m_sXMarkValue = value
                 Me.Invalidate()
             End Set
@@ -444,7 +444,7 @@ Namespace Controls
             Get
                 Return Me.m_iNumDataPoints
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_iNumDataPoints = value
                 Me.Invalidate()
             End Set
@@ -475,7 +475,7 @@ Namespace Controls
                 Return Me.m_color
             End Get
 
-            Set(ByVal value As Color)
+            Set(value As Color)
                 Me.m_color = value
                 Me.Invalidate()
             End Set
@@ -492,7 +492,7 @@ Namespace Controls
 
             Get
                 If Me.m_shape Is Nothing Then Return eShapeCategoryTypes.NotSet
-                Select Case m_shape.DataType
+                Select Case Me.m_shape.DataType
                     Case eDataTypes.Forcing
                         Return eShapeCategoryTypes.Forcing
                     Case eDataTypes.EggProd
@@ -505,7 +505,7 @@ Namespace Controls
                     Case Else
                         Debug.Assert(False)
                 End Select
-                Return m_shapeType
+                Return Me.m_shapeType
             End Get
 
         End Property
@@ -521,7 +521,7 @@ Namespace Controls
             Get
                 Return Me.m_bShowTooltip
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 Me.m_bShowTooltip = value
                 Me.UpdateTooltip(Nothing)
             End Set
@@ -537,8 +537,8 @@ Namespace Controls
         ''' <param name="strError"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function SaveAsImage(ByVal shape As cShapeData, ByVal strFileName As String, _
-                                                ByVal imgFormat As ImageFormat, _
+        Public Overridable Function SaveAsImage(shape As cShapeData, strFileName As String, _
+                                                imgFormat As ImageFormat, _
                                                 ByRef strError As String) As Boolean
 
             Dim rcClient As Rectangle = Me.ClientRectangle()
@@ -583,7 +583,7 @@ Namespace Controls
             Get
                 Return Me.m_bEditable
             End Get
-            Set(ByVal bEditable As Boolean)
+            Set(bEditable As Boolean)
                 If (bEditable <> Me.m_bEditable) Then
                     Me.m_bEditable = bEditable
                     Me.UpdateControl()
@@ -603,14 +603,14 @@ Namespace Controls
         ''' <param name="bDrawLabels">The max X value to draw.</param>
         ''' <param name="sYMax">The max Y value to scale the shape to.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub DrawShape(ByVal shape As cShapeData, _
-                                ByVal rcImage As Rectangle, _
-                                ByVal g As Graphics, _
-                                ByVal clr As Color, _
-                                ByVal bDrawLabels As Boolean, _
-                                ByVal drawMode As eSketchDrawModeTypes, _
-                                ByVal iXMax As Integer, _
-                                ByVal sYMax As Single)
+        Protected Overridable Sub DrawShape(shape As cShapeData, _
+                                rcImage As Rectangle, _
+                                g As Graphics, _
+                                clr As Color, _
+                                bDrawLabels As Boolean, _
+                                drawMode As eSketchDrawModeTypes, _
+                                iXMax As Integer, _
+                                sYMax As Single)
 
             If (Me.Shape Is Nothing) Then Return
 
@@ -637,7 +637,7 @@ Namespace Controls
             Get
                 Return Me.m_editMode
             End Get
-            Set(ByVal value As eMouseInteractionMode)
+            Set(value As eMouseInteractionMode)
                 Me.m_editMode = value
                 Me.UpdateCursor()
             End Set
@@ -653,7 +653,7 @@ Namespace Controls
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 Me.m_uic = value
                 Me.UpdateControl()
             End Set
@@ -668,17 +668,17 @@ Namespace Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="x"></param>
-        Protected Sub DrawYearLimit(ByRef g As Graphics, ByVal x As Integer)
+        Protected Sub DrawYearLimit(ByRef g As Graphics, x As Integer)
             Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)
                 g.FillRectangle(br, New Rectangle(x, 0, Me.Width, Me.Height))
             End Using
         End Sub
 
-        Protected Function YearToX(ByVal iYear As Integer, ByVal iWidth As Integer) As Integer
+        Protected Function YearToX(iYear As Integer, iWidth As Integer) As Integer
             Return CInt(Math.Round((iYear * iWidth * cCore.N_MONTHS) / Me.XAxisMaxValue))
         End Function
 
-        Protected Function XToYear(ByVal x As Integer, ByVal iWidth As Integer) As Integer
+        Protected Function XToYear(x As Integer, iWidth As Integer) As Integer
             Dim iYear As Integer = CInt(Math.Round(x * Me.XAxisMaxValue / (cCore.N_MONTHS * iWidth)))
             Return Math.Min(Math.Max(0, iYear), CInt(Math.Floor(Me.XAxisMaxValue / cCore.N_MONTHS)))
         End Function
@@ -724,19 +724,19 @@ Namespace Controls
         ''' True if the given point lies inside the drawing region.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function PointInRegion(ByVal p As Point, ByVal rcImage As Rectangle) As Boolean
+        Private Function PointInRegion(p As Point, rcImage As Rectangle) As Boolean
             Return (p.X >= rcImage.Left) And (p.X <= rcImage.Right) And _
                    (p.Y >= rcImage.Top) And (p.Y <= rcImage.Bottom)
         End Function
 
-        Protected Overridable Sub DragXMark(ByVal ptPrev As Point, ByVal ptCur As Point)
+        Protected Overridable Sub DragXMark(ptPrev As Point, ptCur As Point)
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = If(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue)
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.XMarkValue = ptfCur.X
         End Sub
 
-        Protected Overridable Sub DragYMark(ByVal ptPrev As Point, ByVal ptCur As Point)
+        Protected Overridable Sub DragYMark(ptPrev As Point, ptCur As Point)
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = If(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue)
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
@@ -748,7 +748,7 @@ Namespace Controls
         ''' Modifies a shape between two click points.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ModifyShapePoints(ByVal ptPrev As Point, ByVal ptCur As Point)
+        Private Sub ModifyShapePoints(ptPrev As Point, ptCur As Point)
 
             Dim sYMax As Single = Me.YAxisMaxValue
             Dim iXMax As Integer = If(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue)
@@ -782,7 +782,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub UpdateTooltip(ByVal ptCur As Point)
+        Private Sub UpdateTooltip(ptCur As Point)
 
             If (Me.Shape Is Nothing) Then Return
 
@@ -821,9 +821,9 @@ Namespace Controls
 
         End Sub
 
-        Private Function IsNearXMark(ByVal sX As Single) As Boolean
+        Private Function IsNearXMark(sX As Single) As Boolean
 
-            If Not m_bShowXMark Then Return False
+            If Not Me.m_bShowXMark Then Return False
 
             ' Check if x value is near x mark
             Dim sYMax As Single = Me.YAxisMaxValue
@@ -835,9 +835,9 @@ Namespace Controls
 
         End Function
 
-        Private Function IsNearYMark(ByVal sY As Single) As Boolean
+        Private Function IsNearYMark(sY As Single) As Boolean
 
-            If Not m_bShowYMark Then Return False
+            If Not Me.m_bShowYMark Then Return False
 
             ' Check if y value is near y mark
             Dim sYMax As Single = Me.YAxisMaxValue
@@ -848,7 +848,7 @@ Namespace Controls
 
         End Function
 
-        Private Function IsNearValue(ByVal ptCur As Point) As Boolean
+        Private Function IsNearValue(ptCur As Point) As Boolean
             If (Me.Shape Is Nothing) Then Return False
             If (Me.UIContext Is Nothing) Then Return False
 
@@ -874,7 +874,7 @@ Namespace Controls
         ''' This method handls the Paint event and does the actual drawing routine
         ''' It only draws the graph with no other additional info like caption, axises..eg..Those will be drawn in the inherited class if needed
         ''' </summary>
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -896,7 +896,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub ProcessMouseInput(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Private Sub ProcessMouseInput(e As System.Windows.Forms.MouseEventArgs)
 
             ' Nothing to do here?
             If Me.UIContext Is Nothing Then Return
@@ -908,7 +908,7 @@ Namespace Controls
                 If Not Me.Editable Then Return
                 If Not Me.Capture Then Return
 
-                If (Me.m_ptPosPrevious = Nothing) Then m_ptPosPrevious = ptPosCurrent
+                If (Me.m_ptPosPrevious = Nothing) Then Me.m_ptPosPrevious = ptPosCurrent
 
                 Select Case Me.EditMode
                     Case eMouseInteractionMode.DrawShape
@@ -951,7 +951,7 @@ Namespace Controls
         ''' <summary>
         ''' Mouse move handler; draws the shape when the mouse input is captured.
         ''' </summary>
-        Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
+        Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
 
             If (Me.Shape Is Nothing) Then Return
 
@@ -981,7 +981,7 @@ Namespace Controls
         ''' <summary>
         ''' Mouse click handler; starts mouse capture and initiates shape drawing.
         ''' </summary>
-        Protected Overrides Sub OnMouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseDown(e)
 
             If (Me.Shape Is Nothing) Then Return
@@ -1006,7 +1006,7 @@ Namespace Controls
         ''' <summary>
         ''' Mouse up handler; finalizes the shape when the mouse is captured.
         ''' </summary>
-        Protected Overrides Sub OnMouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseUp(e As System.Windows.Forms.MouseEventArgs)
             MyBase.OnMouseUp(e)
 
             If (Me.Shape Is Nothing) Then Return
@@ -1040,7 +1040,7 @@ Namespace Controls
 
 #Region " Local events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
         End Sub
 
@@ -1090,7 +1090,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub LineOnlyToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub LineOnlyToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiLine.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.Line
@@ -1098,7 +1098,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub FillToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub FillToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiFill.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.Fill
@@ -1106,7 +1106,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub DriverTSItemClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub DriverTSItemClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiTSDriver.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesDriver
@@ -1114,7 +1114,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub RefAbsTSItemClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub RefAbsTSItemClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiTSRefAbs.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefAbs
@@ -1122,22 +1122,22 @@ Namespace Controls
 
         End Sub
 
-        Private Sub RefRelTSItemClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub RefRelTSItemClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiTSDriver.Click
 
             Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefRel
             Me.UpdateMenuItemStates()
 
         End Sub
-        Private Sub AxisToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub AxisToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiShowMarks.Click
 
             Me.m_tsmiShowMarks.Checked = Not Me.m_tsmiShowMarks.Checked
-            Me.m_bShowAxis = m_tsmiShowMarks.Checked
+            Me.m_bShowAxis = Me.m_tsmiShowMarks.Checked
 
         End Sub
 
-        Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub AutoScaleToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs)
 
             Me.m_tsmiAutoScaleYAxis.Checked = Not Me.m_tsmiAutoScaleYAxis.Checked
             If Me.m_tsmiAutoScaleYAxis.Checked Then
@@ -1148,7 +1148,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub spContextMenuStrip_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+        Private Sub spContextMenuStrip_Opening(sender As System.Object, e As System.ComponentModel.CancelEventArgs) _
             Handles m_spContextMenuStrip.Opening
 
             Me.m_tsmiShowMarks.Checked = Me.m_bShowAxis
@@ -1160,7 +1160,7 @@ Namespace Controls
         ''' <summary>
         ''' The event handler; handles a Reset toolstrip button click.
         ''' </summary>
-        Private Sub OnResetShapeClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnResetShapeClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiReset.Click
 
             If Me.Handler IsNot Nothing Then
@@ -1171,7 +1171,7 @@ Namespace Controls
         ''' <summary>
         ''' Event handler; handles a Options toolstrip menu click 
         ''' </summary>
-        Private Sub OnOptionClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOptionClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiOptions.Click
 
             If Me.Handler IsNot Nothing Then
@@ -1182,7 +1182,7 @@ Namespace Controls
         ''' <summary>
         ''' Event handler; handles a Save image value toolstrip item click
         ''' </summary>
-        Private Sub OnSaveImageClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveImageClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSave.Click
 
             If Me.Handler IsNot Nothing Then
@@ -1194,7 +1194,7 @@ Namespace Controls
         ''' <summary>
         ''' Event handler; handles a Shape value toolstrip item click
         ''' </summary>
-        Private Sub OnShapeValueClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShapeValueClick(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiValue.Click
 
             If Me.Handler IsNot Nothing Then
@@ -1205,7 +1205,7 @@ Namespace Controls
         ''' <summary>
         ''' Event handler; handles a Load shape toolstrip item click
         ''' </summary>
-        Private Sub OnLoadShapeClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLoadShapeClick(sender As System.Object, e As System.EventArgs) _
             Handles LoadToolStripMenuItem.Click
 
             If Me.Handler IsNot Nothing Then

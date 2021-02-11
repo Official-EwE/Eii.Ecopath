@@ -60,7 +60,7 @@ Namespace Style
                     bInSep = Not bInSep
                     If Not bInSep Then
                         If (n > iStart) Then
-                            Dim strBit As String = Format(strUnits.Substring(iStart, n - iStart))
+                            Dim strBit As String = Me.Format(strUnits.Substring(iStart, n - iStart))
                             sb.Append(strBit)
                         End If
                     Else

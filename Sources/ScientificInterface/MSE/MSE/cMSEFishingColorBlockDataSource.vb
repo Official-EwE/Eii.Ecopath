@@ -44,7 +44,7 @@ Public Class cMSEFishingColorBlockDataSource
 
     Public ReadOnly Property BlockCells() As Integer(,) Implements IPolicyColorBlockDataSource.BlockCells
         Get
-            Return m_BlockCells
+            Return Me.m_BlockCells
         End Get
     End Property
 
@@ -55,7 +55,7 @@ Public Class cMSEFishingColorBlockDataSource
         End Get
     End Property
 
-    Public Sub New(ByVal UIContext As cUIContext)
+    Public Sub New(UIContext As cUIContext)
         Me.m_uic = UIContext
     End Sub
 
@@ -65,11 +65,11 @@ Public Class cMSEFishingColorBlockDataSource
     ''' </summary>
     ''' <param name="BlockSelector">ucCVBlockSelector implementation of IBlockSelector</param>
     ''' <remarks>When an IBlockSelector is attached the datasource will add CV's that missing from the IBlockSelector.  </remarks>
-    Public Sub Atatch(ByVal BlockSelector As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
+    Public Sub Atatch(BlockSelector As IBlockSelector) Implements IPolicyColorBlockDataSource.Attach
 
         Debug.Assert(TypeOf BlockSelector Is ucCVBlockSelector, Me.ToString & ".Atatch() Blocks must be a ucCVBlockSelector!")
         Try
-            m_BlockSelector = DirectCast(BlockSelector, ucCVBlockSelector)
+            Me.m_BlockSelector = DirectCast(BlockSelector, ucCVBlockSelector)
 
             'populate the blocks with values from the data!!!!
             Dim cvs As New List(Of Single)
@@ -99,7 +99,7 @@ Public Class cMSEFishingColorBlockDataSource
                     cvs.Insert(iblk, blks(iblk))
                 Next ' For iblk As Integer = 1 To Me.m_blockCodes.NumBlocks
                 cvs.Sort()
-                m_BlockSelector.BlockValues = cvs.ToArray
+                Me.m_BlockSelector.BlockValues = cvs.ToArray
                 '   m_blockCodes.Invalidate()
             End If
 
@@ -111,9 +111,9 @@ Public Class cMSEFishingColorBlockDataSource
 
     Public Sub Init() Implements IPolicyColorBlockDataSource.Init
 
-        m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
+        Me.m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
 
-        ReDim m_BlockCells(Me.nRows, Me.TotalBlocks)
+        ReDim Me.m_BlockCells(Me.nRows, Me.TotalBlocks)
         Dim mseData As cMSEFleetInput
         Dim sYear As Integer = Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear
 
@@ -121,22 +121,22 @@ Public Class cMSEFishingColorBlockDataSource
             mseData = Me.m_uic.Core.MSEManager.EcopathFleetInputs(iflt)
             For iTime As Integer = 1 To Me.TotalBlocks
                 If iTime >= sYear Then
-                    m_BlockCells(iflt, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.FleetCV(iTime))
+                    Me.m_BlockCells(iflt, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.FleetCV(iTime))
                 Else
-                    m_BlockCells(iflt, iTime) = -1
+                    Me.m_BlockCells(iflt, iTime) = -1
                 End If
             Next
         Next
 
     End Sub
 
-    Public Sub FillBlock(ByVal iRow As Integer, ByVal iCol As Integer) Implements IPolicyColorBlockDataSource.FillBlock
+    Public Sub FillBlock(iRow As Integer, iCol As Integer) Implements IPolicyColorBlockDataSource.FillBlock
 
         ' Sanity checks
         'If (iCol <= Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters.BaseYear) Then Return
 
         If (iRow < 1) Then Return
-        If (iRow > m_BlockCells.GetLength(0) - 1) Then Return
+        If (iRow > Me.m_BlockCells.GetLength(0) - 1) Then Return
 
         If iCol < Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear Then
             'Not in bounds 
@@ -152,7 +152,7 @@ Public Class cMSEFishingColorBlockDataSource
 
     End Sub
 
-    Public Sub SetSeqColorCodes(ByVal startYear As Integer, ByVal endYear As Integer, ByVal yearPerBlock As Integer) Implements IPolicyColorBlockDataSource.SetSeqColorCodes
+    Public Sub SetSeqColorCodes(startYear As Integer, endYear As Integer, yearPerBlock As Integer) Implements IPolicyColorBlockDataSource.SetSeqColorCodes
 
         'Sequence years not implemented for MSE fleets
 
@@ -164,7 +164,7 @@ Public Class cMSEFishingColorBlockDataSource
         End Get
     End Property
 
-    Public ReadOnly Property RowLabel(ByVal iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
+    Public ReadOnly Property RowLabel(iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
         Get
             Try
                 Return String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
@@ -181,7 +181,7 @@ Public Class cMSEFishingColorBlockDataSource
         Get
             Return Me.m_batchEdit
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
 
             Me.m_batchEdit = value
 
@@ -201,7 +201,7 @@ Public Class cMSEFishingColorBlockDataSource
             For iflt As Integer = 1 To Me.nRows
                 mse.EcopathFleetInputs(iflt).BatchEdit = True
                 For iyr As Integer = 1 To Me.TotalBlocks
-                    mse.EcopathFleetInputs(iflt).FleetCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(iflt, iyr))
+                    mse.EcopathFleetInputs(iflt).FleetCV(iyr) = Me.m_BlockSelector.BlocktoValue(Me.m_BlockCells(iflt, iyr))
                 Next
                 mse.EcopathFleetInputs(iflt).BatchEdit = False
             Next iflt
@@ -218,7 +218,7 @@ Public Class cMSEFishingColorBlockDataSource
         End Get
     End Property
 
-    Public Function BlockToValue(ByVal iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
+    Public Function BlockToValue(iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
         Try
             Return Me.m_BlockSelector.BlocktoValue(iBlock)
         Catch ex As Exception

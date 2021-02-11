@@ -37,7 +37,7 @@ Namespace MSECommandFile
         ''' </summary>
         ''' <param name="ParameterString"></param>
         ''' <remarks></remarks>
-        Function Init(ByVal ParameterString As String) As Boolean
+        Function Init(ParameterString As String) As Boolean
 
         ''' <summary>
         ''' Update underlying MSE variable with values
@@ -69,14 +69,14 @@ Namespace MSECommandFile
 
         Public MustOverride Function getIndexes() As Integer() Implements IMSEParameter.getIndexes
 
-        Public MustOverride Function Init(ByVal ParameterString As String) As Boolean Implements IMSEParameter.Init
+        Public MustOverride Function Init(ParameterString As String) As Boolean Implements IMSEParameter.Init
 
         Public MustOverride Sub Update() Implements IMSEParameter.Update
 
         Public MustOverride Function Validate() As Boolean Implements IMSEParameter.Validate
 
 
-        Public Sub New(ByVal BatchManager As cMSECommandFileReader)
+        Public Sub New(BatchManager As cMSECommandFileReader)
             Me.m_manager = BatchManager
         End Sub
 
@@ -84,7 +84,7 @@ Namespace MSECommandFile
             Get
                 Return Me.m_index
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_index = value
             End Set
         End Property
@@ -102,7 +102,7 @@ Namespace MSECommandFile
             End Get
         End Property
 
-        Public Sub SendMessage(ByVal Message As String)
+        Public Sub SendMessage(Message As String)
             Try
                 Me.m_manager.Manager.MarshallMessage(Message)
             Catch ex As Exception
@@ -129,12 +129,12 @@ Namespace MSECommandFile
         Protected m_lstPs As List(Of Single)
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
         End Sub
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Try
 
                 Dim values() As String
@@ -159,11 +159,11 @@ Namespace MSECommandFile
         End Function
 
 
-        Private Function readData(ByVal ParameterString As String) As Boolean
+        Private Function readData(ParameterString As String) As Boolean
             Dim values() As String
             values = ParameterString.Split(","c)
 
-            m_lstPs = New List(Of Single)
+            Me.m_lstPs = New List(Of Single)
 
             Dim n As Integer = values.Length
             Dim ips As Integer = 1
@@ -172,7 +172,7 @@ Namespace MSECommandFile
                 If Equals(values(ips), String.Empty) Then
                     Exit Do
                 End If
-                m_lstPs.Add(Single.Parse(values(ips)))
+                Me.m_lstPs.Add(Single.Parse(values(ips)))
                 ips += 1
             Loop
 
@@ -180,7 +180,7 @@ Namespace MSECommandFile
 
         End Function
 
-        Protected Function ValidateIndexes(ByVal nParameters As Integer) As Boolean
+        Protected Function ValidateIndexes(nParameters As Integer) As Boolean
 
             Try
                 Dim lstIndexes As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
@@ -237,19 +237,19 @@ Namespace MSECommandFile
         Protected m_data As String
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
         End Sub
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Try
                 Dim values() As String
                 values = ParameterString.Split(","c)
 
                 If (String.Compare(values(0), Me.Tag) = 0) Then
                     'Data
-                    m_data = values(1)
+                    Me.m_data = values(1)
                     Return True
                 End If
 
@@ -281,7 +281,7 @@ Namespace MSECommandFile
         Inherits cParameterObjectBase
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
 
@@ -309,7 +309,7 @@ Namespace MSECommandFile
     Public Class cOutputDirParameter
         Inherits cParameterObjectBase
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.OUTPUT_DATA_TAG
@@ -346,7 +346,7 @@ Namespace MSECommandFile
 
         End Function
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.OUTPUT_DATA_TAG, ControlString)
 
@@ -356,7 +356,7 @@ Namespace MSECommandFile
     Public Class cModelNameParameter
         Inherits cParameterObjectBase
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.MODEL_NAME_TAG
@@ -381,7 +381,7 @@ Namespace MSECommandFile
 
         End Function
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.MODEL_NAME_TAG, ControlString)
 
@@ -394,7 +394,7 @@ Namespace MSECommandFile
         Inherits cParameterNumericBase
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.PPDEV_DATA_TAG
@@ -412,7 +412,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.PPDEV_DATA_TAG, ControlString)
 
@@ -426,7 +426,7 @@ Namespace MSECommandFile
         Inherits cParameterNumericBase
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.NSIMS_DATA_TAG
@@ -439,7 +439,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.NSIMS_DATA_TAG, ControlString)
 
@@ -451,7 +451,7 @@ Namespace MSECommandFile
         Inherits cParameterNumericBase
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.STARTYEAR_DATA_TAG
@@ -464,7 +464,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.STARTYEAR_DATA_TAG, ControlString)
 
@@ -476,14 +476,14 @@ Namespace MSECommandFile
     Public Class cRunTypeParameter
         Inherits cParameterNumericBase
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.RUNTYPE_DATA_TAG
 
         End Sub
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Dim bsuccess As Boolean
             Try
 
@@ -514,7 +514,7 @@ Namespace MSECommandFile
         End Sub
 
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.RUNTYPE_DATA_TAG, ControlString)
 
@@ -526,7 +526,7 @@ Namespace MSECommandFile
     Public Class cErrorCVParameter
         Inherits cParameterNumericBase
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.CV_DATA_TAG
@@ -546,7 +546,7 @@ Namespace MSECommandFile
         End Sub
 
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.CV_DATA_TAG, ControlString)
 
@@ -559,7 +559,7 @@ Namespace MSECommandFile
         Inherits cParameterListBase
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.F_DATA_TAG
@@ -599,7 +599,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.F_DATA_TAG, ControlString)
 
@@ -651,7 +651,7 @@ Namespace MSECommandFile
 
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.CONTROLTYPE_DATA_TAG
@@ -684,7 +684,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.CONTROLTYPE_DATA_TAG, ControlString)
 
@@ -727,7 +727,7 @@ Namespace MSECommandFile
     Public Class cTACParameter
         Inherits cParameterListBase
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.Y_DATA_TAG
@@ -765,7 +765,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.Y_DATA_TAG, ControlString)
         End Function
 
@@ -787,8 +787,8 @@ Namespace MSECommandFile
         Private m_lstIndexes As List(Of Integer)
         Private m_index As Integer
 
-        Public Sub New(ByVal IndexTag As String)
-            m_tag = IndexTag
+        Public Sub New(IndexTag As String)
+            Me.m_tag = IndexTag
         End Sub
 
         Public ReadOnly Property DataTag() As String Implements IMSEParameter.Tag
@@ -798,13 +798,13 @@ Namespace MSECommandFile
         End Property
 
 
-        Public Function Init(ByVal ParameterString As String) As Boolean Implements IMSEParameter.Init
+        Public Function Init(ParameterString As String) As Boolean Implements IMSEParameter.Init
             Try
 
                 Dim values() As String
                 values = ParameterString.Split(","c)
 
-                m_lstIndexes = New List(Of Integer)
+                Me.m_lstIndexes = New List(Of Integer)
 
                 Dim n As Integer = values.Length
                 Dim ips As Integer = 1
@@ -813,7 +813,7 @@ Namespace MSECommandFile
                     If Equals(values(ips), String.Empty) Then
                         Exit Do
                     End If
-                    m_lstIndexes.Add(Integer.Parse(values(ips)))
+                    Me.m_lstIndexes.Add(Integer.Parse(values(ips)))
                     ips += 1
                 Loop
 
@@ -847,7 +847,7 @@ Namespace MSECommandFile
             Get
                 Return Me.m_index
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 Me.m_index = value
             End Set
         End Property
@@ -865,14 +865,14 @@ Namespace MSECommandFile
         Private m_Fmaxs As List(Of Single)
         Private m_Fmins As List(Of Single)
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.TFM_DATA_TAG
             Me.m_IndexTag = cMSECommandFileReader.TFM_INDEX_TAG
         End Sub
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Try
                 Dim values() As String
                 values = ParameterString.Split(","c)
@@ -896,16 +896,16 @@ Namespace MSECommandFile
         End Function
 
 
-        Private Function readData(ByVal ParameterString As String) As Boolean
+        Private Function readData(ParameterString As String) As Boolean
             Dim values() As String
             values = ParameterString.Split(","c)
 
             ' m_lstIndexes = New List(Of Integer)
 
-            m_blims = New List(Of Single)
-            m_bbases = New List(Of Single)
-            m_Fmaxs = New List(Of Single)
-            m_Fmins = New List(Of Single)
+            Me.m_blims = New List(Of Single)
+            Me.m_bbases = New List(Of Single)
+            Me.m_Fmaxs = New List(Of Single)
+            Me.m_Fmins = New List(Of Single)
 
             Dim n As Integer = values.Length
             Dim nps As Integer = 4 'number of parameters per record/group
@@ -916,10 +916,10 @@ Namespace MSECommandFile
                     Exit Do
                 End If
 
-                m_blims.Add(Single.Parse(values(ips)))
-                m_bbases.Add(Single.Parse(values(ips + 1)))
-                m_Fmins.Add(Single.Parse(values(ips + 2)))
-                m_Fmaxs.Add(Single.Parse(values(ips + 3)))
+                Me.m_blims.Add(Single.Parse(values(ips)))
+                Me.m_bbases.Add(Single.Parse(values(ips + 1)))
+                Me.m_Fmins.Add(Single.Parse(values(ips + 2)))
+                Me.m_Fmaxs.Add(Single.Parse(values(ips + 3)))
                 ips += nps
             Loop
 
@@ -966,7 +966,7 @@ Namespace MSECommandFile
         End Sub
 
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.TFM_DATA_TAG, ControlString)
         End Function
 
@@ -1044,14 +1044,14 @@ Namespace MSECommandFile
         Private m_GroupIndex As Integer
         Private m_FFName As String
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.PP_DATA_TAG
 
         End Sub
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Dim values() As String
             values = ParameterString.Split(","c)
 
@@ -1064,7 +1064,7 @@ Namespace MSECommandFile
         End Function
 
 
-        Private Function readData(ByVal ParameterString As String) As Boolean
+        Private Function readData(ParameterString As String) As Boolean
             Dim values() As String
             values = ParameterString.Split(","c)
 
@@ -1072,9 +1072,9 @@ Namespace MSECommandFile
 
             Dim ips As Integer = 1
 
-            m_FFIndex = Integer.Parse(values(ips))
-            m_FFName = values(ips + 1)
-            m_GroupIndex = Integer.Parse(values(ips + 2))
+            Me.m_FFIndex = Integer.Parse(values(ips))
+            Me.m_FFName = values(ips + 1)
+            Me.m_GroupIndex = Integer.Parse(values(ips + 2))
 
             If Me.m_FFIndex >= 1 Then
                 Me.m_manager.BatchData.bForcingLoaded = True
@@ -1105,7 +1105,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.PP_DATA_TAG, ControlString)
         End Function
 
@@ -1114,10 +1114,10 @@ Namespace MSECommandFile
             Dim core As cCore = Me.Manager.Core
             Try
 
-                Dim ff As cForcingFunction = core.ForcingShapeManager.Item(m_FFIndex - 1)
+                Dim ff As cForcingFunction = core.ForcingShapeManager.Item(Me.m_FFIndex - 1)
 
                 If ff Is Nothing Then
-                    Me.SendMessage("ERROR: Primary Production forcing no forcing function with an index of " & m_FFIndex.ToString)
+                    Me.SendMessage("ERROR: Primary Production forcing no forcing function with an index of " & Me.m_FFIndex.ToString)
                     Return False
                 End If
 
@@ -1160,20 +1160,20 @@ Namespace MSECommandFile
         Private m_EnumTag As eMSEBatchOuputTypes
         Private m_Value As Integer
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
         End Sub
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Try
                 Dim values() As String
                 values = ParameterString.Split(","c)
 
                 Debug.Assert(values.Length > 1, Me.ToString & ".Init() invalid data format.")
                 Me.m_DataTag = cMSECommandFileReader.SAVE_OUTPUT_TAG
-                m_EnumTag = Me.m_manager.OuputTagToOuputType(values(0))
-                m_Value = Integer.Parse(values(1))
+                Me.m_EnumTag = Me.m_manager.OuputTagToOuputType(values(0))
+                Me.m_Value = Integer.Parse(values(1))
 
                 Return True
 
@@ -1205,7 +1205,7 @@ Namespace MSECommandFile
         End Sub
 
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             If ControlString.Contains("_OUTPUT") Then
                 Return True
@@ -1231,7 +1231,7 @@ Namespace MSECommandFile
     Public Class cEndYearParameter
         Inherits cParameterNumericBase
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.ENDYEAR_DATA_TAG
@@ -1244,7 +1244,7 @@ Namespace MSECommandFile
         End Sub
 
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.ENDYEAR_DATA_TAG, ControlString)
         End Function
 
@@ -1255,7 +1255,7 @@ Namespace MSECommandFile
         Inherits cParameterNumericBase
 
 
-        Public Sub New(ByVal FileReader As cMSECommandFileReader)
+        Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
             Me.m_DataTag = cMSECommandFileReader.VERSION_DATA_TAG
@@ -1263,7 +1263,7 @@ Namespace MSECommandFile
         End Sub
 
 
-        Public Overrides Function Init(ByVal ParameterString As String) As Boolean
+        Public Overrides Function Init(ParameterString As String) As Boolean
             Dim bSuccess As Boolean = MyBase.Init(ParameterString)
             If Me.Validate Then
                 Me.Update()
@@ -1278,7 +1278,7 @@ Namespace MSECommandFile
 
         End Sub
 
-        Public Shared Function CanRead(ByVal ControlString As String) As Boolean
+        Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.VERSION_DATA_TAG, ControlString)
 
@@ -1289,7 +1289,7 @@ Namespace MSECommandFile
             If MyBase.Validate() Then
 
                 'Ok test the version number
-                Dim data As Single = Single.Parse(m_data)
+                Dim data As Single = Single.Parse(Me.m_data)
                 If data >= 1.0 Then
                     Return True
                 Else

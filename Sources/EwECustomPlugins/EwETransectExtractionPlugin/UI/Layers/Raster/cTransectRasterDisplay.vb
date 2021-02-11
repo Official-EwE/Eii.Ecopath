@@ -36,7 +36,7 @@ Public Class cTransectRasterDisplay
 
     Private Shared s_vs As New cVisualStyle()
 
-    Public Sub New(ByVal uic As cUIContext, ByVal data As cTransectLayer)
+    Public Sub New(uic As cUIContext, data As cTransectLayer)
         MyBase.New(uic, data, New cLayerRendererHatch(uic, s_vs), Nothing)
 
         Dim sg As cStyleGuide = uic.StyleGuide

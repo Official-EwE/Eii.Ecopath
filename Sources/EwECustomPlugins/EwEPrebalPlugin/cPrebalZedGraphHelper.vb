@@ -90,18 +90,18 @@ Public Class cPrebalZedGraphHelper
         Me.ConfigurePane(SharedResources.HEADER_PRODCONS, My.Resources.LABEL_XAXIS, SharedResources.HEADER_PRODCONS, False, iPane:=4)
 
         ' Data change callback
-        AddHandler Me.m_model.OnUpdated, AddressOf OnUpdated
+        AddHandler Me.m_model.OnUpdated, AddressOf Me.OnUpdated
 
         ' X-axis label formatting handlers
-        For i As Integer = 1 To NumPanes
-            AddHandler Me.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXAxisLabel
+        For i As Integer = 1 To Me.NumPanes
+            AddHandler Me.GetPane(i).XAxis.ScaleFormatEvent, AddressOf Me.OnFormatXAxisLabel
         Next
 
         Me.ShowHoverMenu = True
 
-        Me.m_itemShowHideTL = Me.HoverMenu.AddItem(vnf.ToString(eVarNameFlags.TL, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWTL, Nothing, AddressOf OnShowHideTrophicLevels)
-        Me.m_itemShowHideName = Me.HoverMenu.AddItem(vnf.ToString(eVarNameFlags.Name, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWNAME, Nothing, AddressOf OnShowHideNames)
-        Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, My.Resources.OPTION_SHOWREGFORMULA, Nothing, AddressOf OnShowHideFormula)
+        Me.m_itemShowHideTL = Me.HoverMenu.AddItem(vnf.ToString(eVarNameFlags.TL, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWTL, Nothing, AddressOf Me.OnShowHideTrophicLevels)
+        Me.m_itemShowHideName = Me.HoverMenu.AddItem(vnf.ToString(eVarNameFlags.Name, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWNAME, Nothing, AddressOf Me.OnShowHideNames)
+        Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, My.Resources.OPTION_SHOWREGFORMULA, Nothing, AddressOf Me.OnShowHideFormula)
 
     End Sub
 
@@ -113,11 +113,11 @@ Public Class cPrebalZedGraphHelper
     Public Shadows Sub Detach()
 
         For i As Integer = 1 To Me.NumPanes
-            RemoveHandler Me.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXAxisLabel
+            RemoveHandler Me.GetPane(i).XAxis.ScaleFormatEvent, AddressOf Me.OnFormatXAxisLabel
         Next
 
         MyBase.Detach()
-        RemoveHandler Me.m_model.OnUpdated, AddressOf OnUpdated
+        RemoveHandler Me.m_model.OnUpdated, AddressOf Me.OnUpdated
         Me.m_model = Nothing
 
     End Sub
@@ -246,7 +246,7 @@ Public Class cPrebalZedGraphHelper
                 Dim sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation As Single
                 Dim strLabel As String = ""
 
-                FindRegression(pplRegression, sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, sMin, sMax, iSampleSize)
+                Me.FindRegression(pplRegression, sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, sMin, sMax, iSampleSize)
 
                 If Me.ShowRegressionFormula Then
                     strLabel = cStringUtils.Localize(My.Resources.LABEL_REGRESSION_FORMULA,

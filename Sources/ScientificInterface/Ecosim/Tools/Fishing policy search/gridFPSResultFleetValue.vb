@@ -51,10 +51,10 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As cUIContext)
+            Set(value As cUIContext)
                 MyBase.UIContext = value
                 If value IsNot Nothing Then
-                    Me.m_FPManager = Core.FishingPolicyManager
+                    Me.m_FPManager = Me.Core.FishingPolicyManager
                 End If
             End Set
         End Property
@@ -66,14 +66,14 @@ Namespace Ecosim
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(Core.nFleets + 1, Core.nFleets + 3)
+            Me.Redim(Me.Core.nFleets + 1, Me.Core.nFleets + 3)
             Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.FPS_FV_RESULT_COL0)
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_INCOME)
             Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_PROFIT)
 
-            For i As Integer = 1 To Core.nFleets
-                Me(i, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
-                Me(0, i + 2) = New cPropertyColumnHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
+            For i As Integer = 1 To Me.Core.nFleets
+                Me(i, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, Me.Core.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(0, i + 2) = New cPropertyColumnHeaderCell(Me.PropertyManager, Me.Core.EcopathFleetInputs(i), eVarNameFlags.Name)
             Next
 
         End Sub
@@ -87,11 +87,11 @@ Namespace Ecosim
             Debug.Assert(Me.m_FPManager IsNot Nothing)
             Debug.Assert(Me.UIContext IsNot Nothing)
 
-            For i As Integer = 1 To Core.nFleets
+            For i As Integer = 1 To Me.Core.nFleets
                 Me(i, 1) = New Cell(results.Income(i).ToString)
                 Me(i, 2) = New Cell(results.Profitability(i).ToString)
 
-                For j As Integer = 1 To Core.nFleets
+                For j As Integer = 1 To Me.Core.nFleets
                     Me(i, j + 2) = New Cell(results.CompensationMatrix(i, j).ToString)
                 Next
             Next

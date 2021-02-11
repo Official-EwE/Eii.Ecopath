@@ -42,11 +42,11 @@ Namespace Controls.Map.Layers
             MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As Graphics,
-                                        ByVal rc As RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As Graphics,
+                                        rc As RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)
 
             'Cl2 = 0.01 / CellLength ' ^ 2
             'UpVel(i, j) = UpLoc  'Added for this model  SM.
@@ -102,9 +102,9 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As RectangleF,
-                                           Optional ByVal iSymbol As Integer = 0)
+        Public Overrides Sub RenderPreview(g As Graphics,
+                                           rc As RectangleF,
+                                           Optional iSymbol As Integer = 0)
 
             If Me.IsStyleValid Then
                 Me.RenderCell(g, rc, Nothing, 1.0!, cStyleGuide.eStyleFlags.OK)

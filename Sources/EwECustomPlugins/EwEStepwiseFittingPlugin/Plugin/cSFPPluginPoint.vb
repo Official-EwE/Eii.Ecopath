@@ -249,7 +249,7 @@ Public Class cSFPPluginPoint
         If (Not Me.HasUI) Then
             Me.m_frm = New frmRun(Me.m_uic, Me.m_engine, Me)
         End If
-        Return m_frm
+        Return Me.m_frm
 
     End Function
 

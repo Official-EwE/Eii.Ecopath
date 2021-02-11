@@ -47,9 +47,9 @@ Namespace Ecotracer
         ''' <param name="mode"><see cref="eDialogModeType">Dialog interaction mode</see>.</param>
         ''' <param name="scenario"><see cref="cEcoSpaceScenario">Ecotracer scenario</see> to save, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal mode As eDialogModeType, _
-                       Optional ByVal scenario As cEcotracerScenario = Nothing)
+        Public Sub New(uic As cUIContext, _
+                       mode As eDialogModeType, _
+                       Optional scenario As cEcotracerScenario = Nothing)
             MyBase.New(uic, mode, scenario)
         End Sub
 
@@ -70,7 +70,7 @@ Namespace Ecotracer
             Return SharedResources.DEFAULT_NEWECOTRACERSCENARIO
         End Function
 
-        Protected Overrides Function GetDialogCaption(ByVal mode As Wizard.dlgScenario.eDialogModeType, ByVal strEwEModelName As String) As String
+        Protected Overrides Function GetDialogCaption(mode As Wizard.dlgScenario.eDialogModeType, strEwEModelName As String) As String
             Dim strCaption As String = ""
             Select Case mode
                 Case eDialogModeType.CreateScenario
@@ -85,7 +85,7 @@ Namespace Ecotracer
             Return cStringUtils.Localize(strCaption, strEwEModelName)
         End Function
 
-        Protected Overrides Function DeleteScenario(ByVal scenario As EwECore.cEwEScenario) As Boolean
+        Protected Overrides Function DeleteScenario(scenario As EwECore.cEwEScenario) As Boolean
             Return Me.UIContext.Core.RemoveEcotracerScenario(scenario.Index)
         End Function
 

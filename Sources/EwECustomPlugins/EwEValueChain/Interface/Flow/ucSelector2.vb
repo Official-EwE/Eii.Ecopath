@@ -53,11 +53,11 @@ Public Class ucSelector2
         Get
             Return Me.m_selection
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
 
             If (Me.m_selection IsNot Nothing) Then
                 For Each obj As cEwEDatabase.cOOPStorable In Me.m_selection
-                    RemoveHandler obj.OnChanged, AddressOf OnItemChanged
+                    RemoveHandler obj.OnChanged, AddressOf Me.OnItemChanged
                 Next
             End If
 
@@ -100,7 +100,7 @@ Public Class ucSelector2
 
             If (Me.m_selection IsNot Nothing) Then
                 For Each obj As cEwEDatabase.cOOPStorable In Me.m_selection
-                    AddHandler obj.OnChanged, AddressOf OnItemChanged
+                    AddHandler obj.OnChanged, AddressOf Me.OnItemChanged
                 Next
             End If
 

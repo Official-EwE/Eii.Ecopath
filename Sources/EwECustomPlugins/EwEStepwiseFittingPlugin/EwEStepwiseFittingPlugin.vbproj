@@ -47,6 +47,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>NO_PARALLEL=0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
@@ -150,19 +151,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\cSFPContainer.vb" />
     <Compile Include="IO\cSFPio.vb" />
     <Compile Include="Iterations\cSFPAnomalySearch.vb" />
     <Compile Include="Iterations\cSFPEcosimRun.vb" />
-    <Compile Include="Iterations\cSFPGenericIterations.vb" />
+    <Compile Include="Iterations\cSFPGenericIteration.vb" />
     <Compile Include="Engine\cSFPManager.vb" />
     <Compile Include="Engine\cSFPParameters.vb" />
     <Compile Include="Iterations\cSFPVandASearch.vb" />
     <Compile Include="Iterations\cSFPVulnerabilitySearch.vb" />
-    <Compile Include="ISFPIterations.vb" />
+    <Compile Include="ISFPIteration.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
@@ -201,6 +202,7 @@
     <None Include="app.config" />
     <None Include="EwESFP.licenseheader" />
     <None Include="EwESFPPlugin.snk" />
+    <None Include="Iterations\~ SFPIternations.cd" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

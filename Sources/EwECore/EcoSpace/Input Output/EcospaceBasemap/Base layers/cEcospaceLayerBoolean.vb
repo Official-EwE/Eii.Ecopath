@@ -45,11 +45,11 @@ Public Class cEcospaceLayerBoolean
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                   ByVal manager As IEcospaceLayerManager, _
-                   ByVal strName As String, _
-                   ByVal varName As eVarNameFlags, _
-                   Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
+    Public Sub New(core As cCore, _
+                   manager As IEcospaceLayerManager, _
+                   strName As String, _
+                   varName As eVarNameFlags, _
+                   Optional iIndex As Integer = cCore.NULL_VALUE)
 
         MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Boolean))
 
@@ -66,11 +66,11 @@ Public Class cEcospaceLayerBoolean
     ''' <param name="vn">Optional varname for the layer, if <paramref name="data"/>
     ''' was left empty.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                   ByVal data As Boolean(,), _
-                   ByVal strName As String, _
-                   Optional ByVal meta As cVariableMetaData = Nothing, _
-                   Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
+    Public Sub New(core As cCore, _
+                   data As Boolean(,), _
+                   strName As String, _
+                   Optional meta As cVariableMetaData = Nothing, _
+                   Optional vn As eVarNameFlags = eVarNameFlags.NotSet)
 
         MyBase.New(core, CObj(data), strName, GetType(Boolean), meta, vn)
 
@@ -81,11 +81,11 @@ Public Class cEcospaceLayerBoolean
 #Region " Cell interaction "
 
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Return DirectCast(Me.Data, Boolean(,))(iRow, iCol)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim d As Boolean(,) = DirectCast(Me.Data, Boolean(,))
             If Me.ValidateCellValue(value) Then
                 Dim i As Boolean = CBool(value)
@@ -123,7 +123,7 @@ Public Class cEcospaceLayerBoolean
 
 #End Region ' Cell interaction
 
-    Protected Overrides Function ValidateCellValue(ByVal value As Object) As Boolean
+    Protected Overrides Function ValidateCellValue(value As Object) As Boolean
 
         If Convert.IsDBNull(value) Then Return False
         Dim sValue As Single = Convert.ToSingle(value)

@@ -57,9 +57,9 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
     ''' <param name="shape"></param>
     ''' <param name="manager"></param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal uic As cUIContext,
-                   ByVal shape As EwECore.cEnviroResponseFunction,
-                   ByVal manager As EwECore.IEnvironmentalResponseManager)
+    Public Sub New(uic As cUIContext,
+                   shape As EwECore.cEnviroResponseFunction,
+                   manager As EwECore.IEnvironmentalResponseManager)
 
         Me.InitializeComponent()
 
@@ -80,7 +80,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.m_uic Is Nothing) Then Return
@@ -102,7 +102,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.m_uic Is Nothing) Then Return
 
@@ -117,7 +117,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
 #Region " Control Event Handlers "
 
-    Private Sub OnGroupSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnGroupSelectionChanged(sender As Object, e As System.EventArgs) _
         Handles m_lbxGroups.SelectedValueChanged
         Try
             Me.UpdateControls()
@@ -129,7 +129,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
     ''' <summary>
     ''' Add the selected groups to the currently selected map
     ''' </summary>
-    Private Sub OnAddGroup(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAddGroup(sender As Object, e As System.EventArgs) _
         Handles m_btnAdd.Click
 
         Try
@@ -157,7 +157,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Private Sub OnRemoveGroup(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemoveGroup(sender As Object, e As System.EventArgs) _
         Handles m_btnRemove.Click
 
         Try
@@ -192,7 +192,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOk.Click
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -200,7 +200,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Private Sub OnMapTreeExpanded(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+    Private Sub OnMapTreeExpanded(sender As Object, e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvDrivers.AfterExpand
 
         Try
@@ -211,10 +211,10 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Private Sub OnDriverSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+    Private Sub OnDriverSelected(sender As Object, e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvDrivers.AfterSelect
         Try
-            Me.m_graph.Driver = GetSelectedDriver(e.Node)
+            Me.m_graph.Driver = Me.GetSelectedDriver(e.Node)
             Me.UpdateControls()
         Catch ex As Exception
 
@@ -292,7 +292,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
     End Sub
 
-    Private Function GetSelectedDriver(ByVal node As TreeNode) As IEnviroInputData
+    Private Function GetSelectedDriver(node As TreeNode) As IEnviroInputData
         Try
 
             Dim ob As Object = Nothing
@@ -355,7 +355,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
 
         'Not in the init routine
         'Manager was swapped
-        If Not m_bInInit And bLoadUI Then
+        If Not Me.m_bInInit And bLoadUI Then
             Me.LoadDrivers()
         End If
 

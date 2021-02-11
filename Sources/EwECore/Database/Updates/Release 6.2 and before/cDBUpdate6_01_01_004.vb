@@ -41,12 +41,12 @@ Friend Class cDBUpdate6_01_01_004
         Private m_sMinLon As Single
         Private m_sCellSize As Single
 
-        Public Sub New(ByVal iScenarioID As Integer, _
-                       ByVal lUDH_UL As Long, _
-                       ByVal sLat As Single, _
-                       ByVal sLon As Single, _
-                       ByVal sIDH_SS As Single, _
-                       ByVal sCellSize As Single)
+        Public Sub New(iScenarioID As Integer, _
+                       lUDH_UL As Long, _
+                       sLat As Single, _
+                       sLon As Single, _
+                       sIDH_SS As Single, _
+                       sCellSize As Single)
 
             Me.m_iScenarioID = iScenarioID
 

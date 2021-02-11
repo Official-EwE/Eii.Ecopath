@@ -78,7 +78,7 @@ Namespace Core
         ''' of the type of log writer to use. If nothing is specified the <see cref="cXMLLogWriter">default 
         ''' XML log file writer</see> will be used.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub InitLog(ByVal strModelPath As String, Optional typeLogWriter As Type = Nothing)
+        Public Shared Sub InitLog(strModelPath As String, Optional typeLogWriter As Type = Nothing)
 
             cLog.m_logwriter = Nothing
             cLog.m_strModelPath = strModelPath
@@ -99,9 +99,9 @@ Namespace Core
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' <param name="strMsg">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal theException As Exception,
-                                ByVal level As eVerboseLevel,
-                                Optional ByVal strMsg As String = "")
+        Public Shared Sub Write(theException As Exception,
+                                level As eVerboseLevel,
+                                Optional strMsg As String = "")
             If (level > cLog.VerboseLevel) Then Return
             cLog.Write(theException, strMsg)
         End Sub
@@ -117,8 +117,8 @@ Namespace Core
         ''' This will log the exception text and all nested exceptions.
         '''</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal theException As Exception,
-                                Optional ByVal strDetail As String = "")
+        Public Shared Sub Write(theException As Exception,
+                                Optional strDetail As String = "")
 
             If Not AcquireWriterLock() Then Return
             Try
@@ -138,9 +138,9 @@ Namespace Core
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' <param name="strDetail">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal message As IMessage,
-                                ByVal level As eVerboseLevel,
-                                Optional ByVal strDetail As String = "")
+        Public Shared Sub Write(message As IMessage,
+                                level As eVerboseLevel,
+                                Optional strDetail As String = "")
             If (level > cLog.VerboseLevel) Then Return
             cLog.Write(message, strDetail)
         End Sub
@@ -152,7 +152,7 @@ Namespace Core
         ''' <param name="message">The <see cref="IMessage"/> to write.</param>
         ''' <param name="strDetail">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal message As IMessage, Optional ByVal strDetail As String = "")
+        Public Shared Sub Write(message As IMessage, Optional strDetail As String = "")
 
             If Not AcquireWriterLock() Then Return
             Try
@@ -193,7 +193,7 @@ Namespace Core
         ''' <param name="msg">Message string to write.</param>
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal msg As String, ByVal level As eVerboseLevel)
+        Public Shared Sub Write(msg As String, level As eVerboseLevel)
             If (level > cLog.VerboseLevel) Then Return
             cLog.Write(msg)
         End Sub
@@ -204,7 +204,7 @@ Namespace Core
         ''' </summary>
         ''' <param name="msg">Message string to write.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal msg As String)
+        Public Shared Sub Write(msg As String)
 
             If Not AcquireWriterLock() Then Return
             Try
@@ -296,8 +296,8 @@ Namespace Core
         ''' <param name="sb"></param>
         ''' <param name="strHeader"></param>
         ''' <remarks></remarks>
-        Public Shared Sub WriteTextToFile(ByVal strFilename As String, ByVal sb As Text.StringBuilder, _
-                Optional ByVal bAppend As Boolean = False, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteTextToFile(strFilename As String, sb As Text.StringBuilder, _
+                Optional bAppend As Boolean = False, Optional strHeader As String = "")
 
             Dim strm As System.IO.StreamWriter = Nothing
 
@@ -329,7 +329,7 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new line
         ''' </remarks>
-        Public Shared Sub WriteArrayToFile(ByVal strFilename As String, ByVal array() As Single, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteArrayToFile(strFilename As String, array() As Single, Optional strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n As Integer = array.GetLength(0)
             Dim i As Integer
@@ -367,7 +367,7 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
-        Public Shared Sub WriteGroupMapToFile(ByVal strFilename As String, ByVal array(,,) As Single, iTimestep As Integer, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteGroupMapToFile(strFilename As String, array(,,) As Single, iTimestep As Integer, Optional strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)
             Dim n2 As Integer = array.GetUpperBound(1)
@@ -410,7 +410,7 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new line
         ''' </remarks>
-        Public Shared Sub WriteArrayToFile(ByVal strFilename As String, ByVal array() As Double, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteArrayToFile(strFilename As String, array() As Double, Optional strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n As Integer = array.GetLength(0)
             Dim i As Integer
@@ -447,7 +447,7 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
-        Public Shared Sub WriteMatrixToFile(ByVal strFilename As String, ByVal array(,) As Single, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteMatrixToFile(strFilename As String, array(,) As Single, Optional strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)
             Dim n2 As Integer = array.GetUpperBound(1)
@@ -490,7 +490,7 @@ Namespace Core
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
         <CLSCompliant(False)>
-        Public Shared Sub WriteMatrixToFile(ByVal strFilename As String, ByVal array(,,) As Single, Optional ByVal strHeader As String = "")
+        Public Shared Sub WriteMatrixToFile(strFilename As String, array(,,) As Single, Optional strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)
             Dim n2 As Integer = array.GetUpperBound(1)

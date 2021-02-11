@@ -40,16 +40,16 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes,
-                                          Optional ByVal ashapes() As EwECore.cShapeData = Nothing,
-                                          Optional ByVal data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes,
+                                          Optional ashapes() As EwECore.cShapeData = Nothing,
+                                          Optional data As Object = Nothing)
 
             Try
                 Select Case cmd
 
                     Case eShapeCommandTypes.DefineMediation
                         Debug.Assert((TypeOf Me.SelectedShape Is EwECore.cEnviroResponseFunction), "OPPSSS...")
-                        Dim dlgDefBP As New dlgDefineEcosimFunctionalResponses(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.EcosimEnviroResponseManager)
+                        Dim dlgDefBP As New dlgDefineEcosimFunctionalResponses(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), Me.UIContext.Core.EcosimEnviroResponseManager)
                         If dlgDefBP.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
@@ -75,7 +75,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.OnShapeSelected"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+        Public Overrides Sub OnShapeSelected(shape() As EwECore.cShapeData)
             MyBase.OnShapeSelected(shape)
             If (Me.MediationAssignments IsNot Nothing) Then
                 Dim strTitle As String = ""

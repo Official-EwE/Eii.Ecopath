@@ -33,43 +33,39 @@ Imports EwECore.FitToTimeSeries
 #End Region ' Imports
 
 Public Class cSFPVandASearch
-    Inherits cSFPGenericIterations
+    Inherits cSFPGenericIteration
 
-    Public Sub New(ByVal BOrF As Boolean, ByVal estimatedParameters As Integer, ByVal sps As Integer)
-        BaseorFish = BOrF
-        k = estimatedParameters + sps
-        EstimatedV = estimatedParameters
-        SplinePoints = sps
+    Public Sub New(BOrF As Boolean, estimatedParameters As Integer, sps As Integer)
+        Me.BaseorFish = BOrF
+        Me.k = estimatedParameters + sps
+        Me.EstimatedV = estimatedParameters
+        Me.SplinePoints = sps
     End Sub
 
-#Region " Implements ISFPIterations "
+    Public Overrides Function Load(core As cCore) As Boolean
 
-    Public Overrides Function Load() As Boolean
-
-        Dim bSuccess As Boolean = False
+        Dim bOK As Boolean = False
 
         'Enable specific time series for Baseline or Fishing
-        If MyBase.EnableTimeSeries() Then
+        If Me.EnableTimeSeries(core) Then
             'Reset vunerabilities
-            If MyBase.ResetVs() And MyBase.ResetFF() Then
+            If Me.ResetVs(core) And Me.ResetFF(core) Then
                 'Run a sensitivity of SS to V search for baseline
-                If MyBase.RunSensitivityOfSSToV() Then
-                    bSuccess = True
+                If Me.RunSensitivityOfSSToV(core) Then
+                    bOK = True
                 End If
             End If
         End If
 
-        Return bSuccess
+        Return bOK
 
     End Function
 
-    Public Overrides Function Run() As Boolean
-        If MyBase.RunVandASearch() Then
-            Return MyBase.Run()
+    Public Overrides Function Run(core As cCore) As Boolean
+        If Me.RunVandASearch(core) Then
+            Return MyBase.Run(core)
         End If
         Return False
     End Function
-
-#End Region
 
 End Class

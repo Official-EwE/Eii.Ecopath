@@ -47,9 +47,9 @@ Public Class cQuotaShares
         Public mShare As Single
 
         Public Sub New(GroupNo As Integer, FleetNo As Integer, Share As Single)
-            mGroupNo = GroupNo
-            mFleetNo = FleetNo
-            mShare = Share
+            Me.mGroupNo = GroupNo
+            Me.mFleetNo = FleetNo
+            Me.mShare = Share
         End Sub
 
     End Class
@@ -88,7 +88,7 @@ Public Class cQuotaShares
 
     Public ReadOnly Property GetLstGrpShares As List(Of QuotaShare)
         Get
-            Return m_lstQuotaShares
+            Return Me.m_lstQuotaShares
         End Get
     End Property
 
@@ -97,10 +97,10 @@ Public Class cQuotaShares
     ''' </summary>
     Public Property QuotaFileExists() As Boolean
         Get
-            Return mQuotaShareFileExists
+            Return Me.mQuotaShareFileExists
         End Get
-        Set(ByVal value As Boolean)
-            mQuotaShareFileExists = value
+        Set(value As Boolean)
+            Me.mQuotaShareFileExists = value
         End Set
     End Property
 
@@ -109,7 +109,7 @@ Public Class cQuotaShares
     ''' </summary>
     Public ReadOnly Property CountDist() As Integer
         Get
-            Return m_lstQuotaShares.Count
+            Return Me.m_lstQuotaShares.Count
         End Get
     End Property
 
@@ -198,16 +198,16 @@ Public Class cQuotaShares
     Public Function AddQuotaShare(GroupNo As Integer, FleetNo As Integer, Share As Single) As Boolean
 
         'Check Fleet Number
-        If FleetNo < 0 Or FleetNo > m_core.nFleets Then Return False
+        If FleetNo < 0 Or FleetNo > Me.m_core.nFleets Then Return False
 
         'Check GroupNo
-        If GroupNo < 0 Or GroupNo > m_core.nGroups Then Return False
+        If GroupNo < 0 Or GroupNo > Me.m_core.nGroups Then Return False
 
         'Check Alpha and Beta
         If Share < 0 Or Share > 1 Then Return False
 
         'Add it to the list
-        m_lstQuotaShares.Add(New QuotaShare(GroupNo, FleetNo, Share))
+        Me.m_lstQuotaShares.Add(New QuotaShare(GroupNo, FleetNo, Share))
 
         Return True
 
@@ -221,8 +221,8 @@ Public Class cQuotaShares
     ''' <remarks>iRow is zero-based</remarks>
     Public Function ReadRowDist(iRow As Integer) As QuotaShare
         If iRow < 0 Then Return Nothing
-        If iRow > m_lstQuotaShares.Count - 1 Then Return Nothing
-        Return m_lstQuotaShares(iRow)
+        If iRow > Me.m_lstQuotaShares.Count - 1 Then Return Nothing
+        Return Me.m_lstQuotaShares(iRow)
     End Function
 
     ''' <summary>
@@ -232,13 +232,13 @@ Public Class cQuotaShares
     ''' <param name="iGroup"></param>
     ''' <returns></returns>
     ''' <remarks>iFleet and iGroup are zero-based</remarks>
-    Public Function ReadiFleetiGroupQuotaShare(iFleet As Integer, iGroup As Integer, ByVal FlagNoQuotaShare As Boolean) As QuotaShare
+    Public Function ReadiFleetiGroupQuotaShare(iFleet As Integer, iGroup As Integer, FlagNoQuotaShare As Boolean) As QuotaShare
 
-        If iFleet < 1 Or iFleet > m_core.nFleets Then Return Nothing
-        If iGroup < 1 Or iGroup > m_core.nGroups Then Return Nothing
+        If iFleet < 1 Or iFleet > Me.m_core.nFleets Then Return Nothing
+        If iGroup < 1 Or iGroup > Me.m_core.nGroups Then Return Nothing
 
-        For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
-            If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGroup Then Return m_lstQuotaShares(iRow)
+        For iRow As Integer = 0 To Me.m_lstQuotaShares.Count - 1
+            If Me.m_lstQuotaShares(iRow).mFleetNo = iFleet And Me.m_lstQuotaShares(iRow).mGroupNo = iGroup Then Return Me.m_lstQuotaShares(iRow)
         Next
         Return Nothing
 
@@ -246,8 +246,8 @@ Public Class cQuotaShares
 
     Public Function QuotaSharesExistForGroup(iGrp As Integer) As Boolean
 
-        For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
-            If m_lstQuotaShares(iRow).mGroupNo = iGrp Then
+        For iRow As Integer = 0 To Me.m_lstQuotaShares.Count - 1
+            If Me.m_lstQuotaShares(iRow).mGroupNo = iGrp Then
                 Return True
             End If
         Next
@@ -256,10 +256,10 @@ Public Class cQuotaShares
 
     End Function
 
-    Public Function QuotaShareExistsForGroupFleet(ByVal iGrp As Integer, ByVal iFleet As Integer) As Boolean
+    Public Function QuotaShareExistsForGroupFleet(iGrp As Integer, iFleet As Integer) As Boolean
 
-        For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
-            If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGrp Then Return True
+        For iRow As Integer = 0 To Me.m_lstQuotaShares.Count - 1
+            If Me.m_lstQuotaShares(iRow).mFleetNo = iFleet And Me.m_lstQuotaShares(iRow).mGroupNo = iGrp Then Return True
         Next
         Return False
 
@@ -316,11 +316,11 @@ Public Class cQuotaShares
             If (reader IsNot Nothing) Then
                 Try
                     csv = New CsvReader(reader, True)
-                    mQuotaShareFileExists = True
+                    Me.mQuotaShareFileExists = True
                     While Not csv.EndOfStream
-                        iQuotaShare = ExtractQuotaShare(csv)
+                        iQuotaShare = Me.ExtractQuotaShare(csv)
                         If (iQuotaShare IsNot Nothing) Then
-                            AddQuotaShare(iQuotaShare.mGroupNo, iQuotaShare.mFleetNo, iQuotaShare.mShare)
+                            Me.AddQuotaShare(iQuotaShare.mGroupNo, iQuotaShare.mFleetNo, iQuotaShare.mShare)
                         End If
                     End While
                     csv.Dispose()
@@ -345,7 +345,7 @@ Public Class cQuotaShares
     ''' </summary>
     ''' <param name="csv">The CSV object linking to the quota share file</param>
     ''' <returns></returns>
-    Private Function ExtractQuotaShare(ByVal csv As CsvReader) As QuotaShare
+    Private Function ExtractQuotaShare(csv As CsvReader) As QuotaShare
 
         ' Sanity checks
         If (csv Is Nothing) Then Return Nothing
@@ -384,11 +384,11 @@ Public Class cQuotaShares
         Try
             writer.WriteLine("GroupNumber,GroupName,FleetNumber,FleetName,QuotaShare")
 
-            For Each entry As QuotaShare In m_lstQuotaShares
+            For Each entry As QuotaShare In Me.m_lstQuotaShares
                 writer.WriteLine(cStringUtils.ToCSVField(entry.mGroupNo) & "," &
-                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," &
+                                 cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mFleetNo) & "," &
-                                 cStringUtils.ToCSVField(m_core.EcopathFleetInputs(entry.mFleetNo).Name) & "," &
+                                 cStringUtils.ToCSVField(Me.m_core.EcopathFleetInputs(entry.mFleetNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mShare))
             Next
 
@@ -412,7 +412,7 @@ Public Class cQuotaShares
     End Function
 
     Private Function DefaultFileName() As String
-        Return cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
+        Return cMSEUtils.MSEFile(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")
     End Function
 
     'Something that might only be used for testing purposes
@@ -446,7 +446,7 @@ Public Class cQuotaShares
     Sub RemoveUnnecessaryShares(strategies As Strategies)
 
         'Loop through each group
-        For iGroup = 1 To m_core.nGroups
+        For iGroup = 1 To Me.m_core.nGroups
             'Check that the group has no hcr associated with it and whether there are shares associated with this group
             If Not strategies.HCRExistsForGroup(iGroup) And Me.QuotaSharesExistForGroup(iGroup) Then
                 'If there are then delete them
@@ -462,26 +462,26 @@ Public Class cQuotaShares
         'This routine adds default values to quotashares object and csv because values are now necessary since hcrs have been created for new groups
         Dim Share As Single
         Dim TotalLandingsF As Single
-        Dim TimeStep As Integer = m_MSE.EcosimData.NumStepsPerYear * m_MSE.EcosimData.NumYears
+        Dim TimeStep As Integer = Me.m_MSE.EcosimData.NumStepsPerYear * Me.m_MSE.EcosimData.NumYears
 
-        If m_MSE.RunEcosim() Then
+        If Me.m_MSE.RunEcosim() Then
 
             Dim RelQModifier(,) As Single = Me.m_MSE.calcQModifiers(TimeStep)
 
             'Loop though each group
-            For iGrp = 1 To m_core.nGroups
+            For iGrp = 1 To Me.m_core.nGroups
                 'Check whether the group has an hcr for it and check whether there are quotashares set up for it
                 If strategies.HCRExistsForGroup(iGrp) And Not Me.QuotaSharesExistForGroup(iGrp) Then
                     'if a strategy exists for the group but there aren't any quotashares create default quotashares in memory
                     TotalLandingsF = 0
-                    For iFleet = 1 To m_core.nFleets
+                    For iFleet = 1 To Me.m_core.nFleets
                         'TotalLandings += m_MSE.EcosimData.ResultsSumCatchByGroupGear(iGrp, iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp)
-                        TotalLandingsF += m_MSE.EcosimData.relQ(iFleet, iGrp) * RelQModifier(iFleet, iGrp) * m_MSE.EcosimData.FishRateGear(iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp)
+                        TotalLandingsF += Me.m_MSE.EcosimData.relQ(iFleet, iGrp) * RelQModifier(iFleet, iGrp) * Me.m_MSE.EcosimData.FishRateGear(iFleet, TimeStep) * Me.m_MSE.EcopathData.PropLanded(iFleet, iGrp)
                     Next
 
-                    For iFleet As Integer = 1 To m_core.nFleets
-                        If m_core.EcopathFleetInputs(iFleet).Landings(iGrp) + m_core.EcopathFleetInputs(iFleet).Discards(iGrp) > 0 Then
-                            Share = m_MSE.EcosimData.relQ(iFleet, iGrp) * RelQModifier(iFleet, iGrp) * m_MSE.EcosimData.FishRateGear(iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp) / TotalLandingsF
+                    For iFleet As Integer = 1 To Me.m_core.nFleets
+                        If Me.m_core.EcopathFleetInputs(iFleet).Landings(iGrp) + Me.m_core.EcopathFleetInputs(iFleet).Discards(iGrp) > 0 Then
+                            Share = Me.m_MSE.EcosimData.relQ(iFleet, iGrp) * RelQModifier(iFleet, iGrp) * Me.m_MSE.EcosimData.FishRateGear(iFleet, TimeStep) * Me.m_MSE.EcopathData.PropLanded(iFleet, iGrp) / TotalLandingsF
                             Me.AddQuotaShare(iGrp, iFleet, Share)
                         End If
                     Next

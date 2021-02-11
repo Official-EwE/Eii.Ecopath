@@ -42,13 +42,13 @@ Public Class cLossinProductionIndex
         Return "Loss of Production index"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                     ByVal datagrid As DataGridView,
-                                     ByVal graph As ZedGraphControl,
-                                     ByVal plot As ucPlot,
-                                     ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                     ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                     datagrid As DataGridView,
+                                     graph As ZedGraphControl,
+                                     plot As ucPlot,
+                                     toolstrip As ToolStrip,
+                                         info As Control,
+                                     uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -61,17 +61,17 @@ Public Class cLossinProductionIndex
 
         Me.NetworkManager.RunRequiredPrimaryProd()
 
-        SetUpGridColumn()
+        Me.SetUpGridColumn()
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nLivingGroups + 2
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = Me.NetworkManager.nLivingGroups + 2
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim astrRowContent(Grid.Columns.Count)
+        ReDim astrRowContent(Me.Grid.Columns.Count)
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         astrRowContent(2) = My.Resources.COL_HDR_LINDEX
@@ -79,54 +79,54 @@ Public Class cLossinProductionIndex
         'astrRowContent(4) = My.Resources.COL_HDR_PSUST_SDLOWER
         'astrRowContent(5) = My.Resources.COL_HDR_PSUST_SDUPPER
 
-        Grid.Rows(0).SetValues(astrRowContent)
-        Grid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(astrRowContent)
+        Me.Grid.Rows(0).Visible = True
 
-        For i As Integer = 1 To NetworkManager.nLivingGroups
+        For i As Integer = 1 To Me.NetworkManager.nLivingGroups
             astrRowContent(0) = CStr(i)
-            astrRowContent(1) = NetworkManager.GroupName(i)
-            astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.Lindex(i))
-            astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.Psust(i))
+            astrRowContent(1) = Me.NetworkManager.GroupName(i)
+            astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.Lindex(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.Psust(i))
             'astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PsustSDlower(i))
             'astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PsustSDupper(i))
-            LindexTot += NetworkManager.Lindex(i)
-            Grid.Rows(i).SetValues(astrRowContent)
-            Grid.Rows(i).Visible = True
+            LindexTot += Me.NetworkManager.Lindex(i)
+            Me.Grid.Rows(i).SetValues(astrRowContent)
+            Me.Grid.Rows(i).Visible = True
         Next
 
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.ROW_HDR_TOTAL
         astrRowContent(2) = Me.StyleGuide.FormatNumber(LindexTot)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.CalcPsust(LindexTot))
-        Grid.Rows(NetworkManager.nLivingGroups + 1).SetValues(astrRowContent)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CalcPsust(LindexTot))
+        Me.Grid.Rows(Me.NetworkManager.nLivingGroups + 1).SetValues(astrRowContent)
 
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
-            If NetworkManager.PPRCatchHarvest(i) <= 0.0 Or _
-                NetworkManager.PPRCatchHarvest(i) <= 0.0 And NetworkManager.TotalPrimaryProduction <= 0.0 Then
-                Grid.Rows(i).Visible = False
+            If Me.NetworkManager.PPRCatchHarvest(i) <= 0.0 Or _
+                Me.NetworkManager.PPRCatchHarvest(i) <= 0.0 And Me.NetworkManager.TotalPrimaryProduction <= 0.0 Then
+                Me.Grid.Rows(i).Visible = False
             End If
         Next
 
 
-        Grid.ClearSelection()
+        Me.Grid.ClearSelection()
 
     End Sub
 
     Private Sub SetUpGridColumn()
 
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = 4
+        Me.Grid.ColumnCount = 4
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(0).Frozen = True
-        Grid.Columns(0).Width = ID_COL_WIDTH
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).Width = ID_COL_WIDTH
 
-        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(1).Frozen = True
-        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Me.Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        Me.Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(1).Frozen = True
+        Me.Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
 
     End Sub
 

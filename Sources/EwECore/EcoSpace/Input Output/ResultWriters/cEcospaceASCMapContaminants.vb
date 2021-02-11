@@ -40,23 +40,23 @@ Public Class cEcospaceASCMapContaminants
         Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
         'Include the zero index for the environmental concentrations
         For igrp As Integer = 0 To Me.EcopathData.NumGroups
-            m_selGroups(igrp) = True
+            Me.m_selGroups(igrp) = True
         Next igrp
 
     End Sub
 
-    Protected Overrides Function GetFileName(ByVal varname As eVarNameFlags,
-                                                    ByVal iGrp As Integer,
-                                                    ByVal strExt As String,
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Protected Overrides Function GetFileName(varname As eVarNameFlags,
+                                                    iGrp As Integer,
+                                                    strExt As String,
+                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
         Return Me.GetGroupFileName(varname, iGrp, strExt, iModelTimeStep)
     End Function
 
 
-    Public Overrides Function GetGroupFileName(ByVal varname As eVarNameFlags,
-                                                    ByVal iGrp As Integer,
-                                                    ByVal strExt As String,
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Public Overrides Function GetGroupFileName(varname As eVarNameFlags,
+                                                    iGrp As Integer,
+                                                    strExt As String,
+                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim Filename As String
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -79,7 +79,7 @@ Public Class cEcospaceASCMapContaminants
     End Function
 
 
-    Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+    Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
         'Only if Contaminant Tracer is ON
         If Me.m_core.m_tracerData.EcoSpaceConSimOn Then

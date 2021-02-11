@@ -33,7 +33,7 @@ Namespace Commands
     Public Class cExecuteCommand
         Inherits cCommand
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
@@ -65,7 +65,7 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strCommand">Command string to pass to the command.</param>
         ''' -----------------------------------------------------------------------
-        Public Shadows Sub Invoke(ByVal strCommand As String)
+        Public Shadows Sub Invoke(strCommand As String)
 
             ' Sanity check
             Debug.Assert(Not String.IsNullOrEmpty(strCommand))

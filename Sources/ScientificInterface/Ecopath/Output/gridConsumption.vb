@@ -48,7 +48,7 @@ Namespace Ecopath.Output
 
             Dim source As cCoreGroupBase = Nothing
 
-            Me.Redim(core.nGroups + 3, 2)
+            Me.Redim(Me.core.nGroups + 3, 2)
             'Set header cells
             Dim iRow As Integer = Me.RowsCount
 
@@ -57,8 +57,8 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To core.nGroups
-                source = core.EcoPathGroupOutputs(i)
+            For i As Integer = 1 To Me.core.nGroups
+                source = Me.core.EcoPathGroupOutputs(i)
                 'Group name row header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 Me(i, 1) = New cEwERowHeaderCell(source.Name)
@@ -102,17 +102,17 @@ Namespace Ecopath.Output
             Dim columnIndex As Integer = 2
             Dim rowCnt As Integer = Me.RowsCount
 
-            For iPred As Integer = 1 To core.nGroups
+            For iPred As Integer = 1 To Me.core.nGroups
 
                 'Get the group output
-                source = core.EcoPathGroupOutputs(iPred)
+                source = Me.core.EcoPathGroupOutputs(iPred)
                 If source.PP < 1 Or source.PP = 2 Then
 
                     alPropSumAll.Clear()
 
-                    For iPrey As Integer = 1 To core.nGroups
+                    For iPrey As Integer = 1 To Me.core.nGroups
                         ' Get the group output
-                        sourceSec = core.EcoPathGroupOutputs(iPrey)
+                        sourceSec = Me.core.EcoPathGroupOutputs(iPrey)
                         ' Get the indexed comsumption property by (rowIndex, columnIndex)
                         prop = pm.GetProperty(sourceSec, eVarNameFlags.Consumption, source)
                         cell = New cPropertyCell(prop)

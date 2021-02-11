@@ -41,7 +41,7 @@ Public Module modUtility
     Public Const GRP_NAME_COL_WIDTH As Integer = 110
     Public Const FIRST_ROW_HEIGHT As Integer = 45
 
-    Public Sub SetGridColumnPropertyDefault(ByVal DataGrid As System.Windows.Forms.DataGridView)
+    Public Sub SetGridColumnPropertyDefault(DataGrid As System.Windows.Forms.DataGridView)
         DataGrid.ColumnHeadersVisible = False
         For intColIndex As Integer = 0 To DataGrid.ColumnCount - 1
             'DataGrid.Columns(intColIndex).HeaderCell.Style.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
@@ -54,8 +54,8 @@ Public Module modUtility
     End Sub
 
     <CLSCompliant(False)> _
-    Public Sub AddCurve(ByVal strName As String, ByVal CurveVar() As Single, ByVal Pane As GraphPane, _
-      ByVal MyColor As Color, Optional ByVal Symbol As SymbolType = SymbolType.None)
+    Public Sub AddCurve(strName As String, CurveVar() As Single, Pane As GraphPane, _
+      MyColor As Color, Optional Symbol As SymbolType = SymbolType.None)
         Dim List As PointPairList
         Dim iNumPoints As Integer = CurveVar.GetUpperBound(0)
 
@@ -93,9 +93,9 @@ Public Module modUtility
     ''' <param name="strExtension">The file extension to use.</param>
     ''' <returns>A valid file name in the local temp directory.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function PyramidTempFile(ByVal strModel As String, _
-                                    ByVal pyramidtype As ePyramidTypes, _
-                                    ByVal strExtension As String) As String
+    Public Function PyramidTempFile(strModel As String, _
+                                    pyramidtype As ePyramidTypes, _
+                                    strExtension As String) As String
 
         Dim sbFileName As New StringBuilder()
 
@@ -123,13 +123,13 @@ Public Module modUtility
     ''' <param name="asValue"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function WritePyramidFile(ByVal strModel As String, _
-                                     ByVal pyramidtype As ePyramidTypes, _
-                                     ByVal strUnits As String, _
-                                     ByVal iNumTL As Integer, _
-                                     ByVal sTotalB As Single, _
-                                     ByVal asBiomass() As Single, _
-                                     ByVal asValue() As Single) As String
+    Public Function WritePyramidFile(strModel As String, _
+                                     pyramidtype As ePyramidTypes, _
+                                     strUnits As String, _
+                                     iNumTL As Integer, _
+                                     sTotalB As Single, _
+                                     asBiomass() As Single, _
+                                     asValue() As Single) As String
 
         Dim doc As XmlDocument = New XmlDocument()
         Dim nodePyramid As XmlNode = Nothing

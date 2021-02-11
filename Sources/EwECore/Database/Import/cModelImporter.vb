@@ -43,7 +43,7 @@ Namespace Database
         Protected Class cExternalModelInfoSorter
             Implements IComparer(Of cExternalModelInfo)
 
-            Public Function Compare(ByVal x As cExternalModelInfo, ByVal y As cExternalModelInfo) As Integer _
+            Public Function Compare(x As cExternalModelInfo, y As cExternalModelInfo) As Integer _
                 Implements IComparer(Of cExternalModelInfo).Compare
                 Return String.Compare(x.Name, y.Name)
             End Function
@@ -74,7 +74,7 @@ Namespace Database
 
 #Region " Construction "
 
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(core As cCore)
             Me.m_core = core
         End Sub
 
@@ -93,7 +93,7 @@ Namespace Database
         ''' disconnected via the <see cref="Close">Close</see> method.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Open(ByVal strSource As String) As Boolean _
+        Public MustOverride Function Open(strSource As String) As Boolean _
             Implements IModelImporter.Open
 
         ''' -------------------------------------------------------------------
@@ -123,8 +123,8 @@ Namespace Database
         ''' </summary>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Import(ByVal info As cExternalModelInfo, _
-                               ByVal db As cEwEDatabase, _
+        Public Function Import(info As cExternalModelInfo, _
+                               db As cEwEDatabase, _
                                ByRef strLogfileName As String) As Boolean _
             Implements IModelImporter.Import
 
@@ -190,7 +190,7 @@ Namespace Database
         ''' <param name="strSource">The source to explore.</param>
         ''' <returns>True if this importer can import from the given source.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function CanImportFrom(ByVal strSource As String) As Boolean _
+        Public MustOverride Function CanImportFrom(strSource As String) As Boolean _
             Implements IModelImporter.CanImportFrom
 
         ''' -------------------------------------------------------------------
@@ -213,7 +213,7 @@ Namespace Database
         ''' <param name="iStep">Progress step. If -1, the internal step admin is 
         ''' automatically incremented.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub LogProgress(ByVal strMessage As String, Optional ByVal iStep As Integer = -1)
+        Protected Sub LogProgress(strMessage As String, Optional iStep As Integer = -1)
 
             Dim sProgress As Single = 0
 
@@ -249,10 +249,10 @@ Namespace Database
         ''' Logs a message
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Sub LogMessage(ByVal strMessage As String, _
-                                 Optional ByVal msgType As eMessageType = eMessageType.DataImport, _
-                                 Optional ByVal msgImportance As eMessageImportance = eMessageImportance.Information, _
-                                 Optional ByVal bPublishToInterface As Boolean = False)
+        Protected Sub LogMessage(strMessage As String, _
+                                 Optional msgType As eMessageType = eMessageType.DataImport, _
+                                 Optional msgImportance As eMessageImportance = eMessageImportance.Information, _
+                                 Optional bPublishToInterface As Boolean = False)
 
             ' Add message to log
             Me.m_sbLog.AppendLine(strMessage)

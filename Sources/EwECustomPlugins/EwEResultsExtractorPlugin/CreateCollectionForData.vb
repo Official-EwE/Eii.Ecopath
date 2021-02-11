@@ -34,7 +34,7 @@ Public MustInherit Class CreateCollectionForData
         Me.InitializeComponent()
     End Sub
 
-    Public Sub New(ByVal SelectionData As cSelectionData, ByVal Core As cCore)
+    Public Sub New(SelectionData As cSelectionData, Core As cCore)
 
         Me.InitializeComponent()
 
@@ -50,25 +50,25 @@ Public MustInherit Class CreateCollectionForData
 
         'Load group names into selected & unselected lists
         For Each x In Me.SelectionData.UnSelectedNames
-            lstUnSelected.Items.Add(x)
+            Me.lstUnSelected.Items.Add(x)
         Next
         For Each x In Me.SelectionData.SelectedNames
-            lstSelected.Items.Add(x)
+            Me.lstSelected.Items.Add(x)
         Next
 
-        If lstSelected.Items.Count = 0 Then
-            btnRemoveAll.Enabled = False
-            btnRemoveSelected.Enabled = False
+        If Me.lstSelected.Items.Count = 0 Then
+            Me.btnRemoveAll.Enabled = False
+            Me.btnRemoveSelected.Enabled = False
         End If
-        If lstUnSelected.Items.Count = 0 Then
-            btnAddAll.Enabled = False
-            btnAddSelected.Enabled = False
+        If Me.lstUnSelected.Items.Count = 0 Then
+            Me.btnAddAll.Enabled = False
+            Me.btnAddSelected.Enabled = False
         End If
 
     End Sub
 
     ''Don't use this now because unpredictable - seemed to conflict with SelectedIndexChanged
-    'Private Sub lstSelected_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lstSelected.MouseDoubleClick
+    'Private Sub lstSelected_MouseDoubleClick(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles lstSelected.MouseDoubleClick
 
     '    'Dim IndexSaved As Integer
 
@@ -100,22 +100,22 @@ Public MustInherit Class CreateCollectionForData
 
     'End Sub
 
-    Private Sub lstSelected_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstSelected.SelectedIndexChanged
+    Private Sub lstSelected_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles lstSelected.SelectedIndexChanged
 
-        If lstSelected.SelectedIndex = -1 Then
-            SelectionData.SetFocus = Nothing
+        If Me.lstSelected.SelectedIndex = -1 Then
+            Me.SelectionData.SetFocus = Nothing
             Me.chklstAttached.Items.Clear()
             Exit Sub
         End If
 
-        PopulateAttachedList(lstSelected.SelectedItem.ToString)
-        SelectionData.SetFocus = lstSelected.SelectedItem.ToString
+        Me.PopulateAttachedList(Me.lstSelected.SelectedItem.ToString)
+        Me.SelectionData.SetFocus = Me.lstSelected.SelectedItem.ToString
 
         ' Ticks childs that are part of current parent
-        For x = 0 To chklstAttached.Items.Count - 1
-            For Each i In CType(SelectionData.GetFocus, cCreatedObjects).ChildNames
-                If chklstAttached.Items(x).ToString = i.ToString Then
-                    chklstAttached.SetItemChecked(x, True)
+        For x = 0 To Me.chklstAttached.Items.Count - 1
+            For Each i In CType(Me.SelectionData.GetFocus, cCreatedObjects).ChildNames
+                If Me.chklstAttached.Items(x).ToString = i.ToString Then
+                    Me.chklstAttached.SetItemChecked(x, True)
                 End If
             Next
         Next
@@ -123,178 +123,178 @@ Public MustInherit Class CreateCollectionForData
 
     End Sub
 
-    Public MustOverride Sub PopulateAttachedList(ByVal i As String)
+    Public MustOverride Sub PopulateAttachedList(i As String)
 
-    Private Sub btnAddSelected_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddSelected.Click
+    Private Sub btnAddSelected_Click(sender As System.Object, e As System.EventArgs) Handles btnAddSelected.Click
         Dim PositionSelectedPredator As Integer
 
-        If lstUnSelected.SelectedIndex = -1 Then Exit Sub
+        If Me.lstUnSelected.SelectedIndex = -1 Then Exit Sub
 
         'Buttons to remove are now enabled
-        btnRemoveSelected.Enabled = True
-        btnRemoveAll.Enabled = True
+        Me.btnRemoveSelected.Enabled = True
+        Me.btnRemoveAll.Enabled = True
 
         ' Add to virtual object current selection
-        SelectionData.Add(lstUnSelected.SelectedItem.ToString)
+        Me.SelectionData.Add(Me.lstUnSelected.SelectedItem.ToString)
 
         ' Remove from 1st list box and add to 2nd
-        lstSelected.Items.Add(lstUnSelected.SelectedItem)
-        lstSelected.SelectedIndex = lstSelected.Items.Count - 1
-        PositionSelectedPredator = lstUnSelected.SelectedIndex
-        lstUnSelected.Items.Remove(lstUnSelected.SelectedItem)
+        Me.lstSelected.Items.Add(Me.lstUnSelected.SelectedItem)
+        Me.lstSelected.SelectedIndex = Me.lstSelected.Items.Count - 1
+        PositionSelectedPredator = Me.lstUnSelected.SelectedIndex
+        Me.lstUnSelected.Items.Remove(Me.lstUnSelected.SelectedItem)
 
         'Depending on position of selection and number of items in list select next item
-        If PositionSelectedPredator = lstUnSelected.Items.Count Then
-            lstUnSelected.SelectedIndex = PositionSelectedPredator - 1
+        If PositionSelectedPredator = Me.lstUnSelected.Items.Count Then
+            Me.lstUnSelected.SelectedIndex = PositionSelectedPredator - 1
         ElseIf PositionSelectedPredator > 0 Then
-            lstUnSelected.SelectedIndex = PositionSelectedPredator - 1
-        ElseIf lstUnSelected.Items.Count > 0 Then
-            lstUnSelected.SelectedIndex = 0
+            Me.lstUnSelected.SelectedIndex = PositionSelectedPredator - 1
+        ElseIf Me.lstUnSelected.Items.Count > 0 Then
+            Me.lstUnSelected.SelectedIndex = 0
         End If
 
-        SetStateAddRemove()
+        Me.SetStateAddRemove()
 
     End Sub
 
     Private Sub SetStateAddRemove()
 
-        btnAddSelected.Enabled = False
-        btnAddAll.Enabled = False
-        btnRemoveSelected.Enabled = False
-        btnRemoveAll.Enabled = False
+        Me.btnAddSelected.Enabled = False
+        Me.btnAddAll.Enabled = False
+        Me.btnRemoveSelected.Enabled = False
+        Me.btnRemoveAll.Enabled = False
 
-        If lstUnSelected.Items.Count > 0 Then
-            btnAddSelected.Enabled = True
-            btnAddAll.Enabled = True
+        If Me.lstUnSelected.Items.Count > 0 Then
+            Me.btnAddSelected.Enabled = True
+            Me.btnAddAll.Enabled = True
         End If
-        If lstSelected.Items.Count > 0 Then
-            btnRemoveSelected.Enabled = True
-            btnRemoveAll.Enabled = True
+        If Me.lstSelected.Items.Count > 0 Then
+            Me.btnRemoveSelected.Enabled = True
+            Me.btnRemoveAll.Enabled = True
         End If
 
     End Sub
 
-    Private Sub btnAddAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddAll.Click
+    Private Sub btnAddAll_Click(sender As System.Object, e As System.EventArgs) Handles btnAddAll.Click
 
-        While lstUnSelected.Items.Count > 0
-            SelectionData.Add(lstUnSelected.Items(0).ToString)
-            lstSelected.Items.Add(lstUnSelected.Items(0))
-            lstSelected.SelectedIndex = lstSelected.Items.Count - 1
-            lstUnSelected.Items.RemoveAt(0)
+        While Me.lstUnSelected.Items.Count > 0
+            Me.SelectionData.Add(Me.lstUnSelected.Items(0).ToString)
+            Me.lstSelected.Items.Add(Me.lstUnSelected.Items(0))
+            Me.lstSelected.SelectedIndex = Me.lstSelected.Items.Count - 1
+            Me.lstUnSelected.Items.RemoveAt(0)
         End While
 
-        SetStateAddRemove()
+        Me.SetStateAddRemove()
 
     End Sub
 
-    Private Sub btnRemoveSelected_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSelected.Click
+    Private Sub btnRemoveSelected_Click(sender As System.Object, e As System.EventArgs) Handles btnRemoveSelected.Click
 
         Dim PositionSelectedPredator As Integer
 
-        If lstSelected.SelectedIndex = -1 Then Exit Sub
+        If Me.lstSelected.SelectedIndex = -1 Then Exit Sub
 
         'Buttons to remove are now enabled
-        btnAddSelected.Enabled = True
-        btnAddAll.Enabled = True
+        Me.btnAddSelected.Enabled = True
+        Me.btnAddAll.Enabled = True
 
         ' Remove in virtual object current selection
-        SelectionData.Remove(lstSelected.SelectedItem.ToString)
+        Me.SelectionData.Remove(Me.lstSelected.SelectedItem.ToString)
 
         ' Remove from 1st list box and add to 2nd
-        lstUnSelected.Items.Add(lstSelected.SelectedItem)
-        lstUnSelected.SelectedIndex = lstUnSelected.Items.Count - 1
-        PositionSelectedPredator = lstSelected.SelectedIndex
-        lstSelected.Items.Remove(lstSelected.SelectedItem)
+        Me.lstUnSelected.Items.Add(Me.lstSelected.SelectedItem)
+        Me.lstUnSelected.SelectedIndex = Me.lstUnSelected.Items.Count - 1
+        PositionSelectedPredator = Me.lstSelected.SelectedIndex
+        Me.lstSelected.Items.Remove(Me.lstSelected.SelectedItem)
 
         'Depending on position of selection and number of items in list select next item
-        If PositionSelectedPredator = lstSelected.Items.Count Then
-            lstSelected.SelectedIndex = PositionSelectedPredator - 1
+        If PositionSelectedPredator = Me.lstSelected.Items.Count Then
+            Me.lstSelected.SelectedIndex = PositionSelectedPredator - 1
         ElseIf PositionSelectedPredator > 0 Then
-            lstSelected.SelectedIndex = PositionSelectedPredator - 1
-        ElseIf lstUnSelected.Items.Count > 0 Then
-            lstSelected.SelectedIndex = 0
+            Me.lstSelected.SelectedIndex = PositionSelectedPredator - 1
+        ElseIf Me.lstUnSelected.Items.Count > 0 Then
+            Me.lstSelected.SelectedIndex = 0
         End If
 
-        SetStateAddRemove()
+        Me.SetStateAddRemove()
 
     End Sub
 
-    Private Sub btnRemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveAll.Click
+    Private Sub btnRemoveAll_Click(sender As System.Object, e As System.EventArgs) Handles btnRemoveAll.Click
 
-        While lstSelected.Items.Count > 0
-            SelectionData.Remove(lstSelected.Items(0).ToString)
-            lstUnSelected.Items.Add(lstSelected.Items(0))
-            lstUnSelected.SelectedIndex = lstUnSelected.Items.Count - 1
-            lstSelected.Items.RemoveAt(0)
+        While Me.lstSelected.Items.Count > 0
+            Me.SelectionData.Remove(Me.lstSelected.Items(0).ToString)
+            Me.lstUnSelected.Items.Add(Me.lstSelected.Items(0))
+            Me.lstUnSelected.SelectedIndex = Me.lstUnSelected.Items.Count - 1
+            Me.lstSelected.Items.RemoveAt(0)
         End While
 
-        SetStateAddRemove()
+        Me.SetStateAddRemove()
 
     End Sub
 
-    Private Sub lstUnSelected_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lstUnSelected.MouseDoubleClick
+    Private Sub lstUnSelected_MouseDoubleClick(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles lstUnSelected.MouseDoubleClick
         Dim IndexSaved As Integer
 
         'Remove from unselection object
-        SelectionData.Add(lstUnSelected.SelectedItem.ToString)
+        Me.SelectionData.Add(Me.lstUnSelected.SelectedItem.ToString)
 
         'http://msdn.microsoft.com/en-us/library/kfw3x8dc.aspx
         'Prevents anything from happening when white space double clicked at bottom of listbox
-        If lstUnSelected.IndexFromPoint(e.Location) = -1 Then Exit Sub
+        If Me.lstUnSelected.IndexFromPoint(e.Location) = -1 Then Exit Sub
 
         'Get index of unselected item
-        IndexSaved = lstUnSelected.SelectedIndex
+        IndexSaved = Me.lstUnSelected.SelectedIndex
 
         'Add unselected back to selected
-        lstSelected.Items.Add(lstUnSelected.SelectedItem)
-        lstUnSelected.SelectedIndex = lstUnSelected.Items.Count - 1
+        Me.lstSelected.Items.Add(Me.lstUnSelected.SelectedItem)
+        Me.lstUnSelected.SelectedIndex = Me.lstUnSelected.Items.Count - 1
 
         'Remove from unselected list
-        lstUnSelected.Items.RemoveAt(IndexSaved)
+        Me.lstUnSelected.Items.RemoveAt(IndexSaved)
 
         'If selection at top of list select 1 less else select same index as began with
-        If lstUnSelected.Items.Count = IndexSaved Or IndexSaved = 0 Then
-            lstUnSelected.SelectedIndex = IndexSaved - 1
+        If Me.lstUnSelected.Items.Count = IndexSaved Or IndexSaved = 0 Then
+            Me.lstUnSelected.SelectedIndex = IndexSaved - 1
         Else
-            lstUnSelected.SelectedIndex = IndexSaved
+            Me.lstUnSelected.SelectedIndex = IndexSaved
         End If
 
-        SetStateAddRemove()
+        Me.SetStateAddRemove()
 
     End Sub
 
-    Private Sub chklstAttached_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles chklstAttached.ItemCheck
+    Private Sub chklstAttached_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) Handles chklstAttached.ItemCheck
 
         Dim temp As cCreatedObjects
 
         If e.NewValue = System.Windows.Forms.CheckState.Checked Then
             'Attach checked item to currently selected parent
-            temp = SelectionData.GetFocus
-            temp.Add(chklstAttached.Items(e.Index))
+            temp = Me.SelectionData.GetFocus
+            temp.Add(Me.chklstAttached.Items(e.Index))
         End If
 
         If e.NewValue = System.Windows.Forms.CheckState.Unchecked Then
             'Attach checked item to currently selected parent
-            temp = SelectionData.GetFocus
-            temp.Remove(chklstAttached.Items(e.Index))
+            temp = Me.SelectionData.GetFocus
+            temp.Remove(Me.chklstAttached.Items(e.Index))
         End If
 
         'SetSaveResultsState()
     End Sub
 
-    Private Sub btnAttachAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAttachAll.Click
-        For i = 0 To chklstAttached.Items.Count - 1
-            chklstAttached.SetItemChecked(i, True)
+    Private Sub btnAttachAll_Click(sender As System.Object, e As System.EventArgs) Handles btnAttachAll.Click
+        For i = 0 To Me.chklstAttached.Items.Count - 1
+            Me.chklstAttached.SetItemChecked(i, True)
         Next
     End Sub
 
-    Private Sub btnAttachNone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAttachNone.Click
-        For i = 0 To chklstAttached.Items.Count - 1
-            chklstAttached.SetItemChecked(i, False)
+    Private Sub btnAttachNone_Click(sender As System.Object, e As System.EventArgs) Handles btnAttachNone.Click
+        For i = 0 To Me.chklstAttached.Items.Count - 1
+            Me.chklstAttached.SetItemChecked(i, False)
         Next
     End Sub
 
-    Private Sub btnOk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOk.Click
+    Private Sub btnOk_Click(sender As System.Object, e As System.EventArgs) Handles btnOk.Click
         Me.Close()
     End Sub
 End Class

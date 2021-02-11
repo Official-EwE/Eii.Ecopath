@@ -92,7 +92,7 @@ Public Class cEcotrophPlugin
         End Get
     End Property
 
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
             etCore = DirectCast(core, cCore)
         Catch ex As Exception
@@ -130,16 +130,16 @@ Public Class cEcotrophPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
             If Not Me.HasInterface(Me.frmET) Then
-                frmET = New frmEcotroph()
-                frmET.UIContext = Me.m_uic
+                Me.frmET = New frmEcotroph()
+                Me.frmET.UIContext = Me.m_uic
             End If
 
             ' Pass form reference back to calling app
-            frmPlugin = frmET
+            frmPlugin = Me.frmET
 
         Catch ex As Exception
             cLog.Write(ex, "cEcotrophPlugin.OnControlClick")
@@ -147,7 +147,7 @@ Public Class cEcotrophPlugin
     End Sub
 
 
-    Private Function HasInterface(ByVal theForm As System.Windows.Forms.Form) As Boolean
+    Private Function HasInterface(theForm As System.Windows.Forms.Form) As Boolean
         If theForm Is Nothing Then Return False
         If theForm.IsDisposed Then Return False
         Return True
@@ -224,7 +224,7 @@ Public Class cEcotrophPlugin
 
     End Sub
 
-    'Private Function match(ByVal epdata As cEcopathDataStructures, ByVal p2 As String) As Array
+    'Private Function match(epdata As cEcopathDataStructures, p2 As String) As Array
     '    Throw New NotImplementedException
     'End Function
 

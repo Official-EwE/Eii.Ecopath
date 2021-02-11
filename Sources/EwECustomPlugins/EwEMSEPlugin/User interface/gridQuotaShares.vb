@@ -78,7 +78,7 @@ Public Class gridQuotaShares
 #Region " Public access "
 
     Public Sub Init(Plugin As cMSE, data As cQuotaShares)
-        mMSEPlugin = Plugin
+        Me.mMSEPlugin = Plugin
         Me.m_data = data.GetLstGrpShares
         Me.RefreshContent()
     End Sub
@@ -145,7 +145,7 @@ Public Class gridQuotaShares
         Dim pm As cPropertyManager = Me.UIContext.PropertyManager
         Dim iRow As Integer = -1
         Dim cell As cEwECell = Nothing
-        Dim lstShares As List(Of cQuotaShares.QuotaShare) = m_data
+        Dim lstShares As List(Of cQuotaShares.QuotaShare) = Me.m_data
 
         'Dim lstOptions As New List(Of cMSE.DistributionType)
         'lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(cMSE.DistributionType)), IEnumerable(Of cMSE.DistributionType)))
@@ -164,7 +164,7 @@ Public Class gridQuotaShares
             Me(iRow, eColumnTypes.FleetNumber) = New cEwERowHeaderCell(CStr(data.mFleetNo))
             Me(iRow, eColumnTypes.FleetName) = New cPropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.mFleetNo), eVarNameFlags.Name)
             ' To Mark: property cells automatically keep track of changing variable values
-            Me(iRow, eColumnTypes.QuotaShare) = DataCell(data.mShare)
+            Me(iRow, eColumnTypes.QuotaShare) = Me.DataCell(data.mShare)
             Me.Rows(iRow).Tag = data
         Next
 
@@ -207,7 +207,7 @@ Public Class gridQuotaShares
 
         ' To Mark: I've added a 'lazy notification' to be fired after the entire celll edit bit has completed.
         'Me.RaiseDataChangeEvent()
-        Me.BeginInvoke(New MethodInvoker(AddressOf RaiseDataChangeEvent))
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.RaiseDataChangeEvent))
 
         Return True
 

@@ -25,7 +25,7 @@ Imports ScientificInterfaceShared.Forms
 Partial Class frmShapes
     Inherits frmEwEGrid
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()

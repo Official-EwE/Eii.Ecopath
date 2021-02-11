@@ -92,7 +92,7 @@ Public Class cNormalShapeFunction
             'SD left
             Dim sd As Single = Me.ParamValue(eParNames.SDLeft) + 0.0000001F
             'width in SD
-            Me.ParamValue(eParNames.DataWidth) = ParamValue(eParNames.SDLeft) * 5 + ParamValue(eParNames.SDRight) * 5
+            Me.ParamValue(eParNames.DataWidth) = Me.ParamValue(eParNames.SDLeft) * 5 + Me.ParamValue(eParNames.SDRight) * 5
             'Dim Wsd As Single = Me.ParamValue(3)
             Dim Wsd As Single = Me.ParamValue(eParNames.DataWidth)
 

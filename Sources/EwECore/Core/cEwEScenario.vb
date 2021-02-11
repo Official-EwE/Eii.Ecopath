@@ -26,8 +26,8 @@ Public MustInherit Class cEwEScenario
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore)
-        MyBase.New(theCore)
+    Sub New(core As cCore)
+        MyBase.New(core)
 
         Dim val As cValue
         Dim meta As cVariableMetaData
@@ -44,23 +44,23 @@ Public MustInherit Class cEwEScenario
 
             ' Description
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Description, eStatusFlags.OK, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             ' Author
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Author, eStatusFlags.OK, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             ' Contact
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK, eValueTypes.Str)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New String(desc), eVarNameFlags.Contact, eStatusFlags.OK, eValueTypes.Str)
+            Me.m_values.Add(val.varName, val)
 
             ' Last saved julian date
-            val = New cValue(New Single, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
-            ResetStatusFlags()
+            Me.ResetStatusFlags()
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -82,31 +82,31 @@ Public MustInherit Class cEwEScenario
 
     Public Property Description() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Description))
+            Return CStr(Me.GetVariable(eVarNameFlags.Description))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Description, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.Description, str)
         End Set
     End Property
 
     Public Property Author() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Author))
+            Return CStr(Me.GetVariable(eVarNameFlags.Author))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Author, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.Author, str)
         End Set
     End Property
 
     Public Property Contact() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.Contact))
+            Return CStr(Me.GetVariable(eVarNameFlags.Contact))
         End Get
 
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Contact, str)
+        Set(str As String)
+            Me.SetVariable(eVarNameFlags.Contact, str)
         End Set
     End Property
 
@@ -115,11 +115,11 @@ Public MustInherit Class cEwEScenario
     ''' </summary>
     Public Property LastSaved() As Double
         Get
-            Return CDbl(GetVariable(eVarNameFlags.LastSaved))
+            Return CDbl(Me.GetVariable(eVarNameFlags.LastSaved))
         End Get
 
-        Set(ByVal value As Double)
-            SetVariable(eVarNameFlags.LastSaved, value)
+        Set(value As Double)
+            Me.SetVariable(eVarNameFlags.LastSaved, value)
         End Set
     End Property
 
@@ -130,11 +130,11 @@ Public MustInherit Class cEwEScenario
     Public Property DescriptionStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Description)
+            Return Me.GetStatus(eVarNameFlags.Description)
         End Get
 
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Description, value)
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Description, value)
         End Set
 
     End Property

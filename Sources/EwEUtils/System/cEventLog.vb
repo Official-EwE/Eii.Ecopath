@@ -42,8 +42,8 @@ Public Class cEventLog
     ''' <param name="strLogName">Name of Log (System, Application, Security is 
     ''' read-only) If you specify a non-existent log, the log will be created</param>
     ''' <remarks></remarks>
-    Public Sub New(ByVal strAppName As String, _
-                   Optional ByVal strLogName As String = "Application")
+    Public Sub New(strAppName As String, _
+                   Optional strLogName As String = "Application")
 
         Me.m_strAppName = strAppName
 
@@ -62,8 +62,8 @@ Public Class cEventLog
     ''' <param name="eventlogentry"><see cref="EventLogEntryType">Entry Type</see>.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteToEventLog(ByVal strEntry As String, _
-                                    Optional ByVal eventlogentry As EventLogEntryType = EventLogEntryType.Information) As Boolean
+    Public Function WriteToEventLog(strEntry As String, _
+                                    Optional eventlogentry As EventLogEntryType = EventLogEntryType.Information) As Boolean
 
         Dim objEventLog As New EventLog()
         Dim bSucces As Boolean = True

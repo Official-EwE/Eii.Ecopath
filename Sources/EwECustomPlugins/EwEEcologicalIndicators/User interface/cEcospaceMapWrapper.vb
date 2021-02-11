@@ -71,12 +71,12 @@ Public Class cEcospaceMapWrapper
 
 #Region " Attach + detach "
 
-    Public Sub Attach(ByVal uic As cUIContext,
-                      ByVal indicators As Dictionary(Of Point, cEcospaceIndicators),
-                      ByVal settings As cIndicatorSettings,
-                      ByVal picbox As PictureBox,
-                      ByVal indEcopath As cEcopathIndicators,
-                      ByVal colors As List(Of Color))
+    Public Sub Attach(uic As cUIContext,
+                      indicators As Dictionary(Of Point, cEcospaceIndicators),
+                      settings As cIndicatorSettings,
+                      picbox As PictureBox,
+                      indEcopath As cEcopathIndicators,
+                      colors As List(Of Color))
 
         Me.m_uic = uic
         Me.m_settings = settings
@@ -85,21 +85,21 @@ Public Class cEcospaceMapWrapper
         Me.m_picbox = picbox
         Me.m_colors = colors
 
-        AddHandler Me.m_picbox.Resize, AddressOf OnResizePanel
+        AddHandler Me.m_picbox.Resize, AddressOf Me.OnResizePanel
         'AddHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
-        AddHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
-        AddHandler Me.m_picbox.MouseMove, AddressOf OnSetTooltip
-        AddHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
+        AddHandler Me.m_picbox.MouseEnter, AddressOf Me.OnSetTooltip
+        AddHandler Me.m_picbox.MouseMove, AddressOf Me.OnSetTooltip
+        AddHandler Me.m_picbox.MouseLeave, AddressOf Me.OnClearTooltip
 
     End Sub
 
     Public Sub Detach()
 
-        RemoveHandler Me.m_picbox.Resize, AddressOf OnResizePanel
+        RemoveHandler Me.m_picbox.Resize, AddressOf Me.OnResizePanel
         'RemoveHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
-        RemoveHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
-        RemoveHandler Me.m_picbox.MouseMove, AddressOf OnSetTooltip
-        RemoveHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
+        RemoveHandler Me.m_picbox.MouseEnter, AddressOf Me.OnSetTooltip
+        RemoveHandler Me.m_picbox.MouseMove, AddressOf Me.OnSetTooltip
+        RemoveHandler Me.m_picbox.MouseLeave, AddressOf Me.OnClearTooltip
 
         If (Me.m_bmp IsNot Nothing) Then
             Me.m_bmp.Dispose()
@@ -274,7 +274,7 @@ Public Class cEcospaceMapWrapper
 
             Next
 
-            For Each drawer In m_drawers
+            For Each drawer In Me.m_drawers
                 drawer.SignalState.WaitOne()
             Next
 

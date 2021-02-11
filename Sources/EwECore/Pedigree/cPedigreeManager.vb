@@ -49,7 +49,7 @@ Public Class cPedigreeManager
 
 #Region " Constructor and Cleanup "
 
-    Friend Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal iDBID As Integer)
+    Friend Sub New(core As cCore, varName As eVarNameFlags, iDBID As Integer)
         MyBase.New(core)
 
         Dim val As cValue = Nothing
@@ -67,7 +67,7 @@ Public Class cPedigreeManager
         'Array variables
         'Pedigree
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
+        val = New cValueArray(core, eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
         Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -96,11 +96,11 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <param name="iGroup">One-based index of the group.</param>
     ''' -----------------------------------------------------------------------
-    Public Property Pedigree(ByVal iGroup As Integer) As Integer
+    Public Property Pedigree(iGroup As Integer) As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iGroup))
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Me.SetVariable(eVarNameFlags.Pedigree, value, iGroup)
         End Set
     End Property
@@ -111,11 +111,11 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
     ''' -----------------------------------------------------------------------
-    Public Property PedigreeStatus(ByVal iVariable As Integer) As eStatusFlags
+    Public Property PedigreeStatus(iVariable As Integer) As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.Pedigree, iVariable)
         End Get
-        Friend Set(ByVal value As eStatusFlags)
+        Friend Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.Pedigree, value)
         End Set
     End Property
@@ -142,7 +142,7 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <param name="iLevel">The one-based index of the level to obtain.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
+    Public ReadOnly Property Level(iLevel As Integer) As cPedigreeLevel
         Get
             If (iLevel <= 0) Then Return Nothing
             Return Me.m_levels(iLevel)
@@ -356,7 +356,7 @@ Public Class cPedigreeManager
 
     End Function
 
-    Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
         MyBase.ResetStatusFlags(bForceReset)
         For iGroup As Integer = 1 To Me.m_core.nGroups
@@ -372,7 +372,7 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <param name="group">The group to update.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub Set_Pedigree_Flags(ByVal group As cEcoPathGroupInput)
+    Friend Sub Set_Pedigree_Flags(group As cEcoPathGroupInput)
 
         Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
 

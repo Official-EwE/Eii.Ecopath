@@ -157,7 +157,7 @@ Namespace Shapes.Utility
 
             strLine = text.ReadLine()
             While Not String.IsNullOrWhiteSpace(strLine)
-                Dim bits As String() = cStringUtils.SplitQualified(strLine, Delimiter)
+                Dim bits As String() = cStringUtils.SplitQualified(strLine, Me.Delimiter)
                 Dim fn As IShapeFunction = Me.ShapeFunction(Long.Parse(bits(1)))
                 If (fn IsNot Nothing) Then
                     Dim parms(4) As Single
@@ -189,7 +189,7 @@ Namespace Shapes.Utility
         ''' </summary>
         ''' <returns>An array of <see cref="cFunctionDefinition">function definitions</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function FunctionDefinitions(ByVal dt As eDataTypes) As cFunctionDefinition()
+        Public Function FunctionDefinitions(dt As eDataTypes) As cFunctionDefinition()
             Dim lDefs As New List(Of cFunctionDefinition)
             For Each fn As cFunctionDefinition In Me.m_defs
                 If fn.ShapeFunction.IsCompatible(dt) Then

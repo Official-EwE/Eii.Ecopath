@@ -46,17 +46,17 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
 
-            If disposing AndAlso components IsNot Nothing Then
+            If disposing AndAlso Me.components IsNot Nothing Then
                 Me.m_fpVerboseLevel.Release()
                 Me.m_fpVerboseLevel = Nothing
-                components.Dispose()
+                Me.components.Dispose()
             End If
             MyBase.Dispose(disposing)
 
@@ -66,7 +66,7 @@ Namespace Other
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Dim bHasMRU As Boolean = False
@@ -189,7 +189,7 @@ Namespace Other
 
 #Region " Event handlers "
 
-        Private Sub OnClearMRU(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClearMRU(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClearMRU.Click
 
             Me.ClearFileList(My.Settings.MdbRecentlyUsedList)
@@ -198,7 +198,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnViewLogFileDir(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnViewLogFileDir(sender As System.Object, e As System.EventArgs) _
             Handles m_btnViewLogFileDir.Click
 
             Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
@@ -217,7 +217,7 @@ Namespace Other
 
 #Region " Internals "
 
-        Private Sub ClearFileList(ByVal fileList As ArrayList)
+        Private Sub ClearFileList(fileList As ArrayList)
 
             If (fileList Is Nothing) Then Return
 

@@ -73,10 +73,10 @@ Namespace Ecosim
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal iPrey As Integer, ByVal iPred As Integer,
-                       ByVal shapeType As eShapeCategoryTypes,
-                       ByVal bConsumers As eGroupFilter)
+        Public Sub New(uic As cUIContext,
+                       iPrey As Integer, iPred As Integer,
+                       shapeType As eShapeCategoryTypes,
+                       bConsumers As eGroupFilter)
             Try
 
                 Me.Init(uic, eEditMode.PredPrey, shapeType, bConsumers)
@@ -100,11 +100,11 @@ Namespace Ecosim
         ''' <param name="iGroup">Group this dialog was opened for.</param>
         ''' <param name="editMode">Flag stating how this group should be interpreted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal iGroup As Integer,
-                       ByVal editMode As eEditMode,
-                       ByVal shapeType As eShapeCategoryTypes,
-                       ByVal bConsumers As eGroupFilter)
+        Public Sub New(uic As cUIContext,
+                       iGroup As Integer,
+                       editMode As eEditMode,
+                       shapeType As eShapeCategoryTypes,
+                       bConsumers As eGroupFilter)
 
             Me.Init(uic, editMode, shapeType, bConsumers)
 
@@ -113,18 +113,18 @@ Namespace Ecosim
                 Case eEditMode.Prey
                     Me.m_iSelPrey = iGroup
 
-                    For i As Integer = 1 To m_nGroups
+                    For i As Integer = 1 To Me.m_nGroups
                         If Me.m_InteractionManager.isPredPrey(i, Me.m_iSelPrey) Then
-                            Me.m_lInteractions.Add(m_InteractionManager.PredPreyInteraction(i, Me.m_iSelPrey))
+                            Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(i, Me.m_iSelPrey))
                         End If
                     Next
 
                 Case eEditMode.Predator
                     Me.m_iSelPred = iGroup
 
-                    For i As Integer = 1 To m_nGroups
+                    For i As Integer = 1 To Me.m_nGroups
                         If Me.m_InteractionManager.isPredPrey(Me.m_iSelPred, i) Then
-                            Me.m_lInteractions.Add(m_InteractionManager.PredPreyInteraction(Me.m_iSelPred, i))
+                            Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(Me.m_iSelPred, i))
                         End If
                     Next
 
@@ -140,9 +140,9 @@ Namespace Ecosim
         ''' Create the dialog for all diets
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext,
-                       ByVal shapeType As eShapeCategoryTypes,
-                       ByVal bConsumers As eGroupFilter)
+        Public Sub New(uic As cUIContext,
+                       shapeType As eShapeCategoryTypes,
+                       bConsumers As eGroupFilter)
 
             Me.Init(uic, eEditMode.All, shapeType, bConsumers)
 
@@ -151,7 +151,7 @@ Namespace Ecosim
                 For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
                     ' Can assign FF at this spot in the matrix?
                     If Me.m_InteractionManager.isPredPrey(iPred, iPrey) Then
-                        Me.m_lInteractions.Add(m_InteractionManager.PredPreyInteraction(iPred, iPrey))
+                        Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(iPred, iPrey))
                     End If
                 Next
             Next
@@ -161,7 +161,7 @@ Namespace Ecosim
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
@@ -176,7 +176,7 @@ Namespace Ecosim
             Me.LoadAppliedShapes()
 
             ' Load Prey and predator pair name
-            Select Case m_editMode
+            Select Case Me.m_editMode
                 Case eEditMode.PredPrey
                     Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
                     Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
@@ -195,7 +195,7 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             For Each img As Image In Me.m_ilSmall.Images
                 img.Dispose()
@@ -212,10 +212,10 @@ Namespace Ecosim
 
 #Region " Termination "
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles OK_Button.Click
 
-            Dim iNumApplied As Integer = m_lvAppliedShapes.Items.Count
+            Dim iNumApplied As Integer = Me.m_lvAppliedShapes.Items.Count
             Dim lvItem As ListViewItem = Nothing
             Dim shape As cForcingFunction = Nothing
             Dim iApplication As Integer = 0
@@ -273,7 +273,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles Cancel_Button.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
@@ -283,22 +283,22 @@ Namespace Ecosim
 
 #Region " Add and remove "
 
-        Private Sub lvAllShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvAllShapes_DoubleClick(sender As Object, e As System.EventArgs) _
             Handles m_lvAllShapes.DoubleClick
             Me.AddShapes()
         End Sub
 
-        Private Sub lvAppliedShapes_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvAppliedShapes_DoubleClick(sender As Object, e As System.EventArgs) _
             Handles m_lvAppliedShapes.DoubleClick
             Me.RemoveShapes()
         End Sub
 
-        Private Sub OnAdd(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnAdd(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click
             Me.AddShapes()
         End Sub
 
-        Private Sub OnRemove(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRemove(sender As System.Object, e As System.EventArgs) _
             Handles m_btnRemove.Click
             Me.RemoveShapes()
         End Sub
@@ -325,7 +325,7 @@ Namespace Ecosim
 
 #Region " Selections "
 
-        Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub lvAppliedShapes_SelectedIndexChanged(sender As Object, e As System.EventArgs) _
             Handles m_lvAppliedShapes.SelectedIndexChanged, m_lvAllShapes.SelectedIndexChanged
             Me.UpdateControls()
         End Sub
@@ -353,10 +353,10 @@ Namespace Ecosim
         ''' <param name="shapeType"></param>
         ''' <param name="bConsumers"></param>
         ''' -------------------------------------------------------------------
-        Private Sub Init(ByVal uic As cUIContext,
-                         ByVal editMode As eEditMode,
-                         ByVal shapeType As eShapeCategoryTypes,
-                         ByVal bConsumers As eGroupFilter)
+        Private Sub Init(uic As cUIContext,
+                         editMode As eEditMode,
+                         shapeType As eShapeCategoryTypes,
+                         bConsumers As eGroupFilter)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -390,7 +390,7 @@ Namespace Ecosim
             Next
 
             ' Generate thumbnails from shapes
-            Me.m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
+            Me.m_ilSmall.ImageSize = New Size(Me.SmallIconSize, Me.SmallIconSize)
             Me.GenerateShapeThumbnails()
 
             Me.m_nGroups = Me.m_uic.Core.nGroups
@@ -403,7 +403,7 @@ Namespace Ecosim
         ''' Change the default multiplier, and update all selected appls.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub SetMultiplier(ByVal appl As eForcingFunctionApplication)
+        Private Sub SetMultiplier(appl As eForcingFunctionApplication)
             ' Store appl mode
             Me.m_appl = appl
             ' Update all selected items
@@ -426,11 +426,11 @@ Namespace Ecosim
         ''' Get/set the selected shape for a list view item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Property Shape(ByVal lvi As ListViewItem) As cForcingFunction
+        Private Property Shape(lvi As ListViewItem) As cForcingFunction
             Get
                 Return DirectCast(lvi.Tag, cForcingFunction)
             End Get
-            Set(ByVal value As cForcingFunction)
+            Set(value As cForcingFunction)
                 lvi.Tag = value
             End Set
         End Property
@@ -442,14 +442,14 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub AddShapes()
 
-            Dim colSelected As ListView.SelectedIndexCollection = m_lvAllShapes.SelectedIndices
+            Dim colSelected As ListView.SelectedIndexCollection = Me.m_lvAllShapes.SelectedIndices
             Dim shapeSelected As cForcingFunction = Nothing
             Dim shapeTest As cForcingFunction = Nothing
             Dim iNumApplied As Integer = 0
             Dim bFound As Boolean = False
 
             For Each item As ListViewItem In Me.m_lvAppliedShapes.Items
-                If Me.IsAllowedShape(Shape(item)) Then
+                If Me.IsAllowedShape(Me.Shape(item)) Then
                     iNumApplied += 1
                 End If
             Next
@@ -457,7 +457,7 @@ Namespace Ecosim
             For Each itemSrc As ListViewItem In Me.m_lvAllShapes.SelectedItems
 
                 'Get the shape data
-                shapeSelected = Shape(itemSrc)
+                shapeSelected = Me.Shape(itemSrc)
 
                 ' Sanity check
                 Debug.Assert(shapeSelected IsNot Nothing, "Unable to locate applied forcing function")
@@ -465,7 +465,7 @@ Namespace Ecosim
                 ' Check if already used
                 bFound = False
                 For Each itemTest As ListViewItem In Me.m_lvAppliedShapes.Items
-                    shapeTest = Shape(itemTest)
+                    shapeTest = Me.Shape(itemTest)
                     If ReferenceEquals(shapeSelected, shapeTest) Then bFound = True
                 Next
 
@@ -532,7 +532,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
+        Private Sub UpdateAppliedShape(item As ListViewItem, appl As eForcingFunctionApplication)
 
             Dim fmt As New cFFApplicationTargetTypeFormatter()
             Dim shape As cForcingFunction = Me.Shape(item)
@@ -596,7 +596,7 @@ Namespace Ecosim
 
         Private Sub LoadAppliedShapes()
 
-            If (m_editMode = eEditMode.PredPrey) Then
+            If (Me.m_editMode = eEditMode.PredPrey) Then
 
                 Dim ppi As cMediatedInteraction = Me.m_lInteractions(0)
                 Dim item As ListViewItem = Nothing
@@ -622,11 +622,11 @@ Namespace Ecosim
             End If
 
             Me.m_lvAppliedShapes.View = View.Details
-            Me.m_lvAppliedShapes.SmallImageList = m_ilSmall
+            Me.m_lvAppliedShapes.SmallImageList = Me.m_ilSmall
 
         End Sub
 
-        Private Function IsAllowedShape(ByVal shape As cShapeData) As Boolean
+        Private Function IsAllowedShape(shape As cShapeData) As Boolean
             If (TypeOf shape Is cMediationBaseFunction) Then
                 Return (Me.m_shapeMode = eShapeCategoryTypes.Mediation)
             Else
@@ -661,7 +661,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ConfigureApplicationRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
+        Private Sub ConfigureApplicationRadioButton(rb As RadioButton, tag As eForcingFunctionApplication)
 
             Dim fmt As New cFFApplicationTargetTypeFormatter()
             rb.Text = fmt.ToString(tag)

@@ -48,7 +48,7 @@ Namespace Ecopath.Output
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
-            Me.Redim(Core.nLivingGroups + 1, 2)
+            Me.Redim(Me.Core.nLivingGroups + 1, 2)
 
             ' Set header cells
             ' # (0,0)
@@ -57,9 +57,9 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
             ' For every living groups
-            For i As Integer = 1 To core.nLivingGroups
+            For i As Integer = 1 To Me.core.nLivingGroups
                 'Get group output
-                source = core.EcoPathGroupOutputs(i)
+                source = Me.core.EcoPathGroupOutputs(i)
                 ' Define column header cell
                 Me.Columns.Insert(columnIndex)
                 Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
@@ -79,11 +79,11 @@ Namespace Ecopath.Output
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim prop As cProperty = Nothing
 
-            For columnIndex As Integer = 2 To core.nLivingGroups + 1
-                source = core.EcoPathGroupOutputs(columnIndex - 1)
-                For rowIndex As Integer = 1 To core.nLivingGroups
+            For columnIndex As Integer = 2 To Me.core.nLivingGroups + 1
+                source = Me.core.EcoPathGroupOutputs(columnIndex - 1)
+                For rowIndex As Integer = 1 To Me.core.nLivingGroups
                     ' Get the group output
-                    sourceSec = core.EcoPathGroupOutputs(rowIndex)
+                    sourceSec = Me.core.EcoPathGroupOutputs(rowIndex)
 
                     If columnIndex <= rowIndex + 1 Then
                         If source.PP() <= 1 Then

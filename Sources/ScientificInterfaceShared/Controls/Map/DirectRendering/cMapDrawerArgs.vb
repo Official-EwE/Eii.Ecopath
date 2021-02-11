@@ -25,9 +25,9 @@ Namespace Controls.Map
         Private m_relscaler() As Single
         Private m_sMaxLegendF As Single
 
-        Public Sub New(ByVal maptype As cMapDrawerBase.eMapType,
-                       ByVal theRelScaler() As Single,
-                       ByVal MaxLegendF As Single)
+        Public Sub New(maptype As cMapDrawerBase.eMapType,
+                       theRelScaler() As Single,
+                       MaxLegendF As Single)
 
             Dim data As Single() = Nothing
 

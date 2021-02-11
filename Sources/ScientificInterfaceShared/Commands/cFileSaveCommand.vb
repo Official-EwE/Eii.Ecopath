@@ -44,7 +44,7 @@ Namespace Commands
         ''' Constructor, initializes a new instance of the NavigationCommand class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
@@ -71,10 +71,10 @@ Namespace Commands
         ''' Optional dialog title. If left empty, a system default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strFileName As String, _
-                                    ByVal strFileFilter As String, _
-                                    Optional ByVal iFilter As Integer = 0, _
-                                    Optional ByVal strTitle As String = "")
+        Public Overloads Sub Invoke(strFileName As String, _
+                                    strFileFilter As String, _
+                                    Optional iFilter As Integer = 0, _
+                                    Optional strTitle As String = "")
 
             Dim strPath As String = ""
 
@@ -107,9 +107,9 @@ Namespace Commands
         ''' Optional dialog title. If left empty, the Visual Studio default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strFileFilter As String, _
-                                    Optional ByVal iFilter As Integer = 0, _
-                                    Optional ByVal strTitle As String = "")
+        Public Overloads Sub Invoke(strFileFilter As String, _
+                                    Optional iFilter As Integer = 0, _
+                                    Optional strTitle As String = "")
 
             Me.Invoke("", strFileFilter, iFilter, strTitle)
 

@@ -79,14 +79,14 @@ Friend Class cDBUpdate6_01_01_010
 
     End Function
 
-    Private Function CreateGenericTaxonTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function CreateGenericTaxonTable(db As cEwEDatabase) As Boolean
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("CREATE TABLE EcopathTaxon (TaxonID LONG, CodeISCAAP TEXT(3), CodeTaxon TEXT(14), Code3A TEXT(4), ClassName TEXT(50), OrderName TEXT(50), FamilyName TEXT(50), GenusName TEXT(50), SpeciesName TEXT(50), CommonName TEXT(50), SourceName TEXT(50), SourceKey MEMO, LastUpdated FLOAT, EcologyType LONG, OrganismType LONG, Exploited BYTE, ConservationStatus LONG, OccurrenceStatus LONG, MeanWeight SINGLE, MeanLength SINGLE, MaxLength SINGLE, MeanLifeSpan SINGLE, VulnerabiltyIndex SHORT)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathTaxon ADD CONSTRAINT PK_INDEX PRIMARY KEY (TaxonID)")
         Return bSucces
     End Function
 
-    Private Function CreateTaxonStanzaAssignmentTable(ByVal db As cEwEDatabase) As Boolean
+    Private Function CreateTaxonStanzaAssignmentTable(db As cEwEDatabase) As Boolean
         Dim bSucces As Boolean = True
         bSucces = bSucces And db.Execute("CREATE TABLE EcopathStanzaTaxon (TaxonID LONG, StanzaID LONG, Proportion SINGLE, PropCatch SINGLE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcopathStanzaTaxon ADD CONSTRAINT PK_INDEX PRIMARY KEY (TaxonID)")
@@ -95,7 +95,7 @@ Friend Class cDBUpdate6_01_01_010
         Return bSucces
     End Function
 
-    Private Function CopyTaxonData(ByVal db As cEwEDatabase) As Boolean
+    Private Function CopyTaxonData(db As cEwEDatabase) As Boolean
 
         ' Copy the 'old' fields
         Dim astrColumns As String() = New String() {"TaxonID", "CodeISCAAP", "CodeTaxon", "Code3A", "ClassName", "OrderName", "FamilyName", "GenusName", "SpeciesName", "CommonName", "SourceName", "SourceKey", "LastUpdated"}
@@ -118,7 +118,7 @@ Friend Class cDBUpdate6_01_01_010
 
     End Function
 
-    Private Function CleanupEcopathGroupTaxon(ByVal db As cEwEDatabase) As Boolean
+    Private Function CleanupEcopathGroupTaxon(db As cEwEDatabase) As Boolean
 
         Dim astrColumns As String() = New String() {"CodeISCAAP", "CodeTaxon", "Code3A", "ClassName", "OrderName", "FamilyName", "GenusName", "SpeciesName", "CommonName", "SourceName", "SourceKey", "LastUpdated", "EcologyType", "OrganismType", "Exploited", "ConservationStatus", "OccurrenceStatus", "OccurenceStatus", "MeanWeight", "MeanLength", "MaxLength", "MeanLifeSpan", "VulnerabiltyIndex"}
         Dim bSucces As Boolean = True

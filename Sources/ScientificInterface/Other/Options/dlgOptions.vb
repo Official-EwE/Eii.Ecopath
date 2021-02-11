@@ -60,7 +60,7 @@ Namespace Other
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, Optional verb As String = "")
+        Public Sub New(uic As cUIContext, Optional verb As String = "")
 
             Me.m_uic = uic
             Me.InitializeComponent()
@@ -131,7 +131,7 @@ Namespace Other
 
 #Region " Event handlers "
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOk.Click
 
             Try
@@ -144,7 +144,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnSetDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSetDefaults(sender As System.Object, e As System.EventArgs) _
                 Handles m_btnSetDefaults.Click
 
             Try
@@ -155,7 +155,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnApply(sender As System.Object, e As System.EventArgs) _
                 Handles m_btnApply.Click
 
             Try
@@ -166,7 +166,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
 
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -174,7 +174,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub OnSelectedNode(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Private Sub OnSelectedNode(sender As System.Object, e As System.Windows.Forms.TreeViewEventArgs) _
             Handles m_tvOptions.AfterSelect
 
             If (e.Node Is Nothing) Then Return
@@ -219,7 +219,7 @@ Namespace Other
 
             If (Me.m_tvOptions.GetNodeCount(False) = 0) Then Return
 
-            Dim n As TreeNode = FindNodeByVerb(strVerb)
+            Dim n As TreeNode = Me.FindNodeByVerb(strVerb)
             If (n Is Nothing) Then n = Me.m_tvOptions.Nodes(0)
             Me.m_tvOptions.SelectedNode = n
 
@@ -239,14 +239,14 @@ Namespace Other
                     If (String.Compare(CStr(n.Tag), strVerb, True) = 0) Then Return n
                 End If
                 If (n.Nodes.Count > 0) Then
-                    Dim n2 As TreeNode = FindNodeByVerb(strVerb, n)
+                    Dim n2 As TreeNode = Me.FindNodeByVerb(strVerb, n)
                     If (n2 IsNot Nothing) Then Return n2
                 End If
             Next
             Return Nothing
         End Function
 
-        Private Function CreatePage(ByVal t As Type) As IOptionsPage
+        Private Function CreatePage(t As Type) As IOptionsPage
 
             ' Sanity check
             Debug.Assert(GetType(IOptionsPage).IsAssignableFrom(t))
@@ -344,7 +344,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub SelectPage(ByVal page As IOptionsPage)
+        Private Sub SelectPage(page As IOptionsPage)
 
             Me.SuspendLayout()
 
@@ -362,7 +362,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub ExpandNode(ByVal node As TreeNode)
+        Private Sub ExpandNode(node As TreeNode)
             For Each nodeChild As TreeNode In node.Nodes
                 Me.ExpandNode(nodeChild)
             Next

@@ -32,44 +32,44 @@ Public Class cENACellData
     Private m_epdata As cEcopathDataStructures
 
 
-    Public Sub New(ByVal theRow As Integer, ByVal theCol As Integer)
+    Public Sub New(theRow As Integer, theCol As Integer)
         MyBase.New(theRow, theCol)
 
     End Sub
 
 
     Public Sub Init(SpaceData As cEcospaceDataStructures, EcoPathData As cEcopathDataStructures)
-        nGroups = SpaceData.NGroups
+        Me.nGroups = SpaceData.NGroups
 
-        Me.ENARData = New cENARDataStructures(nGroups)
+        Me.ENARData = New cENARDataStructures(Me.nGroups)
         Me.m_epdata = EcoPathData
 
     End Sub
 
-    Public Sub Populate(iTime As Integer, SpaceData As cEcospaceDataStructures, ByVal Biomass() As Single, Production() As Single, consumpt(,) As Single,
+    Public Sub Populate(iTime As Integer, SpaceData As cEcospaceDataStructures, Biomass() As Single, Production() As Single, consumpt(,) As Single,
                         FishingMort() As Single, EatenOf() As Single, FlowToDertitus() As Single, DetritusFlowByGroup() As Single, TotfisheriesDiscards As Single)
 
         'System.Console.WriteLine("Populating ENA Data " + Me.Key)
 
-        Debug.Assert(Biomass.Length >= nGroups, "enaR Populate(...) Number of groups in enaR and Core is not the same! This will cause problems!")
+        Debug.Assert(Biomass.Length >= Me.nGroups, "enaR Populate(...) Number of groups in enaR and Core is not the same! This will cause problems!")
         Try
 
             Me.iTimeStep = iTime
 			
             ' JS 11dec20: fixed bug where last array items weren't copied over, resulting in missing B for the last (detritus) group in EnaR SCOR files
-            Array.Copy(Biomass, Me.ENARData.b, nGroups + 1)
-            Array.Copy(consumpt, Me.ENARData.Consumpt, nGroups + 1)
+            Array.Copy(Biomass, Me.ENARData.b, Me.nGroups + 1)
+            Array.Copy(consumpt, Me.ENARData.Consumpt, Me.nGroups + 1)
 
-            For igrp As Integer = 1 To nGroups
+            For igrp As Integer = 1 To Me.nGroups
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'IMPORTS / PRODUCTION
-                If m_epdata.PP(igrp) = 1 Then
+                If Me.m_epdata.PP(igrp) = 1 Then
                     Me.ENARData.Import(igrp) = Production(igrp)
                 Else
                     'Imported consumption from Ecopath
                     'impConsump = CSng(m_EcoPathData.B(iGroup) * m_EcoPathData.QB(iGroup) * m_EcoPathData.DC(iGroup, 0))
-                    Me.ENARData.Import(igrp) = Biomass(igrp) * m_epdata.QB(igrp) * m_epdata.DC(igrp, 0)
+                    Me.ENARData.Import(igrp) = Biomass(igrp) * Me.m_epdata.QB(igrp) * Me.m_epdata.DC(igrp, 0)
                 End If
 
                 If igrp = Me.m_epdata.NumLiving + 1 Then
@@ -79,7 +79,7 @@ Public Class cENACellData
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'RESPIRATION
-                If m_epdata.PP(igrp) < 1 Then 'only for consumers
+                If Me.m_epdata.PP(igrp) < 1 Then 'only for consumers
 
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     'Respiration Calcualtion from cEcoNetwork.PrepareUlanowForCallFromEcosim()
@@ -111,7 +111,7 @@ Public Class cENACellData
 
                     'Export of Detritus
                     'cEcopathModel.CalcExportOfDetritus()
-                    Dim ExpDet As Single = FlowToDertitus(igrp - m_epdata.NumLiving) - m_epdata.BA(igrp) - EatenOf(igrp) - Me.ENARData.Resp(igrp)
+                    Dim ExpDet As Single = FlowToDertitus(igrp - Me.m_epdata.NumLiving) - Me.m_epdata.BA(igrp) - EatenOf(igrp) - Me.ENARData.Resp(igrp)
                     If ExpDet > 0 Then
                         Me.ENARData.CatchExport(igrp) = ExpDet - sumCatch
                     End If
@@ -126,7 +126,7 @@ Public Class cENACellData
                 'FLOW TO DETRITUS (CONSUMPTION)
 
                 'Det to Det
-                Dim ndet As Integer = nGroups - Me.m_epdata.NumLiving
+                Dim ndet As Integer = Me.nGroups - Me.m_epdata.NumLiving
                 If igrp > Me.m_epdata.NumLiving Then
 
                     For iDetGrp As Integer = 1 To ndet
@@ -173,7 +173,7 @@ Public Class cENACellData
         Dim row As String = Me.toFormattedString(Me.Row, 3)
         Dim col As String = Me.toFormattedString(Me.Col, 3)
 
-        Dim fp As String = Path.Combine(theCore.DefaultOutputPath(eAutosaveTypes.Ecospace), "ena_data", "TimeStep=" + toFormattedString(iTimeStep, 4))
+        Dim fp As String = Path.Combine(theCore.DefaultOutputPath(eAutosaveTypes.Ecospace), "ena_data", "TimeStep=" + Me.toFormattedString(Me.iTimeStep, 4))
 
         If Not Directory.Exists(fp) Then
             Directory.CreateDirectory(fp)

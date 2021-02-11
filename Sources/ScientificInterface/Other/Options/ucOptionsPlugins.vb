@@ -55,7 +55,7 @@ Namespace Other
 
         Private Class cPluginAssemblyInfo
 
-            Public Sub New(ByVal pa As cPluginAssembly)
+            Public Sub New(pa As cPluginAssembly)
                 Me.PluginAssembly = pa
                 Me.Enabled = pa.Enabled
             End Sub
@@ -91,7 +91,7 @@ Namespace Other
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
             Me.UIContext = uic
             Me.m_pm = Me.UIContext.Core.PluginManager
             Me.InitializeComponent()
@@ -168,7 +168,7 @@ Namespace Other
 
 #Region " Events "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
 
             If (Me.m_pm Is Nothing) Then Return
 
@@ -226,7 +226,7 @@ Namespace Other
 
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 If disposing Then
                     For Each pa As cPluginAssembly In Me.m_dictPluginAssemblyInfo.Keys
@@ -238,8 +238,8 @@ Namespace Other
 
                     Me.m_dictPluginAssemblyInfo.Clear()
 
-                    If components IsNot Nothing Then
-                        components.Dispose()
+                    If Me.components IsNot Nothing Then
+                        Me.components.Dispose()
                     End If
                 End If
             Finally
@@ -247,12 +247,12 @@ Namespace Other
             End Try
         End Sub
 
-        Private Sub OnAfterSelectNode(ByVal sender As System.Object, ByVal e As TreeViewEventArgs) _
+        Private Sub OnAfterSelectNode(sender As System.Object, e As TreeViewEventArgs) _
             Handles m_tvPlugins.AfterSelect
             Me.UpdateDetails()
         End Sub
 
-        Private Sub OnEnableCheckChanged(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnEnableCheckChanged(sender As Object, e As EventArgs) _
             Handles m_cbEnablePlugin.CheckedChanged
 
             Dim pa As cPluginAssembly = Me.SelectedPluginAssembly
@@ -280,7 +280,7 @@ Namespace Other
 
 #Region " Private implementations "
 
-        Private Function FindPluginAssemblyNode(ByVal pa As cPluginAssembly) As TreeNode
+        Private Function FindPluginAssemblyNode(pa As cPluginAssembly) As TreeNode
             If pa Is Nothing Then Return Nothing
             For Each tn As TreeNode In Me.m_tvPlugins.Nodes
                 If (TypeOf tn.Tag Is cPluginAssembly) Then
@@ -312,7 +312,7 @@ Namespace Other
         ''' <param name="info">The plug-in assembly info to return the image for.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function GetPluginAssemblyImageIndex(ByVal info As cPluginAssemblyInfo) As Integer
+        Private Function GetPluginAssemblyImageIndex(info As cPluginAssemblyInfo) As Integer
             ' ToDo: show alert icon when license expiring?
             If (info.PluginAssembly.IsLicensed) Then Return cIMAGE_LICENSE
             If (info.Enabled = False) Then Return cIMAGE_DISABLED
@@ -353,7 +353,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub UpdatePluginImage(ByVal info As cPluginAssemblyInfo)
+        Private Sub UpdatePluginImage(info As cPluginAssemblyInfo)
             Dim tn As TreeNode = Me.FindPluginAssemblyNode(info.PluginAssembly)
             Dim iIndex As Integer = Me.GetPluginAssemblyImageIndex(info)
 

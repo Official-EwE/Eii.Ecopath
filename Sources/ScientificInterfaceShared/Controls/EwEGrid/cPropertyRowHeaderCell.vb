@@ -61,7 +61,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop">cProperty to deliver the cell value.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty)
+        Public Sub New(prop As cProperty)
             MyBase.New(prop)
             Me.VisualModel = New cEwEGridRowHeaderVisualizer
         End Sub
@@ -77,8 +77,8 @@ Namespace Controls.EwEGrid
         ''' <param name="strUnit">The format mask to apply. This mask must
         ''' contain a '{0}' field where the property value is to be inserted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty,
-                       ByVal strUnit As String)
+        Public Sub New(prop As cProperty,
+                       strUnit As String)
             Me.New(prop)
             Me.SetUnits(strUnit)
         End Sub
@@ -97,11 +97,11 @@ Namespace Controls.EwEGrid
         ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
         ''' does not require an index.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal Source As cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing,
-                       Optional ByVal strUnit As String = "")
+        Public Sub New(pm As cPropertyManager,
+                       Source As cCoreInputOutputBase,
+                       VarName As eVarNameFlags,
+                       Optional SourceSec As cCoreInputOutputBase = Nothing,
+                       Optional strUnit As String = "")
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
@@ -114,7 +114,7 @@ Namespace Controls.EwEGrid
             Get
                 Return MyBase.Style Or cStyleGuide.eStyleFlags.Names
             End Get
-            Set(ByVal value As Style.cStyleGuide.eStyleFlags)
+            Set(value As Style.cStyleGuide.eStyleFlags)
                 MyBase.Style = value
             End Set
         End Property

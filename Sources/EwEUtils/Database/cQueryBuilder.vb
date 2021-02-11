@@ -113,8 +113,8 @@ Namespace Database
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------
-        Public Sub New(ByVal strQuery As String, _
-                       Optional ByVal fields As KeyValuePair(Of String, String)() = Nothing)
+        Public Sub New(strQuery As String, _
+                       Optional fields As KeyValuePair(Of String, String)() = Nothing)
 
             Me.m_strQuery = strQuery
             Me.CopyFields(fields)
@@ -146,7 +146,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strSegment">The segment to add.</param>
         ''' -------------------------------------------------------
-        Public Sub AddClause(ByVal strSegment As String)
+        Public Sub AddClause(strSegment As String)
             If (String.IsNullOrWhiteSpace(strSegment)) Then Return
             Me.m_lstrClauses.Add(strSegment)
         End Sub
@@ -183,9 +183,9 @@ Namespace Database
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------
-        Public Function AddClause(ByVal strSegment As String, _
-                                  ByVal strField As String, _
-                                  ByVal astrValues() As String) As Integer
+        Public Function AddClause(strSegment As String, _
+                                  strField As String, _
+                                  astrValues() As String) As Integer
 
             Dim sbValues As New StringBuilder()
             Dim nValueCount As Integer = 0
@@ -210,8 +210,8 @@ Namespace Database
         ''' <param name="strOrder">The segment to add.</param>
         ''' <param name="fields">Hash table with fields to substitute (optional).</param>
         ''' -------------------------------------------------------
-        Public Sub AddOrder(ByVal strOrder As String, _
-                            Optional ByVal fields As KeyValuePair(Of String, String)() = Nothing)
+        Public Sub AddOrder(strOrder As String, _
+                            Optional fields As KeyValuePair(Of String, String)() = Nothing)
 
             If (String.IsNullOrWhiteSpace(strOrder)) Then Return
 
@@ -226,8 +226,8 @@ Namespace Database
         ''' <param name="strGroup">The segment to add.</param>
         ''' <param name="fields">Value fields to substitute (optional).</param>
         ''' -------------------------------------------------------
-        Public Sub AddGroup(ByVal strGroup As String, _
-                            Optional ByVal fields As KeyValuePair(Of String, String)() = Nothing)
+        Public Sub AddGroup(strGroup As String, _
+                            Optional fields As KeyValuePair(Of String, String)() = Nothing)
 
             If (String.IsNullOrWhiteSpace(strGroup)) Then Return
 
@@ -242,7 +242,7 @@ Namespace Database
         ''' <param name="strField">The field placeholder to look for.</param>
         ''' <param name="strReplace">The field value to replace this placeholder with.</param>
         ''' -------------------------------------------------------
-        Public Sub AddField(ByVal strField As String, ByVal strReplace As String)
+        Public Sub AddField(strField As String, strReplace As String)
 
             If (String.IsNullOrWhiteSpace(strField)) Then Return
 
@@ -262,7 +262,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="fields"></param>
         ''' -------------------------------------------------------
-        Private Sub CopyFields(ByVal fields As KeyValuePair(Of String, String)())
+        Private Sub CopyFields(fields As KeyValuePair(Of String, String)())
 
             ' Copy fields. These will be substituted when the query is used
             If (Not fields Is Nothing) Then
@@ -280,7 +280,7 @@ Namespace Database
         ''' <param name="astrClauses">Array of clauses</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------
-        Private Function ConcatSegments(ByVal strType As String, ByVal astrClauses() As String) As String
+        Private Function ConcatSegments(strType As String, astrClauses() As String) As String
 
             Dim nLen As Integer = 0
             Dim n As Integer = 0
@@ -311,8 +311,8 @@ Namespace Database
         ''' <param name="dtSubst">Dictionary with key/value pairs to substitute</param>
         ''' <returns>The reworked string</returns>
         ''' -------------------------------------------------------
-        Private Function Subst(ByVal strIn As String, _
-                               Optional ByVal dtSubst As Dictionary(Of String, String) = Nothing) As String
+        Private Function Subst(strIn As String, _
+                               Optional dtSubst As Dictionary(Of String, String) = Nothing) As String
 
             Dim strOut As String = strIn
 
@@ -325,9 +325,9 @@ Namespace Database
 
         End Function
 
-        Private Function ToClauseString(ByVal strSegment As String, _
-                                        ByVal strField As String, _
-                                        ByVal strValues As String) As String
+        Private Function ToClauseString(strSegment As String, _
+                                        strField As String, _
+                                        strValues As String) As String
 
             Dim strOut As String = ""
 

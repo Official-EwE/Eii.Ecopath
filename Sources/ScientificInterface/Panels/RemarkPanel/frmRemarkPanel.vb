@@ -55,7 +55,7 @@ Public Class frmRemarkPanel
     ''' Constructor, initializes a new instance of the RemarkPanel.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext)
+    Public Sub New(uic As cUIContext)
         Me.InitializeComponent()
         Me.m_uic = uic
         Me.m_mon = New cSelectionMonitor()
@@ -63,17 +63,17 @@ Public Class frmRemarkPanel
 
 #Region " Form overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.m_uic Is Nothing) Then Return
 
         ' Hook up to core state monitor
         Me.m_sm = Me.m_uic.Core.StateMonitor
-        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
 
         Me.m_mon.Attach(Me.m_uic)
-        AddHandler Me.m_mon.OnSelectionChanged, AddressOf OnSelectionChanged
+        AddHandler Me.m_mon.OnSelectionChanged, AddressOf Me.OnSelectionChanged
 
         Me.Icon = Icon.FromHandle(SharedResources.CommentHS.GetHicon)
         Me.m_tsbnInfo.Image = SharedResources.Info
@@ -86,13 +86,13 @@ Public Class frmRemarkPanel
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Clean up
         If (Me.m_uic IsNot Nothing) Then
-            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
             Me.m_sm = Nothing
-            RemoveHandler Me.m_mon.OnSelectionChanged, AddressOf OnSelectionChanged
+            RemoveHandler Me.m_mon.OnSelectionChanged, AddressOf Me.OnSelectionChanged
             Me.m_mon.Detach()
             Me.m_uic = Nothing
 
@@ -139,7 +139,7 @@ Public Class frmRemarkPanel
         End If
 
         For Each p As cProperty In Me.m_lProps
-            RemoveHandler p.PropertyChanged, AddressOf OnPropertyChanged
+            RemoveHandler p.PropertyChanged, AddressOf Me.OnPropertyChanged
         Next
         Me.m_lProps.Clear()
 
@@ -152,7 +152,7 @@ Public Class frmRemarkPanel
             If (mon.Selection IsNot Nothing) Then
                 Me.m_lProps.AddRange(mon.Selection)
                 For Each p As cProperty In Me.m_lProps
-                    AddHandler p.PropertyChanged, AddressOf OnPropertyChanged
+                    AddHandler p.PropertyChanged, AddressOf Me.OnPropertyChanged
                 Next
             End If
         End If
@@ -171,7 +171,7 @@ Public Class frmRemarkPanel
     ''' Event handler, called when remark text has been edited by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnRemarkTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemarkTextChanged(sender As Object, e As System.EventArgs) _
         Handles m_tbxRemark.TextChanged
         Me.HasPendingChanges = True
     End Sub
@@ -181,7 +181,7 @@ Public Class frmRemarkPanel
     ''' Event hander, called when the user applies changes.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnApply(sender As System.Object, e As System.EventArgs) _
         Handles m_btnApply.Click
         Me.Apply()
     End Sub
@@ -192,7 +192,7 @@ Public Class frmRemarkPanel
     ''' apply any text changes to selected <see cref="cProperty">properties</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnLeavePanel(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnLeavePanel(sender As Object, e As System.EventArgs) _
         Handles m_tbxRemark.Leave
 
         ' Could be called in response to closing app!
@@ -250,7 +250,7 @@ Public Class frmRemarkPanel
         Get
             Return Me.m_bHasPendingChanges
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bHasPendingChanges = value
         End Set
     End Property
@@ -264,12 +264,12 @@ Public Class frmRemarkPanel
     ''' Event handler, responds to core state change events to update its state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
+    Private Sub OnCoreExecutionStateEvent(csm As cCoreStateMonitor)
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnPropertyChanged(ByVal p As cProperty, ByVal ct As cProperty.eChangeFlags)
-        Me.BeginInvoke(New MethodInvoker(AddressOf UpdateContents))
+    Private Sub OnPropertyChanged(p As cProperty, ct As cProperty.eChangeFlags)
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateContents))
     End Sub
 
 #End Region ' Core state response

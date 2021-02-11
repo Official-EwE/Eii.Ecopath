@@ -67,7 +67,7 @@ Friend Class cDBUpdate6_00_07_003
         Return Me.FixEcospaceFleetMapPK(db) And Me.UpdateAuxillaryData(db)
     End Function
 
-    Private Function UpdateAuxillaryData(ByVal db As cEwEDatabase) As Boolean
+    Private Function UpdateAuxillaryData(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM Remark")
         Dim iDBID As Integer = 1
@@ -134,7 +134,7 @@ Friend Class cDBUpdate6_00_07_003
     ''' </summary>
     ''' <param name="db"></param>
     ''' <returns></returns>
-    Private Function FixEcospaceFleetMapPK(ByVal db As cEwEDatabase) As Boolean
+    Private Function FixEcospaceFleetMapPK(db As cEwEDatabase) As Boolean
 
         Dim strPK As String = ""
         Dim strSQL As String = ""

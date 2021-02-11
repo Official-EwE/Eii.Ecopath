@@ -50,7 +50,7 @@ Public Class plUnitControl
 
 #Region " Constructors "
 
-    Public Sub New(ByVal uic As cUIContext, ByVal fp As cFlowPosition)
+    Public Sub New(uic As cUIContext, fp As cFlowPosition)
 
         Debug.Assert(fp IsNot Nothing)
 
@@ -64,9 +64,9 @@ Public Class plUnitControl
         ' Auto-repos
         Me.OnPositionChanged(Me.m_fp)
 
-        AddHandler Me.m_fp.OnChanged, AddressOf OnPositionChanged
-        AddHandler Me.m_fp.Unit.OnChanged, AddressOf OnDataChanged
-        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+        AddHandler Me.m_fp.OnChanged, AddressOf Me.OnPositionChanged
+        AddHandler Me.m_fp.Unit.OnChanged, AddressOf Me.OnDataChanged
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleguideChanged
 
     End Sub
 
@@ -74,11 +74,11 @@ Public Class plUnitControl
 
 #Region " Events "
 
-    Private Sub OnDataChanged(ByVal obj As cOOPStorable)
+    Private Sub OnDataChanged(obj As cOOPStorable)
         Me.Invalidate()
     End Sub
 
-    Private Sub OnPositionChanged(ByVal obj As cOOPStorable)
+    Private Sub OnPositionChanged(obj As cOOPStorable)
 
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
@@ -95,9 +95,9 @@ Public Class plUnitControl
 
         If (Me.m_fp IsNot Nothing) Then
 
-            RemoveHandler Me.m_fp.OnChanged, AddressOf OnPositionChanged
-            RemoveHandler Me.m_fp.Unit.OnChanged, AddressOf OnDataChanged
-            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleguideChanged
+            RemoveHandler Me.m_fp.OnChanged, AddressOf Me.OnPositionChanged
+            RemoveHandler Me.m_fp.Unit.OnChanged, AddressOf Me.OnDataChanged
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleguideChanged
 
             Me.m_fp = Nothing
             Me.m_uic = Nothing
@@ -161,19 +161,19 @@ Public Class plUnitControl
     ''' this control has been repositioned.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnLocationChanged(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLocationChanged(e As System.EventArgs)
         MyBase.OnLocationChanged(e)
         Me.m_fp.Xpos = CInt(Me.Location.X / Me.m_sScale)
         Me.m_fp.Ypos = CInt(Me.Location.Y / Me.m_sScale)
     End Sub
 
-    Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
         MyBase.OnSizeChanged(e)
         Me.m_fp.Width = CInt(Me.Width / Me.m_sScale)
         Me.m_fp.Height = CInt(Me.Height / Me.m_sScale)
     End Sub
 
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+    Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
         MyBase.OnPaint(e)
 
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
@@ -249,7 +249,7 @@ Public Class plUnitControl
     ''' Copy/paste handling.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub tsmCopy_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub tsmCopy_Click(sender As Object, e As System.EventArgs)
         Clipboard.SetDataObject(Me.Unit)
     End Sub
 
@@ -258,7 +258,7 @@ Public Class plUnitControl
     ''' Copy/paste handling.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub tsmPaste_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub tsmPaste_Click(sender As Object, e As System.EventArgs)
         Dim data As IDataObject = Clipboard.GetDataObject()
         If data.GetDataPresent(GetType(cOOPStorable)) Then
             Me.Unit.CopyFrom(DirectCast(data.GetData(GetType(cOOPStorable)), cOOPStorable))
@@ -272,7 +272,7 @@ Public Class plUnitControl
     ''' </summary>
     ''' <param name="changeFlags"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType)
+    Private Sub OnStyleguideChanged(changeFlags As cStyleGuide.eChangeType)
         ' Redraw on color or font changes
         If ((changeFlags And (cStyleGuide.eChangeType.Colours Or cStyleGuide.eChangeType.Fonts)) > 0) Then
             Me.Invalidate(True)
@@ -293,7 +293,7 @@ Public Class plUnitControl
         Get
             Return Me.m_sScale
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_sScale = value
             Me.OnPositionChanged(Me.m_fp)
         End Set
@@ -309,7 +309,7 @@ Public Class plUnitControl
         Get
             Return Me.m_bSelected
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bSelected = value
             Me.Refresh()
         End Set

@@ -30,8 +30,8 @@ Public Class cAnomalySearchShapeGUIHandler
 
         ' Make snapshot of PP group indexes
         Me.m_lProducers = New List(Of Integer)
-        For iGroup As Integer = 1 To Core.nGroups
-            Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(iGroup)
+        For iGroup As Integer = 1 To Me.Core.nGroups
+            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
             If (grp.IsProducer) Then
                 Me.m_lProducers.Add(iGroup)
             End If
@@ -45,8 +45,8 @@ Public Class cAnomalySearchShapeGUIHandler
     ''' <param name="stb"></param>
     ''' <param name="sp"></param>
     ''' ---------------------------------------------------------------
-    Public Shadows Sub Attach(ByVal stb As ucShapeToolbox, _
-                              ByVal sp As ucSketchPad)
+    Public Shadows Sub Attach(stb As ucShapeToolbox, _
+                              sp As ucSketchPad)
         MyBase.Attach(stb, Nothing, sp, Nothing)
     End Sub
 
@@ -57,13 +57,13 @@ Public Class cAnomalySearchShapeGUIHandler
     ''' <param name="shape"></param>
     ''' <returns></returns>
     ''' ---------------------------------------------------------------
-    Protected Overrides Function IncludeShape(ByVal shape As EwECore.cShapeData) As Boolean
+    Protected Overrides Function IncludeShape(shape As EwECore.cShapeData) As Boolean
 
         If (Me.UIContext Is Nothing) Then Return False
         If Not (TypeOf shape Is cForcingFunction) Then Return False
 
         ' Fixed 
-        Dim interactions As cMediatedInteractionManager = Core.MediatedInteractionManager
+        Dim interactions As cMediatedInteractionManager = Me.Core.MediatedInteractionManager
         Dim shapes As New List(Of cShapeData)
         Dim shpTest As cForcingFunction = Nothing
         Dim interact As cPredPreyInteraction = Nothing

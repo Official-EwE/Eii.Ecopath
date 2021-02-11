@@ -66,9 +66,9 @@ Namespace Controls
         ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                         ByVal vs As cVisualStyle, _
-                         ByVal style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New(uic As cUIContext, _
+                         vs As cVisualStyle, _
+                         style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(uic, vs, style)
 
             Me.InitializeComponent()
@@ -114,7 +114,7 @@ Namespace Controls
             End Set
         End Property
 
-        Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
+        Public Overrides Function Apply(vs As cVisualStyle) As Boolean
             vs.ForeColour = Me.SelectedForeColor
             vs.BackColour = Me.SelectedBackColor
             vs.HatchStyle = Me.SelectedHatchStyle
@@ -134,7 +134,7 @@ Namespace Controls
             Get
                 Return Me.m_clrFore
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 Me.m_clrFore = value
                 Me.UpdateControls()
             End Set
@@ -149,7 +149,7 @@ Namespace Controls
             Get
                 Return Me.m_clrBack
             End Get
-            Set(ByVal value As Color)
+            Set(value As Color)
                 Me.m_clrBack = value
                 Me.UpdateControls()
             End Set
@@ -164,7 +164,7 @@ Namespace Controls
             Get
                 Return Me.m_hbs
             End Get
-            Set(ByVal value As HatchStyle)
+            Set(value As HatchStyle)
                 Me.m_hbs = value
                 Me.UpdateColors()
             End Set
@@ -174,30 +174,30 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub pbBrush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbBrush.Click
+        Private Sub pbBrush_Click(sender As System.Object, e As System.EventArgs) Handles pbBrush.Click
             Me.DisplayDropdown()
         End Sub
 
-        Private Sub pbForeColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plForeColor.Click
-            SelectCustomControl(eSelectionType.ForeColor)
+        Private Sub pbForeColor_Click(sender As System.Object, e As System.EventArgs) Handles plForeColor.Click
+            Me.SelectCustomControl(eSelectionType.ForeColor)
         End Sub
 
-        Private Sub pbForeColor_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plForeColor.DoubleClick
-            SelectCustomControl(eSelectionType.ForeColor)
-            DisplayDropdown()
+        Private Sub pbForeColor_DoubleClick(sender As System.Object, e As System.EventArgs) Handles plForeColor.DoubleClick
+            Me.SelectCustomControl(eSelectionType.ForeColor)
+            Me.DisplayDropdown()
         End Sub
 
-        Private Sub pbBackColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plBackColor.Click
-            SelectCustomControl(eSelectionType.BackColor)
+        Private Sub pbBackColor_Click(sender As System.Object, e As System.EventArgs) Handles plBackColor.Click
+            Me.SelectCustomControl(eSelectionType.BackColor)
         End Sub
 
-        Private Sub pbBackColor_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plBackColor.DoubleClick
-            SelectCustomControl(eSelectionType.BackColor)
-            DisplayDropdown()
+        Private Sub pbBackColor_DoubleClick(sender As System.Object, e As System.EventArgs) Handles plBackColor.DoubleClick
+            Me.SelectCustomControl(eSelectionType.BackColor)
+            Me.DisplayDropdown()
         End Sub
 
-        Private Sub nud_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles nudRed.ValueChanged, nudGreen.ValueChanged, nudBlue.ValueChanged, nudAlpha.ValueChanged
-            Dim clr As Color = Color.FromArgb(CInt(nudAlpha.Value), CInt(nudRed.Value), CInt(nudGreen.Value), CInt(nudBlue.Value))
+        Private Sub nud_ValueChanged(sender As Object, e As System.EventArgs) Handles nudRed.ValueChanged, nudGreen.ValueChanged, nudBlue.ValueChanged, nudAlpha.ValueChanged
+            Dim clr As Color = Color.FromArgb(CInt(Me.nudAlpha.Value), CInt(Me.nudRed.Value), CInt(Me.nudGreen.Value), CInt(Me.nudBlue.Value))
 
             Select Case Me.m_selectionType
                 Case eSelectionType.ForeColor
@@ -209,8 +209,8 @@ Namespace Controls
             Me.UpdateColors()
         End Sub
 
-        Private Sub tb_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbRed.ValueChanged, tbBlue.ValueChanged, tbGreen.ValueChanged, tbAlpha.ValueChanged
-            Dim clr As Color = Color.FromArgb(CInt(tbAlpha.Value), CInt(tbRed.Value), CInt(tbGreen.Value), CInt(tbBlue.Value))
+        Private Sub tb_Scroll(sender As System.Object, e As System.EventArgs) Handles tbRed.ValueChanged, tbBlue.ValueChanged, tbGreen.ValueChanged, tbAlpha.ValueChanged
+            Dim clr As Color = Color.FromArgb(CInt(Me.tbAlpha.Value), CInt(Me.tbRed.Value), CInt(Me.tbGreen.Value), CInt(Me.tbBlue.Value))
 
             Select Case Me.m_selectionType
                 Case eSelectionType.ForeColor
@@ -227,7 +227,7 @@ Namespace Controls
             Me.UpdateControls()
         End Sub
 
-        Private Sub pbBrush_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pbBrush.Paint
+        Private Sub pbBrush_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) Handles pbBrush.Paint
 
             Dim br As Brush = Nothing
 
@@ -243,13 +243,13 @@ Namespace Controls
 
         End Sub
 
-        Private Sub pbForeColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub pbForeColor_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles plForeColor.Paint
 
             Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
 
-            If plForeColor.Enabled Then
+            If Me.plForeColor.Enabled Then
                 e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
                 Using br As New SolidBrush(Me.m_clrFore)
                     e.Graphics.FillRectangle(br, rcInner)
@@ -263,13 +263,13 @@ Namespace Controls
 
         End Sub
 
-        Private Sub pbBackColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub pbBackColor_Paint(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles plBackColor.Paint
 
             Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)
 
-            If plBackColor.Enabled Then
+            If Me.plBackColor.Enabled Then
                 e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
                 Using br As New SolidBrush(Me.m_clrBack)
                     e.Graphics.FillRectangle(br, rcInner)
@@ -283,12 +283,12 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnDropDownLostFocus(ByVal sender As Object, ByVal e As EventArgs)
-            HideDropdown()
+        Private Sub OnDropDownLostFocus(sender As Object, e As EventArgs)
+            Me.HideDropdown()
         End Sub
 
-        Private Sub OnDropDownDoubleClick(ByVal sender As Object, ByVal e As EventArgs)
-            HideDropdown()
+        Private Sub OnDropDownDoubleClick(sender As Object, e As EventArgs)
+            Me.HideDropdown()
         End Sub
 
 #End Region ' Events 
@@ -315,7 +315,7 @@ Namespace Controls
 
         Private Sub UpdateColors()
 
-            If m_bInUpdate Then Return
+            If Me.m_bInUpdate Then Return
 
             Me.m_bInUpdate = True
 
@@ -352,7 +352,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub SelectCustomControl(ByVal selType As eSelectionType)
+        Private Sub SelectCustomControl(selType As eSelectionType)
 
             Dim dlg As New ColorDialog()
             If (Me.m_selectionType <> selType) Then
@@ -391,20 +391,20 @@ Namespace Controls
             loc.Y += Me.pbBrush.Height + Me.pbBrush.Location.Y
             loc.X += Me.pbBrush.Location.X
 
-            m_control.Colours(Me.m_clrFore, Me.m_clrBack)
+            Me.m_control.Colours(Me.m_clrFore, Me.m_clrBack)
 
-            m_form.Location = loc
-            m_form.Show()
-            m_form.Focus()
+            Me.m_form.Location = loc
+            Me.m_form.Show()
+            Me.m_form.Focus()
 
-            AddHandler m_control.LostFocus, AddressOf Me.OnDropDownLostFocus
-            AddHandler m_control.DoubleClick, AddressOf Me.OnDropDownDoubleClick
+            AddHandler Me.m_control.LostFocus, AddressOf Me.OnDropDownLostFocus
+            AddHandler Me.m_control.DoubleClick, AddressOf Me.OnDropDownDoubleClick
         End Sub
 
         Friend Sub HideDropdown()
-            RemoveHandler m_control.LostFocus, AddressOf Me.OnDropDownLostFocus
-            RemoveHandler m_control.DoubleClick, AddressOf Me.OnDropDownDoubleClick
-            m_form.Hide()
+            RemoveHandler Me.m_control.LostFocus, AddressOf Me.OnDropDownLostFocus
+            RemoveHandler Me.m_control.DoubleClick, AddressOf Me.OnDropDownDoubleClick
+            Me.m_form.Hide()
         End Sub
 
 #End Region ' Internal implementation

@@ -69,7 +69,7 @@ Namespace Ecosim
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -85,23 +85,23 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             MyBase.OnFormClosed(e)
         End Sub
 
-        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnResize(e As System.EventArgs)
             MyBase.OnResize(e)
             Me.m_pbPlots.Invalidate()
         End Sub
 
 #Region " Rendering "
 
-        Private Sub DrawPlots(ByRef g As Graphics, ByVal iWidth As Integer, ByVal iHeight As Integer)
+        Private Sub DrawPlots(ByRef g As Graphics, iWidth As Integer, iHeight As Integer)
 
-            Dim pen As Pen = New Pen(Color.Black, m_sLineWidth)
-            Dim ptfTL As PointF = toDevicePoint(New PointF(m_sLRMargin, 1.02F * m_iRow + m_sTBMargin), iWidth, iHeight)
-            Dim szPosName As SizeF = toDeviceSize(New SizeF(0.02F, 0.02F), iWidth, iHeight)
-            Dim pzPosGraph As SizeF = toDeviceSize(New SizeF(m_sPlotWidth, m_sPlotHeight), iWidth, iHeight)
+            Dim pen As Pen = New Pen(Color.Black, Me.m_sLineWidth)
+            Dim ptfTL As PointF = Me.toDevicePoint(New PointF(Me.m_sLRMargin, 1.02F * Me.m_iRow + Me.m_sTBMargin), iWidth, iHeight)
+            Dim szPosName As SizeF = Me.toDeviceSize(New SizeF(0.02F, 0.02F), iWidth, iHeight)
+            Dim pzPosGraph As SizeF = Me.toDeviceSize(New SizeF(Me.m_sPlotWidth, Me.m_sPlotHeight), iWidth, iHeight)
             Dim iPlot As Integer = 0
             Dim plot As cShowAllFitsPlotData = Nothing
             Dim strTitle As String = ""
@@ -118,8 +118,8 @@ Namespace Ecosim
 
                 If plot.Visible Then
 
-                    iRow = CInt(Math.Floor(iPlot \ m_iCol))
-                    iCol = iPlot Mod m_iCol
+                    iRow = CInt(Math.Floor(iPlot \ Me.m_iCol))
+                    iCol = iPlot Mod Me.m_iCol
                     sPosX = ptfTL.X + iCol * pzPosGraph.Width
                     sPosY = ptfTL.Y + iRow * pzPosGraph.Height
 
@@ -152,28 +152,28 @@ Namespace Ecosim
                         ' ===============
                         ' Draw time series
                         ' ===============
-                        Dim dx As Double = cCore.N_MONTHS / m_NTimes
-                        If plot.TimeSeries.Interval = eTSDataSetInterval.TimeStep Then dx = 1 / m_NTimes
+                        Dim dx As Double = cCore.N_MONTHS / Me.m_NTimes
+                        If plot.TimeSeries.Interval = eTSDataSetInterval.TimeStep Then dx = 1 / Me.m_NTimes
                         data = plot.TimeSeries.ShapeData
                         For k As Integer = 1 To data.Length - 1
                             If (data(k) > 0) Then
-                                Dim dotXRelPos As Single = CSng(m_sPlotWidth * (k - 0.5!) * dx)
-                                Dim dotYRelPos As Single = CSng(m_sPlotHeight * (1 - data(k) * plot.TSDataScale / plot.YMax))
-                                Dim dotPos As SizeF = toDeviceSize(New SizeF(dotXRelPos, dotYRelPos), iWidth, iHeight)
+                                Dim dotXRelPos As Single = CSng(Me.m_sPlotWidth * (k - 0.5!) * dx)
+                                Dim dotYRelPos As Single = CSng(Me.m_sPlotHeight * (1 - data(k) * plot.TSDataScale / plot.YMax))
+                                Dim dotPos As SizeF = Me.toDeviceSize(New SizeF(dotXRelPos, dotYRelPos), iWidth, iHeight)
                                 Select Case handler.SketchDrawMode(plot.TimeSeries)
                                     Case eSketchDrawModeTypes.TimeSeriesDriver
-                                        g.DrawEllipse(pen, New RectangleF(sPosX + dotPos.Width - (0.5! * m_sDotSize),
-                                                                          sPosY + dotPos.Height - (0.5! * m_sDotSize), m_sDotSize, m_sDotSize))
+                                        g.DrawEllipse(pen, New RectangleF(sPosX + dotPos.Width - (0.5! * Me.m_sDotSize),
+                                                                          sPosY + dotPos.Height - (0.5! * Me.m_sDotSize), Me.m_sDotSize, Me.m_sDotSize))
                                     Case eSketchDrawModeTypes.TimeSeriesRefAbs
-                                        g.DrawRectangle(pen, New Rectangle(CInt(sPosX + dotPos.Width - (0.5! * m_sDotSize)),
-                                                                          CInt(sPosY + dotPos.Height - (0.5! * m_sDotSize)), CInt(m_sDotSize), CInt(m_sDotSize)))
+                                        g.DrawRectangle(pen, New Rectangle(CInt(sPosX + dotPos.Width - (0.5! * Me.m_sDotSize)),
+                                                                          CInt(sPosY + dotPos.Height - (0.5! * Me.m_sDotSize)), CInt(Me.m_sDotSize), CInt(Me.m_sDotSize)))
                                     Case eSketchDrawModeTypes.TimeSeriesRefRel
                                         ' You've got to love pointless duplication!! See cShapeImage, ugh...
                                         Dim pts(4) As PointF
-                                        pts(0) = New PointF(sPosX + dotPos.Width, sPosY + dotPos.Height - 0.5! * m_sDotSize)
-                                        pts(1) = New PointF(sPosX + dotPos.Width + 0.5! * m_sDotSize, sPosY + dotPos.Height)
-                                        pts(2) = New PointF(sPosX + dotPos.Width, sPosY + dotPos.Height + 0.5! * m_sDotSize)
-                                        pts(3) = New PointF(sPosX + dotPos.Width - 0.5! * m_sDotSize, sPosY + dotPos.Height)
+                                        pts(0) = New PointF(sPosX + dotPos.Width, sPosY + dotPos.Height - 0.5! * Me.m_sDotSize)
+                                        pts(1) = New PointF(sPosX + dotPos.Width + 0.5! * Me.m_sDotSize, sPosY + dotPos.Height)
+                                        pts(2) = New PointF(sPosX + dotPos.Width, sPosY + dotPos.Height + 0.5! * Me.m_sDotSize)
+                                        pts(3) = New PointF(sPosX + dotPos.Width - 0.5! * Me.m_sDotSize, sPosY + dotPos.Height)
                                         pts(4) = pts(0)
                                         g.DrawPolygon(pen, pts)
                                     Case Else
@@ -189,14 +189,14 @@ Namespace Ecosim
                         If (Not data Is Nothing) Then
                             For k As Integer = 1 To data.Length - 2
 
-                                Dim x1RelPos As Single = m_sPlotWidth * k / m_NTimes
-                                Dim x2RelPos As Single = m_sPlotWidth * (k + 1) / m_NTimes
+                                Dim x1RelPos As Single = Me.m_sPlotWidth * k / Me.m_NTimes
+                                Dim x2RelPos As Single = Me.m_sPlotWidth * (k + 1) / Me.m_NTimes
 
-                                Dim y1RelPos As Single = m_sPlotHeight * (1 - data(k) / plot.YMax)
-                                Dim y2RelPos As Single = m_sPlotHeight * (1 - data(k + 1) / plot.YMax)
+                                Dim y1RelPos As Single = Me.m_sPlotHeight * (1 - data(k) / plot.YMax)
+                                Dim y2RelPos As Single = Me.m_sPlotHeight * (1 - data(k + 1) / plot.YMax)
 
-                                Dim p1Pos As SizeF = toDeviceSize(New SizeF(x1RelPos, y1RelPos), iWidth, iHeight)
-                                Dim p2Pos As SizeF = toDeviceSize(New SizeF(x2RelPos, y2RelPos), iWidth, iHeight)
+                                Dim p1Pos As SizeF = Me.toDeviceSize(New SizeF(x1RelPos, y1RelPos), iWidth, iHeight)
+                                Dim p2Pos As SizeF = Me.toDeviceSize(New SizeF(x2RelPos, y2RelPos), iWidth, iHeight)
 
                                 g.DrawLine(pen, sPosX + p1Pos.Width, sPosY + p1Pos.Height, sPosX + p2Pos.Width, sPosY + p2Pos.Height)
 
@@ -222,15 +222,15 @@ Namespace Ecosim
 
             If Me.m_chkShowYear.Checked Then
 
-                Dim stepYear As Integer = m_NTimes \ (cCore.N_MONTHS * 4)
+                Dim stepYear As Integer = Me.m_NTimes \ (cCore.N_MONTHS * 4)
                 'Dim fs As Single
 
-                Dim iEnd As Integer = m_iCol - 1
-                If iPlot < m_iCol Then
+                Dim iEnd As Integer = Me.m_iCol - 1
+                If iPlot < Me.m_iCol Then
                     iEnd = iPlot - 1
                 End If
                 For i As Integer = 0 To iEnd
-                    Dim yPos As Single = ptfTL.Y + CInt(Math.Ceiling(iPlot / m_iCol)) * pzPosGraph.Height + toDeviceSize(New SizeF(0, 0.005F + m_sTBMargin), iWidth, iHeight).Height
+                    Dim yPos As Single = ptfTL.Y + CInt(Math.Ceiling(iPlot / Me.m_iCol)) * pzPosGraph.Height + Me.toDeviceSize(New SizeF(0, 0.005F + Me.m_sTBMargin), iWidth, iHeight).Height
                     For t As Integer = 0 To 3
                         g.DrawString((Me.Core.EcosimFirstYear + t * stepYear).ToString, ftScale, Brushes.Black, ptfTL.X + i * pzPosGraph.Width + (t * pzPosGraph.Width / 4), yPos)
                     Next
@@ -245,12 +245,12 @@ Namespace Ecosim
 
         Private Function GenerateImage() As System.Drawing.Image
 
-            Dim img As Bitmap = New Bitmap(m_pbPlots.Width, m_pbPlots.Height)
+            Dim img As Bitmap = New Bitmap(Me.m_pbPlots.Width, Me.m_pbPlots.Height)
             img.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
 
             Dim bg As Graphics = Graphics.FromImage(img)
-            bg.Clear(m_pbPlots.BackColor)
-            DrawPlots(bg, img.Width, img.Height)
+            bg.Clear(Me.m_pbPlots.BackColor)
+            Me.DrawPlots(bg, img.Width, img.Height)
 
             Return img
 
@@ -266,11 +266,11 @@ Namespace Ecosim
         Private Sub InitializeDefaultParams()
 
             ' Defaults
-            m_sDotSize = 3
-            m_sLineWidth = 1
-            m_sLRMargin = 0.1
-            m_sTBMargin = 0.1
-            m_iCol = 3
+            Me.m_sDotSize = 3
+            Me.m_sLineWidth = 1
+            Me.m_sLRMargin = 0.1
+            Me.m_sTBMargin = 0.1
+            Me.m_iCol = 3
 
             ' Update controls
             Me.m_nudRowNum.Value = Me.m_iCol
@@ -280,7 +280,7 @@ Namespace Ecosim
             Me.m_nudMarginTB.Value = CDec(Me.m_sTBMargin)
 
             ' Hmm
-            SetPlotTypes()
+            Me.SetPlotTypes()
         End Sub
 
         ''' <summary>
@@ -296,7 +296,7 @@ Namespace Ecosim
 
                 ts = Me.Core.EcosimTimeSeries(iTS)
 
-                If m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
+                If Me.m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
 
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
                         Case eTimeSeriesCategoryType.Group
@@ -417,21 +417,21 @@ Namespace Ecosim
             End If
 
             If Me.m_chkShowZ.Checked Then
-                m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.TotalMortality)
             End If
 
             If Me.m_chkShowCatch.Checked Then
-                m_lShownPlotsType.Add(eTimeSeriesType.Catches)
-                m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
-                m_lShownPlotsType.Add(eTimeSeriesType.CatchesRel)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.Catches)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.CatchesRel)
             End If
 
             If Me.m_chkShowDiscards.Checked Then
-                m_lShownPlotsType.Add(eTimeSeriesType.Discards)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.Discards)
             End If
 
             If Me.m_chkShowLandings.Checked Then
-                m_lShownPlotsType.Add(eTimeSeriesType.Landings)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.Landings)
             End If
 
             Me.m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
@@ -457,7 +457,7 @@ Namespace Ecosim
                 ' Get TS
                 ts = plot.TimeSeries
                 ' Can show type?
-                If m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
+                If Me.m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
                     ' Is applied?
                     If ts.Enabled() Then
                         ' Dunno what this is (yet)
@@ -485,11 +485,11 @@ Namespace Ecosim
         ''' <param name="height"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function toDevicePoint(ByVal p As PointF, ByVal width As Integer, ByVal height As Integer) As PointF
+        Private Function toDevicePoint(p As PointF, width As Integer, height As Integer) As PointF
             ' Transforms the output value to the screen point value
             ' This comes from EWE5. Real men don't write code comments, *sigh*
-            Dim screenPt As New PointF(p.X * width / (8 + 2 * m_sLRMargin), _
-                            height - (height * p.Y) / (1.02F * m_iRow + 2.02F * m_sTBMargin))
+            Dim screenPt As New PointF(p.X * width / (8 + 2 * Me.m_sLRMargin), _
+                            height - (height * p.Y) / (1.02F * Me.m_iRow + 2.02F * Me.m_sTBMargin))
 
             Return screenPt
 
@@ -506,10 +506,10 @@ Namespace Ecosim
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Private Function toDeviceSize(ByVal s As SizeF, ByVal width As Integer, ByVal height As Integer) As SizeF
+        Private Function toDeviceSize(s As SizeF, width As Integer, height As Integer) As SizeF
             ' This comes from EWE5. Real men don't write code comments, *sigh*
-            Dim size As New SizeF(width * s.Width / (8 + 2 * m_sLRMargin),
-                        height * s.Height / (1.02F * m_iRow + 2.02F * m_sTBMargin))
+            Dim size As New SizeF(width * s.Width / (8 + 2 * Me.m_sLRMargin),
+                        height * s.Height / (1.02F * Me.m_iRow + 2.02F * Me.m_sTBMargin))
 
             Return size
 
@@ -527,10 +527,10 @@ Namespace Ecosim
 
 #Region " Printing "
 
-        Private Sub pdAllFits_PrintPage(ByVal sender As System.Object, ByVal e As System.Drawing.Printing.PrintPageEventArgs) _
+        Private Sub pdAllFits_PrintPage(sender As System.Object, e As System.Drawing.Printing.PrintPageEventArgs) _
             Handles m_printdocAllFits.PrintPage
             Dim g As Graphics = e.Graphics
-            DrawPlots(g, e.MarginBounds.Width, e.MarginBounds.Height)
+            Me.DrawPlots(g, e.MarginBounds.Width, e.MarginBounds.Height)
         End Sub
 
 #End Region ' Printing
@@ -545,7 +545,7 @@ Namespace Ecosim
             Discards
         End Enum
 
-        Private Sub SaveToCSV(ByVal strPath As String)
+        Private Sub SaveToCSV(strPath As String)
 
             Dim strFileName As String = ""
             Dim strTargetPath As String = ""
@@ -759,7 +759,7 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Private Sub OnSaveAsCSVClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveAsCSVClicked(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSaveAsCSV.Click
 
             Dim cmd As cDirectoryOpenCommand = DirectCast(Me.CommandHandler.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
@@ -773,7 +773,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSaveAsImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveAsImage(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiSaveAsImage.Click
 
             Dim img As Image = Nothing
@@ -803,7 +803,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub OnPrintClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnPrintClicked(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiPrint.Click
 
             Dim dlgPrint As New PrintDialog()
@@ -811,13 +811,13 @@ Namespace Ecosim
 
             dlgPrint.Document = Me.m_printdocAllFits
             If dlgPrint.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-                m_printdocAllFits.DocumentName = Me.Text
-                m_printdocAllFits.Print()
+                Me.m_printdocAllFits.DocumentName = Me.Text
+                Me.m_printdocAllFits.Print()
             End If
 
         End Sub
 
-        Private Sub OnPrintPreviewClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnPrintPreviewClicked(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiPrintPreview.Click
 
             Dim dlg As New PrintPreviewDialog()
@@ -835,7 +835,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShowDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowDataChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_chkShowB.CheckedChanged,
                     m_chkShowZ.CheckedChanged,
                     m_chkShowCatch.CheckedChanged,
@@ -847,7 +847,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShowDetailsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowDetailsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_chkShowWeight.CheckedChanged, _
                     m_chkShowYear.CheckedChanged, _
                     m_chkScaleForPrinter.CheckedChanged, _
@@ -859,7 +859,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnDotSizeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnDotSizeChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudDotSize.ValueChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -867,7 +867,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnLineWidthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnLineWidthChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudLineWidth.ValueChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -875,7 +875,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnRowNumChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRowNumChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudRowNum.ValueChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -883,7 +883,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnMarginLRChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnMarginLRChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudMarginLR.ValueChanged
 
             If (Me.UIContext Is Nothing) Then Return
@@ -891,7 +891,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnMarginTBChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnMarginTBChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_nudMarginTB.ValueChanged
             Me.UpdatePlots()
         End Sub
@@ -899,7 +899,7 @@ Namespace Ecosim
         ''' <summary>
         ''' HS = Hide / Show
         ''' </summary>
-        Private Sub tsBtnHSPlots_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnHSPlots_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiChoosePlots.Click
 
             Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots.ToArray())
@@ -910,29 +910,29 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnPaintPlots(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnPaintPlots(sender As System.Object, e As System.Windows.Forms.PaintEventArgs) _
             Handles m_pbPlots.Paint
 
-            Me.DrawPlots(e.Graphics, m_pbPlots.Width, m_pbPlots.Height)
+            Me.DrawPlots(e.Graphics, Me.m_pbPlots.Width, Me.m_pbPlots.Height)
 
         End Sub
 
-        Private Sub tsBtnChangeYScale_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnChangeYScale_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnScale.Click
 
             Dim dlgChYScale As New dlgChangeYScale(Me.m_lPlots)
             If (dlgChYScale.ShowDialog = System.Windows.Forms.DialogResult.OK) Then
-                m_pbPlots.Invalidate()
+                Me.m_pbPlots.Invalidate()
             End If
 
         End Sub
 
-        Protected Overrides Sub OnStyleguideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Protected Overrides Sub OnStyleguideChanged(changeType As cStyleGuide.eChangeType)
             ' Redraw
             Me.Invalidate()
         End Sub
 
-        Private Sub OnToggleOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnToggleOptions(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiOptions.Click
             Me.m_scMain.Panel1Collapsed = (Me.m_tsmiOptions.Checked = False)
         End Sub

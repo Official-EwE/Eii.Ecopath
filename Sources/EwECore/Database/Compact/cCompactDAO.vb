@@ -68,10 +68,10 @@ Namespace Database
         ''' <returns>A <see cref="eDatasourceAccessType">database access
         ''' result code</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Compact(ByVal strFileFrom As String, _
-                                ByVal strConnectionFrom As String, _
-                                ByVal strFileTo As String, _
-                                ByVal strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
+        Public Function Compact(strFileFrom As String, _
+                                strConnectionFrom As String, _
+                                strFileTo As String, _
+                                strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
             Implements IDatabaseCompact.Compact
 
             ' Safety check: can compact at all?

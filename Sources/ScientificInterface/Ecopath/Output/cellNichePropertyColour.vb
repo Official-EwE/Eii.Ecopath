@@ -48,7 +48,7 @@ Public Class cellNichePropertyColour
     Private Class NicePropertyColourCellVisualizer
         : Inherits cEwEGridVisualizerBase
 
-        Protected Overrides Sub DrawCell_Background(ByVal p_Cell As SourceGrid2.Cells.ICellVirtual, ByVal p_CellPosition As SourceGrid2.Position, ByVal e As System.Windows.Forms.PaintEventArgs, ByVal p_ClientRectangle As System.Drawing.Rectangle, ByVal p_Status As SourceGrid2.DrawCellStatus)
+        Protected Overrides Sub DrawCell_Background(p_Cell As SourceGrid2.Cells.ICellVirtual, p_CellPosition As SourceGrid2.Position, e As System.Windows.Forms.PaintEventArgs, p_ClientRectangle As System.Drawing.Rectangle, p_Status As SourceGrid2.DrawCellStatus)
 
             If (p_Status And SourceGrid2.DrawCellStatus.Selected) = 0 Then
                 If (TypeOf p_Cell Is cellNichePropertyColour) Then
@@ -92,10 +92,10 @@ Public Class cellNichePropertyColour
     ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces.</param>
     ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal pm As cPropertyManager, _
-                   ByVal Source As cCoreInputOutputBase, _
-                   ByVal VarName As eVarNameFlags, _
-                   Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
+    Public Sub New(pm As cPropertyManager, _
+                   Source As cCoreInputOutputBase, _
+                   VarName As eVarNameFlags, _
+                   Optional SourceSec As cCoreInputOutputBase = Nothing)
         MyBase.new(pm, Source, VarName, SourceSec)
         ' Set shared visualizer
         Me.VisualModel = g_visualizer
@@ -107,7 +107,7 @@ Public Class cellNichePropertyColour
     ''' </summary>
     ''' <param name="prop">The property to assign to the cell.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal prop As cProperty)
+    Public Sub New(prop As cProperty)
         ' Call baseclass constructor
         MyBase.New(prop)
         ' Set shared visualizer

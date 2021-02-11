@@ -53,36 +53,36 @@ Namespace WebServices
         Public Event UploadModelCompleted As UploadModelCompletedEventHandler
 
         <System.Web.Services.Protocols.SoapRpcMethodAttribute("Upload_Model", RequestNamespace:="urn:sirs:getResult", ResponseNamespace:="urn:sirs:getResult")>
-        Public Function Upload_Model(ByVal model_number As Integer, ByVal model_data As String) As <System.Xml.Serialization.SoapElementAttribute("result")> String
+        Public Function Upload_Model(model_number As Integer, model_data As String) As <System.Xml.Serialization.SoapElementAttribute("result")> String
             Dim results() As Object = Me.Invoke("Upload_Model", New Object() {model_number, model_data})
             Return CType(results(0), String)
         End Function
 
         '''<remarks/>
-        Public Function BeginUpload_Model(ByVal model_number As Integer, ByVal model_data As String, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+        Public Function BeginUpload_Model(model_number As Integer, model_data As String, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
             Return Me.BeginInvoke("Upload_Model", New Object() {model_number, model_data}, callback, asyncState)
         End Function
 
         '''<remarks/>
-        Public Function EndUpload_Model(ByVal asyncResult As System.IAsyncResult) As String
+        Public Function EndUpload_Model(asyncResult As System.IAsyncResult) As String
             Dim results() As Object = Me.EndInvoke(asyncResult)
             Return CType(results(0), String)
         End Function
 
         '''<remarks/>
-        Public Overloads Sub Upload_ModelAsync(ByVal model_number As String, ByVal model_data As String)
+        Public Overloads Sub Upload_ModelAsync(model_number As String, model_data As String)
             Me.Upload_ModelAsync(model_number, model_data, Nothing)
         End Sub
 
         '''<remarks/>
-        Public Overloads Sub Upload_ModelAsync(ByVal model_number As String, ByVal model_data As String, ByVal userState As Object)
+        Public Overloads Sub Upload_ModelAsync(model_number As String, model_data As String, userState As Object)
             If (Me.Upload_ModelOperationCompleted Is Nothing) Then
                 Me.Upload_ModelOperationCompleted = AddressOf Me.OnUpload_ModelOperationCompleted
             End If
             Me.InvokeAsync("Upload_Model", New Object() {model_number, model_data}, Me.Upload_ModelOperationCompleted, userState)
         End Sub
 
-        Private Sub OnUpload_ModelOperationCompleted(ByVal arg As Object)
+        Private Sub OnUpload_ModelOperationCompleted(arg As Object)
             If (Not (Me.UploadModelCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent UploadModelCompleted(Me, New Upload_ModelCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
@@ -216,7 +216,7 @@ Namespace WebServices
     End Class
 
     <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1")> _
-    Public Delegate Sub UploadModelCompletedEventHandler(ByVal sender As Object, ByVal e As Upload_ModelCompletedEventArgs)
+    Public Delegate Sub UploadModelCompletedEventHandler(sender As Object, e As Upload_ModelCompletedEventArgs)
 
     '''<remarks/>
     <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1"), _
@@ -227,7 +227,7 @@ Namespace WebServices
 
         Private results() As Object
 
-        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+        Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
             MyBase.New(exception, cancelled, userState)
             Me.results = results
         End Sub

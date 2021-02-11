@@ -52,10 +52,10 @@ Namespace Controls.EwEGrid
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager,
-                       ByVal source As cCoreInputOutputBase,
-                       ByVal varname As eVarNameFlags,
-                       Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+        Public Sub New(pm As cPropertyManager,
+                       source As cCoreInputOutputBase,
+                       varname As eVarNameFlags,
+                       Optional sourceSec As cCoreInputOutputBase = Nothing)
             Me.New(pm.GetProperty(source, varname, sourceSec))
         End Sub
 
@@ -65,7 +65,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop">The property to assign to the cell.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty)
+        Public Sub New(prop As cProperty)
             ' Call baseclass constructor
             MyBase.New(Nothing, prop.GetValueType())
             ' Store the property
@@ -115,7 +115,7 @@ Namespace Controls.EwEGrid
         ''' Commonly called in response to end edit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub SetValue(ByVal p_Position As SourceGrid2.Position, ByVal p_Value As Object)
+        Public Overrides Sub SetValue(p_Position As SourceGrid2.Position, p_Value As Object)
             ' Sanity check
             If (Me.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable Then Return
             ' Apply edited value
@@ -139,7 +139,7 @@ Namespace Controls.EwEGrid
                 Return Nothing
 
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
 
                 Dim bChanged As Boolean = True
 
@@ -191,7 +191,7 @@ Namespace Controls.EwEGrid
                 End If
                 Return s
             End Get
-            Set(ByVal s As cStyleGuide.eStyleFlags)
+            Set(s As cStyleGuide.eStyleFlags)
                 MyBase.Style = s
             End Set
         End Property
@@ -209,7 +209,7 @@ Namespace Controls.EwEGrid
         ''' <param name="changeFlags">Bitwise flag that states what <see cref="cProperty.eChangeFlags">aspect</see>
         ''' of the property has changed.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
+        Protected Overridable Sub OnPropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags)
 
             ' Sanity checks
             Debug.Assert(prop IsNot Nothing, "Invalid event received")

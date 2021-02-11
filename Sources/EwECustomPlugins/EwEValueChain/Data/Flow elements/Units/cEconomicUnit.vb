@@ -116,10 +116,10 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Calculations "
 
-    Protected Overrides Function Calculate(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overrides Function Calculate(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         'The production unit needs to do the same calculations as the MyBase=cEconomicUnit, but:
         Dim bSucces As Boolean = MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
@@ -160,10 +160,10 @@ Public MustInherit Class cEconomicUnit
 
 #End Region
 
-    Protected Overridable Function CalcProductionLiveWeight(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcProductionLiveWeight(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim ToBeCalculated As Single = 0
         results.Store(Me, cResults.eVariableType.ProductionLive, ToBeCalculated, iTimeStep)
@@ -173,10 +173,10 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Revenue "
 
-    Protected Overridable Function CalcProducts(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcProducts(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.EnergyProducts + Me.IndustrialProducts + Me.ServiceProducts)
 
@@ -187,10 +187,10 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcSubsidy(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcSubsidy(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.SubsidyEnergy + Me.SubsidyOther)
         results.Store(Me, cResults.eVariableType.RevenueSubsidies, sSum, iTimeStep)
@@ -201,10 +201,10 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Cost "
 
-    Protected Overridable Function CalcRawmaterialCost(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcRawmaterialCost(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         If Me.Broker = False Then
             'Dim sSum As Single = sInputBiomass * sInputValue
@@ -213,32 +213,32 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcInputCost(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcInputCost(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.CapitalInput + Me.EnergyCost + Me.IndustrialCost + Me.ServiceCost)
         results.Store(Me, cResults.eVariableType.CostInput, sSum, iTimeStep)
         Return True
     End Function
 
-    Protected Overridable Function CalcManagementRoyaltyCertificationCost(ByVal results As cResults, _
-               ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-               ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-               ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcManagementRoyaltyCertificationCost(results As cResults, _
+               sInputBiomass As Single, sInputValue As Single, _
+               sOutputBiomass As Single, sOutputValue As Single, _
+               iTimeStep As Integer) As Boolean
 
-        Dim sSum As Single = sOutputBiomass * (m_ManagementCost + m_RoyaltyCost + m_CertificationCost)
+        Dim sSum As Single = sOutputBiomass * (Me.m_ManagementCost + Me.m_RoyaltyCost + Me.m_CertificationCost)
         results.Store(Me, cResults.eVariableType.CostManagementRoyaltyCertification, sSum, iTimeStep)
         Return True
     End Function
 
 
 
-    Protected Overridable Function CalcTax(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcTax(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.TaxEnvironmental + Me.TaxExport + Me.TaxProduction + Me.TaxVAT + Me.m_TaxesImport + Me.LicenseTax)
         ' profit tax is calculated later, after all revenue and (other) cost is known (VC111117)
@@ -246,10 +246,10 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerPay(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcWorkerPay(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single
         If (Me.m_WorkerMalePay + Me.m_WorkerFemalePay) > 0 Then
@@ -261,10 +261,10 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerPay(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcOwnerPay(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single
         If (Me.m_OwnerMalePay + Me.m_OwnerFemalePay) > 0 Then
@@ -280,20 +280,20 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Social "
 
-    Protected Overridable Function CalcWorkerFemales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcWorkerFemales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerFemale
         results.Store(Me, cResults.eVariableType.NumberOfWorkerFemales, sSum, iTimeStep)
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerMales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcWorkerMales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerMale
         results.Store(Me, cResults.eVariableType.NumberOfWorkerMales, sSum, iTimeStep)
@@ -301,20 +301,20 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerParttime(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcWorkerParttime(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerParttime
         results.Store(Me, cResults.eVariableType.NumberOfWorkerPartTime, sSum, iTimeStep)
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerOther(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcWorkerOther(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerOther
         results.Store(Me, cResults.eVariableType.NumberOfWorkerOther, sSum, iTimeStep)
@@ -322,10 +322,10 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerMales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcOwnerMales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_OwnerMale
         results.Store(Me, cResults.eVariableType.NumberOfOwnerMales, sSum, iTimeStep)
@@ -333,30 +333,30 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerFemales(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcOwnerFemales(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_OwnerFemale
         results.Store(Me, cResults.eVariableType.NumberOfOwnerFemales, sSum, iTimeStep)
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerDependents(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcWorkerDependents(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.m_WorkerFemaleDependents * Me.m_WorkerFemale + Me.m_WorkerMaleDependents * Me.m_WorkerMale)
         results.Store(Me, cResults.eVariableType.NumberOfWorkerDependents, sSum, iTimeStep)
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerDependents(ByVal results As cResults, _
-                ByVal sInputBiomass As Single, ByVal sInputValue As Single, _
-                ByVal sOutputBiomass As Single, ByVal sOutputValue As Single, _
-                ByVal iTimeStep As Integer) As Boolean
+    Protected Overridable Function CalcOwnerDependents(results As cResults, _
+                sInputBiomass As Single, sInputValue As Single, _
+                sOutputBiomass As Single, sOutputValue As Single, _
+                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.m_OwnerFemaleDependents * Me.m_OwnerFemale + Me.m_OwnerMaleDependents * Me.m_OwnerMale)
         results.Store(Me, cResults.eVariableType.NumberOfOwnerDependents, sSum, iTimeStep)
@@ -379,11 +379,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(2)> _
     Public Property EnergyProducts() As Single
         Get
-            Return m_EnergyProducts
+            Return Me.m_EnergyProducts
         End Get
-        Set(ByVal value As Single)
-            m_EnergyProducts = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_EnergyProducts = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -395,11 +395,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(3)> _
     Public Property IndustrialProducts() As Single
         Get
-            Return m_IndustrialProducts
+            Return Me.m_IndustrialProducts
         End Get
-        Set(ByVal value As Single)
-            m_IndustrialProducts = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_IndustrialProducts = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -411,11 +411,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(4)> _
     Public Property ServiceProducts() As Single
         Get
-            Return m_ServiceProducts
+            Return Me.m_ServiceProducts
         End Get
-        Set(ByVal value As Single)
-            m_ServiceProducts = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_ServiceProducts = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -427,11 +427,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(1)> _
     Public Property SubsidyEnergy() As Single
         Get
-            Return m_SubsidyEnergy
+            Return Me.m_SubsidyEnergy
         End Get
-        Set(ByVal value As Single)
-            m_SubsidyEnergy = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_SubsidyEnergy = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -443,11 +443,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(2)> _
     Public Property SubsidyOther() As Single
         Get
-            Return m_SubsidyOther
+            Return Me.m_SubsidyOther
         End Get
-        Set(ByVal value As Single)
-            m_SubsidyOther = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_SubsidyOther = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -458,9 +458,9 @@ Public MustInherit Class cEconomicUnit
      cPropertySorter.PropertyOrder(5)> _
     Public Overridable Property Broker() As Boolean
         Get
-            Return m_bBroker
+            Return Me.m_bBroker
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_bBroker = value
             Me.SetChanged()
         End Set
@@ -479,9 +479,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_WorkerFemalePay
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerFemalePay = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -495,9 +495,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_WorkerMalePay
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerMalePay = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -511,9 +511,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_OwnerFemalePay
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerFemalePay = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -527,9 +527,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_OwnerMalePay
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerMalePay = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -543,9 +543,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_WorkerOtherPay
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerOtherPay = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -563,9 +563,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_WorkerFemaleShare
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerFemaleShare = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -579,9 +579,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_WorkerMaleShare
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerMaleShare = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -595,9 +595,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_OwnerFemaleShare
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerFemaleShare = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -611,9 +611,9 @@ Public MustInherit Class cEconomicUnit
         Get
             Return Me.m_OwnerMaleShare
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerMaleShare = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -629,11 +629,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(2)> _
     Public Property CapitalInput() As Single
         Get
-            Return m_CapitalCost
+            Return Me.m_CapitalCost
         End Get
-        Set(ByVal value As Single)
-            m_CapitalCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_CapitalCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -645,11 +645,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(3)> _
     Public Property EnergyCost() As Single
         Get
-            Return m_EnergyCost
+            Return Me.m_EnergyCost
         End Get
-        Set(ByVal value As Single)
-            m_EnergyCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_EnergyCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -661,11 +661,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(4)> _
     Public Property IndustrialCost() As Single
         Get
-            Return m_IndustrialCost
+            Return Me.m_IndustrialCost
         End Get
-        Set(ByVal value As Single)
-            m_IndustrialCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_IndustrialCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -677,11 +677,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(5)> _
     Public Property ServiceCost() As Single
         Get
-            Return m_ServiceCost
+            Return Me.m_ServiceCost
         End Get
-        Set(ByVal value As Single)
-            m_ServiceCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_ServiceCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -693,11 +693,11 @@ Public MustInherit Class cEconomicUnit
         cPropertySorter.PropertyOrder(6)> _
     Public Property ManagementCost() As Single
         Get
-            Return m_ManagementCost
+            Return Me.m_ManagementCost
         End Get
-        Set(ByVal value As Single)
-            m_ManagementCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_ManagementCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -709,11 +709,11 @@ Public MustInherit Class cEconomicUnit
     cPropertySorter.PropertyOrder(7)> _
 Public Property RoyaltyCost() As Single
         Get
-            Return m_RoyaltyCost
+            Return Me.m_RoyaltyCost
         End Get
-        Set(ByVal value As Single)
-            m_RoyaltyCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_RoyaltyCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -725,11 +725,11 @@ Public Property RoyaltyCost() As Single
     cPropertySorter.PropertyOrder(8)> _
 Public Property CertificationCost() As Single
         Get
-            Return m_CertificationCost
+            Return Me.m_CertificationCost
         End Get
-        Set(ByVal value As Single)
-            m_CertificationCost = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_CertificationCost = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -745,11 +745,11 @@ Public Property CertificationCost() As Single
         cPropertySorter.PropertyOrder(1)> _
     Public Property TaxEnvironmental() As Single
         Get
-            Return m_TaxesEnvironmental
+            Return Me.m_TaxesEnvironmental
         End Get
-        Set(ByVal value As Single)
-            m_TaxesEnvironmental = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesEnvironmental = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -761,11 +761,11 @@ Public Property CertificationCost() As Single
          cPropertySorter.PropertyOrder(2)> _
      Public Property TaxExport() As Single
         Get
-            Return m_TaxesExport
+            Return Me.m_TaxesExport
         End Get
-        Set(ByVal value As Single)
-            m_TaxesExport = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesExport = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -777,11 +777,11 @@ Public Property CertificationCost() As Single
         cPropertySorter.PropertyOrder(3)> _
     Public Property TaxImport() As Single
         Get
-            Return m_TaxesImport
+            Return Me.m_TaxesImport
         End Get
-        Set(ByVal value As Single)
-            m_TaxesImport = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesImport = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -793,11 +793,11 @@ Public Property CertificationCost() As Single
         cPropertySorter.PropertyOrder(4)> _
      Public Property TaxProduction() As Single
         Get
-            Return m_TaxesProduction
+            Return Me.m_TaxesProduction
         End Get
-        Set(ByVal value As Single)
-            m_TaxesProduction = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesProduction = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -809,11 +809,11 @@ Public Property CertificationCost() As Single
          cPropertySorter.PropertyOrder(6)> _
      Public Property TaxVAT() As Single
         Get
-            Return m_TaxesVAT
+            Return Me.m_TaxesVAT
         End Get
-        Set(ByVal value As Single)
-            m_TaxesVAT = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesVAT = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -825,11 +825,11 @@ Public Property CertificationCost() As Single
         cPropertySorter.PropertyOrder(6)> _
     Public Property ProfitTax() As Single
         Get
-            Return m_TaxesProfit
+            Return Me.m_TaxesProfit
         End Get
-        Set(ByVal value As Single)
-            m_TaxesProfit = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesProfit = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -841,11 +841,11 @@ Public Property CertificationCost() As Single
         cPropertySorter.PropertyOrder(7)> _
     Public Property LicenseTax() As Single
         Get
-            Return m_TaxesLicense
+            Return Me.m_TaxesLicense
         End Get
-        Set(ByVal value As Single)
-            m_TaxesLicense = value
-            SetChanged()
+        Set(value As Single)
+            Me.m_TaxesLicense = value
+            Me.SetChanged()
         End Set
     End Property
 
@@ -863,9 +863,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_WorkerFemale
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerFemale = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -879,9 +879,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_WorkerMale
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerMale = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -895,9 +895,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_WorkerParttime
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerParttime = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -911,9 +911,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_WorkerOther
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerOther = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -927,9 +927,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_OwnerFemale
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerFemale = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -943,9 +943,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_OwnerMale
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerMale = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -959,9 +959,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_WorkerFemaleDependents
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerFemaleDependents = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -975,9 +975,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_WorkerMaleDependents
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_WorkerMaleDependents = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -991,9 +991,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_OwnerFemaleDependents
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerFemaleDependents = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 
@@ -1007,9 +1007,9 @@ Public Property CertificationCost() As Single
         Get
             Return Me.m_OwnerMaleDependents
         End Get
-        Set(ByVal value As Single)
+        Set(value As Single)
             Me.m_OwnerMaleDependents = value
-            SetChanged()
+            Me.SetChanged()
         End Set
     End Property
 

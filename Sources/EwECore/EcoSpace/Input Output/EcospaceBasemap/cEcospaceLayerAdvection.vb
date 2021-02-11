@@ -41,7 +41,7 @@ Public Class cEcospaceLayerAdvection
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
 
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerAdvection, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerAdvection
@@ -59,7 +59,7 @@ Public Class cEcospaceLayerAdvection
             If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
             Return data(iIndexSec)(iRow, iCol)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim d As Single()(,) = DirectCast(Me.Data, Single()(,))
             Dim s As Single = Convert.ToSingle(value)
             If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
@@ -101,7 +101,7 @@ Public Class cEcospaceLayerAdvection
             Next iCol
         Next iRow
 
-        If (m_iNumValueCells > 0) Then
+        If (Me.m_iNumValueCells > 0) Then
             Me.m_sMeanValue = sTot / Me.m_iNumValueCells
         Else
             Me.m_sMeanValue = cCore.NULL_VALUE

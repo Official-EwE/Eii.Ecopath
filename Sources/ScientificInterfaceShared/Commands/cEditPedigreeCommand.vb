@@ -40,7 +40,7 @@ Namespace Commands
         ''' <summary>Variable to invoke the command with.</summary>
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
 
-        Public Sub New(ByVal cmdh As cCommandHandler)
+        Public Sub New(cmdh As cCommandHandler)
             MyBase.new(cmdh, cEditPedigreeCommand.cCOMMAND_NAME)
         End Sub
 
@@ -48,7 +48,7 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="varname">The variable to launch the command for.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(Optional ByVal varname As eVarNameFlags = eVarNameFlags.NotSet)
+        Public Overloads Sub Invoke(Optional varname As eVarNameFlags = eVarNameFlags.NotSet)
             Me.m_varname = varname
             MyBase.Invoke()
         End Sub
@@ -62,7 +62,7 @@ Namespace Commands
             Get
                 Return Me.m_varname
             End Get
-            Set(ByVal value As eVarNameFlags)
+            Set(value As eVarNameFlags)
                 Me.m_varname = value
             End Set
         End Property

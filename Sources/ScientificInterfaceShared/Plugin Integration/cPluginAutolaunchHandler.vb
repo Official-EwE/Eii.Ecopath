@@ -44,7 +44,7 @@ Namespace Integration
         ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
         ''' that holds the plugins to launch.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPluginManager, ByVal cmdh As cCommandHandler)
+        Public Sub New(pm As cPluginManager, cmdh As cCommandHandler)
             MyBase.New(pm, cmdh)
             Me.LaunchPlugins()
         End Sub
@@ -58,7 +58,7 @@ Namespace Integration
         ''' Overridden with emtpy method to comply to base class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub EnablePlugin(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
+        Protected Overrides Sub EnablePlugin(ip As IGUIPlugin, bEnable As Boolean)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -66,7 +66,7 @@ Namespace Integration
         ''' Overridden with emtpy method to comply to base class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub PlacePlugin(ByVal ip As IGUIPlugin, ByVal bPlace As Boolean)
+        Protected Overrides Sub PlacePlugin(ip As IGUIPlugin, bPlace As Boolean)
         End Sub
 
 #End Region ' Overrides 

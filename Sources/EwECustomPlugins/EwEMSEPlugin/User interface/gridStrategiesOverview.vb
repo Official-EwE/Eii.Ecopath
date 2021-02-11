@@ -120,7 +120,7 @@ Public Class gridStrategiesOverview
             Me(iRow, eColumnTypes.RunStrategy) = New SourceGrid2.Cells.Real.CheckBox(Me.m_data(i - 1).RunThisStrategy)
             Me(iRow, eColumnTypes.RunStrategy).Behaviors.Add(Me.EwEEditHandler)
 
-            Me.Rows(iRow).Tag = m_data(i-1)
+            Me.Rows(iRow).Tag = Me.m_data(i-1)
 
             Me.UpdateRow(iRow)
 
@@ -245,7 +245,7 @@ Public Class gridStrategiesOverview
     ''' makes this method mandatory.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(p As Position, cell As Cells.ICellVirtual) As Boolean
 
         If Not Me.AllowUpdates Then Return True
 
@@ -295,7 +295,7 @@ Public Class gridStrategiesOverview
 
     End Function
 
-    Private Sub UpdateRow(ByVal iRow As Integer)
+    Private Sub UpdateRow(iRow As Integer)
 
         Dim strat As Strategy = Nothing
         Dim ri As RowInfo = Nothing
@@ -342,7 +342,7 @@ Public Class gridStrategiesOverview
         Get
             Return (Me.m_iUpdateLock = 0)
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If value Then
                 Me.m_iUpdateLock += 1
             Else

@@ -42,7 +42,7 @@ Public Class cEcospaceLayerWind
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerWind, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerWind
         Me.m_ccSecundaryIndex = eCoreCounterTypes.nMonths
@@ -57,7 +57,7 @@ Public Class cEcospaceLayerWind
             If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
             Return DirectCast(Me.Data, Single(,,))(iRow, iCol, iIndexSec)
         End Get
-        Set(ByVal value As Object)
+        Set(value As Object)
             Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
             Dim s As Single = Convert.ToSingle(value)
             If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex

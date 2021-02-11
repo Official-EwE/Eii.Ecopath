@@ -66,9 +66,9 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property DrawAlways() As Boolean
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As RectangleF,
-                                           Optional ByVal iSymbol As Integer = 0)
+        Public Overrides Sub RenderPreview(g As Graphics,
+                                           rc As RectangleF,
+                                           Optional iSymbol As Integer = 0)
 
             If (Me.ForeBrush Is Nothing) Then Me.Update()
 
@@ -89,11 +89,11 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As Graphics,
-                                        ByVal rc As RectangleF,
-                                        ByVal layer As cEcospaceLayer,
-                                        ByVal value As Object,
-                                        ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As Graphics,
+                                        rc As RectangleF,
+                                        layer As cEcospaceLayer,
+                                        value As Object,
+                                        style As cStyleGuide.eStyleFlags)
 
             Dim sValue As Single = CSng(value)
 
@@ -129,7 +129,7 @@ Namespace Controls.Map.Layers
                 If (value IsNot Nothing) And (Me.Font IsNot Nothing) Then
                     If bOutOfRange Then
 
-                        RenderPreview(g, rc, eSymbolTypes.Error)
+                        Me.RenderPreview(g, rc, eSymbolTypes.Error)
                         Me.m_bHasError = True
                         Me.InvalidateSymbols()
 
@@ -178,7 +178,7 @@ Namespace Controls.Map.Layers
             Return (Not String.IsNullOrEmpty(Me.VisualStyle.FontName) Or (Me.VisualStyle.FontSize > 1))
         End Function
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             MyBase.Dispose(disposing)
             Try
                 Me.Font.Dispose()

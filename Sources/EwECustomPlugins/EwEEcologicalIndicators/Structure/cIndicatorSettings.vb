@@ -62,7 +62,7 @@ Public Class cIndicatorSettings
         Set(value As Boolean)
             If (value <> Me.m_bRunPath) Then
                 Me.m_bRunPath = value
-                NotifyWorld()
+                Me.NotifyWorld()
             End If
         End Set
     End Property
@@ -74,7 +74,7 @@ Public Class cIndicatorSettings
         Set(value As Boolean)
             If (value <> Me.m_bRunSim) Then
                 Me.m_bRunSim = value
-                NotifyWorld()
+                Me.NotifyWorld()
             End If
         End Set
     End Property
@@ -86,7 +86,7 @@ Public Class cIndicatorSettings
         Set(value As Boolean)
             If (value <> Me.m_bRunSpace) Then
                 Me.m_bRunSpace = value
-                NotifyWorld()
+                Me.NotifyWorld()
             End If
         End Set
     End Property
@@ -98,7 +98,7 @@ Public Class cIndicatorSettings
         Set(value As Boolean)
             If (value <> Me.m_bRunMC) Then
                 Me.m_bRunMC = value
-                NotifyWorld()
+                Me.NotifyWorld()
             End If
         End Set
     End Property
@@ -110,7 +110,7 @@ Public Class cIndicatorSettings
         Set(value As Boolean)
             If (value <> Me.m_bSpaceAnnualOnly) Then
                 Me.m_bSpaceAnnualOnly = value
-                NotifyWorld()
+                Me.NotifyWorld()
             End If
         End Set
     End Property
@@ -131,8 +131,8 @@ Public Class cIndicatorSettings
     ''' <param name="strDescription">Optional description to assign to the group.</param>
     ''' <returns>The new group.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddGroup(ByVal strName As String,
-                             Optional ByVal strDescription As String = "") As cIndicatorInfoGroup
+    Public Function AddGroup(strName As String,
+                             Optional strDescription As String = "") As cIndicatorInfoGroup
         Dim grp As New cIndicatorInfoGroup(strName, strDescription)
         Me.m_lIndicatorGroups.Add(grp)
         Return grp
@@ -155,7 +155,7 @@ Public Class cIndicatorSettings
     ''' </summary>
     ''' <param name="index">The index to obtain the <see cref="cIndicatorInfoGroup"/> for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property IndicatorGroup(ByVal index As Integer) As cIndicatorInfoGroup
+    Public ReadOnly Property IndicatorGroup(index As Integer) As cIndicatorInfoGroup
         Get
             Return Me.m_lIndicatorGroups(index)
         End Get

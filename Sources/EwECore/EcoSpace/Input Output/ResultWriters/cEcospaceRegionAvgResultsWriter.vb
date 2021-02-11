@@ -150,7 +150,7 @@ Public Class cEcospaceRegionAvgResultsWriter
     ''' <param name="RegionIndex"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function DataSourceFactory(ResultType As eDataSourceTypes, Optional ByVal RegionIndex As Integer = 0) As cEcospaceResultsWriterDataSourceBase
+    Private Function DataSourceFactory(ResultType As eDataSourceTypes, Optional RegionIndex As Integer = 0) As cEcospaceResultsWriterDataSourceBase
         Dim dataSource As cEcospaceResultsWriterDataSourceBase
         Select Case ResultType
             Case eDataSourceTypes.Biomass

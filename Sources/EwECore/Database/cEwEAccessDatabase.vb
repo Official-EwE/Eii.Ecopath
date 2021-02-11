@@ -83,10 +83,10 @@ Namespace Database
         ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Create(ByVal strDatabase As String, _
-                ByVal strModelName As String, _
-                Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet, _
+        Public Overrides Function Create(strDatabase As String, _
+                strModelName As String, _
+                Optional bOverwrite As Boolean = False, _
+                Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, _
                 Optional strAuthor As String = "") As eDatasourceAccessType
 
             Dim strSource As String = ""
@@ -157,10 +157,10 @@ Namespace Database
         ''' <param name="bOverwrite">States whether any model in the way will be obliterated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SaveAs(ByVal strDatabaseTo As String, _
-                ByVal strModelName As String, _
-                Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+        Public Overrides Function SaveAs(strDatabaseTo As String, _
+                strModelName As String, _
+                Optional bOverwrite As Boolean = False, _
+                Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
             Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
             Dim strDatabaseFrom As String = Me.Name
@@ -216,9 +216,9 @@ Namespace Database
         ''' to 'NotSet' to auto-detect the database type.</param>
         ''' <returns>True if connected successfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Open(ByVal strDatabase As String, _
-                                       Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
-                                       Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
+        Public Overrides Function Open(strDatabase As String, _
+                                       Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                                       Optional bReadOnly As Boolean = False) As eDatasourceAccessType
 
             ' Preconditions
             Debug.Assert(Not String.IsNullOrEmpty(strDatabase), "Invalid data source specified")
@@ -248,9 +248,9 @@ Namespace Database
                 ' Assemble connection string
                 Select Case databaseType
                     Case eDataSourceTypes.Access2003
-                        Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strDatabase)
                     Case eDataSourceTypes.Access2007
-                        Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strDatabase)
                     Case eDataSourceTypes.NotSet
                         Me.m_conn.ConnectionString = ""
                         datResult = eDatasourceAccessType.Failed_UnknownType
@@ -330,7 +330,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property Name() As String
             Get
-                Return m_strFileName
+                Return Me.m_strFileName
             End Get
         End Property
 
@@ -352,7 +352,7 @@ Namespace Database
         ''' <para>The obtained OleDbDataAdapter should be released via 
         ''' <see cref="ReleaseAdapter">ReleaseAdapter</see>.</para></remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetAdapter(ByVal strSQL As String) As IDataAdapter
+        Public Overrides Function GetAdapter(strSQL As String) As IDataAdapter
 
             Dim adapter As OleDbDataAdapter = DirectCast(MyBase.GetAdapter(strSQL), OleDbDataAdapter)
 
@@ -403,7 +403,7 @@ Namespace Database
         ''' <param name="dst">The data source type to test.</param>
         ''' <returns>True if the OS can connect to a given data source type.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function CanConnect(ByVal dst As EwEUtils.Core.eDataSourceTypes) As Boolean
+        Public Overrides Function CanConnect(dst As EwEUtils.Core.eDataSourceTypes) As Boolean
 
             Dim conn As OleDbConnection = New OleDbConnection()
             Dim strDatabase As String = "~doesnotexist~"
@@ -412,9 +412,9 @@ Namespace Database
             ' Try to assemble connection string
             Select Case dst
                 Case eDataSourceTypes.Access2003
-                    conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
+                    conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strDatabase)
                 Case eDataSourceTypes.Access2007
-                    conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
+                    conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strDatabase)
                 Case Else
                     conn.ConnectionString = ""
                     datResult = eDatasourceAccessType.Failed_UnknownType
@@ -446,7 +446,7 @@ Namespace Database
         ''' <param name="strConnectionTo"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function CanCompact(ByVal strConnectionFrom As String, ByVal strConnectionTo As String) As Boolean
+        Public Overrides Function CanCompact(strConnectionFrom As String, strConnectionTo As String) As Boolean
 
             Dim compact As IDatabaseCompact = cDatabaseCompactFactory.GetDatabaseCompact(strConnectionFrom)
             If (compact Is Nothing) Then Return False
@@ -466,8 +466,8 @@ Namespace Database
         ''' cannot be <see cref="IsConnected">connected</see> when compacting.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Compact(ByVal strFileFrom As String, _
-                                          ByVal strFileTo As String) As eDatasourceAccessType
+        Public Overrides Function Compact(strFileFrom As String, _
+                                          strFileTo As String) As eDatasourceAccessType
 
             '  If read-only: report only status and abort
             If (Me.IsReadOnly) Then Return eDatasourceAccessType.Failed_ReadOnly

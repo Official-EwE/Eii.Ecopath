@@ -174,7 +174,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' <param name="core">The <see cref="cCore">core</see> that this plug-in
     ''' can connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
 
         ' Grab and remember core when it is provided via the plug-in mechanism
         Me.m_core = DirectCast(core, cCore)
@@ -230,7 +230,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' Not used.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function LoadModel(ByVal dataSource As Object) As Boolean _
+    Public Function LoadModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.LoadModel
 
     End Function
@@ -240,7 +240,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' Not used.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function SaveModel(ByVal dataSource As Object) As Boolean _
+    Public Function SaveModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
 
     End Function
@@ -369,7 +369,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures">The <see cref="cEcosimDatastructures">Ecosim data</see> with results.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub EcosimRunCompletedPost(ByVal EcosimDatastructures As Object) _
+    Public Sub EcosimRunCompletedPost(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
 
         If (Not Me.m_bRunWithEcosim) Then Return
@@ -539,12 +539,12 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #Region " Ecospace "
 
-    Public Sub LoadEcospaceScenario(ByVal dataSource As Object) _
+    Public Sub LoadEcospaceScenario(dataSource As Object) _
         Implements EwEPlugin.IEcospacePlugin.LoadEcospaceScenario
         Me.ClearEcospaceIndicators()
     End Sub
 
-    Public Sub SaveEcospaceScenario(ByVal dataSource As Object) _
+    Public Sub SaveEcospaceScenario(dataSource As Object) _
         Implements EwEPlugin.IEcospacePlugin.SaveEcospaceScenario
         ' NOP
     End Sub
@@ -621,7 +621,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     End Sub
 
-    Public Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
+    Public Sub EcospaceEndTimeStepPost(EcospaceDatastructures As Object, iTime As Integer) _
         Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
 
         If Not Me.m_bEcospaceCalculating Then Return
@@ -679,7 +679,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #Region " UI "
 
-    Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -701,7 +701,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         If (Not Me.HasUI) Then
@@ -960,11 +960,11 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' value can be left empty.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CSVFileName(ByVal component As eComponentType, ByVal strStep As String) As String
+    Private Function CSVFileName(component As eComponentType, strStep As String) As String
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}{1}.csv", Me.ComponentName(component), strStep), False)
     End Function
 
-    Private Function ASCFileName(strIndicator As String, ByVal strStep As String) As String
+    Private Function ASCFileName(strIndicator As String, strStep As String) As String
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}-{1}.asc", strIndicator, strStep), False)
     End Function
 

@@ -201,8 +201,8 @@ Public Class dlgSplitGroup
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
 
-        Me.B1 = Me.m_biomass * (1 - B1Ratio)
-        Me.B2 = Me.m_biomass * B1Ratio
+        Me.B1 = Me.m_biomass * (1 - Me.B1Ratio)
+        Me.B2 = Me.m_biomass * Me.B1Ratio
 
         Me.m_bInUpdate = False
 
@@ -230,12 +230,12 @@ Public Class dlgSplitGroup
 
     Private Sub OnMoveTaxaToGroup2(sender As Object, e As EventArgs) _
         Handles m_btn2to1.Click
-        MoveSelectedTaxa(Me.m_lbxTaxa2, Me.m_lbxTaxa1)
+        Me.MoveSelectedTaxa(Me.m_lbxTaxa2, Me.m_lbxTaxa1)
     End Sub
 
     Private Sub OnMoveTaxaToGroup1(sender As Object, e As EventArgs) _
         Handles m_btn1to2.Click
-        MoveSelectedTaxa(Me.m_lbxTaxa1, Me.m_lbxTaxa2)
+        Me.MoveSelectedTaxa(Me.m_lbxTaxa1, Me.m_lbxTaxa2)
     End Sub
 
     Private Sub OnTaxaSelectionChanged(sender As Object, e As EventArgs) _
@@ -262,7 +262,7 @@ Public Class dlgSplitGroup
             bSucces = Me.m_engine.SplitLifeStage(grp.Index, Me.Name2, Me.Age2)
         Else
             Dim taxa As New List(Of Integer)
-            bSucces = Me.m_engine.SplitGroup(grp.Index, Me.Name2, B1, B2, Me.Taxa(Me.m_lbxTaxa2, False))
+            bSucces = Me.m_engine.SplitGroup(grp.Index, Me.Name2, Me.B1, Me.B2, Me.Taxa(Me.m_lbxTaxa2, False))
         End If
 
         If bSucces Then

@@ -70,12 +70,12 @@ Friend Class cDBUpdate6_00_07_001
                Me.AddMSE(db)
     End Function
 
-    Private Function SetDefaultFleetColours(ByVal db As cEwEDatabase) As Boolean
+    Private Function SetDefaultFleetColours(db As cEwEDatabase) As Boolean
         db.Execute("UPDATE EcopathFleet SET PoolColor='0' WHERE PoolColor='FF000000'")
         Return True
     End Function
 
-    Private Function AddMSE(ByVal db As cEwEDatabase) As Boolean
+    Private Function AddMSE(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True
 

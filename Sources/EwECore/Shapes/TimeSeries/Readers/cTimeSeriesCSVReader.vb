@@ -47,7 +47,7 @@ Public Class cTimeSeriesCSVReader
     ''' <param name="core">A reference to the <see cref="cCore">Core</see> that
     ''' this reader belongs to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore)
+    Public Sub New(core As cCore)
         MyBase.New(core)
     End Sub
 
@@ -66,10 +66,10 @@ Public Class cTimeSeriesCSVReader
     ''' </param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overloads Function Read(ByVal strFileName As String, _
-                                   ByVal strDelimiter As String, _
-                                   ByVal strDecimalSeparator As String, _
-                                   ByVal interval As eTSDataSetInterval) As Boolean
+    Public Overloads Function Read(strFileName As String, _
+                                   strDelimiter As String, _
+                                   strDecimalSeparator As String, _
+                                   interval As eTSDataSetInterval) As Boolean
         ' Store file name
         Me.m_strFileName = strFileName
         ' Let the baseclass do the work
@@ -104,7 +104,7 @@ Public Class cTimeSeriesCSVReader
     ''' <returns>A TextReader if the connection could be made, or
     ''' Nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ReleaseReader(ByVal reader As TextReader) As Boolean
+    Public Overrides Function ReleaseReader(reader As TextReader) As Boolean
         Try
             reader.Close()
             Me.m_stream.Close()

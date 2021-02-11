@@ -45,7 +45,7 @@ Namespace Controls.Map.Layers
 
 #Region " Constructor "
 
-        Public Sub New(ByVal typeGUI As Type)
+        Public Sub New(typeGUI As Type)
             MyBase.New(typeGUI)
         End Sub
 
@@ -82,7 +82,7 @@ Namespace Controls.Map.Layers
             Get
                 Return Me.m_sValue
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 Dim sValue As Single = Math.Max(Math.Min(CSng(value), Me.CellValueMax), Me.CellValueMin)
                 If (sValue <> Me.m_sValue) Then
                     Me.m_sValue = sValue
@@ -97,7 +97,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="pt">The cell location to pick up a value from.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Pickup(ByVal pt As Point)
+        Public Overridable Sub Pickup(pt As Point)
 
             Try
                 Me.CellValue = CDec(Me.Layer.Value(pt.Y, pt.X))
@@ -140,7 +140,7 @@ Namespace Controls.Map.Layers
             Get
                 Return CType(MyBase.Layer, cDisplayLayerRaster)
             End Get
-            Protected Set(ByVal value As cDisplayLayerRaster)
+            Protected Set(value As cDisplayLayerRaster)
                 MyBase.Layer = value
             End Set
         End Property
@@ -164,7 +164,7 @@ Namespace Controls.Map.Layers
             Get
                 Return s_iCursorSize
             End Get
-            Set(ByVal iCursorSize As Integer)
+            Set(iCursorSize As Integer)
                 s_iCursorSize = iCursorSize
                 If (s_cursor IsNot Nothing) Then
                     s_cursor.Dispose()
@@ -178,7 +178,7 @@ Namespace Controls.Map.Layers
         ''' Cursor feedback for the current location of the cursor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Cursor(ByVal ptMouse As Point, ByVal map As ucMap) As Cursor
+        Public Overrides Function Cursor(ptMouse As Point, map As ucMap) As Cursor
 
             If (map.GetCellSize.Width <> s_lastsize) Then
                 s_lastsize = map.GetCellSize.Width
@@ -193,7 +193,7 @@ Namespace Controls.Map.Layers
 
         End Function
 
-        Public Shared Function EditorCursor(ByVal iCursorSize As Integer, ByVal szCell As SizeF) As Cursor
+        Public Shared Function EditorCursor(iCursorSize As Integer, szCell As SizeF) As Cursor
 
             Dim ptIconSize As New Size(CInt(szCell.Width * iCursorSize), CInt(szCell.Height * iCursorSize))
             Dim cursor As Cursor = Cursors.Hand
@@ -284,7 +284,7 @@ Namespace Controls.Map.Layers
         ''' <param name="args">Click <see cref="MouseEventArgs">mouse state</see>
         ''' information.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub StartEdit(ByVal args As MouseEventArgs, map As ucMap)
+        Protected Overrides Sub StartEdit(args As MouseEventArgs, map As ucMap)
 
             Me.IsEditing = True
 
@@ -430,7 +430,7 @@ Namespace Controls.Map.Layers
         ''' Duplicate layer data across indexed layers.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Duplicate(ByVal iFrom As Integer)
+        Public Overridable Sub Duplicate(iFrom As Integer)
 
             If (Not Me.IsEditable) Then Return
 
@@ -496,11 +496,11 @@ Namespace Controls.Map.Layers
         ''' the edit operation.</param>
         ''' <returns>True if map values have changed due to the edit.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function Edit(ByVal ptFrom As Point,
-                                    ByVal ptTo As Point,
-                                    ByVal ptDelta As Point,
-                                    ByVal szfCell As SizeF,
-                                    ByVal args As MouseEventArgs,
+        Protected Overridable Function Edit(ptFrom As Point,
+                                    ptTo As Point,
+                                    ptDelta As Point,
+                                    szfCell As SizeF,
+                                    args As MouseEventArgs,
                                     ByRef ptUpdateMin As Point,
                                     ByRef ptUpdateMax As Point) As Boolean
 

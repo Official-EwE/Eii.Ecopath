@@ -103,11 +103,11 @@ Namespace Ecopath.Output
                 If Not group.IsMultiStanza Then
 
                     iRow = Me.AddRow
-                    UpdateRow(iRow, group)
+                    Me.UpdateRow(iRow, group)
 
                 Else
                     ' Group is stanza
-                    sg = Core.StanzaGroups(group.iStanza)
+                    sg = Me.Core.StanzaGroups(group.iStanza)
                     If group.iStanza <> iStanzaPrev Then
 
                         ' Complete row with dummy cells
@@ -126,13 +126,13 @@ Namespace Ecopath.Output
 
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    UpdateRow(iRow, group, True)
+                    Me.UpdateRow(iRow, group, True)
                 End If
             Next i
 
         End Sub
 
-        Private Sub UpdateRow(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal bIsStanza As Boolean = False)
+        Private Sub UpdateRow(iRow As Integer, source As cCoreInputOutputBase, Optional bIsStanza As Boolean = False)
 
             Dim cell As cEwECellBase = Nothing
 

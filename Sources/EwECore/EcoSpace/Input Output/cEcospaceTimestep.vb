@@ -85,7 +85,7 @@ Public Class cEcospaceTimestep
         ''' <param name="iRow">Row index of the cell to access.</param>
         ''' <param name="iCol">Column index of the cell to access.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
                 If (TypeOf Me.Data Is Single(,,)) Then
                     Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
@@ -99,7 +99,7 @@ Public Class cEcospaceTimestep
                 End If
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 ' NOP
             End Set
         End Property
@@ -126,12 +126,12 @@ Public Class cEcospaceTimestep
         ''' <param name="iRow">Row index of the cell to access.</param>
         ''' <param name="iCol">Column index of the cell to access.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
                 Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
                 Return data(Me.m_iFleet, iRow, iCol)
             End Get
-            Set(ByVal value As Object)
+            Set(value As Object)
                 ' NOP
             End Set
         End Property
@@ -142,11 +142,11 @@ Public Class cEcospaceTimestep
 
 #Region "Constructor & Initialization"
 
-    Public Sub New(theCore As cCore, ByVal EcoSimData As cEcosimDatastructures, ByVal EcoSpaceData As cEcospaceDataStructures, ByVal StanzaData As cStanzaDatastructures)
+    Public Sub New(theCore As cCore, EcoSimData As cEcosimDatastructures, EcoSpaceData As cEcospaceDataStructures, StanzaData As cStanzaDatastructures)
 
-        m_core = theCore
-        m_dbid = cCore.NULL_VALUE
-        m_name = eDataTypes.EcospaceTimestepResults.ToString
+        Me.m_core = theCore
+        Me.m_dbid = cCore.NULL_VALUE
+        Me.m_name = eDataTypes.EcospaceTimestepResults.ToString
         Me.m_simData = EcoSimData
         Me.m_spaceData = EcoSpaceData
         Me.m_stanzaData = StanzaData
@@ -155,17 +155,17 @@ Public Class cEcospaceTimestep
         Debug.Assert(Me.m_spaceData IsNot Nothing, Me.ToString & ".New() Ecospace data cannot be null!")
 
         Try
-            ReDim m_biomass(Me.m_spaceData.NGroups)
-            ReDim m_relativebiomass(Me.m_spaceData.NGroups)
-            ReDim m_ConMax(Me.m_spaceData.NGroups)
-            ReDim m_biomassByRegion(Me.m_spaceData.NGroups, Me.m_spaceData.nRegions)
-            ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
+            ReDim Me.m_biomass(Me.m_spaceData.NGroups)
+            ReDim Me.m_relativebiomass(Me.m_spaceData.NGroups)
+            ReDim Me.m_ConMax(Me.m_spaceData.NGroups)
+            ReDim Me.m_biomassByRegion(Me.m_spaceData.NGroups, Me.m_spaceData.nRegions)
+            ReDim Me.m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
 
 
-            ReDim m_F(Me.m_spaceData.NGroups)
-            ReDim m_pred(Me.m_spaceData.NGroups)
-            ReDim m_consum(Me.m_spaceData.NGroups)
-            ReDim m_catch(Me.m_spaceData.NGroups)
+            ReDim Me.m_F(Me.m_spaceData.NGroups)
+            ReDim Me.m_pred(Me.m_spaceData.NGroups)
+            ReDim Me.m_consum(Me.m_spaceData.NGroups)
+            ReDim Me.m_catch(Me.m_spaceData.NGroups)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
@@ -175,7 +175,7 @@ Public Class cEcospaceTimestep
 
     Friend Sub ComputeSumEffortMap()
 
-        Array.Clear(m_sumEffortMap, 0, m_sumEffortMap.Length)
+        Array.Clear(Me.m_sumEffortMap, 0, Me.m_sumEffortMap.Length)
         'ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
 
         For iRow As Integer = 1 To Me.m_spaceData.InRow
@@ -299,20 +299,20 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
-    Public Property FishingMort(ByVal iGroup As Single) As Single
+    Public Property FishingMort(iGroup As Single) As Single
 
         Get
             Try
-                Return m_F(iGroup)
+                Return Me.m_F(iGroup)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_F(iGroup) = value
+                Me.m_F(iGroup) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -320,20 +320,20 @@ Public Class cEcospaceTimestep
 
     End Property
 
-    Public Property PredMortRate(ByVal iGroup As Single) As Single
+    Public Property PredMortRate(iGroup As Single) As Single
 
         Get
             Try
-                Return m_pred(iGroup)
+                Return Me.m_pred(iGroup)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_pred(iGroup) = value
+                Me.m_pred(iGroup) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -342,20 +342,20 @@ Public Class cEcospaceTimestep
     End Property
 
 
-    Public Property [Catch](ByVal iGroup As Single) As Single
+    Public Property [Catch](iGroup As Single) As Single
 
         Get
             Try
-                Return m_catch(iGroup)
+                Return Me.m_catch(iGroup)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_catch(iGroup) = value
+                Me.m_catch(iGroup) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -363,20 +363,20 @@ Public Class cEcospaceTimestep
 
     End Property
 
-    Public Property ConsumptRate(ByVal iGroup As Single) As Single
+    Public Property ConsumptRate(iGroup As Single) As Single
 
         Get
             Try
-                Return m_consum(iGroup)
+                Return Me.m_consum(iGroup)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_consum(iGroup) = value
+                Me.m_consum(iGroup) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -388,20 +388,20 @@ Public Class cEcospaceTimestep
     ''' Average Biomass by group
     ''' </summary>
     ''' <param name="iGroup">Group index</param>
-    Public Property Biomass(ByVal iGroup As Single) As Single
+    Public Property Biomass(iGroup As Single) As Single
 
         Get
             Try
-                Return m_biomass(iGroup)
+                Return Me.m_biomass(iGroup)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_biomass(iGroup) = value
+                Me.m_biomass(iGroup) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -412,7 +412,7 @@ Public Class cEcospaceTimestep
     ''' <summary>
     ''' Max concentration of contaminant at the current time step by group
     ''' </summary>
-    Public Property ConcMax(ByVal iGroup As Single) As Single
+    Public Property ConcMax(iGroup As Single) As Single
 
         Get
             Try
@@ -423,7 +423,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
                 Me.m_ConMax(iGroup) = value
             Catch ex As Exception
@@ -438,20 +438,20 @@ Public Class cEcospaceTimestep
     ''' Average Biomass relative to the base by group (Bt/B0)
     ''' </summary>
     ''' <param name="iGroup">Group index</param>
-    Public Property RelativeBiomass(ByVal iGroup As Single) As Single
+    Public Property RelativeBiomass(iGroup As Single) As Single
 
         Get
             Try
-                Return m_relativebiomass(iGroup)
+                Return Me.m_relativebiomass(iGroup)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_relativebiomass(iGroup) = value
+                Me.m_relativebiomass(iGroup) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -483,20 +483,20 @@ Public Class cEcospaceTimestep
     ''' Average Biomass by group, region
     ''' </summary>
     ''' <param name="iGroup">Group index</param>
-    Public Property BiomassByRegion(ByVal iGroup As Integer, ByVal iRegion As Integer) As Single
+    Public Property BiomassByRegion(iGroup As Integer, iRegion As Integer) As Single
 
         Get
             Try
-                Return m_biomassByRegion(iGroup, iRegion)
+                Return Me.m_biomassByRegion(iGroup, iRegion)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Get
 
-        Friend Set(ByVal value As Single)
+        Friend Set(value As Single)
             Try
-                m_biomassByRegion(iGroup, iRegion) = value
+                Me.m_biomassByRegion(iGroup, iRegion) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -519,7 +519,7 @@ Public Class cEcospaceTimestep
     ''' </summary>
     ''' <param name="iPreyPredIndex">Index of the Prey/Pred link (1 to nPreyPredLinks)</param>
     ''' <remarks> </remarks>
-    Public ReadOnly Property iPreyIndex(ByVal iPreyPredIndex As Integer) As Integer
+    Public ReadOnly Property iPreyIndex(iPreyPredIndex As Integer) As Integer
 
         Get
             Debug.Assert(iPreyPredIndex <= Me.m_simData.inlinks, Me.ToString & ".iPreyIndex(iPreyPredIndex) iPreyPredIndex out of bounds!")
@@ -538,7 +538,7 @@ Public Class cEcospaceTimestep
     ''' </summary>
     ''' <param name="iPreyPredIndex">Index of the Prey/Pred link (1 to nPreyPredLinks)</param>
     ''' <remarks> </remarks>
-    Public ReadOnly Property iPredIndex(ByVal iPreyPredIndex As Integer) As Integer
+    Public ReadOnly Property iPredIndex(iPreyPredIndex As Integer) As Integer
 
         Get
             Debug.Assert(iPreyPredIndex <= Me.m_simData.inlinks, Me.ToString & ".iPredIndex(iPreyPredIndex) iPreyPredIndex out of bounds!")
@@ -600,10 +600,10 @@ Public Class cEcospaceTimestep
 
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
-            Return m_dbid
+            Return Me.m_dbid
         End Get
-        Set(ByVal value As Integer)
-            m_dbid = value
+        Set(value As Integer)
+            Me.m_dbid = value
         End Set
     End Property
 
@@ -615,17 +615,17 @@ Public Class cEcospaceTimestep
         Get
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
 
         End Set
     End Property
 
     Public Property Name() As String Implements ICoreInterface.Name
         Get
-            Return m_name
+            Return Me.m_name
         End Get
-        Set(ByVal value As String)
-            m_name = value
+        Set(value As String)
+            Me.m_name = value
         End Set
     End Property
 

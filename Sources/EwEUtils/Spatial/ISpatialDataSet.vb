@@ -127,7 +127,7 @@ Namespace SpatialData
         ''' headaches. It is deemed more cost-effective to allow full developer 
         ''' control over the persistence logic.</remarks>
         ''' -------------------------------------------------------------------
-        Property Configuration(ByVal doc As XmlDocument, ByVal strFolderRoot As String) As XmlNode
+        Property Configuration(doc As XmlDocument, strFolderRoot As String) As XmlNode
 
 #End Region ' Configuration
 
@@ -141,7 +141,7 @@ Namespace SpatialData
         ''' purposes, time is assumed to be rounded to days.</param>
         ''' <returns>True if data is available.</returns>
         ''' -------------------------------------------------------------------
-        Function HasDataAtT(ByVal datetime As DateTime) As Boolean
+        Function HasDataAtT(datetime As DateTime) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -159,11 +159,11 @@ Namespace SpatialData
         ''' <param name="strProjectionString">WKT projection string for the target raster.</param>
         ''' <returns>True if data was successfully locked.</returns>
         ''' -------------------------------------------------------------------
-        Function LockDataAtT(ByVal datetime As DateTime, _
-                             ByVal dCellSize As Double, _
-                             ByVal ptfNE As PointF, _
-                             ByVal ptfSW As PointF, _
-                             ByVal strProjectionString As String) As Boolean
+        Function LockDataAtT(datetime As DateTime, _
+                             dCellSize As Double, _
+                             ptfNE As PointF, _
+                             ptfSW As PointF, _
+                             strProjectionString As String) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -192,7 +192,7 @@ Namespace SpatialData
         ''' <param name="ptfSE">Point to receive bottom-right extent value.</param>
         ''' <returns>True if valid values were retrieved.</returns>
         ''' -------------------------------------------------------------------
-        Function GetExtentAtT(ByVal datetime As DateTime, _
+        Function GetExtentAtT(datetime As DateTime, _
                               ByRef ptfNW As PointF, _
                               ByRef ptfSE As PointF) As Boolean
 
@@ -202,7 +202,7 @@ Namespace SpatialData
         ''' run time.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Sub UpdateIndexAtT(ByVal datetime As DateTime)
+        Sub UpdateIndexAtT(datetime As DateTime)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -226,7 +226,7 @@ Namespace SpatialData
         ''' purposes, time is assumed to be rounded to months.</param>
         ''' <returns>True if data at a given time is indexed.</returns>
         ''' -------------------------------------------------------------------
-        Function IndexStatusAtT(ByVal datetime As DateTime) As eIndexStatus
+        Function IndexStatusAtT(datetime As DateTime) As eIndexStatus
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -260,8 +260,8 @@ Namespace SpatialData
         ''' <param name="strLayerName">Name of the layer data will be retrieved for.</param>
         ''' <returns>A <see cref="ISpatialRaster">spatial raster</see>.</returns>
         ''' -------------------------------------------------------------------
-        Function GetRaster(ByVal converter As ISpatialDataConverter, _
-                           ByVal strLayerName As String) As ISpatialRaster
+        Function GetRaster(converter As ISpatialDataConverter, _
+                           strLayerName As String) As ISpatialRaster
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -272,7 +272,7 @@ Namespace SpatialData
         ''' <param name="bVector">Allowed to include vector file types.</param>
         ''' <param name="bAllFiles">Allowed to include 'all files' entry.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, ByVal bImage As Boolean, ByVal bVector As Boolean, ByVal bAllFiles As Boolean) As String
+        ReadOnly Property DialogReadFilter(bRaster As Boolean, bImage As Boolean, bVector As Boolean, bAllFiles As Boolean) As String
 
 #End Region ' Data
 
@@ -297,7 +297,7 @@ Namespace SpatialData
         ''' <returns>A new dataset with the same <see cref="ISpatialDataSet.GUID"/>
         ''' as the source dataset.</returns>
         ''' -------------------------------------------------------------------
-        Function ExportTo(ByVal strPath As String) As ISpatialDataSet
+        Function ExportTo(strPath As String) As ISpatialDataSet
 
 #End Region ' Import / export
 

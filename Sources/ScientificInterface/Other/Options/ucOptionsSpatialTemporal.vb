@@ -55,7 +55,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.UIContext = uic
             Me.InitializeComponent()
@@ -71,7 +71,7 @@ Namespace Other
         ''' Control's load event which gets called every time the control gets loaded. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -425,7 +425,7 @@ Namespace Other
 
         End Sub
 
-        Private Function ToDefaultString(ByVal strIn As String) As String
+        Private Function ToDefaultString(strIn As String) As String
             If String.IsNullOrWhiteSpace(strIn) Then Return SharedResources.GENERIC_VALUE_NOTSET
             Return strIn
         End Function

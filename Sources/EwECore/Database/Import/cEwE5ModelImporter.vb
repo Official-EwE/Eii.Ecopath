@@ -47,7 +47,7 @@ Namespace Database
 
 #Region " Construction "
 
-        Public Sub New(ByVal core As cCore)
+        Public Sub New(core As cCore)
             MyBase.New(core)
         End Sub
 

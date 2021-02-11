@@ -47,7 +47,7 @@ Namespace Other
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(uic As cUIContext)
 
             Me.UIContext = uic
             Me.InitializeComponent()
@@ -58,7 +58,7 @@ Namespace Other
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Me.m_cbHideModelBar.Checked = My.Settings.PresentationModeHideModelBar

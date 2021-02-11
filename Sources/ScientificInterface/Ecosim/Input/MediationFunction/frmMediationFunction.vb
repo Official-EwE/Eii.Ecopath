@@ -63,7 +63,7 @@ Namespace Ecosim
             Get
                 Return MyBase.UIContext
             End Get
-            Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
                 Me.m_assignments.UIContext = value
             End Set
@@ -76,7 +76,7 @@ Namespace Ecosim
         ''' <see cref="eCoreComponentType">message sources</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
             Me.m_shapeguihandler = New cMediationShapeGUIHandler(Me.UIContext)
@@ -86,7 +86,7 @@ Namespace Ecosim
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
             Me.m_shapeguihandler.Detach()
             MyBase.OnFormClosed(e)
         End Sub
@@ -97,7 +97,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="msg">Incoming core <see cref="cMessage">messages</see>.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             If msg.Source = eCoreComponentType.ShapesManager Then
                 If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And _

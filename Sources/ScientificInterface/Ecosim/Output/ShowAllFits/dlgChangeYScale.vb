@@ -39,57 +39,57 @@ Namespace Ecosim
 
         Private m_lplots As List(Of cShowAllFitsPlotData)
 
-        Public Sub New(ByVal lplots As List(Of cShowAllFitsPlotData))
+        Public Sub New(lplots As List(Of cShowAllFitsPlotData))
 
             Me.InitializeComponent()
             Me.m_lplots = lplots
 
         End Sub
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
             Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
             Dim desc As New cShapeDataFormatter()
 
-            m_lbAllPlots.Items.Clear()
+            Me.m_lbAllPlots.Items.Clear()
 
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
                 ts = plot.TimeSeries
-                m_lbAllPlots.Items.Add(desc.ToString(ts, eDescriptorTypes.Name))
+                Me.m_lbAllPlots.Items.Add(desc.ToString(ts, eDescriptorTypes.Name))
             Next
 
-            If m_lbAllPlots.Items.Count > 0 Then
-                m_lbAllPlots.SelectedIndex = 0
+            If Me.m_lbAllPlots.Items.Count > 0 Then
+                Me.m_lbAllPlots.SelectedIndex = 0
             End If
         End Sub
 
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) Handles m_btnOK.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End Sub
 
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnReset.Click
+        Private Sub OnReset(sender As System.Object, e As System.EventArgs) Handles m_btnReset.Click
             For Each plot As cShowAllFitsPlotData In Me.m_lplots
                 plot.YMax = plot.YMaxDefault
             Next
         End Sub
 
-        Private Sub lbAllPlots_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_lbAllPlots.SelectedIndexChanged
+        Private Sub lbAllPlots_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles m_lbAllPlots.SelectedIndexChanged
 
             Me.m_nudYScale.Enabled = False
             Me.m_txbSelPlotName.Text = ""
             Me.m_nudYScale.Value = 0
 
-            If m_lbAllPlots.SelectedIndex >= 0 Then
-                Dim plot As cShowAllFitsPlotData = Me.m_lplots(m_lbAllPlots.SelectedIndex)
+            If Me.m_lbAllPlots.SelectedIndex >= 0 Then
+                Dim plot As cShowAllFitsPlotData = Me.m_lplots(Me.m_lbAllPlots.SelectedIndex)
 
                 If Single.IsNaN(plot.YMax) Then
                     Me.m_txbSelPlotName.Text = "<plot invalid>"
@@ -105,9 +105,9 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub txbYScale_Validated(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_nudYScale.Validated
+        Private Sub txbYScale_Validated(sender As System.Object, e As System.EventArgs) Handles m_nudYScale.Validated
             Try
-                Dim plot As cShowAllFitsPlotData = Me.m_lplots(m_lbAllPlots.SelectedIndex)
+                Dim plot As cShowAllFitsPlotData = Me.m_lplots(Me.m_lbAllPlots.SelectedIndex)
                 plot.YMax = CSng(Me.m_nudYScale.Value)
             Catch ex As Exception
 

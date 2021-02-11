@@ -125,7 +125,7 @@ Namespace Ecospace.Controls
                 If (value IsNot Nothing) Then
                     Me.m_man = Me.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "gridDefineExternalSpatialData"
@@ -279,7 +279,7 @@ Namespace Ecospace.Controls
 
 #End Region ' Internals
 
-        Public Sub Fill(Optional ByVal dsSelect As ISpatialDataSet = Nothing)
+        Public Sub Fill(Optional dsSelect As ISpatialDataSet = Nothing)
 
             Me.RefreshContent()
             Me.SelectedDataset = dsSelect

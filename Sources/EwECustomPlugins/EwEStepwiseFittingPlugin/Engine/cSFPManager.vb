@@ -31,10 +31,12 @@ Option Explicit On
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
-Imports System.Xml
 Imports EwECore
+Imports EwECore.Database
+Imports EwECore.DataSources
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
@@ -42,16 +44,24 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class cSFPManager
 
+#Region " Private vars "
+
     Private m_strModelFileName As String
     Private m_scenario As cEcoSimScenario
     Private m_iTimeSeries As Integer
     Private m_parameters As cSFPParameters
 
-    Private m_iterations As New List(Of ISFPIterations)
+    Private m_iterations As New List(Of ISFPIteration)
     Private m_bIsBaseline As Boolean = True
     Private m_bIsFishing As Boolean = False
 
-    Private m_frmMain As Form
+    Private m_queue As New Stack(Of ISFPIteration)
+    Private m_containers As New List(Of cSFPContainer)
+    Private m_statusmsg As cMessage = Nothing
+    Private m_iQueueLength As Integer = 0
+    Private m_iQueueDone As Integer = 0
+
+    Private m_frmMain As Form = Nothing
 
     ' -- State flags --
 
@@ -59,6 +69,8 @@ Public Class cSFPManager
     Private m_bIsRunning As Boolean = False
     ''' <summary>Flag, stating whether a run abortion has been requested.</summary>
     Private m_bStopRun As Boolean = False
+
+#End Region ' Private vars
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -82,12 +94,12 @@ Public Class cSFPManager
     ''' by EwE.
     ''' </remarks>
     ''' <param name="core">The core instance to initialize to.</param>
-    ''' <param name="mFrm">The main UI form to use for thread marshalling.</param>
+    ''' <param name="frm">The main UI form to use for thread marshalling.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, ByVal mFrm As Form)
+    Public Sub New(core As cCore, frm As Form)
         Me.Core = core
         Me.Parameters = New cSFPParameters(core)
-        Me.m_frmMain = mFrm
+        Me.m_frmMain = frm
     End Sub
 
 #Region " Load user Inputs "
@@ -96,9 +108,9 @@ Public Class cSFPManager
     ''' Load the model in the selected file and keep a reference of the file path
     ''' </summary>
     ''' <returns>True if load successful</returns>
-    Public Function LoadModel(ByVal strFileName As String) As Boolean
+    Public Function LoadModel(strFileName As String) As Boolean
         Me.m_strModelFileName = strFileName
-        Return Me.Core.LoadModel(m_strModelFileName)
+        Return Me.Core.LoadModel(Me.m_strModelFileName)
     End Function
 
     ''' <summary>
@@ -106,12 +118,12 @@ Public Class cSFPManager
     ''' </summary>
     ''' <param name="iScenario">One-based Ecosim scenario index.</param>
     ''' <returns>True if load successful</returns>
-    Public Function LoadEcoSimScenario(ByVal iScenario As Integer) As Boolean
+    Public Function LoadEcoSimScenario(iScenario As Integer) As Boolean
 
         'Try to load scenario
-        If Core.LoadEcosimScenario(iScenario) Then
+        If Me.Core.LoadEcosimScenario(iScenario) Then
             'Store a reference to scenario in SFPManager
-            m_scenario = Core.EcosimScenarios(iScenario)
+            Me.m_scenario = Me.Core.EcosimScenarios(iScenario)
             Return True
         End If
         Return False
@@ -126,8 +138,8 @@ Public Class cSFPManager
         Dim lscenarios As New List(Of String)
         Dim scenario As cEcoSimScenario
 
-        For iScenario As Integer = 1 To Core.nEcosimScenarios
-            scenario = Core.EcosimScenarios(iScenario)
+        For iScenario As Integer = 1 To Me.Core.nEcosimScenarios
+            scenario = Me.Core.EcosimScenarios(iScenario)
             lscenarios.Add(scenario.Name)
         Next
         Return lscenarios
@@ -139,15 +151,15 @@ Public Class cSFPManager
     ''' <param name="tsi">One-based time series dataset index, just as used in the
     ''' EwE core.</param>
     ''' <returns>True if load successful</returns>
-    Public Function LoadTimeSeries(ByVal tsi As Integer) As Boolean
+    Public Function LoadTimeSeries(tsi As Integer) As Boolean
 
         Dim bSuccess As Boolean = False
 
         'Try to load time series
-        If Core.LoadTimeSeries(tsi) Then
+        If Me.Core.LoadTimeSeries(tsi) Then
             'Store a reference to time series index in SFPManager
             Me.m_iTimeSeries = tsi
-            Console.WriteLine("Time Series : " & Core.TimeSeriesDataset(tsi).Name & " Loaded successfully")
+            Console.WriteLine("Time Series : " & Me.Core.TimeSeriesDataset(tsi).Name & " Loaded successfully")
             bSuccess = True
         Else
             Console.WriteLine("Time Series could not Load")
@@ -168,8 +180,8 @@ Public Class cSFPManager
         Dim lTimeSeries As New List(Of String)
         Dim TimeSeries As cTimeSeriesDataset = Nothing
 
-        For iTimeSeries As Integer = 1 To Core.nTimeSeriesDatasets
-            TimeSeries = Core.TimeSeriesDataset(iTimeSeries)
+        For iTimeSeries As Integer = 1 To Me.Core.nTimeSeriesDatasets
+            TimeSeries = Me.Core.TimeSeriesDataset(iTimeSeries)
             lTimeSeries.Add(TimeSeries.Name)
         Next
         Return lTimeSeries
@@ -177,12 +189,12 @@ Public Class cSFPManager
 
     Public Function GetAvailableAnomalyShapes() As cShapeData()
 
-        Dim interactions As cMediatedInteractionManager = Core.MediatedInteractionManager
+        Dim interactions As cMediatedInteractionManager = Me.Core.MediatedInteractionManager
         Dim shapes As New List(Of cShapeData)
 
         Dim lPP As New List(Of Integer)
-        For iGroup As Integer = 1 To Core.nGroups
-            Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(iGroup)
+        For iGroup As Integer = 1 To Me.Core.nGroups
+            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
             If (grp.IsProducer) Then
                 lPP.Add(iGroup)
             End If
@@ -209,7 +221,7 @@ Public Class cSFPManager
     ''' <summary>
     ''' Set the value of PredOrPredPreySSToV from selected String
     ''' </summary>
-    Public Sub SetPredOrPredPreySSToV(ByVal SSToVChoice As String)
+    Public Sub SetPredOrPredPreySSToV(SSToVChoice As String)
 
         ' ToDo: how about using an enum here? ;)
 
@@ -244,7 +256,7 @@ Public Class cSFPManager
         Get
             Return Me.Parameters.AnomalySearchSplineStepSize
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value <> Me.Parameters.AnomalySearchSplineStepSize) Then
                 Me.Parameters.AnomalySearchSplineStepSize = value
                 Me.Refresh(Me.K)
@@ -252,7 +264,7 @@ Public Class cSFPManager
         End Set
     End Property
 
-    Public Sub Refresh(ByVal iPrefK As Integer)
+    Public Sub Refresh(iPrefK As Integer)
         ' Always do this
         Me.Parameters.CalculateParameters(iPrefK)
         ' Create list of ISFPIterations
@@ -283,155 +295,188 @@ Public Class cSFPManager
 
 #Region " Run Iterations "
 
-    Public Sub RunSFPIterationsThreaded()
-
-        If (Me.IsRunning) Then Return
-
-        Dim thread As New Threading.Thread(AddressOf RunSFPIterations)
-        thread.Start()
-
+    Public Sub Run()
+        Me.StartContainerRun()
     End Sub
 
-    Public Sub RunSFPIterations()
+    Private Sub StartContainerRun()
 
         If (Me.IsRunning) Then Return
-
+        cLog.VerboseLevel = eVerboseLevel.Disabled
         Me.m_bIsRunning = True
-        Me.m_bStopRun = False
 
-        Dim iNumSteps As Integer = 1
-        Dim iStep As Integer = 0
-        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.DISPLAYNAME),
-                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-        msg.Hyperlink = Me.OutputFolder
-        Dim bSuccess As Boolean
+#If NO_PARALLEL Then
+        Dim iNumThreads As integer= 1
+#Else
+        Dim iNumThreads As Integer = Me.Parameters.NumThreads
+#End If
 
-        'Debug.WriteLine("Number of Observations = " & Parameters.NumberOfObservations)
-        For Each Iteration As ISFPIterations In m_iterations
-            Iteration.RunState = ISFPIterations.eRunState.Idle
-            Iteration.IsBestFit = False
-            If (Iteration.Enabled) Then iNumSteps += 1
+        ' Add in reverse order (it's a stack)
+        For i As Integer = Me.m_iterations.Count - 1 To 0 Step -1
+            Dim it As ISFPIteration = Me.m_iterations(i)
+            it.RunState = ISFPIteration.eRunState.Idle
+            it.IsBestFit = False
+            If (it.Enabled) Then Me.m_queue.Push(it)
         Next
 
-        ' Set a core batch lock to keep the state monitor busy. This keeps the stop option enabled
-        ' Note: the busy flag depends either on the core search mode or a core batch lock.
-        '       The search mode is reset every time a F2TS search finishes, which is not practical for our purposes
-        '       Batch locks are incremental, which is why the batch lock is chosen here instead of the search mode.
-        ' Clear all
+        Me.m_statusmsg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.DISPLAYNAME),
+                                      eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+        Me.m_statusmsg.Hyperlink = Me.OutputFolder
 
         Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
         Me.Core.StateMonitor.SetIsSearching(eSearchModes.External)
         Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
-        cApplicationStatusNotifier.StartProgress(Me.Core, "", 0.5! / iNumSteps)
 
-        Try
+        Me.m_iQueueDone = 0
+        Me.m_iQueueLength = Me.m_queue.Count + 1
 
+        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_INITIALIZING, My.Resources.DISPLAYNAME), (Me.m_iQueueDone + 0.5!) / Me.m_iQueueLength)
 
-            'Go through each iteration
-            For Each iteration As ISFPIterations In m_iterations
+        ' Export model to .eiixml to prevent database clashes
+        Dim strModelFile As String = Me.ExportModelToText()
+        Me.m_iQueueDone += 1
 
-                'Check if iteration is enabled to run
-                If iteration.Enabled And Not m_bStopRun Then
+        For i As Integer = 1 To iNumThreads
+            Me.AddContainer(i, strModelFile)
+            Me.m_iQueueDone += 1
+        Next
 
-                    cApplicationStatusNotifier.UpdateProgress(Me.Core,
-                                                              cStringUtils.Localize(My.Resources.STATUS_RUNNING,
-                                                                                    My.Resources.DISPLAYNAME,
-                                                                                    iteration.Name),
-                                                              CSng((iStep + 0.5) / iNumSteps))
+        ' Kick off
+        Dim k As Integer = 0
+        While k < Me.m_containers.Count And Me.m_queue.Count > 0
+            Me.HandleIterationUpdate(Me.m_containers(k), Nothing, False)
+            k += 1
+        End While
 
-                    ' Assume the worst
-                    bSuccess = False
-                    ' Set timer
-                    Dim sw As New Stopwatch()
-                    sw.Start()
+    End Sub
 
-                    'Changed Runstate to running instead of error as it confuses the users
-                    iteration.RunState = ISFPIterations.eRunState.Running
-                    SendIterationUpdated(iteration)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Exports the model to the EIIXML format to reduce database clashes while 
+    ''' running iterations.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function ExportModelToText() As String
 
-                    iteration.Init(Core, m_iTimeSeries, Me.Parameters.PredOrPredPreySSToV, Parameters, m_frmMain)
-                    iteration.Load()
-                    SendIterationUpdated(iteration)
+#If ACCESSDB Then
+        Return Me.Core.DataSource.ToString()
+#End If
 
-                    If iteration.Run() Then
-                        If (Not m_bStopRun) Then
-                            Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
+        Dim strSource As String = Me.Core.DataSource.ToString()
+        Dim strFileName As String = cFileUtils.MakeTempFile(".eiixml")
 
-                            ' Make sure Iteration will save
-                            iteration.RunState = ISFPIterations.eRunState.Completed
-                            ' Save Ecosim results if requested
-                            SaveIterationResults(iteration, msg)
-                            ' Save content of iteration for later reloading
-                            SaveIterationConfiguration(iteration, msg)
-                            ' Determine the best fitting iteration
-                            DetermineBestFit()
+        Dim ds As IEwEDataSource = Me.Core.DataSource
+        If Not (TypeOf ds Is cDBDataSource) Then Return strSource
+        Dim dbds As cDBDataSource = DirectCast(ds, cDBDataSource)
+        If Not (TypeOf dbds.Connection Is cEwEAccessDatabase) Then Return strSource
+        Dim db As cEwEAccessDatabase = DirectCast(dbds.Connection, cEwEAccessDatabase)
+        ds = cDataSourceFactory.Create(eDataSourceTypes.EIIXML)
+        If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strFileName) Then Return strFileName
 
-                            bSuccess = True
-                        End If
-                    End If
+        Return strSource
 
-                    sw.Stop()
-                    iteration.Elapsed = sw.Elapsed
+    End Function
 
-                    ' Finalize iteration status
-                    If Not bSuccess Then
-                        iteration.RunState = ISFPIterations.eRunState.Error
-                    End If
+    Private Sub AddContainer(i As Integer, strModelFile As String)
+        Dim cnt As New cSFPContainer("Container_" & i, strModelFile, Me.Core.ActiveEcosimScenarioIndex, Me.m_iTimeSeries, Me.Parameters)
+        AddHandler cnt.OnIterationUpdated, AddressOf Me.HandleIterationUpdate
+        Me.m_containers.Add(cnt)
+    End Sub
 
-                    iteration.Clear()
-                    SendIterationUpdated(iteration)
+    Private Sub RemoveContainer(cnt As cSFPContainer)
+        RemoveHandler cnt.OnIterationUpdated, AddressOf Me.HandleIterationUpdate
+        Me.m_containers.Remove(cnt)
+    End Sub
 
-                    iStep += 1
+    Private Sub HandleIterationUpdate(cnt As cSFPContainer, iteration As ISFPIteration, bDone As Boolean)
 
-                Else
-                    Debug.WriteLine(iteration.Name & ", " & iteration.RunState)
-                End If
-            Next
+        ' Process iteration
+        If (iteration IsNot Nothing) Then
 
-            'Save results to CSV file
-            iStep += 1
-            cApplicationStatusNotifier.UpdateProgress(Me.Core,
-                                                      cStringUtils.Localize(My.Resources.STATUS_SAVING, My.Resources.DISPLAYNAME),
-                                                      sProgress:=CSng(iStep / iNumSteps))
-            SaveResultsToCSV(msg)
+            Debug.WriteLine(cnt.ToString & ": " & iteration.Name & " = " & iteration.RunState.ToString() & " on " & cnt.Model)
 
-            If (Me.Parameters.AutosaveMode <> cSFPParameters.eAutosaveMode.None) Then
-                SaveAllAnomalyResultsToCSV(msg)
+            If (iteration.RunState = ISFPIteration.eRunState.Completed And bDone) Then
+
+                Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
+                ' Save Ecosim results if requested
+                Me.SaveIterationResults(iteration, Me.m_statusmsg)
+                ' Save content of iteration for later reloading
+                Me.SaveIterationConfiguration(iteration, Me.m_statusmsg)
+                ' Determine the best fitting iteration
+                Me.DetermineBestFit()
+
+                Me.m_iQueueDone += 1
+
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, My.Resources.DISPLAYNAME),
+                                                          (Me.m_iQueueDone + 0.5!) / Me.m_iQueueLength)
+
             End If
 
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
+            Me.SendIterationUpdated(iteration)
+
+        End If
+
+        ' Container done?
+        If (Not cnt.IsRunning) Then
+            ' More to run?
+            If (Me.m_queue.Count > 0) Then
+                SyncLock Me.m_queue
+                    ' #Yes: order next run
+                    cnt.Run(Me.m_queue.Pop)
+                End SyncLock
+            Else
+                ' #No: thrash container
+                Me.RemoveContainer(cnt)
+
+                ' Terminate run if all containers are done
+                If (Me.m_containers.Count = 0) Then
+                    Me.TerminateContainerRun()
+                End If
+            End If
+        End If
+
+    End Sub
+
+    ''' <summary>
+    ''' Terminate the SFP iterations container.
+    ''' </summary>
+    Private Sub TerminateContainerRun()
+
+        Debug.Assert(Me.m_containers.Count = 0)
+
+        If (Me.Parameters.AutosaveMode <> cSFPParameters.eAutosaveMode.None) Then
+            Me.SaveResultsToCSV(Me.m_statusmsg)
+            Me.SaveAllAnomalyResultsToCSV(Me.m_statusmsg)
+        End If
 
         Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
         Me.Core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
         Me.Core.SetStopRunDelegate(Nothing)
-        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         Me.m_bIsRunning = False
-        SendIterationUpdated(Nothing)
+        Me.SendIterationUpdated(Nothing)
 
-        If (msg IsNot Nothing) Then
-            If msg.Importance = eMessageImportance.Critical Then
-                msg.Message = cStringUtils.Localize(My.Resources.STATUS_SAVE_FAILED, My.Resources.DISPLAYNAME)
+        If (Me.m_statusmsg IsNot Nothing) Then
+            If Me.m_statusmsg.Importance = eMessageImportance.Critical Then
+                Me.m_statusmsg.Message = cStringUtils.Localize(My.Resources.STATUS_SAVE_FAILED, My.Resources.DISPLAYNAME)
             End If
-            Me.Core.Messages.SendMessage(msg)
+            Me.Core.Messages.SendMessage(Me.m_statusmsg)
         End If
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
-        'Reload Ecosim Scenario 
-        'If we reload scenario the iteration list disappears!
-        'LoadEcoSimScenario(EcoSimScenario.Index)
-        'LoadTimeSeries(TimeSeriesIndex)
+        ''Load best fitted iteration
+        'For Each Iteration As ISFPIterations In m_iterations
+        '    If Iteration.IsBestFit Then
+        '        Iteration.Apply(Me.Core)
+        '        'LoadIterationConfiguration(Iteration)
+        '        Exit For
+        '    End If
+        'Next
 
-        'Load best fitted iteration
-        For Each Iteration As ISFPIterations In m_iterations
-            If Iteration.IsBestFit Then
-                Iteration.Apply()
-                'LoadIterationConfiguration(Iteration)
-                Exit For
-            End If
-        Next
-
+        Me.m_containers.Clear()
+        Me.m_bIsRunning = False
+        Me.SendIterationUpdated(Nothing)
     End Sub
 
     Public ReadOnly Property IsRunning As Boolean
@@ -444,7 +489,17 @@ Public Class cSFPManager
 
         If (Me.IsRunning) Then
             Me.m_bStopRun = True
-            Me.Core.EcosimFitToTimeSeries.StopRun()
+            ' To account for new container run mode
+            If (Me.m_containers.Count > 0) Then
+                SyncLock Me.m_queue
+                    For Each c As cSFPContainer In Me.m_containers
+                        c.StopRun()
+                    Next
+                    Me.m_queue.Clear()
+                End SyncLock
+            Else
+                Me.Core.EcosimFitToTimeSeries.StopRun()
+            End If
         End If
 
     End Sub
@@ -452,16 +507,15 @@ Public Class cSFPManager
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event to notify that an iteraton has been updated during a <see cref="IsRunning">run</see>.
-    ''' <see cref="RunSFPIterations"/>
     ''' <see cref="IsRunning"/>
     ''' <see cref="StopRun"/>
     ''' </summary>
     ''' <param name="sender">This class.</param>
     ''' <param name="iteration">The iteration that completed.</param>
     ''' -----------------------------------------------------------------------
-    Friend Event OnIterationUpdated(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
+    Friend Event OnIterationUpdated(sender As cSFPManager, iteration As ISFPIteration)
 
-    Private Sub SendIterationUpdated(ByVal iteration As ISFPIterations)
+    Private Sub SendIterationUpdated(iteration As ISFPIteration)
         Try
             ' Notify the world that the run is over
             RaiseEvent OnIterationUpdated(Me, Nothing)
@@ -473,33 +527,33 @@ Public Class cSFPManager
 
     Private Sub LoadSFPIterationsList()
 
-        m_iterations.Clear()
+        Me.m_iterations.Clear()
 
         'Only add iterations if time series is loaded
-        If TSIndex >= 1 Then
+        If Me.TSIndex >= 1 Then
 
             'Load Fishing iteration
-            m_iterations.Add(New cSFPEcosimRun(m_bIsFishing))
+            Me.m_iterations.Add(New cSFPEcosimRun(Me.m_bIsFishing))
 
             'Load Fishing Vunerability Search iterations
-            For i = Parameters.MinK To Parameters.K
-                m_iterations.Add(New cSFPVulnerabilitySearch(m_bIsFishing, i))
+            For i = Me.Parameters.MinK To Me.Parameters.K
+                Me.m_iterations.Add(New cSFPVulnerabilitySearch(Me.m_bIsFishing, i))
             Next
 
             'If there is a current FF applied to PP
-            If (Parameters.AppliedShape IsNot Nothing) Then
+            If (Me.Parameters.AppliedShapeIndex > 0) Then
 
                 'Load Fishing Anomaly Search iterations
-                For i = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
-                    m_iterations.Add(New cSFPAnomalySearch(m_bIsFishing, i))
+                For i = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
+                    Me.m_iterations.Add(New cSFPAnomalySearch(Me.m_bIsFishing, i))
                 Next
 
                 'Load Fishing V and A Search iterations
-                For i = Parameters.MinK To Parameters.K
-                    For j = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
+                For i = Me.Parameters.MinK To Me.Parameters.K
+                    For j = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
                         Dim estParams As Integer = i + j
-                        If estParams <= Parameters.K Then
-                            m_iterations.Add(New cSFPVandASearch(m_bIsFishing, i, j))
+                        If estParams <= Me.Parameters.K Then
+                            Me.m_iterations.Add(New cSFPVandASearch(Me.m_bIsFishing, i, j))
                         End If
                     Next
                 Next
@@ -507,27 +561,27 @@ Public Class cSFPManager
             End If
 
             'Load Baseline iteration
-            m_iterations.Add(New cSFPEcosimRun(m_bIsBaseline))
+            Me.m_iterations.Add(New cSFPEcosimRun(Me.m_bIsBaseline))
 
             'Load Baseline Vunerability Search iterations
-            For i = Parameters.MinK To Parameters.K
-                m_iterations.Add(New cSFPVulnerabilitySearch(m_bIsBaseline, i))
+            For i = Me.Parameters.MinK To Me.Parameters.K
+                Me.m_iterations.Add(New cSFPVulnerabilitySearch(Me.m_bIsBaseline, i))
             Next
 
             'If there is a current FF applied to PP
-            If (Parameters.AppliedShape IsNot Nothing) Then
+            If (Me.Parameters.AppliedShapeIndex > 0) Then
 
                 'Load Baseline Anomaly Search iterations
-                For i = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
-                    m_iterations.Add(New cSFPAnomalySearch(m_bIsBaseline, i))
+                For i = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
+                    Me.m_iterations.Add(New cSFPAnomalySearch(Me.m_bIsBaseline, i))
                 Next
 
                 'Load Baseline V and A Search iterations
-                For i = Parameters.MinK To Parameters.K
-                    For j = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
+                For i = Me.Parameters.MinK To Me.Parameters.K
+                    For j = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
                         Dim estParams As Integer = i + j
-                        If estParams <= Parameters.K Then
-                            m_iterations.Add(New cSFPVandASearch(m_bIsBaseline, i, j))
+                        If estParams <= Me.Parameters.K Then
+                            Me.m_iterations.Add(New cSFPVandASearch(Me.m_bIsBaseline, i, j))
                         End If
                     Next
                 Next
@@ -540,12 +594,12 @@ Public Class cSFPManager
     Private Sub DetermineBestFit()
 
         Dim BestAICc As Single = Single.MaxValue
-        Dim BestIteration As ISFPIterations = Nothing
+        Dim BestIteration As ISFPIteration = Nothing
 
         ' Clear all best fit flags, and determine the best fit
-        For Each it As ISFPIterations In Me.Iterations
+        For Each it As ISFPIteration In Me.Iterations
             it.IsBestFit = False
-            If (it.RunState = ISFPIterations.eRunState.Completed) And (it.AICc < BestAICc) Then
+            If (it.RunState = ISFPIteration.eRunState.Completed) And (it.AICc < BestAICc) Then
                 BestIteration = it
                 BestAICc = it.AICc
             End If
@@ -566,10 +620,10 @@ Public Class cSFPManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get an array with all available <see cref="ISFPIterations"/>.
+    ''' Get an array with all available <see cref="ISFPIteration"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend ReadOnly Property Iterations As ISFPIterations()
+    Friend ReadOnly Property Iterations As ISFPIteration()
         Get
             Return Me.m_iterations.ToArray()
         End Get
@@ -584,7 +638,7 @@ Public Class cSFPManager
         Get
             Return Me.m_parameters
         End Get
-        Private Set(ByVal value As cSFPParameters)
+        Private Set(value As cSFPParameters)
             Me.m_parameters = value
         End Set
     End Property
@@ -642,7 +696,7 @@ Public Class cSFPManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveResultsToCSV(ByVal msg As cMessage) As Boolean
+    Private Function SaveResultsToCSV(msg As cMessage) As Boolean
 
         ' Note on globalization: 
         '  - All messages presented to users should be localized, e.g., obtained from the resources;
@@ -653,7 +707,7 @@ Public Class cSFPManager
         Dim CSVfileSimple As String = Path.Combine(strPath, "Stepwise_Fitting_Procedure_Iteration_Results.csv")
         Dim writer As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
-        Dim TimeSeries As cTimeSeriesDataset = Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex)
+        Dim TimeSeries As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
 
         If cFileUtils.IsDirectoryAvailable(strPath, True) Then
 
@@ -670,8 +724,8 @@ Public Class cSFPManager
 
                 ' Include default header if needed
                 If Me.Core.SaveWithFileHeader Then
-                    writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Parameters.NumberOfObservations))
+                    writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Me.Parameters.NumberOfObservations))
                 End If
 
                 ' -- Write header --
@@ -685,8 +739,8 @@ Public Class cSFPManager
                 Try
 
                     'Go through each iteration_EC
-                    For Each Iteration As ISFPIterations In m_iterations
-                        If (Iteration.RunState = ISFPIterations.eRunState.Completed) Then
+                    For Each Iteration As ISFPIteration In Me.m_iterations
+                        If (Iteration.RunState = ISFPIteration.eRunState.Completed) Then
 
                             ' Write iteration info line
                             writer.Write(cStringUtils.ToCSVField(Iteration.Name) & "," &
@@ -730,7 +784,7 @@ Public Class cSFPManager
     ''' <param name="msg">Status message to append information to.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveIterationResults(ByVal iteration As ISFPIterations, ByVal msg As cMessage) As Boolean
+    Private Function SaveIterationResults(iteration As ISFPIteration, msg As cMessage) As Boolean
 
         ' Sanity checks
         Debug.Assert(iteration IsNot Nothing)
@@ -763,8 +817,8 @@ Public Class cSFPManager
            (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
 
             'Save output results in Monthly and Yearly format 
-            SaveAggregatedResults(iteration, True, msg)
-            SaveAggregatedResults(iteration, False, msg)
+            Me.SaveAggregatedResults(iteration, True, msg)
+            Me.SaveAggregatedResults(iteration, False, msg)
 
         End If
 
@@ -782,9 +836,9 @@ Public Class cSFPManager
 
         Dim str As New StringBuilder()
 
-        For i As Integer = 1 To Core.nGroups
-            str.Append(cStringUtils.ToCSVField(Core.EcoSimGroupOutputs(i).Name))
-            If i <> Core.nGroups Then str.Append(",")
+        For i As Integer = 1 To Me.Core.nGroups
+            str.Append(cStringUtils.ToCSVField(Me.Core.EcoSimGroupOutputs(i).Name))
+            If i <> Me.Core.nGroups Then str.Append(",")
         Next
 
         Return str.ToString()
@@ -800,16 +854,16 @@ Public Class cSFPManager
     ''' <param name="msg"> The message to append status information to </param>
     ''' <returns>Always returns true.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedResults(ByVal iteration As ISFPIterations,
-                                           ByVal tsMonthly As Boolean,
-                                           ByVal msg As cMessage) As Boolean
+    Private Function SaveAggregatedResults(iteration As ISFPIteration,
+                                            tsMonthly As Boolean,
+                                            msg As cMessage) As Boolean
 
         For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
             Select Case outputtype
                 Case cEcosimResultWriter.eResultTypes.Biomass,
                      cEcosimResultWriter.eResultTypes.Mortality,
                      cEcosimResultWriter.eResultTypes.Catch
-                    SaveAggregatedTypeResult(outputtype, iteration, tsMonthly, msg)
+                    Me.SaveAggregatedTypeResult(outputtype, iteration, tsMonthly, msg)
             End Select
         Next
 
@@ -826,10 +880,10 @@ Public Class cSFPManager
     ''' <param name="msg">The message to append status information to.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedTypeResult(ByVal ResultType As cEcosimResultWriter.eResultTypes,
-                                              ByVal iteration As ISFPIterations,
-                                              ByVal tsMonthly As Boolean,
-                                              ByVal msg As cMessage) As Boolean
+    Private Function SaveAggregatedTypeResult(ResultType As cEcosimResultWriter.eResultTypes,
+                                               iteration As ISFPIteration,
+                                               tsMonthly As Boolean,
+                                               msg As cMessage) As Boolean
 
         ' Note on globalization: 
         '  - All messages presented to users should be localized, e.g., obtained from the resources;
@@ -847,7 +901,7 @@ Public Class cSFPManager
 
         Dim writer As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
-        Dim data(Core.nGroups, Core.nEcosimTimeSteps) As Single
+        Dim data(Me.Core.nGroups, Me.Core.nEcosimTimeSteps) As Single
         Dim grpOutput As cEcosimGroupOutput = Nothing
         Dim GroupNames As String = Me.GetAllGroupNames()
 
@@ -866,7 +920,7 @@ Public Class cSFPManager
 
                 ' Include default header if needed
                 If Me.Core.SaveWithFileHeader Then
-                    writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                    writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                 End If
 
 
@@ -878,11 +932,11 @@ Public Class cSFPManager
 
                 Try
 
-                    If (iteration.RunState = ISFPIterations.eRunState.Completed) Then
+                    If (iteration.RunState = ISFPIteration.eRunState.Completed) Then
 
-                        For i As Integer = 1 To Core.nGroups
-                            grpOutput = Core.EcoSimGroupOutputs(i)
-                            For j As Integer = 1 To Core.nEcosimTimeSteps
+                        For i As Integer = 1 To Me.Core.nGroups
+                            grpOutput = Me.Core.EcoSimGroupOutputs(i)
+                            For j As Integer = 1 To Me.Core.nEcosimTimeSteps
                                 Select Case ResultType
                                     Case cEcosimResultWriter.eResultTypes.Biomass
                                         data(i, j) = grpOutput.Biomass(j)
@@ -948,7 +1002,7 @@ Public Class cSFPManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveIterationConfiguration(ByVal iteration As ISFPIterations, ByVal msg As cMessage) As Boolean
+    Private Function SaveIterationConfiguration(iteration As ISFPIteration, msg As cMessage) As Boolean
 
         ' Sanity checks
         Debug.Assert(iteration IsNot Nothing)
@@ -959,7 +1013,7 @@ Public Class cSFPManager
 
         ' Abort if not ran completed
         ' Note that this assumes that the directory is vigin territory... failed iterations are not obliterated. EwE always makes this harsh assumption, eek
-        If (Not iteration.RunState = ISFPIterations.eRunState.Completed) Then Return False
+        If (Not iteration.RunState = ISFPIteration.eRunState.Completed) Then Return False
 
         If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
 
@@ -970,9 +1024,9 @@ Public Class cSFPManager
             'Save vulnerabilities configuartion
             writer = New StreamWriter(Path.Combine(strIterationPath, ".vulnerabilities"))
             If (iteration.Vulnerabilities IsNot Nothing) Then
-                For i As Integer = 1 To Core.nGroups
+                For i As Integer = 1 To Me.Core.nGroups
                     If (i > 1) Then writer.WriteLine()
-                    For j As Integer = 1 To Core.nGroups
+                    For j As Integer = 1 To Me.Core.nGroups
                         If (j > 1) Then writer.Write(",")
                         writer.Write(cStringUtils.ToCSVField(iteration.Vulnerabilities(i, j)))
                     Next
@@ -988,7 +1042,7 @@ Public Class cSFPManager
                 If (iteration.Vulnerabilities IsNot Nothing) Then
                     ' Include default header if needed
                     If Me.Core.SaveWithFileHeader Then
-                        writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                     End If
 
                     ' -- Write header --
@@ -996,9 +1050,9 @@ Public Class cSFPManager
                     writer.WriteLine("Data,Vulnerabilities")
                     writer.WriteLine()
 
-                    For i As Integer = 1 To Core.nGroups
+                    For i As Integer = 1 To Me.Core.nGroups
                         If (i > 1) Then writer.WriteLine()
-                        For j As Integer = 1 To Core.nGroups
+                        For j As Integer = 1 To Me.Core.nGroups
                             If (j > 1) Then writer.Write(",")
                             writer.Write(cStringUtils.ToCSVField(iteration.Vulnerabilities(i, j)))
                         Next
@@ -1016,7 +1070,7 @@ Public Class cSFPManager
                     If (iteration.Vulnerabilities IsNot Nothing) Then
                         ' Include default header if needed
                         If Me.Core.SaveWithFileHeader Then
-                            writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                            writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                         End If
 
                         ' -- Write header --
@@ -1024,9 +1078,9 @@ Public Class cSFPManager
                         writer.WriteLine("Data,Vulnerabilities")
                         writer.WriteLine()
 
-                        For i As Integer = 1 To Core.nGroups
+                        For i As Integer = 1 To Me.Core.nGroups
                             If (i > 1) Then writer.WriteLine()
-                            For j As Integer = 1 To Core.nGroups
+                            For j As Integer = 1 To Me.Core.nGroups
                                 If (j > 1) Then writer.Write(",")
                                 writer.Write(cStringUtils.ToCSVField(iteration.Vulnerabilities(i, j)))
                             Next
@@ -1054,7 +1108,7 @@ Public Class cSFPManager
                 If (iteration.AnomalyShape IsNot Nothing) Then
                     ' Include default header if needed
                     If Me.Core.SaveWithFileHeader Then
-                        writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                     End If
 
                     ' -- Write header --
@@ -1078,7 +1132,7 @@ Public Class cSFPManager
                     If (iteration.AnomalyShape IsNot Nothing) Then
                         ' Include default header if needed
                         If Me.Core.SaveWithFileHeader Then
-                            writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                            writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                         End If
 
                         ' -- Write header --
@@ -1109,7 +1163,7 @@ Public Class cSFPManager
     ''' <returns>True if successful.</returns>
     ''' <param name="iteration">The iteration to repopulate.</param>
     ''' -----------------------------------------------------------------------
-    Private Function LoadIterationConfiguration(ByVal iteration As ISFPIterations) As Boolean
+    Private Function LoadIterationConfiguration(iteration As ISFPIteration) As Boolean
 
         Dim strSimPath As String = Path.Combine(Me.OutputFolder, cFileUtils.ToValidFileName(iteration.Name, False))
         Dim bSuccess As Boolean = True
@@ -1131,10 +1185,10 @@ Public Class cSFPManager
             Try
                 Using reader As New StreamReader(Path.Combine(strSimPath, ".vulnerabilities"))
                     Debug.Assert(iteration.Vulnerabilities IsNot Nothing)
-                    For i As Integer = 1 To Core.nGroups
+                    For i As Integer = 1 To Me.Core.nGroups
                         Dim strLine As String = reader.ReadLine().Trim()
                         Dim astrValues As String() = cStringUtils.SplitQualified(strLine, ","c)
-                        For j As Integer = 1 To Core.nGroups
+                        For j As Integer = 1 To Me.Core.nGroups
                             iteration.Vulnerabilities(i, j) = cStringUtils.ConvertToSingle(astrValues(j - 1))
                         Next
                     Next
@@ -1170,12 +1224,12 @@ Public Class cSFPManager
             End Try
         End If
 
-        iteration.RunState = If(bSuccess, ISFPIterations.eRunState.Completed, ISFPIterations.eRunState.Error)
+        iteration.RunState = If(bSuccess, ISFPIteration.eRunState.Completed, ISFPIteration.eRunState.Error)
         Return bSuccess
 
     End Function
 
-    Private Sub AppendStatus(ByVal msg As cMessage, ByVal strMessage As String, ByVal status As eStatusFlags)
+    Private Sub AppendStatus(msg As cMessage, strMessage As String, status As eStatusFlags)
         Dim vs As New cVariableStatus(status, strMessage, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
         msg.Variables.Add(vs)
     End Sub
@@ -1186,7 +1240,7 @@ Public Class cSFPManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveAllAnomalyResultsToCSV(ByVal msg As cMessage) As Boolean
+    Private Function SaveAllAnomalyResultsToCSV(msg As cMessage) As Boolean
 
         ' Note on globalization: 
         '  - All messages presented to users should be localized, e.g., obtained from the resources;
@@ -1197,7 +1251,7 @@ Public Class cSFPManager
         Dim CSVfileSimple As String = Path.Combine(strPath, "Stepwise_Fitting_Procedure_Anomaly_Results.csv")
         Dim writer As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
-        Dim TimeSeries As cTimeSeriesDataset = Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex)
+        Dim TimeSeries As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
 
         If cFileUtils.IsDirectoryAvailable(strPath, True) Then
 
@@ -1214,8 +1268,8 @@ Public Class cSFPManager
 
                 ' Include default header if needed
                 If Me.Core.SaveWithFileHeader Then
-                    writer.WriteLine(Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Parameters.NumberOfObservations))
+                    writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Me.Parameters.NumberOfObservations))
                 End If
 
                 ' -- Write header --
@@ -1230,8 +1284,8 @@ Public Class cSFPManager
                 Try
 
                     'Go through each iteration_EC
-                    For Each Iteration As ISFPIterations In m_iterations
-                        If (Iteration.RunState = ISFPIterations.eRunState.Completed) Then
+                    For Each Iteration As ISFPIteration In Me.m_iterations
+                        If (Iteration.RunState = ISFPIteration.eRunState.Completed) Then
 
                             writer.Write(cStringUtils.ToCSVField(Iteration.Name) & ",")
 

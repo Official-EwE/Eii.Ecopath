@@ -32,16 +32,15 @@ Namespace ValueWrapper
         Protected m_statusarray() As eStatusFlags
         Protected m_values As Object
         Protected m_nObjects As Integer = cCore.NULL_VALUE 'number of object in the array
-        Protected m_CounterDelegate As CoreCounterDelegate = Nothing
         Protected m_Countertype As eCoreCounterTypes
 
 
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
-                ByVal CounterDelegate As CoreCounterDelegate, ByVal MetaData As cVariableMetaData, ByVal Validator As cValidatorDefault)
-            MyBase.New(Nothing, VarName, Status, theValueType, MetaData, Validator)
+        Sub New(core As cCore, theValueType As eValueTypes, VarName As eVarNameFlags, Status As eStatusFlags, CounterType As eCoreCounterTypes,
+                MetaData As cVariableMetaData, Optional Validator As cValidatorDefault = Nothing)
+            MyBase.New(core, Nothing, VarName, Status, theValueType, MetaData, Validator)
 
-            varType = theValueType
-            m_varName = VarName
+            Me.varType = theValueType
+            Me.m_varName = VarName
 
             ' Sanity check
             Debug.Assert(Me.m_metadata IsNot Nothing)
@@ -49,13 +48,12 @@ Namespace ValueWrapper
             ' JS 01may17: Do not overwrite base class smartness
             'm_validator = Validator
 
-            m_CounterDelegate = CounterDelegate
-            m_Countertype = CounterType
+            Me.m_Countertype = CounterType
             Me.m_bStored = True
 
-            If SetSize() Then 'this will redim the arrays and set m_nObjects
-                For i As Integer = 0 To m_nObjects
-                    m_statusarray(i) = Status
+            If Me.SetSize() Then 'this will redim the arrays and set m_nObjects
+                For i As Integer = 0 To Me.m_nObjects
+                    Me.m_statusarray(i) = Status
                 Next
             End If
 
@@ -67,11 +65,8 @@ Namespace ValueWrapper
         ''' <param name="VarName">eVarNameFlags of the data to hold</param>
         ''' <param name="Status">Default status</param>
         ''' <param name="CounterType">Type of core counter to use for dimensioning the array</param>
-        ''' <param name="CounterDelegate">Delegate supplied by the core use to retrieve the size of the data</param>
-        ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags,
-                ByVal CounterType As eCoreCounterTypes, ByVal CounterDelegate As CoreCounterDelegate)
-            Me.New(theValueType, VarName, Status, CounterType, CounterDelegate, Nothing, Nothing)
+        Sub New(core As cCore, theValueType As eValueTypes, VarName As eVarNameFlags, Status As eStatusFlags, CounterType As eCoreCounterTypes)
+            Me.New(core, theValueType, VarName, Status, CounterType, Nothing, Nothing)
         End Sub
 
         ''' <summary>
@@ -82,30 +77,30 @@ Namespace ValueWrapper
         '''  Once the data has been resized it will need to be repopulated.</remarks>
         Public Overrides Function SetSize() As Boolean
 
-            If m_CounterDelegate IsNot Nothing Then
+            If Me.m_Countertype <> eCoreCounterTypes.NotSet Then
 
-                Dim newsize As Integer = m_CounterDelegate(m_Countertype)
+                Dim newsize As Integer = Me.m_core.GetCoreCounter(Me.m_Countertype)
 
                 'only resize the data if it is different
-                If newsize <> m_nObjects Then
-                    m_nObjects = newsize
+                If newsize <> Me.m_nObjects Then
+                    Me.m_nObjects = newsize
 
                     Select Case Me.varType
                         Case eValueTypes.BoolArray
-                            Dim s(m_nObjects) As Boolean
-                            m_values = s
+                            Dim s(Me.m_nObjects) As Boolean
+                            Me.m_values = s
                         Case eValueTypes.IntArray
-                            Dim s(m_nObjects) As Integer
-                            m_values = s
+                            Dim s(Me.m_nObjects) As Integer
+                            Me.m_values = s
                         Case eValueTypes.SingleArray
-                            Dim s(m_nObjects) As Single
-                            m_values = s
+                            Dim s(Me.m_nObjects) As Single
+                            Me.m_values = s
                     End Select
 
-                    ReDim m_statusarray(m_nObjects)
+                    ReDim Me.m_statusarray(Me.m_nObjects)
 
-                    For i As Integer = 0 To m_nObjects
-                        m_statusarray(i) = eStatusFlags.Null
+                    For i As Integer = 0 To Me.m_nObjects
+                        Me.m_statusarray(i) = eStatusFlags.Null
                     Next
                 End If
 
@@ -118,38 +113,38 @@ Namespace ValueWrapper
 
         End Function
 
-        Public Overrides Property Status(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+        Public Overrides Property Status(Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
                 If iSecondaryIndex <> cCore.NULL_VALUE Then
-                    Return m_statusarray(iSecondaryIndex)
+                    Return Me.m_statusarray(iSecondaryIndex)
                 Else
                     'if iSecondaryIndex is NULL for an arrayed value then return NULL
                     'we have no way of know what the user wanted
                     Return eStatusFlags.Null
                 End If
             End Get
-            Friend Set(ByVal value As eStatusFlags)
+            Friend Set(value As eStatusFlags)
                 If iSecondaryIndex <> cCore.NULL_VALUE Then
-                    m_statusarray(iSecondaryIndex) = value
+                    Me.m_statusarray(iSecondaryIndex) = value
                 Else
                     'no index so set all status flags to the new value
-                    For i As Integer = 1 To m_nObjects
-                        m_statusarray(i) = value
+                    For i As Integer = 1 To Me.m_nObjects
+                        Me.m_statusarray(i) = value
                     Next
                 End If
             End Set
         End Property
 
-        Public Overrides Property Value(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Property Value(Optional iSecondaryIndex As Integer = cCore.NULL_VALUE, Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Object
 
             Get
                 Try
                     If iSecondaryIndex <> cCore.NULL_VALUE Then
                         'Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, String.Format("{0}.Value({1}, {2}) secondary index out of bounds", Me.ToString(), Me.m_varName, iSecondaryIndex))
-                        Return DirectCast(m_values, Array).GetValue(iSecondaryIndex)
+                        Return DirectCast(Me.m_values, Array).GetValue(iSecondaryIndex)
                     Else
-                        Return m_values
+                        Return Me.m_values
                     End If
                 Catch ex As Exception
                     Debug.Assert(False, Me.ToString & ".Value Error: " & ex.Message)
@@ -158,22 +153,22 @@ Namespace ValueWrapper
 
             End Get
 
-            Set(ByVal value As Object)
+            Set(value As Object)
 
                 Try
                     If TypeOf value Is System.Array Then
                         'no data validation on arrays
                         'Oh my..........
                         Try
-                            System.Array.Copy(DirectCast(value, Array), DirectCast(m_values, Array), DirectCast(m_values, Array).Length)
+                            System.Array.Copy(DirectCast(value, Array), DirectCast(Me.m_values, Array), DirectCast(Me.m_values, Array).Length)
                         Catch ex As Exception
                             Debug.Assert(False, Me.ToString & ".Value() Failed to convert value to array.")
                             Me.Status = eStatusFlags.ErrorEncountered ' I think this will work???
                         End Try
 
                     Else
-                        Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, Me.ToString & ".Value() iGroup out of bounds.")
-                        Validate(value, iSecondaryIndex)
+                        Debug.Assert(iSecondaryIndex <= Me.m_nObjects And iSecondaryIndex >= 0, Me.ToString & ".Value() iGroup out of bounds.")
+                        Me.Validate(value, iSecondaryIndex)
                     End If
                 Catch ex As Exception
                     Debug.Assert(False, Me.ToString & ".Value Error: " & ex.Message)
@@ -185,7 +180,7 @@ Namespace ValueWrapper
 
         Public Overrides ReadOnly Property Length() As Integer
             Get
-                Return m_nObjects
+                Return Me.m_nObjects
             End Get
         End Property
 
@@ -209,8 +204,8 @@ Namespace ValueWrapper
         ''' <returns></returns>
         ''' <remarks>This can not be handled by the cValue base class because the underlying data is handled differently. Array values are stored in an array (duh...)</remarks>
         Protected Overrides Function Validate(ByRef NewValue As Object,
-                                                Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                                Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+                                                Optional iSecondIndex As Integer = cCore.NULL_VALUE,
+                                                Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
             'convert null or empty inputs into something that can be used
             NewValue = Me.convertEmptyInputs(NewValue)
@@ -220,7 +215,7 @@ Namespace ValueWrapper
             '             A dynamic type conversion will prevent this problem.
 
             ' Determine the type that this array accepts
-            Dim arr As Array = DirectCast(m_values, Array)
+            Dim arr As Array = DirectCast(Me.m_values, Array)
             Dim tArr As Type = arr.GetType.GetElementType
 
             'set the value to the newvalue 
@@ -235,9 +230,9 @@ Namespace ValueWrapper
             End If
 
             'Ok run the validator
-            If m_validator.Validate(Me, m_metadata, iSecondIndex) Then
+            If Me.m_validator.Validate(Me, Me.m_metadata, iSecondIndex) Then
 
-                If m_validationstatus = eStatusFlags.FailedValidation Then
+                If Me.m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to it's original value
                     Try
                         arr.SetValue(Me.m_orgvalue, iSecondIndex)
@@ -246,10 +241,10 @@ Namespace ValueWrapper
                     End Try
                 End If
 
-                If m_statusarray(iSecondIndex) = eStatusFlags.Null Then
+                If Me.m_statusarray(iSecondIndex) = eStatusFlags.Null Then
                     ' m_values(iSecondaryIndex) = m_metadata.NullValue
                     Try
-                        arr.SetValue(Convert.ChangeType(m_metadata.NullValue, tArr), iSecondIndex)
+                        arr.SetValue(Convert.ChangeType(Me.m_metadata.NullValue, tArr), iSecondIndex)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to set default value")
                     End Try
@@ -264,7 +259,6 @@ Namespace ValueWrapper
         Public Overrides Sub Dispose()
             MyBase.Dispose()
             Me.m_values = Nothing
-            Me.m_CounterDelegate = Nothing
         End Sub
 
     End Class

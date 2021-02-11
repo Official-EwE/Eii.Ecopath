@@ -75,12 +75,12 @@ Public Class dlgSelectResponse
     ''' <param name="iDriver">Index of selected driver in the <paramref name="driverManager">driver manager</paramref>.</param>
     ''' <param name="iSelGroup"></param>
     ''' <param name="selection">Flag indicating <see cref="eEnvironmentalResponseSelectionType">how the dialog was invoked</see>.</param>
-    Public Sub New(ByVal uic As cUIContext,
-                   ByVal responseManager As cBaseShapeManager,
-                   ByVal driverManager As IEnvironmentalResponseManager,
-                   ByVal iDriver As Integer,
-                   ByVal iSelGroup As Integer,
-                   ByVal selection As eEnvironmentalResponseSelectionType)
+    Public Sub New(uic As cUIContext,
+                   responseManager As cBaseShapeManager,
+                   driverManager As IEnvironmentalResponseManager,
+                   iDriver As Integer,
+                   iSelGroup As Integer,
+                   selection As eEnvironmentalResponseSelectionType)
 
         Me.UIContext = uic
         Me.m_seltype = selection
@@ -105,7 +105,7 @@ Public Class dlgSelectResponse
 
 #Region " Overrides "
 
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -161,7 +161,7 @@ Public Class dlgSelectResponse
 
     End Sub
 
-    Private Sub OnAdd(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAdd(sender As Object, e As System.EventArgs) _
         Handles m_btnAdd.Click, m_lvAllShapes.DoubleClick
         Try
             Me.AddShapes()
@@ -171,7 +171,7 @@ Public Class dlgSelectResponse
         End Try
     End Sub
 
-    Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemove(sender As Object, e As System.EventArgs) _
         Handles m_btnRemove.Click, m_lvAppliedShapes.DoubleClick
         Try
             Me.RemoveShapes()
@@ -181,7 +181,7 @@ Public Class dlgSelectResponse
         End Try
     End Sub
 
-    Private Sub OnAppliedShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAppliedShapesSelectionChanged(sender As Object, e As System.EventArgs) _
         Handles m_lvAppliedShapes.SelectedIndexChanged
         Try
             Me.UpdateControls()
@@ -190,7 +190,7 @@ Public Class dlgSelectResponse
         End Try
     End Sub
 
-    Private Sub OnAvailableShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnAvailableShapesSelectionChanged(sender As Object, e As System.EventArgs) _
         Handles m_lvAllShapes.SelectedIndexChanged
         Try
             Me.UpdateControls()
@@ -199,14 +199,14 @@ Public Class dlgSelectResponse
         End Try
     End Sub
 
-    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.UpdateSelectedResponseDriver()
         Me.Close()
     End Sub
 
-    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -232,11 +232,11 @@ Public Class dlgSelectResponse
         Next
 
         ' Generate thumbnails from shapes
-        Me.m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
-        Me.GenerateShapeThumbnails(Me.m_ilSmall, SmallIconSize)
+        Me.m_ilSmall.ImageSize = New Size(Me.SmallIconSize, Me.SmallIconSize)
+        Me.GenerateShapeThumbnails(Me.m_ilSmall, Me.SmallIconSize)
 
-        Me.m_ilLarge.ImageSize = New Size(LargeIconSize, LargeIconSize)
-        Me.GenerateShapeThumbnails(Me.m_ilLarge, LargeIconSize)
+        Me.m_ilLarge.ImageSize = New Size(Me.LargeIconSize, Me.LargeIconSize)
+        Me.GenerateShapeThumbnails(Me.m_ilLarge, Me.LargeIconSize)
 
         Me.m_lvAllShapes.LargeImageList = Me.m_ilLarge
         Me.m_lvAllShapes.SmallImageList = Me.m_ilSmall
@@ -267,11 +267,11 @@ Public Class dlgSelectResponse
     ''' Get/set the selected shape for a list view item.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Property Shape(ByVal lvi As ListViewItem) As cForcingFunction
+    Private Property Shape(lvi As ListViewItem) As cForcingFunction
         Get
             Return DirectCast(lvi.Tag, cForcingFunction)
         End Get
-        Set(ByVal value As cForcingFunction)
+        Set(value As cForcingFunction)
             lvi.Tag = value
         End Set
     End Property
@@ -283,7 +283,7 @@ Public Class dlgSelectResponse
     ''' -------------------------------------------------------------------
     Private Sub AddShapes()
 
-        Dim colSelected As ListView.SelectedIndexCollection = m_lvAllShapes.SelectedIndices
+        Dim colSelected As ListView.SelectedIndexCollection = Me.m_lvAllShapes.SelectedIndices
         Dim shapeSelected As cForcingFunction = Nothing
         Dim shapeTest As cForcingFunction = Nothing
         Dim bFound As Boolean = False
@@ -291,7 +291,7 @@ Public Class dlgSelectResponse
         For Each itemSrc As ListViewItem In Me.m_lvAllShapes.SelectedItems
 
             'Get the shape data
-            shapeSelected = Shape(itemSrc)
+            shapeSelected = Me.Shape(itemSrc)
 
             ' Sanity check
             Debug.Assert(shapeSelected IsNot Nothing, "Unable to locate applied forcing function")
@@ -299,7 +299,7 @@ Public Class dlgSelectResponse
             ' Check if already used
             bFound = False
             For Each itemTest As ListViewItem In Me.m_lvAppliedShapes.Items
-                shapeTest = Shape(itemTest)
+                shapeTest = Me.Shape(itemTest)
                 If ReferenceEquals(shapeSelected, shapeTest) Then bFound = True
             Next
 
@@ -351,7 +351,7 @@ Public Class dlgSelectResponse
 
     End Sub
 
-    Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
+    Private Sub UpdateAppliedShape(item As ListViewItem, appl As eForcingFunctionApplication)
 
         ' Hmm, may not be accurate
         Dim fmt As New cFFApplicationTargetTypeFormatter()
@@ -362,7 +362,7 @@ Public Class dlgSelectResponse
 
     End Sub
 
-    Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
+    Private Sub GenerateShapeThumbnails(Icons As ImageList, IconSize As Integer)
 
         Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
 
@@ -452,7 +452,7 @@ Public Class dlgSelectResponse
 
     End Sub
 
-    Private Sub AddShapeToApplied(ByVal isp As Integer)
+    Private Sub AddShapeToApplied(isp As Integer)
 
         Try
 
@@ -487,7 +487,7 @@ Public Class dlgSelectResponse
                     Else
                         bCanCommit = True
                     End If
-                    If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(m_iSelGrp) = iSelResponseShape
+                    If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
                     Return True
                 End If
             ElseIf Me.m_seltype = eEnvironmentalResponseSelectionType.Driver Then

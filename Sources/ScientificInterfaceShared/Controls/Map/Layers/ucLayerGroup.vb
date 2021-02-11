@@ -63,7 +63,7 @@ Namespace Controls.Map
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal strText As String, ByVal strCommand As String)
+        Public Sub New(uic As cUIContext, strText As String, strCommand As String)
             Me.InitializeComponent()
 
             'Enable double buffering
@@ -115,7 +115,7 @@ Namespace Controls.Map
         ''' <param name="l">The <see cref="cDisplayLayer">display layer</see> to add.</param>
         ''' <param name="lPosition">Layer to position this layer before, if any</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal l As cDisplayLayer, Optional ByVal lPosition As cDisplayLayer = Nothing)
+        Public Sub AddLayer(l As cDisplayLayer, Optional lPosition As cDisplayLayer = Nothing)
             Dim ucl As New ucLayer(Me.m_uic, l)
 
             Me.m_fpItems.Controls.Add(ucl)
@@ -133,7 +133,7 @@ Namespace Controls.Map
             Me.UpdateControls()
             Me.UpdateSize()
 
-            AddHandler l.LayerChanged, AddressOf OnLayerChanged
+            AddHandler l.LayerChanged, AddressOf Me.OnLayerChanged
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -142,7 +142,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="l">The <see cref="cDisplayLayer">display layer</see> to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveLayer(ByVal l As cDisplayLayer, Optional ByVal bUpdate As Boolean = True)
+        Public Sub RemoveLayer(l As cDisplayLayer, Optional bUpdate As Boolean = True)
             Dim ucl As ucLayer = Me.FindLayerControl(l)
 
             If (ucl IsNot Nothing) Then
@@ -156,7 +156,7 @@ Namespace Controls.Map
                 End If
             End If
 
-            RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
+            RemoveHandler l.LayerChanged, AddressOf Me.OnLayerChanged
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -197,7 +197,7 @@ Namespace Controls.Map
             Me.UpdateSize()
         End Sub
 
-        Public Sub ShowAllLayers(ByVal bShow As Boolean)
+        Public Sub ShowAllLayers(bShow As Boolean)
             Dim lc As ucLayer = Nothing
 
             ' Toggle layer visiblity
@@ -213,7 +213,7 @@ Namespace Controls.Map
             Me.UpdateControls()
         End Sub
 
-        Public Sub EnableAllLayers(ByVal bEditable As Boolean)
+        Public Sub EnableAllLayers(bEditable As Boolean)
             Dim lc As ucLayer = Nothing
 
             ' Toggle layer visiblity
@@ -227,7 +227,7 @@ Namespace Controls.Map
             Me.UpdateControls()
         End Sub
 
-        Public Sub SetCollapsed(ByVal bCollapsed As Boolean)
+        Public Sub SetCollapsed(bCollapsed As Boolean)
             Me.m_fpItems.Visible = Not bCollapsed
             Me.m_bCollapsed = bCollapsed
             Me.UpdateControls()
@@ -238,11 +238,11 @@ Namespace Controls.Map
 
 #Region " Events "
 
-        Private Sub OnToggleView(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnToggleView(sender As System.Object, e As System.EventArgs)
             Me.ShowAllLayers(Not Me.m_bAllLayersShown)
         End Sub
 
-        Private Sub OnToggleCollapse(ByVal sender As Object, ByVal e As MouseEventArgs) Handles Me.MouseDoubleClick
+        Private Sub OnToggleCollapse(sender As Object, e As MouseEventArgs) Handles Me.MouseDoubleClick
             ' Determine hit area
             Select Case Me.GetArea(e.Location)
                 Case eAreaTypes.Collapse, eAreaTypes.Label, eAreaTypes.Background
@@ -369,7 +369,7 @@ Namespace Controls.Map
             Me.Invalidate(False)
         End Sub
 
-        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateFlag As cDisplayLayer.eChangeFlags)
+        Private Sub OnLayerChanged(l As cDisplayLayer, updateFlag As cDisplayLayer.eChangeFlags)
             ' Update whenever child layer visiblity changes
             If ((updateFlag And cDisplayLayer.eChangeFlags.Visibility) = cDisplayLayer.eChangeFlags.Visibility) Then
                 ' Redraw at some point
@@ -437,7 +437,7 @@ Namespace Controls.Map
             Edit
         End Enum
 
-        Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcCollapse As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcEdit As Rectangle)
+        Private Sub GetRectangles(rcControl As Rectangle, ByRef rcCollapse As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcEdit As Rectangle)
 
             Dim iAvgPad As Integer = 3
 
@@ -487,7 +487,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Function GetArea(ByVal pt As Point) As eAreaTypes
+        Private Function GetArea(pt As Point) As eAreaTypes
 
             Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.m_fpItems.Location.Y)
             Dim rcCollapse As Rectangle = Nothing
@@ -547,7 +547,7 @@ Namespace Controls.Map
         ''' <returns>A child layer control, or nothing if the control could
         ''' not be found.</returns>
         ''' -------------------------------------------------------------------
-        Private Function FindLayerControl(ByVal layer As cDisplayLayer) As ucLayer
+        Private Function FindLayerControl(layer As cDisplayLayer) As ucLayer
             Dim ucl As ucLayer = Nothing
             For Each uc As UserControl In Me.m_fpItems.Controls
                 ucl = DirectCast(uc, ucLayer)
@@ -567,7 +567,7 @@ Namespace Controls.Map
             Next uc
 
             ' Return TRUE if all layers visible OR no layers attached
-            If iVisible = m_fpItems.Controls.Count Then Return TriState.True
+            If iVisible = Me.m_fpItems.Controls.Count Then Return TriState.True
             ' ELSE return FALSE if no layers visible
             If iVisible = 0 Then Return TriState.False
             ' ELSE return 'partial visible'

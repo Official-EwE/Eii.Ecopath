@@ -107,7 +107,7 @@ Namespace Ecosim
 
                 If iStanzaGroup(source.Index) = -1 Then
                     iRow = Me.AddRow
-                    FillInRows(iRow, source)
+                    Me.FillInRows(iRow, source)
                 Else                'If group is a stanza group
 
                     sg = core.StanzaGroups(iStanzaGroup(source.Index))
@@ -136,13 +136,13 @@ Namespace Ecosim
                     End If
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, source, True)
+                    Me.FillInRows(iRow, source, True)
                 End If
             Next groupIndex
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, Optional isIndented As Boolean = False)
             Dim cell As cEwECellBase = Nothing
             Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then

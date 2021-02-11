@@ -35,8 +35,8 @@ Namespace MSE
         'Private m_FMaxValues() As Single
         Private m_BatchData As MSEBatchManager.cMSEBatchDataStructures
 
-        Public Sub New(ByRef theCore As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, ByVal theGroupDBID As Integer)
-            MyBase.New(theCore)
+        Public Sub New(core As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, theGroupDBID As Integer)
+            MyBase.New(core)
 
             Dim val As cValue
 
@@ -49,53 +49,52 @@ Namespace MSE
 
             'default OK status used for setVariable
             'see comment setVariable(...)
-            m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+            Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            val = New cValue(New Single, eVarNameFlags.MSETFMBLimLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETFMBLimLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETFMBLimUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETFMBLimUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETFMBBaseLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETFMBBaseLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETFMBBaseUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETFMBBaseUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETFMFOptLower, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSETFMFOptLower, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.MSETFMFOptUpper, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
-
+            val = New cValue(core, New Single, eVarNameFlags.MSETFMFOptUpper, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'bBase
-            val = New cValue(New Single, eVarNameFlags.MSEBBase, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEBBase, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
             'bLim
-            val = New cValue(New Single, eVarNameFlags.MSEBLim, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEBLim, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
             'FOpt
-            val = New cValue(New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEFmax, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
             'Fmin
-            val = New cValue(New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Single, eVarNameFlags.MSEFmin, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'Used
-            val = New cValue(New Boolean, eVarNameFlags.MSEBatchTFMManaged, eStatusFlags.Null, eValueTypes.Bool)
-            m_values.Add(val.varName, val)
+            val = New cValue(core, New Boolean, eVarNameFlags.MSEBatchTFMManaged, eStatusFlags.Null, eValueTypes.Bool)
+            Me.m_values.Add(val.varName, val)
 
             'Iteration values 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSETFMFOptValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSETFMFOptValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSETFMBBaseValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSETFMBBaseValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM)
+            Me.m_values.Add(val.varName, val)
 
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.MSETFMBLimValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
+            val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSETFMBLimValues, eStatusFlags.Null, eCoreCounterTypes.nMSEBatchTFM)
+            Me.m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
 
@@ -104,31 +103,31 @@ Namespace MSE
 
         Public Property BLim As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBLim))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBLim))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBLim, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBLim, value)
             End Set
         End Property
 
         Public Property BLimLower As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMBLimLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMBLimLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMBLimLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMBLimLower, value)
             End Set
         End Property
 
         Public Property BLimUpper As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMBLimUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMBLimUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMBLimUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMBLimUpper, value)
             End Set
         End Property
 
@@ -136,81 +135,81 @@ Namespace MSE
 
         Public Property BBase As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEBBase))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEBBase))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEBBase, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEBBase, value)
             End Set
         End Property
 
         Public Property BBaseLower As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMBBaseLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMBBaseLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMBBaseLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMBBaseLower, value)
             End Set
         End Property
 
         Public Property BBaseUpper As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMBBaseUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMBBaseUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMBBaseUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMBBaseUpper, value)
             End Set
         End Property
 
         Public Property FMax As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSEFmax))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSEFmax))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEFmax, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSEFmax, value)
             End Set
         End Property
 
         Public Property FMaxLower As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMFOptLower))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMFOptLower))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMFOptLower, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMFOptLower, value)
             End Set
         End Property
 
         Public Property isManaged As Boolean
             Get
-                Return CBool(GetVariable(eVarNameFlags.MSEBatchTFMManaged))
+                Return CBool(Me.GetVariable(eVarNameFlags.MSEBatchTFMManaged))
             End Get
 
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.MSEBatchTFMManaged, value)
+            Set(value As Boolean)
+                Me.SetVariable(eVarNameFlags.MSEBatchTFMManaged, value)
             End Set
         End Property
 
         Public Property FMaxUpper As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMFOptUpper))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMFOptUpper))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMFOptUpper, value)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMFOptUpper, value)
             End Set
         End Property
 
         Public Property FMaxValue(IterationIndex As Integer) As Single
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMFOptValues, IterationIndex))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMFOptValues, IterationIndex))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMFOptValues, value, IterationIndex)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMFOptValues, value, IterationIndex)
             End Set
 
         End Property
@@ -218,11 +217,11 @@ Namespace MSE
         Public Property BLimValue(IterationIndex As Integer) As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMBLimValues, IterationIndex))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMBLimValues, IterationIndex))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMBLimValues, value, IterationIndex)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMBLimValues, value, IterationIndex)
             End Set
             'Get
             '    ' Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
@@ -233,7 +232,7 @@ Namespace MSE
             '    Return cCore.NULL_VALUE
             'End Get
 
-            'Set(ByVal value As Single)
+            'Set(value As Single)
             '    'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
             '    If IterationIndex <= Me.m_BatchData.nTFM Then
             '        Me.m_BatchData.tfmBlim(IterationIndex, Me.Index) = value
@@ -245,11 +244,11 @@ Namespace MSE
         Public Property BBaseValue(IterationIndex As Integer) As Single
 
             Get
-                Return CSng(GetVariable(eVarNameFlags.MSETFMBBaseValues, IterationIndex))
+                Return CSng(Me.GetVariable(eVarNameFlags.MSETFMBBaseValues, IterationIndex))
             End Get
 
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSETFMBBaseValues, value, IterationIndex)
+            Set(value As Single)
+                Me.SetVariable(eVarNameFlags.MSETFMBBaseValues, value, IterationIndex)
             End Set
 
             'Get
@@ -261,7 +260,7 @@ Namespace MSE
             '    Return cCore.NULL_VALUE
             'End Get
 
-            'Set(ByVal value As Single)
+            'Set(value As Single)
             '    'Debug.Assert(IterationIndex <= Me.m_BatchData.nTFM, Me.ToString & ".BLimValue() Index out of range!")
             '    If IterationIndex <= Me.m_BatchData.nTFM Then
             '        Me.m_BatchData.tfmBbase(IterationIndex, Me.Index) = value
@@ -311,7 +310,7 @@ Namespace MSE
         'End Function
 
 
-        Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
+        Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
             MyBase.ResetStatusFlags(bForceReset)
 
             Me.AllowValidation = False

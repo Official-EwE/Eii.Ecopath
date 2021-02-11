@@ -108,7 +108,7 @@ Public Class cTaxonDataStructures
     ''' </summary>
     ''' <param name="ecopathDS"><see cref="cEcopathDataStructures"/> to use for base data.</param>
     ''' <param name="stanzaDS"><see cref="cStanzaDatastructures"/> to use for base data.</param>
-    Public Sub New(ByVal ecopathDS As cEcopathDataStructures, ByVal stanzaDS As cStanzaDatastructures)
+    Public Sub New(ecopathDS As cEcopathDataStructures, stanzaDS As cStanzaDatastructures)
         Me.m_ecopathDS = ecopathDS
         Me.m_stanzaDS = stanzaDS
     End Sub
@@ -173,45 +173,45 @@ Public Class cTaxonDataStructures
         d.NumTaxon = Me.NumTaxon
         d.RedimTaxon()
 
-        TaxonDBID.CopyTo(d.TaxonDBID, 0)
-        TaxonTarget.CopyTo(d.TaxonTarget, 0)
-        IsTaxonStanza.CopyTo(d.IsTaxonStanza, 0)
-        TaxonPropBiomass.CopyTo(d.TaxonPropBiomass, 0)
-        TaxonPropCatch.CopyTo(d.TaxonPropCatch, 0)
-        TaxonClass.CopyTo(d.TaxonClass, 0)
-        TaxonCodeSAUP.CopyTo(d.TaxonCodeSAUP, 0)
-        TaxonCodeFB.CopyTo(d.TaxonCodeFB, 0)
-        TaxonCodeSLB.CopyTo(d.TaxonCodeSLB, 0)
-        TaxonCodeAquaMaps.CopyTo(d.TaxonCodeAquaMaps, 0)
-        TaxonCodeAphia.CopyTo(d.TaxonCodeAphia, 0)
-        TaxonCodeOBIS.CopyTo(d.TaxonCodeOBIS, 0)
-        TaxonCodeFAO.CopyTo(d.TaxonCodeFAO, 0)
-        TaxonCodeLSID.CopyTo(d.TaxonCodeLSID, 0)
-        TaxonName.CopyTo(d.TaxonName, 0)
-        TaxonGenus.CopyTo(d.TaxonGenus, 0)
-        TaxonFamily.CopyTo(d.TaxonFamily, 0)
-        TaxonGenus.CopyTo(d.TaxonGenus, 0)
-        TaxonOrder.CopyTo(d.TaxonOrder, 0)
-        TaxonSourceKey.CopyTo(d.TaxonSourceKey, 0)
-        TaxonSource.CopyTo(d.TaxonSource, 0)
-        TaxonSpecies.CopyTo(d.TaxonSpecies, 0)
-        TaxonNorth.CopyTo(d.TaxonNorth, 0)
-        TaxonSouth.CopyTo(d.TaxonSouth, 0)
-        TaxonEast.CopyTo(d.TaxonEast, 0)
-        TaxonWest.CopyTo(d.TaxonWest, 0)
-        TaxonEcologyType.CopyTo(d.TaxonEcologyType, 0)
-        TaxonOrganismType.CopyTo(d.TaxonOrganismType, 0)
-        TaxonIUCNConservationStatus.CopyTo(d.TaxonIUCNConservationStatus, 0)
-        TaxonExploitationStatus.CopyTo(d.TaxonExploitationStatus, 0)
-        TaxonOccurrenceStatus.CopyTo(d.TaxonOccurrenceStatus, 0)
-        TaxonMeanWeight.CopyTo(d.TaxonMeanWeight, 0)
-        TaxonMeanLength.CopyTo(d.TaxonMeanLength, 0)
-        TaxonMaxLength.CopyTo(d.TaxonMaxLength, 0)
-        TaxonMeanLifeSpan.CopyTo(d.TaxonMeanLifeSpan, 0)
-        TaxonVulnerabilityIndex.CopyTo(d.TaxonVulnerabilityIndex, 0)
-        TaxonLastUpdated.CopyTo(d.TaxonLastUpdated, 0)
-        TaxonWinf.CopyTo(d.TaxonWinf, 0)
-        TaxonK.CopyTo(d.TaxonK, 0)
+        Me.TaxonDBID.CopyTo(d.TaxonDBID, 0)
+        Me.TaxonTarget.CopyTo(d.TaxonTarget, 0)
+        Me.IsTaxonStanza.CopyTo(d.IsTaxonStanza, 0)
+        Me.TaxonPropBiomass.CopyTo(d.TaxonPropBiomass, 0)
+        Me.TaxonPropCatch.CopyTo(d.TaxonPropCatch, 0)
+        Me.TaxonClass.CopyTo(d.TaxonClass, 0)
+        Me.TaxonCodeSAUP.CopyTo(d.TaxonCodeSAUP, 0)
+        Me.TaxonCodeFB.CopyTo(d.TaxonCodeFB, 0)
+        Me.TaxonCodeSLB.CopyTo(d.TaxonCodeSLB, 0)
+        Me.TaxonCodeAquaMaps.CopyTo(d.TaxonCodeAquaMaps, 0)
+        Me.TaxonCodeAphia.CopyTo(d.TaxonCodeAphia, 0)
+        Me.TaxonCodeOBIS.CopyTo(d.TaxonCodeOBIS, 0)
+        Me.TaxonCodeFAO.CopyTo(d.TaxonCodeFAO, 0)
+        Me.TaxonCodeLSID.CopyTo(d.TaxonCodeLSID, 0)
+        Me.TaxonName.CopyTo(d.TaxonName, 0)
+        Me.TaxonGenus.CopyTo(d.TaxonGenus, 0)
+        Me.TaxonFamily.CopyTo(d.TaxonFamily, 0)
+        Me.TaxonGenus.CopyTo(d.TaxonGenus, 0)
+        Me.TaxonOrder.CopyTo(d.TaxonOrder, 0)
+        Me.TaxonSourceKey.CopyTo(d.TaxonSourceKey, 0)
+        Me.TaxonSource.CopyTo(d.TaxonSource, 0)
+        Me.TaxonSpecies.CopyTo(d.TaxonSpecies, 0)
+        Me.TaxonNorth.CopyTo(d.TaxonNorth, 0)
+        Me.TaxonSouth.CopyTo(d.TaxonSouth, 0)
+        Me.TaxonEast.CopyTo(d.TaxonEast, 0)
+        Me.TaxonWest.CopyTo(d.TaxonWest, 0)
+        Me.TaxonEcologyType.CopyTo(d.TaxonEcologyType, 0)
+        Me.TaxonOrganismType.CopyTo(d.TaxonOrganismType, 0)
+        Me.TaxonIUCNConservationStatus.CopyTo(d.TaxonIUCNConservationStatus, 0)
+        Me.TaxonExploitationStatus.CopyTo(d.TaxonExploitationStatus, 0)
+        Me.TaxonOccurrenceStatus.CopyTo(d.TaxonOccurrenceStatus, 0)
+        Me.TaxonMeanWeight.CopyTo(d.TaxonMeanWeight, 0)
+        Me.TaxonMeanLength.CopyTo(d.TaxonMeanLength, 0)
+        Me.TaxonMaxLength.CopyTo(d.TaxonMaxLength, 0)
+        Me.TaxonMeanLifeSpan.CopyTo(d.TaxonMeanLifeSpan, 0)
+        Me.TaxonVulnerabilityIndex.CopyTo(d.TaxonVulnerabilityIndex, 0)
+        Me.TaxonLastUpdated.CopyTo(d.TaxonLastUpdated, 0)
+        Me.TaxonWinf.CopyTo(d.TaxonWinf, 0)
+        Me.TaxonK.CopyTo(d.TaxonK, 0)
 
     End Sub
 
@@ -225,7 +225,7 @@ Public Class cTaxonDataStructures
     ''' or indirectly via a multi-stanza configuration, determined by the state of the 
     ''' <see cref="IsTaxonStanza"/> field. Regardless, this method returns the number of
     ''' taxa assigned to a group - directly or indirectly.</remarks>
-    Public ReadOnly Property NumGroupTaxa(ByVal iGroup As Integer) As Integer
+    Public ReadOnly Property NumGroupTaxa(iGroup As Integer) As Integer
         Get
             If Me.m_alGroupTaxa Is Nothing Then Me.UpdateTaxonIndex()
             Try
@@ -246,7 +246,7 @@ Public Class cTaxonDataStructures
     ''' or indirectly via a multi-stanza configuration, determined by the state of the 
     ''' <see cref="IsTaxonStanza"/> field. Regardless, this method returns the number of
     ''' taxa assigned to a group - directly or indirectly.</remarks>
-    Public ReadOnly Property GroupTaxa(ByVal iGroup As Integer, ByVal iIndex As Integer) As Integer
+    Public ReadOnly Property GroupTaxa(iGroup As Integer, iIndex As Integer) As Integer
         Get
             If Me.m_alGroupTaxa Is Nothing Then Me.UpdateTaxonIndex()
             Try

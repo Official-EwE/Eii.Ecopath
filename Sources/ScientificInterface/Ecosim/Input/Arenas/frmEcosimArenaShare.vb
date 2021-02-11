@@ -45,7 +45,7 @@ Namespace Ecosim
             Set(value As cUIContext)
                 Me.m_groups.Detach()
                 MyBase.UIContext = value
-                Me.m_groups.Attach(UIContext)
+                Me.m_groups.Attach(Me.UIContext)
             End Set
         End Property
 
@@ -87,7 +87,7 @@ Namespace Ecosim
             Dim man As cEcosimArenaManager = Me.Core.EcosimArenaManager
             Dim fmsg As New cFeedbackMessage("This will reset all shared arenas. Are you sure that you want to do this?",
                                              eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-            Core.Messages.SendMessage(fmsg)
+            Me.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.YES) Then
                 man.ResetArenas(0)
             End If

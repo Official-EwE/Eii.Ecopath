@@ -52,8 +52,8 @@ Namespace Integration
         Private Class NavTreePluginComparer
             Implements IComparer(Of INavigationTreeItemPlugin)
 
-            Public Function Compare(ByVal x As INavigationTreeItemPlugin,
-                                    ByVal y As INavigationTreeItemPlugin) As Integer _
+            Public Function Compare(x As INavigationTreeItemPlugin,
+                                    y As INavigationTreeItemPlugin) As Integer _
                                     Implements IComparer(Of INavigationTreeItemPlugin).Compare
 
                 Return String.Compare(x.NavigationTreeItemLocation, y.NavigationTreeItemLocation, True)
@@ -80,9 +80,9 @@ Namespace Integration
         ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
         ''' that holds the plugins to place in the control.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal tv As TreeView,
-                       ByVal pm As cPluginManager,
-                       ByVal cmdh As cCommandHandler)
+        Public Sub New(tv As TreeView,
+                       pm As cPluginManager,
+                       cmdh As cCommandHandler)
             MyBase.New(pm, cmdh)
             ' Remember tree view
             Me.m_tv = tv
@@ -99,7 +99,7 @@ Namespace Integration
         ''' <param name="aip">The plug-ins to sort.</param>
         ''' <returns>A ham sandwich with a cork in it.</returns>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Function SortPlugins(ByVal aip() As IGUIPlugin) As IGUIPlugin()
+        Protected Overrides Function SortPlugins(aip() As IGUIPlugin) As IGUIPlugin()
 
             Dim lPlugins As New List(Of INavigationTreeItemPlugin)
 
@@ -123,7 +123,7 @@ Namespace Integration
         ''' <param name="bPlace">States whether the tree item should be placed (True)
         ''' or removed (False).</param>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub PlacePlugin(ByVal ip As IGUIPlugin, ByVal bPlace As Boolean)
+        Protected Overrides Sub PlacePlugin(ip As IGUIPlugin, bPlace As Boolean)
 
             Dim tnc As TreeNodeCollection = Me.m_tv.Nodes
             Dim tn As TreeNode = Nothing
@@ -203,7 +203,7 @@ Namespace Integration
                             End If
                         End If
                         ' Regular font
-                        tn.NodeFont = New System.Drawing.Font(m_tv.Font, Drawing.FontStyle.Regular)
+                        tn.NodeFont = New System.Drawing.Font(Me.m_tv.Font, Drawing.FontStyle.Regular)
 
                         ' Insert the node alphabetically sorted by name
                         bAdded = False
@@ -228,7 +228,7 @@ Namespace Integration
 
         End Sub
 
-        Protected Overrides Sub EnablePlugin(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
+        Protected Overrides Sub EnablePlugin(ip As IGUIPlugin, bEnable As Boolean)
             ' Always enabled
         End Sub
 
@@ -237,7 +237,7 @@ Namespace Integration
 
 #Region " Tree node events "
 
-        Private Sub tvNavigation_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+        Private Sub tvNavigation_AfterSelect(sender As System.Object, e As System.Windows.Forms.TreeViewEventArgs) _
             Handles m_tv.AfterSelect
 
             ' Sanity checks

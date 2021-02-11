@@ -57,7 +57,7 @@ Namespace Controls
             Me.m_lookup = New cMarineRegionsLookup()
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             ' Abort any search
             Me.Search("")
             Me.m_lookup = Nothing
@@ -84,7 +84,7 @@ Namespace Controls
         ''' <param name="sender"></param>
         ''' <param name="bSearching"></param>
         ''' -----------------------------------------------------------------------
-        Public Event OnSeaching(ByVal sender As cGeocodeLookupComboBox, ByVal bSearching As Boolean)
+        Public Event OnSeaching(sender As cGeocodeLookupComboBox, bSearching As Boolean)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -104,7 +104,7 @@ Namespace Controls
             Get
                 Return Me.m_lookup
             End Get
-            Set(ByVal value As IGeoCodeLookup)
+            Set(value As IGeoCodeLookup)
                 Me.Search("")
                 Me.m_lookup = value
             End Set
@@ -158,7 +158,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strFindStr">Text to find geolocatios for.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub Search(ByVal strFindStr As String)
+        Private Sub Search(strFindStr As String)
 
             ' Let's be easy on the designer
             If Me.DesignMode Then Return
@@ -177,7 +177,7 @@ Namespace Controls
 
             Me.FireSearchingEvent(True)
 
-            Me.m_searchThread = New Thread(AddressOf SearchThread)
+            Me.m_searchThread = New Thread(AddressOf Me.SearchThread)
             Me.m_searchThread.Start(strFindStr)
 
         End Sub
@@ -188,12 +188,12 @@ Namespace Controls
         ''' </summary>
         ''' <param name="strFindStr"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub SearchThread(ByVal strFindStr As Object)
+        Private Sub SearchThread(strFindStr As Object)
 
             Debug.Assert(Me.m_lookup IsNot Nothing)
 
             Dim aLocations As cGeoCodeLocation() = Me.m_lookup.FindPlaces(CStr(strFindStr))
-            Me.BeginInvoke(New OnSearchResultsDelegate(AddressOf OnSearchResults), New Object() {aLocations})
+            Me.BeginInvoke(New OnSearchResultsDelegate(AddressOf Me.OnSearchResults), New Object() {aLocations})
 
         End Sub
 
@@ -203,7 +203,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="aLocations"></param>
         ''' -----------------------------------------------------------------------
-        Private Delegate Sub OnSearchResultsDelegate(ByVal aLocations As cGeoCodeLocation())
+        Private Delegate Sub OnSearchResultsDelegate(aLocations As cGeoCodeLocation())
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -211,14 +211,14 @@ Namespace Controls
         ''' </summary>
         ''' <param name="aLocations"></param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnSearchResults(ByVal aLocations As cGeoCodeLocation())
+        Private Sub OnSearchResults(aLocations As cGeoCodeLocation())
 
             If Me.m_strLastSearch.Length <= 4 Then Return
 
             Me.BindingContext = New BindingContext()
             Me.DataSource = aLocations
             Me.SuspendLayout()
-            Me.BeginInvoke(New MethodInvoker(AddressOf PostProcessSearch), Nothing)
+            Me.BeginInvoke(New MethodInvoker(AddressOf Me.PostProcessSearch), Nothing)
 
             ' Let UI process new datasource items
 
@@ -244,7 +244,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="bSearching">Flag inidicating if a search is active.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub FireSearchingEvent(ByVal bSearching As Boolean)
+        Private Sub FireSearchingEvent(bSearching As Boolean)
             Try
                 RaiseEvent OnSeaching(Me, bSearching)
             Catch ex As Exception

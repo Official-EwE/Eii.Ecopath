@@ -178,10 +178,10 @@ Namespace Controls
             e.Graphics.FillRectangle(Brushes.Black, e.ClipRectangle)
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Protected Overrides Sub Dispose(disposing As Boolean)
             Try
-                If disposing AndAlso m_components IsNot Nothing Then
-                    m_components.Dispose()
+                If disposing AndAlso Me.m_components IsNot Nothing Then
+                    Me.m_components.Dispose()
                 End If
                 ' Manually dispose of all orphaned (e.g., invisible) tab pages
                 For Each key As TabPage In Me.m_admin.Keys

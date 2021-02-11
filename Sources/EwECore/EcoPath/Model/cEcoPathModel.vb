@@ -110,10 +110,10 @@ Namespace Ecopath
         Friend m_stanza As cStanzaDatastructures
         Friend m_psd As cPSDDatastructures
 
-        Public Sub New(ByVal EcoFunctions As cEcoFunctions)
-            ParameterEstimationType = eEstimateParameterFor.ParameterEstimation
-            m_Ecofunctions = EcoFunctions
-            RunState = eEcopathRunState.NotRun
+        Public Sub New(EcoFunctions As cEcoFunctions)
+            Me.ParameterEstimationType = eEstimateParameterFor.ParameterEstimation
+            Me.m_Ecofunctions = EcoFunctions
+            Me.RunState = eEcopathRunState.NotRun
         End Sub
 
         Public Sub Clear()
@@ -132,7 +132,7 @@ Namespace Ecopath
         ''' <remarks>Parameter Estimation results are done as a Property instead of the return value so that a plugin can do the estimation  </remarks>
         Public ReadOnly Property EstimationStatus() As eStatusFlags
             Get
-                Return m_EstimStatus
+                Return Me.m_EstimStatus
             End Get
         End Property
 
@@ -143,7 +143,7 @@ Namespace Ecopath
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Messages() As cMessagePublisher
             Get
-                Return m_msgPub
+                Return Me.m_msgPub
             End Get
         End Property
 
@@ -165,7 +165,7 @@ Namespace Ecopath
         ''' </summary>
         ''' <param name="msg"></param>
         ''' <remarks>Wraps the delegate instance that is use to notify the core of a message</remarks>
-        Private Sub NotifyCore(ByVal msg As cMessage)
+        Private Sub NotifyCore(msg As cMessage)
 
             If msg Is Nothing Then Return
 
@@ -173,8 +173,8 @@ Namespace Ecopath
                 'messages can be turned off be a user
                 'to speed up the running of the model as in the case of the Monte Carlo which run the model multiple times
                 'this puts the model into a 'silent' mode
-                If Not suppressMessages Then
-                    m_msgPub.SendMessage(msg)
+                If Not Me.suppressMessages Then
+                    Me.m_msgPub.SendMessage(msg)
                 End If
             Catch ex As Exception
                 cLog.Write("cEcoPathModel.NotifyCore(...) Failed to post message " & msg.ToString())
@@ -193,11 +193,11 @@ Namespace Ecopath
         Public Property EcopathData() As cEcopathDataStructures
 
             Get
-                EcopathData = m_Data
+                EcopathData = Me.m_Data
             End Get
 
-            Set(ByVal NewParameters As cEcopathDataStructures)
-                m_Data = NewParameters
+            Set(NewParameters As cEcopathDataStructures)
+                Me.m_Data = NewParameters
             End Set
 
         End Property
@@ -218,36 +218,36 @@ Namespace Ecopath
             Dim iParamsEstimated As Integer = eStatusFlags.ErrorEncountered
             Dim msg As cMessage = Nothing
 
-            m_EstimStatus = eStatusFlags.Null
+            Me.m_EstimStatus = eStatusFlags.Null
             Me.RunState = eEcopathRunState.NotRun
 
             'clear out any existing error messages
-            m_messages.Clear()
+            Me.m_messages.Clear()
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Paraniod double checking for the release version
             'Is there a valid Ecopath data object. There is no messages for this as it should not happen in the release version. Just write to the log???????
-            If m_Data Is Nothing Then
+            If Me.m_Data Is Nothing Then
                 cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data is Nothing, Ecopath has not been initialized correctly. Ecopath could not be run.")
-                Debug.Assert(Not m_Data Is Nothing, Me.ToString + ".Run() m_data in Nothing. Ecopath could not be run.")
+                Debug.Assert(Not Me.m_Data Is Nothing, Me.ToString + ".Run() m_data in Nothing. Ecopath could not be run.")
                 Me.RunState = eEcopathRunState.InValidInitialization
                 Return False
             End If
             'have the parameters been initialized
-            If Not m_Data.bInitialized Then
+            If Not Me.m_Data.bInitialized Then
                 cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized. Ecopath could not be run.")
-                Debug.Assert(m_Data.bInitialized, Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized..")
+                Debug.Assert(Me.m_Data.bInitialized, Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized..")
                 Me.RunState = eEcopathRunState.InValidInitialization
                 Return False
             End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             'ToDo_jb Ecopath.EstimateParameter this dimensioning should get moved to a separate routine
-            ReDim DCNoCyc(m_Data.NumGroups + 1, m_Data.NumGroups + 1)
-            ReDim CycDC(m_Data.NumGroups + 1, m_Data.NumGroups + 1)
-            ReDim NumPath(m_Data.NumLiving)
-            ReDim SumCycDC(m_Data.NumGroups)
-            ReDim Cons(m_Data.NumLiving)
+            ReDim Me.DCNoCyc(Me.m_Data.NumGroups + 1, Me.m_Data.NumGroups + 1)
+            ReDim Me.CycDC(Me.m_Data.NumGroups + 1, Me.m_Data.NumGroups + 1)
+            ReDim Me.NumPath(Me.m_Data.NumLiving)
+            ReDim Me.SumCycDC(Me.m_Data.NumGroups)
+            ReDim Me.Cons(Me.m_Data.NumLiving)
 
             'Dump parameter and dietmatrix to file for debugging
             'Me.dumpInputPars()
@@ -261,60 +261,60 @@ Namespace Ecopath
 
                 'check that all diet composition DC() sum to 1
                 'False flag do NOT to ask user what to do
-                If Not checkDietsSumToOne(False) Then
+                If Not Me.checkDietsSumToOne(False) Then
                     Me.RunState = eEcopathRunState.InValidDietMatrix
                     Return False
                 End If
 
-                If ParameterEstimationType = eEstimateParameterFor.ParameterEstimation Then
+                If Me.ParameterEstimationType = eEstimateParameterFor.ParameterEstimation Then
 
-                    CheckStanzaHabArea()
-                    CheckDetritusFate()
-                    CheckForMissingDetritusBiomass()
+                    Me.CheckStanzaHabArea()
+                    Me.CheckDetritusFate()
+                    Me.CheckForMissingDetritusBiomass()
 
-                    CheckForImportOnlyGroups()
-                    CheckDetritusFateTooBig()
-                    CheckDiscardFateZero()
-                    CheckQB()
+                    Me.CheckForImportOnlyGroups()
+                    Me.CheckDetritusFateTooBig()
+                    Me.CheckDiscardFateZero()
+                    Me.CheckQB()
 
                 End If
 
-                CalcNewExportCatch(0)
-                Catch_calculations()
+                Me.CalcNewExportCatch(0)
+                Me.Catch_calculations()
 
                 Dim bPluginFailed As Boolean = True
                 'Ask the plugin manager to try and do the mass balance 
                 'if it fails then run the default mass balance 
                 If Me.PluginManager IsNot Nothing Then
-                    If Me.PluginManager.MassBalance(m_Data, ParameterEstimationType, iParamsEstimated) Then
-                        m_EstimStatus = DirectCast(iParamsEstimated, eStatusFlags)
+                    If Me.PluginManager.MassBalance(Me.m_Data, Me.ParameterEstimationType, iParamsEstimated) Then
+                        Me.m_EstimStatus = DirectCast(iParamsEstimated, eStatusFlags)
                         bPluginFailed = False
                     End If
                 End If
 
                 If bPluginFailed Then
-                    Me.EstimateParameters(ParameterEstimationType, m_EstimStatus)
+                    Me.EstimateParameters(Me.ParameterEstimationType, Me.m_EstimStatus)
                 End If
 
-                If m_EstimStatus = eStatusFlags.OK Then
+                If Me.m_EstimStatus = eStatusFlags.OK Then
                     'If ParameterEstimationType = eEstimateParameterFor.ParameterEstimation Then
                     '    'this code does not run for the sensitivty estimation
                     '    'JS 13Nov18: Ecological Indicators needs this code to run though. It does not hurt to calculate a few extra outputs, Ecopath is fast enough
 
                     'parameters successfully estimated
-                    CalcTotalPrimProd()
-                    CheckIfEstimatesAreZero()
-                    EstimEEAgain()
-                    EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
-                    DetritusCalculations()
-                    Omniv(m_Data.DC, m_Data.TTLX, m_Data.BQB, m_Data.NumGroups)
-                    CalcNichePiankaPred()
-                    CalcNichePiankaPrey()
-                    Chesson()
+                    Me.CalcTotalPrimProd()
+                    Me.CheckIfEstimatesAreZero()
+                    Me.EstimEEAgain()
+                    Me.EstimateTrophicLevels(Me.m_Data.NumGroups, Me.m_Data.NumLiving, Me.m_Data.PP, Me.m_Data.DC, Me.m_Data.TTLX)
+                    Me.DetritusCalculations()
+                    Me.Omniv(Me.m_Data.DC, Me.m_Data.TTLX, Me.m_Data.BQB, Me.m_Data.NumGroups)
+                    Me.CalcNichePiankaPred()
+                    Me.CalcNichePiankaPrey()
+                    Me.Chesson()
 
-                    m_Data.onPostEcopathRun(Me.m_Ecofunctions)
+                    Me.m_Data.onPostEcopathRun(Me.m_Ecofunctions)
 
-                    CheckIfEEsAreOK(bSendMessage:=True)
+                    Me.CheckIfEEsAreOK(bSendMessage:=True)
                     'Else
                     '    EstimEEAgain()
                     'End If
@@ -323,21 +323,21 @@ Namespace Ecopath
 
                     'Failed to estimate parameters
                     'post a message if missing parameters
-                    If m_EstimStatus = eStatusFlags.MissingParameter Then
+                    If Me.m_EstimStatus = eStatusFlags.MissingParameter Then
 
-                        MissingParameterMessage()
+                        Me.MissingParameterMessage()
                         Me.RunState = eEcopathRunState.MissingParameter
 
                     Else 'If ParamsEstimated  = eStatusFlags.ErrorEncountered Then
                         Me.RunState = eEcopathRunState.Error
-                        If m_EstimStatus <> eStatusFlags.ErrorEncountered Then
+                        If Me.m_EstimStatus <> eStatusFlags.ErrorEncountered Then
                             System.Console.WriteLine("WARNING: cEcopathModel.Run() may have set EstimationStatus to the wrong value.")
                         End If
                         'WARNING: This assumes that any m_EstimStatus other than eStatusFlags.OK or eStatusFlags.MissingParameter is an Error
                         'So if you mess with m_EstimStatus make sure you have it right
                         msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR,
                                             eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
-                        NotifyCore(msg)
+                        Me.NotifyCore(msg)
                         cLog.Write("cEcopathModel.Run() failed to estimate parameters because of an error.")
 
                     End If
@@ -354,7 +354,7 @@ Namespace Ecopath
                 Me.RunState = eEcopathRunState.Error
                 msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR,
                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
-                NotifyCore(msg)
+                Me.NotifyCore(msg)
 
                 cLog.Write(Me.ToString + ".Run() Error during parameter estimation: " & ex.Message)
                 Return False
@@ -419,36 +419,36 @@ Namespace Ecopath
         Private Sub setEstimateWhat()
             Dim strMsg As String = ""
 
-            ReDim EstimateWhat(m_Data.NumGroups)
+            ReDim Me.EstimateWhat(Me.m_Data.NumGroups)
 
-            EstimateGE()
+            Me.EstimateGE()
 
-            For igrp As Integer = 1 To m_Data.NumGroups
-                If m_Data.B(igrp) > 0 And m_Data.PB(igrp) >= 0 And m_Data.EE(igrp) >= 0 Then
-                    If m_Data.PP(igrp) = 1 Or m_Data.QB(igrp) >= 0 Then
-                        If EstimateWhat(igrp) = eEstimateTypes.EE Then
+            For igrp As Integer = 1 To Me.m_Data.NumGroups
+                If Me.m_Data.B(igrp) > 0 And Me.m_Data.PB(igrp) >= 0 And Me.m_Data.EE(igrp) >= 0 Then
+                    If Me.m_Data.PP(igrp) = 1 Or Me.m_Data.QB(igrp) >= 0 Then
+                        If Me.EstimateWhat(igrp) = eEstimateTypes.EE Then
 
-                            If m_Data.PP(igrp) < 1 Then
-                                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE, m_Data.GroupName(igrp))
+                            If Me.m_Data.PP(igrp) < 1 Then
+                                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE, Me.m_Data.GroupName(igrp))
                             Else
-                                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE, m_Data.GroupName(igrp))
+                                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE, Me.m_Data.GroupName(igrp))
                             End If
 
                             Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.Estimate_BA, eMessageImportance.Information, eMessageReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
                             fbMsg.Suppressable = True
-                            NotifyCore(fbMsg)
+                            Me.NotifyCore(fbMsg)
 
                             If fbMsg.Reply = eMessageReply.YES Then
-                                EstimateWhat(igrp) = eEstimateTypes.BA
+                                Me.EstimateWhat(igrp) = eEstimateTypes.BA
                             ElseIf fbMsg.Reply = eMessageReply.NO Then
 
-                                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_NETMIGRATION, m_Data.GroupName(igrp))
+                                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_NETMIGRATION, Me.m_Data.GroupName(igrp))
                                 fbMsg.Type = eMessageType.Estimate_Net_Migration
                                 fbMsg.Message = strMsg
-                                NotifyCore(fbMsg)
+                                Me.NotifyCore(fbMsg)
 
                                 If fbMsg.Reply = eMessageReply.YES Then
-                                    EstimateWhat(igrp) = eEstimateTypes.Migration
+                                    Me.EstimateWhat(igrp) = eEstimateTypes.Migration
                                 End If
 
                             End If 'If fbMsg.Reply = eReply.YES Then
@@ -468,8 +468,8 @@ Namespace Ecopath
         ''' <remarks>QB is used by Ecosim which assumes that null values are zero</remarks>
         Private Sub CheckQB()
             Dim i As Integer
-            For i = 1 To m_Data.NumLiving
-                If m_Data.QB(i) < 0 And m_Data.PP(i) = 1 Then m_Data.QB(i) = 0
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.QB(i) < 0 And Me.m_Data.PP(i) = 1 Then Me.m_Data.QB(i) = 0
             Next i
         End Sub
 
@@ -483,40 +483,40 @@ Namespace Ecopath
                                     eMessageImportance.Information)
             Dim vs As cVariableStatus = Nothing
 
-            For i = 1 To m_Data.NumLiving
-                Sum = CSng(If(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
-                Sum = Sum + CSng(If(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
-                Sum = CSng(Sum * m_Data.B(i))
+            For i = 1 To Me.m_Data.NumLiving
+                Sum = CSng(If(Me.m_Data.BaBi(i) <> 0 And Me.m_Data.BA(i) = 0, Me.m_Data.BaBi(i), 0))
+                Sum = Sum + CSng(If(Me.m_Data.Emig(i) > 0 And Me.m_Data.Emigration(i) = 0, Me.m_Data.Emig(i), 0))
+                Sum = CSng(Sum * Me.m_Data.B(i))
 
                 MM2 = 0
-                For j = 1 To m_Data.NumLiving
-                    If m_Data.QB(j) > 0 Then
-                        MM2 = MM2 + m_Data.B(j) * m_Data.QB(j) * m_Data.DC(j, i)
+                For j = 1 To Me.m_Data.NumLiving
+                    If Me.m_Data.QB(j) > 0 Then
+                        MM2 = MM2 + Me.m_Data.B(j) * Me.m_Data.QB(j) * Me.m_Data.DC(j, i)
                     End If
                 Next j
 
                 'ToDo_jb EstimEEAgain EstimateWhat(i) Is never getting set to anything I need to check this with the EwE5 code
-                Select Case EstimateWhat(i)
+                Select Case Me.EstimateWhat(i)
 
                     Case eEstimateTypes.EE,
                          eEstimateTypes.NotSet
 
-                        If m_Data.B(i) > 0 And m_Data.PB(i) > 0 Then
+                        If Me.m_Data.B(i) > 0 And Me.m_Data.PB(i) > 0 Then
                             '031220VC: modified to incorporate that BioAcc and emigration can be rates
-                            If m_Data.StanzaGroup(i) = False Then
-                                m_Data.EE(i) = (m_Data.fCatch(i) + Sum + m_Data.BA(i) + m_Data.Emigration(i) - m_Data.Immig(i) + MM2) / (m_Data.B(i) * m_Data.PB(i))
+                            If Me.m_Data.StanzaGroup(i) = False Then
+                                Me.m_Data.EE(i) = (Me.m_Data.fCatch(i) + Sum + Me.m_Data.BA(i) + Me.m_Data.Emigration(i) - Me.m_Data.Immig(i) + MM2) / (Me.m_Data.B(i) * Me.m_Data.PB(i))
                             Else
-                                m_Data.EE(i) = (m_Data.fCatch(i) + Sum + m_Data.Emigration(i) - m_Data.Immig(i) + MM2) / (m_Data.B(i) * m_Data.PB(i))
+                                Me.m_Data.EE(i) = (Me.m_Data.fCatch(i) + Sum + Me.m_Data.Emigration(i) - Me.m_Data.Immig(i) + MM2) / (Me.m_Data.B(i) * Me.m_Data.PB(i))
                             End If
                         End If
 
                     Case eEstimateTypes.BA    ' Estimate BA
 
-                        Dim sBA As Single = m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - m_Data.fCatch(i) - Sum - m_Data.Emigration(i) + m_Data.Immig(i) - MM2
+                        Dim sBA As Single = Me.m_Data.B(i) * Me.m_Data.PB(i) * Me.m_Data.EE(i) - Me.m_Data.fCatch(i) - Sum - Me.m_Data.Emigration(i) + Me.m_Data.Immig(i) - MM2
                         ' Is a change?
                         If (sBA <> Me.m_Data.BA(i)) Then
                             ' #Yes: update BA
-                            m_Data.BA(i) = sBA
+                            Me.m_Data.BA(i) = sBA
                             ' Send out notification
                             msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight,
                                                 cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_BA, Me.m_Data.GroupName(i)),
@@ -525,18 +525,18 @@ Namespace Ecopath
 
                     Case eEstimateTypes.Migration
 
-                        Sum = CSng(If(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.B(i) * m_Data.BaBi(i), 0))
-                        Sum = CSng(m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - Sum - m_Data.BA(i) - m_Data.fCatch(i) - MM2)
+                        Sum = CSng(If(Me.m_Data.BaBi(i) <> 0 And Me.m_Data.BA(i) = 0, Me.m_Data.B(i) * Me.m_Data.BaBi(i), 0))
+                        Sum = CSng(Me.m_Data.B(i) * Me.m_Data.PB(i) * Me.m_Data.EE(i) - Sum - Me.m_Data.BA(i) - Me.m_Data.fCatch(i) - MM2)
                         If Sum < 0 Then
-                            If (m_Data.Immig(i) <> -Sum) Then
-                                m_Data.Immig(i) = -Sum
+                            If (Me.m_Data.Immig(i) <> -Sum) Then
+                                Me.m_Data.Immig(i) = -Sum
                                 msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight,
                                                     cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_IMMIGRATION, Me.m_Data.GroupName(i)),
                                                     eVarNameFlags.Immig, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                             End If
                         Else
-                            If (m_Data.Emigration(i) <> Sum) Then
-                                m_Data.Emigration(i) = Sum
+                            If (Me.m_Data.Emigration(i) <> Sum) Then
+                                Me.m_Data.Emigration(i) = Sum
                                 msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight,
                                                     cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_EMIGRATION, Me.m_Data.GroupName(i)),
                                                     eVarNameFlags.Emig, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
@@ -558,14 +558,14 @@ Namespace Ecopath
 
             ' Me.m_Data.setGSForModelCurrency()
 
-            CalcGS_Det_FlowToDet()            'det ij is flow of det from i to j
-            Array.Clear(m_Data.DetEaten, 0, m_Data.NumGroups + 1)
-            CalcDetEaten()
-            CalcFateOfDetritus()
-            CalcBAofDetritus()                'BA= Surplus * DF
-            CalcEEforDetritus()               'EE=(DetEaten+DetPassedOn)/INputToDet
-            CalcExportOfDetritus()            'EX=INputToDet-DetEaten-BA-DetPassedON
-            CalcDCofDetritus()
+            Me.CalcGS_Det_FlowToDet()            'det ij is flow of det from i to j
+            Array.Clear(Me.m_Data.DetEaten, 0, Me.m_Data.NumGroups + 1)
+            Me.CalcDetEaten()
+            Me.CalcFateOfDetritus()
+            Me.CalcBAofDetritus()                'BA= Surplus * DF
+            Me.CalcEEforDetritus()               'EE=(DetEaten+DetPassedOn)/INputToDet
+            Me.CalcExportOfDetritus()            'EX=INputToDet-DetEaten-BA-DetPassedON
+            Me.CalcDCofDetritus()
 
         End Sub
 
@@ -573,15 +573,15 @@ Namespace Ecopath
             Dim i As Integer, j As Integer
             ' Dim gs As Single
 
-            For i = 0 To m_Data.NumGroups + m_Data.NumFleet
-                For j = 1 To m_Data.NumGroups + m_Data.NumFleet
-                    m_Data.det(i, j) = 0
+            For i = 0 To Me.m_Data.NumGroups + Me.m_Data.NumFleet
+                For j = 1 To Me.m_Data.NumGroups + Me.m_Data.NumFleet
+                    Me.m_Data.det(i, j) = 0
                 Next j
             Next i
 
-            For i = 1 To m_Data.NumLiving
+            For i = 1 To Me.m_Data.NumLiving
 
-                m_Data.FlowToDet(i) = 0
+                Me.m_Data.FlowToDet(i) = 0
                 'xxxxxxxxxxxxxxxxxx
                 'jb 5-June-2012 Bug fix if the Unit Currency got switched GS was mangled this caused issues when GS was used by other routines
                 'Use a local variable for GS
@@ -599,28 +599,28 @@ Namespace Ecopath
                 'End If
                 'xxxxxxxxxxxxxxxxxxxxxx
 
-                For j = m_Data.NumLiving + 1 To m_Data.NumGroups
-                    m_Data.det(i, j) = m_Data.B(i) * m_Data.PB(i) * (1 - m_Data.EE(i)) * m_Data.DF(i, j - m_Data.NumLiving)
+                For j = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                    Me.m_Data.det(i, j) = Me.m_Data.B(i) * Me.m_Data.PB(i) * (1 - Me.m_Data.EE(i)) * Me.m_Data.DF(i, j - Me.m_Data.NumLiving)
                     'Cont. from dying i-organisms to detritus j
 
-                    m_Data.det(i, j) = m_Data.det(i, j) + m_Data.B(i) * m_Data.QB(i) * m_Data.GS(i) * m_Data.DF(i, j - m_Data.NumLiving)
+                    Me.m_Data.det(i, j) = Me.m_Data.det(i, j) + Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.GS(i) * Me.m_Data.DF(i, j - Me.m_Data.NumLiving)
                     'Cont. from egestion of i to detritus j.
 
-                    m_Data.det(0, j) = m_Data.det(0, j) + m_Data.det(i, j)
+                    Me.m_Data.det(0, j) = Me.m_Data.det(0, j) + Me.m_Data.det(i, j)
                     'Total flow into detritus group j
 
                     ' Here sum all flows from living groups to each detritus group
-                    m_Data.FlowToDet(i) = CSng(m_Data.FlowToDet(i) + m_Data.det(i, j))
+                    Me.m_Data.FlowToDet(i) = CSng(Me.m_Data.FlowToDet(i) + Me.m_Data.det(i, j))
                 Next j
             Next i      'end for groups
 
             'Next for fleets
-            If m_Data.NumFleet > 0 Then
-                For i = 1 To m_Data.NumFleet
-                    For j = m_Data.NumLiving + 1 To m_Data.NumGroups
-                        m_Data.det(i + m_Data.NumGroups, j) = m_Data.Discard(i, 0) * m_Data.DiscardFate(i, j - m_Data.NumLiving)
-                        m_Data.det(0, j) = m_Data.det(0, j) + m_Data.det(i + m_Data.NumGroups, j)
-                        m_Data.FlowToDet(m_Data.NumGroups + i) = CSng(m_Data.FlowToDet(m_Data.NumGroups + i) + m_Data.det(i + m_Data.NumGroups, j))
+            If Me.m_Data.NumFleet > 0 Then
+                For i = 1 To Me.m_Data.NumFleet
+                    For j = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                        Me.m_Data.det(i + Me.m_Data.NumGroups, j) = Me.m_Data.Discard(i, 0) * Me.m_Data.DiscardFate(i, j - Me.m_Data.NumLiving)
+                        Me.m_Data.det(0, j) = Me.m_Data.det(0, j) + Me.m_Data.det(i + Me.m_Data.NumGroups, j)
+                        Me.m_Data.FlowToDet(Me.m_Data.NumGroups + i) = CSng(Me.m_Data.FlowToDet(Me.m_Data.NumGroups + i) + Me.m_Data.det(i + Me.m_Data.NumGroups, j))
                     Next
                 Next
             End If
@@ -629,10 +629,10 @@ Namespace Ecopath
         Private Sub CalcDetEaten()
             Dim i As Integer, j As Integer
 
-            For i = 1 To m_Data.NumGroups
-                For j = m_Data.NumLiving + 1 To m_Data.NumGroups            'Detritus boxes
-                    If m_Data.QB(i) > 0 Then
-                        m_Data.DetEaten(j) = CSng(m_Data.DetEaten(j) + m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, j))
+            For i = 1 To Me.m_Data.NumGroups
+                For j = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups            'Detritus boxes
+                    If Me.m_Data.QB(i) > 0 Then
+                        Me.m_Data.DetEaten(j) = CSng(Me.m_Data.DetEaten(j) + Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, j))
                     End If
                 Next j
             Next i
@@ -644,25 +644,25 @@ Namespace Ecopath
             'First sum flow to detritus from import and flow from living groups
             Dim i As Integer, j As Integer, Surplus As Single
 
-            For i = m_Data.NumLiving + 1 To m_Data.NumGroups
-                m_Data.InputToDet(i) = CSng(m_Data.DtImp(i) + m_Data.det(0, i))
+            For i = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                Me.m_Data.InputToDet(i) = CSng(Me.m_Data.DtImp(i) + Me.m_Data.det(0, i))
             Next i
 
-            For i = m_Data.NumLiving + 1 To m_Data.NumGroups
-                m_Data.DetPassedOn(i) = 0
+            For i = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                Me.m_Data.DetPassedOn(i) = 0
                 'DetEaten(i) is amount eaten of the group by all consumers
-                Surplus = m_Data.InputToDet(i) - m_Data.DetEaten(i) - m_Data.Resp(i)
+                Surplus = Me.m_Data.InputToDet(i) - Me.m_Data.DetEaten(i) - Me.m_Data.Resp(i)
                 If Surplus > 0 Then    'Where do we send the surplus detr. to?
-                    For j = m_Data.NumLiving + 1 To m_Data.NumGroups 'recipient
+                    For j = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups 'recipient
                         If i <> j Then
-                            m_Data.InputToDet(j) = m_Data.InputToDet(j) + Surplus * m_Data.DF(i, j - m_Data.NumLiving)
-                            m_Data.DetPassedOn(i) = m_Data.DetPassedOn(i) + Surplus * m_Data.DF(i, j - m_Data.NumLiving)
-                            m_Data.det(i, j) = Surplus * m_Data.DF(i, j - m_Data.NumLiving)   'Detritus sent from j to i
+                            Me.m_Data.InputToDet(j) = Me.m_Data.InputToDet(j) + Surplus * Me.m_Data.DF(i, j - Me.m_Data.NumLiving)
+                            Me.m_Data.DetPassedOn(i) = Me.m_Data.DetPassedOn(i) + Surplus * Me.m_Data.DF(i, j - Me.m_Data.NumLiving)
+                            Me.m_Data.det(i, j) = Surplus * Me.m_Data.DF(i, j - Me.m_Data.NumLiving)   'Detritus sent from j to i
                         End If
                     Next j
                 End If   'Surplus > 0
-                m_Data.FlowToDet(i) = m_Data.DetPassedOn(i)
-                m_Data.DetPassedProp(i) = CSng(m_Data.DetPassedOn(i) / (m_Data.B(i) + 1.0E-20))
+                Me.m_Data.FlowToDet(i) = Me.m_Data.DetPassedOn(i)
+                Me.m_Data.DetPassedProp(i) = CSng(Me.m_Data.DetPassedOn(i) / (Me.m_Data.B(i) + 1.0E-20))
             Next i
         End Sub
 
@@ -675,14 +675,14 @@ Namespace Ecopath
 
             'Debug.Assert(False, "WARNING: Ecopath.CalcBAofDetritus() has been called.")
 
-            For i = m_Data.NumLiving + 1 To m_Data.NumGroups
+            For i = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
 
                 'InputToDet(i) is the sum of all detritus flows NOT including immigration, emigration, import or biomass accumulation. 
                 'See CalcGS_Det_FlowToDet() and CalcFateOfDetritus()
                 'DetEaten(i) is amount eaten of the group by all consumers
-                Surplus = m_Data.InputToDet(i) - m_Data.DetEaten(i) - m_Data.fCatch(i)
+                Surplus = Me.m_Data.InputToDet(i) - Me.m_Data.DetEaten(i) - Me.m_Data.fCatch(i)
                 'jb Add detritus fate from this group to BA (biomass accumulation) not BA input
-                m_Data.BA(i) += Surplus * m_Data.DF(i, i - m_Data.NumLiving)
+                Me.m_Data.BA(i) += Surplus * Me.m_Data.DF(i, i - Me.m_Data.NumLiving)
             Next i
 
         End Sub
@@ -694,15 +694,15 @@ Namespace Ecopath
             Dim str As String = ""
 
             'Now calculate the EE for each of the detritus groups
-            For i As Integer = m_Data.NumLiving + 1 To m_Data.NumGroups
-                If m_Data.InputToDet(i) > 0 Then
+            For i As Integer = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                If Me.m_Data.InputToDet(i) > 0 Then
 
                     'EE(i) = (DetEaten(i) + DetPassedOn(i)) / InputToDet(i)
-                    If m_Data.InputToDet(i) <> m_Data.Resp(i) Then
-                        m_Data.EE(i) = m_Data.DetEaten(i) / (m_Data.InputToDet(i) - m_Data.Resp(i))
+                    If Me.m_Data.InputToDet(i) <> Me.m_Data.Resp(i) Then
+                        Me.m_Data.EE(i) = Me.m_Data.DetEaten(i) / (Me.m_Data.InputToDet(i) - Me.m_Data.Resp(i))
                     End If
 
-                    If m_Data.Resp(i) >= m_Data.InputToDet(i) Then
+                    If Me.m_Data.Resp(i) >= Me.m_Data.InputToDet(i) Then
                         If msg Is Nothing Then
                             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP,
                                                eMessageType.RespirationExceeedsDetritus, eCoreComponentType.EcoPath, eMessageImportance.Warning)
@@ -727,17 +727,17 @@ Namespace Ecopath
             'Find export of detritus
             Dim i As Integer, j As Integer, SumDF As Single
 
-            m_Data.Dt = 0          'Total flow to detritus
-            For i = m_Data.NumLiving + 1 To m_Data.NumGroups
+            Me.m_Data.Dt = 0          'Total flow to detritus
+            For i = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
                 SumDF = 0
-                For j = m_Data.NumLiving + 1 To m_Data.NumGroups
-                    SumDF = SumDF + m_Data.DF(i, j - m_Data.NumLiving)
+                For j = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                    SumDF = SumDF + Me.m_Data.DF(i, j - Me.m_Data.NumLiving)
                 Next j
-                m_Data.Dt = m_Data.Dt + m_Data.InputToDet(i)
+                Me.m_Data.Dt = Me.m_Data.Dt + Me.m_Data.InputToDet(i)
                 If SumDF < 1 Then
-                    m_Data.Ex(i) = CSng(m_Data.InputToDet(i) - m_Data.DetEaten(i) - m_Data.BA(i) - m_Data.DetPassedOn(i) - m_Data.Resp(i))
+                    Me.m_Data.Ex(i) = CSng(Me.m_Data.InputToDet(i) - Me.m_Data.DetEaten(i) - Me.m_Data.BA(i) - Me.m_Data.DetPassedOn(i) - Me.m_Data.Resp(i))
                 Else
-                    m_Data.Ex(i) = 0.0
+                    Me.m_Data.Ex(i) = 0.0
                 End If
             Next i
 
@@ -746,19 +746,19 @@ Namespace Ecopath
         Private Sub CalcDCofDetritus()
             Dim i As Integer, j As Integer
 
-            For i = m_Data.NumLiving + 1 To m_Data.NumGroups                    'Diet comp of detr.box(es)
+            For i = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups                    'Diet comp of detr.box(es)
                 ' InputToDet(i) gives all flow to detritus, only if positive
-                If m_Data.InputToDet(i) > 0 Then
+                If Me.m_Data.InputToDet(i) > 0 Then
                     'First for the GROUPS
-                    For j = 1 To m_Data.NumGroups
-                        m_Data.DC(i, j) = CSng(m_Data.det(j, i) / m_Data.InputToDet(i))
+                    For j = 1 To Me.m_Data.NumGroups
+                        Me.m_Data.DC(i, j) = CSng(Me.m_Data.det(j, i) / Me.m_Data.InputToDet(i))
                     Next j
                     'Then for IMPORT = DtImp
-                    m_Data.DC(i, 0) = m_Data.DtImp(i) / m_Data.InputToDet(i)
+                    Me.m_Data.DC(i, 0) = Me.m_Data.DtImp(i) / Me.m_Data.InputToDet(i)
                     'Then for FISHERY   VCJan97
-                    If m_Data.NumFleet > 0 Then
-                        For j = 1 To m_Data.NumFleet
-                            m_Data.DCDet(i - m_Data.NumLiving, j) = CSng(m_Data.det(m_Data.NumGroups + j, i) / m_Data.InputToDet(i))
+                    If Me.m_Data.NumFleet > 0 Then
+                        For j = 1 To Me.m_Data.NumFleet
+                            Me.m_Data.DCDet(i - Me.m_Data.NumLiving, j) = CSng(Me.m_Data.det(Me.m_Data.NumGroups + j, i) / Me.m_Data.InputToDet(i))
                         Next
                     End If
                 End If
@@ -794,9 +794,9 @@ Namespace Ecopath
 
             EEMax = 1
 
-            For i = 1 To m_Data.NumGroups
+            For i = 1 To Me.m_Data.NumGroups
                 'only test for EE > 1
-                If m_Data.EE(i) > EEMax Then
+                If Me.m_Data.EE(i) > EEMax Then
                     breturn = False
                     If bSendMessage Then
                         If msg Is Nothing Then
@@ -805,14 +805,14 @@ Namespace Ecopath
                             msg.Suppressable = True
                         End If
                         msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult,
-                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(i)),
+                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), Me.m_Data.EE(i)),
                                     eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                     End If
                 End If
             Next
 
             If Not msg Is Nothing Then
-                NotifyCore(msg)
+                Me.NotifyCore(msg)
             End If
 
             Return breturn
@@ -824,9 +824,9 @@ Namespace Ecopath
         Private Sub CalcTotalPrimProd()
             Dim i As Integer
 
-            m_Data.PProd = 0  ' Calculated primary production
-            For i = 1 To m_Data.NumLiving
-                If m_Data.PP(i) > 0 Then m_Data.PProd = CSng(m_Data.PProd + m_Data.PB(i) * m_Data.B(i) * m_Data.PP(i))
+            Me.m_Data.PProd = 0  ' Calculated primary production
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.PP(i) > 0 Then Me.m_Data.PProd = CSng(Me.m_Data.PProd + Me.m_Data.PB(i) * Me.m_Data.B(i) * Me.m_Data.PP(i))
             Next i
 
         End Sub
@@ -836,9 +836,9 @@ Namespace Ecopath
             Dim msgQB0 As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
 
-            For i As Integer = 1 To m_Data.NumLiving
-                If m_Data.PP(i) < 1 And (m_Data.PB(i) = 0 Or m_Data.QB(i) = 0) Then
-                    If m_Data.PB(i) = 0 Then
+            For i As Integer = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.PP(i) < 1 And (Me.m_Data.PB(i) = 0 Or Me.m_Data.QB(i) = 0) Then
+                    If Me.m_Data.PB(i) = 0 Then
 
                         ' Msg for PB0 not created yet?
                         If msgPB0 Is Nothing Then
@@ -855,7 +855,7 @@ Namespace Ecopath
                         ' Add variable info
                         msgPB0.Variables.Add(vs)
 
-                    ElseIf m_Data.QB(i) = 0 Then
+                    ElseIf Me.m_Data.QB(i) = 0 Then
 
                         If msgQB0 Is Nothing Then
                             ' #Not existing, create it
@@ -879,7 +879,7 @@ Namespace Ecopath
             If msgQB0 IsNot Nothing Then Me.m_msgPub.SendMessage(msgQB0)
         End Sub
 
-        Private Sub Omniv(ByVal DC(,) As Single, ByVal TTLX() As Single, ByVal BQB() As Single, ByVal NumGroups As Integer)
+        Private Sub Omniv(DC(,) As Single, TTLX() As Single, BQB() As Single, NumGroups As Integer)
             Dim i As Integer, S1 As Single, j As Integer
 
             For i = 1 To NumGroups
@@ -906,36 +906,36 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub CalcNewExportCatch(ByVal OneOnly As Integer)
+        Private Sub CalcNewExportCatch(OneOnly As Integer)
             Dim Group As Integer
 
             If OneOnly = 0 Then     'Do them all
-                For Group = 1 To m_Data.NumGroups 'Step 1
-                    UpdateExportCatch(Group)
+                For Group = 1 To Me.m_Data.NumGroups 'Step 1
+                    Me.UpdateExportCatch(Group)
                 Next
             Else        'Really one only
-                If OneOnly > 0 And OneOnly <= m_Data.NumGroups Then UpdateExportCatch(OneOnly)
+                If OneOnly > 0 And OneOnly <= Me.m_Data.NumGroups Then Me.UpdateExportCatch(OneOnly)
             End If
 
         End Sub
 
-        Private Sub UpdateExportCatch(ByVal Group As Integer)
+        Private Sub UpdateExportCatch(Group As Integer)
             Dim GearCount As Integer
             Dim sumValue As Single
             Dim Sum As Single
 
             sumValue = 0
-            For GearCount = 1 To m_Data.NumFleet ' Step 1
-                sumValue = sumValue + CSng((m_Data.Landing(GearCount, Group) + m_Data.Discard(GearCount, Group)))
+            For GearCount = 1 To Me.m_Data.NumFleet ' Step 1
+                sumValue = sumValue + CSng((Me.m_Data.Landing(GearCount, Group) + Me.m_Data.Discard(GearCount, Group)))
             Next
 
-            m_Data.fCatch(Group) = sumValue
-            m_Data.Ex(Group) = m_Data.fCatch(Group)
+            Me.m_Data.fCatch(Group) = sumValue
+            Me.m_Data.Ex(Group) = Me.m_Data.fCatch(Group)
 
-            Sum = CSng(If(m_Data.Emig(Group) > 0 And m_Data.Emigration(Group) = 0 And m_Data.B(Group) > 0, m_Data.Emig(Group) * m_Data.B(Group), 0))
+            Sum = CSng(If(Me.m_Data.Emig(Group) > 0 And Me.m_Data.Emigration(Group) = 0 And Me.m_Data.B(Group) > 0, Me.m_Data.Emig(Group) * Me.m_Data.B(Group), 0))
 
-            If Group <= m_Data.NumLiving Then
-                m_Data.Ex(Group) = m_Data.Ex(Group) - m_Data.Immig(Group) + m_Data.Emigration(Group) + Sum
+            If Group <= Me.m_Data.NumLiving Then
+                Me.m_Data.Ex(Group) = Me.m_Data.Ex(Group) - Me.m_Data.Immig(Group) + Me.m_Data.Emigration(Group) + Sum
             End If
 
         End Sub
@@ -949,33 +949,33 @@ Namespace Ecopath
 
             Dim msg As cMessage
 
-            m_Data.Landing(0, 0) = 0
-            m_Data.Discard(0, 0) = 0
-            For j = 1 To m_Data.NumGroups
-                m_Data.Landing(0, j) = 0
-                m_Data.Discard(0, j) = 0
-                m_Data.fCatch(j) = 0
+            Me.m_Data.Landing(0, 0) = 0
+            Me.m_Data.Discard(0, 0) = 0
+            For j = 1 To Me.m_Data.NumGroups
+                Me.m_Data.Landing(0, j) = 0
+                Me.m_Data.Discard(0, j) = 0
+                Me.m_Data.fCatch(j) = 0
             Next
-            For i = 1 To m_Data.NumFleet
-                m_Data.Landing(i, 0) = 0
-                m_Data.Discard(i, 0) = 0
-                For j = 1 To m_Data.NumGroups
+            For i = 1 To Me.m_Data.NumFleet
+                Me.m_Data.Landing(i, 0) = 0
+                Me.m_Data.Discard(i, 0) = 0
+                For j = 1 To Me.m_Data.NumGroups
                     'mData.fcatch by NumGear, group and total
 
                     'jb Only include discards that suffer mortality
-                    m_Data.fCatch(j) = CSng(m_Data.fCatch(j) + m_Data.Landing(i, j) + (m_Data.Discard(i, j) * m_Data.PropDiscardMort(i, j)))       'by group
+                    Me.m_Data.fCatch(j) = CSng(Me.m_Data.fCatch(j) + Me.m_Data.Landing(i, j) + (Me.m_Data.Discard(i, j) * Me.m_Data.PropDiscardMort(i, j)))       'by group
 
                     'mData.Discards by gear, group, and total
-                    m_Data.Landing(i, 0) = m_Data.Landing(i, 0) + m_Data.Landing(i, j) 'sum of Landing by gear
-                    m_Data.Landing(0, j) = m_Data.Landing(0, j) + m_Data.Landing(i, j) 'sum Landing by group
-                    m_Data.Landing(0, 0) = m_Data.Landing(0, 0) + m_Data.Landing(i, j) 'sum all landing by group and gear
+                    Me.m_Data.Landing(i, 0) = Me.m_Data.Landing(i, 0) + Me.m_Data.Landing(i, j) 'sum of Landing by gear
+                    Me.m_Data.Landing(0, j) = Me.m_Data.Landing(0, j) + Me.m_Data.Landing(i, j) 'sum Landing by group
+                    Me.m_Data.Landing(0, 0) = Me.m_Data.Landing(0, 0) + Me.m_Data.Landing(i, j) 'sum all landing by group and gear
 
                     'Include all discards even those the survive
-                    m_Data.Discard(i, 0) = m_Data.Discard(i, 0) + m_Data.Discard(i, j)
-                    m_Data.Discard(0, j) = m_Data.Discard(0, j) + m_Data.Discard(i, j)
-                    m_Data.Discard(0, 0) = m_Data.Discard(0, 0) + m_Data.Discard(i, j)
+                    Me.m_Data.Discard(i, 0) = Me.m_Data.Discard(i, 0) + Me.m_Data.Discard(i, j)
+                    Me.m_Data.Discard(0, j) = Me.m_Data.Discard(0, j) + Me.m_Data.Discard(i, j)
+                    Me.m_Data.Discard(0, 0) = Me.m_Data.Discard(0, 0) + Me.m_Data.Discard(i, j)
 
-                    If (m_Data.Discard(i, j) = 0) Or (m_Data.Landing(i, j) = 0) Then
+                    If (Me.m_Data.Discard(i, j) = 0) Or (Me.m_Data.Landing(i, j) = 0) Then
                         If msg Is Nothing Then
                             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_CATCH_GENERIC,
                                     eMessageType.NoCatchForFleet, eCoreComponentType.EcoPath,
@@ -983,15 +983,15 @@ Namespace Ecopath
                             msg.Suppressable = True
                         End If
 
-                        If m_Data.Landing(i, j) = 0 Then
+                        If Me.m_Data.Landing(i, j) = 0 Then
                             ' Inform core that the sum of landing and discards is missing
                             msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter,
-                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_LANDING, m_Data.FleetName(i), m_Data.GroupName(j)),
+                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_LANDING, Me.m_Data.FleetName(i), Me.m_Data.GroupName(j)),
                                     eVarNameFlags.Landings, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i, j))
                         End If
-                        If m_Data.Discard(i, j) = 0 Then
+                        If Me.m_Data.Discard(i, j) = 0 Then
                             msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter,
-                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_DISCARD, m_Data.FleetName(i), m_Data.GroupName(j)),
+                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_DISCARD, Me.m_Data.FleetName(i), Me.m_Data.GroupName(j)),
                                     eVarNameFlags.Discards, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i, j))
                         End If
                     End If
@@ -1000,7 +1000,7 @@ Namespace Ecopath
 
                 'if this group has no catch then tell the user
                 'Gather the data for a message
-                If (m_Data.Landing(i, 0) + m_Data.Discard(i, 0)) > 0 Then
+                If (Me.m_Data.Landing(i, 0) + Me.m_Data.Discard(i, 0)) > 0 Then
                     'this has not been tested so stop and see if it works the first time in here
                     ' Debug.Assert(False)
                     msg = Nothing
@@ -1008,47 +1008,47 @@ Namespace Ecopath
             Next
 
             If Not msg Is Nothing Then
-                NotifyCore(msg)
+                Me.NotifyCore(msg)
             End If
 
 
             'Also calculate the average market value by group  -- average value
-            For j = 1 To m_Data.NumGroups
-                m_Data.Market(0, j) = 0
+            For j = 1 To Me.m_Data.NumGroups
+                Me.m_Data.Market(0, j) = 0
                 value = 0
-                For i = 1 To m_Data.NumFleet
+                For i = 1 To Me.m_Data.NumFleet
 
-                    If m_Data.Landing(i, j) > 0 Then value = CSng(value + m_Data.Landing(i, j) * m_Data.Market(i, j))
-                    m_Data.PropLanded(i, j) = 0
-                    m_Data.PropDiscard(i, j) = 0
-                    If m_Data.Landing(i, j) + m_Data.Discard(i, j) > 0 Then
-                        m_Data.PropLanded(i, j) = CSng(m_Data.Landing(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
+                    If Me.m_Data.Landing(i, j) > 0 Then value = CSng(value + Me.m_Data.Landing(i, j) * Me.m_Data.Market(i, j))
+                    Me.m_Data.PropLanded(i, j) = 0
+                    Me.m_Data.PropDiscard(i, j) = 0
+                    If Me.m_Data.Landing(i, j) + Me.m_Data.Discard(i, j) > 0 Then
+                        Me.m_Data.PropLanded(i, j) = CSng(Me.m_Data.Landing(i, j) / (Me.m_Data.Landing(i, j) + Me.m_Data.Discard(i, j)))
                         'PropDiscard() includes discards that survived 
-                        m_Data.PropDiscard(i, j) = CSng(m_Data.Discard(i, j) / (m_Data.Landing(i, j) + m_Data.Discard(i, j)))
+                        Me.m_Data.PropDiscard(i, j) = CSng(Me.m_Data.Discard(i, j) / (Me.m_Data.Landing(i, j) + Me.m_Data.Discard(i, j)))
                     End If
 
                 Next i
-                If value > 0 And m_Data.Landing(0, j) > 0 Then m_Data.Market(0, j) = CSng(value / m_Data.Landing(0, j))
+                If value > 0 And Me.m_Data.Landing(0, j) > 0 Then Me.m_Data.Market(0, j) = CSng(value / Me.m_Data.Landing(0, j))
                 'Calculate proportion mData.Discarded by group
             Next
 
             'Estimate the value and cost PLUS PROFIT for the fisheries:
             '   Dim ttt As Single
-            For i = 1 To m_Data.NumFleet
+            For i = 1 To Me.m_Data.NumFleet
                 value = 0
-                For j = 1 To m_Data.NumLiving
-                    If m_Data.Landing(i, j) > 0 Then value = CSng(value + m_Data.Landing(i, j) * m_Data.Market(i, j))
+                For j = 1 To Me.m_Data.NumLiving
+                    If Me.m_Data.Landing(i, j) > 0 Then value = CSng(value + Me.m_Data.Landing(i, j) * Me.m_Data.Market(i, j))
                 Next
                 '       ttt = ttt + value
                 'Now knows the value; the costs are known as %. The profit is calculated from:
                 'Fixed plus variable cost is summed to give total cost for this gear:
-                tcost = m_Data.CostPct(i, eCostIndex.Fixed) + m_Data.CostPct(i, eCostIndex.CUPE) + m_Data.CostPct(i, eCostIndex.Sail) 'this will sum e.g. to 90 = 90% of value, hence:
+                tcost = Me.m_Data.CostPct(i, eCostIndex.Fixed) + Me.m_Data.CostPct(i, eCostIndex.CUPE) + Me.m_Data.CostPct(i, eCostIndex.Sail) 'this will sum e.g. to 90 = 90% of value, hence:
                 'If tcost > 0 Then
                 For K = 1 To 3
-                    m_Data.cost(i, K) = value * (m_Data.CostPct(i, K) / 100)
+                    Me.m_Data.cost(i, K) = value * (Me.m_Data.CostPct(i, K) / 100)
                 Next
-                m_Data.cost(i, 0) = value * (100 - tcost) / 100 'This is the profit
-                m_Data.CostPct(i, eCostIndex.Profit) = 100 - tcost
+                Me.m_Data.cost(i, 0) = value * (100 - tcost) / 100 'This is the profit
+                Me.m_Data.CostPct(i, eCostIndex.Profit) = 100 - tcost
                 'End If
             Next
 
@@ -1056,9 +1056,9 @@ Namespace Ecopath
             Dim Group As Integer
 
             'mData.fcatch codes totals are needed for scaling later
-            For Group = 1 To m_Data.NumGroups
-                For Code = 1 To m_Data.NumCatchCodes
-                    m_Data.CatchCode(0, Group) = m_Data.CatchCode(0, Group) + m_Data.CatchCode(Code, Group)
+            For Group = 1 To Me.m_Data.NumGroups
+                For Code = 1 To Me.m_Data.NumCatchCodes
+                    Me.m_Data.CatchCode(0, Group) = Me.m_Data.CatchCode(0, Group) + Me.m_Data.CatchCode(Code, Group)
                 Next
             Next
 
@@ -1069,8 +1069,8 @@ Namespace Ecopath
             Dim i As Integer
             Dim isMissing As Boolean
 
-            For i = 1 To m_Data.NumLiving
-                If m_Data.B(i) <= 0 Or m_Data.PB(i) < 0 Or m_Data.QB(i) < 0 Or m_Data.EE(i) < 0 Or m_Data.BA(i) < 0 Then
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.B(i) <= 0 Or Me.m_Data.PB(i) < 0 Or Me.m_Data.QB(i) < 0 Or Me.m_Data.EE(i) < 0 Or Me.m_Data.BA(i) < 0 Then
                     isMissing = True
                     Exit For
                 End If
@@ -1083,13 +1083,13 @@ Namespace Ecopath
                                         eMessageImportance.Warning, eDataTypes.EcoPathGroupInput)
                 msg.Suppressable = False
 
-                For i = 1 To m_Data.NumLiving
-                    If m_Data.B(i) <= 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B, i), eVarNameFlags.Biomass, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
-                    If m_Data.PB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PB, i), eVarNameFlags.PBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
-                    If m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
-                    If m_Data.EE(i) < 0 Then
+                For i = 1 To Me.m_Data.NumLiving
+                    If Me.m_Data.B(i) <= 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B, i), eVarNameFlags.Biomass, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
+                    If Me.m_Data.PB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PB, i), eVarNameFlags.PBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
+                    If Me.m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
+                    If Me.m_Data.EE(i) < 0 Then
                         msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
-                        If m_Data.BA(i) < 0 Then
+                        If Me.m_Data.BA(i) < 0 Then
                             msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                         End If
                     End If
@@ -1097,7 +1097,7 @@ Namespace Ecopath
 
                 'send the message to the core
                 'the core will forward it out to an interface
-                NotifyCore(msg)
+                Me.NotifyCore(msg)
 
             End If
 
@@ -1110,24 +1110,24 @@ Namespace Ecopath
 
             'jb clear out missing array and recompute it in FindMissing() this does not really need to happen every run
             'only if something changes
-            ReDim missing(m_Data.NumGroups, 4)
+            ReDim Me.missing(Me.m_Data.NumGroups, 4)
             'ReDim missingDiets(m_Data.NumGroups, m_Data.NumGroups)
 
             'jb in Ewe this also included a test for Biomass/Area bh() for detritus groups 
             'the test is only performed once then missing values are let through??????
             'that test has been moved to cCore.checkBiomassForDetritus()
 
-            For i = 1 To m_Data.NumLiving
-                If m_Data.QB(i) < 0 And m_Data.PP(i) = 1 Then m_Data.QB(i) = 0
-                missing(i, 1) = (m_Data.BH(i) <= 0)
-                missing(i, 2) = (m_Data.PB(i) < 0 And m_Data.GE(i) < 0)
-                missing(i, 3) = (m_Data.QB(i) < 0 And m_Data.GE(i) < 0)
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.QB(i) < 0 And Me.m_Data.PP(i) = 1 Then Me.m_Data.QB(i) = 0
+                Me.missing(i, 1) = (Me.m_Data.BH(i) <= 0)
+                Me.missing(i, 2) = (Me.m_Data.PB(i) < 0 And Me.m_Data.GE(i) < 0)
+                Me.missing(i, 3) = (Me.m_Data.QB(i) < 0 And Me.m_Data.GE(i) < 0)
 
                 'If i = 1 And m_Data.EE(i) > 0 Then
                 '    System.Console.WriteLine("EE ")
                 'End If
 
-                missing(i, 4) = (m_Data.EE(i) < 0)
+                Me.missing(i, 4) = (Me.m_Data.EE(i) < 0)
                 'For j As Integer = 1 To m_Data.NumLiving
                 '    missingDiets(i, j) = m_Data.DC(i, j) < 0
                 'Next j
@@ -1136,43 +1136,43 @@ Namespace Ecopath
 
         Private Sub CalcNichePiankaPred()
             Dim i As Integer, j As Integer, K As Integer
-            Dim SumP2(m_Data.NumGroups) As Single
-            Dim SumHost(m_Data.NumGroups) As Single
+            Dim SumP2(Me.m_Data.NumGroups) As Single
+            Dim SumHost(Me.m_Data.NumGroups) As Single
 
             '*** Pianka predator niche overlap - start
-            For i = 1 To m_Data.NumLiving
+            For i = 1 To Me.m_Data.NumLiving
                 SumHost(i) = 0
-                For j = 1 To m_Data.NumLiving
-                    If m_Data.B(j) > 0 And m_Data.QB(j) > 0 And m_Data.DC(j, i) > 0 Then
-                        m_Data.Host(i, j) = m_Data.B(j) * m_Data.QB(j) * m_Data.DC(j, i)
-                        SumHost(i) = SumHost(i) + m_Data.Host(i, j)
+                For j = 1 To Me.m_Data.NumLiving
+                    If Me.m_Data.B(j) > 0 And Me.m_Data.QB(j) > 0 And Me.m_Data.DC(j, i) > 0 Then
+                        Me.m_Data.Host(i, j) = Me.m_Data.B(j) * Me.m_Data.QB(j) * Me.m_Data.DC(j, i)
+                        SumHost(i) = SumHost(i) + Me.m_Data.Host(i, j)
                     Else
-                        m_Data.Host(i, j) = 0
+                        Me.m_Data.Host(i, j) = 0
                     End If
                 Next j
             Next i       'Host(ij) is amount eaten of group i by predator j
             'Here calculated not regarding detritus as a pred.
 
-            For i = 1 To m_Data.NumLiving
-                For j = 1 To m_Data.NumLiving
-                    m_Data.Hlap(i, j) = 0
-                    If SumHost(i) > 0 Then m_Data.Host(i, j) = m_Data.Host(i, j) / SumHost(i)
+            For i = 1 To Me.m_Data.NumLiving
+                For j = 1 To Me.m_Data.NumLiving
+                    Me.m_Data.Hlap(i, j) = 0
+                    If SumHost(i) > 0 Then Me.m_Data.Host(i, j) = Me.m_Data.Host(i, j) / SumHost(i)
                 Next j
             Next i
 
-            For i = 1 To m_Data.NumLiving
+            For i = 1 To Me.m_Data.NumLiving
                 SumP2(i) = 0
-                For j = 1 To m_Data.NumLiving
-                    SumP2(i) = CSng(SumP2(i) + m_Data.Host(i, j) ^ 2)
-                    For K = 1 To m_Data.NumGroups
-                        m_Data.Hlap(i, j) = m_Data.Hlap(i, j) + m_Data.Host(i, K) * m_Data.Host(j, K)
+                For j = 1 To Me.m_Data.NumLiving
+                    SumP2(i) = CSng(SumP2(i) + Me.m_Data.Host(i, j) ^ 2)
+                    For K = 1 To Me.m_Data.NumGroups
+                        Me.m_Data.Hlap(i, j) = Me.m_Data.Hlap(i, j) + Me.m_Data.Host(i, K) * Me.m_Data.Host(j, K)
                     Next K
                 Next j
             Next i
 
-            For i = 1 To m_Data.NumLiving
-                For j = 1 To m_Data.NumLiving
-                    If SumP2(i) > 0 And SumP2(j) > 0 Then m_Data.Hlap(i, j) = m_Data.Hlap(i, j) / (SumP2(i) + SumP2(j)) * 2
+            For i = 1 To Me.m_Data.NumLiving
+                For j = 1 To Me.m_Data.NumLiving
+                    If SumP2(i) > 0 And SumP2(j) > 0 Then Me.m_Data.Hlap(i, j) = Me.m_Data.Hlap(i, j) / (SumP2(i) + SumP2(j)) * 2
                 Next j
             Next i
         End Sub
@@ -1182,23 +1182,23 @@ Namespace Ecopath
             Dim SumP2() As Single
             Dim SumHost() As Single
 
-            ReDim SumP2(m_Data.NumGroups)
-            ReDim SumHost(m_Data.NumGroups)
+            ReDim SumP2(Me.m_Data.NumGroups)
+            ReDim SumHost(Me.m_Data.NumGroups)
 
             'estimates the results
-            For i = 1 To m_Data.NumGroups
-                For j = 1 To m_Data.NumGroups
-                    m_Data.Plap(i, j) = 0
-                    If m_Data.DC(i, j) > 0 Then SumP2(i) = CSng(SumP2(i) + m_Data.DC(i, j) ^ 2)
-                    For K = 1 To m_Data.NumGroups
-                        m_Data.Plap(i, j) = m_Data.Plap(i, j) + m_Data.DC(i, K) * m_Data.DC(j, K)
+            For i = 1 To Me.m_Data.NumGroups
+                For j = 1 To Me.m_Data.NumGroups
+                    Me.m_Data.Plap(i, j) = 0
+                    If Me.m_Data.DC(i, j) > 0 Then SumP2(i) = CSng(SumP2(i) + Me.m_Data.DC(i, j) ^ 2)
+                    For K = 1 To Me.m_Data.NumGroups
+                        Me.m_Data.Plap(i, j) = Me.m_Data.Plap(i, j) + Me.m_Data.DC(i, K) * Me.m_Data.DC(j, K)
                     Next K
                 Next j
             Next i
 
-            For i = 1 To m_Data.NumGroups
-                For j = 1 To m_Data.NumGroups
-                    If SumP2(i) > 0 And SumP2(j) > 0 Then m_Data.Plap(i, j) = m_Data.Plap(i, j) / (SumP2(i) + SumP2(j)) * 2
+            For i = 1 To Me.m_Data.NumGroups
+                For j = 1 To Me.m_Data.NumGroups
+                    If SumP2(i) > 0 And SumP2(j) > 0 Then Me.m_Data.Plap(i, j) = Me.m_Data.Plap(i, j) / (SumP2(i) + SumP2(j)) * 2
                 Next j
             Next i
         End Sub
@@ -1214,56 +1214,56 @@ Namespace Ecopath
 
             MaxBio = 0
             LivingBio = 0
-            m_Data.SumBio = 0
+            Me.m_Data.SumBio = 0
 
-            For i As Integer = 1 To m_Data.NumLiving
-                If m_Data.B(i) > MaxBio Then MaxBio = m_Data.B(i)
-                LivingBio = LivingBio + m_Data.B(i)
+            For i As Integer = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.B(i) > MaxBio Then MaxBio = Me.m_Data.B(i)
+                LivingBio = LivingBio + Me.m_Data.B(i)
             Next i
-            m_Data.SumBio = LivingBio
+            Me.m_Data.SumBio = LivingBio
 
             'Will assume that if there is no biomass for a detritus box
             'then the biomass will correspond to the max living biomass
             'divided by the number of detritus boxes. Thus if all detritus
             'biomasses are lacking the total detritus biomass = max living biom.
-            For i As Integer = m_Data.NumLiving + 1 To m_Data.NumGroups
+            For i As Integer = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
                 'If m_Data.B(i) < 0 Then
                 '    m_Data.B(i) = MaxBio / (m_Data.NumGroups - m_Data.NumLiving)
                 'End If
 
                 'jb changed this to not change B() for detritus if no biomass was specified by the user
                 'Changing B() for detritus messes up Ecosim
-                If m_Data.B(i) < 0 Then
-                    m_Data.SumBio = m_Data.SumBio + MaxBio / (m_Data.NumGroups - m_Data.NumLiving)
+                If Me.m_Data.B(i) < 0 Then
+                    Me.m_Data.SumBio = Me.m_Data.SumBio + MaxBio / (Me.m_Data.NumGroups - Me.m_Data.NumLiving)
                 Else
-                    m_Data.SumBio = m_Data.SumBio + m_Data.B(i)
+                    Me.m_Data.SumBio = Me.m_Data.SumBio + Me.m_Data.B(i)
                 End If
 
             Next i
 
-            For i As Integer = 1 To m_Data.NumGroups               'CALCULATION OF PREFERENCE INDEX
-                m_Data.SumR(i) = 0
-                For j As Integer = 1 To m_Data.NumGroups           'FOLLOWING CHESSON (1983)
-                    m_Data.Alpha(i, j) = 0
-                    If m_Data.B(j) > 0 Then
-                        m_Data.Alpha(i, j) = m_Data.DC(i, j) / (m_Data.B(j) / m_Data.SumBio)
+            For i As Integer = 1 To Me.m_Data.NumGroups               'CALCULATION OF PREFERENCE INDEX
+                Me.m_Data.SumR(i) = 0
+                For j As Integer = 1 To Me.m_Data.NumGroups           'FOLLOWING CHESSON (1983)
+                    Me.m_Data.Alpha(i, j) = 0
+                    If Me.m_Data.B(j) > 0 Then
+                        Me.m_Data.Alpha(i, j) = Me.m_Data.DC(i, j) / (Me.m_Data.B(j) / Me.m_Data.SumBio)
                     End If
-                    m_Data.SumR(i) = m_Data.SumR(i) + m_Data.Alpha(i, j)
+                    Me.m_Data.SumR(i) = Me.m_Data.SumR(i) + Me.m_Data.Alpha(i, j)
                 Next j
             Next i
 
-            For i As Integer = 1 To m_Data.NumGroups
-                For j As Integer = 1 To m_Data.NumGroups
-                    If m_Data.SumR(i) > 0 Then
-                        m_Data.Alpha(i, j) = m_Data.Alpha(i, j) / m_Data.SumR(i)
+            For i As Integer = 1 To Me.m_Data.NumGroups
+                For j As Integer = 1 To Me.m_Data.NumGroups
+                    If Me.m_Data.SumR(i) > 0 Then
+                        Me.m_Data.Alpha(i, j) = Me.m_Data.Alpha(i, j) / Me.m_Data.SumR(i)
                     End If
                 Next j               'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
             Next i
 
-            For i As Integer = 1 To m_Data.NumGroups
-                If m_Data.QB(i) > 0 Then
-                    For j As Integer = 1 To m_Data.NumGroups
-                        m_Data.Alpha(i, j) = (m_Data.NumGroups * m_Data.Alpha(i, j) - 1) / ((m_Data.NumGroups - 2) * m_Data.Alpha(i, j) + 1)
+            For i As Integer = 1 To Me.m_Data.NumGroups
+                If Me.m_Data.QB(i) > 0 Then
+                    For j As Integer = 1 To Me.m_Data.NumGroups
+                        Me.m_Data.Alpha(i, j) = (Me.m_Data.NumGroups * Me.m_Data.Alpha(i, j) - 1) / ((Me.m_Data.NumGroups - 2) * Me.m_Data.Alpha(i, j) + 1)
                     Next j
                 End If                     'THIS ALPHA EQUALS CHESSONS EPSILON
             Next i
@@ -1276,15 +1276,15 @@ Namespace Ecopath
         Private Sub CheckForMissingDetritusBiomass()
             Dim msg As cMessage = Nothing
 
-            For i As Integer = m_Data.NumLiving + 1 To m_Data.NumGroups
-                If m_Data.BHinput(i) < 0 And msg Is Nothing Then
+            For i As Integer = Me.m_Data.NumLiving + 1 To Me.m_Data.NumGroups
+                If Me.m_Data.BHinput(i) < 0 And msg Is Nothing Then
                     msg = New cMessage(My.Resources.CoreMessages.ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING,
                                 eMessageType.InvalidModel_B_Detritus, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                     msg.Suppressable = True
                 End If
             Next
 
-            If msg IsNot Nothing Then NotifyCore(msg)
+            If msg IsNot Nothing Then Me.NotifyCore(msg)
 
         End Sub
 
@@ -1294,8 +1294,8 @@ Namespace Ecopath
         Private Sub CheckStanzaHabArea()
             Dim msg As cMessage = Nothing
 
-            For i As Integer = 1 To m_Data.NumLiving
-                If m_Data.Area(i) < 1 And m_Data.StanzaGroup(i) Then
+            For i As Integer = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.Area(i) < 1 And Me.m_Data.StanzaGroup(i) Then
                     If (msg Is Nothing) Then
                         msg = New cMessage(My.Resources.CoreMessages.ECOPATH_PROMPT_STANZA_WHOLE_AREA,
                                 eMessageType.InvalidModel_Stanza_Area, eCoreComponentType.EcoPath, eMessageImportance.Warning)
@@ -1308,7 +1308,7 @@ Namespace Ecopath
                 End If
             Next
 
-            If msg IsNot Nothing Then NotifyCore(msg)
+            If msg IsNot Nothing Then Me.NotifyCore(msg)
 
         End Sub
 
@@ -1316,12 +1316,12 @@ Namespace Ecopath
         Private Sub CheckForImportOnlyGroups()
 
             Dim nFound As Integer = 0
-            Dim bImportOnly(m_Data.NumLiving) As Boolean
+            Dim bImportOnly(Me.m_Data.NumLiving) As Boolean
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
 
-            For iGroup As Integer = 1 To m_Data.NumLiving
-                If (m_Data.DC(iGroup, 0) > 0.9999999) And (m_Data.PP(iGroup) < 1) Then
+            For iGroup As Integer = 1 To Me.m_Data.NumLiving
+                If (Me.m_Data.DC(iGroup, 0) > 0.9999999) And (Me.m_Data.PP(iGroup) < 1) Then
                     bImportOnly(iGroup) = True
                     nFound += 1
                 Else
@@ -1334,7 +1334,7 @@ Namespace Ecopath
                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
-                For iGroup As Integer = 1 To m_Data.NumLiving
+                For iGroup As Integer = 1 To Me.m_Data.NumLiving
                     If bImportOnly(iGroup) Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter,
                         cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP, Me.m_Data.GroupName(iGroup)),
                         eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iGroup))
@@ -1355,12 +1355,12 @@ Namespace Ecopath
 
             Dummy = 0
             AllOne = True
-            For j = 1 To m_Data.NumLiving 'row/groups
+            For j = 1 To Me.m_Data.NumLiving 'row/groups
                 PFlag = False
                 SumDF = 0
-                For i = 1 To m_Data.NumDetrit
-                    If m_Data.DF(j, i) > 0 Then PFlag = True
-                    SumDF = SumDF + m_Data.DF(j, i)
+                For i = 1 To Me.m_Data.NumDetrit
+                    If Me.m_Data.DF(j, i) > 0 Then PFlag = True
+                    SumDF = SumDF + Me.m_Data.DF(j, i)
                 Next
                 If Not PFlag Then Dummy = Dummy + 1
                 If SumDF < 0.99 Then AllOne = False
@@ -1391,17 +1391,17 @@ Namespace Ecopath
         Private Sub CheckDetritusFateTooBig()
 
             Dim nFound As Integer = 0
-            Dim DFtooBig(m_Data.NumGroups) As Boolean
+            Dim DFtooBig(Me.m_Data.NumGroups) As Boolean
             Dim SumDF As Single = 0.0!
             Dim str As String = ""
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
 
-            For i As Integer = 1 To m_Data.NumGroups
+            For i As Integer = 1 To Me.m_Data.NumGroups
                 SumDF = 0.0!
                 DFtooBig(i) = False
-                For j As Integer = 1 To m_Data.NumDetrit
-                    SumDF += m_Data.DF(i, j)
+                For j As Integer = 1 To Me.m_Data.NumDetrit
+                    SumDF += Me.m_Data.DF(i, j)
                 Next
                 ' JS 25Feb10: added grace range to this test
                 If Math.Round(SumDF, 4) > 1.0! Then
@@ -1415,7 +1415,7 @@ Namespace Ecopath
                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
-                For i As Integer = 1 To m_Data.NumGroups
+                For i As Integer = 1 To Me.m_Data.NumGroups
                     If DFtooBig(i) Then
                         str = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP, Me.m_Data.GroupName(i))
                         vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.DetritusFate, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
@@ -1428,7 +1428,7 @@ Namespace Ecopath
         End Sub
 
         Public Function IsFished(igrp As Integer) As Boolean
-            Return IsLanded(igrp) Or IsDiscarded(igrp)
+            Return Me.IsLanded(igrp) Or Me.IsDiscarded(igrp)
         End Function
 
         Public Function IsLanded(igrp As Integer) As Boolean
@@ -1455,8 +1455,8 @@ Namespace Ecopath
 
         Public Sub CheckDiscardFateZero()
             Dim nFound As Integer
-            Dim bNoDiscardFate(m_Data.NumFleet) As Boolean
-            Dim bHasDiscards(m_Data.NumFleet) As Boolean
+            Dim bNoDiscardFate(Me.m_Data.NumFleet) As Boolean
+            Dim bHasDiscards(Me.m_Data.NumFleet) As Boolean
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
             Dim str As String = ""
@@ -1464,28 +1464,28 @@ Namespace Ecopath
             Dim SumDF As Single
 
             nFound = 0
-            For i As Integer = 1 To m_Data.NumGroups
-                For j As Integer = 1 To m_Data.NumFleet
-                    If m_Data.Discard(j, i) > 0 Then bHasDiscards(j) = True
+            For i As Integer = 1 To Me.m_Data.NumGroups
+                For j As Integer = 1 To Me.m_Data.NumFleet
+                    If Me.m_Data.Discard(j, i) > 0 Then bHasDiscards(j) = True
                 Next
             Next
 
             ig = 0
-            For i As Integer = 1 To m_Data.NumFleet
+            For i As Integer = 1 To Me.m_Data.NumFleet
                 If bHasDiscards(i) Then
                     SumDF = 0
                     ig += 1
-                    For j As Integer = 1 To m_Data.NumDetrit
-                        SumDF = SumDF + m_Data.DiscardFate(i, j)
+                    For j As Integer = 1 To Me.m_Data.NumDetrit
+                        SumDF = SumDF + Me.m_Data.DiscardFate(i, j)
                     Next
                     If SumDF = 0 Then bNoDiscardFate(i) = True : nFound += 1
                 End If
             Next
 
-            If nFound = ig And m_Data.NumDetrit = 1 Then
+            If nFound = ig And Me.m_Data.NumDetrit = 1 Then
                 'If there is only one detritus group, and if all groups with discard lacks detritus fate, then use a default
-                For i As Integer = 1 To m_Data.NumFleet
-                    m_Data.DiscardFate(i, 1) = 1
+                For i As Integer = 1 To Me.m_Data.NumFleet
+                    Me.m_Data.DiscardFate(i, 1) = 1
                 Next
             ElseIf nFound > 0 Then
 
@@ -1493,9 +1493,9 @@ Namespace Ecopath
                 msg = New cMessage(str, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
-                For i As Integer = 1 To m_Data.NumFleet
+                For i As Integer = 1 To Me.m_Data.NumFleet
                     If bNoDiscardFate(i) Then
-                        str = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET, m_Data.FleetName(i))
+                        str = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET, Me.m_Data.FleetName(i))
                         vs = New cVariableStatus(eStatusFlags.MissingParameter, str, eVarNameFlags.DiscardFate, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i)
                         msg.AddVariable(vs)
                     End If
@@ -1510,7 +1510,7 @@ Namespace Ecopath
 
 #Region "Estimate Parameters"
 
-        Private Function EstimateParameters(ByVal EstimateFor As eEstimateParameterFor, ByRef Result As eStatusFlags) As Boolean
+        Private Function EstimateParameters(EstimateFor As eEstimateParameterFor, ByRef Result As eStatusFlags) As Boolean
 
             Dim ji As Integer
             'Dim From As Integer
@@ -1521,13 +1521,13 @@ Namespace Ecopath
             Dim msg As cMessage = Nothing
             Dim TimesTried As Integer
 
-            RedimVariables()
+            Me.RedimVariables()
             'Programmer: Villy Christensen
             'This is the main module for parametrization, i.e. estimation of 'missing parameter'
             'for securing mass balance
             Try
 
-                Exit_Sub_Missing_Par = 1
+                Me.Exit_Sub_Missing_Par = 1
 
 Start:
                 LoopC = 0
@@ -1535,31 +1535,31 @@ Start:
 LoopCalc:
                 LoopC = LoopC + 1
                 'exit strategies if the loop has executed to many times
-                If LoopC > m_Data.NumGroups + 2 Then
+                If LoopC > Me.m_Data.NumGroups + 2 Then
 
                     If EstimateFor = eEstimateParameterFor.ParameterEstimation Then
                         'FROM ParamEstimate1
-                        If LoopC > m_Data.NumGroups + 2 Then
+                        If LoopC > Me.m_Data.NumGroups + 2 Then
                             If CyclesDone = False Then
-                                FindCyclesWhenEstimatingBiomass()
+                                Me.FindCyclesWhenEstimatingBiomass()
                                 CyclesDone = True
                                 GoTo Start
-                            ElseIf CheckPredatorPreyTrophicLevels() Then
+                            ElseIf Me.CheckPredatorPreyTrophicLevels() Then
                                 'Check if there are crazy values with high consumption of prey with higher TL:
                                 GoTo Start
-                            ElseIf DoIterationsToEstimateB() <= 3 Then 'Try to do iterations
+                            ElseIf Me.DoIterationsToEstimateB() <= 3 Then 'Try to do iterations
                                 GoTo Start
                             Else
-                                Exit_Sub_Missing_Par = 0
-                                InParameterEstimation = 0
+                                Me.Exit_Sub_Missing_Par = 0
+                                Me.InParameterEstimation = 0
                                 Result = eStatusFlags.MissingParameter
                                 Return False
                             End If
                         End If
 
                     ElseIf EstimateFor = eEstimateParameterFor.Sensitivity Then
-                        Exit_Sub_Missing_Par = 0
-                        InParameterEstimation = 0
+                        Me.Exit_Sub_Missing_Par = 0
+                        Me.InParameterEstimation = 0
                         Result = eStatusFlags.MissingParameter
 
                         Return False
@@ -1577,19 +1577,19 @@ LoopCalc:
                     End If 'If EstimateFor = eEstimateParameterFor.ParameterEstimation Then
                 End If ' If LoopC > m_data.NumGroups + 2 Then
 
-                EstimateGE()
+                Me.EstimateGE()
 
-                If (CountNoOfMissing(m_Data.mis, noMissing, EstimateFor) = False) Then
-                    InParameterEstimation = 0
+                If (Me.CountNoOfMissing(Me.m_Data.mis, noMissing, EstimateFor) = False) Then
+                    Me.InParameterEstimation = 0
                     'jb 
                     cLog.Write("Too many missing parameters. Parameter Estimation not completed successfully.")
                     Result = eStatusFlags.MissingParameter
                     Return False
                 End If
                 '040112VC: In case B is missing, BABi is entered, then estimate BA(i) again
-                For ji = 1 To m_Data.NumLiving
-                    If m_Data.BA(ji) = 0 Then
-                        m_Data.BA(ji) = CSng(If(m_Data.BaBi(ji) <> 0 And m_Data.B(ji) > 0, m_Data.BaBi(ji) * m_Data.B(ji), m_Data.BA(ji)))
+                For ji = 1 To Me.m_Data.NumLiving
+                    If Me.m_Data.BA(ji) = 0 Then
+                        Me.m_Data.BA(ji) = CSng(If(Me.m_Data.BaBi(ji) <> 0 And Me.m_Data.B(ji) > 0, Me.m_Data.BaBi(ji) * Me.m_Data.B(ji), Me.m_Data.BA(ji)))
                         'jb was m_data.BA(ji) = if(m_data.BaBi(ji) <> 0 And m_data.B(ji) > 0, m_data.BaBi(ji) * m_data.B(ji), m_data.BAi(ji))
                     End If
 
@@ -1597,39 +1597,39 @@ LoopCalc:
 
                 If noMissing > 0 Then              ' else No GIM
 
-                    EstimatePB(Pass)
+                    Me.EstimatePB(Pass)
                     If Pass = 1 Then
                         GoTo LoopCalc ' NOW PB IS KNOWN
                     End If
 
-                    EstimateEE(Pass)
+                    Me.EstimateEE(Pass)
                     If Pass = 1 Then
                         GoTo LoopCalc ' Now EE is known
                     End If
 
-                    EstimateB(Pass, EstimateFor, ExitSen)
+                    Me.EstimateB(Pass, EstimateFor, ExitSen)
 
-                    If EstimateFor = eEstimateParameterFor.ParameterEstimation And (Exit_Sub_Missing_Par = 0 Or SecLoop = 3) Then
+                    If EstimateFor = eEstimateParameterFor.ParameterEstimation And (Me.Exit_Sub_Missing_Par = 0 Or SecLoop = 3) Then
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'jb
                         'Exit stratagy ParamEstimate1 
-                        If Exit_Sub_Missing_Par = 0 Or SecLoop% = 3 Then
+                        If Me.Exit_Sub_Missing_Par = 0 Or SecLoop% = 3 Then
                             If CyclesDone = False Then
                                 'FindCyclesWhenEstimatingBiomass(Cons())
-                                FindCyclesWhenEstimatingBiomass()
-                                If bDietsModified Then checkDietsSumToOne(True)
+                                Me.FindCyclesWhenEstimatingBiomass()
+                                If Me.bDietsModified Then Me.checkDietsSumToOne(True)
                                 CyclesDone = True
                                 GoTo Start
-                            ElseIf CheckPredatorPreyTrophicLevels() Then
+                            ElseIf Me.CheckPredatorPreyTrophicLevels() Then
                                 'Check if there are crazy values with high consumption of prey with higher TL:
                                 GoTo Start
-                            ElseIf DoIterationsToEstimateB() <= 3 And TimesTried <= 10 Then 'Try to do iterations
+                            ElseIf Me.DoIterationsToEstimateB() <= 3 And TimesTried <= 10 Then 'Try to do iterations
                                 TimesTried = TimesTried + 1
                                 GoTo Start
                             Else
-                                Exit_Sub_Missing_Par = 0
-                                InParameterEstimation = 0
+                                Me.Exit_Sub_Missing_Par = 0
+                                Me.InParameterEstimation = 0
                                 Result = eStatusFlags.MissingParameter
                                 Return False
                             End If
@@ -1655,12 +1655,12 @@ LoopCalc:
                         GoTo Start ' Now B is known
                     End If
 
-                    EstimateQBorB_1(Pass)
+                    Me.EstimateQBorB_1(Pass)
                     If Pass = 1 Then
                         GoTo Start
                     End If
 
-                    EstimateQBorB_2(Pass)
+                    Me.EstimateQBorB_2(Pass)
                     If Pass = 1 Then
                         GoTo Start
                     End If
@@ -1689,27 +1689,27 @@ LoopCalc:
 
                     'Enter Generalized Inverse Method
                     Pass = 0
-                    For ji = 1 To m_Data.NumLiving                  'GIM
-                        If m_Data.mis(ji) > 0 Then           'IF EQ2=0 THEN B,PB,QB,EE known
+                    For ji = 1 To Me.m_Data.NumLiving                  'GIM
+                        If Me.m_Data.mis(ji) > 0 Then           'IF EQ2=0 THEN B,PB,QB,EE known
                             'If Mis(ji) > 1 Then           'IF EQ2=0 THEN B,PB,QB,EE known
-                            GIM(Result)
+                            Me.GIM(Result)
 
                             'GIM has thrown an error
                             If Result = eStatusFlags.ErrorEncountered Then
-                                InParameterEstimation = 0
+                                Me.InParameterEstimation = 0
                                 Result = eStatusFlags.ErrorEncountered
                                 Return False
                             End If
 
                             'Failed to estimate parameters
-                            If Exit_Sub_Missing_Par = 0 Then
-                                InParameterEstimation = 0
+                            If Me.Exit_Sub_Missing_Par = 0 Then
+                                Me.InParameterEstimation = 0
                                 Result = eStatusFlags.MissingParameter
                                 Return False
                             End If
 
                             Pass = 1
-                            ji = m_Data.NumLiving + 1
+                            ji = Me.m_Data.NumLiving + 1
                             SecLoop = SecLoop + 1
                         End If       'B(2)  B(3)  EE(1)
                     Next ji
@@ -1740,7 +1740,7 @@ LoopCalc:
 
 
         Sub FindCyclesWhenEstimatingBiomass()
-            ' Sub FindCyclesWhenEstimatingBiomass(ByVal Cons() As Single)'EwE5
+            ' Sub FindCyclesWhenEstimatingBiomass(Cons() As Single)'EwE5
             'CycDC [previously called CD] contains the proportion of the diet that is the minimum
             'amount in a cycle and should be removed to break the cycle.
             'This amount is subtracted from all flows in the cycle that contains only groups without biomasses.
@@ -1759,7 +1759,7 @@ LoopCalc:
             Dim i As Integer
             Dim Level As Integer
 
-            EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
+            Me.EstimateTrophicLevels(Me.m_Data.NumGroups, Me.m_Data.NumLiving, Me.m_Data.PP, Me.m_Data.DC, Me.m_Data.TTLX)
 
             'AbortRun = False
             'DoWhat = "PPR"
@@ -1772,11 +1772,11 @@ LoopCalc:
             Cnt = 0
             '   Array.Clear(Cons, 0, Cons.Length)
 
-            ReDim path(2 * m_Data.NumGroups + 2)
-            ReDim lastComp(2 * m_Data.NumGroups + 2)
+            ReDim path(2 * Me.m_Data.NumGroups + 2)
+            ReDim lastComp(2 * Me.m_Data.NumGroups + 2)
 
-            For Pivot = 1 To m_Data.NumLiving
-                If m_Data.B(Pivot) > 0 Then GoTo NextPivot
+            For Pivot = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.B(Pivot) > 0 Then GoTo NextPivot
                 Array.Clear(path, 0, path.Length)
                 '  Init1DimInteg(0, 2 * m_data.NumGroups + 2, Path())
                 '  Assign1DimInteg(1, 2 * m_data.NumGroups + 1, Pivot, lastComp)
@@ -1784,18 +1784,18 @@ LoopCalc:
 
                 path(Pivot - 1) = Pivot           ' Path's limits are Pivot -1 to Level 
                 '*** FOR Level  = Pivot  TO m_data.Numliving
-                For Level = Pivot To 2 * m_Data.NumLiving
+                For Level = Pivot To 2 * Me.m_Data.NumLiving
                     If path(Level - 1) > 0 Then
                         pred = path(Level - 1)
                     Else
                         pred = Pivot
                     End If
-                    For Comp = lastComp(Level) To m_Data.NumLiving
+                    For Comp = lastComp(Level) To Me.m_Data.NumLiving
                         'only for groups that do not have biomass
-                        If m_Data.B(Comp) <= 0 And m_Data.DC(pred, Comp) > 0 Then
+                        If Me.m_Data.B(Comp) <= 0 And Me.m_Data.DC(pred, Comp) > 0 Then
                             prey = Comp
                             path(Level) = 0
-                            CheckPath(path, Pivot, prey, Level)
+                            Me.CheckPath(path, Pivot, prey, Level)
                             If prey = 0 And Comp <> Pivot Then GoTo NextComp 'In Path already
                             If Pivot = Comp Then
                                 path(Level) = Comp
@@ -1832,10 +1832,10 @@ LoopCalc:
                                 'FindMinConsump Cons(), MinCons
                                 'Find the link with the highest difference in TL
                                 Diff = 100
-                                For K = Pivot To m_Data.NumLiving
+                                For K = Pivot To Me.m_Data.NumLiving
                                     If path(K) > 0 Then
-                                        PreyTL = m_Data.TTLX(path(K))
-                                        PredTL = m_Data.TTLX(path(K - 1))
+                                        PreyTL = Me.m_Data.TTLX(path(K))
+                                        PredTL = Me.m_Data.TTLX(path(K - 1))
                                         If PredTL - PreyTL < Diff Then
                                             Diff = PredTL - PreyTL
                                             prey = path(K)
@@ -1893,7 +1893,7 @@ NextPivot:
         End Sub
 
 
-        Sub CheckPath(ByRef path() As Integer, ByVal Pivot As Integer, ByRef prey As Integer, ByVal level As Integer)
+        Sub CheckPath(ByRef path() As Integer, Pivot As Integer, ByRef prey As Integer, level As Integer)
             Dim K As Integer
 
             For K = Pivot - 1 To level + 1
@@ -1907,19 +1907,19 @@ NextPivot:
 
             'ReDim mis(m_data.NumGroups)
 
-            Erase NoBQB
-            Erase H
-            Erase Y
-            Erase P
-            Erase Q
-            Erase AUL
+            Erase Me.NoBQB
+            Erase Me.H
+            Erase Me.Y
+            Erase Me.P
+            Erase Me.Q
+            Erase Me.AUL
 
-            ReDim NoBQB(m_Data.NumGroups)
-            ReDim H(m_Data.NumGroups + 3)
-            ReDim Y(m_Data.NumGroups, m_Data.NumGroups)
-            ReDim P(m_Data.NumGroups)
-            ReDim Q(m_Data.NumGroups + 10)
-            ReDim AUL(m_Data.NumGroups + 3, m_Data.NumGroups + 3)
+            ReDim Me.NoBQB(Me.m_Data.NumGroups)
+            ReDim Me.H(Me.m_Data.NumGroups + 3)
+            ReDim Me.Y(Me.m_Data.NumGroups, Me.m_Data.NumGroups)
+            ReDim Me.P(Me.m_Data.NumGroups)
+            ReDim Me.Q(Me.m_Data.NumGroups + 10)
+            ReDim Me.AUL(Me.m_Data.NumGroups + 3, Me.m_Data.NumGroups + 3)
 
         End Sub
 
@@ -1928,11 +1928,11 @@ NextPivot:
 
             doub1 = 0
             doub2 = 0
-            For i = 1 To m_Data.NumLiving
-                If m_Data.B(i) <= 0 Then doub1 = doub1 + 1
-                If m_Data.Ex(i) = 0 Then doub2 = doub2 + 1
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.B(i) <= 0 Then doub1 = doub1 + 1
+                If Me.m_Data.Ex(i) = 0 Then doub2 = doub2 + 1
             Next i
-            If doub1 = m_Data.NumLiving And doub2 > m_Data.NumLiving - 1 Then
+            If doub1 = Me.m_Data.NumLiving And doub2 > Me.m_Data.NumLiving - 1 Then
                 'up to Mar. 94 it was Doub2 > NumGroups - 4 but no need for this ***
                 'MsgBox("No biomasses -- Edit data ")
                 'End
@@ -1943,25 +1943,25 @@ NextPivot:
         Private Sub EstimateGE()
             Dim i As Integer
 
-            For i = 1 To m_Data.NumLiving
-                If m_Data.PB(i) < 0 And m_Data.QB(i) > 0 And m_Data.GE(i) > 0 Then
-                    m_Data.PB(i) = m_Data.GE(i) * m_Data.QB(i)
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.PB(i) < 0 And Me.m_Data.QB(i) > 0 And Me.m_Data.GE(i) > 0 Then
+                    Me.m_Data.PB(i) = Me.m_Data.GE(i) * Me.m_Data.QB(i)
                 End If
 
-                If m_Data.QB(i) < 0 And m_Data.PB(i) > 0 And m_Data.GE(i) > 0 Then
-                    m_Data.QB(i) = m_Data.PB(i) / m_Data.GE(i)
+                If Me.m_Data.QB(i) < 0 And Me.m_Data.PB(i) > 0 And Me.m_Data.GE(i) > 0 Then
+                    Me.m_Data.QB(i) = Me.m_Data.PB(i) / Me.m_Data.GE(i)
                 End If
 
-                If m_Data.QB(i) > 0 And m_Data.PB(i) >= 0 Then
-                    m_Data.GE(i) = m_Data.PB(i) / m_Data.QB(i)
+                If Me.m_Data.QB(i) > 0 And Me.m_Data.PB(i) >= 0 Then
+                    Me.m_Data.GE(i) = Me.m_Data.PB(i) / Me.m_Data.QB(i)
                 End If
             Next i
 
         End Sub
 
 
-        Private Function CountNoOfMissing(ByRef Mis() As Integer, ByRef nNoMissing As Integer, ByVal From As eEstimateParameterFor) As Boolean
-            'Private Sub CountNoOfMissing(ByRef Mis() As Integer, ByRef NoMissing As Integer, ByVal From As String, ByVal chk As Integer)
+        Private Function CountNoOfMissing(ByRef Mis() As Integer, ByRef nNoMissing As Integer, From As eEstimateParameterFor) As Boolean
+            'Private Sub CountNoOfMissing(ByRef Mis() As Integer, ByRef NoMissing As Integer, From As String, chk As Integer)
 
             'count the number of missing parameters for each group and store the values in the argument Mis()
             'this will have to change because the basic estimator and the Sensitivity loop count the number of missing parameters differently
@@ -1971,21 +1971,21 @@ NextPivot:
 
             nNoMissing = 0
 
-            For i = 1 To m_Data.NumLiving
+            For i = 1 To Me.m_Data.NumLiving
                 iMissingForGroup = 0
-                If m_Data.B(i) <= 0 Then iMissingForGroup += 1
-                If m_Data.PB(i) < 0 Then iMissingForGroup += 1
-                If m_Data.EE(i) < 0 Then iMissingForGroup += 1
+                If Me.m_Data.B(i) <= 0 Then iMissingForGroup += 1
+                If Me.m_Data.PB(i) < 0 Then iMissingForGroup += 1
+                If Me.m_Data.EE(i) < 0 Then iMissingForGroup += 1
 
                 ' If Miss >= 2 And From = "ParameterEstimate" Then
                 If iMissingForGroup >= 2 And From = eEstimateParameterFor.ParameterEstimation Then
-                    MsgManyMissingPar(i)
-                    Exit_Sub_Missing_Par = 0
+                    Me.MsgManyMissingPar(i)
+                    Me.Exit_Sub_Missing_Par = 0
                     cLog.Write("'CountNoOfMissing(...)' Group " & i & " missing " & iMissingForGroup.ToString & " parameter(s).")
                     Return False
                 End If
 
-                If m_Data.QB(i) < 0 And m_Data.PP(i) < 1 Then
+                If Me.m_Data.QB(i) < 0 And Me.m_Data.PP(i) < 1 Then
                     iMissingForGroup = iMissingForGroup + 1
                 End If
 
@@ -1999,7 +1999,7 @@ NextPivot:
                         done = True
                     End If
 
-                    Exit_Sub_Missing_Par = 0
+                    Me.Exit_Sub_Missing_Par = 0
                     Return False
                 End If
 
@@ -2016,31 +2016,31 @@ NextPivot:
             Dim i As Integer, j As Integer
             Dim Sum As Single
 
-            For j = 1 To m_Data.NumLiving
+            For j = 1 To Me.m_Data.NumLiving
                 Pass = 0                       'Estimate PB from other parameters
-                If m_Data.PB(j) < 0 And m_Data.B(j) > 0 And m_Data.EE(j) >= 0 Then    '1490
+                If Me.m_Data.PB(j) < 0 And Me.m_Data.B(j) > 0 And Me.m_Data.EE(j) >= 0 Then    '1490
                     MM2 = 0
-                    For i = 1 To m_Data.NumLiving
-                        If m_Data.DC(i, j) > 0 Then                         '1470
-                            If m_Data.B(i) <= 0 Or m_Data.QB(i) < 0 Then Exit For '1490
-                            MM2 = MM2 + m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, j)   'M2 is amount eaten of
+                    For i = 1 To Me.m_Data.NumLiving
+                        If Me.m_Data.DC(i, j) > 0 Then                         '1470
+                            If Me.m_Data.B(i) <= 0 Or Me.m_Data.QB(i) < 0 Then Exit For '1490
+                            MM2 = MM2 + Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, j)   'M2 is amount eaten of
                         End If                                          'group J by predators I.
 
-                        If i = m_Data.NumLiving Then
-                            If (m_Data.B(j) * m_Data.EE(j)) <> 0 Then
+                        If i = Me.m_Data.NumLiving Then
+                            If (Me.m_Data.B(j) * Me.m_Data.EE(j)) <> 0 Then
                                 '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
-                                Sum = CSng(if(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                                Sum = Sum + CSng(if(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                                Sum = Sum * m_Data.B(j)
-                                m_Data.PB(j) = CSng((MM2 + Sum + m_Data.BA(j) + m_Data.Emigration(j) - m_Data.Immig(j) + m_Data.fCatch(j)) / (m_Data.B(j) * m_Data.EE(j)))
+                                Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                                Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                                Sum = Sum * Me.m_Data.B(j)
+                                Me.m_Data.PB(j) = CSng((MM2 + Sum + Me.m_Data.BA(j) + Me.m_Data.Emigration(j) - Me.m_Data.Immig(j) + Me.m_Data.fCatch(j)) / (Me.m_Data.B(j) * Me.m_Data.EE(j)))
                                 'Added mig above 15022000 per discussion with Kerim / Villy
                             End If
 
-                            If m_Data.PB(j) > 0 Then
+                            If Me.m_Data.PB(j) > 0 Then
                                 Pass = 1
                                 Exit Sub
                             Else
-                                m_Data.PB(j) = -9                                    'Calc production
+                                Me.m_Data.PB(j) = -9                                    'Calc production
                             End If
                         End If
                     Next i
@@ -2054,39 +2054,39 @@ NextPivot:
             Dim MM2 As Double
             Dim Sum As Single
             'Estimate EE from other parameters
-            For j = 1 To m_Data.NumLiving
+            For j = 1 To Me.m_Data.NumLiving
                 Pass = 0
-                If m_Data.EE(j) < 0 And m_Data.B(j) > 0 And m_Data.PB(j) > 0 Then
+                If Me.m_Data.EE(j) < 0 And Me.m_Data.B(j) > 0 And Me.m_Data.PB(j) > 0 Then
                     MM2 = 0
-                    For i = 1 To m_Data.NumLiving
-                        If m_Data.DC(i, j) > 0 And m_Data.PP(i) < 1 Then
+                    For i = 1 To Me.m_Data.NumLiving
+                        If Me.m_Data.DC(i, j) > 0 And Me.m_Data.PP(i) < 1 Then
 
-                            If m_Data.B(i) <= 0 Or m_Data.QB(i) < 0 Then
+                            If Me.m_Data.B(i) <= 0 Or Me.m_Data.QB(i) < 0 Then
                                 GoTo nextJ 'Exit For
                             End If
 
-                            MM2 = MM2 + m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, j)     'M2 is amount eaten of
+                            MM2 = MM2 + Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, j)     'M2 is amount eaten of
                         End If                                         'group j by predators i
                         '031220VC Now has Emigi and BABi as rates, won't have values if Emigration and BA have.
                         '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
                     Next i
-                    Sum = CSng(if(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(if(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                    Sum = Sum * m_Data.B(j)
+                    Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                    Sum = Sum * Me.m_Data.B(j)
 
-                    If m_Data.B(j) * m_Data.PB(j) > 0 Then
-                        If m_Data.StanzaGroup(j) = False Then
-                            m_Data.EE(j) = CSng(MM2 + Sum + m_Data.Emigration(j) - m_Data.Immig(j) + m_Data.BA(j) + m_Data.fCatch(j)) / (m_Data.B(j) * m_Data.PB(j))
+                    If Me.m_Data.B(j) * Me.m_Data.PB(j) > 0 Then
+                        If Me.m_Data.StanzaGroup(j) = False Then
+                            Me.m_Data.EE(j) = CSng(MM2 + Sum + Me.m_Data.Emigration(j) - Me.m_Data.Immig(j) + Me.m_Data.BA(j) + Me.m_Data.fCatch(j)) / (Me.m_Data.B(j) * Me.m_Data.PB(j))
                         Else
-                            m_Data.EE(j) = CSng(MM2 + Sum + m_Data.Emigration(j) - m_Data.Immig(j) + m_Data.fCatch(j)) / (m_Data.B(j) * m_Data.PB(j))
+                            Me.m_Data.EE(j) = CSng(MM2 + Sum + Me.m_Data.Emigration(j) - Me.m_Data.Immig(j) + Me.m_Data.fCatch(j)) / (Me.m_Data.B(j) * Me.m_Data.PB(j))
                         End If
                     End If
 
-                    If m_Data.EE(j) >= 0 Then
+                    If Me.m_Data.EE(j) >= 0 Then
                         Pass = 1
                         Exit Sub
                     Else
-                        m_Data.EE(j) = -91
+                        Me.m_Data.EE(j) = -91
                     End If
                 End If 'If m_data.EE(j) < 0 And m_data.B(j) > 0 And m_data.PB(j) > 0 Then
 nextJ:
@@ -2094,7 +2094,7 @@ nextJ:
         End Sub
 
 
-        Private Sub EstimateB(ByRef Pass As Integer, ByVal EstimateFor As eEstimateParameterFor, ByRef SenExit As Boolean)
+        Private Sub EstimateB(ByRef Pass As Integer, EstimateFor As eEstimateParameterFor, ByRef SenExit As Boolean)
             Dim i As Integer
             Dim j As Integer
             Dim Miss As Integer
@@ -2105,25 +2105,25 @@ nextJ:
             Dim msg As cFeedbackMessage = Nothing
             Dim strMessage As String = ""
 
-            For j = 1 To m_Data.NumLiving
+            For j = 1 To Me.m_Data.NumLiving
                 Pass = 0 'Estimate B
-                If m_Data.PB(j) > 0 And m_Data.EE(j) > 0 And m_Data.B(j) <= 0 And m_Data.mis(j) = 1 Then
+                If Me.m_Data.PB(j) > 0 And Me.m_Data.EE(j) > 0 And Me.m_Data.B(j) <= 0 And Me.m_Data.mis(j) = 1 Then
                     'If Mis(j) = 0 Or Mis(j) > 1 Then goto NextJ '1680
                     Miss = 0 : PartM2 = 0
-                    For i = 1 To m_Data.NumLiving
-                        If m_Data.DC(i, j) > 0 Then
-                            If m_Data.B(i) <= 0 Or m_Data.QB(i) < 0 Then
+                    For i = 1 To Me.m_Data.NumLiving
+                        If Me.m_Data.DC(i, j) > 0 Then
+                            If Me.m_Data.B(i) <= 0 Or Me.m_Data.QB(i) < 0 Then
                                 If i <> j Then GoTo nextJ '1680
                             Else
-                                PartM2 = PartM2 + m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, j)
+                                PartM2 = PartM2 + Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, j)
                             End If
                         End If
                     Next i
-                    If m_Data.QB(j) < 0 And m_Data.PP(j) < 0 Then GoTo nextJ '1680
+                    If Me.m_Data.QB(j) < 0 And Me.m_Data.PP(j) < 0 Then GoTo nextJ '1680
                     '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
-                    Sum = CSng(if(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(if(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                    Only = m_Data.PB(j) * m_Data.EE(j) - m_Data.QB(j) * m_Data.DC(j, j) - Sum
+                    Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                    Only = Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.QB(j) * Me.m_Data.DC(j, j) - Sum
                     ' There may be too much cannibalism when e.g. the biomass
                     ' of a group is changed and the EE is kept constant in the
                     ' sens analysis. The results are not valid when this happens
@@ -2132,11 +2132,11 @@ nextJ:
                     If Only < 0 Then
                         'If From = 1 Then             ' From Parameter estimation
                         If EstimateFor = eEstimateParameterFor.ParameterEstimation Then
-                            If Abort4(j) Then 'has changed data if this is true
+                            If Me.Abort4(j) Then 'has changed data if this is true
                                 'repeat estimation
                                 Pass = 1    'Will make it start estimation again from scratch
                             Else
-                                Exit_Sub_Missing_Par = 0
+                                Me.Exit_Sub_Missing_Par = 0
                             End If
                             Exit Sub
                             'jb changed from
@@ -2149,60 +2149,60 @@ nextJ:
                         End If
                     End If
                     If Only = 0 Then GoTo nextJ '1680
-                    If PartM2 < 0 Then m_Data.B(j) = -99 : GoTo nextJ '1680
+                    If PartM2 < 0 Then Me.m_Data.B(j) = -99 : GoTo nextJ '1680
                     ' Up to Mar 94 it was PartM2 <= 0 but this failed
                     ' to catch cases with toppredators with unknown B.
-                    m_Data.B(j) = CSng((m_Data.fCatch(j) + m_Data.BA(j) + m_Data.Emigration(j) - m_Data.Immig(j) + PartM2) / Only)
+                    Me.m_Data.B(j) = CSng((Me.m_Data.fCatch(j) + Me.m_Data.BA(j) + Me.m_Data.Emigration(j) - Me.m_Data.Immig(j) + PartM2) / Only)
                     'Added mig above 15022000 per discussion with Kerim / Villy
-                    If m_Data.B(j) > 0 Then
+                    If Me.m_Data.B(j) > 0 Then
                         Pass = 1
                         Exit Sub
                     ElseIf Not CancelPressed Then
 
-                        If m_Data.B(j) = 0 Then
+                        If Me.m_Data.B(j) = 0 Then
                             ' Prepare message text
-                            strMessage = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY, j, m_Data.GroupName(j))
+                            strMessage = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY, j, Me.m_Data.GroupName(j))
                             ' Prepare message
                             msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance)
                             msg.Suppressable = True
                             ' Send off
-                            NotifyCore(msg)
+                            Me.NotifyCore(msg)
                             ' Catch result
                             CancelPressed = (msg.Reply = 0)
                         End If
 
-                        If m_Data.B(j) < 0 Then
+                        If Me.m_Data.B(j) < 0 Then
                             If Only < 0 Then
                                 ' Prepare message text
-                                strMessage = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PRODxEE, j, m_Data.GroupName(j), Only.ToString("0.000"))
+                                strMessage = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PRODxEE, j, Me.m_Data.GroupName(j), Only.ToString("0.000"))
                                 ' Prepare message
                                 msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance)
                                 msg.Suppressable = True
                                 ' Send off
-                                NotifyCore(msg)
+                                Me.NotifyCore(msg)
                                 ' Catch result
                                 CancelPressed = (msg.Reply = 0)
                             Else
                                 ' Prepare message text
-                                strMessage = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY, j, m_Data.GroupName(j), m_Data.B(j).ToString("0.000"))
+                                strMessage = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY, j, Me.m_Data.GroupName(j), Me.m_Data.B(j).ToString("0.000"))
                                 ' Prepare message
                                 msg = New cFeedbackMessage(strMessage, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Maintenance)
                                 msg.Suppressable = True
                                 ' Send off
-                                NotifyCore(msg)
+                                Me.NotifyCore(msg)
                                 ' Catch result
                                 CancelPressed = (msg.Reply = 0)
                             End If
                         End If
                         If CancelPressed = True Then Exit Sub
-                        m_Data.B(j) = -9
+                        Me.m_Data.B(j) = -9
                     End If
                 End If
 nextJ:
             Next j
         End Sub
 
-        Private Function Abort4(ByVal j As Integer) As Boolean
+        Private Function Abort4(j As Integer) As Boolean
 
             Dim bSucces As Boolean = False
             Dim str As String
@@ -2229,7 +2229,7 @@ nextJ:
                         End If
                     Next
                     'Now make the diets sum to 1 again:
-                    bSucces = checkDietsSumToOne(True)
+                    bSucces = Me.checkDietsSumToOne(True)
 
                 Case Else
                     msg = New cMessage(My.Resources.CoreMessages.GENERIC_ABORTING_EDIT_DATA, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
@@ -2252,7 +2252,7 @@ nextJ:
         ''' prompted.</param>
         ''' <returns>True if diets do sum to one.</returns>
         ''' -------------------------------------------------------------------
-        Private Function checkDietsSumToOne(ByVal bQuiet As Boolean) As Boolean
+        Private Function checkDietsSumToOne(bQuiet As Boolean) As Boolean
 
             Dim iPred As Integer
             Dim iPrey As Integer
@@ -2269,13 +2269,13 @@ nextJ:
             sTolerance = 0.001
 
             ' Check all diets
-            For iPred = 1 To m_Data.NumLiving
+            For iPred = 1 To Me.m_Data.NumLiving
                 ' Is consumer?
-                If m_Data.PP(iPred) < 1 Then
+                If Me.m_Data.PP(iPred) < 1 Then
                     ' #Yes: determine diet sum
                     sSum = 0
-                    For iPrey = 0 To m_Data.NumGroups
-                        sSum += m_Data.DC(iPred, iPrey)
+                    For iPrey = 0 To Me.m_Data.NumGroups
+                        sSum += Me.m_Data.DC(iPred, iPrey)
                     Next
 
                     ' JS 4Nov14 - EwE30 course feedback: should warn when a predator has no diet!
@@ -2340,23 +2340,23 @@ nextJ:
                 ' Any diets that did not sum, and needing to fix?
                 If (bSumToOne = False) And (reply = eMessageReply.YES) Then
                     ' #Yes: make diets sum to one
-                    For iPred = 1 To m_Data.NumLiving Step 1
-                        If m_Data.PP(iPred) < 1 Then
+                    For iPred = 1 To Me.m_Data.NumLiving Step 1
+                        If Me.m_Data.PP(iPred) < 1 Then
                             sSum = 0
-                            For iPrey = 0 To m_Data.NumGroups Step 1
-                                sSum = sSum + m_Data.DC(iPred, iPrey)
+                            For iPrey = 0 To Me.m_Data.NumGroups Step 1
+                                sSum = sSum + Me.m_Data.DC(iPred, iPrey)
                             Next
                             If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
-                                For iPrey = 0 To m_Data.NumGroups Step 1
-                                    m_Data.DC(iPred, iPrey) = m_Data.DC(iPred, iPrey) / sSum
+                                For iPrey = 0 To Me.m_Data.NumGroups Step 1
+                                    Me.m_Data.DC(iPred, iPrey) = Me.m_Data.DC(iPred, iPrey) / sSum
                                 Next
-                                m_Data.DietsModified = True
+                                Me.m_Data.DietsModified = True
                             End If
                         End If
                     Next
                     bSumToOne = True
 
-                    If m_Data.DietsModified Then
+                    If Me.m_Data.DietsModified Then
                         ' Notify the core that data has changed
                         Me.NotifyCore(msgMaintenance)
                     End If
@@ -2370,7 +2370,7 @@ nextJ:
 
 
 
-        Private Sub EstimateQBorB_1(ByVal Pass As Integer)
+        Private Sub EstimateQBorB_1(Pass As Integer)
             'The following is a routine made by VC in March 1994 to estimate
             'QB Or B independent of the Generalized Inverse. It works in cases
             'where for a given predator j the PB, B, EE are known for all
@@ -2381,30 +2381,30 @@ nextJ:
             Dim SumQ As Single, SumMi As Single
             Dim Sum As Single
 
-            For j = 1 To m_Data.NumLiving
+            For j = 1 To Me.m_Data.NumLiving
                 SumQ = 0
                 Pass = 0                      'Estimate QB or B
-                If (m_Data.QB(j) > 0 And m_Data.B(j) <= 0) Or (m_Data.QB(j) < 0 And m_Data.B(j) > 0) Then
+                If (Me.m_Data.QB(j) > 0 And Me.m_Data.B(j) <= 0) Or (Me.m_Data.QB(j) < 0 And Me.m_Data.B(j) > 0) Then
                     ' If QB(j) * B(j) < 0 Then
                     ' If both are known or both are unknown it won't enter
-                    For i = 1 To m_Data.NumLiving
-                        If m_Data.DC(j, i) > 0 And SumQ >= 0 Then
-                            If m_Data.B(i) > 0 And m_Data.PB(i) > 0 And m_Data.EE(i) >= 0 Then
+                    For i = 1 To Me.m_Data.NumLiving
+                        If Me.m_Data.DC(j, i) > 0 And SumQ >= 0 Then
+                            If Me.m_Data.B(i) > 0 And Me.m_Data.PB(i) > 0 And Me.m_Data.EE(i) >= 0 Then
                                 '031220VC:
-                                Sum = CSng(if(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
-                                Sum = Sum + CSng(if(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
-                                Sum = Sum * m_Data.B(i)
-                                SumMi = m_Data.BA(i) + Sum + m_Data.Emigration(i) + m_Data.Immig(i) + m_Data.fCatch(i) + (1 - m_Data.EE(i)) * m_Data.PB(i) * m_Data.B(i)
+                                Sum = CSng(if(Me.m_Data.BaBi(i) <> 0 And Me.m_Data.BA(i) = 0, Me.m_Data.BaBi(i), 0))
+                                Sum = Sum + CSng(if(Me.m_Data.Emig(i) > 0 And Me.m_Data.Emigration(i) = 0, Me.m_Data.Emig(i), 0))
+                                Sum = Sum * Me.m_Data.B(i)
+                                SumMi = Me.m_Data.BA(i) + Sum + Me.m_Data.Emigration(i) + Me.m_Data.Immig(i) + Me.m_Data.fCatch(i) + (1 - Me.m_Data.EE(i)) * Me.m_Data.PB(i) * Me.m_Data.B(i)
                                 'Added mig above 15022000 per discussion with Kerim / Villy
                                 'SumMi is used to add up all mortalities of i. If the only
                                 ' lacking mortality is due to j then QB(j) or B(j) can
                                 ' be estimated. The first term (above) sums export and M0.
-                                For K = 1 To m_Data.NumLiving
+                                For K = 1 To Me.m_Data.NumLiving
                                     If K <> j Then
-                                        If m_Data.DC(K, i) > 0 Then
+                                        If Me.m_Data.DC(K, i) > 0 Then
                                             'This is a predator on i
-                                            If m_Data.QB(K) > 0 And m_Data.B(K) > 0 Then
-                                                SumMi = SumMi + m_Data.QB(K) * m_Data.B(K) * m_Data.DC(K, i)
+                                            If Me.m_Data.QB(K) > 0 And Me.m_Data.B(K) > 0 Then
+                                                SumMi = SumMi + Me.m_Data.QB(K) * Me.m_Data.B(K) * Me.m_Data.DC(K, i)
                                                 'This terms gives how much k eats of i
                                             Else
                                                 SumMi = -9
@@ -2414,7 +2414,7 @@ nextJ:
                                         End If    'End DC(k,i) > 0
                                     End If       'End k <> j
                                 Next K
-                                If SumMi > 0 Then SumQ = SumQ + m_Data.PB(i) * m_Data.B(i) - SumMi
+                                If SumMi > 0 Then SumQ = SumQ + Me.m_Data.PB(i) * Me.m_Data.B(i) - SumMi
                             Else
                                 SumQ = -9
                                 Exit For    'for i
@@ -2423,11 +2423,11 @@ nextJ:
                     Next i
                 End If
                 If SumQ > 0.0001 Then '0 Then
-                    If m_Data.QB(j) < 0 And m_Data.B(j) > 0 And SumQ > 0.0001 Then
-                        m_Data.QB(j) = SumQ / m_Data.B(j)
+                    If Me.m_Data.QB(j) < 0 And Me.m_Data.B(j) > 0 And SumQ > 0.0001 Then
+                        Me.m_Data.QB(j) = SumQ / Me.m_Data.B(j)
                         Pass = 1
-                    ElseIf m_Data.B(j) <= 0 And m_Data.QB(j) > 0 And SumQ > 0.0001 Then
-                        m_Data.B(j) = SumQ / m_Data.QB(j)
+                    ElseIf Me.m_Data.B(j) <= 0 And Me.m_Data.QB(j) > 0 And SumQ > 0.0001 Then
+                        Me.m_Data.B(j) = SumQ / Me.m_Data.QB(j)
                         Pass = 1
                     End If
                     SumQ = -9
@@ -2456,9 +2456,9 @@ nextJ:
             MM = 0
 
             'added 053196 eli.
-            ReDim AUL(m_Data.NumGroups + 10, m_Data.NumGroups + 10)
-            ReDim Q(m_Data.NumGroups + 10)
-            Dim LHS(m_Data.NumGroups, m_Data.NumGroups) As Single
+            ReDim Me.AUL(Me.m_Data.NumGroups + 10, Me.m_Data.NumGroups + 10)
+            ReDim Me.Q(Me.m_Data.NumGroups + 10)
+            Dim LHS(Me.m_Data.NumGroups, Me.m_Data.NumGroups) As Single
 
             Try
 
@@ -2470,16 +2470,16 @@ nextJ:
                 '1 means B is missing
                 '10 means QB and PP are missing 
                 '11 means B QB and PP are all missing
-                For i = 1 To m_Data.NumLiving
+                For i = 1 To Me.m_Data.NumLiving
 
-                    NoBQB(i) = 0
-                    If m_Data.B(i) <= 0 Then
-                        NoBQB(i) = 1
+                    Me.NoBQB(i) = 0
+                    If Me.m_Data.B(i) <= 0 Then
+                        Me.NoBQB(i) = 1
                     End If
 
                     '040112VC Added the check for pproducers below, seems necessary when calling from frmBvary
-                    If m_Data.QB(i) < 0 And m_Data.PP(i) < 1 Then
-                        NoBQB(i) = NoBQB(i) + 10
+                    If Me.m_Data.QB(i) < 0 And Me.m_Data.PP(i) < 1 Then
+                        Me.NoBQB(i) = Me.NoBQB(i) + 10
                     End If
 
                 Next i
@@ -2488,15 +2488,15 @@ nextJ:
                 'and total missing parameters
                 Total = 0 'total number of missing parameter
                 NBQB = 0 'total missing  B QB 
-                For i = 1 To m_Data.NumLiving
-                    If NoBQB(i) = 11 Then NBQB = NBQB + 1
-                    If NoBQB(i) > 0 Then Total = Total + 1
+                For i = 1 To Me.m_Data.NumLiving
+                    If Me.NoBQB(i) = 11 Then NBQB = NBQB + 1
+                    If Me.NoBQB(i) > 0 Then Total = Total + 1
                 Next i
 
                 Pass = 0
                 If NBQB >= 1 Then
                     'compute B()  and QB() 
-                    SolvenoBnoQB(Pass, NBQB)
+                    Me.SolvenoBnoQB(Pass, NBQB)
                     If Pass = 1 Then
                         'all done
                         Result = eStatusFlags.OK
@@ -2510,40 +2510,40 @@ nextJ:
                         eMessageType.MassBalance_InsufficientData, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                     msg.Suppressable = True
 
-                    NotifyCore(msg)
-                    Exit_Sub_Missing_Par = 0
+                    Me.NotifyCore(msg)
+                    Me.Exit_Sub_Missing_Par = 0
                     Result = eStatusFlags.MissingParameter
                     Exit Sub
                 End If
 
-                For i = 1 To m_Data.NumLiving
-                    If m_Data.PB(i) >= 0 And m_Data.EE(i) >= 0 Then
+                For i = 1 To Me.m_Data.NumLiving
+                    If Me.m_Data.PB(i) >= 0 And Me.m_Data.EE(i) >= 0 Then
                         'jb fixed bug 891
-                        Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(i) - m_Data.Immig(i)
+                        Me.Q(i) = Me.m_Data.fCatch(i) + Me.m_Data.BA(i) + Me.m_Data.Emigration(i) - Me.m_Data.Immig(i)
                         'Q(i) = m_Data.fCatch(i) + m_Data.BA(i) + m_Data.Emigration(j) - m_Data.Immig(j)
                         'vc980303 This was including detritus, don't know why For j = 1 To NumGroups
-                        For j = 1 To m_Data.NumLiving
-                            AUL(i, j) = -9999
-                            If NoBQB(j) = 11 Then
-                                Dim strMsg As String = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSING_B_QB, m_Data.GroupName(j))
+                        For j = 1 To Me.m_Data.NumLiving
+                            Me.AUL(i, j) = -9999
+                            If Me.NoBQB(j) = 11 Then
+                                Dim strMsg As String = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_MISSING_B_QB, Me.m_Data.GroupName(j))
                                 Dim msg As New cMessage(strMsg, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
-                                NotifyCore(msg)
-                                Exit_Sub_Missing_Par = 0
+                                Me.NotifyCore(msg)
+                                Me.Exit_Sub_Missing_Par = 0
                                 Result = eStatusFlags.MissingParameter
                                 Exit Sub
                             End If
-                            If NoBQB(j) = 10 And i = j Then Q(i) = Q(i) - m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i)
-                            If NoBQB(j) = 1 And i = j Then AUL(i, j) = (m_Data.PB(i) * m_Data.EE(i) - m_Data.QB(j) * m_Data.DC(j, i))
+                            If Me.NoBQB(j) = 10 And i = j Then Me.Q(i) = Me.Q(i) - Me.m_Data.B(i) * Me.m_Data.PB(i) * Me.m_Data.EE(i)
+                            If Me.NoBQB(j) = 1 And i = j Then Me.AUL(i, j) = (Me.m_Data.PB(i) * Me.m_Data.EE(i) - Me.m_Data.QB(j) * Me.m_Data.DC(j, i))
                             ' No B:
-                            If NoBQB(j) = 1 And i <> j Then AUL(i, j) = -m_Data.QB(j) * m_Data.DC(j, i)
+                            If Me.NoBQB(j) = 1 And i <> j Then Me.AUL(i, j) = -Me.m_Data.QB(j) * Me.m_Data.DC(j, i)
                             'No QB
                             '031220VC Emigi and BABi now included as rates, will be zero if there are flows (Emigration and BA)
-                            Sum = CSng(if(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                            Sum = Sum + CSng(if(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                            Sum = Sum * m_Data.B(j)
-                            If NoBQB(j) = 10 Then AUL(i, j) = -m_Data.B(j) * m_Data.DC(j, i)
-                            If NoBQB(j) = 0 And i <> j Then Q(i) = Q(i) + (m_Data.B(j) * m_Data.QB(j) * m_Data.DC(j, i)) + Sum
-                            If NoBQB(j) = 0 And i = j Then Q(i) = Q(i) - m_Data.B(j) * (m_Data.EE(i) * m_Data.PB(j) - m_Data.QB(j) * m_Data.DC(j, i)) + Sum
+                            Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                            Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                            Sum = Sum * Me.m_Data.B(j)
+                            If Me.NoBQB(j) = 10 Then Me.AUL(i, j) = -Me.m_Data.B(j) * Me.m_Data.DC(j, i)
+                            If Me.NoBQB(j) = 0 And i <> j Then Me.Q(i) = Me.Q(i) + (Me.m_Data.B(j) * Me.m_Data.QB(j) * Me.m_Data.DC(j, i)) + Sum
+                            If Me.NoBQB(j) = 0 And i = j Then Me.Q(i) = Me.Q(i) - Me.m_Data.B(j) * (Me.m_Data.EE(i) * Me.m_Data.PB(j) - Me.m_Data.QB(j) * Me.m_Data.DC(j, i)) + Sum
                         Next j
                     End If
                 Next i
@@ -2552,39 +2552,39 @@ nextJ:
                 '             Generalized inverse method
                 '             --------------------------
                 Kount = 0
-                For i = 1 To m_Data.NumLiving 'N1 modified 053196 eli.
+                For i = 1 To Me.m_Data.NumLiving 'N1 modified 053196 eli.
                     Total = 0
-                    For j = 1 To m_Data.NumGroups
-                        If AUL(i, j) <> -9999 And AUL(i, j) <> 0 Then
+                    For j = 1 To Me.m_Data.NumGroups
+                        If Me.AUL(i, j) <> -9999 And Me.AUL(i, j) <> 0 Then
                             Total = 1
-                            j = m_Data.NumGroups + 1
+                            j = Me.m_Data.NumGroups + 1
                         End If
                     Next j
 
-                    If m_Data.fCatch(i) >= 0 And m_Data.PB(i) >= 0 And Total = 1 Then    'GoTo 7620 'OR TD(i) < 0
+                    If Me.m_Data.fCatch(i) >= 0 And Me.m_Data.PB(i) >= 0 And Total = 1 Then    'GoTo 7620 'OR TD(i) < 0
                         Kount = Kount + 1
-                        H(Kount) = Q(i)
+                        Me.H(Kount) = Me.Q(i)
                         kountj = 0
-                        For j = 1 To m_Data.NumGroups
-                            If AUL(i, j) <> -9999 Then    'GoTo 7610         'EXCL PRIMARY PROD. & DETRITUS
+                        For j = 1 To Me.m_Data.NumGroups
+                            If Me.AUL(i, j) <> -9999 Then    'GoTo 7610         'EXCL PRIMARY PROD. & DETRITUS
                                 kountj = kountj + 1
-                                LHS(Kount, kountj) = AUL(i, j)
+                                LHS(Kount, kountj) = Me.AUL(i, j)
                             End If
                         Next j
                     End If
                 Next i
 
                 NN = Kount : MM = kountj
-                If NN < MM Then Me.ManyUnknown(m_Data.NumLiving, NN, MM, NoBQB)
+                If NN < MM Then Me.ManyUnknown(Me.m_Data.NumLiving, NN, MM, Me.NoBQB)
                 If NN <> 0 And MM <> 0 Then
-                    Geninv(NN, MM, LHS)
+                    Me.Geninv(NN, MM, LHS)
                     Estim = 1
                     Result = eStatusFlags.OK
                 Else
                     Result = eStatusFlags.MissingParameter
                     Estim = 0
-                    For j = 1 To m_Data.NumGroups
-                        P(j) = 0
+                    For j = 1 To Me.m_Data.NumGroups
+                        Me.P(j) = 0
                     Next j
                 End If
 
@@ -2594,11 +2594,11 @@ nextJ:
                 '             ---------------------------------
                 If Estim = 1 Then
                     Kount = 0
-                    For i = 1 To m_Data.NumLiving                     '*** Changed 19 jan 94
-                        If m_Data.PB(i) >= 0 And NoBQB(i) > 0 Then
+                    For i = 1 To Me.m_Data.NumLiving                     '*** Changed 19 jan 94
+                        If Me.m_Data.PB(i) >= 0 And Me.NoBQB(i) > 0 Then
                             Kount = Kount + 1
-                            If NoBQB(i) = 1 Then m_Data.B(i) = CSng(P(Kount))
-                            If NoBQB(i) = 10 Then m_Data.QB(i) = CSng(P(Kount))
+                            If Me.NoBQB(i) = 1 Then Me.m_Data.B(i) = CSng(Me.P(Kount))
+                            If Me.NoBQB(i) = 10 Then Me.m_Data.QB(i) = CSng(Me.P(Kount))
                         End If
                     Next i
                 End If
@@ -2625,8 +2625,8 @@ nextJ:
             'find the first group that is missing both B QB and PP 
             'this is flaged by the NoBQB(i) = 11 see GIM()
             'kg will be this group
-            For i = 1 To m_Data.NumLiving
-                If NoBQB(i) = 11 Then
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.NoBQB(i) = 11 Then
                     kq = i
                     'jb todo  i = m_data.NumLiving is not doing anything
                     'i is reset in the next loop
@@ -2637,11 +2637,11 @@ nextJ:
 
             'jb
             'now find the pray that is not missing any parameters for group kg
-            For i = 1 To m_Data.NumLiving
-                If m_Data.mis(i) = 0 And m_Data.DC(kq, i) > 0 Then kc = i
+            For i = 1 To Me.m_Data.NumLiving
+                If Me.m_Data.mis(i) = 0 And Me.m_Data.DC(kq, i) > 0 Then kc = i
             Next i
 
-            If kc = 0 Or m_Data.PB(kq) <= 0 Or m_Data.EE(kq) <= 0 Then
+            If kc = 0 Or Me.m_Data.PB(kq) <= 0 Or Me.m_Data.EE(kq) <= 0 Then
                 'jb changed to return to calling code
                 'as was the intent of the original code
                 Exit Sub
@@ -2650,19 +2650,19 @@ nextJ:
             End If
 
             '031220VC: rates or flows,
-            sum = CSng(if(m_Data.BaBi(kc) <> 0 And m_Data.BA(kc) = 0, m_Data.BaBi(kc), 0))
-            sum = sum + CSng(if(m_Data.Emig(kc) > 0 And m_Data.Emigration(kc) = 0, m_Data.Emig(kc), 0))
-            sum = sum * m_Data.B(kc)
+            sum = CSng(if(Me.m_Data.BaBi(kc) <> 0 And Me.m_Data.BA(kc) = 0, Me.m_Data.BaBi(kc), 0))
+            sum = sum + CSng(if(Me.m_Data.Emig(kc) > 0 And Me.m_Data.Emigration(kc) = 0, Me.m_Data.Emig(kc), 0))
+            sum = sum * Me.m_Data.B(kc)
 
-            BQBDC = m_Data.B(kc) * m_Data.PB(kc) * m_Data.EE(kc) - m_Data.fCatch(kc) - m_Data.BA(kc) - m_Data.Emigration(kc) + m_Data.Immig(kc) - sum
+            BQBDC = Me.m_Data.B(kc) * Me.m_Data.PB(kc) * Me.m_Data.EE(kc) - Me.m_Data.fCatch(kc) - Me.m_Data.BA(kc) - Me.m_Data.Emigration(kc) + Me.m_Data.Immig(kc) - sum
             'Added mig above 15022000 per discussion with Kerim / Villy
             PartM2 = 0
-            For i = 1 To m_Data.NumLiving
+            For i = 1 To Me.m_Data.NumLiving
                 If i <> kq Then
-                    If (m_Data.DC(i, kq) > 0 Or m_Data.DC(i, kc) > 0) Then   'GoTo 6830
+                    If (Me.m_Data.DC(i, kq) > 0 Or Me.m_Data.DC(i, kc) > 0) Then   'GoTo 6830
 
-                        If m_Data.B(i) <= 0 Or m_Data.QB(i) < 0 Then
-                            i = m_Data.NumLiving
+                        If Me.m_Data.B(i) <= 0 Or Me.m_Data.QB(i) < 0 Then
+                            i = Me.m_Data.NumLiving
                             'jb changed to return to calling code
                             'as was the intent of the original code
                             Exit Sub
@@ -2670,8 +2670,8 @@ nextJ:
                             'Return 'GoTo 6840
                         End If
 
-                        BQBDC = BQBDC - m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, kc)
-                        PartM2 = PartM2 + m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, kq)
+                        BQBDC = BQBDC - Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, kc)
+                        PartM2 = PartM2 + Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, kq)
                     End If
                 End If
             Next i
@@ -2683,43 +2683,43 @@ nextJ:
                 'msg = New cMessage(My.Resources.INFORMATION_MISSING_PARAMETERS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
                 'notifyCore(msg)
 
-                Exit_Sub_Missing_Par = 0
+                Me.Exit_Sub_Missing_Par = 0
                 Exit Sub
             End If
 
             '031220VC, either use BaBi or BA and either Emigi or Emigration
-            If (m_Data.DC(kq, kc)) > 0 And (m_Data.PB(kq) * m_Data.EE(kq)) > 0 Then
-                sum = CSng(if(m_Data.BaBi(kq) <> 0 And m_Data.BA(kq) = 0, m_Data.BaBi(kq), 0))
-                sum = sum + CSng(if(m_Data.Emig(kq) > 0 And m_Data.Emigration(kq) = 0, m_Data.Emig(kq), 0))
+            If (Me.m_Data.DC(kq, kc)) > 0 And (Me.m_Data.PB(kq) * Me.m_Data.EE(kq)) > 0 Then
+                sum = CSng(if(Me.m_Data.BaBi(kq) <> 0 And Me.m_Data.BA(kq) = 0, Me.m_Data.BaBi(kq), 0))
+                sum = sum + CSng(if(Me.m_Data.Emig(kq) > 0 And Me.m_Data.Emigration(kq) = 0, Me.m_Data.Emig(kq), 0))
                 'Sum is the combined migration and biomass.acc instantaneous mortality rate, will only be non-zero if these are entered
                 'B.PB.EE = Pred + NM.B + BAB.B + Catch, hence B = (Pred + Catch)/(PB.EE-NM-BAB)
-                m_Data.B(kq) = (PartM2 + m_Data.BA(kq) + m_Data.Emigration(kq) - m_Data.Immig(kq) + m_Data.fCatch(kq) + m_Data.DC(kq, kq) * BQBDC / m_Data.DC(kq, kc)) / (m_Data.PB(kq) * m_Data.EE(kq) - sum)
+                Me.m_Data.B(kq) = (PartM2 + Me.m_Data.BA(kq) + Me.m_Data.Emigration(kq) - Me.m_Data.Immig(kq) + Me.m_Data.fCatch(kq) + Me.m_Data.DC(kq, kq) * BQBDC / Me.m_Data.DC(kq, kc)) / (Me.m_Data.PB(kq) * Me.m_Data.EE(kq) - sum)
             End If
             'Added mig above 15022000 per discussion with Kerim / Villy
 
-            If m_Data.B(kq) > 0 And m_Data.DC(kq, kc) > 0 Then
-                m_Data.QB(kq) = BQBDC / (m_Data.B(kq) * m_Data.DC(kq, kc))
+            If Me.m_Data.B(kq) > 0 And Me.m_Data.DC(kq, kc) > 0 Then
+                Me.m_Data.QB(kq) = BQBDC / (Me.m_Data.B(kq) * Me.m_Data.DC(kq, kc))
             Else
-                m_Data.B(kq) = -9
+                Me.m_Data.B(kq) = -9
             End If
 
-            If m_Data.B(kq) > 0 And m_Data.QB(kq) >= 0 Then
-                NoBQB(kq) = 0
+            If Me.m_Data.B(kq) > 0 And Me.m_Data.QB(kq) >= 0 Then
+                Me.NoBQB(kq) = 0
                 pass = 1
                 NBQB = NBQB - 1
             End If
 
         End Sub
 
-        Private Sub Geninv(ByVal NN As Integer, ByVal MM As Integer, ByVal LHS(,) As Single)
+        Private Sub Geninv(NN As Integer, MM As Integer, LHS(,) As Single)
             Dim t As Single, i As Integer, j As Integer, L As Integer, lhsi As Integer, K As Single, d As Single
             'jb are these local?????????
             'I hope so because they are now
             Dim Z(,) As Single, W(,) As Single, Y(,) As Single
 
-            ReDim Z(m_Data.NumGroups, m_Data.NumGroups)
-            ReDim W(m_Data.NumGroups, m_Data.NumGroups)
-            ReDim Y(m_Data.NumGroups, m_Data.NumGroups)
+            ReDim Z(Me.m_Data.NumGroups, Me.m_Data.NumGroups)
+            ReDim W(Me.m_Data.NumGroups, Me.m_Data.NumGroups)
+            ReDim Y(Me.m_Data.NumGroups, Me.m_Data.NumGroups)
             'StrLong$ = " Geninv routine" & Chr$(13) & Chr$(13)
             ' LOCATE 16, 12: Print "              2*N + trace =";
 
@@ -2796,9 +2796,9 @@ ONE:
             'P is the solutions to the equations
             'Y is the generalized inverse
             For i = 1 To MM
-                P(i) = 0
+                Me.P(i) = 0
                 For j = 1 To NN
-                    P(i) = P(i) + Y(i, j) * H(j)
+                    Me.P(i) = Me.P(i) + Y(i, j) * Me.H(j)
                     'If Y(i, j) < 0 Then
                     '
                     'End If
@@ -2807,7 +2807,7 @@ ONE:
             Erase Z, W   '- test for compilation
         End Sub
 
-        Private Sub EstimateQBorB_2(ByVal Pass As Integer)
+        Private Sub EstimateQBorB_2(Pass As Integer)
             'The following is a routine made by VC in March 1994 to estimate
             'QB Or B independent of the Generalized Inverse. It works in cases
             'where for a given prey j the PB, B, EE is known and where
@@ -2819,41 +2819,41 @@ ONE:
             Dim LeftProd As Single
             Dim MisQ As Integer
             Dim Sum As Single
-            For j = 1 To m_Data.NumLiving                'j is the prey
+            For j = 1 To Me.m_Data.NumLiving                'j is the prey
                 Pass = 0                       'Estimate QB or B
                 Cnt = 0
-                If m_Data.B(j) > 0 And m_Data.PB(j) > 0 And m_Data.EE(j) > 0 Then
+                If Me.m_Data.B(j) > 0 And Me.m_Data.PB(j) > 0 And Me.m_Data.EE(j) > 0 Then
                     '031220VC, emig and ba as rates
-                    Sum = CSng(if(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(if(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                    Sum = Sum * m_Data.B(j)
+                    Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                    Sum = Sum * Me.m_Data.B(j)
 
-                    LeftProd = m_Data.B(j) * m_Data.PB(j) * m_Data.EE(j) - m_Data.fCatch(j) - Sum - m_Data.BA(j) - m_Data.Emigration(j) + m_Data.Immig(j)
+                    LeftProd = Me.m_Data.B(j) * Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.fCatch(j) - Sum - Me.m_Data.BA(j) - Me.m_Data.Emigration(j) + Me.m_Data.Immig(j)
                     'Added mig above 15022000 per discussion with Kerim / Villy
-                    For i = 1 To m_Data.NumLiving             'i is the predator without Q
-                        If m_Data.DC(i, j) > 0 Then
-                            If m_Data.B(i) <= 0 Or m_Data.QB(i) < 0 Then
+                    For i = 1 To Me.m_Data.NumLiving             'i is the predator without Q
+                        If Me.m_Data.DC(i, j) > 0 Then
+                            If Me.m_Data.B(i) <= 0 Or Me.m_Data.QB(i) < 0 Then
                                 Cnt = Cnt + 1
                                 MisQ = i
                             Else
-                                LeftProd = LeftProd - m_Data.B(i) * m_Data.QB(i) * m_Data.DC(i, j)
+                                LeftProd = LeftProd - Me.m_Data.B(i) * Me.m_Data.QB(i) * Me.m_Data.DC(i, j)
                             End If
                         End If
                     Next i
                 End If
                 If Cnt = 1 Then
-                    If m_Data.QB(MisQ) < 0 And m_Data.B(MisQ) > 0 And LeftProd > 0.0001 Then
-                        m_Data.QB(MisQ) = LeftProd / m_Data.B(MisQ) / m_Data.DC(MisQ, j)
+                    If Me.m_Data.QB(MisQ) < 0 And Me.m_Data.B(MisQ) > 0 And LeftProd > 0.0001 Then
+                        Me.m_Data.QB(MisQ) = LeftProd / Me.m_Data.B(MisQ) / Me.m_Data.DC(MisQ, j)
                         Pass = 1
-                    ElseIf m_Data.B(MisQ) < 0 And m_Data.QB(MisQ) > 0 And LeftProd > 0.0001 Then
-                        m_Data.B(MisQ) = LeftProd / m_Data.QB(MisQ) / m_Data.DC(MisQ, j)
+                    ElseIf Me.m_Data.B(MisQ) < 0 And Me.m_Data.QB(MisQ) > 0 And LeftProd > 0.0001 Then
+                        Me.m_Data.B(MisQ) = LeftProd / Me.m_Data.QB(MisQ) / Me.m_Data.DC(MisQ, j)
                         Pass = 1
                     End If
                 End If
             Next j
         End Sub
 
-        Private Sub ManyUnknown(ByVal NumLiving As Integer, ByVal NN As Integer, ByVal MM As Integer, ByVal NoBQB() As Integer)
+        Private Sub ManyUnknown(NumLiving As Integer, NN As Integer, MM As Integer, NoBQB() As Integer)
 
             Dim msg As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
@@ -2861,7 +2861,7 @@ ONE:
             Dim strMsg As String = ""
             Dim i As Integer
 
-            If InParameterEstimation = 0 Then
+            If Me.InParameterEstimation = 0 Then
                 Exit Sub
             End If
 
@@ -2896,7 +2896,7 @@ ONE:
 
         End Sub
 
-        Private Sub MsgManyMissingPar(ByVal i As Integer)
+        Private Sub MsgManyMissingPar(i As Integer)
             Dim strMsg As String
             Dim msg As cMessage = Nothing
 
@@ -2905,7 +2905,7 @@ ONE:
                                        Me.m_Data.GroupName(i), Environment.NewLine)
                 msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = False
-                NotifyCore(msg)
+                Me.NotifyCore(msg)
 
             Catch ex As Exception
                 cLog.Write("Error in MsgManyMissingPar(). Error: " + ex.Message())
@@ -2914,8 +2914,8 @@ ONE:
         End Sub
 
 
-        Private Sub EstimateTrophicLevels(ByVal iNumGroups As Integer, ByVal iNumLiving As Integer, _
-                                          ByVal PP() As Single, ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+        Private Sub EstimateTrophicLevels(iNumGroups As Integer, iNumLiving As Integer, _
+                                          PP() As Single, Diet(,) As Single, TLreturn() As Single)
 
             Me.m_Ecofunctions.EstimateTrophicLevels(iNumGroups, iNumLiving, PP, Diet, TLreturn)
 
@@ -2934,14 +2934,14 @@ ONE:
             'It was just copied from EWE5 this could be dangerous
 
             If DoneAlready = False Then
-                EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
+                Me.EstimateTrophicLevels(Me.m_Data.NumGroups, Me.m_Data.NumLiving, Me.m_Data.PP, Me.m_Data.DC, Me.m_Data.TTLX)
                 'Now check if any group gets more than 15% of its consumption from a group that has >= m_data.ttlx as itself:
-                For i = 1 To m_Data.NumLiving  'Consumers only
+                For i = 1 To Me.m_Data.NumLiving  'Consumers only
                     dcsum = 0
-                    For j = 1 To m_Data.NumLiving 'only living groups can have a higher TL
-                        If (m_Data.DC(i, j) > 0.0!) Then 'i eats j
-                            If m_Data.TTLX(i) <= m_Data.TTLX(j) Then 'prey has higher TL
-                                dcsum = dcsum + m_Data.DC(i, j)
+                    For j = 1 To Me.m_Data.NumLiving 'only living groups can have a higher TL
+                        If (Me.m_Data.DC(i, j) > 0.0!) Then 'i eats j
+                            If Me.m_Data.TTLX(i) <= Me.m_Data.TTLX(j) Then 'prey has higher TL
+                                dcsum = dcsum + Me.m_Data.DC(i, j)
                             End If
                         End If
                     Next
@@ -2949,12 +2949,12 @@ ONE:
                         If done = False Then
 
                             ' Prepare message
-                            Dim strMsg As String = cStringUtils.Localize(My.Resources.CoreMessages.DIETCOMP_PROMPT_CORRECTTO15PERC, m_Data.GroupName(i), CInt(dcsum * 100))
+                            Dim strMsg As String = cStringUtils.Localize(My.Resources.CoreMessages.DIETCOMP_PROMPT_CORRECTTO15PERC, Me.m_Data.GroupName(i), CInt(dcsum * 100))
                             Dim msg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.DietComp_CorrectTo15Perc, eMessageImportance.Critical, eMessageReplyStyle.YES_NO_CANCEL)
                             msg.Suppressable = True
 
                             ' Send message
-                            NotifyCore(msg)
+                            Me.NotifyCore(msg)
                             RetVal = msg.Reply
                             If RetVal = eMessageReply.CANCEL Then done = True
 
@@ -2962,25 +2962,25 @@ ONE:
                             RetVal = eMessageReply.NO
                         End If
                         If RetVal = eMessageReply.YES Then
-                            bDietsModified = True
+                            Me.bDietsModified = True
                             DoneAlready = True
-                            For j = 1 To m_Data.NumGroups
-                                If m_Data.DC(i, j) > 0 Then
+                            For j = 1 To Me.m_Data.NumGroups
+                                If Me.m_Data.DC(i, j) > 0 Then
                                     'Debug.Print i, j, m_data.ttlx(i), m_data.ttlx(j), m_data.dc(i, j),
-                                    If m_Data.TTLX(i) <= m_Data.TTLX(j) Then
-                                        m_Data.DC(i, j) = CSng(m_Data.DC(i, j) * 0.15 / dcsum)
+                                    If Me.m_Data.TTLX(i) <= Me.m_Data.TTLX(j) Then
+                                        Me.m_Data.DC(i, j) = CSng(Me.m_Data.DC(i, j) * 0.15 / dcsum)
                                     Else
-                                        m_Data.DC(i, j) = CSng(m_Data.DC(i, j) * 0.85 / (1 - dcsum))
+                                        Me.m_Data.DC(i, j) = CSng(Me.m_Data.DC(i, j) * 0.85 / (1 - dcsum))
                                     End If
                                     'Debug.Print m_data.dc(i, j)
                                 End If
                             Next
-                            m_Data.DC(i, 0) = CSng(m_Data.DC(i, 0) * 0.85 / (1 - dcsum))
+                            Me.m_Data.DC(i, 0) = CSng(Me.m_Data.DC(i, 0) * 0.85 / (1 - dcsum))
                         End If
                     End If
                 Next
                 If DoneAlready = True Then
-                    checkDietsSumToOne(True)
+                    Me.checkDietsSumToOne(True)
                 Else
                     DoneAlready = True  'this has to be done, so it won't repeat this circus
                 End If
@@ -3004,18 +3004,18 @@ ONE:
             Dim Sum As Single
             'On Local Error GoTo exitSub
             'Dim NegativeB() As Boolean
-            ReDim BIter(m_Data.NumLiving)
+            ReDim BIter(Me.m_Data.NumLiving)
             'ReDim NegativeB(m_data.numliving)
-            ReDim GuessedBiomass(m_Data.NumLiving)
+            ReDim GuessedBiomass(Me.m_Data.NumLiving)
             'This is based on EstimateB
 
             Try
 
-                For j = 1 To m_Data.NumLiving 'If we only lack the Biomass then let's try to guess it
-                    If m_Data.B(j) <= 0 And m_Data.PB(j) > 0 And m_Data.QB(j) > 0 And m_Data.EE(j) > 0 Then
+                For j = 1 To Me.m_Data.NumLiving 'If we only lack the Biomass then let's try to guess it
+                    If Me.m_Data.B(j) <= 0 And Me.m_Data.PB(j) > 0 And Me.m_Data.QB(j) > 0 And Me.m_Data.EE(j) > 0 Then
                         GuessedBiomass(j) = True
                     Else
-                        If m_Data.B(j) > MaxBio Then MaxBio = m_Data.B(j)
+                        If Me.m_Data.B(j) > MaxBio Then MaxBio = Me.m_Data.B(j)
                     End If
                 Next
                 MaxBio = CDbl(if(MaxBio > 0, CSng(10 * MaxBio), 100))
@@ -3027,34 +3027,34 @@ ONE:
                     OldSum = NewSum
                     NewSum = 0
                     Cnt = Cnt + 1
-                    For j = 1 To m_Data.NumLiving
+                    For j = 1 To Me.m_Data.NumLiving
                         'If j = 2 Then Stop
                         If GuessedBiomass(j) Then   'Only do something if the biomass has been guessed
                             PartM2 = 0  'partM2 because cannibalism is excluded from calc.
-                            For i = 1 To m_Data.NumLiving
-                                If m_Data.DC(i, j) > 0 And i <> j Then 'this group, i, is a consumer,
-                                    If m_Data.QB(i) < 0 Then  'we don't know the qb of this consumer so it won't work
+                            For i = 1 To Me.m_Data.NumLiving
+                                If Me.m_Data.DC(i, j) > 0 And i <> j Then 'this group, i, is a consumer,
+                                    If Me.m_Data.QB(i) < 0 Then  'we don't know the qb of this consumer so it won't work
                                         GoTo nextJ
                                     ElseIf GuessedBiomass(i) Then
-                                        PartM2 = PartM2 + m_Data.QB(i) * m_Data.DC(i, j) * BIter(i)
+                                        PartM2 = PartM2 + Me.m_Data.QB(i) * Me.m_Data.DC(i, j) * BIter(i)
                                     Else
-                                        PartM2 = PartM2 + m_Data.QB(i) * m_Data.DC(i, j) * m_Data.B(i)
+                                        PartM2 = PartM2 + Me.m_Data.QB(i) * Me.m_Data.DC(i, j) * Me.m_Data.B(i)
                                     End If
                                 End If
                             Next i
                             '031220VC: modified to incorporate that BioAcc and emigration can be rates
-                            Sum = CSng(if(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                            Sum = Sum + CSng(if(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
-                            Sum = Sum * m_Data.B(j)
-                            Only = m_Data.PB(j) * m_Data.EE(j) - m_Data.QB(j) * m_Data.DC(j, j) - Sum
+                            Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                            Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                            Sum = Sum * Me.m_Data.B(j)
+                            Only = Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.QB(j) * Me.m_Data.DC(j, j) - Sum
                             If Only > 0 Then
-                                NewB = (m_Data.fCatch(j) + m_Data.BA(j) + m_Data.Emigration(j) - m_Data.Immig(j) + PartM2) / Only
+                                NewB = (Me.m_Data.fCatch(j) + Me.m_Data.BA(j) + Me.m_Data.Emigration(j) - Me.m_Data.Immig(j) + PartM2) / Only
                                 If NewB > MaxBio Then NewB = MaxBio
                                 If NewB > 0 And Cnt > 4 And Math.Abs(NewB - BIter(j)) < 10 ^ -6 * BIter(j) And BIter(j) > 10 ^ -7 Then
                                     'get the biomasses that are OK
                                     GuessedBiomass(j) = False
                                     DoIterationsToEstimateB = DoIterationsToEstimateB + 1
-                                    m_Data.B(j) = CSng(NewB)
+                                    Me.m_Data.B(j) = CSng(NewB)
                                 End If
                                 If NewB = 0 Then Return 0
                                 BIter(j) = NewB
@@ -3078,8 +3078,8 @@ nextJ:
                 Loop
                 'DoIterationsToEstimateB = True
                 'So transfer the values we have obtained through iteration
-                For i = 1 To m_Data.NumLiving
-                    If BIter(i) > 10 ^ -7 Then m_Data.B(i) = CSng(BIter(i))
+                For i = 1 To Me.m_Data.NumLiving
+                    If BIter(i) > 10 ^ -7 Then Me.m_Data.B(i) = CSng(BIter(i))
                 Next
             Catch ex As Exception
                 Return 0

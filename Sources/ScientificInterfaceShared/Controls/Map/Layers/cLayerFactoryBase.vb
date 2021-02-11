@@ -85,7 +85,7 @@ Namespace Controls.Map
                         Dim hab As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
 
                         ' Get or create Visual Style
-                        ad = GetAuxillaryData(core, varName, iHabitat)
+                        ad = Me.GetAuxillaryData(core, varName, iHabitat)
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then
                             vs = avs(iHabitat - 1)
@@ -109,7 +109,7 @@ Namespace Controls.Map
 
                     If (core.nGroups > 0) Then
 
-                        ad = GetAuxillaryData(core, varName)
+                        ad = Me.GetAuxillaryData(core, varName)
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
 
@@ -130,7 +130,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerRegion
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(uic, vs)
@@ -149,7 +149,7 @@ Namespace Controls.Map
                     For iMPA As Integer = 1 To core.nMPAs
 
                         Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
-                        ad = GetAuxillaryData(core, varName, iMPA)
+                        ad = Me.GetAuxillaryData(core, varName, iMPA)
 
                         ' Get or create Visual Style
                         vs = ad.VisualStyle
@@ -173,7 +173,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerRelPP
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -188,7 +188,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerContaminantRelativeDistribution
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -203,7 +203,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerContaminantForcingAbsolute
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -236,7 +236,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerAdvection
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -251,7 +251,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerWind
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -268,7 +268,7 @@ Namespace Controls.Map
 
                     ' ToDo: globalize this
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -283,7 +283,7 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerPort
 
                     If (core.nFleets > 0) Then
-                        ad = GetAuxillaryData(core, varName)
+                        ad = Me.GetAuxillaryData(core, varName)
                         vs = ad.VisualStyle
 
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -298,7 +298,7 @@ Namespace Controls.Map
 
                     If (core.nFleets > 0) Then
 
-                        ad = GetAuxillaryData(core, varName)
+                        ad = Me.GetAuxillaryData(core, varName)
                         vs = ad.VisualStyle
 
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -316,7 +316,7 @@ Namespace Controls.Map
                     For iLayer As Integer = 1 To core.nEnvironmentalDriverLayers
 
                         Dim src As cEcospaceLayerDriver = core.EcospaceBasemap.LayerDriver(iLayer)
-                        ad = GetAuxillaryData(core, varName, iLayer)
+                        ad = Me.GetAuxillaryData(core, varName, iLayer)
                         vs = ad.VisualStyle
 
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -334,7 +334,7 @@ Namespace Controls.Map
 
                     Dim src As cEcospaceLayerExclusion = core.EcospaceBasemap.LayerExclusion
 
-                    ad = GetAuxillaryData(core, varName)
+                    ad = Me.GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then
@@ -362,7 +362,7 @@ Namespace Controls.Map
 
         End Function
 
-        Public Overridable Function GetLayerGroup(ByVal varName As eVarNameFlags) As String
+        Public Overridable Function GetLayerGroup(varName As eVarNameFlags) As String
 
             Dim strGroup As String = ""
             Select Case varName
@@ -426,7 +426,7 @@ Namespace Controls.Map
         ''' edit command for.</param>
         ''' <returns>A command name, or an empty string if not applicable.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetLayerEditCommand(ByVal varName As eVarNameFlags) As String
+        Public Overridable Function GetLayerEditCommand(varName As eVarNameFlags) As String
 
             Dim strCommand As String = ""
             Select Case varName
@@ -454,7 +454,7 @@ Namespace Controls.Map
         Public Overridable Function GetAuxillaryData(core As cCore, l As cEcospaceLayer) As cAuxiliaryData
 
             If (l Is Nothing) Then Return Nothing
-            Return GetAuxillaryData(core, l.VarName, l.Index)
+            Return Me.GetAuxillaryData(core, l.VarName, l.Index)
 
         End Function
 

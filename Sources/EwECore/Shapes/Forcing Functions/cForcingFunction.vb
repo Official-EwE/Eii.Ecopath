@@ -87,7 +87,7 @@ Public Class cForcingFunction
         Get
             Return Me.m_ShapeFunctionType
         End Get
-        Friend Set(ByVal value As Long)
+        Friend Set(value As Long)
             If (value <> Me.m_ShapeFunctionType) Then
                 Me.m_ShapeFunctionType = value
                 Me.Update()
@@ -163,7 +163,7 @@ Public Class cForcingFunction
         Get
             Return Me.m_nYears
         End Get
-        Friend Set(ByVal value As Integer)
+        Friend Set(value As Integer)
             Me.m_nYears = value
             Me.Update()
         End Set
@@ -189,23 +189,23 @@ Public Class cForcingFunction
     ''' -----------------------------------------------------------------------
     Friend Sub New(ByRef esData As cEcosimDatastructures, _
                    ByRef Manager As cBaseShapeManager, _
-                   ByVal iDBID As Integer, _
-                   ByVal DataType As eDataTypes)
+                   iDBID As Integer, _
+                   DataType As eDataTypes)
 
         MyBase.New(esData.ForcePoints)
 
-        m_bInInit = True
-        m_data = esData
+        Me.m_bInInit = True
+        Me.m_data = esData
 
-        m_datatype = DataType
-        m_coreComponent = CoreComponent
-        m_iDBID = iDBID
+        Me.m_datatype = DataType
+        Me.m_coreComponent = Me.CoreComponent
+        Me.m_iDBID = iDBID
 
-        m_manager = Manager 'keep a reference to the manager for this shape
+        Me.m_manager = Manager 'keep a reference to the manager for this shape
 
         'Load()
 
-        m_bInInit = False
+        Me.m_bInInit = False
 
     End Sub
 
@@ -217,31 +217,31 @@ Public Class cForcingFunction
     ''' <remarks>This seperates creation from initialization so that an existing object can be repopluated from its underlying data</remarks>
     Protected Friend Overridable Function Load() As Boolean
 
-        m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_iDBID)
-        Debug.Assert(m_iEcoSimIndex <> -1, "Failed to find index for Shape.")
+        Me.m_iEcoSimIndex = Array.IndexOf(Me.m_data.ForcingDBIDs, Me.m_iDBID)
+        Debug.Assert(Me.m_iEcoSimIndex <> -1, "Failed to find index for Shape.")
 
-        If m_iEcoSimIndex = -1 Then Return False
-        m_bInInit = True
+        If Me.m_iEcoSimIndex = -1 Then Return False
+        Me.m_bInInit = True
         Me.LockUpdates()
 
         'copy the data from zscale into an array that will be used to create a forcing data object
-        Me.Init(m_data.ForcePoints)
-        For ipt As Integer = 1 To m_data.ForcePoints
-            Me.ShapeData(ipt) = m_data.zscale(ipt, m_iEcoSimIndex)
+        Me.Init(Me.m_data.ForcePoints)
+        For ipt As Integer = 1 To Me.m_data.ForcePoints
+            Me.ShapeData(ipt) = Me.m_data.zscale(ipt, Me.m_iEcoSimIndex)
         Next ipt
 
-        Me.Name = m_data.ForcingTitles(m_iEcoSimIndex)
+        Me.Name = Me.m_data.ForcingTitles(Me.m_iEcoSimIndex)
 
-        m_nYears = m_data.NumYears
+        Me.m_nYears = Me.m_data.NumYears
 
         'shape parameters
-        m_ShapeFunctionType = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_params = CType(m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams.Clone(), Single())
+        Me.m_ShapeFunctionType = Me.m_data.ForcingShapeParams(Me.m_iEcoSimIndex).ShapeFunctionType
+        Me.m_params = CType(Me.m_data.ForcingShapeParams(Me.m_iEcoSimIndex).ShapeFunctionParams.Clone(), Single())
 
-        Me.IsSeasonal = m_data.isSeasonal(m_iEcoSimIndex)
+        Me.IsSeasonal = Me.m_data.isSeasonal(Me.m_iEcoSimIndex)
 
         Me.UnlockUpdates()
-        m_bInInit = False
+        Me.m_bInInit = False
 
         Return True
 
@@ -271,10 +271,10 @@ Public Class cForcingFunction
 
         Try
 
-            Debug.Assert(m_data IsNot Nothing, Me.ToString & ".Update() underlying ecosim data has not been set.")
+            Debug.Assert(Me.m_data IsNot Nothing, Me.ToString & ".Update() underlying ecosim data has not been set.")
 
             'do not update during initialization
-            If m_bInInit Then
+            If Me.m_bInInit Then
                 'update will be call be the Forcing Data object (m_xData) when it is populated it has no way of knowing who is changing its value
                 'so it has to call update on its parent
                 Return False
@@ -290,9 +290,9 @@ Public Class cForcingFunction
             End If
 
             'turn the Database ID into an Array index using the Ecosim Data structures database ID this value should be good
-            m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_iDBID)
-            Debug.Assert(m_iEcoSimIndex >= 0, Me.ToString & ".Update() Failed to find index for Database ID " & m_iDBID)
-            If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_data.NumForcingShapes) Then
+            Me.m_iEcoSimIndex = Array.IndexOf(Me.m_data.ForcingDBIDs, Me.m_iDBID)
+            Debug.Assert(Me.m_iEcoSimIndex >= 0, Me.ToString & ".Update() Failed to find index for Database ID " & Me.m_iDBID)
+            If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_data.NumForcingShapes) Then
                 cLog.Write(Me.ToString & ".Update() index out of bounds. Data not updated.")
                 Return False
             End If
@@ -300,23 +300,23 @@ Public Class cForcingFunction
             'make sure the shape data is the same size as the EcoSim Shape data
             'this is a double check as the data size was checked when the forcing function was created by the Shape Manager
             'however it could have been changed by an interface at a later date
-            Me.ResizeData(m_data.ForcePoints)
+            Me.ResizeData(Me.m_data.ForcePoints)
 
             'populate the raw shape data
             For ipt As Integer = 1 To Me.nPoints
-                m_data.zscale(ipt, m_iEcoSimIndex) = Me.ShapeData(ipt)
+                Me.m_data.zscale(ipt, Me.m_iEcoSimIndex) = Me.ShapeData(ipt)
             Next ipt
-            m_data.ForcingTitles(m_iEcoSimIndex) = Me.Name
+            Me.m_data.ForcingTitles(Me.m_iEcoSimIndex) = Me.Name
 
-            m_data.ForcingShapeType(m_iEcoSimIndex) = m_datatype
+            Me.m_data.ForcingShapeType(Me.m_iEcoSimIndex) = Me.m_datatype
 
             'shape parameters
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams = CType(Me.m_params.Clone(), Single())
+            Me.m_data.ForcingShapeParams(Me.m_iEcoSimIndex).ShapeFunctionType = Me.m_ShapeFunctionType
+            Me.m_data.ForcingShapeParams(Me.m_iEcoSimIndex).ShapeFunctionParams = CType(Me.m_params.Clone(), Single())
 
-            m_data.isSeasonal(m_iEcoSimIndex) = Me.IsSeasonal()
+            Me.m_data.isSeasonal(Me.m_iEcoSimIndex) = Me.IsSeasonal()
 
-            ShapeChanged()
+            Me.ShapeChanged()
             Return True
 
         Catch ex As Exception

@@ -27,7 +27,6 @@ Namespace ValueWrapper
 
         Protected m_dataType As eDataTypes
         Protected m_iArrayIndex As Integer
-        Shadows m_CounterDelegate As CoreIndexedCounterDelegate
 
         Public Property iSecondIndex As Integer
 
@@ -39,23 +38,21 @@ Namespace ValueWrapper
         ''' <param name="VarName"></param>
         ''' <param name="Status"></param>
         ''' <param name="CounterType"></param>
-        ''' <param name="CounterDelegate"></param>
         ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
-                ByRef CounterDelegate As CoreIndexedCounterDelegate, ByVal iArrayIndex As Integer, ByVal DataType As eDataTypes)
-            MyBase.New(theValueType, VarName, Status, CounterType, Nothing)
+        Sub New(core As cCore, theValueType As eValueTypes, VarName As eVarNameFlags, Status As eStatusFlags, CounterType As eCoreCounterTypes,
+                iArrayIndex As Integer, DataType As eDataTypes)
+            MyBase.New(core, theValueType, VarName, Status, CounterType, Nothing)
 
-            varType = theValueType
-            m_varName = VarName
-            m_dataType = DataType
-            m_iArrayIndex = iArrayIndex
+            Me.varType = theValueType
+            Me.m_varName = VarName
+            Me.m_dataType = DataType
+            Me.m_iArrayIndex = iArrayIndex
 
-            m_CounterDelegate = CounterDelegate
-            m_Countertype = CounterType
+            Me.m_Countertype = CounterType
 
-            If SetSize() Then 'this will redim the arrays and set m_nObjects
-                For i As Integer = 0 To m_nObjects
-                    m_statusarray(i) = Status
+            If Me.SetSize() Then 'this will redim the arrays and set m_nObjects
+                For i As Integer = 0 To Me.m_nObjects
+                    Me.m_statusarray(i) = Status
                 Next
                 'Else
                 '    Debug.Assert(False, "Something is wrong in " & Me.ToString & ".New()")
@@ -72,26 +69,26 @@ Namespace ValueWrapper
         '''  Once the data has been resized it will need to be repopulated.</remarks>
         Public Overrides Function SetSize() As Boolean
 
-            If m_CounterDelegate IsNot Nothing Then
+            If Me.m_Countertype <> eCoreCounterTypes.NotSet Then
 
-                Dim newsize As Integer = m_CounterDelegate(m_Countertype, m_iArrayIndex)
+                Dim newsize As Integer = Me.m_core.GetCoreCounter(Me.m_Countertype, Me.m_iArrayIndex)
 
                 'only resize the data if it is different
-                If newsize <> m_nObjects Then
-                    m_nObjects = newsize
+                If newsize <> Me.m_nObjects Then
+                    Me.m_nObjects = newsize
                     Select Case Me.varType
                         Case eValueTypes.BoolArray
-                            Dim s(m_nObjects) As Boolean
-                            m_values = s
+                            Dim s(Me.m_nObjects) As Boolean
+                            Me.m_values = s
                         Case eValueTypes.IntArray
-                            Dim s(m_nObjects) As Integer
-                            m_values = s
+                            Dim s(Me.m_nObjects) As Integer
+                            Me.m_values = s
                         Case eValueTypes.SingleArray
-                            Dim s(m_nObjects) As Single
-                            m_values = s
+                            Dim s(Me.m_nObjects) As Single
+                            Me.m_values = s
                     End Select
 
-                    ReDim m_statusarray(m_nObjects)
+                    ReDim Me.m_statusarray(Me.m_nObjects)
 
                 End If
 
@@ -106,16 +103,6 @@ Namespace ValueWrapper
 
         End Function
 
-
-        Public Overrides Sub Dispose()
-            MyBase.Dispose()
-
-            Me.m_CounterDelegate = Nothing
-
-        End Sub
-
     End Class
-
-
 
 End Namespace

@@ -47,14 +47,14 @@ Namespace Controls
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
-                ByVal rcImage As System.Drawing.Rectangle, _
-                ByVal g As System.Drawing.Graphics, _
-                ByVal clr As System.Drawing.Color, _
-                ByVal bDrawLabels As Boolean, _
-                ByVal drawMode As eSketchDrawModeTypes, _
-                ByVal iXMax As Integer, _
-                ByVal sYMax As Single)
+        Protected Overrides Sub DrawShape(shape As EwECore.cShapeData, _
+                rcImage As System.Drawing.Rectangle, _
+                g As System.Drawing.Graphics, _
+                clr As System.Drawing.Color, _
+                bDrawLabels As Boolean, _
+                drawMode As eSketchDrawModeTypes, _
+                iXMax As Integer, _
+                sYMax As Single)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -128,14 +128,14 @@ Namespace Controls
             Get
                 Return Me.m_strXAxisLabel
             End Get
-            Set(ByVal value As String)
+            Set(value As String)
                 Me.m_strXAxisLabel = value
             End Set
         End Property
 
         Public Overrides ReadOnly Property XMarkLabel() As String
             Get
-                If (Not TypeOf (Shape) Is cMediationBaseFunction) Then Return MyBase.XMarkLabel
+                If (Not TypeOf (Me.Shape) Is cMediationBaseFunction) Then Return MyBase.XMarkLabel
                 Dim medfn As cMediationBaseFunction = DirectCast(Me.Shape, cMediationBaseFunction)
                 Return Me.UIContext.StyleGuide.FormatNumber(medfn.XBase)
             End Get
@@ -146,17 +146,17 @@ Namespace Controls
             Get
                 Return cCore.NULL_VALUE
             End Get
-            Set(ByVal value As Integer)
+            Set(value As Integer)
                 '
             End Set
         End Property
 
-        Protected Overrides Sub DragXMark(ByVal ptPrev As System.Drawing.Point, ByVal ptCur As System.Drawing.Point)
+        Protected Overrides Sub DragXMark(ptPrev As System.Drawing.Point, ptCur As System.Drawing.Point)
             MyBase.DragXMark(ptPrev, ptCur)
             Me.CalculateYMark()
         End Sub
 
-        Protected Overrides Sub DragYMark(ByVal ptPrev As System.Drawing.Point, ByVal ptCur As System.Drawing.Point)
+        Protected Overrides Sub DragYMark(ptPrev As System.Drawing.Point, ptCur As System.Drawing.Point)
             MyBase.DragYMark(ptPrev, ptCur)
             Me.YMarkValue = Math.Min(Me.YMarkValue, Me.Shape.YMax)
         End Sub

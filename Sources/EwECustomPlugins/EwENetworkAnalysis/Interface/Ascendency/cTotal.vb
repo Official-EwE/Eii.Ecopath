@@ -36,13 +36,13 @@ Public Class cTotal
         '
     End Sub
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager,
-                                    ByVal datagrid As DataGridView,
-                                    ByVal graph As ZedGraphControl,
-                                    ByVal plot As ucPlot,
-                                    ByVal toolstrip As ToolStrip,
-                                         ByVal info As Control,
-                                    ByVal uic As cUIContext) As Boolean
+    Public Overrides Function Attach(manager As cNetworkManager,
+                                    datagrid As DataGridView,
+                                    graph As ZedGraphControl,
+                                    plot As ucPlot,
+                                    toolstrip As ToolStrip,
+                                         info As Control,
+                                    uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
         Me.Grid.Visible = bSucces
         Return bSucces
@@ -51,17 +51,17 @@ Public Class cTotal
     Public Overrides Sub DisplayData()
         Dim astrRowContent() As String
 
-        SetUpGridColumn()
+        Me.SetUpGridColumn()
 
         'Set up grid rows
-        Grid.RowHeadersVisible = False
-        Grid.RowCount = 6
-        Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
-        Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Rows(0).Frozen = True
-        Grid.Rows(0).Height = FIRST_ROW_HEIGHT
+        Me.Grid.RowHeadersVisible = False
+        Me.Grid.RowCount = 6
+        Me.Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
+        Me.Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Rows(0).Frozen = True
+        Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
-        ReDim astrRowContent(Grid.Columns.Count)
+        ReDim astrRowContent(Me.Grid.Columns.Count)
         astrRowContent(0) = My.Resources.COL_HDR_SOURCE
         astrRowContent(1) = My.Resources.COL_HDR_ASCEND_FLOWBIT
         astrRowContent(2) = My.Resources.COL_HDR_ASCEND_PCT
@@ -69,60 +69,60 @@ Public Class cTotal
         astrRowContent(4) = My.Resources.COL_HDR_OVERHEAD_PCT
         astrRowContent(5) = My.Resources.COL_HDR_CAPACITY_FLOWBIT
         astrRowContent(6) = My.Resources.COL_HDR_CAPACITY_PCT
-        Grid.Rows(0).SetValues(astrRowContent)
-        Grid.Rows(0).Visible = True
+        Me.Grid.Rows(0).SetValues(astrRowContent)
+        Me.Grid.Rows(0).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_IMPORT
-        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyImportTotal)
-        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyImportPer)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadImportTotal)
-        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadImportPer)
-        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityImportTotal)
-        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityImportPer)
-        Grid.Rows(1).SetValues(astrRowContent)
-        Grid.Rows(1).Visible = True
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyImportTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyImportPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadImportTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadImportPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityImportTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityImportPer)
+        Me.Grid.Rows(1).SetValues(astrRowContent)
+        Me.Grid.Rows(1).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_INTN_FLOW
-        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyInternalFlowTotal)
-        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyInternalFlowPer)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadFlowTotal)
-        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadFlowPer)
-        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityFlowTotal)
-        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityFlowPer)
-        Grid.Rows(2).SetValues(astrRowContent)
-        Grid.Rows(2).Visible = True
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyInternalFlowTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyInternalFlowPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadFlowTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadFlowPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityFlowTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityFlowPer)
+        Me.Grid.Rows(2).SetValues(astrRowContent)
+        Me.Grid.Rows(2).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_EXPORT
-        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyExportTotal)
-        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyExportPer)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadExportTotal)
-        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadExportPer)
-        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityExportTotal)
-        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityExportPer)
-        Grid.Rows(3).SetValues(astrRowContent)
-        Grid.Rows(3).Visible = True
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyExportTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyExportPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadExportTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadExportPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityExportTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityExportPer)
+        Me.Grid.Rows(3).SetValues(astrRowContent)
+        Me.Grid.Rows(3).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_RESP
-        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyRespTotal)
-        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyRespPer)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadRespTotal)
-        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadRespPer)
-        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityRespTotal)
-        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityRespPer)
-        Grid.Rows(4).SetValues(astrRowContent)
-        Grid.Rows(4).Visible = True
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyRespTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyRespPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadRespTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadRespPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityRespTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityRespPer)
+        Me.Grid.Rows(4).SetValues(astrRowContent)
+        Me.Grid.Rows(4).Visible = True
 
         astrRowContent(0) = My.Resources.ROW_HDR_TOTAL
-        astrRowContent(1) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyTotalsTotal)
-        astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.AscendancyTotalsPer)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadTotalsTotal)
-        astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.OverheadTotalsPer)
-        astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityTotalsTotal)
-        astrRowContent(6) = Me.StyleGuide.FormatNumber(NetworkManager.CapacityTotalsPer)
-        Grid.Rows(5).SetValues(astrRowContent)
-        Grid.Rows(5).Visible = True
+        astrRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyTotalsTotal)
+        astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.AscendancyTotalsPer)
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadTotalsTotal)
+        astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.OverheadTotalsPer)
+        astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityTotalsTotal)
+        astrRowContent(6) = Me.StyleGuide.FormatNumber(Me.NetworkManager.CapacityTotalsPer)
+        Me.Grid.Rows(5).SetValues(astrRowContent)
+        Me.Grid.Rows(5).Visible = True
 
-        Grid.ClearSelection()
+        Me.Grid.ClearSelection()
 
     End Sub
 
@@ -133,14 +133,14 @@ Public Class cTotal
 
     Private Sub SetUpGridColumn()
 
-        Grid.ReadOnly = True
+        Me.Grid.ReadOnly = True
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = 7
+        Me.Grid.ColumnCount = 7
 
-        SetGridColumnPropertyDefault(Grid)
+        SetGridColumnPropertyDefault(Me.Grid)
 
-        Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(0).Frozen = True
+        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
+        Me.Grid.Columns(0).Frozen = True
 
     End Sub
 

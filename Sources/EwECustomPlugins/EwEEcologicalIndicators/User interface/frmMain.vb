@@ -54,7 +54,7 @@ Public Class frmMain
 
 #Region " Construction "
 
-    Public Sub New(ByVal uic As cUIContext, pluginpoint As cEwEEcologicalIndicatorsPlugin)
+    Public Sub New(uic As cUIContext, pluginpoint As cEwEEcologicalIndicatorsPlugin)
 
         MyBase.New()
         Me.UIContext = uic
@@ -81,7 +81,7 @@ Public Class frmMain
     ''' the form content.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -190,8 +190,8 @@ Public Class frmMain
         Me.m_tsbnEcospaceSaveImage.Image = SharedResources.saveHS
 
         ' Start listening to core run state changes
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-        AddHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
+        AddHandler Me.m_settings.OnSettingsChanged, AddressOf Me.OnSettingsChanged
 
         ' Start listening to Ecopath, Ecosim, Ecospace and external messages (responses are handled in OnCoreMessage)
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Core}
@@ -205,11 +205,11 @@ Public Class frmMain
     ''' Form is officially closed; preserve what needs preserving and clean up.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Stop listening to core run state changes
-        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-        RemoveHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
+        RemoveHandler Me.m_settings.OnSettingsChanged, AddressOf Me.OnSettingsChanged
 
         ' Cleanup 
         Me.m_grid.Detach()
@@ -332,7 +332,7 @@ Public Class frmMain
 
 #Region " Events "
 
-    Private Sub OnTreeNodeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+    Private Sub OnTreeNodeSelected(sender As Object, e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvIndicators.AfterSelect
 
         Try
@@ -448,7 +448,7 @@ Public Class frmMain
         Handles m_cbPlotAtEnd.CheckedChanged
 
         If Me.m_bInUpdate Then Return
-        My.Settings.PlotAtEnd = m_cbPlotAtEnd.Checked
+        My.Settings.PlotAtEnd = Me.m_cbPlotAtEnd.Checked
         My.Settings.Save()
 
     End Sub
