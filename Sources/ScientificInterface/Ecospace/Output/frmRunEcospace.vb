@@ -1400,7 +1400,7 @@ Namespace Ecospace
 
                 ' Update status feedback
                 If Me.IsRunning Then
-                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING)
+                    cApplicationStatusNotifier.StartProgress(Me.Core, "")
                 Else
                     cApplicationStatusNotifier.EndProgress(Me.Core)
                 End If
