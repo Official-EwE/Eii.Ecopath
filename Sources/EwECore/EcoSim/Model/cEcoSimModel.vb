@@ -1160,9 +1160,12 @@ Namespace Ecosim
             Dim landings As Single
             For igrp As Integer = 1 To Me.m_EPData.NumLiving
                 For iflt = 1 To Me.m_Data.nGear
+
+                    ' JS 210308: used correct number of steps per year here
+
                     'landings calculated by ecosim
                     'discards are not included
-                    landings = Me.CalcLandings(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / 12.0F
+                    landings = Me.CalcLandings(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / Me.m_Data.NumStepsPerYear
                     'sum into yearly value for searches
                     Me.m_search.CatchYear(iflt, igrp) += landings
                     Me.m_search.CatchYearGroup(igrp) += landings
@@ -1170,9 +1173,10 @@ Namespace Ecosim
                     'Price Elasticity function are based on the yearly Ecopath Landings
                     'Searches use average annual value so they sum the monthly values
                     'so we need to convert this back to Ecopath yearly values for the Price Elasticity to return the correct value
-                    LandingsForValue(igrp, iflt) += landings * 12
+                    LandingsForValue(igrp, iflt) += landings * Me.m_Data.NumStepsPerYear
                 Next
             Next
+
 
             'Now get Value of the landings 
             If iYear > Me.m_search.BaseYear Then
@@ -5296,21 +5300,39 @@ Namespace Ecosim
         End Sub
 
         Sub FindCurrentProfit(ByVal BB() As Single, ByVal t As Integer)
+            ' JS 080321: enabled price elasticity
+
             Dim i As Integer, ig As Integer, TotIncome As Single, Fg As Single
+            Dim LandingsForValue(Me.m_Data.nGroups, Me.m_Data.nGear) As Single
+            For i = 1 To Me.m_EPData.NumLiving
+                For ig = 1 To Me.m_Data.nGear
+                    LandingsForValue(i, ig) += Me.CalcLandings(i, ig, BB(i), m_Data.FishRateGear(ig, t), Me.m_Data.relQ(ig, i), 1)
+                Next ig
+            Next i
+            Me.m_Data.PriceMedData.SetPriceMedFunctions(LandingsForValue)
+
             Dim TotCost As Single
-            ReDim Me.CurrentProfit(Me.m_Data.nGear), Me.CurrentIncome(Me.m_Data.nGear)
-            For ig = 1 To Me.m_Data.nGear
+            ReDim CurrentProfit(m_Data.nGear), CurrentIncome(m_Data.nGear)
+            For ig = 1 To m_Data.nGear
                 TotIncome = 0
-                For i = 1 To Me.m_Data.nGroups
-                    Fg = CSng(Me.Qmult(i) * Me.m_Data.FishMGear(ig, i) * (Me.m_Data.FishRateGear(ig, t) + 1.0E-20))
+                For i = 1 To m_Data.nGroups
+                    Fg = CSng(Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20))
                     'jb use time varing proportion of landings
-                    TotIncome = TotIncome + Fg * BB(i) * Me.m_EPData.Market(ig, i) * Me.m_Data.PropLandedTime(ig, i)
+                    If (1 = 1) Then
+                        ' Use price elasticity 
+                        Dim price As Single = Me.PESValue(i, ig)
+                        TotIncome += Fg * BB(i) * price * Me.m_Data.PropLandedTime(ig, i)
+                    Else
+                        ' Use 'old' version
+                        TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Data.PropLandedTime(ig, i)
+                    End If
                 Next
-                TotCost = Me.m_Data.FishRateGear(ig, t) * (Me.m_EPData.cost(ig, eCostIndex.CUPE) + Me.m_EPData.cost(ig, eCostIndex.Sail))
-                Me.CurrentProfit(ig) = TotIncome - TotCost
+
+                TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, eCostIndex.CUPE) + m_EPData.cost(ig, eCostIndex.Sail))
+                CurrentProfit(ig) = TotIncome - TotCost
                 'If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
-                If Me.CurrentProfit(ig) < 0 Then Me.CurrentProfit(ig) = 0
-                Me.CurrentIncome(ig) = CSng(TotIncome / (Me.m_Data.FishRateGear(ig, t) + 1.0E-20))
+                If CurrentProfit(ig) < 0 Then CurrentProfit(ig) = 0
+                CurrentIncome(ig) = CSng(TotIncome / (m_Data.FishRateGear(ig, t) + 1.0E-20))
             Next
             'Debug.Print CurrentProfit(1), CurrentProfit(2), CurrentProfit(3)
         End Sub
@@ -5327,13 +5349,16 @@ Namespace Ecosim
         End Sub
 
 
+        ''' <summary>
+        ''' Initialize fishing capacities by fleet for dynamic effort model, and set effort dynamic response parameters for simulation
+        ''' </summary>
         Sub InitializeCapacity()
             'initialize fishing capacities by fleet for dynamic effort model, and
             'set effort dynamic response parameters for simulation
 
             If Me.m_search.bInSearch And Me.m_search.SearchMode <> eSearchModes.MSE Then
                 'If in search mode then only MSE
-                Exit Sub
+                Return
             End If
 
             ReDim Me.CapTime(Me.m_Data.nGear), Me.CapBase(Me.m_Data.nGear), Me.EscalePar(Me.m_Data.nGear)

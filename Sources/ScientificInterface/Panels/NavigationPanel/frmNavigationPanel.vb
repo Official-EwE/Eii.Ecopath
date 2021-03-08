@@ -260,7 +260,10 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_FISHINGEFFORT, "ndFishingEffort", eCoreExecutionState.EcosimLoaded, GetType(frmFishingEffort), eNodeImages.Input, nodeInput) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_FISHINGMORT, "ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality), eNodeImages.Input, nodeInput) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_FLEETSIZEDYNAMICS, "ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimFleetSizeDynamics), eNodeImages.Input, nodeInput, "Fleet size dynamics.htm")
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_PRICEELAST, "ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_PRICEELAST, "ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYPRICEELAST, "ndApplyPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmApplyPriceElasticy), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
         'xxxxxxxxxxxxxxxxxxxxxxxx
         'jb test catchability form
         Me.m_nodecontroller.Add("Catchability", "ndCatchability", eCoreExecutionState.EcosimLoaded, GetType(frmCatchability), eNodeImages.Input, nodeInput) ' ToDo: connect to help
