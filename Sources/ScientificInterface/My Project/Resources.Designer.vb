@@ -2671,6 +2671,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apply price elasticity.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_APPLYPRICEELAST() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOSIM_INPUT_APPLYPRICEELAST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Shared arenas.
         '''</summary>
         Public ReadOnly Property LABEL_NAV_ECOSIM_INPUT_ARENA() As String
