@@ -488,7 +488,7 @@ Namespace Ecosim
         Private Function toDevicePoint(p As PointF, width As Integer, height As Integer) As PointF
             ' Transforms the output value to the screen point value
             ' This comes from EWE5. Real men don't write code comments, *sigh*
-            Dim screenPt As New PointF(p.X * width / (8 + 2 * Me.m_sLRMargin), _
+            Dim screenPt As New PointF(p.X * width / (8 + 2 * Me.m_sLRMargin),
                             height - (height * p.Y) / (1.02F * Me.m_iRow + 2.02F * Me.m_sTBMargin))
 
             Return screenPt
@@ -562,7 +562,7 @@ Namespace Ecosim
             Dim bAnnual As Boolean = (tsd.TimeSeriesInterval = eTSDataSetInterval.Annual)
             Dim nSteps As Integer = CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
 
-            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath),
                                eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information)
 
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
@@ -668,7 +668,7 @@ Namespace Ecosim
                                 Select Case f
                                     Case eAllFitFile.Biomass
                                         If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                            sw.Write(plot.SimData(k))
+                                            sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
@@ -679,7 +679,7 @@ Namespace Ecosim
                                         End If
                                     Case eAllFitFile.Mortality
                                         If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                            sw.Write(plot.SimData(k))
+                                            sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
@@ -691,7 +691,7 @@ Namespace Ecosim
                                     Case eAllFitFile.Catch
                                         If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
                                             Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
-                                            sw.Write(plot.SimData(k))
+                                            sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
@@ -702,7 +702,7 @@ Namespace Ecosim
                                         End If
                                     Case eAllFitFile.Landings
                                         If ts.TimeSeriesType = eTimeSeriesType.Landings Then
-                                            sw.Write(plot.SimData(k))
+                                            sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
@@ -713,7 +713,7 @@ Namespace Ecosim
                                         End If
                                     Case eAllFitFile.Discards
                                         If ts.TimeSeriesType = eTimeSeriesType.Discards Then
-                                            sw.Write(plot.SimData(k))
+                                            sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
@@ -828,7 +828,7 @@ Namespace Ecosim
             Try
                 dlg.ShowDialog()
             Catch ex As Exception
-                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_PRINT_PREVIEW_FAILED, ex.Message), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_PRINT_PREVIEW_FAILED, ex.Message),
                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 Me.Core.Messages.SendMessage(msg)
             End Try
@@ -848,10 +848,10 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnShowDetailsChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_chkShowWeight.CheckedChanged, _
-                    m_chkShowYear.CheckedChanged, _
-                    m_chkScaleForPrinter.CheckedChanged, _
-                    m_chkShowSS.CheckedChanged, _
+            Handles m_chkShowWeight.CheckedChanged,
+                    m_chkShowYear.CheckedChanged,
+                    m_chkScaleForPrinter.CheckedChanged,
+                    m_chkShowSS.CheckedChanged,
                     m_cbShowGroupNo.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
