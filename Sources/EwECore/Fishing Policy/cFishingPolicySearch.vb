@@ -81,7 +81,7 @@ Namespace FishingPolicy
         Public ManValueBase As Double
         Public EcoValueBase As Double
         Public ExistValue As Single
-        Public BioDivBase As Single
+        Public BioDivBase As Double
 
         ''' <summary>
         ''' Force a running search to exit
@@ -611,12 +611,18 @@ Namespace FishingPolicy
                 Dim i As Integer, Estfn As Double
 
                 'do not mess with the following parameters-used by Fletch
-                StepSize = 0.0001
+                'jb 24-Mar-2021 flet() was not varying the results of each search iteration enough to find any sort of a difference/gradient for each search variable.
+                'Setting the step size to larger (from StepSize = 0.0001 to StepSize = 0.001) fixes this and it was able to search through the varaible space.
+                'This does not affect the DFPmin() fuunction. It has it's own way of setting the step size
+                'StepSize = 0.0001 'default
+                StepSize = 0.001
+                Gtol = 0.0000000001 'Default
+
                 eps = 0.000001
-                Gtol = 0.0000000001
                 mode = 1
                 maxfn = Me.MaxNoOfIterations
                 iprint = 1
+
                 For i = 1 To X.Length - 1 : Me.Xm(i) = X(i) : Next
 
                 Estfn = Me.FUNC(X, n)

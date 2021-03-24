@@ -1291,10 +1291,10 @@ Namespace MSE
             Me.m_output.MeanEmployValue = Me.m_MSEdata.sumEmployVal / Me.m_MSEdata.CurrentIteration
             Me.m_output.MeanMandatedValue = Me.m_MSEdata.sumManVal / Me.m_MSEdata.CurrentIteration
 
-            Me.m_output.EconomicValue = Me.m_MSEdata.BaseTotalVal
-            Me.m_output.EcologicalValue = Me.m_MSEdata.BaseEcoVal
-            Me.m_output.EmployValue = Me.m_MSEdata.BaseEmployVal
-            Me.m_output.MandatedValue = Me.m_MSEdata.BaseManValue
+            Me.m_output.EconomicValue = CSng(Me.m_MSEdata.BaseTotalVal)
+            Me.m_output.EcologicalValue = CSng(Me.m_MSEdata.BaseEcoVal)
+            Me.m_output.EmployValue = CSng(Me.m_MSEdata.BaseEmployVal)
+            Me.m_output.MandatedValue = CSng(Me.m_MSEdata.BaseManValue)
 
             Dim nt As Integer = Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
             For Each grp As cMSEGroupOutput In Me.m_lstGroupOutputs

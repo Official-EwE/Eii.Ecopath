@@ -134,12 +134,19 @@ Public Class cSearchDatastructures
     Public UseCostPenalty As Boolean
     Public CostRatio() As Single
 
+
     'results of the search
-    Public totval As Single
-    Public Employ As Single
-    Public manvalue As Single
-    Public ecovalue As Single
-    Public profit As Single
+    'Public totval As Single
+    'Public Employ As Single
+    'Public manvalue As Single
+    'Public ecovalue As Single
+    'Public profit As Single
+
+    Public totval As Double
+    Public Employ As Double
+    Public manvalue As Double
+    Public ecovalue As Double
+    Public profit As Double
 
     ''' <summary>Value of Catch</summary>
     ''' <remarks>By (fleet, livingGroup)
@@ -194,7 +201,7 @@ Public Class cSearchDatastructures
     ''' <remarks></remarks>
     Private m_SearchCatchSemaphor As System.Threading.Semaphore
 
-    Public DiversityIndex As Single
+    Public DiversityIndex As Double
 
     Public FPSUseEconomicPlugin As Boolean
     Public MSEUseEconomicPlugin As Boolean
@@ -342,11 +349,11 @@ Public Class cSearchDatastructures
 
     Public ReadOnly Property WeightedTotal() As Single
         Get
-            Return Me.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.totval +
+            Return CSng(Me.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.totval +
                 Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ +
                 Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue +
                 Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue +
-                Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityIndex
+                Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityIndex)
         End Get
     End Property
 

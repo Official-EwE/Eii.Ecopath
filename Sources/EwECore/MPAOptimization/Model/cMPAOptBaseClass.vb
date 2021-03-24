@@ -90,7 +90,9 @@ Public MustInherit Class cMPAOptBaseClass
     Public StoreBtimeForEcoSeed() As Single
 
     Protected TotWeightedValueBase As Single
-    Protected EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, DiversityBase As Single, AreaBoundBase As Single
+    'Protected EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, DiversityBase As Single, AreaBoundBase As Single
+    Protected EmployBase As Double, TotValBase As Double, ManValueBase As Double, EcoValueBase As Double, DiversityBase As Double, AreaBoundBase As Double
+
     Protected TargetSumMax As Single
 
     Protected AreaBoundary As Single
@@ -294,7 +296,7 @@ Public MustInherit Class cMPAOptBaseClass
 
 
     Friend Overridable Function EvaluateRun() As Single
-        Dim curSum As Single 'results of the search run
+        Dim curSum As Double 'results of the search run
 
         Try
 
@@ -312,16 +314,16 @@ Public MustInherit Class cMPAOptBaseClass
 
             'calculate the relative values in to data structures 
             'so they can be use to populate the Input/Output object for the interface
-            Me.m_data.objFuncEcologicalValue = Me.m_search.ecovalue / Me.EcoValueBase
-            Me.m_data.objFuncMandatedValue = Me.m_search.manvalue / Me.ManValueBase
-            Me.m_data.objFuncSocialValue = Me.m_search.Employ / Me.EmployBase
-            Me.m_data.objFuncEconomicValue = Me.m_search.totval / Me.TotValBase
-            Me.m_data.objFuncBiodiversity = Me.m_search.DiversityIndex / Me.DiversityBase
+            Me.m_data.objFuncEcologicalValue = CSng(Me.m_search.ecovalue / Me.EcoValueBase)
+            Me.m_data.objFuncMandatedValue = CSng(Me.m_search.manvalue / Me.ManValueBase)
+            Me.m_data.objFuncSocialValue = CSng(Me.m_search.Employ / Me.EmployBase)
+            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.totval / Me.TotValBase)
+            Me.m_data.objFuncBiodiversity = CSng(Me.m_search.DiversityIndex / Me.DiversityBase)
             Me.m_data.objFuncAreaBorder = Me.AreaBoundary '/ AreaBoundBase
 
             If curSum > Me.TargetSumMax Then
                 'save the best results 
-                Me.TargetSumMax = curSum
+                Me.TargetSumMax = CSng(curSum)
 
                 Me.setRunState(cMPAOptManager.eRunStates.NewBestResultFound)
 
@@ -338,7 +340,7 @@ Public MustInherit Class cMPAOptBaseClass
             '    Me.m_lstObjectiveResults.RemoveRange(RESULTS_TO_KEEP - 1, Me.m_lstObjectiveResults.Count - RESULTS_TO_KEEP)
             'End If
 
-            Return curSum
+            Return CSng(curSum)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -568,12 +570,12 @@ Public MustInherit Class cMPAOptBaseClass
         If Me.AreaBoundBase = 0 Then Me.AreaBoundBase = 1
         If Me.DiversityBase = 0 Then Me.DiversityBase = 1
 
-        Me.TotWeightedValueBase = 0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.TotValBase + _
-                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.EmployBase + _
-                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ManValueBase + _
-                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.EcoValueBase + _
-                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityBase + _
-                        Me.m_data.BoundaryWeight * Me.AreaBoundBase
+        Me.TotWeightedValueBase = CSng(0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.TotValBase +
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.EmployBase +
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ManValueBase +
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.EcoValueBase +
+                        Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityBase +
+                        Me.m_data.BoundaryWeight * Me.AreaBoundBase)
 
     End Sub
 

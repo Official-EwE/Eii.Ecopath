@@ -169,7 +169,7 @@ Namespace EcoSeed
             'Dim bExitRun As Boolean
 
             'total objective sum of the current search 
-            Dim CurSum As Single
+            Dim CurSum As Double
             Dim writer As StreamWriter = Nothing
 
             Try
@@ -254,12 +254,12 @@ Namespace EcoSeed
                             AreaBordary = Me.CalculateAreaOverBondaryLength()
                             CurSum = CurSum + AreaBordary * Me.m_data.BoundaryWeight
 
-                            Me.m_data.objFuncEcologicalValue = Me.m_search.ecovalue / Me.EcoValueBase
-                            Me.m_data.objFuncMandatedValue = Me.m_search.manvalue / Me.ManValueBase
-                            Me.m_data.objFuncSocialValue = Me.m_search.Employ / Me.EmployBase
-                            Me.m_data.objFuncEconomicValue = Me.m_search.totval / Me.TotValBase
-                            Me.m_data.objFuncBiodiversity = Me.m_search.DiversityIndex / Me.DiversityBase
-                            Me.m_data.objFuncAreaBorder = AreaBordary / Me.AreaBoundBase
+                            Me.m_data.objFuncEcologicalValue = CSng(Me.m_search.ecovalue / Me.EcoValueBase)
+                            Me.m_data.objFuncMandatedValue = CSng(Me.m_search.manvalue / Me.ManValueBase)
+                            Me.m_data.objFuncSocialValue = CSng(Me.m_search.Employ / Me.EmployBase)
+                            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.totval / Me.TotValBase)
+                            Me.m_data.objFuncBiodiversity = CSng(Me.m_search.DiversityIndex / Me.DiversityBase)
+                            Me.m_data.objFuncAreaBorder = CSng(AreaBordary / Me.AreaBoundBase)
                             Me.m_data.objFuncTotal = (Me.m_search.WeightedTotal + AreaBordary * Me.m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
                             If CurSum > Me.SeedSumMax Then
@@ -267,7 +267,7 @@ Namespace EcoSeed
                                 Me.m_data.bestrow = Me.m_data.CurRow
                                 Me.m_data.bestcol = Me.m_data.CurCol
 
-                                Me.SeedSumMax = CurSum
+                                Me.SeedSumMax = CSng(CurSum)
 
                                 If Me.SeedSumMax > Me.TotalSearchMax Then
                                     Me.TotalSearchMax = Me.SeedSumMax
