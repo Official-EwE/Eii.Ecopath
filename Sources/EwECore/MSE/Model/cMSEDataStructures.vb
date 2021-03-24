@@ -131,10 +131,16 @@ Namespace MSE
 
         Public BestTotalValue As Single
 
-        Public BaseEmployVal As Single
-        Public BaseTotalVal As Single
-        Public BaseManValue As Single
-        Public BaseEcoVal As Single
+        'Public BaseEmployVal As Single
+        'Public BaseTotalVal As Single
+        'Public BaseManValue As Single
+        'Public BaseEcoVal As Single
+
+        Public BaseEmployVal As Double
+        Public BaseTotalVal As Double
+        Public BaseManValue As Double
+        Public BaseEcoVal As Double
+
 
         ''' <summary>
         ''' Use for EwE5 Closed Loop Fishing Rate Assessment method

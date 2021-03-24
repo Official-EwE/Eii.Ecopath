@@ -499,10 +499,10 @@ Namespace MSE
                 Me.m_data.BaseEcoVal = Me.m_Search.ecovalue
 
                 'cal base BestTotalValue (TotValBase,EmployBase... were set in SetBaseValues()
-                Me.m_data.BestTotalValue = Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / Me.TotValBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase + _
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase
+                Me.m_data.BestTotalValue = CSng(Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / Me.TotValBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -940,16 +940,16 @@ Namespace MSE
         ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
         Private Sub SumValues()
 
-            Me.m_data.sumEmployVal += Me.m_Search.Employ
-            Me.m_data.SumTotVal += Me.m_Search.totval
-            Me.m_data.sumManVal += Me.m_Search.manvalue
-            Me.m_data.sumEcoVal += Me.m_Search.ecovalue
+            Me.m_data.sumEmployVal += CSng(Me.m_Search.Employ)
+            Me.m_data.SumTotVal += CSng(Me.m_Search.totval)
+            Me.m_data.sumManVal += CSng(Me.m_Search.manvalue)
+            Me.m_data.sumEcoVal += CSng(Me.m_Search.ecovalue)
 
-            Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues + _
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / Me.TotValBase + _
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase + _
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase + _
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase
+            Me.m_data.sumWeightedValues = CSng(Me.m_data.sumWeightedValues +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / Me.TotValBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase)
 
         End Sub
 
