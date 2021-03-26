@@ -86,15 +86,13 @@ Namespace Ecopath
             Dim mgr As cForcingFunctionShapeManager = Me.m_uic.Core.ForcingShapeManager
             Dim lItems As New List(Of Object)
 
-            ' Gather stanza names
+            ' Gather stanza
             lItems.Clear()
             For iIndex As Integer = 0 To Me.m_uic.Core.nStanzas - 1
                 lItems.Add(Me.m_uic.Core.StanzaGroups(iIndex))
             Next
             Me.m_fpStanza = New cEwEFormatProvider(Me.m_uic, Me.m_cmbStanzaGroups, GetType(Integer), lItems.ToArray())
-
-            ' Find stanza for initial group
-            If Me.m_groupInitial IsNot Nothing Then
+            If (Me.m_groupInitial IsNot Nothing) Then
                 Me.m_fpStanza.Value = Me.m_groupInitial.iStanza
             Else
                 Me.m_fpStanza.Value = 0
@@ -153,6 +151,13 @@ Namespace Ecopath
                 e.Value = fmt.ToString(e.ListItem)
             End If
 
+        End Sub
+
+        Private Sub OnFormatRecStanza(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbRecStanza.Format
+            If (TypeOf e.ListItem Is cCoreInputOutputBase) Then
+                Dim fmt As New cCoreInterfaceFormatter()
+                e.Value = fmt.ToString(e.ListItem)
+            End If
         End Sub
 
         Private Sub OnCalculate(sender As System.Object, e As System.EventArgs) _
@@ -324,6 +329,20 @@ Namespace Ecopath
 
             Me.m_fpAge0Numbers.Value = stanza.Age0Numbers
 
+            Dim lItems As New List(Of Object)
+            lItems.Add(SharedResources.GENERIC_VALUE_NONE)
+            Dim sel As Integer = 0
+            For iIndex As Integer = 0 To Me.m_uic.Core.nStanzas - 1
+                Dim sg As cStanzaGroup = Me.m_uic.Core.StanzaGroups(iIndex)
+                If sg.Index <> stanza.Index And sg.RecruitmentStanza <= 0 Then
+                    If sg.Index = stanza.RecruitmentStanza Then sel = lItems.Count
+                    lItems.Add(sg)
+                End If
+            Next
+            Me.m_cmbRecStanza.Items.Clear()
+            Me.m_cmbRecStanza.Items.AddRange(lItems.ToArray())
+            Me.m_cmbRecStanza.SelectedIndex = sel
+
             Dim iSel As Integer = 0
             If bEcosimLoaded Then
                 For i As Integer = 1 To Me.m_cmbFF.Items.Count - 1
@@ -365,13 +384,20 @@ Namespace Ecopath
             stanza.RecruitmentPower = CSng(Me.m_fpRecPwr.Value)
             stanza.BiomassAccumulationRate = CSng(Me.m_fpBab.Value)
             stanza.WmatWinf = CSng(Me.m_fpWmatWinf.Value)
+            stanza.RecruitmentStanza = CInt(Me.m_cmbRecStanza.SelectedIndex)
+
+            If (Me.m_cmbRecStanza.SelectedIndex = 0) Then
+                stanza.RecruitmentStanza = 0
+            Else
+                stanza.RecruitmentStanza = DirectCast(Me.m_cmbRecStanza.SelectedItem, cCoreInputOutputBase).Index
+            End If
 
             If bEcosimLoaded Then
                 ' Only update FF when scenario is loaded
                 If (Me.m_cmbFF.SelectedIndex = 0) Then
-                    Me.m_grid.StanzaGroup.HatchCode = 0
+                    stanza.HatchCode = 0
                 Else
-                    Me.m_grid.StanzaGroup.HatchCode = DirectCast(Me.m_cmbFF.SelectedItem, cForcingFunction).Index
+                    stanza.HatchCode = DirectCast(Me.m_cmbFF.SelectedItem, cForcingFunction).Index
                 End If
             End If
 

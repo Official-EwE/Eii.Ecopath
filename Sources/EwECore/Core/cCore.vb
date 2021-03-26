@@ -12046,6 +12046,7 @@ Public Class cCore
             stanza.LeadingB = m_Stanza.BaseStanza(iStanza)
             stanza.LeadingCB = m_Stanza.BaseStanzaCB(iStanza)
             stanza.RecruitmentPower = m_Stanza.RecPowerSplit(iStanza)
+            stanza.RecruitmentStanza = m_Stanza.RecStanza(iStanza)
             stanza.WmatWinf = m_Stanza.WmatWinf(iStanza)
             stanza.BiomassAccumulationRate = m_Stanza.BABsplit(iStanza)
             stanza.HatchCode = m_Stanza.HatchCode(iStanza)
@@ -12264,6 +12265,7 @@ Public Class cCore
         m_Stanza.BaseStanza(iStanza) = stanza.LeadingB
         m_Stanza.BaseStanzaCB(iStanza) = stanza.LeadingCB
         m_Stanza.RecPowerSplit(iStanza) = stanza.RecruitmentPower
+        m_Stanza.RecStanza(iStanza) = stanza.RecruitmentStanza
         m_Stanza.WmatWinf(iStanza) = stanza.WmatWinf
         m_Stanza.BABsplit(iStanza) = stanza.BiomassAccumulationRate
         m_Stanza.HatchCode(iStanza) = stanza.HatchCode
@@ -13641,6 +13643,27 @@ Public Class cCore
         'For now the validation is done right here (inline)
         'if this gets to bulky the core can call another routine to do the validation for different variables
         Select Case ValueObject.varName
+
+            Case eVarNameFlags.RecruitmentStanza
+                'Cannot chain these up
+                Dim iStanza As Integer = ValueObject.Index
+                Dim iTarget As Integer = CInt(ValueObject.Value)
+                If (iTarget <= 0) Then
+                    'passed validation
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationStatus = eStatusFlags.OK
+                    ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
+                Else
+                    If Me.m_Stanza.RecStanza(iTarget) <= 0 Then
+                        'passed validation
+                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationStatus = eStatusFlags.OK
+                        ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
+                    Else
+                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.ToString(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+                    End If
+                End If
 
             Case eVarNameFlags.MSEFleetWeight
                 'Can not set FleetWeight if this is not a valid fleet

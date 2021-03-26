@@ -1430,4 +1430,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Total predation on prey {0} by predator {1} is {2}</value>
     <comment>{0}=prey name, {1}=predator name, {2}=total</comment>
   </data>
+  <data name="VARIABLE_VALIDATION_RSTANZA" xml:space="preserve">
+    <value>The target stanza has driven recruitment. Unable to set variable {0}</value>
+  </data>
 </root>

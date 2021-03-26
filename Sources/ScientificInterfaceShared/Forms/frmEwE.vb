@@ -311,10 +311,6 @@ Namespace Forms
             End If
 
             Me.CoreComponents = Nothing
-            If (Me.Icon IsNot Nothing) Then
-                Me.Icon.Dispose()
-                Me.Icon = Nothing
-            End If
 
             cLog.Write("Closed", Me.Text, "FormState", eVerboseLevel.Detailed)
 
@@ -437,6 +433,11 @@ Namespace Forms
 
             ' Just in case
             Me.EndPrint()
+
+            If (Me.Icon IsNot Nothing) Then
+                Me.Icon.Dispose()
+                Me.Icon = Nothing
+            End If
 
             MyBase.OnFormClosing(e)
 

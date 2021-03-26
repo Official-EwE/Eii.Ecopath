@@ -1820,6 +1820,13 @@ Namespace Ecosim
                 End If
             Next isp
 
+            ' Update linked recruitments
+            For isp = 1 To Me.m_stanza.Nsplit
+                If (Me.m_stanza.RecStanza(isp) > 0) And (Me.m_stanza.RecStanza(isp) <= Me.m_stanza.Nsplit) Then
+                    Me.m_stanza.NageS(isp, Me.m_stanza.Age1(isp, 1)) = Me.m_stanza.NageS(Me.m_stanza.RecStanza(isp), Me.m_stanza.Age1(Me.m_stanza.RecStanza(isp), 1))
+                End If
+            Next
+
             ' finally update biomass, pred and NumSplit information for all multistanza species
             'BAvg(averaged biomass) is a temporary variable and will be destroyed 
             'use(BtoUpdate) this is the actual biomass array from the last sub timestep

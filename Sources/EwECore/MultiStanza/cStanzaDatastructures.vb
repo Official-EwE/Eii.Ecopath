@@ -95,6 +95,8 @@ Public Class cStanzaDatastructures
     Public WageS(,) As Single
     ''' <summary>Base recruitment to age 0 for split species.</summary>
     Public RzeroS() As Single
+    ''' <summary>Stanza that drives this stanza's recuitment.</summary>
+    Public RecStanza() As Integer
 
     ''' <summary>growth coefficients by split spp and age (set in initialstate)</summary>
     Public SplitAlpha(,) As Single
@@ -178,7 +180,6 @@ Public Class cStanzaDatastructures
 
         ReDim Me.StanzaDBID(Me.Nsplit)
 
-        ReDim Me.RecPowerSplit(Me.Nsplit)
         ReDim Me.Nstanza(Me.Nsplit) 'number of stanzas by split species (set in ecopath)
         ReDim Me.BaseStanza(Me.Nsplit) 'holds stanzano for which info is entered
         ReDim Me.BaseStanzaCB(Me.Nsplit)
@@ -190,6 +191,8 @@ Public Class cStanzaDatastructures
         ReDim Me.Stanza_Bio(Me.Nsplit, Me.MaxStanza) 'mortality
         ReDim Me.Stanza_CB(Me.Nsplit, Me.MaxStanza) 'mortality
         ReDim Me.SpawnProp(Me.Nsplit, Me.MaxStanza)
+        ReDim Me.RecPowerSplit(Me.Nsplit)
+        ReDim Me.RecStanza(Me.Nsplit)
         ReDim Me.RzeroS(Me.Nsplit) 'base recruitment to age 0 for split species
         'redim PredS() 'effective predator abund for split species (set in ecosim splitpred)
         ReDim Me.SplitAlpha(Me.Nsplit, Me.MaxAgeSplit) 'growth coefficients by split spp and age (set in initialstate)
@@ -238,6 +241,7 @@ Public Class cStanzaDatastructures
         Me.Stanza_Z = Nothing ' (Nsplit, MaxStanza) 'mortality
         Me.Stanza_Bio = Nothing ' (Nsplit, MaxStanza) 'mortality
         Me.Stanza_CB = Nothing ' (Nsplit, MaxStanza) 'mortality
+        Me.RecStanza = Nothing ' (Nsplit) 'base recruitment to age 0 for split species
         Me.RzeroS = Nothing ' (Nsplit) 'base recruitment to age 0 for split species
         'me.PredS = nothing ' () 'effective predator abund for split species  = nothing ' (set in ecosim splitpred)
         Me.SplitAlpha = Nothing ' (Nsplit, MaxAgeSplit) 'growth coefficients by split spp and age  = nothing ' (set in initialstate)
