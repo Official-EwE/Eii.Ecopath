@@ -6893,8 +6893,7 @@ exitline:
     ''' </summary>
     ''' <remarks></remarks>
     Sub SpaceSplitUpdate()
-        'updates numbers, weight, and biomass for multiple stanza species using information
-        'on average performance (eatenby, loss) over ecospace grid cells used by the species
+
         Dim isp As Integer, ist As Integer, ieco As Integer, ia As Integer
         Dim Su As Single, Gf As Single, Nt As Single
         Dim Agemax As Integer, AgeMin As Integer, Be As Single
@@ -6962,6 +6961,13 @@ exitline:
                 Me.StanzaData.WageS(isp, Me.StanzaData.Age1(isp, 1)) = 0
             End If
         Next isp
+
+        ' Update linked recruitments
+        For isp = 1 To Me.StanzaData.Nsplit
+            If (Me.StanzaData.RecStanza(isp) > 0) And (Me.StanzaData.RecStanza(isp) <= Me.StanzaData.Nsplit) Then
+                Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) = Me.StanzaData.NageS(Me.StanzaData.RecStanza(isp), Me.StanzaData.Age1(Me.StanzaData.RecStanza(isp), 1))
+            End If
+        Next
 
         ' finally update bioamss and pred index information for all species
         Me.EcoSim.SplitSetPred(Me.Blocal)
