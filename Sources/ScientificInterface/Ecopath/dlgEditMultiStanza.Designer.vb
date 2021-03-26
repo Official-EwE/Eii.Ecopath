@@ -69,6 +69,8 @@ Namespace Ecopath
             Me.m_grid = New ScientificInterface.gridEditMultiStanza()
             Me.m_tlpLayout = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plButtons = New System.Windows.Forms.Panel()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_cmbRecStanza = New System.Windows.Forms.ComboBox()
             CType(Me.m_splitMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitMain.Panel1.SuspendLayout()
             Me.m_splitMain.Panel2.SuspendLayout()
@@ -228,12 +230,14 @@ Namespace Ecopath
             '
             'm_plControls
             '
+            Me.m_plControls.Controls.Add(Me.m_cmbRecStanza)
             Me.m_plControls.Controls.Add(Me.m_lbAge0Numbers)
             Me.m_plControls.Controls.Add(Me.Label1)
             Me.m_plControls.Controls.Add(Me.m_lblStanzaGroups)
             Me.m_plControls.Controls.Add(Me.m_cbEggAtSpawn)
             Me.m_plControls.Controls.Add(Me.m_lblK)
             Me.m_plControls.Controls.Add(Me.m_hdrEcospace)
+            Me.m_plControls.Controls.Add(Me.Label2)
             Me.m_plControls.Controls.Add(Me.m_lblRecPwr)
             Me.m_plControls.Controls.Add(Me.m_hdrEcosim)
             Me.m_plControls.Controls.Add(Me.m_lblBAB)
@@ -310,6 +314,18 @@ Namespace Ecopath
             Me.m_plButtons.Controls.Add(Me.m_btnOK)
             Me.m_plButtons.Name = "m_plButtons"
             '
+            'Label2
+            '
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
+            '
+            'm_cmbRecStanza
+            '
+            Me.m_cmbRecStanza.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbRecStanza.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbRecStanza, "m_cmbRecStanza")
+            Me.m_cmbRecStanza.Name = "m_cmbRecStanza"
+            '
             'EditMultiStanza
             '
             resources.ApplyResources(Me, "$this")
@@ -361,6 +377,8 @@ Namespace Ecopath
         Friend WithEvents Label1 As Label
         Private WithEvents m_tlpLayout As TableLayoutPanel
         Private WithEvents m_plButtons As Panel
+        Friend WithEvents m_cmbRecStanza As ComboBox
+        Private WithEvents Label2 As Label
     End Class
 
 End Namespace

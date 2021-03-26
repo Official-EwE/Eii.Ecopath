@@ -3362,6 +3362,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The target stanza has driven recruitment. Unable to set variable {0}.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_RSTANZA() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VALIDATION_RSTANZA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Reset vulnerabilities to a default value of {0}?.
         '''</summary>
         Public Shared ReadOnly Property VULNERABILITIES_PROMPT_RESET() As String

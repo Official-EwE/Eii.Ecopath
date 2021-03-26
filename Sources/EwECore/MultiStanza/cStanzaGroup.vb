@@ -84,6 +84,10 @@ Public Class cStanzaGroup
         val = New cValue(core, New Single, eVarNameFlags.RecPowerSplit, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
 
+        ' RecruitmentStanza
+        val = New cValue(core, New Integer, eVarNameFlags.RecruitmentStanza, eStatusFlags.Null, eValueTypes.Int)
+        Me.m_values.Add(val.varName, val)
+
         ' Relative biomass accumulation rate (BaB)
         val = New cValue(core, New Single, eVarNameFlags.BABsplit, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
@@ -334,6 +338,22 @@ Public Class cStanzaGroup
             Me.SetVariable(eVarNameFlags.RecPowerSplit, value)
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eVarNameFlags.RecruitmentStanza"/>
+    ''' for this stanza configuration.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property RecruitmentStanza() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.RecPowerSplit))
+        End Get
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.RecPowerSplit, value)
+        End Set
+    End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

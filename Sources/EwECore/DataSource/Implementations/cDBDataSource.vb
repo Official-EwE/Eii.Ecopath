@@ -1604,6 +1604,7 @@ Namespace DataSources
                         stanzaDS.StanzaName(iStanza) = CStr(rdStanza("StanzaName"))
 
                         stanzaDS.RecPowerSplit(iStanza) = CSng(rdStanza("RecPower"))
+                        stanzaDS.RecStanza(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "RecStanza", 0))
                         stanzaDS.BABsplit(iStanza) = CSng(rdStanza("BabSplit"))
                         stanzaDS.WmatWinf(iStanza) = CSng(rdStanza("WMatWinf"))
                         ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
@@ -1615,6 +1616,7 @@ Namespace DataSources
                         stanzaDS.BaseStanza(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingLifeStage", cCore.NULL_VALUE))
                         ' JS 14jun12: Leading CB separated from leading B (default to LeadingLifeStage)
                         stanzaDS.BaseStanzaCB(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingCB", stanzaDS.BaseStanza(iStanza)))
+
 
                     Catch ex As Exception
                         Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
@@ -1708,6 +1710,7 @@ Namespace DataSources
 
                         drow("StanzaName") = stanzaDS.StanzaName(iStanza)
                         drow("RecPower") = stanzaDS.RecPowerSplit(iStanza)
+                        drow("RecStanza") = stanzaDS.RecStanza(iStanza)
                         drow("BabSplit") = stanzaDS.BABsplit(iStanza)
                         drow("WMatWinf") = stanzaDS.WmatWinf(iStanza)
                         drow("FixedFecundity") = stanzaDS.FixedFecundity(iStanza)

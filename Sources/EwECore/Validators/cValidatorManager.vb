@@ -60,7 +60,7 @@ Public Class cValidatorManager
         Me.m_validators.Add(eVarNameFlags.Biomass, validator)
 
         'the same core validator for all the Ecospace summary data
-        'the validator will figure out which varaible is being validated
+        'the validator will figure out which variable is being validated
         validator = New cValidatorCore(theCore)
         Me.m_validators.Add(eVarNameFlags.EcospaceNumberSummaryTimeSteps, validator)
         Me.m_validators.Add(eVarNameFlags.EcospaceSummaryTimeEnd, validator)
@@ -72,6 +72,7 @@ Public Class cValidatorManager
 
         Me.m_validators.Add(eVarNameFlags.MSEFixedEscapement, validator)
         Me.m_validators.Add(eVarNameFlags.MSEFixedF, validator)
+        Me.m_validators.Add(eVarNameFlags.RecruitmentStanza, validator)
 
         'MPAOpt
         Me.m_validators.Add(eVarNameFlags.MPAOptStartYear, validator)

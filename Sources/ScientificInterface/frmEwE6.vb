@@ -1124,6 +1124,14 @@ Public Class frmEwE6
             cLog.Write(ex, "frmEwE6.OnFormClosing")
         End Try
 
+        If (Me.Icon IsNot Nothing) Then
+            Try
+                Me.Icon.Dispose()
+            Catch ex As Exception
+
+            End Try
+        End If
+
         ' Resume shutdown
         MyBase.OnFormClosing(e)
 
@@ -1183,13 +1191,6 @@ Public Class frmEwE6
                 ' Clear commands after all UI elements have lost their UI context, which 
                 ' should have triggered proper cleanups
                 cmdh.Clear()
-
-                ' Clean up
-                If (Me.Icon IsNot Nothing) Then
-                    Dim ico As Icon = Me.Icon
-                    Me.Icon = Nothing
-                    ico.Dispose()
-                End If
 
                 Try
                     ' For good measure, non-critical
