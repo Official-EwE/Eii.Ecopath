@@ -684,7 +684,7 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property DiveristyIndex() As Single
+    Public Property DiversityIndex() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcopathStatsDiversity))
         End Get
@@ -693,7 +693,7 @@ Public Class cEcoPathStats
         End Set
     End Property
 
-    Public Property DiveristyIndexStatus() As eStatusFlags
+    Public Property DiversityIndexStatus() As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcopathStatsDiversity)
         End Get
