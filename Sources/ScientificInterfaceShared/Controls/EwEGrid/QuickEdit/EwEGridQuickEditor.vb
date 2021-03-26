@@ -40,7 +40,7 @@ Namespace Controls.EwEGrid
     ''' all currently selected EwE variables can be modified. Conditions apply.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)>
+    <CLSCompliant(False)> _
     Public Class cQuickEditHandler
 
 #Region " Private variables "
@@ -87,10 +87,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="ts">The ToolStrip to connect to, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(grid As cEwEGrid,
-                          uic As cUIContext,
-                          ts As ToolStrip,
-                          Optional bIsOutputGrid As Boolean = True)
+        Public Sub Attach(grid As cEwEGrid, uic As cUIContext, ts As ToolStrip, Optional bIsOutputGrid As Boolean = True)
 
             ' Sanity checks
             Debug.Assert(grid IsNot Nothing)
@@ -105,7 +102,7 @@ Namespace Controls.EwEGrid
             Me.m_uic = uic
             Me.m_ts = ts
 
-            AddHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
+            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
             ' Hide grip
             Me.m_ts.GripStyle = ToolStripGripStyle.Hidden
@@ -118,19 +115,19 @@ Namespace Controls.EwEGrid
             ' Create quick edit set button
             Me.m_btnSet = New ToolStripButton(My.Resources.GENERIC_LABEL_APPLY)
             Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_APPLYVALUE
-            AddHandler Me.m_btnSet.Click, AddressOf Me.OnBtnSetClick
+            AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
 
             ' Create import button (input grids only)
             If Not bIsOutputGrid Then
                 Me.m_btnImport = New ToolStripButton(My.Resources.ImportHS)
                 Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
-                AddHandler Me.m_btnImport.Click, AddressOf Me.OnImportGrid
+                AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
             End If
 
             ' Create export button
             Me.m_btnExport = New ToolStripButton(My.Resources.ExportHS)
             Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
-            AddHandler Me.m_btnExport.Click, AddressOf Me.OnExportGrid
+            AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
 
             ' Add items to the toolstrip
             Dim align As ToolStripItemAlignment = If(cSystemUtils.IsRightToLeft, ToolStripItemAlignment.Left, ToolStripItemAlignment.Right)
@@ -174,27 +171,27 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub Detach()
 
-            If Not Me.m_bAttached Then Return
+            If Not m_bAttached Then Return
 
             Me.m_ts.Items.Remove(Me.m_ctrlValue)
 
             If Me.m_btnImport IsNot Nothing Then
-                RemoveHandler Me.m_btnImport.Click, AddressOf Me.OnImportGrid
+                RemoveHandler Me.m_btnImport.Click, AddressOf OnImportGrid
                 Me.m_btnImport.Dispose()
                 Me.m_btnImport = Nothing
             End If
 
-            RemoveHandler Me.m_btnExport.Click, AddressOf Me.OnExportGrid
+            RemoveHandler Me.m_btnExport.Click, AddressOf OnExportGrid
             Me.m_btnExport.Dispose()
             Me.m_btnExport = Nothing
 
             Me.SetEditControl(eControlType.NotSet)
 
-            RemoveHandler Me.m_btnSet.Click, AddressOf Me.OnBtnSetClick
+            RemoveHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
             Me.m_btnSet.Dispose()
             Me.m_btnSet = Nothing
 
-            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf Me.OnGridSelectionChanged
+            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
             Me.m_grid = Nothing
 
             Me.m_ts = Nothing
@@ -319,18 +316,32 @@ Namespace Controls.EwEGrid
 
 #Region " Grid events "
 
+        ''' <summary>
+        ''' Helper flag, stating that a visual update is pending.
+        ''' </summary>
         Private m_bUpdatePending As Boolean = False
 
         ' Buffer consecutive update requests to prevent flashing controls
         Private Sub OnGridSelectionChanged()
+
+            If (Me.m_grid Is Nothing) Then Return
+            If (Me.m_grid.Disposing) Then Return
+
             Me.m_bUpdatePending = True
-            Me.m_grid.BeginInvoke(New MethodInvoker(AddressOf Me.DoUpdateControls))
+            Me.m_grid.BeginInvoke(New MethodInvoker(AddressOf DoUpdateControls))
+
         End Sub
 
         Private Sub DoUpdateControls()
+
             If Not Me.m_bUpdatePending Then Return
             Me.m_bUpdatePending = False
+
+            If (Me.m_grid Is Nothing) Then Return
+            If (Me.m_grid.Disposing) Then Return
+
             Me.UpdateControls()
+
         End Sub
 
 #End Region ' Command events
@@ -610,12 +621,12 @@ Namespace Controls.EwEGrid
             If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return bSuccess
 
             Try
-                fs = New FileStream(cmdOF.FileName,
-                                    FileMode.Open,
-                                    FileAccess.Read,
+                fs = New FileStream(cmdOF.FileName, _
+                                    FileMode.Open, _
+                                    FileAccess.Read, _
                                     FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
             Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message),
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message), _
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
                 bSuccess = False
             End Try
@@ -636,7 +647,7 @@ Namespace Controls.EwEGrid
                 sr.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName),
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName), _
                     eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
 
@@ -666,7 +677,7 @@ Namespace Controls.EwEGrid
                 fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
             Catch ex As Exception
                 ' Woops!
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message),
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message), _
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
 
@@ -676,7 +687,7 @@ Namespace Controls.EwEGrid
                 sw.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName),
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdSF.FileName)
             End If
@@ -700,14 +711,14 @@ Namespace Controls.EwEGrid
 
                 Case eControlType.TextBox
                     Dim ctrl As ToolStripTextBox = DirectCast(Me.m_ctrlValue, ToolStripTextBox)
-                    RemoveHandler ctrl.KeyDown, AddressOf Me.OnSetBoxKeyDown
-                    RemoveHandler ctrl.Enter, AddressOf Me.OnSetBoxEnter
-                    RemoveHandler ctrl.Leave, AddressOf Me.OnSetBoxLeave
+                    RemoveHandler ctrl.KeyDown, AddressOf OnSetBoxKeyDown
+                    RemoveHandler ctrl.Enter, AddressOf OnSetBoxEnter
+                    RemoveHandler ctrl.Leave, AddressOf OnSetBoxLeave
                     ctrl.Dispose()
 
                 Case eControlType.ComboBox
                     Dim ctrl As ToolStripComboBox = DirectCast(Me.m_ctrlValue, ToolStripComboBox)
-                    RemoveHandler ctrl.SelectedIndexChanged, AddressOf Me.OnSelectedValueChanged
+                    RemoveHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
                     ctrl.Dispose()
 
             End Select
@@ -724,15 +735,15 @@ Namespace Controls.EwEGrid
                 Case eControlType.TextBox
                     Dim ctrl As New ToolStripTextBox("~tsqeValue")
                     ctrl.AcceptsReturn = True
-                    AddHandler ctrl.Enter, AddressOf Me.OnSetBoxEnter
-                    AddHandler ctrl.Leave, AddressOf Me.OnSetBoxLeave
-                    AddHandler ctrl.KeyDown, AddressOf Me.OnSetBoxKeyDown
+                    AddHandler ctrl.Enter, AddressOf OnSetBoxEnter
+                    AddHandler ctrl.Leave, AddressOf OnSetBoxLeave
+                    AddHandler ctrl.KeyDown, AddressOf OnSetBoxKeyDown
                     Me.m_ctrlValue = ctrl
 
                 Case eControlType.ComboBox
                     Dim ctrl As New ToolStripComboBox("~tsqeValue")
                     ctrl.DropDownStyle = ComboBoxStyle.DropDownList
-                    AddHandler ctrl.SelectedIndexChanged, AddressOf Me.OnSelectedValueChanged
+                    AddHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
                     Me.m_ctrlValue = ctrl
                     If (items IsNot Nothing) Then
                         For Each item As Object In items
