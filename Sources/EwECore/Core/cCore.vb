@@ -5155,7 +5155,7 @@ Public Class cCore
             Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab)
             Me.m_EcopathStats.Pedigree = Me.m_EcoPathData.PedigreeStatsModel
             Me.m_EcopathStats.MeasureOfFit = Me.m_EcoPathData.PedigreeStatsTStar
-            Me.m_EcopathStats.DiveristyIndex = Me.m_EcoPathData.DiversityIndex
+            Me.m_EcopathStats.DiversityIndex = Me.m_EcoPathData.DiversityIndex
 
             Me.m_EcopathStats.ResetStatusFlags()
 
