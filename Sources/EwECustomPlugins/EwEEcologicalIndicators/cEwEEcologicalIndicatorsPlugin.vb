@@ -730,6 +730,12 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #Region " Friend interfaces "
 
+    Public ReadOnly Property Settings As cIndicatorSettings
+        Get
+            Return m_settings
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the default output folder.
