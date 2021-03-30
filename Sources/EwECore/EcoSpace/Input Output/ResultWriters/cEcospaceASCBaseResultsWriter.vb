@@ -220,7 +220,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' <param name="SpaceTSData">The Ecospace data structures to use for spatial referencing.</param>
     ''' <param name="varname">The variable to write.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIBody(writer As StreamWriter,
+    Protected Overridable Sub WriteASCIIBody(writer As StreamWriter,
                                  SpaceTSData As cEcospaceTimestep,
                                  iIndex As Integer,
                                  varname As eVarNameFlags)
