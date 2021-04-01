@@ -35,6 +35,7 @@ Public Class cStanzaDatastructures
     Public Wpacket(,,) As Single ' weight of fish in the packet
     Public IBMMovesPerMonth() As Integer
     Public IBMdistmove(,) As Single
+    Public IBMTotRecruits() As Single ' for linked recruitment
 
     ''' <summary>
     ''' i (map row) position index of the packet

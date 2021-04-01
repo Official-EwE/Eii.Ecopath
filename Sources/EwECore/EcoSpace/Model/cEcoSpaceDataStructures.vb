@@ -488,8 +488,8 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public nEffortDistThreads As Integer
 
-    'number of species per thread for the IBM stuff
-    Public nIBMGroupsPerThread As Integer
+    'stanza groups per thread for the IBM stuff (thread x igroup)
+    Public nIBMGroupsPerThread(,) As Integer
 
     Public nIBMPacketsPerThread As Integer
 

@@ -523,7 +523,7 @@ Public Class cEcoSpace
 
                 'Init the Spatial Temporal data
                 Me.InitSpatialTemporalRun()
-                'Initialized EcoSpace
+                'Initialize EcoSpace
                 Me.initSpatialEquilibrium()
                 'Run Ecospace
                 Me.FindSpatialEquilibrium()
@@ -1589,40 +1589,31 @@ Public Class cEcoSpace
         'jb 18-Nov-2011 Changed calling order of GrowSurvivePackets() and MovePackets()
         're Carls email
         'Yes, assuming that the IBM updates are done after all the solvegrid calls (as in ewe5)
-        ' then growsurvivepackets must be called before movepackets.  
+        'then growsurvivepackets must be called before movepackets.  
         'Otherwise the growth-survival calculations for each packet will be based on the cell position after the move, 
         'rather than the cell position used to predict food consumption and mortality rates from derivt in the solvegrid loop.
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ' js 30-Mar-2021 Linked stanza recruitment requires that all 'driving' stanza have been computed first, 
+        ' before the linked stanzas can recruit. This is only relevant for growsurvivepackets.
+        ' Changed iFirstGroup, iLastGroup solver logic to an array of group indices, where linked recruitment stanzas
+        ' are listed after their driving stanzas. The stanza list for runGrowSurvivePackets is now populated once
+        ' in AllocateIBMStanzaPerThread()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         Try
-
-            'this loop should only excecute once
-            Do While iLstgrp < Me.StanzaData.Nsplit
-                'loop through each solver object, make sure it's okay to run, and run it
-                'each thread will do several groups at a time
-                For Each solver In Me.m_IBMSolvers
-
-                    If solver.isOkToRun Then
-
-                        iLstgrp = iFstGrp + Me.EcoSpaceData.nIBMGroupsPerThread - 1
-                        If iLstgrp > Me.StanzaData.Nsplit Then iLstgrp = Me.StanzaData.Nsplit
-
-                        solver.FirstLastGroups(iFstGrp, iLstgrp)
-                        solver.SignalState.Reset()
-
-                        solver.isOkToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf solver.runGrowSurvivePackets)
-
-                        iFstGrp += Me.EcoSpaceData.nIBMGroupsPerThread
-                    Else
-                        'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
-                    End If
-
-                    If iLstgrp >= Me.StanzaData.Nsplit Then
-                        Exit For
-                    End If
-                Next solver
-            Loop
+            'loop through each solver object, make sure it's okay to run, and run it
+            'each thread will do several groups at a time
+            For Each solver In Me.m_IBMSolvers
+                If solver.isOkToRun Then
+                    solver.SignalState.Reset()
+                    solver.isOkToRun = False
+                    ThreadPool.QueueUserWorkItem(AddressOf solver.runGrowSurvivePackets)
+                Else
+                    'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & Me.EcoSpaceData.TimeNow)
+                End If
+            Next solver
 
             ' wait for all the threads to finish before starting the next time step
             For Each solver In Me.m_IBMSolvers
@@ -2276,6 +2267,11 @@ Public Class cEcoSpace
                 Next
             Next
 
+            ' Initialize linked stanza recruitment in IBM modus
+            If EcoSpaceData.UseIBM Then
+
+            End If
+
             Me.NormalizeMigrationMaps()
 
             Me.SetBoundaryDepths()
@@ -2698,7 +2694,6 @@ Public Class cEcoSpace
             End If
 
             Me.EcoSim.InitializeDataInfo()
-            Me.EcoSpaceData.nIBMGroupsPerThread = (Me.StanzaData.Nsplit + Me.EcoSpaceData.nGridSolverThreads - 1) \ Me.EcoSpaceData.nGridSolverThreads
 
             'Spin-up Initialization
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunStarted(Me.EcoSpaceData)
@@ -2757,6 +2752,76 @@ Public Class cEcoSpace
         End Try
 
     End Function
+
+#Region " IBM stanza solver thread allocations "
+
+    ''' <summary>
+    ''' JS 31-Mar-2021. Linked stanza recruitment requires that IBM packet growth is performed in
+    ''' for the 'leading' recruitment stanzas first. The thread allocation of stanzas is done here
+    ''' </summary>
+    Private Function AllocateIBMStanzaPerThread() As Integer(,)
+
+        ' One-based array of (thread, isp)
+        Dim nIBMGroupsPerThread(Me.EcoSpaceData.nGridSolverThreads, Me.StanzaData.Nsplit) As Integer
+        Dim Queue(Me.EcoSpaceData.nGridSolverThreads) As Integer
+        Dim iThread As Integer = 1
+        Dim iMaxQueue As Integer = 0
+
+        Dim isAllocated(Me.StanzaData.Nsplit) As Boolean
+
+        ' Pass one: Queue all stanzas that are driven after their leading group
+        For isp As Integer = 1 To Me.StanzaData.Nsplit
+            ' Is recruitment led by another stanza?
+            If Me.StanzaData.RecStanza(isp) > 0 Then
+                ' #Yes: queue leading recruitment stanza first
+                nIBMGroupsPerThread(iThread, Queue(iThread) + 1) = Me.StanzaData.RecStanza(isp)
+                ' Queue linked stanza next
+                nIBMGroupsPerThread(iThread, Queue(iThread) + 2) = isp
+                ' Increase queue length for this thread
+                Queue(iThread) += 2
+                ' Remember max queue length
+                iMaxQueue = Math.Max(iMaxQueue, Queue(iThread))
+                ' Also remember that these two stanza have been allocated
+                isAllocated(Me.StanzaData.RecStanza(isp)) = True
+                isAllocated(isp) = True
+
+                ' Move to next thread, circling back to thread 1 past the end of the no of threads
+                iThread = (iThread Mod Me.EcoSpaceData.nGridSolverThreads) + 1
+
+            End If
+        Next
+
+        ' Pass two: allocate remaining stanzas to thread queue
+        For isp As Integer = 1 To Me.StanzaData.Nsplit
+            ' Stanza not allocated yet?
+            If Not isAllocated(isp) Then
+                ' #Yes: current thread pool at max length?
+                If Queue(iThread) = iMaxQueue Then
+                    ' #Yes: Find next thread to queue the stanza to
+                    Dim iNext As Integer = iThread
+                    For itest As Integer = 1 To Me.EcoSpaceData.nGridSolverThreads
+                        iNext = ((iThread + itest - 1) Mod Me.EcoSpaceData.nGridSolverThreads) + 1
+                        ' Abort loop when a shorter queue was found. If the loop goes around, the max thread queue will increase
+                        If Queue(iNext) < iMaxQueue Then Exit For
+                    Next
+                    iThread = iNext
+                End If
+                ' Add to the queue
+                nIBMGroupsPerThread(iThread, Queue(iThread) + 1) = isp
+                ' Increase queue length
+                Queue(iThread) += 1
+                ' Remember max queue and proceed
+                iMaxQueue = Math.Max(iMaxQueue, Queue(iThread))
+
+                isAllocated(isp) = True ' Not really needed, but handy for debugging to make sure all stanza are allocated 
+            End If
+        Next
+
+        Return nIBMGroupsPerThread
+
+    End Function
+
+#End Region ' IBM stanza solver thread allocations
 
     Private Sub InitSpatialTemporalRun()
 
@@ -6984,10 +7049,11 @@ exitline:
             If Me.EcoSpaceData.UseIBM Then
                 'Packet number weights and iPacket, jPacket positions
                 Me.InitPackets()
-                '
+                ' js 30Mar2021 - define stanza groups per thread
                 Me.SetNearestOKcellforIBM()
             End If
 
+            Me.EcoSpaceData.nIBMGroupsPerThread = Me.AllocateIBMStanzaPerThread()
             Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.EcoSpaceData.nGridSolverThreads - 1) \ Me.EcoSpaceData.nGridSolverThreads
 
         Catch ex As Exception
@@ -7012,6 +7078,7 @@ exitline:
         ReDim Me.EcoSpaceData.PredCell(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)
         ReDim Me.StanzaData.Nnursery(Me.StanzaData.Nsplit), Me.StanzaData.StanzaNo(Me.StanzaData.Nsplit, Me.StanzaData.MaxAgeSplit)
         ReDim Me.StanzaData.MaxAgeSpecies(Me.StanzaData.Nsplit), Me.StanzaData.AgeIndex1(Me.StanzaData.Nsplit)
+        ReDim Me.StanzaData.IBMTotRecruits(Me.StanzaData.Nsplit)
         'ReDim Cper(m_Data.Inrow, m_Data.InCol, m_Data.NGroups)
 
         'set number of packets per age **** to interface?****
