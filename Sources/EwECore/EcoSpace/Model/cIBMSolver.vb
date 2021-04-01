@@ -58,13 +58,8 @@ Public Class cIBMSolver
     Public e(,,) As Single
     Public Cper(,,) As Single
 
-    'the isp groups to solve
-    Private iFrstGrp As Integer
-    Private iLastGrp As Integer
-
     Public iFirstPacket As Integer
     Public iLastPacket As Integer
-
     Public BcellThread(,,) As Single
     Public PredCellThread(,,) As Single
 
@@ -77,18 +72,6 @@ Public Class cIBMSolver
 
     Public Sub Init()
 
-
-    End Sub
-
-    ''' <summary>
-    ''' Set the groups to iterate over.
-    ''' </summary>
-    ''' <param name="iFirstGroup"></param>
-    ''' <param name="iLastGroup"></param>
-    ''' <remarks>Call for each thread, before the thread is started, to set the groups to solve.</remarks>
-    Public Sub FirstLastGroups(iFirstGroup As Integer, iLastGroup As Integer)
-        Me.iFrstGrp = iFirstGroup
-        Me.iLastGrp = iLastGroup
     End Sub
 
 #Region "Public 'Solve'"
@@ -152,13 +135,13 @@ Public Class cIBMSolver
         Try
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             Me.SignalState.Reset()
-            Dim iGrp As Integer
 
             'do the processing here
-            For iGrp = Me.iFrstGrp To Me.iLastGrp
-                'now do the computations
-                Me.GrowSurvivePackets(iGrp) 'this is called outside now
-            Next iGrp
+            For i As Integer = 1 To Me.m_Stanza.Nsplit
+                If Me.m_Data.nIBMGroupsPerThread(Me.ThreadID, i) = 0 Then Exit For
+                'Console.WriteLine("Thread " & Me.ThreadID & " growing isp " & Me.m_Data.nIBMGroupsPerThread(Me.ThreadID, i))
+                Me.GrowSurvivePackets(Me.m_Data.nIBMGroupsPerThread(Me.ThreadID, i))
+            Next i
 
             'thread has finished it is ok to run this again
             Me.isOkToRun = True
@@ -452,6 +435,12 @@ Public Class cIBMSolver
 
             End If 'm_Stanza.isForcedIBMRecruits(ist) = True 
 
+            ' JS 30-Mar-2021: link recruitment
+            If Me.m_Stanza.RecStanza(isp) > 0 Then
+                TotRecruits = Me.m_Stanza.IBMTotRecruits(Me.m_Stanza.RecStanza(isp))
+            Else
+                Me.m_Stanza.IBMTotRecruits(isp) = TotRecruits
+            End If
 
             'distribute the total recruits (totrecruits) over packets and suitable spatial cells for recruitment
             'and set initial body sizes for packets representing new recruits
