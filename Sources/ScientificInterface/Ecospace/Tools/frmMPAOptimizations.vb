@@ -141,6 +141,11 @@ Namespace Ecospace
         ''' <summary>The mode that this form is in.</summary>
         Private m_mode As eFormModeTypes = eFormModeTypes.Prepare
 
+        ''' <summary>The layer currently selected by the user.</summary>
+        Private m_layerSelected As cDisplayLayer = Nothing
+        ''' <summary>The editor belonging to the selected layer, if any.</summary>
+        Private m_editorGUISelected As ucLayerEditor = Nothing
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -223,6 +228,8 @@ Namespace Ecospace
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
+            Me.m_plEditor.Visible = False
+
             ' -- Sponsors --
             Dim cmd As cCommand = Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
             cmd.AddControl(Me.m_pbLenfest, New Object() {"http://www.lenfestocean.org/"})
@@ -245,6 +252,7 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
+            Me.SelectedLayer = Nothing
             Me.m_manager.Disconnect()
 
             ' Terminate any run state feedback
@@ -594,9 +602,14 @@ Namespace Ecospace
 #Region " Map "
 
         Private Sub OnLayerChanged(l As cDisplayLayer, changeFlags As cDisplayLayer.eChangeFlags)
+
+            If (Me.m_bInUpdate) Then Return
+
             If ((changeFlags And cDisplayLayer.eChangeFlags.Selected) > 0) Then
                 Me.UpdateControls()
             End If
+            Me.SelectedLayer = l
+
         End Sub
 
 #End Region ' Map
@@ -1058,6 +1071,57 @@ Namespace Ecospace
 
 #End Region ' Run-mode specific updates
 
+#Region " Layer editor "
+
+        Private Property SelectedLayer() As cDisplayLayer
+            Get
+                Return Me.m_layerSelected
+            End Get
+            Set(ByVal layer As cDisplayLayer)
+
+                If ReferenceEquals(layer, Me.m_layerSelected) Then Return
+
+                Me.SuspendLayout()
+
+                If (Me.m_layerSelected IsNot Nothing) Then
+                    ' Has editor GUI?
+                    If (Me.m_editorGUISelected IsNot Nothing) Then
+                        ' #Yes: remove layer editor GUI
+                        Me.m_plEditor.Controls.Remove(Me.m_editorGUISelected)
+                        Me.m_editorGUISelected = Nothing
+                    End If
+
+                    If (TypeOf Me.m_layerSelected Is cDisplayLayerRaster) Then
+                        DirectCast(Me.m_layerSelected, cDisplayLayerRaster).Editor.DestroyEditorControl()
+                    End If
+                End If
+
+                Me.m_layerSelected = layer
+
+                If (Me.m_layerSelected IsNot Nothing) Then
+
+                    ' Add layer editor GUI
+                    If (TypeOf Me.m_layerSelected Is cDisplayLayerRaster) And (Me.RunMode = eFormModeTypes.Prepare) Then
+                        Me.m_editorGUISelected = DirectCast(Me.m_layerSelected, cDisplayLayerRaster).Editor.CreateEditorControl()
+                    End If
+
+                    If (Me.m_editorGUISelected IsNot Nothing) Then
+                        Me.m_plEditor.Height = Me.m_editorGUISelected.Height
+                        Me.m_editorGUISelected.Dock = DockStyle.Fill
+                        Me.m_plEditor.Controls.Add(Me.m_editorGUISelected)
+
+                    End If
+                End If
+
+                Me.ResumeLayout()
+
+                Me.m_plEditor.Visible = (Me.m_editorGUISelected IsNot Nothing)
+
+            End Set
+        End Property
+
+#End Region ' Layer editor
+
 #Region " Map updating "
 
         ''' -------------------------------------------------------------------
@@ -1082,7 +1146,9 @@ Namespace Ecospace
                 If (TypeOf (l) Is cDisplayLayerRaster) Then
                     ' Add the layer to the control(s)
                     Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
-                    rl.Editor.IsReadOnly = True
+                    ' Do not block out key layers
+                    Dim bCanEdit As Boolean = (varName = eVarNameFlags.LayerMPASeed) Or (varName = eVarNameFlags.LayerImportance)
+                    rl.Editor.IsReadOnly = Not bCanEdit
                     Me.AddLayer(l, strGroup)
                 End If
             Next
@@ -1509,6 +1575,8 @@ Namespace Ecospace
             ' The %^@#$^#@$ check boxes throw events even before the form OnLoad has been called. Nice.
             ' Added sanity check to prevent premature control handling
             If (Me.m_manager Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
 
             Dim bIsInputMode As Boolean = (Me.RunMode = eFormModeTypes.Prepare) Or (Me.RunMode = eFormModeTypes.Results)
             Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)
@@ -1568,6 +1636,8 @@ Namespace Ecospace
             Me.m_ucZoom.Map.Editable = bIsInputMode
 
             Me.m_cbAutoSave.Checked = Me.Core.Autosave(eAutosaveTypes.MPAOpt)
+
+            Me.m_bInUpdate = False
 
         End Sub
 

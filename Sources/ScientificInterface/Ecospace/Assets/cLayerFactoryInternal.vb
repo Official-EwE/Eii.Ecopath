@@ -84,7 +84,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(uic, vs)
                     renderer.RenderMode = eLayerRenderType.Always
 
-                    editor = New cLayerEditorTwoState()
+                    editor = New cLayerEditorTwoState(GetType(ucLayerEditorDefault), True)
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
                     layer = New cDisplayLayerRaster(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
 
