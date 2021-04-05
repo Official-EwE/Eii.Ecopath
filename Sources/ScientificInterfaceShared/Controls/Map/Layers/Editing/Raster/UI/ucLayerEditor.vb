@@ -129,8 +129,10 @@ Namespace Controls.Map.Layers
                     vn = Me.Layer.Data.VarName
                 End If
 
-                If (md.Units IsNot Nothing) Then
-                    ' ToDo: format units
+                If (md IsNot Nothing) Then
+                    If (md.Units IsNot Nothing) Then
+                        ' ToDo: format units
+                    End If
                 End If
 
                 If (vn = eVarNameFlags.NotSet) Then

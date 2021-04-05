@@ -27,7 +27,7 @@ Namespace Ecospace
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
-        Protected Overrides Sub Dispose(disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
@@ -92,6 +92,7 @@ Namespace Ecospace
             Me.m_nudGenDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblGenDiscRate = New System.Windows.Forms.Label()
             Me.m_cbAutoSave = New System.Windows.Forms.CheckBox()
+            Me.m_cbUseRegions = New System.Windows.Forms.CheckBox()
             Me.m_tcConfiguration = New System.Windows.Forms.TabControl()
             Me.m_tabParameters = New System.Windows.Forms.TabPage()
             Me.m_tlpObjectives = New System.Windows.Forms.TableLayoutPanel()
@@ -108,7 +109,7 @@ Namespace Ecospace
             Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
             Me.m_pbDuke = New System.Windows.Forms.PictureBox()
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
-            Me.m_cbUseRegions = New System.Windows.Forms.CheckBox()
+            Me.m_plEditor = New System.Windows.Forms.Panel()
             Me.m_gridObjectives = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
             Me.m_gridFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
             Me.m_gridGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
@@ -476,6 +477,12 @@ Namespace Ecospace
             Me.m_cbAutoSave.Name = "m_cbAutoSave"
             Me.m_cbAutoSave.UseVisualStyleBackColor = True
             '
+            'm_cbUseRegions
+            '
+            resources.ApplyResources(Me.m_cbUseRegions, "m_cbUseRegions")
+            Me.m_cbUseRegions.Name = "m_cbUseRegions"
+            Me.m_cbUseRegions.UseVisualStyleBackColor = True
+            '
             'm_tcConfiguration
             '
             Me.m_tcConfiguration.Controls.Add(Me.m_tabParameters)
@@ -549,11 +556,12 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tlbLayers, "m_tlbLayers")
             Me.m_tlbLayers.Controls.Add(Me.m_plLayers, 0, 1)
             Me.m_tlbLayers.Controls.Add(Me.m_hdrLayers, 0, 0)
+            Me.m_tlbLayers.Controls.Add(Me.m_plEditor, 0, 2)
             Me.m_tlbLayers.Name = "m_tlbLayers"
             '
             'm_plLayers
             '
-            Me.m_plLayers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_plLayers.BackColor = System.Drawing.SystemColors.Window
             resources.ApplyResources(Me.m_plLayers, "m_plLayers")
             Me.m_plLayers.Name = "m_plLayers"
             '
@@ -611,11 +619,11 @@ Namespace Ecospace
             Me.m_scContent.Panel2.Controls.Add(Me.m_hdrOutput)
             Me.m_scContent.Panel2.Controls.Add(Me.m_tcResults)
             '
-            'm_cbUseRegions
+            'm_plEditor
             '
-            resources.ApplyResources(Me.m_cbUseRegions, "m_cbUseRegions")
-            Me.m_cbUseRegions.Name = "m_cbUseRegions"
-            Me.m_cbUseRegions.UseVisualStyleBackColor = True
+            Me.m_plEditor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            resources.ApplyResources(Me.m_plEditor, "m_plEditor")
+            Me.m_plEditor.Name = "m_plEditor"
             '
             'm_gridObjectives
             '
@@ -913,5 +921,6 @@ Namespace Ecospace
         Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
         Private WithEvents m_pbDuke As System.Windows.Forms.PictureBox
         Private WithEvents m_cbUseRegions As CheckBox
+        Private WithEvents m_plEditor As Panel
     End Class
 End Namespace

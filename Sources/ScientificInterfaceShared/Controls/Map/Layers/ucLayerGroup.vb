@@ -205,7 +205,7 @@ Namespace Controls.Map
                 lc = DirectCast(uc, ucLayer)
                 With lc.Layer
                     .Renderer.IsVisible = bShow
-                    .Update(cDisplayLayer.eChangeFlags.Visibility)
+                    If Not Me.m_bLocked Then .Update(cDisplayLayer.eChangeFlags.Visibility)
                 End With
             Next
 
