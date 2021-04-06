@@ -437,7 +437,10 @@ Public Class cIBMSolver
 
             ' JS 30-Mar-2021: link recruitment
             If Me.m_Stanza.RecStanza(isp) > 0 Then
-                TotRecruits = Me.m_Stanza.IBMTotRecruits(Me.m_Stanza.RecStanza(isp))
+                Dim sFrom As Single = Me.m_Stanza.IBMTotRecruits(Me.m_Stanza.RecStanza(isp))
+                Dim sTo As Single = TotRecruits
+                If (Me.m_Stanza.RecStanzaScalar(isp) = 0) Then Me.m_Stanza.RecStanzaScalar(isp) = sTo / sFrom
+                TotRecruits = sFrom * Me.m_Stanza.RecStanzaScalar(isp)
             Else
                 Me.m_Stanza.IBMTotRecruits(isp) = TotRecruits
             End If

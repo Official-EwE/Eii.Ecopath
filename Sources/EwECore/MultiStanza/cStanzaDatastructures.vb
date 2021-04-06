@@ -98,6 +98,8 @@ Public Class cStanzaDatastructures
     Public RzeroS() As Single
     ''' <summary>Stanza that drives this stanza's recuitment.</summary>
     Public RecStanza() As Integer
+    ''' <summary>Stanza relative recruitment scalar.</summary>
+    Public RecStanzaScalar() As Single
 
     ''' <summary>growth coefficients by split spp and age (set in initialstate)</summary>
     Public SplitAlpha(,) As Single
@@ -194,6 +196,7 @@ Public Class cStanzaDatastructures
         ReDim Me.SpawnProp(Me.Nsplit, Me.MaxStanza)
         ReDim Me.RecPowerSplit(Me.Nsplit)
         ReDim Me.RecStanza(Me.Nsplit)
+        ReDim Me.RecStanzaScalar(Me.Nsplit)
         ReDim Me.RzeroS(Me.Nsplit) 'base recruitment to age 0 for split species
         'redim PredS() 'effective predator abund for split species (set in ecosim splitpred)
         ReDim Me.SplitAlpha(Me.Nsplit, Me.MaxAgeSplit) 'growth coefficients by split spp and age (set in initialstate)

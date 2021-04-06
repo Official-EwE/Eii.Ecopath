@@ -816,6 +816,8 @@ Namespace Ecosim
             'Ecosim is about to be initialized for a run
             If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimPreRunInitialized(Me.m_Data)
 
+            Me.InitializeStanzaVars()
+
             If Me.m_Data.bTimestepOutput Then
                 Me.redimTime(NumberOfYears + ExtraTime, True)
                 Me.m_Data.dimResults(NumberOfYears + ExtraTime)
@@ -1704,6 +1706,10 @@ Namespace Ecosim
 
         End Sub
 
+        Friend Sub InitializeStanzaVars()
+            Array.Clear(Me.m_stanza.RecStanzaScalar, 0, Me.m_stanza.Nsplit)
+        End Sub
+
         Friend Sub clearMonthlyStanzaVars()
             Array.Clear(Me.BBAvg, 0, Me.nGroups + 1)
             Array.Clear(Me.LossAvg, 0, Me.nGroups + 1)
@@ -1711,7 +1717,6 @@ Namespace Ecosim
             Array.Clear(Me.EatenByAvg, 0, Me.nGroups + 1)
             Array.Clear(Me.EatenOfAvg, 0, Me.nGroups + 1)
             Array.Clear(Me.PredAvg, 0, Me.nGroups + 1)
-
         End Sub
 
         ''' <summary>
@@ -1823,7 +1828,10 @@ Namespace Ecosim
             ' Update linked recruitments
             For isp = 1 To Me.m_stanza.Nsplit
                 If (Me.m_stanza.RecStanza(isp) > 0) And (Me.m_stanza.RecStanza(isp) <= Me.m_stanza.Nsplit) Then
-                    Me.m_stanza.NageS(isp, Me.m_stanza.Age1(isp, 1)) = Me.m_stanza.NageS(Me.m_stanza.RecStanza(isp), Me.m_stanza.Age1(Me.m_stanza.RecStanza(isp), 1))
+                    Dim sFrom As Single = Me.m_stanza.NageS(Me.m_stanza.RecStanza(isp), Me.m_stanza.Age1(Me.m_stanza.RecStanza(isp), 1))
+                    Dim sTo As Single = Me.m_stanza.NageS(isp, Me.m_stanza.Age1(isp, 1))
+                    If (Me.m_stanza.RecStanzaScalar(isp) = 0) Then Me.m_stanza.RecStanzaScalar(isp) = sTo / sFrom
+                    Me.m_stanza.NageS(isp, Me.m_stanza.Age1(isp, 1)) = sFrom * Me.m_stanza.RecStanzaScalar(isp)
                 End If
             Next
 
@@ -3735,7 +3743,6 @@ Namespace Ecosim
             ReDim Me.m_RefData.Erpred(Me.m_RefData.NdatType * Me.m_RefData.nDatPoints)
             ReDim Me.m_RefData.Yhat(Me.m_RefData.NdatType * Me.m_RefData.nDatPoints)
             ReDim Me.DatDev(Me.m_RefData.NdatType, Me.m_RefData.nDatPoints)
-
             Me.m_RefData.Iobs = 0
 
         End Sub
