@@ -2955,6 +2955,8 @@ Public Class cEcoSpace
 
             ReDim Me.EcoSpaceData.isGroupHabCapChanged(Me.EcoSpaceData.NGroups)
 
+            Array.Clear(Me.StanzaData.RecStanzaScalar, 0, Me.StanzaData.Nsplit)
+
             Me.nEcospaceTimeSteps = CInt(Me.EcoSpaceData.TotalTime * (1.0 / Me.EcoSpaceData.TimeStep))
             success = success And Me.EcoSpaceData.redimTimeStepResults(Me.nEcospaceTimeSteps)
 
@@ -7030,7 +7032,10 @@ exitline:
         ' Update linked recruitments
         For isp = 1 To Me.StanzaData.Nsplit
             If (Me.StanzaData.RecStanza(isp) > 0) And (Me.StanzaData.RecStanza(isp) <= Me.StanzaData.Nsplit) Then
-                Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) = Me.StanzaData.NageS(Me.StanzaData.RecStanza(isp), Me.StanzaData.Age1(Me.StanzaData.RecStanza(isp), 1))
+                Dim sFrom As Single = Me.StanzaData.NageS(Me.StanzaData.RecStanza(isp), Me.StanzaData.Age1(Me.StanzaData.RecStanza(isp), 1))
+                Dim sTo As Single = Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1))
+                If (Me.StanzaData.RecStanzaScalar(isp) = 0) Then Me.StanzaData.RecStanzaScalar(isp) = sTo / sFrom
+                Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) = sFrom * Me.StanzaData.RecStanzaScalar(isp)
             End If
         Next
 
