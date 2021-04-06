@@ -48,6 +48,8 @@ Friend Class frmSplash
 
         Me.Text = My.Resources.GENERIC_CAPTION
         Me.BackgroundImage = My.Resources.splash_01
+        Me.AllowTransparency = False
+
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
 
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())

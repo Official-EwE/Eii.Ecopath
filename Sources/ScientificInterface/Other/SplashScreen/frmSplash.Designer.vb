@@ -96,7 +96,7 @@ Partial Class frmSplash
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.TopMost = True
-        Me.TransparencyKey = System.Drawing.Color.Transparent
+        Me.TransparencyKey = System.Drawing.Color.Magenta
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpSplash.ResumeLayout(False)
         Me.m_tlpSplash.PerformLayout()
