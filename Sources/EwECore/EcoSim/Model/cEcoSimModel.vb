@@ -5603,7 +5603,7 @@ Namespace Ecosim
             Dim i As Integer
             Dim fCatch As Single
             Dim totalTL As Single
-            Dim sFiBT, sFiB0 As Single
+            Dim sFiBT, sFiB0 As Double
 
             Try
                 ' Reset running totals for a time step
@@ -5629,10 +5629,10 @@ Namespace Ecosim
                         Me.fCatch0(i) = fCatch
                         ' Init TLSim
                         Me.m_Data.TLSim(i) = Me.m_EPData.TTLX(i)
-                    Else
+                    ElseIf fCatch > 0 Then ' Apparently, 0 ^ 0 = 1?!
                         ' #No: total FiB terms for all groups
-                        sFiBT = CSng(sFiBT + (fCatch ^ (Me.m_Data.TLSim(i) - 1)))
-                        sFiB0 = CSng(sFiB0 + (Me.fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1)))
+                        sFiBT = sFiBT + (fCatch ^ (Me.m_Data.TLSim(i) - 1)))
+                        sFiB0 = sFiB0 + (Me.fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1)))
                     End If
                 Next
 

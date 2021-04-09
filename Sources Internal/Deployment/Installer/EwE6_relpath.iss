@@ -3,9 +3,9 @@
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 ; spinup + spattemp now combined in one flag 'EwEPro'
-#define EwEPro 0
+#define EwEPro 1
 ; RobertsBank features are optional to 'EwEPro'
 #define RobertsBank 0
 #define SAFENET 0

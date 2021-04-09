@@ -156,7 +156,7 @@ Public Class cNetworkManager
 
         If (Me.m_runstate = eRunState.CoreNotReady) Then Return False
 
-        If (Me.m_corestatemonitor.HasEcopathRan) Then Return False
+        If (Me.m_corestatemonitor.HasEcopathRan) Then Return True
         Return Me.m_corestatemonitor.HasEcopathBalanced
 
     End Function
