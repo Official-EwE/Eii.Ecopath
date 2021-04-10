@@ -5631,8 +5631,8 @@ Namespace Ecosim
                         Me.m_Data.TLSim(i) = Me.m_EPData.TTLX(i)
                     ElseIf fCatch > 0 Then ' Apparently, 0 ^ 0 = 1?!
                         ' #No: total FiB terms for all groups
-                        sFiBT = sFiBT + (fCatch ^ (Me.m_Data.TLSim(i) - 1)))
-                        sFiB0 = sFiB0 + (Me.fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1)))
+                        sFiBT = sFiBT + (fCatch ^ (Me.m_Data.TLSim(i) - 1))
+                        sFiB0 = sFiB0 + (Me.fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1))
                     End If
                 Next
 
