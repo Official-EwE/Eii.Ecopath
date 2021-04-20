@@ -30,7 +30,8 @@ Friend Class frmSplash
 
     Public Sub New()
         Me.InitializeComponent()
-        Me.Visible = False
+        Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
+        Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.Opaque, False)
     End Sub
 
     Public Sub UpdateStatus(message As String)
