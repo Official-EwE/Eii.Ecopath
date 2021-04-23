@@ -347,10 +347,10 @@ Public Class cStanzaGroup
     ''' -----------------------------------------------------------------------
     Public Property RecruitmentStanza() As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.RecPowerSplit))
+            Return CInt(Me.GetVariable(eVarNameFlags.RecruitmentStanza))
         End Get
         Set(value As Integer)
-            Me.SetVariable(eVarNameFlags.RecPowerSplit, value)
+            Me.SetVariable(eVarNameFlags.RecruitmentStanza, value)
         End Set
     End Property
 
