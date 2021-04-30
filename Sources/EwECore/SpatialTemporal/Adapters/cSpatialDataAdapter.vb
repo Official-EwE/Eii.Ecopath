@@ -17,6 +17,12 @@
 ' ===============================================================================
 '
 
+' ToDo_JS: external data enabled must become persistent
+'  - eVarNameFlags.EcospaceIsExternalDataEnabled has been declared
+'  - Database update has been declared
+'  - Need to define a data structure to read this data into (=awkward, LayerDBID + eDataType)
+
+
 #Region " Imports "
 
 Option Strict On
@@ -43,6 +49,8 @@ Namespace SpatialData
 
         Protected m_connections() As List(Of cSpatialDataConnection)
         Protected m_astrBackupFiles() As String
+
+        ' ToDo_JS: replace with eVarNameFlags.EcospaceIsExternalDataEnabled
         Protected m_bIsEnabled() As Boolean
 
         ''' <summary>Ecospace variable to operate onto.</summary>
@@ -75,6 +83,8 @@ Namespace SpatialData
             Me.AllowSaveIntermediateResults = False
             Me.DBID = -1
             Me.AllowValidation = True
+
+            ' ToDo_JS: declare var boolarray eVarNameFlags.EcospaceIsExternalDataEnabled
 
             Me.Initialize()
 
@@ -150,9 +160,11 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overridable Property IsEnabled(iLayer As Integer) As Boolean
             Get
+                ' ToDo_JS: use var eVarNameFlags.EcospaceIsExternalDataEnabled
                 Return Me.m_bIsEnabled(iLayer)
             End Get
             Set(value As Boolean)
+                ' ToDo_JS: use var eVarNameFlags.EcospaceIsExternalDataEnabled
                 If (value <> Me.m_bIsEnabled(iLayer)) Then
                     Me.m_bIsEnabled(iLayer) = value
                     Me.OnChanged()

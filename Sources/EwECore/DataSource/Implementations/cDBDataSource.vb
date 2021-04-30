@@ -7962,6 +7962,7 @@ Namespace DataSources
 
             Try
                 ' Delete tables not necessarily linked by cascading rules
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnectionDisabled WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
@@ -9870,9 +9871,14 @@ Namespace DataSources
                 While readerLayer.Read()
                     Dim iLayerID As Integer = CInt(readerLayer("LayerID"))
                     Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
-                    If (iLayer >= 0) Then
+                    Dim ShapeType As Integer = CInt(Me.m_db.ReadSafe(readerLayer, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
+
+                    If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
                         ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
-                    End If
+                    ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
+                        ' Use case does not exist yet. But it may in the near future
+                    End If 'If ShapeType = 
+
                 End While
             Catch ex As Exception
                 bSucces = False
@@ -9884,6 +9890,43 @@ Namespace DataSources
             Return bSucces
 
         End Function
+
+        ''' <summary>
+        ''' Loads the layers for which external data has been disabled.
+        ''' </summary>
+        ''' <param name="iScenarioID">The scenario identifier.</param>
+        ''' <returns></returns>
+        Private Function EcospaceScenarioLayerConnectionDisabled(iScenarioID As Integer) As Boolean
+
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim readerLayer As IDataReader = Nothing
+            Dim bSucces As Boolean = True
+
+            Try
+                readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
+                While readerLayer.Read()
+                    Dim iLayerID As Integer = CInt(readerLayer("LayerID"))
+                    Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
+                    Dim ShapeType As Integer = CInt(Me.m_db.ReadSafe(readerLayer, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
+
+                    If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
+                        ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
+                    ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
+                        ' Use case does not exist yet. But it may in the near future
+                    End If 'If ShapeType = 
+
+                End While
+            Catch ex As Exception
+                bSucces = False
+            Finally
+                Me.m_db.ReleaseReader(readerLayer)
+                readerLayer = Nothing
+            End Try
+
+            Return bSucces
+
+        End Function
+
 
 #End Region ' Load
 
@@ -9976,14 +10019,12 @@ Namespace DataSources
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
                         If (ecospaceDS.CapacityResponseFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()
-                            drow("Target") = eDataTypes.EcospaceEnviroCapacityResponse
+                            drow("Target") = CInt(eDataTypes.EcospaceEnviroCapacityResponse)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapacityResponseFunctions(iMap, iGroup))
-
                             drow("ScenarioID") = iScenarioID
                             ' Referenced to Ecospace group DBIDs
                             drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
                             drow("VarDBID") = If(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
-                            drow("Target") = CInt(eDataTypes.EcospaceEnviroCapacityResponse)
                             writer.AddRow(drow)
                         End If
 
@@ -9991,7 +10032,6 @@ Namespace DataSources
                             drow = writer.NewRow()
                             drow("Target") = eDataTypes.EcospaceEnviroMortalityResponse
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.MortalityResposeFunctions(iMap, iGroup))
-
                             drow("ScenarioID") = iScenarioID
                             ' Referenced to Ecospace group DBIDs
                             drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
@@ -10034,6 +10074,7 @@ Namespace DataSources
                         End If
                         drow("ScenarioID") = iScenarioID
                         drow("LayerID") = iLayerID
+                        drow("Target") = eDataTypes.EcospaceEnviroCapacityResponse
                         writer.AddRow(drow)
                     End If
 
@@ -10145,8 +10186,7 @@ Namespace DataSources
             While (reader.Read())
                 Try
                     ' JS 23Nov20: Sh!t, this should have been stored by eDatatype, not eVarname! 
-                    '             Numerical values of datatypes are fixed, varnames can change.
-                    '             This requires a structural change in the ext data fw, even the spat temp data FW 
+                    '             Storing the varname STRING is at least robust, but deviates from the EwE DB norms...
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
                     Dim iLayer As Integer = Array.IndexOf(Me.getLayerIDs(var), iLayerID)
