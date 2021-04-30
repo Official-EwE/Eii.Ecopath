@@ -611,6 +611,7 @@ Namespace Core
         EcospaceFleetProfit
         ''' <summary>Ecospace yearly average jobs [value of catch] * [jobs]</summary>
         EcospaceFleetJobs
+        EcospaceIsExternalDataEnabled
 
         EcospaceSpinupEnabled
         EcospaceSpinupYears

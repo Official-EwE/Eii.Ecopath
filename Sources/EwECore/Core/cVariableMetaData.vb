@@ -413,8 +413,9 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceUseEcosimDiscardForcing) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcospaceMinForagingCapacity) = New cVariableMetaData(cEcoSpace.MIN_HABCAP, 0.1, ge, le, 0.01)
         Me.Metadata(eVarNameFlags.EcospaceAllowHabCapGradCorrections) = New cVariableMetaData(True)
-        Me.Metadata(eVarNameFlags.EcospaceSpinupEnabled) = New cVariableMetaData(True)
+        Me.Metadata(eVarNameFlags.EcospaceSpinupEnabled) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.EcospaceSpinupYears) = New cVariableMetaData(1, 999, ge, le, 10)
+        Me.Metadata(eVarNameFlags.EcospaceIsExternalDataEnabled) = New cVariableMetaData(True)
 
         ' map
         Me.Metadata(eVarNameFlags.InRow) = New cVariableMetaData(1, 10000, ge, le)
