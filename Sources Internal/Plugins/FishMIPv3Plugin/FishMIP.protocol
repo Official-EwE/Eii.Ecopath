@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<run-protocol name="FishMIP ISIMIP3b">
+  <gcms>
+    <gcm name="ipsl" description="IPSL-CM6A-LR"/>
+    <gcm name="gfdl" description="GFDL-gcm4"/>
+  </gcms>
+  <variables>
+    <variable name="lphy" type="biomass"/>
+    <variable name="sphy" type="biomass"/>
+    <variable name="dphy" type="biomass"/>
+    <variable name="temp-150m" type="driver"/>
+    <variable name="temp-column" type="driver"/>
+    <variable name="temp-bot" type="driver"/>
+    <variable name="ice-surf" type="driver"/>
+    <variable name="salt-surf" type="driver"/>
+    <variable name="o2-bot" type="driver"/>
+  </variables>
+  <ocean-regions>
+      <ocean-region name="global" description="Global"/>
+      <ocean-region name="north-sea" description="North Sea"/>
+      <ocean-region name="baltic-sea" description="Baltic Sea"/>
+      <ocean-region name="nw-med-sea" description="North-west Meditteranean"/>
+      <ocean-region name="adriatic-sea" description="Adriatic Sea"/>run-protocol
+      <ocean-region name="med-glob" description="Mediterranean Sea"/>
+      <ocean-region name="se-australia" description="South-east Australia"/>
+      <ocean-region name="east-bass-strait" description="Eastern Bass Strait"/>
+      <ocean-region name="cook-strait" description="Cook Strait"/>
+      <ocean-region name="humboldt-n" description="North Humboldt Sea"/>
+      <ocean-region name="hawaii" description="Hawaii"/>
+      <ocean-region name="ne-brasil" description="Nort-east Brasil"/>
+      <ocean-region name="benguela" description="Benguela Current"/>
+    </ocean-regions>
+    <periods>
+      <period name="historical" start-year="1950" end-year="2014"/>
+      <period name="future" start-year="2015" end-year="2100"/>
+    </periods>
+    <climate-scenarios>
+      <climate-scenario name="pi" description="Pre-industrial climate as simulated by the GCMs"/>
+      <climate-scenario name="hist" description="Historical climate as simulated by the GCMs"/>
+      <climate-scenario name="ssp126" description="SSP1-RCP2.6 climate as simulated by the GCMs"/>
+      <climate-scenario name="ssp370" description="SSP3-RCP7 climate as simulated by the GCMs"/>
+      <climate-scenario name="ssp585" description="SSP5-RCP8.5 climate as simulated by the GCMs"/>
+    </climate-scenarios>
+    <socio-econ-scenarios>
+      <socio-econ-scenario name="1850soc" description="Fixed year-1850 direct human influences (e.g. land use, nitrogen deposition and fertilizer input, fishing effort)"/>
+      <socio-econ-scenario name="histsoc" description="Varying direct human influences in the historical period (e.g. observed changes in historical land use, nitrogen deposition and fertilizer input, fishing effort)"/>
+      <socio-econ-scenario name="2015soc" description="Fixed year-2015 direct human influences (e.g. land use, nitrogen deposition and fertilizer input, fishing effort)."/>
+      <socio-econ-scenario name="nat" description="No direct human influences (naturalized run)"/>
+    </socio-econ-scenarios>
+    <experiments>
+      <experiment name="pre-industrial control histsoc">
+        <periods>
+          <period name="pre-industrial" climate-scenario="pi" socio-econ-scenario="1850soc"/>
+          <period name="historical" climate-scenario="pi" socio-econ-scenario="histsoc"/>
+          <period name="future" climate-scenario="pi" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="pre-industrial control 2015s0c">
+        <periods>
+          <period name="historical" climate-scenario="pi" socio-econ-scenario="2015soc"/>
+          <period name="future" climate-scenario="pi" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="pre-industrial control nat">
+        <periods>
+          <period name="historical" climate-scenario="pi" socio-econ-scenario="nat"/>
+          <period name="future" climate-scenario="pi" socio-econ-scenario="nat"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP2.6 histsoc">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="histsoc"/>
+          <period name="future" climate-scenario="ssp126" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP2.6 2015soc">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="2015soc"/>
+          <period name="future" climate-scenario="ssp126" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP2.6 nat">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="nat"/>
+          <period name="future" climate-scenario="ssp126" socio-econ-scenario="nat"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP7 histsoc">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="histsoc"/>
+          <period name="future" climate-scenario="ssp370" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP7 2015soc">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="2015soc"/>
+          <period name="future" climate-scenario="ssp370" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP7 nat">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="nat"/>
+          <period name="future" climate-scenario="ssp370" socio-econ-scenario="nat"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP8.5 histsoc">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="histsoc"/>
+          <period name="future" climate-scenario="ssp585" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP8.5 2015soc">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="2015soc"/>
+          <period name="future" climate-scenario="ssp585" socio-econ-scenario="2015soc"/>
+        </periods>
+      </experiment>
+      <experiment name="RCP8.5 nat">
+        <periods>
+          <period name="historical" climate-scenario="hist" socio-econ-scenario="nat"/>
+          <period name="future" climate-scenario="ssp585" socio-econ-scenario="nat"/>
+        </periods>
+      </experiment>
+    </experiments>
+    <outputs>
+      <output name="tcb" mandatory="1" units="g m-2" min-trophic-level="1.0001" description="Total Consumer Biomass Density" comments="All consumers (trophic level &gt;1, vertebrates and invertebrates)"/>
+      <output name="tpb" mandatory="1" units="g m-2" min-trophic-level="1.0001" description="Total Pelagic Biomass Density" comments="All pelagic consumers (trophic level &gt;1, vertebrates and invertebrates)"/>
+      <output name="bp30cm" mandatory="0" units="g m-2" description="Biomass Density of Small Pelagics &lt;30cm" comments="If a pelagic species and L infinity is &lt;30 cm, include in this variable"/>
+      <output name="bp30to90cm" mandatory="0" units="g m-2" description="Biomass Density of Medium Pelagics &gt;=30cm and &lt;90cm" comments="If a pelagic species and L infinity is &gt;=30 cm and &lt;90cm, include in this variable"/>
+      <output name="bp90cm" mandatory="0" units="g m-2" description="Biomass Density of Large Pelagics &gt;=90cm" comments="If a pelagic species and L infinity is &gt;=90cm, include in this variable"/>
+      <output name="tdb" mandatory="1" units="g m-2" description="Total Demersal Biomass Density" comments="All demersal consumers (trophic level &gt;1, vertebrates and invertebrates)"/>
+      <output name="bd30cm" mandatory="0" units="g m-2" description="Biomass Density of Small Demersals &lt;30cm" comments="If a demersal species and L infinity is &lt;30 cm, include in this variable"/>
+      <output name="bd30to90cm" mandatory="0" units="g m-2" description="Biomass Density of Medium Demersals &gt;=30cm and &lt;90cm" comments="If a demersal species and L infinity is &gt;=30 cm and &lt;90cm, include in this variable"/>
+      <output name="bd90cm" mandatory="0" units="g m-2" description="Biomass Density of Large Demersals &gt;=90cm" comments="If a demersal species and L infinity is &gt;=90cm, include in this variable"/>
+      <output name="tc" mandatory="1" units="g m-2" description="Total Catch (all commercial functional groups / size classes)" comments="Catch at sea (commercial landings plus discards, fish and invertebrates)"/>
+      <output name="tpc" mandatory="1" units="g m-2" min-trophic-level="1.0001" description="Total Pelagic Catch" comments="Catch at sea of all pelagic consumers (trophic level &gt;1, vertebrates and invertebrates)"/>
+      <output name="cp30cm" mandatory="0" units="g m-2" description="Catch Density of Small Pelagics &lt;30cm" comments="Catch at sea of pelagic species with L infinity &lt;30 cm"/>
+      <output name="cp30to90cm" mandatory="0" units="g m-2" description="Catch Density of Medium Pelagics &gt;=30cm and &lt;90cm" comments="Catch at sea of pelagic species with L infinity &gt;=30 cm and &lt;90cm"/>
+      <output name="cp90cm" mandatory="0" units="g m-2" description="Catch Density of Large Pelagics &gt;=90cm" comments="Catch at sea of pelagic species with L infinity &gt;=90cm"/>
+      <output name="tdc" mandatory="1" units="g m-2" min-trophic-level="1.0001" description="Total Demersal Catch" comments="Catch at sea of all demersal consumers (trophic level &gt;1, vertebrates and invertebrates)"/>
+      <output name="cd30cm" mandatory="0" units="g m-2" description="Catch Density of Small Demersals &lt;30cm" comments="Catch at sea of pelagic species with L infinity &lt;30 cm"/>
+      <output name="cd30to90cm" mandatory="0" units="g m-2" description="Catch Density of Medium Demersals &gt;=30cm and &lt;90cm" comments="Catch at sea of pelagic species with L infinity &gt;=30 cm and &lt;90cm"/>
+      <output name="cd90cm" mandatory="0" units="g m-2" description="Catch Density of Large Demersals &gt;=90cm" comments="Catch at sea of pelagic species with L infinity &gt;=90cm"/>
+    </outputs>
+  <indicators>
+    <indicator>tb</indicator>
+    <indicator>tcomb</indicator>
+    <indicator>tfb</indicator>
+    <indicator>tib</indicator>
+    <indicator>tibtif</indicator>
+    <indicator>tdbtpb</indicator>
+    <indicator>t4b</indicator>
+    <indicator>q</indicator>
+    <indicator>h</indicator>
+    <indicator>tc</indicator>
+    <indicator>tfc</indicator>
+    <indicator>tic</indicator>
+    <indicator>tictfc</indicator>
+    <indicator>tdctpc</indicator>
+    <indicator>t4c</indicator>
+    <indicator>ctl</indicator>
+    <indicator>mti</indicator>
+    <indicator>cotl</indicator>
+    <indicator>co325tl</indicator>
+    <indicator>tmsrb</indicator>
+    <indicator>tmsrc</indicator>
+  </indicators>
+  <output-file-mask>[model-name]_[gcm]_[bias-correction]_[climate-scenario]­_[socio-econ-scenario]_[sens-scenario]_[variable]_[ocean-region]_[start-year]_[end-year].nc</output-file-mask>
+</run-protocol>
