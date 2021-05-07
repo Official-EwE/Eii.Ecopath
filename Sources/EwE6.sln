@@ -81,6 +81,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EcospaceMonteCarlo", "..\So
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEBiomassEmitterPlugin", "..\Sources Internal\Plugins\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj", "{F1E83A61-8A90-4975-ABAE-A546E74E7235}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FishMIPv3Plugin", "..\Sources Internal\Plugins\FishMIPv3Plugin\FishMIPv3Plugin.vbproj", "{6402204A-1134-4C46-B6D6-C9F197DF638D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -487,6 +489,18 @@ Global
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Release|x64.Build.0 = Release|x64
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Release|x86.ActiveCfg = Release|x86
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Release|x86.Build.0 = Release|x86
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Debug|x64.ActiveCfg = Debug|x64
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Debug|x64.Build.0 = Debug|x64
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Debug|x86.ActiveCfg = Debug|x86
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Debug|x86.Build.0 = Debug|x86
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Release|x64.ActiveCfg = Release|x64
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Release|x64.Build.0 = Release|x64
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Release|x86.ActiveCfg = Release|x86
+		{6402204A-1134-4C46-B6D6-C9F197DF638D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -525,6 +539,7 @@ Global
 		{28C34EA4-882E-4838-907F-C154C3E67719} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
 		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
+		{6402204A-1134-4C46-B6D6-C9F197DF638D} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95C63F26-75FD-4801-881F-04EB9E2D6425}

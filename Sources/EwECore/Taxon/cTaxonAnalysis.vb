@@ -105,6 +105,28 @@ Public Class cTaxonAnalysis
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Returns ecology types of demersal species.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DemersalEcologyTypes As eEcologyTypes()
+        Get
+            Return New eEcologyTypes() {eEcologyTypes.Demersal, eEcologyTypes.Benthic, eEcologyTypes.BathyDemersal}
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns ecology types of pelagic species.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property PelagicEcologyTypes As eEcologyTypes()
+        Get
+            Return New eEcologyTypes() {eEcologyTypes.Pelagic, eEcologyTypes.BathyPelagic, eEcologyTypes.BenthoPelagic, eEcologyTypes.PelagicNeritic, eEcologyTypes.PelagicOceanic}
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Resets all internally cached values.
     ''' </summary>
     ''' -----------------------------------------------------------------------

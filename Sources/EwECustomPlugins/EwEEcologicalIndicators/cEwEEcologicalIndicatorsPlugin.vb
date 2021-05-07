@@ -23,10 +23,12 @@ Option Strict On
 Imports System.Drawing
 Imports System.IO
 Imports System.Text
+Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -107,11 +109,15 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Private m_bRunWithMonteCarlo As Boolean = False
     Private m_bCalcExtrasOld As Boolean = False
 
+    Private m_spacecalculators As New List(Of cTreadCalculator)
+
 #End Region ' Variables
 
 #Region " Plug-in points "
 
 #Region " Generic "
+
+    Public Const PluginName As String = "EwEBiomassIndicatorsPlugin"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -154,11 +160,11 @@ Public Class cEwEEcologicalIndicatorsPlugin
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Name"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EwEBiomassIndicatorsPlugin"
+            Return PluginName
         End Get
     End Property
 
@@ -575,11 +581,24 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Dim ptCell As Point = Nothing
         Dim lookup As cTaxonAnalysis = Me.m_core.TaxonAnalysis
 
+        Me.m_dtIndEcospace.Clear()
+        Me.m_spacecalculators.Clear()
+
+        ' Set up threading
+        For i As Integer = 1 To cSystemUtils.ProcessorCount() * 2
+            Me.m_spacecalculators.Add(New cTreadCalculator())
+        Next
+
+        Dim n As Integer = 0
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
                 If (depth.IsWaterCell(iRow, iCol)) Then
                     ptCell = New Point(iCol, iRow)
-                    Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, ptCell, Me.m_stanzaDS, Me.m_taxonDS, lookup)
+                    Dim inds As New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, ptCell, Me.m_stanzaDS, Me.m_taxonDS, lookup)
+                    Me.m_dtIndEcospace(ptCell) = inds
+                    ' Round-robin allocate to threads
+                    Me.m_spacecalculators(n Mod Me.m_spacecalculators.Count).Add(inds)
+                    n += 1
                 End If
             Next iCol
         Next iRow
@@ -627,9 +646,20 @@ Public Class cEwEEcologicalIndicatorsPlugin
         If Not Me.m_bEcospaceCalculating Then Return
         Try
             ' Compute
-            For Each ind As cIndicators In Me.m_dtIndEcospace.Values
-                ind.Compute()
+            Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
+            Dim sw As Stopwatch = Stopwatch.StartNew()
+            cTreadCalculator.ThreadIncrementer = cSystemUtils.ProcessorCount()
+
+            For Each comp As cTreadCalculator In Me.m_spacecalculators
+                comp.WaitHandle = WaitOb
+                Dim thread As New Thread(AddressOf comp.Compute)
+                thread.Start()
             Next
+            'For Each ind As cIndicators In Me.m_dtIndEcospace.Values
+            '    ind.Compute()
+            'Next
+            WaitOb.WaitOne()
+            'Console.WriteLine("EcoIND space calculated in {0} ms", sw.ElapsedMilliseconds)
             If Me.m_bSavingEcospace Then Me.PerformSave(eComponentType.Ecospace)
 
         Catch ex As Exception
@@ -658,6 +688,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Me.m_ecospaceDS.bCalTrophicLevel = Me.m_bCalcExtrasOld
 
         If Me.m_bSavingEcospace Then Me.EndSave()
+
+        ' Release threading
+        Me.m_spacecalculators.Clear()
 
         ' Has UI?
         If (Me.HasUI) Then
@@ -724,17 +757,22 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Return "ndTimeDynamic\ndEcosimTools"
         End Get
     End Property
+
 #End Region ' UI
 
 #End Region ' Plug-in points
 
-#Region " Friend interfaces "
+#Region " Public bits "
 
     Public ReadOnly Property Settings As cIndicatorSettings
         Get
-            Return m_settings
+            Return Me.m_settings
         End Get
     End Property
+
+#End Region ' Public bits
+
+#Region " Friend interfaces "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1021,7 +1059,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(info.Name), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
+                If (info.Enabled) Then
+                    sw.WriteLine("{0},{1},{2}", cStringUtils.ToCSVField(info.OutputName), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
+                End If
             Next
         Next
 
@@ -1056,8 +1096,10 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                sb.Append(",")
-                sb.Append(cStringUtils.ToCSVField(info.Name))
+                If (info.Enabled) Then
+                    sb.Append(",")
+                    sb.Append(cStringUtils.ToCSVField(info.OutputName))
+                End If
             Next
         Next
         sw.WriteLine(sb.ToString())
@@ -1074,8 +1116,10 @@ Public Class cEwEEcologicalIndicatorsPlugin
                 Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                 For iInfo As Integer = 0 To grp.NumIndicators - 1
                     Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                    sb.Append(",")
-                    sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                    If (info.Enabled) Then
+                        sb.Append(",")
+                        sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                    End If
                 Next iInfo
             Next iGrp
             sw.WriteLine(sb.ToString())
@@ -1117,7 +1161,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                sw.Write("," & cStringUtils.ToCSVField(info.Name))
+                If (info.Enabled) Then
+                    sw.Write("," & cStringUtils.ToCSVField(info.OutputName))
+                End If
             Next
         Next
         sw.WriteLine()
@@ -1129,7 +1175,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
                 Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                 For iInfo As Integer = 0 To grp.NumIndicators - 1
                     Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                    sw.Write("," & cStringUtils.ToCSVField(info.GetValue(ind)))
+                    If (info.Enabled) Then
+                        sw.Write("," & cStringUtils.ToCSVField(info.GetValue(ind)))
+                    End If
                 Next
             Next
             sw.WriteLine()
@@ -1165,8 +1213,10 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                sb.Append(",")
-                sb.Append(cStringUtils.ToCSVField(info.Name))
+                If (info.Enabled) Then
+                    sb.Append(",")
+                    sb.Append(cStringUtils.ToCSVField(info.Name))
+                End If
             Next
         Next
         sw.WriteLine(sb.ToString())
@@ -1187,8 +1237,10 @@ Public Class cEwEEcologicalIndicatorsPlugin
                     Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                     For iInfo As Integer = 0 To grp.NumIndicators - 1
                         Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                        sb.Append(",")
-                        sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                        If (info.Enabled) Then
+                            sb.Append(",")
+                            sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                        End If
                     Next iInfo
                 Next iGrp
                 sw.WriteLine(sb.ToString())
@@ -1206,7 +1258,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Save calculated Ecospace indicators to a CSV file.
+    ''' Save calculated and enabled Ecospace indicators to a CSV file.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub SaveEcospaceCSV()
@@ -1221,7 +1273,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                fields.Add(info.Name)
+                If info.Enabled Then
+                    fields.Add(info.OutputName)
+                End If
             Next
         Next
 
@@ -1233,7 +1287,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
                     Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                     For iInfo As Integer = 0 To grp.NumIndicators - 1
                         Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                        exp.Value(ind.Location.Y, ind.Location.X, info.Name) = info.GetValue(ind)
+                        If info.Enabled Then
+                            exp.Value(ind.Location.Y, ind.Location.X, info.OutputName) = info.GetValue(ind)
+                        End If
                     Next iInfo
                 Next iGrp
             End If
@@ -1261,7 +1317,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                Dim fout As String = Path.Combine(pout, Me.ASCFileName(info.Name, iTS.ToString("D4")))
+                Dim fout As String = Path.Combine(pout, Me.ASCFileName(info.OutputName, iTS.ToString("D4")))
                 Dim exp As New cEcospaceImportExportASCIIData(Me.m_core)
                 For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
                     If (ind.IsComputed) Then

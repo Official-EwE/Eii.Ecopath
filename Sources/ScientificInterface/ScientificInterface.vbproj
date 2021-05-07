@@ -2200,6 +2200,10 @@
       <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
       <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\FishMIPv3Plugin\FishMIPv3Plugin.vbproj">
+      <Project>{6402204a-1134-4c46-b6d6-c9f197df638d}</Project>
+      <Name>FishMIPv3Plugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\RobertsBank\DepthChangePlugin\DepthChangePlugin.vbproj">
       <Project>{28c34ea4-882e-4838-907f-c154c3e67719}</Project>
       <Name>DepthChangePlugin</Name>

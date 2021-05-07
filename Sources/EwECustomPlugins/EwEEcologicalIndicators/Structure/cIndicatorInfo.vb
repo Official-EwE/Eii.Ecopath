@@ -34,9 +34,11 @@ Imports EwECore.Style
 ''' -----------------------------------------------------------------------
 Public Class cIndicatorInfo
 
-#Region " Private fields "
+#Region " Internal vars "
 
-#End Region ' Private fields
+    Private m_varname As String = ""
+
+#End Region ' Internal vars
 
 #Region " Construction "
 
@@ -59,7 +61,7 @@ Public Class cIndicatorInfo
                    Optional md As cVariableMetaData = Nothing)
 
         Me.Name = strName
-        Me.FunctionName = strFunctionName
+        Me.Abbreviation = strFunctionName
         Me.ValueDescription = strValueDescription
         Me.Units = strUnits
         Me.Description = strDescription
@@ -69,6 +71,13 @@ Public Class cIndicatorInfo
 #End Region ' Construction
 
 #Region " Public access "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the indicator should be computed.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Property Enabled As Boolean = True
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -83,6 +92,13 @@ Public Class cIndicatorInfo
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public ReadOnly Property Description As String = ""
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>The indicator abbreviated name. This name MUST coincode with 
+    ''' the function name  used to compute the indicator in 
+    ''' <see cref="cIndicators"/></summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property Abbreviation As String = ""
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -107,6 +123,22 @@ Public Class cIndicatorInfo
 
     ''' -------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set the name for this indicator to use when writing information 
+    ''' to file. By default, this returns the indicator <see cref="Name"/>.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Property OutputName As String
+        Get
+            If String.IsNullOrWhiteSpace(Me.m_varname) Then Return Me.Name
+            Return Me.m_varname
+        End Get
+        Set(value As String)
+            Me.m_varname = value
+        End Set
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
     ''' Get the value for the indicator from a computed <see cref="cIndicators">indicator</see>.
     ''' </summary>
     ''' <param name="indicators">The computed <see cref="cIndicators">indicator</see> to extract information from.</param>
@@ -117,7 +149,7 @@ Public Class cIndicatorInfo
         If (indicators Is Nothing) Then Return 0
 
         ' Try to get property info from the indicator
-        Dim mi As MethodInfo = GetType(cIndicators).GetMethod(Me.FunctionName)
+        Dim mi As MethodInfo = GetType(cIndicators).GetMethod(Me.Abbreviation)
         ' Prepare default value
         Dim sValue As Single = cCore.NULL_VALUE
         ' Was property found?
@@ -127,7 +159,7 @@ Public Class cIndicatorInfo
                 sValue = CSng(mi.Invoke(indicators, New Object() {}))
             Catch ex As Exception
                 ' A failure is due to a programming error
-                Debug.Assert(False, "Property " & Me.FunctionName & " cannot be converted to Single")
+                Debug.Assert(False, "Property " & Me.Abbreviation & " cannot be converted to Single")
             End Try
         End If
         ' Return value
@@ -135,13 +167,10 @@ Public Class cIndicatorInfo
 
     End Function
 
+    Public Overrides Function ToString() As String
+        Return Me.Name
+    End Function
+
 #End Region ' Public access
-
-#Region " Internals "
-
-    ''' <summary>The function name of the indicator in the <see cref="cIndicators">indicator</see></summary>
-    Private ReadOnly Property FunctionName As String = ""
-
-#End Region ' Internals
 
 End Class
