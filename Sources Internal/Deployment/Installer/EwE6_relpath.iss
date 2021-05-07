@@ -8,20 +8,23 @@
 #define EwEPro 1
 ; RobertsBank features are optional to 'EwEPro'
 #define RobertsBank 0
-#define SAFENET 0
-#define FISHMIP 0
+; EcoOcean features are optional to 'EwEPro'
+#define EcoOcean 0
+; FishMIP features are optional to 'EwEPro'
+#define FISHMIP 1
 #define MSPTools 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
 #define enaR 0
+#define SAFENET 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0.17322 devbuild 32-bit"
+  #define MyAppVersion "6.7.0 devbuild 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0.17322 devbuild 64-bit"
+  #define MyAppVersion "6.7.0 devbuild 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -37,7 +40,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.7.17322
+  VersionInfoVersion=6.7.0.17329
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -155,26 +158,35 @@ Source: "{#DefRoot}{#DefDB}\Generic_37.EwEmdb"; DestDir: "{userdocs}\EwE sample 
 Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
+
 ; -- ExcludeDeadCells --
 #if ExcludeDeadCells == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
 #endif
+
 ; -- RandomizeMPAs --
 #if RandomizeMPAs == 1
 Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
 #endif
+
 ; -- enaR --
 #if enaR == 1
 Source: "{#DefRoot}{#DefSrc}\enaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
 #endif
-; -- EwEPro --
-#if EwEPro == 1
-; - Roberts Bank only part of PRO
-#if RobertsBank == 1
-Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+
+#if MSPTools == 1
+Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
+Source: "{#DefRoot}{#DefSrc}\EwEMSPToolsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
 #endif
 
+#if SAFENET == 1
+Source: "{#DefRoot}{#DefSrc}\SafenetUtils.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
+Source: "{#DefRoot}{#DefSrc}\EwEMassApplyEnvResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
+Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
+#endif
+
+; -- EwEPro --
+#if EwEPro == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -292,20 +304,24 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5Image.dll"
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 #endif
+; - Roberts Bank only part of PRO
+#if RobertsBank == 1
+Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
 #endif
-#if MSPTools == 1
-Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
-Source: "{#DefRoot}{#DefSrc}\EwEMSPToolsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
+; - EcoOcean only part of PRO
+#if EcoOcean == 1
+Source: "{#DefRoot}{#DefSrc}\EcoOceanCellSpecificTempResponsesPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanLMEEffortPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanNativeRangesPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanQ10Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanUtils.dll"; DestDir: "{app}"; Flags: ignoreversion
 #endif
 #if FISHMIP == 1
-Source: "{#DefRoot}{#DefSrc}\GOMplugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\FishMIP2Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\FishMIPv3Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 #endif
-#if SAFENET == 1
-Source: "{#DefRoot}{#DefSrc}\SafenetUtils.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
-Source: "{#DefRoot}{#DefSrc}\EwEMassApplyEnvResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
-Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
 #endif
+
 [Components]
 Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
 Name: "databases"; Description: "Sample EwE models"; Types: full custom
@@ -343,6 +359,14 @@ Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange 
 ; - Roberts Bank only part of PRO
 #if RobertsBank == 1
 Name: "plugin\robertsbank"; Description: "Roberts Bank utilities"; Types: full custom
+#endif
+; - EcoOcean only part of PRO
+#if EcoOcean == 1
+Name: "plugin\ecoocean"; Description: "EcoOcean"; Types: full custom
+#endif
+; - FishMIP only part of PRO
+#if FISHMIP == 1
+Name: "plugin\fishmip"; Description: "FishMIP/TRIATLAS utilities"; Types: full custom
 #endif
 #endif
 #if MSPTools == 1
