@@ -250,5 +250,8 @@
   <ItemGroup>
     <None Include="Resources\BioDiversityPlugin.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FishMIP_logo_plain.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

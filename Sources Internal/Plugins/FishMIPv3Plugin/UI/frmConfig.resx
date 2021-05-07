@@ -360,39 +360,6 @@
   <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_pbTriatlas.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="m_pbTriatlas.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_pbTriatlas.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_pbTriatlas.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 512</value>
-  </data>
-  <data name="m_pbTriatlas.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_pbTriatlas.Size" type="System.Drawing.Size, System.Drawing">
-    <value>704, 60</value>
-  </data>
-  <data name="m_pbTriatlas.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_pbTriatlas.Name" xml:space="preserve">
-    <value>m_pbTriatlas</value>
-  </data>
-  <data name="&gt;&gt;m_pbTriatlas.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbTriatlas.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_pbTriatlas.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_btnApply.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Right</value>
   </data>
@@ -400,7 +367,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>629, 486</value>
+    <value>629, 466</value>
   </data>
   <data name="m_btnApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -421,7 +388,7 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_btnApply.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_scConfig.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -466,7 +433,7 @@
     <value>447, 26</value>
   </data>
   <data name="m_dgvFishing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 218</value>
+    <value>234, 205</value>
   </data>
   <data name="m_dgvFishing.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -523,7 +490,7 @@
     <value>174, 26</value>
   </data>
   <data name="m_dgvDriverScaling.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 218</value>
+    <value>267, 205</value>
   </data>
   <data name="m_dgvDriverScaling.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -568,7 +535,7 @@
     <value>m_hdrIndex</value>
   </data>
   <data name="&gt;&gt;m_hdrIndex.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17300, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIndex.Parent" xml:space="preserve">
     <value>m_tlpDrivers</value>
@@ -601,7 +568,7 @@
     <value>m_hdrScaling</value>
   </data>
   <data name="&gt;&gt;m_hdrScaling.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17300, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScaling.Parent" xml:space="preserve">
     <value>m_tlpDrivers</value>
@@ -643,7 +610,7 @@
     <value>0, 3, 3, 3</value>
   </data>
   <data name="m_dgvDriversPos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 218</value>
+    <value>168, 205</value>
   </data>
   <data name="m_dgvDriversPos.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -685,7 +652,7 @@
     <value>m_hdrFishing</value>
   </data>
   <data name="&gt;&gt;m_hdrFishing.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17300, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFishing.Parent" xml:space="preserve">
     <value>m_tlpDrivers</value>
@@ -703,7 +670,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpDrivers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 247</value>
+    <value>684, 234</value>
   </data>
   <data name="m_tlpDrivers.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -766,7 +733,7 @@
     <value>m_hdrExperiments</value>
   </data>
   <data name="&gt;&gt;m_hdrExperiments.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17300, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExperiments.Parent" xml:space="preserve">
     <value>m_tlpExperiment</value>
@@ -823,7 +790,7 @@
     <value>3, 58</value>
   </data>
   <data name="m_dgvExperimentDrivers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 105</value>
+    <value>678, 98</value>
   </data>
   <data name="m_dgvExperimentDrivers.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -964,7 +931,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpExperiment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 166</value>
+    <value>684, 159</value>
   </data>
   <data name="m_tlpExperiment.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -997,10 +964,10 @@
     <value>1</value>
   </data>
   <data name="m_scConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 417</value>
+    <value>684, 397</value>
   </data>
   <data name="m_scConfig.SplitterDistance" type="System.Int32, mscorlib">
-    <value>247</value>
+    <value>234</value>
   </data>
   <data name="m_scConfig.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1024,7 +991,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_plProtocol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 417</value>
+    <value>684, 397</value>
   </data>
   <data name="m_plProtocol.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1048,7 +1015,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tabProtocol.Size" type="System.Drawing.Size, System.Drawing">
-    <value>690, 423</value>
+    <value>690, 403</value>
   </data>
   <data name="m_tabProtocol.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1081,7 +1048,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>494, 398</value>
+    <value>494, 378</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1144,7 +1111,7 @@
     <value>3, 3, 0, 3</value>
   </data>
   <data name="m_dgvIndicators.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 398</value>
+    <value>192, 378</value>
   </data>
   <data name="m_dgvIndicators.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1174,7 +1141,7 @@
     <value>1</value>
   </data>
   <data name="m_scOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>690, 398</value>
+    <value>690, 378</value>
   </data>
   <data name="m_scOutput.SplitterDistance" type="System.Int32, mscorlib">
     <value>494</value>
@@ -1366,7 +1333,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tabOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>690, 423</value>
+    <value>690, 403</value>
   </data>
   <data name="m_tabOutput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1393,7 +1360,7 @@
     <value>6, 31</value>
   </data>
   <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>698, 449</value>
+    <value>698, 429</value>
   </data>
   <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1408,7 +1375,100 @@
     <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_tcMain.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tlpCredits.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="m_pbTriatlas.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbTriatlas.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbTriatlas.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbTriatlas.Location" type="System.Drawing.Point, System.Drawing">
+    <value>344, 0</value>
+  </data>
+  <data name="m_pbTriatlas.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_pbTriatlas.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 74</value>
+  </data>
+  <data name="m_pbTriatlas.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_pbTriatlas.Name" xml:space="preserve">
+    <value>m_pbTriatlas</value>
+  </data>
+  <data name="&gt;&gt;m_pbTriatlas.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbTriatlas.Parent" xml:space="preserve">
+    <value>m_tlpCredits</value>
+  </data>
+  <data name="&gt;&gt;m_pbTriatlas.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_pbFishMIP.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbFishMIP.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbFishMIP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_pbFishMIP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>338, 68</value>
+  </data>
+  <data name="m_pbFishMIP.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_pbFishMIP.Name" xml:space="preserve">
+    <value>m_pbFishMIP</value>
+  </data>
+  <data name="&gt;&gt;m_pbFishMIP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbFishMIP.Parent" xml:space="preserve">
+    <value>m_tlpCredits</value>
+  </data>
+  <data name="&gt;&gt;m_pbFishMIP.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpCredits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpCredits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 495</value>
+  </data>
+  <data name="m_tlpCredits.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpCredits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>698, 74</value>
+  </data>
+  <data name="m_tlpCredits.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.Name" xml:space="preserve">
+    <value>m_tlpCredits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.Parent" xml:space="preserve">
+    <value>m_tlpMain</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tlpCredits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbTriatlas" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFishMIP" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50,Absolute,10,Absolute,20,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1441,7 +1501,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_ts" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbTriatlas" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnApply" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tcMain" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,Absolute,60,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_ts" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnApply" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tcMain" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpCredits" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,Absolute,80,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -6170,6 +6230,12 @@
   <data name="&gt;&gt;ToolStripLabel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnEcoIndTriatlas.Name" xml:space="preserve">
+    <value>m_tsbnEcoIndTriatlas</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnEcoIndTriatlas.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbnEcoIndNone.Name" xml:space="preserve">
     <value>m_tsbnEcoIndNone</value>
   </data>
@@ -6182,16 +6248,10 @@
   <data name="&gt;&gt;m_tsbnEcoIndAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnEcoIndTriatlas.Name" xml:space="preserve">
-    <value>m_tsbnEcoIndTriatlas</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnEcoIndTriatlas.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmConfig</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.7.0.17300, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

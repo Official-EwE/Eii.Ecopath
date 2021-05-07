@@ -39,7 +39,6 @@ Partial Class frmConfig
         Me.m_tsbnSaveEcosim = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnSaveEcospace = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnSaveEcoInd = New System.Windows.Forms.ToolStripButton()
-        Me.m_pbTriatlas = New System.Windows.Forms.PictureBox()
         Me.m_btnApply = New System.Windows.Forms.Button()
         Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tabProtocol = New System.Windows.Forms.TabPage()
@@ -86,14 +85,16 @@ Partial Class frmConfig
         Me.m_tsbnTaxonDefaults = New System.Windows.Forms.ToolStripButton()
         Me.m_tsspOutput = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsbnEcoIndTriatlas = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnEcoIndNone = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnEcoIndAll = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnEcoIndTriatlas = New System.Windows.Forms.ToolStripButton()
+        Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbTriatlas = New System.Windows.Forms.PictureBox()
+        Me.m_pbFishMIP = New System.Windows.Forms.PictureBox()
         sep2 = New System.Windows.Forms.ToolStripSeparator()
         sep0 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tlpMain.SuspendLayout()
         Me.m_ts.SuspendLayout()
-        CType(Me.m_pbTriatlas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcMain.SuspendLayout()
         Me.m_tabProtocol.SuspendLayout()
         Me.m_plProtocol.SuspendLayout()
@@ -115,6 +116,9 @@ Partial Class frmConfig
         Me.m_scOutput.SuspendLayout()
         CType(Me.m_dgvIndicators, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tsOutput.SuspendLayout()
+        Me.m_tlpCredits.SuspendLayout()
+        CType(Me.m_pbTriatlas, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbFishMIP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'sep2
@@ -143,9 +147,9 @@ Partial Class frmConfig
         '
         resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
         Me.m_tlpMain.Controls.Add(Me.m_ts, 0, 0)
-        Me.m_tlpMain.Controls.Add(Me.m_pbTriatlas, 0, 3)
         Me.m_tlpMain.Controls.Add(Me.m_btnApply, 0, 2)
         Me.m_tlpMain.Controls.Add(Me.m_tcMain, 0, 1)
+        Me.m_tlpMain.Controls.Add(Me.m_tlpCredits, 0, 3)
         Me.m_tlpMain.Name = "m_tlpMain"
         '
         'm_ts
@@ -199,14 +203,6 @@ Partial Class frmConfig
         Me.m_tsbnSaveEcoInd.CheckOnClick = True
         resources.ApplyResources(Me.m_tsbnSaveEcoInd, "m_tsbnSaveEcoInd")
         Me.m_tsbnSaveEcoInd.Name = "m_tsbnSaveEcoInd"
-        '
-        'm_pbTriatlas
-        '
-        Me.m_pbTriatlas.BackColor = System.Drawing.Color.White
-        Me.m_pbTriatlas.BackgroundImage = Global.FishMIPv3Plugin.My.Resources.Resources.triatlas
-        resources.ApplyResources(Me.m_pbTriatlas, "m_pbTriatlas")
-        Me.m_pbTriatlas.Name = "m_pbTriatlas"
-        Me.m_pbTriatlas.TabStop = False
         '
         'm_btnApply
         '
@@ -607,6 +603,11 @@ Partial Class frmConfig
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
         resources.ApplyResources(Me.ToolStripLabel1, "ToolStripLabel1")
         '
+        'm_tsbnEcoIndTriatlas
+        '
+        resources.ApplyResources(Me.m_tsbnEcoIndTriatlas, "m_tsbnEcoIndTriatlas")
+        Me.m_tsbnEcoIndTriatlas.Name = "m_tsbnEcoIndTriatlas"
+        '
         'm_tsbnEcoIndNone
         '
         Me.m_tsbnEcoIndNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -619,10 +620,28 @@ Partial Class frmConfig
         resources.ApplyResources(Me.m_tsbnEcoIndAll, "m_tsbnEcoIndAll")
         Me.m_tsbnEcoIndAll.Name = "m_tsbnEcoIndAll"
         '
-        'm_tsbnEcoIndTriatlas
+        'm_tlpCredits
         '
-        resources.ApplyResources(Me.m_tsbnEcoIndTriatlas, "m_tsbnEcoIndTriatlas")
-        Me.m_tsbnEcoIndTriatlas.Name = "m_tsbnEcoIndTriatlas"
+        Me.m_tlpCredits.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_tlpCredits, "m_tlpCredits")
+        Me.m_tlpCredits.Controls.Add(Me.m_pbTriatlas, 1, 0)
+        Me.m_tlpCredits.Controls.Add(Me.m_pbFishMIP, 0, 0)
+        Me.m_tlpCredits.Name = "m_tlpCredits"
+        '
+        'm_pbTriatlas
+        '
+        Me.m_pbTriatlas.BackColor = System.Drawing.Color.White
+        Me.m_pbTriatlas.BackgroundImage = Global.FishMIPv3Plugin.My.Resources.Resources.triatlas
+        resources.ApplyResources(Me.m_pbTriatlas, "m_pbTriatlas")
+        Me.m_pbTriatlas.Name = "m_pbTriatlas"
+        Me.m_pbTriatlas.TabStop = False
+        '
+        'm_pbFishMIP
+        '
+        Me.m_pbFishMIP.BackgroundImage = Global.FishMIPv3Plugin.My.Resources.Resources.FishMIP_logo_plain
+        resources.ApplyResources(Me.m_pbFishMIP, "m_pbFishMIP")
+        Me.m_pbFishMIP.Name = "m_pbFishMIP"
+        Me.m_pbFishMIP.TabStop = False
         '
         'frmConfig
         '
@@ -638,7 +657,6 @@ Partial Class frmConfig
         Me.m_tlpMain.PerformLayout()
         Me.m_ts.ResumeLayout(False)
         Me.m_ts.PerformLayout()
-        CType(Me.m_pbTriatlas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tcMain.ResumeLayout(False)
         Me.m_tabProtocol.ResumeLayout(False)
         Me.m_plProtocol.ResumeLayout(False)
@@ -662,6 +680,9 @@ Partial Class frmConfig
         CType(Me.m_dgvIndicators, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tsOutput.ResumeLayout(False)
         Me.m_tsOutput.PerformLayout()
+        Me.m_tlpCredits.ResumeLayout(False)
+        CType(Me.m_pbTriatlas, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbFishMIP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -728,4 +749,6 @@ Partial Class frmConfig
     Private WithEvents m_scConfig As SplitContainer
     Private WithEvents m_tlpExperiment As TableLayoutPanel
     Private WithEvents m_tsbnCalculateScaling As ToolStripButton
+    Private WithEvents m_tlpCredits As TableLayoutPanel
+    Private WithEvents m_pbFishMIP As PictureBox
 End Class
