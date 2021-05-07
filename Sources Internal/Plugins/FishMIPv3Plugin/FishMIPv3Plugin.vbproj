@@ -244,5 +244,11 @@
   <ItemGroup>
     <None Include="Resources\triatlas-fish.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ecoocean_768px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BioDiversityPlugin.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

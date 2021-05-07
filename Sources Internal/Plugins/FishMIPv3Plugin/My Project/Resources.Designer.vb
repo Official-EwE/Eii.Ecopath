@@ -61,6 +61,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property BioDiversityPlugin() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BioDiversityPlugin", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to FishMIP ISIMIP3b runs.
         '''</summary>
         Friend ReadOnly Property CAPTION() As String
@@ -84,6 +94,16 @@ Namespace My.Resources
         Friend ReadOnly Property CSV_READ_ERROR() As String
             Get
                 Return ResourceManager.GetString("CSV_READ_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property ecoocean_768px() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ecoocean_768px", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

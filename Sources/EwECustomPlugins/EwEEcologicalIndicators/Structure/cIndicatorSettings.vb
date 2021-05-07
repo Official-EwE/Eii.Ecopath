@@ -153,7 +153,7 @@ Public Class cIndicatorSettings
     ''' <summary>
     ''' Get the <see cref="cIndicatorInfoGroup"/>s at a given index in the settings.
     ''' </summary>
-    ''' <param name="index">The index to obtain the <see cref="cIndicatorInfoGroup"/> for.</param>
+    ''' <param name="index">The zero-based index to obtain the <see cref="cIndicatorInfoGroup"/> for.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property IndicatorGroup(index As Integer) As cIndicatorInfoGroup
         Get
@@ -188,20 +188,20 @@ Public Class cIndicatorSettings
         grp.Add("DemB", My.Resources.IND_DEMB, My.Resources.IND_DEMB_DESC, My.Resources.IND_VALUE_B, strUnitCurrency)
         grp.Add("PelB", My.Resources.IND_PELB, My.Resources.IND_PELB_DESC, My.Resources.IND_VALUE_B, strUnitCurrency)
         grp.Add("DemPelB", My.Resources.IND_DEMPELB_RATIO, My.Resources.IND_DEMPELB_RATIO_DESC, My.Resources.IND_VALUE_B_RATIO)
-        grp.Add("PredB", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, My.Resources.IND_VALUE_B, strUnitCurrency)
+        grp.Add("Pred4B", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, My.Resources.IND_VALUE_B, strUnitCurrency)
         grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC, My.Resources.IND_KEMPTONSQ)
         grp.Add("ShannonDiversity", My.Resources.IND_SHANNON, My.Resources.IND_SHANNON_DESC, My.Resources.IND_SHANNON)
 
         ' 2 catch-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_CATCH, My.Resources.GROUP_CATCH_DESC)
-        grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
+        grp.Add("TotalC", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
         grp.Add("FishC", My.Resources.IND_FISHC, My.Resources.IND_FISHC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
         grp.Add("InveC", My.Resources.IND_INVC, My.Resources.IND_INVC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
         grp.Add("InveFishC", My.Resources.IND_INVFISHC, My.Resources.IND_INVFISHC_DESC, My.Resources.IND_VALUE_C_RATIO)
         grp.Add("DemC", My.Resources.IND_DEMC, My.Resources.IND_DEMC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
         grp.Add("PelC", My.Resources.IND_PELC, My.Resources.IND_PELC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
         grp.Add("DemPelC", My.Resources.IND_DEMPELC_RATIO, My.Resources.IND_DEMPELC_RATIO_DESC, My.Resources.IND_VALUE_C_RATIO)
-        grp.Add("sC4", My.Resources.IND_PREDC, My.Resources.IND_PREDC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
+        grp.Add("Pred4C", My.Resources.IND_PREDC, My.Resources.IND_PREDC_DESC, My.Resources.IND_VALUE_C, strUnitCatch)
         grp.Add("DT", My.Resources.IND_DIS, My.Resources.IND_DIS_DESC, My.Resources.IND_VALUE_DISCARDS, strUnitCatch)
 
         ' 3 trophic-based indicators

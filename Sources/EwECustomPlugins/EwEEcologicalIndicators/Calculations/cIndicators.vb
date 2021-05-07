@@ -724,7 +724,7 @@ Public MustInherit Class cIndicators
     ''' </summary>
     ''' <returns>The 'total fish of predaotry organisms >TL4' indicator.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function PredB() As Single
+    Public Function Pred4B() As Single
         Return Me.m_sTotalB4
     End Function
 
@@ -798,7 +798,7 @@ Public MustInherit Class cIndicators
     ''' </summary>
     ''' <returns>The 'total catch' indicator.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Ctotal() As Single
+    Public Function TotalC() As Single
         Return Me.m_sCT
     End Function
 
@@ -834,7 +834,7 @@ Public MustInherit Class cIndicators
     ''' Returns the 'Catch of predatory organisms with TL >= 4' indicator.
     ''' </summary>
     ''' <returns>The 'Catch of predatory organisms with TL >= 4.</returns>
-    Public Function sC4() As Single
+    Public Function Pred4C() As Single
         Return Me.m_sC4
     End Function
 
@@ -941,7 +941,6 @@ Public MustInherit Class cIndicators
     Public Function IVIC() As Single
         Return Me.m_sIVIc
     End Function
-
 
 #End Region ' Species indicators
 

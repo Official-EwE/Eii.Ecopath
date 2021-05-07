@@ -50,6 +50,8 @@ Public Class frmMain
     Private m_settings As cIndicatorSettings = Nothing
     Private m_bInUpdate As Boolean = False
 
+    Private WithEvents m_checker As cCheckboxHierarchy = Nothing
+
 #End Region ' Variables
 
 #Region " Construction "
@@ -134,6 +136,9 @@ Public Class frmMain
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
 
+        Me.m_checker = New cCheckboxHierarchy(Nothing)
+        Me.m_checker.ManageCheckedStates = False
+
         Try
             ' Populate tree view from indicator settings
             Me.m_tvIndicators.Nodes.Clear()
@@ -147,6 +152,8 @@ Public Class frmMain
                 ' Show description as tooltip text
                 tnGrp.ToolTipText = grp.Description
 
+                Me.m_checker.Add(tnGrp, Nothing)
+
                 For j As Integer = 0 To grp.NumIndicators - 1
                     ' Get indicator from group
                     Dim ind As cIndicatorInfo = grp.Indicator(j)
@@ -156,6 +163,10 @@ Public Class frmMain
                     tnInd.Tag = ind
                     ' Show description as tooltip text
                     tnInd.ToolTipText = ind.Description
+                    ' Set enabled state
+                    tnInd.Checked = ind.Enabled
+
+                    Me.m_checker.Add(tnInd, tnGrp)
 
                 Next
 
@@ -172,19 +183,12 @@ Public Class frmMain
             ' Catch programming error
             Debug.Assert(False, ex.Message)
         End Try
+        Me.m_checker.ManageCheckedStates = True
 
         ' Initialize content of controls
         Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
         Me.m_cbPlotAtEnd.Checked = My.Settings.PlotAtEnd
         Me.m_sliderNoBins.Value = My.Settings.NunHistBins
-
-        If (My.Settings.SaveToDefault) Then
-            Me.m_rbDefault.Checked = True
-        Else
-            Me.m_rbCustom.Checked = True
-        End If
-        Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
-        Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
         Me.Icon = My.Resources.BioDiversityPluginIcon
         Me.m_tsbnEcospaceSaveImage.Image = SharedResources.saveHS
@@ -197,6 +201,8 @@ Public Class frmMain
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
         Me.m_bInUpdate = False
+
+        Me.UpdateControls()
 
     End Sub
 
@@ -245,14 +251,14 @@ Public Class frmMain
         ' is broadcasted via a proper notification message.
         If (msg.Importance = eMessageImportance.Progress) Then Return
 
-        ' Is an external message?
-        If (msg.Type = eMessageType.GlobalSettingsChanged) Then
-            ' #Yes: Update default location because systemwide settings may have changed
-            Me.m_bInUpdate = True
-            Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
-            Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
-            Me.m_bInUpdate = False
-        End If
+        '' Is an external message?
+        'If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+        '    ' #Yes: Update default location because systemwide settings may have changed
+        '    Me.m_bInUpdate = True
+        '    Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
+        '    Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
+        '    Me.m_bInUpdate = False
+        'End If
 
         ' Update controls to reflect any core state changes
         Me.UpdateControls()
@@ -276,6 +282,9 @@ Public Class frmMain
     Protected Overrides Sub UpdateControls()
 
         If (Me.UIContext Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
+
+        Me.m_bInUpdate = True
 
         Dim csm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
         Dim bCanSave As Boolean = False
@@ -287,6 +296,15 @@ Public Class frmMain
         Me.m_cbRunWithEcospace.Checked = Me.m_settings.RunWithEcospace
         Me.m_cbRunWithMC.Checked = Me.m_settings.RunWithMonteCarlo
         Me.m_cbEcospaceAnnualOnly.Checked = Me.m_settings.EcospaceAnnualOnly
+
+        If (My.Settings.SaveToDefault) Then
+            Me.m_rbDefault.Checked = True
+        Else
+            Me.m_rbCustom.Checked = True
+        End If
+        Me.m_cbAutoSaveCSV.Checked = Me.m_plugin.AutoSave
+        Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
+        Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
         Select Case Me.SelectedTabComponent
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Any
@@ -326,6 +344,15 @@ Public Class frmMain
 
         Me.m_tbxHistNoBins.Text = CStr(Me.m_mcgraphPath.NumBins(Nothing))
 
+        For Each ndParent As TreeNode In Me.m_tvIndicators.Nodes
+            For Each ndInd As TreeNode In ndParent.Nodes
+                Dim ind As cIndicatorInfo = DirectCast(ndInd.Tag, cIndicatorInfo)
+                ndInd.Checked = ind.Enabled
+            Next
+        Next
+
+        Me.m_bInUpdate = False
+
     End Sub
 
 #End Region ' Overrides
@@ -342,6 +369,15 @@ Public Class frmMain
             ' Whoah
         End Try
 
+    End Sub
+
+    Private Sub OnTreeNodeCheckChanged(sender As Object, e As TreeViewEventArgs) _
+        Handles m_tvIndicators.AfterCheck
+
+        If (Me.m_bInUpdate) Then Return
+
+        Me.m_bTreenodeProcessingPending = True
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.ProcessTreenodeStates))
     End Sub
 
     Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) _
@@ -364,7 +400,6 @@ Public Class frmMain
     Private Sub OnAutoSaveCSVCChanged(sender As Object, e As System.EventArgs) _
         Handles m_cbAutoSaveCSV.CheckedChanged
 
-        ' User toggled AutoSaveCSV checkbox; update settings
         If Me.m_bInUpdate Then Return
         My.Settings.AutoSaveCSV = Me.m_cbAutoSaveCSV.Checked
         My.Settings.Save()
@@ -464,6 +499,8 @@ Public Class frmMain
 
     Private Sub OnSaveLocationChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbDefault.CheckedChanged, m_tbxOutputFolder.TextChanged
+
+        If (Me.m_bInUpdate) Then Return
 
         ' User has changed the content of controls that affect the save location
         ' Update settings accordingly
@@ -584,6 +621,20 @@ Public Class frmMain
         ' Update state specific controls as a precaution
         Me.UpdateControls()
 
+    End Sub
+
+    Private m_bTreenodeProcessingPending As Boolean = False
+
+    Friend Sub ProcessTreenodeStates()
+        If Not Me.m_bTreenodeProcessingPending Then Return
+        Me.m_bTreenodeProcessingPending = False
+        For Each tnGroup As TreeNode In Me.m_tvIndicators.Nodes
+            For Each tnInd As TreeNode In tnGroup.Nodes
+                Dim info As cIndicatorInfo = DirectCast(tnInd.Tag, cIndicatorInfo)
+                info.Enabled = tnInd.Checked
+            Next
+        Next
+        Me.UpdateIndicators(cEwEEcologicalIndicatorsPlugin.eComponentType.Any)
     End Sub
 
 #End Region ' Public methods

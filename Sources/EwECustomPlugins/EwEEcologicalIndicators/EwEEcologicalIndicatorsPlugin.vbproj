@@ -145,6 +145,7 @@
     <Compile Include="My Project\Settings.vb" />
     <Compile Include="Structure\cIndicatorGroup.vb" />
     <Compile Include="Structure\cIndicatorInfo.vb" />
+    <Compile Include="Threading\cIndicatorsComputer.vb" />
     <Compile Include="User interface\cEcosimGraphWrapper.vb" />
     <Compile Include="User interface\cEcospaceMapDrawer.vb" />
     <Compile Include="User interface\cEcospaceMapWrapper.vb" />

@@ -12,11 +12,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EcoOceanCellSpecificTempResponsesPlugin
-Imports EcoOceanLMEEffortPlugin
-Imports EcoOceanNativeRangesPlugin
-Imports EcoOceanQ10Plugin
-Imports EwEEcologicalIndicatorsPlugin
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -109,7 +104,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
         Get
-            Return EcoOceanUtils.My.Resources.ecoocean_768px
+            Return Nothing
         End Get
     End Property
 
@@ -214,37 +209,6 @@ Public Class cFishMIPEcospaceResultWriterPlugin
             Me.m_bSaving = False
             Return
         End If
-
-        ' Write run log file
-        Using sw As New StreamWriter(Path.Combine(strPath, "FishMIP_runinfo.txt"))
-
-            core.ExtraFileHeaderFields("SpinupEnabled") = CStr(Me.m_ds.UseSpinUp)
-            core.ExtraFileHeaderFields("SpinupYears") = CStr(Me.m_ds.SpinUpYears)
-
-            Dim nr As cEwENativeRangesPlugin = Me.NativeRanges()
-            core.ExtraFileHeaderFields("NativeRangesEnabled") = CStr(nr.ResetNativeRanges)
-            core.ExtraFileHeaderFields("NativeRangesDelay") = CStr(nr.ResetDelay)
-            core.ExtraFileHeaderFields("NativeRangesSpinUp") = CStr(nr.AllowResetDuringSpinup)
-
-            Dim q10 As cQ10UIPlugin = Me.Q10
-            core.ExtraFileHeaderFields("Q10Enabled") = CStr(q10.Autorunning)
-
-            Dim cs As cEcoOceanCellSpecificTempResponsesPlugin = Me.CellSpec
-            core.ExtraFileHeaderFields("CellSpecRespEnabled") = CStr(cs.AutoRun(eCoreComponentType.NotSet))
-
-            Dim lmeeff As cEwEDriveLMEEffortPlugin = Me.LMEEffort
-            core.ExtraFileHeaderFields("OverwriteLMEEffort") = CStr(lmeeff.OverwriteEffort)
-            core.ExtraFileHeaderFields("OverwriteMPAs") = CStr(lmeeff.OverwriteMPAs)
-
-            Dim ecoind As cEwEEcologicalIndicatorsPlugin = Me.EcoIND
-            core.ExtraFileHeaderFields("EcoIndEnabled") = CStr(ecoind.AutoRun(eCoreComponentType.EcoSpace))
-
-            sw.Write(core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-            sw.Flush()
-
-            core.ExtraFileHeaderFields.Clear()
-
-        End Using
 
         Me.CloseWriters()
 
@@ -375,39 +339,5 @@ Public Class cFishMIPEcospaceResultWriterPlugin
             Return Me.m_config
         End Get
     End Property
-
-#Region " Internals "
-
-    Private Function NativeRanges() As cEwENativeRangesPlugin
-        Dim core As cCore = Me.m_uic.Core
-        Dim pm As cPluginManager = core.PluginManager
-        Return DirectCast(pm.GetPlugins(cEwENativeRangesPlugin.PluginName)(0), cEwENativeRangesPlugin)
-    End Function
-
-    Private Function Q10() As cQ10UIPlugin
-        Dim core As cCore = Me.m_uic.Core
-        Dim pm As cPluginManager = core.PluginManager
-        Return DirectCast(pm.GetPlugins(cQ10UIPlugin.PluginName)(0), cQ10UIPlugin)
-    End Function
-
-    Private Function CellSpec() As cEcoOceanCellSpecificTempResponsesPlugin
-        Dim core As cCore = Me.m_uic.Core
-        Dim pm As cPluginManager = core.PluginManager
-        Return DirectCast(pm.GetPlugins(cEcoOceanCellSpecificTempResponsesPlugin.PluginName)(0), cEcoOceanCellSpecificTempResponsesPlugin)
-    End Function
-
-    Private Function LMEEffort() As cEwEDriveLMEEffortPlugin
-        Dim core As cCore = Me.m_uic.Core
-        Dim pm As cPluginManager = core.PluginManager
-        Return DirectCast(pm.GetPlugins(cEwEDriveLMEEffortPlugin.PluginName)(0), cEwEDriveLMEEffortPlugin)
-    End Function
-
-    Private Function EcoIND() As cEwEEcologicalIndicatorsPlugin
-        Dim core As cCore = Me.m_uic.Core
-        Dim pm As cPluginManager = core.PluginManager
-        Return DirectCast(pm.GetPlugins(cEwEEcologicalIndicatorsPlugin.PluginName)(0), cEwEEcologicalIndicatorsPlugin)
-    End Function
-
-#End Region ' Internals
 
 End Class

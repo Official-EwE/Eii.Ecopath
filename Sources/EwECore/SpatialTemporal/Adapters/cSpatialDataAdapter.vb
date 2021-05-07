@@ -90,6 +90,11 @@ Namespace SpatialData
 
         End Sub
 
+        Public Overrides Sub Dispose()
+            Me.m_backups.Clear()
+            MyBase.Dispose()
+        End Sub
+
 #End Region ' Constructor
 
 #Region " Basic bits "
@@ -643,6 +648,25 @@ Namespace SpatialData
 
 #Region " Connections "
 
+        Private m_backups As New Dictionary(Of Integer, cSpatialDataConnection())
+
+        Public Sub BackupConnections(iLayer As Integer, Optional bClear As Boolean = True)
+
+            If (iLayer < 0 Or iLayer >= Me.m_connections.Count) Then Return
+            Me.m_backups(iLayer) = Me.m_connections(iLayer).ToArray()
+            Me.m_connections(iLayer).Clear()
+
+        End Sub
+
+        Public Sub RestoreConnections(iLayer As Integer)
+            If (iLayer < 0 Or iLayer >= Me.m_connections.Count) Then Return
+            Me.m_connections(iLayer).Clear()
+            If (Me.m_backups.ContainsKey(iLayer)) Then
+                Me.m_connections(iLayer).AddRange(Me.m_backups(iLayer))
+                Me.m_backups.Remove(iLayer)
+            End If
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return configured connections for this adapter.
@@ -675,6 +699,17 @@ Namespace SpatialData
 
         End Function
 
+
+        Public Function AddConnection(iLayer As Integer, conn As cSpatialDataConnection) As cSpatialDataConnection
+
+            If (Me.m_connections(iLayer).Count < cSpatialDataStructures.cMAX_CONN) Then
+                conn.iLayer = iLayer
+                Me.m_connections(iLayer).Add(conn)
+            End If
+            Return conn
+
+        End Function
+
         Public Function AddConnection(iLayer As Integer) As cSpatialDataConnection
 
             Dim conn As cSpatialDataConnection = Nothing
@@ -689,6 +724,8 @@ Namespace SpatialData
         End Function
 
         Public Function RemoveConnection(iLayer As Integer, conn As cSpatialDataConnection) As Boolean
+
+            If (iLayer < 0 Or iLayer >= Me.m_connections(iLayer).Count) Then Return False
 
             Me.m_connections(iLayer).Remove(conn)
             Return True

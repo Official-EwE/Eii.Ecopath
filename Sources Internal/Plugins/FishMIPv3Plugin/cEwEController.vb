@@ -124,7 +124,7 @@ Public Class cEwEController
         Dim iLayer As Integer = Me.Data.GCMVarDriverLayerMapping(var)
         Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
         Dim sBiomass As Single = Me.Core.EcoPathGroupOutputs(iLayer).Biomass
-        Dim iPeriod As Integer = Me.Data.GetPeriodNo(Me.Core.RunStartYear)
+        Dim iPeriod As Integer = Me.Data.GetPeriodNo(Me.Core.EcosimFirstYear)
         If (iPeriod < 0) Then Return cCore.NULL_VALUE
 
         Dim p As cPeriod = Me.Data.Periods(iPeriod)

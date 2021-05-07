@@ -142,7 +142,7 @@
     <value>m_tvIndicators</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -370,7 +370,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChangeDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>466, 171</value>
+    <value>466, 181</value>
   </data>
   <data name="m_btnChangeDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -400,7 +400,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChooseFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>466, 197</value>
+    <value>466, 207</value>
   </data>
   <data name="m_btnChooseFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -427,7 +427,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxDefaultLocation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 173</value>
+    <value>155, 183</value>
   </data>
   <data name="m_tbxDefaultLocation.Size" type="System.Drawing.Size, System.Drawing">
     <value>305, 20</value>
@@ -451,7 +451,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 199</value>
+    <value>155, 209</value>
   </data>
   <data name="m_tbxOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>305, 20</value>
@@ -478,7 +478,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSaveTo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 156</value>
+    <value>3, 166</value>
   </data>
   <data name="m_lblSaveTo.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 13</value>
@@ -508,7 +508,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbCustom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 200</value>
+    <value>24, 210</value>
   </data>
   <data name="m_rbCustom.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 17</value>
@@ -538,7 +538,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 174</value>
+    <value>24, 184</value>
   </data>
   <data name="m_rbDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 17</value>
@@ -568,7 +568,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbAutoSaveCSV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 134</value>
+    <value>3, 144</value>
   </data>
   <data name="m_cbAutoSaveCSV.Size" type="System.Drawing.Size, System.Drawing">
     <value>159, 17</value>
@@ -778,7 +778,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrExport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 110</value>
+    <value>0, 120</value>
   </data>
   <data name="m_hdrExport.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 18</value>
@@ -796,7 +796,7 @@
     <value>m_hdrExport</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -829,7 +829,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -883,7 +883,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEEcologicalIndicatorsPlugin.gridEcopath, EwEEcologicalIndicatorsPlugin, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=04cd55d5998388f6</value>
+    <value>EwEEcologicalIndicatorsPlugin.gridEcopath, EwEEcologicalIndicatorsPlugin, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=04cd55d5998388f6</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpEcopath</value>
@@ -1030,7 +1030,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tlpEcospace</value>
@@ -1189,7 +1189,7 @@
     <value>m_sliderNoBins</value>
   </data>
   <data name="&gt;&gt;m_sliderNoBins.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sliderNoBins.Parent" xml:space="preserve">
     <value>m_tlpHistSettings</value>
@@ -1504,7 +1504,7 @@
     <value>m_llStatus</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Parent" xml:space="preserve">
     <value>$this</value>
@@ -6054,6 +6054,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.6.17229, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -65,6 +65,23 @@ Public Class cIndicatorInfoGroup
 
     ''' -------------------------------------------------------------------
     ''' <summary>
+    ''' Gets a value indicating at least one of the child <see cref="cIndicatorInfo">indicators</see> is enabled.
+    ''' </summary>
+    ''' <value>
+    '''   <c>true</c> if enabled; otherwise, <c>false</c>.
+    ''' </value>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property Enabled As Boolean
+        Get
+            For Each ind As cIndicatorInfo In Me.m_lIndicators
+                If ind.Enabled Then Return True
+            Next
+            Return False
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
     ''' Get the name of the indicator group.
     ''' </summary>
     ''' -------------------------------------------------------------------

@@ -55,11 +55,11 @@ Public Class frmConfig
         MyBase.OnLoad(e)
 
         Me.m_tsbnLoadProtocol.Image = SharedResources.certificate
-        Me.m_tsbnEcoOceanDefaults.Image = EcoOceanUtils.My.Resources.ecoocean_768px
+        Me.m_tsbnEcoOceanDefaults.Image = My.Resources.ecoocean_768px
         Me.m_tsbnTaxonDefaults.Image = SharedResources.taxon
         Me.m_tsbnSaveEcosim.Image = SharedResources.Ecosim_32x32
         Me.m_tsbnSaveEcospace.Image = SharedResources.Ecospace_32x32
-        Me.m_tsbnSaveEcoInd.Image = EwEEcologicalIndicatorsPlugin.My.Resources.BioDiversityPlugin
+        Me.m_tsbnSaveEcoInd.Image = My.Resources.BioDiversityPlugin
         Me.m_tsbnEcoIndTriatlas.Image = My.Resources.triatlas_fish
         Me.m_tsbnCalculateScaling.Image = SharedResources.CalculatorHS
 
