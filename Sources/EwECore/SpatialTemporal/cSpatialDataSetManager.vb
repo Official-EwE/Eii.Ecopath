@@ -838,7 +838,7 @@ Namespace SpatialData
         ''' <para>Note that this method can also be used to export datasets.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function Save(strFile As String, bExport As Boolean) As Boolean
+        Public Function Save(strFile As String, bExport As Boolean, Optional description As String = "", Optional author As String = "", Optional contact As String = "", Optional station As String = "") As Boolean
 
             Dim doc As New XmlDocument()
             Dim strPath As String = Path.GetDirectoryName(strFile)
@@ -857,6 +857,26 @@ Namespace SpatialData
 
             ' Build new base doc
             doc = cSpatialDataSetManager.NewDoc(xnRoot)
+            If (Not String.IsNullOrWhiteSpace(description)) Then
+                xaDataset = doc.CreateAttribute("Description")
+                xaDataset.Value = description
+                doc.Attributes.Append(xaDataset)
+            End If
+            If (Not String.IsNullOrWhiteSpace(author)) Then
+                xaDataset = doc.CreateAttribute("Author")
+                xaDataset.Value = author
+                doc.Attributes.Append(xaDataset)
+            End If
+            If (Not String.IsNullOrWhiteSpace(contact)) Then
+                xaDataset = doc.CreateAttribute("Contact")
+                xaDataset.Value = contact
+                doc.Attributes.Append(xaDataset)
+            End If
+            If (Not String.IsNullOrWhiteSpace(station)) Then
+                xaDataset = doc.CreateAttribute("Station")
+                xaDataset.Value = station
+                doc.Attributes.Append(xaDataset)
+            End If
 
             For Each ds As ISpatialDataSet In Me.m_lAvailable
 
