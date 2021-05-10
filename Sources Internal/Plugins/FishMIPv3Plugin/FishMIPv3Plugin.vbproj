@@ -217,26 +217,6 @@
       <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Tools\Shared libraries\EcoOceanUtils\EcoOceanUtils.vbproj">
-      <Project>{eb9df62a-c930-4eec-865e-7ef302aa72db}</Project>
-      <Name>EcoOceanUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EcoOceanCellSpecificTempResponsesPlugin\EcoOceanCellSpecificTempResponsesPlugin.vbproj">
-      <Project>{9a1ea476-b2fb-401c-8585-194c30579fef}</Project>
-      <Name>EcoOceanCellSpecificTempResponsesPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EcoOceanLMEEffortPlugin\EcoOceanLMEEffortPlugin.vbproj">
-      <Project>{e2011d02-4ac4-4cc1-9417-beb82af68f8e}</Project>
-      <Name>EcoOceanLMEEffortPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EcoOceanNativeRangesPlugin\EcoOceanNativeRangesPlugin.vbproj">
-      <Project>{f18b0f39-2007-43fe-9936-a0e74cf255c8}</Project>
-      <Name>EcoOceanNativeRangesPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EcoOceanQ10Plugin\EcoOceanQ10Plugin.vbproj">
-      <Project>{4f1052f9-e4cd-437b-95bf-8bb82821242b}</Project>
-      <Name>EcoOceanQ10Plugin</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\triatlas.png" />
