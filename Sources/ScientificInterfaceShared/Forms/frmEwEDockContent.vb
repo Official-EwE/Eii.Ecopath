@@ -60,6 +60,7 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Public Shadows Property Icon As Icon
             Get
+                If (Me.IsDisposed) Then Return Nothing
                 Return MyBase.Icon
             End Get
             Set(value As Icon)
