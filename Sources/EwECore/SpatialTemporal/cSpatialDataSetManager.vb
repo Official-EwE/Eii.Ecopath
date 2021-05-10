@@ -83,7 +83,6 @@ Namespace SpatialData
         Private m_strConfigFile As String = ""
         Private m_strAuthor As String = ""
         Private m_strContact As String = ""
-        Private m_strDescription As String = ""
 
         Private m_lConfigFiles As List(Of cSpatialDataConfigFile)
 
@@ -178,11 +177,11 @@ Namespace SpatialData
             If cfg.Initialize(strFile) Then
                 If cfg.Load(Me.m_core, Me) Then
 
-                    Me.m_strDescription = cfg.Description
-                    Me.m_strAuthor = cfg.Author
-                    Me.m_strContact = cfg.Contact
-
+                    Me.DataDescription = cfg.Description
+                    Me.DataAuthor = cfg.Author
+                    Me.DataContact = cfg.Contact
                     bSuccess = True
+
                 End If
             End If
 
@@ -227,6 +226,7 @@ Namespace SpatialData
 
             If (String.IsNullOrWhiteSpace(strAuthor)) Then strAuthor = Me.DataAuthor
             If (String.IsNullOrWhiteSpace(strContact)) Then strContact = Me.DataContact
+            If (String.IsNullOrWhiteSpace(strDescription)) Then strDescription = Me.DataDescription
 
             ' Any switch of destination other than to the default location is considered as an export
             Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And
@@ -673,25 +673,27 @@ Namespace SpatialData
 
 #Region " Data ownership "
 
-        Public ReadOnly Property DataAuthor As String
+        Public Property DataAuthor As String
             Get
                 If (String.IsNullOrWhiteSpace(Me.m_strAuthor)) Then Return Me.m_core.DefaultAuthor
                 Return Me.m_strAuthor
             End Get
+            Set(value As String)
+                Me.m_strAuthor = value
+            End Set
         End Property
 
-        Public ReadOnly Property DataContact As String
+        Public Property DataContact As String
             Get
                 If (String.IsNullOrWhiteSpace(Me.m_strContact)) Then Return Me.m_core.DefaultContact
                 Return Me.m_strContact
             End Get
+            Set(value As String)
+                Me.m_strContact = value
+            End Set
         End Property
 
-        Public ReadOnly Property DataDescription As String
-            Get
-                Return Me.m_strDescription
-            End Get
-        End Property
+        Public Property DataDescription As String = ""
 
 #End Region ' Data ownership
 
