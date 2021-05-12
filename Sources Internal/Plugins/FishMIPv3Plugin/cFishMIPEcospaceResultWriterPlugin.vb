@@ -64,7 +64,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
-            Return "Ecospace Fish-MIP ISIMIP3b"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
@@ -290,7 +290,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
         If Me.m_bSaving Then
             ' Notify UI
-            Dim msg As New cMessage(String.Format("FishMIPv2 Ecospace results have been saved to {0}", Me.AutoSaveOutputPath),
+            Dim msg As New cMessage(String.Format("{0} results have been saved to {1}", My.Resources.CAPTION, Me.AutoSaveOutputPath),
                                     eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
             msg.Hyperlink = Me.AutoSaveOutputPath
             core.Messages.SendMessage(msg)

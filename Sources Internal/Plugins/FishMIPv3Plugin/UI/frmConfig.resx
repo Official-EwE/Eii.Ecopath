@@ -307,10 +307,10 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbnSaveEcospace.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 22</value>
+    <value>83, 22</value>
   </data>
   <data name="m_tsbnSaveEcospace.Text" xml:space="preserve">
-    <value>Save with Ecospace</value>
+    <value>Save maps</value>
   </data>
   <data name="m_tsbnSaveEcoInd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -331,10 +331,10 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbnSaveEcoInd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 22</value>
+    <value>106, 22</value>
   </data>
   <data name="m_tsbnSaveEcoInd.Text" xml:space="preserve">
-    <value>Save EcoIND</value>
+    <value>Save indicators</value>
   </data>
   <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -535,7 +535,7 @@
     <value>m_hdrIndex</value>
   </data>
   <data name="&gt;&gt;m_hdrIndex.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17355, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIndex.Parent" xml:space="preserve">
     <value>m_tlpDrivers</value>
@@ -568,7 +568,7 @@
     <value>m_hdrScaling</value>
   </data>
   <data name="&gt;&gt;m_hdrScaling.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17355, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScaling.Parent" xml:space="preserve">
     <value>m_tlpDrivers</value>
@@ -652,7 +652,7 @@
     <value>m_hdrFishing</value>
   </data>
   <data name="&gt;&gt;m_hdrFishing.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17355, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFishing.Parent" xml:space="preserve">
     <value>m_tlpDrivers</value>
@@ -733,7 +733,7 @@
     <value>m_hdrExperiments</value>
   </data>
   <data name="&gt;&gt;m_hdrExperiments.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17355, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExperiments.Parent" xml:space="preserve">
     <value>m_tlpExperiment</value>
@@ -1057,7 +1057,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>FishMIPv3Plugin.gridConfig, FishMIPv3Plugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>FishMIPv3Plugin.gridConfig, FishMIPv3Plugin, Version=6.7.0.17355, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_scOutput.Panel1</value>
@@ -1378,7 +1378,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpCredits.ColumnCount" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_pbTriatlas.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -1390,13 +1390,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbTriatlas.Location" type="System.Drawing.Point, System.Drawing">
-    <value>344, 0</value>
+    <value>359, 0</value>
   </data>
   <data name="m_pbTriatlas.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pbTriatlas.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 74</value>
+    <value>319, 74</value>
   </data>
   <data name="m_pbTriatlas.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1419,11 +1419,14 @@
   <data name="m_pbFishMIP.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="m_pbFishMIP.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_pbFishMIP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>23, 3</value>
   </data>
   <data name="m_pbFishMIP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>338, 68</value>
+    <value>313, 68</value>
   </data>
   <data name="m_pbFishMIP.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1468,7 +1471,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpCredits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbTriatlas" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFishMIP" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50,Absolute,10,Absolute,20,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbTriatlas" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFishMIP" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,20,Percent,50,Absolute,20,Percent,50,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -6029,6 +6032,9 @@
         //////////////////////////////////////////////////8=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;caption&gt;</value>
   </data>
@@ -6252,6 +6258,6 @@
     <value>frmConfig</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.7.0.17322, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.7.0.17355, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

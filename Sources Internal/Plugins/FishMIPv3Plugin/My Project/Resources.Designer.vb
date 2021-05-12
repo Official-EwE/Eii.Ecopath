@@ -71,7 +71,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FishMIP ISIMIP3b runs.
+        '''  Looks up a localized string similar to FishMIP configuration.
         '''</summary>
         Friend ReadOnly Property CAPTION() As String
             Get
@@ -123,6 +123,60 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("FishMIP_logo_plain", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE configuration updated.
+        '''</summary>
+        Friend ReadOnly Property MESSAGE_CONFIG() As String
+            Get
+                Return ResourceManager.GetString("MESSAGE_CONFIG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Layer {0} connected to driver {1}: {2}.
+        '''</summary>
+        Friend ReadOnly Property MESSAGE_DETAIL_DRIVER() As String
+            Get
+                Return ResourceManager.GetString("MESSAGE_DETAIL_DRIVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time series {0} loaded: {1}.
+        '''</summary>
+        Friend ReadOnly Property MESSAGE_DETAIL_TIMESERIES_SET() As String
+            Get
+                Return ResourceManager.GetString("MESSAGE_DETAIL_TIMESERIES_SET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time series unloaded.
+        '''</summary>
+        Friend ReadOnly Property MESSAGE_DETAIL_TMESERIES_CLEAR() As String
+            Get
+                Return ResourceManager.GetString("MESSAGE_DETAIL_TMESERIES_CLEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to External dataset not defined.
+        '''</summary>
+        Friend ReadOnly Property MESSAGE_ERROR_DRIVER_NOT_FOUND() As String
+            Get
+                Return ResourceManager.GetString("MESSAGE_ERROR_DRIVER_NOT_FOUND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time series not loaded.
+        '''</summary>
+        Friend ReadOnly Property MESSAGE_ERROR_TIMESERIES_NOT_FOUND() As String
+            Get
+                Return ResourceManager.GetString("MESSAGE_ERROR_TIMESERIES_NOT_FOUND", resourceCulture)
             End Get
         End Property
         

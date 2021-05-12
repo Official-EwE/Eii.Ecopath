@@ -902,23 +902,29 @@ Public Class cConfiguration
 
 #Region " Messaging "
 
-    Public Sub ReportSuccess(text As String, Optional hyperlink As String = "")
-        Dim msg As New cMessage(String.Format(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.CAPTION, text),
-                                eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
-        msg.Hyperlink = hyperlink
-        Me.Core.Messages.SendMessage(msg, True)
+    Public Sub ReportSuccess(text As String, Optional details As IEnumerable(Of String) = Nothing, Optional hyperlink As String = "")
+        Me.Report(True, text, details, hyperlink)
     End Sub
 
-    Public Sub ReportFailure(text As String, Optional issues As IEnumerable(Of String) = Nothing, Optional hyperlink As String = "")
-        Dim msg As New cMessage(String.Format(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.CAPTION, text),
-                                eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-        If (issues IsNot Nothing) Then
-            For Each issue As String In issues
-                msg.AddVariable(New cVariableStatus(eStatusFlags.ErrorEncountered, issue, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, -1))
+    Public Sub ReportFailure(text As String, Optional details As IEnumerable(Of String) = Nothing, Optional hyperlink As String = "")
+        Me.Report(False, text, details, hyperlink)
+    End Sub
+
+    Public Sub Report(bSuccess As Boolean, text As String, details As IEnumerable(Of String), hyperlink As String)
+
+        Dim msg As New cMessage(String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, text),
+                                eMessageType.Any, eCoreComponentType.External,
+                                If(bSuccess, eMessageImportance.Information, eMessageImportance.Critical))
+
+        If (details IsNot Nothing) Then
+            For Each detail As String In details
+                msg.AddVariable(New cVariableStatus(eStatusFlags.OK, detail, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, -1), True)
             Next
         End If
+
         msg.Hyperlink = hyperlink
         Me.Core.Messages.SendMessage(msg, True)
+
     End Sub
 
 #End Region ' Messaging

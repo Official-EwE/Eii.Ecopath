@@ -16,7 +16,8 @@ Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEPlugin
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -38,12 +39,15 @@ Public Class cEwEController
 
     Public Sub ConfigEwE()
 
+        Dim effman As cFishingEffortShapeManger = Me.Core.FishingEffortShapeManager
+        Dim datman As cSpatialDataConnectionManager = Me.Core.SpatialDataConnectionManager
+        Dim setman As cSpatialDataSetManager = datman.DatasetManager
+
+        Dim msg As String = My.Resources.MESSAGE_CONFIG
+        Dim details As New Dictionary(Of String, String)
+        Dim bSuccess As Boolean = True
+
         Try
-
-            Dim effman As cFishingEffortShapeManger = Me.Core.FishingEffortShapeManager
-            Dim datman As cSpatialDataConnectionManager = Me.Core.SpatialDataConnectionManager
-            Dim setman As cSpatialDataSetManager = datman.DatasetManager
-
             effman.ResetToDefaults()
 
             ' This code presumes that external data connections are consistently named:
@@ -63,7 +67,8 @@ Public Class cEwEController
 
                     For iPeriod As Integer = 0 To Me.Data.Periods.Count - 1
                         Dim p As cPeriod = Me.Data.Periods(iPeriod)
-                        Dim ds As ISpatialDataSet = FindDataset(Me.Data.ClimateModel, Me.Data.ClimateScenarioForPeriod(p.Name), var)
+                        Dim dsname As String = DatasetName(Me.Data.ClimateModel, Me.Data.ClimateScenarioForPeriod(p.Name), var)
+                        Dim ds As ISpatialDataSet = FindDataset(dsname)
 
                         If (ds IsNot Nothing) Then
                             Dim bDuplicate As Boolean = False
@@ -72,14 +77,19 @@ Public Class cEwEController
                             Next
                             If Not bDuplicate Then
                                 datasets.Add(ds)
+                                If Not details.ContainsKey(dsname) Then
+                                    details(dsname) = cStringUtils.Localize(My.Resources.MESSAGE_DETAIL_DRIVER, var, dsname, "OK")
+
+                                End If
                             End If
+                        Else
+                            details(dsname) = cStringUtils.Localize(My.Resources.MESSAGE_DETAIL_DRIVER, var, dsname, My.Resources.MESSAGE_ERROR_DRIVER_NOT_FOUND)
+                            bSuccess = False
                         End If
                     Next
 
-                    Console.WriteLine("Applying {0} dataset(s) to {1}", datasets.Count, var)
                     If bIsScalar Then
-                        Me.Apply(datman.Adapter(eVarNameFlags.LayerBiomassForcing), i,
-                                 datasets.ToArray(), Me.Data.LayerScaling(Me.Data.ClimateModel, var))
+                        Me.Apply(datman.Adapter(eVarNameFlags.LayerBiomassForcing), i, datasets.ToArray(), Me.Data.LayerScaling(Me.Data.ClimateModel, var))
                     Else
                         Me.Apply(datman.Adapter(eVarNameFlags.LayerDriver), i, datasets.ToArray())
                     End If
@@ -89,7 +99,12 @@ Public Class cEwEController
 
             Dim iTS As Integer = Me.Data.Fishing
             If (iTS > 0) Then
-                Me.Core.LoadTimeSeries(iTS, True)
+                If Me.Core.LoadTimeSeries(iTS, True) Then
+                    details("TS") = cStringUtils.Localize(My.Resources.MESSAGE_DETAIL_TIMESERIES_SET, iTS, "OK")
+                Else
+                    details("TS") = cStringUtils.Localize(My.Resources.MESSAGE_DETAIL_TIMESERIES_SET, iTS, My.Resources.MESSAGE_ERROR_TIMESERIES_NOT_FOUND)
+                    bSuccess = False
+                End If
             Else
                 Me.Core.LoadTimeSeries(0)
                 For iShape As Integer = 0 To effman.Shapes.Count - 1
@@ -105,11 +120,14 @@ Public Class cEwEController
                     End If
                     shape.UnlockUpdates(bIsLast)
                 Next
+                details("TS") = My.Resources.MESSAGE_DETAIL_TMESERIES_CLEAR
             End If
             datman.Update(ForceUpdate:=True)
         Catch ex As Exception
 
         End Try
+
+        Me.Data.Report(bSuccess, msg, details.Values.ToArray, "")
 
     End Sub
 
@@ -131,7 +149,8 @@ Public Class cEwEController
         If (iPeriod < 0) Then Return cCore.NULL_VALUE
 
         Dim p As cPeriod = Me.Data.Periods(iPeriod)
-        Dim ds As ISpatialDataSet = FindDataset(gcm, Me.Data.ClimateScenarioForPeriod(p.Name), var)
+        Dim dsname As String = Me.DatasetName(gcm, Me.Data.ClimateScenarioForPeriod(p.Name), var)
+        Dim ds As ISpatialDataSet = FindDataset(dsname)
         If (ds Is Nothing) Then Return cCore.NULL_VALUE
 
         adt.BackupConnections(iLayer)
@@ -184,15 +203,15 @@ Public Class cEwEController
 
     End Sub
 
-    Private Function FindDataset(gcm As String, clim As String, var As String) As ISpatialDataSet
+    Private Function DatasetName(gcm As String, clim As String, var As String) As String
+        Return gcm & "_" & clim & "_" & var
+    End Function
 
+    Private Function FindDataset(dsname As String) As ISpatialDataSet
         Dim effman As cFishingEffortShapeManger = Me.Core.FishingEffortShapeManager
         Dim datman As cSpatialDataConnectionManager = Me.Core.SpatialDataConnectionManager
         Dim setman As cSpatialDataSetManager = datman.DatasetManager
-
-        Dim dsname As String = gcm & "_" & clim & "_" & var
         Return setman.Find(dsname)
-
     End Function
 
 End Class
