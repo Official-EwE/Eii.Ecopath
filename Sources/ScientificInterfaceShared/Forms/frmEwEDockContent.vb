@@ -285,7 +285,8 @@ Namespace Forms
             Me.m_timerPulse = Nothing
 
             ' Restore icon
-            Me.Icon = Me.m_icoOrg
+            If Not Me.IsDisposed Then Me.Icon = Me.m_icoOrg
+
             Me.m_icoOrg = Nothing
 
             ' Dispose current pulsing icon
