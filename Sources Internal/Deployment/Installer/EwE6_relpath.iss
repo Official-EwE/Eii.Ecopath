@@ -40,7 +40,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17348
+  VersionInfoVersion=6.7.0.17355
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -311,14 +311,14 @@ Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\P
 #endif
 ; - EcoOcean only part of PRO
 #if EcoOcean == 1
-Source: "{#DefRoot}{#DefSrc}\EcoOceanCellSpecificTempResponsesPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanLMEEffortPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanNativeRangesPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanQ10Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanUtils.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanCellSpecificTempResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanLMEEffortPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanNativeRangesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanQ10Plugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EcoOceanUtils.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 #endif
 #if FISHMIP == 1
-Source: "{#DefRoot}{#DefSrc}\FishMIPv3Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\FishMIPv3Plugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 #endif
 #endif
 
