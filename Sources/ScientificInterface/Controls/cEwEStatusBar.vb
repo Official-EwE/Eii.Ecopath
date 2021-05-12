@@ -201,7 +201,7 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecosim
             ' -------
-            If (sm.HasEcosimLoaded()) Then
+            If (sm.HasEcosimLoaded() And core.ActiveEcosimScenarioIndex > 0) Then
                 simScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
 
                 If core.ActiveTimeSeriesDatasetIndex > 0 Then
@@ -227,7 +227,7 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecospace
             ' -------
-            If (sm.HasEcospaceLoaded()) Then
+            If (sm.HasEcospaceLoaded() And core.ActiveEcospaceScenarioIndex > 0) Then
                 spaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
                 strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP,
                                            spaceScenario.Name,
