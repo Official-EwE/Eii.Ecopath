@@ -725,7 +725,7 @@ Namespace SpatialData
 
         Public Function RemoveConnection(iLayer As Integer, conn As cSpatialDataConnection) As Boolean
 
-            If (iLayer < 0 Or iLayer >= Me.m_connections(iLayer).Count) Then Return False
+            If (iLayer < 0 Or iLayer >= Me.m_connections.Count) Then Return False
 
             Me.m_connections(iLayer).Remove(conn)
             Return True
