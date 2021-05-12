@@ -48,7 +48,7 @@ Namespace Ecospace
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim sep1 As System.Windows.Forms.ToolStripSeparator
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSpatialTimeSeries))
@@ -169,7 +169,6 @@ Namespace Ecospace
             Me.m_toolbox.Filter = EwEUtils.Core.eVarNameFlags.NotSet
             Me.m_toolbox.Name = "m_toolbox"
             Me.m_toolbox.SelectedDatasetIndex = -1
-            Me.m_toolbox.SelectedTimeStep = -1
             Me.m_toolbox.UIContext = Nothing
             '
             'frmSpatialTimeSeries
@@ -191,12 +190,13 @@ Namespace Ecospace
             Me.ResumeLayout(False)
 
         End Sub
+
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_toolbox As ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox
         Private WithEvents m_tsDatasets As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tscmbLayerVariable As System.Windows.Forms.ToolStripComboBox
         Private WithEvents m_tslbFilter As System.Windows.Forms.ToolStripLabel
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_gridApply As gridExternalSpatialData
         Private WithEvents m_tsbnOnlyShowConnectedLayers As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
