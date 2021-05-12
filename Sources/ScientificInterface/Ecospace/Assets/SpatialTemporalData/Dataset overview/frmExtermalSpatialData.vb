@@ -121,8 +121,6 @@ Namespace Ecospace
             Next
             Me.m_tscmbLayerVariable.SelectedIndex = 0
 
-            Me.m_toolbox.SelectedTimeStep = 0
-
             Me.m_tsbnOnlyShowConnectedLayers.Checked = Me.m_gridApply.OnlyShowConnected
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
@@ -189,10 +187,6 @@ Namespace Ecospace
             Me.m_gridApply.Filter = vn
             Me.m_toolbox.Filter = vn
 
-        End Sub
-
-        Private Sub OnSelectedTimestepChanged(owner As Object, iTimeStep As Integer, dt As Date) _
-            Handles m_toolbox.OnSelectedTimestepChanged
         End Sub
 
         Private Sub OnToggleOnlyShowConnectedLayers(sender As System.Object, e As System.EventArgs) _

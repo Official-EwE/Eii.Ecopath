@@ -68,7 +68,6 @@ Namespace Ecospace.Controls
         Private m_lInfo As New List(Of cDatasetInfo)
         Private m_iTimestepSize As Integer = 0 ' Will be calculated, should perhaps be configurable
         Private m_iSelectedIndex As Integer = -1
-        Private m_iSelectedTimeStep As Integer = -1
 
         Private m_mhPath As cMessageHandler = Nothing
         Private m_mhSim As cMessageHandler = Nothing
@@ -198,33 +197,6 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Public Event OnSelectedTimestepChanged(owner As Object, iTimeStep As Integer, dt As DateTime)
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the one-based index of the selected Ecospace time step. 
-        ''' This value cannot exceed <see cref="cCore.nEcospaceTimeSteps"/>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property SelectedTimeStep As Integer
-            Get
-                Return Me.m_iSelectedTimeStep
-            End Get
-            Set(value As Integer)
-
-                If (Me.UIContext Is Nothing) Then Return
-
-                Me.m_iSelectedTimeStep = Math.Max(0, Math.Min(value, Me.m_uic.Core.nEcospaceTimeSteps - 1))
-                Me.Invalidate()
-
-                Try
-                    RaiseEvent OnSelectedTimestepChanged(Me, Me.m_iSelectedTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iSelectedTimeStep))
-                Catch ex As Exception
-
-                End Try
-            End Set
-        End Property
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Entirely refresh the content of the toolbox.
@@ -255,34 +227,6 @@ Namespace Ecospace.Controls
             Me.Invalidate(True)
         End Sub
 
-        Protected Overrides Function IsInputKey(keyData As System.Windows.Forms.Keys) As Boolean
-            Select Case keyData
-                Case Keys.Right, Keys.Left
-                    Return True
-            End Select
-            Return MyBase.IsInputKey(keyData)
-        End Function
-
-        Protected Overrides Sub OnKeyDown(e As System.Windows.Forms.KeyEventArgs)
-            Dim iInc As Integer = 0
-            Select Case e.KeyCode
-                Case Keys.Left
-                    iInc = -1
-                Case Keys.Right
-                    iInc = 1
-            End Select
-
-            If ((e.Modifiers And Keys.Control) <> 0) Then
-                Dim sStepsPerYear As Single = CSng(Me.m_uic.Core.nEcospaceTimeSteps / Math.Max(1, Me.m_uic.Core.nEcospaceYears))
-                iInc = CInt(iInc * sStepsPerYear)
-            End If
-
-            If (iInc <> 0) Then
-                Me.SelectedTimeStep = Math.Min(Me.m_uic.Core.nEcospaceTimeSteps, Math.Max(1, Me.m_iSelectedTimeStep + iInc))
-            End If
-            MyBase.OnKeyDown(e)
-        End Sub
-
         Protected Overrides Sub OnMouseDoubleClick(e As System.Windows.Forms.MouseEventArgs)
 
             'MyBase.OnMouseDoubleClick(e)
@@ -306,7 +250,6 @@ Namespace Ecospace.Controls
             If (pos IsNot Nothing) Then
                 Me.SelectedDatasetIndex = pos.m_iPosVert
             End If
-            Me.SelectedTimeStep = Me.TimestepFromPoint(ptClick)
             MyBase.OnMouseClick(e)
         End Sub
 
@@ -479,7 +422,10 @@ Namespace Ecospace.Controls
                 For Each conn As cSpatialDataConnection In adt.Connections()
                     Debug.Assert(conn IsNot Nothing)
                     If (adt.IsEnabled(conn.iLayer) And conn.IsConfigured) Then
-                        dicConn(conn.Dataset) = conn
+                        ' Only show datasets overlapping with run period
+                        If Me.OverlapsWithRunPeriod(conn.Dataset) Then
+                            dicConn(conn.Dataset) = conn
+                        End If
                     End If
                 Next conn
             Next
@@ -501,7 +447,7 @@ Namespace Ecospace.Controls
                 If conn.Dataset.TimeEnd = Date.MaxValue Then
                     pos.m_iTimeEnd = core.nEcospaceTimeSteps
                 Else
-                    pos.m_iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
+                    pos.m_iTimeEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
                 End If
 
                 For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
@@ -568,11 +514,6 @@ Namespace Ecospace.Controls
                     Dim sx As Single = i * sStepsPerYear * Me.m_iTimestepSize
                     g.DrawLine(p, rc.X + sx, rc.Y, sx, rc.Y + rc.Height)
                 Next
-            End Using
-
-            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), 2)
-                Dim sx As Single = Me.m_iSelectedTimeStep * Me.m_iTimestepSize
-                g.DrawLine(p, rc.X + sx, rc.Y, sx, rc.Y + rc.Height)
             End Using
 
         End Sub
@@ -708,6 +649,19 @@ Namespace Ecospace.Controls
                 If ((pt.Y >= area.Y) And (pt.Y <= (area.Y + area.Height))) Then Return pos
             Next
             Return Nothing
+        End Function
+
+        Private Function OverlapsWithRunPeriod(ds As ISpatialDataSet) As Boolean
+
+            If (ds.TimeStart = Date.MinValue) Then Return True
+            If (ds.TimeEnd = Date.MaxValue) Then Return True
+
+            Dim core As cCore = Me.m_uic.Core
+            Dim dtStart As Date = core.EcospaceTimestepToAbsoluteTime(1)
+            Dim dtEnd As Date = core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)
+
+            Return dtStart < ds.TimeEnd And dtEnd > ds.TimeStart
+
         End Function
 
 #End Region ' Internals
