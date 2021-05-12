@@ -166,6 +166,7 @@ Public Class cNetworkD3RWriterPlugin
                     End Using
                     msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_FILESAVE_SUCCESS, network.Name, cmd.FileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = Path.GetDirectoryName(cmd.FileName)
                 Catch ex As Exception
                     msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_FILESAVE_ERROR, network.Name, cmd.FileName, ex.Message),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
