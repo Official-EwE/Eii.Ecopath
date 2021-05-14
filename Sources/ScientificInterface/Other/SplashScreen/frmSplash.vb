@@ -32,20 +32,6 @@ Friend Class frmSplash
         Me.InitializeComponent()
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
         Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.Opaque, False)
-    End Sub
-
-    Public Sub UpdateStatus(message As String)
-        If Me.InvokeRequired Then
-            Me.Invoke(New UpdateStatusDelegate(AddressOf Me.UpdateStatus), message)
-        Else
-            Me.m_lblText.Text = message
-        End If
-    End Sub
-
-    Private Delegate Sub UpdateStatusDelegate(message As String)
-
-    Protected Overrides Sub OnLoad(e As System.EventArgs)
-        MyBase.OnLoad(e)
 
         Me.Text = My.Resources.GENERIC_CAPTION
         Me.BackgroundImage = My.Resources.splash_01
@@ -73,14 +59,30 @@ Friend Class frmSplash
         Me.m_lblReleaseMode.Text = sb.ToString()
 
         Me.UpdateStatus(My.Resources.STATUS_LOADING)
-        Me.CenterToScreen()
-        Me.Visible = True
 
 #If DEBUG Then
         Me.TopMost = False
 #Else
         Me.TopMost = True
-#End If
+#End If\
+    End Sub
+
+    Public Sub UpdateStatus(message As String)
+        If Me.InvokeRequired Then
+            Me.Invoke(New UpdateStatusDelegate(AddressOf Me.UpdateStatus), message)
+        Else
+            Me.m_lblText.Text = message
+        End If
+    End Sub
+
+    Private Delegate Sub UpdateStatusDelegate(message As String)
+
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+
+        Me.CenterToScreen()
+
+
+        MyBase.OnLoad(e)
 
     End Sub
 
