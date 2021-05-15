@@ -64,7 +64,7 @@ Friend Class frmSplash
         Me.TopMost = False
 #Else
         Me.TopMost = True
-#End If\
+#End If
     End Sub
 
     Public Sub UpdateStatus(message As String)

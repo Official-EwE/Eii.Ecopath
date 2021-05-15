@@ -1346,10 +1346,6 @@ Public Class frmEwE6
 
         End Select
 
-        ' JS 12oct07: disabled total refresh to minimize screen flickering
-        '' Redraw!
-        'Me.Refresh()
-
         ' Update status text
         Me.m_ssMain.SetStatusText(strText, sProgress)
 
@@ -2372,11 +2368,8 @@ Public Class frmEwE6
             Me.UpdateModelControls()
             Me.ClearScenarioDropdowns()
 
-            ' Take out the trash
-            GC.Collect()
-
-            ' Redraw everything immediately
-            Me.Refresh()
+            ' Invalidate, do not redraw
+            Me.Invalidate()
         End If
 
         ' Report succes

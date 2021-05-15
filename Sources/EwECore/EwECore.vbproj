@@ -352,6 +352,7 @@
     <Compile Include="Shapes\Forcing Functions\cMediationShapeManager.vb" />
     <Compile Include="Shapes\Forcing Functions\IEnviroInputData.vb" />
     <Compile Include="Shapes\Forcing Functions\IEnvironmentalResponseManager.vb" />
+    <Compile Include="Shapes\Shape functions\cComputedShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cLogisticFourParamsShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cShapeFunctionFactory.vb" />
     <Compile Include="Shapes\Shape functions\cShoulderShapeFunction.vb" />

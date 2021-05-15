@@ -3517,6 +3517,7 @@ Namespace Core
     '''alter the numerical value below, but feel free to add new function 
     '''types.</remarks>
     Public Enum eShapeFunctionType As Long
+        Computed = -1
         NotSet = 0
         Linear = 1
         Sigmoid_Legacy = 2
