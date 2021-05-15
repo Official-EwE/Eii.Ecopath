@@ -8267,6 +8267,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Computed|||Shape has been computed by external cleverness that cannot be replicated by EwE.
+        '''</summary>
+        Public ReadOnly Property SHAPEFUNCTION_COMPUTED() As String
+            Get
+                Return ResourceManager.GetString("SHAPEFUNCTION_COMPUTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Exponential.
         '''</summary>
         Public ReadOnly Property SHAPEFUNCTION_EXPONENTIAL() As String

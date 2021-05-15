@@ -3151,4 +3151,7 @@
   <data name="SHAPEFUNCTION_LOGISTIC_4PARAMS" xml:space="preserve">
     <value>Logistic 4 Parameters</value>
   </data>
+  <data name="SHAPEFUNCTION_COMPUTED" xml:space="preserve">
+    <value>Computed|||Shape has been computed by external cleverness that cannot be replicated by EwE</value>
+  </data>
 </root>
