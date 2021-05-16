@@ -111,7 +111,7 @@ Namespace Ecopath.Controls.FlowDiagram
                         Case eFDNodeValueType.Biomass
                             Return grp.Biomass
                         Case eFDNodeValueType.Production
-                            Return grp.PBOutput
+                            Return grp.PBOutput * grp.Biomass
                         Case Else
                             Debug.Assert(False)
                     End Select
