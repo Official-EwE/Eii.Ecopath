@@ -3,7 +3,7 @@
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 ; spinup + spattemp now combined in one flag 'EwEPro'
 #define EwEPro 1
 ; RobertsBank features are optional to 'EwEPro'
@@ -40,7 +40,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17355
+  VersionInfoVersion=6.7.0.17363
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
