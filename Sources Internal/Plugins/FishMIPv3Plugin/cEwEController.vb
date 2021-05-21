@@ -79,7 +79,6 @@ Public Class cEwEController
                                 datasets.Add(ds)
                                 If Not details.ContainsKey(dsname) Then
                                     details(dsname) = cStringUtils.Localize(My.Resources.MESSAGE_DETAIL_DRIVER, var, dsname, "OK")
-
                                 End If
                             End If
                         Else

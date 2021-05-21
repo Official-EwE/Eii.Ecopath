@@ -16,6 +16,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 Imports EwECore
 Imports EwECore.Auxiliary
+Imports EwECore.SpatialData
 Imports EwEEcologicalIndicatorsPlugin
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -31,6 +32,21 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class cConfiguration
 
+    Private Class cVariableComparer
+        Implements IComparer(Of cVariable)
+
+        Public Function Compare(x As cVariable, y As cVariable) As Integer Implements IComparer(Of cVariable).Compare
+            If x Is Nothing Then Return -1
+            If y Is Nothing Then Return 1
+            Dim i As Integer = String.Compare(x.VarType, y.VarType, True)
+            If (i = 0) Then
+                i = String.Compare(x.Name, y.Name, True)
+            End If
+            Return i
+        End Function
+
+    End Class
+
 #Region " Private vars "
 
     Private m_protocol As cProtocol = Nothing
@@ -40,6 +56,7 @@ Public Class cConfiguration
 
     ''' The layers that can be driven by the spatial temporal data framework (layer name -> index).
     Private m_driverlayersmapping As New Dictionary(Of String, Integer)
+
     ''' Drivable layer scaling factors (layer name -> scaling).
     Private m_scaling As New Dictionary(Of String, Single)
     ''' <summary>Soc specifier -> TS index (-1=ignore, 0+=ts index)</summary>
@@ -212,37 +229,33 @@ Public Class cConfiguration
         End Get
     End Property
 
-    ''' <summary>Get phy variables from protocol</summary>
-    Public ReadOnly Property PhyVariables As String()
+    Public ReadOnly Property Variable(var As String) As cVariable
         Get
-            Dim vars As New List(Of String)
             If (Me.m_protocol IsNot Nothing) Then
                 For i As Integer = 0 To Me.m_protocol.Variables.Count - 1
-                    Dim var As cVariable = Me.m_protocol.Variables(i)
-                    Dim test As String = var.VarType.ToLower()
-                    If test.EndsWith("biomass") Then
-                        vars.Add(var.Name)
+                    If String.Compare(var, Me.m_protocol.Variables(i).Name, True) = 0 Then
+                        Return Me.m_protocol.Variables(i)
                     End If
                 Next
             End If
-            Return vars.ToArray
+            Return Nothing
         End Get
     End Property
 
-    ''' <summary>Get phy variables from protocol</summary>
-    Public ReadOnly Property EnvDriverVariables As String()
+    ''' <summary>
+    ''' Returns the variable names in the protocol, alphabetically sorted and grouped by vartype.
+    ''' </summary>
+    Public ReadOnly Property Variables As String()
         Get
-            Dim vars As New List(Of String)
+            Dim varnames As New List(Of String)
             If (Me.m_protocol IsNot Nothing) Then
-                For i As Integer = 0 To Me.m_protocol.Variables.Count - 1
-                    Dim var As cVariable = Me.m_protocol.Variables(i)
-                    Dim test As String = var.VarType.ToLower()
-                    If test.EndsWith("driver") Then
-                        vars.Add(var.Name)
-                    End If
+                Dim vars As cVariable() = Me.m_protocol.Variables.ToArray()
+                Array.Sort(vars, New cVariableComparer())
+                For i As Integer = 0 To vars.Count - 1
+                    varnames.Add(vars(i).Name)
                 Next
             End If
-            Return vars.ToArray
+            Return varnames.ToArray()
         End Get
     End Property
 
@@ -285,6 +298,88 @@ Public Class cConfiguration
     End Property
 
 #End Region ' Protocol
+
+#Region " Variable mapping "
+
+    Public ReadOnly Property EcospaceLayerVarName(nanme As String) As eVarNameFlags
+        Get
+            Return EcospaceLayerVarName(Variable(nanme))
+        End Get
+    End Property
+
+    Public ReadOnly Property EcospaceLayerVarName(var As cVariable) As eVarNameFlags
+        Get
+            If (var IsNot Nothing) Then
+                Dim test As String = var.VarType.ToLower()
+                If test.EndsWith("production") Then
+                    Return eVarNameFlags.LayerRelPP
+                ElseIf test.EndsWith("biomass") Then
+                    Return eVarNameFlags.LayerBiomassRelativeForcing
+                ElseIf test.EndsWith("driver") Then
+                    Return eVarNameFlags.LayerDriver
+                ElseIf test.EndsWith("protection") Then
+                    Return eVarNameFlags.LayerMPA
+                ElseIf test.EndsWith("habitat") Then
+                    Return eVarNameFlags.LayerHabitat
+                ElseIf test.EndsWith("niche") Then
+                    Return eVarNameFlags.LayerHabitatCapacityInput
+                End If
+            End If
+            Return eVarNameFlags.NotSet
+        End Get
+    End Property
+
+    Public ReadOnly Property IsScalar(nanme As String) As Boolean
+        Get
+            Dim var As eVarNameFlags = Me.EcospaceLayerVarName(nanme)
+            Dim man As cSpatialDataConnectionManager = Me.Core.SpatialDataConnectionManager
+            Dim adt As cSpatialDataAdapter = man.Adapter(var)
+
+            If (adt IsNot Nothing) Then
+                Return TypeOf adt Is cSpatialScalarDataAdapter
+            End If
+
+            Return False
+        End Get
+    End Property
+
+    Private ReadOnly Property Variables(varname As eVarNameFlags) As String()
+        Get
+            Dim vars As New List(Of String)
+            If (Me.m_protocol IsNot Nothing) Then
+                For i As Integer = 0 To Me.m_protocol.Variables.Count - 1
+                    Dim var As cVariable = Me.m_protocol.Variables(i)
+                    If Me.EcospaceLayerVarName(var) = varname Then
+                        vars.Add(var.Name)
+                    End If
+                Next
+            End If
+            Return vars.ToArray
+        End Get
+    End Property
+
+    ''' <summary>Get pp variables from protocol</summary>
+    Public ReadOnly Property PPVariables As String()
+        Get
+            Return Me.Variables(eVarNameFlags.LayerBiomassRelativeForcing)
+        End Get
+    End Property
+
+    ''' <summary>Get phy variables from protocol</summary>
+    Public ReadOnly Property PhyVariables As String()
+        Get
+            Return Me.Variables(eVarNameFlags.LayerRelPP)
+        End Get
+    End Property
+
+    ''' <summary>Get phy variables from protocol</summary>
+    Public ReadOnly Property EnvDriverVariables As String()
+        Get
+            Return Me.Variables(eVarNameFlags.LayerDriver)
+        End Get
+    End Property
+
+#End Region ' Variable mapping
 
 #Region " Utility "
 
