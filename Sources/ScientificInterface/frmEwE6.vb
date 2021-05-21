@@ -2932,10 +2932,11 @@ Public Class frmEwE6
 
         If (TypeOf sender Is ToolStripDropDownItem) Then
             Dim dd As ToolStripDropDownItem = DirectCast(sender, ToolStripDropDownItem)
+            Dim fmt As New cCoreInterfaceFormatter()
             For Each tsi As ToolStripItem In dd.DropDownItems
                 If (tsi.Tag IsNot Nothing) Then
                     If (TypeOf tsi.Tag Is cCoreInputOutputBase) Then
-                        tsi.Text = DirectCast(tsi.Tag, cCoreInputOutputBase).Name
+                        tsi.Text = fmt.ToString(DirectCast(tsi.Tag, cCoreInputOutputBase))
                     End If
                 End If
             Next
