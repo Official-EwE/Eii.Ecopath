@@ -384,12 +384,11 @@ Namespace Ecopath
             stanza.RecruitmentPower = CSng(Me.m_fpRecPwr.Value)
             stanza.BiomassAccumulationRate = CSng(Me.m_fpBab.Value)
             stanza.WmatWinf = CSng(Me.m_fpWmatWinf.Value)
-            stanza.RecruitmentStanza = CInt(Me.m_cmbRecStanza.SelectedIndex)
 
-            If (Me.m_cmbRecStanza.SelectedIndex = 0) Then
-                stanza.RecruitmentStanza = 0
-            Else
+            If (TypeOf Me.m_cmbRecStanza.SelectedItem Is cStanzaGroup) Then
                 stanza.RecruitmentStanza = DirectCast(Me.m_cmbRecStanza.SelectedItem, cCoreInputOutputBase).Index
+            Else
+                stanza.RecruitmentStanza = 0
             End If
 
             If bEcosimLoaded Then

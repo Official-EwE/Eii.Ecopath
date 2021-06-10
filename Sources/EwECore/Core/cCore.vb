@@ -12130,6 +12130,8 @@ Public Class cCore
             Dim ba As Single
             Dim leadingB As Integer
             Dim leadingCB As Integer
+            Dim recruiting As Integer
+
             'maybe not the correct messagetype but it seems to work
             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name),
                                             eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza)
@@ -12161,6 +12163,7 @@ Public Class cCore
             Next
             leadingB = stanza.LeadingB
             leadingCB = stanza.LeadingCB
+            recruiting = stanza.RecruitmentStanza
 
             If SecondAge(nLifeStages) = 0 Then
                 For i = 2 To nLifeStages
@@ -12206,6 +12209,8 @@ Public Class cCore
             stanza.FixedFecundity = bFixedFecundity
             stanza.LeadingB = leadingB
             stanza.LeadingCB = leadingCB
+            stanza.RecruitmentStanza = recruiting
+
             stanza.EggAtSpawn = EggAtSpawn
 
             'stanza.AllowValidation = True
