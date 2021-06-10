@@ -64,7 +64,7 @@ Namespace Controls.Map
             Dim min As Single = map.MinValue
             Dim max As Single = map.MaxValue
             Dim range As Single = max - min
-            If (range = 0) Then range = 1
+            If (range = 0) Then range = 1 : min = 0
 
             Try
                 For i As Integer = 1 To Me.InRow
