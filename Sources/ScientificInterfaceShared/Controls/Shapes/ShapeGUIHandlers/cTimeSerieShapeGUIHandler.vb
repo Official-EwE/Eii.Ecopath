@@ -153,7 +153,7 @@ Namespace Controls
 
             Select Case cmd
                 Case eShapeCommandTypes.Add
-                    Return True
+                    Return False
                 Case eShapeCommandTypes.Weight
                     Return True
                 Case eShapeCommandTypes.Duplicate
@@ -167,7 +167,7 @@ Namespace Controls
                 Case eShapeCommandTypes.Modify
                     Return True
                 Case eShapeCommandTypes.Remove
-                    Return True
+                    Return False
                 Case eShapeCommandTypes.Seasonal
                     Return False
                 Case eShapeCommandTypes.SetWeight
@@ -202,9 +202,9 @@ Namespace Controls
 
             Select Case cmd
 
-                Case cShapeGUIHandler.eShapeCommandTypes.Import, _
-                     cShapeGUIHandler.eShapeCommandTypes.Load, _
-                     cShapeGUIHandler.eShapeCommandTypes.FilterList, _
+                Case cShapeGUIHandler.eShapeCommandTypes.Import,
+                     cShapeGUIHandler.eShapeCommandTypes.Load,
+                     cShapeGUIHandler.eShapeCommandTypes.FilterList,
                      eShapeCommandTypes.FilterName
                     Return True
 
@@ -215,16 +215,16 @@ Namespace Controls
                     End If
                     Return False
 
-                Case cShapeGUIHandler.eShapeCommandTypes.Add, _
-                     cShapeGUIHandler.eShapeCommandTypes.Weight, _
+                Case cShapeGUIHandler.eShapeCommandTypes.Weight,
                      cShapeGUIHandler.eShapeCommandTypes.Export
                     Return Me.Core.HasTimeSeries
 
-                Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
+                Case cShapeGUIHandler.eShapeCommandTypes.Duplicate,
+                     cShapeGUIHandler.eShapeCommandTypes.Add,
                      cShapeGUIHandler.eShapeCommandTypes.Remove
-                    Return bHasSelection
+                    Return False
 
-                Case cShapeGUIHandler.eShapeCommandTypes.Modify, _
+                Case cShapeGUIHandler.eShapeCommandTypes.Modify,
                      cShapeGUIHandler.eShapeCommandTypes.SaveAsImage
                     Return bHasSingleSelection
 
