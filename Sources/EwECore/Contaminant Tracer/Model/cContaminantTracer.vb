@@ -98,21 +98,28 @@ Public Class cContaminantTracer
         maxT = 1.0# / 12
         For i = 0 To Me.m_EPData.NumGroups
             'calculate equilibrium state estimate
-            Ceq = CSng(Cintotal(i) / (Closs(i)) + 1.0E-20)
+            'Ceq = CSng(Cintotal(i) / (Closs(i)) + 1.0E-20)
+            'this should be allowed to evaluate as Inf or NaN
+            Ceq = CSng(Cintotal(i) / Closs(i))
             'calculate distance to equilibrium (%)
+            'if the equilibrium is Inf or NaN, then this should evaluate to NaN
             Terr = CSng(2.0 * Math.Abs(Ceq - Me.ConcTr(i)) / (Ceq + Me.ConcTr(i)))
-            If Terr < 0.1 Then
+            If Terr < 0.01 Then
                 'this forces the maximum timestep size to be 1/closs
-                Terr = 0.1
+                Terr = 0.01
             End If
             'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
             'the timestep scales from (0.01 to 1.0) times 1/closs as ConcTr approaches Ceq
-            Ttemp = CSng(0.001 / Terr / Closs(i))
+            'in the case of NaN for Terr, this evaluates to NaN, and no action will be taken (keep default timestep)
+            Ttemp = CSng(0.01 / Terr / Closs(i))
             If Ttemp < maxT Then
                 maxT = Ttemp
             End If
         Next
+        'calculate number of ecotracer timesteps per ecosim timestep based on the max timestep
         nstep = CInt(Math.Ceiling(1.0 / 12.0 / maxT))
+        'cap the max timestep at the user defined value
+        nstep = Math.Min(nstep, m_TracerData.MaxTimeSteps)
         Tst = CSng(1.0# / (12 * nstep))
 
         'Euler 1st step
