@@ -396,11 +396,9 @@ Public Class frmShapeValue
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
         Me.m_txtName.Enabled = True
-        Me.m_txtName.Text = ts.Name
 
         Me.m_lblWeight.Visible = True
         Me.m_txtWeight.Visible = True
-        Me.m_fpWeight.Value = ts.WtType
 
         Me.m_lblTSType.Visible = True
         Me.m_cmbTSType.Visible = True
@@ -410,6 +408,11 @@ Public Class frmShapeValue
 
         Me.m_lblViewAs.Visible = False
         Me.m_cmbViewAs.Visible = False
+
+        If (ts IsNot Nothing) Then
+            Me.m_txtName.Text = ts.Name
+            Me.m_fpWeight.Value = ts.WtType
+        End If
 
         Me.FillTSTypeCombo(ts)
 
@@ -609,15 +612,20 @@ Public Class frmShapeValue
 
             ' Time series specific tests:
             If (bIsTimeSeries) Then
-                ' TS need a valid weight factor
-                ' Parse value using UI number settings
-                bEnableOk = bEnableOk And (Single.Parse(Me.m_txtWeight.Text) >= 0)
-                ' TS need a valid poolcode selection
-                bEnableOk = bEnableOk And (Me.m_cmbPoolCode.SelectedIndex >= 0)
-                ' .. and perhaps a valid secondary pool code too
-                Dim ts As cTimeSeries = DirectCast(Me.m_shape, cTimeSeries)
-                If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
-                    bEnableOk = bEnableOk And (Me.m_cmbPoolCodeSec.SelectedIndex >= 0)
+                If Me.m_shape IsNot Nothing Then
+
+                    ' TS need a valid weight factor
+                    ' Parse value using UI number settings
+                    bEnableOk = bEnableOk And (Single.Parse(Me.m_txtWeight.Text) >= 0)
+                    ' TS need a valid poolcode selection
+                    bEnableOk = bEnableOk And (Me.m_cmbPoolCode.SelectedIndex >= 0)
+                    ' .. and perhaps a valid secondary pool code too
+                    Dim ts As cTimeSeries = DirectCast(Me.m_shape, cTimeSeries)
+                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
+                        bEnableOk = bEnableOk And (Me.m_cmbPoolCodeSec.SelectedIndex >= 0)
+                    End If
+                Else
+                    bEnableOk = False
                 End If
             End If
 
