@@ -57,7 +57,7 @@ Friend Class cDBUpdate6_70_00_03
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Delete orphaned fishing effort shapes
+    ''' Add arena share sequential no
     ''' </summary>
     ''' <param name="db"></param>
     ''' <returns></returns>
