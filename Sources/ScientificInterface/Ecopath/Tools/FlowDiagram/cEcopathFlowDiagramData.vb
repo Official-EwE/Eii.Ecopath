@@ -47,8 +47,8 @@ Namespace Ecopath.Controls.FlowDiagram
         Private m_bInvalid As Boolean = True
         Private m_datatype As eFDNodeValueType = eFDNodeValueType.Biomass
 
-        Private m_TTLX_all() As Single
-        Private m_catch_all() As Single
+        Private m_fleetTTLX() As Single
+        Private m_fleetcatch() As Single
 
 #End Region ' Internals
 
@@ -191,7 +191,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iPred -= c.nGroups
                 If (iPrey <= c.nGroups) Then
                     Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(iPred)
-                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / (Me.m_catch_all(iPred) + 1.0E-20F)
+                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / (Me.m_fleetcatch(iPred) + 1.0E-20F)
                 End If
                 Return 0
             End Get
@@ -208,7 +208,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iIndex -= c.nGroups
 
                 Me.UpdateData()
-                Return Me.m_TTLX_all(iIndex)
+                Return Me.m_fleetTTLX(iIndex)
             End Get
         End Property
 
@@ -302,16 +302,18 @@ Namespace Ecopath.Controls.FlowDiagram
             If (Me.UIContext Is Nothing) Then Return
 
             Dim c As cCore = Me.UIContext.Core
-            Dim link_all(c.nGroups + c.nFleets, c.nGroups + c.nFleets) As Single
-            Dim val_all(c.nGroups + c.nFleets) As Single
-            Dim PP_all(c.nGroups + c.nFleets) As Single
-            ReDim Me.m_TTLX_all(c.nGroups + c.nFleets)
-            ReDim Me.m_catch_all(c.nFleets)
+            Dim link_all(c.nFleets + c.nGroups, c.nFleets + c.nGroups) As Single
+            Dim val_all(c.nFleets + c.nGroups) As Single
+            Dim PP_all(c.nFleets + c.nGroups) As Single
+            Dim TTLX_all(c.nFleets + c.nGroups) As Single
+
+            ReDim Me.m_fleetcatch(c.nFleets)
+            ReDim Me.m_fleetTTLX(c.nFleets)
 
             For i As Integer = 1 To c.nFleets
                 Dim flt As cEcopathFleetInput = c.EcopathFleetInputs(i)
                 For j As Integer = 1 To c.nGroups
-                    Me.m_catch_all(i) = Me.m_catch_all(i) + flt.Landings(j) + flt.Discards(j)
+                    Me.m_fleetcatch(i) = Me.m_fleetcatch(i) + flt.Landings(j) + flt.Discards(j)
                 Next
             Next
 
@@ -361,7 +363,12 @@ Namespace Ecopath.Controls.FlowDiagram
             Next i
 
             Dim fn As cEcoFunctions = c.EcoFunction
-            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, link_all, Me.m_TTLX_all)
+            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, link_all, TTLX_all)
+
+            For i As Integer = 1 To c.nFleets
+                Me.m_fleetTTLX(i) = TTLX_all(i)
+            Next
+
             Me.m_bInvalid = False
 
         End Sub
