@@ -351,7 +351,6 @@ Namespace Ecosim
                 Me.CalcMo()
                 Me.CalcBaseAdditiveMort()
 
-
                 Me.InitStanza()
 
                 Me.BaseValueOfHarvest()
