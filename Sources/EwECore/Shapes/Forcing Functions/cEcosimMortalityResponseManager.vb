@@ -69,7 +69,7 @@ Public Class cEcosimMortalityResponseManager
                 EnviroData.Init(Me.m_simData.CapEnvResData, Me.m_simData)
                 EnviroData.IsCapacityEnabled = True
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
-                    EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.MortalityRespFuncIndex(iEnv, iGroup)
+                    EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.MortalityRespFuncIndex(EnviroData.Index, iGroup)
                 Next
                 'Me.m_simData.lstEnviroInputData.Add(EnviroData)
                 Me.m_lstEnviroData.Add(EnviroData)
