@@ -32,7 +32,7 @@
 ' The USE_LICENSE_LIB flag is ONLY checked in release mode; the STDF will NOT
 ' check the core license in DEBUG mode.
 
-#Const USE_LICENSE_LIB = 1
+#Const USE_LICENSE_LIB = 0
 
 #If Not DEBUG Then
 #Const USE_LICENSE_LIB = 1
