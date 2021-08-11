@@ -28,6 +28,7 @@ Imports System.Windows.Forms
 
 Namespace Controls
 
+#Disable Warning CA1063 ' Implement IDisposable Correctly
     ''' <summary>
     ''' Management class for a hierarchy of check boxes.
     ''' </summary>
@@ -37,7 +38,7 @@ Namespace Controls
 #Region " Private vars "
 
         Private m_dtLinks As New Dictionary(Of Object, cLink)
-        Private m_linkRoot As cLink = Nothing
+        Private m_linkRoots As New List(Of cLink)
         Private m_bManageChecks As Boolean = False
         Private m_iLockCount As Integer = 0
 
@@ -112,7 +113,7 @@ Namespace Controls
 
                 Dim iNumChecked As Integer = 0
                 Dim iNumInterm As Integer = 0
-                Dim state As CheckState = Checkstate.Unchecked
+                Dim state As CheckState = CheckState.Unchecked
 
                 ' Only affect links with children
                 If (Me.m_children.Count > 0) Then
@@ -122,17 +123,17 @@ Namespace Controls
                         ' Update its checked state
                         child.Update()
                         ' Count checked state of children
-                        If child.Checkstate = Checkstate.Checked Then iNumChecked += 1
-                        If child.Checkstate = Checkstate.Indeterminate Then iNumInterm += 1
+                        If child.Checkstate = CheckState.Checked Then iNumChecked += 1
+                        If child.Checkstate = CheckState.Indeterminate Then iNumInterm += 1
                     Next
 
                     ' Determine checked state of this node
                     If (iNumChecked = 0) Then
-                        If (iNumInterm > 0) Then state = Checkstate.Indeterminate
+                        If (iNumInterm > 0) Then state = CheckState.Indeterminate
                     ElseIf (iNumChecked > 0) And (iNumChecked < Me.m_children.Count) Then
-                        state = Checkstate.Indeterminate
+                        state = CheckState.Indeterminate
                     Else
-                        state = Checkstate.Checked
+                        state = CheckState.Checked
                     End If
 
                     ' Apply state
@@ -170,12 +171,12 @@ Namespace Controls
             Public Sub New(cb As CheckBox, hr As cCheckboxHierarchy, parent As cLink)
                 MyBase.New(hr, parent)
                 Me.m_cb = cb
-                AddHandler Me.m_cb.CheckedChanged, AddressOf Me.OnCheckChanged
+                AddHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
             End Sub
 
             Public Overrides Sub Dispose()
                 If (Me.m_cb IsNot Nothing) Then
-                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf Me.OnCheckChanged
+                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
                     Me.m_cb = Nothing
                 End If
                 MyBase.Dispose()
@@ -379,18 +380,18 @@ Namespace Controls
             ''' </summary>
             ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
             ''' created for.</param>
-            ''' <param name="cb">The <see cref="cEwECheckboxCell"/> to define this link for.</param>
+            ''' <param name="cb">The <see cref="EwECheckboxCell"/> to define this link for.</param>
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(cb As DataGridViewCheckBoxCell, hr As cCheckboxHierarchy, parent As cLink)
                 MyBase.New(hr, parent)
                 Me.m_cb = cb
-                AddHandler Me.m_cb.DataGridView.CellContentClick, AddressOf Me.OnCellValueChanged
+                AddHandler Me.m_cb.DataGridView.CellContentClick, AddressOf OnCellValueChanged
             End Sub
 
             Public Overrides Sub Dispose()
                 If (Me.m_cb IsNot Nothing) Then
-                    RemoveHandler Me.m_cb.DataGridView.CellContentClick, AddressOf Me.OnCellValueChanged
+                    RemoveHandler Me.m_cb.DataGridView.CellContentClick, AddressOf OnCellValueChanged
                     Me.m_cb = Nothing
                 End If
                 MyBase.Dispose()
@@ -436,6 +437,69 @@ Namespace Controls
 
 #End Region ' DataGridView support
 
+#Region " Treeview support "
+
+        Private Class cTreeNodeLink
+            Inherits cLink
+
+            Private m_node As TreeNode
+
+            Public Sub New(nd As TreeNode, hr As cCheckboxHierarchy, parent As cLink)
+                MyBase.New(hr, parent)
+                Me.m_node = nd
+                AddHandler Me.m_node.TreeView.AfterCheck, AddressOf OnCheckChanged
+            End Sub
+
+            Public Overrides Sub Dispose()
+                If (Me.m_node IsNot Nothing) Then
+                    RemoveHandler Me.m_node.TreeView.AfterCheck, AddressOf OnCheckChanged
+                    Me.m_node = Nothing
+                End If
+                MyBase.Dispose()
+            End Sub
+
+            Public Overrides Property Checkstate As CheckState
+                Get
+                    Return If(Me.m_node.Checked, CheckState.Checked, CheckState.Unchecked)
+                End Get
+                Set(value As CheckState)
+                    Me.m_node.Checked = (value = CheckState.Checked)
+                End Set
+            End Property
+
+
+#Region " Event handling "
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Respond to checkbox check state changes.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Private Sub OnCheckChanged(sender As Object, args As TreeViewEventArgs)
+
+                If Not Object.ReferenceEquals(args.Node, Me.m_node) Then Return
+                'If Me.m_hr.IsBusy Then Return
+
+                ' If allowed to dispatch checks
+                If (Me.m_hr.ManageCheckedStates) Then
+                    ' Engage check lock
+                    Me.m_hr.BeginCheckChange()
+                    ' Apply check state to all children
+                    For Each linkChild As cLink In Me.m_children
+                        linkChild.Checkstate = Me.Checkstate
+                    Next
+                    ' Release check lock
+                    Me.m_hr.EndCheckChange()
+                End If
+
+            End Sub
+
+#End Region ' Event handling
+
+        End Class
+
+#End Region ' Treeview support
+
 #End Region ' Checkbox links
 
 #Region " Public methods "
@@ -460,7 +524,7 @@ Namespace Controls
                 link.Dispose()
             Next
             Me.m_dtLinks.Clear()
-            Me.m_linkRoot = Nothing
+            Me.m_linkRoots.Clear()
             GC.SuppressFinalize(Me)
         End Sub
 
@@ -481,15 +545,12 @@ Namespace Controls
             ' Checkbox already defined?
             If Me.m_dtLinks.ContainsKey(checkbox) Then Return False
 
-            If (Me.m_linkRoot IsNot Nothing) Then
+            If (checkboxParent IsNot Nothing) Then
+                If (Not Me.m_dtLinks.ContainsKey(checkboxParent)) Then Return False
+                linkParent = Me.m_dtLinks(checkboxParent)
+            End If
 
-                If (checkboxParent IsNot Nothing) Then
-                    If (Not Me.m_dtLinks.ContainsKey(checkboxParent)) Then Return False
-                    linkParent = Me.m_dtLinks(checkboxParent)
-                Else
-                    linkParent = Me.m_linkRoot
-                End If
-
+            If (linkParent IsNot Nothing) Then
                 ' Create new link
                 Dim linkNew As cLink = Me.GetLink(checkbox, linkParent)
                 ' Add new link as child to parent
@@ -498,9 +559,10 @@ Namespace Controls
                 Me.m_dtLinks(checkbox) = linkNew
             Else
                 ' Create new root link
-                Me.m_linkRoot = Me.GetLink(checkbox, Nothing)
+                Dim linkRoot As cLink = Me.GetLink(checkbox, Nothing)
+                Me.m_linkRoots.Add(linkRoot)
                 ' Remember new link
-                Me.m_dtLinks(checkbox) = Me.m_linkRoot
+                Me.m_dtLinks(checkbox) = linkRoot
             End If
 
             Return True
@@ -536,14 +598,16 @@ Namespace Controls
         Public Sub Update()
 
             If (Me.m_iLockCount <> 0) Then Return
-            If (Me.m_linkRoot Is Nothing) Then Return
+            If (Me.m_linkRoots.Count = 0) Then Return
 
             ' Remember dispatch state
             Dim bDispatchChecksOld As Boolean = Me.m_bManageChecks
             ' Turn off dispatching
             Me.m_bManageChecks = False
             ' Update all links
-            Me.m_linkRoot.Update()
+            For Each link As cLink In Me.m_linkRoots
+                link.Update()
+            Next
             ' Restore dispatching state
             Me.m_bManageChecks = bDispatchChecksOld
 
@@ -576,6 +640,10 @@ Namespace Controls
             Me.Update()
         End Sub
 
+        Protected Function IsBusy() As Boolean
+            Return (Me.m_iLockCount > 0)
+        End Function
+
         Private Function GetLink(cb As Object, parent As cLink) As cLink
             Select Case cb.GetType
                 Case GetType(CheckBox)
@@ -584,6 +652,8 @@ Namespace Controls
                     Return New cCheckboxCellLink(DirectCast(cb, cEwECheckboxCell), Me, parent)
                 Case GetType(DataGridViewCheckBoxCell)
                     Return New cDataGridViewCheckboxLink(DirectCast(cb, DataGridViewCheckBoxCell), Me, parent)
+                Case GetType(TreeNode)
+                    Return New cTreeNodeLink(DirectCast(cb, TreeNode), Me, parent)
                 Case Else
                     Debug.Assert(False, "Type not supported")
             End Select
@@ -596,3 +666,5 @@ Namespace Controls
     End Class
 
 End Namespace ' Controls
+
+#Enable Warning CA1063 ' Implement IDisposable Correctly

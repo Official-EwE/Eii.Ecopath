@@ -95,6 +95,7 @@ Public Class cMSEUtils
 
         Try
             writer = New StreamWriter(strFile, bAppend)
+            writer.AutoFlush = True
         Catch ex As Exception
             cLog.Write(ex, eVerboseLevel.Detailed, "MSEplugIn(" & strFile & ")")
         End Try
@@ -105,10 +106,10 @@ Public Class cMSEUtils
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Fail-safe method to release stream writer previously obtained via
-    ''' <see cref="GetReader"/>.
+    ''' <see cref="GetWriter"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Shared Sub ReleaseWriter(ByRef writer As StreamWriter)
+    Public Shared Sub ReleaseWriter(writer As StreamWriter)
         If (writer IsNot Nothing) Then
             writer.Flush()
             writer.Close()

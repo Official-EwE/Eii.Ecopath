@@ -794,7 +794,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         If My.Settings.SaveToDefault Then
             Select Case component
                 Case eComponentType.Ecopath : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecopath)
-                Case eComponentType.Ecosim : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
+                Case eComponentType.Ecosim : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults)
                 Case eComponentType.Ecospace : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceResults)
                 Case eComponentType.MonteCarlo : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
             End Select
@@ -1086,7 +1086,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Dim sb As New StringBuilder()
 
         If Me.m_core.SaveWithFileHeader Then
-            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.EcosimResults))
             sw.WriteLine()
         End If
 

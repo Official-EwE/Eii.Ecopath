@@ -126,8 +126,7 @@ Friend Class cEngine
     Private m_lManagers As New List(Of cBaseShapeManager)
     Private m_types As eFunctionTypes = eFunctionTypes.Forcing
 
-    Private m_astrFiles As String()
-    Private m_strOutFolder As String = ""
+    Private m_CSVFiles As String()
     Private m_bReadMonthly As Boolean = False
     Private m_options As cEcosimResultWriter.eResultTypes() = Nothing
     Private m_FFCache As New Dictionary(Of String, cFFCache)
@@ -199,34 +198,26 @@ Friend Class cEngine
     ''' 
     ''' </summary>
     ''' <param name="dgtComplete"></param>
-    ''' <param name="astrFiles"></param>
-    ''' <param name="strOutFolder">The output folder to write a log file to.</param>
+    ''' <param name="CsvFiles"></param>
     ''' -----------------------------------------------------------------------
     Public Sub ValidateFiles(dgtComplete As RunCompletedDelegate,
                              dgtDisableFile As DisableFileDelegate,
-                             astrFiles As String(),
-                             strOutFolder As String,
+                             CsvFiles As String(),
                              types As eFunctionTypes)
 
         If (Me.IsRunning) Then Return
 
-        Me.m_strOutFolder = strOutFolder
-        Me.m_astrFiles = astrFiles
+        Me.m_CSVFiles = CsvFiles
         Me.m_types = types
 
         Me.m_dgtProgress = Nothing
         Me.m_dgtComplete = dgtComplete
         Me.m_dgtDisableFile = dgtDisableFile
 
-        If Not cFileUtils.IsDirectoryAvailable(Me.m_strOutFolder, True) Then
-            ' ToDo: panic
-            Return
-        End If
-
         Me.SetWait()
 
         Try
-            Dim thrd As New Threading.Thread(AddressOf Me.ValidateFilesThreaded)
+            Dim thrd As New Threading.Thread(AddressOf ValidateFilesThreaded)
             thrd.Start()
         Catch ex As Exception
             ' Whoah!
@@ -243,7 +234,6 @@ Friend Class cEngine
     ''' </summary>
     ''' <param name="dgtComplete">Delegate to call when the run has finished.</param>
     ''' <param name="astrFiles">The files to read and apply.</param>
-    ''' <param name="strOutFolder">Output folder.</param>
     ''' <param name="bReadMonthly">States whether files should be read as monthly (true) or annual (false) values.
     ''' annual values (<see cref="TriState.[False]"/>), or in both modes (<see cref="TriState.UseDefault"/>).</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
@@ -251,7 +241,6 @@ Friend Class cEngine
     Public Sub Run(dgtProgress As RunProgressDelegate,
                    dgtComplete As RunCompletedDelegate,
                    astrFiles As String(),
-                   strOutFolder As String,
                    types As eFunctionTypes,
                    bReadMonthly As Boolean,
                    options As cEcosimResultWriter.eResultTypes())
@@ -259,28 +248,20 @@ Friend Class cEngine
         If (Me.IsRunning) Then Return
         If (Not Me.m_core.SaveChanges(False, cCore.eBatchChangeLevelFlags.Ecosim)) Then Return
 
-        Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
-        Dim strScope As String = If(bReadMonthly, "monthly", "annual")
 
         Me.m_bReadMonthly = bReadMonthly
-        Me.m_astrFiles = astrFiles
+        Me.m_CSVFiles = astrFiles
         Me.m_types = types
         Me.m_options = options
         Me.m_iStep = 1
-        Me.m_iNumSteps = Me.m_astrFiles.Length
-
-        If Me.CreateUniqueRunFolder Then
-            Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(cStringUtils.Localize("Run {0} {1}", strDate, strScope), False))
-        Else
-            Me.m_strOutFolder = strOutFolder
-        End If
+        Me.m_iNumSteps = Me.m_CSVFiles.Length
 
         Me.m_dgtProgress = dgtProgress
         Me.m_dgtComplete = dgtComplete
         Me.SetWait()
 
         Try
-            Dim thrd As New Threading.Thread(AddressOf Me.RunThreaded)
+            Dim thrd As New Threading.Thread(AddressOf RunThreaded)
             thrd.Start()
         Catch ex As Exception
             ' Whoah!
@@ -419,7 +400,7 @@ Friend Class cEngine
             ' Explore all functions
             For j As Integer = 0 To man.Count - 1
                 Dim ff As cForcingFunction = man(j)
-                strKey = Me.Key(ff.Name)
+                strKey = Key(ff.Name)
 
                 If (bCheckDuplicates And Me.m_FFCache.ContainsKey(strKey)) Then
 
@@ -488,7 +469,7 @@ Friend Class cEngine
 
             ' Prevent 'our' FFs from updating prematurely while reading CSV file
             ' This also resets the FFs to their original values before the MultiSim run to make sure this iteration starts afresh
-            For Each ffc As cFFCache In Me.m_FFCache.Values
+            For Each ffc As cFFCache In m_FFCache.Values
                 ffc.StartEdit()
             Next
 
@@ -503,10 +484,10 @@ Friend Class cEngine
                 strKey = Me.Key(values(i))
                 If Me.m_FFCache.ContainsKey(strKey) Then
                     lff.Add(Me.m_FFCache(strKey))
-                    Me.m_log.Add("- Using function " & values(i))
+                    m_log.Add("- Using function " & values(i))
                 Else
                     lff.Add(Nothing)
-                    Me.m_log.Add("- Skipping function " & values(i) & ", function not found")
+                    m_log.Add("- Skipping function " & values(i) & ", function not found")
                 End If
             Next
 
@@ -545,7 +526,7 @@ Friend Class cEngine
             End While
 
             ' CSV has been read, now release the update lock on FFs and apply the content of FFs to Ecosim
-            For Each ffc As cFFCache In Me.m_FFCache.Values
+            For Each ffc As cFFCache In m_FFCache.Values
                 ffc.EndEdit()
             Next
 
@@ -587,42 +568,52 @@ Friend Class cEngine
             Return
         End If
 
+        Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
+        Dim strScope As String = If(Me.m_bReadMonthly, "monthly", "annual")
+        Dim scenarioFolder As String = Path.GetFileNameWithoutExtension(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults, ""))
+        If Me.CreateUniqueRunFolder Then
+            scenarioFolder = Path.Combine(scenarioFolder, cFileUtils.ToValidFileName(cStringUtils.Localize("Multisim {0} {1}", strDate, strScope), False))
+        Else
+            scenarioFolder = Path.Combine(scenarioFolder, "Multisim")
+        End If
+
         Try
-            Dim iNum As Integer = Me.m_astrFiles.Length
+            Dim iNum As Integer = Me.m_CSVFiles.Length
             Dim i As Integer = 0
 
             While i < iNum And Not Me.m_bStopRun
 
-                Dim strFile As String = Me.m_astrFiles(i)
-                Dim strFileShort As String = Path.GetFileNameWithoutExtension(strFile)
-                Dim strFolder As String = Path.Combine(Me.m_strOutFolder, strFileShort)
+                Dim strFile As String = Me.m_CSVFiles(i)
+                Dim strFileShort As String = "File_" & Path.GetFileNameWithoutExtension(strFile)
 
-                If Not cFileUtils.IsDirectoryAvailable(strFolder, True) Then
-                    Me.m_bStopRun = True
-                End If
+                Me.m_core.CustomAutosaveFolder(eAutosaveTypes.EcosimResults) = Path.Combine(scenarioFolder, strFileShort)
+                Dim strFolder As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults)
+
+                cFileUtils.IsDirectoryAvailable(strFolder, True)
 
                 If Not Me.m_bStopRun Then
-                    Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
+                    Me.m_core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
-                    Me.m_log.Add("Reading CSV file " & strFile)
+                    m_log.Add("Reading CSV file " & strFile)
                     Me.ReadCSVIntoFF(strFile)
-                    Me.m_log.Add("- Done")
+                    m_log.Add("- Done")
                 End If
 
                 If Not Me.m_bStopRun Then
-                    Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
+                    Me.m_core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
-                    Me.m_log.Add("Running Ecosim scenario " & scenario.Name & ":")
+                    m_log.Add("Running Ecosim scenario " & scenario.Name & ":")
+                    'Me.m_core.EcoSimModelParameters.ContaminantTracing = True
                     Me.m_core.RunEcoSim(Nothing, False)
-                    Me.m_log.Add("- Done")
+                    m_log.Add("- Done")
                 End If
 
                 If Not Me.m_bStopRun Then
-                    Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
+                    Me.m_core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
-                    Me.m_log.Add("Writing MultiSim results to " & strFolder & ":")
+                    m_log.Add("Writing MultiSim results to " & strFolder & ":")
                     Me.WriteResults(strFolder, strFile, Me.m_options)
-                    Me.m_log.Add("- Done")
+                    m_log.Add("- Done")
                 End If
 
                 i += 1
@@ -633,6 +624,9 @@ Friend Class cEngine
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
+
+        ' Reset
+        Me.m_core.CustomAutosaveFolder(eAutosaveTypes.EcosimResults) = ""
 
         cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RESTORING, -1)
         For Each ffc As cFFCache In Me.m_FFCache.Values
@@ -656,11 +650,6 @@ Friend Class cEngine
 
     End Sub
 
-    Public ReadOnly Property OutputPath As String
-        Get
-            Return Me.m_strOutFolder
-        End Get
-    End Property
 
 #End Region ' Running
 
@@ -683,11 +672,11 @@ Friend Class cEngine
 
         Me.m_bStopRun = False
         Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
-        Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
+        Me.m_core.SetStopRunDelegate(AddressOf StopRun)
 
 
         Try
-            For Each strFileName As String In Me.m_astrFiles
+            For Each strFileName As String In Me.m_CSVFiles
                 Me.m_valStatus = Me.m_valStatus Or Me.ValidateFile(strFileName)
             Next
         Catch ex As Exception
@@ -842,6 +831,12 @@ Friend Class cEngine
 
 #End Region ' File validation
 
+    Public ReadOnly Property OutputPath As String
+        Get
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults))
+        End Get
+    End Property
+
     ''' <summary>
     ''' 
     ''' </summary>
@@ -954,7 +949,6 @@ Friend Class cEngine
         For Each vs As cVariableStatus In Me.m_valDetails
             msg.AddVariable(vs)
         Next
-        msg.Hyperlink = Me.m_strOutFolder
 
         ' Send!
         Me.m_core.Messages.SendMessage(msg)

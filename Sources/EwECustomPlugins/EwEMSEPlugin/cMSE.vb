@@ -3077,19 +3077,20 @@ Public Class cMSE
                             If isbalanced = True Then
 
                                 'Output the diet matrix parameters to csv
-                                Dim csv_dietout As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"), False)
-                                Try
-                                    For iPrey = 0 To nGroups
-                                        For iPred = 1 To Me.m_core.nLivingGroups
-                                            If iPred > 1 Then csv_dietout.Write(", ")
-                                            csv_dietout.Write(cStringUtils.FormatNumber(Me.m_ecopath.EcopathData.DC(iPred, iPrey)))
+                                Using csv_dietout As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "DietMatrixTrial" & iTrial & ".csv"), False)
+                                    Try
+                                        For iPrey = 0 To nGroups
+                                            For iPred = 1 To Me.m_core.nLivingGroups
+                                                If iPred > 1 Then csv_dietout.Write(", ")
+                                                csv_dietout.Write(cStringUtils.FormatNumber(Me.m_ecopath.EcopathData.DC(iPred, iPrey)))
+                                            Next
+                                            csv_dietout.WriteLine()
                                         Next
-                                        csv_dietout.WriteLine()
-                                    Next
-                                Catch ex As Exception
-                                    ' ToDo: respond to error
-                                End Try
-                                cMSEUtils.ReleaseWriter(csv_dietout)
+                                    Catch ex As Exception
+                                        ' ToDo: respond to error
+                                    End Try
+                                    cMSEUtils.ReleaseWriter(csv_dietout)
+                                End Using
 
                                 ' JS 30Sep13: greatly simplified :)
                                 Me.WriteEcopathParms("b_out.csv", Me.m_ecopath.EcopathData.B)
@@ -4850,17 +4851,18 @@ Public Class cMSE
     End Function
 
     Private Sub clearQModifiers()
-        For iflt As Integer = 1 To Me.m_core.nFleets
-            For igrp As Integer = 1 To Me.m_core.nGroups
-                If Me.m_relQModifier(iflt, igrp) > 0 Then
-                    'Don't need to restore the mse's internal BaseCatchRate()
-                    'Because it will be initialized in Run() for each new model run
-                    Me._simdata.FishMGear(iflt, igrp) /= Me.m_relQModifier(iflt, igrp)
-                    Me._simdata.relQ(iflt, igrp) /= Me.m_relQModifier(iflt, igrp)
-                End If
+        If (Me.m_relQModifier IsNot Nothing) Then
+            For iflt As Integer = 1 To Me.m_core.nFleets
+                For igrp As Integer = 1 To Me.m_core.nGroups
+                    If Me.m_relQModifier(iflt, igrp) > 0 Then
+                        'Don't need to restore the mse's internal BaseCatchRate()
+                        'Because it will be initialized in Run() for each new model run
+                        Me._simdata.FishMGear(iflt, igrp) /= Me.m_relQModifier(iflt, igrp)
+                        Me._simdata.relQ(iflt, igrp) /= Me.m_relQModifier(iflt, igrp)
+                    End If
+                Next
             Next
-        Next
-
+        End If
         Me.m_bQSet = False
     End Sub
 
