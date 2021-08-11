@@ -62,12 +62,9 @@ Partial Class frmMain
         Me.m_lblReadAs = New System.Windows.Forms.Label()
         Me.m_cbCreateRunFolder = New System.Windows.Forms.CheckBox()
         Me.m_hrdOut = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_tbxDest = New System.Windows.Forms.TextBox()
         Me.m_btnRun = New System.Windows.Forms.Button()
         Me.m_clbValues = New System.Windows.Forms.CheckedListBox()
-        Me.m_lblDest = New System.Windows.Forms.Label()
         Me.m_btnAllVars = New System.Windows.Forms.Button()
-        Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogoDFO = New System.Windows.Forms.PictureBox()
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
@@ -112,12 +109,9 @@ Partial Class frmMain
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_cbCreateRunFolder)
         Me.m_scMain.Panel2.Controls.Add(Me.m_hrdOut)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tbxDest)
         Me.m_scMain.Panel2.Controls.Add(Me.m_btnRun)
         Me.m_scMain.Panel2.Controls.Add(Me.m_clbValues)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_lblDest)
         Me.m_scMain.Panel2.Controls.Add(Me.m_btnAllVars)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_btnChooseOut)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lblVars)
         '
         'm_cbEggProduction
@@ -239,12 +233,6 @@ Partial Class frmMain
         Me.m_hrdOut.IsCollapsed = False
         Me.m_hrdOut.Name = "m_hrdOut"
         '
-        'm_tbxDest
-        '
-        resources.ApplyResources(Me.m_tbxDest, "m_tbxDest")
-        Me.m_tbxDest.Name = "m_tbxDest"
-        Me.m_tbxDest.ReadOnly = True
-        '
         'm_btnRun
         '
         resources.ApplyResources(Me.m_btnRun, "m_btnRun")
@@ -260,22 +248,11 @@ Partial Class frmMain
         Me.m_clbValues.Name = "m_clbValues"
         Me.m_clbValues.Sorted = True
         '
-        'm_lblDest
-        '
-        resources.ApplyResources(Me.m_lblDest, "m_lblDest")
-        Me.m_lblDest.Name = "m_lblDest"
-        '
         'm_btnAllVars
         '
         resources.ApplyResources(Me.m_btnAllVars, "m_btnAllVars")
         Me.m_btnAllVars.Name = "m_btnAllVars"
         Me.m_btnAllVars.UseVisualStyleBackColor = True
-        '
-        'm_btnChooseOut
-        '
-        resources.ApplyResources(Me.m_btnChooseOut, "m_btnChooseOut")
-        Me.m_btnChooseOut.Name = "m_btnChooseOut"
-        Me.m_btnChooseOut.UseVisualStyleBackColor = True
         '
         'm_lblVars
         '
@@ -338,7 +315,6 @@ Partial Class frmMain
 
     End Sub
     Private WithEvents m_clbFilesSrc As System.Windows.Forms.CheckedListBox
-    Private WithEvents m_tbxDest As System.Windows.Forms.TextBox
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Friend WithEvents m_lblFilesSrc As System.Windows.Forms.Label
     Private WithEvents m_hdrIn As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -351,9 +327,7 @@ Partial Class frmMain
     Private WithEvents m_lblReadAs As System.Windows.Forms.Label
     Private WithEvents m_hrdOut As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_clbValues As System.Windows.Forms.CheckedListBox
-    Private WithEvents m_lblDest As System.Windows.Forms.Label
     Private WithEvents m_btnAllVars As System.Windows.Forms.Button
-    Private WithEvents m_btnChooseOut As System.Windows.Forms.Button
     Private WithEvents m_lblVars As System.Windows.Forms.Label
     Private WithEvents m_pbLogoDFO As System.Windows.Forms.PictureBox
     Private WithEvents m_btnRun As System.Windows.Forms.Button

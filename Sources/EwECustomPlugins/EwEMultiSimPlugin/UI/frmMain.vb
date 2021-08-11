@@ -67,7 +67,6 @@ Public Class frmMain
         If (String.IsNullOrWhiteSpace(strPathOut)) Then
             strPathOut = Me.Core.DefaultOutputPath(eAutosaveTypes.EcosimResults, "MultiSim")
         End If
-        Me.m_tbxDest.Text = strPathOut
         Me.m_cbCreateRunFolder.Checked = My.Settings.CreateUniqueRunFolder
 
         Me.m_cbFF.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Forcing) = cEngine.eFunctionTypes.Forcing
@@ -99,11 +98,10 @@ Public Class frmMain
 
         Dim bHasFiles As Boolean = (Me.m_clbFilesSrc.CheckedItems.Count > 0)
         Dim bHasVars As Boolean = (Me.m_clbValues.CheckedItems.Count > 0)
-        Dim bHasOutput As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDest.Text)
         Dim bIsRunning As Boolean = Me.Core.StateMonitor.IsBusy()
 
         Me.m_scMain.Enabled = Not bIsRunning
-        Me.m_btnRun.Enabled = bHasFiles And bHasOutput And bHasVars And Not bIsRunning
+        Me.m_btnRun.Enabled = bHasFiles And bHasVars And Not bIsRunning
 
     End Sub
 
@@ -145,19 +143,6 @@ Public Class frmMain
         Catch ex As Exception
             ' Whoah
             cLog.Write(ex, "OnAllScr")
-        End Try
-
-    End Sub
-
-    Private Sub OnBrowseOut(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnChooseOut.Click
-
-        Try
-            Me.BrowseToTextbox(Me.m_tbxDest, "Select destination folder")
-            Me.UpdateControls()
-        Catch ex As Exception
-            ' Whoah
-            cLog.Write(ex, "OnBrowseOut")
         End Try
 
     End Sub
@@ -230,10 +215,9 @@ Public Class frmMain
                 lFiles.Add(CStr(item))
             Next
 
-            Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf Me.RunDoneCallback), _
-                                      New cEngine.DisableFileDelegate(AddressOf Me.DisableFileCallback), _
-                                      lFiles.ToArray(), _
-                                      Me.m_tbxDest.Text, _
+            Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf Me.RunDoneCallback),
+                                      New cEngine.DisableFileDelegate(AddressOf Me.DisableFileCallback),
+                                      lFiles.ToArray(),
                                       Me.SelectedApplications)
 
         Catch ex As Exception
@@ -264,9 +248,9 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf Me.RunProgressCallback), _
-                            New cEngine.RunCompletedDelegate(AddressOf Me.RunDoneCallback), _
-                            lFiles.ToArray(), Me.m_tbxDest.Text, Me.SelectedApplications, _
+            Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf Me.RunProgressCallback),
+                            New cEngine.RunCompletedDelegate(AddressOf Me.RunDoneCallback),
+                            lFiles.ToArray(), Me.SelectedApplications,
                             Me.m_rbMonthly.Checked, lOptions.ToArray())
 
         Catch ex As Exception
@@ -417,7 +401,6 @@ Public Class frmMain
 
         Try
             My.Settings.PathIn = Me.m_tbxSource.Text
-            My.Settings.PathOut = Me.m_tbxDest.Text
             My.Settings.ReadAsMonth = Me.m_rbMonthly.Checked
             My.Settings.CreateUniqueRunFolder = Me.m_cbCreateRunFolder.Checked
             My.Settings.FFtypes = Me.SelectedApplications

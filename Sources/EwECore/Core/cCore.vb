@@ -2517,6 +2517,28 @@ Public Class cCore
 
     End Function
 
+    Private m_dtCustomAutosaveFolders As New Dictionary(Of eAutosaveTypes, String)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Gets or sets the custom folder to save scenario data under. This is very useful when running tools such as
+    ''' MultiSim, where plug-ins responding to MultiSim perturbations need to save under a non-standard Ecosim folder.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CustomAutosaveFolder(savetype As eAutosaveTypes) As String
+        Get
+            If Not Me.m_dtCustomAutosaveFolders.ContainsKey(savetype) Then Return ""
+            Return Me.m_dtCustomAutosaveFolders(savetype)
+        End Get
+        Set(value As String)
+            If String.IsNullOrWhiteSpace(value) Then
+                If (Me.m_dtCustomAutosaveFolders.ContainsKey(savetype)) Then Me.m_dtCustomAutosaveFolders.Remove(savetype)
+            Else
+                Me.m_dtCustomAutosaveFolders(savetype) = cFileUtils.ToValidFileName(value, True)
+            End If
+        End Set
+    End Property
+
     ''' -------------------------------------------------------------------------
     ''' <summary>
     ''' Get the default output location for a given <see cref="eAutosaveTypes">autosaving component</see>.
@@ -2543,75 +2565,76 @@ Public Class cCore
                 strModel = "{model}"
             End If
 
-            Select Case type
-                Case eAutosaveTypes.Ecopath
+            strScenario = Me.CustomAutosaveFolder(type)
+            If (String.IsNullOrWhiteSpace(strScenario)) Then
+
+                Select Case type
+                    Case eAutosaveTypes.Ecopath
                     ' NOP
 
-                Case eAutosaveTypes.Ecosim, eAutosaveTypes.EcosimResults
-                    strScenario = "ecosim_"
-                    If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.Ecosim, eAutosaveTypes.EcosimResults
+                        strScenario = "ecosim_"
+                        If (Me.ActiveEcosimScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-                Case eAutosaveTypes.MonteCarlo
-                    strScenario = "mc_"
-                    If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.MonteCarlo
+                        strScenario = "mc_"
+                        If (Me.ActiveEcosimScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-                Case eAutosaveTypes.MSE
-                    strScenario = "mse_"
-                    If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.MSE
+                        strScenario = "mse_"
+                        If (Me.ActiveEcosimScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-                Case eAutosaveTypes.MSY
-                    strScenario = "msy_"
-                    If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.MSY
+                        strScenario = "msy_"
+                        If (Me.ActiveEcosimScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-                Case eAutosaveTypes.Ecospace, eAutosaveTypes.EcospaceResults
-                    If (Me.ActiveEcospaceScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.Ecospace, eAutosaveTypes.EcospaceResults
+                        If (Me.ActiveEcospaceScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-                Case eAutosaveTypes.MPAOpt
-                    strScenario = "mpa_opt_"
-                    If (Me.ActiveEcospaceScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.MPAOpt
+                        strScenario = "mpa_opt_"
+                        If (Me.ActiveEcospaceScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-                Case eAutosaveTypes.Ecotracer
-                    strScenario = "ecotracer_"
-                    If (Me.ActiveEcotracerScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
+                    Case eAutosaveTypes.Ecotracer
+                        strScenario = "ecotracer_"
+                        If (Me.ActiveEcotracerScenarioIndex > 0) Then
+                            strScenario = strScenario & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+                        Else
+                            strScenario = strScenario & "{scenario}"
+                        End If
 
-            End Select
+                End Select
+                strScenario = cFileUtils.ToValidFileName(strScenario, False)
+            End If
 
             cPathUtility.ResolvePath(strBasePath, Me, strPath)
 
-            'If Not String.IsNullOrWhiteSpace(strModel) Then
-            '    strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strModel, False))
-            'End If
-
             If Not String.IsNullOrWhiteSpace(strScenario) Then
-                strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strScenario, False))
+                strPath = Path.Combine(strPath, strScenario)
             End If
 
             Return strPath
