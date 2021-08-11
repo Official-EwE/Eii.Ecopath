@@ -140,9 +140,6 @@ Public Class cEcoSpace
     Private RelMoveFit(,) As Single 'populated in SetKmove()
     Private RelFitness(,,) As Single
 
-
-
-
     Friend FtimeCell(,,) As Single 'feeding time???
     Private HdenCell(,,) As Single
 
@@ -419,11 +416,7 @@ Public Class cEcoSpace
         End Set
     End Property
 
-
     Public Property TimeSeriesManager() As EcospaceTimeSeries.cEcospaceTimeSeriesManager
-
-
-
 
 #End Region
 
@@ -752,6 +745,8 @@ Public Class cEcoSpace
         Dim stpwchSolver As New Stopwatch
         Dim stpwchGrid As New Stopwatch
         Dim stpwchEffort As New Stopwatch
+        Dim stpwchIBMMultiStanza As New Stopwatch
+
 
         Try
 
@@ -983,6 +978,7 @@ Public Class cEcoSpace
                     Next i
                 Next 'For ip = 1 To m_Data.nvartot
 
+                stpwchIBMMultiStanza.Start()
                 'update total age structure over space for multistanza groups if new method is used
                 If Me.EcoSpaceData.NewMultiStanza Then
 
@@ -993,6 +989,7 @@ Public Class cEcoSpace
                     Me.runIBMSolverThreads()
 
                 End If 'end of section to overwrite PDE biomasses with multistanza distributed biomasses if newmultistanza=true
+                stpwchIBMMultiStanza.Stop()
 
                 'sum biomass after Multistanza updates
                 Array.Clear(Me.Btime, 0, Me.Btime.Length)
@@ -1148,17 +1145,23 @@ Public Class cEcoSpace
             Dim SpaceRunTime As Double = stpwchSolver.Elapsed.TotalMinutes
             Dim GridRunTime As Double = stpwchGrid.Elapsed.TotalMinutes
             Dim EffortRunTime As Double = stpwchEffort.Elapsed.TotalMinutes
+            Dim IBMRunTime As Double = stpwchIBMMultiStanza.Elapsed.TotalMinutes
 
-#If DEBUG Then
-            System.Console.WriteLine("---------------FindSpatialEquilibrium() Timing-------------")
-            System.Console.WriteLine(" Number of Time Steps, " & Me.itt.ToString)
-            System.Console.WriteLine(" Total run time(min.), " & totRunTime.ToString)
-            System.Console.WriteLine(" Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
-            System.Console.WriteLine(" Trophic time(min.), " & SpaceRunTime.ToString & ",(%)," & (SpaceRunTime / totRunTime * 100).ToString)
-            System.Console.WriteLine(" GridSolver time(min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
-            System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
-            System.Console.WriteLine("-----------------------------------------------------------")
-#End If
+            dumpEcospaceThreadTimeingLog(totRunTime, SpaceRunTime, GridRunTime, EffortRunTime, IBMRunTime)
+
+            '#If DEBUG Then
+            '            System.Console.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
+            '            System.Console.WriteLine(" Trophic Threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString &
+            '                                     ", Grid Threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString & " Effort Threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
+            '            System.Console.WriteLine(" Number of Time Steps, " & Me.itt.ToString)
+            '            System.Console.WriteLine(" Total run time(min.), " & totRunTime.ToString)
+            '            System.Console.WriteLine(" Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
+            '            System.Console.WriteLine(" Trophic time(min.), " & SpaceRunTime.ToString & ",(%)," & (SpaceRunTime / totRunTime * 100).ToString)
+            '            System.Console.WriteLine(" Dispersal (min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
+            '            System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
+            '            System.Console.WriteLine(" MultiStanza IBM (min.), " & IBMRunTime.ToString & ",(%)," & (IBMRunTime / totRunTime * 100).ToString)
+            '            System.Console.WriteLine("-----------------------------------------------------------")
+            '#End If
 
         Catch ex As Exception
             cLog.Write(ex, "cEcospace::FindSpatialEquilibrium")
@@ -2177,6 +2180,55 @@ Public Class cEcoSpace
         Next
 
     End Sub
+
+    Private Sub dumpEcospaceThreadTimeingLog(totRunTime As Single, SpaceRunTime As Single, GridRunTime As Single, EffortRunTime As Single, IBMRunTime As Single)
+
+        Dim logFileName As String = cLog.LogFile
+        Dim timingLogFilename As String
+
+
+        Dim md As String = IO.Path.GetFileNameWithoutExtension(logFileName)
+        timingLogFilename = IO.Path.Combine(IO.Path.GetDirectoryName(logFileName), md + "_ThreadTiming.txt")
+        Try
+            Dim strm As IO.StreamWriter = New IO.StreamWriter(timingLogFilename)
+
+            'strm.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
+
+            strm.WriteLine("Variable, Total_Run_Time_Minutes, Run_Time_Percentage")
+
+            strm.WriteLine("Trophic Threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString)
+            strm.WriteLine("Grid Dispersal & IBM Threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString)
+            strm.WriteLine("Effort Threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
+
+            strm.WriteLine("Number of Time Steps, " & Me.itt.ToString)
+            strm.WriteLine("Total run time(min.), " & totRunTime.ToString)
+            strm.WriteLine("Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
+            strm.WriteLine("Trophic time(min.), " & SpaceRunTime.ToString & ", " & (SpaceRunTime / totRunTime).ToString("P"))
+            strm.WriteLine("Dispersal (min.), " & GridRunTime.ToString & ", " & (GridRunTime / totRunTime).ToString("P"))
+            strm.WriteLine("Effort dist. time(min.), " & EffortRunTime.ToString & ", " & (EffortRunTime / totRunTime).ToString("P"))
+            strm.WriteLine("MultiStanza IBM (min.), " & IBMRunTime.ToString & ", " & (IBMRunTime / totRunTime).ToString("P"))
+            strm.Close()
+
+        Catch ex As Exception
+
+        End Try
+
+#If DEBUG Then
+        System.Console.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
+        System.Console.WriteLine(" Trophic Threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString &
+                                 ", Grid Threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString & " Effort Threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
+        System.Console.WriteLine(" Number of Time Steps, " & Me.itt.ToString)
+        System.Console.WriteLine(" Total run time(min.), " & totRunTime.ToString)
+        System.Console.WriteLine(" Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
+        System.Console.WriteLine(" Trophic time(min.), " & SpaceRunTime.ToString & ",(%)," & (SpaceRunTime / totRunTime * 100).ToString)
+        System.Console.WriteLine(" Dispersal (min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
+        System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
+        System.Console.WriteLine(" MultiStanza IBM (min.), " & IBMRunTime.ToString & ",(%)," & (IBMRunTime / totRunTime * 100).ToString)
+        System.Console.WriteLine("-----------------------------------------------------------")
+#End If
+
+    End Sub
+
 
     Private Sub dumpCellComputeTimes()
         System.Console.WriteLine("Cell compute times")
