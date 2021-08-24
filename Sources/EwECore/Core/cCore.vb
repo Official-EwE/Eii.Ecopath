@@ -10676,7 +10676,7 @@ Public Class cCore
             m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded
 
             m_EcospaceModelParams.SaveThreadingLog = m_EcoSpaceData.bSaveThreadingLog
-
+            m_EcospaceModelParams.nIBMMovementThreads = m_EcoSpaceData.nIBMMovementSolverThreads
 
             Me.LoadEcospaceResultsWriters()
 
