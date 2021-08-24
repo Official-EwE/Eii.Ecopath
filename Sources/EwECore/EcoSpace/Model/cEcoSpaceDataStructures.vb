@@ -479,6 +479,11 @@ Public Class cEcospaceDataStructures
     Public nGridSolverThreads As Integer
 
     ''' <summary>
+    ''' Number of threads to use for the IBM Movement
+    ''' </summary>
+    Public nIBMMovementSolverThreads As Integer
+
+    ''' <summary>
     ''' Number of threads to run the groups biomass calculations on 
     ''' </summary>
     Public nSpaceSolverThreads As Integer
@@ -840,6 +845,12 @@ Public Class cEcospaceDataStructures
 
     Public RelFitnessBase(,,) As Single
 
+    ''' <summary>
+    ''' Save the threading run time log. By default this will be turned off, the log will not be saved. 
+    ''' Used by plugins or external process to optimize run threading.
+    ''' </summary>
+    Public bSaveThreadingLog As Boolean
+
 #End Region
 
 #Region "Private Data"
@@ -1145,8 +1156,8 @@ Public Class cEcospaceDataStructures
             Me.EcospaceAreaOutputDir = ""
             Me.EcospaceMapOutputDir = ""
 
-
             Me.bSaveRelNutFile = False
+            Me.bSaveThreadingLog = False
 
             Return True
         Catch ex As Exception
@@ -1165,6 +1176,10 @@ Public Class cEcospaceDataStructures
             Me.nSpaceSolverThreads = System.Environment.ProcessorCount
             Me.nEffortDistThreads = System.Environment.ProcessorCount
         End If
+
+        'Yeah do the IBM Movement threads separately
+        'Because it's not save in the database at this time
+        If (Me.nIBMMovementSolverThreads <= 0) Then Me.nIBMMovementSolverThreads = System.Environment.ProcessorCount
 
     End Sub
 
@@ -1198,7 +1213,6 @@ Public Class cEcospaceDataStructures
                         Me.Mvel(j) = 10
                         Exit For
                     End If
-
                 Next
             Next
 
