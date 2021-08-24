@@ -206,10 +206,6 @@ Public Class cIBMSolver
                                 If Me.m_Stanza.iPacket(isp, iaa, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + CELL_BOUNDS
                                 If Me.m_Stanza.jPacket(isp, iaa, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + CELL_BOUNDS
 
-                                'Bounds Checking
-                                'If Me.m_Stanza.iPacket(isp, iaa, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
-                                'If Me.m_Stanza.jPacket(isp, iaa, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
-
                             End If
 
                         End If 'Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2

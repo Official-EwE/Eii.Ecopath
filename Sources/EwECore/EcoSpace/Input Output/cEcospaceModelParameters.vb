@@ -111,6 +111,11 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
+
+            val = New cValue(core, 1, eVarNameFlags.nIBMMovementThreads, eStatusFlags.Null, eValueTypes.Int)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
             'space threads
             val = New cValue(core, 1, eVarNameFlags.nSpaceThreads, eStatusFlags.Null, eValueTypes.Int)
             val.AffectsRunState = False
@@ -212,6 +217,11 @@ Public Class cEcospaceModelParameters
             Me.m_values.Add(val.varName, val)
 
             val = New cValue(core, 1, eVarNameFlags.EcospaceUseEcosimDiscardForcing, eStatusFlags.Null, eValueTypes.Bool)
+            val.Stored = False
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospaceSaveThreadingLog, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
@@ -356,6 +366,15 @@ Public Class cEcospaceModelParameters
         End Get
         Set(value As Integer)
             Me.SetVariable(eVarNameFlags.nGridSolverThreads, value)
+        End Set
+    End Property
+
+    Public Property nIBMMovementThreads() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.nIBMMovementThreads))
+        End Get
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.nIBMMovementThreads, value)
         End Set
     End Property
 
@@ -715,6 +734,17 @@ Public Class cEcospaceModelParameters
         End Get
         Set(value As Integer)
             Me.SetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep, value)
+        End Set
+    End Property
+
+
+
+    Public Property SaveThreadingLog() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceSaveThreadingLog))
+        End Get
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceSaveThreadingLog, value)
         End Set
     End Property
 

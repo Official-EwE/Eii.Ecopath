@@ -641,11 +641,15 @@ Namespace Core
 
         ''' <summary>To document</summary>
         nGridSolverThreads
+        ''' <summary>Number of threads to run the IBM Movement on.</summary>
+        nIBMMovementThreads
         ''' <summary>To document</summary>
         nSpaceThreads
         ''' <summary>To document</summary>
         nEffortDistThreads
         ''' <summary>To document</summary>
+        EcospaceSaveThreadingLog
+
         IFDPower
         ''' <summary>To document</summary>
         UseIBM

@@ -7611,6 +7611,10 @@ Namespace DataSources
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
+                'HACK nIBMMovementSolverThreads is not saved to the database so use the nGridSolverThreads. 
+                'This still allows it to be set by code
+                ecospaceDS.nIBMMovementSolverThreads = ecospaceDS.nGridSolverThreads
+
                 Select Case CInt(reader("ModelType"))
                     Case 0
                         ecospaceDS.NewMultiStanza = False

@@ -99,7 +99,9 @@ Public Class cEcoSpace
 
     Private m_gridSolvers As List(Of cGridSolver)
     Private m_spaceSolvers As List(Of cSpaceSolver)
-    Private m_IBMSolvers As List(Of cIBMSolver)
+    Private m_IBMGrowSolvers As List(Of cIBMSolver)
+    Private m_IBMMoveSolvers As List(Of cIBMSolver)
+
 
     Private m_TimestepDelegate As EcoSpaceTimeStepDelegate
 
@@ -283,6 +285,9 @@ Public Class cEcoSpace
 
     ''' <summary>Does the Spin-Up base biomass need initialization</summary>
     Private bInitSpinUpBase As Boolean
+
+    Private _IBMGrowTimer As Stopwatch
+    Private _IBMMoveTimer As Stopwatch
 
 #End Region
 
@@ -1145,9 +1150,15 @@ Public Class cEcoSpace
             Dim SpaceRunTime As Double = stpwchSolver.Elapsed.TotalMinutes
             Dim GridRunTime As Double = stpwchGrid.Elapsed.TotalMinutes
             Dim EffortRunTime As Double = stpwchEffort.Elapsed.TotalMinutes
-            Dim IBMRunTime As Double = stpwchIBMMultiStanza.Elapsed.TotalMinutes
+            Dim IBMMultiStanza As Double = stpwchIBMMultiStanza.Elapsed.TotalMinutes
+            Dim GrowthTot As Double, MovementTot As Double
+            If Me.EcoSpaceData.UseIBM Then
+                Dim tot As Double = _IBMGrowTimer.Elapsed.TotalMinutes + _IBMMoveTimer.Elapsed.TotalMinutes
+                GrowthTot = _IBMGrowTimer.Elapsed.TotalMinutes '/ tot
+                MovementTot = _IBMMoveTimer.Elapsed.TotalMinutes '/ tot
+            End If
 
-            dumpEcospaceThreadTimeingLog(totRunTime, SpaceRunTime, GridRunTime, EffortRunTime, IBMRunTime)
+            dumpEcospaceThreadTimeingLog(totRunTime, SpaceRunTime, GridRunTime, EffortRunTime, IBMMultiStanza, GrowthTot, MovementTot)
 
             '#If DEBUG Then
             '            System.Console.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
@@ -1582,7 +1593,7 @@ Public Class cEcoSpace
 
         Dim solvCtr As Integer = 1
 
-        For Each solver In Me.m_IBMSolvers
+        For Each solver In Me.m_IBMMoveSolvers
             ReDim solver.BcellThread(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.nvartot)
             ReDim solver.PredCellThread(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.nvartot)
         Next
@@ -1606,9 +1617,10 @@ Public Class cEcoSpace
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         Try
+            _IBMGrowTimer.Start()
             'loop through each solver object, make sure it's okay to run, and run it
             'each thread will do several groups at a time
-            For Each solver In Me.m_IBMSolvers
+            For Each solver In Me.m_IBMGrowSolvers
                 If solver.isOkToRun Then
                     solver.SignalState.Reset()
                     solver.isOkToRun = False
@@ -1619,29 +1631,30 @@ Public Class cEcoSpace
             Next solver
 
             ' wait for all the threads to finish before starting the next time step
-            For Each solver In Me.m_IBMSolvers
+            For Each solver In Me.m_IBMGrowSolvers
                 solver.SignalState.WaitOne()
             Next
 
+            _IBMGrowTimer.Stop()
+            _IBMMoveTimer.Start()
             'this loop should only excecute once
             Do While iLastPacket < Me.StanzaData.Npackets
                 'loop through each solver object, make sure it's okay to run, and run it
                 'each thread will do several groups at a time
 
-                For Each solver In Me.m_IBMSolvers
+                For Each MoveSolver As cIBMSolver In Me.m_IBMMoveSolvers
 
-                    If solver.isOkToRun Then
+                    If MoveSolver.isOkToRun Then
 
                         iLastPacket = iFirstPacket + Me.EcoSpaceData.nIBMPacketsPerThread - 1
                         If iLastPacket > Me.StanzaData.Npackets Then iLastPacket = Me.StanzaData.Npackets
 
-                        'solver.FirstLastGroups(iFstGrp, iLstgrp)
-                        solver.iFirstPacket = iFirstPacket
-                        solver.iLastPacket = iLastPacket
-                        solver.SignalState.Reset()
+                        MoveSolver.iFirstPacket = iFirstPacket
+                        MoveSolver.iLastPacket = iLastPacket
+                        MoveSolver.SignalState.Reset()
 
-                        solver.isOkToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf solver.runMovePackets)
+                        MoveSolver.isOkToRun = False
+                        ThreadPool.QueueUserWorkItem(AddressOf MoveSolver.runMovePackets)
 
                         iFirstPacket += Me.EcoSpaceData.nIBMPacketsPerThread
                     Else
@@ -1651,13 +1664,15 @@ Public Class cEcoSpace
                     If iLastPacket >= Me.StanzaData.Npackets Then
                         Exit For
                     End If
-                Next solver
+                Next MoveSolver
             Loop
 
             ' wait for all the threads to finish before starting the next time step
-            For Each solver In Me.m_IBMSolvers
+            For Each solver In Me.m_IBMMoveSolvers
                 solver.SignalState.WaitOne()
             Next
+
+            _IBMMoveTimer.Stop()
 
             Dim ieco As Integer
             For isp As Integer = 1 To Me.StanzaData.Nsplit
@@ -1672,7 +1687,7 @@ Public Class cEcoSpace
                 Next ist
             Next isp
 
-            For Each solver In Me.m_IBMSolvers
+            For Each solver In Me.m_IBMMoveSolvers
                 For isp As Integer = 1 To Me.StanzaData.Nsplit
                     For ist As Integer = 1 To Me.StanzaData.Nstanza(isp)
                         ieco = Me.StanzaData.EcopathCode(isp, ist)
@@ -2181,32 +2196,46 @@ Public Class cEcoSpace
 
     End Sub
 
-    Private Sub dumpEcospaceThreadTimeingLog(totRunTime As Single, SpaceRunTime As Single, GridRunTime As Single, EffortRunTime As Single, IBMRunTime As Single)
+    Private Sub dumpEcospaceThreadTimeingLog(totRunTime As Single, SpaceRunTime As Single, GridRunTime As Single, EffortRunTime As Single, MultiStanzaRunTime As Single, IBMGrowthRunTime As Single, IBMMovementRunTime As Single)
 
+        If Not Me.EcoSpaceData.bSaveThreadingLog Then
+            Return
+        End If
+
+        'Build the file name from the cLog file.
+        'This is because we don't have access to the core in Ecospace, which has all the output and input directory info.
+        'So just fake it here!
+        'This will put the threading log in the same directory as the model and log file.
         Dim logFileName As String = cLog.LogFile
         Dim timingLogFilename As String
-
 
         Dim md As String = IO.Path.GetFileNameWithoutExtension(logFileName)
         timingLogFilename = IO.Path.Combine(IO.Path.GetDirectoryName(logFileName), md + "_ThreadTiming.txt")
         Try
             Dim strm As IO.StreamWriter = New IO.StreamWriter(timingLogFilename)
 
-            'strm.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
-
             strm.WriteLine("Variable, Total_Run_Time_Minutes, Run_Time_Percentage")
 
-            strm.WriteLine("Trophic Threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString)
-            strm.WriteLine("Grid Dispersal & IBM Threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString)
-            strm.WriteLine("Effort Threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
+            strm.WriteLine("Trophic threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString)
+            strm.WriteLine("Grid dispersal, " & Me.EcoSpaceData.nGridSolverThreads.ToString)
+            strm.WriteLine("Effort threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
+            strm.WriteLine("MultiStanza & IBM Growth threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString)
 
-            strm.WriteLine("Number of Time Steps, " & Me.itt.ToString)
+            strm.WriteLine("IBM Movement Threads, " & Me.EcoSpaceData.nIBMMovementSolverThreads.ToString)
+
+            strm.WriteLine("Number of time steps, " & Me.itt.ToString)
             strm.WriteLine("Total run time(min.), " & totRunTime.ToString)
-            strm.WriteLine("Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
-            strm.WriteLine("Trophic time(min.), " & SpaceRunTime.ToString & ", " & (SpaceRunTime / totRunTime).ToString("P"))
+            strm.WriteLine("Average per timestep(min.), " & (totRunTime / Me.itt).ToString)
+            strm.WriteLine("Trophic (min.), " & SpaceRunTime.ToString & ", " & (SpaceRunTime / totRunTime).ToString("P"))
             strm.WriteLine("Dispersal (min.), " & GridRunTime.ToString & ", " & (GridRunTime / totRunTime).ToString("P"))
-            strm.WriteLine("Effort dist. time(min.), " & EffortRunTime.ToString & ", " & (EffortRunTime / totRunTime).ToString("P"))
-            strm.WriteLine("MultiStanza IBM (min.), " & IBMRunTime.ToString & ", " & (IBMRunTime / totRunTime).ToString("P"))
+            strm.WriteLine("Effort dist. (min.), " & EffortRunTime.ToString & ", " & (EffortRunTime / totRunTime).ToString("P"))
+            strm.WriteLine("MultiStanza or IBM (min.), " & MultiStanzaRunTime.ToString & ", " & (MultiStanzaRunTime / totRunTime).ToString("P"))
+
+            If Me.EcoSpaceData.UseIBM Then
+                strm.WriteLine("IBM Growth (min.), " & IBMGrowthRunTime.ToString & ", " & (IBMGrowthRunTime / totRunTime).ToString("P"))
+                strm.WriteLine("IBM Movement (min.), " & IBMMovementRunTime.ToString & ", " & (IBMMovementRunTime / totRunTime).ToString("P"))
+            End If
+
             strm.Close()
 
         Catch ex As Exception
@@ -2223,7 +2252,7 @@ Public Class cEcoSpace
         System.Console.WriteLine(" Trophic time(min.), " & SpaceRunTime.ToString & ",(%)," & (SpaceRunTime / totRunTime * 100).ToString)
         System.Console.WriteLine(" Dispersal (min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
         System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
-        System.Console.WriteLine(" MultiStanza IBM (min.), " & IBMRunTime.ToString & ",(%)," & (IBMRunTime / totRunTime * 100).ToString)
+        System.Console.WriteLine(" MultiStanza IBM (min.), " & MultiStanzaRunTime.ToString & ",(%)," & (MultiStanzaRunTime / totRunTime * 100).ToString)
         System.Console.WriteLine("-----------------------------------------------------------")
 #End If
 
@@ -2649,6 +2678,12 @@ Public Class cEcoSpace
                 Me.EcoSpaceData.nGridSolverThreads = Me.EcoSpaceData.NGroups
                 System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of grid threads limited to number of groups.")
             End If
+
+            'Don't do this here. The number of packets has not been calcualted yet
+            'If Me.EcoSpaceData.nIBMMovementSolverThreads > Me.StanzaData.Npackets Then
+            '    Me.EcoSpaceData.nIBMMovementSolverThreads = Me.StanzaData.Npackets
+            '    System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of IBM movement threads limited to number of IBM paeckets.")
+            'End If
 
             If Me.EcoSpaceData.nSpaceSolverThreads > Me.EcoSpaceData.iTotalWaterCells Then
                 Me.EcoSpaceData.nSpaceSolverThreads = Me.EcoSpaceData.iTotalWaterCells
@@ -6491,10 +6526,10 @@ exitline:
         Dim solver As cIBMSolver
 
         Try
-            If Me.m_IBMSolvers Is Nothing Then
-                Me.m_IBMSolvers = New List(Of cIBMSolver)
+            If Me.m_IBMGrowSolvers Is Nothing Then
+                Me.m_IBMGrowSolvers = New List(Of cIBMSolver)
             Else
-                Me.m_IBMSolvers.Clear()
+                Me.m_IBMGrowSolvers.Clear()
             End If
 
             For i As Integer = 1 To Me.EcoSpaceData.nGridSolverThreads
@@ -6516,7 +6551,37 @@ exitline:
 
                 solver.EcospaceErrorHandler = AddressOf Me.SolverErrorHandler
 
-                Me.m_IBMSolvers.Add(solver)
+                Me.m_IBMGrowSolvers.Add(solver)
+            Next i
+
+
+
+            If Me.m_IBMMoveSolvers Is Nothing Then
+                Me.m_IBMMoveSolvers = New List(Of cIBMSolver)
+            Else
+                Me.m_IBMMoveSolvers.Clear()
+            End If
+
+            For i As Integer = 1 To Me.EcoSpaceData.nIBMMovementSolverThreads
+                solver = New cIBMSolver(i)
+
+                'set reference variables
+                solver.m_EcospaceModel = Me
+                solver.m_Data = Me.EcoSpaceData
+                solver.m_ESData = Me.EcoSimData
+                solver.m_Stanza = Me.StanzaData
+                solver.m_Ecosim = Me.EcoSim
+                solver.Bcw = Me.Bcw
+                solver.C = Me.C
+                solver.d = Me.d
+                solver.e = Me.e
+                solver.Cper = Me.Cper
+
+                solver.Init()
+
+                solver.EcospaceErrorHandler = AddressOf Me.SolverErrorHandler
+
+                Me.m_IBMMoveSolvers.Add(solver)
             Next i
 
             Return True
@@ -7104,6 +7169,10 @@ exitline:
     Private Sub InitIBM()
         Try
             If Me.EcoSpaceData.UseIBM Then
+
+                _IBMGrowTimer = New Stopwatch
+                _IBMMoveTimer = New Stopwatch
+
                 'Packet number weights and iPacket, jPacket positions
                 Me.InitPackets()
                 ' js 30Mar2021 - define stanza groups per thread
@@ -7111,8 +7180,9 @@ exitline:
             End If
 
             Me.EcoSpaceData.nIBMGroupsPerThread = Me.AllocateIBMStanzaPerThread()
-            Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.EcoSpaceData.nGridSolverThreads - 1) \ Me.EcoSpaceData.nGridSolverThreads
-
+            'Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.EcoSpaceData.nGridSolverThreads - 1) \ Me.EcoSpaceData.nGridSolverThreads
+            Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.m_IBMMoveSolvers.Count - 1) \ Me.m_IBMMoveSolvers.Count
+            'Debug.Assert(False, "IBM Threading!")
         Catch ex As Exception
 
         End Try
