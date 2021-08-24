@@ -10675,6 +10675,9 @@ Public Class cCore
             m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
             m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded
 
+            m_EcospaceModelParams.SaveThreadingLog = m_EcoSpaceData.bSaveThreadingLog
+
+
             Me.LoadEcospaceResultsWriters()
 
             m_EcospaceModelParams.ResetStatusFlags()
@@ -10705,6 +10708,8 @@ Public Class cCore
         m_EcoSpaceData.nGridSolverThreads = m_EcospaceModelParams.nGridSolverThreads
         m_EcoSpaceData.nEffortDistThreads = m_EcospaceModelParams.nEffortDistThreads
         m_EcoSpaceData.nSpaceSolverThreads = m_EcospaceModelParams.nSpaceThreads
+
+        m_EcoSpaceData.nIBMMovementSolverThreads = m_EcospaceModelParams.nIBMMovementThreads
 
         m_EcoSpaceData.IFDPower = m_EcospaceModelParams.IFDPower
         m_EcoSpaceData.UseIBM = m_EcospaceModelParams.UseIBM
@@ -10741,6 +10746,8 @@ Public Class cCore
 
         m_EcoSpaceData.UseEcosimBiomassForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
         m_EcoSpaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
+
+        m_EcoSpaceData.bSaveThreadingLog = m_EcospaceModelParams.SaveThreadingLog
 
         Return True
 
