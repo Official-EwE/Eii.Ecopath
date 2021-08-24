@@ -639,7 +639,7 @@ Namespace Core
         'Ecospace multi thread vars
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        ''' <summary>To document</summary>
+        ''' <summary>Number of threads to run Dispersal or IBM Growth on.</summary>
         nGridSolverThreads
         ''' <summary>Number of threads to run the IBM Movement on.</summary>
         nIBMMovementThreads
@@ -649,6 +649,7 @@ Namespace Core
         nEffortDistThreads
         ''' <summary>To document</summary>
         EcospaceSaveThreadingLog
+
 
         IFDPower
         ''' <summary>To document</summary>
