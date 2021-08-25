@@ -1158,21 +1158,7 @@ Public Class cEcoSpace
                 MovementTot = _IBMMoveTimer.Elapsed.TotalMinutes '/ tot
             End If
 
-            dumpEcospaceThreadTimeingLog(totRunTime, SpaceRunTime, GridRunTime, EffortRunTime, IBMMultiStanza, GrowthTot, MovementTot)
-
-            '#If DEBUG Then
-            '            System.Console.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
-            '            System.Console.WriteLine(" Trophic Threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString &
-            '                                     ", Grid Threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString & " Effort Threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
-            '            System.Console.WriteLine(" Number of Time Steps, " & Me.itt.ToString)
-            '            System.Console.WriteLine(" Total run time(min.), " & totRunTime.ToString)
-            '            System.Console.WriteLine(" Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
-            '            System.Console.WriteLine(" Trophic time(min.), " & SpaceRunTime.ToString & ",(%)," & (SpaceRunTime / totRunTime * 100).ToString)
-            '            System.Console.WriteLine(" Dispersal (min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
-            '            System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
-            '            System.Console.WriteLine(" MultiStanza IBM (min.), " & IBMRunTime.ToString & ",(%)," & (IBMRunTime / totRunTime * 100).ToString)
-            '            System.Console.WriteLine("-----------------------------------------------------------")
-            '#End If
+            dumpEcospaceThreadLog(totRunTime, SpaceRunTime, GridRunTime, EffortRunTime, IBMMultiStanza, GrowthTot, MovementTot)
 
         Catch ex As Exception
             cLog.Write(ex, "cEcospace::FindSpatialEquilibrium")
@@ -2196,7 +2182,7 @@ Public Class cEcoSpace
 
     End Sub
 
-    Private Sub dumpEcospaceThreadTimeingLog(totRunTime As Single, SpaceRunTime As Single, GridRunTime As Single, EffortRunTime As Single, MultiStanzaRunTime As Single, IBMGrowthRunTime As Single, IBMMovementRunTime As Single)
+    Private Sub dumpEcospaceThreadLog(totRunTime As Single, SpaceRunTime As Single, GridRunTime As Single, EffortRunTime As Single, MultiStanzaRunTime As Single, IBMGrowthRunTime As Single, IBMMovementRunTime As Single)
 
         If Not Me.EcoSpaceData.bSaveThreadingLog Then
             Return
@@ -2205,7 +2191,7 @@ Public Class cEcoSpace
         'Build the file name from the cLog file.
         'This is because we don't have access to the core in Ecospace, which has all the output and input directory info.
         'So just fake it here!
-        'This will put the threading log in the same directory as the model and log file.
+        'This will put the threading log in the same directory as the model and log files.
         Dim logFileName As String = cLog.LogFile
         Dim timingLogFilename As String
 
@@ -2244,15 +2230,25 @@ Public Class cEcoSpace
 
 #If DEBUG Then
         System.Console.WriteLine("---------------FindSpatialEquilibrium() Thread Timing-------------")
-        System.Console.WriteLine(" Trophic Threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString &
-                                 ", Grid Threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString & " Effort Threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
-        System.Console.WriteLine(" Number of Time Steps, " & Me.itt.ToString)
-        System.Console.WriteLine(" Total run time(min.), " & totRunTime.ToString)
-        System.Console.WriteLine(" Average per Timestep(min.), " & (totRunTime / Me.itt).ToString)
-        System.Console.WriteLine(" Trophic time(min.), " & SpaceRunTime.ToString & ",(%)," & (SpaceRunTime / totRunTime * 100).ToString)
-        System.Console.WriteLine(" Dispersal (min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
-        System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
-        System.Console.WriteLine(" MultiStanza IBM (min.), " & MultiStanzaRunTime.ToString & ",(%)," & (MultiStanzaRunTime / totRunTime * 100).ToString)
+        System.Console.WriteLine("Trophic threads, " & Me.EcoSpaceData.nSpaceSolverThreads.ToString)
+        System.Console.WriteLine("Grid dispersal, " & Me.EcoSpaceData.nGridSolverThreads.ToString)
+        System.Console.WriteLine("Effort threads, " & Me.EcoSpaceData.nEffortDistThreads.ToString)
+        System.Console.WriteLine("MultiStanza & IBM Growth threads, " & Me.EcoSpaceData.nGridSolverThreads.ToString)
+
+        System.Console.WriteLine("IBM Movement Threads, " & Me.EcoSpaceData.nIBMMovementSolverThreads.ToString)
+
+        System.Console.WriteLine("Number of time steps, " & Me.itt.ToString)
+        System.Console.WriteLine("Total run time(min.), " & totRunTime.ToString)
+        System.Console.WriteLine("Average per timestep(min.), " & (totRunTime / Me.itt).ToString)
+        System.Console.WriteLine("Trophic (min.), " & SpaceRunTime.ToString & ", " & (SpaceRunTime / totRunTime).ToString("P"))
+        System.Console.WriteLine("Dispersal (min.), " & GridRunTime.ToString & ", " & (GridRunTime / totRunTime).ToString("P"))
+        System.Console.WriteLine("Effort dist. (min.), " & EffortRunTime.ToString & ", " & (EffortRunTime / totRunTime).ToString("P"))
+        System.Console.WriteLine("MultiStanza or IBM (min.), " & MultiStanzaRunTime.ToString & ", " & (MultiStanzaRunTime / totRunTime).ToString("P"))
+
+        If Me.EcoSpaceData.UseIBM Then
+            System.Console.WriteLine("IBM Growth (min.), " & IBMGrowthRunTime.ToString & ", " & (IBMGrowthRunTime / totRunTime).ToString("P"))
+            System.Console.WriteLine("IBM Movement (min.), " & IBMMovementRunTime.ToString & ", " & (IBMMovementRunTime / totRunTime).ToString("P"))
+        End If
         System.Console.WriteLine("-----------------------------------------------------------")
 #End If
 
