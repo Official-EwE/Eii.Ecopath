@@ -27,7 +27,6 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports SafenetUtils
 Imports System.IO
 
 #End Region ' 

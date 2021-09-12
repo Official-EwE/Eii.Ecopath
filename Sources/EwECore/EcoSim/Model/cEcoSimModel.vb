@@ -2740,7 +2740,6 @@ Namespace Ecosim
             Dim DtImpMult As Single
             'Imported Detritus after forcing function has been applied
             Dim DetInFlow As Single
-            Dim PredMult As Single
 
             ReDim aeff(Me.m_Data.inlinks)
             ReDim Veff(Me.m_Data.inlinks)
@@ -4496,7 +4495,7 @@ Namespace Ecosim
         ''' <remarks>Eatenby, Eatenof and Consumption are initialized as a function of StartBiomass QB and DC</remarks>
         Friend Sub CalcEatenOfBy()
 
-            Dim i As Integer, j As Integer, K As Integer, ii As Integer
+            Dim i As Integer, j As Integer, ii As Integer
 
             'The Diet Matrix could have changed since the last call to this
             'so count the links before populating them
@@ -5200,7 +5199,7 @@ Namespace Ecosim
         Sub DefineFlowList()
 
             ' set up list of foraging arenas defined by nonzero trophic flows
-            Dim i As Integer, j As Integer, K As Integer, ii As Integer, iii As Integer
+            Dim i As Integer, K As Integer, ii As Integer, iii As Integer
 
 
             ' JS 12Jun20: moved arena validation to a pre-run Sim check
