@@ -1128,7 +1128,7 @@ Public Class cSpaceSolver
         '    Dim noMoForce As Single = (m_SimData.mo(igrp) * (1 - m_SimData.MoPred(igrp) + m_SimData.MoPred(igrp) * Ftime(igrp))) * biomass
         '    ' System.Console.WriteLine(m_moLoss(igrp).ToString + ", " + (moTot - noMoForce).ToString + ", " + (m_moLoss(igrp) / (moTot - noMoForce)).ToString)
         'End If
-        '''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     End Sub
 

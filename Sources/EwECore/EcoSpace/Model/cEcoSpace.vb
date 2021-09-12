@@ -1425,8 +1425,6 @@ Public Class cEcoSpace
 
                 'Now we can force the biomass:
                 'loop over the Ecosim time series and find the group with forced biomass for this time step
-                'AAAAH Group 1 is forced (as an example, so let's force the biomass of this group
-                'If ip = 1 Then
                 If Me.EcoSpaceData.IsEcosimBioForcingGroup(ip) Then
 
                     'jb Only if there is valid data for this timestep

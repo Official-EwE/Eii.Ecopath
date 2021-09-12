@@ -331,7 +331,6 @@ Public Class cEcospaceDataStructures
     Public EnvironmentalLayerMap()(,) As Single
     ''' <summary>Environmental layer capacity disabled flag (layer)</summary>
     Public EnvironmentalLayerCapacityDisabled() As Boolean
-    ''' <summary>Depth layer capacity disabled flag (layer)</summary>
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Capacity calculation customization flags
