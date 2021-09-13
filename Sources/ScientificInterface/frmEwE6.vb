@@ -792,7 +792,10 @@ Public Class frmEwE6
     End Sub
 
     Private Function Panel(strPanelName As String) As frmEwEDockContent
-        Return Me.m_dtPanels(strPanelName)
+        If Me.m_dtPanels.ContainsKey(strPanelName) Then
+            Return Me.m_dtPanels(strPanelName)
+        End If
+        Return Nothing
     End Function
 
     Private Sub InitDockPanelPositions()
@@ -3407,11 +3410,11 @@ Public Class frmEwE6
 
         Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
         Dim strURL As String = bcmd.URL(New cWebLinks(Me.Core))
-        Dim panel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
+        Dim startpanel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
 
         ' Is a hyperlink?
         If cUriBuilder.IsValidURI(strURL) Or String.IsNullOrWhiteSpace(strURL) Then
-            If (My.Settings.UseExternalBrowser) And Not String.IsNullOrWhiteSpace(strURL) Then
+            If (My.Settings.UseExternalBrowser) Or (startpanel Is Nothing) Then
                 Try
                     ' Fire off system default URL handling
                     System.Diagnostics.Process.Start(strURL)
@@ -3424,15 +3427,15 @@ Public Class frmEwE6
             Else
                 ' #Yes: extract hyperlink bit, and pass it to the desired browser
                 If (Not cmd.Checked) Or (Not String.IsNullOrWhiteSpace(strURL)) Then
-                    If Panel.IsDisposed() Then
-                        Panel = New frmStartPanel(Me.UIContext)
-                        Me.m_dtPanels(cPANEL_START) = panel
+                    If startpanel.IsDisposed() Then
+                        startpanel = New frmStartPanel(Me.UIContext)
+                        Me.m_dtPanels(cPANEL_START) = startpanel
                     End If
-                    If Not String.IsNullOrWhiteSpace(strURL) Then Panel.URL = strURL
-                    Panel.Show(Me.m_DockPanel, DockState.Document)
+                    If Not String.IsNullOrWhiteSpace(strURL) Then startpanel.URL = strURL
+                    startpanel.Show(Me.m_DockPanel, DockState.Document)
                 Else
-                    If Not Panel.IsDisposed Then
-                        Panel.Close()
+                    If Not startpanel.IsDisposed Then
+                        startpanel.Close()
                     End If
                 End If
             End If
