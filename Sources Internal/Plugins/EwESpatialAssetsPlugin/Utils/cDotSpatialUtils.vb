@@ -29,8 +29,7 @@
 ' from checking the core license, and use its internal expiration scheme. This is
 ' necessary when EwE is used in development contracts without a proper license.
 '
-' The USE_LICENSE_LIB flag is ONLY checked in release mode; the STDF will NOT
-' check the core license in DEBUG mode.
+' The USE_LICENSE_LIB flag applies to release and debug modes.
 
 #Const USE_LICENSE_LIB = 0
 
@@ -631,10 +630,6 @@ Public Class cDotSpatialUtils
     ''' -----------------------------------------------------------------------
     Public Shared Function IsLicensed(core As cCore) As Boolean
 
-#If DEBUG Then
-        Return True
-#End If
-
         Debug.Assert(core IsNot Nothing)
         Dim bValid As Boolean = False
 
@@ -663,6 +658,8 @@ Public Class cDotSpatialUtils
             cLog.Write(ex, "cDotSpatialUtils.IsLicensed")
             Return False
         End Try
+#ElseIf DEBUG = 1 Then
+    return true
 #Else
         bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
 #End If
