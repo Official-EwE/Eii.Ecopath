@@ -87,7 +87,6 @@ Public Class frmEwE6
     Private Const cPANEL_REMARKS As String = "remarks"
     Private Const cPANEL_STATUS As String = "Status"
     Private Const cPANEL_NAV As String = "navigation"
-    Private Const cPANEL_START As String = "start"
 
     Private m_DockPanel As DockPanel = Nothing
     Private m_dtPanels As New Dictionary(Of String, frmEwEDockContent)
@@ -579,7 +578,7 @@ Public Class frmEwE6
 
         'Create and configure 'view start page' command
         Me.m_cmdBrowseURI = New cBrowserCommand(cmdh)
-        Me.m_cmdBrowseURI.AddControl(Me.m_tsmiViewStartPage)
+        Me.m_cmdBrowseURI.AddControl(Me.m_tsmiViewOnline)
 
         'Create and configure 'view status pane' command
         Me.m_cmdViewStatusPane = New cCommand(cmdh, "ViewStatusPane")
@@ -784,7 +783,6 @@ Public Class frmEwE6
             Me.m_dtPanels(cPANEL_NAV) = New frmNavigationPanel(Me.UIContext, Me.m_pluginManager)
             Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_messageHistory)
             Me.m_dtPanels(cPANEL_REMARKS) = New frmRemarkPanel(Me.UIContext)
-            Me.m_dtPanels(cPANEL_START) = New frmStartPanel(Me.UIContext)
         Catch ex As Exception
 
         End Try
@@ -1067,16 +1065,10 @@ Public Class frmEwE6
 
         Me.InitDockPanelPositions()
 
-#If Not DEBUG Then
-                ' Show start page (but not in DEBUG mode)
-                Me.Panel(cPANEL_START).Show(Me.m_DockPanel, DockState.Document)
-#End If
-
         ' Start controlling the status strip
         Me.m_ssMain.Attach(Me.UIContext, Me)
         ' Start controlling forms
         Me.m_formstatemanager = New cEwEFormStateManager(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
-        Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
 
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()
@@ -3410,35 +3402,19 @@ Public Class frmEwE6
 
         Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
         Dim strURL As String = bcmd.URL(New cWebLinks(Me.Core))
-        Dim startpanel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
 
         ' Is a hyperlink?
         If cUriBuilder.IsValidURI(strURL) Or String.IsNullOrWhiteSpace(strURL) Then
-            If (My.Settings.UseExternalBrowser) Or (startpanel Is Nothing) Then
-                Try
-                    ' Fire off system default URL handling
-                    System.Diagnostics.Process.Start(strURL)
-                Catch ex As Exception
-                    ' Failed to launch
-                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SHELL_FAILURE, ex.Message),
+            Try
+                ' Fire off system default URL handling
+                System.Diagnostics.Process.Start(strURL)
+            Catch ex As Exception
+                ' Failed to launch
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SHELL_FAILURE, ex.Message),
                                         eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
-                    Me.Core.Messages.SendMessage(msg)
-                End Try
-            Else
-                ' #Yes: extract hyperlink bit, and pass it to the desired browser
-                If (Not cmd.Checked) Or (Not String.IsNullOrWhiteSpace(strURL)) Then
-                    If startpanel.IsDisposed() Then
-                        startpanel = New frmStartPanel(Me.UIContext)
-                        Me.m_dtPanels(cPANEL_START) = startpanel
-                    End If
-                    If Not String.IsNullOrWhiteSpace(strURL) Then startpanel.URL = strURL
-                    startpanel.Show(Me.m_DockPanel, DockState.Document)
-                Else
-                    If Not startpanel.IsDisposed Then
-                        startpanel.Close()
-                    End If
-                End If
-            End If
+                Me.Core.Messages.SendMessage(msg)
+            End Try
+
         ElseIf cStringUtils.BeginsWith(strURL, "command:", True) Then
             ' #No: Is command?
             Dim strCommand As String = strURL.Substring(8)

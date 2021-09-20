@@ -872,12 +872,6 @@
   <data name="m_tsmiViewNavigation.Text" xml:space="preserve">
     <value>&amp;Navigator</value>
   </data>
-  <data name="m_tsmiViewStartPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
-  </data>
-  <data name="m_tsmiViewStartPage.Text" xml:space="preserve">
-    <value>&amp;Start page</value>
-  </data>
   <data name="m_tsmiViewStatus.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 22</value>
   </data>
@@ -889,6 +883,12 @@
   </data>
   <data name="m_tsmiViewRemarks.Text" xml:space="preserve">
     <value>&amp;Remarks Panel</value>
+  </data>
+  <data name="m_tsmiViewOnline.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 22</value>
+  </data>
+  <data name="m_tsmiViewOnline.Text" xml:space="preserve">
+    <value>&amp;Web portal</value>
   </data>
   <data name="m_tsmiViewMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>207, 22</value>
@@ -1372,7 +1372,7 @@
     <value>m_menuMain</value>
   </data>
   <data name="&gt;&gt;m_menuMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEMenustrip, ScientificInterfaceShared, Version=6.7.0.17090, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEMenustrip, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_menuMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1792,7 +1792,7 @@
     <value>m_tsModel</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.7.0.17090, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1819,7 +1819,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.7.0.17090, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -7266,6 +7266,12 @@
   <data name="&gt;&gt;m_tsmiViewNavigation.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsmiViewOnline.Name" xml:space="preserve">
+    <value>m_tsmiViewOnline</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiViewOnline.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsmiViewStatus.Name" xml:space="preserve">
     <value>m_tsmiViewStatus</value>
   </data>
@@ -7547,12 +7553,6 @@
   </data>
   <data name="&gt;&gt;m_bgw.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiViewStartPage.Name" xml:space="preserve">
-    <value>m_tsmiViewStartPage</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiViewStartPage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmEwE6</value>

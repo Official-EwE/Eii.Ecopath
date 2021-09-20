@@ -11,7 +11,7 @@
 ; EcoOcean features are optional to 'EwEPro'
 #define EcoOcean 0
 ; FishMIP features are optional to 'EwEPro'
-#define FISHMIP 1
+#define FISHMIP 0
 #define MSPTools 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0

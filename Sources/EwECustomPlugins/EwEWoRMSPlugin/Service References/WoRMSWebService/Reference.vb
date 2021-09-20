@@ -21,84 +21,84 @@ Namespace WoRMSWebService
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaID) of message getAphiaIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded)>  _
-        Function getAphiaID(request As WoRMSWebService.getAphiaIDRequest) As WoRMSWebService.getAphiaIDResponse
+        Function getAphiaID(ByVal request As WoRMSWebService.getAphiaIDRequest) As WoRMSWebService.getAphiaIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaRecords) of message getAphiaRecordsRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaRecords", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaRecords(request As WoRMSWebService.getAphiaRecordsRequest) As WoRMSWebService.getAphiaRecordsResponse
+        Function getAphiaRecords(ByVal request As WoRMSWebService.getAphiaRecordsRequest) As WoRMSWebService.getAphiaRecordsResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaName) of message getAphiaNameByIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaNameByID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaNameByID(request As WoRMSWebService.getAphiaNameByIDRequest) As WoRMSWebService.getAphiaNameByIDResponse
+        Function getAphiaNameByID(ByVal request As WoRMSWebService.getAphiaNameByIDRequest) As WoRMSWebService.getAphiaNameByIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaRecord) of message getAphiaRecordByIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaRecordByID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaRecordByID(request As WoRMSWebService.getAphiaRecordByIDRequest) As WoRMSWebService.getAphiaRecordByIDResponse
+        Function getAphiaRecordByID(ByVal request As WoRMSWebService.getAphiaRecordByIDRequest) As WoRMSWebService.getAphiaRecordByIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaRecord) of message getAphiaRecordByTSNRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaRecordByTSN", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaRecordByTSN(request As WoRMSWebService.getAphiaRecordByTSNRequest) As WoRMSWebService.getAphiaRecordByTSNResponse
+        Function getAphiaRecordByTSN(ByVal request As WoRMSWebService.getAphiaRecordByTSNRequest) As WoRMSWebService.getAphiaRecordByTSNResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaMatches) of message getAphiaRecordsByNamesRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaRecordsByNames", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaRecordsByNames(request As WoRMSWebService.getAphiaRecordsByNamesRequest) As WoRMSWebService.getAphiaRecordsByNamesResponse
+        Function getAphiaRecordsByNames(ByVal request As WoRMSWebService.getAphiaRecordsByNamesRequest) As WoRMSWebService.getAphiaRecordsByNamesResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaRecords) of message getAphiaRecordsByVernacularRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaRecordsByVernacular", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaRecordsByVernacular(request As WoRMSWebService.getAphiaRecordsByVernacularRequest) As WoRMSWebService.getAphiaRecordsByVernacularResponse
+        Function getAphiaRecordsByVernacular(ByVal request As WoRMSWebService.getAphiaRecordsByVernacularRequest) As WoRMSWebService.getAphiaRecordsByVernacularResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/Classification) of message getAphiaClassificationByIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaClassificationByID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaClassificationByID(request As WoRMSWebService.getAphiaClassificationByIDRequest) As WoRMSWebService.getAphiaClassificationByIDResponse
+        Function getAphiaClassificationByID(ByVal request As WoRMSWebService.getAphiaClassificationByIDRequest) As WoRMSWebService.getAphiaClassificationByIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/Sources) of message getSourcesByAphiaIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getSourcesByAphiaID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getSourcesByAphiaID(request As WoRMSWebService.getSourcesByAphiaIDRequest) As WoRMSWebService.getSourcesByAphiaIDResponse
+        Function getSourcesByAphiaID(ByVal request As WoRMSWebService.getSourcesByAphiaIDRequest) As WoRMSWebService.getSourcesByAphiaIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaRecords) of message getAphiaSynonymsByIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaSynonymsByID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaSynonymsByID(request As WoRMSWebService.getAphiaSynonymsByIDRequest) As WoRMSWebService.getAphiaSynonymsByIDResponse
+        Function getAphiaSynonymsByID(ByVal request As WoRMSWebService.getAphiaSynonymsByIDRequest) As WoRMSWebService.getAphiaSynonymsByIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaVernaculars) of message getAphiaVernacularsByIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaVernacularsByID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaVernacularsByID(request As WoRMSWebService.getAphiaVernacularsByIDRequest) As WoRMSWebService.getAphiaVernacularsByIDResponse
+        Function getAphiaVernacularsByID(ByVal request As WoRMSWebService.getAphiaVernacularsByIDRequest) As WoRMSWebService.getAphiaVernacularsByIDResponse
         
         'CODEGEN: Generating message contract since the wrapper namespace (http://aphia/v1.0/AphiaRecords) of message getAphiaChildrenByIDRequest does not match the default value (http://aphia/v1.0)
         <System.ServiceModel.OperationContractAttribute(Action:="getAphiaChildrenByID", ReplyAction:="*"),  _
          System.ServiceModel.XmlSerializerFormatAttribute(Style:=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults:=true, Use:=System.ServiceModel.OperationFormatUse.Encoded),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Vernacular)),  _
          System.ServiceModel.ServiceKnownTypeAttribute(GetType(Source))>  _
-        Function getAphiaChildrenByID(request As WoRMSWebService.getAphiaChildrenByIDRequest) As WoRMSWebService.getAphiaChildrenByIDResponse
+        Function getAphiaChildrenByID(ByVal request As WoRMSWebService.getAphiaChildrenByIDRequest) As WoRMSWebService.getAphiaChildrenByIDResponse
     End Interface
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -117,7 +117,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(scientificname As String, marine_only As Boolean)
+        Public Sub New(ByVal scientificname As String, ByVal marine_only As Boolean)
             MyBase.New
             Me.scientificname = scientificname
             Me.marine_only = marine_only
@@ -137,14 +137,14 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return] As Integer)
+        Public Sub New(ByVal [return] As Integer)
             MyBase.New
             Me.[return] = [return]
         End Sub
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0"),  _
      System.SerializableAttribute(),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
@@ -376,7 +376,7 @@ Namespace WoRMSWebService
         
         Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
         
-        Protected Sub RaisePropertyChanged(propertyName As String)
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
             Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
             If (Not (propertyChanged) Is Nothing) Then
                 propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
@@ -385,7 +385,7 @@ Namespace WoRMSWebService
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0"),  _
      System.SerializableAttribute(),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
@@ -435,7 +435,7 @@ Namespace WoRMSWebService
         
         Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
         
-        Protected Sub RaisePropertyChanged(propertyName As String)
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
             Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
             If (Not (propertyChanged) Is Nothing) Then
                 propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
@@ -444,7 +444,7 @@ Namespace WoRMSWebService
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0"),  _
      System.SerializableAttribute(),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
@@ -546,7 +546,7 @@ Namespace WoRMSWebService
         
         Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
         
-        Protected Sub RaisePropertyChanged(propertyName As String)
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
             Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
             If (Not (propertyChanged) Is Nothing) Then
                 propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
@@ -555,7 +555,7 @@ Namespace WoRMSWebService
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0"),  _
      System.SerializableAttribute(),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
@@ -618,7 +618,7 @@ Namespace WoRMSWebService
         
         Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
         
-        Protected Sub RaisePropertyChanged(propertyName As String)
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
             Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
             If (Not (propertyChanged) Is Nothing) Then
                 propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
@@ -651,7 +651,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(scientificname As String, [like] As Boolean, fuzzy As Boolean, marine_only As Boolean, offset As Integer)
+        Public Sub New(ByVal scientificname As String, ByVal [like] As Boolean, ByVal fuzzy As Boolean, ByVal marine_only As Boolean, ByVal offset As Integer)
             MyBase.New
             Me.scientificname = scientificname
             Me.[like] = [like]
@@ -674,7 +674,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]() As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return]() As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -693,7 +693,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer)
+        Public Sub New(ByVal AphiaID As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
         End Sub
@@ -712,7 +712,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return] As String)
+        Public Sub New(ByVal [return] As String)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -731,7 +731,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer)
+        Public Sub New(ByVal AphiaID As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
         End Sub
@@ -750,7 +750,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return] As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return] As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -769,7 +769,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(TSN As Integer)
+        Public Sub New(ByVal TSN As Integer)
             MyBase.New
             Me.TSN = TSN
         End Sub
@@ -788,7 +788,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return] As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return] As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -816,7 +816,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(scientificnames() As String, [like] As Boolean, fuzzy As Boolean, marine_only As Boolean)
+        Public Sub New(ByVal scientificnames() As String, ByVal [like] As Boolean, ByVal fuzzy As Boolean, ByVal marine_only As Boolean)
             MyBase.New
             Me.scientificnames = scientificnames
             Me.[like] = [like]
@@ -838,7 +838,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]()() As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return]()() As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -863,7 +863,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(vernacular As String, [like] As Boolean, offset As Integer)
+        Public Sub New(ByVal vernacular As String, ByVal [like] As Boolean, ByVal offset As Integer)
             MyBase.New
             Me.vernacular = vernacular
             Me.[like] = [like]
@@ -884,7 +884,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]() As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return]() As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -903,7 +903,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer)
+        Public Sub New(ByVal AphiaID As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
         End Sub
@@ -922,7 +922,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return] As WoRMSWebService.Classification)
+        Public Sub New(ByVal [return] As WoRMSWebService.Classification)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -941,7 +941,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer)
+        Public Sub New(ByVal AphiaID As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
         End Sub
@@ -960,7 +960,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]() As WoRMSWebService.Source)
+        Public Sub New(ByVal [return]() As WoRMSWebService.Source)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -979,7 +979,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer)
+        Public Sub New(ByVal AphiaID As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
         End Sub
@@ -998,7 +998,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]() As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return]() As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -1017,7 +1017,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer)
+        Public Sub New(ByVal AphiaID As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
         End Sub
@@ -1036,7 +1036,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]() As WoRMSWebService.Vernacular)
+        Public Sub New(ByVal [return]() As WoRMSWebService.Vernacular)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -1058,7 +1058,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(AphiaID As Integer, offset As Integer)
+        Public Sub New(ByVal AphiaID As Integer, ByVal offset As Integer)
             MyBase.New
             Me.AphiaID = AphiaID
             Me.offset = offset
@@ -1078,7 +1078,7 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New([return]() As WoRMSWebService.AphiaRecord)
+        Public Sub New(ByVal [return]() As WoRMSWebService.AphiaRecord)
             MyBase.New
             Me.[return] = [return]
         End Sub
@@ -1099,28 +1099,28 @@ Namespace WoRMSWebService
             MyBase.New
         End Sub
         
-        Public Sub New(endpointConfigurationName As String)
+        Public Sub New(ByVal endpointConfigurationName As String)
             MyBase.New(endpointConfigurationName)
         End Sub
         
-        Public Sub New(endpointConfigurationName As String, remoteAddress As String)
+        Public Sub New(ByVal endpointConfigurationName As String, ByVal remoteAddress As String)
             MyBase.New(endpointConfigurationName, remoteAddress)
         End Sub
         
-        Public Sub New(endpointConfigurationName As String, remoteAddress As System.ServiceModel.EndpointAddress)
+        Public Sub New(ByVal endpointConfigurationName As String, ByVal remoteAddress As System.ServiceModel.EndpointAddress)
             MyBase.New(endpointConfigurationName, remoteAddress)
         End Sub
         
-        Public Sub New(binding As System.ServiceModel.Channels.Binding, remoteAddress As System.ServiceModel.EndpointAddress)
+        Public Sub New(ByVal binding As System.ServiceModel.Channels.Binding, ByVal remoteAddress As System.ServiceModel.EndpointAddress)
             MyBase.New(binding, remoteAddress)
         End Sub
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaID(request As WoRMSWebService.getAphiaIDRequest) As WoRMSWebService.getAphiaIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaID(ByVal request As WoRMSWebService.getAphiaIDRequest) As WoRMSWebService.getAphiaIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaID
             Return MyBase.Channel.getAphiaID(request)
         End Function
         
-        Public Function getAphiaID(scientificname As String, marine_only As Boolean) As Integer
+        Public Function getAphiaID(ByVal scientificname As String, ByVal marine_only As Boolean) As Integer
             Dim inValue As WoRMSWebService.getAphiaIDRequest = New WoRMSWebService.getAphiaIDRequest()
             inValue.scientificname = scientificname
             inValue.marine_only = marine_only
@@ -1129,11 +1129,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecords(request As WoRMSWebService.getAphiaRecordsRequest) As WoRMSWebService.getAphiaRecordsResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecords
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecords(ByVal request As WoRMSWebService.getAphiaRecordsRequest) As WoRMSWebService.getAphiaRecordsResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecords
             Return MyBase.Channel.getAphiaRecords(request)
         End Function
         
-        Public Function getAphiaRecords(scientificname As String, [like] As Boolean, fuzzy As Boolean, marine_only As Boolean, offset As Integer) As WoRMSWebService.AphiaRecord()
+        Public Function getAphiaRecords(ByVal scientificname As String, ByVal [like] As Boolean, ByVal fuzzy As Boolean, ByVal marine_only As Boolean, ByVal offset As Integer) As WoRMSWebService.AphiaRecord()
             Dim inValue As WoRMSWebService.getAphiaRecordsRequest = New WoRMSWebService.getAphiaRecordsRequest()
             inValue.scientificname = scientificname
             inValue.[like] = [like]
@@ -1145,11 +1145,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaNameByID(request As WoRMSWebService.getAphiaNameByIDRequest) As WoRMSWebService.getAphiaNameByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaNameByID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaNameByID(ByVal request As WoRMSWebService.getAphiaNameByIDRequest) As WoRMSWebService.getAphiaNameByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaNameByID
             Return MyBase.Channel.getAphiaNameByID(request)
         End Function
         
-        Public Function getAphiaNameByID(AphiaID As Integer) As String
+        Public Function getAphiaNameByID(ByVal AphiaID As Integer) As String
             Dim inValue As WoRMSWebService.getAphiaNameByIDRequest = New WoRMSWebService.getAphiaNameByIDRequest()
             inValue.AphiaID = AphiaID
             Dim retVal As WoRMSWebService.getAphiaNameByIDResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getAphiaNameByID(inValue)
@@ -1157,11 +1157,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordByID(request As WoRMSWebService.getAphiaRecordByIDRequest) As WoRMSWebService.getAphiaRecordByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordByID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordByID(ByVal request As WoRMSWebService.getAphiaRecordByIDRequest) As WoRMSWebService.getAphiaRecordByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordByID
             Return MyBase.Channel.getAphiaRecordByID(request)
         End Function
         
-        Public Function getAphiaRecordByID(AphiaID As Integer) As WoRMSWebService.AphiaRecord
+        Public Function getAphiaRecordByID(ByVal AphiaID As Integer) As WoRMSWebService.AphiaRecord
             Dim inValue As WoRMSWebService.getAphiaRecordByIDRequest = New WoRMSWebService.getAphiaRecordByIDRequest()
             inValue.AphiaID = AphiaID
             Dim retVal As WoRMSWebService.getAphiaRecordByIDResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getAphiaRecordByID(inValue)
@@ -1169,11 +1169,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordByTSN(request As WoRMSWebService.getAphiaRecordByTSNRequest) As WoRMSWebService.getAphiaRecordByTSNResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordByTSN
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordByTSN(ByVal request As WoRMSWebService.getAphiaRecordByTSNRequest) As WoRMSWebService.getAphiaRecordByTSNResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordByTSN
             Return MyBase.Channel.getAphiaRecordByTSN(request)
         End Function
         
-        Public Function getAphiaRecordByTSN(TSN As Integer) As WoRMSWebService.AphiaRecord
+        Public Function getAphiaRecordByTSN(ByVal TSN As Integer) As WoRMSWebService.AphiaRecord
             Dim inValue As WoRMSWebService.getAphiaRecordByTSNRequest = New WoRMSWebService.getAphiaRecordByTSNRequest()
             inValue.TSN = TSN
             Dim retVal As WoRMSWebService.getAphiaRecordByTSNResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getAphiaRecordByTSN(inValue)
@@ -1181,11 +1181,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordsByNames(request As WoRMSWebService.getAphiaRecordsByNamesRequest) As WoRMSWebService.getAphiaRecordsByNamesResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordsByNames
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordsByNames(ByVal request As WoRMSWebService.getAphiaRecordsByNamesRequest) As WoRMSWebService.getAphiaRecordsByNamesResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordsByNames
             Return MyBase.Channel.getAphiaRecordsByNames(request)
         End Function
         
-        Public Function getAphiaRecordsByNames(scientificnames() As String, [like] As Boolean, fuzzy As Boolean, marine_only As Boolean) As WoRMSWebService.AphiaRecord()()
+        Public Function getAphiaRecordsByNames(ByVal scientificnames() As String, ByVal [like] As Boolean, ByVal fuzzy As Boolean, ByVal marine_only As Boolean) As WoRMSWebService.AphiaRecord()()
             Dim inValue As WoRMSWebService.getAphiaRecordsByNamesRequest = New WoRMSWebService.getAphiaRecordsByNamesRequest()
             inValue.scientificnames = scientificnames
             inValue.[like] = [like]
@@ -1196,11 +1196,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordsByVernacular(request As WoRMSWebService.getAphiaRecordsByVernacularRequest) As WoRMSWebService.getAphiaRecordsByVernacularResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordsByVernacular
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaRecordsByVernacular(ByVal request As WoRMSWebService.getAphiaRecordsByVernacularRequest) As WoRMSWebService.getAphiaRecordsByVernacularResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaRecordsByVernacular
             Return MyBase.Channel.getAphiaRecordsByVernacular(request)
         End Function
         
-        Public Function getAphiaRecordsByVernacular(vernacular As String, [like] As Boolean, offset As Integer) As WoRMSWebService.AphiaRecord()
+        Public Function getAphiaRecordsByVernacular(ByVal vernacular As String, ByVal [like] As Boolean, ByVal offset As Integer) As WoRMSWebService.AphiaRecord()
             Dim inValue As WoRMSWebService.getAphiaRecordsByVernacularRequest = New WoRMSWebService.getAphiaRecordsByVernacularRequest()
             inValue.vernacular = vernacular
             inValue.[like] = [like]
@@ -1210,11 +1210,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaClassificationByID(request As WoRMSWebService.getAphiaClassificationByIDRequest) As WoRMSWebService.getAphiaClassificationByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaClassificationByID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaClassificationByID(ByVal request As WoRMSWebService.getAphiaClassificationByIDRequest) As WoRMSWebService.getAphiaClassificationByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaClassificationByID
             Return MyBase.Channel.getAphiaClassificationByID(request)
         End Function
         
-        Public Function getAphiaClassificationByID(AphiaID As Integer) As WoRMSWebService.Classification
+        Public Function getAphiaClassificationByID(ByVal AphiaID As Integer) As WoRMSWebService.Classification
             Dim inValue As WoRMSWebService.getAphiaClassificationByIDRequest = New WoRMSWebService.getAphiaClassificationByIDRequest()
             inValue.AphiaID = AphiaID
             Dim retVal As WoRMSWebService.getAphiaClassificationByIDResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getAphiaClassificationByID(inValue)
@@ -1222,11 +1222,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getSourcesByAphiaID(request As WoRMSWebService.getSourcesByAphiaIDRequest) As WoRMSWebService.getSourcesByAphiaIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getSourcesByAphiaID
+        Function WoRMSWebService_AphiaNameServicePortType_getSourcesByAphiaID(ByVal request As WoRMSWebService.getSourcesByAphiaIDRequest) As WoRMSWebService.getSourcesByAphiaIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getSourcesByAphiaID
             Return MyBase.Channel.getSourcesByAphiaID(request)
         End Function
         
-        Public Function getSourcesByAphiaID(AphiaID As Integer) As WoRMSWebService.Source()
+        Public Function getSourcesByAphiaID(ByVal AphiaID As Integer) As WoRMSWebService.Source()
             Dim inValue As WoRMSWebService.getSourcesByAphiaIDRequest = New WoRMSWebService.getSourcesByAphiaIDRequest()
             inValue.AphiaID = AphiaID
             Dim retVal As WoRMSWebService.getSourcesByAphiaIDResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getSourcesByAphiaID(inValue)
@@ -1234,11 +1234,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaSynonymsByID(request As WoRMSWebService.getAphiaSynonymsByIDRequest) As WoRMSWebService.getAphiaSynonymsByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaSynonymsByID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaSynonymsByID(ByVal request As WoRMSWebService.getAphiaSynonymsByIDRequest) As WoRMSWebService.getAphiaSynonymsByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaSynonymsByID
             Return MyBase.Channel.getAphiaSynonymsByID(request)
         End Function
         
-        Public Function getAphiaSynonymsByID(AphiaID As Integer) As WoRMSWebService.AphiaRecord()
+        Public Function getAphiaSynonymsByID(ByVal AphiaID As Integer) As WoRMSWebService.AphiaRecord()
             Dim inValue As WoRMSWebService.getAphiaSynonymsByIDRequest = New WoRMSWebService.getAphiaSynonymsByIDRequest()
             inValue.AphiaID = AphiaID
             Dim retVal As WoRMSWebService.getAphiaSynonymsByIDResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getAphiaSynonymsByID(inValue)
@@ -1246,11 +1246,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaVernacularsByID(request As WoRMSWebService.getAphiaVernacularsByIDRequest) As WoRMSWebService.getAphiaVernacularsByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaVernacularsByID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaVernacularsByID(ByVal request As WoRMSWebService.getAphiaVernacularsByIDRequest) As WoRMSWebService.getAphiaVernacularsByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaVernacularsByID
             Return MyBase.Channel.getAphiaVernacularsByID(request)
         End Function
         
-        Public Function getAphiaVernacularsByID(AphiaID As Integer) As WoRMSWebService.Vernacular()
+        Public Function getAphiaVernacularsByID(ByVal AphiaID As Integer) As WoRMSWebService.Vernacular()
             Dim inValue As WoRMSWebService.getAphiaVernacularsByIDRequest = New WoRMSWebService.getAphiaVernacularsByIDRequest()
             inValue.AphiaID = AphiaID
             Dim retVal As WoRMSWebService.getAphiaVernacularsByIDResponse = CType(Me,WoRMSWebService.AphiaNameServicePortType).getAphiaVernacularsByID(inValue)
@@ -1258,11 +1258,11 @@ Namespace WoRMSWebService
         End Function
         
         <System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Function WoRMSWebService_AphiaNameServicePortType_getAphiaChildrenByID(request As WoRMSWebService.getAphiaChildrenByIDRequest) As WoRMSWebService.getAphiaChildrenByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaChildrenByID
+        Function WoRMSWebService_AphiaNameServicePortType_getAphiaChildrenByID(ByVal request As WoRMSWebService.getAphiaChildrenByIDRequest) As WoRMSWebService.getAphiaChildrenByIDResponse Implements WoRMSWebService.AphiaNameServicePortType.getAphiaChildrenByID
             Return MyBase.Channel.getAphiaChildrenByID(request)
         End Function
         
-        Public Function getAphiaChildrenByID(AphiaID As Integer, offset As Integer) As WoRMSWebService.AphiaRecord()
+        Public Function getAphiaChildrenByID(ByVal AphiaID As Integer, ByVal offset As Integer) As WoRMSWebService.AphiaRecord()
             Dim inValue As WoRMSWebService.getAphiaChildrenByIDRequest = New WoRMSWebService.getAphiaChildrenByIDRequest()
             inValue.AphiaID = AphiaID
             inValue.offset = offset

@@ -12,7 +12,7 @@
     <MyType>Windows</MyType>
     <OptionStrict>On</OptionStrict>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterfaceShared.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
@@ -147,15 +147,11 @@
     <Compile Include="Commands\Foundation\cCommandHandler.vb" />
     <Compile Include="Commands\Foundation\cControlHandler.vb" />
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
-    <Compile Include="Controls\ComboBox\cGeocodeLookupComboBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ComboBox\cGeocodeLookupComboBox.vb" />
     <Compile Include="Controls\Config\dlgConfig.Designer.vb">
       <DependentUpon>dlgConfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Config\dlgConfig.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\Config\dlgConfig.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramManager.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\Default\cTreeFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramData.vb" />
@@ -163,21 +159,11 @@
     <Compile Include="Controls\EwEGrid\cEwEStatusCell.vb" />
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
-    <Compile Include="Controls\Label\cEwEUnitLabel.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Label\cFileDropLabel.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Label\ucLinkLabel.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ListBox\cFlickerFreeCheckedListbox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ListBox\cFlickerFreeListbox.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Label\cEwEUnitLabel.vb" />
+    <Compile Include="Controls\Label\cFileDropLabel.vb" />
+    <Compile Include="Controls\Label\ucLinkLabel.vb" />
+    <Compile Include="Controls\ListBox\cFlickerFreeCheckedListbox.vb" />
+    <Compile Include="Controls\ListBox\cFlickerFreeListbox.vb" />
     <Compile Include="Controls\Map\cMapSettings.vb" />
     <Compile Include="Controls\Map\Core wrapper\cEcospaceLayerVelocity.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
@@ -186,9 +172,7 @@
     <Compile Include="Controls\Map\DirectRendering\ucLegendBar.Designer.vb">
       <DependentUpon>ucLegendBar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\DirectRendering\ucLegendBar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\DirectRendering\ucLegendBar.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorRaster.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorUpwelling.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorSailCost.vb" />
@@ -196,27 +180,19 @@
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorExclusion.Designer.vb">
       <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorExclusion.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorExclusion.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitat.Designer.vb">
       <DependentUpon>ucLayerEditorHabitat.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitat.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitat.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacityComputed.Designer.vb">
       <DependentUpon>ucLayerEditorHabitatCapacityComputed.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacityComputed.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacityComputed.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.Designer.vb">
       <DependentUpon>ucLayerEditorMonthVelocity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Vector\cLayerEditorVector.vb" />
     <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayerRaster.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExclusion.vb" />
@@ -227,51 +203,31 @@
     <Compile Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.Designer.vb">
       <DependentUpon>dlgImportShapes.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\Shapes\ShapeImport\UI\gridImportShapes.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.vb" />
+    <Compile Include="Controls\Shapes\ShapeImport\UI\gridImportShapes.vb" />
     <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.Designer.vb">
       <DependentUpon>dlgDefineEcosimFunctionalResponses.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.vb" />
     <Compile Include="Controls\Shapes\Utility\ucChangeShapeType.Designer.vb">
       <DependentUpon>ucChangeShapeType.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\Utility\ucChangeShapeType.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\Utility\ucChangeShapeType.vb" />
     <Compile Include="Controls\Shapes\Utility\ucDriverResponseView.Designer.vb">
       <DependentUpon>ucDriverResponseView.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\Utility\ucDriverResponseView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\Utility\ucDriverResponseView.vb" />
     <Compile Include="Controls\Shapes\Utility\dlgChangeShape.Designer.vb">
       <DependentUpon>dlgChangeShape.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\Utility\dlgChangeShape.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\Shapes\Utility\gridShapeFunctionParameters.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\Utility\dlgChangeShape.vb" />
+    <Compile Include="Controls\Shapes\Utility\gridShapeFunctionParameters.vb" />
     <Compile Include="Controls\ShowItemsUI\cShowHideItemsUI.vb" />
     <Compile Include="Controls\SysConfig\cSysConfig.vb" />
-    <Compile Include="Controls\TabControl\ucTabControlEx.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Toolstrip\cEwEMenustrip.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\TabControl\ucTabControlEx.vb" />
+    <Compile Include="Controls\Toolstrip\cEwEMenustrip.vb" />
     <Compile Include="Controls\TreeMap\cTreeMapRenderer.vb" />
-    <Compile Include="Controls\TreeView\cThemedTreeView.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\TreeView\cThemedTreeView.vb" />
     <Compile Include="Definitions\cWebLinks.vb" />
     <Compile Include="Commands\cDirectoryOpenCommand.vb" />
     <Compile Include="Commands\cShowHideItemsCommand.vb" />
@@ -289,21 +245,15 @@
     <Compile Include="Commands\cPrintCommand.vb" />
     <Compile Include="Commands\cShowOptionsCommand.vb" />
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
-    <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb" />
     <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.Designer.vb">
       <DependentUpon>cCustomToolstripComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ComboBox\cCustomToolstripComboBox.vb" />
     <Compile Include="Controls\ComboBox\ucFieldPicker.Designer.vb">
       <DependentUpon>ucFieldPicker.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboBox\ucFieldPicker.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\ComboBox\ucFieldPicker.vb" />
     <Compile Include="Controls\Cursor\cCursorFactory.vb" />
     <Compile Include="Controls\EwEGrid\cPropertyCheckboxCell.vb" />
     <Compile Include="Controls\EwEGrid\cPropertyInfoHelper.vb" />
@@ -338,20 +288,14 @@
     <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.Designer.vb">
       <DependentUpon>ucCollapsiblePanelController.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.vb" />
     <Compile Include="Controls\ComboBox\cMonetaryUnitComboBox.Designer.vb">
       <DependentUpon>cMonetaryUnitComboBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ComboBox\cMonetaryUnitComboBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ComboBox\cMonetaryUnitComboBox.vb" />
     <Compile Include="Controls\FileDialog\cEwEFileDialogHelper.vb" />
     <Compile Include="Controls\Indicator renderers\cArrowIndicator.vb" />
-    <Compile Include="Controls\EwEGrid\cEwEGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\EwEGrid\cEwEGrid.vb" />
     <Compile Include="Controls\EwEGrid\cEwECellBase.vb" />
     <Compile Include="Controls\EwEGrid\Visualizers\cEwEGridColorVisualizer.vb" />
     <Compile Include="Controls\EwEGrid\cEwEHierarchyGridCell.vb" />
@@ -359,37 +303,23 @@
     <Compile Include="Controls\GlyphSelect\ucGlyph.Designer.vb">
       <DependentUpon>ucGlyph.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GlyphSelect\ucGlyph.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\GlyphSelect\ucGlyph.vb" />
     <Compile Include="Controls\GlyphSelect\ucGlyphSelect.designer.vb">
       <DependentUpon>ucGlyphSelect.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GlyphSelect\ucGlyphSelect.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\GlyphSelect\ucGlyphSelect.vb" />
     <Compile Include="Controls\Indicator renderers\cColorRampIndicator.vb" />
     <Compile Include="Controls\Indicator renderers\cPedigreeIndicator.vb" />
     <Compile Include="Controls\InputBox\frmInputBox.Designer.vb">
       <DependentUpon>frmInputBox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\InputBox\frmInputBox.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\InputBox\frmInputBox.vb" />
     <Compile Include="Controls\IUIElement.vb" />
-    <Compile Include="Controls\Label\cEwEHeaderLabel.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Label\cEwEHeaderLabel.vb" />
     <Compile Include="Controls\cCoreInputOutputControlItem.vb" />
-    <Compile Include="Controls\ListBox\cFleetListBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ListBox\cGroupListBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ListView\cSmoothListView.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ListBox\cFleetListBox.vb" />
+    <Compile Include="Controls\ListBox\cGroupListBox.vb" />
+    <Compile Include="Controls\ListView\cSmoothListView.vb" />
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
     <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayerImage.vb" />
     <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayer.vb" />
@@ -409,63 +339,43 @@
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditor.Designer.vb">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditor.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDefault.Designer.vb">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDefault.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDefault.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDepth.Designer.vb">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDepth.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDepth.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.Designer.vb">
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.Designer.vb">
       <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMigration.Designer.vb">
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMigration.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMigration.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorPort.Designer.vb">
       <DependentUpon>ucLayerEditorPort.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorPort.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorPort.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRange.Designer.vb">
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRange.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRange.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRegions.Designer.vb">
       <DependentUpon>ucLayerEditorRegions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRegions.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRegions.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorSailCost.Designer.vb">
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorSailCost.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorSailCost.vb" />
     <Compile Include="Controls\Map\Layers\Layer types\cStyleguideImageLayer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cImageLayerRenderer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cVectorLayerRenderer.vb" />
@@ -481,84 +391,54 @@
     <Compile Include="Controls\Map\Layers\ucLayer.Designer.vb">
       <DependentUpon>ucLayer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\ucLayer.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayer.vb" />
     <Compile Include="Controls\Map\Layers\ucLayerGroup.Designer.vb">
       <DependentUpon>ucLayerGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\ucLayerGroup.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayerGroup.vb" />
     <Compile Include="Controls\Map\Layers\ucLayersControl.Designer.vb">
       <DependentUpon>ucLayersControl.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\ucLayersControl.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\ucLayersControl.vb" />
     <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditGradient.Designer.vb">
       <DependentUpon>ucEditGradient.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditGradient.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditGradient.vb" />
     <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.Designer.vb">
       <DependentUpon>ucEditHatch.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditHatch.vb" />
     <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditImage.Designer.vb">
       <DependentUpon>ucEditImage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditImage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditVisualStyle.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditImage.vb" />
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucEditVisualStyle.vb" />
     <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.Designer.vb">
       <DependentUpon>ucHatch.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.vb" />
     <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatchSelect.designer.vb">
       <DependentUpon>ucHatchSelect.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatchSelect.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\VisualStyleEditors\ucHatchSelect.vb" />
     <Compile Include="Controls\Map\Legend\cLegend.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cRasterLayerRenderer.vb" />
     <Compile Include="Controls\Map\ucMap.Designer.vb">
       <DependentUpon>ucMap.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\ucMap.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\ucMap.vb" />
     <Compile Include="Controls\Map\ucMapZoom.designer.vb">
       <DependentUpon>ucMapZoom.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\ucMapZoom.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\ucMapZoom.vb" />
     <Compile Include="Controls\Map\ucMapZoomToolbar.Designer.vb">
       <DependentUpon>ucMapZoomToolbar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\ucMapZoomToolbar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\ucMapZoomToolbar.vb" />
     <Compile Include="Controls\MessageBox\cCustomMessageBox.vb" />
-    <Compile Include="Controls\MessageBox\frmCustomMessageBox.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\NumericUpDown\cEwENumericUpDown.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Panel\ucSmoothPanel.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\MessageBox\frmCustomMessageBox.vb" />
+    <Compile Include="Controls\NumericUpDown\cEwENumericUpDown.vb" />
+    <Compile Include="Controls\Panel\ucSmoothPanel.vb" />
     <Compile Include="Controls\Pyramid\cPyramid.vb" />
     <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cCapacityShapeGUIHandler.vb" />
@@ -573,146 +453,92 @@
     <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.Designer.vb">
       <DependentUpon>dlgDefineEcospaceForagingResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.vb" />
     <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.Designer.vb">
       <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cMediationGUIHandler.vb" />
     <Compile Include="Controls\Shapes\Utility\ShapeImage.vb" />
     <Compile Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.Designer.vb">
       <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.vb" />
     <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolbox.Designer.vb">
       <DependentUpon>ucShapeToolbox.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolbox.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolbox.vb" />
     <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolboxToolbar.Designer.vb">
       <DependentUpon>ucShapeToolboxToolbar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolboxToolbar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeToolbox\ucShapeToolboxToolbar.vb" />
     <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.Designer.vb">
       <DependentUpon>frmShapeValue.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\Shapes\ShapeValue\gridShapeValue.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.vb" />
+    <Compile Include="Controls\Shapes\ShapeValue\gridShapeValue.vb" />
     <Compile Include="Controls\Shapes\SketchPad\ucSketchPad.Designer.vb">
       <DependentUpon>ucSketchPad.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\SketchPad\ucSketchPad.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\ucSketchPad.vb" />
     <Compile Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.Designer.vb">
       <DependentUpon>ucSketchPadToolbar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\ucSketchPadToolbar.vb" />
     <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignments.Designer.vb">
       <DependentUpon>ucMediationAssignments.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignments.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignments.vb" />
     <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsToolbar.Designer.vb">
       <DependentUpon>ucMediationAssignmentsToolbar.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsToolbar.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TextBox\ucCharacterTextBox.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Toolstrip\cEwEToolstrip.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Toolstrip\cModelPathToolStrip.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Tooltip\cToolTipShared.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsToolbar.vb" />
+    <Compile Include="Controls\Shapes\ShapeMediation\ucMediationAssignmentsGrid.vb" />
+    <Compile Include="Controls\TextBox\ucCharacterTextBox.vb" />
+    <Compile Include="Controls\Toolstrip\cEwEToolstrip.vb" />
+    <Compile Include="Controls\Toolstrip\cModelPathToolStrip.vb" />
+    <Compile Include="Controls\Tooltip\cToolTipShared.vb" />
     <Compile Include="Controls\TreeView\cTreeViewNodeController.vb" />
     <Compile Include="Controls\Separator\ucFormSeparator.Designer.vb">
       <DependentUpon>ucFormSeparator.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Separator\ucFormSeparator.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Separator\ucFormSeparator.vb" />
     <Compile Include="Controls\Slider\ucSlider.designer.vb">
       <DependentUpon>ucSlider.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Slider\ucSlider.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Slider\ucSlider.vb" />
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.Designer.vb">
       <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.vb" />
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.Designer.vb">
       <DependentUpon>ucMediationSketchPad.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucMediationSketchPad.vb" />
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.Designer.vb">
       <DependentUpon>ucTimeSeriesSketchPad.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\TreeView\cNavigateTreeview.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.vb" />
+    <Compile Include="Controls\TreeView\cNavigateTreeview.vb" />
     <Compile Include="Controls\Wizard\cWizard.vb" />
     <Compile Include="Controls\Wizard\Interfaces\IWizardNavigation.vb" />
     <Compile Include="Controls\Wizard\Interfaces\IWizardPage.vb" />
     <Compile Include="Controls\Wizard\ucWizardNavigation.Designer.vb">
       <DependentUpon>ucWizardNavigation.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Wizard\ucWizardNavigation.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Wizard\ucWizardNavigation.vb" />
     <Compile Include="Controls\HoverMenu\ucHoverMenu.Designer.vb">
       <DependentUpon>ucHoverMenu.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\HoverMenu\ucHoverMenu.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\HoverMenu\ucHoverMenu.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphHelper.vb" />
     <Compile Include="Controls\ZedGraph\ZedGraphKiteHelper.vb" />
     <Compile Include="Controls\cUIContext.vb" />
     <Compile Include="Definitions\Filters.vb" />
     <Compile Include="Engines\cDefineItemsEngine.vb" />
-    <Compile Include="Forms\frmEwEDockContent.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmEwE.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\frmEwEGrid.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Forms\frmEwEDockContent.vb" />
+    <Compile Include="Forms\frmEwE.vb" />
+    <Compile Include="Forms\frmEwEGrid.vb" />
     <Compile Include="GeoCode\cGeoCodeLookup.vb" />
     <Compile Include="GeoCode\cMarineRegionsLookup.vb" />
     <Compile Include="GeoCode\cMarineRegionsWSDL.vb" />
@@ -728,6 +554,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
