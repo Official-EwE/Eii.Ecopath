@@ -31,7 +31,7 @@
 '
 ' The USE_LICENSE_LIB flag applies to release and debug modes.
 
-#Const USE_LICENSE_LIB = 0
+#Const USE_LICENSE_LIB = 1
 
 #If Not DEBUG Then
 #Const USE_LICENSE_LIB = 1

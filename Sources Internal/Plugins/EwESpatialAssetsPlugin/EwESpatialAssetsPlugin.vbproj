@@ -174,7 +174,9 @@
     <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.Designer.vb">
       <DependentUpon>ucAttributeFilterConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.vb" />
+    <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Plugins\Converters\Vector\Inclusion\cVectorCookieCutterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Isobar\cIsobarConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
@@ -182,7 +184,9 @@
     <Compile Include="Plugins\Converters\Vector\ucAttributeNameConfigPage.Designer.vb">
       <DependentUpon>ucAttributeNameConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Converters\Vector\ucAttributeNameConfigPage.vb" />
+    <Compile Include="Plugins\Converters\Vector\ucAttributeNameConfigPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Plugins\Datasets\Files\Specific\cASCIIFilesDataSetPlugin.vb" />
     <Compile Include="Plugins\Datasets\Files\cCalendarColumn.vb" />
     <Compile Include="Plugins\Datasets\cFileDataSetPlugin.vb" />
@@ -191,7 +195,9 @@
     <Compile Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.Designer.vb">
       <DependentUpon>ucMultiFileDataSetConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.vb" />
+    <Compile Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Plugins\Datasets\Single File\cSingleFileDataSetPlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -212,7 +218,9 @@
     <Compile Include="Plugins\Datasets\Single File\ucSingleFileDataSetConfigPage.Designer.vb">
       <DependentUpon>ucSingleFileDataSetConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Datasets\Single File\ucSingleFileDataSetConfigPage.vb" />
+    <Compile Include="Plugins\Datasets\Single File\ucSingleFileDataSetConfigPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Rasters\cSpatialRaster.vb" />
     <Compile Include="Tools\cProjectTools.vb" />
     <Compile Include="Tools\cSurfaceTools.vb" />
