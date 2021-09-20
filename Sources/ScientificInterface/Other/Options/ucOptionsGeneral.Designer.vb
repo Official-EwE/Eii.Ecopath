@@ -51,7 +51,6 @@ Namespace Other
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnViewLogFileDir = New System.Windows.Forms.Button()
             Me.m_cbStatusShowVariableValidations = New System.Windows.Forms.CheckBox()
-            Me.m_cbUseExternalBrowser = New System.Windows.Forms.CheckBox()
             Me.m_cbStatusShowNewestFirst = New System.Windows.Forms.CheckBox()
             Me.m_cbStatusAutoPopup = New System.Windows.Forms.CheckBox()
             Me.m_cbShowSplashScreen = New System.Windows.Forms.CheckBox()
@@ -171,12 +170,6 @@ Namespace Other
             Me.m_cbStatusShowVariableValidations.Name = "m_cbStatusShowVariableValidations"
             Me.m_cbStatusShowVariableValidations.UseVisualStyleBackColor = True
             '
-            'm_cbUseExternalBrowser
-            '
-            resources.ApplyResources(Me.m_cbUseExternalBrowser, "m_cbUseExternalBrowser")
-            Me.m_cbUseExternalBrowser.Name = "m_cbUseExternalBrowser"
-            Me.m_cbUseExternalBrowser.UseVisualStyleBackColor = True
-            '
             'm_cbStatusShowNewestFirst
             '
             resources.ApplyResources(Me.m_cbStatusShowNewestFirst, "m_cbStatusShowNewestFirst")
@@ -211,7 +204,6 @@ Namespace Other
             Me.Controls.Add(Me.m_hdrAuthor)
             Me.Controls.Add(Me.m_hdrStatusPanel)
             Me.Controls.Add(Me.m_cbShowSplashScreen)
-            Me.Controls.Add(Me.m_cbUseExternalBrowser)
             Me.Controls.Add(Me.m_cbShowHost)
             Me.Controls.Add(Me.m_btnViewLogFileDir)
             Me.Controls.Add(Me.m_btnClearMRU)
@@ -246,7 +238,6 @@ Namespace Other
         Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
         Private WithEvents m_btnViewLogFileDir As System.Windows.Forms.Button
         Private WithEvents m_cbStatusShowVariableValidations As System.Windows.Forms.CheckBox
-        Private WithEvents m_cbUseExternalBrowser As CheckBox
         Private WithEvents m_cbStatusShowNewestFirst As CheckBox
         Private WithEvents m_cbStatusAutoPopup As CheckBox
         Private WithEvents m_cbShowSplashScreen As CheckBox

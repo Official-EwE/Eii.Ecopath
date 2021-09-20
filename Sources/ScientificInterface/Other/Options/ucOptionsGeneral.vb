@@ -88,7 +88,6 @@ Namespace Other
 
             Me.m_cbShowSplashScreen.Checked = My.Settings.ShowSplash
             Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
-            Me.m_cbUseExternalBrowser.Checked = My.Settings.UseExternalBrowser
 
             Me.m_cbStatusShowTime.Checked = My.Settings.StatusShowTime
             Me.m_cbStatusShowNewestFirst.Checked = My.Settings.StatusSortNewestFirst
@@ -140,7 +139,6 @@ Namespace Other
                 My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, eVerboseLevel)
                 My.Settings.Author = Me.m_tbxAuthor.Text
                 My.Settings.Contact = Me.m_tbxContact.Text
-                My.Settings.UseExternalBrowser = Me.m_cbUseExternalBrowser.Checked
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed
@@ -167,7 +165,6 @@ Namespace Other
                 Me.m_cbStatusAutoPopup.Checked = CBool(My.Settings.GetDefaultValue("StatusAutoPopup"))
                 Me.m_fpVerboseLevel.Value = My.Settings.GetDefaultValue("LogVerboseLevel")
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
-                Me.m_cbUseExternalBrowser.Checked = CBool(My.Settings.GetDefaultValue("UseExternalBrowser"))
 
                 Me.m_tbxAuthor.Text = Environment.UserName
                 Me.m_tbxContact.Text = ""

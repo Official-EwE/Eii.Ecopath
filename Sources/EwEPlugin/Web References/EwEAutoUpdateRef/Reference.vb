@@ -24,7 +24,7 @@ Imports System.Xml.Serialization
 Namespace EwEAutoUpdateRef
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code"),  _
      System.Web.Services.WebServiceBindingAttribute(Name:="UpdateServiceSoap", [Namespace]:="http://webservice.ecopath.org/EwEAutoUpdate.Web/")>  _
@@ -96,25 +96,25 @@ Namespace EwEAutoUpdateRef
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://webservice.ecopath.org/EwEAutoUpdate.Web/GetPluginMigrationToken", RequestNamespace:="http://webservice.ecopath.org/EwEAutoUpdate.Web/", ResponseNamespace:="http://webservice.ecopath.org/EwEAutoUpdate.Web/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function GetPluginMigrationToken(strCoreVersion As String, strPluginName As String, strPluginVersion As String) As String
+        Public Function GetPluginMigrationToken(ByVal strCoreVersion As String, ByVal strPluginName As String, ByVal strPluginVersion As String) As String
             Dim results() As Object = Me.Invoke("GetPluginMigrationToken", New Object() {strCoreVersion, strPluginName, strPluginVersion})
             Return CType(results(0),String)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub GetPluginMigrationTokenAsync(strCoreVersion As String, strPluginName As String, strPluginVersion As String)
+        Public Overloads Sub GetPluginMigrationTokenAsync(ByVal strCoreVersion As String, ByVal strPluginName As String, ByVal strPluginVersion As String)
             Me.GetPluginMigrationTokenAsync(strCoreVersion, strPluginName, strPluginVersion, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub GetPluginMigrationTokenAsync(strCoreVersion As String, strPluginName As String, strPluginVersion As String, userState As Object)
+        Public Overloads Sub GetPluginMigrationTokenAsync(ByVal strCoreVersion As String, ByVal strPluginName As String, ByVal strPluginVersion As String, ByVal userState As Object)
             If (Me.GetPluginMigrationTokenOperationCompleted Is Nothing) Then
                 Me.GetPluginMigrationTokenOperationCompleted = AddressOf Me.OnGetPluginMigrationTokenOperationCompleted
             End If
             Me.InvokeAsync("GetPluginMigrationToken", New Object() {strCoreVersion, strPluginName, strPluginVersion}, Me.GetPluginMigrationTokenOperationCompleted, userState)
         End Sub
         
-        Private Sub OnGetPluginMigrationTokenOperationCompleted(arg As Object)
+        Private Sub OnGetPluginMigrationTokenOperationCompleted(ByVal arg As Object)
             If (Not (Me.GetPluginMigrationTokenCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent GetPluginMigrationTokenCompleted(Me, New GetPluginMigrationTokenCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
@@ -123,25 +123,25 @@ Namespace EwEAutoUpdateRef
         
         '''<remarks/>
         <System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://webservice.ecopath.org/EwEAutoUpdate.Web/CheckPluginUpdate", RequestNamespace:="http://webservice.ecopath.org/EwEAutoUpdate.Web/", ResponseNamespace:="http://webservice.ecopath.org/EwEAutoUpdate.Web/", Use:=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle:=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)>  _
-        Public Function CheckPluginUpdate(strCoreVersion As String, strPluginName As String, strPluginPKT As String, strPluginVersion As String) As Boolean
+        Public Function CheckPluginUpdate(ByVal strCoreVersion As String, ByVal strPluginName As String, ByVal strPluginPKT As String, ByVal strPluginVersion As String) As Boolean
             Dim results() As Object = Me.Invoke("CheckPluginUpdate", New Object() {strCoreVersion, strPluginName, strPluginPKT, strPluginVersion})
             Return CType(results(0),Boolean)
         End Function
         
         '''<remarks/>
-        Public Overloads Sub CheckPluginUpdateAsync(strCoreVersion As String, strPluginName As String, strPluginPKT As String, strPluginVersion As String)
+        Public Overloads Sub CheckPluginUpdateAsync(ByVal strCoreVersion As String, ByVal strPluginName As String, ByVal strPluginPKT As String, ByVal strPluginVersion As String)
             Me.CheckPluginUpdateAsync(strCoreVersion, strPluginName, strPluginPKT, strPluginVersion, Nothing)
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub CheckPluginUpdateAsync(strCoreVersion As String, strPluginName As String, strPluginPKT As String, strPluginVersion As String, userState As Object)
+        Public Overloads Sub CheckPluginUpdateAsync(ByVal strCoreVersion As String, ByVal strPluginName As String, ByVal strPluginPKT As String, ByVal strPluginVersion As String, ByVal userState As Object)
             If (Me.CheckPluginUpdateOperationCompleted Is Nothing) Then
                 Me.CheckPluginUpdateOperationCompleted = AddressOf Me.OnCheckPluginUpdateOperationCompleted
             End If
             Me.InvokeAsync("CheckPluginUpdate", New Object() {strCoreVersion, strPluginName, strPluginPKT, strPluginVersion}, Me.CheckPluginUpdateOperationCompleted, userState)
         End Sub
         
-        Private Sub OnCheckPluginUpdateOperationCompleted(arg As Object)
+        Private Sub OnCheckPluginUpdateOperationCompleted(ByVal arg As Object)
             If (Not (Me.CheckPluginUpdateCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent CheckPluginUpdateCompleted(Me, New CheckPluginUpdateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
@@ -161,14 +161,14 @@ Namespace EwEAutoUpdateRef
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub DownloadPluginAsync(userState As Object)
+        Public Overloads Sub DownloadPluginAsync(ByVal userState As Object)
             If (Me.DownloadPluginOperationCompleted Is Nothing) Then
                 Me.DownloadPluginOperationCompleted = AddressOf Me.OnDownloadPluginOperationCompleted
             End If
             Me.InvokeAsync("DownloadPlugin", New Object(-1) {}, Me.DownloadPluginOperationCompleted, userState)
         End Sub
         
-        Private Sub OnDownloadPluginOperationCompleted(arg As Object)
+        Private Sub OnDownloadPluginOperationCompleted(ByVal arg As Object)
             If (Not (Me.DownloadPluginCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent DownloadPluginCompleted(Me, New DownloadPluginCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
@@ -188,14 +188,14 @@ Namespace EwEAutoUpdateRef
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub GetPluginHashAsync(userState As Object)
+        Public Overloads Sub GetPluginHashAsync(ByVal userState As Object)
             If (Me.GetPluginHashOperationCompleted Is Nothing) Then
                 Me.GetPluginHashOperationCompleted = AddressOf Me.OnGetPluginHashOperationCompleted
             End If
             Me.InvokeAsync("GetPluginHash", New Object(-1) {}, Me.GetPluginHashOperationCompleted, userState)
         End Sub
         
-        Private Sub OnGetPluginHashOperationCompleted(arg As Object)
+        Private Sub OnGetPluginHashOperationCompleted(ByVal arg As Object)
             If (Not (Me.GetPluginHashCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent GetPluginHashCompleted(Me, New GetPluginHashCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
@@ -215,14 +215,14 @@ Namespace EwEAutoUpdateRef
         End Sub
         
         '''<remarks/>
-        Public Overloads Sub GetPluginExtensionAsync(userState As Object)
+        Public Overloads Sub GetPluginExtensionAsync(ByVal userState As Object)
             If (Me.GetPluginExtensionOperationCompleted Is Nothing) Then
                 Me.GetPluginExtensionOperationCompleted = AddressOf Me.OnGetPluginExtensionOperationCompleted
             End If
             Me.InvokeAsync("GetPluginExtension", New Object(-1) {}, Me.GetPluginExtensionOperationCompleted, userState)
         End Sub
         
-        Private Sub OnGetPluginExtensionOperationCompleted(arg As Object)
+        Private Sub OnGetPluginExtensionOperationCompleted(ByVal arg As Object)
             If (Not (Me.GetPluginExtensionCompletedEvent) Is Nothing) Then
                 Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg,System.Web.Services.Protocols.InvokeCompletedEventArgs)
                 RaiseEvent GetPluginExtensionCompleted(Me, New GetPluginExtensionCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
@@ -230,11 +230,11 @@ Namespace EwEAutoUpdateRef
         End Sub
         
         '''<remarks/>
-        Public Shadows Sub CancelAsync(userState As Object)
+        Public Shadows Sub CancelAsync(ByVal userState As Object)
             MyBase.CancelAsync(userState)
         End Sub
         
-        Private Function IsLocalFileSystemWebService(url As String) As Boolean
+        Private Function IsLocalFileSystemWebService(ByVal url As String) As Boolean
             If ((url Is Nothing)  _
                         OrElse (url Is String.Empty)) Then
                 Return false
@@ -249,11 +249,11 @@ Namespace EwEAutoUpdateRef
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub GetPluginMigrationTokenCompletedEventHandler(sender As Object, e As GetPluginMigrationTokenCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")>  _
+    Public Delegate Sub GetPluginMigrationTokenCompletedEventHandler(ByVal sender As Object, ByVal e As GetPluginMigrationTokenCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class GetPluginMigrationTokenCompletedEventArgs
@@ -261,7 +261,7 @@ Namespace EwEAutoUpdateRef
         
         Private results() As Object
         
-        Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
             MyBase.New(exception, cancelled, userState)
             Me.results = results
         End Sub
@@ -276,11 +276,11 @@ Namespace EwEAutoUpdateRef
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub CheckPluginUpdateCompletedEventHandler(sender As Object, e As CheckPluginUpdateCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")>  _
+    Public Delegate Sub CheckPluginUpdateCompletedEventHandler(ByVal sender As Object, ByVal e As CheckPluginUpdateCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class CheckPluginUpdateCompletedEventArgs
@@ -288,7 +288,7 @@ Namespace EwEAutoUpdateRef
         
         Private results() As Object
         
-        Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
             MyBase.New(exception, cancelled, userState)
             Me.results = results
         End Sub
@@ -303,11 +303,11 @@ Namespace EwEAutoUpdateRef
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub DownloadPluginCompletedEventHandler(sender As Object, e As DownloadPluginCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")>  _
+    Public Delegate Sub DownloadPluginCompletedEventHandler(ByVal sender As Object, ByVal e As DownloadPluginCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class DownloadPluginCompletedEventArgs
@@ -315,7 +315,7 @@ Namespace EwEAutoUpdateRef
         
         Private results() As Object
         
-        Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
             MyBase.New(exception, cancelled, userState)
             Me.results = results
         End Sub
@@ -330,11 +330,11 @@ Namespace EwEAutoUpdateRef
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub GetPluginHashCompletedEventHandler(sender As Object, e As GetPluginHashCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")>  _
+    Public Delegate Sub GetPluginHashCompletedEventHandler(ByVal sender As Object, ByVal e As GetPluginHashCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class GetPluginHashCompletedEventArgs
@@ -342,7 +342,7 @@ Namespace EwEAutoUpdateRef
         
         Private results() As Object
         
-        Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
             MyBase.New(exception, cancelled, userState)
             Me.results = results
         End Sub
@@ -357,11 +357,11 @@ Namespace EwEAutoUpdateRef
     End Class
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0")>  _
-    Public Delegate Sub GetPluginExtensionCompletedEventHandler(sender As Object, e As GetPluginExtensionCompletedEventArgs)
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")>  _
+    Public Delegate Sub GetPluginExtensionCompletedEventHandler(ByVal sender As Object, ByVal e As GetPluginExtensionCompletedEventArgs)
     
     '''<remarks/>
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.3761.0"),  _
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0"),  _
      System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.ComponentModel.DesignerCategoryAttribute("code")>  _
     Partial Public Class GetPluginExtensionCompletedEventArgs
@@ -369,7 +369,7 @@ Namespace EwEAutoUpdateRef
         
         Private results() As Object
         
-        Friend Sub New(results() As Object, exception As System.Exception, cancelled As Boolean, userState As Object)
+        Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
             MyBase.New(exception, cancelled, userState)
             Me.results = results
         End Sub

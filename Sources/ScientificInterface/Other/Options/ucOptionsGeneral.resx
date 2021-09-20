@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnClearMRU.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
   <data name="m_lblMRU.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMRU.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>20</value>
   </data>
   <data name="m_cbStatusShowTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -187,7 +187,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbStatusShowTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 292</value>
+    <value>11, 271</value>
   </data>
   <data name="m_cbStatusShowTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>146, 17</value>
@@ -217,7 +217,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 269</value>
+    <value>8, 248</value>
   </data>
   <data name="m_lblMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 13</value>
@@ -268,7 +268,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbShowHost.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -298,7 +298,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>19</value>
   </data>
   <data name="m_cmbLogLevel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -331,7 +331,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 182</value>
+    <value>8, 161</value>
   </data>
   <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 13</value>
@@ -352,13 +352,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <data name="m_tbxAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 179</value>
+    <value>168, 158</value>
   </data>
   <data name="m_tbxAuthor.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 20</value>
@@ -385,7 +385,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 208</value>
+    <value>8, 187</value>
   </data>
   <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 13</value>
@@ -406,13 +406,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="m_tbxContact.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 205</value>
+    <value>168, 184</value>
   </data>
   <data name="m_tbxContact.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -436,7 +436,7 @@
     <value>0</value>
   </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 267</value>
+    <value>168, 246</value>
   </data>
   <data name="m_nudMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 20</value>
@@ -448,7 +448,7 @@
     <value>m_nudMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
     <value>$this</value>
@@ -463,7 +463,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 158</value>
+    <value>0, 137</value>
   </data>
   <data name="m_hdrAuthor.Size" type="System.Drawing.Size, System.Drawing">
     <value>487, 18</value>
@@ -481,7 +481,7 @@
     <value>m_hdrAuthor</value>
   </data>
   <data name="&gt;&gt;m_hdrAuthor.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAuthor.Parent" xml:space="preserve">
     <value>$this</value>
@@ -496,7 +496,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrStatusPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 246</value>
+    <value>0, 225</value>
   </data>
   <data name="m_hdrStatusPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>487, 18</value>
@@ -514,7 +514,7 @@
     <value>m_hdrStatusPanel</value>
   </data>
   <data name="&gt;&gt;m_hdrStatusPanel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStatusPanel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -535,13 +535,13 @@
     <value>m_nudMRU</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -568,13 +568,13 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="m_btnViewLogFileDir.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -604,7 +604,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnViewLogFileDir.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="m_cbStatusShowVariableValidations.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -613,7 +613,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbStatusShowVariableValidations.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 338</value>
+    <value>11, 317</value>
   </data>
   <data name="m_cbStatusShowVariableValidations.Size" type="System.Drawing.Size, System.Drawing">
     <value>208, 17</value>
@@ -636,36 +636,6 @@
   <data name="&gt;&gt;m_cbStatusShowVariableValidations.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_cbUseExternalBrowser.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbUseExternalBrowser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbUseExternalBrowser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 130</value>
-  </data>
-  <data name="m_cbUseExternalBrowser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>322, 17</value>
-  </data>
-  <data name="m_cbUseExternalBrowser.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_cbUseExternalBrowser.Text" xml:space="preserve">
-    <value>Show links in system default &amp;browser instead of EwE start page</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseExternalBrowser.Name" xml:space="preserve">
-    <value>m_cbUseExternalBrowser</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseExternalBrowser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseExternalBrowser.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseExternalBrowser.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_cbStatusShowNewestFirst.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -673,7 +643,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbStatusShowNewestFirst.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 315</value>
+    <value>11, 294</value>
   </data>
   <data name="m_cbStatusShowNewestFirst.Size" type="System.Drawing.Size, System.Drawing">
     <value>159, 17</value>
@@ -703,7 +673,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbStatusAutoPopup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 361</value>
+    <value>11, 340</value>
   </data>
   <data name="m_cbStatusAutoPopup.Size" type="System.Drawing.Size, System.Drawing">
     <value>208, 17</value>
@@ -769,7 +739,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 390</value>
+    <value>490, 360</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucOptionsGeneral</value>
