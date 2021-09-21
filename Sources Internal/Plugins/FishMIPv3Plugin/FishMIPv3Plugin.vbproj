@@ -91,6 +91,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwELicense, Version=6.7.0.17410, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sources\EwECore\Includes\EwELicense.dll</HintPath>
+    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>

@@ -16,6 +16,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports System.Drawing
 Imports System.IO
@@ -32,11 +33,13 @@ Public Class cFishMIPEcospaceResultWriterPlugin
     Implements IEcospaceRunCompletedPlugin
     Implements IAutoSavePlugin
     Implements IUIContextPlugin
+    Implements ILicensePlugin
 
     Public Const PluginName As String = "ndQ_FishMip_ISIMIP3_Ecospace_writer"
 
 #Region " Private vars "
 
+    Private m_core As cCore = Nothing
     Private m_uic As cUIContext = Nothing
     Private m_ds As cEcospaceDataStructures = Nothing
     Private m_config As cConfiguration = Nothing
@@ -53,7 +56,8 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 #Region " Generic plug-in integration "
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-        ' NOP
+        ' Enable use w/o UI
+        Me.m_core = DirectCast(core, cCore)
     End Sub
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
@@ -99,6 +103,16 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 #Region " UI integration "
 
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
+        If (Me.m_uic Is Nothing) Then Return
+        If (Not Me.m_core.License.IsLicensed) Then
+            Try
+                Dim cmd As cEnterLicenseCommand = CType(Me.m_uic.CommandHandler.GetCommand(cEnterLicenseCommand.cCOMMAND_NAME), cEnterLicenseCommand)
+                cmd.Invoke()
+            Catch ex As Exception
+
+            End Try
+            Return
+        End If
         frmPlugin = frmConfig.GetUI(Me.m_uic, Me.m_config)
     End Sub
 
@@ -132,7 +146,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public Function LoadModel(dataSource As Object) As Boolean Implements IEcopathPlugin.LoadModel
         ' Automatically reloads last configuration upon creation
-        Me.m_config = cConfiguration.Attach(Me.m_uic.Core)
+        Me.m_config = cConfiguration.Attach(Me.m_core)
         Return True
     End Function
 
@@ -161,7 +175,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Try
             For Each var As cOutput In Me.m_config.Outputs
                 ' Skip catch summaries if there is no fishing
-                If (var.IsBiomass Or Me.m_uic.Core.ActiveTimeSeriesDatasetIndex > 0) Then
+                If (var.IsBiomass Or Me.m_core.ActiveTimeSeriesDatasetIndex > 0) Then
                     Dim fo As String = ""
                     If strFile.Contains("[var]") Then
                         fo = strFile.Replace("[var]", var.Name.ToString).ToLower
@@ -202,7 +216,6 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         If (Not Me.m_bSaving) Then Return
 
         Me.m_ds = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
-        Dim core As cCore = Me.m_uic.Core
 
         Dim strPath As String = Me.AutoSaveOutputPath()
         If cFileUtils.IsDirectoryAvailable(strPath, True) = False Then
@@ -225,7 +238,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         If Me.m_ds.bInSpinUp Then Return
 
         ' Aggregate results
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.m_core
         Dim dt As DateTime = core.EcospaceTimestepToAbsoluteTime(iTime)
 
         If (dt.Year < Me.m_config.ReportingStartYear) Then Return
@@ -284,7 +297,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.m_core
 
         Me.CloseWriters()
 
@@ -327,10 +340,18 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Implements IAutoSavePlugin.AutoSaveOutputPath
 
         ' Present complete path to UI
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.m_core
         Return Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), "FishMIP_ISIMIP3b")
 
     End Function
+
+    Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
+        Try
+            dt = Me.m_core.License.Expiry
+        Catch ex As Exception
+            ' Whoah!
+        End Try
+    End Sub
 
 #End Region ' Autosave
 
