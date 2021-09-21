@@ -29,10 +29,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EcospaceSpinupPlugin")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
-<Assembly: AssemblyProduct("EcospaceSpinupPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © Microsoft 2013")> 
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("Ecopath International Initiative")>
+<Assembly: AssemblyProduct("EcospaceSpinupPlugin")>
+<Assembly: AssemblyCopyright("Copyright © EII 2013")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

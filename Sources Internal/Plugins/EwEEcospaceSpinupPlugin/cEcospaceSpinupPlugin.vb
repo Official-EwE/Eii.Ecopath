@@ -30,6 +30,8 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region
 
+#Const USE_LICENSE_LIB = 1
+
 Public Class cEcospaceSpinupPlugin
     Implements EwEPlugin.IPlugin
     Implements EwEPlugin.ICorePlugin
@@ -41,6 +43,7 @@ Public Class cEcospaceSpinupPlugin
     Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
     Implements EwEPlugin.IEcospaceRunCompletedPlugin
     Implements EwEPlugin.IAutoRunPlugin
+    Implements EwEPlugin.ILicensePlugin
 
 #Region "Events sent out by Plugin to an Interface"
 
@@ -409,6 +412,15 @@ Public Class cEcospaceSpinupPlugin
 
     Private Function GetMainForm() As frmEcospaceSpinup
 
+#If USE_LICENSE_LIB Then
+        Try
+            If Not Me.m_core.License.IsLicensed Then Return Nothing
+        Catch ex As Exception
+            cLog.Write(ex, "cEcospaceSpinUpPlugin.GetMainForm")
+            Return Nothing
+        End Try
+#End If
+
         If Not Me.HasMainForm() Then
             Me.m_form = New frmEcospaceSpinup()
             Me.m_form.UIContext = Me.m_uic
@@ -419,6 +431,18 @@ Public Class cEcospaceSpinupPlugin
         Return Me.m_form
 
     End Function
+
+    Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
+#If USE_LICENSE_LIB Then
+        Try
+            dt = Me.m_core.License.Expiry
+        Catch ex As Exception
+            cLog.Write(ex, "cEcospaceSpinUpPlugin.Expiry")
+        End Try
+#Else
+        dt = Date.Now().AddDays(1)
+#End If
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
