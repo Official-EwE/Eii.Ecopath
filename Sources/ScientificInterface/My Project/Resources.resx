@@ -2184,4 +2184,10 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="LABEL_NAV_ECOSIM_INPUT_APPLYPRICEELAST" xml:space="preserve">
     <value>Apply price elasticity</value>
   </data>
+  <data name="OPTIONS_PAGE_FONTS" xml:space="preserve">
+    <value>Fonts</value>
+  </data>
+  <data name="OPTIONS_PAGE_GRADIENTS" xml:space="preserve">
+    <value>Color gradients</value>
+  </data>
 </root>

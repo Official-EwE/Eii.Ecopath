@@ -50,7 +50,7 @@ Namespace Controls.Map
             Dim RelScaler() As Single = Args.RelMapScaler
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
             Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
-            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
             If maptype = eMapType.FishingMortRate Then
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
@@ -71,7 +71,7 @@ Namespace Controls.Map
                         Dim brCell As Brush = Nothing
 
                         'If it is water
-                        If Me.m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
                             ' Is not excluded
                             If (Not excl.IsExcludedCell(i, j)) Then
                                 ' Water Cell
@@ -130,9 +130,9 @@ Namespace Controls.Map
 
                 Dim isp As Integer = -1
 
-                For ispTmp As Integer = 1 To Me.StanzaDS.Nsplit
-                    For ist As Integer = 1 To Me.StanzaDS.Nstanza(ispTmp)
-                        If iItem = Me.StanzaDS.EcopathCode(ispTmp, ist) Then
+                For ispTmp As Integer = 1 To StanzaDS.Nsplit
+                    For ist As Integer = 1 To StanzaDS.Nstanza(ispTmp)
+                        If iItem = StanzaDS.EcopathCode(ispTmp, ist) Then
                             If (isp = -1) Then isp = ispTmp
                         End If
                     Next ist
@@ -140,17 +140,17 @@ Namespace Controls.Map
 
                 Try
                     ' JS 06Mar18: Made robust to abuse. Toggling to IBM mode after a run messed up the map drawers, who want to draw IBM data that is not there
-                    If isp > -1 Then
-                        For iaa As Integer = 0 To Me.StanzaDS.MaxAgeSpecies(isp)
-                            Dim ia As Integer = Me.StanzaDS.AgeIndex1(isp) + iaa : If ia > Me.StanzaDS.MaxAgeSpecies(isp) Then ia = ia - Me.StanzaDS.MaxAgeSpecies(isp) - 1
-                            Dim ist As Integer = Me.StanzaDS.StanzaNo(isp, ia)
-                            Dim ieco As Integer = Me.StanzaDS.EcopathCode(isp, ist)
+                    If isp > -1 And StanzaDS.MaxAgeSpecies IsNot Nothing Then
+                        For iaa As Integer = 0 To StanzaDS.MaxAgeSpecies(isp)
+                            Dim ia As Integer = StanzaDS.AgeIndex1(isp) + iaa : If ia > StanzaDS.MaxAgeSpecies(isp) Then ia = ia - StanzaDS.MaxAgeSpecies(isp) - 1
+                            Dim ist As Integer = StanzaDS.StanzaNo(isp, ia)
+                            Dim ieco As Integer = StanzaDS.EcopathCode(isp, ist)
 
                             If ieco = iItem Then
-                                For ipkt As Integer = 1 To Me.StanzaDS.Npackets
+                                For ipkt As Integer = 1 To StanzaDS.Npackets
 
-                                    Dim sy As Single = Me.StanzaDS.iPacket(isp, iaa, ipkt)
-                                    Dim sx As Single = Me.StanzaDS.jPacket(isp, iaa, ipkt)
+                                    Dim sy As Single = StanzaDS.iPacket(isp, iaa, ipkt)
+                                    Dim sx As Single = StanzaDS.jPacket(isp, iaa, ipkt)
 
                                     If CBool(excl.Cell(CInt(Math.Floor(sy)), CInt(Math.Floor(sx)))) = False Then
                                         Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol),

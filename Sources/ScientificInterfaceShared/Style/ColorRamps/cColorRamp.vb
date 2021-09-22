@@ -18,9 +18,6 @@
 '
 
 Option Strict On
-Imports System.Drawing
-Imports EwECore
-Imports EwEUtils.Core
 
 Namespace Style
 
@@ -36,13 +33,25 @@ Namespace Style
             Me.IsSystemRamp = bIsSystemRamp
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Stock gradient ID, loosely maintained by the gradient classes in this assembly.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property ID As Integer = 0
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets or sets the name of the color ramp.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public MustOverride Property Name As String
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets if this color ramp is defined by EwE and cannot be modified.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property IsSystemRamp() As Boolean
 
         ''' -------------------------------------------------------------------

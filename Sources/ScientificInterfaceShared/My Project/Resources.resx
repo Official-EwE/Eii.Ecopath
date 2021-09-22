@@ -3154,4 +3154,7 @@
   <data name="SHAPEFUNCTION_COMPUTED" xml:space="preserve">
     <value>Computed|||Shape has been computed by external cleverness that cannot be replicated by EwE</value>
   </data>
+  <data name="DEFAULT_COLORRAMP" xml:space="preserve">
+    <value>Color ramp</value>
+  </data>
 </root>

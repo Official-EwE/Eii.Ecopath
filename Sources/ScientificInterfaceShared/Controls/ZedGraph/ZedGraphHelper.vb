@@ -78,7 +78,7 @@ Namespace Controls
             ''' curve label is obtained from the core data object.</param>
             ''' ---------------------------------------------------------------
             Public Sub New(src As ICoreInterface,
-                           uic As cUIContext,
+                            uic As cUIContext,
                            Optional strLabel As String = "",
                            Optional tag As Object = Nothing)
 
@@ -126,8 +126,8 @@ Namespace Controls
             ''' the curve display style.</param>
             ''' ---------------------------------------------------------------
             Public Sub New(strLabel As String,
-                           colour As Color,
-                           lineType As eSketchDrawModeTypes,
+                            colour As Color,
+                            lineType As eSketchDrawModeTypes,
                            Optional tag As Object = Nothing)
 
                 Me.m_strLabel = strLabel
@@ -408,7 +408,7 @@ Namespace Controls
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Attach(uic As cUIContext,
-                                      zgc As ZedGraphControl,
+                                       zgc As ZedGraphControl,
                                       Optional iNumPanels As Integer = 1)
 
             ' Sanity checks
@@ -423,14 +423,14 @@ Namespace Controls
 
             Me.ChangeNumPanels()
 
-            AddHandler Me.m_zgc.MouseDownEvent, AddressOf Me.OnMouseDownEvent
-            AddHandler Me.m_zgc.MouseMoveEvent, AddressOf Me.OnMouseMoveEvent
-            AddHandler Me.m_zgc.MouseUpEvent, AddressOf Me.OnMouseUpEvent
-            AddHandler Me.m_zgc.PointValueEvent, AddressOf Me.OnPointValueEvent
+            AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
+            AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
+            AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
+            AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
-            AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf Me.OnBuildContextMenu
+            AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
 
-            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+            AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.AllowZoom = True
             Me.AllowPan = False
@@ -457,13 +457,13 @@ Namespace Controls
 
             If (Me.m_zgc Is Nothing) Then Return
 
-            RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf Me.OnMouseDownEvent
-            RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf Me.OnMouseMoveEvent
-            RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf Me.OnMouseUpEvent
-            RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf Me.OnBuildContextMenu
-            RemoveHandler Me.m_zgc.PointValueEvent, AddressOf Me.OnPointValueEvent
+            RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
+            RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
+            RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
+            RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
-            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+            RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
             Me.ShowHoverMenu = False
 
@@ -616,9 +616,9 @@ Namespace Controls
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ConfigurePane(strTitle As String,
-                                                  strXAxisLabel As String, dXAxisMin As Double, dXAxisMax As Double,
-                                                  strYAxisLabel As String, dYAxisMin As Double, dYAxisMax As Double,
-                                                  bShowLegend As Boolean, Optional legendPos As LegendPos = LegendPos.TopCenter,
+                                                   strXAxisLabel As String, dXAxisMin As Double, dXAxisMax As Double,
+                                                   strYAxisLabel As String, dYAxisMin As Double, dYAxisMax As Double,
+                                                   bShowLegend As Boolean, Optional legendPos As LegendPos = LegendPos.TopCenter,
                                                   Optional iPane As Integer = 1) As GraphPane
 
             Dim gp As GraphPane = Me.ConfigurePane(strTitle,
@@ -658,9 +658,9 @@ Namespace Controls
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ConfigurePane(strTitle As String,
-                                                  strXAxisLabel As String,
-                                                  strYAxisLabel As String,
-                                                  bShowLegend As Boolean, Optional legendPos As LegendPos = LegendPos.TopCenter,
+                                                   strXAxisLabel As String,
+                                                   strYAxisLabel As String,
+                                                   bShowLegend As Boolean, Optional legendPos As LegendPos = LegendPos.TopCenter,
                                                   Optional iPane As Integer = 1) As GraphPane
 
             Me.m_bShowLegend = bShowLegend
@@ -1114,7 +1114,7 @@ Namespace Controls
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateLineItem(src As ICoreInterface,
-                                                   ppl As PointPairList,
+                                                    ppl As PointPairList,
                                                    Optional strLabel As String = "",
                                                    Optional tag As Object = Nothing) As LineItem
             ' SAnity check
@@ -1134,9 +1134,9 @@ Namespace Controls
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function CreateLineItem(strName As String,
-                                                   curveType As eSketchDrawModeTypes,
-                                                   clr As Color,
-                                                   ppl As PointPairList,
+                                                    curveType As eSketchDrawModeTypes,
+                                                    clr As Color,
+                                                    ppl As PointPairList,
                                                    Optional tag As Object = Nothing) As LineItem
             Return Me.CreateLineItem(New cCurveInfo(strName, clr, curveType, tag), ppl)
         End Function
@@ -1963,7 +1963,7 @@ Namespace Controls
 
         Private Function OnMouseDownEvent(zg As ZedGraphControl, args As MouseEventArgs) As Boolean
 
-            Dim iPane As Integer = Me.GetPaneAtPoint(args.Location)
+            Dim iPane As Integer = GetPaneAtPoint(args.Location)
             Dim pane As GraphPane = Nothing
             Dim ciNearest As CurveItem = Nothing
             Dim iNearest As Integer = -1
@@ -1979,7 +1979,7 @@ Namespace Controls
 
                 ' Cursor?
                 If Me.m_abShowCursor(iPane) Then
-                    Me.CursorPos = Me.GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
+                    Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
                     Return True
                 End If
 
@@ -1989,7 +1989,7 @@ Namespace Controls
 
         Private Function OnMouseMoveEvent(zg As ZedGraphControl, args As MouseEventArgs) As Boolean
 
-            Dim iPane As Integer = Me.GetPaneAtPoint(args.Location)
+            Dim iPane As Integer = GetPaneAtPoint(args.Location)
             Dim ciNearest As CurveItem = Nothing
             Dim iNearest As Integer = -1
 
@@ -2000,7 +2000,7 @@ Namespace Controls
 
                 ' Cursor?
                 If Me.m_abShowCursor(iPane) Then
-                    Me.CursorPos = Me.GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
+                    Me.CursorPos = GraphToScale(New PointF(args.Location.X, args.Location.Y)).X
                     Return True
                 End If
 
@@ -2009,7 +2009,7 @@ Namespace Controls
         End Function
 
         Private Function OnMouseUpEvent(zg As ZedGraphControl, args As MouseEventArgs) As Boolean
-            Dim iPanel As Integer = Me.GetPaneAtPoint(args.Location)
+            Dim iPanel As Integer = GetPaneAtPoint(args.Location)
             If iPanel > -1 Then
                 If Me.m_abShowCursor(iPanel) Then
                     Me.CursorPos = CSng(Math.Round(Me.CursorPos))
@@ -2040,7 +2040,7 @@ Namespace Controls
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Protected Overridable Function CreateLineItem(info As cCurveInfo,
-                                                      ppl As PointPairList) As LineItem
+                                                       ppl As PointPairList) As LineItem
 
             Dim li As LineItem = Nothing
             Dim bShowInLegend As Boolean = True
@@ -2398,11 +2398,11 @@ Namespace Controls
                         ax.Scale.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Scale) And FontStyle.Underline) = FontStyle.Underline)
                     Next
 
-                    .Legend.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.Legend)
-                    .Legend.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.Legend)
-                    .Legend.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Bold) = FontStyle.Bold)
-                    .Legend.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Italic) = FontStyle.Italic)
-                    .Legend.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.Legend) And FontStyle.Underline) = FontStyle.Underline)
+                    .Legend.FontSpec.Family = Me.StyleGuide.FontFamilyName(cStyleGuide.eApplicationFontType.SubTitle)
+                    .Legend.FontSpec.Size = Me.StyleGuide.FontSize(cStyleGuide.eApplicationFontType.SubTitle)
+                    .Legend.FontSpec.IsBold = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Bold) = FontStyle.Bold)
+                    .Legend.FontSpec.IsItalic = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Italic) = FontStyle.Italic)
+                    .Legend.FontSpec.IsUnderline = ((Me.StyleGuide.FontStyle(cStyleGuide.eApplicationFontType.SubTitle) And FontStyle.Underline) = FontStyle.Underline)
 
                 End With
             Next
@@ -2427,7 +2427,7 @@ Namespace Controls
 
         Private Sub UpdateLegends(Optional gp As GraphPane = Nothing)
 
-            Dim bShow As Boolean = (Me.StyleGuide.ShowLegends = TriState.True) Or _
+            Dim bShow As Boolean = (Me.StyleGuide.ShowLegends = TriState.True) Or
                                    (Me.StyleGuide.ShowLegends = TriState.UseDefault And Me.m_bShowLegend = True)
             If gp Is Nothing Then
                 For Each gp In Me.m_zgc.MasterPane.PaneList
@@ -2443,7 +2443,7 @@ Namespace Controls
 
         Private Sub UpdateAxisLabels(Optional gp As GraphPane = Nothing)
 
-            Dim bShow As Boolean = (Me.StyleGuide.ShowAxisLabels = TriState.True) Or _
+            Dim bShow As Boolean = (Me.StyleGuide.ShowAxisLabels = TriState.True) Or
                                    (Me.StyleGuide.ShowAxisLabels = TriState.UseDefault And Me.m_bShowAxisLabels = True)
             If (gp Is Nothing) Then
                 For Each gp In Me.m_zgc.MasterPane.PaneList
@@ -2537,11 +2537,11 @@ Namespace Controls
                 ' Clean up if necessary
                 If Me.m_aliCursors(iPane) IsNot Nothing Then Me.RemoveCursor(iPane)
                 ' Set cursor
-                Me.m_aliCursors(iPane) = New LineItem(My.Resources.GENERIC_TEXT_CURSOR, _
-                        New Double() {Me.m_asCursorPos(iPane), Me.m_asCursorPos(iPane)}, _
-                        New Double() {dYMin, dYMax}, _
-                        Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), _
-                        SymbolType.None, _
+                Me.m_aliCursors(iPane) = New LineItem(My.Resources.GENERIC_TEXT_CURSOR,
+                        New Double() {Me.m_asCursorPos(iPane), Me.m_asCursorPos(iPane)},
+                        New Double() {dYMin, dYMax},
+                        Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT),
+                        SymbolType.None,
                         3)
 
                 gp.CurveList.Add(Me.m_aliCursors(iPane))
@@ -2563,9 +2563,9 @@ Namespace Controls
         ''' <param name="objState"></param>
         ''' -----------------------------------------------------------------------
         Protected Sub OnBuildContextMenu(control As ZedGraphControl,
-                                         menuStrip As ContextMenuStrip,
-                                         mousePt As Point,
-                                         objState As ZedGraphControl.ContextMenuObjectState)
+                                          menuStrip As ContextMenuStrip,
+                                          mousePt As Point,
+                                          objState As ZedGraphControl.ContextMenuObjectState)
 
             Dim item As ToolStripMenuItem = Nothing
 
@@ -2578,18 +2578,18 @@ Namespace Controls
             '    End If
             'Next
 
-            item = New ToolStripMenuItem(My.Resources.GENERIC_SHOW_LEGEND, My.Resources.LegendHS, AddressOf Me.OnShowHideLegend)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SHOW_LEGEND, My.Resources.LegendHS, AddressOf OnShowHideLegend)
             item.ShortcutKeys = Keys.Control Or Keys.L
             item.ShowShortcutKeys = True
             item.Checked = Me.IsLegendVisible
             menuStrip.Items.Add(item)
 
-            item = New ToolStripMenuItem(My.Resources.GENERIC_SHOW_LABELS, Nothing, AddressOf Me.OnShowHideAxisLabels)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SHOW_LABELS, Nothing, AddressOf OnShowHideAxisLabels)
             item.ShowShortcutKeys = True
             item.Checked = Me.IsAxisLabelsVisible
             menuStrip.Items.Add(item)
 
-            item = New ToolStripMenuItem(My.Resources.GENERIC_SAVE_TO_CSV, My.Resources.ExportHS, AddressOf Me.OnExtractToCSV)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SAVE_TO_CSV, My.Resources.ExportHS, AddressOf OnExtractToCSV)
             item.ShowShortcutKeys = True
             menuStrip.Items.Add(item)
 
@@ -2661,7 +2661,7 @@ Namespace Controls
             Set(value As Boolean)
 
                 If (Me.m_hovermenu IsNot Nothing) Then
-                    RemoveHandler Me.m_hovermenu.OnHoverVisible, AddressOf Me.OnShowHoverMenu
+                    RemoveHandler Me.m_hovermenu.OnHoverVisible, AddressOf OnShowHoverMenu
                     Me.DestroyHoverMenu()
                 End If
 
@@ -2669,7 +2669,7 @@ Namespace Controls
 
                 If (Me.m_bShowHoverMenu And Me.IsAttached()) Then
                     Me.CreateHoverMenu()
-                    AddHandler Me.m_hovermenu.OnHoverVisible, AddressOf Me.OnShowHoverMenu
+                    AddHandler Me.m_hovermenu.OnHoverVisible, AddressOf OnShowHoverMenu
                 End If
 
             End Set
@@ -2694,7 +2694,7 @@ Namespace Controls
             If (Not TypeOf cmd Is eHoverCommands) Then Return
 
             If Me.m_zgc.InvokeRequired Then
-                Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf Me.OnHoverMenuCommand), New Object() {cmd})
+                Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
                 Return
             End If
 
@@ -2738,7 +2738,7 @@ Namespace Controls
                         Exit For
 
                     Case eHoverCommands.ShowLabels
-                        Me.IsAxisLabelsVisible = Not Me.IsAxisLabelsVisible
+                        Me.IsAxisLabelsVisible = Not IsAxisLabelsVisible
                         Exit For
 
                 End Select
@@ -2786,7 +2786,7 @@ Namespace Controls
             Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
             Me.m_hovermenu.AddSeparator()
             Me.m_hovermenu.AddItem(My.Resources.ExportHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
-            AddHandler Me.m_hovermenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
+            AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_hovermenu.Attach(Me.m_zgc)
 
@@ -2795,7 +2795,7 @@ Namespace Controls
         Private Sub DestroyHoverMenu()
 
             If (Me.m_hovermenu Is Nothing) Then Return
-            RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
+            RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
             Me.m_hovermenu.Detach()
             Me.m_hovermenu.Dispose()
             Me.m_hovermenu = Nothing

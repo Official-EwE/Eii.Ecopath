@@ -3919,11 +3919,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fonts.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_FONTS() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_FONTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to General.
         '''</summary>
         Public ReadOnly Property OPTIONS_PAGE_GENERAL() As String
             Get
                 Return ResourceManager.GetString("OPTIONS_PAGE_GENERAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Color gradients.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_GRADIENTS() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_GRADIENTS", resourceCulture)
             End Get
         End Property
         
