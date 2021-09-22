@@ -241,7 +241,10 @@ Namespace Controls
 
             ' Draw background
             ' - Eradicate!
-            e.Graphics.FillRectangle(New SolidBrush(Me.BackColor), e.ClipRectangle)
+            Using br As New SolidBrush(Me.BackColor)
+                e.Graphics.FillRectangle(br, e.ClipRectangle)
+            End Using
+
             ' - Focus rect
             If Me.Focused Then ControlPaint.DrawFocusRectangle(e.Graphics, e.ClipRectangle)
 

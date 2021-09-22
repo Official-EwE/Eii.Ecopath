@@ -59,8 +59,8 @@ Friend Class cStyleGuideUpdater
         Me.m_uic = uic
         Me.m_sm = Me.m_uic.Core.StateMonitor
 
-        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf Me.OnCoreStateEvent
-        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
     End Sub
 
@@ -68,8 +68,8 @@ Friend Class cStyleGuideUpdater
 
         If (Me.m_uic IsNot Nothing) Then
 
-            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
-            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf Me.OnCoreStateEvent
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
 
             Me.m_uic = Nothing
             Me.m_sm = Nothing
@@ -107,28 +107,28 @@ Friend Class cStyleGuideUpdater
 
         If Me.m_bIsEcopathLoaded Then
 
-            Me.m_propGroupDigits = pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.GroupDigits)
-            Me.m_propNumDigits = pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.NumDigits)
-            AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
-            AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
+            Me.m_propGroupDigits = pm.GetProperty(Core.EwEModel, eVarNameFlags.GroupDigits)
+            Me.m_propNumDigits = pm.GetProperty(Core.EwEModel, eVarNameFlags.NumDigits)
+            AddHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
+            AddHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
 
-            Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
-            Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
-            AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
-            AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
+            Me.m_propUnitCurrency = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitCurrency), cIntegerProperty)
+            Me.m_propUnitCurrencyText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitCurrencyCustomText), cStringProperty)
+            AddHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
+            AddHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
 
-            Me.m_propUnitTime = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
-            Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
-            AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf Me.OnTimeUnitChanged
-            AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf Me.OnTimeUnitChanged
+            Me.m_propUnitTime = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitTime), cIntegerProperty)
+            Me.m_propUnitTimeText = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitTimeCustomText), cStringProperty)
+            AddHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
+            AddHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
 
-            Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Me.Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
-            AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf Me.OnMonetaryUnitChanged
+            Me.m_propUnitMonetary = DirectCast(pm.GetProperty(Core.EwEModel, eVarNameFlags.UnitMonetary), cStringProperty)
+            AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
 
-            Me.OnCurrencyUnitChanged(Me.m_propUnitCurrency, cProperty.eChangeFlags.All)
-            Me.OnTimeUnitChanged(Me.m_propUnitTime, cProperty.eChangeFlags.All)
-            Me.OnMonetaryUnitChanged(Me.m_propUnitMonetary, cProperty.eChangeFlags.All)
-            Me.OnNumberFormatChanged(Me.m_propNumDigits, cProperty.eChangeFlags.All)
+            Me.OnCurrencyUnitChanged(m_propUnitCurrency, cProperty.eChangeFlags.All)
+            Me.OnTimeUnitChanged(m_propUnitTime, cProperty.eChangeFlags.All)
+            Me.OnMonetaryUnitChanged(m_propUnitMonetary, cProperty.eChangeFlags.All)
+            Me.OnNumberFormatChanged(m_propNumDigits, cProperty.eChangeFlags.All)
 
             ' Load item visibility settings from model
             Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
@@ -136,22 +136,22 @@ Friend Class cStyleGuideUpdater
 
         Else
 
-            RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
-            RemoveHandler Me.m_propGroupDigits.PropertyChanged, AddressOf Me.OnNumberFormatChanged
+            RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
+            RemoveHandler Me.m_propGroupDigits.PropertyChanged, AddressOf OnNumberFormatChanged
             Me.m_propNumDigits = Nothing
             Me.m_propGroupDigits = Nothing
 
-            RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
-            RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf Me.OnCurrencyUnitChanged
+            RemoveHandler Me.m_propUnitCurrency.PropertyChanged, AddressOf OnCurrencyUnitChanged
+            RemoveHandler Me.m_propUnitCurrencyText.PropertyChanged, AddressOf OnCurrencyUnitChanged
             Me.m_propUnitCurrency = Nothing
             Me.m_propUnitCurrencyText = Nothing
 
-            RemoveHandler Me.m_propUnitTime.PropertyChanged, AddressOf Me.OnTimeUnitChanged
-            RemoveHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf Me.OnTimeUnitChanged
+            RemoveHandler Me.m_propUnitTime.PropertyChanged, AddressOf OnTimeUnitChanged
+            RemoveHandler Me.m_propUnitTimeText.PropertyChanged, AddressOf OnTimeUnitChanged
             Me.m_propUnitTime = Nothing
             Me.m_propUnitTimeText = Nothing
 
-            RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf Me.OnMonetaryUnitChanged
+            RemoveHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnMonetaryUnitChanged
             Me.m_propUnitMonetary = Nothing
 
         End If
@@ -260,11 +260,15 @@ Friend Class cStyleGuideUpdater
 
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName) = My.Settings.CountryNames
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType) = My.Settings.EcosystemTypes
+            .ClearCustomColorRamps()
+            For Each ramp As cARGBColorRamp In Me.StringToARGBColorRamps(My.Settings.ColorRampsCustom)
+                .AddCustomColorRamp(ramp)
+            Next
+
         End With
 
         Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
         Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
-        Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
         Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
 
         Me.StyleGuide.ResumeEvents()
@@ -321,11 +325,12 @@ Friend Class cStyleGuideUpdater
 
             My.Settings.OutputDPI = .PreferredDPI
 
+            My.Settings.ColorRampsCustom = Me.ARGBColorRampsToString(.CustomARGBColorRamps)
+
         End With
 
         My.Settings.FontTitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Title)
         My.Settings.FontSubtitle = Me.FontSettingToString(cStyleGuide.eApplicationFontType.SubTitle)
-        My.Settings.FontLegend = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Legend)
         My.Settings.FontScale = Me.FontSettingToString(cStyleGuide.eApplicationFontType.Scale)
 
     End Sub
@@ -366,6 +371,63 @@ Friend Class cStyleGuideUpdater
         sb.Append(cStringUtils.FormatSingle(Me.StyleGuide.FontSize(ft)))
         Return sb.ToString()
 
+    End Function
+
+    Private Function StringToARGBColorRamps(strSetting As String) As cARGBColorRamp()
+
+        Dim ramps As New List(Of cARGBColorRamp)
+
+        If Not String.IsNullOrWhiteSpace(strSetting) Then
+            Dim items() As String = strSetting.Split(New String() {";"c}, StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 0 To items.Count - 1
+                Dim item As cARGBColorRamp = Me.StringToARGBColorRamp(items(i))
+                If (item IsNot Nothing) Then ramps.Add(item)
+            Next
+        End If
+        Return ramps.ToArray()
+
+    End Function
+
+    Private Function StringToARGBColorRamp(item As String) As cARGBColorRamp
+        Try
+            Dim bits As String() = cStringUtils.SplitQualified(item, ","c)
+            Dim name As String = bits(0)
+            Dim colors As New List(Of Color)
+            Dim breaks As New List(Of Double)
+            For j As Integer = 1 To bits.Count - 1 Step 2
+                colors.Add(Color.FromArgb(Convert.ToInt32(bits(j), 16)))
+                breaks.Add(cStringUtils.ConvertToDouble(bits(j + 1)))
+            Next
+            Return New cARGBColorRamp(name, colors.ToArray(), breaks.ToArray())
+        Catch ex As Exception
+            ' Ok, that didn't work - plow on
+        End Try
+        Return Nothing
+
+    End Function
+
+    Private Function ARGBColorRampsToString(ramps As cARGBColorRamp()) As String
+
+        Dim sb As New StringBuilder()
+        If (ramps IsNot Nothing) Then
+            For i As Integer = 0 To ramps.Count - 1
+                If (i > 0) Then sb.Append(";")
+                sb.Append(ARGBColorRampToString(ramps(i)))
+            Next
+        End If
+        Return sb.ToString()
+
+    End Function
+
+    Private Function ARGBColorRampToString(ramp As cARGBColorRamp) As String
+        Dim sb As New StringBuilder()
+        sb.Append("""" & ramp.Name.Replace("""", "") & """")
+        For j As Integer = 0 To ramp.GradientBreaks.Count - 1
+            Dim clr As Color = ramp.GradientColors(j)
+            sb.Append("," & cStringUtils.ToHexString(New Byte() {clr.A, clr.R, clr.G, clr.B}))
+            sb.Append("," & cStringUtils.FormatNumber(ramp.GradientBreaks(j)))
+        Next
+        Return sb.ToString()
     End Function
 
 #End Region

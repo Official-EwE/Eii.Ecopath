@@ -58,13 +58,13 @@ Namespace Controls.Map
             Using br As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
                 Me.Graphics.FillRectangle(br, rcPos)
             End Using
-            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
             map.Invalidate()
             Dim min As Single = map.MinValue
             Dim max As Single = map.MaxValue
             Dim range As Single = max - min
-            If (range = 0) Then range = 1 : min = 0
+            If (range = 0) Then range = 1
 
             Try
                 For i As Integer = 1 To Me.InRow
@@ -77,7 +77,7 @@ Namespace Controls.Map
                         Dim brCell As Brush = Nothing
 
                         'If it is water
-                        If Me.m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                        If m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
                             ' Is not excluded
                             If (Not excl.IsExcludedCell(i, j)) Then
                                 ' Water Cell

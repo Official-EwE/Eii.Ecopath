@@ -20,11 +20,11 @@
 Namespace Controls
 
     Partial Class ucEditGradient
-        Inherits ucEditVisualStyle
+        Inherits UserControl
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()>
-        Protected Overrides Sub Dispose(disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
                     components.Dispose()
@@ -56,7 +56,6 @@ Namespace Controls
             Me.m_lbBlue = New System.Windows.Forms.Label()
             Me.m_lbGreen = New System.Windows.Forms.Label()
             Me.m_lbRed = New System.Windows.Forms.Label()
-            Me.m_cmbGradient = New System.Windows.Forms.ComboBox()
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_slGradient = New ScientificInterfaceShared.Controls.ucSlider()
@@ -73,7 +72,7 @@ Namespace Controls
             '
             Me.m_nudAlpha.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudAlpha.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudAlpha.Location = New System.Drawing.Point(282, 183)
+            Me.m_nudAlpha.Location = New System.Drawing.Point(283, 156)
             Me.m_nudAlpha.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudAlpha.Name = "m_nudAlpha"
             Me.m_nudAlpha.Size = New System.Drawing.Size(54, 20)
@@ -83,7 +82,7 @@ Namespace Controls
             '
             Me.m_nudBlue.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudBlue.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudBlue.Location = New System.Drawing.Point(282, 160)
+            Me.m_nudBlue.Location = New System.Drawing.Point(283, 133)
             Me.m_nudBlue.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudBlue.Name = "m_nudBlue"
             Me.m_nudBlue.Size = New System.Drawing.Size(54, 20)
@@ -93,7 +92,7 @@ Namespace Controls
             '
             Me.m_nudGreen.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudGreen.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudGreen.Location = New System.Drawing.Point(282, 137)
+            Me.m_nudGreen.Location = New System.Drawing.Point(283, 110)
             Me.m_nudGreen.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudGreen.Name = "m_nudGreen"
             Me.m_nudGreen.Size = New System.Drawing.Size(54, 20)
@@ -103,7 +102,7 @@ Namespace Controls
             '
             Me.m_nudRed.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudRed.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudRed.Location = New System.Drawing.Point(282, 113)
+            Me.m_nudRed.Location = New System.Drawing.Point(283, 86)
             Me.m_nudRed.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudRed.Name = "m_nudRed"
             Me.m_nudRed.Size = New System.Drawing.Size(54, 20)
@@ -115,7 +114,7 @@ Namespace Controls
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slAlpha.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_slAlpha.CurrentKnob = 0
-            Me.m_slAlpha.Location = New System.Drawing.Point(87, 183)
+            Me.m_slAlpha.Location = New System.Drawing.Point(88, 156)
             Me.m_slAlpha.Maximum = 255
             Me.m_slAlpha.Minimum = 0
             Me.m_slAlpha.Name = "m_slAlpha"
@@ -129,7 +128,7 @@ Namespace Controls
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slBlue.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_slBlue.CurrentKnob = 0
-            Me.m_slBlue.Location = New System.Drawing.Point(87, 160)
+            Me.m_slBlue.Location = New System.Drawing.Point(88, 133)
             Me.m_slBlue.Maximum = 255
             Me.m_slBlue.Minimum = 0
             Me.m_slBlue.Name = "m_slBlue"
@@ -143,7 +142,7 @@ Namespace Controls
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slGreen.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_slGreen.CurrentKnob = 0
-            Me.m_slGreen.Location = New System.Drawing.Point(87, 137)
+            Me.m_slGreen.Location = New System.Drawing.Point(88, 110)
             Me.m_slGreen.Maximum = 255
             Me.m_slGreen.Minimum = 0
             Me.m_slGreen.Name = "m_slGreen"
@@ -157,7 +156,7 @@ Namespace Controls
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slRed.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_slRed.CurrentKnob = 0
-            Me.m_slRed.Location = New System.Drawing.Point(87, 113)
+            Me.m_slRed.Location = New System.Drawing.Point(88, 86)
             Me.m_slRed.Maximum = 255
             Me.m_slRed.Minimum = 0
             Me.m_slRed.Name = "m_slRed"
@@ -172,7 +171,7 @@ Namespace Controls
             Me.m_plGradient.BackColor = System.Drawing.SystemColors.Control
             Me.m_plGradient.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plGradient.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_plGradient.Location = New System.Drawing.Point(3, 56)
+            Me.m_plGradient.Location = New System.Drawing.Point(4, 29)
             Me.m_plGradient.Name = "m_plGradient"
             Me.m_plGradient.Size = New System.Drawing.Size(274, 22)
             Me.m_plGradient.TabIndex = 3
@@ -183,7 +182,7 @@ Namespace Controls
             Me.m_pbCurrentColor.BackColor = System.Drawing.Color.PaleGreen
             Me.m_pbCurrentColor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbCurrentColor.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_pbCurrentColor.Location = New System.Drawing.Point(6, 113)
+            Me.m_pbCurrentColor.Location = New System.Drawing.Point(7, 86)
             Me.m_pbCurrentColor.Name = "m_pbCurrentColor"
             Me.m_pbCurrentColor.Size = New System.Drawing.Size(23, 23)
             Me.m_pbCurrentColor.TabIndex = 7
@@ -192,7 +191,7 @@ Namespace Controls
             'm_lbAlpha
             '
             Me.m_lbAlpha.AutoSize = True
-            Me.m_lbAlpha.Location = New System.Drawing.Point(41, 185)
+            Me.m_lbAlpha.Location = New System.Drawing.Point(42, 158)
             Me.m_lbAlpha.Name = "m_lbAlpha"
             Me.m_lbAlpha.Size = New System.Drawing.Size(37, 13)
             Me.m_lbAlpha.TabIndex = 17
@@ -201,7 +200,7 @@ Namespace Controls
             'm_lbBlue
             '
             Me.m_lbBlue.AutoSize = True
-            Me.m_lbBlue.Location = New System.Drawing.Point(42, 162)
+            Me.m_lbBlue.Location = New System.Drawing.Point(43, 135)
             Me.m_lbBlue.Name = "m_lbBlue"
             Me.m_lbBlue.Size = New System.Drawing.Size(31, 13)
             Me.m_lbBlue.TabIndex = 14
@@ -210,7 +209,7 @@ Namespace Controls
             'm_lbGreen
             '
             Me.m_lbGreen.AutoSize = True
-            Me.m_lbGreen.Location = New System.Drawing.Point(42, 139)
+            Me.m_lbGreen.Location = New System.Drawing.Point(43, 112)
             Me.m_lbGreen.Name = "m_lbGreen"
             Me.m_lbGreen.Size = New System.Drawing.Size(39, 13)
             Me.m_lbGreen.TabIndex = 11
@@ -219,28 +218,16 @@ Namespace Controls
             'm_lbRed
             '
             Me.m_lbRed.AutoSize = True
-            Me.m_lbRed.Location = New System.Drawing.Point(41, 116)
+            Me.m_lbRed.Location = New System.Drawing.Point(42, 89)
             Me.m_lbRed.Name = "m_lbRed"
             Me.m_lbRed.Size = New System.Drawing.Size(30, 13)
             Me.m_lbRed.TabIndex = 8
             Me.m_lbRed.Text = "&Red:"
             '
-            'm_cmbGradient
-            '
-            Me.m_cmbGradient.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_cmbGradient.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_cmbGradient.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbGradient.FormattingEnabled = True
-            Me.m_cmbGradient.Location = New System.Drawing.Point(3, 3)
-            Me.m_cmbGradient.Name = "m_cmbGradient"
-            Me.m_cmbGradient.Size = New System.Drawing.Size(332, 21)
-            Me.m_cmbGradient.TabIndex = 2
-            '
             'm_btnAdd
             '
             Me.m_btnAdd.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnAdd.Location = New System.Drawing.Point(283, 84)
+            Me.m_btnAdd.Location = New System.Drawing.Point(284, 57)
             Me.m_btnAdd.Name = "m_btnAdd"
             Me.m_btnAdd.Size = New System.Drawing.Size(23, 23)
             Me.m_btnAdd.TabIndex = 4
@@ -250,7 +237,7 @@ Namespace Controls
             'm_btnRemove
             '
             Me.m_btnRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnRemove.Location = New System.Drawing.Point(312, 84)
+            Me.m_btnRemove.Location = New System.Drawing.Point(313, 57)
             Me.m_btnRemove.Name = "m_btnRemove"
             Me.m_btnRemove.Size = New System.Drawing.Size(23, 23)
             Me.m_btnRemove.TabIndex = 5
@@ -263,7 +250,7 @@ Namespace Controls
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slGradient.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_slGradient.CurrentKnob = 0
-            Me.m_slGradient.Location = New System.Drawing.Point(3, 84)
+            Me.m_slGradient.Location = New System.Drawing.Point(4, 57)
             Me.m_slGradient.Maximum = 100
             Me.m_slGradient.Minimum = 0
             Me.m_slGradient.Name = "m_slGradient"
@@ -274,7 +261,7 @@ Namespace Controls
             'm_btnFlip
             '
             Me.m_btnFlip.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnFlip.Location = New System.Drawing.Point(283, 55)
+            Me.m_btnFlip.Location = New System.Drawing.Point(284, 28)
             Me.m_btnFlip.Name = "m_btnFlip"
             Me.m_btnFlip.Size = New System.Drawing.Size(52, 23)
             Me.m_btnFlip.TabIndex = 20
@@ -285,7 +272,7 @@ Namespace Controls
             '
             Me.m_tbxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxName.Location = New System.Drawing.Point(3, 30)
+            Me.m_tbxName.Location = New System.Drawing.Point(4, 3)
             Me.m_tbxName.Name = "m_tbxName"
             Me.m_tbxName.Size = New System.Drawing.Size(332, 20)
             Me.m_tbxName.TabIndex = 22
@@ -299,7 +286,6 @@ Namespace Controls
             Me.Controls.Add(Me.m_btnFlip)
             Me.Controls.Add(Me.m_btnRemove)
             Me.Controls.Add(Me.m_btnAdd)
-            Me.Controls.Add(Me.m_cmbGradient)
             Me.Controls.Add(Me.m_nudAlpha)
             Me.Controls.Add(Me.m_nudBlue)
             Me.Controls.Add(Me.m_nudGreen)
@@ -316,7 +302,7 @@ Namespace Controls
             Me.Controls.Add(Me.m_lbGreen)
             Me.Controls.Add(Me.m_lbRed)
             Me.Name = "ucEditGradient"
-            Me.Size = New System.Drawing.Size(340, 210)
+            Me.Size = New System.Drawing.Size(340, 183)
             CType(Me.m_nudAlpha, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudBlue, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudGreen, System.ComponentModel.ISupportInitialize).EndInit()
@@ -340,7 +326,6 @@ Namespace Controls
         Private WithEvents m_nudRed As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_pbCurrentColor As System.Windows.Forms.PictureBox
         Private WithEvents m_plGradient As System.Windows.Forms.Panel
-        Private WithEvents m_cmbGradient As System.Windows.Forms.ComboBox
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_btnRemove As System.Windows.Forms.Button
         Private WithEvents m_slGradient As ScientificInterfaceShared.Controls.ucSlider

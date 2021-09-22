@@ -17,8 +17,6 @@
 ' ===============================================================================
 '
 
-' ToDo: integrate option pages provided through plug-ins
-
 #Region " Imports "
 
 Option Strict On
@@ -48,13 +46,13 @@ Namespace Other
         Private m_lPages As New List(Of IOptionsPage)
         ''' <summary>Current page.</summary>
         Private m_pageCurrent As IOptionsPage = Nothing
-        ''' <summary>Page to show upon startup</summary>
-        Private m_strVerb As String = ""
 
         ' ToDo: track changes in pages, and only show prompts after changes occurred. Not very important right now.
         Private m_bHasFiredPrompt As Boolean = False
 
         Private m_dtNodes As New Dictionary(Of String, Type)
+
+        Private ReadOnly Property Verb As String
 
 #End Region ' Private variables
 
@@ -64,7 +62,7 @@ Namespace Other
 
             Me.m_uic = uic
             Me.InitializeComponent()
-            Me.m_strVerb = verb
+            Me.Verb = verb
 
         End Sub
 
@@ -81,7 +79,8 @@ Namespace Other
             Dim tnAppearance As New TreeNode(My.Resources.OPTIONS_PAGE_APPEARANCE)
             tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_WINDOW, eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))
             tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_COLORS, eApplicationOptionTypes.Colours.ToString(), GetType(ucOptionsStatusColors)))
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GRAPHS, eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GRADIENTS, eApplicationOptionTypes.Gradients.ToString(), GetType(ucOptionsColorRamps)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FONTS, eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
             tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_MAPS, eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
             tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_PEDIGREE, eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
             Me.m_tvOptions.Nodes.Add(tnAppearance)
@@ -107,7 +106,7 @@ Namespace Other
             Me.m_tvOptions.ExpandAll()
 
             'Me.SelectPage(Me.GetPage(Me.m_strVerb))
-            Me.SelectNode(Me.m_strVerb)
+            Me.SelectNode(Me.Verb)
 
         End Sub
 
@@ -219,7 +218,7 @@ Namespace Other
 
             If (Me.m_tvOptions.GetNodeCount(False) = 0) Then Return
 
-            Dim n As TreeNode = Me.FindNodeByVerb(strVerb)
+            Dim n As TreeNode = FindNodeByVerb(strVerb)
             If (n Is Nothing) Then n = Me.m_tvOptions.Nodes(0)
             Me.m_tvOptions.SelectedNode = n
 
@@ -239,7 +238,7 @@ Namespace Other
                     If (String.Compare(CStr(n.Tag), strVerb, True) = 0) Then Return n
                 End If
                 If (n.Nodes.Count > 0) Then
-                    Dim n2 As TreeNode = Me.FindNodeByVerb(strVerb, n)
+                    Dim n2 As TreeNode = FindNodeByVerb(strVerb, n)
                     If (n2 IsNot Nothing) Then Return n2
                 End If
             Next

@@ -1063,6 +1063,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Color ramp.
+        '''</summary>
+        Public ReadOnly Property DEFAULT_COLORRAMP() As String
+            Get
+                Return ResourceManager.GetString("DEFAULT_COLORRAMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to New Ecosim scenario.
         '''</summary>
         Public ReadOnly Property DEFAULT_NEWECOSIMSCENARIO() As String

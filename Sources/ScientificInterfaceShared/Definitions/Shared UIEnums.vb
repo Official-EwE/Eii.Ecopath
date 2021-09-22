@@ -157,6 +157,8 @@ Namespace Definitions
         General = 0
         ''' <summary>Colour options.</summary>
         Colours
+        ''' <summary>Colour gradients.</summary>
+        Gradients
         ''' <summary>Font options.</summary>
         Fonts
         ''' <summary>Graph options.</summary>

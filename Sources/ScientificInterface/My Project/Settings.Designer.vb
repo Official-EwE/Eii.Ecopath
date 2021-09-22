@@ -1066,6 +1066,18 @@ Partial Friend NotInheritable Class Settings
             Me("SelectionLinkPreys") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property ColorRampsCustom() As String
+        Get
+            Return CType(Me("ColorRampsCustom"),String)
+        End Get
+        Set
+            Me("ColorRampsCustom") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

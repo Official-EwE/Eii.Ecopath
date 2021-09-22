@@ -108,7 +108,7 @@ Namespace Ecosim
             Dim iRow, iCol As Integer
             Dim sPosX, sPosY As Single
             Dim data() As Single
-            Dim ftCaption As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim ftCaption As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
             Dim ftScale As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
             Dim handler As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 

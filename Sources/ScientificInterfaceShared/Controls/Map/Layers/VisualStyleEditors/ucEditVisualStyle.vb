@@ -57,7 +57,7 @@ Namespace Controls
             End If
 
             If ((style And cVisualStyle.eVisualStyleTypes.Gradient) = cVisualStyle.eVisualStyleTypes.Gradient) Then
-                Return New ucEditGradient(uic, vs, style)
+                Return New ucChooseEditGradient(uic, vs, style)
             End If
 
             Return New ucEditHatch(uic, vs, style)

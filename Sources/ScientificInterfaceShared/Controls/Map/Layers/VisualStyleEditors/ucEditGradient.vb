@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
 Imports EwECore.Auxiliary
 Imports EwEUtils
 Imports ScientificInterfaceShared.Style
@@ -30,7 +31,7 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' User control for editing the gradient part of a <see cref="cVisualStyle"/>.
+    ''' User control for editing a <see cref="cARGBColorRamp"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class ucEditGradient
@@ -38,7 +39,7 @@ Namespace Controls
 #Region " Private parts "
 
         Private m_lColors As New List(Of Color)
-        Private m_bReady As Boolean = False
+        Private m_ramp As cColorRamp = Nothing
 
 #End Region ' Private parts
 
@@ -48,15 +49,10 @@ Namespace Controls
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <param name="uic">UIContext to operate onto.</param>
-        ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
-        ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(uic As cUIContext,
-                       vs As cVisualStyle,
-                       style As cVisualStyle.eVisualStyleTypes)
+        Public Sub New()
 
-            MyBase.New(uic, vs, style)
+            MyBase.New()
             Me.InitializeComponent()
 
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
@@ -71,19 +67,44 @@ Namespace Controls
 
 #Region " Overrides "
 
+        <Browsable(False)>
+        Public Property ColorRamp As cColorRamp
+            Get
+                Return Me.m_ramp
+            End Get
+            Set(value As cColorRamp)
+
+                Dim bClear As Boolean = True
+
+                Debug.Assert(Not Me.m_bInUpdate)
+                Me.m_bInUpdate = True
+
+                Me.m_tbxName.Text = ""
+                Me.m_ramp = value
+
+                If (value IsNot Nothing) Then
+                    Me.m_tbxName.Text = value.Name
+                    If TypeOf value Is cARGBColorRamp Then
+                        Dim ramp As cARGBColorRamp = DirectCast(value, cARGBColorRamp)
+                        Me.SetARGBGradient(ramp.GradientBreaks, ramp.GradientColors)
+                        bClear = False
+                    End If
+                End If
+
+                If bClear Then Me.SetARGBGradient(Nothing, Nothing)
+                Me.m_tbxName.ReadOnly = Not Me.IsEditable()
+                Me.UpdateControls()
+
+                Me.m_bInUpdate = False
+
+            End Set
+        End Property
+
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            If (Me.UIContext Is Nothing) Then Return
+            Me.ColorRamp = Nothing
 
-            Me.m_bInUpdate = True
-
-            Me.m_bReady = True
-            Me.VisualStyle = Me.VisualStyle
-
-            Me.UpdateControls()
-
-            Me.m_bInUpdate = False
         End Sub
 
         ''' <summary>
@@ -94,90 +115,23 @@ Namespace Controls
             MyBase.OnPaintBackground(e)
 
             Dim rc As Rectangle = Me.m_plGradient.ClientRectangle
-            Dim ramp As cColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
+            Dim ramp As cColorRamp = Me.m_ramp
 
             rc.X = Me.m_plGradient.Location.X
             rc.Y = Me.m_plGradient.Location.Y
-            e.Graphics.FillRectangle(New SolidBrush(Color.White), rc)
+
+            e.Graphics.FillRectangle(SystemBrushes.Window, rc)
 
             cColorRampIndicator.DrawColorRamp(e.Graphics, ramp, rc)
             ControlPaint.DrawBorder3D(e.Graphics, rc)
 
         End Sub
 
-        Public Overrides Function Apply(vs As cVisualStyle) As Boolean
-
-            Dim ramp As cColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
-			
-			If (ramp isnot nothing) then
-				vs.ColorRampID = ramp.ID
-				If (TypeOf ramp Is cARGBColorRamp) Then
-					Dim argb As cARGBColorRamp = DirectCast(ramp, cARGBColorRamp)
-					vs.ColorRampBreaks = argb.GradientBreaks
-					vs.ColorRampColors = argb.GradientColors
-				Else
-					vs.ColorRampBreaks = Nothing
-					vs.ColorRampColors = Nothing
-				End If
-			End If
-
-            Return True
-
-        End Function
-
-        Public Overrides Property VisualStyle As cVisualStyle
-            Get
-                Return MyBase.VisualStyle
-            End Get
-            Set(value As cVisualStyle)
-                MyBase.VisualStyle = value
-                If Not Me.m_bReady Then Return
-
-                Dim aGrads() As cVisualStyle = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Gradient)
-                Dim iSel As Integer = 0
-                Me.m_cmbGradient.Items.Clear()
-
-                Me.m_cmbGradient.Items.Add(New cEwEColorRamp())
-                Me.m_cmbGradient.Items.Add(New cViridisColorRamp(cViridisColorRamp.eViridisOptions.A))
-                Me.m_cmbGradient.Items.Add(New cViridisColorRamp(cViridisColorRamp.eViridisOptions.B))
-                Me.m_cmbGradient.Items.Add(New cViridisColorRamp(cViridisColorRamp.eViridisOptions.C))
-                Me.m_cmbGradient.Items.Add(New cViridisColorRamp(cViridisColorRamp.eViridisOptions.D))
-                Me.m_cmbGradient.Items.Add(New cViridisColorRamp(cViridisColorRamp.eViridisOptions.E))
-
-                For i As Integer = 0 To aGrads.Length - 1
-                    Dim vs As cVisualStyle = aGrads(i)
-                    Me.m_cmbGradient.Items.Add(New cARGBColorRamp(vs.ColorRampColors, vs.ColorRampBreaks))
-                Next i
-
-                ' Set selection
-                For i As Integer = 0 To Me.m_cmbGradient.Items.Count - 1
-                    Dim ramp As cColorRamp = DirectCast(Me.m_cmbGradient.Items(i), cColorRamp)
-                    If (Me.VisualStyle.ColorRampID = ramp.ID) Then
-                        If (TypeOf ramp Is cARGBColorRamp) Then
-                            Dim argb As cARGBColorRamp = DirectCast(ramp, cARGBColorRamp)
-                            If argb.GradientBreaks.EqualsArray(Me.VisualStyle.ColorRampBreaks) And
-                                argb.GradientColors.EqualsArray(Me.VisualStyle.ColorRampColors) Then
-                                iSel = i
-                            End If
-                        Else
-                            iSel = i
-                        End If
-                    End If
-                Next
-
-                Me.m_cmbGradient.SelectedIndex = iSel
-
-            End Set
-        End Property
-
 #End Region ' Overrides
 
 #Region " Events "
 
-        'Private Sub OnGradientTypeChanged(sender As Object, e As System.EventArgs) _
-        '    Handles m_rbDefaultGradient.CheckedChanged, m_rbCustomGradient.CheckedChanged
-        '    Me.UpdateControls()
-        'End Sub
+        Public Event OnColorRampChanged(sender As Object, args As cColorRamp)
 
         ''' <summary>
         ''' User clicked CurrentColor box to pick a colour
@@ -198,7 +152,7 @@ Namespace Controls
 
             If (Me.m_bInUpdate) Then Return
 
-            Dim clr As Color = Color.FromArgb(CInt(Me.m_nudAlpha.Value), CInt(Me.m_nudRed.Value), CInt(Me.m_nudGreen.Value), CInt(Me.m_nudBlue.Value))
+            Dim clr As Color = Color.FromArgb(CInt(m_nudAlpha.Value), CInt(m_nudRed.Value), CInt(m_nudGreen.Value), CInt(m_nudBlue.Value))
             Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.ApplyColorsToGradient()
 
@@ -212,7 +166,7 @@ Namespace Controls
 
             If (Me.m_bInUpdate) Then Return
 
-            Dim clr As Color = Color.FromArgb(CInt(Me.m_slAlpha.Value), CInt(Me.m_slRed.Value), CInt(Me.m_slGreen.Value), CInt(Me.m_slBlue.Value))
+            Dim clr As Color = Color.FromArgb(CInt(m_slAlpha.Value), CInt(m_slRed.Value), CInt(m_slGreen.Value), CInt(m_slBlue.Value))
             Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.ApplyColorsToGradient()
 
@@ -224,7 +178,7 @@ Namespace Controls
         Private Sub OnAddBreak(sender As System.Object, e As System.EventArgs) _
             Handles m_btnAdd.Click
 
-            Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
+            Dim grad As cARGBColorRamp = DirectCast(Me.m_ramp, cARGBColorRamp)
             Me.m_slGradient.Add()
             Me.m_lColors.Add(grad.GetColor(Me.m_slGradient.Value(0) / Me.m_slGradient.Maximum))
             Me.UpdateARGBGradient(grad)
@@ -242,7 +196,7 @@ Namespace Controls
             If Me.m_lColors.Count > 2 Then
                 Me.m_slGradient.Remove(iKnob)
                 Me.m_lColors.RemoveAt(iKnob)
-                Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
+                Dim grad As cARGBColorRamp = DirectCast(Me.m_ramp, cARGBColorRamp)
                 Me.UpdateARGBGradient(grad)
             End If
             Me.UpdateControls()
@@ -272,65 +226,6 @@ Namespace Controls
         End Sub
 
         ''' <summary>
-        ''' Draw an item in the gradient combo box.
-        ''' </summary>
-        Private Sub OnDrawGradientComboBoxItem(sender As Object, e As System.Windows.Forms.DrawItemEventArgs) _
-            Handles m_cmbGradient.DrawItem
-
-            ' Sanity check
-            If (e.Index < 0) Then Return
-
-            Try
-
-                Dim ramp As cColorRamp = DirectCast(Me.m_cmbGradient.Items(e.Index), cColorRamp)
-                Dim rc As Rectangle = e.Bounds
-
-                If (e.Index < 0) Then
-                    e.DrawBackground()
-                    e.DrawFocusRectangle()
-                    Return
-                End If
-
-                e.DrawBackground()
-                rc.Inflate(-2, -2)
-                cColorRampIndicator.DrawColorRamp(e.Graphics, ramp, rc)
-                e.DrawFocusRectangle()
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
-                System.Console.WriteLine(Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
-            End Try
-
-        End Sub
-
-        ''' <summary>
-        ''' User selected a gradient from the combo box.
-        ''' </summary>
-        Private Sub OnGradientSelected(sender As Object, e As System.EventArgs) _
-            Handles m_cmbGradient.SelectedIndexChanged
-
-            If (Me.m_bInUpdate) Then Return
-
-            Try
-
-                Dim grad As cColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
-                If (TypeOf (grad) Is cARGBColorRamp) Then
-                    Dim argb As cARGBColorRamp = DirectCast(grad, cARGBColorRamp)
-                    Me.SetARGBGradient(argb.GradientBreaks, argb.GradientColors)
-                Else
-                    Me.SetARGBGradient(Nothing, Nothing)
-                End If
-                Me.m_tbxName.Text = grad.Name
-                Me.m_tbxName.Enabled = Not grad.IsSystemRamp()
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".OnGradientSelected() Exception " & ex.Message)
-                System.Console.WriteLine(Me.ToString & ".OnGradientSelected() Exception " & ex.Message)
-            End Try
-
-        End Sub
-
-        ''' <summary>
         ''' Flip gradient
         ''' </summary>
         Private Sub OnFlipGradient(sender As System.Object, e As System.EventArgs) _
@@ -353,12 +248,9 @@ Namespace Controls
         End Sub
 
         Private Sub OnNameChanged(sender As Object, e As EventArgs) Handles m_tbxName.TextChanged
-
             Try
-                Dim grad As cColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
-                If (Not grad.IsSystemRamp) Then
-                    grad.Name = Me.m_tbxName.Text
-                End If
+                If (Me.m_bInUpdate) Then Return
+                If (Me.IsEditable) Then Me.m_ramp.Name = Me.m_tbxName.Text
             Catch ex As Exception
 
             End Try
@@ -368,13 +260,22 @@ Namespace Controls
 
 #Region " Internals "
 
+        Private ReadOnly Property IsEditable As Boolean
+            Get
+                If (Me.m_ramp Is Nothing) Then Return False
+                Return (Not Me.m_ramp.IsSystemRamp)
+            End Get
+        End Property
+
         Private Sub SetARGBGradient(breaks() As Double, colors() As Color)
 
             Me.m_bInUpdate = True
 
+            Me.m_lColors.Clear()
+            Me.m_slGradient.NumKnobs = 0
+
             If (breaks IsNot Nothing) And (colors IsNot Nothing) Then
 
-                Me.m_lColors.Clear()
                 Me.m_slGradient.NumKnobs = breaks.Length
 
                 Dim iPos As Integer = 0
@@ -395,8 +296,10 @@ Namespace Controls
 
         Private Sub UpdateControls()
 
-            Dim bIsEditableGradient As Boolean = (TypeOf Me.m_cmbGradient.SelectedItem Is cARGBColorRamp) And (Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Gradient) > 0
+            Dim bIsEditableGradient As Boolean = Me.IsEditable
             Dim iNumKnobs As Integer = Me.m_slGradient.NumKnobs
+
+            Me.m_tbxName.Enabled = Me.IsEditable
 
             Me.m_slRed.Enabled = bIsEditableGradient
             Me.m_nudRed.Enabled = bIsEditableGradient
@@ -420,8 +323,6 @@ Namespace Controls
             ' Hide it, and draw on the area of this control instead... wow, that's awful!
             Me.m_plGradient.Visible = False
 
-            Me.ApplyColorsToGradient()
-
         End Sub
 
         ''' <summary>Loop prevention flag.</summary>
@@ -430,13 +331,10 @@ Namespace Controls
         Private Sub ApplyColorsToGradient()
 
             If Me.m_bInUpdate Then Return
-
             Me.m_bInUpdate = True
 
-            If (TypeOf Me.m_cmbGradient.SelectedItem Is cARGBColorRamp) Then
-
-                Try
-
+            Try
+                If Me.IsEditable Then
                     Dim clr As Color = Me.m_lColors(Me.m_slGradient.CurrentKnob)
                     Me.m_pbCurrentColor.BackColor = clr
 
@@ -452,19 +350,28 @@ Namespace Controls
                     Me.m_slAlpha.Value = clr.A
                     Me.m_nudAlpha.Value = clr.A
 
-                    Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
-                    Me.UpdateARGBGradient(grad)
+                    Me.UpdateARGBGradient(DirectCast(Me.m_ramp, cARGBColorRamp))
+                    RaiseEvent OnColorRampChanged(Me, Me.m_ramp)
+                Else
+                    Me.m_slRed.Value = 0
+                    Me.m_nudRed.Value = 0
 
-                    Me.VisualStyle.ColorRampBreaks = grad.GradientBreaks
-                    Me.VisualStyle.ColorRampColors = grad.GradientColors
+                    Me.m_slGreen.Value = 0
+                    Me.m_nudGreen.Value = 0
 
-                Catch ex As Exception
-                    Debug.Assert(False, Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
-                    System.Console.WriteLine(Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
-                End Try
-            End If
+                    Me.m_slBlue.Value = 0
+                    Me.m_nudBlue.Value = 0
 
-            Me.FireStyleChangedEvent()
+                    Me.m_slAlpha.Value = 0
+                    Me.m_nudAlpha.Value = 0
+
+                End If
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".OnDrawGradientComboBoxItem() Exception " & ex.Message)
+            End Try
+
             Me.m_bInUpdate = False
 
             Me.Refresh()
@@ -522,6 +429,8 @@ Namespace Controls
             ' Update gradient
             argb.GradientColors = lColor.ToArray
             argb.GradientBreaks = lPos.ToArray
+
+            argb.Name = Me.m_tbxName.Text
 
         End Sub
 

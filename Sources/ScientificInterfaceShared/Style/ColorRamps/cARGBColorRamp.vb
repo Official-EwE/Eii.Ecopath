@@ -18,7 +18,7 @@
 '
 
 Option Strict On
-Imports System.Drawing
+Imports System.Linq
 Imports EwECore
 
 Namespace Style
@@ -49,8 +49,8 @@ Namespace Style
         ''' <summary>
         ''' Initializes a new instance of the ARGBColorRamp class.
         ''' </summary>
-        ''' <param name="aColors">The colour breaks to use.</param>
-        ''' <param name="adPositions">The position of each colour break, 
+        ''' <param name="colors">The colour breaks to use.</param>
+        ''' <param name="breaks">The position of each colour break, 
         ''' relative to its predessesor.</param>
         ''' <remarks>
         ''' The following snippet illustrates how to create a valid ARGB color ramp:
@@ -77,21 +77,31 @@ Namespace Style
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(aColors() As Color, adPositions() As Double)
+        Public Sub New(name As String, colors() As Color, breaks() As Double)
 
             MyBase.New(cCore.NULL_VALUE, False)
 
-            Dim clr As Color = Nothing
-            Dim dTotalPos As Double = 0.0
-
             ' Validate input
-            If (aColors Is Nothing) Then Throw New Exception("Missing required parameter aColors")
-            If (adPositions Is Nothing) Then Throw New Exception("Missing required parameter adPositions")
-            If (aColors.Length <> adPositions.Length) Then Throw New Exception("Number of colors and positions do not match")
+            If (colors Is Nothing) Then Throw New Exception("Missing required parameter aColors")
+            If (breaks Is Nothing) Then Throw New Exception("Missing required parameter adPositions")
+            If (colors.Length <> breaks.Length) Then Throw New Exception("Number of colors and positions do not match")
 
-            Me.GradientColors = aColors
-            Me.GradientBreaks = adPositions
+            Me.GradientColors = colors
+            Me.GradientBreaks = breaks
 
+            If (String.IsNullOrWhiteSpace(name)) Then name = My.Resources.DEFAULT_COLORRAMP
+            Me.Name = name
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Copy constructor.
+        ''' </summary>
+        ''' <param name="ramp">The ramp to duplicate.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ramp As cARGBColorRamp)
+            Me.New(ramp.Name, ramp.GradientColors, ramp.GradientBreaks)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -165,7 +175,7 @@ Namespace Style
                 Return Me.m_colors
             End Get
             Set(value As Color())
-                Me.m_colors = value
+                Me.m_colors = CType(value.Clone(), Color())
             End Set
         End Property
 

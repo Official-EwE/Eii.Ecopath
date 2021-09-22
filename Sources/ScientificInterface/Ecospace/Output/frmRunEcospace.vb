@@ -927,7 +927,7 @@ Namespace Ecospace
 
                 If Me.StyleGuide.InvertMapLabelColor Then br = Brushes.White
 
-                g.DrawString(strLabel, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), br, rcPos, fmt)
+                g.DrawString(strLabel, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle), br, rcPos, fmt)
             End If
 
         End Sub

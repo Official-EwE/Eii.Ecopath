@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Option Explicit On
 
 Imports System.Collections.Specialized
 Imports System.Drawing.Drawing2D
@@ -253,12 +252,7 @@ Namespace Style
             Me.m_core = core
             Me.m_mode = mode
 
-            ' Control how colour ramp delivers its colours
-            Me.GroupColorRamp.ColorOffsetStart = c_sRampOffsetStart
-            Me.GroupColorRamp.ColorOffsetEnd = c_sRampOffsetEnd
-
-            Me.PedigreeColorRamp.ColorOffsetStart = c_sRampOffsetStart
-            Me.PedigreeColorRamp.ColorOffsetEnd = c_sRampOffsetEnd
+            Me.DefaultColorRamp = SystemColorRamps(0)
 
             ' Load up
             Me.ResetApplicationColors()
@@ -337,7 +331,6 @@ Namespace Style
         ''' Public enumerator stating the visual feedback required for rendering a value.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Flags>
         Public Enum eStyleFlags As Integer
 
             '-----------------------------------------------------------------
@@ -345,41 +338,38 @@ Namespace Style
             '-----------------------------------------------------------------
 
             ''' <summary>All well, value is OK and does not require any kind of formatting.</summary>
-            OK = eStatusFlags.OK
+            OK = CInt(eStatusFlags.OK)
 
             ''' <summary>Flag indicating that Data Validation Failed for a value.</summary>
-            FailedValidation = eStatusFlags.FailedValidation
+            FailedValidation = CInt(eStatusFlags.FailedValidation)
 
             ''' <summary>Flag indicating that a value was Computed, not entered.</summary>
-            ValueComputed = eStatusFlags.ValueComputed
+            ValueComputed = CInt(eStatusFlags.ValueComputed)
 
             ''' <summary>Flag indicating that a value was Computed to an Invalid Result.</summary>
-            InvalidModelResult = eStatusFlags.InvalidModelResult
+            InvalidModelResult = CInt(eStatusFlags.InvalidModelResult)
 
             ''' <summary>Flag indicating that a value is Not Editable, e.g. should not
             ''' be modified by user input.</summary>
             ''' <remarks>This flag is also known as ReadOnly or BlockedForInput (EwE5)</remarks>
-            NotEditable = eStatusFlags.NotEditable
+            NotEditable = CInt(eStatusFlags.NotEditable)
 
             ''' <summary>Flag indicating that an Unknown Error has been encountered regarding this value.</summary>
-            ErrorEncountered = eStatusFlags.ErrorEncountered
+            ErrorEncountered = CInt(eStatusFlags.ErrorEncountered)
 
             ''' <summary>Flag indicating that a value is a Missing Parameter for one of the EwE models.</summary>
-            MissingParameter = eStatusFlags.MissingParameter
+            MissingParameter = CInt(eStatusFlags.MissingParameter)
 
             ''' <summary>
             ''' Flag indicating that the core deemed a value as important for whatever reason. The
             ''' core is not able to communicate such reasons, and highlighting is therefore an
             ''' ad-hoc process on a per-case basis.
             ''' </summary>
-            Checked = eStatusFlags.CoreHighlight
+            Checked = CInt(eStatusFlags.CoreHighlight)
 
             ''' <summary>Flag indicating that a value is Null; its value has not been set or has been
             ''' set to the <see cref="cCore.NULL_VALUE">Core NULL value</see>.</summary>
-            Null = eStatusFlags.Null
-
-            ''' <summary>Flag indicating that a value is stored with EwE model data.</summary>
-            Stored = eStatusFlags.Stored
+            Null = CInt(eStatusFlags.Null)
 
             ''' <summary>Bit-pattern mask to separate core statuses from GUI statuses.</summary>
             CoreStatusFlagsMask = 4095
@@ -486,10 +476,10 @@ Namespace Style
         Public Sub ResumeEvents(Optional bNotifyWorld As Boolean = True)
             Me.m_nEventLock -= 1
             ' Did this clear the event lock?
-            If (Me.m_nEventLock <= 0) And (Me.m_pendingChangeEventTypes <> eChangeType.None) Then
+            If (Me.m_nEventLock <= 0) And (m_pendingChangeEventTypes <> eChangeType.None) Then
                 ' Fire remaining event(s)
                 If (bNotifyWorld) Then
-                    Me.FireChangeEvent(Me.m_pendingChangeEventTypes)
+                    FireChangeEvent(Me.m_pendingChangeEventTypes)
                 End If
                 ' Clear cache
                 Me.m_pendingChangeEventTypes = eChangeType.None
@@ -986,7 +976,7 @@ Namespace Style
             Set(value As PointF)
                 If Not Point.Equals(Me.m_ptMapRefLayerTL, value) Then
                     Me.m_ptMapRefLayerTL = value
-                    Me.MapStyleChanged()
+                    MapStyleChanged()
                 End If
             End Set
         End Property
@@ -998,7 +988,7 @@ Namespace Style
             Set(value As PointF)
                 If Not Point.Equals(Me.m_ptMapRefLayerBR, value) Then
                     Me.m_ptMapRefLayerBR = value
-                    Me.MapStyleChanged()
+                    MapStyleChanged()
                 End If
             End Set
         End Property
@@ -1094,6 +1084,7 @@ Namespace Style
                 Me.MapStyleChanged()
             End Set
         End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set if maps labels should be drawn in inverted colours.
@@ -1169,13 +1160,6 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the color ramp for obtaining group colors.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property GroupColorRamp As New cEwEColorRamp()
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Get/set the color to represent a group.
         ''' </summary>
         ''' <remarks>
@@ -1219,7 +1203,7 @@ Namespace Style
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function GroupColorDefault(core As cCore,
-                                          iGroup As Integer) As Color
+                                           iGroup As Integer) As Color
             If (iGroup = 0) Then Return Color.Gray
             Return Me.GroupColorDefault(iGroup, core.nGroups)
         End Function
@@ -1235,8 +1219,8 @@ Namespace Style
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function GroupColorDefault(iGroup As Integer,
-                                          nGroups As Integer) As Color
-            Return Me.GroupColorRamp.GetColor(iGroup, nGroups)
+                                           nGroups As Integer) As Color
+            Return Me.DefaultColorRamp.GetColor(iGroup, nGroups)
         End Function
 
 #End Region ' Group
@@ -1244,7 +1228,7 @@ Namespace Style
 #Region " Fleet "
 
         ''' <summary>Color ramp for obtaining fleet colors</summary>
-        Public Property FleetColorRamp As New cARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
+        Public Property FleetColorRamp As cColorRamp = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1293,9 +1277,11 @@ Namespace Style
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function FleetColorDefault(iFleet As Integer,
-                                          nFleets As Integer) As Color
+                                           nFleets As Integer) As Color
+            Dim ramp As cColorRamp = Me.FleetColorRamp
+            If (ramp Is Nothing) Then ramp = SystemColorRamps(1)
             If (iFleet = 0) Then Return Color.Gray
-            Return Me.FleetColorRamp.GetColor(iFleet, nFleets)
+            Return ramp.GetColor(iFleet, nFleets)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1310,16 +1296,13 @@ Namespace Style
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function FleetColorDefault(core As cCore,
-                                          iFleet As Integer) As Color
-            Return Me.FleetColorDefault(iFleet, core.nFleets)
+                                           iFleet As Integer) As Color
+            Return FleetColorDefault(iFleet, core.nFleets)
         End Function
 
 #End Region ' Fleet 
 
 #Region " Pedigree "
-
-        ''' <summary>Color ramp for obtaining pedigree colors</summary>
-        Public Property PedigreeColorRamp As New cEwEColorRamp()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1396,8 +1379,8 @@ Namespace Style
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function PedigreeColorDefault(iLevel As Integer,
-                                             nLevels As Integer) As Color
-            Return Me.PedigreeColorRamp.GetColor(iLevel - 1, nLevels)
+                                              nLevels As Integer) As Color
+            Return Me.DefaultColorRamp.GetColor(iLevel - 1, nLevels)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1413,10 +1396,10 @@ Namespace Style
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function PedigreeColorDefault(core As cCore,
-                                             iLevel As Integer,
-                                             vn As eVarNameFlags) As Color
+                                              iLevel As Integer,
+                                              vn As eVarNameFlags) As Color
             Debug.Assert(core.IsPedigreeVariableSupported(vn))
-            Return Me.PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
+            Return PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
         End Function
 
 #End Region ' Pedigree
@@ -1466,8 +1449,6 @@ Namespace Style
             NotSet = 0
             ''' <summary>The font to use for graphs and charts major titles.</summary>
             Title
-            ''' <summary>The font to use for graphs and charts legend text.</summary>
-            Legend
             ''' <summary>The font to use for graphs and charts minor titles, 
             ''' such as subtitles, axis labels, legend titles, etc.</summary>
             SubTitle
@@ -1587,7 +1568,7 @@ Namespace Style
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
                     Return Me.m_dtApplicationColors(colorType)
                 End If
-                Return Me.DefaultColor(colorType)
+                Return DefaultColor(colorType)
             End Get
             Set(value As Color)
                 ' Optimization
@@ -1611,7 +1592,7 @@ Namespace Style
                 If (Me.m_dtShapeColors.ContainsKey(shapetype)) Then
                     Return Me.m_dtShapeColors(shapetype)
                 End If
-                Return Me.DefaultShapeColor(shapetype)
+                Return DefaultShapeColor(shapetype)
             End Get
             Set(value As Color)
 
@@ -1629,6 +1610,76 @@ Namespace Style
 
 #End Region ' Shape
 
+#Region " Ramps "
+
+        ''' <summary>The default color ramp</summary>
+        Private m_defaultRamp As cColorRamp = Nothing
+
+        ''' <summary>Customizable ARGB color ramps.</summary>
+        Private m_customizableRamps As New List(Of cARGBColorRamp)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the default color ramp for EwE.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property DefaultColorRamp As cColorRamp
+            Get
+                If (Me.m_defaultRamp Is Nothing) Then Return SystemColorRamps(0)
+                Return Me.m_defaultRamp
+            End Get
+            Set(value As cColorRamp)
+                Me.m_defaultRamp = value
+                Me.ColorsChanged()
+            End Set
+        End Property
+
+        Public Sub ClearCustomColorRamps()
+            Me.m_customizableRamps.Clear()
+            Me.ColorsChanged()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add an ARGB color ramp.
+        ''' </summary>
+        ''' <param name="ramp">The ramp to add.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function AddCustomColorRamp(ramp As cARGBColorRamp) As Boolean
+            If ramp.IsSystemRamp Then Return False
+            Me.m_customizableRamps.Add(ramp)
+            Me.ColorsChanged()
+            Return True
+        End Function
+
+        Public ReadOnly Property CustomARGBColorRamps As cARGBColorRamp()
+            Get
+                If Me.m_customizableRamps.Count = 0 Then Return cStyleGuide.DefaultArgbRamps
+                Return Me.m_customizableRamps.ToArray()
+            End Get
+        End Property
+
+        Public ReadOnly Property ColorRamps As cColorRamp()
+            Get
+                Dim ramps As New List(Of cColorRamp)
+                ramps.AddRange(cStyleGuide.SystemColorRamps)
+                ramps.AddRange(Me.CustomARGBColorRamps)
+                Return ramps.ToArray()
+            End Get
+        End Property
+
+        Public ReadOnly Property DefaultColorRamps As cColorRamp()
+            Get
+                Dim ramps As New List(Of cColorRamp)
+                ramps.AddRange(cStyleGuide.SystemColorRamps)
+                ramps.AddRange(cStyleGuide.DefaultArgbRamps)
+                Return ramps.ToArray()
+            End Get
+        End Property
+
+#End Region ' Ramps
+
 #Region " Generics "
 
         ''' -------------------------------------------------------------------
@@ -1640,7 +1691,7 @@ Namespace Style
         Public Function GetEwE5ColorRamp(iNumLevels As Integer) As List(Of Color)
             Dim lColors As New List(Of Color)
             For i As Integer = 0 To iNumLevels
-                Dim clr As Color = Me.GroupColorRamp.GetColor(i, iNumLevels)
+                Dim clr As Color = Me.DefaultColorRamp.GetColor(i, iNumLevels)
                 lColors.Add(clr)
             Next
             Return lColors
@@ -1680,7 +1731,7 @@ Namespace Style
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Shared Function CalculateAlternatingColors(i As Integer,
-                                                          iLen As Integer,
+                                                           iLen As Integer,
                                                           Optional iHueScale As Integer = 9,
                                                           Optional iSaturationRange As Integer = 240,
                                                           Optional iValueRange As Integer = 200) As HSV
@@ -1750,7 +1801,7 @@ Namespace Style
                         Return strName
                     End If
                 End If
-                Return Me.DefaultFontFamilyName(ft)
+                Return DefaultFontFamilyName(ft)
             End Get
             Set(value As String)
                 Me.m_dtFontFamilyName(ft) = value
@@ -1770,7 +1821,7 @@ Namespace Style
                 If Me.m_dtFontStye.ContainsKey(ft) Then
                     Return Me.m_dtFontStye(ft)
                 End If
-                Return Me.DefaultFontStyle(ft)
+                Return DefaultFontStyle(ft)
             End Get
             Set(value As FontStyle)
                 If (value < 0) Then
@@ -1797,7 +1848,7 @@ Namespace Style
                         Return sSize
                     End If
                 End If
-                Return Me.DefaultFontSize(ft)
+                Return DefaultFontSize(ft)
             End Get
             Set(value As Single)
                 If (value < 0) Then
@@ -1896,7 +1947,7 @@ Namespace Style
             End Get
             Set(value As String)
                 Me.m_strPreset = value
-                Me.Preset(value)
+                Preset(value)
                 Me.ItemVisibilityChanged()
             End Set
         End Property
@@ -1986,7 +2037,7 @@ Namespace Style
         ''' <returns>True if any groups or fleets are hidden.</returns>
         ''' -------------------------------------------------------------------
         Public Function HasHiddenItems() As Boolean
-            Dim preset As cItemVisibilityPreset = Me.Preset(Me.SelectedItemVisibilityPresetName)
+            Dim preset As cItemVisibilityPreset = Me.Preset(SelectedItemVisibilityPresetName)
             If (preset Is Nothing) Then Return False
             Return preset.HasHiddenItems
         End Function
@@ -2230,19 +2281,11 @@ Namespace Style
             My.Resources.glyph_circles_small
         }
 
-        Private DefaultHatchPatterns As HatchStyle() = {HatchStyle.DiagonalCross,
-                                                  HatchStyle.Cross,
-                                                  HatchStyle.DiagonalBrick,
-                                                  HatchStyle.Divot,
-                                                  HatchStyle.LightHorizontal,
-                                                  HatchStyle.Shingle,
-                                                  HatchStyle.ZigZag,
-                                                  HatchStyle.SmallGrid,
-                                                  HatchStyle.DashedVertical,
-                                                  HatchStyle.Plaid}
+        Private DefaultHatchPatterns As HatchStyle() = CType([Enum].GetValues(GetType(HatchStyle)), HatchStyle())
 
         Public Shared SystemColorRamps As cColorRamp() = {
-            New cEwEColorRamp(),
+            New cEwEColorRamp(c_sRampOffsetStart, c_sRampOffsetEnd),
+            New cARGBColorRamp("Fleets", New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#}),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.A),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.B),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.C),
@@ -2250,23 +2293,24 @@ Namespace Style
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.E)
         }
 
+        ' ToDo: globalize ramp names
         Public Shared DefaultArgbRamps As cARGBColorRamp() = {
-            New cARGBColorRamp(New Color() {Color.FromArgb(250, 230, 230), Color.FromArgb(250, 24, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(250, 250, 230), Color.FromArgb(250, 250, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(230, 250, 230), Color.FromArgb(24, 250, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(230, 250, 250), Color.FromArgb(24, 250, 250)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(230, 230, 250), Color.FromArgb(24, 24, 250)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(250, 230, 250), Color.FromArgb(240, 24, 250)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(230, 230, 230), Color.FromArgb(24, 24, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(240, 240, 255), Color.LightBlue, Color.MediumPurple, Color.Purple}, New Double() {0, 1 / 3, 1 / 3, 1 / 3}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(240, 255, 240), Color.LightGreen, Color.DarkGreen}, New Double() {0, 1 / 3, 2 / 3}),
-            New cARGBColorRamp(New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.LemonChiffon, Color.Orange, Color.SaddleBrown}, New Double() {0, 0.5, 0.5}),
-            New cARGBColorRamp(New Color() {Color.LightYellow, Color.SaddleBrown}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.White, Color.DarkRed}, New Double() {0, 0.5, 0.5}),
-            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.OrangeRed, Color.DarkRed}, New Double() {0, 0.25, 0.25, 0.25, 0.25}),
-            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.LightBlue, Color.DarkBlue}, New Double() {0, 1 / 3, 1 / 6, 1 / 6, 1 / 3}),
-            New cARGBColorRamp(New Color() {Color.FromArgb(255, 0, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 0)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6})
+            New cARGBColorRamp("Reds", New Color() {Color.FromArgb(250, 230, 230), Color.FromArgb(250, 24, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Yellows", New Color() {Color.FromArgb(250, 250, 230), Color.FromArgb(250, 250, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Greens", New Color() {Color.FromArgb(230, 250, 230), Color.FromArgb(24, 250, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Light blues", New Color() {Color.FromArgb(230, 250, 250), Color.FromArgb(24, 250, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp("Dark blues", New Color() {Color.FromArgb(230, 230, 250), Color.FromArgb(24, 24, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp("Magentas", New Color() {Color.FromArgb(250, 230, 250), Color.FromArgb(240, 24, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp("Grays", New Color() {Color.FromArgb(230, 230, 230), Color.FromArgb(24, 24, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Purples", New Color() {Color.FromArgb(240, 240, 255), Color.LightBlue, Color.MediumPurple, Color.Purple}, New Double() {0, 1 / 3, 1 / 3, 1 / 3}),
+            New cARGBColorRamp("Foilage", New Color() {Color.FromArgb(240, 255, 240), Color.LightGreen, Color.DarkGreen}, New Double() {0, 1 / 3, 2 / 3}),
+            New cARGBColorRamp("Underwater", New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1}),
+            New cARGBColorRamp("Sands", New Color() {Color.LemonChiffon, Color.Orange, Color.SaddleBrown}, New Double() {0, 0.5, 0.5}),
+            New cARGBColorRamp("Earthy", New Color() {Color.LightYellow, Color.SaddleBrown}, New Double() {0, 1}),
+            New cARGBColorRamp("Contrast 1", New Color() {Color.DarkGreen, Color.White, Color.DarkRed}, New Double() {0, 0.5, 0.5}),
+            New cARGBColorRamp("Contrast 2", New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.OrangeRed, Color.DarkRed}, New Double() {0, 0.25, 0.25, 0.25, 0.25}),
+            New cARGBColorRamp("Land and sea", New Color() {Color.DarkGreen, Color.LightGreen, Color.LightYellow, Color.White, Color.LightBlue, Color.DarkBlue}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 3}),
+            New cARGBColorRamp("Careful with that axe, Eugene", New Color() {Color.FromArgb(255, 0, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 0)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6})
         }
 
         Private m_brHightLightDefault As Brush = Brushes.Red
@@ -2294,19 +2338,19 @@ Namespace Style
                     Me.GetColors(avs)
 
                 Case eBrushType.Glyphs
-                    If (nBrushes <= 0) Then nBrushes = Me.DefaultGlyphs.Length
+                    nBrushes = DefaultGlyphs.Length
                     ReDim avs(nBrushes)
-                    Me.GetGlyphs(avs, Me.DefaultGlyphs)
+                    Me.GetGlyphs(avs, DefaultGlyphs)
 
                 Case eBrushType.HatchPattern
-                    If (nBrushes <= 0) Then nBrushes = Me.DefaultHatchPatterns.Length
+                    nBrushes = DefaultHatchPatterns.Length
                     ReDim avs(nBrushes)
-                    Me.GetPatterns(avs, Me.DefaultHatchPatterns)
+                    Me.GetPatterns(avs, DefaultHatchPatterns)
 
                 Case eBrushType.Gradient
-                    If (nBrushes <= 0) Then nBrushes = DefaultArgbRamps.Length
+                    nBrushes = Me.m_customizableRamps.Count
                     ReDim avs(nBrushes - 1)
-                    Me.GetGradients(avs, DefaultArgbRamps)
+                    Me.GetGradients(avs, Me.m_customizableRamps.ToArray())
 
             End Select
 
@@ -2314,9 +2358,16 @@ Namespace Style
             Return avs
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets the color ramp used in a given visual style.
+        ''' </summary>
+        ''' <param name="vs">The <see cref="cVisualStyle"/>.</param>
+        ''' <returns>A color ramp, or nothing if the ramp could not be found.</returns>
+        ''' -------------------------------------------------------------------
         Public Function GetColorRamp(vs As cVisualStyle) As cColorRamp
             If (vs.ColorRampBreaks IsNot Nothing) And (vs.ColorRampColors IsNot Nothing) Then
-                Return New cARGBColorRamp(vs.ColorRampColors, vs.ColorRampBreaks)
+                Return New cARGBColorRamp("Used", vs.ColorRampColors, vs.ColorRampBreaks)
             Else
                 For Each r As cColorRamp In SystemColorRamps
                     If r.ID = vs.ColorRampID Then Return r
@@ -2623,9 +2674,9 @@ Namespace Style
                 End If
                 Select Case ft
                     Case eEcobaseFieldType.CountryName
-                        Return Me.DefaultCountryNames()
+                        Return DefaultCountryNames()
                     Case eEcobaseFieldType.EcosystemType
-                        Return Me.DefaultEcosystemTypes()
+                        Return DefaultEcosystemTypes()
                 End Select
                 Return New StringCollection()
             End Get
@@ -2639,7 +2690,7 @@ Namespace Style
         End Property
 
         Public Sub EcoBaseFieldsChanged()
-            Me.FireChangeEvent(eChangeType.EcobaseLists)
+            FireChangeEvent(eChangeType.EcobaseLists)
         End Sub
 
         Private Function DefaultCountryNames() As StringCollection
@@ -2722,7 +2773,7 @@ Namespace Style
             Select Case ft
                 Case eApplicationFontType.Title
                     Return 12
-                Case eApplicationFontType.Legend, eApplicationFontType.SubTitle
+                Case eApplicationFontType.SubTitle
                     Return 10
                 Case eApplicationFontType.Scale
                     Return 8.25

@@ -26,7 +26,7 @@ Namespace Other
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
-        Protected Overrides Sub Dispose(disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
@@ -58,6 +58,7 @@ Namespace Other
             Me.lblItemForeColor = New System.Windows.Forms.Label()
             Me.m_lbFontTypes = New System.Windows.Forms.ListBox()
             Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
             CType(Me.m_nudThumbnailSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudFontSize, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -169,10 +170,16 @@ Namespace Other
             resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.Name = "Label1"
             '
+            'm_lblDescription
+            '
+            resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
+            Me.m_lblDescription.Name = "m_lblDescription"
+            '
             'ucOptionsGraphs
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.Controls.Add(Me.m_lblDescription)
             Me.Controls.Add(Me.m_lblExample)
             Me.Controls.Add(Me.m_lblThumbnailUnit)
             Me.Controls.Add(Me.m_rbLegendAlways)
@@ -212,7 +219,7 @@ Namespace Other
         Private WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_nudThumbnailSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudFontSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
-
+        Private WithEvents m_lblDescription As Label
     End Class
 End Namespace
 

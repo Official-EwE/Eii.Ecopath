@@ -329,7 +329,7 @@ Namespace Controls.Map
         Private Function Measure(g As Graphics) As Size
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
-            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
             Dim ftScale As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
 
             ' Measure size of legend
@@ -379,7 +379,7 @@ Namespace Controls.Map
         Public Function Draw(g As Graphics, ptOrigin As Point) As Boolean
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
-            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
             Dim ftScale As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
             Dim szfItem As SizeF = Nothing
             Dim iHeight As Integer

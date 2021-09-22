@@ -552,6 +552,12 @@
     <Compile Include="Other\Options\ucOptionsAutoRun.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Other\Options\ucOptionsColorRamps.Designer.vb">
+      <DependentUpon>ucOptionsColorRamps.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsColorRamps.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Other\SplashScreen\frmSplash.Designer.vb">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </Compile>
@@ -1250,6 +1256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsAutoRun.resx">
       <DependentUpon>ucOptionsAutoRun.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsColorRamps.resx">
+      <DependentUpon>ucOptionsColorRamps.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\SplashScreen\frmSplash.resx">
       <DependentUpon>frmSplash.vb</DependentUpon>

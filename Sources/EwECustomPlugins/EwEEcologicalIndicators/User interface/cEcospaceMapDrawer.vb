@@ -53,7 +53,7 @@ Public Class cEcospaceMapDrawer
         Dim maptype As cMapDrawerBase.eMapType = Args.MapType
         Dim RelScaler() As Single = Args.RelMapScaler
         Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
-        Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
+        Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
         For i As Integer = 1 To Me.InRow
             For j As Integer = 1 To Me.InCol
