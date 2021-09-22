@@ -170,7 +170,7 @@ Public Class dlgEditBasemap
     End Sub
 
     Private Sub OnAssumeSquareCellsChanged(sender As System.Object, e As System.EventArgs)
-        Me.CalcCellSize()
+        Me.CalcCellLength()
         Me.UpdateControls()
     End Sub
 
