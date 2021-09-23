@@ -33,10 +33,6 @@
 
 #Const USE_LICENSE_LIB = 1
 
-#If Not DEBUG Then
-#Const USE_LICENSE_LIB = 1
-#End If
-
 #Region " Imports "
 
 Option Strict On
@@ -646,8 +642,6 @@ Public Class cDotSpatialUtils
             cLog.Write(ex, "cDotSpatialUtils.IsLicensed")
             Return False
         End Try
-#ElseIf DEBUG = 1 Then
-    return true
 #Else
         bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
 #End If
