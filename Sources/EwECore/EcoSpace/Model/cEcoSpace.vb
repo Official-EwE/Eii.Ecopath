@@ -172,7 +172,7 @@ Public Class cEcoSpace
     'A() searchrate modifer one if in prefered habitate < 1 otherwise used in derivRed() to calculate effective search rate
     'repopulated for each time step each cell
     Private EatEff() As Single
-    '   'V() modifier used in the same way as EatEff() to modfy effective vulnerability in derivtRed()
+    'V() modifier used in the same way as EatEff() to modfy effective vulnerability in derivtRed()
     Private VulPred() As Single
 
     ''' <summary>
@@ -210,9 +210,7 @@ Public Class cEcoSpace
 
     Private TimeStep2 As Single
 
-    ' Dim Tn As Integer ' summary array index
-
-    'jb Movement parameter with no migration?????
+    'jb Movement parameter with no migration
     'Set in SetMovementParameters() to the same values as counterparts BcwNomig() = Bcw()
     Private BcwNomig(,,) As Single
     Private CNomig(,,) As Single
@@ -3682,7 +3680,7 @@ Public Class cEcoSpace
         'e movement to left
         Me.EcoSpaceData.allocate(Me.e, Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1, Me.EcoSpaceData.nvartot)
 
-        'Advection vectors Xvel(,) are in cm/sec convert to km/year, same units as the mrate()
+        'Advection vectors Xvel(,) are in cm/sec convert to km/year, same units as the mvel()/(Dispersal Rate)
         '[km/year] / [cell length]
         AdScale = 315.36 / Me.EcoSpaceData.CellLength
 
@@ -7171,15 +7169,20 @@ exitline:
                 Me.InitPackets()
                 ' js 30Mar2021 - define stanza groups per thread
                 Me.SetNearestOKcellforIBM()
+
+                Me.EcoSpaceData.nIBMGroupsPerThread = Me.AllocateIBMStanzaPerThread()
+                Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.m_IBMMoveSolvers.Count - 1) \ Me.m_IBMMoveSolvers.Count
+
             End If
 
-            Me.EcoSpaceData.nIBMGroupsPerThread = Me.AllocateIBMStanzaPerThread()
-            'Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.EcoSpaceData.nGridSolverThreads - 1) \ Me.EcoSpaceData.nGridSolverThreads
-            Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.m_IBMMoveSolvers.Count - 1) \ Me.m_IBMMoveSolvers.Count
-            'Debug.Assert(False, "IBM Threading!")
         Catch ex As Exception
+            cLog.Write(ex)
+            Me.Messages.SendMessage(New cMessage(cStringUtils.Localize("IBM Failed to initialize and will not run correctly." + cStringUtils.vbCrLf + ex.Message, ex.Message),
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
 
         End Try
+
+
     End Sub
 
     ''' <summary>
@@ -7297,9 +7300,7 @@ exitline:
             Me.StanzaData.MaxAgeSpecies(isp) = ia
         Next
         ReDim Me.StanzaData.Zcell(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)  'this variable used to store spatial field of total mortality rates for survival updates
-        ' For i = 1 To 6: Debug.Print Bcell(1, 1, i), StartBiomass(i): Next
-        'For i = 1 To 6: Debug.Print PredCell(1, 1, i), pred(i): Next
-        'Stop
+
     End Sub
 
     ''' <summary>
