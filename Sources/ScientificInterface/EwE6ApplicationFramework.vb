@@ -48,8 +48,6 @@ Module EwE6ApplicationFramework
 
     Public Sub Main()
 
-        Threading.Thread.CurrentThread.CurrentUICulture = New Globalization.CultureInfo("es-ES")
-
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
 
         Application.EnableVisualStyles()
@@ -221,15 +219,21 @@ Module EwE6ApplicationFramework
 
     Public Function EwERegistration(lic As cLicense) As String
 
-        If (lic IsNot Nothing) Then
-            If (lic.IsRegistered) Then
-                If (lic.IsLicensed) Then
-                    Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
-                Else
-                    Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
+        Try
+            If (lic IsNot Nothing) Then
+                If (lic.IsRegistered) Then
+                    If (lic.IsLicensed) Then
+                        Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
+                    Else
+                        Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
+                    End If
                 End If
             End If
-        End If
+        Catch ex2 As ObjectDisposedException
+            ' Can happen during app shutdown. Ignore
+        Catch ex As Exception
+
+        End Try
         Return My.Resources.REGISTRATION_NONE
 
     End Function
