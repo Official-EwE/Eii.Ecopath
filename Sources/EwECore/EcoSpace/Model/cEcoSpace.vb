@@ -7167,9 +7167,9 @@ exitline:
 
                 'Packet number weights and iPacket, jPacket positions
                 Me.InitPackets()
-                ' js 30Mar2021 - define stanza groups per thread
                 Me.SetNearestOKcellforIBM()
 
+                ' js 30Mar2021 - define stanza groups per thread
                 Me.EcoSpaceData.nIBMGroupsPerThread = Me.AllocateIBMStanzaPerThread()
                 Me.EcoSpaceData.nIBMPacketsPerThread = (Me.StanzaData.Npackets + Me.m_IBMMoveSolvers.Count - 1) \ Me.m_IBMMoveSolvers.Count
 
