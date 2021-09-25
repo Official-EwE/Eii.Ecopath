@@ -77,9 +77,9 @@ Namespace Style
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(name As String, colors() As Color, breaks() As Double)
+        Public Sub New(name As String, ByVal colors() As Color, ByVal breaks() As Double, Optional iSystemID As Integer = cCore.NULL_VALUE)
 
-            MyBase.New(cCore.NULL_VALUE, False)
+            MyBase.New(iSystemID, iSystemID > 0)
 
             ' Validate input
             If (colors Is Nothing) Then Throw New Exception("Missing required parameter aColors")
@@ -203,8 +203,6 @@ Namespace Style
                 Next
             End Set
         End Property
-
-        Public Overrides Property Name As String = ""
 
     End Class
 

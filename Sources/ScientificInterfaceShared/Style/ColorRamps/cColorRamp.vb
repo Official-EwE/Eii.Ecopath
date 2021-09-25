@@ -45,7 +45,7 @@ Namespace Style
         ''' Gets or sets the name of the color ramp.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public MustOverride Property Name As String
+        Public Overridable Property Name As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

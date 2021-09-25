@@ -141,7 +141,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public ReadOnly Property BlockColors() As Color() Implements IBlockSelector.BlockColors
             Get
-                Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
+                Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.DefaultColors(Me.m_iNumBlocks)
                 lcolors.Insert(0, Color.Black)
                 Return lcolors.ToArray
             End Get

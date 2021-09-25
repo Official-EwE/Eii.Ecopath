@@ -44,26 +44,33 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsColorRamps))
             Me.m_tlpGradients = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbGradients = New ScientificInterfaceShared.Controls.cFlickerFreeListBox()
-            Me.m_hdrSelected = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_hdrGradients = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnAdd = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDuplicate = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDelete = New System.Windows.Forms.ToolStripButton()
             Me.m_editor = New ScientificInterfaceShared.Controls.ucEditGradient()
+            Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plDefaults = New System.Windows.Forms.Panel()
+            Me.m_btnSetFleetDefault = New System.Windows.Forms.Button()
+            Me.m_btnSetEwEDefault = New System.Windows.Forms.Button()
+            Me.m_plPreviewFleet = New System.Windows.Forms.Panel()
+            Me.m_lblFleetDefault = New System.Windows.Forms.Label()
+            Me.m_plPreviewEwE = New System.Windows.Forms.Panel()
+            Me.m_lblEwEDefault = New System.Windows.Forms.Label()
+            Me.m_hdrTitle = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpGradients.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             Me.m_ts.SuspendLayout()
+            Me.m_tlpContent.SuspendLayout()
+            Me.m_plDefaults.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tlpGradients
             '
             resources.ApplyResources(Me.m_tlpGradients, "m_tlpGradients")
-            Me.m_tlpGradients.Controls.Add(Me.m_lbGradients, 0, 1)
-            Me.m_tlpGradients.Controls.Add(Me.m_hdrSelected, 1, 0)
-            Me.m_tlpGradients.Controls.Add(Me.m_hdrGradients, 0, 0)
-            Me.m_tlpGradients.Controls.Add(Me.m_tlpDetails, 1, 1)
+            Me.m_tlpGradients.Controls.Add(Me.m_lbGradients, 0, 0)
+            Me.m_tlpGradients.Controls.Add(Me.m_tlpDetails, 1, 0)
             Me.m_tlpGradients.Name = "m_tlpGradients"
             '
             'm_lbGradients
@@ -72,22 +79,6 @@ Namespace Other
             Me.m_lbGradients.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGradients.FormattingEnabled = True
             Me.m_lbGradients.Name = "m_lbGradients"
-            '
-            'm_hdrSelected
-            '
-            Me.m_hdrSelected.CanCollapseParent = False
-            Me.m_hdrSelected.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrSelected, "m_hdrSelected")
-            Me.m_hdrSelected.IsCollapsed = False
-            Me.m_hdrSelected.Name = "m_hdrSelected"
-            '
-            'm_hdrGradients
-            '
-            Me.m_hdrGradients.CanCollapseParent = False
-            Me.m_hdrGradients.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrGradients, "m_hdrGradients")
-            Me.m_hdrGradients.IsCollapsed = False
-            Me.m_hdrGradients.Name = "m_hdrGradients"
             '
             'm_tlpDetails
             '
@@ -128,17 +119,81 @@ Namespace Other
             Me.m_editor.ColorRamp = Nothing
             Me.m_editor.Name = "m_editor"
             '
+            'm_tlpContent
+            '
+            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+            Me.m_tlpContent.Controls.Add(Me.m_plDefaults, 0, 2)
+            Me.m_tlpContent.Controls.Add(Me.m_tlpGradients, 0, 1)
+            Me.m_tlpContent.Controls.Add(Me.m_hdrTitle, 0, 0)
+            Me.m_tlpContent.Name = "m_tlpContent"
+            '
+            'm_plDefaults
+            '
+            Me.m_plDefaults.Controls.Add(Me.m_btnSetFleetDefault)
+            Me.m_plDefaults.Controls.Add(Me.m_btnSetEwEDefault)
+            Me.m_plDefaults.Controls.Add(Me.m_plPreviewFleet)
+            Me.m_plDefaults.Controls.Add(Me.m_lblFleetDefault)
+            Me.m_plDefaults.Controls.Add(Me.m_plPreviewEwE)
+            Me.m_plDefaults.Controls.Add(Me.m_lblEwEDefault)
+            resources.ApplyResources(Me.m_plDefaults, "m_plDefaults")
+            Me.m_plDefaults.Name = "m_plDefaults"
+            '
+            'm_btnSetFleetDefault
+            '
+            resources.ApplyResources(Me.m_btnSetFleetDefault, "m_btnSetFleetDefault")
+            Me.m_btnSetFleetDefault.Name = "m_btnSetFleetDefault"
+            Me.m_btnSetFleetDefault.UseVisualStyleBackColor = True
+            '
+            'm_btnSetEwEDefault
+            '
+            resources.ApplyResources(Me.m_btnSetEwEDefault, "m_btnSetEwEDefault")
+            Me.m_btnSetEwEDefault.Name = "m_btnSetEwEDefault"
+            Me.m_btnSetEwEDefault.UseVisualStyleBackColor = True
+            '
+            'm_plPreviewFleet
+            '
+            resources.ApplyResources(Me.m_plPreviewFleet, "m_plPreviewFleet")
+            Me.m_plPreviewFleet.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_plPreviewFleet.Name = "m_plPreviewFleet"
+            '
+            'm_lblFleetDefault
+            '
+            resources.ApplyResources(Me.m_lblFleetDefault, "m_lblFleetDefault")
+            Me.m_lblFleetDefault.Name = "m_lblFleetDefault"
+            '
+            'm_plPreviewEwE
+            '
+            resources.ApplyResources(Me.m_plPreviewEwE, "m_plPreviewEwE")
+            Me.m_plPreviewEwE.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_plPreviewEwE.Name = "m_plPreviewEwE"
+            '
+            'm_lblEwEDefault
+            '
+            resources.ApplyResources(Me.m_lblEwEDefault, "m_lblEwEDefault")
+            Me.m_lblEwEDefault.Name = "m_lblEwEDefault"
+            '
+            'm_hdrTitle
+            '
+            Me.m_hdrTitle.CanCollapseParent = False
+            Me.m_hdrTitle.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrTitle, "m_hdrTitle")
+            Me.m_hdrTitle.IsCollapsed = False
+            Me.m_hdrTitle.Name = "m_hdrTitle"
+            '
             'ucOptionsColorRamps
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.Controls.Add(Me.m_tlpGradients)
+            Me.Controls.Add(Me.m_tlpContent)
             Me.Name = "ucOptionsColorRamps"
             Me.m_tlpGradients.ResumeLayout(False)
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
+            Me.m_tlpContent.ResumeLayout(False)
+            Me.m_plDefaults.ResumeLayout(False)
+            Me.m_plDefaults.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -149,9 +204,16 @@ Namespace Other
         Private WithEvents m_tsbnDuplicate As ToolStripButton
         Private WithEvents m_tsbnDelete As ToolStripButton
         Private WithEvents m_editor As ucEditGradient
-        Private WithEvents m_hdrSelected As cEwEHeaderLabel
-        Private WithEvents m_hdrGradients As cEwEHeaderLabel
         Private WithEvents m_tlpDetails As TableLayoutPanel
+        Private WithEvents m_tlpContent As TableLayoutPanel
+        Private WithEvents m_plDefaults As Panel
+        Private WithEvents m_btnSetFleetDefault As Button
+        Private WithEvents m_btnSetEwEDefault As Button
+        Private WithEvents m_lblFleetDefault As Label
+        Private WithEvents m_lblEwEDefault As Label
+        Private WithEvents m_plPreviewFleet As Panel
+        Private WithEvents m_plPreviewEwE As Panel
+        Private WithEvents m_hdrTitle As cEwEHeaderLabel
     End Class
 End Namespace
 

@@ -269,7 +269,7 @@ Namespace Other
                     Dim strPrompt As String = My.Resources.PROMPT_CACHE_CLEAR
 
                     If (lSizeUnused > 0) Then
-                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(strPrompt, sg.FormatBytes(lSizeBefore), sg.FormatBytes(lSizeUnused)),
+                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(strPrompt, sg.FormatMemory(lSizeBefore), sg.FormatMemory(lSizeUnused)),
                                                          eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                         core.Messages.SendMessage(fmsg)
 
@@ -285,7 +285,7 @@ Namespace Other
                         cache.Clear()
                     End If
 
-                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_CACHECLEARED, sg.FormatBytes(lSizeBefore - cache.GetSize())),
+                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_CACHECLEARED, sg.FormatMemory(lSizeBefore - cache.GetSize())),
                          eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
                     core.Messages.SendMessage(msg)
 
@@ -471,8 +471,8 @@ Namespace Other
 
             Me.m_lblCacheLocationValue.Text = cStringUtils.CompactString(cache.RootFolder, Me.m_lblCacheLocationValue.ClientSize.Width, Me.Font)
             Me.m_lblCacheSizeValue.Text = cStringUtils.Localize(My.Resources.GENERIC_VALUE_CACHEMEMORY,
-                                                        sg.FormatBytes(cache.GetSize()),
-                                                        sg.FormatBytes(cache.GetUnusedSize(man)))
+                                                        sg.FormatMemory(cache.GetSize()),
+                                                        sg.FormatMemory(cache.GetUnusedSize(man)))
 
             Me.m_btnViewCache.Enabled = Directory.Exists(cache.RootFolder)
             Me.m_btnClearCache.Enabled = (cache.GetSize() > 0)
