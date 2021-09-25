@@ -51,9 +51,13 @@ Public Class cLicense
     End Function
 
     Public Function IsLicensed() As Boolean
-        If (Me.Treek.OnlineRevocationCheck()) Then
-            Me.Treek.AsyncSilentReactivation()
-        End If
+        Try
+            If (Me.Treek.OnlineRevocationCheck()) Then
+                Me.Treek.AsyncSilentReactivation()
+            End If
+        Catch ex As Exception
+            Return False
+        End Try
         Return Me.Treek.IsLicenseValid()
     End Function
 
