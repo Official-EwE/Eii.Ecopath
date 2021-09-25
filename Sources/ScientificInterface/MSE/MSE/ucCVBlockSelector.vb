@@ -103,7 +103,7 @@ Public Class ucCVBlockSelector
     Public ReadOnly Property BlockColors() As System.Drawing.Color() _
         Implements IBlockSelector.BlockColors
         Get
-            Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.NumBlocks + 2) ' +2 to spread the max colours a bit better
+            Dim lcolors As List(Of Color) = Me.m_uic.StyleGuide.DefaultColors(Me.NumBlocks + 2) ' +2 to spread the max colours a bit better
             Return lcolors.ToArray
         End Get
     End Property

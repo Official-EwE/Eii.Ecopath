@@ -637,7 +637,7 @@
     <value>Catch upper</value>
   </data>
   <data name="HEADER_COLOR" xml:space="preserve">
-    <value>Colour</value>
+    <value>Color</value>
   </data>
   <data name="HEADER_CONCENTRATION" xml:space="preserve">
     <value>Concentration (cumulative)</value>
@@ -2468,7 +2468,7 @@
     <value>Switching power</value>
   </data>
   <data name="GENERIC_COLOUR_USAGE" xml:space="preserve">
-    <value>Colour usage</value>
+    <value>Color usage</value>
   </data>
   <data name="GENERIC_SHOW_NUMTL" xml:space="preserve">
     <value>Number of trophic levels</value>
@@ -3100,7 +3100,7 @@
     <value>..\Resources\ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="COLORRAMP_EWE" xml:space="preserve">
-    <value>Standard EwE colour scheme</value>
+    <value>Standard EwE color scheme</value>
   </data>
   <data name="COLORRAMP_VIRIDIS" xml:space="preserve">
     <value>Viridis color blind {0}</value>
@@ -3156,5 +3156,8 @@
   </data>
   <data name="DEFAULT_COLORRAMP" xml:space="preserve">
     <value>Color ramp</value>
+  </data>
+  <data name="COLORRAMP_FLEETS" xml:space="preserve">
+    <value>Standard fleet color scheme</value>
   </data>
 </root>

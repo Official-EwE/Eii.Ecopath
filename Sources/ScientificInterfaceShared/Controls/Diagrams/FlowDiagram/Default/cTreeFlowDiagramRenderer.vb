@@ -194,7 +194,6 @@ Namespace Controls
 
         Private m_data As IFlowDiagramData = Nothing
 
-        Private m_colorramp As New cEwEColorRamp()
         Private m_iNumTrophicLevels As Integer = 6
         Private m_bShowTrophicLevels As Boolean = True
         Private m_sAngle() As Single            '' To store where the angle is relative to 0
@@ -242,8 +241,6 @@ Namespace Controls
 
             Me.m_node = New cFlowDiagramNode()
             Me.m_connectors = New cFlowDiagramConnector()
-            ' Elminate near-white colours
-            Me.m_colorramp.ColorOffsetStart = 0.2!
 
             cTreeFlowDiagramRenderer.g_fmt.Alignment = StringAlignment.Center
             Me.InitNodePositions()
@@ -262,6 +259,12 @@ Namespace Controls
         End Property
 
 #Region " Drawing "
+
+        Friend ReadOnly Property ColorRamp As cColorRamp
+            Get
+                Return Me.UIContext.StyleGuide.DefaultColorRamp
+            End Get
+        End Property
 
         Friend Sub DrawBackground(g As Graphics, rc As Rectangle) _
             Implements IFlowDiagramRenderer.DrawBackground
@@ -334,9 +337,9 @@ Namespace Controls
                         Case eFDColorUsageTypes.EwE
                             clrFill = Me.m_data.ItemColor(iNode)
                         Case eFDColorUsageTypes.Value
-                            clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
+                            clrFill = Me.ColorRamp.GetColor(sValue, sValueMax)
                         Case eFDColorUsageTypes.TrophicLevel
-                            clrFill = Me.m_colorramp.GetColor(Me.m_data.TrophicLevel(iNode) - 1, Me.m_iNumTrophicLevels - 1)
+                            clrFill = Me.ColorRamp.GetColor(Me.m_data.TrophicLevel(iNode) - 1, Me.m_iNumTrophicLevels - 1)
                         Case Else
                             clrFill = Me.m_clrNode
                     End Select
@@ -384,7 +387,7 @@ Namespace Controls
                 Case IFlowDiagramRenderer.eFDHighlightType.None
                     Select Case Me.m_colorusagetype
                         Case eFDColorUsageTypes.Flow
-                            clrLine = Me.m_colorramp.GetColor(sDiet, sDietMax)
+                            clrLine = Me.ColorRamp.GetColor(sDiet, sDietMax)
                         Case Else
                             ' Normal
                     End Select

@@ -731,11 +731,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Standard EwE colour scheme.
+        '''  Looks up a localized string similar to Standard EwE color scheme.
         '''</summary>
         Public ReadOnly Property COLORRAMP_EWE() As String
             Get
                 Return ResourceManager.GetString("COLORRAMP_EWE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Standard fleet color scheme.
+        '''</summary>
+        Public ReadOnly Property COLORRAMP_FLEETS() As String
+            Get
+                Return ResourceManager.GetString("COLORRAMP_FLEETS", resourceCulture)
             End Get
         End Property
         
@@ -2255,7 +2264,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Colour usage.
+        '''  Looks up a localized string similar to Color usage.
         '''</summary>
         Public ReadOnly Property GENERIC_COLOUR_USAGE() As String
             Get
@@ -4211,7 +4220,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Colour.
+        '''  Looks up a localized string similar to Color.
         '''</summary>
         Public ReadOnly Property HEADER_COLOR() As String
             Get

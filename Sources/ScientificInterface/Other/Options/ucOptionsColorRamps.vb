@@ -41,6 +41,13 @@ Namespace Other
         Implements IOptionsPage
         Implements IUIElement
 
+#Region " Private variables "
+
+        Private m_rampEwEDefault As cColorRamp = Nothing
+        Private m_rampFleetDefault As cColorRamp = Nothing
+
+#End Region ' Private variables
+
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
@@ -94,6 +101,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            Me.m_hdrTitle.Text = My.Resources.OPTIONS_PAGE_GRADIENTS
             Me.InitUI(False)
         End Sub
 
@@ -133,6 +141,9 @@ Namespace Other
                     sg.AddCustomColorRamp(ramp)
                 End If
             Next
+
+            sg.DefaultColorRamp = Me.m_rampEwEDefault
+            sg.FleetColorRamp = Me.m_rampFleetDefault
 
             sg.ResumeEvents()
             Return IOptionsPage.eApplyResultType.Success
@@ -221,13 +232,43 @@ Namespace Other
 #Region " Internals "
 
         Private Sub InitUI(bDefault As Boolean)
+
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Me.m_lbGradients.Items.Clear()
+
             If bDefault Then
-                Me.m_lbGradients.Items.AddRange(Me.UIContext.StyleGuide.DefaultColorRamps)
+                Me.m_lbGradients.Items.AddRange(sg.DefaultColorRamps)
+                Me.m_rampEwEDefault = sg.DefaultColorRamps(0)
+                Me.m_rampFleetDefault = sg.DefaultColorRamps(1)
             Else
-                Me.m_lbGradients.Items.AddRange(Me.UIContext.StyleGuide.ColorRamps)
+                Me.m_lbGradients.Items.AddRange(sg.ColorRamps)
+                Me.m_rampEwEDefault = sg.DefaultColorRamp
+                Me.m_rampFleetDefault = sg.FleetColorRamp
             End If
             Me.m_lbGradients.SelectedIndex = 0
+            Me.m_plPreviewEwE.Invalidate()
+            Me.m_plPreviewFleet.Invalidate()
+
+        End Sub
+
+        Private Sub OnSetDefaultEwERamp(sender As Object, e As EventArgs) Handles m_btnSetEwEDefault.Click
+            Dim item As cColorRamp = DirectCast(Me.m_lbGradients.SelectedItem, cColorRamp)
+            If (item IsNot Nothing) Then Me.m_rampEwEDefault = item
+            Me.m_plPreviewEwE.Invalidate()
+        End Sub
+
+        Private Sub OnSetDefaultFleetRamp(sender As Object, e As EventArgs) Handles m_btnSetFleetDefault.Click
+            Dim item As cColorRamp = DirectCast(Me.m_lbGradients.SelectedItem, cColorRamp)
+            If (item IsNot Nothing) Then Me.m_rampFleetDefault = item
+            Me.m_plPreviewFleet.Invalidate()
+        End Sub
+
+        Private Sub m_plPreviewEwE_Paint(sender As Object, e As PaintEventArgs) Handles m_plPreviewEwE.Paint
+            cColorRampIndicator.DrawColorRamp(e.Graphics, Me.m_rampEwEDefault, e.ClipRectangle)
+        End Sub
+
+        Private Sub m_plPreviewFleet_Paint(sender As Object, e As PaintEventArgs) Handles m_plPreviewFleet.Paint
+            cColorRampIndicator.DrawColorRamp(e.Graphics, Me.m_rampFleetDefault, e.ClipRectangle)
         End Sub
 
 #End Region ' Internals

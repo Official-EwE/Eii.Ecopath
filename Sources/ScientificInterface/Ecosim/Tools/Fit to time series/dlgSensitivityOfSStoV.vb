@@ -322,11 +322,11 @@ Public Class dlgSensitivityOfSStoV
 
         Me.m_bInUpdate = True
 
-        Dim lColors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
+        Dim lColors As List(Of Color) = Me.m_uic.StyleGuide.DefaultColors(Me.m_iNumBlocks)
         lColors.Insert(0, Color.Black)
         Me.m_legend.Colors = lColors
 
-        lColors = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
+        lColors = Me.m_uic.StyleGuide.DefaultColors(Me.m_iNumBlocks)
         lColors.Reverse()
         lColors.Insert(0, Color.Black)
         Me.m_ucVulBlocks.BlockColors = lColors.ToArray

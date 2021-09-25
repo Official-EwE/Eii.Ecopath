@@ -31,15 +31,16 @@ Namespace Style
     Public NotInheritable Class cEwEColorRamp
         Inherits cColorRamp
 
-        Public Sub New(Optional startoffset As Single = 0, Optional endoffset As Single = 1.0)
+        Public Sub New(name As String, Optional startoffset As Single = 0, Optional endoffset As Single = 1.0)
             MyBase.New(0, True)
             Me.ColorOffsetStart = startoffset
             Me.ColorOffsetEnd = endoffset
+            MyBase.Name = name
         End Sub
 
         Public Overrides Property Name As String
             Get
-                Return My.Resources.COLORRAMP_EWE
+                Return MyBase.Name
             End Get
             Set(value As String)
                 ' NOP

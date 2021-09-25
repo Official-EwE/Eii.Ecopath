@@ -103,7 +103,7 @@ Public Class frmMain
         Me.m_pbStatus.BackgroundImage = ScientificInterfaceShared.My.Resources.Warning
 
         Me.m_legend.UIContext = Me.UIContext
-        Me.m_legend.Colors = Me.StyleGuide.GetEwE5ColorRamp(50)
+        Me.m_legend.Colors = Me.StyleGuide.DefaultColors(50)
 
         Try
             Me.m_grid.Attach(Me.m_settings)

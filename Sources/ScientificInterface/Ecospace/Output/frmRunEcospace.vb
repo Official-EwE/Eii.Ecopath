@@ -302,6 +302,9 @@ Namespace Ecospace
 
         Private Sub UpdateStyleColors()
             Me.m_pbMap.BackColor = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            Me.m_legend.Colors = Me.StyleGuide.DefaultColors(cColourBins)
+            Me.Invalidate()
+
         End Sub
 
 #End Region ' Initialization and Updating
@@ -314,7 +317,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_legend.UIContext = Me.UIContext
-            Me.m_legend.Colors = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
+            Me.m_legend.Colors = Me.StyleGuide.DefaultColors(cColourBins)
 
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
@@ -822,7 +825,7 @@ Namespace Ecospace
                                        iFleet As Integer, rcPos As Rectangle, g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
-            Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
+            Dim lColors As List(Of Color) = sg.DefaultColors(cColourBins)
             Dim cScaler As Single = cColourBins / 2 'Me.m_sMaxEffort
             Dim brCell As Brush = Nothing
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
@@ -2000,11 +2003,11 @@ Namespace Ecospace
                     End If
                 Next
 
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName),
                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = strDir
             Catch ex As Exception
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 

@@ -179,10 +179,6 @@ Namespace Style
         Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
         ''' <summary>Shape colour scheme.</summary>
         Private m_dtShapeColors As New Dictionary(Of eDataTypes, Color)
-        ''' <summary>Start offset for colour ramp.</summary>
-        Private Const c_sRampOffsetStart As Single = 0.15!
-        ''' <summary>End offset for colour ramp.</summary>
-        Private Const c_sRampOffsetEnd As Single = 1.0!
 
         ' -- graphs --
         ''' <summary></summary>
@@ -253,6 +249,7 @@ Namespace Style
             Me.m_mode = mode
 
             Me.DefaultColorRamp = SystemColorRamps(0)
+            Me.FleetColorRamp = SystemColorRamps(1)
 
             ' Load up
             Me.ResetApplicationColors()
@@ -662,25 +659,19 @@ Namespace Style
 
         End Function
 
-        ''' <summary>
-        ''' Format a number of bytes
-        ''' </summary>
-        ''' <param name="size">number of bytes to format.</param>
-        ''' <returns></returns>
-        Public Function FormatBytes(size As Long) As String
+        Public Function FormatMemory(size As Long) As String
 
-            ' http://highscalability.com/blog/2012/9/11/how-big-is-a-petabyte-exabyte-zettabyte-or-a-yottabyte.html
-            Dim astrUnits As String() = New String() {My.Resources.UNIT_BYTE, My.Resources.UNIT_KILOBYTE, My.Resources.UNIT_MEGABYTE, My.Resources.UNIT_TERABYTE, "PB", "EB", "ZB", "YB", "XB", "SB", "DB", "Stupidly much"}
+            Dim astrUnits As String() = New String() {My.Resources.UNIT_BYTE, My.Resources.UNIT_KILOBYTE, My.Resources.UNIT_MEGABYTE, My.Resources.UNIT_TERABYTE}
             Dim i As Integer = 0
             Dim dTest As Double = 1024
-            Dim dValue As Double = CDbl(size)
+            Dim dValue As Double = size
 
             While (dValue > dTest) And (i < astrUnits.Length - 1)
                 dValue /= 1024
                 i += 1
             End While
 
-            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(dValue), astrUnits(i))
+            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, Me.FormatNumber(CInt(size)), astrUnits(i))
 
         End Function
 
@@ -1278,10 +1269,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function FleetColorDefault(iFleet As Integer,
                                            nFleets As Integer) As Color
-            Dim ramp As cColorRamp = Me.FleetColorRamp
-            If (ramp Is Nothing) Then ramp = SystemColorRamps(1)
             If (iFleet = 0) Then Return Color.Gray
-            Return ramp.GetColor(iFleet, nFleets)
+            Return Me.FleetColorRamp.GetColor(iFleet, nFleets)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1688,7 +1677,7 @@ Namespace Style
         ''' scheme.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function GetEwE5ColorRamp(iNumLevels As Integer) As List(Of Color)
+        Public Function DefaultColors(iNumLevels As Integer) As List(Of Color)
             Dim lColors As New List(Of Color)
             For i As Integer = 0 To iNumLevels
                 Dim clr As Color = Me.DefaultColorRamp.GetColor(i, iNumLevels)
@@ -2284,8 +2273,8 @@ Namespace Style
         Private DefaultHatchPatterns As HatchStyle() = CType([Enum].GetValues(GetType(HatchStyle)), HatchStyle())
 
         Public Shared SystemColorRamps As cColorRamp() = {
-            New cEwEColorRamp(c_sRampOffsetStart, c_sRampOffsetEnd),
-            New cARGBColorRamp("Fleets", New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#}),
+            New cEwEColorRamp(My.Resources.COLORRAMP_EWE, 0.15!, 1.0!),
+            New cARGBColorRamp(My.Resources.COLORRAMP_FLEETS, New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#}, 1),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.A),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.B),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.C),
@@ -2381,7 +2370,7 @@ Namespace Style
         Private Sub GetColors(avs() As cVisualStyle)
 
             Dim vs As cVisualStyle = Nothing
-            Dim clrramp As New cEwEColorRamp()
+            Dim clrramp As cColorRamp = Me.DefaultColorRamp
 
             ' Loop through number of requested visual styles
             For i As Integer = 0 To avs.Length - 1
