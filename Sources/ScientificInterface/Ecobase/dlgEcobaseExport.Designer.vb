@@ -340,7 +340,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_cmbCountry, "m_cmbCountry")
         Me.m_cmbCountry.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.m_cmbCountry.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.m_cmbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbCountry.FormattingEnabled = True
         Me.m_cmbCountry.Name = "m_cmbCountry"
         Me.m_cmbCountry.Sorted = True
@@ -375,7 +374,6 @@ Partial Class dlgEcobaseExport
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackgroundImage = ScientificInterfaceShared.My.Resources.Resources.EcoBase1
         resources.ApplyResources(Me.PictureBox1, "PictureBox1")
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.TabStop = False
