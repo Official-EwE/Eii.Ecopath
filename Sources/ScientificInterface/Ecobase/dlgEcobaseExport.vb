@@ -459,22 +459,22 @@ Public Class dlgEcobaseExport
         Dim model As cEwEModel = core.EwEModel
         Dim bSucces As Boolean = True
 
-        Dim bChange As Boolean = (String.Compare(strName, model.Name) <> 0) Or _
-                                 (String.Compare(strAuthor, model.Author) <> 0) Or _
-                                 (String.Compare(strContact, model.Contact) <> 0) Or _
-                                 (String.Compare(strDescr, model.Description) <> 0) Or _
-                                 (String.Compare(strDOI, model.PublicationDOI) <> 0) Or _
-                                 (String.Compare(strURI, model.PublicationURI) <> 0) Or _
-                                 (String.Compare(strRef, model.PublicationReference) <> 0) Or _
-                                 (String.Compare(strCountry, model.Country) <> 0) Or _
-                                 (String.Compare(strEcoType, model.EcosystemType) <> 0) Or _
-                                 (model.Area <> sArea) Or _
-                                 (model.FirstYear <> iYear) Or _
+        Dim bChange As Boolean = (String.Compare(strName, model.Name) <> 0) Or
+                                 (String.Compare(strAuthor, model.Author) <> 0) Or
+                                 (String.Compare(strContact, model.Contact) <> 0) Or
+                                 (String.Compare(strDescr, model.Description) <> 0) Or
+                                 (String.Compare(strDOI, model.PublicationDOI) <> 0) Or
+                                 (String.Compare(strURI, model.PublicationURI) <> 0) Or
+                                 (String.Compare(strRef, model.PublicationReference) <> 0) Or
+                                 (String.Compare(strCountry, model.Country) <> 0) Or
+                                 (String.Compare(strEcoType, model.EcosystemType) <> 0) Or
+                                 (model.Area <> sArea) Or
+                                 (model.FirstYear <> iYear) Or
                                  (model.NumYears <> iYears)
 
-        bChange = bChange Or (model.North <> sNorth) Or _
-                             (model.East <> sEast) Or _
-                             (model.West <> sWest) Or _
+        bChange = bChange Or (model.North <> sNorth) Or
+                             (model.East <> sEast) Or
+                             (model.West <> sWest) Or
                              (model.South <> sSouth)
 
         If bChange Then
@@ -633,11 +633,11 @@ Public Class dlgEcobaseExport
 
         Catch ex As WebException
             bSucces = False
-            msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, _
+            msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION,
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
         Catch ex As Exception
             bSucces = False
-            msg = New cMessage(cStringUtils.Localize(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message), _
+            msg = New cMessage(cStringUtils.Localize(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message),
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
         End Try
 
@@ -656,6 +656,10 @@ Public Class dlgEcobaseExport
             cmb.Items.Add(str)
         Next
 
+        If cmb.DropDownStyle = ComboBoxStyle.DropDown Then
+            cmb.AutoCompleteSource = AutoCompleteSource.ListItems
+            cmb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+        End If
     End Sub
 
     Private Sub FillModelCombo()
@@ -688,7 +692,7 @@ Public Class dlgEcobaseExport
         Catch exWeb As Net.WebException
             msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         Catch ex As Exception
-            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message), _
+            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message),
                                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         End Try
 
@@ -698,7 +702,7 @@ Public Class dlgEcobaseExport
 
     End Sub
 
-    Private Sub OnGetModelsCompleted(sender As Object, _
+    Private Sub OnGetModelsCompleted(sender As Object,
                                      e As System.ComponentModel.RunWorkerCompletedEventArgs) _
         Handles m_wrkGetModels.RunWorkerCompleted
 
@@ -743,11 +747,4 @@ Public Class dlgEcobaseExport
 
 #End Region
 
-    Private Sub dlgEcobaseExport_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    Private Sub m_rtfAuthorAgreement_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_rtfAuthorAgreement.TextChanged
-
-    End Sub
 End Class
