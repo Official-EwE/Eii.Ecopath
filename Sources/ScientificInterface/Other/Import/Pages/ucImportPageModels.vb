@@ -263,7 +263,9 @@ Namespace Import
                 Me.m_cmbDatabaseFormat.Items.Add(New cDatabaseTypeItem(eDataSourceTypes.Access2003))
             End If
 
-            Me.m_cmbDatabaseFormat.SelectedIndex = 0
+            If (Me.m_cmbDatabaseFormat.Items.Count > 0) Then
+                Me.m_cmbDatabaseFormat.SelectedIndex = 0
+            End If
 
         End Sub
 

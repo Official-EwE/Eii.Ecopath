@@ -772,7 +772,9 @@
     <Compile Include="Settings\cSettingsParser.vb" />
     <Compile Include="Settings\IXMLDocSettings.vb" />
     <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
+    <Compile Include="Style\ColorRamps\cBinaryColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cColorRamp.vb" />
+    <Compile Include="Style\ColorRamps\ColorRampIO\cColorRampActIO.vb" />
     <Compile Include="Style\ColorRamps\cViridisColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cEwEColorRamp.vb" />
     <Compile Include="Style\cStyleGuide.vb" />

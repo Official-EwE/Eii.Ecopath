@@ -263,7 +263,7 @@ Namespace Controls
         Private ReadOnly Property IsEditable As Boolean
             Get
                 If (Me.m_ramp Is Nothing) Then Return False
-                Return (Not Me.m_ramp.IsSystemRamp)
+                Return (Me.m_ramp.IsEditable)
             End Get
         End Property
 
@@ -299,7 +299,7 @@ Namespace Controls
             Dim bIsEditableGradient As Boolean = Me.IsEditable
             Dim iNumKnobs As Integer = Me.m_slGradient.NumKnobs
 
-            Me.m_tbxName.Enabled = Me.IsEditable
+            Me.m_tbxName.Enabled = bIsEditableGradient
 
             Me.m_slRed.Enabled = bIsEditableGradient
             Me.m_nudRed.Enabled = bIsEditableGradient

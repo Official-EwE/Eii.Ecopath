@@ -1078,6 +1078,18 @@ Partial Friend NotInheritable Class Settings
             Me("ColorRampsCustom") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property ColorRampsBinary() As String
+        Get
+            Return CType(Me("ColorRampsBinary"),String)
+        End Get
+        Set
+            Me("ColorRampsBinary") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

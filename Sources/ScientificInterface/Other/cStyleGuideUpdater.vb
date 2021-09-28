@@ -77,7 +77,7 @@ Friend Class cStyleGuideUpdater
         End If
     End Sub
 
-#Region " Private vars "
+#Region " Internals "
 
     Private Sub OnCoreStateEvent(csm As cCoreStateMonitor)
         If Me.m_bIsEcopathLoaded <> csm.HasEcopathLoaded Then
@@ -260,9 +260,15 @@ Friend Class cStyleGuideUpdater
 
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName) = My.Settings.CountryNames
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType) = My.Settings.EcosystemTypes
+
+            ' -- Color ramps --
             .ClearCustomColorRamps()
             For Each ramp As cARGBColorRamp In Me.StringToARGBColorRamps(My.Settings.ColorRampsCustom)
                 .AddCustomColorRamp(ramp)
+            Next
+            .ClearImportedColorRamps()
+            For Each ramp As cBinaryColorRamp In Me.StringToBinaryColorRamps(My.Settings.ColorRampsBinary)
+                .AddImportedColorRamp(ramp)
             Next
 
         End With
@@ -326,6 +332,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.OutputDPI = .PreferredDPI
 
             My.Settings.ColorRampsCustom = Me.ARGBColorRampsToString(.CustomARGBColorRamps)
+            My.Settings.ColorRampsBinary = Me.BinaryColorRampsToString(.ImportedColorRamps)
 
         End With
 
@@ -372,6 +379,8 @@ Friend Class cStyleGuideUpdater
         Return sb.ToString()
 
     End Function
+
+#Region " ARGB color ramps "
 
     Private Function StringToARGBColorRamps(strSetting As String) As cARGBColorRamp()
 
@@ -430,7 +439,71 @@ Friend Class cStyleGuideUpdater
         Return sb.ToString()
     End Function
 
-#End Region
+#End Region ' ARGB color ramps
+
+#Region " Binary color ramps "
+
+    Private Function StringToBinaryColorRamps(strSetting As String) As cBinaryColorRamp()
+
+        Dim ramps As New List(Of cBinaryColorRamp)
+
+        If Not String.IsNullOrWhiteSpace(strSetting) Then
+            Dim items() As String = strSetting.Split(New String() {";"c}, StringSplitOptions.RemoveEmptyEntries)
+            For i As Integer = 0 To items.Count - 1
+                Dim item As cBinaryColorRamp = Me.StringToBinaryColorRamp(items(i))
+                If (item IsNot Nothing) Then ramps.Add(item)
+            Next
+        End If
+        Return ramps.ToArray()
+
+    End Function
+
+    Private Function StringToBinaryColorRamp(item As String) As cBinaryColorRamp
+        Try
+            Dim colors As New List(Of Color)
+            Dim bits As String() = cStringUtils.SplitQualified(item, ","c)
+            For i As Integer = 2 To bits.Length - 1
+                Dim iBase As Integer = Convert.ToInt32(bits(i), 16)
+                Dim iColor As Integer = iBase Or 255 << 24
+                Dim color As Color = Color.FromArgb(iColor)
+                colors.Add(color)
+            Next
+            Return New cBinaryColorRamp(CInt(bits(1)), bits(0), colors.ToArray())
+        Catch ex As Exception
+            ' Ok, that didn't work - plow on
+        End Try
+        Return Nothing
+
+    End Function
+
+    Private Function BinaryColorRampsToString(ramps As cBinaryColorRamp()) As String
+
+        Dim sb As New StringBuilder()
+        If (ramps IsNot Nothing) Then
+            For i As Integer = 0 To ramps.Count - 1
+                If (i > 0) Then sb.Append(";")
+                sb.Append(BinaryColorRampToString(ramps(i)))
+            Next
+        End If
+        Return sb.ToString()
+
+    End Function
+
+    Private Function BinaryColorRampToString(ramp As cBinaryColorRamp) As String
+        Dim sb As New StringBuilder()
+        sb.Append("""" & ramp.Name.Replace("""", "") & """")
+        sb.Append("," & ramp.ID)
+        For j As Integer = 0 To ramp.Colors.Count - 1
+            Dim clr As Color = ramp.Colors(j)
+            sb.Append(",")
+            sb.Append(cStringUtils.ToHexString(New Byte() {clr.R, clr.G, clr.B}))
+        Next
+        Return sb.ToString()
+    End Function
+
+#End Region ' Binary color ramps
+
+#End Region ' Internals
 
 End Class
 

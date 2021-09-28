@@ -23,6 +23,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
@@ -75,17 +76,24 @@ Namespace Other
             Dim item As cColorRamp = DirectCast(Me.m_lbGradients.SelectedItem, cColorRamp)
 
             Dim bIsEditable As Boolean = False
+            Dim bIsSystem As Boolean = True
 
             If (item IsNot Nothing) Then
-                bIsEditable = (TypeOf item Is cARGBColorRamp) And (Not item.IsSystemRamp)
+                bIsSystem = item.IsSystemRamp
+                bIsEditable = item.IsEditable
             End If
 
             Me.m_bInUpdate = True
 
             Me.m_tsbnAdd.Enabled = True
-            Me.m_tsbnDelete.Enabled = bIsEditable
             Me.m_tsbnDuplicate.Enabled = bIsEditable
+            Me.m_tsbnDelete.Enabled = Not bIsSystem
 
+#If DEBUG Then
+            Me.m_tsbnImport.Enabled = True
+#Else
+            Me.m_tsbnImport.Enabled = false
+#End If
             Me.m_bInUpdate = False
 
         End Sub
@@ -133,12 +141,17 @@ Namespace Other
             ' Apply colors to the style guide
             sg.SuspendEvents()
             sg.ClearCustomColorRamps()
+            sg.ClearImportedColorRamps()
 
             For i As Integer = 0 To Me.m_lbGradients.Items.Count - 1
                 Dim item As cColorRamp = DirectCast(Me.m_lbGradients.Items(i), cColorRamp)
                 If (TypeOf item Is cARGBColorRamp) Then
                     Dim ramp As cARGBColorRamp = DirectCast(item, cARGBColorRamp)
                     sg.AddCustomColorRamp(ramp)
+                End If
+                If (TypeOf item Is cBinaryColorRamp) Then
+                    Dim ramp As cBinaryColorRamp = DirectCast(item, cBinaryColorRamp)
+                    sg.AddImportedColorRamp(ramp)
                 End If
             Next
 
@@ -263,12 +276,30 @@ Namespace Other
             Me.m_plPreviewFleet.Invalidate()
         End Sub
 
-        Private Sub m_plPreviewEwE_Paint(sender As Object, e As PaintEventArgs) Handles m_plPreviewEwE.Paint
+        Private Sub OnPaintEwEDefaultPreview(sender As Object, e As PaintEventArgs) Handles m_plPreviewEwE.Paint
             cColorRampIndicator.DrawColorRamp(e.Graphics, Me.m_rampEwEDefault, e.ClipRectangle)
         End Sub
 
-        Private Sub m_plPreviewFleet_Paint(sender As Object, e As PaintEventArgs) Handles m_plPreviewFleet.Paint
+        Private Sub OnPaintFleetDefaultPreview(sender As Object, e As PaintEventArgs) Handles m_plPreviewFleet.Paint
             cColorRampIndicator.DrawColorRamp(e.Graphics, Me.m_rampFleetDefault, e.ClipRectangle)
+        End Sub
+
+        Private Sub OnImportColorRamps(sender As Object, e As EventArgs) Handles m_tsbnImport.Click
+
+            ' Experimental feature
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select .act color table", "", "Adobe color table|*.act")
+            ofd.Multiselect = True
+
+            If ofd.ShowDialog() = DialogResult.OK Then
+                Dim imp As New cColorRampActIO()
+                For Each fn As String In ofd.FileNames
+                    Dim ramp As cBinaryColorRamp = imp.Read(fn)
+                    If (ramp IsNot Nothing) Then
+                        ' ToDO: prohibit duplicates
+                        Me.m_lbGradients.Items.Add(ramp)
+                    End If
+                Next
+            End If
         End Sub
 
 #End Region ' Internals
