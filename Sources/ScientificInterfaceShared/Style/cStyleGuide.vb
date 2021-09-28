@@ -1606,6 +1606,8 @@ Namespace Style
 
         ''' <summary>Customizable ARGB color ramps.</summary>
         Private m_customizableRamps As New List(Of cARGBColorRamp)
+        ''' <summary>Imported binary color ramps.</summary>
+        Private m_importedRamps As New List(Of cBinaryColorRamp)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1649,10 +1651,35 @@ Namespace Style
             End Get
         End Property
 
+        Public Sub ClearImportedColorRamps()
+            Me.m_importedRamps.Clear()
+            Me.ColorsChanged()
+        End Sub
+
+        Public ReadOnly Property ImportedColorRamps As cBinaryColorRamp()
+            Get
+                Return Me.m_importedRamps.ToArray()
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add an ARGB color ramp.
+        ''' </summary>
+        ''' <param name="ramp">The ramp to add.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function AddImportedColorRamp(ramp As cBinaryColorRamp) As Boolean
+            Me.m_importedRamps.Add(ramp)
+            Me.ColorsChanged()
+            Return True
+        End Function
+
         Public ReadOnly Property ColorRamps As cColorRamp()
             Get
                 Dim ramps As New List(Of cColorRamp)
                 ramps.AddRange(cStyleGuide.SystemColorRamps)
+                ramps.AddRange(Me.ImportedColorRamps)
                 ramps.AddRange(Me.CustomARGBColorRamps)
                 Return ramps.ToArray()
             End Get

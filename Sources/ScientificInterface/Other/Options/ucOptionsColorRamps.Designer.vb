@@ -49,6 +49,7 @@ Namespace Other
             Me.m_tsbnAdd = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDuplicate = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDelete = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
             Me.m_editor = New ScientificInterfaceShared.Controls.ucEditGradient()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDefaults = New System.Windows.Forms.Panel()
@@ -91,7 +92,7 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAdd, Me.m_tsbnDuplicate, Me.m_tsbnDelete})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAdd, Me.m_tsbnDuplicate, Me.m_tsbnDelete, Me.m_tsbnImport})
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
@@ -112,6 +113,12 @@ Namespace Other
             Me.m_tsbnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnDelete, "m_tsbnDelete")
             Me.m_tsbnDelete.Name = "m_tsbnDelete"
+            '
+            'm_tsbnImport
+            '
+            Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
+            Me.m_tsbnImport.Name = "m_tsbnImport"
             '
             'm_editor
             '
@@ -214,6 +221,7 @@ Namespace Other
         Private WithEvents m_plPreviewFleet As Panel
         Private WithEvents m_plPreviewEwE As Panel
         Private WithEvents m_hdrTitle As cEwEHeaderLabel
+        Private WithEvents m_tsbnImport As ToolStripButton
     End Class
 End Namespace
 

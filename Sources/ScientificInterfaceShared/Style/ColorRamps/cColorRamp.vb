@@ -56,6 +56,17 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Gets if this color ramp can be edited.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property IsEditable() As Boolean
+            Get
+                Return (Me.ID = -9999) And Not Me.IsSystemRamp
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Sets the color start offset, which enables selective use of the color ramp without having to modify the ramp.
         ''' </summary>
         ''' <remarks>
