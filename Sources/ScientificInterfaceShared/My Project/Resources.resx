@@ -3160,4 +3160,7 @@
   <data name="COLORRAMP_FLEETS" xml:space="preserve">
     <value>Standard fleet color scheme</value>
   </data>
+  <data name="FILEFILTER_COLORTABLE" xml:space="preserve">
+    <value>Adobe color table|*.act</value>
+  </data>
 </root>

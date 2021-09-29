@@ -89,11 +89,12 @@ Namespace Other
             Me.m_tsbnDuplicate.Enabled = bIsEditable
             Me.m_tsbnDelete.Enabled = Not bIsSystem
 
-#If DEBUG Then
+            Me.m_tsbnImport.Image = SharedResources.ImportHS
+            Me.m_tsbnExport.Image = SharedResources.ExportHS
+
             Me.m_tsbnImport.Enabled = True
-#Else
-            Me.m_tsbnImport.Enabled = false
-#End If
+            Me.m_tsbnExport.Enabled = (item IsNot Nothing)
+
             Me.m_bInUpdate = False
 
         End Sub
@@ -287,19 +288,32 @@ Namespace Other
         Private Sub OnImportColorRamps(sender As Object, e As EventArgs) Handles m_tsbnImport.Click
 
             ' Experimental feature
-            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select .act color table", "", "Adobe color table|*.act")
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(SharedResources.CAPTION_SELECT_FILE, "", SharedResources.FILEFILTER_COLORTABLE)
             ofd.Multiselect = True
 
             If ofd.ShowDialog() = DialogResult.OK Then
-                Dim imp As New cColorRampActIO()
+                Dim io As New cColorRampActIO()
                 For Each fn As String In ofd.FileNames
-                    Dim ramp As cBinaryColorRamp = imp.Read(fn)
+                    Dim ramp As cBinaryColorRamp = io.Read(fn)
                     If (ramp IsNot Nothing) Then
                         ' ToDO: prohibit duplicates
                         Me.m_lbGradients.Items.Add(ramp)
                     End If
                 Next
             End If
+        End Sub
+
+        Private Sub OnExportColorRamps(sender As Object, e As EventArgs) Handles m_tsbnExport.Click
+
+            Dim sfd As FolderBrowserDialog = cEwEFileDialogHelper.FolderBrowserDialog(SharedResources.LABEL_CHOOSE_FOLDER, "")
+
+            If sfd.ShowDialog = DialogResult.OK Then
+                Dim io As New cColorRampActIO()
+                For Each item As Object In Me.m_lbGradients.SelectedItems
+                    io.Write(sfd.SelectedPath, DirectCast(item, cColorRamp))
+                Next
+            End If
+
         End Sub
 
 #End Region ' Internals

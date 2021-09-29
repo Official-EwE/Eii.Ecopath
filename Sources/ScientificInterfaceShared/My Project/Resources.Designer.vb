@@ -1885,6 +1885,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Adobe color table|*.act.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_COLORTABLE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_COLORTABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Comma-separated text files (*.csv)|*.csv.
         '''</summary>
         Public ReadOnly Property FILEFILTER_CSV() As String

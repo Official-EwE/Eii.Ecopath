@@ -23,10 +23,11 @@ Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-' ToDo: use factory, use plug-ins for readers/writers
+' ToDo: also support Adobe GRD(M) file format?
 
 ''' <summary>
 ''' Reader/writer to the .act file format
@@ -35,8 +36,9 @@ Imports ScientificInterfaceShared.Style
 ''' https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/#50577411_pgfId-1070626
 ''' Load of ramps at
 ''' https://www.giss.nasa.gov/tools/panoply/colorbars/
-''' File formats at
+''' Formats at
 ''' http://www.selapa.net/swatches/colors/fileformats.php
+''' http://www.selapa.net/swatches/gradients/fileformats.php
 ''' </remarks>
 Public Class cColorRampActIO
 
@@ -64,6 +66,27 @@ Public Class cColorRampActIO
             End Using
         End Using
         Return New cBinaryColorRamp(id, name, colors.ToArray())
+
+    End Function
+
+    Public Function Write(folder As String, ramp As cColorRamp) As Boolean
+
+        Try
+            Dim fn As String = Path.Combine(folder, cFileUtils.ToValidFileName(ramp.Name, False) & ".act")
+            Using stream As New FileStream(fn, FileMode.Create)
+                Using sw As New BinaryWriter(stream)
+                    For i As Integer = 0 To 255
+                        Dim color As Color = ramp.GetColor(i / 255)
+                        sw.Write(color.R)
+                        sw.Write(color.G)
+                        sw.Write(color.B)
+                    Next
+                End Using
+            End Using
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
 
     End Function
 
