@@ -21,8 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

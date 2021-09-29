@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports System.Linq
 Imports EwECore
 
 Namespace Style

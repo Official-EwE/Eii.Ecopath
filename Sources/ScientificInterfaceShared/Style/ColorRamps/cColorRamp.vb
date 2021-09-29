@@ -17,7 +17,11 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Strict On
+
+#End Region ' Imports
 
 Namespace Style
 
