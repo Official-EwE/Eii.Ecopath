@@ -1146,7 +1146,7 @@ Namespace DataSources
                 Try
                     ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
                     ecopathDS.PedigreeLevelName(iLevel) = Me.ToLocalizedDefault(CStr(reader("LevelName")), 0)
-                    ecopathDS.PedigreeLevelDescription(iLevel) = Me.ToLocalizedDefault(CStr(reader("Description")), 1)
+                    ecopathDS.PedigreeLevelDescription(iLevel) = Me.ToLocalizedDefault(CStr(Me.m_db.ReadSafe(reader, "Description", "")), 1)
 
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     ' fudge, no need to issue a database update
