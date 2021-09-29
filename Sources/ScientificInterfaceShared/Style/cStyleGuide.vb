@@ -26,9 +26,9 @@ Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.Globalization
 Imports System.IO
+Imports System.Linq
 Imports System.Text
 Imports System.Threading
-Imports System.Linq
 Imports System.Windows.Forms.VisualStyles
 Imports EwECore
 Imports EwECore.Auxiliary

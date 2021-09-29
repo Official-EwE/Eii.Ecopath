@@ -19,6 +19,8 @@
 
 #Region " Imports "
 
+Option Strict On
+Option Explicit On
 Imports System.Text
 Imports EwECore
 Imports EwECore.Auxiliary
