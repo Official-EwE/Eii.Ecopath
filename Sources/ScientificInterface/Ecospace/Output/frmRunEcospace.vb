@@ -782,6 +782,7 @@ Namespace Ecospace
 
         End Sub
 
+        ' ToDo: move to cMapDrawerFleet
         Private Sub PlotFleetMap(g As Graphics)
 
             Dim iNumVizFleets As Integer = 0
@@ -821,6 +822,7 @@ Namespace Ecospace
 
         End Sub
 
+        ' ToDo: move to cMapDrawerFleet
         Private Sub DrawFishingBaseMap(mapFishing(,,) As Single,
                                        iFleet As Integer, rcPos As Rectangle, g As Graphics)
 
@@ -869,7 +871,7 @@ Namespace Ecospace
 
                             ' Draw MPA
                             If Me.StyleGuide.ShowMapsMPAs Then
-                                For k As Integer = 1 To Me.Core.nMPAs - 1
+                                For k As Integer = 1 To Me.Core.nMPAs
                                     Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA(k).Cell(i, j))
                                     If iMPA > 0 Then
                                         If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
