@@ -174,6 +174,16 @@ Namespace Other
 
         End Sub
 
+        Private Sub OnLinkClicked(sender As Object, e As LinkClickedEventArgs) Handles m_rtbAcknowledgements.LinkClicked, m_rtbDisclaimer.LinkClicked, m_rtbDistribution.LinkClicked, m_rtbLicense.LinkClicked, m_rtbTeam.LinkClicked
+            Try
+                Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+                Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                cmd.Invoke(e.LinkText)
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+        End Sub
+
     End Class
 
 End Namespace
