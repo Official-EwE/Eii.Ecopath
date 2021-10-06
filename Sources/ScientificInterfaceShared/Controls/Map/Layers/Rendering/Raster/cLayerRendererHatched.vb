@@ -63,7 +63,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean
-            Return ((Me.VisualStyle.HatchStyle > 0) And (CInt(Me.VisualStyle.HatchStyle) < [Enum].GetValues(GetType(System.Drawing.Drawing2D.HatchStyle)).Length))
+            Return ((Me.VisualStyle.HatchStyle >= 0) And (CInt(Me.VisualStyle.HatchStyle) < [Enum].GetValues(GetType(System.Drawing.Drawing2D.HatchStyle)).Length))
         End Function
 
         Public Overrides Function GetDisplayText(value As Object) As String
