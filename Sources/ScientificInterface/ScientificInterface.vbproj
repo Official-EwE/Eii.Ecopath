@@ -194,12 +194,6 @@
     <Compile Include="Ecobase\cEcoBaseModelListBox.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecobase\dlgEcobaseExport.Designer.vb">
-      <DependentUpon>dlgEcobaseExport.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecobase\dlgEcobaseExport.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecopath\frmModelParameters.Designer.vb">
       <DependentUpon>frmModelParameters.vb</DependentUpon>
     </Compile>
@@ -536,12 +530,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\cSelectionMonitor.vb" />
-    <Compile Include="Ecobase\dlgEcobaseImport.Designer.vb">
-      <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecobase\dlgEcobaseImport.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Other\Localization\cTestFormCreation.vb" />
     <Compile Include="Other\Options\AutoRunOptionAssets\gridAutoRun.vb">
       <SubType>Component</SubType>
@@ -1059,9 +1047,6 @@
     <EmbeddedResource Include="Controls\dlgSelectEnvironmentalResponse.resx">
       <DependentUpon>dlgSelectEnvironmentalResponse.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecobase\dlgEcobaseExport.resx">
-      <DependentUpon>dlgEcobaseExport.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\frmModelParameters.resx">
       <DependentUpon>frmModelParameters.vb</DependentUpon>
     </EmbeddedResource>
@@ -1249,10 +1234,6 @@
     <EmbeddedResource Include="Ecospace\Output\frmRunEcospace.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmRunEcospace.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecobase\dlgEcobaseImport.resx">
-      <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsAutoRun.resx">
       <DependentUpon>ucOptionsAutoRun.vb</DependentUpon>
@@ -2204,10 +2185,6 @@
       <Project>{6402204a-1134-4c46-b6d6-c9f197df638d}</Project>
       <Name>FishMIPv3Plugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\RobertsBank\DepthChangePlugin\DepthChangePlugin.vbproj">
-      <Project>{28c34ea4-882e-4838-907f-c154c3e67719}</Project>
-      <Name>DepthChangePlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin</Name>
@@ -2334,6 +2311,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.Forms.UI.Controls.WebView">
       <Version>6.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="NETStandard.Library">
+      <Version>2.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

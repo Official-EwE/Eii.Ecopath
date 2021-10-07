@@ -23,17 +23,13 @@ Imports ScientificInterfaceShared.Controls
 
 
 Public Class cResultsHolder
-
     Implements EwEPlugin.IMenuItemPlugin
-
     Implements EwEPlugin.IEcosimModifyTimeseriesPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.ICorePlugin
-
     Implements EwEPlugin.IUIContextPlugin
-
     Implements EwEPlugin.IHelpPlugin
 
     Private ResultsForm As frmResults = Nothing
@@ -73,7 +69,7 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasForm As Boolean = False

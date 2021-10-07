@@ -16,6 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#If NETFRAMEWORK
 
 #Region " Imports "
 
@@ -107,3 +108,5 @@ Public Class cTimeSeriesClipboardReader
 #End Region ' Private helper bits
 
 End Class
+
+#End If

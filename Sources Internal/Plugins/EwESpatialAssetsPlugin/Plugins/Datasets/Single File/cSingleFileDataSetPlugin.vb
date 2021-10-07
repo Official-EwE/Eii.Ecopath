@@ -166,7 +166,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.GetConfigUI"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetConfigUI() As System.Windows.Forms.Control
+        Public Overrides Function GetConfigUI() As Object
             If (cDotSpatialUtils.IsLicensed(Me.m_core)) Then
                 Try
                     Dim pg As New ucSingleFileDataSetConfigPage()

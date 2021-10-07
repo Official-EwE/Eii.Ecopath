@@ -134,7 +134,7 @@ Namespace Ecospace.Controls
             Me.m_btnDelete.Enabled = bHasSelection
             Me.m_btnExport.Enabled = bHasDS
 
-            Me.m_lblConfigValue.Text = cStringUtils.CompactString(Me.m_manSets.CurrentConfigFile, Me.m_lblConfigValue.ClientSize.Width, Me.Font)
+            Me.m_lblConfigValue.Text = Me.m_manSets.CurrentConfigFile
 
         End Sub
 
@@ -335,7 +335,7 @@ Namespace Ecospace.Controls
             End If
 
             Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim ctrl As Control = dsConf.GetConfigUI()
+            Dim ctrl As Control = DirectCast(dsConf.GetConfigUI(), Control)
 
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured
 

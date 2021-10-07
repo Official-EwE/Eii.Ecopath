@@ -130,7 +130,7 @@ Public Class cEcotrophPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
             If Not Me.HasInterface(Me.frmET) Then

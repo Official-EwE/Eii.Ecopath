@@ -102,7 +102,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
 #Region " UI integration "
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
         If (Me.m_uic Is Nothing) Then Return
         If (Not Me.m_core.License.IsLicensed) Then
             Try

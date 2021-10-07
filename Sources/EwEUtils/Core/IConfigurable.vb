@@ -48,7 +48,7 @@ Namespace Core
         ''' </summary>
         ''' <returns>The windows control though which the item can be configured.</returns>
         ''' -----------------------------------------------------------------------
-        Function GetConfigUI() As Control
+        Function GetConfigUI() As Object
 
     End Interface
 

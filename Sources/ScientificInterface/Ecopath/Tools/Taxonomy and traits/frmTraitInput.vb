@@ -143,7 +143,11 @@ Namespace Ecopath.Input
             'If cfg.IsConfigured Then Return True 
 
             Try
-                ui = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+                ' NET standard / framework work around
+                Dim obj As Object = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+                If (TypeOf obj Is Control) Then
+                    ui = DirectCast(obj, Control)
+                End If
             Catch ex As Exception
                 ui = Nothing
             End Try

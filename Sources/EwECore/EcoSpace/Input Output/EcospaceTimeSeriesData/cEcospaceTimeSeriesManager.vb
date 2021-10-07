@@ -23,7 +23,7 @@ Imports EwEUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports System.IO
-
+Imports System.Data
 
 Namespace EcospaceTimeSeries
 

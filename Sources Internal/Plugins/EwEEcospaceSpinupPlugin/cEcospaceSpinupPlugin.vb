@@ -399,7 +399,7 @@ Public Class cEcospaceSpinupPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
         form = Me.GetMainForm
     End Sub
 

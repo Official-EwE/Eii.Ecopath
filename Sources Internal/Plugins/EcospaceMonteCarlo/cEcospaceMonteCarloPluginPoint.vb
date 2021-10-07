@@ -21,15 +21,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
+Imports System.Threading
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-Imports System.Threading
 
 #End Region
 
@@ -70,8 +67,6 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     Implements EwEPlugin.ISearchPlugin
     Implements EwEPlugin.IMonteCarloBalancedModelWaitLock
-
-
 
 #Region "Local variables"
 
@@ -387,7 +382,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasInterface As Boolean = False
 

@@ -306,7 +306,7 @@ Public Class cImportDietsPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
         Dim ofd As New OpenFileDialog()
 
         ofd.Filter = ScientificInterfaceShared.My.Resources.FILEFILTER_MODEL_SAVE

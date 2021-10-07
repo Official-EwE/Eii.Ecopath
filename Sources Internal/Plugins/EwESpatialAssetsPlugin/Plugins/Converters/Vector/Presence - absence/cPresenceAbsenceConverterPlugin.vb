@@ -49,7 +49,7 @@ Namespace SpatialData
             MyBase.New()
         End Sub
 
-        Public Overridable Function GetConfigUI() As System.Windows.Forms.Control _
+        Public Overridable Function GetConfigUI() As Object _
             Implements IConfigurable.GetConfigUI
             Dim pg As New ucAttributeFilterConfigPage()
             pg.Converter = Me

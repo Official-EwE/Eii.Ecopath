@@ -1181,7 +1181,9 @@ Public Class cEcoSpace
                 msg.AppendLine("Auto paused Year = " & CalendarYear.ToString & " Month = " & (Me.EcoSpaceData.MonthNow + 1).ToString)
                 msg.AppendLine("To restart the run click the Pause or Resume button once.")
                 Me.isPaused = True
-                Microsoft.VisualBasic.MsgBox(msg.ToString, Microsoft.VisualBasic.MsgBoxStyle.Information, "HACK WARNING")
+
+                Me.Messages.SendMessage(New cMessage(msg.ToString, eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Warning))
+                'Microsoft.VisualBasic.MsgBox(msg.ToString, Microsoft.VisualBasic.MsgBoxStyle.Information, "HACK WARNING")
             End If
         Catch ex As Exception
             'Ehhh that's the breaks ehhh
@@ -6296,9 +6298,7 @@ exitline:
 
     End Sub
 
-
-
-    Private Sub readAdvectFile()
+    Public Sub readAdvectFile(filename As String)
         ''Read in Advection Field data.  SM, Jan 7, 2003
         ''Used for reading in Advection field data.
         'Dim i As Integer, j As Integer
@@ -6311,34 +6311,30 @@ exitline:
         '    NewReadVelFields(F$)
         'End If
         Try
-            Dim d As New System.Windows.Forms.OpenFileDialog
-            Dim sr As System.IO.TextReader
-
-            If d.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
-                sr = New System.IO.StreamReader(d.FileName)
+            Using SR As New System.IO.StreamReader(filename)
 
                 Dim i As Integer, j As Integer, InrowRead As Integer, IncolRead As Integer
                 Dim Xvl As Single, Yvl As Single, Xvv As Single, Yvv As Single, Vxp As Single, Vyp As Single, Upv As Single, Dep As Single
 
-                InrowRead = cFileUtils.ReadNumber(sr)
-                IncolRead = cFileUtils.ReadNumber(sr)
+                InrowRead = cFileUtils.ReadNumber(SR)
+                IncolRead = cFileUtils.ReadNumber(SR)
 
                 If InrowRead <> Me.EcoSpaceData.InRow Or IncolRead <> Me.EcoSpaceData.InCol Then
                     'vbYesNo is not Mon compatible
                     'If MsgBox("Number of rows and columns in this advection file are not the same as your current map; try to read anyway?", vbYesNo) = vbNo Then Exit Sub
                 End If
 
-                Vxp = cFileUtils.ReadNumber(sr)
-                Vyp = cFileUtils.ReadNumber(sr)
+                Vxp = cFileUtils.ReadNumber(SR)
+                Vyp = cFileUtils.ReadNumber(SR)
 
                 For i = 0 To InrowRead + 1
                     For j = 0 To IncolRead + 1
-                        Xvl = cFileUtils.ReadNumber(sr)
-                        Yvl = cFileUtils.ReadNumber(sr)
-                        Xvv = cFileUtils.ReadNumber(sr)
-                        Yvv = cFileUtils.ReadNumber(sr)
-                        Upv = cFileUtils.ReadNumber(sr)
-                        Dep = cFileUtils.ReadNumber(sr)
+                        Xvl = cFileUtils.ReadNumber(SR)
+                        Yvl = cFileUtils.ReadNumber(SR)
+                        Xvv = cFileUtils.ReadNumber(SR)
+                        Yvv = cFileUtils.ReadNumber(SR)
+                        Upv = cFileUtils.ReadNumber(SR)
+                        Dep = cFileUtils.ReadNumber(SR)
                         If i <= Me.EcoSpaceData.InRow + 1 And j <= Me.EcoSpaceData.InCol + 1 Then
                             Me.EcoSpaceData.Xvloc(i, j) = Xvl
                             Me.EcoSpaceData.Yvloc(i, j) = Yvl
@@ -6349,8 +6345,7 @@ exitline:
                         End If
                     Next
                 Next
-
-            End If
+            End Using
         Catch ex As Exception
             Debug.Assert(False, "Reading advection file failed - " + ex.Message)
         End Try

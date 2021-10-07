@@ -140,15 +140,13 @@ Namespace SystemUtilities
                 Else
                     links.Add(url)
                 End If
-                If My.Computer.Network.IsAvailable Then
-                    Using client As New WebClient()
-                        For Each uri As String In links
-                            Using stream As IDisposable = client.OpenRead(uri)
-                                Return True
-                            End Using
-                        Next
-                    End Using
-                End If
+                Using client As New WebClient()
+                    For Each uri As String In links
+                        Using stream As IDisposable = client.OpenRead(uri)
+                            Return True
+                        End Using
+                    Next
+                End Using
             Catch
                 Return False
             End Try
@@ -307,6 +305,7 @@ Namespace SystemUtilities
             Return Environment.OSVersion.VersionString
         End Function
 
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns whether this application is running in a remote desktop session.
@@ -316,7 +315,11 @@ Namespace SystemUtilities
         ''' not been evaluated.</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsRDC() As Boolean
+#If NETFRAMEWORK Then
             Return System.Windows.Forms.SystemInformation.TerminalServerSession
+#Else
+            Return False
+#End If
         End Function
 
         ''' -------------------------------------------------------------------
@@ -376,18 +379,18 @@ Namespace SystemUtilities
 
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns whether the system is running on battery power.
-        ''' </summary>
-        ''' <returns>True if the system is running on battery power.</returns>
-        ''' <remarks>
-        ''' http://stackoverflow.com/questions/241142/c-sharp-net-how-to-check-if-were-running-on-battery
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function IsBatteryPower() As Boolean
-            Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
-        End Function
+        '''' -----------------------------------------------------------------------
+        '''' <summary>
+        '''' Returns whether the system is running on battery power.
+        '''' </summary>
+        '''' <returns>True if the system is running on battery power.</returns>
+        '''' <remarks>
+        '''' http://stackoverflow.com/questions/241142/c-sharp-net-how-to-check-if-were-running-on-battery
+        '''' </remarks>
+        '''' -----------------------------------------------------------------------
+        'Public Shared Function IsBatteryPower() As Boolean
+        '    Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
+        'End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -430,11 +433,10 @@ Namespace SystemUtilities
             End If
 
             If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
-                ' Prefer product name, but uif that does not work, use assembly name
-                ApplicationSettingsFolderName = My.Application.Info.ProductName
-                If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
-                    ApplicationSettingsFolderName = My.Application.Info.AssemblyName
-                End If
+                ApplicationSettingsFolderName = "Ecopath with Ecosim"
+                'If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
+                '    ApplicationSettingsFolderName = My.Application.Info.AssemblyName
+                'End If
             End If
 
             strPath = Path.Combine(strBaseDir, cFileUtils.ToValidFileName(ApplicationSettingsFolderName, False))

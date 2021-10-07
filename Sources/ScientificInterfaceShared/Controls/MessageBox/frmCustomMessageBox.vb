@@ -86,7 +86,7 @@ Namespace Controls
             ' Config icon
             Me.m_pbIcon.Visible = False
             Try
-                Dim icon As Icon = cResourceUtils.GetMessageBoxIcon(mbi)
+                Dim icon As Icon = Me.GetMessageBoxIcon(mbi)
                 If icon IsNot Nothing Then
                     Me.m_pbIcon.Image = icon.ToBitmap
                 End If
@@ -140,6 +140,44 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the system icon for a <see cref="System.Windows.Forms.MessageBoxIcon">message box 
+        ''' icon</see> identifier.
+        ''' </summary>
+        ''' <param name="mbi"><see cref="System.Windows.Forms.MessageBoxIcon">message box icon</see>
+        ''' identifier to get the system icon for.</param>
+        ''' <returns>An <see cref="Icon">Icon</see>, or Nothing if the icon
+        ''' could not be found.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetMessageBoxIcon(mbi As MessageBoxIcon) As Icon
+
+            Dim objIcon As Icon = Nothing
+
+            Select Case mbi
+                Case MessageBoxIcon.Asterisk
+                    objIcon = SystemIcons.Asterisk
+                Case MessageBoxIcon.Error
+                    objIcon = SystemIcons.Error
+                Case MessageBoxIcon.Exclamation
+                    objIcon = SystemIcons.Exclamation
+                Case MessageBoxIcon.Hand,
+                     MessageBoxIcon.Stop
+                    objIcon = SystemIcons.Hand
+                Case MessageBoxIcon.Information
+                    objIcon = SystemIcons.Information
+                Case MessageBoxIcon.Question
+                    objIcon = SystemIcons.Question
+                Case MessageBoxIcon.Warning
+                    objIcon = SystemIcons.Warning
+                Case Else
+                    ' NOP
+            End Select
+
+            Return objIcon
+
+        End Function
+
 #Region " Properties "
 
         ''' -------------------------------------------------------------------
@@ -176,8 +214,11 @@ Namespace Controls
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
+            ' ToDo: port this to scientificInterfaceShared
+#If 0 Then
             ' > Plink <
             cSoundUtilities.PlaySound(Me.m_mbi)
+#End If
             ' Let base class do its magic
             MyBase.OnLoad(e)
             ' Center
