@@ -16,6 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+' TODO: SEE https://medium.com/grensesnittet/integrating-with-soap-web-services-in-net-core-adebfad173fb
 
 ' ===============================================================================
 ' This class is manually generated via Visual Studio tool wsdl.exe
@@ -25,6 +26,8 @@
 ' Converted VB file contained errors in the event firing logic, which were fixed by hand
 ' ===============================================================================
 Option Strict On
+
+#If NETFRAMEWORK Then
 
 Namespace WebServices
 
@@ -242,3 +245,5 @@ Namespace WebServices
     End Class
 
 End Namespace ' WebServices
+
+#End If

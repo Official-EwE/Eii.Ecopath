@@ -3181,17 +3181,19 @@ Public Class frmEwE6
 
         Dim strModel As String = ""
 
-        If (String.IsNullOrWhiteSpace(strModel)) Then
-            Dim frm As New dlgEcobaseImport(Me.UIContext)
-            If (frm.ShowDialog() = DialogResult.OK) Then
-                Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
-                strModel = "ewe-ecobase:" & model.EcobaseCode
-            End If
-        End If
+        Throw New NotImplementedException()
 
-        If (Not String.IsNullOrWhiteSpace(strModel)) Then
-            Me.LoadEcopathModel(strModel, eLoadSourceType.User)
-        End If
+        'If (String.IsNullOrWhiteSpace(strModel)) Then
+        '    Dim frm As New dlgEcobaseImport(Me.UIContext)
+        '    If (frm.ShowDialog() = DialogResult.OK) Then
+        '        Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
+        '        strModel = "ewe-ecobase:" & model.EcobaseCode
+        '    End If
+        'End If
+
+        'If (Not String.IsNullOrWhiteSpace(strModel)) Then
+        '    Me.LoadEcopathModel(strModel, eLoadSourceType.User)
+        'End If
 
     End Sub
 
@@ -3214,9 +3216,11 @@ Public Class frmEwE6
             ' All pending changes must be saved prior to this
             If (Not Me.Core.SaveChanges()) Then Return
 
+            Throw New NotImplementedException()
+
             ' Export
-            Dim dlg As New dlgEcobaseExport(Me.UIContext)
-            dlg.ShowDialog(Me)
+            'Dim dlg As New dlgEcobaseExport(Me.UIContext)
+            'dlg.ShowDialog(Me)
 
         Catch ex As Exception
 
@@ -4355,7 +4359,7 @@ Public Class frmEwE6
             'End If
 
             Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim ctrl As Control = dsConf.GetConfigUI()
+            Dim ctrl As Control = DirectCast(dsConf.GetConfigUI(), Control)
             If (ctrl Is Nothing) Then Return
 
             Dim dlg As New dlgConfig(Me.UIContext)

@@ -30,6 +30,8 @@ Imports System.Net
 
 #End Region ' Imports 
 
+#If NETFRAMEWORK Then
+
 Namespace Database
 
     ''' -----------------------------------------------------------------------
@@ -788,3 +790,5 @@ Namespace Database
     End Class
 
 End Namespace ' Database
+
+#end if

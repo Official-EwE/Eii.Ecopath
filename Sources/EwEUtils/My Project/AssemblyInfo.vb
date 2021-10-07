@@ -33,7 +33,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Ecopath with Ecosim utilities")>
 <Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("EwEUtils")> 
-<Assembly: AssemblyCopyright("Copyright © 2005")> 
+<Assembly: AssemblyCopyright("Copyright © 2021 Ecopath International Initiative")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)>

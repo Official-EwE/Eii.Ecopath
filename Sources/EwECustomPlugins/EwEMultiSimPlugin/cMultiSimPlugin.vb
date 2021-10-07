@@ -115,7 +115,7 @@ Public Class cMultiSimPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         frmPlugin = Me.UI
     End Sub

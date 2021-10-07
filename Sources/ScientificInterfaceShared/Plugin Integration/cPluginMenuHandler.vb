@@ -216,9 +216,12 @@ Namespace Integration
                         ' Add tag
                         tsi.Tag = ip
 
+#If 0 Then
+                        ' Discontinued under .Net standard port
                         If (TypeOf (ip) Is IMenuItemKeyboardShortcutPlugin) Then
                             tsi.ShortcutKeys = DirectCast(ip, IMenuItemKeyboardShortcutPlugin).ShortcutKeys
                         End If
+#End If
 
                         Me.m_lItems.Add(tsi)
 

@@ -1219,6 +1219,10 @@ Public Class frmEcotroph
 
     Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
 
+        ' ToDo: reactivate this!
+        Throw New NotImplementedException()
+
+#If 0 Then
 
 
         Try
@@ -1266,6 +1270,7 @@ Public Class frmEcotroph
             cLog.Write(ex, "Ecotroph::Button7-Click")
             Me.NotifyUser(My.Resources.ERROR_NO_WS, eMessageImportance.Critical)
         End Try
+#End If
 
     End Sub
 
@@ -1287,6 +1292,9 @@ Public Class frmEcotroph
 
         url_eco = "http://ecobase.ecopath.org/php/extract_model.php?model=" & Me.num_model(Me.models_list.SelectedIndex)
 
+        ' ToDo: reactivate this!
+        Throw New NotImplementedException()
+#If 0 Then
 
         Try
             Dim myservice As New cEcoBaseWDSL()
@@ -1387,6 +1395,7 @@ Public Class frmEcotroph
                 myStream.Close()
             End If
         End Try
+#End If
 
     End Sub
 

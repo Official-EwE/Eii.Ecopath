@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Data
 Imports System.Drawing
 Imports System.Xml
 Imports EwEUtils.Core

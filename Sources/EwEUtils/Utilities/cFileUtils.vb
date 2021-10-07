@@ -144,7 +144,8 @@ Namespace Utilities
                 ' Try to be nice
                 If File.Exists(strFullPath) Then Return strFullPath
                 ' Ok, maybe the file is hidden. Let's be less nice.
-                fsec = File.GetAccessControl(strFullPath, AccessControlSections.Group)
+
+                fsec = New FileInfo(strFullPath).GetAccessControl()
                 If fsec IsNot Nothing Then
                     Return strFullPath
                 End If

@@ -19,10 +19,6 @@
 
 Option Strict On
 
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports System.Data
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' Database update 6.0.1.1: Add VisualStyles column to table Remark

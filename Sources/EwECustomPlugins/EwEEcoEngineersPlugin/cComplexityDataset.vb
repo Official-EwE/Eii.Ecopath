@@ -177,7 +177,7 @@ Public Class cComplexityDataset
         Return (Me.m_lRules.Count > 0)
     End Function
 
-    Public Function GetConfigUI() As System.Windows.Forms.Control _
+    Public Function GetConfigUI() As Object _
         Implements IConfigurable.GetConfigUI
         Return New ucEcoEngineerConfigUI(Me)
     End Function

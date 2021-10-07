@@ -32,6 +32,8 @@ Imports EwEUtils.NetUtilities
 
 #End Region ' Imports
 
+#If NETFRAMEWORK Then
+
 Namespace WebServices.Ecobase
 
     ''' -----------------------------------------------------------------------
@@ -136,3 +138,5 @@ Namespace WebServices.Ecobase
     End Class
 
 End Namespace
+
+#end if

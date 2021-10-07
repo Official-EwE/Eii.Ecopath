@@ -310,7 +310,7 @@ Public Class cDatasetPicker
 
             Try
                 Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)
-                Return (dlg.ShowDialog(cStringUtils.Localize(SharedResources.CAPTION_GENERIC_EDIT, strTitle), cfg.GetConfigUI()) = DialogResult.OK)
+                Return (dlg.ShowDialog(cStringUtils.Localize(SharedResources.CAPTION_GENERIC_EDIT, strTitle), DirectCast(cfg.GetConfigUI(), Control)) = DialogResult.OK)
             Catch ex As Exception
                 ' Whoah!
                 Return False

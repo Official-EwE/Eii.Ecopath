@@ -85,10 +85,10 @@ Namespace Utilities
             Return MyBase.Uri.AbsoluteUri
         End Function
 
-        Public Sub Navigate(Optional bEndResponse As Boolean = True)
-            Dim strURI As String = Me.ToString()
-            HttpContext.Current.Response.Redirect(strURI, bEndResponse)
-        End Sub
+        'Public Sub Navigate(Optional bEndResponse As Boolean = True)
+        '    Dim strURI As String = Me.ToString()
+        '    HttpContext.Current.Response.Redirect(strURI, bEndResponse)
+        'End Sub
 
 #End Region ' Public methods
 

@@ -20,19 +20,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections.Generic
-Imports System.Diagnostics
-Imports System.Drawing
 Imports System.Globalization
 Imports System.Security
 Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports Microsoft.VisualBasic
 
 #End Region ' Imports
 
@@ -925,6 +919,7 @@ Namespace Utilities
             Return Convert.ToBase64String(abHash)
         End Function
 
+#If NETFRAMEWORK Then
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' String truncation method, blatantly copied from 
@@ -949,6 +944,7 @@ Namespace Utilities
             Return strResult
 
         End Function
+#End If
 
         Private Shared CSV_SEPARATORCHARS As Char() = New Char() {","c, " "c, ControlChars.Tab}
 
@@ -1107,7 +1103,7 @@ Namespace Utilities
         End Function
 
         ''' <summary>Default string split delimiters, in order of decreasing relevance.</summary>
-        Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space), ","c}
+        Public Shared c_DELIMITERS As Char() = New Char() {ControlChars.Tab, ";"c, " "c, ","c}
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -278,7 +278,7 @@ Namespace Other
                     End If
                     Me.m_strPath = strPath
 
-                Me.m_lblPath.Text = cStringUtils.CompactString(strPath, Me.m_lblPath.ClientSize.Width, Me.Font)
+                Me.m_lblPath.Text = strPath
                 Me.m_lblPath.Visible = True
                 Me.m_btnVisitFolder.Visible = True
                 Me.m_btnVisitFolder.Enabled = Directory.Exists(Me.m_strPath)

@@ -18,10 +18,8 @@
 '
 
 Option Strict On
-Imports EwEPlugin
+Imports System.Data
 Imports EwEUtils.Database
-Imports EwEUtils.Core
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.1.1.004:</para>
