@@ -194,6 +194,18 @@
     <Compile Include="Ecobase\cEcoBaseModelListBox.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecobase\dlgEcobaseExport.Designer.vb">
+      <DependentUpon>dlgEcobaseExport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecobase\dlgEcobaseExport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecobase\dlgEcobaseImport.Designer.vb">
+      <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecobase\dlgEcobaseImport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\frmModelParameters.Designer.vb">
       <DependentUpon>frmModelParameters.vb</DependentUpon>
     </Compile>
@@ -1046,6 +1058,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\dlgSelectEnvironmentalResponse.resx">
       <DependentUpon>dlgSelectEnvironmentalResponse.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecobase\dlgEcobaseExport.resx">
+      <DependentUpon>dlgEcobaseExport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecobase\dlgEcobaseImport.resx">
+      <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\frmModelParameters.resx">
       <DependentUpon>frmModelParameters.vb</DependentUpon>
@@ -2309,9 +2327,6 @@
     <Folder Include="Other\Update\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Forms.UI.Controls.WebView">
-      <Version>6.1.2</Version>
-    </PackageReference>
     <PackageReference Include="NETStandard.Library">
       <Version>2.0.3</Version>
     </PackageReference>
