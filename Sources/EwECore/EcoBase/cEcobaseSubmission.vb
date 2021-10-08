@@ -32,8 +32,6 @@ Imports EwEUtils.NetUtilities
 
 #End Region ' Imports
 
-#If NETFRAMEWORK Then
-
 Namespace WebServices.Ecobase
 
     ''' -----------------------------------------------------------------------
@@ -45,12 +43,12 @@ Namespace WebServices.Ecobase
 
 #Region " Variables "
 
-        <XmlElement("result")> _
+        <XmlElement("result")> 
         Public Property Result As Integer
-        <XmlElement("md5_key")> _
+        <XmlElement("md5_key")> 
         Public Property Hash As String
         ''' <summary>Ecobase ID.</summary>
-        <XmlElement("model_number")> _
+        <XmlElement("model_number")> 
         Public Property ModelNumber As String
 
         Public Enum eSubmisssionResultTypes As Integer
@@ -59,7 +57,7 @@ Namespace WebServices.Ecobase
             NotInEcobase = 2
         End Enum
 
-        <XmlIgnore()> _
+        <XmlIgnore()> 
         Public Property ResultType As eSubmisssionResultTypes
             Get
                 Return DirectCast(Me.Result, eSubmisssionResultTypes)
@@ -139,4 +137,3 @@ Namespace WebServices.Ecobase
 
 End Namespace
 
-#end if

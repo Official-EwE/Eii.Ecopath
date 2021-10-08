@@ -3181,19 +3181,17 @@ Public Class frmEwE6
 
         Dim strModel As String = ""
 
-        Throw New NotImplementedException()
+        If (String.IsNullOrWhiteSpace(strModel)) Then
+            Dim frm As New dlgEcobaseImport(Me.UIContext)
+            If (frm.ShowDialog() = DialogResult.OK) Then
+                Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
+                strModel = "ewe-ecobase:" & model.EcobaseCode
+            End If
+        End If
 
-        'If (String.IsNullOrWhiteSpace(strModel)) Then
-        '    Dim frm As New dlgEcobaseImport(Me.UIContext)
-        '    If (frm.ShowDialog() = DialogResult.OK) Then
-        '        Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
-        '        strModel = "ewe-ecobase:" & model.EcobaseCode
-        '    End If
-        'End If
-
-        'If (Not String.IsNullOrWhiteSpace(strModel)) Then
-        '    Me.LoadEcopathModel(strModel, eLoadSourceType.User)
-        'End If
+        If (Not String.IsNullOrWhiteSpace(strModel)) Then
+            Me.LoadEcopathModel(strModel, eLoadSourceType.User)
+        End If
 
     End Sub
 
@@ -3219,8 +3217,8 @@ Public Class frmEwE6
             Throw New NotImplementedException()
 
             ' Export
-            'Dim dlg As New dlgEcobaseExport(Me.UIContext)
-            'dlg.ShowDialog(Me)
+            Dim dlg As New dlgEcobaseExport(Me.UIContext)
+            dlg.ShowDialog(Me)
 
         Catch ex As Exception
 
