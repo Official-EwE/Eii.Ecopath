@@ -90,7 +90,7 @@ Public Class EwEImportLayersPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
         Dim io As New cImportExportStyle(Me.m_uic)
         Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECTFILE_LOAD, "", SharedResources.FILEFILTER_STYLE)
         If ofd.ShowDialog(Me.m_uic.FormMain) = DialogResult.OK Then

@@ -173,7 +173,7 @@ Public Class EwEEcosamplerPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         frmPlugin = Me.GetUI()

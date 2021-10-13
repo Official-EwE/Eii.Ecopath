@@ -255,7 +255,6 @@ Public Class cPluginManager
 
 #End Region ' Initialization 
 
-#If 0 Then
 #Region " Updates "
 
     ''' -----------------------------------------------------------------------
@@ -394,7 +393,6 @@ Public Class cPluginManager
     End Function
 
 #End Region ' Updates
-#End If
 
 #Region " Public assembly management "
 
@@ -491,11 +489,9 @@ Public Class cPluginManager
             Try
                 ' Try to load assembly
                 clsAssembly = Assembly.LoadFrom(strFileName)
-#If NETFRAMEWORK Then
             Catch exLoad As FileLoadException
                 ' Try to load assembly in a sandbox
                 clsAssembly = Me.LoadAssemblySandboxed(strFileName, strSandbox)
-#End If
             Catch ex As Exception
                 cLog.Write(ex, "cPluginManager.LoadPluginAssembly::LoadFrom(" & strFileName & ")")
             End Try
@@ -2751,8 +2747,6 @@ Public Class cPluginManager
 
 #End Region ' Private helper methods
 
-#If NETFRAMEWORK Then
-
 #Region " Sandboxing "
 
     ''' -----------------------------------------------------------------------
@@ -2809,7 +2803,5 @@ Public Class cPluginManager
     End Function
 
 #End Region ' Sandboxing
-
-#End If
 
 End Class

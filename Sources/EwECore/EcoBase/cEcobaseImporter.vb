@@ -27,8 +27,6 @@ Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports System.Net
-Imports System.Data
-Imports EwECore.WebServices.Ecobase
 
 #End Region ' Imports 
 
@@ -84,8 +82,8 @@ Namespace Database
                         Me.m_data = Ecobase.cEcobaseModelParameters.FromXML(reader.ReadToEnd())
                     End Using
                 Else
-                    Dim wdsl As New cEcobaseWDSL()
-                    Dim strModel As String = wdsl.getModel("all_data", Integer.Parse(strSource), "")
+                    Dim wdsl As New cEcoBaseWDSL()
+                    Dim strModel As String = wdsl.getModel("all_data", Integer.Parse(strSource))
                     Me.m_data = Ecobase.cEcobaseModelParameters.FromXML(strModel)
                 End If
                 Me.m_bHasLoaded = (Me.m_data IsNot Nothing)
@@ -409,8 +407,8 @@ Namespace Database
                 bSucces = False
             End Try
 
-            Return bSucces And
-                Me.m_dbTarget.ReleaseWriter(writerLifeStages, bSucces) And
+            Return bSucces And _
+                Me.m_dbTarget.ReleaseWriter(writerLifeStages, bSucces) And _
                 Me.m_dbTarget.ReleaseWriter(writerStanza, bSucces)
 
         End Function
@@ -531,9 +529,9 @@ Namespace Database
                 For i As Integer = 1 To Me.m_data.NumFleets
                     For j As Integer = 1 To Me.m_data.NumGroups
 
-                        If (Landing(i, j) > 0.0!) Or
-                           (Discard(i, j) > 0.0!) Or
-                           (Market(i, j) > 0.0!) Or
+                        If (Landing(i, j) > 0.0!) Or _
+                           (Discard(i, j) > 0.0!) Or _
+                           (Market(i, j) > 0.0!) Or _
                            (PropDiscardMort(i, j) > 0.0!) Then
 
                             drow = writer.NewRow()
@@ -688,8 +686,8 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            bSucces = Me.m_dbTarget.Execute("DELETE FROM EcopathStanzaTaxon") And
-                      Me.m_dbTarget.Execute("DELETE FROM EcopathGroupTaxon") And
+            bSucces = Me.m_dbTarget.Execute("DELETE FROM EcopathStanzaTaxon") And _
+                      Me.m_dbTarget.Execute("DELETE FROM EcopathGroupTaxon") And _
                       Me.m_dbTarget.Execute("DELETE FROM EcopathTaxon")
 
             wr = Me.m_dbTarget.GetWriter("EcopathTaxon")
@@ -790,4 +788,3 @@ Namespace Database
     End Class
 
 End Namespace ' Database
-

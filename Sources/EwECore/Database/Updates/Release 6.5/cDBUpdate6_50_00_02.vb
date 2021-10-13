@@ -18,6 +18,7 @@
 '
 
 Option Strict On
+Imports EwEUtils.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

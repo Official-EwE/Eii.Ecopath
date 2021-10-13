@@ -111,7 +111,7 @@ Public Class cEwEMPADynamicsPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
         frmPlugin = Me.GetUI()
     End Sub
 

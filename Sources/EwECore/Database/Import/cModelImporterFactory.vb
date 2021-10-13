@@ -49,11 +49,9 @@ Public Class cModelImporterFactory
                                             strSource As String, _
                                             pm As cPluginManager) As IModelImporter
 
-#If NETFRAMEWORK Then
         If (strSource.ToLower().StartsWith("ewe-ecobase:")) Then
             Return New cEcobaseImporter(core)
         End If
-#End If
 
         Select Case cDataSourceFactory.GetSupportedType(strSource)
 

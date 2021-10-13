@@ -39,7 +39,7 @@ Public Class dlgEcobaseImport
 
 #Region " Private vars "
 
-    Private m_ecobase As cEcobaseWDSL = Nothing
+    Private m_ecobase As cEcoBaseWDSL = Nothing
     Private m_models As New List(Of cModelData)
     Private m_model As cModelData = Nothing
 
@@ -112,7 +112,7 @@ Public Class dlgEcobaseImport
         Me.m_tsbnShowAuthor.Checked = p.Parameter("Author", "0") = "1"
         Me.m_tsbnShowDownloadable.Checked = p.Parameter("Downloadable", "1") = "1"
 
-        Me.m_ecobase = New cEcobaseWDSL()
+        Me.m_ecobase = New cEcoBaseWDSL()
 
         Me.m_wrkGetAgreement.WorkerSupportsCancellation = True
         Me.m_wrkGetModels.WorkerSupportsCancellation = True
@@ -148,7 +148,7 @@ Public Class dlgEcobaseImport
 
             Try
                 ' Shoot workers
-                Me.m_ecobase.Close()
+                Me.m_ecobase.CancelAsync(Nothing)
                 Me.m_wrkGetAgreement.CancelAsync()
                 Me.m_wrkGetImage.CancelAsync()
                 Me.m_wrkGetModels.CancelAsync()
@@ -178,7 +178,7 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Try
-            'Me.m_ecobase.Dispose()
+            Me.m_ecobase.Dispose()
             Me.m_ecobase = Nothing
         Catch ex As Exception
 
@@ -426,7 +426,7 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click,
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, _
                 m_tsmiDepth.Click, m_tsmiTemperature.Click, m_tsmiReference.Click, m_tsmiModelName.Click
 
         Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
@@ -476,7 +476,7 @@ Public Class dlgEcobaseImport
         Me.m_models.Clear()
 
         Try
-            Dim strModels As String = Me.m_ecobase.list_models("")
+            Dim strModels As String = Me.m_ecobase.list_models("", Nothing)
             Dim data As cEcobaseModelList = cEcobaseModelList.FromXML(strModels)
             Me.m_models.AddRange(data.Models)
 
@@ -485,7 +485,7 @@ Public Class dlgEcobaseImport
         Catch exWeb As Net.WebException
             msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         Catch ex As Exception
-            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message),
+            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message), _
                                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         End Try
 
@@ -514,8 +514,8 @@ Public Class dlgEcobaseImport
         Handles m_wrkGetAgreement.DoWork
 
         Try
-            Dim wdsl As New cEcobaseWDSL()
-            Dim strAgreement As String = wdsl.getModel("agreement", -1, "")
+            Dim wdsl As New cEcoBaseWDSL()
+            Dim strAgreement As String = wdsl.getModel("agreement", -1)
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
             If Me.m_wrkGetAgreement.CancellationPending Then e.Cancel = True
 
@@ -679,8 +679,8 @@ Public Class dlgEcobaseImport
         If (Me.m_model Is Nothing) Then Return ""
         If (Me.m_model.FirstYear = 0) Then Return "?"
         If (Me.m_model.NumYears <= 1) Then Return CStr(Me.m_model.FirstYear)
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
-                                     Me.m_model.FirstYear,
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                     Me.m_model.FirstYear, _
                                      Me.m_model.FirstYear + Math.Max(1, Me.m_model.NumYears) - 1)
 
     End Function
@@ -693,8 +693,8 @@ Public Class dlgEcobaseImport
 
         If (Me.m_model Is Nothing) Then Return ""
         If (Me.m_model.North = Me.m_model.South) Then Return SharedResources.GENERIC_VALUE_NONE
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
-                                     cStringUtils.Localize("{0}N", sg.FormatNumber(Me.m_model.North)),
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                     cStringUtils.Localize("{0}N", sg.FormatNumber(Me.m_model.North)), _
                                      cStringUtils.Localize("{0}S", sg.FormatNumber(Me.m_model.South)))
 
     End Function
@@ -707,8 +707,8 @@ Public Class dlgEcobaseImport
 
         If (Me.m_model Is Nothing) Then Return ""
         If (Me.m_model.North = Me.m_model.South) Then Return SharedResources.GENERIC_VALUE_NONE
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
-                                     cStringUtils.Localize("{0}W", sg.FormatNumber(Me.m_model.West)),
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                     cStringUtils.Localize("{0}W", sg.FormatNumber(Me.m_model.West)), _
                                      cStringUtils.Localize("{0}E", sg.FormatNumber(Me.m_model.East)))
 
     End Function

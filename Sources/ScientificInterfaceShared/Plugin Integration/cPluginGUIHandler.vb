@@ -271,13 +271,7 @@ Namespace Integration
                     pcmd.Invoke(ip, sender, e)
                 Else
                     ' #No: activate plugin directly
-                    Dim obj As Object = Nothing
-
-                    ' NET standard vs Framework work-around
-                    ip.OnControlClick(sender, e, obj)
-                    If (TypeOf obj Is Form) Then
-                        frm = DirectCast(obj, Form)
-                    End If
+                    ip.OnControlClick(sender, e, frm)
                 End If
 
             Catch ex As Exception

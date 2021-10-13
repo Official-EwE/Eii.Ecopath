@@ -263,7 +263,14 @@ Namespace Ecospace.Controls
             Dim bHasTarget As Boolean = Not String.IsNullOrWhiteSpace(cFileUtils.ToValidFileName(Me.m_tbxName.Text, False))
             Dim bHasSelection As Boolean = (Me.m_clbDatsets.CheckedIndices.Count > 0)
 
-            Me.m_lblFolderPreview.Text = Path.GetDirectoryName(Me.OutputLocation)
+            Dim strPathOrg As String = Path.GetDirectoryName(Me.OutputLocation())
+            Dim strPathFit As String = cStringUtils.CompactString(Path.GetDirectoryName(Me.OutputLocation()), _
+                                                                  Me.m_lblFolderPreview.ClientSize.Width, _
+                                                                  Me.m_lblFolderPreview.Font)
+            Me.m_lblFolderPreview.Text = strPathFit
+            cToolTipShared.GetInstance().SetToolTip(Me.m_lblFolderPreview, strPathOrg)
+
+
             Me.m_btnExport.Enabled = bHasTarget And bHasSelection
 
         End Sub

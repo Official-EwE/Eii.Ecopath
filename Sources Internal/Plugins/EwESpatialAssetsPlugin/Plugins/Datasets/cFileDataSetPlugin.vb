@@ -180,7 +180,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function GetConfigUI() As Object _
+        Public MustOverride Function GetConfigUI() As System.Windows.Forms.Control _
             Implements IConfigurablePlugin.GetConfigUI
 
         ''' -------------------------------------------------------------------

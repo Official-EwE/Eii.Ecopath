@@ -20,7 +20,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports System
 Imports System.Drawing
+Imports System.Windows.Forms
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -58,7 +60,7 @@ Public Interface IGUIPlugin
     ''' <param name="frmPlugin">A reference to the form that the plug-in creates
     ''' or activates in response to this event.</param>
     ''' -----------------------------------------------------------------------
-    Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object)
+    Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

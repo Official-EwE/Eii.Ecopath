@@ -285,7 +285,7 @@ Public Class cWoRMSPluginPoint
 #Region " Configuration "
 
     ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
-    Public Function GetConfigUI() As Object _
+    Public Function GetConfigUI() As System.Windows.Forms.Control _
         Implements EwEPlugin.IConfigurablePlugin.GetConfigUI
         Return New ucConfig(Me)
     End Function

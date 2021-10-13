@@ -18,9 +18,12 @@
 '
 
 Option Strict On
+Imports System
 Imports System.Data
-Imports EwEUtils.Core
+Imports System.Text
+Imports EwEPlugin
 Imports EwEUtils.Database
+Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

@@ -1,10 +1,24 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B91F6E0-6127-4CF3-BF57-684092481454}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <RootNamespace>EwEPlugin</RootNamespace>
+    <AssemblyName>EwEPlugin</AssemblyName>
     <MyType>Windows</MyType>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwEPlugin.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -20,82 +34,238 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
+    <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
+    <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Updating\**" />
-    <Compile Remove="Web References\EwEAutoUpdateRef\**" />
-    <EmbeddedResource Remove="Updating\**" />
-    <EmbeddedResource Remove="Web References\EwEAutoUpdateRef\**" />
-    <None Remove="Updating\**" />
-    <None Remove="Web References\EwEAutoUpdateRef\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Update="System.Runtime.Serialization">
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="My Project\Application.Designer.vb">
+    <Compile Include="Plugin templates\Core\ICoreDataPlugin.vb" />
+    <Compile Include="Plugin templates\Core\ILicensePlugin.vb" />
+    <Compile Include="Plugin templates\Core\ISaveFilterPlugin.vb" />
+    <Compile Include="Plugin templates\Core\ICorePlugin.vb" />
+    <Compile Include="Plugin templates\Core\IMessageFilterPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\cEcopathRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\cEcosimRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\cEcospaceRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\cFishingPolicySearchRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\ITaxonSearchCapabilitiesPlugin.vb" />
+    <Compile Include="Plugin templates\Database\IModelImportPlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunInitializedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimTimeSeriesPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimModifyEffort.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimShapeFunctionPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimScenarioAddedOrRemovedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunStartedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceLayerChangePlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceScenarioAddedOrRemovedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterUtils.vb" />
+    <Compile Include="Plugin templates\Ecotracer\IEcotracerScenarioAddedOrRemovedPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IAutoRunPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\ICommandHandlerPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IMenuItemKeyboardShortcutPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IAutoSavePlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\cSearchRunType.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataConsumerPlugin.vb" />
+    <Compile Include="Plugin templates\Core\IDataValidatedPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataBroadcaster.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataProducerPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataSearchProducerPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\IDataSearchResults.vb" />
+    <Compile Include="Plugin templates\Data exchange\IPluginData.vb" />
+    <Compile Include="Plugin templates\Database\IDatabasePlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunInvalidatedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunCompletedPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathMassBalancePlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimDataInitialized.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimModifyFGearPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimRunCompletedPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimEndTimestepPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimEndTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimInitializedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimModifyTimeseriesPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimRunInitializedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimSubTimestepsPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimRunInvalidatedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceRunInvalidatedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceCalcCostOfSailingPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPostPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceInitializedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceEndTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceBeginTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospacePlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospacePostFishingEffortModTimestepPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\ISpatialDataConverterPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\ISpatialDataSetPlugin.vb" />
+    <Compile Include="Plugin templates\Ecotracer\IEcotracerInitializedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecotracer\IEcotracerPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IAutolaunchPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IConfigurablePlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IDockStatePlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IHelpPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IEwEOptionsPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\INavigationTreeItemPlugin.vb" />
+    <Compile Include="Handlers\cPluginAssembly.vb" />
+    <Compile Include="Handlers\cPluginException.vb" />
+    <Compile Include="Handlers\cPluginManager.vb" />
+    <Compile Include="Plugin templates\GUI\IUIContextPlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IGUIPlugin.vb" />
+    <Compile Include="Plugin templates\Ecopath\IEcopathRunCompleted2Plugin.vb" />
+    <Compile Include="Plugin templates\GUI\IMenuItemPlugin.vb" />
+    <Compile Include="Plugin templates\IDisposedPlugin.vb" />
+    <Compile Include="Plugin templates\IPlugin.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Update="My Project\Resources.Designer.vb">
+    <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="My Project\Settings.Designer.vb">
+    <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Plugin templates\Management Evaluation\IMSEBatch.vb" />
+    <Compile Include="Plugin templates\Management Evaluation\IMSEInitialized.vb" />
+    <Compile Include="Plugin templates\Management Evaluation\IMSERunPlugin.vb" />
+    <Compile Include="Plugin templates\Management Evaluation\IMSYPlugin.vb" />
+    <Compile Include="Plugin templates\MonteCarlo\IMonteCarloPlugin.vb" />
+    <Compile Include="Plugin templates\MonteCarlo\IMonteCarloResultWriterPlugin.vb" />
+    <Compile Include="Plugin templates\MonteCarlo\IMonteCarloBalancedModelWaitLock.vb" />
+    <Compile Include="Plugin templates\Search\ISearchPlugin.vb" />
+    <Compile Include="Updating\cAutoUpdate.vb" />
+    <Compile Include="Web References\EwEAutoUpdateRef\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Update="My Project\Application.myapp">
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EwE.licenseheader" />
+    <None Include="Overview.cd" />
+    <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
+      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Name>EwEUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="EwEPlugin.snk" />
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
@@ -112,6 +282,14 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>EwEPlugin_EwEAutoUpdateRef_UpdateService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\EwEAutoUpdateRef\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\EwEAutoUpdateRef\UpdateService.disco" />
+    <None Include="Web References\EwEAutoUpdateRef\UpdateService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -132,18 +310,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="Web References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Plugin templates\Ecosim\IEcosimFunctionalResponsePlugin.vb" />
-    <Compile Remove="Plugin templates\GUI\IOptionsPagePlugin.vb" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.ServiceModel.Duplex" Version="4.8.1" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.8.1" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.8.1" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.246501">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

@@ -18,6 +18,8 @@
 '
 
 Option Strict On
+Imports EwEPlugin
+Imports EwEUtils.Database
 Imports System.Data
 
 ''' --------------------------------------------------------------------------

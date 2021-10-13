@@ -35,10 +35,8 @@ Public Class cTimeSeriesReaderFactory
     Public Enum eTimeSeriesReaderTypes
         ''' <summary>Indicates a reader that can read Time Series data from a comma-separated file.</summary>
         CSV
-#If NETFRAMEWORK Then
         ''' <summary>Indicates a reader that can read Time Series data from the clipboard.</summary>
         Clipboard
-#End If
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -59,10 +57,8 @@ Public Class cTimeSeriesReaderFactory
         Select Case readerType
             Case eTimeSeriesReaderTypes.CSV
                 reader = New cTimeSeriesCSVReader(core)
-#If NETFRAMEWORK Then
             Case eTimeSeriesReaderTypes.Clipboard
                 reader = New cTimeSeriesClipboardReader(core)
-#End If
             Case Else
                 ' Wtf
                 Debug.Assert(False, String.Format("Unable to create Time series text reader for input source {0}", readerType))

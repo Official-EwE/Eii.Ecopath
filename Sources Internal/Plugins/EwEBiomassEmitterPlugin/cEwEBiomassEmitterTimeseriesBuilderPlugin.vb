@@ -91,7 +91,7 @@ Public Class cEwEBiomassEmitterTimeseriesBuilderPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
         Dim dlg As New dlgBiomassEmitterTimeSeriesBuilder(Me.m_uic)
         dlg.ShowDialog(Me.m_uic.FormMain)
     End Sub

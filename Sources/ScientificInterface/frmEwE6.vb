@@ -3214,8 +3214,6 @@ Public Class frmEwE6
             ' All pending changes must be saved prior to this
             If (Not Me.Core.SaveChanges()) Then Return
 
-            Throw New NotImplementedException()
-
             ' Export
             Dim dlg As New dlgEcobaseExport(Me.UIContext)
             dlg.ShowDialog(Me)
@@ -4357,7 +4355,7 @@ Public Class frmEwE6
             'End If
 
             Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim ctrl As Control = DirectCast(dsConf.GetConfigUI(), Control)
+            Dim ctrl As Control = dsConf.GetConfigUI()
             If (ctrl Is Nothing) Then Return
 
             Dim dlg As New dlgConfig(Me.UIContext)

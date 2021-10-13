@@ -29,8 +29,6 @@ Imports Microsoft.VisualBasic
 
 Namespace Utilities
 
-#If NETFRAMEWORK Then
-
     ''' =======================================================================
     ''' <summary>
     ''' Helper class offering miscellaneous sound-related functionalities.
@@ -83,7 +81,6 @@ Namespace Utilities
 
 #Region " Public access "
 
-
         Public Shared Sub PlaySound(icon As MessageBoxIcon)
 
             Dim strFileName As String = ""
@@ -134,6 +131,5 @@ Namespace Utilities
 #End Region ' Public access
 
     End Class
-#End If
 
 End Namespace

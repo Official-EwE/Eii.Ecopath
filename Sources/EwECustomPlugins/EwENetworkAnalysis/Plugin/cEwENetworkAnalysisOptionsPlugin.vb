@@ -81,7 +81,7 @@ Public Class cEwENetworkAnalysisOptionsPlugin
         Return True
     End Function
 
-    Public Function GetConfigUI() As Object Implements IConfigurable.GetConfigUI
+    Public Function GetConfigUI() As Control Implements IConfigurable.GetConfigUI
         Return New ucOptions(Me.m_uic)
     End Function
 

@@ -46,7 +46,7 @@ Public Class dlgEcobaseExport
 
 #Region " Private vars "
 
-    Private m_ecobase As cEcobaseWDSL = Nothing
+    Private m_ecobase As cEcoBaseWDSL = Nothing
     Private m_models As New List(Of cModelData)
     Private m_strAuthorAgreement As String = ""
 
@@ -161,7 +161,7 @@ Public Class dlgEcobaseExport
 
         Me.m_bInUpdate = False
 
-        Me.m_ecobase = New cEcobaseWDSL()
+        Me.m_ecobase = New cEcoBaseWDSL()
 
         Me.m_wrkGetAuthorAgreement.WorkerSupportsCancellation = True
         Me.m_wrkGetAuthorAgreement.RunWorkerAsync(Nothing)
@@ -543,14 +543,14 @@ Public Class dlgEcobaseExport
     Private Function SubmitToEcobase() As Boolean
 
         Dim msg As cMessage = Nothing
-        Dim wdsl As New cEcobaseWDSL()
+        Dim wdsl As New cEcoBaseWDSL()
         Dim bSucces As Boolean = True
 
         ' Sanity checks
         Debug.Assert(Me.Core.IsModelBalanced)
 
         ' Prepare data to send to Ecobase
-        Dim data As New WebServices.Ecobase.cEcobaseModelParameters(Me.Core)
+        Dim data As New WebServices.Ecobase.cEcobaseModelParameters(Me.core)
         Dim md As Ecobase.cModelData = data.Model
 
         ' Update values not stored in the model
@@ -607,7 +607,7 @@ Public Class dlgEcobaseExport
 
         msg = New cMessage("Ecobase export XML saved to " & strFile, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strFile)
-        Me.Core.Messages.SendMessage(msg)
+        Me.core.Messages.SendMessage(msg)
         msg = Nothing
 #End If
 
@@ -642,7 +642,7 @@ Public Class dlgEcobaseExport
         End Try
 
         If (msg IsNot Nothing) Then
-            Me.Core.Messages.SendMessage(msg)
+            Me.core.Messages.SendMessage(msg)
         End If
 
         Return bSucces
@@ -683,7 +683,7 @@ Public Class dlgEcobaseExport
         Me.m_models.Clear()
 
         Try
-            Dim strModels As String = Me.m_ecobase.list_models("")
+            Dim strModels As String = Me.m_ecobase.list_models("", Nothing)
             Dim data As cEcobaseModelList = cEcobaseModelList.FromXML(strModels)
             Me.m_models.AddRange(data.Models)
 
@@ -720,8 +720,8 @@ Public Class dlgEcobaseExport
         Handles m_wrkGetAuthorAgreement.DoWork
 
         Try
-            Dim wdsl As New cEcobaseWDSL()
-            Dim strAgreement As String = wdsl.getModel("agreement", -1, "")
+            Dim wdsl As New cEcoBaseWDSL()
+            Dim strAgreement As String = wdsl.getModel("agreement", -1)
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
 
             Me.m_strAuthorAgreement = data.AuthorAgreement

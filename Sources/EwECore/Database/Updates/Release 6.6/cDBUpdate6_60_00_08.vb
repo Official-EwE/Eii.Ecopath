@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports EwEUtils.Database
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 

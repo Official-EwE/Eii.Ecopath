@@ -69,7 +69,7 @@ Public Class cPluginPoint
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements IGUIPlugin.OnControlClick
         Try
             Me.m_uic.FormMain.BeginInvoke(New MethodInvoker(AddressOf Me.LaunchUI))

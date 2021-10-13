@@ -43,12 +43,12 @@ Namespace WebServices.Ecobase
 
 #Region " Variables "
 
-        <XmlElement("result")> 
+        <XmlElement("result")> _
         Public Property Result As Integer
-        <XmlElement("md5_key")> 
+        <XmlElement("md5_key")> _
         Public Property Hash As String
         ''' <summary>Ecobase ID.</summary>
-        <XmlElement("model_number")> 
+        <XmlElement("model_number")> _
         Public Property ModelNumber As String
 
         Public Enum eSubmisssionResultTypes As Integer
@@ -57,7 +57,7 @@ Namespace WebServices.Ecobase
             NotInEcobase = 2
         End Enum
 
-        <XmlIgnore()> 
+        <XmlIgnore()> _
         Public Property ResultType As eSubmisssionResultTypes
             Get
                 Return DirectCast(Me.Result, eSubmisssionResultTypes)
@@ -136,4 +136,3 @@ Namespace WebServices.Ecobase
     End Class
 
 End Namespace
-

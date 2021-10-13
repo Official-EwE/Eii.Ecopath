@@ -170,7 +170,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form) _
         Implements IGUIPlugin.OnControlClick
 
         Try

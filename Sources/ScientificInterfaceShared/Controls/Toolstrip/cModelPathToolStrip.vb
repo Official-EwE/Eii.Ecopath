@@ -234,7 +234,6 @@ Namespace Controls
             rcLabel = New Rectangle(iMin, 0, iMax - iMin, Me.ClientRectangle.Height)
 
             If (rcLabel.Width > 0) Then
-#If NETFRAMEWORK Then
                 strTemp = cStringUtils.CompactString(strTemp, rcLabel.Width, Me.Font)
 
                 ' Chop off Nothing characters which will occur when string is shortened.
@@ -246,9 +245,6 @@ Namespace Controls
                     End If
                     sbTemp.Append(c)
                 Next
-#Else
-                sbTemp.Append(strTemp)
-#End If
 
             End If
 

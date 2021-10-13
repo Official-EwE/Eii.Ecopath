@@ -21,19 +21,20 @@
 
 Option Strict On
 
-Imports System.Data
-Imports System.Data.OleDb
 Imports System.IO
-Imports System.Text
-Imports System.Xml
-Imports EwECore.Auxiliary
 Imports EwECore.DataSources
-Imports EwECore.MSE
-Imports EwECore.SpatialData
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports System.Xml
+Imports System.Text
+Imports System.Data.OleDb
 Imports EwEUtils.Utilities
+Imports EwECore.MSE
+Imports EwECore.SpatialData
+Imports EwECore.Auxiliary
 
+'
 #End Region ' Imports
 
 #Disable Warning CA1063 ' Implement IDisposable Correctly
