@@ -90,7 +90,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         If Not Me.HasForm Then
             Me.m_ui = New frmShapes(Me.GridType)

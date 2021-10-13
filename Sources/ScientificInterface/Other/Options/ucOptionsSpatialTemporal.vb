@@ -469,7 +469,7 @@ Namespace Other
             Me.m_btnExport.Enabled = (man.Datasets.Count > 0)
             Me.m_btnViewConfig.Enabled = bHasSelection
 
-            Me.m_lblCacheLocationValue.Text = cache.RootFolder
+            Me.m_lblCacheLocationValue.Text = cStringUtils.CompactString(cache.RootFolder, Me.m_lblCacheLocationValue.ClientSize.Width, Me.Font)
             Me.m_lblCacheSizeValue.Text = cStringUtils.Localize(My.Resources.GENERIC_VALUE_CACHEMEMORY,
                                                         sg.FormatMemory(cache.GetSize()),
                                                         sg.FormatMemory(cache.GetUnusedSize(man)))

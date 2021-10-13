@@ -30,7 +30,6 @@ Imports OfficeOpenXml
 
 #End Region ' Imports
 
-<CLSCompliant(False)>
 Public Class cGenericDataReader
 
 #Region " Config "

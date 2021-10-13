@@ -18,8 +18,13 @@
 '
 
 Option Strict On
-Imports System.Data
+Imports EwEPlugin
 Imports EwEUtils.Database
+Imports EwEUtils.Core
+Imports System.Data
+Imports System.Data.OleDb
+Imports EwEUtils.Utilities
+Imports EwECore.DataSources.cDBDataSource
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

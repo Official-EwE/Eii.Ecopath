@@ -242,7 +242,7 @@ Public Class dlgManageTimeSeries
 
     Private Sub OnImportSetClipboardSource(sender As System.Object, e As System.EventArgs) _
             Handles m_rbImportSourceClipboard.CheckedChanged
-        'Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard)
+        Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard)
     End Sub
 
     Private Sub OnImportFormatInterval(sender As System.Object, e As ListControlConvertEventArgs) _
@@ -380,8 +380,8 @@ Public Class dlgManageTimeSeries
         ' Update source radio buttons
         If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
             Me.m_rbImportSourceTextFile.Checked = True
-            'ElseIf TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
-            '    Me.m_rbImportSourceClipboard.Checked = True
+        ElseIf TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
+            Me.m_rbImportSourceClipboard.Checked = True
         End If
 
         ' Update preview controls
@@ -549,9 +549,9 @@ Public Class dlgManageTimeSeries
                 If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then Return
                 Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
 
-                'Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard
-                '    If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then Return
-                '    Me.m_tr = New cTimeSeriesClipboardReader(Me.m_uic.Core)
+            Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard
+                If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then Return
+                Me.m_tr = New cTimeSeriesClipboardReader(Me.m_uic.Core)
 
             Case Else
                 Debug.Assert(False)
@@ -576,9 +576,9 @@ Public Class dlgManageTimeSeries
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PREVIEW_LOADING)
         Try
-            'If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
-            '    Me.m_tr.Read(del, sep, inv)
-            If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
+            If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
+                Me.m_tr.Read(del, sep, inv)
+            ElseIf TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
                 DirectCast(Me.m_tr, cTimeSeriesCSVReader).Read(Me.m_strImportFileName, del, sep, inv)
             End If
 

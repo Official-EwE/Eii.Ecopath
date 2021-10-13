@@ -116,7 +116,7 @@ Public Class cNetworkD3RWriterPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
         Try
             Me.CreateNetworkD3RScript()
         Catch ex As Exception
@@ -182,7 +182,7 @@ Public Class cNetworkD3RWriterPlugin
         Return True
     End Function
 
-    Public Function GetConfigUI() As Object Implements IConfigurable.GetConfigUI
+    Public Function GetConfigUI() As Control Implements IConfigurable.GetConfigUI
         Dim ui As New ucNetworkD3Options()
         ui.Init(Me)
         Return ui

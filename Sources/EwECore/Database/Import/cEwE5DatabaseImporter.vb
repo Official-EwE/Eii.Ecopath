@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Data
 Imports System.Drawing
 Imports System.Globalization
 Imports System.Text

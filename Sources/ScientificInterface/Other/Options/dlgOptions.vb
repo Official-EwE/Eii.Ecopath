@@ -95,7 +95,7 @@ Namespace Other
                 ' ToDo: sort
                 For Each pi As IPlugin In pm.GetPlugins(GetType(IEwEOptionsPlugin))
                     Dim opt As IEwEOptionsPlugin = DirectCast(pi, IEwEOptionsPlugin)
-                    Dim page As Control = DirectCast(opt.GetConfigUI(), Control)
+                    Dim page As Control = opt.GetConfigUI()
                     Me.m_lPages.Add(DirectCast(page, IOptionsPage))
                     tnPlugins.Nodes.Add(Me.CreateNode(opt.Label, pi.Name, page.GetType()))
                 Next

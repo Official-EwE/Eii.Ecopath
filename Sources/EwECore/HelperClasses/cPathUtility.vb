@@ -164,10 +164,10 @@ Public Class cPathUtility
     ''' <param name="strModelVersion">The model file version to use.</param>
     ''' <returns>A susbstituted value.</returns>
     ''' -----------------------------------------------------------------------
-    Private Shared Function ResolvePlaceholder(placeholder As ePathPlaceholderTypes,
-                                               strModelFile As String,
-                                               strModelPath As String,
-                                               strModelExt As String,
+    Private Shared Function ResolvePlaceholder(placeholder As ePathPlaceholderTypes, _
+                                               strModelFile As String, _
+                                               strModelPath As String, _
+                                               strModelExt As String, _
                                                strModelVersion As String) As String
 
         Dim strResolved As String = ""
@@ -180,10 +180,11 @@ Public Class cPathUtility
                 Case ePathPlaceholderTypes.ModelPath : strResolved = strModelPath
                 Case ePathPlaceholderTypes.ModelExt : strResolved = strModelExt
                 Case ePathPlaceholderTypes.ModelVersion : strResolved = strModelVersion
-                Case ePathPlaceholderTypes.MyDocuments : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-                Case ePathPlaceholderTypes.MyAppData : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                Case ePathPlaceholderTypes.Desktop : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                Case ePathPlaceholderTypes.TempFiles : strResolved = System.IO.Path.GetTempPath
+                Case ePathPlaceholderTypes.MyDocuments : strResolved = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+                Case ePathPlaceholderTypes.MyAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+                Case ePathPlaceholderTypes.Desktop : strResolved = My.Computer.FileSystem.SpecialDirectories.Desktop
+                    'Case ePathPlaceholderTypes.SharedAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
+                Case ePathPlaceholderTypes.TempFiles : strResolved = My.Computer.FileSystem.SpecialDirectories.Temp
                 Case Else : Debug.Assert(False)
             End Select
         Catch ex As Exception

@@ -126,7 +126,10 @@ Public Class cModelFromEcosimPluginPoint
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object,
+                              e As System.EventArgs,
+                              ByRef frmPlugin As System.Windows.Forms.Form) _
+                              Implements EwEPlugin.IGUIPlugin.OnControlClick
         If (Me.m_uic IsNot Nothing) Then
             frmPlugin = DirectCast(Me.UI, System.Windows.Forms.Form)
         End If

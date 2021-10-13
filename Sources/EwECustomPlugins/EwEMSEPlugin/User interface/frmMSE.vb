@@ -234,7 +234,7 @@ Public Class frmMSE
         Me.m_rbEwEDefaultPath.Checked = Me.MSE.UseEwEPath
         Me.m_rbCustomPath.Checked = Not Me.MSE.UseEwEPath
 
-        Me.m_lblPathValue.Text = Me.MSE.DataPath
+        Me.m_lblPathValue.Text = cStringUtils.CompactString(Me.MSE.DataPath, Me.m_lblPathValue.ClientRectangle.Width, Me.m_lblPathValue.Font, TextFormatFlags.PathEllipsis)
         cToolTipShared.GetInstance().SetToolTip(Me.m_lblPathValue, Me.MSE.DataPath)
 
         ' Manage panel 1 control in detail, because this panel shares general configuration

@@ -120,7 +120,7 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements IGUIPlugin.OnControlClick
         Try
             If (Me.m_core Is Nothing) Then Return

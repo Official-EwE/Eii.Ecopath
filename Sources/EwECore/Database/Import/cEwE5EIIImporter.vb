@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Data
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Database

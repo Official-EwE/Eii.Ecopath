@@ -250,8 +250,8 @@ Public Class cConverterPicker
 
         Try
             Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)
-            Return (dlg.ShowDialog(cStringUtils.Localize(SharedResources.CAPTION_GENERIC_EDIT, strTitle),
-                                   DirectCast(cfg.GetConfigUI(), Control)) = DialogResult.OK)
+            Return (dlg.ShowDialog(cStringUtils.Localize(SharedResources.CAPTION_GENERIC_EDIT, strTitle), _
+                                   cfg.GetConfigUI()) = DialogResult.OK)
         Catch ex As Exception
             ' Whoah!
         End Try

@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports EwEUtils.Database
+Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

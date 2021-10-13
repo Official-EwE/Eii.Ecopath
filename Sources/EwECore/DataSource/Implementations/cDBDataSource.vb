@@ -20,7 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Data
+
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwECore.MSE
