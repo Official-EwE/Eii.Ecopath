@@ -238,9 +238,9 @@
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
     <Compile Include="EcoBase\cEcobaseSubmission.vb" />
-    <Compile Include="EcoBase\cEcoBaseWDSL.vb" />
     <Compile Include="EcoBase\cEcobaseData.vb" />
     <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
+    <Compile Include="EcoBase\cEcoBaseWDSL.vb" />
     <Compile Include="EcoPath\Input Output\cEcopathFleetOutput.vb" />
     <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
     <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeGroups.vb" />
