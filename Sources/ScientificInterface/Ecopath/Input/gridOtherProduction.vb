@@ -111,9 +111,9 @@ Namespace Ecopath.Input
 
                 Me(iRow, eColumnTypes.Index) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                 If group.IsMultiStanza Then
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                    Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
                 Else
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                    Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
                 End If
                 Me(iRow, eColumnTypes.Immig) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.Immig)
                 Me(iRow, eColumnTypes.Emig) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.Emig)
