@@ -54,45 +54,7 @@ Public Class cEIIXMLDataSource
     Private m_core As cCore = Nothing
     Private m_doc As XmlDocument = Nothing
 
-    Private Shared s_dtExcludedDBEntries As New Dictionary(Of String, String())
-
     Public Sub New()
-
-        ' JS 02 Dec 2020: do not exclude any db entries for now; EIIXML must be a fully functional data source
-
-        's_dtExcludedDBEntries("EcopathGroup") = New String() {"PoolColor"}
-        's_dtExcludedDBEntries("EcopathFleet") = New String() {"PoolColor"}
-        '' s_dtExcludedDBEntries("Auxillary") = New String() {}
-        's_dtExcludedDBEntries("Quote") = New String() {}
-        's_dtExcludedDBEntries("UpdateLog") = New String() {}
-        's_dtExcludedDBEntries("Pedigree") = New String() {}
-        's_dtExcludedDBEntries("EcopathGroupPedigree") = New String() {}
-        's_dtExcludedDBEntries("Taxon") = New String() {}
-        's_dtExcludedDBEntries("EcopathGroupTaxon") = New String() {}
-        's_dtExcludedDBEntries("EcopathStanzaTaxon") = New String() {}
-
-        '' Exclude value chain
-        's_dtExcludedDBEntries("cUnit") = New String() {}
-        's_dtExcludedDBEntries("cConsumerUnitDefault") = New String() {}
-        's_dtExcludedDBEntries("cConsumerUnit") = New String() {}
-        's_dtExcludedDBEntries("cDistributionUnit") = New String() {}
-        's_dtExcludedDBEntries("cDistributionUnitDefault") = New String() {}
-        's_dtExcludedDBEntries("cEconomicUnit") = New String() {}
-        's_dtExcludedDBEntries("cFlowDiagram") = New String() {}
-        's_dtExcludedDBEntries("cFlowPosition") = New String() {}
-        's_dtExcludedDBEntries("cLink") = New String() {}
-        's_dtExcludedDBEntries("cLinkDefault") = New String() {}
-        's_dtExcludedDBEntries("cLinkLandings") = New String() {}
-        's_dtExcludedDBEntries("cOOPStorable") = New String() {}
-        's_dtExcludedDBEntries("cParameters") = New String() {}
-        's_dtExcludedDBEntries("cProcessingUnit") = New String() {}
-        's_dtExcludedDBEntries("cProcessingUnitDefault") = New String() {}
-        's_dtExcludedDBEntries("cProducerUnit") = New String() {}
-        's_dtExcludedDBEntries("cProducerUnitDefault") = New String() {}
-        's_dtExcludedDBEntries("cRetailerUnit") = New String() {}
-        's_dtExcludedDBEntries("cRetailerUnitDefault") = New String() {}
-        's_dtExcludedDBEntries("cWholesalerUnit") = New String() {}
-        's_dtExcludedDBEntries("cWholesalerUnitDefault") = New String() {}
 
     End Sub
 
@@ -3014,26 +2976,12 @@ Public Class cEIIXMLDataSource
         Dim conn As OleDbConnection = DirectCast(db.GetConnection(), OleDbConnection)
         Dim dtTables As DataTable = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, New String() {Nothing, Nothing, strTable, Nothing})
         Dim lstrColumns As New List(Of String)
-        Dim astrExcl As String() = New String() {}
-
-        ' Has exclusion entries for table?
-        If s_dtExcludedDBEntries.ContainsKey(strTable) Then
-            ' #Yes: get it
-            astrExcl = s_dtExcludedDBEntries(strTable)
-            ' Is an empty array?
-            If (astrExcl.Length = 0) Then
-                ' #Yes: No columns to write
-                Return lstrColumns.ToArray()
-            End If
-        End If
 
         ' Summarize columns
         For Each drow As DataRow In dtTables.Rows
             Dim strColName As String = CStr(drow("COLUMN_NAME"))
             Dim strColType As String = Me.DataType(CInt(drow("DATA_TYPE"))).ToString()
-            If Array.IndexOf(astrExcl, strColName) = -1 Then
-                lstrColumns.Add(strColName & ":" & strColType)
-            End If
+            lstrColumns.Add(strColName & ":" & strColType)
         Next
         Return lstrColumns.ToArray()
 
