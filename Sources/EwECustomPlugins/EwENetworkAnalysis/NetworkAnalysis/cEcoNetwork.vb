@@ -2846,7 +2846,7 @@ NextPivot:
             totalCatch = 0
             For i As Integer = 1 To m_epdata.NumGroups
                 totalCatch = totalCatch + m_epdata.fCatch(i)
-            Next i%
+            Next i
         Catch ex As Exception
             cLog.Write(ex)
             Throw New ApplicationException("EstimTotalCatch() " & ex.Message, ex)
@@ -3617,9 +3617,9 @@ NextPivot:
                 If m_esdata.Eatenby(j) > 0 Then SDiet(j, i) = m_esdata.Consumpt(i, j) / m_esdata.Eatenby(j)
             Next
 
-            If Round = 54 Then
-                Debug.Assert(False)
-            End If
+            'If Round = 54 Then
+            '    Debug.Assert(False)
+            'End If
 
 
             ''jb BUG Jan-2021 SimEx and SimResp are not the same as the Ecospath versions when calculated on a flat Ecosim model
