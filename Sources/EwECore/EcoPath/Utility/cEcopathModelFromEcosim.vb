@@ -139,7 +139,11 @@ Public Class cEcopathModelFromEcosim
 
     Public Sub InitGeneration(BACalcMode As eBACalcTypes)
 
-        Debug.Assert(Me.m_data Is Nothing)
+        'Clear out any data from the last time a model saved
+        If Me.m_data IsNot Nothing Then
+            Me.m_data.Clear()
+            Me.m_data = Nothing
+        End If
 
         Me.m_data = New cData()
         Me.m_data.BACalcMode = BACalcMode
