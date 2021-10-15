@@ -249,7 +249,8 @@ Public Class cNetworkAnalysisEcosimResultWriter
                 Else
                     ' #No: add year label
                     If (j = 1) Then
-                        sb.Append(iYear & ":" & (iMonth + 1))
+                        Dim d As Date = New Date(iYear, iMonth + 1, 1)
+                        sb.Append(d.ToShortDateString)
                         sb.Append(", ")
                     End If
                     ' Add value
