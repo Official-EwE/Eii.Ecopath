@@ -636,9 +636,7 @@ Namespace SpatialData
             Next
             If (n >= 0) Then Me.m_lConfigFiles.RemoveAt(n)
 
-            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription,
-                                             cSystemUtils.GetHostName(),
-                                             Me.m_core.DefaultAuthor, Me.m_core.DefaultContact)
+            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription, cSystemUtils.GetHostName(), Me.DataAuthor, Me.DataContact)
             cfg.Save(Me.m_core, Me, Nothing, False)
             Me.m_lConfigFiles.Add(cfg)
             Return cfg
