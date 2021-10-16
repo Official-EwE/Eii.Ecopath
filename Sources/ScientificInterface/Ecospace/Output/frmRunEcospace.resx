@@ -328,7 +328,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_pbMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>794, 813</value>
+    <value>797, 817</value>
   </data>
   <data name="m_pbMap.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -460,7 +460,7 @@
     <value>m_hdrAutosave</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
     <value>m_plMapSaveImages</value>
@@ -657,8 +657,8 @@
   <data name="&gt;&gt;m_cbShowLabels.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_hdrLabelOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrLabelOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_hdrLabelOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -685,7 +685,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plMapLabels</value>
@@ -975,8 +975,8 @@
   <data name="&gt;&gt;m_rbDisplayContaminantC.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="m_hdrDist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrDist.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_hdrDist.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1000,7 +1000,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plMapData</value>
@@ -1179,8 +1179,8 @@
   <data name="&gt;&gt;m_btnDisplayGroups1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_hdrDispOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrDispOpt.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_hdrDispOpt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1207,7 +1207,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -1242,8 +1242,8 @@
   <data name="m_plRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdrRunning.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrRunning.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_hdrRunning.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1255,7 +1255,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrRunning.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 18</value>
+    <value>204, 18</value>
   </data>
   <data name="m_hdrRunning.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1270,7 +1270,7 @@
     <value>m_hdrRunning</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -1539,8 +1539,8 @@
   <data name="&gt;&gt;m_rbRelBiomassGraph.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_hdrGraphTypes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrGraphTypes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_hdrGraphTypes.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -1549,7 +1549,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrGraphTypes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 18</value>
+    <value>204, 18</value>
   </data>
   <data name="m_hdrGraphTypes.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1564,7 +1564,7 @@
     <value>m_hdrGraphTypes</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Parent" xml:space="preserve">
     <value>m_plGraphData</value>
@@ -1641,9 +1641,6 @@
   <data name="m_scMain.Panel1MinSize" type="System.Int32, mscorlib">
     <value>210</value>
   </data>
-  <data name="m_tcOutputs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
   <data name="m_zgPlotLarge.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1654,7 +1651,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_zgPlotLarge.Size" type="System.Drawing.Size, System.Drawing">
-    <value>828, 813</value>
+    <value>831, 817</value>
   </data>
   <data name="m_zgPlotLarge.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1675,7 +1672,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tabGraph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>828, 813</value>
+    <value>831, 817</value>
   </data>
   <data name="m_tabGraph.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1714,13 +1711,13 @@
 </value>
   </data>
   <data name="m_legend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>800, 3</value>
+    <value>803, 3</value>
   </data>
   <data name="m_legend.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_legend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 810</value>
+    <value>23, 814</value>
   </data>
   <data name="m_legend.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1729,7 +1726,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tabMap</value>
@@ -1741,7 +1738,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tabMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>828, 813</value>
+    <value>831, 817</value>
   </data>
   <data name="m_tabMap.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1761,11 +1758,14 @@
   <data name="&gt;&gt;m_tabMap.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_tcOutputs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="m_tcOutputs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 5</value>
+    <value>0, 0</value>
   </data>
   <data name="m_tcOutputs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>836, 839</value>
+    <value>839, 843</value>
   </data>
   <data name="m_tcOutputs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -6348,6 +6348,6 @@
     <value>frmRunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

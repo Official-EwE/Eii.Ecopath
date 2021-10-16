@@ -2327,11 +2327,6 @@
   <ItemGroup>
     <Folder Include="Other\Update\" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Forms.UI.Controls.WebView">
-      <Version>6.1.2</Version>
-    </PackageReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
