@@ -89,12 +89,18 @@ Partial Class dlgManageTimeSeries
         Me.m_clInterval = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_tcMain = New System.Windows.Forms.TabControl()
+        Me.m_tlpLoadTS = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tlpWeights = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plWeights = New System.Windows.Forms.Panel()
         Me.m_tpDelete.SuspendLayout()
         Me.m_tpImport.SuspendLayout()
         CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpWeights.SuspendLayout()
         Me.m_tpLoad.SuspendLayout()
         Me.m_tcMain.SuspendLayout()
+        Me.m_tlpLoadTS.SuspendLayout()
+        Me.m_tlpWeights.SuspendLayout()
+        Me.m_plWeights.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -491,9 +497,7 @@ Partial Class dlgManageTimeSeries
         '
         'm_tpWeights
         '
-        Me.m_tpWeights.Controls.Add(Me.m_gridWeights)
-        Me.m_tpWeights.Controls.Add(Me.m_btnApplyCheckNone)
-        Me.m_tpWeights.Controls.Add(Me.m_btnApplyCheckAll)
+        Me.m_tpWeights.Controls.Add(Me.m_tlpWeights)
         Me.m_tpWeights.ImageIndex = 1
         Me.m_tpWeights.Location = New System.Drawing.Point(4, 26)
         Me.m_tpWeights.Name = "m_tpWeights"
@@ -506,11 +510,9 @@ Partial Class dlgManageTimeSeries
         'm_gridWeights
         '
         Me.m_gridWeights.AllowBlockSelect = True
-        Me.m_gridWeights.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_gridWeights.AutoSizeMinHeight = 10
         Me.m_gridWeights.AutoSizeMinWidth = 10
+        Me.m_gridWeights.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_gridWeights.AutoStretchColumnsToFitWidth = True
         Me.m_gridWeights.AutoStretchRowsToFitHeight = False
         Me.m_gridWeights.BackColor = System.Drawing.Color.White
@@ -520,14 +522,16 @@ Partial Class dlgManageTimeSeries
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridWeights.CustomSort = False
         Me.m_gridWeights.DataName = "grid content"
+        Me.m_gridWeights.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_gridWeights.FixedColumnWidths = False
         Me.m_gridWeights.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridWeights.GridToolTipActive = True
         Me.m_gridWeights.IsLayoutSuspended = False
         Me.m_gridWeights.IsOutputGrid = True
-        Me.m_gridWeights.Location = New System.Drawing.Point(3, 3)
+        Me.m_gridWeights.Location = New System.Drawing.Point(0, 0)
+        Me.m_gridWeights.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
         Me.m_gridWeights.Name = "m_gridWeights"
-        Me.m_gridWeights.Size = New System.Drawing.Size(420, 578)
+        Me.m_gridWeights.Size = New System.Drawing.Size(419, 564)
         Me.m_gridWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -544,7 +548,7 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_btnApplyCheckNone.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnApplyCheckNone.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnApplyCheckNone.Location = New System.Drawing.Point(429, 32)
+        Me.m_btnApplyCheckNone.Location = New System.Drawing.Point(3, 29)
         Me.m_btnApplyCheckNone.Name = "m_btnApplyCheckNone"
         Me.m_btnApplyCheckNone.Size = New System.Drawing.Size(67, 23)
         Me.m_btnApplyCheckNone.TabIndex = 2
@@ -555,7 +559,7 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_btnApplyCheckAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnApplyCheckAll.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnApplyCheckAll.Location = New System.Drawing.Point(429, 3)
+        Me.m_btnApplyCheckAll.Location = New System.Drawing.Point(3, 0)
         Me.m_btnApplyCheckAll.Name = "m_btnApplyCheckAll"
         Me.m_btnApplyCheckAll.Size = New System.Drawing.Size(67, 23)
         Me.m_btnApplyCheckAll.TabIndex = 1
@@ -564,8 +568,7 @@ Partial Class dlgManageTimeSeries
         '
         'm_tpLoad
         '
-        Me.m_tpLoad.Controls.Add(Me.m_cbLoadEnableOnLoad)
-        Me.m_tpLoad.Controls.Add(Me.m_lvLoadDatasets)
+        Me.m_tpLoad.Controls.Add(Me.m_tlpLoadTS)
         Me.m_tpLoad.ImageIndex = 0
         Me.m_tpLoad.Location = New System.Drawing.Point(4, 26)
         Me.m_tpLoad.Name = "m_tpLoad"
@@ -581,7 +584,7 @@ Partial Class dlgManageTimeSeries
         Me.m_cbLoadEnableOnLoad.AutoSize = True
         Me.m_cbLoadEnableOnLoad.Checked = True
         Me.m_cbLoadEnableOnLoad.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.m_cbLoadEnableOnLoad.Location = New System.Drawing.Point(3, 547)
+        Me.m_cbLoadEnableOnLoad.Location = New System.Drawing.Point(3, 544)
         Me.m_cbLoadEnableOnLoad.Name = "m_cbLoadEnableOnLoad"
         Me.m_cbLoadEnableOnLoad.Size = New System.Drawing.Size(181, 17)
         Me.m_cbLoadEnableOnLoad.TabIndex = 1
@@ -602,7 +605,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lvLoadDatasets.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lvLoadDatasets.MultiSelect = False
         Me.m_lvLoadDatasets.Name = "m_lvLoadDatasets"
-        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(499, 544)
+        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(493, 541)
         Me.m_lvLoadDatasets.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.m_lvLoadDatasets.TabIndex = 0
         Me.m_lvLoadDatasets.UseCompatibleStateImageBehavior = False
@@ -630,9 +633,6 @@ Partial Class dlgManageTimeSeries
         '
         'm_tcMain
         '
-        Me.m_tcMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tcMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
         Me.m_tcMain.Controls.Add(Me.m_tpLoad)
         Me.m_tcMain.Controls.Add(Me.m_tpWeights)
@@ -645,6 +645,48 @@ Partial Class dlgManageTimeSeries
         Me.m_tcMain.SelectedIndex = 0
         Me.m_tcMain.Size = New System.Drawing.Size(507, 600)
         Me.m_tcMain.TabIndex = 0
+        '
+        'm_tlpLoadTS
+        '
+        Me.m_tlpLoadTS.ColumnCount = 1
+        Me.m_tlpLoadTS.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpLoadTS.Controls.Add(Me.m_cbLoadEnableOnLoad, 0, 1)
+        Me.m_tlpLoadTS.Controls.Add(Me.m_lvLoadDatasets, 0, 0)
+        Me.m_tlpLoadTS.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tlpLoadTS.Location = New System.Drawing.Point(3, 3)
+        Me.m_tlpLoadTS.Name = "m_tlpLoadTS"
+        Me.m_tlpLoadTS.RowCount = 2
+        Me.m_tlpLoadTS.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpLoadTS.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.m_tlpLoadTS.Size = New System.Drawing.Size(493, 564)
+        Me.m_tlpLoadTS.TabIndex = 2
+        '
+        'm_tlpWeights
+        '
+        Me.m_tlpWeights.ColumnCount = 2
+        Me.m_tlpWeights.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpWeights.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.m_tlpWeights.Controls.Add(Me.m_gridWeights, 0, 0)
+        Me.m_tlpWeights.Controls.Add(Me.m_plWeights, 1, 0)
+        Me.m_tlpWeights.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tlpWeights.Location = New System.Drawing.Point(0, 3)
+        Me.m_tlpWeights.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_tlpWeights.Name = "m_tlpWeights"
+        Me.m_tlpWeights.RowCount = 1
+        Me.m_tlpWeights.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpWeights.Size = New System.Drawing.Size(499, 564)
+        Me.m_tlpWeights.TabIndex = 3
+        '
+        'm_plWeights
+        '
+        Me.m_plWeights.Controls.Add(Me.m_btnApplyCheckAll)
+        Me.m_plWeights.Controls.Add(Me.m_btnApplyCheckNone)
+        Me.m_plWeights.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_plWeights.Location = New System.Drawing.Point(425, 0)
+        Me.m_plWeights.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        Me.m_plWeights.Name = "m_plWeights"
+        Me.m_plWeights.Size = New System.Drawing.Size(74, 564)
+        Me.m_plWeights.TabIndex = 1
         '
         'dlgManageTimeSeries
         '
@@ -674,8 +716,11 @@ Partial Class dlgManageTimeSeries
         CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpWeights.ResumeLayout(False)
         Me.m_tpLoad.ResumeLayout(False)
-        Me.m_tpLoad.PerformLayout()
         Me.m_tcMain.ResumeLayout(False)
+        Me.m_tlpLoadTS.ResumeLayout(False)
+        Me.m_tlpLoadTS.PerformLayout()
+        Me.m_tlpWeights.ResumeLayout(False)
+        Me.m_plWeights.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -725,5 +770,7 @@ Partial Class dlgManageTimeSeries
     Private WithEvents m_cmbImportInterval As System.Windows.Forms.ComboBox
     Private WithEvents m_lblImportInterval As System.Windows.Forms.Label
     Private WithEvents m_clInterval As System.Windows.Forms.ColumnHeader
-
+    Private WithEvents m_tlpLoadTS As TableLayoutPanel
+    Private WithEvents m_tlpWeights As TableLayoutPanel
+    Private WithEvents m_plWeights As Panel
 End Class
