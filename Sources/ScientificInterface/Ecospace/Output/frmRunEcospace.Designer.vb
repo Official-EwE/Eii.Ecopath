@@ -27,7 +27,7 @@ Namespace Ecospace
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
-        Protected Overrides Sub Dispose(disposing As Boolean)
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
@@ -280,9 +280,9 @@ Namespace Ecospace
             '
             'm_hdrLabelOptions
             '
-            resources.ApplyResources(Me.m_hdrLabelOptions, "m_hdrLabelOptions")
             Me.m_hdrLabelOptions.CanCollapseParent = True
             Me.m_hdrLabelOptions.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrLabelOptions, "m_hdrLabelOptions")
             Me.m_hdrLabelOptions.IsCollapsed = False
             Me.m_hdrLabelOptions.Name = "m_hdrLabelOptions"
             '
@@ -366,9 +366,9 @@ Namespace Ecospace
             '
             'm_hdrDist
             '
-            resources.ApplyResources(Me.m_hdrDist, "m_hdrDist")
             Me.m_hdrDist.CanCollapseParent = True
             Me.m_hdrDist.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrDist, "m_hdrDist")
             Me.m_hdrDist.IsCollapsed = False
             Me.m_hdrDist.Name = "m_hdrDist"
             '
@@ -415,9 +415,9 @@ Namespace Ecospace
             '
             'm_hdrDispOpt
             '
-            resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
             Me.m_hdrDispOpt.CanCollapseParent = True
             Me.m_hdrDispOpt.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
             Me.m_hdrDispOpt.IsCollapsed = False
             Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
             '
@@ -430,9 +430,9 @@ Namespace Ecospace
             '
             'm_hdrRunning
             '
-            resources.ApplyResources(Me.m_hdrRunning, "m_hdrRunning")
             Me.m_hdrRunning.CanCollapseParent = False
             Me.m_hdrRunning.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrRunning, "m_hdrRunning")
             Me.m_hdrRunning.IsCollapsed = False
             Me.m_hdrRunning.Name = "m_hdrRunning"
             '
@@ -508,17 +508,17 @@ Namespace Ecospace
             '
             'm_hdrGraphTypes
             '
-            resources.ApplyResources(Me.m_hdrGraphTypes, "m_hdrGraphTypes")
             Me.m_hdrGraphTypes.CanCollapseParent = True
             Me.m_hdrGraphTypes.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrGraphTypes, "m_hdrGraphTypes")
             Me.m_hdrGraphTypes.IsCollapsed = False
             Me.m_hdrGraphTypes.Name = "m_hdrGraphTypes"
             '
             'm_tcOutputs
             '
-            resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
             Me.m_tcOutputs.Controls.Add(Me.m_tabGraph)
             Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
+            resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
             Me.m_tcOutputs.Name = "m_tcOutputs"
             Me.m_tcOutputs.SelectedIndex = 0
             '
