@@ -243,6 +243,17 @@ Namespace Ecosim
             End Set
         End Property
 
+        Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
+            MyBase.OnStyleGuideChanged(ct)
+            Try
+                If ((ct And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
+                    Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
+                End If
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Form overrides
 
 #Region " Private control event handlers "
