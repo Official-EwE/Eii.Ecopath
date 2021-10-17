@@ -48,6 +48,7 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSY))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnSaveOutput = New System.Windows.Forms.ToolStripButton()
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_sc = New System.Windows.Forms.SplitContainer()
             Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
@@ -80,7 +81,6 @@ Namespace Ecosim
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_lblMaxRelF = New System.Windows.Forms.Label()
             Me.m_lblNumSteps = New System.Windows.Forms.Label()
-            Me.m_tsbnSaveOutput = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
@@ -104,6 +104,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnSaveOutput
+            '
+            Me.m_tsbnSaveOutput.CheckOnClick = True
+            Me.m_tsbnSaveOutput.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnSaveOutput, "m_tsbnSaveOutput")
+            Me.m_tsbnSaveOutput.Name = "m_tsbnSaveOutput"
             '
             'm_graph
             '
@@ -174,9 +181,9 @@ Namespace Ecosim
             '
             'm_hdrRun
             '
-            resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
             Me.m_hdrRun.CanCollapseParent = False
             Me.m_hdrRun.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
             Me.m_hdrRun.IsCollapsed = False
             Me.m_hdrRun.Name = "m_hdrRun"
             '
@@ -211,9 +218,9 @@ Namespace Ecosim
             '
             'm_hdrAssessment
             '
-            resources.ApplyResources(Me.m_hdrAssessment, "m_hdrAssessment")
             Me.m_hdrAssessment.CanCollapseParent = True
             Me.m_hdrAssessment.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrAssessment, "m_hdrAssessment")
             Me.m_hdrAssessment.IsCollapsed = False
             Me.m_hdrAssessment.Name = "m_hdrAssessment"
             '
@@ -229,9 +236,9 @@ Namespace Ecosim
             '
             'm_hdr
             '
-            resources.ApplyResources(Me.m_hdr, "m_hdr")
             Me.m_hdr.CanCollapseParent = True
             Me.m_hdr.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdr, "m_hdr")
             Me.m_hdr.IsCollapsed = False
             Me.m_hdr.Name = "m_hdr"
             '
@@ -271,9 +278,9 @@ Namespace Ecosim
             '
             'm_hdrTools
             '
-            resources.ApplyResources(Me.m_hdrTools, "m_hdrTools")
             Me.m_hdrTools.CanCollapseParent = False
             Me.m_hdrTools.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrTools, "m_hdrTools")
             Me.m_hdrTools.IsCollapsed = False
             Me.m_hdrTools.Name = "m_hdrTools"
             '
@@ -351,13 +358,6 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_lblNumSteps, "m_lblNumSteps")
             Me.m_lblNumSteps.Name = "m_lblNumSteps"
-            '
-            'm_tsbnSaveOutput
-            '
-            Me.m_tsbnSaveOutput.CheckOnClick = True
-            Me.m_tsbnSaveOutput.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnSaveOutput, "m_tsbnSaveOutput")
-            Me.m_tsbnSaveOutput.Name = "m_tsbnSaveOutput"
             '
             'frmMSY
             '

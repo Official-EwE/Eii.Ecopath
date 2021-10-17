@@ -454,7 +454,9 @@ Namespace Forms
         ''' <param name="ct"></param>
         ''' -----------------------------------------------------------------------
         Protected Overridable Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
-            ' NOP
+            If ((ct And cStyleGuide.eChangeType.Colours) = cStyleGuide.eChangeType.Colours) Then
+                Me.Invalidate(True)
+            End If
         End Sub
 
         ''' -----------------------------------------------------------------------
