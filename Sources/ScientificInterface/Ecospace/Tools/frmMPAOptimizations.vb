@@ -203,8 +203,6 @@ Namespace Ecospace
 
             ' Configure map
             Me.m_ucZoom.UIContext = Me.UIContext
-            Me.m_ucZoomBar.UIContext = Me.UIContext
-            Me.m_ucZoomBar.AddZoomContainer(Me.m_ucZoom)
 
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
             AddHandler Me.m_propSearchType.PropertyChanged, AddressOf Me.OnSearchTypeChanged
@@ -265,7 +263,6 @@ Namespace Ecospace
 
             Dim alays As cDisplayLayer() = Me.m_layers.ToArray
 
-            Me.m_ucZoomBar.RemoveZoomContainer(Me.m_ucZoom)
             For Each l As cDisplayLayer In alays
                 Me.RemoveLayer(l)
             Next
