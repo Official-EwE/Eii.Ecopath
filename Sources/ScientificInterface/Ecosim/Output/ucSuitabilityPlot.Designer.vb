@@ -30,18 +30,23 @@ Partial Class ucSuitabilityPlot
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
-        Me.m_graph = New ZedGraph.ZedGraphControl
-        Me.m_scContent = New System.Windows.Forms.SplitContainer
-        Me.m_rbSuitability = New System.Windows.Forms.RadioButton
-        Me.m_rbFunctionalResponse = New System.Windows.Forms.RadioButton
-        Me.m_rbElectivity = New System.Windows.Forms.RadioButton
-        Me.m_hdrPredator = New cEwEHeaderLabel
-        Me.m_hdrPlotType = New cEwEHeaderLabel
-        Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+        Me.components = New System.ComponentModel.Container()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_scContent = New System.Windows.Forms.SplitContainer()
+        Me.m_rbSuitability = New System.Windows.Forms.RadioButton()
+        Me.m_rbFunctionalResponse = New System.Windows.Forms.RadioButton()
+        Me.m_rbElectivity = New System.Windows.Forms.RadioButton()
+        Me.m_hdrPredator = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrPlotType = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plPlotType = New System.Windows.Forms.Panel()
+        CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scContent.Panel1.SuspendLayout()
         Me.m_scContent.Panel2.SuspendLayout()
         Me.m_scContent.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.m_plPlotType.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_graph
@@ -50,15 +55,15 @@ Partial Class ucSuitabilityPlot
         Me.m_graph.IsShowPointValues = True
         Me.m_graph.Location = New System.Drawing.Point(0, 0)
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0
-        Me.m_graph.ScrollMaxX = 0
-        Me.m_graph.ScrollMaxY = 0
-        Me.m_graph.ScrollMaxY2 = 0
-        Me.m_graph.ScrollMinX = 0
-        Me.m_graph.ScrollMinY = 0
-        Me.m_graph.ScrollMinY2 = 0
-        Me.m_graph.Size = New System.Drawing.Size(504, 532)
-        Me.m_graph.TabIndex = 4
+        Me.m_graph.ScrollGrace = 0R
+        Me.m_graph.ScrollMaxX = 0R
+        Me.m_graph.ScrollMaxY = 0R
+        Me.m_graph.ScrollMaxY2 = 0R
+        Me.m_graph.ScrollMinX = 0R
+        Me.m_graph.ScrollMinY = 0R
+        Me.m_graph.ScrollMinY2 = 0R
+        Me.m_graph.Size = New System.Drawing.Size(498, 532)
+        Me.m_graph.TabIndex = 0
         '
         'm_scContent
         '
@@ -72,20 +77,15 @@ Partial Class ucSuitabilityPlot
         '
         'm_scContent.Panel2
         '
-        Me.m_scContent.Panel2.Controls.Add(Me.m_rbSuitability)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_rbFunctionalResponse)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_rbElectivity)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_hdrPredator)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_hdrPlotType)
-        Me.m_scContent.Panel2.Controls.Add(Me.m_lbGroups)
+        Me.m_scContent.Panel2.Controls.Add(Me.TableLayoutPanel1)
         Me.m_scContent.Size = New System.Drawing.Size(700, 532)
-        Me.m_scContent.SplitterDistance = 504
-        Me.m_scContent.TabIndex = 6
+        Me.m_scContent.SplitterDistance = 498
+        Me.m_scContent.TabIndex = 0
         '
         'm_rbSuitability
         '
         Me.m_rbSuitability.AutoSize = True
-        Me.m_rbSuitability.Location = New System.Drawing.Point(4, 69)
+        Me.m_rbSuitability.Location = New System.Drawing.Point(3, 49)
         Me.m_rbSuitability.Name = "m_rbSuitability"
         Me.m_rbSuitability.Size = New System.Drawing.Size(69, 17)
         Me.m_rbSuitability.TabIndex = 2
@@ -97,10 +97,10 @@ Partial Class ucSuitabilityPlot
         'm_rbFunctionalResponse
         '
         Me.m_rbFunctionalResponse.AutoSize = True
-        Me.m_rbFunctionalResponse.Location = New System.Drawing.Point(4, 46)
+        Me.m_rbFunctionalResponse.Location = New System.Drawing.Point(3, 26)
         Me.m_rbFunctionalResponse.Name = "m_rbFunctionalResponse"
         Me.m_rbFunctionalResponse.Size = New System.Drawing.Size(120, 17)
-        Me.m_rbFunctionalResponse.TabIndex = 2
+        Me.m_rbFunctionalResponse.TabIndex = 1
         Me.m_rbFunctionalResponse.TabStop = True
         Me.m_rbFunctionalResponse.Tag = ""
         Me.m_rbFunctionalResponse.Text = "Functional response"
@@ -109,10 +109,10 @@ Partial Class ucSuitabilityPlot
         'm_rbElectivity
         '
         Me.m_rbElectivity.AutoSize = True
-        Me.m_rbElectivity.Location = New System.Drawing.Point(4, 23)
+        Me.m_rbElectivity.Location = New System.Drawing.Point(3, 3)
         Me.m_rbElectivity.Name = "m_rbElectivity"
         Me.m_rbElectivity.Size = New System.Drawing.Size(67, 17)
-        Me.m_rbElectivity.TabIndex = 2
+        Me.m_rbElectivity.TabIndex = 0
         Me.m_rbElectivity.TabStop = True
         Me.m_rbElectivity.Tag = ""
         Me.m_rbElectivity.Text = "Electivity"
@@ -121,30 +121,29 @@ Partial Class ucSuitabilityPlot
         'm_hdrPredator
         '
         Me.m_hdrPredator.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_hdrPredator.BackColor = System.Drawing.SystemColors.ControlDark
-        Me.m_hdrPredator.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.m_hdrPredator.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.m_hdrPredator.Location = New System.Drawing.Point(0, 105)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrPredator.CanCollapseParent = False
+        Me.m_hdrPredator.CollapsedParentHeight = 0
+        Me.m_hdrPredator.IsCollapsed = False
+        Me.m_hdrPredator.Location = New System.Drawing.Point(0, 92)
         Me.m_hdrPredator.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrPredator.Name = "m_hdrPredator"
-        Me.m_hdrPredator.Size = New System.Drawing.Size(196, 18)
-        Me.m_hdrPredator.TabIndex = 1
+        Me.m_hdrPredator.Size = New System.Drawing.Size(198, 18)
+        Me.m_hdrPredator.TabIndex = 2
         Me.m_hdrPredator.Text = "Predator"
         Me.m_hdrPredator.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_hdrPlotType
         '
-        Me.m_hdrPlotType.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_hdrPlotType.BackColor = System.Drawing.SystemColors.ControlDark
-        Me.m_hdrPlotType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.m_hdrPlotType.ForeColor = System.Drawing.SystemColors.ControlLightLight
+        Me.m_hdrPlotType.CanCollapseParent = False
+        Me.m_hdrPlotType.CollapsedParentHeight = 0
+        Me.m_hdrPlotType.Dock = System.Windows.Forms.DockStyle.Top
+        Me.m_hdrPlotType.IsCollapsed = False
         Me.m_hdrPlotType.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrPlotType.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrPlotType.Name = "m_hdrPlotType"
-        Me.m_hdrPlotType.Size = New System.Drawing.Size(196, 18)
-        Me.m_hdrPlotType.TabIndex = 1
+        Me.m_hdrPlotType.Size = New System.Drawing.Size(198, 18)
+        Me.m_hdrPlotType.TabIndex = 0
         Me.m_hdrPlotType.Text = "Plot type"
         Me.m_hdrPlotType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -152,24 +151,52 @@ Partial Class ucSuitabilityPlot
         '
         Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
         Me.m_lbGroups.AllGroupsItemText = "(All)"
-        Me.m_lbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_lbGroups.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbGroups.FormattingEnabled = True
-        Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
         Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
         Me.m_lbGroups.IntegralHeight = False
-        Me.m_lbGroups.Location = New System.Drawing.Point(0, 123)
+        Me.m_lbGroups.IsAllGroupsItemSelected = False
+        Me.m_lbGroups.Location = New System.Drawing.Point(0, 110)
         Me.m_lbGroups.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lbGroups.Name = "m_lbGroups"
         Me.m_lbGroups.SelectedGroup = Nothing
         Me.m_lbGroups.SelectedGroupIndex = -1
         Me.m_lbGroups.ShowAllGroupsItem = False
-        Me.m_lbGroups.Size = New System.Drawing.Size(192, 409)
+        Me.m_lbGroups.Size = New System.Drawing.Size(198, 422)
         Me.m_lbGroups.SortThreshold = -9999.0!
-        Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
-        Me.m_lbGroups.TabIndex = 0
+        Me.m_lbGroups.TabIndex = 3
+        Me.m_lbGroups.VisibleGroups = Nothing
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 1
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.m_hdrPlotType, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbGroups, 0, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_hdrPredator, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_plPlotType, 0, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(198, 532)
+        Me.TableLayoutPanel1.TabIndex = 3
+        '
+        'm_plPlotType
+        '
+        Me.m_plPlotType.Controls.Add(Me.m_rbElectivity)
+        Me.m_plPlotType.Controls.Add(Me.m_rbSuitability)
+        Me.m_plPlotType.Controls.Add(Me.m_rbFunctionalResponse)
+        Me.m_plPlotType.Location = New System.Drawing.Point(0, 18)
+        Me.m_plPlotType.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_plPlotType.Name = "m_plPlotType"
+        Me.m_plPlotType.Size = New System.Drawing.Size(198, 74)
+        Me.m_plPlotType.TabIndex = 1
         '
         'ucSuitabilityPlot
         '
@@ -180,8 +207,11 @@ Partial Class ucSuitabilityPlot
         Me.Size = New System.Drawing.Size(700, 532)
         Me.m_scContent.Panel1.ResumeLayout(False)
         Me.m_scContent.Panel2.ResumeLayout(False)
-        Me.m_scContent.Panel2.PerformLayout()
+        CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scContent.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.m_plPlotType.ResumeLayout(False)
+        Me.m_plPlotType.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -193,5 +223,6 @@ Partial Class ucSuitabilityPlot
     Private WithEvents m_rbElectivity As System.Windows.Forms.RadioButton
     Private WithEvents m_rbSuitability As System.Windows.Forms.RadioButton
     Private WithEvents m_rbFunctionalResponse As System.Windows.Forms.RadioButton
-
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Private WithEvents m_plPlotType As Panel
 End Class
