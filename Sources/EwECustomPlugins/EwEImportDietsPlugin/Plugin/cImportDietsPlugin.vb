@@ -21,14 +21,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 
@@ -54,7 +50,6 @@ Public Class cImportDietsPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcospaceInitializedPlugin
     Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
 
 #Region " Local variables"
@@ -321,59 +316,7 @@ Public Class cImportDietsPlugin
             End If 'Me.setEcopathState
         End If 'ofd.ShowDialog = DialogResult.OK 
 
-
-        'Dim bHasInterface As Boolean = False
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'NOT NEEDED AT THIS TIME
-        '' Initialized ok?
-        'If m_uic IsNot Nothing Then
-
-        '    ' Test if form still exists. This is a two-step test: the interface needs to be defined, and has not been closed previously.
-        '    If Me.m_form IsNot Nothing Then
-        '        If Not Me.m_form.IsDisposed Then
-        '            bHasInterface = True
-        '        End If
-        '    End If
-
-        '    ' Create the interface if needed
-        '    If Not bHasInterface Then
-
-        '        ' Create the EwE form-derived user interface for this plug-in
-        '        Me.m_form = New frmEwEPlugin()
-        '        Me.m_form.Init(Me)
-        '        ' Pass on the UI context to the form
-        '        Me.m_form.UIContext = m_uic
-
-        '    End If
-
-        '    ' Pass a reference to the new interface back to whomever invoked us
-        '    form = Me.m_form
-
-        '    ' Just to show what can be done: test where this function was invoked from
-        '    If TypeOf sender Is System.Windows.Forms.TreeNode Then
-        '        ' Plug-in was invoked from the EwE6 navigation panel
-        '    ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
-        '        ' Plug-in was invoked from the EwE6 main menu
-        '    End If
-        'Else
-        '    Debug.Assert(False, "Plugin was not initialized properly.")
-        'End If
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
     End Sub
-
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Tell EwE6 where to place an item in its main menu.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
-        Get
-            ' For example, a plug-in menu item should be placed in the main the 'Tools' menu. 
-            Return "MenuTools"
-        End Get
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -396,7 +339,7 @@ Public Class cImportDietsPlugin
     Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             ' As an example, place a navigation tree item under the main 'tools' node.
-            Return "ndTools"
+            Return "ndParameterization\ndEcopathInput\ndEcopathInputTools"
         End Get
     End Property
 
@@ -430,7 +373,6 @@ Public Class cImportDietsPlugin
     End Property
 
 #End Region
-
 
     Private Function setEcopathState() As Boolean
         If Not Me.m_core.StateMonitor.HasEcopathRan Then
