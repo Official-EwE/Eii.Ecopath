@@ -61,7 +61,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Import Diets.
+        '''  Looks up a localized string similar to Import diets from external source such as another EwE model.
+        '''</summary>
+        Friend ReadOnly Property CONTROL_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("CONTROL_DESCRIPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Import diets.
         '''</summary>
         Friend ReadOnly Property CONTROL_TEXT() As String
             Get
