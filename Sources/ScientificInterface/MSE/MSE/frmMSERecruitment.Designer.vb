@@ -154,8 +154,8 @@ Namespace Ecosim
         Private WithEvents m_grid As Ecosim.gridMSERecruitment
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Friend WithEvents tsToolStrip As cEwEToolstrip
-        Friend WithEvents tsbtDefaults As System.Windows.Forms.ToolStripButton
+        Private WithEvents tsToolStrip As cEwEToolstrip
+        Private WithEvents tsbtDefaults As System.Windows.Forms.ToolStripButton
 
     End Class
 

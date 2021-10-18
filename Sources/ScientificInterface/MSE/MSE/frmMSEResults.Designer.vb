@@ -42,34 +42,16 @@ Partial Class frmMSEResults
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.rbGroup = New System.Windows.Forms.RadioButton()
-        Me.rbFleet = New System.Windows.Forms.RadioButton()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEResults))
         Me.m_grid = New ScientificInterface.gridRiskResults()
-        Me.pnlGrid = New System.Windows.Forms.Panel()
-        Me.pnlGrid.SuspendLayout()
+        Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tsOptions = New cEwEToolstrip()
+        Me.m_tslViewAs = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsbnGroup = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnFleet = New System.Windows.Forms.ToolStripButton()
+        Me.m_tlpAll.SuspendLayout()
+        Me.m_tsOptions.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'rbGroup
-        '
-        Me.rbGroup.AutoSize = True
-        Me.rbGroup.Checked = True
-        Me.rbGroup.Location = New System.Drawing.Point(12, 10)
-        Me.rbGroup.Name = "rbGroup"
-        Me.rbGroup.Size = New System.Drawing.Size(54, 17)
-        Me.rbGroup.TabIndex = 0
-        Me.rbGroup.TabStop = True
-        Me.rbGroup.Text = "&Group"
-        Me.rbGroup.UseVisualStyleBackColor = True
-        '
-        'rbFleet
-        '
-        Me.rbFleet.AutoSize = True
-        Me.rbFleet.Location = New System.Drawing.Point(72, 10)
-        Me.rbFleet.Name = "rbFleet"
-        Me.rbFleet.Size = New System.Drawing.Size(48, 17)
-        Me.rbFleet.TabIndex = 3
-        Me.rbFleet.Text = "&Fleet"
-        Me.rbFleet.UseVisualStyleBackColor = True
         '
         'm_grid
         '
@@ -84,7 +66,7 @@ Partial Class frmMSEResults
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
+        Me.m_grid.DataName = "MSE_results"
         Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_grid.FixedColumnWidths = True
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
@@ -92,9 +74,9 @@ Partial Class frmMSEResults
         Me.m_grid.GridType = ScientificInterface.gridRiskResults.eGridType.Group
         Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.IsOutputGrid = True
-        Me.m_grid.Location = New System.Drawing.Point(0, 0)
+        Me.m_grid.Location = New System.Drawing.Point(3, 28)
         Me.m_grid.Name = "m_grid"
-        Me.m_grid.Size = New System.Drawing.Size(640, 393)
+        Me.m_grid.Size = New System.Drawing.Size(633, 394)
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -107,16 +89,53 @@ Partial Class frmMSEResults
         Me.m_grid.TabIndex = 4
         Me.m_grid.UIContext = Nothing
         '
-        'pnlGrid
+        'm_tlpAll
         '
-        Me.pnlGrid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlGrid.Controls.Add(Me.m_grid)
-        Me.pnlGrid.Location = New System.Drawing.Point(1, 33)
-        Me.pnlGrid.Name = "pnlGrid"
-        Me.pnlGrid.Size = New System.Drawing.Size(640, 393)
-        Me.pnlGrid.TabIndex = 5
+        Me.m_tlpAll.ColumnCount = 1
+        Me.m_tlpAll.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpAll.Controls.Add(Me.m_grid, 0, 1)
+        Me.m_tlpAll.Controls.Add(Me.m_tsOptions, 0, 0)
+        Me.m_tlpAll.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tlpAll.Location = New System.Drawing.Point(0, 0)
+        Me.m_tlpAll.Name = "m_tlpAll"
+        Me.m_tlpAll.RowCount = 2
+        Me.m_tlpAll.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.m_tlpAll.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpAll.Size = New System.Drawing.Size(639, 425)
+        Me.m_tlpAll.TabIndex = 6
+        '
+        'm_tsOptions
+        '
+        Me.m_tsOptions.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslViewAs, Me.m_tsbnGroup, Me.m_tsbnFleet})
+        Me.m_tsOptions.Location = New System.Drawing.Point(0, 0)
+        Me.m_tsOptions.Name = "m_tsOptions"
+        Me.m_tsOptions.Size = New System.Drawing.Size(639, 25)
+        Me.m_tsOptions.TabIndex = 5
+        Me.m_tsOptions.Text = "ToolStrip1"
+        '
+        'm_tslViewAs
+        '
+        Me.m_tslViewAs.Name = "m_tslViewAs"
+        Me.m_tslViewAs.Size = New System.Drawing.Size(35, 22)
+        Me.m_tslViewAs.Text = "&View:"
+        '
+        'm_tsbnGroup
+        '
+        Me.m_tsbnGroup.CheckOnClick = True
+        Me.m_tsbnGroup.Image = CType(resources.GetObject("m_tsbnGroup.Image"), System.Drawing.Image)
+        Me.m_tsbnGroup.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsbnGroup.Name = "m_tsbnGroup"
+        Me.m_tsbnGroup.Size = New System.Drawing.Size(60, 22)
+        Me.m_tsbnGroup.Text = "Group"
+        '
+        'm_tsbnFleet
+        '
+        Me.m_tsbnFleet.CheckOnClick = True
+        Me.m_tsbnFleet.Image = CType(resources.GetObject("m_tsbnFleet.Image"), System.Drawing.Image)
+        Me.m_tsbnFleet.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsbnFleet.Name = "m_tsbnFleet"
+        Me.m_tsbnFleet.Size = New System.Drawing.Size(52, 22)
+        Me.m_tsbnFleet.Text = "Fleet"
         '
         'frmMSEResults
         '
@@ -124,20 +143,23 @@ Partial Class frmMSEResults
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(639, 425)
-        Me.Controls.Add(Me.pnlGrid)
-        Me.Controls.Add(Me.rbFleet)
-        Me.Controls.Add(Me.rbGroup)
+        Me.Controls.Add(Me.m_tlpAll)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmMSEResults"
         Me.TabText = ""
         Me.Text = "MSE results"
-        Me.pnlGrid.ResumeLayout(False)
+        Me.m_tlpAll.ResumeLayout(False)
+        Me.m_tlpAll.PerformLayout()
+        Me.m_tsOptions.ResumeLayout(False)
+        Me.m_tsOptions.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents rbFleet As System.Windows.Forms.RadioButton
-    Friend WithEvents pnlGrid As System.Windows.Forms.Panel
     Private WithEvents m_grid As ScientificInterface.gridRiskResults
-    Private WithEvents rbGroup As System.Windows.Forms.RadioButton
+    Private WithEvents m_tlpAll As TableLayoutPanel
+    Private WithEvents m_tsOptions As cEwEToolstrip
+    Private WithEvents m_tslViewAs As ToolStripLabel
+    Private WithEvents m_tsbnGroup As ToolStripButton
+    Private WithEvents m_tsbnFleet As ToolStripButton
 End Class
