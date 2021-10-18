@@ -340,7 +340,7 @@ Partial Class frmMSEOptions
     Private WithEvents m_rbEffortEcosim As System.Windows.Forms.RadioButton
     Private WithEvents m_rbEffortNoCap As System.Windows.Forms.RadioButton
     Private WithEvents m_rbEffortPredicted As System.Windows.Forms.RadioButton
-    Friend WithEvents m_rbQuotaControls As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbQuotaControls As System.Windows.Forms.RadioButton
     Private WithEvents m_rbUseRegs As System.Windows.Forms.RadioButton
     Private WithEvents m_rbNoRegs As System.Windows.Forms.RadioButton
     Private WithEvents m_hdrEffort As ScientificInterfaceShared.Controls.cEwEHeaderLabel

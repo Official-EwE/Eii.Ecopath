@@ -23,8 +23,8 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports EwECore.MSE
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -41,8 +41,11 @@ Public Class frmMSEResults
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.rbFleet.Tag = ScientificInterface.gridRiskResults.eGridType.Fleet
-        Me.rbGroup.Tag = ScientificInterface.gridRiskResults.eGridType.Group
+        Me.m_tsbnGroup.Image = SharedResources.fish
+        Me.m_tsbnGroup.Tag = ScientificInterface.gridRiskResults.eGridType.Group
+
+        Me.m_tsbnFleet.Image = SharedResources.fishing_gear
+        Me.m_tsbnFleet.Tag = ScientificInterface.gridRiskResults.eGridType.Fleet
 
         Me.m_grid.UIContext = Me.UIContext
 
@@ -51,6 +54,8 @@ Public Class frmMSEResults
         AddHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         AddHandler Me.m_EventSource.onRunCompleted, AddressOf Me.onRunCompleted
 
+        Me.UpdateControls()
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
@@ -58,6 +63,14 @@ Public Class frmMSEResults
         RemoveHandler Me.m_EventSource.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
         RemoveHandler Me.m_EventSource.onRunCompleted, AddressOf Me.onRunCompleted
         MyBase.OnFormClosed(e)
+
+    End Sub
+
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+
+        Me.m_tsbnFleet.Checked = (Me.m_grid.GridType = gridRiskResults.eGridType.Fleet)
+        Me.m_tsbnGroup.Checked = (Me.m_grid.GridType = gridRiskResults.eGridType.Group)
 
     End Sub
 
@@ -73,12 +86,13 @@ Public Class frmMSEResults
         End Try
     End Sub
 
-    Private Sub onGridTypeCheckedChanged(sender As System.Object, e As System.EventArgs) _
-        Handles rbGroup.CheckedChanged, rbFleet.CheckedChanged
+    Private Sub onGridTypeCheckedChanged(sender As System.Object, e As System.EventArgs) Handles m_tsbnFleet.Click, m_tsbnGroup.Click
+
         Try
-            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+            Dim rb As ToolStripButton = DirectCast(sender, ToolStripButton)
             If rb.Checked Then
                 Me.m_grid.GridType = DirectCast(rb.Tag, ScientificInterface.gridRiskResults.eGridType)
+                Me.UpdateControls()
             End If
         Catch ex As Exception
 

@@ -94,10 +94,8 @@ Public Class frmMSE
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         If cmd IsNot Nothing Then
-            cmd.AddControl(Me.m_btnShowHide)
+            AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         End If
-
-        AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         AddHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.m_paneMaster = Me.m_zgc.MasterPane
@@ -134,10 +132,9 @@ Public Class frmMSE
         Dim cmdh As cCommandHandler = Me.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         If cmd IsNot Nothing Then
-            cmd.RemoveControl(Me.m_btnShowHide)
+            RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         End If
 
-        RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
 
         Me.m_MSE.Disconnect()
@@ -401,7 +398,6 @@ Public Class frmMSE
                 Case eMSEStates.InActive
                     Me.m_btRun.Enabled = True
                     Me.m_btnStop.Enabled = False
-                    Me.m_btnShowHide.Enabled = True
                     Me.m_nudStartYear.Enabled = True
                     Me.m_nudNumTrials.Enabled = True
                     Me.m_ckSave.Enabled = True
@@ -411,7 +407,6 @@ Public Class frmMSE
                 Case eMSEStates.Running
                     Me.m_btRun.Enabled = False
                     Me.m_btnStop.Enabled = True
-                    Me.m_btnShowHide.Enabled = False
                     Me.m_nudStartYear.Enabled = False
                     Me.m_nudNumTrials.Enabled = False
                     Me.m_ckSave.Enabled = False
@@ -421,7 +416,6 @@ Public Class frmMSE
                 Case eMSEStates.Completed
                     Me.m_btRun.Enabled = True
                     Me.m_btnStop.Enabled = False
-                    Me.m_btnShowHide.Enabled = True
                     Me.m_nudStartYear.Enabled = True
                     Me.m_nudNumTrials.Enabled = True
                     Me.m_ckSave.Enabled = True

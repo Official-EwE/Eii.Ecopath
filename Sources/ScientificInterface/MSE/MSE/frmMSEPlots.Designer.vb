@@ -220,7 +220,7 @@ Partial Class frmMSEPlots
     Private WithEvents m_btnShowHide As System.Windows.Forms.Button
     Private WithEvents m_rbBioEst As System.Windows.Forms.RadioButton
     Private WithEvents m_hdrPlots As cEwEHeaderLabel
-    Friend WithEvents pnlGraph As System.Windows.Forms.Panel
+    Private WithEvents pnlGraph As System.Windows.Forms.Panel
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_rbTotFleetValue As System.Windows.Forms.RadioButton
     Private WithEvents m_rbFComparison As System.Windows.Forms.RadioButton
