@@ -81,7 +81,7 @@ Public Class cImportDietsPlugin
 
 #End Region
 
-#Region "Ecopath, Ecosim and Ecospace events"
+#Region " Plug-in points "
 
     ''' <summary>
     ''' Every plug-in is told to initialize to the EwE core as soon as it is loaded. 
@@ -205,9 +205,9 @@ Public Class cImportDietsPlugin
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
 
-#End Region
+#End Region ' Plug-in points
 
-#Region "Core, Ecopath, Ecosim and Ecospace Datastructures"
+#Region " Data access "
 
     Public ReadOnly Property Core As cCore
         Get
@@ -237,7 +237,7 @@ Public Class cImportDietsPlugin
         End Get
     End Property
 
-#End Region
+#End Region ' Data access
 
 #Region " User Interface plug-in implementation "
 
@@ -308,7 +308,7 @@ Public Class cImportDietsPlugin
         ofd.FilterIndex = 1
 
         If ofd.ShowDialog = DialogResult.OK Then
-            If Me.setEcopathState Then
+            If Me.SetEcopathRunState Then
 
                 Dim ImportDiets As New cDietImporter(Me.Core, Me.EcoPathData)
                 ImportDiets.Run(ofd.FileName)
@@ -345,23 +345,23 @@ Public Class cImportDietsPlugin
 
 #End Region ' User Interface plug-in implementation
 
-#Region "IPlugin implementation"
+#Region " IPlugin implementation "
 
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Me"
+            Return "Szymon Surma"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "you@someplace.com"
+            Return ""
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Import diets from external source."
+            Return My.Resources.CONTROL_DESCRIPTION
         End Get
     End Property
 
@@ -372,13 +372,17 @@ Public Class cImportDietsPlugin
         End Get
     End Property
 
-#End Region
+#End Region ' IPlugin implementation
 
-    Private Function setEcopathState() As Boolean
+#Region " Internals "
+
+    Private Function SetEcopathRunState() As Boolean
         If Not Me.m_core.StateMonitor.HasEcopathRan Then
             Return Me.m_core.RunEcoPath()
         End If
         Return True
     End Function
+
+#End Region ' Internals
 
 End Class
