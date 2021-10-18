@@ -35,6 +35,8 @@ Imports ScientificInterfaceShared.Commands
 
 Public Class frmMSEOptions
 
+#Region " Private vars "
+
     'ToDo_jb 19-April-2010 Change "Effort and regulatory option" to something Effort and evaluation type control type....
     Dim m_MSE As cMSEManager
 
@@ -55,11 +57,20 @@ Public Class frmMSEOptions
         OutputQuota
     End Enum
 
+    Private Enum eRegOptions As Integer
+        Effort
+        Quota
+        NoReg
+    End Enum
+
+#End Region ' Private vars
 
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
     End Sub
+
+#Region " Overrides "
 
     Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
         Get
@@ -67,8 +78,8 @@ Public Class frmMSEOptions
         End Get
         Set(value As ScientificInterfaceShared.Controls.cUIContext)
             MyBase.UIContext = value
-            Me.m_gridFleetLPEffortBounds.UIContext = Me.UIContext
-            Me.m_gridRegOptions.UIContext = Me.UIContext
+            Me.m_gridEffortControls.UIContext = Me.UIContext
+            Me.m_gridQuotaControls.UIContext = Me.UIContext
         End Set
     End Property
 
@@ -107,11 +118,6 @@ Public Class frmMSEOptions
         Me.m_RegMode = eMSERegulationMode.UseRegulations
         Me.m_ControlType = eControlTypes.OutputQuota
 
-        ' Don't set this in designer
-        Me.m_panelEffortControls.Dock = DockStyle.Fill
-        Me.m_panelQuotaControls.Dock = DockStyle.Fill
-        Me.m_panelNoReg.Dock = DockStyle.Fill
-
         Me.UpdateControls()
 
     End Sub
@@ -119,59 +125,6 @@ Public Class frmMSEOptions
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         Me.m_fpSBPower.Release()
         MyBase.OnFormClosed(e)
-    End Sub
-
-    Private Sub rbFTracking_CheckedChanged(sender As System.Object, e As System.EventArgs)
-
-        If Me.m_MSE Is Nothing Then Exit Sub
-
-        Try
-            Dim rb As RadioButton = DirectCast(sender, RadioButton)
-            If rb.Checked = True Then
-                Dim EffortMode As eMSERegulationMode = DirectCast(rb.Tag, eMSERegulationMode)
-                Me.m_MSE.ModelParameters.RegulatoryMode = EffortMode
-            End If
-
-        Catch ex As Exception
-            Debug.Assert(False, "Exception setting MSE Effort Mode. " & ex.Message)
-        End Try
-
-        Me.UpdateControls()
-        Me.Refresh()
-
-    End Sub
-
-
-    ''' <summary>
-    ''' Change the biomass assessment method based on the selected radio button
-    ''' </summary>
-    Private Sub onAssessmentMethodChanged(sender As System.Object, e As System.EventArgs)
-
-        Try
-
-            If Me.m_MSE Is Nothing Then Exit Sub
-
-            Debug.Assert(TypeOf sender Is RadioButton)
-            Dim rb As RadioButton = DirectCast(sender, RadioButton)
-            'This event handler is call for both radio buttons Changed events Checked and UnChecked
-            'Use the tag of the Checked radio button to set the MSE.AssessmentMethod
-            If rb.Checked = True Then
-                Me.m_MSE.ModelParameters.AssessmentMethod = DirectCast(rb.Tag, eAssessmentMethods)
-
-            End If
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-
-    Private Sub UpdateSelectedEffortMode()
-        Try
-            ' m_dctEffortControls.Item(Me.m_MSE.ModelParameters.RegulatoryMode).Checked = True
-        Catch ex As Exception
-
-        End Try
     End Sub
 
     Private m_bInUpdate As Boolean = False
@@ -182,50 +135,79 @@ Public Class frmMSEOptions
         Me.m_bInUpdate = True
 
         ' 0 = Effort, 1 = Quota, 2 = NoReg
-        Dim iPanel As Integer = 0
+        Dim [option] As eRegOptions = eRegOptions.Effort
 
         Me.m_MSE.ModelParameters.RegulatoryMode = Me.m_RegMode
 
-        Select Me.m_RegMode
+        ' This is some awful logic...
+        ' In EwE, controls are not hidden, only disabled / enabled. Fixed this UI up properly
+        ' Also, control anchoring is not working reliably anymore. Panels have been reorganized which is unfortunate.
+
+        Select Case Me.m_RegMode
             Case eMSERegulationMode.UseRegulations
                 Me.m_rbUseRegs.Checked = True
                 Select Case Me.m_ControlType
                     Case eControlTypes.InputEffort
                         Me.m_rbEffortControls.Checked = True
-                        iPanel = 0
+                        [option] = eRegOptions.Effort
                     Case eControlTypes.OutputQuota
                         Me.m_rbQuotaControls.Checked = True
-                        iPanel = 1
+                        [option] = eRegOptions.Quota
                 End Select
             Case eMSERegulationMode.NoRegulations
                 Me.m_rbNoRegs.Checked = True
-                iPanel = 2
-                End Select
-        Me.m_MSE.ModelParameters.UseLPSolution = (iPanel = 0)
-                Me.m_panelEffortControls.Visible = (iPanel = 0)
-                Me.m_panelQuotaControls.Visible = (iPanel = 1)
-                Me.m_panelNoReg.Enabled = (iPanel = 2)
-                Me.m_panelNoReg.Visible = (iPanel = 2)
+                [option] = eRegOptions.NoReg
+        End Select
 
-                Me.m_panelRegControls.Enabled = (iPanel <> 2)
-                Me.m_bInUpdate = False
+        Me.m_MSE.ModelParameters.UseLPSolution = ([option] = eRegOptions.Effort)
+        Me.m_gridEffortControls.Enabled = ([option] = eRegOptions.Effort)
+        Me.m_panelQuotaControls.Enabled = ([option] = eRegOptions.Quota)
+        Me.m_gridQuotaControls.Enabled = ([option] = eRegOptions.Quota)
+        Me.m_panelNoReg.Enabled = ([option] = eRegOptions.NoReg)
+
+        ' Do not disable master controls
+        'Me.m_panelRegControls.Enabled = ([option] <> eRegOptions.NoReg)
+
+        Me.m_bInUpdate = False
 
     End Sub
 
+#End Region ' Overrides
+
+#Region " Event handlers "
+
+    Private Sub rbFTracking_CheckedChanged(sender As System.Object, e As System.EventArgs)
+
+        If (Me.UIContext Is Nothing) Then Return
+
+        Try
+            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+            If rb.Checked = True Then
+                Dim EffortMode As eMSERegulationMode = DirectCast(rb.Tag, eMSERegulationMode)
+                Me.m_MSE.ModelParameters.RegulatoryMode = EffortMode
+                Me.UpdateControls()
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, "Exception setting MSE Effort Mode. " & ex.Message)
+        End Try
+
+
+    End Sub
 
     Private Sub rbNoCap_CheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbEffortNoCap.CheckedChanged, m_rbEffortEcosim.CheckedChanged, m_rbEffortPredicted.CheckedChanged
 
+        If (Me.UIContext Is Nothing) Then Return
+
         Try
-
-            If Me.m_MSE Is Nothing Then Exit Sub
-
             Debug.Assert(TypeOf sender Is RadioButton)
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
             'This event handler is call when the radio button is Checked or UnChecked
             'Use the tag of the Checked radio button to set the MSE.EffortSource
             If rb.Checked = True Then
                 Me.m_MSE.ModelParameters.EffortSource = DirectCast(rb.Tag, eMSEEffortSource)
+                Me.UpdateControls()
             End If
 
         Catch ex As Exception
@@ -244,9 +226,12 @@ Public Class frmMSEOptions
             Debug.Assert(TypeOf sender Is RadioButton)
             Debug.Assert(rb.Tag IsNot Nothing)
             Debug.Assert(TypeOf rb.Tag Is eControlTypes)
-            Me.m_RegMode = eMSERegulationMode.UseRegulations
-            Me.m_ControlType = DirectCast(rb.Tag, eControlTypes)
-            Me.UpdateControls()
+
+            If (rb.Checked) Then
+                Me.m_RegMode = eMSERegulationMode.UseRegulations
+                Me.m_ControlType = DirectCast(rb.Tag, eControlTypes)
+                Me.UpdateControls()
+            End If
         Catch ex As Exception
             cLog.Write(ex, "frmMSEOptions::OnControlTypeCheckChanged")
         End Try
@@ -256,7 +241,7 @@ Public Class frmMSEOptions
     Private Sub OnRegControlsCheckChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbUseRegs.CheckedChanged, m_rbNoRegs.CheckedChanged
 
-        If Me.UIContext Is Nothing Then Return
+        If (Me.UIContext Is Nothing) Then Return
 
         Try
 
@@ -276,5 +261,7 @@ Public Class frmMSEOptions
         End Try
 
     End Sub
+
+#End Region ' Event handlers
 
 End Class
