@@ -5195,10 +5195,8 @@ Public Class frmEwE6
                 ' Set or clear initial nav node
                 Me.UpdateSelectedNode("", (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded))
             End If
-
-            Me.UpdateModelControls()
-            Me.PopulateModelMRUDropdown()
-            Me.PopulateScenarioDropdowns()
+            'Me.PopulateModelMRUDropdown()
+            'Me.PopulateScenarioDropdowns()
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
         End Try
