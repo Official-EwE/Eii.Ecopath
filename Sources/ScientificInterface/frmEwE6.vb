@@ -1079,6 +1079,7 @@ Public Class frmEwE6
         Me.ProcessCommandLine()
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
+        Me.PopulateModelMRUDropdown()
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
@@ -2182,6 +2183,7 @@ Public Class frmEwE6
         If Me.Core.LoadModel(ds) Then
             ' Set core paths
             Me.UpdateCorePaths(True)
+            Me.PopulateScenarioDropdowns()
 
             Me.m_propModelName = Me.PropertyManager.GetProperty(Me.Core.EwEModel, eVarNameFlags.Name)
             AddHandler Me.m_propModelName.PropertyChanged, AddressOf Me.OnModelNameChanged
