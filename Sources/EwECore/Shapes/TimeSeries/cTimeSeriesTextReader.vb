@@ -392,7 +392,7 @@ Public MustInherit Class cTimeSeriesTextReader
             astrCols = Me.SplitLine(strLine)
             Me.m_tsPreview.AddRow(strLine, astrCols)
 
-            If astrCols(0).ToLower.Contains("sec") Then
+            If astrCols(0).ToLower.Contains("sec") Or astrCols(0).Contains("2") Then
                 strLine = Me.ReadLine(reader, iLineNumber)
                 astrCols = Me.SplitLine(strLine)
                 Me.m_tsPreview.AddRow(strLine, astrCols)
