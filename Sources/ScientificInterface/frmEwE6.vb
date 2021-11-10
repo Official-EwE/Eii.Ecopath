@@ -80,7 +80,10 @@ Public Class frmEwE6
     Private m_messageHistory As cMessageHistory = Nothing
 
     ''' <summary>Status messages stack.</summary>
-    Private m_lstrStatus As New List(Of String)
+    Private m_statusmessages As New List(Of String)
+
+    ''' <summary>Flag indicating that the EwE is fully initialized</summary>
+    Private m_bIsInitialized As Boolean = False
 
 #Region " Panels "
 
@@ -106,7 +109,7 @@ Public Class frmEwE6
 #Region " Private vars "
 
         Private m_frm As frmEwE6 = Nothing
-        Private m_bActive As Boolean = False
+        Private m_bInPresentationMode As Boolean = False
 
         ' -- cached main form states  --
         Private m_bShowMenu As Boolean
@@ -150,16 +153,16 @@ Public Class frmEwE6
         ''' -------------------------------------------------------------------
         Public Property IsPresentationModeActive As Boolean
             Get
-                Return Me.m_bActive
+                Return Me.m_bInPresentationMode
             End Get
             Set(value As Boolean)
-                If (value = Me.m_bActive) Then Return
-                Me.m_bActive = value
+                If (value = Me.m_bInPresentationMode) Then Return
+                Me.m_bInPresentationMode = value
 
                 If (Me.m_bUseOpacity) Then Me.m_frm.Opacity = 0
 
                 ' Presentation mode active?
-                If (Me.m_bActive) Then
+                If (Me.m_bInPresentationMode) Then
                     ' #Yes: hide bits and stretch form
                     Me.m_bShowMenu = Me.m_frm.m_menuMain.Visible : Me.m_frm.m_menuMain.Visible = Not My.Settings.PresentationModeHideMainMenu
                     Me.m_bShowModelBar = Me.m_frm.m_tsModel.Visible : Me.m_frm.m_tsModel.Visible = Not My.Settings.PresentationModeHideModelBar
@@ -1094,10 +1097,23 @@ Public Class frmEwE6
             cLog.Write(ex)
         End Try
 
+        Me.m_bIsInitialized = True
         Me.Activate()
 
         Me.ValidateSetup()
 
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Event handler, overridden to keep the form hidden until the UI has fully
+    ''' initialized
+    ''' </summary>
+    ''' <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Sub OnActivated(e As EventArgs)
+        MyBase.OnActivated(e)
+        If Not Me.m_bIsInitialized Then Me.Hide()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1315,25 +1331,25 @@ Public Class frmEwE6
             Case eProgressState.Start
 
                 ' Push text to the status text stack
-                Me.m_lstrStatus.Insert(0, strText)
+                Me.m_statusmessages.Insert(0, strText)
                 ' Set wait cursor
                 Me.Cursor = Cursors.WaitCursor
 
             Case eProgressState.Finished
 
                 ' Has wait cursors pending?
-                If Me.m_lstrStatus.Count > 0 Then
+                If Me.m_statusmessages.Count > 0 Then
                     ' #Yes: no text specified?
                     If String.IsNullOrEmpty(strText) Then
                         ' #Yes: obtain text from the status text stack
-                        strText = Me.m_lstrStatus(0)
+                        strText = Me.m_statusmessages(0)
                     End If
                     ' Pop text from the status text stack
-                    Me.m_lstrStatus.RemoveAt(0)
+                    Me.m_statusmessages.RemoveAt(0)
                 End If
 
                 ' Status stack empty?
-                If Me.m_lstrStatus.Count = 0 Then
+                If Me.m_statusmessages.Count = 0 Then
                     ' #Yes: restore default cursor
                     Me.Cursor = Cursors.Default
                     strText = ""
