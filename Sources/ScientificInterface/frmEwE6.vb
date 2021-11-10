@@ -1047,8 +1047,6 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
-        Me.SuspendLayout()
-
         ' Add the dock panel 
         Me.m_DockPanel = New DockPanel()
         Me.m_DockPanel.Parent = Me
@@ -1088,8 +1086,6 @@ Public Class frmEwE6
         Me.m_cmdHelpAbout.AddControl(Me.m_tsbnLicense)
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
-
-        Me.ResumeLayout()
 
         Try
             RaiseEvent OnLoadCompleted(Me, New EventArgs())
