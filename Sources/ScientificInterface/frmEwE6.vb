@@ -1540,7 +1540,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
-        Dim strCaption As String = EwE6ApplicationFramework.EwEVersion(False, True, False)
+        Dim strCaption As String = EwE6ApplicationFramework.EwEVersion(False, True, True)
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
@@ -1692,7 +1692,6 @@ Public Class frmEwE6
     Private Sub UpdateRegistrationControls()
 
         Try
-            Me.m_tsbnLicense.Text = EwERelease()
             If Me.Core.License.IsLicensed Then
                 Dim diff As Integer = Me.Core.License.Expiry.Subtract(Date.Now).Days
                 If diff > 21 Then
@@ -1702,9 +1701,12 @@ Public Class frmEwE6
                 Else
                     Me.m_tsbnLicense.Image = SharedResources.license_expired
                 End If
+
+                Me.m_tsbnLicense.Text = EwELicense(Me.Core.License)
                 Me.m_tsbnLicense.ToolTipText = EwE6ApplicationFramework.EwERegistration(Me.Core.License)
                 Me.m_tsbnLicense.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
             Else
+                Me.m_tsbnLicense.Text = EwELicense(Nothing)
                 Me.m_tsbnLicense.ToolTipText = ""
                 Me.m_tsbnLicense.DisplayStyle = ToolStripItemDisplayStyle.Text
             End If
