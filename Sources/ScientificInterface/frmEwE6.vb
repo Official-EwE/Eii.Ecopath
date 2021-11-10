@@ -1080,6 +1080,9 @@ Public Class frmEwE6
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!
         Me.UpdateModelControls()
         Me.PopulateModelMRUDropdown()
+        Me.UpdateRegistrationControls()
+
+        Me.m_cmdHelpAbout.AddControl(Me.m_tsbnLicense)
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateChanged
 
@@ -1537,14 +1540,9 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
-        Dim strCaption As String = EwE6ApplicationFramework.EwEVersion(False, True, True)
+        Dim strCaption As String = EwE6ApplicationFramework.EwEVersion(False, True, False)
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
-
-        Dim strRegistration As String = EwE6ApplicationFramework.EwERegistration(Me.Core.License)
-        If (Not String.IsNullOrWhiteSpace(strRegistration)) Then
-            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, strCaption, strRegistration)
-        End If
 
         Me.m_tsModel.Path = Me.SelectedFileName
         If Me.Core.StateMonitor.HasEcopathLoaded Then
@@ -1688,6 +1686,31 @@ Public Class frmEwE6
             RemoveHandler tsi.Click, AddressOf Me.OnLoadEcotracerScenario
         Next
         Me.m_tsbEcotracer.DropDownItems.Clear()
+
+    End Sub
+
+    Private Sub UpdateRegistrationControls()
+
+        Try
+            Me.m_tsbnLicense.Text = EwERelease()
+            If Me.Core.License.IsLicensed Then
+                Dim diff As Integer = Me.Core.License.Expiry.Subtract(Date.Now).Days
+                If diff > 21 Then
+                    Me.m_tsbnLicense.Image = SharedResources.license_ok
+                ElseIf diff > 0 Then
+                    Me.m_tsbnLicense.Image = SharedResources.license_expired
+                Else
+                    Me.m_tsbnLicense.Image = SharedResources.license_expired
+                End If
+                Me.m_tsbnLicense.ToolTipText = EwE6ApplicationFramework.EwERegistration(Me.Core.License)
+                Me.m_tsbnLicense.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+            Else
+                Me.m_tsbnLicense.ToolTipText = ""
+                Me.m_tsbnLicense.DisplayStyle = ToolStripItemDisplayStyle.Text
+            End If
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -4879,14 +4902,14 @@ Public Class frmEwE6
     Private Sub OnEnterLicense(cmd As cCommand) Handles m_cmdEnterLicense.OnInvoke
         Dim l As New cWebLinks(Me.Core)
         If Me.Core.License.ShowRegistrationForm(Me, Me.Text, l.GetURL(cWebLinks.eLinkType.GoPro), SharedResources.Ecopath_install) = DialogResult.OK Then
-            Me.UpdateModelControls()
+            Me.UpdateRegistrationControls()
         End If
     End Sub
 
     Private Sub OnClearLicense(cmd As cCommand) Handles m_cmdClearLicense.OnInvoke
         If (Not Me.Core.License.IsRegistered) Then Return
         Me.Core.License.Unregister()
-        Me.UpdateModelControls()
+        Me.UpdateRegistrationControls()
     End Sub
 
     Private Sub OnClearLicenseUpdate(cmd As cCommand) Handles m_cmdClearLicense.OnUpdate
@@ -5199,6 +5222,8 @@ Public Class frmEwE6
             End If
             'Me.PopulateModelMRUDropdown()
             'Me.PopulateScenarioDropdowns()
+            Me.UpdateModelControls()
+
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
         End Try

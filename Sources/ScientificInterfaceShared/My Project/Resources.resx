@@ -373,9 +373,6 @@
   <data name="CalculatorHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CalculatorHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="certificate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\certificate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Collapsed.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -3162,5 +3159,26 @@
   </data>
   <data name="FILEFILTER_COLORTABLE" xml:space="preserve">
     <value>Adobe color table|*.act</value>
+  </data>
+  <data name="license_expired" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\license_expired.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="license_expiring" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\license_expiring.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="license_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\license_ok.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="star_yellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_yellow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

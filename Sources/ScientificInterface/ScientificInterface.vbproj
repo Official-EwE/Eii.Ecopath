@@ -1364,7 +1364,6 @@
     <Content Include="Resources\ExtraIcons.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\saveOutputHS.png" />
     <None Include="Resources\Ecopath6_joepie.ico" />
     <Content Include="Resources\EcoBase.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1372,7 +1371,6 @@
     <Content Include="Resources\EcoBase.png" />
     <Content Include="Resources\logo_mgel.png" />
     <Content Include="Resources\logo_sm.png" />
-    <None Include="Resources\Warning.png" />
     <None Include="Resources\license.rtf" />
     <None Include="Resources\urf.jpg" />
     <EmbeddedResource Include="Controls\cEwEStatusBar.resx">
@@ -1997,28 +1995,20 @@
       <SubType>UserControl</SubType>
     </Compile>
     <None Include="Resources\team.rtf" />
-    <None Include="Resources\Regions.png" />
-    <None Include="Resources\Habitat.png" />
-    <None Include="Resources\MPA.png" />
     <None Include="Resources\Ecotracer.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\ewe_home.url.txt" />
-    <None Include="Resources\certificate.png" />
-    <Content Include="Resources\Computer.png" />
     <None Include="Resources\EWE_forever.jpg" />
     <None Include="Resources\Ecopath_install.png" />
     <Content Include="Resources\logo_EU.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\logo_FIMR.jpg" />
-    <None Include="Resources\Importance.png" />
     <Content Include="Resources\logo_LENFEST.jpg" />
     <None Include="Resources\logo_PEW.jpg" />
     <Content Include="Resources\logo_SAUP.jpg" />
-    <None Include="Resources\Seed.PNG" />
     <None Include="Resources\logo_SAUP2.jpg" />
     <None Include="Resources\acknowledgements.rtf" />
-    <None Include="Resources\Web.png" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -2145,7 +2135,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\EwELogo.gif" />
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
-    <EmbeddedResource Include="Resources\PublishPlanHS.png" />
     <EmbeddedResource Include="MSE\MSE\frmMSEAssessFleets.resx">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -2199,10 +2188,6 @@
     <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
       <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
       <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\FishMIPv3Plugin\FishMIPv3Plugin.vbproj">
-      <Project>{6402204a-1134-4c46-b6d6-c9f197df638d}</Project>
-      <Name>FishMIPv3Plugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
