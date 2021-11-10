@@ -1155,6 +1155,9 @@
     <Content Include="Resources\glyph_vl_med_dblue.png" />
     <None Include="Resources\HabitatFunctionHS.png" />
     <Content Include="Resources\ImportHS.png" />
+    <None Include="Resources\license_expired.png" />
+    <None Include="Resources\license_expiring.png" />
+    <None Include="Resources\license_ok.png" />
     <Content Include="Resources\NavHS.png" />
     <None Include="Resources\plugin.png" />
     <None Include="Resources\pluginpoint.png" />
@@ -1177,6 +1180,10 @@
     <None Include="Resources\taxon.png" />
     <None Include="Resources\SourceCodeHS.png" />
     <None Include="Resources\StopHS.png" />
+    <None Include="Resources\star_black.png" />
+    <None Include="Resources\star_blue.png" />
+    <None Include="Resources\star_gray.png" />
+    <None Include="Resources\star_yellow.png" />
     <Content Include="Resources\timeseries.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />

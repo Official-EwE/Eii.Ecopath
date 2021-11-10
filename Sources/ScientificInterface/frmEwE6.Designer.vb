@@ -120,9 +120,9 @@ Partial Public Class frmEwE6
         Me.m_menuMain = New ScientificInterfaceShared.Controls.cEwEMenustrip()
         Me.MenuView = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewNavigation = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiViewOnline = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewStatus = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewRemarks = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiViewOnline = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewMenu = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewModelBar = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewStatusBar = New System.Windows.Forms.ToolStripMenuItem()
@@ -162,6 +162,7 @@ Partial Public Class frmEwE6
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
+        Me.m_tsbnLicense = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsddViewItems = New System.Windows.Forms.ToolStripSplitButton()
@@ -604,11 +605,6 @@ Partial Public Class frmEwE6
         Me.m_tsmiViewNavigation.Name = "m_tsmiViewNavigation"
         resources.ApplyResources(Me.m_tsmiViewNavigation, "m_tsmiViewNavigation")
         '
-        'm_tsmiViewOnline
-        '
-        Me.m_tsmiViewOnline.Name = "m_tsmiViewOnline"
-        resources.ApplyResources(Me.m_tsmiViewOnline, "m_tsmiViewOnline")
-        '
         'm_tsmiViewStatus
         '
         Me.m_tsmiViewStatus.Name = "m_tsmiViewStatus"
@@ -618,6 +614,11 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiViewRemarks.Name = "m_tsmiViewRemarks"
         resources.ApplyResources(Me.m_tsmiViewRemarks, "m_tsmiViewRemarks")
+        '
+        'm_tsmiViewOnline
+        '
+        Me.m_tsmiViewOnline.Name = "m_tsmiViewOnline"
+        resources.ApplyResources(Me.m_tsmiViewOnline, "m_tsmiViewOnline")
         '
         'm_tsmiViewMenu
         '
@@ -792,7 +793,7 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnFeedback, Me.m_tslbReadOnly, ToolStripSeparator6, Me.m_tsddViewItems, Me.ToolStripSeparator7, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, Me.m_tslbReadOnly, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnLicense, Me.m_tsbnFeedback, ToolStripSeparator6, Me.m_tsddViewItems, Me.ToolStripSeparator7, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -839,6 +840,12 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '
+        'm_tsbnLicense
+        '
+        Me.m_tsbnLicense.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        resources.ApplyResources(Me.m_tsbnLicense, "m_tsbnLicense")
+        Me.m_tsbnLicense.Name = "m_tsbnLicense"
+        '
         'm_tsbnFeedback
         '
         Me.m_tsbnFeedback.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -849,7 +856,6 @@ Partial Public Class frmEwE6
         '
         'm_tslbReadOnly
         '
-        Me.m_tslbReadOnly.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tslbReadOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
@@ -1018,5 +1024,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiHelpRegister As ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewEcobase As ToolStripMenuItem
     Private WithEvents m_tsmiViewOnline As ToolStripMenuItem
+    Private WithEvents m_tsbnLicense As ToolStripButton
 End Class
 

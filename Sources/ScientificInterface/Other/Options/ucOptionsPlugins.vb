@@ -51,7 +51,8 @@ Namespace Other
         Const cIMAGE_ANYPLUGINPOINT As Integer = 2
         Const cIMAGE_DISABLED As Integer = 3
         Const cIMAGE_CONFLICT As Integer = 4
-        Const cIMAGE_LICENSE As Integer = 5
+        Const cIMAGE_LICENSE_OK As Integer = 5
+        Const cIMAGE_LICENSE_EXPIRED As Integer = 6
 
         Private Class cPluginAssemblyInfo
 
@@ -186,7 +187,8 @@ Namespace Other
             Me.m_ilPlugins.Images.Add(SharedResources.pluginpoint)
             Me.m_ilPlugins.Images.Add(SharedResources.Cancel)
             Me.m_ilPlugins.Images.Add(SharedResources.Warning)
-            Me.m_ilPlugins.Images.Add(SharedResources.certificate)
+            Me.m_ilPlugins.Images.Add(SharedResources.license_ok)
+            Me.m_ilPlugins.Images.Add(SharedResources.license_expired)
 
             collPA = Me.m_pm.PluginAssemblies
             For Each pa In collPA
@@ -313,8 +315,9 @@ Namespace Other
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function GetPluginAssemblyImageIndex(info As cPluginAssemblyInfo) As Integer
-            ' ToDo: show alert icon when license expiring?
-            If (info.PluginAssembly.IsLicensed) Then Return cIMAGE_LICENSE
+            If (info.PluginAssembly.IsLicensed) Then
+                Return If(info.PluginAssembly.Expiry > Date.Now, cIMAGE_LICENSE_OK, cIMAGE_LICENSE_EXPIRED)
+            End If
             If (info.Enabled = False) Then Return cIMAGE_DISABLED
             If (info.Compatible = False) Then Return cIMAGE_CONFLICT
             If (info.AlwaysEnabled = True) Then Return cIMAGE_CORE

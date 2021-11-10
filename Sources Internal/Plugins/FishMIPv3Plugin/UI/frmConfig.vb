@@ -54,7 +54,7 @@ Public Class frmConfig
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_tsbnLoadProtocol.Image = SharedResources.certificate
+        Me.m_tsbnLoadProtocol.Image = SharedResources.star_blue
         Me.m_tsbnEcoOceanDefaults.Image = My.Resources.ecoocean_768px
         Me.m_tsbnTaxonDefaults.Image = SharedResources.taxon
         Me.m_tsbnSaveEcosim.Image = SharedResources.Ecosim_32x32
