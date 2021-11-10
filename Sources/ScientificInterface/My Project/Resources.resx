@@ -2068,10 +2068,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Development build</value>
     <comment>{0}=date</comment>
   </data>
-  <data name="VERSION_RELEASE" xml:space="preserve">
-    <value>Official release</value>
-    <comment>{0}=date</comment>
-  </data>
   <data name="PLUGIN_LICENSE_EXPIRATION" xml:space="preserve">
     <value>Plug-in licensed until {0}</value>
     <comment>{0}=date</comment>
@@ -2129,10 +2125,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Registered to {0}</value>
     <comment>{0}=name</comment>
   </data>
-  <data name="VERSION_REGISTRATION" xml:space="preserve">
-    <value>EwE Pro {0}, expires {1}</value>
-    <comment>{0}=registration, {1}=expiry</comment>
-  </data>
   <data name="REGISTRATION_ACTIVE" xml:space="preserve">
     <value>Registered to {0}, expires {1}</value>
   </data>
@@ -2189,5 +2181,17 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="OPTIONS_PAGE_GRADIENTS" xml:space="preserve">
     <value>Color gradients</value>
+  </data>
+  <data name="LICENSE_FREE" xml:space="preserve">
+    <value>Free version</value>
+  </data>
+  <data name="LICENSE_PRO" xml:space="preserve">
+    <value>Pro</value>
+  </data>
+  <data name="LICENSE_PRO_INDIVIDUAL" xml:space="preserve">
+    <value>Pro individual</value>
+  </data>
+  <data name="LICENSE_PRO_TEAM" xml:space="preserve">
+    <value>Pro team</value>
   </data>
 </root>

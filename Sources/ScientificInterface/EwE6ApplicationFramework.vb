@@ -192,17 +192,21 @@ Module EwE6ApplicationFramework
 
     Public Function EwEVersion(bIncludeCompileDate As Boolean, bIncludeBitness As Boolean, bIncludeRelease As Boolean) As String
 
-        Dim strCaption As String = My.Resources.GENERIC_CAPTION
+        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version(bIncludeCompileDate, bIncludeBitness))
         If bIncludeRelease Then
             Dim strRelease As String = EwERelease()
             If (Not String.IsNullOrEmpty(strRelease)) Then
                 strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, strRelease)
             End If
         End If
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strCaption, cCore.Version(bIncludeCompileDate, bIncludeBitness))
+        Return strCaption
 
     End Function
 
+    ''' <summary>
+    ''' Returns the release mode of EwE: beta, debug, official release
+    ''' </summary>
+    ''' <returns></returns>
     Public Function EwERelease() As String
 
         Select Case EwE6ApplicationFramework.ReleaseMode
@@ -213,10 +217,14 @@ Module EwE6ApplicationFramework
             Case eReleaseMode.Release
                 ' NOP
         End Select
-        Return My.Resources.VERSION_RELEASE
+        Return ""
 
     End Function
 
+    ''' <summary>
+    ''' Returns the registration status of EwE
+    ''' </summary>
+    ''' <returns></returns>
     Public Function EwERegistration(lic As cLicense) As String
 
         Try
@@ -236,6 +244,31 @@ Module EwE6ApplicationFramework
         End Try
         Return My.Resources.REGISTRATION_NONE
 
+    End Function
+
+    ''' <summary>
+    ''' Returns the license of EwE: Pro [teams|individual], free version
+    ''' </summary>
+    Public Function EwELicense(lic As cLicense) As String
+        Try
+            If (lic IsNot Nothing) Then
+                If (lic.IsRegistered) Then
+                    Select Case lic.LicenseType
+                        Case cLicense.eLicenseType.NotSet
+                            Return My.Resources.LICENSE_PRO
+                        Case cLicense.eLicenseType.Team
+                            Return My.Resources.LICENSE_PRO_TEAM
+                        Case cLicense.eLicenseType.Individual
+                            Return My.Resources.LICENSE_PRO_INDIVIDUAL
+                    End Select
+                End If
+            End If
+        Catch ex2 As ObjectDisposedException
+            ' Can happen during app shutdown. Ignore
+        Catch ex As Exception
+
+        End Try
+        Return My.Resources.LICENSE_FREE
     End Function
 
 #End Region ' Version formatting
