@@ -62,7 +62,6 @@ Namespace Other
             cmd.AddControl(Me.m_rtbDisclaimer)
             cmd.AddControl(Me.m_rtbDistribution)
             cmd.AddControl(Me.m_rtbLicense)
-            'cmd.AddControl(Me.m_lblExpiry, If(String.IsNullOrWhiteSpace(Me.m_uic.RegisteredOwner), "http://ecopath.org/downloads", "http://ecopath.org/go-pro"))
 
             ' Format generic page
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, My.Resources.GENERIC_CAPTION)
@@ -171,6 +170,14 @@ Namespace Other
             Dim cmd As cClearLicenseCommand = CType(cmdh.GetCommand(cClearLicenseCommand.cCOMMAND_NAME), cClearLicenseCommand)
             cmd.Invoke()
             Me.UpdateLicenseControls()
+
+        End Sub
+
+        Private Sub OnOrder(sender As Object, e As EventArgs) Handles m_btnOrder.Click
+
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke("https://ecopath.org/go-pro")
 
         End Sub
 
