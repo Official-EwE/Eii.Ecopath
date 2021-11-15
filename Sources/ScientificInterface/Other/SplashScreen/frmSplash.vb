@@ -37,19 +37,19 @@ Friend Class frmSplash
 
         Me.AllowTransparency = False
 
-        Dim bDarkBack As Boolean = False
+        Dim bInvertText As Boolean = False
         Dim now As Date = Date.Now
         Select Case now.Hour Mod 4
             Case 0 : Me.BackgroundImage = My.Resources.splash_01
-            Case 1 : Me.BackgroundImage = My.Resources.splash_02
+            Case 1 : Me.BackgroundImage = My.Resources.splash_02 : bInvertText = True
             Case 2 : Me.BackgroundImage = My.Resources.splash_03
-            Case 3 : Me.BackgroundImage = My.Resources.splash_04 : bDarkBack = True
+            Case 3 : Me.BackgroundImage = My.Resources.splash_04 : bInvertText = True
         End Select
 
         ' Tee hee hee
         If ((now.Month = 4) And (now.Day = 1)) Then
             Me.BackgroundImage = My.Resources.splash_xx
-            bDarkBack = True
+            bInvertText = True
         End If
 
         Me.Text = My.Resources.GENERIC_CAPTION
@@ -74,7 +74,7 @@ Friend Class frmSplash
         End If
         Me.m_lblReleaseMode.Text = sb.ToString()
 
-        If (bDarkBack) Then
+        If (bInvertText) Then
             Me.m_lblEwE.ForeColor = Color.White
             Me.m_lblReleaseMode.ForeColor = Color.White
             Me.m_lblText.ForeColor = Color.White
