@@ -1364,6 +1364,7 @@
     <Content Include="Resources\ExtraIcons.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\splash_04.png" />
     <None Include="Resources\splash_03.png" />
     <None Include="Resources\splash_02.png" />
     <None Include="Resources\Ecopath6_joepie.ico" />
