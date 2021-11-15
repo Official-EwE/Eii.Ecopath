@@ -29,15 +29,20 @@ Imports EwEUtils.Utilities
 Friend Class frmSplash
 
     Public Sub New()
+
         Me.InitializeComponent()
+
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
         Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.Opaque, False)
 
+        Dim bDarkBack As Boolean = False
+
         Me.Text = My.Resources.GENERIC_CAPTION
-        Select Case Date.Now.Hour Mod 3
+        Select Case Date.Now.Hour Mod 4
             Case 0 : Me.BackgroundImage = My.Resources.splash_01
             Case 1 : Me.BackgroundImage = My.Resources.splash_02
             Case 2 : Me.BackgroundImage = My.Resources.splash_03
+            Case 3 : Me.BackgroundImage = My.Resources.splash_04 : bDarkBack = True
         End Select
 
         Me.AllowTransparency = False
@@ -63,6 +68,11 @@ Friend Class frmSplash
         End If
         Me.m_lblReleaseMode.Text = sb.ToString()
 
+        If (bDarkBack) Then
+            Me.m_lblEwE.ForeColor = Color.White
+            Me.m_lblReleaseMode.ForeColor = Color.White
+            Me.m_lblText.ForeColor = Color.White
+        End If
         Me.UpdateStatus(My.Resources.STATUS_LOADING)
 
 #If DEBUG Then
