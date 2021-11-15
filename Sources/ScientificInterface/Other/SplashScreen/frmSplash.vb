@@ -34,7 +34,12 @@ Friend Class frmSplash
         Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.Opaque, False)
 
         Me.Text = My.Resources.GENERIC_CAPTION
-        Me.BackgroundImage = My.Resources.splash_01
+        Select Case Date.Now.Hour Mod 3
+            Case 0 : Me.BackgroundImage = My.Resources.splash_01
+            Case 1 : Me.BackgroundImage = My.Resources.splash_02
+            Case 2 : Me.BackgroundImage = My.Resources.splash_03
+        End Select
+
         Me.AllowTransparency = False
 
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
