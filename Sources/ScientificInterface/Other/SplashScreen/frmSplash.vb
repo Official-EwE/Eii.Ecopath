@@ -35,18 +35,24 @@ Friend Class frmSplash
         Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
         Me.SetStyle(ControlStyles.SupportsTransparentBackColor Or ControlStyles.Opaque, False)
 
-        Dim bDarkBack As Boolean = False
+        Me.AllowTransparency = False
 
-        Me.Text = My.Resources.GENERIC_CAPTION
-        Select Case Date.Now.Hour Mod 4
+        Dim bDarkBack As Boolean = False
+        Dim now As Date = Date.Now
+        Select Case now.Hour Mod 4
             Case 0 : Me.BackgroundImage = My.Resources.splash_01
             Case 1 : Me.BackgroundImage = My.Resources.splash_02
             Case 2 : Me.BackgroundImage = My.Resources.splash_03
             Case 3 : Me.BackgroundImage = My.Resources.splash_04 : bDarkBack = True
         End Select
 
-        Me.AllowTransparency = False
+        ' Tee hee hee
+        If ((now.Month = 4) And (now.Day = 1)) Then
+            Me.BackgroundImage = My.Resources.splash_xx
+            bDarkBack = True
+        End If
 
+        Me.Text = My.Resources.GENERIC_CAPTION
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
 
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
