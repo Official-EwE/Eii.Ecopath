@@ -662,9 +662,6 @@ Public Class cEcosimDatastructures
     ''' <remarks>Used to sum effort into a single output map</remarks>
     Public EffortConversionFactor() As Single
 
-
-    Public lstEnviroInputData As List(Of IEnviroInputData)
-
     Public EcosimEnvResFunctions As New cMediationDataStructures
 
     Public Sub RedimVars()

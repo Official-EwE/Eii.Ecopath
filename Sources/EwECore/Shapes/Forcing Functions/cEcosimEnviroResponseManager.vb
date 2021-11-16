@@ -34,6 +34,7 @@ Public Class cEcosimEnviroResponseManager
 
     Private m_simData As cEcosimDatastructures
     Private m_medData As cMediationDataStructures
+    Private m_EnviroInputData As New List(Of IEnviroInputData)
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -44,7 +45,7 @@ Public Class cEcosimEnviroResponseManager
     Friend Sub Init(EocsimData As cEcosimDatastructures, MediationData As cMediationDataStructures)
         Me.m_simData = EocsimData
         Me.m_medData = MediationData
-        Me.m_simData.lstEnviroInputData = New List(Of IEnviroInputData)
+        Me.m_EnviroInputData.Clear()
     End Sub
 
     Public Sub Load(manager As cForcingFunctionShapeManager)
@@ -64,7 +65,7 @@ Public Class cEcosimEnviroResponseManager
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
                     EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.EnvRespFuncIndex(EnviroData.Index, iGroup)
                 Next
-                Me.m_simData.lstEnviroInputData.Add(EnviroData)
+                Me.m_EnviroInputData.Add(EnviroData)
 
             Catch ex As Exception
                 Debug.Assert(False, "LoadFromCoreData Error: " & ex.Message)
@@ -83,7 +84,7 @@ Public Class cEcosimEnviroResponseManager
         Dim bSuccess As Boolean = True
 
         Try
-            For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
+            For Each env As cEcosimEnviroInputData In Me.m_EnviroInputData
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
                     'If this is a new application
                     'check that the response function cover some of the input(forcing) data
@@ -109,7 +110,7 @@ Public Class cEcosimEnviroResponseManager
 
     Public ReadOnly Property nInputData() As Integer Implements IEnvironmentalResponseManager.nEnviroData
         Get
-            Return Me.m_simData.lstEnviroInputData.Count
+            Return Me.m_EnviroInputData.Count
         End Get
     End Property
 
@@ -117,7 +118,7 @@ Public Class cEcosimEnviroResponseManager
     Public ReadOnly Property InputData(iDataIndex As Integer) As IEnviroInputData Implements IEnvironmentalResponseManager.EnviroData
         Get
             If iDataIndex > 0 And iDataIndex <= Me.nInputData Then
-                Return Me.m_simData.lstEnviroInputData(iDataIndex - 1)
+                Return Me.m_EnviroInputData(iDataIndex - 1)
             End If
             Return Nothing
         End Get
