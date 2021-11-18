@@ -39,11 +39,18 @@ Friend Class frmSplash
 
         Dim bInvertText As Boolean = False
         Dim now As Date = Date.Now
-        Select Case now.Hour Mod 4
+        Dim image As Integer = now.DayOfYear Mod 6
+#If DEBUG Then
+        'image = 3
+#End If
+        Select Case image
             Case 0 : Me.BackgroundImage = My.Resources.splash_01
             Case 1 : Me.BackgroundImage = My.Resources.splash_02 : bInvertText = True
             Case 2 : Me.BackgroundImage = My.Resources.splash_03
             Case 3 : Me.BackgroundImage = My.Resources.splash_04 : bInvertText = True
+            Case 4 : Me.BackgroundImage = My.Resources.splash_05 : bInvertText = True
+            Case 5 : Me.BackgroundImage = My.Resources.splash_06 : bInvertText = True
+            Case 6 : Me.BackgroundImage = My.Resources.splash_07 : bInvertText = True
         End Select
 
         ' Tee hee hee
