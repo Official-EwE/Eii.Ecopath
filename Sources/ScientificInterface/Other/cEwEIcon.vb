@@ -75,7 +75,7 @@ Public Class cEwEIcon
 
                 Dim tf As String = cFileUtils.MakeTempFile(".ico")
                 Try
-                    My.Computer.Network.DownloadFile(New Uri("http://ecopath.org/EwE/current.ico"), tf)
+                    My.Computer.Network.DownloadFile(New Uri("https://ecopath.org/EwE/current.ico"), tf)
                     cEwEIcon.m_ico = New Icon(tf)
                 Catch ex As Exception
                     ' OK
