@@ -1126,11 +1126,6 @@ Public Class frmEwE6
             ' Abort if Ecopath model did not close sucessfully
             If e.Cancel Then Return
 
-            ' Last-ditch cleanup
-            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_CLEANUP_TEMPFILES)
-            cFileUtils.PurgeTempFiles()
-            cApplicationStatusNotifier.EndProgress(Me.Core)
-
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6.OnFormClosing")
         End Try

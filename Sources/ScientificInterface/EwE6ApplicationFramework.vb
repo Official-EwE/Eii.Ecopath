@@ -77,6 +77,8 @@ Module EwE6ApplicationFramework
         RemoveHandler m_main.OnLoadCompleted, AddressOf OnLoadCompleted
         RemoveHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
 
+        cFileUtils.PurgeTempFiles()
+
         ' Termninate well
         My.Settings.Save()
 
