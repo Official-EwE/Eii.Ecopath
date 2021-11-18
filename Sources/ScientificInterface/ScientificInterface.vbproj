@@ -1364,6 +1364,9 @@
     <Content Include="Resources\ExtraIcons.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\splash_07.png" />
+    <None Include="Resources\splash_06.png" />
+    <None Include="Resources\splash_05.png" />
     <None Include="Resources\splash_xx.png" />
     <None Include="Resources\splash_04.png" />
     <None Include="Resources\splash_03.png" />
