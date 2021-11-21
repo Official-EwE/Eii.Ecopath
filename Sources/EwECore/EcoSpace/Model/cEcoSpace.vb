@@ -885,7 +885,7 @@ Public Class cEcoSpace
                 'HACK ALERT
                 'Using our Harry Potter powers to magically move migrating biomass into the new area
                 'this totally messes up the trophic interaction 
-                'TeleportMigrationBiomass(m_Data.MonthNow)
+                'TeleportMigrationBiomass(EcoSpaceData.MonthNow)
                 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
@@ -2426,7 +2426,9 @@ Public Class cEcoSpace
                 Me.EcoSpaceData.IsFishRateSet = True
             End If
 
-            If Me.EcoSpaceData.PredictEffort Then Me.SetEffortParameters()
+            'jb 21-Nov-2021 TotEffort(fleet) should only be set once during initialization
+            'If SetEffortParameters() is called again ResetTotEffort should be False
+            If Me.EcoSpaceData.PredictEffort Then Me.SetEffortParameters(ResetTotEffort:=True)
 
             If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
                 'If m_ConTracer Is Nothing Then
@@ -3600,14 +3602,14 @@ Public Class cEcoSpace
     End Sub
 
 
-    Private Sub SetEffortParameters()
+    Private Sub SetEffortParameters(ResetTotEffort As Boolean)
         'this predicts total effort by gear type over model cells
         'accounting for habitat type restriction of each gear (gearhab(geartype,habitat))
         Dim i As Integer, j As Integer, ig As Integer
         Dim PFished As Single
 
         For ig = 1 To Me.EcoSpaceData.nFleets
-            Me.EcoSpaceData.TotEffort(ig) = 0
+            If ResetTotEffort Then Me.EcoSpaceData.TotEffort(ig) = 0
             For i = 1 To Me.EcoSpaceData.InRow
                 For j = 1 To Me.EcoSpaceData.InCol
                     'below changed following CJW's email of 20 Jan 98:
@@ -3642,22 +3644,24 @@ Public Class cEcoSpace
                         'constrain percentage of area fished to 1.0
                         If Me.EcoSpaceData.PAreaFished(ig)(i, j) > 1.0 Then Me.EcoSpaceData.PAreaFished(ig)(i, j) = 1.0
 
-                        If Not Me.EcoSpaceData.bUseEffortDistThreshold Then
-                            'Fishing is only restricted by the Habitat types
-                            Me.EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
-
-                        Else ' Me.m_Data.bUseEffortDistThreshold  = True
-                            'Fishing is also restricted by sailing cost < effort distribution threshold
-                            If Me.EcoSpaceData.Sail(ig)(i, j) < Me.EcoSpaceData.EffortDistThreshold Then
+                        If ResetTotEffort Then
+                            If Not Me.EcoSpaceData.bUseEffortDistThreshold Then
+                                'Fishing is only restricted by the Habitat types
                                 Me.EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
-                            Else
-                                'Sailing cost > effort distribution threshold
-                                'So this fleet is not fishing in this cell
-                                Me.EcoSpaceData.PAreaFished(ig)(i, j) = 0
-                            End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
 
-                        End If 'Me.m_Data.bUseEffortDistThreshold
-                    End If 'm_Data.Depth(i, j) > 0
+                            Else ' Me.m_Data.bUseEffortDistThreshold  = True
+                                'Fishing is also restricted by sailing cost < effort distribution threshold
+                                If Me.EcoSpaceData.Sail(ig)(i, j) < Me.EcoSpaceData.EffortDistThreshold Then
+                                    Me.EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
+                                Else
+                                    'Sailing cost > effort distribution threshold
+                                    'So this fleet is not fishing in this cell
+                                    Me.EcoSpaceData.PAreaFished(ig)(i, j) = 0
+                                End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
+
+                            End If 'Me.m_Data.bUseEffortDistThreshold
+                        End If 'm_Data.Depth(i, j) > 0
+                    End If 'If ResetTotEffort Then
 
                 Next j 'map cols
             Next i 'map rows
@@ -4203,8 +4207,8 @@ exitline:
         'System.Console.WriteLine("----------------setIsFished------------------------")
 
         If Me.EcoSpaceData.isFishingHabitatChanged And Me.EcoSpaceData.PredictEffort Then
-            ' Re-evaluate PAreaFished and tot effort
-            Me.SetEffortParameters()
+            'Re-evaluate PAreaFished but not TotEffort()
+            Me.SetEffortParameters(ResetTotEffort:=False)
         End If
 
         ' For all cells
@@ -4958,6 +4962,9 @@ exitline:
     ''' </summary>
     ''' <remarks></remarks>
     Sub AdjustTotalEffort()
+        'Me.bEffortAdjusted = True
+        'Debug.Assert(False, "AdjustTotalEffort")
+        'Return
 
         Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
         Dim Valt As Single, isp As Integer
@@ -5215,7 +5222,10 @@ exitline:
                                                 diagAdjust = 0.4142 'sqrt(2)-1
                                             End If
 
-                                            If Me.MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust < smallestDist And ((Me.EcoSpaceData.Depth(i, j) > 0 And Me.EcoSpaceData.HabCap(migIndex(iMigGrp))(i, j) > minHabCap) Or i = 0 Or i = Me.EcoSpaceData.InRow + 1 Or j = 0 Or j = Me.EcoSpaceData.InCol + 1) Then
+                                            If Me.MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust < smallestDist And
+                                                ((Me.EcoSpaceData.Depth(i, j) > 0 And Me.EcoSpaceData.HabCap(migIndex(iMigGrp))(i, j) > minHabCap) _
+                                                Or i = 0 Or i = Me.EcoSpaceData.InRow + 1 Or j = 0 Or j = Me.EcoSpaceData.InCol + 1) Then
+
                                                 smallestDist = Me.MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust
                                                 ' Debug.Assert(Not (ii = 3 And jj > 1 And imonth = 6))
                                                 pathFound = True
@@ -5236,17 +5246,17 @@ exitline:
                 Next imonth 'imonth = 1 To 12
             Next iMigGrp 'iMigGrp = 1 To nMig
 
-            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx()
-            ''DEBUGGING()
-            ''Dump the migration maps to the debug/immediate window
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx()
+            'DEBUGGING()
+            'Dump the migration maps to the debug/immediate window
             'Dim tempstr As String
             'For iMigGrp = 1 To nMig 'm_Data.NGroups
             '    For imonth = 1 To 12
             '        Debug.Print("")
-            '        Debug.Print(Me.m_EPdata.GroupName(migIndex(iMigGrp)) + ", imonth = " + imonth.ToString)
-            '        For i = 0 To m_Data.InRow + 1
-            '            For j = 0 To m_Data.InCol + 1
-            '                tempstr = tempstr + Math.Round(MigGrad(i, j, iMigGrp, imonth), 3).ToString.PadRight(10)
+            '        Debug.Print(Me.EcoPathData.GroupName(migIndex(iMigGrp)) + ", imonth = " + imonth.ToString)
+            '        For i = 0 To EcoSpaceData.InRow + 1
+            '            For j = 0 To EcoSpaceData.InCol + 1
+            '                tempstr = tempstr + Math.Round(MigGrad(iMigGrp, imonth)(i, j)).ToString.PadRight(10)
 
             '            Next j
             '            Debug.Print(tempstr)
@@ -5254,7 +5264,7 @@ exitline:
             '        Next i
             '    Next imonth
             'Next iMigGrp
-            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx()
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx()
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -5567,7 +5577,7 @@ exitline:
                 Next icol
             Next irow
 
-            'Debug.Assert(tempBSum = sumB(imig))
+            Debug.Assert(Math.Abs(tempBSum / sumB(imig)) < 1.0001)
         Next imig
 
 
@@ -5580,6 +5590,9 @@ exitline:
     Function RelMigMove(ByVal iRowFrom As Integer, ByVal iColFrom As Integer, ByVal iRowTo As Integer, ByVal iColTo As Integer, ByVal G(,) As Single, ByVal gk As Single, ByVal iMigGrp As Integer, ByVal imonth As Integer, ByVal ip As Integer) As Single
         'sets relative movement rate using slope of g() function between origin (i1,j1) and destination (i2,j2) cells
         'function is 1 when slope ss is zero
+
+
+        'Return 1.0
 
         Dim Ss As Single
         Dim multDir As Single
@@ -5601,11 +5614,14 @@ exitline:
                 'Use the gradient to decide the direction of flow
                 Dim grad As Single = Me.EcoSpaceData.MigMaps(ip, imonth)(iRowTo, iColTo) / Me.EcoSpaceData.MigMaps(ip, imonth)(iRowFrom, iColFrom)
                 If grad = 1.0 Then
-                    Return 1.0
+                    'If G(iRowFrom, iColFrom) <> 0 Then
+                    'Dim g1 = G(iRowTo, iColTo) / (G(iRowFrom, iColFrom) + 1.0E-20)
+                    'End If
+                    Return Me.EcoSpaceData.InMigAreaMovement(ip)
                 ElseIf grad > 1 Then
-                    Return 1 + Me.EcoSpaceData.InMigAreaMovement(ip)
-                Else
-                    Return 1 - Me.EcoSpaceData.InMigAreaMovement(ip)
+                        Return 1 + Me.EcoSpaceData.InMigAreaMovement(ip)
+                    Else
+                        Return 1 - Me.EcoSpaceData.InMigAreaMovement(ip)
                 End If
 
             End If
@@ -5636,11 +5652,11 @@ exitline:
                 'Case 0
                 'RelMigMove = 1
                 Case Is < 0
-                    RelMovement = 1 + BarrierAvoid * multDir * G(iRowFrom, iColFrom) / (0.5 * gk + G(iRowFrom, iColFrom)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
+                    RelMovement = 1.0 + BarrierAvoid * multDir * G(iRowFrom, iColFrom) / (0.5 * gk + G(iRowFrom, iColFrom)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
                 Case Is > 0
-                    RelMovement = 1 - BarrierAvoid * multDir * G(iRowFrom, iColFrom) / (0.5 * gk + G(iRowFrom, iColFrom))
+                    RelMovement = 1.0 - BarrierAvoid * multDir * G(iRowFrom, iColFrom) / (0.5 * gk + G(iRowFrom, iColFrom))
                 Case Else
-                    RelMovement = 1 'Stop
+                    RelMovement = 1.0 'Stop
             End Select
 
         Catch ex As Exception
