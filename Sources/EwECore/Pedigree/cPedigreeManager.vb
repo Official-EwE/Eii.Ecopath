@@ -389,28 +389,28 @@ Public Class cPedigreeManager
                 Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
 
             Case eVarNameFlags.PBInput
-                If (group.IsDetritus()) Then
+                If (group.IsDetritus) Then
                     Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
                 Else
                     Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
             Case eVarNameFlags.QBInput
-                If (group.IsDetritus() Or group.IsProducer()) Then
+                If (group.IsDetritus Or group.IsProducer) Then
                     Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
                 Else
                     Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
             Case eVarNameFlags.DietComp
-                If (group.IsDetritus() Or group.IsProducer()) Then
+                If (group.IsDetritus Or group.IsProducer) Then
                     Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 Else
                     Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
             Case eVarNameFlags.TCatchInput
-                If epdata.fCatch(group.Index) > 0 Then
+                If (group.IsFished) Then
                     Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 Else
                     Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
