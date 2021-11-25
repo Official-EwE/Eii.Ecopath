@@ -35,10 +35,10 @@ Namespace UI
     ''' Outcome configuration grid; enables configuring how Ecospace predictions
     ''' are fed back to MEL.
     ''' </summary>
-    ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
+    ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
     ''' -----------------------------------------------------------------------
     Public Class gridOutcomes
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Internal vars "
 
@@ -82,10 +82,10 @@ Namespace UI
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(ScientificInterfaceShared.My.Resources.HEADER_NAME)
-            Me(0, eColumnTypes.Numerator) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMERATOR)
-            Me(0, eColumnTypes.Denominator) = New EwEColumnHeaderCell(My.Resources.HEADER_DENOMINATOR)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(ScientificInterfaceShared.My.Resources.HEADER_NAME)
+            Me(0, eColumnTypes.Numerator) = New cEwEColumnHeaderCell(My.Resources.HEADER_NUMERATOR)
+            Me(0, eColumnTypes.Denominator) = New cEwEColumnHeaderCell(My.Resources.HEADER_DENOMINATOR)
 
             Me.FixedColumnWidths = False
             Me.FixedColumns = 2
@@ -110,7 +110,7 @@ Namespace UI
             For i As Integer = 1 To Me.Output.NumItems
 
                 Dim strName As String = ""
-                Dim c As EwECell = Nothing
+                Dim c As cEwECell = Nothing
 
                 Select Case Me.Output.LayerType
                     Case cOutcome.eLayerType.Biomass
@@ -124,15 +124,15 @@ Namespace UI
                 If (Not String.IsNullOrWhiteSpace(strName)) Then
                     iRow = Me.AddRow()
 
-                    Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i))
-                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(strName)
+                    Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i))
+                    Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(strName)
 
-                    c = New EwECell(CSng(Output.Numerator(i)))
+                    c = New cEwECell(CSng(Output.Numerator(i)))
                     c.SuppressZero(0) = True
                     Me(iRow, eColumnTypes.Numerator) = c
                     Me(iRow, eColumnTypes.Numerator).Behaviors.Add(Me.EwEEditHandler)
 
-                    c = New EwECell(CSng(Output.Denominator(i)))
+                    c = New cEwECell(CSng(Output.Denominator(i)))
                     c.SuppressZero(0) = True
                     Me(iRow, eColumnTypes.Denominator) = c
                     Me(iRow, eColumnTypes.Denominator).Behaviors.Add(Me.EwEEditHandler)

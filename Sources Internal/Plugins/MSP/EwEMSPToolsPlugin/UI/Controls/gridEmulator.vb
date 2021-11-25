@@ -39,10 +39,10 @@ Namespace UI
     ''' <summary>
     ''' Test data configuration grid; enables managing <see cref="cTestset">simulated MEL test data</see>.
     ''' </summary>
-    ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
+    ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
     ''' -----------------------------------------------------------------------
     Public Class gridEmulator
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -84,9 +84,9 @@ Namespace UI
             MyBase.InitStyle()
 
             Me.Redim(1, 3)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_PRESSURE)
-            Me(0, eColumnTypes.Testdata) = New EwEColumnHeaderCell(My.Resources.HEADER_TESTDATA)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_PRESSURE)
+            Me(0, eColumnTypes.Testdata) = New cEwEColumnHeaderCell(My.Resources.HEADER_TESTDATA)
 
             Me.FixedColumnWidths = False
             Me.FixedColumns = 2
@@ -106,7 +106,7 @@ Namespace UI
             If (Me.m_game Is Nothing) Then Return
 
             Dim iRow As Integer = 0
-            Dim cell As EwECell = Nothing
+            Dim cell As cEwECell = Nothing
 
             For i As Integer = 0 To Me.m_testset.Pressures.Count - 1
 
@@ -116,18 +116,18 @@ Namespace UI
 
                 iRow = Me.AddRow()
 
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(pressure.Name)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
 
                 Select Case pressure.DataType
                     Case cPressure.eDataTypes.Scalar
-                        cell = New EwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
+                        cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
                         cell.SuppressZero(cCore.NULL_VALUE) = True
                     Case cPressure.eDataTypes.Grid
-                        cell = New EwECell(Me.m_testset.Testdata(pressure), style)
+                        cell = New cEwECell(Me.m_testset.Testdata(pressure), style)
                     Case Else
                         Debug.Assert(False)
-                        cell = New EwECell("", eStyleFlags.NotEditable)
+                        cell = New cEwECell("", eStyleFlags.NotEditable)
                 End Select
 
                 Me(iRow, eColumnTypes.Testdata) = cell

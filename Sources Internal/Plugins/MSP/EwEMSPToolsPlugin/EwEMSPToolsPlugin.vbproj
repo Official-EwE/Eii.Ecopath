@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -10,7 +10,7 @@
     <AssemblyName>EwEMSPToolsPlugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-<TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -207,6 +207,10 @@
     <ProjectReference Include="..\..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
       <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
       <Name>ScientificInterfaceShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwEMSPShell\EwEMSPShell.vbproj">
+      <Project>{ddc5d15f-63f4-4b9d-ad24-a69d1d91c243}</Project>
+      <Name>EwEMSPShell</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

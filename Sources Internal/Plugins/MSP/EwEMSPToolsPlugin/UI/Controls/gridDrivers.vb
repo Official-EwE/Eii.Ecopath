@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports EwEShell
-Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2.DataModels
@@ -34,10 +33,10 @@ Namespace UI
     ''' Driver configuration grid; enables configuring how MEL <see cref="cPressure">pressures</see>
     ''' map to available <see cref="cDriver">Ecospace driver variables</see>.
     ''' </summary>
-    ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
+    ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
     ''' -----------------------------------------------------------------------
     Public Class gridDrivers
-        Inherits EwEGrid
+        Inherits cEwEGrid
 
 #Region " Internal vars "
 
@@ -79,10 +78,10 @@ Namespace UI
             MyBase.InitStyle()
 
             Me.Redim(1, 4)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(My.Resources.HEADER_PRESSURE)
-            Me(0, eColumnTypes.Mapping) = New EwEColumnHeaderCell(My.Resources.HEADER_DRIVER)
-            Me(0, eColumnTypes.Mulitplier) = New EwEColumnHeaderCell(My.Resources.HEADER_MULTIPLIER)
+            Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_PRESSURE)
+            Me(0, eColumnTypes.Mapping) = New cEwEColumnHeaderCell(My.Resources.HEADER_DRIVER)
+            Me(0, eColumnTypes.Mulitplier) = New cEwEColumnHeaderCell(My.Resources.HEADER_MULTIPLIER)
 
             Me.FixedColumnWidths = False
             Me.FixedColumns = 2
@@ -108,8 +107,8 @@ Namespace UI
                 Dim pressure As cPressure = Me.Game.Pressures(i)
                 iRow = Me.AddRow()
 
-                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i + 1))
-                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(pressure.Name)
+                Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
 
                 Dim edt As EditorComboBox = Me.Editor(pressure)
                 Dim d As cDriver = Game.Driver(pressure.Name)
@@ -128,10 +127,10 @@ Namespace UI
                 Me(iRow, eColumnTypes.Mapping).Behaviors.Add(Me.EwEEditHandler)
 
                 If (pressure.DataType = cPressure.eDataTypes.Scalar) Then
-                    Me(iRow, eColumnTypes.Mulitplier) = New EwECell(Game.Multiplier(pressure.Name))
+                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell(Game.Multiplier(pressure.Name))
                     Me(iRow, eColumnTypes.Mulitplier).Behaviors.Add(Me.EwEEditHandler)
                 Else
-                    Me(iRow, eColumnTypes.Mulitplier) = New EwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
                 End If
 
                 Me.Pressure(iRow) = pressure

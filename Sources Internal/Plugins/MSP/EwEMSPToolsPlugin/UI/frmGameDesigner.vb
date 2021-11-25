@@ -822,7 +822,6 @@ Namespace UI
         ''' <summary>
         ''' Event handler, called when the users has selected a <see cref="cPressure">pressure</see>.
         ''' </summary>
-        ''' <param name="selection">Ignored.</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnPressureSelected() _
             Handles m_gridPressureMappings.OnSelectionChanged
