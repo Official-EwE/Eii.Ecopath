@@ -2417,7 +2417,6 @@ Public Class cEcoSpace
 
             If Me.EcoSpaceData.IsFishRateSet = False Then
                 For ig = 1 To Me.EcoSpaceData.nFleets
-                    'For i = 0 To TotalTime * 12
                     For i = 0 To Me.EcoSimData.NTimes
                         Me.EcoSimData.FishRateGear(ig, i) = 1
                     Next
@@ -2431,20 +2430,10 @@ Public Class cEcoSpace
             If Me.EcoSpaceData.PredictEffort Then Me.SetEffortParameters(ResetTotEffort:=True)
 
             If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
-                'If m_ConTracer Is Nothing Then
-                '    m_ConTracer = New cContaminantTracer
-                'End If
-                'm_ConTracer.Init(m_tracerData, m_EPdata, m_ESData, m_Stanza)
-                'm_ConTracer.CInitialize()
                 Me.Basebiomass(0) = 1
                 Me.EcoSpaceData.IsAdvected(0) = True
                 'VC with CJW 20151124: first detritus group has to be advected for ecotracter environment to be moved around
                 Me.EcoSpaceData.IsAdvected(Me.EcoPathData.NumLiving + 1) = True
-
-                'Temporary for debuging advected contaminants
-                'Hardcode some Velocity vectors
-                'Me.m_Data.debugSetAdvectionVectors()
-
             End If
 
             Dim btot(ip) As Single

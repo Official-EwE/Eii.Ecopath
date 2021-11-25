@@ -167,11 +167,12 @@ Namespace SpatialData
         Public Overrides Function Populate(iTime As Integer, dNoData As Double, Optional layer As cEcospaceLayer = Nothing) As Boolean
 
             If MyBase.Populate(iTime, dNoData, layer) Then
-                ' Is there external data waiting to be copied to a new timestep?
-                'jb 6-Aug-2020 This prevents the data from ever being loaded
-                'If (Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow) Then
-                ' #Yes: integrate all non-NULL external data values into this month's advection pattern
-                For ir As Integer = 0 To Me.m_spaceData.InRow + 1
+                'If there was data loaded by the framework, but not for this time step, copy the last recieved data into the current time step
+                'This allows for sparse data loading. Only some months need to have data.
+                If (Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow) Then
+                    ' #Yes: integrate all non-NULL external data values into this month's advection pattern
+                    'this will always be data from a previous timestep
+                    For ir As Integer = 0 To Me.m_spaceData.InRow + 1
                         For ic As Integer = 0 To Me.m_spaceData.InCol + 1
                             If Me.m_lastXData(ir, ic) <> cCore.NULL_VALUE Then
                                 Me.m_spaceData.MonthlyXvel(Me.m_spaceData.MonthNow)(ir, ic) = CSng(Me.m_lastXData(ir, ic))
@@ -179,10 +180,10 @@ Namespace SpatialData
                             If Me.m_lastYData(ir, ic) <> cCore.NULL_VALUE Then
                                 Me.m_spaceData.MonthlyYvel(Me.m_spaceData.MonthNow)(ir, ic) = CSng(Me.m_lastYData(ir, ic))
                             End If
-                        Next
-                    Next
-                'End If
-            End If
+                        Next ic
+                    Next ir
+                End If '(Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow)
+            End If 'MyBase.Populate(iTime, dNoData, layer)
 
         End Function
 
