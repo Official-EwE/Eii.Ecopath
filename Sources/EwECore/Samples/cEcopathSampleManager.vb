@@ -796,42 +796,46 @@ Namespace Samples
             Debug.WriteLine("EcoSampler: Loading " & s.Name)
 
             ' User wants to keep the best fit parameters
-            For iGroup As Integer = 1 To Me.m_core.nGroups
+            For iGroup As Integer = 0 To Me.m_core.nGroups
 
-                If (s.B(iGroup) > cCore.NULL_VALUE) Then
-                    epdata.Binput(iGroup) = s.B(iGroup)
-                    epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
-                End If
+                If (iGroup >= 1) Then
 
-                If (s.PB(iGroup) > cCore.NULL_VALUE) Then
-                    epdata.PBinput(iGroup) = s.PB(iGroup)
-                End If
-
-                If (s.QB(iGroup) > cCore.NULL_VALUE) Then
-                    epdata.QBinput(iGroup) = s.QB(iGroup)
-                End If
-
-                If (s.EE(iGroup) > cCore.NULL_VALUE) Then
-                    epdata.EEinput(iGroup) = s.EE(iGroup)
-                    If (epdata.EEinput(1) > 0) Then Stop
-                End If
-
-                If (s.BA(iGroup) > cCore.NULL_VALUE) Then
-                    epdata.BAInput(iGroup) = s.BA(iGroup)
-                End If
-
-                If (s.BaBi(iGroup) > cCore.NULL_VALUE) Then
-                    epdata.BaBi(iGroup) = s.BaBi(iGroup)
-                End If
-
-                For iFleet As Integer = 1 To Me.m_core.nFleets
-                    If (s.Landing(iFleet, iGroup) > cCore.NULL_VALUE) Then
-                        epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)
+                    If (s.B(iGroup) > cCore.NULL_VALUE) Then
+                        epdata.Binput(iGroup) = s.B(iGroup)
+                        epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
                     End If
-                    If (s.Discard(iFleet, iGroup) > cCore.NULL_VALUE) Then
-                        epdata.Discard(iFleet, iGroup) = s.Discard(iFleet, iGroup)
+
+                    If (s.PB(iGroup) > cCore.NULL_VALUE) Then
+                        epdata.PBinput(iGroup) = s.PB(iGroup)
                     End If
-                Next
+
+                    If (s.QB(iGroup) > cCore.NULL_VALUE) Then
+                        epdata.QBinput(iGroup) = s.QB(iGroup)
+                    End If
+
+                    If (s.EE(iGroup) > cCore.NULL_VALUE) Then
+                        epdata.EEinput(iGroup) = s.EE(iGroup)
+                        If (epdata.EEinput(1) > 0) Then Stop
+                    End If
+
+                    If (s.BA(iGroup) > cCore.NULL_VALUE) Then
+                        epdata.BAInput(iGroup) = s.BA(iGroup)
+                    End If
+
+                    If (s.BaBi(iGroup) > cCore.NULL_VALUE) Then
+                        epdata.BaBi(iGroup) = s.BaBi(iGroup)
+                    End If
+
+                    For iFleet As Integer = 1 To Me.m_core.nFleets
+                        If (s.Landing(iFleet, iGroup) > cCore.NULL_VALUE) Then
+                            epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)
+                        End If
+                        If (s.Discard(iFleet, iGroup) > cCore.NULL_VALUE) Then
+                            epdata.Discard(iFleet, iGroup) = s.Discard(iFleet, iGroup)
+                        End If
+                    Next
+
+                End If
 
                 For iPred As Integer = 1 To epdata.NumLiving
                     If (s.DC(iPred, iGroup) > cCore.NULL_VALUE) Then
