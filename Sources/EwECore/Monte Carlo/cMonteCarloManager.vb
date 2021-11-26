@@ -1180,12 +1180,13 @@ Public Class cMonteCarloManager
                 Me.m_mc.CVpar(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBicv
                 Me.m_mc.CVpar(eMCParams.EE, MCGroup.Index) = MCGroup.EEcv
                 Me.m_mc.CVpar(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUcv
+                Me.m_mc.CVParDC(eMCDietSamplingMethod.Dirichlets, MCGroup.Index) = MCGroup.DietMultiplier
+                Me.m_mc.CVParDC(eMCDietSamplingMethod.NormalDistribution, MCGroup.Index) = MCGroup.Dietcv
 
                 For ifleet As Integer = 1 To Me.m_core.nFleets
                     Me.m_mc.CVparLanding(ifleet, MCGroup.Index) = MCGroup.Landingscv(ifleet)
                     Me.m_mc.CVparDiscard(ifleet, MCGroup.Index) = MCGroup.Discardscv(ifleet)
                 Next
-                Me.m_mc.CVpar(eMCParams.Diets, MCGroup.Index) = MCGroup.DietMultiplier
 
                 Me.m_mc.ParLimit(0, eMCParams.Biomass, MCGroup.Index) = MCGroup.BLower
                 Me.m_mc.ParLimit(0, eMCParams.PB, MCGroup.Index) = MCGroup.PBLower
