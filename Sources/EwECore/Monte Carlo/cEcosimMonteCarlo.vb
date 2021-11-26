@@ -428,6 +428,7 @@ Public Class cEcosimMonteCarlo
         Dim man As cPedigreeManager = Nothing
         Dim parm As eMCParams = eMCParams.NotSet
         Dim iVar As Integer = Me.m_core.PedigreeVariableIndex(varname)
+        Dim bCalcLimits As Boolean = False
 
         If (iVar <= 0) Then Return False
 
@@ -444,20 +445,23 @@ Public Class cEcosimMonteCarlo
 
                             Case eVarNameFlags.BiomassAreaInput,
                                  eVarNameFlags.PBInput,
-                                 eVarNameFlags.QBInput,
-                                 eVarNameFlags.DietComp
+                                 eVarNameFlags.QBInput
                                 parm = Me.PedigreeVarToMCIndex(varname)
-                                Me.CVpar(parm, i) = opt / 100.0! / 2.0!
-                                Me.CalculateUpperLowerLimits(False, parm)
+                                CVpar(parm, i) = opt / 100.0! / 2.0!
+                                bCalcLimits = True
+
+                            Case eVarNameFlags.DietComp
+                                Debug.Assert(Me.DietSamplingMethod = eMCDietSamplingMethod.NormalDistribution)
+
+                                parm = Me.PedigreeVarToMCIndex(varname)
+                                CVParDC(eMCDietSamplingMethod.NormalDistribution, i) = opt / 100.0! / 2.0!
 
                             Case eVarNameFlags.TCatchInput
                                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                                    Me.CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
-                                    Me.CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
+                                    CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
+                                    CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
                                 Next
-
-                                Me.CalculateUpperLowerLimits(False, eMCParams.Landings)
-                                Me.CalculateUpperLowerLimits(False, eMCParams.Discards)
+                                bCalcLimits = True
                         End Select
 
                     Catch ex As Exception
@@ -467,6 +471,17 @@ Public Class cEcosimMonteCarlo
                 End If
             End If
         Next
+
+        If bCalcLimits Then
+            Select Case varname
+                Case eVarNameFlags.TCatchInput
+                    Me.CalculateUpperLowerLimits(False, eMCParams.Landings)
+                    Me.CalculateUpperLowerLimits(False, eMCParams.Discards)
+                Case Else
+                    Me.CalculateUpperLowerLimits(False, Me.PedigreeVarToMCIndex(varname))
+            End Select
+        End If
+
         Return True
 
     End Function
