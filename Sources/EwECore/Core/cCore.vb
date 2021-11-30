@@ -6959,9 +6959,6 @@ Public Class cCore
         Next i
         Me.m_EcoSim.CalcEatenOfBy()
 
-        ' Set default arenas
-        Me.m_EcoSimData.ValidateSharedArenas()
-
     End Sub
 
     ''' <summary>

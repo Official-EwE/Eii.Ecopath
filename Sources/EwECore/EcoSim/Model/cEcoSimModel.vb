@@ -4531,14 +4531,14 @@ Namespace Ecosim
             '    jb swaped the loading order To match all other prey, pred loops
             'Debug.Assert(False, "JB CalcEatenOfBy")
             For i = 1 To Me.nGroups     'all living groups; consumers
-                        For j = 1 To Me.nGroups  'prey
+                For j = 1 To Me.nGroups  'prey
 
-                            If Me.m_Data.Consumption(i, j) > 0 Then
+                    If Me.m_Data.Consumption(i, j) > 0 Then
                         Me.m_Data.inlinks = Me.m_Data.inlinks + 1
                         Me.m_Data.ilink(Me.m_Data.inlinks) = i
                         Me.m_Data.jlink(Me.m_Data.inlinks) = j
-                            End If
-                        Next
+                    End If
+                Next
             Next
 
             ' Set arenas here. They do not change anymore
@@ -5226,7 +5226,7 @@ Namespace Ecosim
                 ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
                 K = Me.m_Data.KlinkSet(iii)
                 If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
-                    ''Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
+                    'Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
                     'If m_Data.PeatArena(ii, K) <> 1.0F Then
                     '    Debug.WriteLine("ShArenas: DefineFlowList - Prop: {0}, Arena: {1}, Pred {2}", m_Data.PeatArena(ii, K), ii, K)
                     'End If
@@ -5306,7 +5306,6 @@ Namespace Ecosim
                 Ipower = CSng(Me.CurrentIncome(ig) ^ Me.m_Data.Epower(ig))
                 Me.m_Data.FishRateGear(ig, t) = Me.CapTime(ig) * Ipower / (Me.EscalePar(ig) + Ipower)
                 'jb m_Data.FishRateGear(gear,time) is bounded by MaxEffort() in SetFtimeFromGear()
-                'If m_Data.FishRateGear(ig, t) <> m_Data.FishRateGear(ig, t) Or m_Data.FishRateGear(ig, t) > 1000 Then Stop
             Next
 
         End Sub

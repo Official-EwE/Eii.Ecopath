@@ -63,7 +63,11 @@ Namespace Ecosim
             Me.m_groups.Populate()
 
             ' Go
-            Me.m_groups.SelectedIndex = 0
+            'jb some models can have no shared arenas
+            'in that case don't select any group
+            If Me.m_groups.Items.Count > 0 Then
+                Me.m_groups.SelectedIndex = 0
+            End If
 
         End Sub
 
