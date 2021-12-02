@@ -39,7 +39,7 @@ Friend Class frmSplash
 
         Dim bInvertText As Boolean = False
         Dim now As Date = Date.Now
-        Dim image As Integer = now.DayOfYear Mod 6
+        Dim image As Integer = now.DayOfYear Mod 7
 #If DEBUG Then
         'image = 3
 #End If
