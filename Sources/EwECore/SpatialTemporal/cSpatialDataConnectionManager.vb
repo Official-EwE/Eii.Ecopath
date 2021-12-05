@@ -581,7 +581,7 @@ Namespace SpatialData
             Me.AddAdapter(New cHabitatDataAdapter(Me.m_core, eVarNameFlags.LayerHabitat, eCoreCounterTypes.nHabitats))
             Me.AddAdapter(New cBiomassForcingAdapter(Me.m_core, eVarNameFlags.LayerBiomassForcing, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cBiomassRelativeAdapter(Me.m_core, eVarNameFlags.LayerBiomassRelativeForcing, eCoreCounterTypes.nGroups))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerMPA, eCoreCounterTypes.nMPAs))
+            Me.AddAdapter(New cMPADataAdapter(Me.m_core, eVarNameFlags.LayerMPA, eCoreCounterTypes.nMPAs))
             Me.AddAdapter(New cAdvectionAdapter(Me.m_core, eVarNameFlags.LayerAdvection, eCoreCounterTypes.nVectorFields))
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerSail, eCoreCounterTypes.nFleets))
 
