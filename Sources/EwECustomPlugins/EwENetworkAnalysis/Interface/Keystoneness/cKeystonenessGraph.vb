@@ -182,9 +182,11 @@ Public Class cKeystonenessGraph
         Dim ppl As PointPairList = Nothing
         Dim txt As ZedGraph.TextObj = Nothing
         Dim group As cCoreInputOutputBase = Nothing
+        Dim label As String = ""
         Dim sMaxB As Single = 0.0
         Dim sg As cStyleGuide = Me.UIContext.StyleGuide
         Dim KS3Ranking(Me.UIContext.Core.nLivingGroups) As Integer
+        Dim fmt As New cCoreInterfaceFormatter()
 
         ' UpdateControls will take care of axis labels
         pane = Me.m_zgh.ConfigurePane("", "", "", False)
@@ -241,6 +243,7 @@ Public Class cKeystonenessGraph
 
                 ' Get actual group
                 group = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
+                label = fmt.ToString(group)
 
                 ' Make things look purdy
                 Select Case Me.m_representation
@@ -248,14 +251,14 @@ Public Class cKeystonenessGraph
                     Case eRepresentationType.Circle
 
                         ' Render values as uni-sized black circles
-                        li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
+                        li = New LineItem(label, ppl, Color.Black, SymbolType.Circle)
                         li.Line.Color = Color.Transparent
                         pane.CurveList.Add(li)
 
                     Case eRepresentationType.CircleScaled
 
                         ' Render values as group-coloured circles, scaled to biomass
-                        li = New LineItem(group.Name, ppl, Color.Black, SymbolType.Circle)
+                        li = New LineItem(label, ppl, Color.Black, SymbolType.Circle)
                         li.Line.Color = Color.Transparent
                         li.Symbol.Size = CSng(iMAX_SYMBOL_SIZE * Math.Sqrt(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB))
                         li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, group.Index))
@@ -266,7 +269,7 @@ Public Class cKeystonenessGraph
                         ' Render values as black texts reflecting numeric group indices
 
                         ' Add hidden line for mouse value tracking
-                        li = New LineItem(group.Name, ppl, Color.Transparent, SymbolType.None)
+                        li = New LineItem(label, ppl, Color.Transparent, SymbolType.None)
                         pane.CurveList.Add(li)
 
                         ' Add text label
