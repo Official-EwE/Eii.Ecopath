@@ -182,11 +182,11 @@ Public Class cKeystonenessGraph
         Dim ppl As PointPairList = Nothing
         Dim txt As ZedGraph.TextObj = Nothing
         Dim group As cCoreInputOutputBase = Nothing
+        Dim fmt As New cCoreInterfaceFormatter()
         Dim label As String = ""
         Dim sMaxB As Single = 0.0
         Dim sg As cStyleGuide = Me.UIContext.StyleGuide
         Dim KS3Ranking(Me.UIContext.Core.nLivingGroups) As Integer
-        Dim fmt As New cCoreInterfaceFormatter()
 
         ' UpdateControls will take care of axis labels
         pane = Me.m_zgh.ConfigurePane("", "", "", False)
@@ -288,7 +288,9 @@ Public Class cKeystonenessGraph
         Next iGroup
 
         ' Sort curve list by symbol size, if applicable
-        pane.CurveList.Sort(New cSymbolSizeSorter())
+        If Me.m_representation = eRepresentationType.CircleScaled Then
+            pane.CurveList.Sort(New cSymbolSizeSorter())
+        End If
 
         ' Yo!
         Me.m_zgh.RescaleAndRedraw()
