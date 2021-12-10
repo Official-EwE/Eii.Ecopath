@@ -1927,9 +1927,6 @@ Namespace Core
 
         LayerOtherMortLoss
 
-        <Obsolete("Use LayerRelativeContaminants instead")>
-        LayerRelCin = LayerContaminantRelativeDistribution
-
     End Enum
 
 #End Region ' Variable names

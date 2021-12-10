@@ -380,7 +380,7 @@ Namespace Controls
             ''' </summary>
             ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
             ''' created for.</param>
-            ''' <param name="cb">The <see cref="EwECheckboxCell"/> to define this link for.</param>
+            ''' <param name="cb">The <see cref="DataGridViewCheckBoxCell"/> to define this link for.</param>
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(cb As DataGridViewCheckBoxCell, hr As cCheckboxHierarchy, parent As cLink)

@@ -57,17 +57,11 @@ Friend Class ucSingleFileDataSetConfigPage
             Me.m_date.Value = Date.Now
         End If
 
-        If (Me.m_dataset.VarName = eVarNameFlags.NotSet) Then
-            ' Allow all supported varnames
-            Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
-            If (Me.UIContext IsNot Nothing) Then
-                For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
-                    Me.m_cmbVarName.Items.Add(adt.VarName)
-                Next
-            End If
-        Else
-            ' Allow only dataset varname when configuring a pre-existing dataset
-            Me.m_cmbVarName.Items.Add(Me.m_dataset.VarName)
+        Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
+        If (Me.UIContext IsNot Nothing) Then
+            For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
+                Me.m_cmbVarName.Items.Add(adt.VarName)
+            Next
         End If
         Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
         If (Me.m_cmbVarName.SelectedItem Is Nothing) Then
@@ -102,6 +96,12 @@ Friend Class ucSingleFileDataSetConfigPage
     Private Sub OnSwitchToDatePicker(sender As System.Object, e As System.EventArgs) _
         Handles m_date.GotFocus
         Me.m_rbMonth.Checked = True
+    End Sub
+
+    Private Sub OnDatePicked(sender As Object, e As EventArgs) Handles m_date.ValueChanged
+        If Me.m_date.Value.Day <> 1 Then
+            Me.m_date.Value = New Date(Me.m_date.Value.Year, Me.m_date.Value.Month, 1)
+        End If
     End Sub
 
     Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
@@ -191,9 +191,9 @@ Friend Class ucSingleFileDataSetConfigPage
         Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 
         If Me.m_rbFirstTimeStep.Checked Then
-            Me.m_dataset.Time = DateTime.MinValue
+            Me.m_dataset.Time = Date.MinValue
         Else
-            Me.m_dataset.Time = Me.m_date.Value
+            Me.m_dataset.Time = New Date(Me.m_date.Value.Year, Me.m_date.Value.Month, 1)
         End If
 
     End Sub

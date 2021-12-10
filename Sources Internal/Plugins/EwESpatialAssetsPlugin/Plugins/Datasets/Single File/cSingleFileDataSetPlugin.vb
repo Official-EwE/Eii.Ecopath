@@ -49,8 +49,7 @@ Namespace SpatialData
         Private m_indexstatus As ISpatialDataSet.eIndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
         Private m_ptTL As New PointF(0, 0)
         Private m_ptBR As New PointF(0, 0)
-        Private m_dtStart As DateTime = DateTime.MinValue
-        Private m_dtEnd As DateTime = DateTime.MaxValue
+        Private m_datatime As Date = Date.MinValue
 
 #End Region ' Private vars
 
@@ -93,7 +92,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property TimeStart As DateTime
             Get
-                Return Me.m_dtStart
+                Return Me.Time
             End Get
         End Property
 
@@ -102,22 +101,22 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property TimeEnd As DateTime
             Get
-                Return Me.m_dtEnd
+                Return If(Me.Time = Date.MinValue, Date.MaxValue, Me.Time)
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Date that this single data point adheres to.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property Time As DateTime
             Get
-                Return Me.m_dtStart
+                Return Me.m_datatime
             End Get
             Set(value As DateTime)
-                If (value = DateTime.MinValue) Or (value = DateTime.MaxValue) Then
-                    Me.m_dtStart = DateTime.MinValue
-                    Me.m_dtEnd = DateTime.MaxValue
-                Else
-                    Me.m_dtStart = value
-                    Me.m_dtEnd = value
-                End If
+                Me.m_datatime = value
+                Me.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
             End Set
         End Property
 
@@ -144,8 +143,8 @@ Namespace SpatialData
 
             Dim sfd As cSingleFileDataSetPlugin = DirectCast(obj, cSingleFileDataSetPlugin)
 
-            Return (String.Compare(Me.SourceFileName, sfd.SourceFileName, True) = 0) And _
-                   (Me.TimeStart = sfd.TimeStart) And _
+            Return (String.Compare(Me.SourceFileName, sfd.SourceFileName, True) = 0) And
+                   (Me.TimeStart = sfd.TimeStart) And
                    (Me.TimeEnd = sfd.TimeEnd)
         End Function
 
@@ -237,7 +236,7 @@ Namespace SpatialData
             xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("Date")
-            xaFile.Value = cStringUtils.FormatDate(Me.m_dtStart, "d")
+            xaFile.Value = cStringUtils.FormatDate(Me.Time, "d")
             xnFile.Attributes.Append(xaFile)
 
             xnMaster.AppendChild(xnFile)
@@ -312,22 +311,13 @@ Namespace SpatialData
                                 strDate = xn.Attributes("Date").InnerText
                                 dt = cStringUtils.ConvertToDate(strDate)
                             End If
-                            If (dt = DateTime.MinValue) Or (dt = DateTime.MaxValue) Then
-                                Me.m_dtStart = DateTime.MinValue
-                                Me.m_dtEnd = DateTime.MaxValue
-                            Else
-                                Me.m_dtStart = dt
-                                Me.m_dtEnd = dt
-                            End If
+                            Me.Time = dt
 
                             ' -- Index status --
                             Me.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
 
                     End Select
                 Next
-
-                ' Set initial index status
-                Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Failed
 
             Catch ex As Exception
                 Return False
@@ -351,14 +341,17 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides Function HasDataAtT(ByVal time As DateTime) As Boolean
             If (Me.m_core Is Nothing) Then Return True
-            Return (Me.m_core.AbsoluteTimeToEcospaceTimestep(time) = 1)
+            Dim t1 As Integer = Me.m_core.AbsoluteTimeToEcospaceTimestep(time)
+            If Me.m_datatime = Date.MinValue Then Return (t1 = 1)
+            Dim t2 As Integer = Me.m_core.AbsoluteTimeToEcospaceTimestep(Me.m_datatime)
+            Return t1 = t2
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.GetExtentAtT"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetExtentAtT(ByVal datetime As Date, _
-                                               ByRef ptfTL As System.Drawing.PointF, _
+        Public Overrides Function GetExtentAtT(ByVal datetime As Date,
+                                               ByRef ptfTL As System.Drawing.PointF,
                                                ByRef ptfBR As System.Drawing.PointF) As Boolean
 
             ' Return cached extent

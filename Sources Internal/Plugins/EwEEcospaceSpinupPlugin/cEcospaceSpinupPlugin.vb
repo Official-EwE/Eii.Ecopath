@@ -326,12 +326,14 @@ Public Class cEcospaceSpinupPlugin
             Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
             If Not sm.HasEcospaceLoaded Then Return False
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            If (parms Is Nothing) Then Return False
             Return parms.SpinupEnabled
         End Get
         Set(value As Boolean)
             Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
             If Not sm.HasEcospaceLoaded Then Return
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            If (parms Is Nothing) Then Return
             parms.SpinupEnabled = value
         End Set
     End Property

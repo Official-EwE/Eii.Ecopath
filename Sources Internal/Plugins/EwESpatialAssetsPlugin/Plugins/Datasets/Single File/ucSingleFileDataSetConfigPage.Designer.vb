@@ -153,8 +153,9 @@ Partial Class ucSingleFileDataSetConfigPage
         'm_date
         '
         Me.m_date.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.m_date.CustomFormat = "MM/yyyy"
+        Me.m_date.CustomFormat = "yyyy/MM"
         Me.m_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.m_date.ShowUpDown = True
         Me.m_date.Location = New System.Drawing.Point(170, 202)
         Me.m_date.Name = "m_date"
         Me.m_date.Size = New System.Drawing.Size(107, 20)
@@ -224,8 +225,8 @@ Partial Class ucSingleFileDataSetConfigPage
     Private WithEvents m_tbxFile As System.Windows.Forms.TextBox
     Private WithEvents m_btnBrowse As System.Windows.Forms.Button
     Private WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents m_rbFirstTimeStep As System.Windows.Forms.RadioButton
-    Friend WithEvents m_rbMonth As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbFirstTimeStep As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbMonth As System.Windows.Forms.RadioButton
     Private WithEvents m_date As System.Windows.Forms.DateTimePicker
     Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
     Private WithEvents m_lblVariable As System.Windows.Forms.Label

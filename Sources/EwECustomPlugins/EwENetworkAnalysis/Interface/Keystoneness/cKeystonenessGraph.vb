@@ -253,6 +253,7 @@ Public Class cKeystonenessGraph
                         ' Render values as uni-sized black circles
                         li = New LineItem(label, ppl, Color.Black, SymbolType.Circle)
                         li.Line.Color = Color.Transparent
+                        li.Symbol.Fill = New Fill(Me.StyleGuide.GroupColor(Me.NetworkManager.Core, group.Index))
                         pane.CurveList.Add(li)
 
                     Case eRepresentationType.CircleScaled
