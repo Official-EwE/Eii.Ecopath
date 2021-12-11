@@ -185,6 +185,7 @@ Namespace Ecospace.Controls
             Me.UpdateDatasetPanel()
             Me.UpdateConversionPanel()
             Me.UpdateScalingPanel()
+            Me.UpdateExperimentalPanel()
             Me.UpdateControls()
 
         End Sub
@@ -556,7 +557,12 @@ Namespace Ecospace.Controls
 
 #End Region ' Scaling
 
-#Region " OK "
+#Region " Experimental "
+
+
+#End Region ' Experimental
+
+#Region " Other "
 
         Private Sub OnOK(sender As Object, e As System.EventArgs) _
             Handles m_btnOK.Click
@@ -792,6 +798,7 @@ Namespace Ecospace.Controls
                 Me.UpdateDatasetPanel()
                 Me.UpdateConversionPanel()
                 Me.UpdateScalingPanel()
+                Me.UpdateExperimentalPanel()
                 Me.UpdateControls()
 
             End Set
@@ -868,6 +875,44 @@ Namespace Ecospace.Controls
         End Sub
 
 #End Region ' Scalar data adapter
+
+#Region " Experimental features "
+
+        Private Sub OnRepeatFirstYearChanged(sender As Object, e As EventArgs) Handles m_cbRepeatFirstYear.CheckedChanged
+
+            If (Me.m_bInUpdate) Then Return
+
+            Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
+            If (conn Is Nothing) Then Return
+            conn.RepeatFirstYearFromStart = Me.m_cbRepeatFirstYear.Checked
+
+        End Sub
+
+        Private Sub UpdateExperimentalPanel()
+
+#If Not DEBUG Then
+            Me.m_plExperimental.Visible = False
+            Return
+#End If
+
+            Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
+            If (conn Is Nothing) Then Return
+
+            Dim bInUpdate As Boolean = Me.m_bInUpdate
+            Me.m_bInUpdate = True
+
+            If conn.Dataset.TimeStart > Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(1) Then
+                Me.m_cbRepeatFirstYear.Enabled = True
+                Me.m_cbRepeatFirstYear.Checked = conn.RepeatFirstYearFromStart
+            Else
+                Me.m_cbRepeatFirstYear.Enabled = False
+            End If
+
+            Me.m_bInUpdate = bInUpdate
+
+        End Sub
+
+#End Region ' Experimental features
 
 #End Region ' Internals
 

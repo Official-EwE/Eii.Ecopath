@@ -247,9 +247,16 @@ Namespace SpatialData
                             ' Get dataset and converter
                             Dim ds As ISpatialDataSet = conn.Dataset
                             Dim cv As ISpatialDataConverter = conn.Converter
+                            Dim bHasData As Boolean = False
 
                             ' #Yes: has data for this time step?
                             dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
+
+                            ' Special trick when dealing with data that is configured to repeat its first year from the start of the simulation
+                            If (dt < ds.TimeStart And conn.RepeatFirstYearFromStart) Then
+                                Dim iBorrowed As Integer = Me.m_core.AbsoluteTimeToEcospaceTimestep(ds.TimeStart) + iTime Mod cCore.N_MONTHS
+                                dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iBorrowed)
+                            End If
 
                             If (ds.HasDataAtT(dt)) Then
 
