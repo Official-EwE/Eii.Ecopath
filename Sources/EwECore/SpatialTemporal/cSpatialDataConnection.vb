@@ -33,6 +33,8 @@ Namespace SpatialData
         Public Property Scale As Single = 1
         Public Property ScaleType As eScaleType
 
+        Public Property RepeatFirstYearFromStart As Boolean = False
+
         Public Property Adapter As cSpatialDataAdapter = Nothing
         Public Property iLayer As Integer = 1
 

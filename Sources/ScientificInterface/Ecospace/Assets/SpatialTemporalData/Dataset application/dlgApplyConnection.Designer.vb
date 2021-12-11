@@ -51,12 +51,15 @@ Namespace Ecospace.Controls
             Me.m_lblDatasetInfo = New System.Windows.Forms.Label()
             Me.m_btnConfigDS = New System.Windows.Forms.Button()
             Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plExperimental = New System.Windows.Forms.Panel()
+            Me.m_cbRepeatFirstYear = New System.Windows.Forms.CheckBox()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnShowIncompatibleConnections = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
-            Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
             Me.m_tslFilter = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnShowIncompatibleConnections = New System.Windows.Forms.ToolStripButton()
+            Me.m_sep = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -65,12 +68,14 @@ Namespace Ecospace.Controls
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
+            Me.m_hdrExperimental = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
             Me.m_plConversion.SuspendLayout()
             Me.m_plDataset.SuspendLayout()
             CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_plExperimental.SuspendLayout()
             Me.m_tsMain.SuspendLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -86,6 +91,7 @@ Namespace Ecospace.Controls
             Me.m_tlpContent.Controls.Add(Me.m_plScalarAdapter, 0, 3)
             Me.m_tlpContent.Controls.Add(Me.m_plConversion, 0, 2)
             Me.m_tlpContent.Controls.Add(Me.m_plDataset, 0, 1)
+            Me.m_tlpContent.Controls.Add(Me.m_plExperimental, 0, 4)
             Me.m_tlpContent.Name = "m_tlpContent"
             '
             'm_plConnection
@@ -243,6 +249,20 @@ Namespace Ecospace.Controls
             Me.m_hdrConfig.IsCollapsed = False
             Me.m_hdrConfig.Name = "m_hdrConfig"
             '
+            'm_plExperimental
+            '
+            Me.m_plExperimental.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(128, Byte), Integer))
+            Me.m_plExperimental.Controls.Add(Me.m_hdrExperimental)
+            Me.m_plExperimental.Controls.Add(Me.m_cbRepeatFirstYear)
+            resources.ApplyResources(Me.m_plExperimental, "m_plExperimental")
+            Me.m_plExperimental.Name = "m_plExperimental"
+            '
+            'm_cbRepeatFirstYear
+            '
+            resources.ApplyResources(Me.m_cbRepeatFirstYear, "m_cbRepeatFirstYear")
+            Me.m_cbRepeatFirstYear.Name = "m_cbRepeatFirstYear"
+            Me.m_cbRepeatFirstYear.UseVisualStyleBackColor = True
+            '
             'm_hdrConnections
             '
             Me.m_hdrConnections.CanCollapseParent = False
@@ -254,39 +274,40 @@ Namespace Ecospace.Controls
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowIncompatibleConnections, Me.m_tsbnCaseSensitive, Me.m_tstbFilter, Me.m_tslFilter, Me.m_tsbnDefineConnections})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslFilter, Me.m_tstbFilter, Me.m_tsbnCaseSensitive, Me.m_tsbnShowIncompatibleConnections, Me.m_sep, Me.m_tsbnDefineConnections})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnShowIncompatibleConnections
+            'm_tslFilter
             '
-            Me.m_tsbnShowIncompatibleConnections.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.m_tsbnShowIncompatibleConnections.CheckOnClick = True
-            Me.m_tsbnShowIncompatibleConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsbnShowIncompatibleConnections, "m_tsbnShowIncompatibleConnections")
-            Me.m_tsbnShowIncompatibleConnections.Name = "m_tsbnShowIncompatibleConnections"
+            Me.m_tslFilter.Name = "m_tslFilter"
+            resources.ApplyResources(Me.m_tslFilter, "m_tslFilter")
+            '
+            'm_tstbFilter
+            '
+            resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
+            Me.m_tstbFilter.Name = "m_tstbFilter"
             '
             'm_tsbnCaseSensitive
             '
-            Me.m_tsbnCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tsbnCaseSensitive.AutoToolTip = False
             Me.m_tsbnCaseSensitive.CheckOnClick = True
             Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnCaseSensitive, "m_tsbnCaseSensitive")
             Me.m_tsbnCaseSensitive.Name = "m_tsbnCaseSensitive"
             '
-            'm_tstbFilter
+            'm_tsbnShowIncompatibleConnections
             '
-            Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
-            Me.m_tstbFilter.Name = "m_tstbFilter"
+            Me.m_tsbnShowIncompatibleConnections.CheckOnClick = True
+            Me.m_tsbnShowIncompatibleConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnShowIncompatibleConnections, "m_tsbnShowIncompatibleConnections")
+            Me.m_tsbnShowIncompatibleConnections.Name = "m_tsbnShowIncompatibleConnections"
             '
-            'm_tslFilter
+            'm_sep
             '
-            Me.m_tslFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.m_tslFilter.Name = "m_tslFilter"
-            resources.ApplyResources(Me.m_tslFilter, "m_tslFilter")
+            Me.m_sep.Name = "m_sep"
+            resources.ApplyResources(Me.m_sep, "m_sep")
             '
             'm_tsbnDefineConnections
             '
@@ -351,6 +372,14 @@ Namespace Ecospace.Controls
             Me.m_cbEnabled.Name = "m_cbEnabled"
             Me.m_cbEnabled.UseVisualStyleBackColor = True
             '
+            'm_hdrExperimental
+            '
+            Me.m_hdrExperimental.CanCollapseParent = False
+            Me.m_hdrExperimental.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrExperimental, "m_hdrExperimental")
+            Me.m_hdrExperimental.IsCollapsed = False
+            Me.m_hdrExperimental.Name = "m_hdrExperimental"
+            '
             'dlgApplyConnection
             '
             resources.ApplyResources(Me, "$this")
@@ -372,6 +401,8 @@ Namespace Ecospace.Controls
             Me.m_plConversion.PerformLayout()
             Me.m_plDataset.ResumeLayout(False)
             CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_plExperimental.ResumeLayout(False)
+            Me.m_plExperimental.PerformLayout()
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
             Me.m_scMain.Panel1.ResumeLayout(False)
@@ -411,12 +442,16 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnRemove As System.Windows.Forms.Button
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_lbSourceDatasets As cSpatialDatasetListbox
-        Friend WithEvents m_pbCompat As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbCompat As System.Windows.Forms.PictureBox
         Private WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
         Private WithEvents m_tstbFilter As ToolStripTextBox
         Private WithEvents m_tsbnCaseSensitive As ToolStripButton
         Private WithEvents m_tsbnShowIncompatibleConnections As ToolStripButton
-        Friend WithEvents m_tslFilter As ToolStripLabel
+        Private WithEvents m_tslFilter As ToolStripLabel
+        Private WithEvents m_plExperimental As Panel
+        Friend WithEvents m_cbRepeatFirstYear As CheckBox
+        Private WithEvents m_sep As ToolStripSeparator
+        Private WithEvents m_hdrExperimental As cEwEHeaderLabel
     End Class
 
 End Namespace

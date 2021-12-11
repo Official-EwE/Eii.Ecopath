@@ -41,14 +41,18 @@ Namespace Ecospace.Controls
         ''' Helper administration class for a data set in the toolbox
         ''' </summary>
         Private Class cDatasetInfo
-            Public m_ds As ISpatialDataSet
-            Public m_var As eVarNameFlags
-            Public m_guid As Guid
-            Public m_iTimeStart As Integer = 0
-            Public m_iTimeEnd As Integer = 0
-            Public m_iPosVert As Integer = 0
-            Public m_liData As New List(Of Integer) ' Time steps with data
-            Public m_liTime As New List(Of DateTime) ' Translated time for time steps
+            Public Property Dataset As ISpatialDataSet
+            Public Property VarName As eVarNameFlags
+            Public Property Guid As Guid
+            Public Property TimeStart As Integer = 0
+            ''' <summary>Timestep where 'borrowed' data starts, e.g., seasonally repeating data, or prematurely starting at the beginning of a run</summary>
+            Public Property TimeStartBorrowed As Integer = Int32.MaxValue
+            Public Property TimeEnd As Integer = 0
+            Public Property PosVert As Integer = 0
+            ''' <summary>Time steps with data.</summary>
+            Public Property DataPoint As New List(Of Integer)
+            Public Property BorrowedDataPoint As New List(Of Integer)
+
         End Class
 
 #End Region ' Private classes
@@ -188,7 +192,7 @@ Namespace Ecospace.Controls
                 If (Me.UIContext Is Nothing) Then Return
 
                 Dim ds As ISpatialDataSet = Nothing
-                If (Me.m_iSelectedIndex >= 0) Then ds = Me.m_lInfo(Me.m_iSelectedIndex).m_ds
+                If (Me.m_iSelectedIndex >= 0) Then ds = Me.m_lInfo(Me.m_iSelectedIndex).Dataset
                 Try
                     RaiseEvent OnSelectedDatasetChanged(Me, ds)
                 Catch ex As Exception
@@ -235,7 +239,7 @@ Namespace Ecospace.Controls
             If (info Is Nothing) Then Return
 
             Dim cmd As cEditSpatialDatasetCommand = CType(Me.UIContext.CommandHandler.GetCommand(cEditSpatialDatasetCommand.COMMAND_NAME), cEditSpatialDatasetCommand)
-            cmd.Invoke(info.m_ds)
+            cmd.Invoke(info.Dataset)
 
         End Sub
 
@@ -248,7 +252,7 @@ Namespace Ecospace.Controls
             Dim ptClick As New Point(e.Location.X - Me.AutoScrollPosition.X, e.Location.Y - Me.AutoScrollPosition.Y)
             Dim pos As cDatasetInfo = Me.DatasetFromPoint(ptClick)
             If (pos IsNot Nothing) Then
-                Me.SelectedDatasetIndex = pos.m_iPosVert
+                Me.SelectedDatasetIndex = pos.PosVert
             End If
             MyBase.OnMouseClick(e)
         End Sub
@@ -262,31 +266,31 @@ Namespace Ecospace.Controls
             Dim strText As String = ""
 
             If (pos IsNot Nothing) Then
-                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.m_ds)
+                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.Dataset)
                 Dim iStep As Integer = Me.TimestepFromPoint(ptClick)
                 Dim dtStep As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep)
                 Dim strDate As String = dtStep.ToShortDateString
 
                 Select Case comp.CompatibilityAt(iStep)
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal,
                          cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        strText = pos.m_ds.CustomName
+                        strText = pos.Dataset.CustomName
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.CustomName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.Dataset.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.m_ds.CustomName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.Dataset.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.m_ds.CustomName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.Dataset.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.m_ds.CustomName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.Dataset.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.m_ds.CustomName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.Dataset.CustomName, iStep, strDate)
 
                 End Select
             End If
@@ -411,8 +415,8 @@ Namespace Ecospace.Controls
             Dim iSel As Integer = 0
 
             If (Me.m_iSelectedIndex > 0) Then
-                var = Me.m_lInfo(Me.m_iSelectedIndex).m_var
-                guid = Me.m_lInfo(Me.m_iSelectedIndex).m_guid
+                var = Me.m_lInfo(Me.m_iSelectedIndex).VarName
+                guid = Me.m_lInfo(Me.m_iSelectedIndex).Guid
             End If
 
             Me.m_lInfo.Clear()
@@ -423,7 +427,7 @@ Namespace Ecospace.Controls
                     Debug.Assert(conn IsNot Nothing)
                     If (adt.IsEnabled(conn.iLayer) And conn.IsConfigured) Then
                         ' Only show datasets overlapping with run period
-                        If Me.OverlapsWithRunPeriod(conn.Dataset) Then
+                        If Me.OverlapsWithRunPeriod(conn) Then
                             dicConn(conn.Dataset) = conn
                         End If
                     End If
@@ -433,34 +437,42 @@ Namespace Ecospace.Controls
             For Each conn As cSpatialDataConnection In dicConn.Values
 
                 Dim pos As New cDatasetInfo()
-                pos.m_ds = conn.Dataset
-                pos.m_var = conn.Adapter.VarName
-                pos.m_guid = conn.Dataset.GUID
-                pos.m_iPosVert = iRow
+                pos.Dataset = conn.Dataset
+                pos.VarName = conn.Adapter.VarName
+                pos.Guid = conn.Dataset.GUID
+                pos.PosVert = iRow
 
                 If conn.Dataset.TimeStart = Date.MinValue Then
-                    pos.m_iTimeStart = 1
+                    pos.TimeStart = 1
                 Else
-                    pos.m_iTimeStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart)
+                    If conn.RepeatFirstYearFromStart Then pos.TimeStartBorrowed = 1
+                    pos.TimeStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart)
                 End If
 
                 If conn.Dataset.TimeEnd = Date.MaxValue Then
-                    pos.m_iTimeEnd = core.nEcospaceTimeSteps
+                    pos.TimeEnd = core.nEcospaceTimeSteps
                 Else
-                    pos.m_iTimeEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
+                    pos.TimeEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
                 End If
 
-                For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
+                For iStep As Integer = pos.TimeStartBorrowed To pos.TimeStart
+                    Dim iBorrowed As Integer = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart) + iStep Mod cCore.N_MONTHS
+                    Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iBorrowed)
+                    If conn.Dataset.HasDataAtT(tm) Then
+                        pos.BorrowedDataPoint.Add(iStep)
+                    End If
+                Next
+
+                For iStep As Integer = pos.TimeStart To pos.TimeEnd
                     Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
                     If conn.Dataset.HasDataAtT(tm) Then
-                        pos.m_liData.Add(iStep)
-                        pos.m_liTime.Add(tm)
+                        pos.DataPoint.Add(iStep)
                     End If
                 Next
 
                 Me.m_lInfo.Add(pos)
 
-                If (pos.m_var = var) And (pos.m_guid = guid) Then
+                If (pos.VarName = var) And (pos.Guid = guid) Then
                     iSel = iRow
                 End If
 
@@ -523,13 +535,13 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
-        Private Sub DrawDatasetIndicator(g As Graphics, _
-                                         pos As cDatasetInfo, _
+        Private Sub DrawDatasetIndicator(g As Graphics,
+                                         pos As cDatasetInfo,
                                          bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
-            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.m_ds)
+            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.Dataset)
 
             ' Fill back bar
             Using br As New SolidBrush(cColorUtils.GetVariant(cStyleGuide.GetColor(comp), 0.75))
@@ -545,17 +557,18 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
-        Private Sub DrawDataset(g As Graphics, _
-                                pos As cDatasetInfo, _
+        Private Sub DrawDataset(g As Graphics,
+                                pos As cDatasetInfo,
                                 bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
+            Dim rcBorrowed As Rectangle = Me.DatasetBorrowedArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
             Dim rcDot As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
             Dim rcImg As New Rectangle(rcBar.X, CInt(rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_imgradius), 2 * c_imgradius, 2 * c_imgradius)
 
-            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.m_ds)
+            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.Dataset)
             Dim clrBar As Color = cStyleGuide.GetColor(comp)
             Dim clrText As Color = SystemColors.ControlText
             Dim clrOutline As Color
@@ -572,10 +585,24 @@ Namespace Ecospace.Controls
                 clrOutline = cColorUtils.GetVariant(clrBar, -0.5)
             End If
 
+            ' Draw borrowed area, if any
+            If rcBorrowed.Width > 0 Then
+                'Using br As New HatchBrush(HatchStyle.BackwardDiagonal, clrBar, Color.White)
+                '    g.FillRectangle(br, rcBorrowed)
+                'End Using
+                For i As Integer = 0 To pos.BorrowedDataPoint.Count - 1
+                    Dim iStep As Integer = pos.BorrowedDataPoint(i)
+                    rcDot.X = rcBorrowed.X + (iStep - pos.TimeStartBorrowed) * Me.m_iTimestepSize - c_dotradius
+                    g.FillEllipse(Brushes.White, rcDot)
+                    g.DrawEllipse(Pens.Gray, rcDot)
+                Next
+            End If
+
             ' Fill area bar
             Using br As New SolidBrush(clrBar)
                 g.FillRectangle(br, rcBar)
             End Using
+
             ' Draw outline
             Using p As New Pen(clrOutline, iWidthOutline)
                 g.DrawRectangle(p, rcBar)
@@ -584,17 +611,17 @@ Namespace Ecospace.Controls
             ' Draw text within bar area, but as much on-screen as possible
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                 rcLabel.Width = rcBack.Width
-                g.DrawString(pos.m_ds.CustomName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
+                g.DrawString(pos.Dataset.CustomName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
 
-            For i As Integer = 0 To pos.m_liData.Count - 1
-                Dim iStep As Integer = pos.m_liData(i)
-                rcDot.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
-                rcImg.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_imgradius
+
+            For i As Integer = 0 To pos.DataPoint.Count - 1
+                Dim iStep As Integer = pos.DataPoint(i)
+                rcDot.X = rcBar.X + (iStep - pos.TimeStart) * Me.m_iTimestepSize - c_dotradius
+                rcImg.X = rcBar.X + (iStep - pos.TimeStart) * Me.m_iTimestepSize - c_imgradius
 
                 Select Case comp.CompatibilityAt(iStep)
-
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet, _
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NotSet,
                          cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
                         g.FillEllipse(Brushes.White, rcDot)
                         g.DrawEllipse(Pens.Black, rcDot)
@@ -616,23 +643,31 @@ Namespace Ecospace.Controls
                         g.DrawEllipse(Pens.Black, rcDot)
 
                 End Select
-
             Next
+
 
         End Sub
 
         Private Function DatasetPos(ds As ISpatialDataSet) As cDatasetInfo
             If ds Is Nothing Then Return Nothing
             For Each pos As cDatasetInfo In Me.m_lInfo
-                If ReferenceEquals(pos.m_ds, ds) Then Return pos
+                If ReferenceEquals(pos.Dataset, ds) Then Return pos
             Next
             Return Nothing
         End Function
 
         Private Function DatasetArea(pos As cDatasetInfo) As Rectangle
-            Dim iStart As Integer = pos.m_iTimeStart * Me.m_iTimestepSize
-            Dim iEnd As Integer = (pos.m_iTimeEnd + 1) * Me.m_iTimestepSize - 1
-            Return New Rectangle(iStart, c_headerheight + pos.m_iPosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
+            Dim iStart As Integer = pos.TimeStart * Me.m_iTimestepSize
+            Dim iEnd As Integer = (pos.TimeEnd + 1) * Me.m_iTimestepSize - 1
+            Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
+        End Function
+
+        Private Function DatasetBorrowedArea(pos As cDatasetInfo) As Rectangle
+            If (pos.TimeStartBorrowed < pos.TimeStart) Then
+                Dim iStart As Integer = pos.TimeStartBorrowed * Me.m_iTimestepSize
+                Dim iEnd As Integer = (pos.TimeStart + 1) * Me.m_iTimestepSize - 1
+                Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, Math.Max(0, iEnd - iStart), c_barheight)
+            End If
         End Function
 
         Private Function TimestepFromPoint(pt As Point) As Integer
@@ -651,7 +686,9 @@ Namespace Ecospace.Controls
             Return Nothing
         End Function
 
-        Private Function OverlapsWithRunPeriod(ds As ISpatialDataSet) As Boolean
+        Private Function OverlapsWithRunPeriod(conn As cSpatialDataConnection) As Boolean
+
+            Dim ds As ISpatialDataSet = conn.Dataset
 
             If (ds.TimeStart = Date.MinValue) Then Return True
             If (ds.TimeEnd = Date.MaxValue) Then Return True
@@ -660,7 +697,7 @@ Namespace Ecospace.Controls
             Dim dtStart As Date = core.EcospaceTimestepToAbsoluteTime(1)
             Dim dtEnd As Date = core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)
 
-            Return dtStart < ds.TimeEnd And dtEnd > ds.TimeStart
+            Return dtStart < ds.TimeEnd And dtEnd > If(conn.RepeatFirstYearFromStart, dtStart, ds.TimeStart)
 
         End Function
 
