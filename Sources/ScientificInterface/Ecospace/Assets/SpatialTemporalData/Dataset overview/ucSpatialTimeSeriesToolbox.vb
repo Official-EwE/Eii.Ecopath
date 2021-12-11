@@ -562,7 +562,6 @@ Namespace Ecospace.Controls
                                 bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
-            Dim rcBorrowed As Rectangle = Me.DatasetBorrowedArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
             Dim rcDot As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
@@ -585,18 +584,13 @@ Namespace Ecospace.Controls
                 clrOutline = cColorUtils.GetVariant(clrBar, -0.5)
             End If
 
-            ' Draw borrowed area, if any
-            If rcBorrowed.Width > 0 Then
-                'Using br As New HatchBrush(HatchStyle.BackwardDiagonal, clrBar, Color.White)
-                '    g.FillRectangle(br, rcBorrowed)
-                'End Using
-                For i As Integer = 0 To pos.BorrowedDataPoint.Count - 1
-                    Dim iStep As Integer = pos.BorrowedDataPoint(i)
-                    rcDot.X = rcBorrowed.X + (iStep - pos.TimeStartBorrowed) * Me.m_iTimestepSize - c_dotradius
-                    g.FillEllipse(Brushes.White, rcDot)
-                    g.DrawEllipse(Pens.Gray, rcDot)
-                Next
-            End If
+            ' Draw borrowed data points, if any
+            For i As Integer = 0 To pos.BorrowedDataPoint.Count - 1
+                Dim iStep As Integer = pos.BorrowedDataPoint(i)
+                rcDot.X = rcBar.X + (iStep - pos.TimeStart) * Me.m_iTimestepSize - c_dotradius
+                g.FillEllipse(Brushes.White, rcDot)
+                g.DrawEllipse(Pens.Gray, rcDot)
+            Next
 
             ' Fill area bar
             Using br As New SolidBrush(clrBar)
@@ -662,13 +656,6 @@ Namespace Ecospace.Controls
             Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
         End Function
 
-        Private Function DatasetBorrowedArea(pos As cDatasetInfo) As Rectangle
-            If (pos.TimeStartBorrowed < pos.TimeStart) Then
-                Dim iStart As Integer = pos.TimeStartBorrowed * Me.m_iTimestepSize
-                Dim iEnd As Integer = (pos.TimeStart + 1) * Me.m_iTimestepSize - 1
-                Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, Math.Max(0, iEnd - iStart), c_barheight)
-            End If
-        End Function
 
         Private Function TimestepFromPoint(pt As Point) As Integer
             If (Me.m_iTimestepSize = 0) Then Return -1
