@@ -35,6 +35,11 @@ Namespace SpatialData
 
         Public Property RepeatFirstYearFromStart As Boolean = False
 
+        ' Instead of the repeat flag, it would be useful to have a start (date) and end (date) flag to
+        ' define where external data is supposed to kick in. This has two potential usages:
+        ' - Limit the span data is applied to (start > ds.datefrom, end < ds.dateto)
+        ' - Reuse first year (start < ds.datefrom) or repeat last year (end > ds.dateto)
+
         Public Property Adapter As cSpatialDataAdapter = Nothing
         Public Property iLayer As Integer = 1
 
