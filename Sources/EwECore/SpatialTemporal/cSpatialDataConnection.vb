@@ -22,7 +22,7 @@ Imports EwEUtils.SpatialData
 
 Namespace SpatialData
 
-    ' TODO: inherit from cCoreInputOutputBase
+    ' TODO: inherit from cCoreInputOutputBase to fire off change notifications
     ' Add variables
     ' Variable statuses: scale may be read-only
 
