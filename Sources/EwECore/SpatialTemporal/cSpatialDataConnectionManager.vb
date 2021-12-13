@@ -211,8 +211,8 @@ Namespace SpatialData
                             Me.m_datasetManager.UpdateConverter(conn.Converter, cfg)
                             cfg.Scale = conn.Scale
                             cfg.ScaleType = CByte(conn.ScaleType)
-                            cfg.StartYear = If(conn.UseDefaultStartYear, conn.CustomStartYear, 0)
-                            cfg.EndYear = If(conn.UseDefaultEndYear, conn.CustomEndYear, 0)
+                            cfg.StartYear = If(conn.UseDefaultStartYear, 0, conn.CustomStartYear)
+                            cfg.EndYear = If(conn.UseDefaultEndYear, 0, conn.CustomEndYear)
                         Else
                             cfg.Clear()
                         End If
