@@ -44,13 +44,14 @@ Namespace Ecospace.Controls
             Public Property Dataset As ISpatialDataSet
             Public Property VarName As eVarNameFlags
             Public Property Guid As Guid
-            Public Property TimeStart As Integer = 0
-            ''' <summary>Timestep where 'borrowed' data starts, e.g., seasonally repeating data, or prematurely starting at the beginning of a run</summary>
-            Public Property TimeStartBorrowed As Integer = Int32.MaxValue
-            Public Property TimeEnd As Integer = 0
+            Public Property AppliedDataStart As Integer = 0
+            Public Property DataStart As Integer = 0
+            Public Property DataEnd As Integer = 0
+            Public Property AppliedDataEnd As Integer = 0
             Public Property PosVert As Integer = 0
-            ''' <summary>Time steps with data.</summary>
+            ''' <summary>Time steps with data from the dataset.</summary>
             Public Property DataPoint As New List(Of Integer)
+            ''' <summary>Time steps with repeated data from the dataset.</summary>
             Public Property BorrowedDataPoint As New List(Of Integer)
 
         End Class
@@ -443,30 +444,33 @@ Namespace Ecospace.Controls
                 pos.PosVert = iRow
 
                 If conn.Dataset.TimeStart = Date.MinValue Then
-                    pos.TimeStart = 1
+                    pos.DataStart = 1
+                    pos.AppliedDataStart = pos.DataStart
                 Else
-                    If conn.RepeatFirstYearFromStart Then pos.TimeStartBorrowed = 1
-                    pos.TimeStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart)
+                    pos.DataStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart)
+                    pos.AppliedDataStart = core.AbsoluteTimeToEcospaceTimestep(conn.TimeStart)
                 End If
 
                 If conn.Dataset.TimeEnd = Date.MaxValue Then
-                    pos.TimeEnd = core.nEcospaceTimeSteps
+                    pos.DataEnd = core.nEcospaceTimeSteps
+                    pos.AppliedDataStart = pos.DataEnd
                 Else
-                    pos.TimeEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
+                    pos.DataEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
+                    pos.AppliedDataEnd = core.AbsoluteTimeToEcospaceTimestep(conn.TimeEnd)
                 End If
 
-                For iStep As Integer = pos.TimeStartBorrowed To pos.TimeStart
-                    Dim iBorrowed As Integer = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart) + iStep Mod cCore.N_MONTHS
-                    Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iBorrowed)
-                    If conn.Dataset.HasDataAtT(tm) Then
-                        pos.BorrowedDataPoint.Add(iStep)
-                    End If
-                Next
+                For iStep As Integer = pos.AppliedDataStart To pos.AppliedDataEnd
+                    Dim bIsBorrowed As Boolean = False
 
-                For iStep As Integer = pos.TimeStart To pos.TimeEnd
                     Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
-                    If conn.Dataset.HasDataAtT(tm) Then
-                        pos.DataPoint.Add(iStep)
+                    Dim tmData As DateTime = conn.ToDataTime(tm)
+
+                    If conn.Dataset.HasDataAtT(tmData) Then
+                        If tm = tmData Then
+                            pos.DataPoint.Add(iStep)
+                        Else
+                            pos.BorrowedDataPoint.Add(iStep)
+                        End If
                     End If
                 Next
 
@@ -587,7 +591,7 @@ Namespace Ecospace.Controls
             ' Draw borrowed data points, if any
             For i As Integer = 0 To pos.BorrowedDataPoint.Count - 1
                 Dim iStep As Integer = pos.BorrowedDataPoint(i)
-                rcDot.X = rcBar.X + (iStep - pos.TimeStart) * Me.m_iTimestepSize - c_dotradius
+                rcDot.X = rcBar.X + (iStep - pos.DataStart) * Me.m_iTimestepSize - c_dotradius
                 g.FillEllipse(Brushes.White, rcDot)
                 g.DrawEllipse(Pens.Gray, rcDot)
             Next
@@ -611,8 +615,8 @@ Namespace Ecospace.Controls
 
             For i As Integer = 0 To pos.DataPoint.Count - 1
                 Dim iStep As Integer = pos.DataPoint(i)
-                rcDot.X = rcBar.X + (iStep - pos.TimeStart) * Me.m_iTimestepSize - c_dotradius
-                rcImg.X = rcBar.X + (iStep - pos.TimeStart) * Me.m_iTimestepSize - c_imgradius
+                rcDot.X = rcBar.X + (iStep - pos.DataStart) * Me.m_iTimestepSize - c_dotradius
+                rcImg.X = rcBar.X + (iStep - pos.DataStart) * Me.m_iTimestepSize - c_imgradius
 
                 Select Case comp.CompatibilityAt(iStep)
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet,
@@ -651,8 +655,8 @@ Namespace Ecospace.Controls
         End Function
 
         Private Function DatasetArea(pos As cDatasetInfo) As Rectangle
-            Dim iStart As Integer = pos.TimeStart * Me.m_iTimestepSize
-            Dim iEnd As Integer = (pos.TimeEnd + 1) * Me.m_iTimestepSize - 1
+            Dim iStart As Integer = pos.DataStart * Me.m_iTimestepSize
+            Dim iEnd As Integer = (pos.DataEnd + 1) * Me.m_iTimestepSize - 1
             Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
         End Function
 
@@ -684,7 +688,8 @@ Namespace Ecospace.Controls
             Dim dtStart As Date = core.EcospaceTimestepToAbsoluteTime(1)
             Dim dtEnd As Date = core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)
 
-            Return dtStart < ds.TimeEnd And dtEnd > If(conn.RepeatFirstYearFromStart, dtStart, ds.TimeStart)
+            ' ToDo: mke this work properly
+            Return dtStart < ds.TimeEnd And dtEnd > If(conn.UseDefaultStartYear, ds.TimeStart, dtStart)
 
         End Function
 

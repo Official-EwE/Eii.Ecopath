@@ -197,12 +197,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overridable ReadOnly Property Status(iLayer As Integer) As eStatusFlags
             Get
-                ' This is hack!
-                If (Me.m_varName = eVarNameFlags.LayerDriver) Then
-                    Dim manager As IEnvironmentalResponseManager = Me.m_core.CapacityMapInteractionManager
-                    Dim map As IEnviroInputData = Nothing
-
-                End If
                 Return eStatusFlags.OK
             End Get
         End Property
@@ -226,7 +220,7 @@ Namespace SpatialData
             Dim dataExternal As ISpatialRaster = Nothing
             Dim dCellSize As Double = Math.Round(CDbl(bm.CellSize), 8)
             Dim layers As cEcospaceLayer() = Nothing
-            Dim dt As Date
+            Dim dt, dtVirt As DateTime
             Dim bSuccess As Boolean = True
 
             ' Decide which layers to update
@@ -251,25 +245,21 @@ Namespace SpatialData
 
                             ' #Yes: has data for this time step?
                             dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
+                            ' JS 12Dec21: conn translates date to a dataset point where to obtain the real data from
+                            dtVirt = conn.ToDataTime(dt)
 
-                            ' Special trick when dealing with data that is configured to repeat its first year from the start of the simulation
-                            If (dt < ds.TimeStart And conn.RepeatFirstYearFromStart) Then
-                                Dim iBorrowed As Integer = Me.m_core.AbsoluteTimeToEcospaceTimestep(ds.TimeStart) + iTime Mod cCore.N_MONTHS
-                                dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iBorrowed)
-                            End If
-
-                            If (ds.HasDataAtT(dt)) Then
+                            If (ds.HasDataAtT(dtVirt)) Then
 
                                 ' Internal log, no need to translate
-                                strMsg = "cSpatialDataAdapter::Populate({0}.{1}) dataset {2} trying to load data for T{3}, ext({4},{5}) to ({6},{7})"
-                                cLog.Write(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.CustomName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+                                strMsg = "cSpatialDataAdapter::Populate({0}.{1}) dataset {2} trying to load {3} data for T{4}, ext({5},{6}) to ({7},{8})"
+                                cLog.Write(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.CustomName, dtVirt.ToShortDateString, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
 
                                 ' #Yes: Can lock that data?
-                                If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
+                                If (ds.LockDataAtT(dtVirt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
                                     ' #Yes: start process of extracting external data
 
                                     ' Start logging the operations on successfully locked data
-                                    Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, Me.VarName, layer)
+                                    Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dtVirt, Me.VarName, layer)
 
                                     ' Sanity check
                                     Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")
@@ -299,7 +289,7 @@ Namespace SpatialData
 
 
                                         ' Integrate data
-                                        Me.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
+                                        Me.Adapt(bm, layer, conn, iTime, dtVirt, dataExternal, dNoData)
 
                                         ' Notify world
                                         If (Me.m_core.PluginManager IsNot Nothing) Then
