@@ -69,6 +69,8 @@ Namespace Ecospace.Controls
         Private m_bIsScaling As Boolean = False
 
         Private m_fpScale As cEwEFormatProvider = Nothing
+        Private m_fpStartYear As cEwEFormatProvider = Nothing
+        Private m_fpEndYear As cEwEFormatProvider = Nothing
 
 #End Region ' Private variables
 
@@ -172,6 +174,9 @@ Namespace Ecospace.Controls
 
             Me.m_cbEnabled.Checked = Me.m_adt.IsEnabled(Me.m_iLayer)
 
+            Me.m_fpStartYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxYearStart, GetType(Integer))
+            Me.m_fpEndYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxYearEnd, GetType(Integer))
+
             ' Start listening to grid events
             AddHandler Me.m_gridConnections.OnSelectionChanged, AddressOf Me.OnSelectDS
 
@@ -203,6 +208,8 @@ Namespace Ecospace.Controls
                 RemoveHandler Me.m_fpScale.OnValueChanged, AddressOf Me.OnScaleChanged
             End If
             Me.m_fpScale.Release()
+            Me.m_fpStartYear.Release()
+            Me.m_fpEndYear.Release()
 
             RemoveHandler Me.m_gridConnections.OnSelectionChanged, AddressOf Me.OnSelectDS
             Me.UIContext = Nothing
@@ -557,11 +564,6 @@ Namespace Ecospace.Controls
 
 #End Region ' Scaling
 
-#Region " Experimental "
-
-
-#End Region ' Experimental
-
 #Region " Other "
 
         Private Sub OnOK(sender As Object, e As System.EventArgs) _
@@ -578,6 +580,13 @@ Namespace Ecospace.Controls
                         conn.Scale = CSng(Me.m_fpScale.Value)
                         Me.m_fpScale.Enabled = True
                     End If
+
+                    conn.UseDefaultStartYear = Me.m_rbStartWithData.Checked
+                    conn.CustomStartYear = CInt(Me.m_fpStartYear.Value)
+
+                    conn.UseDefaultEndYear = Me.m_rbEndWithData.Checked
+                    conn.CustomEndYear = CInt(Me.m_fpEndYear.Value)
+
                     Me.LayerChanged()
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
@@ -878,22 +887,12 @@ Namespace Ecospace.Controls
 
 #Region " Experimental features "
 
-        Private Sub OnRepeatFirstYearChanged(sender As Object, e As EventArgs) Handles m_cbRepeatFirstYear.CheckedChanged
-
-            If (Me.m_bInUpdate) Then Return
-
-            Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
-            If (conn Is Nothing) Then Return
-            conn.RepeatFirstYearFromStart = Me.m_cbRepeatFirstYear.Checked
-
-        End Sub
-
         Private Sub UpdateExperimentalPanel()
 
-#If Not DEBUG Then
-            Me.m_plExperimental.Visible = False
-            Return
-#End If
+            '#If Not DEBUG Then
+            '            Me.m_plExperimental.Visible = False
+            '            Return
+            '#End If
 
             Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
             If (conn Is Nothing) Then Return
@@ -901,12 +900,13 @@ Namespace Ecospace.Controls
             Dim bInUpdate As Boolean = Me.m_bInUpdate
             Me.m_bInUpdate = True
 
-            If conn.Dataset.TimeStart > Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(1) Then
-                Me.m_cbRepeatFirstYear.Enabled = True
-                Me.m_cbRepeatFirstYear.Checked = conn.RepeatFirstYearFromStart
-            Else
-                Me.m_cbRepeatFirstYear.Enabled = False
-            End If
+            Me.m_rbStartWithData.Checked = conn.UseDefaultStartYear
+            Me.m_rbStartYear.Checked = Not conn.UseDefaultStartYear
+            Me.m_fpStartYear.Value = conn.CustomStartYear
+
+            Me.m_rbEndWithData.Checked = conn.UseDefaultEndYear
+            Me.m_rbEndYear.Checked = Not conn.UseDefaultEndYear
+            Me.m_fpEndYear.Value = conn.CustomEndYear
 
             Me.m_bInUpdate = bInUpdate
 

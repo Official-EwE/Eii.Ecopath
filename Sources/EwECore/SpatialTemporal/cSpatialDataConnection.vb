@@ -16,9 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
+Option Strict On
 Imports EwECore.SpatialData.cSpatialScalarDataAdapterBase
 Imports EwEUtils.SpatialData
+
+#End Region ' Imports
 
 Namespace SpatialData
 
@@ -28,24 +32,50 @@ Namespace SpatialData
 
     Public Class cSpatialDataConnection
 
+        ''' <summary></summary>
         Public Property Dataset As ISpatialDataSet = Nothing
+
+        ''' <summary></summary>
         Public Property Converter As ISpatialDataConverter = Nothing
+
+        ''' <summary></summary>
         Public Property Scale As Single = 1
-        Public Property ScaleType As eScaleType
 
-        Public Property RepeatFirstYearFromStart As Boolean = False
+        ''' <summary></summary>
+        Public Property ScaleType As eScaleType = eScaleType.Relative
 
-        ' Instead of the repeat flag, it would be useful to have a start (date) and end (date) flag to
-        ' define where external data is supposed to kick in. This has two potential usages:
-        ' - Limit the span data is applied to (start > ds.datefrom, end < ds.dateto)
-        ' - Reuse first year (start < ds.datefrom) or repeat last year (end > ds.dateto)
+        ''' <summary></summary>
+        Public Property UseDefaultStartYear As Boolean = True
 
+        ''' <summary>
+        ''' Custom start year for bringing in external data.
+        ''' If set before the first year of dataset data, the spatial temporal 
+        ''' framework will repeat the FIRST YEAR of external data until the
+        ''' actual external data is encountered.
+        ''' </summary>
+        Public Property CustomStartYear As Integer
+
+        ''' <summary></summary>
+        Public Property UseDefaultEndYear As Boolean = True
+
+        ''' <summary>
+        ''' Custom end year for bringing in external data.
+        ''' If set past the last year of dataset data, the spatial temporal 
+        ''' framework will keep repeating the LAST YEAR of external data.
+        ''' </summary>
+        Public Property CustomEndYear As Integer
+
+        ''' <summary></summary>
         Public Property Adapter As cSpatialDataAdapter = Nothing
+
+        ''' <summary></summary>
         Public Property iLayer As Integer = 1
 
+        ''' <summary></summary>
         Public Sub New()
         End Sub
 
+        ''' <summary></summary>
         Public Overridable Function IsConfigured() As Boolean
 
             Dim bIsConfigured As Boolean = False
@@ -65,7 +95,72 @@ Namespace SpatialData
 
         End Function
 
-        'ToDo: add diagnostics? Compatibility?
+#Region " Helper methods "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method to resolve the start year of external data, based on dataset 
+        ''' configuration and optional choices.
+        ''' </summary>
+        ''' <seealso cref="CustomStartYear"/>
+        ''' <seealso cref="UseDefaultStartYear"/>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property TimeStart As DateTime
+            Get
+                If (Me.Dataset Is Nothing) Then Return Nothing
+                If (Me.UseDefaultStartYear) Then Return Me.Dataset.TimeStart
+                Return New Date(Math.Max(1, Me.CustomStartYear), 1, 1)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method to resolve the end year of external data, based on dataset 
+        ''' configuration and optional choices.
+        ''' </summary>
+        ''' <seealso cref="CustomStartYear"/>
+        ''' <seealso cref="UseDefaultStartYear"/>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property TimeEnd As DateTime
+            Get
+                If (Me.Dataset Is Nothing) Then Return Nothing
+                If (Me.UseDefaultEndYear) Then Return Me.Dataset.TimeEnd
+                Return New Date(Math.Max(1, Me.CustomEndYear), 1, 1)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Translate a date to 
+        ''' </summary>
+        ''' <param name="dt"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function ToDataTime(dt As DateTime) As DateTime
+
+            If (Me.Dataset Is Nothing) Then Return dt
+
+            Dim dtStart As DateTime = Me.TimeStart
+            Dim dtEnd As DateTime = Me.TimeEnd
+
+            If (dt < dtStart Or dt > dtEnd) Then Return dt
+
+            If dt < Me.Dataset.TimeStart Then
+                Return New Date(Me.Dataset.TimeStart.Year, dt.Month, dt.Day)
+            End If
+
+            If dt > Me.Dataset.TimeEnd Then
+                Return New Date(Me.Dataset.TimeEnd.Year, dt.Month, dt.Day)
+            End If
+
+            Return dt
+
+        End Function
+
+
+#End Region ' Helper methods
 
     End Class
 

@@ -122,6 +122,9 @@ Namespace SpatialData
 
         Public Sub Refresh()
 
+            If Me.m_core Is Nothing Then Return
+            If Me.m_core.EcospaceBasemap Is Nothing Then Return
+
             Me.m_rcfBasemap = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
 
             Dim iNumTimeSteps As Integer = Me.m_core.nEcospaceTimeSteps

@@ -10217,6 +10217,8 @@ Namespace DataSources
                             item.ConverterConfig = CStr(Me.m_db.ReadSafe(reader, "ConverterCfg", ""))
                             item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
                             item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
+                            item.StartYear = CInt(Me.m_db.ReadSafe(reader, "StartYear", 0))
+                            item.EndYear = CInt(Me.m_db.ReadSafe(reader, "EndYear", 0))
                         End If
                     End If
 
@@ -10315,6 +10317,8 @@ Namespace DataSources
                                     drow("ConverterCfg") = cfg.ConverterConfig
                                     drow("Scale") = cfg.Scale
                                     drow("ScaleType") = cfg.ScaleType
+                                    drow("StartYear") = cfg.StartYear
+                                    drow("EndYear") = cfg.EndYear
                                     writer.AddRow(drow)
 
                                     iSequence += 1

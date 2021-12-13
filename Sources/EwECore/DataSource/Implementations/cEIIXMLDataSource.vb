@@ -2880,8 +2880,8 @@ Public Class cEIIXMLDataSource
                         item.ConverterConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "ConverterCfg", "")))
                         item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
                         item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
-
-                        ' These datasets are 'virtual', obtained from a foreign model but not properly defined
+                        item.StartYear = CInt(Me.ReadSafe(drow, "StartYear", 0))
+                        item.EndYear = CInt(Me.ReadSafe(drow, "EndYear", 0))
 
                     End If
                 End If

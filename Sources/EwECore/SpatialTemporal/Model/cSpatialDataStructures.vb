@@ -105,6 +105,8 @@ Namespace SpatialData
             ''' <summary></summary>
             Public Property ScaleType As Byte = 0
 
+            Public Property StartYear As Integer = 0
+            Public Property EndYear As Integer = 0
             Friend Sub Clear()
                 Me.DatasetGUID = ""
                 Me.DatasetTypeName = ""

@@ -18,11 +18,11 @@
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0 alpha 32-bit"
+  #define MyAppVersion "6.7.0 Gio special 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0 alpha 64-bit"
+  #define MyAppVersion "6.7.0 Gio special 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -38,12 +38,12 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17633
+  VersionInfoVersion=6.7.0.17649
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
 ;   <full path to signtool.exe> /f <cert file> /p <password> /t <path to timestamp server> $f
-;   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.p12" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
+;   "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.pfx" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
 SignTool=codesign /d $q{#MyAppName}$q $f
 WizardImageFile=EwE5Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp

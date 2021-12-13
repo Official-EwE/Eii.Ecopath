@@ -130,7 +130,7 @@
     <value>0, 18</value>
   </data>
   <data name="m_gridConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 280</value>
+    <value>556, 224</value>
   </data>
   <data name="m_gridConnections.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -139,7 +139,7 @@
     <value>m_gridConnections</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -172,7 +172,7 @@
     <value>m_hdrSource</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -190,7 +190,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plConnection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 298</value>
+    <value>556, 242</value>
   </data>
   <data name="m_plConnection.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -358,7 +358,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plScalarAdapter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 396</value>
+    <value>0, 340</value>
   </data>
   <data name="m_plScalarAdapter.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -367,7 +367,7 @@
     <value>556, 54</value>
   </data>
   <data name="m_plScalarAdapter.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_plScalarAdapter.Name" xml:space="preserve">
     <value>m_plScalarAdapter</value>
@@ -469,7 +469,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plConversion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 368</value>
+    <value>0, 312</value>
   </data>
   <data name="m_plConversion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -529,7 +529,7 @@
     <value>525, 18</value>
   </data>
   <data name="m_lblCompatibility.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_lblCompatibility.Text" xml:space="preserve">
     <value>&lt;compat&gt;</value>
@@ -559,7 +559,7 @@
     <value>441, 18</value>
   </data>
   <data name="m_lblDatasetInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="m_lblDatasetInfo.Text" xml:space="preserve">
     <value>&lt;descr&gt;</value>
@@ -589,7 +589,7 @@
     <value>106, 23</value>
   </data>
   <data name="m_btnConfigDS.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnConfigDS.Text" xml:space="preserve">
     <value>C&amp;onfigure...</value>
@@ -619,7 +619,7 @@
     <value>553, 18</value>
   </data>
   <data name="m_hdrConfig.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_hdrConfig.Text" xml:space="preserve">
     <value>Configure connection</value>
@@ -631,7 +631,7 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>m_plDataset</value>
@@ -643,7 +643,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plDataset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 298</value>
+    <value>0, 242</value>
   </data>
   <data name="m_plDataset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -666,20 +666,164 @@
   <data name="&gt;&gt;m_plDataset.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_hdrExperimental.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_hdrExperimental.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_hdrExperimental.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 18</value>
-  </data>
-  <data name="m_hdrExperimental.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tlExperimentalFeatures.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_tbxYearStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>245, 2</value>
+  </data>
+  <data name="m_tbxYearStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 20</value>
+  </data>
+  <data name="m_tbxYearStart.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearStart.Name" xml:space="preserve">
+    <value>m_tbxYearStart</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearStart.Parent" xml:space="preserve">
+    <value>m_plStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearStart.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblStart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 5</value>
+  </data>
+  <data name="m_lblStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 13</value>
+  </data>
+  <data name="m_lblStart.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblStart.Text" xml:space="preserve">
+    <value>&amp;First year:</value>
+  </data>
+  <data name="&gt;&gt;m_lblStart.Name" xml:space="preserve">
+    <value>m_lblStart</value>
+  </data>
+  <data name="&gt;&gt;m_lblStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblStart.Parent" xml:space="preserve">
+    <value>m_plStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_lblStart.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbStartWithData.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbStartWithData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbStartWithData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>69, 3</value>
+  </data>
+  <data name="m_rbStartWithData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 17</value>
+  </data>
+  <data name="m_rbStartWithData.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbStartWithData.Text" xml:space="preserve">
+    <value>default</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartWithData.Name" xml:space="preserve">
+    <value>m_rbStartWithData</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartWithData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartWithData.Parent" xml:space="preserve">
+    <value>m_plStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartWithData.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbStartYear.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbStartYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbStartYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>169, 3</value>
+  </data>
+  <data name="m_rbStartYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 17</value>
+  </data>
+  <data name="m_rbStartYear.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbStartYear.Text" xml:space="preserve">
+    <value>at year:</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartYear.Name" xml:space="preserve">
+    <value>m_rbStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartYear.Parent" xml:space="preserve">
+    <value>m_plStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_rbStartYear.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_plStartYear.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plStartYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_plStartYear.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_plStartYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>556, 24</value>
+  </data>
+  <data name="m_plStartYear.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_plStartYear.Name" xml:space="preserve">
+    <value>m_plStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_plStartYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plStartYear.Parent" xml:space="preserve">
+    <value>m_tlExperimentalFeatures</value>
+  </data>
+  <data name="&gt;&gt;m_plStartYear.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdrExperimental.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_hdrExperimental.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrExperimental.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_hdrExperimental.Size" type="System.Drawing.Size, System.Drawing">
+    <value>550, 18</value>
+  </data>
+  <data name="m_hdrExperimental.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="m_hdrExperimental.Text" xml:space="preserve">
-    <value>Experimental features</value>
+    <value>Experimental features *)</value>
   </data>
   <data name="m_hdrExperimental.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -688,52 +832,232 @@
     <value>m_hdrExperimental</value>
   </data>
   <data name="&gt;&gt;m_hdrExperimental.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExperimental.Parent" xml:space="preserve">
-    <value>m_plExperimental</value>
+    <value>m_tlExperimentalFeatures</value>
   </data>
   <data name="&gt;&gt;m_hdrExperimental.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbxYearEnd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>245, 2</value>
+  </data>
+  <data name="m_tbxYearEnd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 20</value>
+  </data>
+  <data name="m_tbxYearEnd.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearEnd.Name" xml:space="preserve">
+    <value>m_tbxYearEnd</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearEnd.Parent" xml:space="preserve">
+    <value>m_plEndYear</value>
+  </data>
+  <data name="&gt;&gt;m_tbxYearEnd.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_cbRepeatFirstYear.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblEnd.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_cbRepeatFirstYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
+  <data name="m_lblEnd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="m_cbRepeatFirstYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>233, 17</value>
+  <data name="m_lblEnd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 5</value>
   </data>
-  <data name="m_cbRepeatFirstYear.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblEnd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 13</value>
+  </data>
+  <data name="m_lblEnd.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_cbRepeatFirstYear.Text" xml:space="preserve">
-    <value>&amp;Apply first year of data from the start of a run</value>
+  <data name="m_lblEnd.Text" xml:space="preserve">
+    <value>Last year:</value>
   </data>
-  <data name="&gt;&gt;m_cbRepeatFirstYear.Name" xml:space="preserve">
-    <value>m_cbRepeatFirstYear</value>
+  <data name="&gt;&gt;m_lblEnd.Name" xml:space="preserve">
+    <value>m_lblEnd</value>
   </data>
-  <data name="&gt;&gt;m_cbRepeatFirstYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_lblEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cbRepeatFirstYear.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblEnd.Parent" xml:space="preserve">
+    <value>m_plEndYear</value>
+  </data>
+  <data name="&gt;&gt;m_lblEnd.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbEndWithData.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbEndWithData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbEndWithData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>69, 3</value>
+  </data>
+  <data name="m_rbEndWithData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 17</value>
+  </data>
+  <data name="m_rbEndWithData.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbEndWithData.Text" xml:space="preserve">
+    <value>default</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndWithData.Name" xml:space="preserve">
+    <value>m_rbEndWithData</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndWithData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndWithData.Parent" xml:space="preserve">
+    <value>m_plEndYear</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndWithData.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbEndYear.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbEndYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbEndYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>169, 3</value>
+  </data>
+  <data name="m_rbEndYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 17</value>
+  </data>
+  <data name="m_rbEndYear.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbEndYear.Text" xml:space="preserve">
+    <value>until year:</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndYear.Name" xml:space="preserve">
+    <value>m_rbEndYear</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndYear.Parent" xml:space="preserve">
+    <value>m_plEndYear</value>
+  </data>
+  <data name="&gt;&gt;m_rbEndYear.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_plEndYear.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plEndYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 42</value>
+  </data>
+  <data name="m_plEndYear.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_plEndYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>556, 24</value>
+  </data>
+  <data name="m_plEndYear.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_plEndYear.Name" xml:space="preserve">
+    <value>m_plEndYear</value>
+  </data>
+  <data name="&gt;&gt;m_plEndYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plEndYear.Parent" xml:space="preserve">
+    <value>m_tlExperimentalFeatures</value>
+  </data>
+  <data name="&gt;&gt;m_plEndYear.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lblStartEndInfo.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblStartEndInfo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblStartEndInfo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblStartEndInfo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 66</value>
+  </data>
+  <data name="m_lblStartEndInfo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>550, 32</value>
+  </data>
+  <data name="m_lblStartEndInfo.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lblStartEndInfo.Text" xml:space="preserve">
+    <value>*) Use start and end years to truncate external data run times, to start repeating the first year earlier, or to keep repeating the last year</value>
+  </data>
+  <data name="m_lblStartEndInfo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblStartEndInfo.Name" xml:space="preserve">
+    <value>m_lblStartEndInfo</value>
+  </data>
+  <data name="&gt;&gt;m_lblStartEndInfo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblStartEndInfo.Parent" xml:space="preserve">
+    <value>m_tlExperimentalFeatures</value>
+  </data>
+  <data name="&gt;&gt;m_lblStartEndInfo.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.RowCount" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.Size" type="System.Drawing.Size, System.Drawing">
+    <value>556, 98</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tlExperimentalFeatures.Name" xml:space="preserve">
+    <value>m_tlExperimentalFeatures</value>
+  </data>
+  <data name="&gt;&gt;m_tlExperimentalFeatures.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlExperimentalFeatures.Parent" xml:space="preserve">
     <value>m_plExperimental</value>
   </data>
-  <data name="&gt;&gt;m_cbRepeatFirstYear.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_tlExperimentalFeatures.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlExperimentalFeatures.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plStartYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrExperimental" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEndYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStartEndInfo" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_plExperimental.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_plExperimental.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 450</value>
+    <value>0, 394</value>
   </data>
   <data name="m_plExperimental.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plExperimental.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 42</value>
+    <value>556, 98</value>
   </data>
   <data name="m_plExperimental.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -808,7 +1132,7 @@
     <value>m_hdrConnections</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -922,7 +1246,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -991,7 +1315,7 @@
     <value>m_lbSourceDatasets</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.7.0.17633, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -1205,6 +1529,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>824, 561</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>External spatial temporal data connected to '{0}'</value>
