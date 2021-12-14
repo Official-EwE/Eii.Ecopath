@@ -441,7 +441,6 @@ Namespace Ecospace.Controls
 
         End Sub
 
-
         Private Sub OnDatScaleTypeChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
 
@@ -563,6 +562,18 @@ Namespace Ecospace.Controls
         End Sub
 
 #End Region ' Scaling
+
+#Region " Dating "
+
+        Private Sub OnEnterCustomStartYear(sender As Object, e As EventArgs) Handles m_tbxYearStart.Enter
+            Me.m_rbStartYear.Checked = True
+        End Sub
+
+        Private Sub OnEnterCustomRnfYear(sender As Object, e As EventArgs) Handles m_tbxYearEnd.Enter
+            Me.m_rbEndYear.Checked = True
+        End Sub
+
+#End Region ' Dating
 
 #Region " Other "
 

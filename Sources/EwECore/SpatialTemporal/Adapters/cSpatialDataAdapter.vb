@@ -246,7 +246,7 @@ Namespace SpatialData
                             ' #Yes: has data for this time step?
                             dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
                             ' JS 12Dec21: conn translates date to a dataset point where to obtain the real data from
-                            dtVirt = conn.ToDataTime(dt)
+                            dtVirt = conn.ToDataTime(Me.m_core, dt)
 
                             If (ds.HasDataAtT(dtVirt)) Then
 
