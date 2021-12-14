@@ -53,6 +53,8 @@ Namespace Ecospace.Controls
             Public Property DataPoint As New List(Of Integer)
             ''' <summary>Time steps with repeated data from the dataset.</summary>
             Public Property BorrowedDataPoint As New List(Of Integer)
+            ''' <summary>The original data the point borrows from.</summary>
+            Public Property BorrowedDataFrom As New List(Of Integer)
 
         End Class
 
@@ -150,7 +152,6 @@ Namespace Ecospace.Controls
                     Me.m_mhSim.Name = "ucSpatialTimeSeriesToolbox::m_mhSim"
                     Me.m_mhSpace.Name = "ucSpatialTimeSeriesToolbox::m_mhSpace"
 #End If
-
                 End If
             End Set
         End Property
@@ -272,28 +273,34 @@ Namespace Ecospace.Controls
                 Dim dtStep As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep)
                 Dim strDate As String = dtStep.ToShortDateString
 
-                Select Case comp.CompatibilityAt(iStep)
+                Dim iBorrowed As Integer = pos.BorrowedDataPoint.IndexOf(iStep)
+                If (iBorrowed > -1) Then
+                    dtStep = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iBorrowed)
+                    strText = String.Format("Data for {0} borrowed from {1}", strDate, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iBorrowed).ToShortDateString)
+                Else
+                    Select Case comp.CompatibilityAt(iStep)
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal,
-                         cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        strText = pos.Dataset.CustomName
+                        Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal,
+                             cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                            strText = pos.Dataset.CustomName
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.Dataset.CustomName, iStep, strDate)
+                        Case cDatasetCompatilibity.eCompatibilityTypes.Errors
+                            strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.Dataset.CustomName, iStep, strDate)
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.Dataset.CustomName, iStep, strDate)
+                        Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                            strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.Dataset.CustomName, iStep, strDate)
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.Dataset.CustomName, iStep, strDate)
+                        Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                            strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.Dataset.CustomName, iStep, strDate)
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.Dataset.CustomName, iStep, strDate)
+                        Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
+                            strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.Dataset.CustomName, iStep, strDate)
 
-                    Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.Dataset.CustomName, iStep, strDate)
+                        Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
+                            strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.Dataset.CustomName, iStep, strDate)
 
-                End Select
+                    End Select
+                End If
             End If
 
             ' Async update to prevent flickering
@@ -463,13 +470,14 @@ Namespace Ecospace.Controls
                     Dim bIsBorrowed As Boolean = False
 
                     Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
-                    Dim tmData As DateTime = conn.ToDataTime(tm)
+                    Dim tmData As DateTime = conn.ToDataTime(core, tm)
 
                     If conn.Dataset.HasDataAtT(tmData) Then
                         If tm = tmData Then
                             pos.DataPoint.Add(iStep)
                         Else
                             pos.BorrowedDataPoint.Add(iStep)
+                            pos.BorrowedDataFrom.Add(core.AbsoluteTimeToEcospaceTimestep(tmData))
                         End If
                     End If
                 Next
@@ -688,8 +696,7 @@ Namespace Ecospace.Controls
             Dim dtStart As Date = core.EcospaceTimestepToAbsoluteTime(1)
             Dim dtEnd As Date = core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)
 
-            ' ToDo: mke this work properly
-            Return dtStart < ds.TimeEnd And dtEnd > If(conn.UseDefaultStartYear, ds.TimeStart, dtStart)
+            Return dtStart < conn.TimeEnd And dtEnd > conn.TimeStart
 
         End Function
 
