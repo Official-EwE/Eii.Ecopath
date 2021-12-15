@@ -1373,7 +1373,7 @@ Namespace Ecosim
                             'Carl suggests the following:
                             'predict F from
                             'F=w*Fmax+(1-w)C/B
-                            'Where the “weight” w is given by the logistic function, and K = 5
+                            'Where the ï¿½weightï¿½ w is given by the logistic function, and K = 5
                             'w = 1 / (1 + exp(-K * (C / B - Fmax)))
                             'Fmax is the Flimit from the search
                             'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - FLimit(iGrp))))
@@ -1563,23 +1563,23 @@ Namespace Ecosim
             'can we run Ecosim at different time scales? Joe and I are looking at the code, 
             'thinking of running multistanza once per month, but updating feeding calculations at finer time scales. 
             'No changes in interfaces if this can be done, only accessible from code
-            'Carl: "Certainly.  You need to pass the mean rate over the month to the multistanza growth equation, 
-            'likewise mean (or total) mortality rate to the multistanza survival equation.  
+            'Carl: "Certainly. ï¿½You need to pass the mean rate over the month to the multistanza growth equation, 
+            'likewise mean (or total) mortality rate to the multistanza survival equation. ï¿½
             'Note the mortality rates caused on prey by the multistanza group will be approximated by rate at start of the month, 
-            'not updated during month.  Otherwise, all continuous variables can be upated with shorter time step.  
+            'not updated during month. ï¿½Otherwise, all continuous variables can be upated with shorter time step. ï¿½
             'Watch out for very fast pools (very high PB), note these are not updated but modeled as tracking equiilibrium."
-            '[05/09/09 12:00:14 PM]  But as i told Beth Thursday AM, i do not think that is the right approach.  
+            '[05/09/09 12:00:14 PM]  But as i told Beth Thursday AM, i do not think that is the right approach. ï¿½
             'Instead, would take two steps: (1) fix the ERSEM/GTM state initialization using Ecopath-type calculation, 
             'so don't get initial instability; and (2) do all the fast variables only in the 
             'ERSEM/GTM model (phyto, zoops, detritus), pass only the monthly mean biomasses to Ecosim 
-            'and pass back only the monthly mean mortality rates and fluxes to detritus from the Ecosim pools.  
+            'and pass back only the monthly mean mortality rates and fluxes to detritus from the Ecosim pools. ï¿½
             'Joe has added array in Derivt to calculate all mortality rate components (Mij), so can pass just the correct ones to ERSEM/GTM.
             '[05/09/09 11:57:59 AM] Carl Walters: Also, we already calculate in global variable ToDetritus the flows 
             'from ecopath pools to detritus, just need to make sure only the flows are used in ERSEM/GTM 
             'that are from pools represented only in Ecosim.
             'Note you should not be afraid to demand that the ERSEM/GTM models 
             'be modified to add fast dynamic pools where/when we have identified such pools as 
-            'important in Ecopath but they have been overlooked or omitted for some reason in the ERSEM/GTM models.  
+            'important in Ecopath but they have been overlooked or omitted for some reason in the ERSEM/GTM models. ï¿½
             'That would make a clean split: fast variables all done in the detailed models, slower variables all done in Ecosim.
             'Push hard for what i just recommended.  
             'Avoid changing Ecosim time step (not needed for our important variables), 
