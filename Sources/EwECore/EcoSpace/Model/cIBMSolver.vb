@@ -437,7 +437,7 @@ Public Class cIBMSolver
                 Dim sTo As Single = TotRecruits
                 If (Me.m_Stanza.RecStanzaScalar(isp) = 0) Then Me.m_Stanza.RecStanzaScalar(isp) = sTo / sFrom
                 ' JS 05Dec21: Joe, how about applying the recruitment power to control linked stanza recruitment?
-                TotRecruits = sFrom * Me.m_Stanza.RecStanzaScalar(isp) ^ Me.m_Stanza.RecPowerSplit(isp)
+                TotRecruits = (sFrom * Me.m_Stanza.RecStanzaScalar(isp)) '^ Me.m_Stanza.RecPowerSplit(isp)
             Else
                 Me.m_Stanza.IBMTotRecruits(isp) = TotRecruits
             End If
