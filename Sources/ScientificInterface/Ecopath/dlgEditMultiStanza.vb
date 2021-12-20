@@ -143,7 +143,7 @@ Namespace Ecopath
 
         End Sub
 
-#Region "Event handlers "
+#Region " Event handlers "
 
         Private Sub OnFormatFFItem(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbFF.Format
             If (TypeOf e.ListItem Is cForcingFunction) Then
@@ -159,6 +159,12 @@ Namespace Ecopath
                 e.Value = fmt.ToString(e.ListItem)
             End If
         End Sub
+
+        Private Sub OnSelectRecStanza(sender As Object, e As EventArgs) Handles m_cmbRecStanza.SelectedIndexChanged
+            If Me.m_bInUpdate Then Return
+            Me.UpdateControls()
+        End Sub
+
 
         Private Sub OnCalculate(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
@@ -323,12 +329,6 @@ Namespace Ecopath
                 Me.m_fpK.Enabled = False
             End If
 
-            Me.m_fpRecPwr.Value = stanza.RecruitmentPower
-            Me.m_fpBab.Value = stanza.BiomassAccumulationRate
-            Me.m_fpWmatWinf.Value = stanza.WmatWinf
-
-            Me.m_fpAge0Numbers.Value = stanza.Age0Numbers
-
             Dim lItems As New List(Of Object)
             lItems.Add(SharedResources.GENERIC_VALUE_NONE)
             Dim sel As Integer = 0
@@ -342,6 +342,13 @@ Namespace Ecopath
             Me.m_cmbRecStanza.Items.Clear()
             Me.m_cmbRecStanza.Items.AddRange(lItems.ToArray())
             Me.m_cmbRecStanza.SelectedIndex = sel
+
+            Me.m_fpRecPwr.Value = stanza.RecruitmentPower
+            Me.m_fpRecPwr.Enabled = (Me.m_cmbRecStanza.SelectedIndex = 0)
+            Me.m_fpBab.Value = stanza.BiomassAccumulationRate
+            Me.m_fpWmatWinf.Value = stanza.WmatWinf
+
+            Me.m_fpAge0Numbers.Value = stanza.Age0Numbers
 
             Dim iSel As Integer = 0
             If bEcosimLoaded Then
