@@ -83,6 +83,8 @@ Namespace Controls.Map
         Public Property ShowExcluded() As Boolean
         Public Property Map() As Single(,,)
         Public Property StanzaDS() As cStanzaDatastructures
+        ''' <summary>IBM packet rendering step size</summary>
+        Public Property StanzaPacketStepSize As Integer = 1
         Public Property InRow() As Integer
         Public Property InCol() As Integer
         Public Property Month() As Integer
