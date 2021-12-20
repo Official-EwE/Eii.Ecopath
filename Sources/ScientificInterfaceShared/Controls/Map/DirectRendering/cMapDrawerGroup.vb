@@ -147,7 +147,7 @@ Namespace Controls.Map
                             Dim ieco As Integer = StanzaDS.EcopathCode(isp, ist)
 
                             If ieco = iItem Then
-                                For ipkt As Integer = 1 To StanzaDS.Npackets
+                                For ipkt As Integer = 1 To StanzaDS.Npackets Step StanzaPacketStepSize
 
                                     Dim sy As Single = StanzaDS.iPacket(isp, iaa, ipkt)
                                     Dim sx As Single = StanzaDS.jPacket(isp, iaa, ipkt)

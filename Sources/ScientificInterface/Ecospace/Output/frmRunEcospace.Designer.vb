@@ -67,6 +67,7 @@ Namespace Ecospace
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
             Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plMapData = New System.Windows.Forms.Panel()
+            Me.m_nudPacketStepSize = New System.Windows.Forms.NumericUpDown()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_txFMax = New System.Windows.Forms.TextBox()
             Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
@@ -110,6 +111,7 @@ Namespace Ecospace
             Me.m_plMapSaveImages.SuspendLayout()
             Me.m_plMapLabels.SuspendLayout()
             Me.m_plMapData.SuspendLayout()
+            CType(Me.m_nudPacketStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plDisplayOptions.SuspendLayout()
             Me.m_plRun.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
@@ -288,10 +290,10 @@ Namespace Ecospace
             '
             'm_plMapData
             '
+            Me.m_plMapData.Controls.Add(Me.m_nudPacketStepSize)
             Me.m_plMapData.Controls.Add(Me.Label1)
             Me.m_plMapData.Controls.Add(Me.m_txFMax)
             Me.m_plMapData.Controls.Add(Me.m_cbShowIBMPackets)
-            Me.m_plMapData.Controls.Add(Me.m_cbOverlay)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayF)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayRelBiomass)
             Me.m_plMapData.Controls.Add(Me.m_cbMPA)
@@ -305,6 +307,13 @@ Namespace Ecospace
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayCoverB)
             resources.ApplyResources(Me.m_plMapData, "m_plMapData")
             Me.m_plMapData.Name = "m_plMapData"
+            '
+            'm_nudPacketStepSize
+            '
+            resources.ApplyResources(Me.m_nudPacketStepSize, "m_nudPacketStepSize")
+            Me.m_nudPacketStepSize.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudPacketStepSize.Name = "m_nudPacketStepSize"
+            Me.m_nudPacketStepSize.Value = New Decimal(New Integer() {5, 0, 0, 0})
             '
             'Label1
             '
@@ -464,6 +473,7 @@ Namespace Ecospace
             Me.m_plGraphData.Controls.Add(Me.m_rbCatchGraph)
             Me.m_plGraphData.Controls.Add(Me.m_rbConsumpGraph)
             Me.m_plGraphData.Controls.Add(Me.m_rbPredMortGraph)
+            Me.m_plGraphData.Controls.Add(Me.m_cbOverlay)
             Me.m_plGraphData.Controls.Add(Me.m_rbFishMortGraph)
             Me.m_plGraphData.Controls.Add(Me.m_rbRelBiomassGraph)
             Me.m_plGraphData.Controls.Add(Me.m_hdrGraphTypes)
@@ -580,6 +590,7 @@ Namespace Ecospace
             Me.m_plMapLabels.PerformLayout()
             Me.m_plMapData.ResumeLayout(False)
             Me.m_plMapData.PerformLayout()
+            CType(Me.m_nudPacketStepSize, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plDisplayOptions.ResumeLayout(False)
             Me.m_plDisplayOptions.PerformLayout()
             Me.m_plRun.ResumeLayout(False)
@@ -649,6 +660,7 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayComputedHabitatCapacity As RadioButton
         Private WithEvents m_rbFishMortGraph As RadioButton
         Private WithEvents m_cbShowIndexInLabel As CheckBox
+        Private WithEvents m_nudPacketStepSize As NumericUpDown
     End Class
 
 End Namespace

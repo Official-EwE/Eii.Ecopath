@@ -132,6 +132,7 @@ Namespace Ecospace
         Private m_mapPlotTypeLast As ePlotTypes = ePlotTypes.Effort
         Private m_bOverlay As Boolean = False
         Private m_bShowIBM As Boolean = True
+        Private m_iPacketStepSize As Integer = 1
         Private m_bpConTracing As cBooleanProperty = Nothing
         Private m_showitemMode As eShowItemType = eShowItemType.ShowAll
         Private m_iItemToShow As Integer = 1
@@ -591,6 +592,7 @@ Namespace Ecospace
 
                                 If parms.UseIBM And Me.m_bShowIBM Then
                                     drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
+                                    drawer.StanzaPacketStepSize = Me.m_iPacketStepSize
                                 End If
 
                             Case ePlotTypes.FOverB
@@ -1090,6 +1092,15 @@ Namespace Ecospace
 
             Me.m_bShowIBM = Me.m_cbShowIBMPackets.Checked
             Me.UpdateControls()
+            Me.RefreshMap()
+
+        End Sub
+
+        Private Sub OnPacketsStepSizeChanged(sender As Object, e As EventArgs) Handles m_nudPacketStepSize.ValueChanged
+
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_iPacketStepSize = CInt(Math.Max(1, Me.m_nudPacketStepSize.Value))
             Me.RefreshMap()
 
         End Sub
