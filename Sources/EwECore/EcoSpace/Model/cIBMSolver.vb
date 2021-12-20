@@ -178,6 +178,7 @@ Public Class cIBMSolver
         Dim Mrat As Single, Ipos As Single, Jpos As Single
         Dim aa As Single, bb As Single, cc As Single, dd As Single
         Dim dAllow As Single
+        Dim AdScale = 315.36 / Me.m_Data.CellLength
 
         Try
             For isp = 1 To Me.m_Stanza.Nsplit
@@ -230,6 +231,21 @@ Public Class cIBMSolver
                         'Nmoves = m_Stanza.IBMMovesPerMonth(ieco) * Math.Log(m_Data.HabCap(ieco)(i, j), 0.1) ^ m_Data.RelMoveBad(ieco)
                     End If
                     'Debug.Assert(ieco <> 1)
+
+                    ' JS 15Dec21: packet movement is ignoring advection speed
+                    ' CW 16Dec21: You have to move the calculation of IBMDistMove and nmoves to inside the loop, recalculate IBMDistMove 
+                    '             using the cell-specific vector velocity sqrt(vx^2+vy^2+basedist) where vx,vy are the cell-specific 
+                    '             x and y advection velocities.  Note that nmove will go up a lot when these velocities are high.
+                    '             Look at how IBMDistMove is calculated from the species base movement distance/year to see how to scale
+                    '             the calculation when the vector velocity is added to the species base movement distance/year
+                    If Me.m_Data.IsAdvected(ieco) Then
+                        ' Increase local DMove (not IBMDistMove) with advection velocity vector
+                        Dim dvel As Single = Math.Sqrt((Me.m_Data.Xvel(i, j) ^ 2) + (Me.m_Data.Yvel(i, j) ^ 2)) * AdScale
+                        Dmove += dvel
+                        ' Somehow increase Nmoves too
+                        Nmoves += 10
+                    End If
+
                     For imm = 1 To Nmoves
                         i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
                         aa = Me.Bcw(i + 1, j, ieco) 'south move
