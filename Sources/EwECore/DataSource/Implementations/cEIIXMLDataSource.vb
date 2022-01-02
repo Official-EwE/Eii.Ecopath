@@ -1055,9 +1055,8 @@ Public Class cEIIXMLDataSource
 
         'jb added to redim time variables in ecosim data structures
         ecosimDS.RedimTime()
-
-        Me.m_core.m_MSEData.redimTime()
-        Me.m_core.m_EcoSim.setDefaultCatchabilities()
+        mseDS.redimTime()
+        ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
 
         ' Set active scenario
         ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)

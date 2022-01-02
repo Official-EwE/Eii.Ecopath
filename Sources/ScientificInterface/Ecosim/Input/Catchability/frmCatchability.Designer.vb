@@ -47,13 +47,16 @@ Namespace Ecosim
             Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
             Me.m_tscbFleets = New System.Windows.Forms.ToolStripComboBox()
             Me.m_grdCatchability = New ScientificInterface.gridCatchability()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnResetFleet = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnResetAll = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.m_tscbFleets})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.m_tscbFleets, Me.ToolStripSeparator1, Me.m_tsbnResetFleet, Me.m_tsbnResetAll})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -102,6 +105,23 @@ Namespace Ecosim
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grdCatchability.UIContext = Nothing
             '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tsbnResetFleet
+            '
+            Me.m_tsbnResetFleet.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnResetFleet, "m_tsbnResetFleet")
+            Me.m_tsbnResetFleet.Name = "m_tsbnResetFleet"
+            '
+            'm_tsbnResetAll
+            '
+            Me.m_tsbnResetAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnResetAll, "m_tsbnResetAll")
+            Me.m_tsbnResetAll.Name = "m_tsbnResetAll"
+            '
             'frmCatchability
             '
             resources.ApplyResources(Me, "$this")
@@ -121,6 +141,9 @@ Namespace Ecosim
         Friend WithEvents ToolStripLabel1 As ToolStripLabel
         Private WithEvents m_grdCatchability As gridCatchability
         Private WithEvents m_ts As cEwEToolstrip
+        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+        Private WithEvents m_tsbnResetFleet As ToolStripButton
+        Private WithEvents m_tsbnResetAll As ToolStripButton
     End Class
 
 

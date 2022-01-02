@@ -5850,44 +5850,6 @@ Namespace Ecosim
 
         End Function
 
-        Public Sub setDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
-
-            Dim q As Single
-            If (Me.m_EPData.Landing(iFlt, iGrp) + Me.m_EPData.Discard(iFlt, iGrp)) > 0 Then
-                q = (Me.m_EPData.Landing(iFlt, iGrp) + Me.m_EPData.Discard(iFlt, iGrp)) / Me.m_EPData.B(iGrp)
-            Else
-                q = cCore.NULL_VALUE
-            End If
-
-            For it As Integer = 1 To Me.m_Data.NTimes
-                Me.m_Data.relQt(iFlt, iGrp, it) = q
-            Next
-
-        End Sub
-
-
-        Public Sub setDefaultCatchabilities()
-            Dim iflt As Integer
-            Dim iGrp As Integer
-            'set relative catchabilities by gear type, treating effort for each gear as starting at base
-            'value of 1.0 so that F for the gear (F=qE=C/B) is 1.0xq where q is relative catchability
-            'this avoids measuring effort in some unnecessary data units
-
-            Me.m_Data.relQt = New Single(Me.m_Data.nGear, Me.m_Data.nGroups, Me.m_Data.NTimes) {}
-
-            For iflt = 1 To Me.m_Data.nGear
-                For iGrp = 1 To Me.m_Data.nGroups
-                    'total catch rate 
-                    'Includes discards that survive
-                    'relQ(i, j) = (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_Data.StartBiomass(j)
-                    Me.setDefaultCatchabilities(iflt, iGrp)
-
-                Next iGrp
-            Next iflt
-
-        End Sub
-
-
 #End Region
 
 #Region "Evolve functions stored for reference"
