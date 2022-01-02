@@ -6653,13 +6653,17 @@ Public Class cCore
 
 #End Region ' Variables
 
-
-    Public Sub setDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
-
-        Me.m_EcoSim.setDefaultCatchabilities(iFlt, iGrp)
-
+    Public Sub SetDefaultCatchabilities()
+        Me.m_EcoSimData.SetDefaultCatchabilities(Me.m_EcoPathData.Landing, Me.m_EcoPathData.Discard, Me.m_EcoPathData.B)
+        Me.LoadEcosimFleetInputs()
+        Me.m_publisher.SendMessage(New cMessage("Ecosim groups have changed.", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFleetInput))
     End Sub
 
+    Public Sub SetDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
+        Me.m_EcoSimData.SetDefaultCatchabilities(Me.m_EcoPathData.Landing, Me.m_EcoPathData.Discard, Me.m_EcoPathData.B, iFlt, iGrp)
+        Me.LoadEcosimFleetInputs()
+        Me.m_publisher.SendMessage(New cMessage("Ecosim groups have changed.", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcosimFleetInput))
+    End Sub
 
     ''' <summary>
     ''' Start biomass of each group
@@ -14369,15 +14373,13 @@ Public Class cCore
                         Dim iflt As Integer = value.Index
                         Dim igrp As Integer = obj.ValidationStatus.iArrayIndex
                         If Me.m_StateMonitor.HasEcosimLoaded Then
-                            Me.setDefaultCatchabilities(iflt, igrp)
+                            Me.SetDefaultCatchabilities(iflt, igrp)
                         End If
 
                     Case eVarNameFlags.OffVesselPrice
                         Me.Set_OffVesselValue_Flags(flt, True)
 
                 End Select
-
-
 
             Case eDataTypes.Taxon
 

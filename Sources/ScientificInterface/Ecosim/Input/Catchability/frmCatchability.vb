@@ -74,6 +74,32 @@ Namespace Ecosim
             End If
         End Sub
 
+
+        Private Sub OnResetFleetCatchabilities(sender As Object, e As EventArgs) Handles m_tsbnResetFleet.Click
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
+            Try
+                ' ToDo: ask if user is sure to proceed
+
+                Dim iFleet As Integer = Me.m_tscbFleets.SelectedIndex + 1
+                For iGroup As Integer = 1 To Me.Core.nGroups
+                    Me.Core.SetDefaultCatchabilities(iFleet, iGroup)
+                Next
+            Catch ex As Exception
+                cLog.Write(ex, "frmCatchability.OnResetFleetCatchabilities")
+            End Try
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim)
+        End Sub
+
+        Private Sub OnResetAllCatchabilities(sender As Object, e As EventArgs) Handles m_tsbnResetAll.Click
+            Try
+                ' ToDo: ask if user is sure to proceed
+
+                Me.Core.SetDefaultCatchabilities()
+            Catch ex As Exception
+                cLog.Write(ex, "frmCatchability.OnResetAllCatchabilities")
+            End Try
+        End Sub
+
     End Class
 
 End Namespace

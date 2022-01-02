@@ -39,6 +39,12 @@ Public Class gridCatchability
         MyBase.New()
     End Sub
 
+    Public Overrides ReadOnly Property CoreComponents As eCoreComponentType()
+        Get
+            Return New eCoreComponentType() {eCoreComponentType.EcoSim}
+        End Get
+    End Property
+
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
@@ -85,7 +91,7 @@ Public Class gridCatchability
                     style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
                 End If
 
-                cell = New cEwECell(source.RelQt(igrp, it), GetType(Single), style)
+                cell = New cEwECell(0, GetType(Single), style)
                 cell.SuppressZero = False
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 ' JS 01Mar18: Not core null?
@@ -93,6 +99,26 @@ Public Class gridCatchability
 
                 Me(it, igrp) = cell
 
+            Next
+        Next
+        Me.UpdateContent()
+
+    End Sub
+
+    Private Sub UpdateContent()
+
+        If Me.IsDisposed Then Return
+
+        Dim cell As cEwECell = Nothing
+        Dim source As cEcosimFleetInput
+        source = Me.Core.EcosimFleetInputs(Me.m_iSelFleet)
+
+        For it As Integer = 1 To Me.Core.nEcosimTimeSteps
+
+            For igrp As Integer = 1 To Me.Core.nGroups
+
+                cell = CType(Me(it, igrp), cEwECell)
+                cell.Value = source.RelQt(igrp, it)
             Next
         Next
 
@@ -141,5 +167,11 @@ Public Class gridCatchability
 
     End Function
 
+    Public Overrides Sub OnCoreMessage(ByRef msg As cMessage)
+        MyBase.OnCoreMessage(msg)
+        If (msg.Source = eCoreComponentType.EcoSim And msg.DataType = eDataTypes.EcosimFleetInput) Then
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateContent))
+        End If
+    End Sub
 
 End Class

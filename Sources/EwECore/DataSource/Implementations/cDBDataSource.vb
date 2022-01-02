@@ -3730,9 +3730,9 @@ Namespace DataSources
             'jb added to redim time variables in ecosim data structures
             ecosimDS.RedimTime()
 
-            Me.m_core.m_MSEData.redimTime()
+            mseDS.redimTime()
 
-            Me.m_core.m_EcoSim.setDefaultCatchabilities()
+            ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
 
             ' Set active scenario
             ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
@@ -7449,7 +7449,7 @@ Namespace DataSources
 
                         If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0 Then
                             If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
-                                Me.m_core.setDefaultCatchabilities(iFleet, iGroup)
+                                ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
                             End If 'ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE
                         End If 'ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0
                     End If ' Not String.IsNullOrWhiteSpace(zScale)
@@ -7495,7 +7495,7 @@ Namespace DataSources
                             'This fleet/group has catch but the catchabilities have not been set
                             'Set the default catchability before saving
                             If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
-                                Me.m_core.setDefaultCatchabilities(iFleet, iGroup)
+                                ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
                             End If
 
                             sbZScale = New StringBuilder()

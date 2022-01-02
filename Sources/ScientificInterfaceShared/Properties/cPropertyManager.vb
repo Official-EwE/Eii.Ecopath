@@ -213,10 +213,10 @@ Namespace Properties
         ''' <param name="bAllowedToCreate">States that the property should be created if it does not exist</param>
         ''' <remarks>The property is generated if it does not exist yet</remarks>
         ''' -------------------------------------------------------------------
-        Public Function GetProperty(src As cCoreInputOutputBase, _
-                                    varname As eVarNameFlags, _
-                                    Optional srcSec As cCoreInputOutputBase = Nothing, _
-                                    Optional bAllowedToCreate As Boolean = True, _
+        Public Function GetProperty(src As cCoreInputOutputBase,
+                                    varname As eVarNameFlags,
+                                    Optional srcSec As cCoreInputOutputBase = Nothing,
+                                    Optional bAllowedToCreate As Boolean = True,
                                     Optional iSecundaryIndexOffset As Integer = 0) As cProperty
 
             Dim strID As String = Nothing

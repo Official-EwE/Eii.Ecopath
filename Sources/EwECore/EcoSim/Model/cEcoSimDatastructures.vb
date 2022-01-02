@@ -1389,7 +1389,43 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-    Public Sub setRelQToT(iTimestep As Integer, Optional bUseNullValues As Integer = True)
+    Public Sub SetDefaultCatchabilities(landing(,) As Single, discard(,) As Single, b() As Single, iFlt As Integer, iGrp As Integer)
+
+        Dim q As Single
+        If (landing(iFlt, iGrp) + discard(iFlt, iGrp)) > 0 Then
+            q = (landing(iFlt, iGrp) + discard(iFlt, iGrp)) / b(iGrp)
+        Else
+            q = cCore.NULL_VALUE
+        End If
+
+        For it As Integer = 1 To Me.NTimes
+            Me.relQt(iFlt, iGrp, it) = q
+        Next
+
+    End Sub
+
+
+    Public Sub SetDefaultCatchabilities(landing(,) As Single, discard(,) As Single, b() As Single)
+        Dim iflt As Integer
+        Dim iGrp As Integer
+        'set relative catchabilities by gear type, treating effort for each gear as starting at base
+        'value of 1.0 so that F for the gear (F=qE=C/B) is 1.0xq where q is relative catchability
+        'this avoids measuring effort in some unnecessary data units
+
+        Me.relQt = New Single(Me.nGear, Me.nGroups, Me.NTimes) {}
+
+        For iflt = 1 To Me.nGear
+            For iGrp = 1 To Me.nGroups
+                'total catch rate 
+                'Includes discards that survive
+                'relQ(i, j) = (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_Data.StartBiomass(j)
+                Me.SetDefaultCatchabilities(landing, discard, b, iflt, iGrp)
+            Next iGrp
+        Next iflt
+
+    End Sub
+
+    Public Sub SetRelQToT(iTimestep As Integer, Optional bUseNullValues As Integer = True)
         ' Debug.Assert(iTimestep <> 25)
 
         If iTimestep > Me.NTimes Then
