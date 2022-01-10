@@ -79,6 +79,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EcospaceMonteCarlo", "..\So
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEBiomassEmitterPlugin", "..\Sources Internal\Plugins\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj", "{F1E83A61-8A90-4975-ABAE-A546E74E7235}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DepthChangePlugin", "..\Sources Internal\Plugins\RobertsBank\DepthChangePlugin\DepthChangePlugin.vbproj", "{28C34EA4-882E-4838-907F-C154C3E67719}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -473,6 +475,18 @@ Global
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Release|x64.Build.0 = Release|x64
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Release|x86.ActiveCfg = Release|x86
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Release|x86.Build.0 = Release|x86
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|x64.Build.0 = Debug|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|x86.ActiveCfg = Debug|x86
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|x86.Build.0 = Debug|x86
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x64.ActiveCfg = Release|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x64.Build.0 = Release|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x86.ActiveCfg = Release|x86
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

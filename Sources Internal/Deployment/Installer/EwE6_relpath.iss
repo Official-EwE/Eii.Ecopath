@@ -4,10 +4,10 @@
 
 ; New since EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 
 ; Optional features
-#define RobertsBank 0
+#define RobertsBank 1
 #define EcoOcean 0
 #define FISHMIP 0
 #define MSPTools 0
@@ -18,11 +18,11 @@
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0 Gio special 32-bit"
+  #define MyAppVersion "6.7.0 RBT 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0 Gio special 64-bit"
+  #define MyAppVersion "6.7.0 RBT 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -38,7 +38,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17651
+  VersionInfoVersion=6.7.0.17702
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
