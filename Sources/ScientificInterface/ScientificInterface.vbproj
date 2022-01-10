@@ -2196,6 +2196,10 @@
       <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
       <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\RobertsBank\DepthChangePlugin\DepthChangePlugin.vbproj">
+      <Project>{28c34ea4-882e-4838-907f-c154c3e67719}</Project>
+      <Name>DepthChangePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin</Name>
