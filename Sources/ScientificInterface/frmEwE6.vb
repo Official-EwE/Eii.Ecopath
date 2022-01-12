@@ -1108,8 +1108,9 @@ Public Class frmEwE6
     ''' <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnActivated(e As EventArgs)
+        If Me.m_bIsInitialized Then Me.Show()
         MyBase.OnActivated(e)
-        If Not Me.m_bIsInitialized Then Me.Hide()
+        If Not Me.m_bIsInitialized Then Me.Hide() Else Me.Show()
     End Sub
 
     ''' -----------------------------------------------------------------------

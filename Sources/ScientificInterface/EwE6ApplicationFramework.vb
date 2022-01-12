@@ -165,11 +165,11 @@ Module EwE6ApplicationFramework
 
     Private Sub Splash()
         Application.Run(m_splash)
-        CloseSplash()
     End Sub
 
     Private Sub OnLoadCompleted(sender As Object, args As EventArgs)
         CloseSplash()
+        m_main.Activate()
     End Sub
 
     Public Sub CloseSplash()
