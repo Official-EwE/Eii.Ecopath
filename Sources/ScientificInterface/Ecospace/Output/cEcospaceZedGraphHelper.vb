@@ -20,14 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
 Imports EwECore
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports ScientificInterface.Other
-Imports ScientificInterfaceShared.Style
-Imports ZedGraph
 Imports EwEUtils.Utilities
+Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -43,17 +39,17 @@ Namespace Ecospace
     Public Class cEcospaceZedGraphHelper
         Inherits cZedGraphHelper
 
+#Region " Private variables "
+
         Private m_nTotalSteps As Integer = 0
         Private m_iFirstYear As Integer = 0
         Private m_sNumStepsPerYear As Single = 0.0!
         Private m_nGroups As Integer = 0
         Private m_pane As GraphPane = Nothing
 
-        Private m_showitemMode As frmRunEcospace.eShowItemType = frmRunEcospace.eShowItemType.ShowAll
-        Private m_iItemToShow As Integer = cCore.NULL_VALUE
+#End Region ' Private variables
 
-
-        Private m_useLogScale As Boolean = True
+#Region " Overrides "
 
         Public Overrides Sub Attach(uic As ScientificInterfaceShared.Controls.cUIContext, zgc As ZedGraph.ZedGraphControl, Optional iNumPanels As Integer = 1)
             MyBase.Attach(uic, zgc, iNumPanels)
@@ -71,25 +67,42 @@ Namespace Ecospace
             MyBase.Detach()
         End Sub
 
-        Public Sub Reset(strTitle As String, _
-                         strYAxisLabel As String, _
-                         nGroups As Integer, _
-                         nTotalSteps As Integer, _
-                         iFirstYear As Integer, _
-                         sNumStepsPerYear As Single)
+        Protected Overrides Function FormatTooltipValue(pane As GraphPane, curve As CurveItem, iPoint As Integer) As String
+            Dim pp As PointPair = curve(iPoint)
+            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, curve.Label.Text, Me.FormatXValue(pp.X), Me.FormatYValue(pp.Y))
+        End Function
+
+        Protected Overrides Function IsCurveVisible(ci As ZedGraph.CurveItem) As Boolean
+            Dim info As cCurveInfo = Me.CurveInfo(ci)
+            Select Case Me.ItemShowMode
+                Case frmRunEcospace.eShowItemType.ShowAll
+                    Return True
+                Case frmRunEcospace.eShowItemType.ShowCustom
+                    Return MyBase.IsCurveVisible(ci)
+                Case frmRunEcospace.eShowItemType.ShowSingle
+                    Return (info.Index = Me.ItemToShow)
+            End Select
+            Return True
+        End Function
+
+#End Region ' Overrides
+
+#Region " Public methods "
+
+        Public Sub Reset(strTitle As String, strYAxisLabel As String, nGroups As Integer, nTotalSteps As Integer, iFirstYear As Integer, sNumStepsPerYear As Single)
 
             Dim li As LineItem = Nothing
             Dim YMin As Single, YMax As Single
-            If Me.m_useLogScale Then
+            If Me.LogScale Then
                 YMin = -1
                 YMax = 1
             End If
 
-            Me.m_pane = Me.ConfigurePane(strTitle, _
-                                         ScientificInterfaceShared.My.Resources.HEADER_YEAR, _
+            Me.m_pane = Me.ConfigurePane(strTitle,
+                                         ScientificInterfaceShared.My.Resources.HEADER_YEAR,
                                          0, nTotalSteps, strYAxisLabel, YMin, YMax, False)
             'Auto Scale the Y Axis if not using a log scale
-            Me.m_pane.YAxis.Scale.MaxAuto = (Not Me.m_useLogScale)
+            Me.m_pane.YAxis.Scale.MaxAuto = (Not Me.LogScale)
 
             Me.m_nGroups = nGroups
             Me.m_nTotalSteps = nTotalSteps
@@ -111,6 +124,7 @@ Namespace Ecospace
             '    Me.m_agpLines(igroup).StartFigure()
             'Next
         End Sub
+
 
         Public Sub AddValue(iGroup As Integer, iTimeStep As Integer, sValue As Single)
 
@@ -136,14 +150,7 @@ Namespace Ecospace
         ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ItemShowMode() As frmRunEcospace.eShowItemType
-            Get
-                Return Me.m_showitemMode
-            End Get
-            Set(value As frmRunEcospace.eShowItemType)
-                Me.m_showitemMode = value
-            End Set
-        End Property
+        Public Property ItemShowMode() As frmRunEcospace.eShowItemType = frmRunEcospace.eShowItemType.ShowAll
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -151,65 +158,36 @@ Namespace Ecospace
         ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ItemToShow() As Integer
-            Get
-                Return Me.m_iItemToShow
-            End Get
-            Set(value As Integer)
-                Me.m_iItemToShow = value
-            End Set
-        End Property
+        Public Property ItemToShow() As Integer = cCore.NULL_VALUE
 
-        Public Property LogScale() As Boolean
-            Get
-                Return Me.m_useLogScale
-            End Get
-            Set(value As Boolean)
-                Me.m_useLogScale = value
-            End Set
-        End Property
+        Public Property LogScale() As Boolean = True
 
+#End Region ' Public methods
 
-        Protected Overrides Function IsCurveVisible(ci As ZedGraph.CurveItem) As Boolean
+#Region " Internals "
 
-            Dim info As cCurveInfo = Me.CurveInfo(ci)
-
-            Select Case Me.ItemShowMode
-                Case frmRunEcospace.eShowItemType.ShowAll
-                    Return True
-                Case frmRunEcospace.eShowItemType.ShowCustom
-                    Return MyBase.IsCurveVisible(ci)
-                Case frmRunEcospace.eShowItemType.ShowSingle
-                    Return (info.Index = Me.m_iItemToShow)
-            End Select
-
-            Return True
-
+        Private Function XScaleFormatEvent(pane As GraphPane, axis As Axis, dValue As Double, iIndex As Integer) As String
+            Return FormatXValue(dValue)
         End Function
 
-        Private Function XScaleFormatEvent(pane As GraphPane, _
-                                           axis As Axis, _
-                                           dValue As Double, _
-                                           iIndex As Integer) As String
-            Dim sNumStepsPerYear As Single = Me.m_sNumStepsPerYear
-            Dim sYear As Single = 0.0!
-
-            If (sNumStepsPerYear <= 0.0!) Then sNumStepsPerYear = 1.0!
-            sYear = Me.m_iFirstYear + CSng(dValue / sNumStepsPerYear)
-            Return sYear.ToString
-
+        Private Function YScaleFormatEvent(pane As GraphPane, axis As Axis, dValue As Double, iIndex As Integer) As String
+            Return Me.FormatYValue(dValue)
         End Function
 
-        Private Function YScaleFormatEvent(pane As GraphPane, _
-                                           axis As Axis, _
-                                           dValue As Double, _
-                                           iIndex As Integer) As String
+        Private Function FormatXValue(dValue As Double) As String
+            Dim d As DateTime = Me.Core.EcospaceTimestepToAbsoluteTime(CInt(Math.Max(1, Math.Round(dValue))))
+            Return d.ToShortDateString()
+        End Function
+
+        Private Function FormatYValue(dValue As Double) As String
             If Me.LogScale Then
                 Return Me.StyleGuide.FormatNumber(Math.Pow(10, dValue))
             Else
                 Return Me.StyleGuide.FormatNumber(dValue)
             End If
         End Function
+
+#End Region ' Internals
 
     End Class
 
