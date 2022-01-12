@@ -243,18 +243,19 @@ Public Class cIBMSolver
                     If Me.m_Data.IsAdvected(ieco) Then
                         ' Increase local DMove (not IBMDistMove) with advection velocity vector
                         Dim dvel As Single = Math.Sqrt((Me.m_Data.Xvel(i, j) ^ 2) + (Me.m_Data.Yvel(i, j) ^ 2)) * AdScale
-                        'jb not sure we want to change Dmove 
-                        'it should never be greater then 0.5 (half a cell)
-                        'Dmove += dvel
                         'Add distance moved from advection (in km/y) to the base dispersal rate
                         'and calculate the new cell specific Nmoves from that
                         Nmoves = (Me.m_Data.Mvel(ieco) + dvel) / (12 * Me.m_Data.CellLength) * 2.0
                         'this still needs to be modified to check DMove is not < 0.5
                         'if it is it needs to be set to the correct distance to move
                         'See InitPackets()
+
                     End If
 
                     For imm = 1 To Nmoves
+
+                        ' Q: should nmoves be adapted in this loop if an advected packet traverses cells with a different advection velocity?
+
                         i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
                         aa = Me.Bcw(i + 1, j, ieco) 'south move
                         bb = Me.C(i - 1, j, ieco) 'north move
