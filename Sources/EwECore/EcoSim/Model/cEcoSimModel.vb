@@ -4911,6 +4911,13 @@ Namespace Ecosim
 
             Try
 
+                If Me.m_Data.mo(iPredIndex) = 0.0F Then
+                    'if mo is zero applying a multiplier will have no effect
+                    'so just save time and return 1.0
+                    Mo = 1.0F
+                    Return
+                End If
+
                 'Get the proportion of total mortality as a function of environmental driver
                 For iRes As Integer = 1 To Me.EcosimMortalityResponseManager.nInputData  ' As IEnviroInputData In Me.EcosimEnviroResponseManager.InputData
                     Dim ResponseFunction As IEnviroInputData = Me.EcosimMortalityResponseManager.InputData(iRes)
@@ -4930,7 +4937,7 @@ Namespace Ecosim
                 'instantaneous mortality in Ecopath annual units, this should be the same as Ecopath mo units
                 Dim lnPropMort As Single = CSng(-Math.Log(1 - propMort)) * 12
                 'multiplier to scale mo up to the new value
-                Mo = ((lnPropMort + Me.m_Data.mo(iPredIndex)) / Me.m_Data.mo(iPredIndex))
+                Mo = (lnPropMort + Me.m_Data.mo(iPredIndex)) / Me.m_Data.mo(iPredIndex)
 
             Catch ex As Exception
                 Mo = 1.0F

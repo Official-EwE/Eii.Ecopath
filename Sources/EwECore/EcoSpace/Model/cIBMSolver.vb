@@ -178,7 +178,9 @@ Public Class cIBMSolver
         Dim Mrat As Single, Ipos As Single, Jpos As Single
         Dim aa As Single, bb As Single, cc As Single, dd As Single
         Dim dAllow As Single
-        Dim AdScale = 315.36 / Me.m_Data.CellLength
+        'jb Just the conversion from cm/s to km/y
+        'The cell length conversion comes later
+        Dim AdScale = 315.36 ' / Me.m_Data.CellLength
 
         Try
             For isp = 1 To Me.m_Stanza.Nsplit
@@ -241,9 +243,15 @@ Public Class cIBMSolver
                     If Me.m_Data.IsAdvected(ieco) Then
                         ' Increase local DMove (not IBMDistMove) with advection velocity vector
                         Dim dvel As Single = Math.Sqrt((Me.m_Data.Xvel(i, j) ^ 2) + (Me.m_Data.Yvel(i, j) ^ 2)) * AdScale
-                        Dmove += dvel
-                        ' Somehow increase Nmoves too
-                        Nmoves += 10
+                        'jb not sure we want to change Dmove 
+                        'it should never be greater then 0.5 (half a cell)
+                        'Dmove += dvel
+                        'Add distance moved from advection (in km/y) to the base dispersal rate
+                        'and calculate the new cell specific Nmoves from that
+                        Nmoves = (Me.m_Data.Mvel(ieco) + dvel) / (12 * Me.m_Data.CellLength) * 2.0
+                        'this still needs to be modified to check DMove is not < 0.5
+                        'if it is it needs to be set to the correct distance to move
+                        'See InitPackets()
                     End If
 
                     For imm = 1 To Nmoves
@@ -253,16 +261,9 @@ Public Class cIBMSolver
                         cc = Me.d(i, j, ieco) 'east move
                         dd = Me.e(i, j, ieco) 'west move
 
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        'jb 14-Aug-2020 TEST ONLY Set movement directly on the packet instead of via dispersal vectors
-                        'aa = Bcw(i + 1, j, ieco) * m_Data.RelMoveFitGroup(ip)(i + 1, j) 'south move
-                        'bb = C(i - 1, j, ieco) * m_Data.RelMoveFitGroup(ip)(i - 1, j) 'north move
-                        'cc = d(i, j, ieco) * m_Data.RelMoveFitGroup(ip)(i, j - 1) 'east move
-                        'dd = e(i, j, ieco) * m_Data.RelMoveFitGroup(ip)(i, j + 1) 'west move
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
                         If Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0 Then
-                            If imm > Me.m_Stanza.IBMMovesPerMonth(ieco) Then Exit For
+                            'jb 22-Dec-2021 remove cap on number of moves because advection vectors set Nmoves to local values for this cell
+                            'If imm > Me.m_Stanza.IBMMovesPerMonth(ieco) Then Exit For
                             If Me.m_Data.IsMigratory(ieco) = False Then
                                 'this changes movement if it's inside the box s.t. it can't get out in one move
                                 Ipos = Me.m_Stanza.iPacket(isp, iaa, ip) - i : Jpos = Me.m_Stanza.jPacket(isp, iaa, ip) - j
