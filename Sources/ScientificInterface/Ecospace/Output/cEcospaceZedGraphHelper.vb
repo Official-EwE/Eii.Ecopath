@@ -69,7 +69,7 @@ Namespace Ecospace
 
         Protected Overrides Function FormatTooltipValue(pane As GraphPane, curve As CurveItem, iPoint As Integer) As String
             Dim pp As PointPair = curve(iPoint)
-            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, curve.Label.Text, Me.FormatXValue(pp.X), Me.FormatYValue(pp.Y))
+            Return cStringUtils.Localize("{0}, {1} = {2}", curve.Label.Text, Me.FormatXValue(pp.X), Me.FormatYValue(pp.Y))
         End Function
 
         Protected Overrides Function IsCurveVisible(ci As ZedGraph.CurveItem) As Boolean
