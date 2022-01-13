@@ -5610,9 +5610,9 @@ Namespace My.Resources
                 Return ResourceManager.GetString("STATUSSTRIP_ECOSIM_TOOLTIP", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to  {0} connection/s.
+        '''  Looks up a localized string similar to {0} connection/s.
         '''</summary>
         Public ReadOnly Property STATUSSTRIP_ECOSPACE_CONNECTIONS() As String
             Get
