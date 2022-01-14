@@ -225,6 +225,7 @@ Public Class cEcosimEnviroInputData
     Public Property ResponseIndexForGroup(GrpIndex As Integer, Optional bUpdateMaps As Boolean = True) As Integer _
         Implements IEnviroInputData.ResponseIndexForGroup
         Get
+            If GrpIndex >= Me.m_GrpToShape.Length Then Return 0
             Return Me.m_GrpToShape(GrpIndex)
         End Get
 
