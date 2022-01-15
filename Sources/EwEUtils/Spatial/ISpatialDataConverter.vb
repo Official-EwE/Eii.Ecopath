@@ -97,11 +97,11 @@ Namespace SpatialData
         ''' bounding box indicated by <paramref name="ptfNE"/>, <paramref name="ptfSW"/> and 
         ''' <paramref name="dCellSize">cell size</paramref>.</returns>
         ''' -------------------------------------------------------------------
-        Function Convert(data As Object, _
-                         ptfNE As PointF, _
-                         ptfSW As PointF, _
-                         dCellSize As Double, _
-                         strProjToWkt As String, _
+        Function Convert(data As Object,
+                         ptfNE As PointF,
+                         ptfSW As PointF,
+                         dCellSize As Double,
+                         strProjToWkt As String,
                          strFile As String) As ISpatialRaster
 
         ''' -------------------------------------------------------------------
