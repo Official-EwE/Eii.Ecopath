@@ -304,7 +304,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.GetRaster"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetRaster(ByVal converter As ISpatialDataConverter, _
+        Public Overridable Function GetRaster(ByVal converter As ISpatialDataConverter,
                                               ByVal strLayerName As String) As ISpatialRaster _
             Implements ISpatialDataSet.GetRaster
 
