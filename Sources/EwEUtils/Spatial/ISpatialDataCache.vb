@@ -54,8 +54,8 @@ Namespace SpatialData
         ''' <param name="strExt">File extension to create the file name for.</param>
         ''' <returns>A cache path.</returns>
         ''' -------------------------------------------------------------------
-        Function GetFileName(ds As ISpatialDataSet, _
-                             ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
+        Function GetFileName(ds As ISpatialDataSet,
+                             ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime,
                              strFilter As String, strExt As String) As String
     End Interface
 

@@ -159,11 +159,7 @@ Namespace SpatialData
         ''' <param name="strProjectionString">WKT projection string for the target raster.</param>
         ''' <returns>True if data was successfully locked.</returns>
         ''' -------------------------------------------------------------------
-        Function LockDataAtT(datetime As DateTime, _
-                             dCellSize As Double, _
-                             ptfNE As PointF, _
-                             ptfSW As PointF, _
-                             strProjectionString As String) As Boolean
+        Function LockDataAtT(datetime As DateTime, dCellSize As Double, ptfNE As PointF, ptfSW As PointF, strProjectionString As String) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -192,9 +188,7 @@ Namespace SpatialData
         ''' <param name="ptfSE">Point to receive bottom-right extent value.</param>
         ''' <returns>True if valid values were retrieved.</returns>
         ''' -------------------------------------------------------------------
-        Function GetExtentAtT(datetime As DateTime, _
-                              ByRef ptfNW As PointF, _
-                              ByRef ptfSE As PointF) As Boolean
+        Function GetExtentAtT(datetime As DateTime, ByRef ptfNW As PointF, ByRef ptfSE As PointF) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -260,8 +254,7 @@ Namespace SpatialData
         ''' <param name="strLayerName">Name of the layer data will be retrieved for.</param>
         ''' <returns>A <see cref="ISpatialRaster">spatial raster</see>.</returns>
         ''' -------------------------------------------------------------------
-        Function GetRaster(converter As ISpatialDataConverter, _
-                           strLayerName As String) As ISpatialRaster
+        Function GetRaster(converter As ISpatialDataConverter, strLayerName As String) As ISpatialRaster
 
         ''' -------------------------------------------------------------------
         ''' <summary>
