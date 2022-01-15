@@ -22,6 +22,12 @@
 '  - Database update has been declared
 '  - Need to define a data structure to read this data into (=awkward, LayerDBID + eDataType)
 
+' ToDo_JS: perhaps add the ability to pre-load and cache external maps X time steps ahead on a separate thread?
+'  - Aim is to speed up loading external data while Ecospace computes. Is worthwhile for EcoOcean, but
+'    will be less of a benefit with smaller maps / less external data
+'  - Some work involved:
+'    * make cSpatialDataAdapter.Populate work on cached maps
+'    * cache management, and make populate wait if thread for desired map isn't finished yet
 
 #Region " Imports "
 
