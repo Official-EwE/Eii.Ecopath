@@ -184,7 +184,6 @@ Namespace Ecospace.Controls
 
             ' ToDo: globalize this
 
-            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
             Dim ds As ISpatialDataSet = conn.Dataset
             Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
