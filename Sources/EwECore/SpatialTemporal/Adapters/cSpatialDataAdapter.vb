@@ -24,10 +24,16 @@
 
 ' ToDo_JS: perhaps add the ability to pre-load and cache external maps X time steps ahead on a separate thread?
 '  - Aim is to speed up loading external data while Ecospace computes. Is worthwhile for EcoOcean, but
-'    will be less of a benefit with smaller maps / less external data
+'    may be less of a benefit for smaller maps / less external data. It also allows for parallel
+'    GIS-processing while Ecospace computes time steps
+'  - Caveats:
+'    * not all datasets can be pre-loaded, especially when implementing a connection to external models
+'    * is quite a lot of work to implement
 '  - Some work involved:
-'    * make cSpatialDataAdapter.Populate work on cached maps
-'    * cache management, and make populate wait if thread for desired map isn't finished yet
+'    * pre-load maps in cSpatialDataAdapter on separate thread
+'    * reroute populate to use preloaded maps
+'    * make populate call wait if thread for desired map isn't finished yet
+'    * datasets need an interface to disable caching and preloading that adapters must honour
 
 #Region " Imports "
 
