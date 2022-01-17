@@ -4,7 +4,7 @@ Option Strict On
 Imports EwEPlugin
 Imports EwECore
 Imports EwEUtils.Core
-Imports Microsoft.Toolkit.Uwp.Notifications
+Imports Microsoft.Toolkit.Uwp.Notifications ' VS no longer can resolve this assembly. It's magic, and it's fragile
 
 #End Region ' Imports
 
