@@ -1,26 +1,23 @@
-lkey password hint: IML@.....
+How to generate pro licenses
+============================
 
-Generic email text:
+Prepare the software
+--------------------
+Needed:  TreeksLicensingLibrary1.zip, ewepro_generic.lkey
+- Extract the content of folder V2 from TreeksLicensingLibrary1.zip 
+- Run LibraryToolbox2.exe. This will bring up the "Treek's licensing library toolbox" window.
+- To get the tool to work, you'll need to load a license signing key.
+  Tab 1 > section 1 > press [Load Existing], and browse to the file "ewepro_generic.lkey". lkey password hint: IML@.....
+  
+Generate a license in LibraryToolbox2.exe
+-----------------------------------------
+- Go to Tab 2 (License generation)
+- Section 1: enter details or load existing from SVN
+- Details:
+  * Product name: "EwE Pro personal" or "EwE Pro team"
+  * License owner name: <name>, <institution> (e.g., Chiara Piroddi, JRC)
+  * Serial number: [Generate] or reuse previous for the same person
+- Section 2: enter license expiration details
+  * Press [License expiration] and select a date. Make sure that license expiration is enabled
+  * 
 
-As requested, attached please find the invoice for your EwE Pro license and the license key to activate EwE Pro.
-
-Here are the links to download the latest installer for EwE Pro (version 6.6.3.16996):
-
-    32-bit: https://www.dropbox.com/s/2ec2a29vaov40m8/EwE6.6.3.16996_32bit-pro.exe?dl=0
-    64-bit: https://www.dropbox.com/s/87gtg9vv1pizpyj/EwE6.6.3.16996_64bit-pro.exe?dl=0
-
-Installation and activation instructions:
-
-    Save attached license file to a directory on a computer where EwE Pro will be installed;
-    Keep a back-up copy of the attached license file in a safe place;
-    Download the appropriate EwE installer. As with previous versions of EwE, make sure that the bit-ness of EwE matches the bit-ness of any installed Microsoft Office component on your computer: 32-bit versions of EwE require 32-bit versions of Office, and 64-bit versions of EwE require 64-bit versions of Office;
-    Run the installer to install EwE;
-    EwE will prompt for a license file when needed. Browse to the license file that you saved earlier, and EwE will be registered.
-
-For technical assistance please contact us at eweusers@gmail.com.
-
-Best wishes,
-
-Jeroen Steenbeek
-EwE development coordinator
-Ecopath International Initiative 
