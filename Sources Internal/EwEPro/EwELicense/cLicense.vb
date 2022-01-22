@@ -77,8 +77,8 @@ Public Class cLicense
         Get
             Dim lic As TreeksLicensingLibrary2.License = Me.License
             If (lic Is Nothing) Then Return eLicenseType.NotSet
-            If lic.AllowedFeatures.Contains("team") Then Return eLicenseType.Team
-            If lic.AllowedFeatures.Contains("single") Then Return eLicenseType.Individual
+            If lic.AllowedFeatures.Contains("team") Or lic.ProductName.ToLower().Contains("team") Then Return eLicenseType.Team
+            If lic.AllowedFeatures.Contains("single") Or lic.ProductName.ToLower().Contains("ind") Then Return eLicenseType.Individual
             Return eLicenseType.NotSet
         End Get
     End Property
