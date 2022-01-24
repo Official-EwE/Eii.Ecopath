@@ -162,7 +162,7 @@ Namespace Ecopath
 
         Private Sub OnSelectRecStanza(sender As Object, e As EventArgs) Handles m_cmbRecStanza.SelectedIndexChanged
             If Me.m_bInUpdate Then Return
-            Me.UpdateControls()
+            'Me.UpdateControls()
         End Sub
 
 
