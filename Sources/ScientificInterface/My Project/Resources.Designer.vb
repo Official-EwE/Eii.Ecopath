@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -388,9 +388,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Groups &apos;{0}&apos; and &apos;{1}&apos; in stanza &apos;{2}&apos; have the same start age. Please correct this..
         '''</summary>
-        Public ReadOnly Property ECOPATH_EDITGROUPSSTANZA_AGECONFLICT() As String
+        Public ReadOnly Property ECOPATH_EDITGROUPSSTANZA_AGESAME() As String
             Get
-                Return ResourceManager.GetString("ECOPATH_EDITGROUPSSTANZA_AGECONFLICT", resourceCulture)
+                Return ResourceManager.GetString("ECOPATH_EDITGROUPSSTANZA_AGESAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Life stages need to span two months or more. Please correct stanza &apos;{0}&apos;..
+        '''</summary>
+        Public ReadOnly Property ECOPATH_EDITGROUPSSTANZA_AGESDIFF() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_EDITGROUPSSTANZA_AGESDIFF", resourceCulture)
             End Get
         End Property
         
@@ -5610,7 +5619,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("STATUSSTRIP_ECOSIM_TOOLTIP", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to {0} connection/s.
         '''</summary>
@@ -5666,6 +5675,15 @@ Namespace My.Resources
         Public ReadOnly Property STATUSSTRIP_MODIFIED() As String
             Get
                 Return ResourceManager.GetString("STATUSSTRIP_MODIFIED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Public ReadOnly Property String1() As String
+            Get
+                Return ResourceManager.GetString("String1", resourceCulture)
             End Get
         End Property
         

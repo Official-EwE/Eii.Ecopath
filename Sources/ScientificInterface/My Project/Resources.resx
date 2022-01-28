@@ -1016,7 +1016,7 @@ Description: {1}</value>
   <data name="STATUS_SEARCH_INITIALIZING" xml:space="preserve">
     <value>Initializing search...</value>
   </data>
-  <data name="ECOPATH_EDITGROUPSSTANZA_AGECONFLICT" xml:space="preserve">
+  <data name="ECOPATH_EDITGROUPSSTANZA_AGESAME" xml:space="preserve">
     <value>Groups '{0}' and '{1}' in stanza '{2}' have the same start age. Please correct this.</value>
     <comment>{0}=first conflicting group. {1}=second conflicting group. {2}=stanza name</comment>
   </data>
@@ -2214,5 +2214,12 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="splash_07" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\splash_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_AGESDIFF" xml:space="preserve">
+    <value>Life stages need to span two months or more. Please correct stanza '{0}'.</value>
+    <comment>{0}=stanza name</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

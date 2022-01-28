@@ -1622,11 +1622,17 @@ Public Class gridDefineGroups
                 Else
                     ' Cannot have two groups of the same age within a stanza
                     If gi.StanzaAge = giPrev.StanzaAge Then
-                        strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGECONFLICT, giPrev.Name, gi.Name, si.Name)
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGESAME, giPrev.Name, gi.Name, si.Name)
+                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        Me.UIContext.Core.Messages.SendMessage(msg)
+                        Return False
+                    ElseIf (Math.Abs(gi.StanzaAge - giPrev.StanzaAge) < 2) Then
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGESDIFF, si.Name)
                         Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                         Return False
                     End If
+
                 End If
                 giPrev = gi
             Next iGroup
