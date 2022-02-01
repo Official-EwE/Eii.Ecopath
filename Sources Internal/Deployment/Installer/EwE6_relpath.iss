@@ -1,28 +1,27 @@
-; Inno Setup install script for Ecopath with Ecosim
+﻿; Inno Setup install script for Ecopath with Ecosim
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
 ; New since EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 
 ; Optional features
-#define RobertsBank 1
+#define RobertsBank 0
 #define EcoOcean 0
 #define FISHMIP 0
 #define MSPTools 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
 #define enaR 0
-#define SAFENET 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0 RBT 32-bit"
+  #define MyAppVersion "6.7.0 α 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.7.0 RBT 64-bit"
+  #define MyAppVersion "6.7.0 α 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -38,7 +37,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17702
+  VersionInfoVersion=6.7.0.17756
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -291,13 +290,6 @@ Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ig
 Source: "{#DefRoot}{#DefSrc}\EwEMSPToolsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
 #endif
 
-; -- SAFENET --
-#if SAFENET == 1
-Source: "{#DefRoot}{#DefSrc}\SafenetUtils.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
-Source: "{#DefRoot}{#DefSrc}\EwEMassApplyEnvResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
-Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
-#endif
-
 ; -- RBT --
 #if RobertsBank == 1
 Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
@@ -369,9 +361,6 @@ Name: "plugin\fishmip"; Description: "FishMIP/TRIATLAS utilities"; Types: full c
 #endif
 #if MSPTools == 1
 Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
-#endif
-#if SAFENET == 1
-Name: "plugin\safenet"; Description: "Safenet utilities"; Types: full custom
 #endif
 #if ExcludeDeadCells == 1
 Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full

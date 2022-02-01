@@ -90,11 +90,6 @@ Public Class frmRun
         Me.m_grid.UIContext = Me.UIContext
         Me.m_grid.Initialize(Me.m_engine)
 
-#If DEBUG Then
-        Me.m_btnExport.Visible = True
-#Else
-        Me.m_btnExport.Visible = False
-#End If
         Me.m_btnResetFolder.Image = ScientificInterfaceShared.My.Resources.ResetHS
         Me.m_btnResetFolder.Text = ""
 
@@ -156,10 +151,6 @@ Public Class frmRun
         My.Settings.Save()
         MyBase.OnFormClosed(e)
 
-    End Sub
-
-    Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
-        MyBase.OnFormClosing(e)
     End Sub
 
     Public Overrides ReadOnly Property IsRunForm As Boolean
@@ -264,7 +255,6 @@ Public Class frmRun
             Me.m_btnSelectV.Enabled = Not bIsRunning
             Me.m_btnSelectVandA.Enabled = Not bIsRunning
             Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And Not bIsRunning
-            Me.m_btnExport.Enabled = Not bIsRunning
             Me.m_grid.UpdateRunState()
 
             ' -- Run panel --
@@ -461,7 +451,6 @@ Public Class frmRun
         If (Me.m_engine Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
 
-
         Try
             Me.m_engine.K = CInt(Me.m_nudK.Value)
             Me.m_grid.RefreshContent()
@@ -481,8 +470,8 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnExport(sender As Object, e As EventArgs) _
-        Handles m_btnExport.Click
+    Private Sub OnExport(sender As Object, e As EventArgs)
+
         Try
             Dim cmd As cFileSaveCommand = CType(Me.UIContext.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
             cmd.Invoke(ScientificInterfaceShared.My.Resources.FILEFILTER_XML, 0, "Select file save location")
@@ -497,6 +486,15 @@ Public Class frmRun
                 End If
                 Me.Core.Messages.SendMessage(msg)
             End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnReloadIterations(sender As Object, e As EventArgs)
+        Try
+            Me.m_engine.LoadIterationsConfiguration()
+            Me.m_grid.UpdateContent()
         Catch ex As Exception
 
         End Try

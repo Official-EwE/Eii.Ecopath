@@ -54,19 +54,15 @@ Namespace Forms
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="Form.Icon"/>
-        ''' <remarks>
-        ''' Overridden to update visuals.
-        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shadows Property Icon As Icon
+        Public Property BlinkIcon As Icon
             Get
-                If (Me.IsDisposed) Then Return Nothing
-                Return MyBase.Icon
+                Return Me.Icon
             End Get
             Set(value As Icon)
                 If (Me.IsDisposed) Then Return
                 Try
-                    MyBase.Icon = value
+                    Me.Icon = value
                     If (Me.Pane IsNot Nothing) Then
                         Me.BeginInvoke(New MethodInvoker(AddressOf Me.Pane.UpdateTabs))
                     End If
@@ -257,9 +253,9 @@ Namespace Forms
 
             Me.m_iNumPulses -= 1
             If Me.m_iNumPulses Mod 2 = 1 Then
-                Me.Icon = Me.m_icoPulse
+                Me.BlinkIcon = Me.m_icoPulse
             Else
-                Me.Icon = Me.m_icoOrg
+                Me.BlinkIcon = Me.m_icoOrg
             End If
 
             If Me.m_iNumPulses <= 0 Then

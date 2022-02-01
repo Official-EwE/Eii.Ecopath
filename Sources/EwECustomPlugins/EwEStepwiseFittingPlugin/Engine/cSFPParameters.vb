@@ -217,6 +217,9 @@ Public Class cSFPParameters
     ''' </summary>
     Private Sub AddToObservations(ByVal ts As cTimeSeries)
 
+        ' Do not include timeseries at 0 weight
+        If (ts.WtType = 0) Then Return
+
         Dim tsdatapoints As Single()
         Dim count As Integer
 
