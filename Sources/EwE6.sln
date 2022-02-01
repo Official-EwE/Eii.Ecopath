@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScientificInterface", "ScientificInterface", "{5969ADB4-4FDE-4385-986B-6C28A162AD78}"
 EndProject
@@ -82,6 +82,10 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DepthChangePlugin", "..\Sources Internal\Plugins\RobertsBank\DepthChangePlugin\DepthChangePlugin.vbproj", "{28C34EA4-882E-4838-907F-C154C3E67719}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -459,8 +463,8 @@ Global
 		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Debug|x86.Build.0 = Debug|x86
 		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|x64.ActiveCfg = Release|Any CPU
-		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|x64.Build.0 = Release|Any CPU
+		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|x64.ActiveCfg = Release|x64
+		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|x64.Build.0 = Release|x64
 		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|x86.ActiveCfg = Release|x86
 		{DF752FA0-B8C1-4DE1-9B9B-D1ADF678B64E}.Release|x86.Build.0 = Release|x86
 		{F1E83A61-8A90-4975-ABAE-A546E74E7235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -483,8 +487,8 @@ Global
 		{28C34EA4-882E-4838-907F-C154C3E67719}.Debug|x86.Build.0 = Debug|x86
 		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x64.ActiveCfg = Release|Any CPU
-		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x64.Build.0 = Release|Any CPU
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x64.ActiveCfg = Release|x64
+		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x64.Build.0 = Release|x64
 		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x86.ActiveCfg = Release|x86
 		{28C34EA4-882E-4838-907F-C154C3E67719}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
@@ -527,9 +531,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95C63F26-75FD-4801-881F-04EB9E2D6425}
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN2019 - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
