@@ -49,7 +49,9 @@ Namespace Other
             Me.m_tsbnAdd = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDuplicate = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDelete = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_editor = New ScientificInterfaceShared.Controls.ucEditGradient()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDefaults = New System.Windows.Forms.Panel()
@@ -60,8 +62,6 @@ Namespace Other
             Me.m_plPreviewEwE = New System.Windows.Forms.Panel()
             Me.m_lblEwEDefault = New System.Windows.Forms.Label()
             Me.m_hdrTitle = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_tlpGradients.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             Me.m_ts.SuspendLayout()
@@ -116,11 +116,22 @@ Namespace Other
             resources.ApplyResources(Me.m_tsbnDelete, "m_tsbnDelete")
             Me.m_tsbnDelete.Name = "m_tsbnDelete"
             '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
             'm_tsbnImport
             '
             Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
             Me.m_tsbnImport.Name = "m_tsbnImport"
+            '
+            'm_tsbnExport
+            '
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
             '
             'm_editor
             '
@@ -188,17 +199,6 @@ Namespace Other
             resources.ApplyResources(Me.m_hdrTitle, "m_hdrTitle")
             Me.m_hdrTitle.IsCollapsed = False
             Me.m_hdrTitle.Name = "m_hdrTitle"
-            '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
-            'm_tsbnExport
-            '
-            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
-            Me.m_tsbnExport.Name = "m_tsbnExport"
             '
             'ucOptionsColorRamps
             '

@@ -125,9 +125,6 @@
   <data name="m_lbGradients.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lbGradients.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lbGradients.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -145,7 +142,7 @@
     <value>m_lbGradients</value>
   </data>
   <data name="&gt;&gt;m_lbGradients.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFlickerFreeListBox, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFlickerFreeListBox, ScientificInterfaceShared, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGradients.Parent" xml:space="preserve">
     <value>m_tlpGradients</value>
@@ -301,7 +298,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
@@ -328,7 +325,7 @@
     <value>m_editor</value>
   </data>
   <data name="&gt;&gt;m_editor.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucEditGradient, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucEditGradient, ScientificInterfaceShared, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_editor.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
@@ -616,7 +613,7 @@
     <value>m_hdrTitle</value>
   </data>
   <data name="&gt;&gt;m_hdrTitle.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrTitle.Parent" xml:space="preserve">
     <value>m_tlpContent</value>
@@ -684,17 +681,17 @@
   <data name="&gt;&gt;m_tsbnDelete.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnImport.Name" xml:space="preserve">
-    <value>m_tsbnImport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
     <value>ToolStripSeparator1</value>
   </data>
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnImport.Name" xml:space="preserve">
+    <value>m_tsbnImport</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
     <value>m_tsbnExport</value>
