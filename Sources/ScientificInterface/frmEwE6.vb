@@ -1131,14 +1131,6 @@ Public Class frmEwE6
             cLog.Write(ex, "frmEwE6.OnFormClosing")
         End Try
 
-        If (Me.Icon IsNot Nothing) Then
-            Try
-                Me.Icon.Dispose()
-            Catch ex As Exception
-
-            End Try
-        End If
-
         ' Resume shutdown
         MyBase.OnFormClosing(e)
 
@@ -1210,6 +1202,16 @@ Public Class frmEwE6
                 cLog.Write(ex, "frmEwE6.OnFormClosed")
             End Try
         End If
+
+        'If (Me.Icon IsNot Nothing) Then
+        '    Try
+        '        Me.Icon.Dispose()
+        '        Me.Icon = Nothing
+        '        Console.WriteLine("aargh")
+        '    Catch ex As Exception
+        '        ' NOP
+        '    End Try
+        'End If
 
         MyBase.OnFormClosed(e)
 

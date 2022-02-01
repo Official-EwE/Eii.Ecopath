@@ -63,7 +63,6 @@ Partial Class frmRun
         Me.m_btnResetFolder = New System.Windows.Forms.Button()
         Me.m_plSettings = New System.Windows.Forms.Panel()
         Me.m_lblNoRuns = New System.Windows.Forms.Label()
-        Me.m_btnExport = New System.Windows.Forms.Button()
         Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
         Me.m_lblAnomalyShape = New System.Windows.Forms.Label()
         Me.m_cbEnableAbsBioforBaseline = New System.Windows.Forms.CheckBox()
@@ -368,7 +367,6 @@ Partial Class frmRun
         'm_plSettings
         '
         Me.m_plSettings.Controls.Add(Me.m_lblNoRuns)
-        Me.m_plSettings.Controls.Add(Me.m_btnExport)
         Me.m_plSettings.Controls.Add(Me.m_cmbAnomalyShape)
         Me.m_plSettings.Controls.Add(Me.m_lblAnomalyShape)
         Me.m_plSettings.Controls.Add(Me.m_cbEnableAbsBioforBaseline)
@@ -389,12 +387,6 @@ Partial Class frmRun
         '
         resources.ApplyResources(Me.m_lblNoRuns, "m_lblNoRuns")
         Me.m_lblNoRuns.Name = "m_lblNoRuns"
-        '
-        'm_btnExport
-        '
-        resources.ApplyResources(Me.m_btnExport, "m_btnExport")
-        Me.m_btnExport.Name = "m_btnExport"
-        Me.m_btnExport.UseVisualStyleBackColor = True
         '
         'm_cmbAnomalyShape
         '
@@ -445,6 +437,7 @@ Partial Class frmRun
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.BlinkIcon = CType(resources.GetObject("$this.BlinkIcon"), System.Drawing.Icon)
         Me.Controls.Add(Me.m_tlpContent)
         Me.Name = "frmRun"
         Me.ShowIcon = False
@@ -508,7 +501,6 @@ Partial Class frmRun
     Private WithEvents m_plSettings As System.Windows.Forms.Panel
     Private WithEvents m_nudK As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNumVars As System.Windows.Forms.Label
-    Private WithEvents m_btnExport As System.Windows.Forms.Button
     Private WithEvents m_btnResetFolder As System.Windows.Forms.Button
     Private WithEvents m_btnStop As System.Windows.Forms.Button
     Private WithEvents m_lblNoRuns As System.Windows.Forms.Label

@@ -104,20 +104,24 @@ Public Class cSFPManager
 
 #Region " Load user Inputs "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Load the model in the selected file and keep a reference of the file path
     ''' </summary>
     ''' <returns>True if load successful</returns>
+    ''' -----------------------------------------------------------------------
     Public Function LoadModel(strFileName As String) As Boolean
         Me.m_strModelFileName = strFileName
         Return Me.Core.LoadModel(Me.m_strModelFileName)
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Load the Ecosim Scenario from selected index and keep a reference of the scenario
     ''' </summary>
     ''' <param name="iScenario">One-based Ecosim scenario index.</param>
     ''' <returns>True if load successful</returns>
+    ''' -----------------------------------------------------------------------
     Public Function LoadEcoSimScenario(iScenario As Integer) As Boolean
 
         'Try to load scenario
@@ -130,10 +134,12 @@ Public Class cSFPManager
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Gets a list of names of all the Ecosim Scenarios from the core
     ''' </summary>
     ''' <returns>String List of Ecosim Scenario names </returns>
+    ''' -----------------------------------------------------------------------
     Public Function GetAvailableScenarioNames() As List(Of String)
         Dim lscenarios As New List(Of String)
         Dim scenario As cEcoSimScenario
@@ -145,12 +151,14 @@ Public Class cSFPManager
         Return lscenarios
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Load the Time Series from selected index and keep a reference of the Time Series
     ''' </summary>
     ''' <param name="tsi">One-based time series dataset index, just as used in the
     ''' EwE core.</param>
     ''' <returns>True if load successful</returns>
+    ''' -----------------------------------------------------------------------
     Public Function LoadTimeSeries(tsi As Integer) As Boolean
 
         Dim bSuccess As Boolean = False
@@ -172,10 +180,12 @@ Public Class cSFPManager
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Gets a list of names of all the Time Series from the core
     ''' </summary>
     ''' <returns>String List of Time Series names </returns>
+    ''' -----------------------------------------------------------------------
     Public Function GetAvailableTimeSeriesNames() As List(Of String)
         Dim lTimeSeries As New List(Of String)
         Dim TimeSeries As cTimeSeriesDataset = Nothing
@@ -218,9 +228,11 @@ Public Class cSFPManager
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the value of PredOrPredPreySSToV from selected String
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub SetPredOrPredPreySSToV(SSToVChoice As String)
 
         ' ToDo: how about using an enum here? ;)
@@ -336,7 +348,8 @@ Public Class cSFPManager
         Dim strModelFile As String = Me.ExportModelToText()
         Me.m_iQueueDone += 1
 
-        For i As Integer = 1 To iNumThreads
+        ' Do not create containers that aren't going to be doing anything, right?
+        For i As Integer = 1 To Math.Min(iNumThreads, m_queue.Count)
             Me.AddContainer(i, strModelFile)
             Me.m_iQueueDone += 1
         Next
@@ -491,8 +504,9 @@ Public Class cSFPManager
             Me.m_bStopRun = True
             ' To account for new container run mode
             If (Me.m_containers.Count > 0) Then
+                Dim cts As cSFPContainer() = Me.m_containers.ToArray
                 SyncLock Me.m_queue
-                    For Each c As cSFPContainer In Me.m_containers
+                    For Each c As cSFPContainer In cts
                         c.StopRun()
                     Next
                     Me.m_queue.Clear()
@@ -1156,6 +1170,35 @@ Public Class cSFPManager
 
     End Function
 
+    Public Function LoadIterationsConfiguration() As Boolean
+
+        Me.m_iterations.Clear()
+
+        Dim strSimPath As String = Me.OutputFolder
+        For Each dir As String In Directory.GetDirectories(strSimPath)
+
+            Dim n As String = Path.GetFileName(dir)
+            Dim iter As ISFPIteration = Nothing
+
+            Try
+                Using reader As New StreamReader(Path.Combine(dir, ".classname"))
+                    Dim strClassName As String = reader.ReadLine().Trim()
+                    reader.Close()
+                    Dim t As Type = Type.GetType(strClassName, False, True)
+                    iter = CType(Activator.CreateInstance(t), ISFPIteration)
+                End Using
+            Catch ex As Exception
+                ' NOP
+            End Try
+
+            If LoadIterationConfiguration(iter) Then
+                Me.m_iterations.Add(iter)
+            End If
+        Next
+        Return (Me.m_iterations.Count > 0)
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Re-populate an iteration from file.
@@ -1164,6 +1207,8 @@ Public Class cSFPManager
     ''' <param name="iteration">The iteration to repopulate.</param>
     ''' -----------------------------------------------------------------------
     Private Function LoadIterationConfiguration(iteration As ISFPIteration) As Boolean
+
+        If (iteration Is Nothing) Then Return False
 
         Dim strSimPath As String = Path.Combine(Me.OutputFolder, cFileUtils.ToValidFileName(iteration.Name, False))
         Dim bSuccess As Boolean = True

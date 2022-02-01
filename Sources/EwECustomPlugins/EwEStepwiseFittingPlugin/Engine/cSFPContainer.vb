@@ -107,6 +107,8 @@ Public Class cSFPContainer
             Catch ex As Exception
                 ' ToDo: Log
             End Try
+        Else
+            RaiseEvent OnIterationUpdated(Me, Me.m_iteration, True)
         End If
 
     End Sub
