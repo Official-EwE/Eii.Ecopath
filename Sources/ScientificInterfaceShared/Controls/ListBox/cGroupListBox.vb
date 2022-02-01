@@ -789,7 +789,7 @@ Namespace Controls
             For i As Integer = iGroupStart To iGroupEnd
 
                 ' Hard list given?
-                If (Me.VisibleGroups IsNot Nothing) And (Me.GroupListTracking = eGroupTrackingType.Manual) Then
+                If (Me.VisibleGroups IsNot Nothing) Then
                     bIncludeGroup = (Array.IndexOf(Me.VisibleGroups, i) >= 0)
                 Else
                     Select Case Me.m_groupdisplaystyle
