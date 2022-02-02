@@ -167,7 +167,7 @@ Public Class cSFPContainer
                 ' Run and complete
                 Me.m_core = core
                 If Me.m_iteration.Run(core) Then
-                    If (iter.RunState = ISFPIteration.eRunState.Stopping) Then
+                    If (m_iteration.RunState = ISFPIteration.eRunState.Stopping) Then
                         Me.m_iteration.RunState = ISFPIteration.eRunState.Idle
                     Else
                         Me.m_iteration.RunState = ISFPIteration.eRunState.Completed
