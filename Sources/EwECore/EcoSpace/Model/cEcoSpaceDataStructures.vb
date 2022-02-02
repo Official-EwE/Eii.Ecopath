@@ -376,6 +376,8 @@ Public Class cEcospaceDataStructures
     Public ResultsRegionGroup(,,) As Single
     ''' <summary>ResultsRegionGroup(nRegions, nGroups, nYears)</summary>
     Public ResultsRegionGroupYear(,,) As Single
+    ''' <summary>ResultsConsumptionPredPrey(nRegions, nGroups, nGroups, nTimesteps)</summary>
+    Public ResultsRegionConsumptionPredPrey(,,,) As Single
 
     ''' <summary> Summarized time step data </summary>
     ''' <remarks>populated in sumarizeTimeStepData()</remarks>

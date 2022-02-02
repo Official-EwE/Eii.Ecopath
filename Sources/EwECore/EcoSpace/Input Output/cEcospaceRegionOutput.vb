@@ -65,6 +65,7 @@ Public Class cEcospaceRegionOutput
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionBiomassYear, New c3DResultsWrapper(Me.m_spacedata.ResultsRegionGroupYear, Me.Index))
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatch, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionConsumption, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsRegionConsumptionPredPrey, Me.Index))
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Init() Error: " & ex.Message)
             cLog.Write(ex)
@@ -175,6 +176,17 @@ Public Class cEcospaceRegionOutput
                 Debug.Assert(False, ex.Message)
             End Try
         End Set
+    End Property
+
+    Public ReadOnly Property EcospaceRegionConsumptionByTime(iPred As Integer, iPrey As Integer, iTimestep As Integer) As Single
+        Get
+            Try
+                Return DirectCast(Me.GetVariable(eVarNameFlags.EcospaceRegionConsumption, iPred, iPrey, iTimestep), Single)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Return cCore.NULL_VALUE
+            End Try
+        End Get
     End Property
 
     Public ReadOnly Property BiomassByTime(iGroup As Integer, iTimeStep As Integer) As Single

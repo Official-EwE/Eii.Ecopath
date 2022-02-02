@@ -607,6 +607,9 @@ Namespace Core
         ''' <summary>Ecospace Biomass by region over time averaged over all the cells in a region, per year.
         ''' <seealso cref="EcospaceRegionBiomass"/></summary>
         EcospaceRegionBiomassYear
+        ''' <summary>Ecospace Consumption by pred and prey averaged over all the cells in a region for each timestep.
+        EcospaceRegionConsumption
+
         ''' <summary>Ecospace yearly average profit by fleet</summary>
         EcospaceFleetProfit
         ''' <summary>Ecospace yearly average jobs [value of catch] * [jobs]</summary>
