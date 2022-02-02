@@ -134,6 +134,7 @@ Public Class cSpaceSolver
     ''' <remarks></remarks>
     Public ResultsByFleetGroup(,,) As Single
     Public ResultsCatchRegionGearGroup(,,) As Single
+    Public ResultsConsumptionRegionPredPrey(,,) As Single
 
     ''' <summary>
     ''' Sum of Landings across cells by group fleet
@@ -237,6 +238,7 @@ Public Class cSpaceSolver
         ReDim Me.ResultsByFleetGroup([Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, Me.m_Data.nFleets, Me.m_Data.NGroups)
         ReDim Me.Landings(Me.m_Data.NGroups, Me.m_Data.nFleets)
         ReDim Me.ResultsCatchRegionGearGroup(Me.m_Data.nRegions, Me.m_Data.nFleets, Me.m_Data.NGroups)
+        ReDim Me.ResultsConsumptionRegionPredPrey(Me.m_Data.nRegions, Me.m_Data.NGroups, Me.m_Data.NGroups)
 
         'local copies are initialized from the ecosim data
         Array.Copy(Me.m_SimData.Hden, Me.Hden, Me.m_Data.NGroups + 1)
@@ -326,6 +328,7 @@ Public Class cSpaceSolver
             Array.Clear(Me.ResultsByFleet, 0, Me.ResultsByFleet.Length)
             Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
             Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
+            Array.Clear(Me.ResultsConsumptionRegionPredPrey, 0, Me.ResultsConsumptionRegionPredPrey.Length)
 
             'Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
             Array.Clear(Me.TotLossThread, 0, Me.m_Data.NGroups)
@@ -594,7 +597,6 @@ Public Class cSpaceSolver
                 Me.ResultsByGroup(eSpaceResultsGroups.TotalLoss, iGrp) += Me.loss(iGrp) * CellAreaKM2
 
                 Me.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, iGrp) += Me.m_moLoss(iGrp)
-
             Next
 
             For iGrp = 1 To Me.m_Data.NGroups
@@ -933,6 +935,12 @@ Public Class cSpaceSolver
                 If Me.m_TracerData.EcoSpaceConSimOn = True Then
                     'jb ConKtrophic will need to be local it is the rate of comsumption per unit of prey
                     If Biomass(i) > 0 Then Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i) Else Me.m_ConTracer.ConKtrophic(ii) = 0
+                End If
+
+                If Me.m_Data.nRegions >= 1 Then
+                    Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
+                    If (iRgn > Me.m_Data.nRegions) Then iRgn = 0
+                    Me.ResultsConsumptionRegionPredPrey(iRgn, j, i) += eat
                 End If
 
             Next ii
