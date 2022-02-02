@@ -38,17 +38,7 @@ Public MustInherit Class cSFPGenericIteration
     Implements ISFPIteration
 
     Protected m_iTimeSeries As Integer
-    Protected m_bPredOrPredPreySSToV As Boolean
-    Public Property Parameters As cSFPParameters Implements ISFPIteration.Parameters
-
-    Public Property k As Integer = 0 Implements ISFPIteration.K
-    Public Property EstimatedV As Integer = 0 Implements ISFPIteration.EstimatedV
-    Public Property SplinePoints As Integer = 0 Implements ISFPIteration.SplinePoints
-    Public Property BaseorFish As Boolean Implements ISFPIteration.BaseorFishValue
-    Public Property Enabled As Boolean = True Implements ISFPIteration.Enabled
-    Public Property RunState As ISFPIteration.eRunState = ISFPIteration.eRunState.Idle Implements ISFPIteration.RunState
-    Public Property Elapsed As TimeSpan Implements ISFPIteration.Elapsed
-    Public Property Completed As Date Implements ISFPIteration.Completed
+    Protected m_bPredOrPredPreySSToV As ISFPIteration.eVulSearchMode
 
     ''' <summary>Calculated Sum of Squares</summary>
     Protected m_ss As Single = 0
@@ -69,15 +59,15 @@ Public MustInherit Class cSFPGenericIteration
     ''' </summary>
     ''' <param name="core"></param>
     ''' <param name="tsi"></param>
-    ''' <param name="SSToVChoice"></param>
+    ''' <param name="vulsearch"></param>
     ''' <param name="Params"></param>
     ''' -----------------------------------------------------------------------
-    Protected Sub Initiate(core As EwECore.cCore, tsi As Integer, SSToVChoice As Boolean, Params As cSFPParameters, frmUI As Form) _
+    Protected Sub Initiate(core As EwECore.cCore, tsi As Integer, vulsearch As ISFPIteration.eVulSearchMode, Params As cSFPParameters) _
         Implements ISFPIteration.Init
 
         'Get variables needed for SFP iteration
         Me.m_iTimeSeries = tsi
-        Me.m_bPredOrPredPreySSToV = SSToVChoice
+        Me.m_bPredOrPredPreySSToV = vulsearch
         Me.Parameters = Params
 
         ' Allocate memory for anomaly shape
@@ -188,34 +178,40 @@ Public MustInherit Class cSFPGenericIteration
         'Reset fishing effort shapes
         core.FishingEffortShapeManager.ResetToDefaults()
 
-        'If Baseline
-        If Me.BaseorFish Then
-            'Go through each time series of the time series dataset
-            For i As Integer = 1 To dataset.nTimeSeries
+        Select Case Me.BaseSearchMode
 
-                Dim ts As cTimeSeries = dataset.TimeSeries(i)
-                'If the time series type is 0, 1, 5, 6, 7 enable it
-                Select Case ts.TimeSeriesType
-                    Case eTimeSeriesType.BiomassRel,
-                         eTimeSeriesType.TotalMortality,
-                         eTimeSeriesType.Catches,
-                         eTimeSeriesType.CatchesRel,
-                         eTimeSeriesType.AverageWeight
-                        ts.Enabled = True
-                    Case eTimeSeriesType.BiomassAbs
-                        ts.Enabled = Me.Parameters.EnableAbsoluteBiomass
-                    Case Else
-                        ts.Enabled = False
-                End Select
-            Next
-        Else ' Else Fishing
-            'Go through each time series of the time series dataset
-            For i As Integer = 1 To dataset.nTimeSeries
-                'Enable Time Series
-                Dim ts As cTimeSeries = dataset.TimeSeries(i)
-                ts.Enabled = True
-            Next
-        End If
+            Case ISFPIteration.eBaseSearchMode.Baseline
+                'Go through each time series of the time series dataset
+                For i As Integer = 1 To dataset.nTimeSeries
+
+                    Dim ts As cTimeSeries = dataset.TimeSeries(i)
+                    'If the time series type is 0, 1, 5, 6, 7 enable it
+                    Select Case ts.TimeSeriesType
+                        Case eTimeSeriesType.BiomassRel,
+                             eTimeSeriesType.TotalMortality,
+                             eTimeSeriesType.Catches,
+                             eTimeSeriesType.CatchesRel,
+                             eTimeSeriesType.AverageWeight
+                            ts.Enabled = True
+                        Case eTimeSeriesType.BiomassAbs
+                            ts.Enabled = Me.Parameters.EnableAbsoluteBiomass
+                        Case Else
+                            ts.Enabled = False
+                    End Select
+                Next
+
+            Case ISFPIteration.eBaseSearchMode.Fishing
+                'Go through each time series of the time series dataset
+                For i As Integer = 1 To dataset.nTimeSeries
+                    'Enable Time Series
+                    Dim ts As cTimeSeries = dataset.TimeSeries(i)
+                    ts.Enabled = True
+                Next
+
+            Case Else
+                Debug.Assert(False, "Unsupported enum")
+
+        End Select
 
         'Apply the enabled time series
         core.UpdateTimeSeries(False)
@@ -223,6 +219,17 @@ Public MustInherit Class cSFPGenericIteration
         Return True
 
     End Function
+
+    Public Property Parameters As cSFPParameters Implements ISFPIteration.Parameters
+
+    Public Property k As Integer = 0 Implements ISFPIteration.K
+    Public Property EstimatedV As Integer = 0 Implements ISFPIteration.EstimatedV
+    Public Property SplinePoints As Integer = 0 Implements ISFPIteration.SplinePoints
+    Public Property BaseSearchMode As ISFPIteration.eBaseSearchMode Implements ISFPIteration.BaseSearchMode
+    Public Property Enabled As Boolean = True Implements ISFPIteration.Enabled
+    Public Property RunState As ISFPIteration.eRunState = ISFPIteration.eRunState.Idle Implements ISFPIteration.RunState
+    Public Property Elapsed As TimeSpan Implements ISFPIteration.Elapsed
+    Public Property Completed As Date Implements ISFPIteration.Completed
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -250,22 +257,24 @@ Public MustInherit Class cSFPGenericIteration
         man.nBlockCodes = Me.Parameters.K
 
         'If PredOrPredPreySSToV = true then run SS2VBy Predator
-        If Me.m_bPredOrPredPreySSToV Then
-            If man.RunSensitivitySS2VByPredator(True, TriState.False) Then
-                Debug.Assert(Not man.IsRunning)
-                'Set vulnerabiltiy blocks
-                man.setNBlocksFromSensitivity(Me.Parameters.K)
-                bOK = True
-            End If
-            'Else run SS2VBy Pred/Prey
-        Else
-            If man.RunSensitivitySS2VByPredPrey(True, TriState.False) Then
-                Debug.Assert(Not man.IsRunning)
-                'Set vulnerabiltiy blocks
-                man.setNBlocksFromSensitivity(Me.Parameters.K)
-                bOK = True
-            End If
-        End If
+        Select Case Me.m_bPredOrPredPreySSToV
+            Case ISFPIteration.eVulSearchMode.Predator
+                If man.RunSensitivitySS2VByPredator(True, TriState.False) Then
+                    Debug.Assert(Not man.IsRunning)
+                    'Set vulnerabiltiy blocks
+                    man.setNBlocksFromSensitivity(Me.Parameters.K)
+                    bOK = True
+                End If
+            Case ISFPIteration.eVulSearchMode.PredPrey
+                If man.RunSensitivitySS2VByPredPrey(True, TriState.False) Then
+                    Debug.Assert(Not man.IsRunning)
+                    'Set vulnerabiltiy blocks
+                    man.setNBlocksFromSensitivity(Me.Parameters.K)
+                    bOK = True
+                End If
+            Case Else
+                Debug.Assert(False, "Unsupported enum")
+        End Select
 
         Return bOK
 
@@ -433,11 +442,15 @@ Public MustInherit Class cSFPGenericIteration
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Function BaselineOrFishing() As String
-        If (Me.BaseorFish) Then
-            Return "Baseline"
-        Else
-            Return "Fishing"
-        End If
+        Select Case Me.BaseSearchMode
+            Case ISFPIteration.eBaseSearchMode.Baseline
+                Return My.Resources.MODUS_BASELINE
+            Case ISFPIteration.eBaseSearchMode.Fishing
+                Return My.Resources.MODUS_FISHING
+            Case Else
+                Debug.Assert(False, "Unsupported enum")
+        End Select
+        Return "?"
     End Function
 
     ''' -----------------------------------------------------------------------

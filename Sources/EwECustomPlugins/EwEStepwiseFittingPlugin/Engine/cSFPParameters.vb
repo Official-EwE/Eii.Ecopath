@@ -322,12 +322,12 @@ Public Class cSFPParameters
 
 #Region " Persistent configuration "
 
-    Public Property PredOrPredPreySSToV As Boolean
+    Public Property VulSearchMode As ISFPIteration.eVulSearchMode
         Get
-            Return My.Settings.PredOrPredPreySSToV
+            Return CType(My.Settings.VulSearchMode, ISFPIteration.eVulSearchMode)
         End Get
-        Set(ByVal value As Boolean)
-            My.Settings.PredOrPredPreySSToV = value
+        Set(ByVal value As ISFPIteration.eVulSearchMode)
+            My.Settings.VulSearchMode = value
         End Set
     End Property
 

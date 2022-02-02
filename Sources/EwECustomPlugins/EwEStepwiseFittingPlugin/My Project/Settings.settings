@@ -5,8 +5,8 @@
     <Setting Name="AutoSaveMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="PredOrPredPreySSToV" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="VulSearchMode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="CustomOutputPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

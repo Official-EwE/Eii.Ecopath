@@ -166,6 +166,12 @@
   <data name="HEADER_STATE" xml:space="preserve">
     <value>State</value>
   </data>
+  <data name="MODUS_BASELINE" xml:space="preserve">
+    <value>Baseline</value>
+  </data>
+  <data name="MODUS_FISHING" xml:space="preserve">
+    <value>Fishing</value>
+  </data>
   <data name="STATE_ITERATION_ERROR" xml:space="preserve">
     <value>Error</value>
   </data>

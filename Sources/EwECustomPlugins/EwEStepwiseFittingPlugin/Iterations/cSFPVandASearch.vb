@@ -35,8 +35,8 @@ Imports EwECore.FitToTimeSeries
 Public Class cSFPVandASearch
     Inherits cSFPGenericIteration
 
-    Public Sub New(BOrF As Boolean, estimatedParameters As Integer, sps As Integer)
-        Me.BaseorFish = BOrF
+    Public Sub New(BOrF As ISFPIteration.eBaseSearchMode, estimatedParameters As Integer, sps As Integer)
+        Me.BaseSearchMode = BOrF
         Me.k = estimatedParameters + sps
         Me.EstimatedV = estimatedParameters
         Me.SplinePoints = sps

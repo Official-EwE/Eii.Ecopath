@@ -205,6 +205,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Baseline.
+        '''</summary>
+        Friend ReadOnly Property MODUS_BASELINE() As String
+            Get
+                Return ResourceManager.GetString("MODUS_BASELINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing.
+        '''</summary>
+        Friend ReadOnly Property MODUS_FISHING() As String
+            Get
+                Return ResourceManager.GetString("MODUS_FISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Error.
         '''</summary>
         Friend ReadOnly Property STATE_ITERATION_ERROR() As String
