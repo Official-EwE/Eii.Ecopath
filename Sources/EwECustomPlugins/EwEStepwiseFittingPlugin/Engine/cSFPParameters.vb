@@ -50,6 +50,7 @@ Public Class cSFPParameters
     Private m_core As cCore
 
     Private m_iK As Integer
+    Private m_iCorrectK As Integer
     Private m_iMinK As Integer
     Private m_iMaxK As Integer
 
@@ -105,37 +106,41 @@ Public Class cSFPParameters
             ts = Me.m_ts.TimeSeries(i)
             tsType = ts.TimeSeriesType
 
-            Select Case tsType
-                Case eTimeSeriesType.BiomassRel,
-                     eTimeSeriesType.TotalMortality,
-                     eTimeSeriesType.Catches,
-                     eTimeSeriesType.CatchesRel,
-                     eTimeSeriesType.AverageWeight,
-                     eTimeSeriesType.Discards,
-                     eTimeSeriesType.Landings
-                    count += 1
-
-                Case eTimeSeriesType.BiomassAbs
-                    If Me.EnableAbsoluteBiomass Then
+            If (ts.Enabled And ts.WtType > 0) Then
+                Select Case tsType
+                    Case eTimeSeriesType.BiomassRel,
+                         eTimeSeriesType.TotalMortality,
+                         eTimeSeriesType.Catches,
+                         eTimeSeriesType.CatchesRel,
+                         eTimeSeriesType.AverageWeight,
+                         eTimeSeriesType.Discards,
+                         eTimeSeriesType.Landings
                         count += 1
-                    End If
 
-            End Select
+                    Case eTimeSeriesType.BiomassAbs
+                        If Me.EnableAbsoluteBiomass Then
+                            count += 1
+                        End If
+
+                End Select
+            End If
         Next
+
+        Me.m_iCorrectK = Math.Max(0, count - 1)
 
         If (iPrefK <= 0) Then
             Me.m_iK = count - 1
         Else
             Me.m_iK = iPrefK
         End If
-        Me.m_iMinK = count - (count - 1)
 
     End Sub
 
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Calculate the values of Max Spline Points from time series dataset
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub CalculateMaxSplinePoints()
 
         Me.m_iMaxSplinePoints = 0
@@ -148,9 +153,12 @@ Public Class cSFPParameters
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Calculate the number of observations/data points from time series dataset that are within a time series of type 0,1,5,6 and 7 
+    ''' Calculate the number of observations/data points from time series dataset 
+    ''' that are within a time series of type 0,1,5,6 and 7 
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub CalculateNumberOfObservations()
 
         Me.m_iObservations = 0
@@ -190,16 +198,24 @@ Public Class cSFPParameters
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Calculate the value of Max K from the number of observations
+    ''' Calculate the value of Max K from the number of observations. This is
+    ''' funky but allows for experimenting below the 'correct' value of K
     ''' </summary>
+    ''' <seealso cref="CorrectK"/>
+    ''' <seealso cref="K"/>
+    ''' <seealso cref="MinK"/>
+    ''' -----------------------------------------------------------------------
     Private Sub CalculateMaxK()
         Me.m_iMaxK = Me.m_iObservations - 1
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Calculate the number of observations/data points within a time series
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub AddToObservations(ByVal ts As cTimeSeries)
 
         ' Sanity check
@@ -223,24 +239,51 @@ Public Class cSFPParameters
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the value of K to use. This value falls between <see cref="MinK"/>
+    ''' and <see cref="MaxK"/>, and correctly, should not exceed <see cref="CorrectK"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property K As Integer
         Get
             Return Math.Min(Math.Max(Me.MinK, Me.m_iK), Me.MaxK)
         End Get
         Set(value As Integer)
-            Me.m_iK = value
+            Me.m_iK = Math.Min(Math.Max(Me.MinK, value), Me.MaxK)
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the lower limit for <see cref="K"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property MinK As Integer
         Get
             Return Me.m_iMinK
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the upper limit for <see cref="K"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property MaxK As Integer
         Get
             Return Me.m_iMaxK
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the correct value for <see cref="K"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property CorrectK As Integer
+        Get
+            Return Me.m_iCorrectK
         End Get
     End Property
 

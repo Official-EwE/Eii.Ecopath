@@ -31,6 +31,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -51,6 +52,8 @@ Public Class frmRun
     Private m_bInUpdate As Boolean = False
 
     Private WithEvents m_cmdLoadTS As cCommand = Nothing
+
+    Private m_fpK As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -87,6 +90,12 @@ Public Class frmRun
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.m_bInUpdate = True
+
+        If Me.m_runmode = eRunMode.Plugin Then
+            Me.MinimumSize = New Drawing.Size(Me.MinimumSize.Width, Me.MinimumSize.Height - m_plModel.Height)
+        End If
+
         Me.m_grid.UIContext = Me.UIContext
         Me.m_grid.Initialize(Me.m_engine)
 
@@ -94,12 +103,14 @@ Public Class frmRun
         Me.m_btnResetFolder.Text = ""
 
         ' Populate controls
-        Me.m_nudNoThreads.Maximum = Me.m_engine.Parameters.MaxThreads
-        Me.m_nudNoThreads.Value = Me.m_engine.Parameters.NumThreads
-        Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
-        Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
         Me.m_rbPredator.Checked = (Me.m_engine.Parameters.PredOrPredPreySSToV = True)
         Me.m_rbPredPrey.Checked = (Me.m_engine.Parameters.PredOrPredPreySSToV = False)
+        Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
+        Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
+        Me.m_nudNoThreads.Maximum = Me.m_engine.Parameters.MaxThreads
+        Me.m_nudNoThreads.Value = Me.m_engine.Parameters.NumThreads
+
+        Me.m_fpK = New cEwEFormatProvider(Me.UIContext, Me.m_nudK, GetType(Integer))
 
         ' -- Handle run modes
         Select Case Me.m_runmode
@@ -133,6 +144,8 @@ Public Class frmRun
 
         AddHandler Me.m_engine.OnIterationUpdated, AddressOf Me.OnIterationUpdated
 
+        Me.m_bInUpdate = False
+
         Me.UpdateControls()
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MediatedInteractionManager, eCoreComponentType.TimeSeries}
@@ -162,20 +175,19 @@ Public Class frmRun
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
-        Select Case msg.Source
-            Case eCoreComponentType.MediatedInteractionManager
-                Me.PopulateAnomalyDropdown()
-            Case eCoreComponentType.TimeSeries
-                Try
+        Try
+            Select Case msg.Source
+                Case eCoreComponentType.MediatedInteractionManager
+                    Me.PopulateAnomalyDropdown()
+                Case eCoreComponentType.TimeSeries
                     Dim parms As cSFPParameters = Me.m_engine.Parameters
-                    Me.m_engine.Refresh(parms.K)
-                    parms.CalculateParameters(parms.K)
+                    Me.m_engine.Refresh(0)
                     Me.m_grid.RefreshContent()
                     Me.UpdateControls()
-                Catch ex As Exception
-
-                End Try
-        End Select
+            End Select
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
 
     End Sub
 
@@ -232,6 +244,8 @@ Public Class frmRun
                 Me.m_nudK.Minimum = parms.MinK
                 Me.m_nudK.Maximum = parms.MaxK
                 Me.m_nudK.Value = parms.K
+                Me.m_fpK.Style = If(parms.K <= parms.CorrectK, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.InvalidModelResult)
+
             Catch ex As Exception
 
             End Try
@@ -311,6 +325,7 @@ Public Class frmRun
     Private Sub OnSelectModel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectModel.Click
 
+        If (Me.m_bInUpdate) Then Return
         If (Me.m_runmode <> eRunMode.StandAlone) Then Return
 
         Try
@@ -343,6 +358,7 @@ Public Class frmRun
     Private Sub OnSelectedScenario(sender As Object, e As System.EventArgs) _
         Handles m_cmbScenario.SelectedIndexChanged
 
+        If (Me.m_bInUpdate) Then Return
         If (Me.m_runmode <> eRunMode.StandAlone) Then Return
 
         Try
@@ -372,6 +388,7 @@ Public Class frmRun
     Private Sub OnSelectedTimeseries(sender As Object, e As System.EventArgs) _
         Handles m_cmbTimeSeries.SelectedIndexChanged
 
+        If (Me.m_bInUpdate) Then Return
         If (Me.m_runmode <> eRunMode.StandAlone) Then Return
 
         Try
@@ -404,6 +421,9 @@ Public Class frmRun
 
     Private Sub OnShapeSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_cmbAnomalyShape.SelectedIndexChanged
+
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
         Try
             Me.m_engine.Parameters.AppliedShapeIndex = Me.SelectedShapeIndex
@@ -466,6 +486,9 @@ Public Class frmRun
     Private Sub OnSearchCheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbPredator.CheckedChanged,
                 m_rbPredPrey.CheckedChanged
+
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
         Me.m_engine.Parameters.PredOrPredPreySSToV = Me.m_rbPredator.Checked
         Me.UpdateControls()
@@ -539,8 +562,6 @@ Public Class frmRun
             For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVulnerabilitySearch) Then
                     it.Enabled = True
-                    'Else
-                    '    it.Enabled = False
                 End If
             Next
         Catch ex As Exception
@@ -556,8 +577,6 @@ Public Class frmRun
             For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch) Then
                     it.Enabled = True
-                    'Else
-                    '    it.Enabled = False
                 End If
             Next
         Catch ex As Exception
@@ -573,8 +592,21 @@ Public Class frmRun
             For Each it As ISFPIteration In Me.m_engine.Iterations
                 If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch) Then
                     it.Enabled = True
-                    'Else
-                    '    it.Enabled = False
+                End If
+            Next
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+        Me.m_grid.UpdateContent()
+    End Sub
+
+    Private Sub OnSelectFandVandA(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnSelectFandVandA.Click
+        Try
+            ' Enable all V and A iterations for running
+            For Each it As ISFPIteration In Me.m_engine.Iterations
+                If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch) And it.BaseorFishValue = False Then
+                    it.Enabled = True
                 End If
             Next
         Catch ex As Exception

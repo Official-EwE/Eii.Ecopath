@@ -70,6 +70,7 @@ Partial Class frmRun
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
         Me.m_nudNoThreads = New System.Windows.Forms.NumericUpDown()
+        Me.m_btnSelectFandVandA = New System.Windows.Forms.Button()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -253,6 +254,7 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_plConfig, "m_plConfig")
         Me.m_plConfig.Controls.Add(Me.m_btnSelectFishing)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectBaseline)
+        Me.m_plConfig.Controls.Add(Me.m_btnSelectFandVandA)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectVandA)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectA)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectV)
@@ -433,6 +435,12 @@ Partial Class frmRun
         Me.m_nudNoThreads.Name = "m_nudNoThreads"
         Me.m_nudNoThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
+        'm_btnSelectFandVandA
+        '
+        resources.ApplyResources(Me.m_btnSelectFandVandA, "m_btnSelectFandVandA")
+        Me.m_btnSelectFandVandA.Name = "m_btnSelectFandVandA"
+        Me.m_btnSelectFandVandA.UseVisualStyleBackColor = True
+        '
         'frmRun
         '
         resources.ApplyResources(Me, "$this")
@@ -505,4 +513,5 @@ Partial Class frmRun
     Private WithEvents m_btnStop As System.Windows.Forms.Button
     Private WithEvents m_lblNoRuns As System.Windows.Forms.Label
     Private WithEvents m_nudNoThreads As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_btnSelectFandVandA As Windows.Forms.Button
 End Class
