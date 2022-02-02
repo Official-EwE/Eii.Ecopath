@@ -168,7 +168,9 @@ Public Class frmRun
             Case eCoreComponentType.TimeSeries
                 Try
                     Dim parms As cSFPParameters = Me.m_engine.Parameters
+                    Me.m_engine.Refresh(parms.K)
                     parms.CalculateParameters(parms.K)
+                    Me.m_grid.RefreshContent()
                     Me.UpdateControls()
                 Catch ex As Exception
 
@@ -470,26 +472,26 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnExport(sender As Object, e As EventArgs)
+    'Private Sub OnExport(sender As Object, e As EventArgs)
 
-        Try
-            Dim cmd As cFileSaveCommand = CType(Me.UIContext.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            cmd.Invoke(ScientificInterfaceShared.My.Resources.FILEFILTER_XML, 0, "Select file save location")
-            If cmd.Result = DialogResult.OK Then
-                Dim IO As New cSFPio(Me.m_engine)
-                Dim msg As cMessage = Nothing
-                If IO.ToXML(cmd.FileName) Then
-                    msg = New cMessage(String.Format("Stepwise fitting results saved to {0}", cmd.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = System.IO.Path.GetDirectoryName(cmd.FileName)
-                Else
-                    msg = New cMessage(String.Format("Stepwise fitting results failed to save to {0}", cmd.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
-                End If
-                Me.Core.Messages.SendMessage(msg)
-            End If
-        Catch ex As Exception
+    '    Try
+    '        Dim cmd As cFileSaveCommand = CType(Me.UIContext.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+    '        cmd.Invoke(ScientificInterfaceShared.My.Resources.FILEFILTER_XML, 0, "Select file save location")
+    '        If cmd.Result = DialogResult.OK Then
+    '            Dim IO As New cSFPio(Me.m_engine)
+    '            Dim msg As cMessage = Nothing
+    '            If IO.ToXML(cmd.FileName) Then
+    '                msg = New cMessage(String.Format("Stepwise fitting results saved to {0}", cmd.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+    '                msg.Hyperlink = System.IO.Path.GetDirectoryName(cmd.FileName)
+    '            Else
+    '                msg = New cMessage(String.Format("Stepwise fitting results failed to save to {0}", cmd.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+    '            End If
+    '            Me.Core.Messages.SendMessage(msg)
+    '        End If
+    '    Catch ex As Exception
 
-        End Try
-    End Sub
+    '    End Try
+    'End Sub
 
     Private Sub OnReloadIterations(sender As Object, e As EventArgs)
         Try

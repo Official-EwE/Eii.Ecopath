@@ -40,6 +40,7 @@ Public Class cSFPContainer
 
     Private m_iteration As ISFPIteration = Nothing
 
+    ''' <summary>Local core, which is only valid while a run is in progress</summary>
     Private m_core As cCore = Nothing
 
     ''' <summary>
@@ -101,12 +102,16 @@ Public Class cSFPContainer
 
         If (Me.IsRunning) Then
             Try
-                Me.m_iteration.RunState = ISFPIteration.eRunState.Stopping
-                If (Me.m_core IsNot Nothing) Then Me.m_core.EcosimFitToTimeSeries.StopRun()
-                RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
+                SyncLock (Me.m_iteration)
+                    Me.m_iteration.RunState = ISFPIteration.eRunState.Stopping
+                    If (Me.m_core IsNot Nothing) Then
+                        Me.m_core.EcosimFitToTimeSeries.StopRun()
+                    End If
+                End SyncLock
             Catch ex As Exception
                 ' ToDo: Log
             End Try
+            RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
         Else
             RaiseEvent OnIterationUpdated(Me, Me.m_iteration, True)
         End If
@@ -124,35 +129,37 @@ Public Class cSFPContainer
         Dim sw As New Stopwatch()
         sw.Start()
 
+        ' Intermediate status update
+        Me.m_iteration.RunState = ISFPIteration.eRunState.Initializing
+        RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
+
+        ' Create local core to work on
+        SyncLock (Me.m_iteration)
+            Me.m_core = New cCore()
+            Me.m_core.Name = Me.Name
+        End SyncLock
+
+        Debug.WriteLine("Creating core " & Me.Name)
+
         Try
-
-            ' Intermediate status update
-            Me.m_iteration.RunState = ISFPIteration.eRunState.Initializing
-            RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
-
-            ' Run iteration on local core
-            Dim core As New cCore()
-            core.Name = Me.Name
-
-            Debug.WriteLine("Creating core " & Me.Name)
 
             ' No need to load plug-ins. Rather not, actually.
             'core.PluginManager = New EwEPlugin.cPluginManager()
             'core.PluginManager.Core = core ' Let's get to know each other, shall we?
             'core.PluginManager.LoadPlugins()
 
-            bSuccess = core.LoadModel(Me.Model)
+            bSuccess = Me.m_core.LoadModel(Me.Model)
             Debug.Assert(bSuccess = True)
 
-            bSuccess = bSuccess And core.LoadEcosimScenario(Me.m_iScenario)
+            bSuccess = bSuccess And Me.m_core.LoadEcosimScenario(Me.m_iScenario)
             Debug.Assert(bSuccess = True)
 
-            bSuccess = bSuccess And core.LoadTimeSeries(Me.m_iTS, False)
+            bSuccess = bSuccess And Me.m_core.LoadTimeSeries(Me.m_iTS, False)
             Debug.Assert(bSuccess = True)
 
-            Me.m_iteration.Init(core, Me.m_iTS, Me.Parameters.PredOrPredPreySSToV, Me.Parameters, Nothing)
+            Me.m_iteration.Init(Me.m_core, Me.m_iTS, Me.Parameters.PredOrPredPreySSToV, Me.Parameters, Nothing)
 
-            bSuccess = bSuccess And Me.m_iteration.Load(core)
+            bSuccess = bSuccess And Me.m_iteration.Load(Me.m_core)
             Debug.Assert(bSuccess = True)
 
             ' Has stop request been received?
@@ -165,8 +172,7 @@ Public Class cSFPContainer
                 RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
 
                 ' Run and complete
-                Me.m_core = core
-                If Me.m_iteration.Run(core) Then
+                If Me.m_iteration.Run(Me.m_core) Then
                     If (m_iteration.RunState = ISFPIteration.eRunState.Stopping) Then
                         Me.m_iteration.RunState = ISFPIteration.eRunState.Idle
                     Else
@@ -176,22 +182,19 @@ Public Class cSFPContainer
                     Me.m_iteration.RunState = ISFPIteration.eRunState.Error
                 End If
             End If
-
-            ' Just making sure
-            Debug.Assert(Not core.StateMonitor.IsBusy, "Core " & Me.Name & " still working!")
-
-            core.CloseEcosimScenario()
-            core.CloseModel()
-            core.Dispose()
-
-            Debug.WriteLine("Disposed core " & Me.Name)
-
-            ' Unlink
-            Me.m_core = Nothing
-
         Catch ex As Exception
             Me.m_iteration.RunState = ISFPIteration.eRunState.Error
         End Try
+
+        ' Just making sure
+        Debug.Assert(Not Me.m_core.StateMonitor.IsBusy, "Core " & Me.Name & " still working!")
+
+        Me.m_core.CloseEcosimScenario()
+        Me.m_core.CloseModel()
+        Me.m_core.Dispose()
+        Me.m_core = Nothing
+
+        Debug.WriteLine("Disposed core " & Me.Name)
 
         ' Free resources prior to sending the last update
         sw.Stop()
