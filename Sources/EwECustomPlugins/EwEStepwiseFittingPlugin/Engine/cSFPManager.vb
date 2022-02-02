@@ -56,8 +56,6 @@ Public Class cSFPManager
     Private m_parameters As cSFPParameters
 
     Private m_iterations As New List(Of ISFPIteration)
-    Private m_bIsBaseline As Boolean = True
-    Private m_bIsFishing As Boolean = False
 
     Private m_queue As New Stack(Of ISFPIteration)
     Private m_containers As New List(Of cSFPContainer)
@@ -237,23 +235,8 @@ Public Class cSFPManager
     ''' Set the value of PredOrPredPreySSToV from selected String
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub SetPredOrPredPreySSToV(SSToVChoice As String)
-
-        ' ToDo: how about using an enum here? ;)
-
-        Dim choice As String = SSToVChoice
-        Select Case choice
-
-            Case "Predator"
-                Me.Parameters.PredOrPredPreySSToV = True
-                'Console.WriteLine("Sensitivity of SS to V set by : " & choice)
-
-            Case "Predator/Prey"
-                Me.Parameters.PredOrPredPreySSToV = False
-                'Console.WriteLine("Sensitivity of SS to V set by : " & choice)
-
-        End Select
-
+    Public Sub SetPredOrPredPreySSToV(VulSearchMode As ISFPIteration.eVulSearchMode)
+        Me.Parameters.VulSearchMode = VulSearchMode
     End Sub
 
     Public Property K As Integer
@@ -560,11 +543,11 @@ Public Class cSFPManager
         If Me.TSIndex >= 1 Then
 
             'Load Fishing iteration
-            Me.m_iterations.Add(New cSFPEcosimRun(Me.m_bIsFishing))
+            Me.m_iterations.Add(New cSFPEcosimRun(ISFPIteration.eBaseSearchMode.Fishing))
 
             'Load Fishing Vunerability Search iterations
             For i = Me.Parameters.MinK To Me.Parameters.K
-                Me.m_iterations.Add(New cSFPVulnerabilitySearch(Me.m_bIsFishing, i))
+                Me.m_iterations.Add(New cSFPVulnerabilitySearch(ISFPIteration.eBaseSearchMode.Fishing, i))
             Next
 
             'If there is a current FF applied to PP
@@ -572,7 +555,7 @@ Public Class cSFPManager
 
                 'Load Fishing Anomaly Search iterations
                 For i = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
-                    Me.m_iterations.Add(New cSFPAnomalySearch(Me.m_bIsFishing, i))
+                    Me.m_iterations.Add(New cSFPAnomalySearch(ISFPIteration.eBaseSearchMode.Fishing, i))
                 Next
 
                 'Load Fishing V and A Search iterations
@@ -580,7 +563,7 @@ Public Class cSFPManager
                     For j = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
                         Dim estParams As Integer = i + j
                         If estParams <= Me.Parameters.K Then
-                            Me.m_iterations.Add(New cSFPVandASearch(Me.m_bIsFishing, i, j))
+                            Me.m_iterations.Add(New cSFPVandASearch(ISFPIteration.eBaseSearchMode.Fishing, i, j))
                         End If
                     Next
                 Next
@@ -588,11 +571,11 @@ Public Class cSFPManager
             End If
 
             'Load Baseline iteration
-            Me.m_iterations.Add(New cSFPEcosimRun(Me.m_bIsBaseline))
+            Me.m_iterations.Add(New cSFPEcosimRun(ISFPIteration.eBaseSearchMode.Baseline))
 
             'Load Baseline Vunerability Search iterations
             For i = Me.Parameters.MinK To Me.Parameters.K
-                Me.m_iterations.Add(New cSFPVulnerabilitySearch(Me.m_bIsBaseline, i))
+                Me.m_iterations.Add(New cSFPVulnerabilitySearch(ISFPIteration.eBaseSearchMode.Baseline, i))
             Next
 
             'If there is a current FF applied to PP
@@ -600,7 +583,7 @@ Public Class cSFPManager
 
                 'Load Baseline Anomaly Search iterations
                 For i = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
-                    Me.m_iterations.Add(New cSFPAnomalySearch(Me.m_bIsBaseline, i))
+                    Me.m_iterations.Add(New cSFPAnomalySearch(ISFPIteration.eBaseSearchMode.Baseline, i))
                 Next
 
                 'Load Baseline V and A Search iterations
@@ -608,7 +591,7 @@ Public Class cSFPManager
                     For j = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
                         Dim estParams As Integer = i + j
                         If estParams <= Me.Parameters.K Then
-                            Me.m_iterations.Add(New cSFPVandASearch(Me.m_bIsBaseline, i, j))
+                            Me.m_iterations.Add(New cSFPVandASearch(ISFPIteration.eBaseSearchMode.Baseline, i, j))
                         End If
                     Next
                 Next

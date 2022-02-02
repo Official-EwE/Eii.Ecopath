@@ -35,8 +35,8 @@ Imports EwECore.FitToTimeSeries
 Public Class cSFPEcosimRun
     Inherits cSFPGenericIteration
 
-    Public Sub New(BOrF As Boolean)
-        Me.BaseorFish = BOrF
+    Public Sub New(baseSearchMode As ISFPIteration.eBaseSearchMode)
+        Me.BaseSearchMode = baseSearchMode
     End Sub
 
     Public Overrides Function Load(core As cCore) As Boolean

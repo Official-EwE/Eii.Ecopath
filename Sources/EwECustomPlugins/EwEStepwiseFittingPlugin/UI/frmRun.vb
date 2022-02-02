@@ -103,8 +103,8 @@ Public Class frmRun
         Me.m_btnResetFolder.Text = ""
 
         ' Populate controls
-        Me.m_rbPredator.Checked = (Me.m_engine.Parameters.PredOrPredPreySSToV = True)
-        Me.m_rbPredPrey.Checked = (Me.m_engine.Parameters.PredOrPredPreySSToV = False)
+        Me.m_rbPredator.Checked = (Me.m_engine.Parameters.VulSearchMode = ISFPIteration.eVulSearchMode.Predator)
+        Me.m_rbPredPrey.Checked = (Me.m_engine.Parameters.VulSearchMode = ISFPIteration.eVulSearchMode.PredPrey)
         Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
         Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
         Me.m_nudNoThreads.Maximum = Me.m_engine.Parameters.MaxThreads
@@ -297,6 +297,11 @@ Public Class frmRun
 
     End Sub
 
+    Private Sub ApplyControls()
+        Me.m_engine.Parameters.AppliedShapeIndex = Me.SelectedShapeIndex
+
+    End Sub
+
 #End Region ' Overrides
 
 #Region " Plug-in triggers "
@@ -355,6 +360,29 @@ Public Class frmRun
 
     End Sub
 
+    Private Sub OnFormatShape(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbAnomalyShape.Format
+
+        Try
+            Dim fmt As New ScientificInterfaceShared.Style.cShapeDataFormatter()
+            e.Value = fmt.ToString(e.ListItem)
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub OnFormatTimeSeries(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbTimeSeries.Format
+
+        Try
+            e.Value = DirectCast(e.ListItem, cTimeSeriesDataset).Name
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
     Private Sub OnSelectedScenario(sender As Object, e As System.EventArgs) _
         Handles m_cmbScenario.SelectedIndexChanged
 
@@ -371,17 +399,6 @@ Public Class frmRun
         End Try
 
         Me.UpdateControls()
-
-    End Sub
-
-    Private Sub OnFormatTimeSeries(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-        Handles m_cmbTimeSeries.Format
-
-        Try
-            e.Value = DirectCast(e.ListItem, cTimeSeriesDataset).Name
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
 
     End Sub
 
@@ -407,23 +424,11 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnFormatShape(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-        Handles m_cmbAnomalyShape.Format
-
-        Try
-            Dim fmt As New ScientificInterfaceShared.Style.cShapeDataFormatter()
-            e.Value = fmt.ToString(e.ListItem)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-
-    End Sub
-
     Private Sub OnShapeSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_cmbAnomalyShape.SelectedIndexChanged
 
-        If (Me.m_engine Is Nothing) Then Return
-        If (Me.m_bInUpdate) Then Return
+        'If (Me.m_engine Is Nothing) Then Return
+        'If (Me.m_bInUpdate) Then Return
 
         Try
             Me.m_engine.Parameters.AppliedShapeIndex = Me.SelectedShapeIndex
@@ -454,7 +459,6 @@ Public Class frmRun
 
         ' Safety catch: Numeric updown controls throw events on creation. Aargh.
         If (Me.m_engine Is Nothing) Then Return
-        If (Me.m_bInUpdate) Then Return
 
         Try
             Me.m_engine.AnomalySearchSplineStepSize = CInt(Me.m_nudStepSize.Value)
@@ -488,9 +492,8 @@ Public Class frmRun
                 m_rbPredPrey.CheckedChanged
 
         If (Me.m_engine Is Nothing) Then Return
-        If (Me.m_bInUpdate) Then Return
 
-        Me.m_engine.Parameters.PredOrPredPreySSToV = Me.m_rbPredator.Checked
+        Me.m_engine.Parameters.VulSearchMode = If(Me.m_rbPredator.Checked, ISFPIteration.eVulSearchMode.Predator, ISFPIteration.eVulSearchMode.PredPrey)
         Me.UpdateControls()
 
     End Sub
@@ -605,7 +608,7 @@ Public Class frmRun
         Try
             ' Enable all V and A iterations for running
             For Each it As ISFPIteration In Me.m_engine.Iterations
-                If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch) And it.BaseorFishValue = False Then
+                If it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch) And (it.BaseSearchMode = ISFPIteration.eBaseSearchMode.Fishing) Then
                     it.Enabled = True
                 End If
             Next
@@ -620,7 +623,7 @@ Public Class frmRun
         Try
             ' Enable Baseline iterations for running
             For Each it As ISFPIteration In Me.m_engine.Iterations
-                If it.BaseorFishValue Then
+                If (it.BaseSearchMode = ISFPIteration.eBaseSearchMode.Baseline) Then
                     it.Enabled = True
                 End If
             Next
@@ -635,7 +638,7 @@ Public Class frmRun
         Try
             ' Enable Fishing iterations for running
             For Each it As ISFPIteration In Me.m_engine.Iterations
-                If it.BaseorFishValue <> True Then
+                If it.BaseSearchMode = ISFPIteration.eBaseSearchMode.Fishing Then
                     it.Enabled = True
                 End If
             Next

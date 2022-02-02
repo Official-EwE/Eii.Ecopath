@@ -157,7 +157,7 @@ Public Class cSFPContainer
             bSuccess = bSuccess And Me.m_core.LoadTimeSeries(Me.m_iTS, False)
             Debug.Assert(bSuccess = True)
 
-            Me.m_iteration.Init(Me.m_core, Me.m_iTS, Me.Parameters.PredOrPredPreySSToV, Me.Parameters, Nothing)
+            Me.m_iteration.Init(Me.m_core, Me.m_iTS, Me.Parameters.VulSearchMode, Me.Parameters)
 
             bSuccess = bSuccess And Me.m_iteration.Load(Me.m_core)
             Debug.Assert(bSuccess = True)

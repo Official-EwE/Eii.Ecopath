@@ -35,8 +35,8 @@ Imports EwECore.FitToTimeSeries
 Public Class cSFPAnomalySearch
     Inherits cSFPGenericIteration
 
-    Public Sub New(BOrF As Boolean, sps As Integer)
-        Me.BaseorFish = BOrF
+    Public Sub New(baseSearchMode As ISFPIteration.eBaseSearchMode, sps As Integer)
+        Me.BaseSearchMode = baseSearchMode
         Me.k = sps
         Me.SplinePoints = Me.k
     End Sub

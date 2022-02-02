@@ -42,7 +42,25 @@ Imports System.Windows.Forms
 Public Interface ISFPIteration
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>Enumerated type, defining possible iteration run state values.</summary>
+    ''' <summary>Enumerator defining possible base search modes.</summary>
+    ''' -----------------------------------------------------------------------
+    Enum eBaseSearchMode As Integer
+        Baseline = 0
+        Fishing = 1
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>Enumerator defining possible vulnerability search values.</summary>
+    ''' -----------------------------------------------------------------------
+    Enum eVulSearchMode As Integer
+        ''' <summary>Search by predator.</summary>
+        Predator = 0
+        ''' <summary>Search by predator and prey.</summary>
+        PredPrey = 1
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>Enumerator defining possible iteration run state values.</summary>
     ''' -----------------------------------------------------------------------
     Enum eRunState As Integer
         ''' <summary>Iteration has not ran yet.</summary>
@@ -65,10 +83,10 @@ Public Interface ISFPIteration
     ''' </summary>
     ''' <param name="core"></param>
     ''' <param name="tsi"></param>
-    ''' <param name="SSToVChoice"></param>
+    ''' <param name="vulsearch"></param>
     ''' <param name="Params"></param>
     ''' -----------------------------------------------------------------------
-    Sub Init(core As cCore, tsi As Integer, SSToVChoice As Boolean, Params As cSFPParameters, mFrm As Form)
+    Sub Init(core As cCore, tsi As Integer, vulsearch As eVulSearchMode, Params As cSFPParameters)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -114,7 +132,7 @@ Public Interface ISFPIteration
     ''' Get/set the iteration type to be Baseline = true or Fishing = false
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Property BaseorFishValue As Boolean
+    Property BaseSearchMode As eBaseSearchMode
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

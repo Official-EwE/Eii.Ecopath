@@ -159,7 +159,7 @@
     <Compile Include="Engine\cSFPParameters.vb" />
     <Compile Include="Iterations\cSFPVandASearch.vb" />
     <Compile Include="Iterations\cSFPVulnerabilitySearch.vb" />
-    <Compile Include="ISFPIteration.vb" />
+    <Compile Include="Iterations\ISFPIteration.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
