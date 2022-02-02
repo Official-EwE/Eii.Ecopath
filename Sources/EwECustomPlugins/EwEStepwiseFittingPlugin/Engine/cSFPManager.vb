@@ -46,7 +46,11 @@ Public Class cSFPManager
 
 #Region " Private vars "
 
+    ''' <summary>Original model file name</summary>
     Private m_strModelFileName As String
+    ''' <summary>Filename to be removed when the run completes</summary>
+    Private m_strTempFileName As String
+
     Private m_scenario As cEcoSimScenario
     Private m_iTimeSeries As Integer
     Private m_parameters As cSFPParameters
@@ -327,6 +331,7 @@ Public Class cSFPManager
         For i As Integer = Me.m_iterations.Count - 1 To 0 Step -1
             Dim it As ISFPIteration = Me.m_iterations(i)
             it.RunState = ISFPIteration.eRunState.Idle
+            it.Elapsed = New TimeSpan(0)
             it.IsBestFit = False
             If (it.Enabled) Then Me.m_queue.Push(it)
         Next
@@ -372,12 +377,8 @@ Public Class cSFPManager
     ''' -----------------------------------------------------------------------
     Private Function ExportModelToText() As String
 
-#If ACCESSDB Then
-        Return Me.Core.DataSource.ToString()
-#End If
-
         Dim strSource As String = Me.Core.DataSource.ToString()
-        Dim strFileName As String = cFileUtils.MakeTempFile(".eiixml")
+        Dim strTempFile As String = cFileUtils.MakeTempFile(".eiixml")
 
         Dim ds As IEwEDataSource = Me.Core.DataSource
         If Not (TypeOf ds Is cDBDataSource) Then Return strSource
@@ -385,7 +386,10 @@ Public Class cSFPManager
         If Not (TypeOf dbds.Connection Is cEwEAccessDatabase) Then Return strSource
         Dim db As cEwEAccessDatabase = DirectCast(dbds.Connection, cEwEAccessDatabase)
         ds = cDataSourceFactory.Create(eDataSourceTypes.EIIXML)
-        If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strFileName) Then Return strFileName
+        If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strTempFile) Then
+            Me.m_strTempFileName = strTempFile
+            Return strTempFile
+        End If
 
         Return strSource
 
@@ -432,21 +436,21 @@ Public Class cSFPManager
 
         ' Container done?
         If (Not cnt.IsRunning) Then
-            ' More to run?
-            If (Me.m_queue.Count > 0) Then
-                SyncLock Me.m_queue
+            SyncLock Me.m_queue
+                ' More to run?
+                If (Me.m_queue.Count > 0) Then
                     ' #Yes: order next run
                     cnt.Run(Me.m_queue.Pop)
-                End SyncLock
-            Else
-                ' #No: thrash container
-                Me.RemoveContainer(cnt)
+                Else
+                    ' #No: thrash container
+                    Me.RemoveContainer(cnt)
 
-                ' Terminate run if all containers are done
-                If (Me.m_containers.Count = 0) Then
-                    Me.TerminateContainerRun()
+                    ' Terminate run if all containers are done
+                    If (Me.m_containers.Count = 0) Then
+                        Me.TerminateContainerRun()
+                    End If
                 End If
-            End If
+            End SyncLock
         End If
 
     End Sub
@@ -487,6 +491,15 @@ Public Class cSFPManager
         '    End If
         'Next
 
+        Try
+            If Not String.IsNullOrWhiteSpace(Me.m_strTempFileName) Then
+                File.Delete(Me.m_strTempFileName)
+                Me.m_strTempFileName = ""
+            End If
+        Catch ex As Exception
+
+        End Try
+
         Me.m_containers.Clear()
         Me.m_bIsRunning = False
         Me.SendIterationUpdated(Nothing)
@@ -506,10 +519,10 @@ Public Class cSFPManager
             If (Me.m_containers.Count > 0) Then
                 Dim cts As cSFPContainer() = Me.m_containers.ToArray
                 SyncLock Me.m_queue
+                    Me.m_queue.Clear()
                     For Each c As cSFPContainer In cts
                         c.StopRun()
                     Next
-                    Me.m_queue.Clear()
                 End SyncLock
             Else
                 Me.Core.EcosimFitToTimeSeries.StopRun()

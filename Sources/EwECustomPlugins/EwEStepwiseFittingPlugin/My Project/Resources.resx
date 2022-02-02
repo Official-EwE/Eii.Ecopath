@@ -145,6 +145,9 @@
   <data name="HEADER_AICc" xml:space="preserve">
     <value>AICc</value>
   </data>
+  <data name="HEADER_COMPLETED" xml:space="preserve">
+    <value>Completed</value>
+  </data>
   <data name="HEADER_ELAPSED" xml:space="preserve">
     <value>Elapsed</value>
   </data>

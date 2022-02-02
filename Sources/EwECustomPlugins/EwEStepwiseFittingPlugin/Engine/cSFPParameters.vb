@@ -72,18 +72,14 @@ Public Class cSFPParameters
 
         If (Me.m_core.ActiveTimeSeriesDatasetIndex < 1) Then
             Me.m_ts = Nothing
-            'Console.WriteLine("SFPParameters no longer has a reference to SFPManager time series")
         Else
             Me.m_ts = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
-            'Console.WriteLine("SFPParameters now has reference to SFPManager time series")
         End If
 
         Me.CalculateOptimalK(iPrefK)
         Me.CalculateMaxSplinePoints()
         Me.CalculateNumberOfObservations()
         Me.CalculateMaxK()
-
-        'Console.WriteLine("SFPParameters calculated estimated parameters")
 
         Return True
 
@@ -92,6 +88,7 @@ Public Class cSFPParameters
     ''' <summary>
     ''' Calculate the values of Min K and K from time series dataset of time series of type 0,1,5,6 and 7 
     ''' </summary>
+    ''' <param name="iPrefK">?</param>
     Private Sub CalculateOptimalK(ByVal iPrefK As Integer)
 
         Me.m_iK = 0
@@ -133,9 +130,6 @@ Public Class cSFPParameters
         End If
         Me.m_iMinK = count - (count - 1)
 
-        'Console.WriteLine("Number of max k Parameters to estimate: " & m_iMaxK.ToString)
-        'Console.WriteLine("Number of min k Parameters to estimate: " & m_iMinK.ToString)
-
     End Sub
 
 
@@ -150,11 +144,7 @@ Public Class cSFPParameters
         If (Me.m_ts Is Nothing) Then Return
 
         Dim years As Integer = Me.m_ts.NumPoints - 1
-        'Console.WriteLine("Number of years in time series: " & years.ToString)
         Me.m_iMaxSplinePoints = Math.Min(Me.m_iK, years)
-
-        'Console.WriteLine("Number of Max spline points: " & m_iMaxSplinePoints.ToString)
-        'Console.WriteLine("Number of Min spline points: " & m_iMinSplinePoints.ToString)
 
     End Sub
 
@@ -176,22 +166,26 @@ Public Class cSFPParameters
             ts = Me.m_ts.TimeSeries(i)
             'Get the time series type
             tsType = ts.TimeSeriesType
-            'If the time series type is 0,1,5,6 or 7 add its datapoints to the total number of observations
-            Select Case tsType
-                Case eTimeSeriesType.BiomassRel,
-                    eTimeSeriesType.TotalMortality,
-                    eTimeSeriesType.Catches,
-                    eTimeSeriesType.CatchesRel,
-                    eTimeSeriesType.AverageWeight,
-                    eTimeSeriesType.Discards,
-                    eTimeSeriesType.Landings
-                    Me.AddToObservations(ts)
-                Case eTimeSeriesType.BiomassAbs
-                    If Me.EnableAbsoluteBiomass Then
-                        Me.AddToObservations(ts)
-                    End If
-            End Select
 
+            ' Can use time series?
+            If (ts.Enabled And ts.WtType > 0) Then
+                'If the time series type is 0,1,5,6 or 7 add its datapoints to the total number of observations
+                Select Case tsType
+                    Case eTimeSeriesType.BiomassRel,
+                         eTimeSeriesType.TotalMortality,
+                         eTimeSeriesType.Catches,
+                         eTimeSeriesType.CatchesRel,
+                         eTimeSeriesType.AverageWeight,
+                         eTimeSeriesType.Discards,
+                         eTimeSeriesType.Landings
+                        Me.AddToObservations(ts)
+
+                    Case eTimeSeriesType.BiomassAbs
+                        If Me.EnableAbsoluteBiomass Then
+                            Me.AddToObservations(ts)
+                        End If
+                End Select
+            End If
         Next
 
     End Sub
@@ -208,8 +202,8 @@ Public Class cSFPParameters
     ''' </summary>
     Private Sub AddToObservations(ByVal ts As cTimeSeries)
 
-        ' Do not include timeseries at 0 weight
-        If (ts.WtType = 0) Then Return
+        ' Sanity check
+        Debug.Assert(ts.Enabled And ts.WtType > 0)
 
         Dim tsdatapoints As Single()
         Dim count As Integer
@@ -219,14 +213,13 @@ Public Class cSFPParameters
             'Get copy of datapoints
             tsdatapoints = ts.ShapeData
             'If the datapoint is not zero add to count
-            If tsdatapoints(j) <> 0 Then
+            If (tsdatapoints(j) <> 0) And (tsdatapoints(j) <> cCore.NULL_VALUE) Then
                 count += 1
             End If
         Next
+
         'Add number of data points from this time seires to the total number of observations
         Me.m_iObservations += count
-
-        'Console.WriteLine("Number of Observations from : " & ts.Name & " = " & count.ToString)
 
     End Sub
 

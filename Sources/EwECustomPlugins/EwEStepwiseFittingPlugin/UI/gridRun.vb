@@ -111,7 +111,7 @@ Public Class gridRun
         Me(0, eColumnTypes.AICc) = New cEwEColumnHeaderCell(My.Resources.HEADER_AICc)
         Me(0, eColumnTypes.State) = New cEwEColumnHeaderCell(My.Resources.HEADER_STATE)
         Me(0, eColumnTypes.Elapsed) = New cEwEColumnHeaderCell(My.Resources.HEADER_ELAPSED)
-        Me(0, eColumnTypes.Completed) = New cEwEColumnHeaderCell("Completed")
+        Me(0, eColumnTypes.Completed) = New cEwEColumnHeaderCell(My.Resources.HEADER_COMPLETED)
 
         Me.AllowBlockSelect = False
         Me.FixedColumnWidths = False
@@ -253,7 +253,10 @@ Public Class gridRun
                 Return My.Resources.STATE_ITERATION_RUNNING
             Case ISFPIteration.eRunState.Stopping
                 Return My.Resources.STATE_ITERATION_STOPPING
+            Case Else
+                Debug.Assert(False, "Unknown state")
         End Select
+
         Return "?"
 
     End Function
