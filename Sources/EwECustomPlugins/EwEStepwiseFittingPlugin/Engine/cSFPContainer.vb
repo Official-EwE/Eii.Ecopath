@@ -120,7 +120,6 @@ Public Class cSFPContainer
     ''' </summary>
     Private Sub Run()
 
-        Dim iter As ISFPIteration = Me.m_iteration
         Dim bSuccess As Boolean = True
         Dim sw As New Stopwatch()
         sw.Start()
@@ -128,8 +127,8 @@ Public Class cSFPContainer
         Try
 
             ' Intermediate status update
-            iter.RunState = ISFPIteration.eRunState.Initializing
-            RaiseEvent OnIterationUpdated(Me, iter, False)
+            Me.m_iteration.RunState = ISFPIteration.eRunState.Initializing
+            RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
 
             ' Run iteration on local core
             Dim core As New cCore()
@@ -151,24 +150,31 @@ Public Class cSFPContainer
             bSuccess = bSuccess And core.LoadTimeSeries(Me.m_iTS, False)
             Debug.Assert(bSuccess = True)
 
-            iter.Init(core, Me.m_iTS, Me.Parameters.PredOrPredPreySSToV, Me.Parameters, Nothing)
+            Me.m_iteration.Init(core, Me.m_iTS, Me.Parameters.PredOrPredPreySSToV, Me.Parameters, Nothing)
 
-            bSuccess = bSuccess And iter.Load(core)
+            bSuccess = bSuccess And Me.m_iteration.Load(core)
             Debug.Assert(bSuccess = True)
 
-            iter.RunState = ISFPIteration.eRunState.Running
-            RaiseEvent OnIterationUpdated(Me, iter, False)
-
-            ' Run and complete
-            Me.m_core = core
-            If iter.Run(core) Then
-                If (iter.RunState = ISFPIteration.eRunState.Stopping) Then
-                    iter.RunState = ISFPIteration.eRunState.Idle
-                Else
-                    iter.RunState = ISFPIteration.eRunState.Completed
-                End If
+            ' Has stop request been received?
+            If Me.m_iteration.RunState = ISFPIteration.eRunState.Stopping Then
+                ' Flag as idle and done
+                Me.m_iteration.RunState = ISFPIteration.eRunState.Idle
             Else
-                iter.RunState = ISFPIteration.eRunState.Error
+                ' Start running
+                Me.m_iteration.RunState = ISFPIteration.eRunState.Running
+                RaiseEvent OnIterationUpdated(Me, Me.m_iteration, False)
+
+                ' Run and complete
+                Me.m_core = core
+                If Me.m_iteration.Run(core) Then
+                    If (iter.RunState = ISFPIteration.eRunState.Stopping) Then
+                        Me.m_iteration.RunState = ISFPIteration.eRunState.Idle
+                    Else
+                        Me.m_iteration.RunState = ISFPIteration.eRunState.Completed
+                    End If
+                Else
+                    Me.m_iteration.RunState = ISFPIteration.eRunState.Error
+                End If
             End If
 
             ' Just making sure
@@ -184,7 +190,7 @@ Public Class cSFPContainer
             Me.m_core = Nothing
 
         Catch ex As Exception
-            iter.RunState = ISFPIteration.eRunState.Error
+            Me.m_iteration.RunState = ISFPIteration.eRunState.Error
         End Try
 
         ' Free resources prior to sending the last update
@@ -194,7 +200,7 @@ Public Class cSFPContainer
         Me.m_iteration = Nothing
 
         ' Notify the world
-        RaiseEvent OnIterationUpdated(Me, iter, True)
+        RaiseEvent OnIterationUpdated(Me, Me.m_iteration, True)
 
     End Sub
 

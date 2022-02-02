@@ -164,7 +164,6 @@ Public Class cSFPParameters
     Private Sub CalculateNumberOfObservations()
 
         Me.m_iObservations = 0
-        ' Dim Num As Integer = 0
 
         ' Make fail-safe
         If (Me.m_ts Is Nothing) Then Return
@@ -186,22 +185,14 @@ Public Class cSFPParameters
                     eTimeSeriesType.AverageWeight,
                     eTimeSeriesType.Discards,
                     eTimeSeriesType.Landings
-                    'If the weight type is not 0 add datapoints of time series to the total number of observations
-                    If ts.WtType > 0 Then
-                        Me.AddToObservations(ts)
-                        'Num += TimeSeries.NumPoints
-                    End If
+                    Me.AddToObservations(ts)
                 Case eTimeSeriesType.BiomassAbs
-                    If Me.EnableAbsoluteBiomass And ts.WtType > 0 Then
+                    If Me.EnableAbsoluteBiomass Then
                         Me.AddToObservations(ts)
-                        'Num += TimeSeries.NumPoints
                     End If
             End Select
 
         Next
-
-        'Console.WriteLine("Num: " & Num.ToString)
-        'Console.WriteLine("Total Number of Observations: " & m_iObservations.ToString)
 
     End Sub
 
