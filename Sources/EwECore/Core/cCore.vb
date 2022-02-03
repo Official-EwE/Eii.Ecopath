@@ -6980,10 +6980,10 @@ Public Class cCore
 
         If String.IsNullOrEmpty(strError) Then
             strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_LOAD_SUCCESS, strScenarioName)
-            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSim, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSim, eMessageImportance.Information, eDataTypes.EcoSimScenario)
         Else
             strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_LOAD_FAILED, strScenarioName, strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning, eDataTypes.EcoSimScenario)
         End If
 
         Me.m_publisher.AddMessage(msg)
@@ -6998,10 +6998,10 @@ Public Class cCore
 
         If bSucces Then
             strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_SUCCESS, strScenarioName)
-            msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Information)
+            msg = New cMessage(strText, eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Information, eDataTypes.EcoSimScenario)
         Else
             strText = cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strScenarioName, strError)
-            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            msg = New cMessage(strText, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning, eDataTypes.EcoSimScenario)
         End If
 
         Me.m_publisher.AddMessage(msg)
