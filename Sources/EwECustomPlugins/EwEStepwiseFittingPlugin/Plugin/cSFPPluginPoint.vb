@@ -158,7 +158,7 @@ Public Class cSFPPluginPoint
 
 #End Region ' Menu item
 
-#Region " Time series "
+#Region " Ecosim flow "
 
     Public Sub TimeSeriesClosed() _
         Implements EwEPlugin.IEcosimTimeSeriesPlugin.TimeSeriesClosed
@@ -183,7 +183,7 @@ Public Class cSFPPluginPoint
 
     End Sub
 
-#End Region ' Time series
+#End Region ' Ecosim flow
 
 #Region " Disposal "
 

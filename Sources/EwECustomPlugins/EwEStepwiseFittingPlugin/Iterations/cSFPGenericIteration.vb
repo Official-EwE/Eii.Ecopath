@@ -194,7 +194,7 @@ Public MustInherit Class cSFPGenericIteration
                              eTimeSeriesType.AverageWeight
                             ts.Enabled = True
                         Case eTimeSeriesType.BiomassAbs
-                            ts.Enabled = Me.Parameters.EnableAbsoluteBiomass
+                            ts.Enabled = Me.Parameters.EnableAbsoluteBiomassTimeSeries
                         Case Else
                             ts.Enabled = False
                     End Select
@@ -349,8 +349,8 @@ Public MustInherit Class cSFPGenericIteration
 
     Protected Function GetAppliedShape(core As cCore) As cShapeData
         Dim man As cForcingFunctionShapeManager = core.ForcingShapeManager
-        If (Me.Parameters.AppliedShapeIndex > 0) Then
-            Return man(Me.Parameters.AppliedShapeIndex - 1)
+        If (Me.Parameters.AnomalyShapeIndex > 0) Then
+            Return man(Me.Parameters.AnomalyShapeIndex - 1)
         End If
         Return Nothing
     End Function
@@ -367,7 +367,7 @@ Public MustInherit Class cSFPGenericIteration
         Dim bSuccess As Boolean = False
 
         'If there is no applied shape do not run search (This is already checked by the cSFPManager but just to make sure)
-        If (Me.Parameters.AppliedShapeIndex > 0) Then
+        If (Me.Parameters.AnomalyShapeIndex > 0) Then
 
             'Setup manager to do a Anomaly search
             man.AnomalySearch = True
@@ -377,7 +377,7 @@ Public MustInherit Class cSFPGenericIteration
             man.PPVariance = 0.1
             'Set the number of spline points selected (Number of parameters to estimate)
             man.NumSplinePoints = Me.SplinePoints
-            man.AnomalySearchShapeNumber = Me.Parameters.AppliedShapeIndex
+            man.AnomalySearchShapeNumber = Me.Parameters.AnomalyShapeIndex
 
             ' Run the search silently
             If man.RunSearch(True, TriState.False) Then
@@ -402,7 +402,7 @@ Public MustInherit Class cSFPGenericIteration
         Dim bSuccess As Boolean = False
 
         'If there is an applied shape and a sensitivity search has been ran : run the search
-        If (Me.Parameters.AppliedShapeIndex > 0) And man.HasRunSens Then
+        If (Me.Parameters.AnomalyShapeIndex > 0) And man.HasRunSens Then
 
             'Setup manager to do a Vulnerability and Anomaly search
             man.AnomalySearch = True
@@ -411,7 +411,7 @@ Public MustInherit Class cSFPGenericIteration
             man.PPVariance = 0.1
             'Set the number of spline points selected (Number of parameters to estimate)
             man.NumSplinePoints = Me.SplinePoints
-            man.AnomalySearchShapeNumber = Me.Parameters.AppliedShapeIndex
+            man.AnomalySearchShapeNumber = Me.Parameters.AnomalyShapeIndex
 
             man.VulnerabilitySearch = True
             'Set the number of blocks selected (Number of parameters to estimate)
