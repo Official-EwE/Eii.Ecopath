@@ -66,9 +66,13 @@ Public Class cSFPParameters
         Me.NumThreads = cSystemUtils.ProcessorCount
     End Sub
 
+#Region " Public bits "
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Calculate the values of estimated parameters from time series dataset and find applied shape
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Function CalculateParameters(ByVal iPrefK As Integer) As Boolean
 
         If (Me.m_core.ActiveTimeSeriesDatasetIndex < 1) Then
@@ -79,170 +83,18 @@ Public Class cSFPParameters
 
         Me.CalculateOptimalK(iPrefK)
         Me.CalculateMaxSplinePoints()
-        Me.CalculateNumberOfObservations()
+        Me.UpdateNumberOfObservations()
         Me.CalculateMaxK()
 
         Return True
 
     End Function
 
-    ''' <summary>
-    ''' Calculate the values of Min K and K from time series dataset of time series of type 0,1,5,6 and 7 
-    ''' </summary>
-    ''' <param name="iPrefK">?</param>
-    Private Sub CalculateOptimalK(ByVal iPrefK As Integer)
-
-        Me.m_iK = 0
-        Me.m_iMinK = 1
-
-        ' Make fail-safe
-        If (Me.m_ts Is Nothing) Then Return
-
-        Dim ts As cTimeSeries
-        Dim tsType As eTimeSeriesType
-        Dim count As Integer = 0
-
-        For i As Integer = 1 To Me.m_ts.nTimeSeries
-            ts = Me.m_ts.TimeSeries(i)
-            tsType = ts.TimeSeriesType
-
-            If (ts.Enabled And ts.WtType > 0) Then
-                Select Case tsType
-                    Case eTimeSeriesType.BiomassRel,
-                         eTimeSeriesType.TotalMortality,
-                         eTimeSeriesType.Catches,
-                         eTimeSeriesType.CatchesRel,
-                         eTimeSeriesType.AverageWeight,
-                         eTimeSeriesType.Discards,
-                         eTimeSeriesType.Landings
-                        count += 1
-
-                    Case eTimeSeriesType.BiomassAbs
-                        If Me.EnableAbsoluteBiomass Then
-                            count += 1
-                        End If
-
-                End Select
-            End If
-        Next
-
-        Me.m_iCorrectK = Math.Max(0, count - 1)
-
-        If (iPrefK <= 0) Then
-            Me.m_iK = count - 1
-        Else
-            Me.m_iK = iPrefK
-        End If
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Calculate the values of Max Spline Points from time series dataset
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub CalculateMaxSplinePoints()
-
-        Me.m_iMaxSplinePoints = 0
-
-        ' Make fail-safe
-        If (Me.m_ts Is Nothing) Then Return
-
-        Dim years As Integer = Me.m_ts.NumPoints - 1
-        Me.m_iMaxSplinePoints = Math.Min(Me.m_iK, years)
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Calculate the number of observations/data points from time series dataset 
-    ''' that are within a time series of type 0,1,5,6 and 7 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub CalculateNumberOfObservations()
-
-        Me.m_iObservations = 0
-
-        ' Make fail-safe
-        If (Me.m_ts Is Nothing) Then Return
-
-        Dim ts As cTimeSeries
-        Dim tsType As eTimeSeriesType
-        'Go through each time series of the time series dataset
-        For i As Integer = 1 To Me.m_ts.nTimeSeries
-            'Get a time series
-            ts = Me.m_ts.TimeSeries(i)
-            'Get the time series type
-            tsType = ts.TimeSeriesType
-
-            ' Can use time series?
-            If (ts.Enabled And ts.WtType > 0) Then
-                'If the time series type is 0,1,5,6 or 7 add its datapoints to the total number of observations
-                Select Case tsType
-                    Case eTimeSeriesType.BiomassRel,
-                         eTimeSeriesType.TotalMortality,
-                         eTimeSeriesType.Catches,
-                         eTimeSeriesType.CatchesRel,
-                         eTimeSeriesType.AverageWeight,
-                         eTimeSeriesType.Discards,
-                         eTimeSeriesType.Landings
-                        Me.AddToObservations(ts)
-
-                    Case eTimeSeriesType.BiomassAbs
-                        If Me.EnableAbsoluteBiomass Then
-                            Me.AddToObservations(ts)
-                        End If
-                End Select
-            End If
-        Next
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Calculate the value of Max K from the number of observations. This is
-    ''' funky but allows for experimenting below the 'correct' value of K
-    ''' </summary>
-    ''' <seealso cref="CorrectK"/>
-    ''' <seealso cref="K"/>
-    ''' <seealso cref="MinK"/>
-    ''' -----------------------------------------------------------------------
-    Private Sub CalculateMaxK()
-        Me.m_iMaxK = Me.m_iObservations - 1
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Calculate the number of observations/data points within a time series
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub AddToObservations(ByVal ts As cTimeSeries)
-
-        ' Sanity check
-        Debug.Assert(ts.Enabled And ts.WtType > 0)
-
-        Dim tsdatapoints As Single()
-        Dim count As Integer
-
-        'Go through each data point of the time series
-        For j As Integer = 1 To ts.nPoints
-            'Get copy of datapoints
-            tsdatapoints = ts.ShapeData
-            'If the datapoint is not zero add to count
-            If (tsdatapoints(j) <> 0) And (tsdatapoints(j) <> cCore.NULL_VALUE) Then
-                count += 1
-            End If
-        Next
-
-        'Add number of data points from this time seires to the total number of observations
-        Me.m_iObservations += count
-
-    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the value of K to use. This value falls between <see cref="MinK"/>
-    ''' and <see cref="MaxK"/>, and correctly, should not exceed <see cref="CorrectK"/>.
+    ''' and <see cref="MaxK"/>, and should not really exceed <see cref="CorrectK"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property K As Integer
@@ -308,17 +160,48 @@ Public Class cSFPParameters
     ''' <summary>
     ''' Get/set the index of the selected anomaly shape
     ''' </summary>
-    Public Property AppliedShapeIndex As Integer
+    Public Property AnomalyShapeIndex As Integer
 
-    Public Property EnableAbsoluteBiomass As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether absolute biomass timeseries should be included here.
+    ''' </summary>
+    ''' <seealso cref="HasAbsoluteBiomassTimeSeries"/>
+    ''' -----------------------------------------------------------------------
+    Public Property EnableAbsoluteBiomassTimeSeries As Boolean = False
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns if absolute biomass timeseries are available.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasAbsoluteBiomassTimeSeries() As Boolean
+        For Each ts As cTimeSeries In Me.GetRelevantTimeSeries()
+            If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then Return True
+        Next
+        Return False
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the number of threads to use. Should be between 1 and <see cref="MaxThreads"/>,
+    ''' but this policy is not enforced.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property NumThreads As Integer
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the max number of parallel threads to run.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property MaxThreads As Integer
         Get
-            Return cSystemUtils.ProcessorCount * 4
+            Return cSystemUtils.ProcessorCount * 2
         End Get
     End Property
+
+#End Region ' Public bits
 
 #Region " Persistent configuration "
 
@@ -359,5 +242,139 @@ Public Class cSFPParameters
     End Property
 
 #End Region ' Persistent configuration
+
+#Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, digs up all relevant, enabled and non-zero weighted 
+    ''' time series.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Function GetRelevantTimeSeries() As cTimeSeries()
+
+        Dim l As New List(Of cTimeSeries)
+        If (Me.m_ts IsNot Nothing) Then
+            For i As Integer = 1 To Me.m_ts.nTimeSeries
+                Dim ts As cTimeSeries = Me.m_ts.TimeSeries(i)
+                If (ts.Enabled And ts.WtType > 0) Then
+                    Select Case ts.TimeSeriesType
+                        Case eTimeSeriesType.BiomassRel,
+                             eTimeSeriesType.TotalMortality,
+                             eTimeSeriesType.Catches,
+                             eTimeSeriesType.CatchesRel,
+                             eTimeSeriesType.AverageWeight,
+                             eTimeSeriesType.Discards,
+                             eTimeSeriesType.Landings
+                            l.Add(ts)
+
+                        Case eTimeSeriesType.BiomassAbs
+                            If Me.EnableAbsoluteBiomassTimeSeries Then
+                                l.Add(ts)
+                            End If
+                    End Select
+                End If
+            Next
+        End If
+        Return l.ToArray()
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate the values of Min K and K from the <see cref="GetRelevantTimeSeries()">
+    ''' relevant time series</see>.
+    ''' </summary>
+    ''' <param name="iPrefK">The <see cref="K"/> to maintain.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub CalculateOptimalK(ByVal iPrefK As Integer)
+
+        Me.m_iK = 0
+        Me.m_iMinK = 1
+
+        Dim count As Integer = Me.GetRelevantTimeSeries().Length
+        Me.m_iCorrectK = Math.Max(0, count - 1)
+
+        If (iPrefK <= 0) Then
+            Me.m_iK = count - 1
+        Else
+            Me.m_iK = iPrefK
+        End If
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate the values of Max Spline Points from time series dataset
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub CalculateMaxSplinePoints()
+
+        Me.m_iMaxSplinePoints = 0
+
+        ' Make fail-safe
+        If (Me.m_ts Is Nothing) Then Return
+
+        Dim years As Integer = Me.m_ts.NumPoints - 1
+        Me.m_iMaxSplinePoints = Math.Min(Me.m_iK, years)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update the <see cref="NumberOfObservations">number of observations/data points</see> 
+    ''' across all <see cref="GetRelevantTimeSeries()">relevant time series</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub UpdateNumberOfObservations()
+
+        Me.m_iObservations = 0
+        For Each ts As cTimeSeries In Me.GetRelevantTimeSeries()
+            Me.m_iObservations += Me.CountNoOfObservations(ts)
+        Next
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate the value of Max K from the number of observations. This is
+    ''' funky but allows for experimenting below the 'correct' value of K
+    ''' </summary>
+    ''' <seealso cref="CorrectK"/>
+    ''' <seealso cref="K"/>
+    ''' <seealso cref="MinK"/>
+    ''' -----------------------------------------------------------------------
+    Private Sub CalculateMaxK()
+        Me.m_iMaxK = Me.m_iObservations - 1
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the number of observations/data points within a time series
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Function CountNoOfObservations(ByVal ts As cTimeSeries) As Integer
+
+        ' Sanity check
+        Debug.Assert(ts.Enabled And ts.WtType > 0)
+
+        Dim tsdatapoints As Single()
+        Dim count As Integer
+
+        'Go through each data point of the time series
+        For j As Integer = 1 To ts.nPoints
+            'Get copy of datapoints
+            tsdatapoints = ts.ShapeData
+            'If the datapoint is not zero add to count
+            If (tsdatapoints(j) <> 0) And (tsdatapoints(j) <> cCore.NULL_VALUE) Then
+                count += 1
+            End If
+        Next
+
+        Return count
+
+    End Function
+
+#End Region ' Internals
 
 End Class

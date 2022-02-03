@@ -92,6 +92,8 @@ Public Class frmRun
 
         Me.m_bInUpdate = True
 
+        Dim parms As cSFPParameters = Me.m_engine.Parameters
+
         If Me.m_runmode = eRunMode.Plugin Then
             Me.MinimumSize = New Drawing.Size(Me.MinimumSize.Width, Me.MinimumSize.Height - m_plModel.Height)
         End If
@@ -103,12 +105,12 @@ Public Class frmRun
         Me.m_btnResetFolder.Text = ""
 
         ' Populate controls
-        Me.m_rbPredator.Checked = (Me.m_engine.Parameters.VulSearchMode = ISFPIteration.eVulSearchMode.Predator)
-        Me.m_rbPredPrey.Checked = (Me.m_engine.Parameters.VulSearchMode = ISFPIteration.eVulSearchMode.PredPrey)
-        Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
-        Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
-        Me.m_nudNoThreads.Maximum = Me.m_engine.Parameters.MaxThreads
-        Me.m_nudNoThreads.Value = Me.m_engine.Parameters.NumThreads
+        Me.m_rbPredator.Checked = (parms.VulSearchMode = ISFPIteration.eVulSearchMode.Predator)
+        Me.m_rbPredPrey.Checked = (parms.VulSearchMode = ISFPIteration.eVulSearchMode.PredPrey)
+        Me.m_nudStepSize.Value = parms.AnomalySearchSplineStepSize
+        Me.m_cmbAutoSave.SelectedIndex = parms.AutosaveMode
+        Me.m_nudNoThreads.Maximum = parms.MaxThreads
+        Me.m_nudNoThreads.Value = parms.NumThreads
 
         Me.m_fpK = New cEwEFormatProvider(Me.UIContext, Me.m_nudK, GetType(Integer))
 
@@ -257,20 +259,19 @@ Public Class frmRun
             Me.m_cmbTimeSeries.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
 
             ' -- Parameters panel --
-            Me.m_btnSelectA.Enabled = bContainsAnomaly
-            Me.m_btnSelectV.Enabled = bContainsVul
-            Me.m_btnSelectVandA.Enabled = bContainsVul Or bContainsAnomaly
             Me.m_plSettings.Enabled = Not bIsRunning
+            Me.m_cbEnableAbsBioforBaseline.Enabled = (Not bIsRunning) And parms.HasAbsoluteBiomassTimeSeries
 
             ' -- Iterations panel --
             Me.m_btnSelectAll.Enabled = Not bIsRunning
             Me.m_btnSelectNone.Enabled = Not bIsRunning
-            Me.m_btnSelectA.Enabled = Not bIsRunning
+            Me.m_btnSelectA.Enabled = (Not bIsRunning) And bContainsAnomaly
             Me.m_btnSelectBaseline.Enabled = Not bIsRunning
             Me.m_btnSelectFishing.Enabled = Not bIsRunning
-            Me.m_btnSelectV.Enabled = Not bIsRunning
-            Me.m_btnSelectVandA.Enabled = Not bIsRunning
-            Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And Not bIsRunning
+            Me.m_btnSelectV.Enabled = (Not bIsRunning) And bContainsVul
+            Me.m_btnSelectVandA.Enabled = (Not bIsRunning) And bContainsVul Or bContainsAnomaly
+            Me.m_btnSelectFandVandA.Enabled = (Not bIsRunning) And bContainsVul Or bContainsAnomaly
+            Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And (Not bIsRunning)
             Me.m_grid.UpdateRunState()
 
             ' -- Run panel --
@@ -279,15 +280,12 @@ Public Class frmRun
 
             ' Update output path entirely to resolve path placeholders
             Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
-            Me.m_btnResetFolder.Enabled = Not bIsRunning And bIsDefaultPath
+            Me.m_btnResetFolder.Enabled = (Not bIsRunning) And (Not bIsDefaultPath)
             Me.m_btnChooseFolder.Enabled = Not bIsRunning
 
             'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
-            Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk And Not bIsRunning
+            Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk And (Not bIsRunning)
             Me.m_btnStop.Enabled = bIsRunning
-
-            'Enable Absolute Biomass time series check box when time series are loaded
-            Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
 
         Catch ex As Exception
 
@@ -297,8 +295,35 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub ApplyControls()
-        Me.m_engine.Parameters.AppliedShapeIndex = Me.SelectedShapeIndex
+    ''' <summary>
+    ''' Apply the contents of the UI to the engine.
+    ''' </summary>
+    Private Sub CommitControls(bRefreshIterationsList As Boolean)
+
+        Dim parms As cSFPParameters = Me.m_engine.Parameters
+
+        Try
+            ' The harmless ones
+            parms.VulSearchMode = If(Me.m_rbPredator.Checked, ISFPIteration.eVulSearchMode.Predator, ISFPIteration.eVulSearchMode.PredPrey)
+            parms.NumThreads = CInt(Me.m_nudNoThreads.Value)
+            parms.AutosaveMode = CType(Me.m_cmbAutoSave.SelectedIndex, cSFPParameters.eAutosaveMode)
+
+            ' And the ones that affect the list of iterations (grid refrensh can be slow)
+            If bRefreshIterationsList Then
+
+                parms.AnomalyShapeIndex = Me.SelectedShapeIndex
+                parms.AnomalySearchSplineStepSize = CInt(Me.m_nudStepSize.Value)
+                parms.EnableAbsoluteBiomassTimeSeries = Me.m_cbEnableAbsBioforBaseline.Checked
+                parms.K = CInt(Me.m_nudK.Value)
+
+                Me.m_engine.Refresh(parms.K)
+                Me.m_grid.RefreshContent()
+
+            End If
+        Catch ex As Exception
+
+        End Try
+        Me.UpdateControls()
 
     End Sub
 
@@ -414,28 +439,21 @@ Public Class frmRun
             If (ts IsNot Nothing) Then its = ts.Index
             Me.m_engine.LoadTimeSeries(its)
 
-            ' Repopulate the grid
-            Me.m_grid.RefreshContent()
+            Me.CommitControls(True)
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
-
-        Me.UpdateControls()
 
     End Sub
 
     Private Sub OnShapeSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_cmbAnomalyShape.SelectedIndexChanged
 
-        'If (Me.m_engine Is Nothing) Then Return
-        'If (Me.m_bInUpdate) Then Return
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
-        Try
-            Me.m_engine.Parameters.AppliedShapeIndex = Me.SelectedShapeIndex
-            Me.UpdateControls()
-        Catch ex As Exception
+        Me.CommitControls(True)
 
-        End Try
     End Sub
 
     Private Sub OnThreadCountChanged(sender As Object, e As System.EventArgs) _
@@ -445,12 +463,7 @@ Public Class frmRun
         If (Me.m_engine Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
 
-        Try
-            Me.m_engine.Parameters.NumThreads = CInt(Me.m_nudNoThreads.Value)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-        Me.UpdateControls()
+        Me.CommitControls(False)
 
     End Sub
 
@@ -459,14 +472,9 @@ Public Class frmRun
 
         ' Safety catch: Numeric updown controls throw events on creation. Aargh.
         If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
-        Try
-            Me.m_engine.AnomalySearchSplineStepSize = CInt(Me.m_nudStepSize.Value)
-            Me.m_grid.RefreshContent()
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-        Me.UpdateControls()
+        Me.CommitControls(True)
 
     End Sub
 
@@ -477,13 +485,7 @@ Public Class frmRun
         If (Me.m_engine Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
 
-        Try
-            Me.m_engine.K = CInt(Me.m_nudK.Value)
-            Me.m_grid.RefreshContent()
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-        Me.UpdateControls()
+        Me.CommitControls(True)
 
     End Sub
 
@@ -492,9 +494,9 @@ Public Class frmRun
                 m_rbPredPrey.CheckedChanged
 
         If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
-        Me.m_engine.Parameters.VulSearchMode = If(Me.m_rbPredator.Checked, ISFPIteration.eVulSearchMode.Predator, ISFPIteration.eVulSearchMode.PredPrey)
-        Me.UpdateControls()
+        Me.CommitControls(False)
 
     End Sub
 
@@ -519,14 +521,14 @@ Public Class frmRun
     '    End Try
     'End Sub
 
-    Private Sub OnReloadIterations(sender As Object, e As EventArgs)
-        Try
-            Me.m_engine.LoadIterationsConfiguration()
-            Me.m_grid.UpdateContent()
-        Catch ex As Exception
+    'Private Sub OnReloadIterations(sender As Object, e As EventArgs)
+    '    Try
+    '        Me.m_engine.LoadIterationsConfiguration()
+    '        Me.m_grid.UpdateContent()
+    '    Catch ex As Exception
 
-        End Try
-    End Sub
+    '    End Try
+    'End Sub
 
     Private Sub OnSelectAll(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectAll.Click
@@ -705,31 +707,20 @@ Public Class frmRun
     Private Sub OnAutosaveOptionsChanged(sender As Object, e As System.EventArgs) _
         Handles m_cmbAutoSave.SelectedIndexChanged
 
-        ' Safety catch: some controls throw events on creation. Aargh.
         If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
-        Try
-            Me.m_engine.Parameters.AutosaveMode = CType(Me.m_cmbAutoSave.SelectedIndex, cSFPParameters.eAutosaveMode)
-        Catch ex As Exception
-
-        End Try
+        Me.CommitControls(False)
 
     End Sub
 
     Private Sub OnEnableAbBioforBaselineChanged(sender As Object, e As System.EventArgs) _
         Handles m_cbEnableAbsBioforBaseline.CheckedChanged
 
-        ' Safety catch: some controls throw events on creation. Aargh.
         If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
-        Try
-            Me.m_engine.Parameters.EnableAbsoluteBiomass = Me.m_cbEnableAbsBioforBaseline.Checked
-            Me.m_engine.Refresh(Me.m_engine.K)
-            Me.m_grid.RefreshContent()
-            Me.UpdateControls()
-        Catch ex As Exception
-
-        End Try
+        Me.CommitControls(True)
 
     End Sub
 
@@ -819,12 +810,17 @@ Public Class frmRun
 
         ' Anomaly shapes
         Me.m_cmbAnomalyShape.Items.Clear()
+
+        Dim iSel As Integer = -1
+        Dim parms As cSFPParameters = Me.m_engine.Parameters
+
         For Each shape As cShapeData In Me.m_engine.GetAvailableAnomalyShapes()
-            Me.m_cmbAnomalyShape.Items.Add(shape)
+            Dim iItem As Integer = Me.m_cmbAnomalyShape.Items.Add(shape)
+            If (shape.Index = parms.AnomalyShapeIndex) Then iSel = iItem
         Next
 
         If (Me.m_cmbAnomalyShape.Items.Count > 0) Then
-            Me.m_cmbAnomalyShape.SelectedIndex = 0
+            Me.m_cmbAnomalyShape.SelectedIndex = Math.Max(0, iSel)
         End If
 
     End Sub

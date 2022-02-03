@@ -53,7 +53,6 @@ Public Class cSFPManager
 
     Private m_scenario As cEcoSimScenario
     Private m_iTimeSeries As Integer
-    Private m_parameters As cSFPParameters
 
     Private m_iterations As New List(Of ISFPIteration)
 
@@ -99,9 +98,11 @@ Public Class cSFPManager
     ''' <param name="frm">The main UI form to use for thread marshalling.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(core As cCore, frm As Form)
+
         Me.Core = core
         Me.Parameters = New cSFPParameters(core)
         Me.m_frmMain = frm
+
     End Sub
 
 #Region " Load user Inputs "
@@ -239,30 +240,6 @@ Public Class cSFPManager
         Me.Parameters.VulSearchMode = VulSearchMode
     End Sub
 
-    Public Property K As Integer
-        Get
-            Return Me.Parameters.K
-        End Get
-        Set(value As Integer)
-            If (value <> Me.Parameters.K) Then
-                Me.Parameters.K = value
-                Me.Refresh(Me.K)
-            End If
-        End Set
-    End Property
-
-    Public Property AnomalySearchSplineStepSize As Integer
-        Get
-            Return Me.Parameters.AnomalySearchSplineStepSize
-        End Get
-        Set(value As Integer)
-            If (value <> Me.Parameters.AnomalySearchSplineStepSize) Then
-                Me.Parameters.AnomalySearchSplineStepSize = value
-                Me.Refresh(Me.K)
-            End If
-        End Set
-    End Property
-
     Public Sub Refresh(iPrefK As Integer)
         ' Always do this
         Me.Parameters.CalculateParameters(iPrefK)
@@ -278,6 +255,12 @@ Public Class cSFPManager
 
         ' Sanity checks
         Debug.Assert(Me.Core IsNot Nothing)
+
+        If (Me.Parameters.AnomalyShapeIndex = 0) Then
+            Dim shapes As cShapeData() = Me.GetAvailableAnomalyShapes()
+            If (shapes.Length > 0) Then Me.Parameters.AnomalyShapeIndex = shapes(0).Index
+        End If
+
         If (Me.Core.StateMonitor.HasEcosimLoaded) Then
             Me.m_scenario = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
             Me.m_iTimeSeries = Me.Core.ActiveTimeSeriesDatasetIndex
@@ -551,7 +534,7 @@ Public Class cSFPManager
             Next
 
             'If there is a current FF applied to PP
-            If (Me.Parameters.AppliedShapeIndex > 0) Then
+            If (Me.Parameters.AnomalyShapeIndex > 0) Then
 
                 'Load Fishing Anomaly Search iterations
                 For i = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
@@ -579,7 +562,7 @@ Public Class cSFPManager
             Next
 
             'If there is a current FF applied to PP
-            If (Me.Parameters.AppliedShapeIndex > 0) Then
+            If (Me.Parameters.AnomalyShapeIndex > 0) Then
 
                 'Load Baseline Anomaly Search iterations
                 For i = Me.Parameters.MinSplinePoints To Me.Parameters.MaxSplinePoints Step Me.Parameters.AnomalySearchSplineStepSize
@@ -645,13 +628,6 @@ Public Class cSFPManager
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Parameters As cSFPParameters
-        Get
-            Return Me.m_parameters
-        End Get
-        Private Set(value As cSFPParameters)
-            Me.m_parameters = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -695,6 +671,8 @@ Public Class cSFPManager
             Return String.IsNullOrWhiteSpace(Me.Parameters.CustomOutputFolder)
         End Get
     End Property
+
+    Public ReadOnly Property HasAbsoluteBiomassTimeSeries As Boolean
 
 #End Region ' Public access
 
