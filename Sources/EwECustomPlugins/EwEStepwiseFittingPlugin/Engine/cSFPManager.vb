@@ -46,23 +46,18 @@ Public Class cSFPManager
 
 #Region " Private vars "
 
-    ''' <summary>Original model file name</summary>
-    Private m_strModelFileName As String
+    ' -- Admin --
     ''' <summary>Filename to be removed when the run completes</summary>
     Private m_strTempFileName As String
-
-    Private m_scenario As cEcoSimScenario
-    Private m_iTimeSeries As Integer
-
+    ''' <summary>All available STF interations</summary>
     Private m_iterations As New List(Of ISFPIteration)
 
+    ' -- Multi-threaded running
     Private m_queue As New Stack(Of ISFPIteration)
     Private m_containers As New List(Of cSFPContainer)
     Private m_statusmsg As cMessage = Nothing
     Private m_iQueueLength As Integer = 0
     Private m_iQueueDone As Integer = 0
-
-    Private m_frmMain As Form = Nothing
 
     ' -- State flags --
 
@@ -83,7 +78,7 @@ Public Class cSFPManager
     ''' -----------------------------------------------------------------------
     Public Sub New()
         'Create a new core
-        Me.New(New cCore(), Nothing)
+        Me.New(New cCore())
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -95,14 +90,9 @@ Public Class cSFPManager
     ''' by EwE.
     ''' </remarks>
     ''' <param name="core">The core instance to initialize to.</param>
-    ''' <param name="frm">The main UI form to use for thread marshalling.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(core As cCore, frm As Form)
-
-        Me.Core = core
+    Public Sub New(core As cCore)
         Me.Parameters = New cSFPParameters(core)
-        Me.m_frmMain = frm
-
     End Sub
 
 #Region " Load user Inputs "
@@ -114,8 +104,11 @@ Public Class cSFPManager
     ''' <returns>True if load successful</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(strFileName As String) As Boolean
-        Me.m_strModelFileName = strFileName
-        Return Me.Core.LoadModel(Me.m_strModelFileName)
+        Me.Parameters.ModelFileName = ""
+        If Me.Core.LoadModel(strFileName) Then
+            Me.Parameters.ModelFileName = strFileName
+        End If
+        Return Not String.IsNullOrWhiteSpace(Me.Parameters.ModelFileName)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -126,15 +119,7 @@ Public Class cSFPManager
     ''' <returns>True if load successful</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadEcoSimScenario(iScenario As Integer) As Boolean
-
-        'Try to load scenario
-        If Me.Core.LoadEcosimScenario(iScenario) Then
-            'Store a reference to scenario in SFPManager
-            Me.m_scenario = Me.Core.EcosimScenarios(iScenario)
-            Return True
-        End If
-        Return False
-
+        Return Me.Core.LoadEcosimScenario(iScenario)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -169,12 +154,12 @@ Public Class cSFPManager
         'Try to load time series
         If Me.Core.LoadTimeSeries(tsi) Then
             'Store a reference to time series index in SFPManager
-            Me.m_iTimeSeries = tsi
+            Me.Parameters.TimeSeriesDataset = tsi
             Console.WriteLine("Time Series : " & Me.Core.TimeSeriesDataset(tsi).Name & " Loaded successfully")
             bSuccess = True
         Else
             Console.WriteLine("Time Series could not Load")
-            Me.m_iTimeSeries = -1
+            Me.Parameters.TimeSeriesDataset = -1
             bSuccess = False
         End If
 
@@ -231,16 +216,12 @@ Public Class cSFPManager
 
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Set the value of PredOrPredPreySSToV from selected String
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub SetPredOrPredPreySSToV(VulSearchMode As ISFPIteration.eVulSearchMode)
-        Me.Parameters.VulSearchMode = VulSearchMode
-    End Sub
-
     Public Sub Refresh(iPrefK As Integer)
+
+        Me.m_iterations.Clear()
+
+        If (Me.Parameters.EcosimScenario <= 0) Then Return
+
         ' Always do this
         Me.Parameters.CalculateParameters(iPrefK)
         ' Create list of ISFPIterations
@@ -262,14 +243,15 @@ Public Class cSFPManager
         End If
 
         If (Me.Core.StateMonitor.HasEcosimLoaded) Then
-            Me.m_scenario = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
-            Me.m_iTimeSeries = Me.Core.ActiveTimeSeriesDatasetIndex
-            Me.Refresh(0)
+            Me.Parameters.EcosimScenario = Me.Core.ActiveEcosimScenarioIndex
+            Me.Parameters.TimeSeriesDataset = Me.Core.ActiveTimeSeriesDatasetIndex
         Else
-            Me.m_scenario = Nothing
-            Me.m_iTimeSeries = -1
+            Me.Parameters.EcosimScenario = -1
+            Me.Parameters.TimeSeriesDataset = -1
             Me.m_iterations.Clear()
         End If
+
+        Me.Refresh(0)
 
     End Sub
 
@@ -278,6 +260,7 @@ Public Class cSFPManager
 #Region " Run Iterations "
 
     Public Sub Run()
+        Me.Parameters.PrepareForRun()
         Me.StartContainerRun()
     End Sub
 
@@ -362,7 +345,7 @@ Public Class cSFPManager
     End Function
 
     Private Sub AddContainer(i As Integer, strModelFile As String)
-        Dim cnt As New cSFPContainer("Container_" & i, strModelFile, Me.Core.ActiveEcosimScenarioIndex, Me.m_iTimeSeries, Me.Parameters)
+        Dim cnt As New cSFPContainer("Container_" & i, strModelFile, Me.Parameters)
         AddHandler cnt.OnIterationUpdated, AddressOf Me.HandleIterationUpdate
         Me.m_containers.Add(cnt)
     End Sub
@@ -609,7 +592,11 @@ Public Class cSFPManager
 
 #Region " Public access "
 
-    Public ReadOnly Property Core As cCore = Nothing
+    Public ReadOnly Property Core As cCore
+        Get
+            Return Me.Parameters.Core
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

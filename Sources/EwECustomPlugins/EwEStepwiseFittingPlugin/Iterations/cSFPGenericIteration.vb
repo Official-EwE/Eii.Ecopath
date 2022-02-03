@@ -37,9 +37,6 @@ Imports EwEUtils.Core
 Public MustInherit Class cSFPGenericIteration
     Implements ISFPIteration
 
-    Protected m_iTimeSeries As Integer
-    Protected m_bPredOrPredPreySSToV As ISFPIteration.eVulSearchMode
-
     ''' <summary>Calculated Sum of Squares</summary>
     Protected m_ss As Single = 0
     ''' <summary>Calculated AIC</summary>
@@ -53,22 +50,23 @@ Public MustInherit Class cSFPGenericIteration
     ''' <summary>Calculated time series SS results</summary>
     Protected m_timeseriesSS As Single()
 
+    Private m_parameters As cSFPParameters = Nothing
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
     ''' </summary>
     ''' <param name="core"></param>
-    ''' <param name="tsi"></param>
-    ''' <param name="vulsearch"></param>
     ''' <param name="Params"></param>
     ''' -----------------------------------------------------------------------
-    Protected Sub Initiate(core As EwECore.cCore, tsi As Integer, vulsearch As ISFPIteration.eVulSearchMode, Params As cSFPParameters) _
+    Protected Sub Init(core As EwECore.cCore, params As cSFPParameters) _
         Implements ISFPIteration.Init
 
         'Get variables needed for SFP iteration
-        Me.m_iTimeSeries = tsi
-        Me.m_bPredOrPredPreySSToV = vulsearch
-        Me.Parameters = Params
+        Me.m_parameters = params
+
+        ' This is expected throughout this class
+        Debug.Assert(Me.Parameters.TimeSeriesDataset >= 1)
 
         ' Allocate memory for anomaly shape
         ReDim Me.m_anomalyshape(core.nEcosimTimeSteps)
@@ -77,7 +75,7 @@ Public MustInherit Class cSFPGenericIteration
         ReDim Me.m_vulnerabilities(core.nGroups, core.nGroups)
 
         'Allocate memory for time series SS results
-        ReDim Me.m_timeseriesSS(core.TimeSeriesDataset(Me.m_iTimeSeries).nTimeSeries)
+        ReDim Me.m_timeseriesSS(core.TimeSeriesDataset(Me.Parameters.TimeSeriesDataset).nTimeSeries)
 
     End Sub
 
@@ -167,12 +165,12 @@ Public MustInherit Class cSFPGenericIteration
     ''' <summary>
     ''' Enable only time series specific to Baseline or Fishing and apply to the Ecosim model
     ''' </summary>
+    ''' <param name="core">The run core to apply to.</param>
     ''' -----------------------------------------------------------------------
     Protected Function EnableTimeSeries(core As cCore) As Boolean
 
-        If (Me.m_iTimeSeries < 1) Then Return False
-
-        Dim dataset As cTimeSeriesDataset = core.TimeSeriesDataset(Me.m_iTimeSeries)
+        Dim iTS As Integer = Me.Parameters.TimeSeriesDataset
+        Dim dataset As cTimeSeriesDataset = core.TimeSeriesDataset(iTS)
         Dim man As cF2TSManager = core.EcosimFitToTimeSeries
 
         'Reset fishing effort shapes
@@ -185,6 +183,7 @@ Public MustInherit Class cSFPGenericIteration
                 For i As Integer = 1 To dataset.nTimeSeries
 
                     Dim ts As cTimeSeries = dataset.TimeSeries(i)
+
                     'If the time series type is 0, 1, 5, 6, 7 enable it
                     Select Case ts.TimeSeriesType
                         Case eTimeSeriesType.BiomassRel,
@@ -192,9 +191,11 @@ Public MustInherit Class cSFPGenericIteration
                              eTimeSeriesType.Catches,
                              eTimeSeriesType.CatchesRel,
                              eTimeSeriesType.AverageWeight
-                            ts.Enabled = True
+                            ts.Enabled = Me.Parameters.TimeSeriesEnabled(i)
+                            ts.WtType = Me.Parameters.TimeSeriesWeight(i)
                         Case eTimeSeriesType.BiomassAbs
-                            ts.Enabled = Me.Parameters.EnableAbsoluteBiomassTimeSeries
+                            ts.Enabled = (Me.Parameters.EnableAbsoluteBiomassTimeSeries And Me.Parameters.TimeSeriesEnabled(i))
+                            ts.WtType = Me.Parameters.TimeSeriesWeight(i)
                         Case Else
                             ts.Enabled = False
                     End Select
@@ -205,7 +206,8 @@ Public MustInherit Class cSFPGenericIteration
                 For i As Integer = 1 To dataset.nTimeSeries
                     'Enable Time Series
                     Dim ts As cTimeSeries = dataset.TimeSeries(i)
-                    ts.Enabled = True
+                    ts.Enabled = Me.Parameters.TimeSeriesEnabled(i)
+                    ts.WtType = Me.Parameters.TimeSeriesWeight(i)
                 Next
 
             Case Else
@@ -221,6 +223,13 @@ Public MustInherit Class cSFPGenericIteration
     End Function
 
     Public Property Parameters As cSFPParameters Implements ISFPIteration.Parameters
+        Get
+            Return Me.m_parameters
+        End Get
+        Protected Set(value As cSFPParameters)
+            Me.m_parameters = value
+        End Set
+    End Property
 
     Public Property k As Integer = 0 Implements ISFPIteration.K
     Public Property EstimatedV As Integer = 0 Implements ISFPIteration.EstimatedV
@@ -257,7 +266,7 @@ Public MustInherit Class cSFPGenericIteration
         man.nBlockCodes = Me.Parameters.K
 
         'If PredOrPredPreySSToV = true then run SS2VBy Predator
-        Select Case Me.m_bPredOrPredPreySSToV
+        Select Case Me.Parameters.VulSearchMode
             Case ISFPIteration.eVulSearchMode.Predator
                 If man.RunSensitivitySS2VByPredator(True, TriState.False) Then
                     Debug.Assert(Not man.IsRunning)
@@ -364,6 +373,7 @@ Public MustInherit Class cSFPGenericIteration
     Protected Function RunAnomalySearch(core As cCore) As Boolean
 
         Dim man As cF2TSManager = core.EcosimFitToTimeSeries
+        Dim iTS As Integer = Me.Parameters.TimeSeriesDataset
         Dim bSuccess As Boolean = False
 
         'If there is no applied shape do not run search (This is already checked by the cSFPManager but just to make sure)
@@ -373,7 +383,7 @@ Public MustInherit Class cSFPGenericIteration
             man.AnomalySearch = True
             man.VulnerabilitySearch = False
             man.FirstYear = 1
-            man.LastYear = core.TimeSeriesDataset(Me.m_iTimeSeries).NumPoints
+            man.LastYear = core.TimeSeriesDataset(iTS).NumPoints
             man.PPVariance = 0.1
             'Set the number of spline points selected (Number of parameters to estimate)
             man.NumSplinePoints = Me.SplinePoints
@@ -399,6 +409,7 @@ Public MustInherit Class cSFPGenericIteration
     Protected Function RunVandASearch(core As cCore) As Boolean
 
         Dim man As cF2TSManager = core.EcosimFitToTimeSeries
+        Dim iTS As Integer = Me.Parameters.TimeSeriesDataset
         Dim bSuccess As Boolean = False
 
         'If there is an applied shape and a sensitivity search has been ran : run the search
@@ -407,7 +418,7 @@ Public MustInherit Class cSFPGenericIteration
             'Setup manager to do a Vulnerability and Anomaly search
             man.AnomalySearch = True
             man.FirstYear = 1
-            man.LastYear = core.TimeSeriesDataset(Me.m_iTimeSeries).NumPoints
+            man.LastYear = core.TimeSeriesDataset(iTS).NumPoints
             man.PPVariance = 0.1
             'Set the number of spline points selected (Number of parameters to estimate)
             man.NumSplinePoints = Me.SplinePoints
@@ -639,6 +650,7 @@ Public MustInherit Class cSFPGenericIteration
             answer = Me.GetAIC(core) + 2.0F * Me.SplinePoints * (Me.SplinePoints - 1.0F) / (nData - Me.SplinePoints - 1.0F)
             Return answer
         Else 'V and A Search
+            Debug.Assert(Me.k <> 0, "JS debugging")
             answer = Me.GetAIC(core) + 2.0F * Me.k * (Me.k - 1.0F) / (nData - Me.k - 1.0F)
             Return answer
         End If
@@ -647,8 +659,9 @@ Public MustInherit Class cSFPGenericIteration
 
     Private Sub GetTimeSeriesSS(core As cCore)
 
+        Dim iTS As Integer = Me.Parameters.TimeSeriesDataset
         For i As Integer = 1 To core.nTimeSeries
-            Me.m_timeseriesSS(i) = core.TimeSeriesDataset(Me.m_iTimeSeries).TimeSeries(i).DataSS
+            Me.m_timeseriesSS(i) = core.TimeSeriesDataset(iTS).TimeSeries(i).DataSS
         Next
 
     End Sub

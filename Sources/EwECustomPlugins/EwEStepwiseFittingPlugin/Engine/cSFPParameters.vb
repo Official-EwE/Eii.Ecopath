@@ -46,9 +46,6 @@ Public Class cSFPParameters
 
 #Region " Private vars "
 
-    Private m_ts As cTimeSeriesDataset = Nothing
-    Private m_core As cCore
-
     Private m_iK As Integer
     Private m_iCorrectK As Integer
     Private m_iMinK As Integer
@@ -61,12 +58,18 @@ Public Class cSFPParameters
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal c As EwECore.cCore)
-        Me.m_core = c
+#Region " Construction "
+
+    Public Sub New(c As cCore)
+        Me.Core = c
         Me.NumThreads = cSystemUtils.ProcessorCount
     End Sub
 
+#End Region ' Construction
+
 #Region " Public bits "
+
+    Public ReadOnly Property Core As cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -75,11 +78,8 @@ Public Class cSFPParameters
     ''' -----------------------------------------------------------------------
     Public Function CalculateParameters(ByVal iPrefK As Integer) As Boolean
 
-        If (Me.m_core.ActiveTimeSeriesDatasetIndex < 1) Then
-            Me.m_ts = Nothing
-        Else
-            Me.m_ts = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
-        End If
+        ' Sanity check
+        Debug.Assert(Me.TimeSeriesDataset = Me.Core.ActiveTimeSeriesDatasetIndex)
 
         Me.CalculateOptimalK(iPrefK)
         Me.CalculateMaxSplinePoints()
@@ -89,7 +89,6 @@ Public Class cSFPParameters
         Return True
 
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -201,7 +200,48 @@ Public Class cSFPParameters
         End Get
     End Property
 
+    Public Property ModelFileName As String = ""
+    Public Property EcosimScenario As Integer = 0
+    Public Property TimeSeriesDataset As Integer = 0
+
 #End Region ' Public bits
+
+#Region " Run preparation and offloading "
+
+    Private m_weights(1000) As Single
+    Private m_enabled(1000) As Boolean
+
+    Public Sub PrepareForRun()
+        Array.Clear(Me.m_weights, 0, Me.m_weights.Length)
+
+        If (Me.TimeSeriesDataset <= 0) Then Return
+        Dim dataset As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.TimeSeriesDataset)
+
+        'Go through each time series of the time series dataset
+        For i As Integer = 1 To dataset.nTimeSeries
+            With dataset.TimeSeries(i)
+                Me.m_weights(i) = .WtType
+                Me.m_enabled(i) = .Enabled
+            End With
+        Next
+
+    End Sub
+
+    Public ReadOnly Property TimeSeriesWeight(its As Integer) As Single
+        Get
+            If (its < 0 Or its >= Me.m_weights.Length) Then Return 0
+            Return Me.m_weights(its)
+        End Get
+    End Property
+
+    Public ReadOnly Property TimeSeriesEnabled(its As Integer) As Boolean
+        Get
+            If (its < 0 Or its >= Me.m_enabled.Length) Then Return True
+            Return Me.m_enabled(its)
+        End Get
+    End Property
+
+#End Region ' Run preparation and offloading
 
 #Region " Persistent configuration "
 
@@ -253,10 +293,11 @@ Public Class cSFPParameters
     ''' -----------------------------------------------------------------------
     Private Function GetRelevantTimeSeries() As cTimeSeries()
 
+        Dim dataset As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.TimeSeriesDataset)
         Dim l As New List(Of cTimeSeries)
-        If (Me.m_ts IsNot Nothing) Then
-            For i As Integer = 1 To Me.m_ts.nTimeSeries
-                Dim ts As cTimeSeries = Me.m_ts.TimeSeries(i)
+        If (dataset IsNot Nothing) Then
+            For i As Integer = 1 To dataset.nTimeSeries
+                Dim ts As cTimeSeries = dataset.TimeSeries(i)
                 If (ts.Enabled And ts.WtType > 0) Then
                     Select Case ts.TimeSeriesType
                         Case eTimeSeriesType.BiomassRel,
@@ -312,10 +353,11 @@ Public Class cSFPParameters
 
         Me.m_iMaxSplinePoints = 0
 
-        ' Make fail-safe
-        If (Me.m_ts Is Nothing) Then Return
+        If (Me.TimeSeriesDataset <= 0) Then Return
+        Dim dataset As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.TimeSeriesDataset)
+        If (dataset Is Nothing) Then Return
 
-        Dim years As Integer = Me.m_ts.NumPoints - 1
+        Dim years As Integer = dataset.NumPoints - 1
         Me.m_iMaxSplinePoints = Math.Min(Me.m_iK, years)
 
     End Sub

@@ -81,16 +81,14 @@ Public Interface ISFPIteration
     ''' <summary>
     ''' Initialize the iteration
     ''' </summary>
-    ''' <param name="core"></param>
-    ''' <param name="tsi"></param>
-    ''' <param name="vulsearch"></param>
-    ''' <param name="Params"></param>
+    ''' <param name="core">The core to initialize to.</param>
+    ''' <param name="params">The <see cref="cSFPParameters"/> instance to initialize to.</param>
     ''' -----------------------------------------------------------------------
-    Sub Init(core As cCore, tsi As Integer, vulsearch As eVulSearchMode, Params As cSFPParameters)
+    Sub Init(core As cCore, params As cSFPParameters)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Load the paratmeter configuration to Ecosim, eg make all the input parameter 
+    ''' Load the parameter configuration to Ecosim, eg make all the input parameter 
     ''' tweaks to Ecosim, Fit to TS, vunerability searches etc but do not run yet
     ''' </summary>
     ''' <returns>True if load successful</returns>
@@ -118,7 +116,7 @@ Public Interface ISFPIteration
     ''' Get/set the <see cref="cSFPParameters"/> that the iteration can use.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Property Parameters As cSFPParameters
+    ReadOnly Property Parameters As cSFPParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -132,28 +130,28 @@ Public Interface ISFPIteration
     ''' Get/set the iteration type to be Baseline = true or Fishing = false
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Property BaseSearchMode As eBaseSearchMode
+    ReadOnly Property BaseSearchMode As eBaseSearchMode
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the K value.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Property K As Integer
+    ReadOnly Property K As Integer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the EstimatedV value.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Property EstimatedV As Integer
+    ReadOnly Property EstimatedV As Integer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the number of spline points.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Property SplinePoints As Integer
+    ReadOnly Property SplinePoints As Integer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
