@@ -7178,9 +7178,6 @@ Public Class cCore
             ' Update economic data state for Ecosim objects
             Me.OnEconomicDataPluginEnabled()
 
-            ' Let's send out at least one message
-            Me.SendEcosimLoadStateMessage(strScenarioName)
-
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
                 Me.PluginManager.EcosimLoadScenario(ds)
@@ -7189,6 +7186,8 @@ Public Class cCore
 
             ' Update core state
             Me.m_StateMonitor.SetEcoSimLoaded(True)
+            ' Let's send out at least one message
+            Me.SendEcosimLoadStateMessage(strScenarioName)
 
             ' JS12May10: EcosimLoaded implies EcosimInitialized
             'Me.m_StateMonitor.SetEcoSimInitialized()
