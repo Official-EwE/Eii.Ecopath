@@ -30,13 +30,13 @@ Imports EwECore
 
 #End Region ' Imports
 
+' ToDo:
+' - Remove scenario storage to parameters, remove from container
+
 ''' <summary>
 ''' A iteration run container to execute SFP on its own core. Runs are asynchronous.
 ''' </summary>
 Public Class cSFPContainer
-
-    Private m_iScenario As Integer = 0
-    Private m_iTS As Integer = 0
 
     Private m_iteration As ISFPIteration = Nothing
 
@@ -47,17 +47,13 @@ Public Class cSFPContainer
     ''' Initializes a new instance of the <see cref="cSFPContainer"/> class.
     ''' </summary>
     ''' <param name="name">The name of the container.</param>
-    ''' <param name="model">The model.</param>
-    ''' <param name="iSim">The i sim.</param>
-    ''' <param name="iTS">The i ts.</param>
+    ''' <param name="model">The model file name to load.</param>
     ''' <param name="params">The parameters.</param>
-    Public Sub New(name As String, model As String, iSim As Integer, iTS As Integer, params As cSFPParameters)
+    Public Sub New(name As String, model As String, params As cSFPParameters)
 
         Me.Name = name
         Me.Model = model
         Me.Parameters = params
-        Me.m_iScenario = iSim
-        Me.m_iTS = iTS
 
     End Sub
 
@@ -151,13 +147,13 @@ Public Class cSFPContainer
             bSuccess = Me.m_core.LoadModel(Me.Model)
             Debug.Assert(bSuccess = True)
 
-            bSuccess = bSuccess And Me.m_core.LoadEcosimScenario(Me.m_iScenario)
+            bSuccess = bSuccess And Me.m_core.LoadEcosimScenario(Me.Parameters.EcosimScenario)
             Debug.Assert(bSuccess = True)
 
-            bSuccess = bSuccess And Me.m_core.LoadTimeSeries(Me.m_iTS, False)
+            bSuccess = bSuccess And Me.m_core.LoadTimeSeries(Me.Parameters.TimeSeriesDataset, False)
             Debug.Assert(bSuccess = True)
 
-            Me.m_iteration.Init(Me.m_core, Me.m_iTS, Me.Parameters.VulSearchMode, Me.Parameters)
+            Me.m_iteration.Init(Me.m_core, Me.Parameters)
 
             bSuccess = bSuccess And Me.m_iteration.Load(Me.m_core)
             Debug.Assert(bSuccess = True)

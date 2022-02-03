@@ -269,8 +269,8 @@ Public Class frmRun
             Me.m_btnSelectBaseline.Enabled = Not bIsRunning
             Me.m_btnSelectFishing.Enabled = Not bIsRunning
             Me.m_btnSelectV.Enabled = (Not bIsRunning) And bContainsVul
-            Me.m_btnSelectVandA.Enabled = (Not bIsRunning) And bContainsVul Or bContainsAnomaly
-            Me.m_btnSelectFandVandA.Enabled = (Not bIsRunning) And bContainsVul Or bContainsAnomaly
+            Me.m_btnSelectVandA.Enabled = (Not bIsRunning) And bContainsVul And bContainsAnomaly
+            Me.m_btnSelectFandVandA.Enabled = (Not bIsRunning) And bContainsVul And bContainsAnomaly
             Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And (Not bIsRunning)
             Me.m_grid.UpdateRunState()
 

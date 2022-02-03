@@ -101,10 +101,14 @@ Public Class cSFPPluginPoint
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
             If (uic IsNot Nothing) Then
-                Me.m_engine = New cSFPManager(Me.m_uic.Core, Me.m_uic.FormMain)
+                Me.m_engine = New cSFPManager(Me.m_uic.Core)
             Else
                 ' Cleaning up
-                If Me.HasUI Then Me.m_frm.Close()
+                If Me.HasUI Then
+                    Me.m_frm.Close()
+                    Me.m_frm.Dispose()
+                    Me.m_frm = Nothing
+                End If
                 Me.m_engine = Nothing
             End If
         Catch ex As Exception
