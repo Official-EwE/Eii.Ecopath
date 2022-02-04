@@ -211,7 +211,10 @@ Public Class cSFPParameters
     Private m_weights(1000) As Single
     Private m_enabled(1000) As Boolean
 
-    Public Sub PrepareForRun()
+    Public Sub PrepareForRun(outputfolder As String)
+
+        Me.IterationOutputFolder = outputfolder
+
         Array.Clear(Me.m_weights, 0, Me.m_weights.Length)
 
         If (Me.TimeSeriesDataset <= 0) Then Return
@@ -240,6 +243,9 @@ Public Class cSFPParameters
             Return Me.m_enabled(its)
         End Get
     End Property
+
+    Public Property IterationOutputFolder As String = ""
+    Public Property SaveHeaders As Boolean = False
 
 #End Region ' Run preparation and offloading
 

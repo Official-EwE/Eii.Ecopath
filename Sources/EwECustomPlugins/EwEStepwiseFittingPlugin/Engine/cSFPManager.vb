@@ -260,7 +260,7 @@ Public Class cSFPManager
 #Region " Run Iterations "
 
     Public Sub Run()
-        Me.Parameters.PrepareForRun()
+        Me.Parameters.PrepareForRun(Me.OutputFolder)
         Me.StartContainerRun()
     End Sub
 
@@ -357,35 +357,33 @@ Public Class cSFPManager
 
     Private Sub HandleIterationUpdate(cnt As cSFPContainer, iteration As ISFPIteration, bDone As Boolean)
 
-        ' Process iteration
-        If (iteration IsNot Nothing) Then
+        SyncLock Me.m_queue
+            ' Process iteration
+            If (iteration IsNot Nothing) Then
 
-            Debug.WriteLine(cnt.ToString & ": " & iteration.Name & " = " & iteration.RunState.ToString() & " on " & cnt.Model)
+                Debug.WriteLine(cnt.ToString & ": " & iteration.Name & " = " & iteration.RunState.ToString() & " on " & cnt.Model)
 
-            If (iteration.RunState = ISFPIteration.eRunState.Completed And bDone) Then
+                If (iteration.RunState = ISFPIteration.eRunState.Completed And bDone) Then
 
-                Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
-                ' Save Ecosim results if requested
-                Me.SaveIterationResults(iteration, Me.m_statusmsg)
-                ' Save content of iteration for later reloading
-                Me.SaveIterationConfiguration(iteration, Me.m_statusmsg)
-                ' Determine the best fitting iteration
-                Me.DetermineBestFit()
+                    Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
 
-                Me.m_iQueueDone += 1
+                    For Each msg As String In iteration.RunStateMessages
+                        Me.AppendStatus(Me.m_statusmsg, msg, If(iteration.RunState = ISFPIteration.eRunState.Completed, eStatusFlags.OK, eStatusFlags.ErrorEncountered))
+                    Next
+                    ' Determine the best fitting iteration
+                    Me.DetermineBestFit()
 
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, My.Resources.DISPLAYNAME),
-                                                          (Me.m_iQueueDone + 0.5!) / Me.m_iQueueLength)
+                    Me.m_iQueueDone += 1
 
+                    cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, My.Resources.DISPLAYNAME),
+                                                              (Me.m_iQueueDone + 0.5!) / Me.m_iQueueLength)
+
+                End If
+                Me.SendIterationUpdated(iteration)
             End If
 
-            Me.SendIterationUpdated(iteration)
-
-        End If
-
-        ' Container done?
-        If (Not cnt.IsRunning) Then
-            SyncLock Me.m_queue
+            ' Container done?
+            If (Not cnt.IsRunning) Then
                 ' More to run?
                 If (Me.m_queue.Count > 0) Then
                     ' #Yes: order next run
@@ -399,8 +397,8 @@ Public Class cSFPManager
                         Me.TerminateContainerRun()
                     End If
                 End If
-            End SyncLock
-        End If
+            End If
+        End SyncLock
 
     End Sub
 
@@ -638,7 +636,7 @@ Public Class cSFPManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property OutputFolder As String
         Get
-            If String.IsNullOrWhiteSpace(Me.Parameters.CustomOutputFolder) Then
+            If Me.IsDefaultOutputFolder Then
                 Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), cFileUtils.ToValidFileName(My.Resources.DISPLAYNAME, False))
             End If
             Return Me.Parameters.CustomOutputFolder
@@ -751,489 +749,34 @@ Public Class cSFPManager
 
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Save Ecosim run results of an iteration to file.
-    ''' </summary>
-    ''' <param name="iteration">The iteration that needs saving.</param>
-    ''' <param name="msg">Status message to append information to.</param>
-    ''' <returns>True if successful.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveIterationResults(iteration As ISFPIteration, msg As cMessage) As Boolean
-
-        ' Sanity checks
-        Debug.Assert(iteration IsNot Nothing)
-
-        Dim strIterationPath As String = Path.Combine(Me.OutputFolder, cFileUtils.ToValidFileName(iteration.Name, False))
-        Dim bSuccess As Boolean = True
-
-        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
-           (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
-
-            If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
-                Dim wsim As New Ecosim.cEcosimResultWriter(Me.Core)
-                Try
-                    If wsim.WriteResults(strIterationPath, bQuiet:=True) Then
-                        Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_SUCCESS, My.Resources.DETAIL_ECOSIM, strIterationPath), eStatusFlags.OK)
-                        bSuccess = True
-                    Else
-                        Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_FAILED, My.Resources.DETAIL_ECOSIM, ""), eStatusFlags.ErrorEncountered)
-                        bSuccess = False
-                    End If
-                Catch ex As Exception
-                    ' This REALLY should not happen
-                    cLog.Write(ex, "cSFPManager.SaveIterationResults(Ecosim)")
-                    Debug.Assert(False, ex.Message)
-                End Try
-            End If
-        End If
-
-        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
-           (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
-
-            'Save output results in Monthly and Yearly format 
-            Me.SaveAggregatedResults(iteration, True, msg)
-            Me.SaveAggregatedResults(iteration, False, msg)
-
-        End If
-
-        Return bSuccess
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get all group names from Ecosim run and return them as a comma separated string
-    ''' </summary>
-    ''' <returns>String of comma separated group names.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function GetAllGroupNames() As String
-
-        Dim str As New StringBuilder()
-
-        For i As Integer = 1 To Me.Core.nGroups
-            str.Append(cStringUtils.ToCSVField(Me.Core.EcoSimGroupOutputs(i).Name))
-            If i <> Me.Core.nGroups Then str.Append(",")
-        Next
-
-        Return str.ToString()
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Save specific Ecosim results (Biomass,Mortality and Yield) of iteration to a CSV file.
-    ''' </summary>
-    ''' <param name="iteration"> The iteration the results come from </param>
-    ''' <param name="tsMonthly"> True for results to be saved monthly and false to save annually </param>
-    ''' <param name="msg"> The message to append status information to </param>
-    ''' <returns>Always returns true.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedResults(iteration As ISFPIteration,
-                                            tsMonthly As Boolean,
-                                            msg As cMessage) As Boolean
-
-        For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
-            Select Case outputtype
-                Case cEcosimResultWriter.eResultTypes.Biomass,
-                     cEcosimResultWriter.eResultTypes.Mortality,
-                     cEcosimResultWriter.eResultTypes.Catch
-                    Me.SaveAggregatedTypeResult(outputtype, iteration, tsMonthly, msg)
-            End Select
-        Next
-
-        Return True
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Save a specific result (Biomass,Mortality or Yield) of iteration to a CSV file.
-    ''' </summary>
-    ''' <param name="ResultType">The Result type to save.</param>
-    ''' <param name="iteration">The iteration the results come from.</param>
-    ''' <param name="tsMonthly">True for results to be saved monthly and false to save annually.</param>
-    ''' <param name="msg">The message to append status information to.</param>
-    ''' <returns>True if successful.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedTypeResult(ResultType As cEcosimResultWriter.eResultTypes,
-                                               iteration As ISFPIteration,
-                                               tsMonthly As Boolean,
-                                               msg As cMessage) As Boolean
-
-        ' Note on globalization: 
-        '  - All messages presented to users should be localized, e.g., obtained from the resources;
-        '  - All text written to CSV files is written in English, and cannot be localized in case EwE needs to parse this data one day.
-        '  - File names are thus also not localized.
-
-        Dim strPath As String = Me.OutputFolder
-        Dim CSVfile As String
-        'Set file name
-        If (tsMonthly) Then
-            CSVfile = Path.Combine(strPath, iteration.Name + "_" + ResultType.ToString + ".csv")
-        Else
-            CSVfile = Path.Combine(strPath, iteration.Name + "_" + ResultType.ToString + "_Annual.csv")
-        End If
-
-        Dim writer As StreamWriter = Nothing
-        Dim bSuccess As Boolean = True
-        Dim data(Me.Core.nGroups, Me.Core.nEcosimTimeSteps) As Single
-        Dim grpOutput As cEcosimGroupOutput = Nothing
-        Dim GroupNames As String = Me.GetAllGroupNames()
-
-        If cFileUtils.IsDirectoryAvailable(strPath, True) Then
-
-            ' ToDo: clear the content of the directory?
-
-            Try
-                writer = New StreamWriter(CSVfile)
-            Catch ex As Exception
-                Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_FAILED, My.Resources.DETAIL_ITERATION_AGGREGATED, ex.Message), eStatusFlags.ErrorEncountered)
-                bSuccess = False
-            End Try
-
-            If (writer IsNot Nothing) Then
-
-                ' Include default header if needed
-                If Me.Core.SaveWithFileHeader Then
-                    writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                End If
-
-
-                ' -- Write header --
-                writer.WriteLine("Iteration Name," + iteration.Name)
-                writer.WriteLine("Data," + ResultType.ToString)
-                writer.WriteLine()
-                writer.WriteLine(GroupNames)
-
-                Try
-
-                    If (iteration.RunState = ISFPIteration.eRunState.Completed) Then
-
-                        For i As Integer = 1 To Me.Core.nGroups
-                            grpOutput = Me.Core.EcoSimGroupOutputs(i)
-                            For j As Integer = 1 To Me.Core.nEcosimTimeSteps
-                                Select Case ResultType
-                                    Case cEcosimResultWriter.eResultTypes.Biomass
-                                        data(i, j) = grpOutput.Biomass(j)
-                                    Case cEcosimResultWriter.eResultTypes.Mortality
-                                        data(i, j) = grpOutput.TotalMort(j)
-                                    Case cEcosimResultWriter.eResultTypes.Catch
-                                        data(i, j) = grpOutput.Catch(j)
-                                End Select
-                            Next
-                        Next
-
-                        'Output Monthly
-                        If (tsMonthly) Then
-                            'Each time steps
-                            For j As Integer = 1 To data.GetLength(1) - 1
-                                'For every group
-                                For i As Integer = 1 To data.GetLength(0) - 1
-                                    If i > 1 Then writer.Write(", ")
-                                    writer.Write(cStringUtils.FormatSingle(data(i, j)))
-                                Next
-                                writer.WriteLine()
-                            Next
-                        Else ' Output Yearly
-                            Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
-                            Dim nGroups As Integer = data.GetLength(0) - 1
-                            Dim sum(nGroups) As Single
-                            For j As Integer = 1 To simYears
-                                For i As Integer = 1 To nGroups
-                                    For k As Integer = 1 To cCore.N_MONTHS
-                                        If (k = 1) Then sum(i) = 0
-                                        sum(i) += data(i, (j - 1) * cCore.N_MONTHS + k)
-                                    Next
-                                    If i > 1 Then writer.Write(", ")
-                                    writer.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
-                                Next
-                                writer.WriteLine()
-                            Next
-                        End If
-
-                        ' ToDo: Consider if we also need to write any information if iterations somehow failed. The run is not complete then...
-                        Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_SUCCESS, My.Resources.DETAIL_ITERATION_AGGREGATED, CSVfile), eStatusFlags.OK)
-                    End If
-
-                Catch ex As Exception
-                    Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_FAILED, My.Resources.DETAIL_ITERATION_AGGREGATED, ex.Message), eStatusFlags.ErrorEncountered)
-                    bSuccess = False
-                End Try
-
-                writer.Close()
-
-            End If
-        Else
-            ' Panic!
-            Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.FAILURE_DIRECTORY, strPath), eStatusFlags.ErrorEncountered)
-        End If
-
-        Return bSuccess
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Save the configuration of an iteration to file for later reloading.
-    ''' </summary>
-    ''' <returns>True if successful.</returns>
-    ''' -----------------------------------------------------------------------
-    Private Function SaveIterationConfiguration(iteration As ISFPIteration, msg As cMessage) As Boolean
-
-        ' Sanity checks
-        Debug.Assert(iteration IsNot Nothing)
-
-        Dim strIterationPath As String = Path.Combine(Me.OutputFolder, cFileUtils.ToValidFileName(iteration.Name, False))
-        Dim writer As StreamWriter = Nothing
-        Dim bSuccess As Boolean = True
-
-        ' Abort if not ran completed
-        ' Note that this assumes that the directory is vigin territory... failed iterations are not obliterated. EwE always makes this harsh assumption, eek
-        If (Not iteration.RunState = ISFPIteration.eRunState.Completed) Then Return False
-
-        If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
-
-            writer = New StreamWriter(Path.Combine(strIterationPath, ".classname"))
-            writer.WriteLine(iteration.GetType().ToString)
-            writer.Close()
-
-            'Save vulnerabilities configuartion
-            writer = New StreamWriter(Path.Combine(strIterationPath, ".vulnerabilities"))
-            If (iteration.Vulnerabilities IsNot Nothing) Then
-                For i As Integer = 1 To Me.Core.nGroups
-                    If (i > 1) Then writer.WriteLine()
-                    For j As Integer = 1 To Me.Core.nGroups
-                        If (j > 1) Then writer.Write(",")
-                        writer.Write(cStringUtils.ToCSVField(iteration.Vulnerabilities(i, j)))
-                    Next
-                Next
-            End If
-            writer.Close()
-
-            'Output vulnerabilities to a csv file
-            'If ecosim or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
-               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
-                writer = New StreamWriter(Path.Combine(strIterationPath, "Vulnerabilities.csv"))
-                If (iteration.Vulnerabilities IsNot Nothing) Then
-                    ' Include default header if needed
-                    If Me.Core.SaveWithFileHeader Then
-                        writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                    End If
-
-                    ' -- Write header --
-                    writer.WriteLine("Iteration Name," + iteration.Name)
-                    writer.WriteLine("Data,Vulnerabilities")
-                    writer.WriteLine()
-
-                    For i As Integer = 1 To Me.Core.nGroups
-                        If (i > 1) Then writer.WriteLine()
-                        For j As Integer = 1 To Me.Core.nGroups
-                            If (j > 1) Then writer.Write(",")
-                            writer.Write(cStringUtils.ToCSVField(iteration.Vulnerabilities(i, j)))
-                        Next
-                    Next
-                End If
-                writer.Close()
-            End If
-
-            'If aggregated or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
-               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
-                Dim strPath As String = Me.OutputFolder
-                If cFileUtils.IsDirectoryAvailable(strPath, True) Then
-                    writer = New StreamWriter(Path.Combine(strPath, iteration.Name + "_Vulnerabilities.csv"))
-                    If (iteration.Vulnerabilities IsNot Nothing) Then
-                        ' Include default header if needed
-                        If Me.Core.SaveWithFileHeader Then
-                            writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        End If
-
-                        ' -- Write header --
-                        writer.WriteLine("Iteration Name," + iteration.Name)
-                        writer.WriteLine("Data,Vulnerabilities")
-                        writer.WriteLine()
-
-                        For i As Integer = 1 To Me.Core.nGroups
-                            If (i > 1) Then writer.WriteLine()
-                            For j As Integer = 1 To Me.Core.nGroups
-                                If (j > 1) Then writer.Write(",")
-                                writer.Write(cStringUtils.ToCSVField(iteration.Vulnerabilities(i, j)))
-                            Next
-                        Next
-                    End If
-                    writer.Close()
-                End If
-            End If
-
-            'Save anomaly shape configuartion
-            writer = New StreamWriter(Path.Combine(strIterationPath, ".anomaly"))
-            If (iteration.AnomalyShape IsNot Nothing) Then
-                For i As Integer = 0 To iteration.AnomalyShape.Length - 1
-                    If (i >= 1) Then writer.Write(",")
-                    writer.Write(cStringUtils.ToCSVField(iteration.AnomalyShape(i)))
-                Next
-            End If
-            writer.Close()
-
-            'Output Anomaly to a csv file
-            'If ecosim or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
-               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
-                writer = New StreamWriter(Path.Combine(strIterationPath, "Anomaly.csv"))
-                If (iteration.AnomalyShape IsNot Nothing) Then
-                    ' Include default header if needed
-                    If Me.Core.SaveWithFileHeader Then
-                        writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                    End If
-
-                    ' -- Write header --
-                    writer.WriteLine("Iteration Name," + iteration.Name)
-                    writer.WriteLine("Data,Anomaly")
-                    writer.WriteLine()
-                    For i As Integer = 0 To iteration.AnomalyShape.Length - 1
-                        If (i >= 1) Then writer.Write(",")
-                        writer.Write(cStringUtils.ToCSVField(iteration.AnomalyShape(i)))
-                    Next
-                End If
-                writer.Close()
-            End If
-
-            'If aggregated or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
-               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
-                Dim strPath As String = Me.OutputFolder
-                If cFileUtils.IsDirectoryAvailable(strPath, True) Then
-                    writer = New StreamWriter(Path.Combine(strPath, iteration.Name + "_Anomaly.csv"))
-                    If (iteration.AnomalyShape IsNot Nothing) Then
-                        ' Include default header if needed
-                        If Me.Core.SaveWithFileHeader Then
-                            writer.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        End If
-
-                        ' -- Write header --
-                        writer.WriteLine("Iteration Name," + iteration.Name)
-                        writer.WriteLine("Data,Anomaly")
-                        writer.WriteLine()
-
-                        For i As Integer = 0 To iteration.AnomalyShape.Length - 1
-                            If (i >= 1) Then writer.Write(",")
-                            writer.Write(cStringUtils.ToCSVField(iteration.AnomalyShape(i)))
-                        Next
-                    End If
-                    writer.Close()
-                End If
-            End If
-
-            Me.AppendStatus(msg, cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_SUCCESS, My.Resources.DETAIL_ITERATION_CONFIG, strIterationPath), eStatusFlags.OK)
-
-        End If
-        Return bSuccess
-
-    End Function
-
-    Public Function LoadIterationsConfiguration() As Boolean
-
-        Me.m_iterations.Clear()
-
-        Dim strSimPath As String = Me.OutputFolder
-        For Each dir As String In Directory.GetDirectories(strSimPath)
-
-            Dim n As String = Path.GetFileName(dir)
-            Dim iter As ISFPIteration = Nothing
-
-            Try
-                Using reader As New StreamReader(Path.Combine(dir, ".classname"))
-                    Dim strClassName As String = reader.ReadLine().Trim()
-                    reader.Close()
-                    Dim t As Type = Type.GetType(strClassName, False, True)
-                    iter = CType(Activator.CreateInstance(t), ISFPIteration)
-                End Using
-            Catch ex As Exception
-                ' NOP
-            End Try
-
-            If LoadIterationConfiguration(iter) Then
-                Me.m_iterations.Add(iter)
-            End If
-        Next
-        Return (Me.m_iterations.Count > 0)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Re-populate an iteration from file.
-    ''' </summary>
-    ''' <returns>True if successful.</returns>
-    ''' <param name="iteration">The iteration to repopulate.</param>
-    ''' -----------------------------------------------------------------------
-    Private Function LoadIterationConfiguration(iteration As ISFPIteration) As Boolean
-
-        If (iteration Is Nothing) Then Return False
-
-        Dim strSimPath As String = Path.Combine(Me.OutputFolder, cFileUtils.ToValidFileName(iteration.Name, False))
-        Dim bSuccess As Boolean = True
-
-        If cFileUtils.IsDirectoryAvailable(strSimPath, False) Then
-
-            ' -- Class name validation --
-            Try
-                Using reader As New StreamReader(Path.Combine(strSimPath, ".classname"))
-                    Dim strClassName As String = reader.ReadLine().Trim()
-                    bSuccess = (String.Compare(iteration.GetType().ToString(), strClassName, True) = 0)
-                    reader.Close()
-                End Using
-            Catch ex As Exception
-                bSuccess = False
-            End Try
-
-            ' -- Vulnerabilities --
-            Try
-                Using reader As New StreamReader(Path.Combine(strSimPath, ".vulnerabilities"))
-                    Debug.Assert(iteration.Vulnerabilities IsNot Nothing)
-                    For i As Integer = 1 To Me.Core.nGroups
-                        Dim strLine As String = reader.ReadLine().Trim()
-                        Dim astrValues As String() = cStringUtils.SplitQualified(strLine, ","c)
-                        For j As Integer = 1 To Me.Core.nGroups
-                            iteration.Vulnerabilities(i, j) = cStringUtils.ConvertToSingle(astrValues(j - 1))
-                        Next
-                    Next
-                End Using
-
-
-            Catch ex As Exception
-                ' Let this code blunder into array bounds etc. No neat error trapping for now, we can always improve this checking later
-                bSuccess = False
-            End Try
-
-            ' -- Anomaly shape --
-            Try
-                Using reader As New StreamReader(Path.Combine(strSimPath, ".anomaly"))
-
-                    Debug.Assert(iteration.AnomalyShape IsNot Nothing)
-
-                    Dim strLine As String = reader.ReadLine().Trim()
-                    Dim astrValues As String() = cStringUtils.SplitQualified(strLine, ","c)
-                    Dim shape As Single() = iteration.AnomalyShape
-
-                    For i As Integer = 0 To astrValues.Length - 1
-                        shape(i) = cStringUtils.ConvertToSingle(astrValues(i))
-                    Next
-                    For i As Integer = astrValues.Length - 1 To shape.Length - 1
-                        shape(i) = 0
-                    Next
-
-                End Using
-            Catch ex As Exception
-                ' Let this code blunder into array bounds etc. No neat error trapping for now, we can always improve this checking later
-                bSuccess = False
-            End Try
-        End If
-
-        iteration.RunState = If(bSuccess, ISFPIteration.eRunState.Completed, ISFPIteration.eRunState.Error)
-        Return bSuccess
-
-    End Function
+    'Public Function LoadIterationsConfiguration() As Boolean
+
+    '    Me.m_iterations.Clear()
+
+    '    Dim strSimPath As String = Me.OutputFolder
+    '    For Each dir As String In Directory.GetDirectories(strSimPath)
+
+    '        Dim n As String = Path.GetFileName(dir)
+    '        Dim iter As ISFPIteration = Nothing
+
+    '        Try
+    '            Using reader As New StreamReader(Path.Combine(dir, ".classname"))
+    '                Dim strClassName As String = reader.ReadLine().Trim()
+    '                reader.Close()
+    '                Dim t As Type = Type.GetType(strClassName, False, True)
+    '                iter = CType(Activator.CreateInstance(t), ISFPIteration)
+    '            End Using
+    '        Catch ex As Exception
+    '            ' NOP
+    '        End Try
+
+    '        If iter.LoadIterationConfiguration(Me.Core) Then
+    '            Me.m_iterations.Add(iter)
+    '        End If
+    '    Next
+    '    Return (Me.m_iterations.Count > 0)
+
+    'End Function
 
     Private Sub AppendStatus(msg As cMessage, strMessage As String, status As eStatusFlags)
         Dim vs As New cVariableStatus(status, strMessage, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)

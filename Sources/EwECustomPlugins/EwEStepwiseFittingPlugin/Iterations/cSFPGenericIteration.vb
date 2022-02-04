@@ -27,30 +27,39 @@
 
 Option Strict On
 
-Imports System.Windows.Forms
+Imports System.IO
+Imports System.Text
 Imports EwECore
+Imports EwECore.Ecosim
 Imports EwECore.FitToTimeSeries
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
 Public MustInherit Class cSFPGenericIteration
     Implements ISFPIteration
 
+#Region " Private variables "
+
     ''' <summary>Calculated Sum of Squares</summary>
-    Protected m_ss As Single = 0
+    Private m_ss As Single = 0
     ''' <summary>Calculated AIC</summary>
-    Protected m_aic As Single = 0
+    Private m_aic As Single = 0
     ''' <summary>Calculated AICc</summary>
-    Protected m_aicc As Single = 0
+    Private m_aicc As Single = 0
     ''' <summary>Anomaly shape data</summary>
-    Protected m_anomalyshape() As Single = Nothing
+    Private m_anomalyshape() As Single = Nothing
     ''' <summary>Vulnerabilities data</summary>
-    Protected m_vulnerabilities(,) As Single = Nothing
+    Private m_vulnerabilities(,) As Single = Nothing
     ''' <summary>Calculated time series SS results</summary>
-    Protected m_timeseriesSS As Single()
+    Private m_timeseriesSS As Single()
+
+    Private m_lRunMessages As New List(Of String)
 
     Private m_parameters As cSFPParameters = Nothing
+
+#End Region ' Private variables
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -90,6 +99,8 @@ Public MustInherit Class cSFPGenericIteration
     ''' -----------------------------------------------------------------------
     Public Overridable Function Run(core As cCore) As Boolean _
         Implements ISFPIteration.Run
+
+        Me.Clear()
 
         'Run EcoSim
         Me.RunEcosim(core)
@@ -222,6 +233,8 @@ Public MustInherit Class cSFPGenericIteration
 
     End Function
 
+#Region " Accessors "
+
     Public Property Parameters As cSFPParameters Implements ISFPIteration.Parameters
         Get
             Return Me.m_parameters
@@ -239,6 +252,93 @@ Public MustInherit Class cSFPGenericIteration
     Public Property RunState As ISFPIteration.eRunState = ISFPIteration.eRunState.Idle Implements ISFPIteration.RunState
     Public Property Elapsed As TimeSpan Implements ISFPIteration.Elapsed
     Public Property Completed As Date Implements ISFPIteration.Completed
+    Public ReadOnly Property RunStateMessages As String() Implements ISFPIteration.RunStateMessages
+        Get
+            Return Me.m_lRunMessages.ToArray()
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.SS"/>
+    ''' -----------------------------------------------------------------------
+    Public Property SS() As Single _
+        Implements ISFPIteration.SS
+        Get
+            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return 0
+            Return Me.m_ss
+        End Get
+        Friend Set(value As Single)
+            Me.m_ss = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.AIC"/>
+    ''' -----------------------------------------------------------------------
+    Public Property AIC() As Single _
+        Implements ISFPIteration.AIC
+        Get
+            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return 0
+            Return Me.m_aic
+        End Get
+        Friend Set(value As Single)
+            Me.m_aic = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.AICc"/>
+    ''' -----------------------------------------------------------------------
+    Public Property AICc() As Single _
+        Implements ISFPIteration.AICc
+        Get
+            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return 0
+            Return Me.m_aicc
+        End Get
+        Friend Set(value As Single)
+            Me.m_aicc = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.IsBestFit"/>
+    ''' -----------------------------------------------------------------------
+    Public Property IsBestFit As Boolean = False _
+        Implements ISFPIteration.IsBestFit
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.AnomalyShape"/>
+    ''' -----------------------------------------------------------------------
+    Public Function AnomalyShape() As Single() _
+        Implements ISFPIteration.AnomalyShape
+        Return Me.m_anomalyshape
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.Vulnerabilities"/>
+    ''' -----------------------------------------------------------------------
+    Public Function Vulnerabilities() As Single(,) _
+        Implements ISFPIteration.Vulnerabilities
+        Return Me.m_vulnerabilities
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.TimeSeriesSS"/>
+    ''' -----------------------------------------------------------------------
+    Public Property TimeSeriesSS As Single() _
+          Implements ISFPIteration.TimeSeriesSS
+        Get
+            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return Nothing
+            Return Me.m_timeseriesSS
+        End Get
+        Friend Set(value As Single())
+            Me.m_timeseriesSS = value
+        End Set
+    End Property
+
+#End Region ' Accessors
+
+#Region " Running "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -296,7 +396,7 @@ Public MustInherit Class cSFPGenericIteration
     ''' <returns>True if a run started successfully.</returns>
     ''' -----------------------------------------------------------------------
     Protected Function RunEcosim(core As cCore) As Boolean
-        Return core.RunEcoSim()
+        Return core.RunEcoSim(Nothing, False)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -441,11 +541,17 @@ Public MustInherit Class cSFPGenericIteration
     End Function
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.Clear"/>
+    ''' <summary>
+    ''' Wipe prior to a run.
+    ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub Clear() _
-       Implements ISFPIteration.Clear
+    Public Overridable Sub Clear()
+        Me.m_lRunMessages.Clear()
     End Sub
+
+#End Region ' Running
+
+#Region " Formatting "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -497,85 +603,20 @@ Public MustInherit Class cSFPGenericIteration
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.SS"/>
-    ''' -----------------------------------------------------------------------
-    Public Property SS() As Single _
-        Implements ISFPIteration.SS
-        Get
-            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return 0
-            Return Me.m_ss
-        End Get
-        Friend Set(value As Single)
-            Me.m_ss = value
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.AIC"/>
-    ''' -----------------------------------------------------------------------
-    Public Property AIC() As Single _
-        Implements ISFPIteration.AIC
-        Get
-            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return 0
-            Return Me.m_aic
-        End Get
-        Friend Set(value As Single)
-            Me.m_aic = value
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.AICc"/>
-    ''' -----------------------------------------------------------------------
-    Public Property AICc() As Single _
-        Implements ISFPIteration.AICc
-        Get
-            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return 0
-            Return Me.m_aicc
-        End Get
-        Friend Set(value As Single)
-            Me.m_aicc = value
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.IsBestFit"/>
-    ''' -----------------------------------------------------------------------
-    Public Property IsBestFit As Boolean = False _
-        Implements ISFPIteration.IsBestFit
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.AnomalyShape"/>
-    ''' -----------------------------------------------------------------------
-    Public Function AnomalyShape() As Single() _
-        Implements ISFPIteration.AnomalyShape
-        Return Me.m_anomalyshape
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.Vulnerabilities"/>
-    ''' -----------------------------------------------------------------------
-    Public Function Vulnerabilities() As Single(,) _
-        Implements ISFPIteration.Vulnerabilities
-        Return Me.m_vulnerabilities
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="ISFPIteration.TimeSeriesSS"/>
-    ''' -----------------------------------------------------------------------
-    Public Property TimeSeriesSS As Single() _
-          Implements ISFPIteration.TimeSeriesSS
-        Get
-            If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return Nothing
-            Return Me.m_timeseriesSS
-        End Get
-        Friend Set(value As Single())
-            Me.m_timeseriesSS = value
-        End Set
-    End Property
+#End Region ' Formatting
 
 #Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add a run status message for the user.
+    ''' </summary>
+    ''' <param name="msg"></param>
+    ''' -----------------------------------------------------------------------
+    Protected Sub AppendRunStateMessage(msg As String)
+        If String.IsNullOrWhiteSpace(msg) Then Return
+        Me.m_lRunMessages.Add(msg)
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -667,5 +708,429 @@ Public MustInherit Class cSFPGenericIteration
     End Sub
 
 #End Region ' Internals
+
+#Region " Serialization and output writing "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save Ecosim run results of an iteration to file.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function SaveResults(core As cCore) As Boolean Implements ISFPIteration.SaveResults
+
+        Dim strIterationPath As String = Path.Combine(Me.Parameters.IterationOutputFolder, cFileUtils.ToValidFileName(Me.Name, False))
+        Dim bSuccess As Boolean = True
+
+        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
+           (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
+
+            If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
+                Dim wsim As New Ecosim.cEcosimResultWriter(core)
+                Try
+                    If wsim.WriteResults(strIterationPath, bQuiet:=True) Then
+                        Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_SUCCESS, My.Resources.DETAIL_ECOSIM, strIterationPath))
+                        bSuccess = True
+                    Else
+                        Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_FAILED, My.Resources.DETAIL_ECOSIM, ""))
+                        bSuccess = False
+                    End If
+                Catch ex As Exception
+                    ' This REALLY should not happen
+                    cLog.Write(ex, "cSFPManager.SaveIterationResults(Ecosim)")
+                    Debug.Assert(False, ex.Message)
+                End Try
+            End If
+        End If
+
+        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
+           (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
+
+            'Save output results in Monthly and Yearly format 
+            Me.SaveAggregatedResults(core, strIterationPath, True)
+            Me.SaveAggregatedResults(core, strIterationPath, False)
+
+        End If
+
+        Me.SaveIterationConfiguration(core)
+
+        Return bSuccess
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save specific Ecosim results (Biomass,Mortality and Yield) of iteration to a CSV file.
+    ''' </summary>
+    ''' <param name="bMonthly"> True for results to be saved monthly and false to save annually </param>
+    ''' <returns>Always returns true.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function SaveAggregatedResults(core As cCore, strIterationPath As String, bMonthly As Boolean) As Boolean
+
+        For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
+            Select Case outputtype
+                Case cEcosimResultWriter.eResultTypes.Biomass,
+                     cEcosimResultWriter.eResultTypes.Mortality,
+                     cEcosimResultWriter.eResultTypes.Catch
+                    Me.SaveAggregatedTypeResult(outputtype, core, strIterationPath, bMonthly)
+            End Select
+        Next
+
+        Return True
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save a specific result (Biomass,Mortality or Yield) of iteration to a CSV file.
+    ''' </summary>
+    ''' <param name="ResultType">The Result type to save.</param>
+    ''' <param name="bMonthly">True for results to be saved monthly and false to save annually.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function SaveAggregatedTypeResult(ResultType As cEcosimResultWriter.eResultTypes, core As cCore,
+                                              strIterationPath As String, bMonthly As Boolean) As Boolean
+
+        Dim CSVfile As String = ""
+        If (bMonthly) Then
+            CSVfile = Path.Combine(strIterationPath, Me.Name + "_" + ResultType.ToString + ".csv")
+        Else
+            CSVfile = Path.Combine(strIterationPath, Me.Name + "_" + ResultType.ToString + "_Annual.csv")
+        End If
+
+        Dim writer As StreamWriter = Nothing
+        Dim bSuccess As Boolean = True
+        Dim data(core.nGroups, core.nEcosimTimeSteps) As Single
+        Dim grpOutput As cEcosimGroupOutput = Nothing
+        Dim GroupNames As String = Me.GetAllGroupNames(core)
+
+        If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
+
+            ' ToDo: clear the content of the directory?
+
+            Try
+                writer = New StreamWriter(CSVfile)
+            Catch ex As Exception
+                Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_FAILED, My.Resources.DETAIL_ITERATION_AGGREGATED, ex.Message))
+                bSuccess = False
+            End Try
+
+            If (writer IsNot Nothing) Then
+
+                ' Include default header if needed
+                If Me.Parameters.SaveHeaders Then
+                    writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                    writer.WriteLine("Iteration Name," + Me.Name)
+                    writer.WriteLine("Data," + ResultType.ToString)
+                    writer.WriteLine()
+                End If
+
+                writer.WriteLine(GroupNames)
+
+                Try
+
+                    If (Me.RunState = ISFPIteration.eRunState.Completed) Then
+
+                        For i As Integer = 1 To core.nGroups
+                            grpOutput = core.EcoSimGroupOutputs(i)
+                            For j As Integer = 1 To core.nEcosimTimeSteps
+                                Select Case ResultType
+                                    Case cEcosimResultWriter.eResultTypes.Biomass
+                                        data(i, j) = grpOutput.Biomass(j)
+                                    Case cEcosimResultWriter.eResultTypes.Mortality
+                                        data(i, j) = grpOutput.TotalMort(j)
+                                    Case cEcosimResultWriter.eResultTypes.Catch
+                                        data(i, j) = grpOutput.Catch(j)
+                                End Select
+                            Next
+                        Next
+
+                        'Output Monthly
+                        If (bMonthly) Then
+                            'Each time steps
+                            For j As Integer = 1 To data.GetLength(1) - 1
+                                'For every group
+                                For i As Integer = 1 To data.GetLength(0) - 1
+                                    If i > 1 Then writer.Write(", ")
+                                    writer.Write(cStringUtils.FormatSingle(data(i, j)))
+                                Next
+                                writer.WriteLine()
+                            Next
+                        Else ' Output Yearly
+                            Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
+                            Dim nGroups As Integer = data.GetLength(0) - 1
+                            Dim sum(nGroups) As Single
+                            For j As Integer = 1 To simYears
+                                For i As Integer = 1 To nGroups
+                                    For k As Integer = 1 To cCore.N_MONTHS
+                                        If (k = 1) Then sum(i) = 0
+                                        sum(i) += data(i, (j - 1) * cCore.N_MONTHS + k)
+                                    Next
+                                    If i > 1 Then writer.Write(", ")
+                                    writer.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
+                                Next
+                                writer.WriteLine()
+                            Next
+                        End If
+
+                        Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_SUCCESS, My.Resources.DETAIL_ITERATION_AGGREGATED, CSVfile))
+                    End If
+
+                Catch ex As Exception
+                    Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_FAILED, My.Resources.DETAIL_ITERATION_AGGREGATED, ex.Message))
+                    bSuccess = False
+                End Try
+
+                writer.Close()
+
+            End If
+        Else
+            ' Panic!
+            Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.FAILURE_DIRECTORY, strIterationPath))
+            bSuccess = False
+        End If
+
+        Return bSuccess
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get all group names from Ecosim run and return them as a comma separated string
+    ''' </summary>
+    ''' <returns>String of comma separated group names.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function GetAllGroupNames(core As cCore) As String
+
+        Dim str As New StringBuilder()
+
+        For i As Integer = 1 To core.nGroups
+            str.Append(cStringUtils.ToCSVField(core.EcoSimGroupOutputs(i).Name))
+            If i <> core.nGroups Then str.Append(",")
+        Next
+
+        Return str.ToString()
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save the configuration of an iteration to file for later reloading.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function SaveIterationConfiguration(core As cCore) As Boolean
+
+        ' Sanity checks
+
+        Dim strIterationPath As String = Path.Combine(Me.Parameters.IterationOutputFolder, cFileUtils.ToValidFileName(Me.Name, False))
+        Dim writer As StreamWriter = Nothing
+        Dim bSuccess As Boolean = True
+
+        ' Abort if not ran completed
+        ' Note that this assumes that the directory is vigin territory... failed iterations are not obliterated. EwE always makes this harsh assumption, eek
+        If (Not Me.RunState = ISFPIteration.eRunState.Completed) Then Return False
+
+        If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
+
+            writer = New StreamWriter(Path.Combine(strIterationPath, ".classname"))
+            writer.WriteLine(Me.GetType().ToString)
+            writer.Close()
+
+            'Save vulnerabilities configuartion
+            writer = New StreamWriter(Path.Combine(strIterationPath, ".vulnerabilities"))
+            If (Me.Vulnerabilities IsNot Nothing) Then
+                For i As Integer = 1 To core.nGroups
+                    If (i > 1) Then writer.WriteLine()
+                    For j As Integer = 1 To core.nGroups
+                        If (j > 1) Then writer.Write(",")
+                        writer.Write(cStringUtils.ToCSVField(Me.Vulnerabilities(i, j)))
+                    Next
+                Next
+            End If
+            writer.Close()
+
+            'Output vulnerabilities to a csv file
+            'If ecosim or all output is selected save the csv file to the named iteration folder
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
+               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
+                writer = New StreamWriter(Path.Combine(strIterationPath, "Vulnerabilities.csv"))
+                If (Me.Vulnerabilities IsNot Nothing) Then
+                    ' Include default header if needed
+                    If Me.Parameters.SaveHeaders Then
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        writer.WriteLine("Iteration Name," + Me.Name)
+                        writer.WriteLine("Data,Vulnerabilities")
+                        writer.WriteLine()
+                    End If
+
+                    ' -- Write header --
+                    For i As Integer = 1 To core.nGroups
+                        If (i > 1) Then writer.WriteLine()
+                        For j As Integer = 1 To core.nGroups
+                            If (j > 1) Then writer.Write(",")
+                            writer.Write(cStringUtils.ToCSVField(Me.Vulnerabilities(i, j)))
+                        Next
+                    Next
+                End If
+                writer.Close()
+            End If
+
+            'If aggregated or all output is selected save the csv file to the named iteration folder
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
+               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
+                Dim strPath As String = Me.Parameters.IterationOutputFolder
+                writer = New StreamWriter(Path.Combine(strPath, Me.Name + "_Vulnerabilities.csv"))
+                If (Me.Vulnerabilities IsNot Nothing) Then
+                    ' Include default header if needed
+                    If (Me.Parameters.SaveHeaders) Then
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        writer.WriteLine("Iteration Name," + Me.Name)
+                        writer.WriteLine("Data,Vulnerabilities")
+                        writer.WriteLine()
+                    End If
+
+                    For i As Integer = 1 To core.nGroups
+                        If (i > 1) Then writer.WriteLine()
+                        For j As Integer = 1 To core.nGroups
+                            If (j > 1) Then writer.Write(",")
+                            writer.Write(cStringUtils.ToCSVField(Me.Vulnerabilities(i, j)))
+                        Next
+                    Next
+                End If
+                writer.Close()
+            End If
+
+            'Save anomaly shape configuartion
+            writer = New StreamWriter(Path.Combine(strIterationPath, ".anomaly"))
+            If (Me.AnomalyShape IsNot Nothing) Then
+                For i As Integer = 0 To Me.AnomalyShape.Length - 1
+                    If (i >= 1) Then writer.Write(",")
+                    writer.Write(cStringUtils.ToCSVField(Me.AnomalyShape(i)))
+                Next
+            End If
+            writer.Close()
+
+            'Output Anomaly to a csv file
+            'If ecosim or all output is selected save the csv file to the named iteration folder
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
+               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
+                writer = New StreamWriter(Path.Combine(strIterationPath, "Anomaly.csv"))
+                If (Me.AnomalyShape IsNot Nothing) Then
+                    ' Include default header if needed
+                    If (Me.Parameters.SaveHeaders) Then
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        writer.WriteLine("Iteration Name," + Me.Name)
+                        writer.WriteLine("Data,Anomaly")
+                        writer.WriteLine()
+                    End If
+                    For i As Integer = 0 To Me.AnomalyShape.Length - 1
+                        If (i >= 1) Then writer.Write(",")
+                        writer.Write(cStringUtils.ToCSVField(Me.AnomalyShape(i)))
+                    Next
+                End If
+                writer.Close()
+            End If
+
+            'If aggregated or all output is selected save the csv file to the named iteration folder
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
+               (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
+                writer = New StreamWriter(Path.Combine(strIterationPath, Me.Name + "_Anomaly.csv"))
+                If (Me.AnomalyShape IsNot Nothing) Then
+                    ' Include default header if needed
+                    ' Include default header if needed
+                    If (Me.Parameters.SaveHeaders) Then
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        writer.WriteLine("Iteration Name," + Me.Name)
+                        writer.WriteLine("Data,Anomaly")
+                        writer.WriteLine()
+                    End If
+
+                    For i As Integer = 0 To Me.AnomalyShape.Length - 1
+                        If (i >= 1) Then writer.Write(",")
+                        writer.Write(cStringUtils.ToCSVField(Me.AnomalyShape(i)))
+                    Next
+                End If
+                writer.Close()
+            End If
+
+            Me.AppendRunStateMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_DETAIL_SUCCESS, My.Resources.DETAIL_ITERATION_CONFIG, strIterationPath))
+
+        End If
+        Return bSuccess
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Re-populate an iteration from file.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadIterationConfiguration(core As cCore) As Boolean
+
+        Dim strSimPath As String = Path.Combine(Me.Parameters.IterationOutputFolder, cFileUtils.ToValidFileName(Me.Name, False))
+        Dim bSuccess As Boolean = True
+
+        If cFileUtils.IsDirectoryAvailable(strSimPath, False) Then
+
+            ' -- Class name validation --
+            Try
+                Using reader As New StreamReader(Path.Combine(strSimPath, ".classname"))
+                    Dim strClassName As String = reader.ReadLine().Trim()
+                    bSuccess = (String.Compare(Me.GetType().ToString(), strClassName, True) = 0)
+                    reader.Close()
+                End Using
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
+            ' -- Vulnerabilities --
+            Try
+                Using reader As New StreamReader(Path.Combine(strSimPath, ".vulnerabilities"))
+                    Debug.Assert(Me.Vulnerabilities IsNot Nothing)
+                    For i As Integer = 1 To core.nGroups
+                        Dim strLine As String = reader.ReadLine().Trim()
+                        Dim astrValues As String() = cStringUtils.SplitQualified(strLine, ","c)
+                        For j As Integer = 1 To core.nGroups
+                            Me.Vulnerabilities(i, j) = cStringUtils.ConvertToSingle(astrValues(j - 1))
+                        Next
+                    Next
+                End Using
+
+
+            Catch ex As Exception
+                ' Let this code blunder into array bounds etc. No neat error trapping for now, we can always improve this checking later
+                bSuccess = False
+            End Try
+
+            ' -- Anomaly shape --
+            Try
+                Using reader As New StreamReader(Path.Combine(strSimPath, ".anomaly"))
+
+                    Debug.Assert(Me.AnomalyShape IsNot Nothing)
+
+                    Dim strLine As String = reader.ReadLine().Trim()
+                    Dim astrValues As String() = cStringUtils.SplitQualified(strLine, ","c)
+                    Dim shape As Single() = Me.AnomalyShape
+
+                    For i As Integer = 0 To astrValues.Length - 1
+                        shape(i) = cStringUtils.ConvertToSingle(astrValues(i))
+                    Next
+                    For i As Integer = astrValues.Length - 1 To shape.Length - 1
+                        shape(i) = 0
+                    Next
+
+                End Using
+            Catch ex As Exception
+                ' Let this code blunder into array bounds etc. No neat error trapping for now, we can always improve this checking later
+                bSuccess = False
+            End Try
+        End If
+
+        Me.RunState = If(bSuccess, ISFPIteration.eRunState.Idle, ISFPIteration.eRunState.Error)
+        Return bSuccess
+
+    End Function
+
+#End Region ' Serialization and output writing
 
 End Class

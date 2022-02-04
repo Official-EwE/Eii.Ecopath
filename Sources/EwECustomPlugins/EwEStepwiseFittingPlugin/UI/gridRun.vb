@@ -62,7 +62,6 @@ Public Class gridRun
 
     Public Sub Initialize(manager As cSFPManager)
         Me.m_manager = manager
-        Me.RefreshContent()
     End Sub
 
     ''' <summary>
@@ -95,6 +94,15 @@ Public Class gridRun
 
 #Region " Overrides "
 
+    Public Overrides Sub RefreshContent()
+
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.m_manager Is Nothing) Then Return
+
+        MyBase.RefreshContent()
+
+    End Sub
+
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
@@ -120,10 +128,6 @@ Public Class gridRun
     End Sub
 
     Protected Overrides Sub FillData()
-
-        ' Sanity checks
-        If (Me.UIContext Is Nothing) Then Return
-        If (Me.m_manager Is Nothing) Then Return
 
         Me.RowsCount = 1
 
