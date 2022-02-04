@@ -8,7 +8,7 @@ Module Module1
     Sub Main()
 
         ' Checking newer corrupt (model 1) against good, older version (model 2)
-        Dim model1 As String = "D:\Troubleshooting\2022-02-04 Ecospace corrupt Marta GSA\GSA0607EwEPelweb_04.02.22.Ecospace_CORRUPT.ewemdb"
+        Dim model1 As String = "D:\Troubleshooting\2022-02-04 Ecospace corrupt Marta GSA\GSA0607EwEPelweb_04.02.22.ewemdb"
         Dim model2 As String = "D:\Troubleshooting\2022-02-04 Ecospace corrupt Marta GSA\GSA0607EwEPelweb_04.02.22.Ecospace_OK.ewemdb"
 
         Dim r As New cAccessReader()
@@ -34,8 +34,13 @@ Module Module1
                     If c.GetDifferences(dt1, dt2) Then
                         sw.WriteLine(">> {0}: DIFFERENCES", table)
                         For Each d As cRowDifference In c.Differences
-                            ' Show how older value changed to a newer value (hence {4}->{3})
-                            sw.WriteLine("   {0}.{1} {2} ('{4}'->'{3}') where {5}", table, d.Column, d.Diff.ToString, d.Values1, d.Values2, d.Filter)
+                            Select Case d.Diff
+                                Case cRowDifference.eRowDifference.Changed
+                                    ' Show how older value changed to a newer value (hence {4}->{3})
+                                    sw.WriteLine("   {0}.{1} {2} ('{4}'->'{3}') where {5}", table, d.Column, d.Diff.ToString, d.Values1, d.Values2, d.Filter)
+                                Case cRowDifference.eRowDifference.Missing
+                                    sw.WriteLine("   {0}.{1} {2} where {3}", table, d.Column, d.Diff.ToString, d.Filter)
+                            End Select
                         Next
                     Else
                         sw.WriteLine("   {0}: ok", table)
