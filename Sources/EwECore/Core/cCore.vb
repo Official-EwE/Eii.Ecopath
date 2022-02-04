@@ -1687,6 +1687,50 @@ Public Class cCore
 
     End Function
 
+    Private Function LoadEcosimTimeSeriesStats() As Boolean
+        Dim tsd As cTimeSeriesDataset = Nothing
+
+        Dim bSucces As Boolean = True
+
+        Try
+            If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
+                tsd = Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex)
+            End If
+
+            For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
+
+                ts.LockUpdates()
+
+                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
+                ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
+                ts.Interval = Me.m_TSData.DataSetInterval
+
+                ts.UnlockUpdates(False)
+
+            Next
+
+            For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
+
+                ts.LockUpdates()
+
+                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
+                ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
+
+                ts.UnlockUpdates(False)
+
+                tsd.Add(ts)
+            Next
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
 #End Region ' Init and loading
 
 #Region " Update "
@@ -8454,7 +8498,10 @@ Public Class cCore
 
             LoadEcosimGroupOutputs()
             LoadEcosimFleetOutputs()
-            LoadEcosimTimeSeries()
+
+            ' JS 03Feb2021: Changed statement below to only load time series statistics.
+            ' The previous call to reload time series all the way messed up plug-ins such as Stepwise Fitting that lose their content in response
+            LoadEcosimTimeSeriesStats()
 
             LoadEcosimOutputs()
             LoadEcosimStats()

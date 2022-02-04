@@ -873,10 +873,14 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Refresh the entire content of the grid.
+        ''' Refresh the entire content of the grid. To stop a total grid refresh
+        ''' in its tracks, override <see cref="CanRefreshGrid()"/>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub RefreshContent()
+        Public Overridable Sub RefreshContent()
+
+            If Not Me.CanRefreshGrid Then Return
+
             Me.SuspendLayoutGrid()
             Try
                 Me.InitLayout()
@@ -885,6 +889,16 @@ Namespace Controls.EwEGrid
             End Try
             Me.ResumeLayoutGrid()
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Function to stop <see cref="RefreshContent()"/> if implementation-specific
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function CanRefreshGrid() As Boolean
+            Return True
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

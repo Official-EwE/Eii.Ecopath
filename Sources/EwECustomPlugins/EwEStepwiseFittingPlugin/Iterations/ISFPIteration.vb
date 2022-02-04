@@ -105,11 +105,11 @@ Public Interface ISFPIteration
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Clean up after the run
-    ''' Make sure Clear is ALWAYS called on any created iterations object after the object has been used
+    ''' Save the results of the iteration
     ''' </summary>
+    ''' <returns>True if successful</returns>
     ''' -----------------------------------------------------------------------
-    Sub Clear()
+    Function SaveResults(core As cCore) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -194,6 +194,13 @@ Public Interface ISFPIteration
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Property RunState As eRunState
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the messages to accompany the <see cref="RunState"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    ReadOnly Property RunStateMessages As String()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -173,6 +173,7 @@ Public Class cSFPContainer
                         Me.m_iteration.RunState = ISFPIteration.eRunState.Idle
                     Else
                         Me.m_iteration.RunState = ISFPIteration.eRunState.Completed
+                        Me.m_iteration.SaveResults(Me.m_core)
                     End If
                 Else
                     Me.m_iteration.RunState = ISFPIteration.eRunState.Error
@@ -185,21 +186,22 @@ Public Class cSFPContainer
         ' Just making sure
         Debug.Assert(Not Me.m_core.StateMonitor.IsBusy, "Core " & Me.Name & " still working!")
 
-        Me.m_core.CloseEcosimScenario()
-        Me.m_core.CloseModel()
-        Me.m_core.Dispose()
-        Me.m_core = Nothing
-
         Debug.WriteLine("Disposed core " & Me.Name)
 
         ' Free resources prior to sending the last update
         sw.Stop()
         Me.m_iteration.Elapsed = sw.Elapsed
         Me.m_iteration.Completed = Date.Now
+        Dim iter As ISFPIteration = Me.m_iteration
         Me.m_iteration = Nothing
 
+        Me.m_core.CloseEcosimScenario()
+        Me.m_core.CloseModel()
+        Me.m_core.Dispose()
+        Me.m_core = Nothing
+
         ' Notify the world
-        RaiseEvent OnIterationUpdated(Me, Me.m_iteration, True)
+        RaiseEvent OnIterationUpdated(Me, iter, True)
 
     End Sub
 
