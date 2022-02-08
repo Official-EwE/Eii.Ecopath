@@ -135,7 +135,8 @@
     <Reference Include="EPPlus">
       <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="EwELicense">
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\EwECore\Includes\EwELicense.dll</HintPath>
     </Reference>
     <Reference Include="SourceGrid2">
