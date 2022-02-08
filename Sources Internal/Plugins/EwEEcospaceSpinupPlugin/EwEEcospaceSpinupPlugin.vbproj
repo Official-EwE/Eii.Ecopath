@@ -105,7 +105,8 @@
     <AssemblyOriginatorKeyFile>EwEEcospaceSpinupPlugin.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EwELicense">
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Sources\EwECore\Includes\EwELicense.dll</HintPath>
     </Reference>
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">

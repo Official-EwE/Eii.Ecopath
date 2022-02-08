@@ -146,7 +146,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Topology.dll</HintPath>
     </Reference>
-    <Reference Include="EwELicense, Version=1.0.0.0, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Sources\EwECore\Includes\EwELicense.dll</HintPath>
     </Reference>

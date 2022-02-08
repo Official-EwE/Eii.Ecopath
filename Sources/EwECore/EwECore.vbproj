@@ -122,7 +122,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="EwELicense">
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\EwELicense.dll</HintPath>
     </Reference>
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
@@ -697,7 +698,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\EPPlus.dll" />
-    <Content Include="Includes\EwELicense.dll" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\LPSolve\win64\lpsolve55.dll">
