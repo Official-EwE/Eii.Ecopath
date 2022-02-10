@@ -71,12 +71,12 @@ Public Class cEcospaceMapWrapper
 
 #Region " Attach + detach "
 
-    Public Sub Attach(uic As cUIContext,
-                      indicators As Dictionary(Of Point, cEcospaceIndicators),
-                      settings As cIndicatorSettings,
-                      picbox As PictureBox,
-                      indEcopath As cEcopathIndicators,
-                      colors As List(Of Color))
+    Public Sub Attach(ByVal uic As cUIContext,
+                      ByVal indicators As Dictionary(Of Point, cEcospaceIndicators),
+                      ByVal settings As cIndicatorSettings,
+                      ByVal picbox As PictureBox,
+                      ByVal indEcopath As cEcopathIndicators,
+                      ByVal colors As List(Of Color))
 
         Me.m_uic = uic
         Me.m_settings = settings
@@ -85,21 +85,19 @@ Public Class cEcospaceMapWrapper
         Me.m_picbox = picbox
         Me.m_colors = colors
 
-        AddHandler Me.m_picbox.Resize, AddressOf Me.OnResizePanel
-        'AddHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
-        AddHandler Me.m_picbox.MouseEnter, AddressOf Me.OnSetTooltip
-        AddHandler Me.m_picbox.MouseMove, AddressOf Me.OnSetTooltip
-        AddHandler Me.m_picbox.MouseLeave, AddressOf Me.OnClearTooltip
+        AddHandler Me.m_picbox.Resize, AddressOf OnResizePanel
+        AddHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
+        AddHandler Me.m_picbox.MouseMove, AddressOf OnSetTooltip
+        AddHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
 
     End Sub
 
     Public Sub Detach()
 
-        RemoveHandler Me.m_picbox.Resize, AddressOf Me.OnResizePanel
-        'RemoveHandler Me.m_picbox.Paint, AddressOf OnPaintPicbox
-        RemoveHandler Me.m_picbox.MouseEnter, AddressOf Me.OnSetTooltip
-        RemoveHandler Me.m_picbox.MouseMove, AddressOf Me.OnSetTooltip
-        RemoveHandler Me.m_picbox.MouseLeave, AddressOf Me.OnClearTooltip
+        RemoveHandler Me.m_picbox.Resize, AddressOf OnResizePanel
+        RemoveHandler Me.m_picbox.MouseEnter, AddressOf OnSetTooltip
+        RemoveHandler Me.m_picbox.MouseMove, AddressOf OnSetTooltip
+        RemoveHandler Me.m_picbox.MouseLeave, AddressOf OnClearTooltip
 
         If (Me.m_bmp IsNot Nothing) Then
             Me.m_bmp.Dispose()
@@ -153,133 +151,117 @@ Public Class cEcospaceMapWrapper
                 drawer.Colors = Me.m_colors
                 Me.m_drawers.Add(drawer)
             Next
-            If (Me.m_bmp IsNot Nothing) Then
-                Me.m_bmp.Dispose()
-                Me.m_bmp = Nothing
-            End If
-            Me.DrawMapBitmap()
-            Me.m_picbox.BackgroundImage = Me.m_bmp
-
-#If 0 Then
-            Dim p As String = Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace)
-            Dim n As String = "ecoind.png"
-            If lInfo.Count = 1 Then n = "ind_" & lInfo(0).Name.Replace(" "c, "_").ToLower() & "_2016.png"
-            If Not System.IO.Directory.Exists(p) Then System.IO.Directory.CreateDirectory(p)
-            Try
-                Me.m_bmp.Save(System.IO.Path.Combine(p, n))
-            Catch ex As Exception
-
-            End Try
-#End If
         End If
 
-        Me.m_picbox.Invalidate()
+        Me.RefreshMapImage()
 
     End Sub
+
 
     Private Sub OnResizePanel(sender As Object, args As EventArgs)
 
-        If (Me.m_bmp IsNot Nothing) Then
-            Me.m_bmp = Nothing
-        End If
-        Me.m_picbox.Invalidate()
+        Me.RefreshMapImage()
 
     End Sub
 
-    Private Sub DrawMapBitmap()
+    Private Sub RefreshMapImage()
 
         If (Me.m_uic Is Nothing) Then Return
 
-        Debug.Assert(Me.m_bmp Is Nothing)
+        If (Me.m_bmp IsNot Nothing) Then
+            Me.m_bmp.Dispose()
+            Me.m_bmp = Nothing
+        End If
 
         Me.m_bmp = New Bitmap(Me.m_picbox.Width, Me.m_picbox.Height, Imaging.PixelFormat.Format32bppArgb)
 
         Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
 
-        If (bm Is Nothing) Then Return
+        If (bm IsNot Nothing) Then
 
-        Dim iInRow As Integer = bm.InRow
-        Dim iInCol As Integer = bm.InCol
-        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-        Dim info As cIndicatorInfo = Nothing
-        Dim ind As cEcospaceIndicators = Nothing
-        Dim settings As cIndicatorSettings = Me.m_settings
+            Dim iInRow As Integer = bm.InRow
+            Dim iInCol As Integer = bm.InCol
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim info As cIndicatorInfo = Nothing
+            Dim ind As cEcospaceIndicators = Nothing
+            Dim settings As cIndicatorSettings = Me.m_settings
 
-        Dim n As Integer = Me.m_drawers.Count
+            Dim n As Integer = Me.m_drawers.Count
 
-        If (n > 0) Then
+            If (n > 0) Then
 
-            ' Ugh!
-            Dim asData(iInRow, iInCol, n) As Single
-            Dim sValue As Single = 0
-            Dim asScaler(n) As Single
-            Dim astrLabels(n) As String
-            Dim astrDescriptions(n) As String
+                ' Ugh!
+                Dim asData(iInRow, iInCol, n) As Single
+                Dim sValue As Single = 0
+                Dim asScaler(n) As Single
+                Dim astrLabels(n) As String
+                Dim astrDescriptions(n) As String
 
-            ' Populate result array from computed indicators
-            For i As Integer = 0 To Me.m_drawers.Count - 1
-                info = Me.m_drawers(i).Indicator
+                ' Populate result array from computed indicators
+                For i As Integer = 0 To Me.m_drawers.Count - 1
+                    info = Me.m_drawers(i).Indicator
 
-                For Each pt As Point In Me.m_dtIndicators.Keys
-                    ind = Me.m_dtIndicators(pt)
-                    sValue = info.GetValue(ind)
-                    asData(pt.Y, pt.X, i) = sValue
+                    For Each pt As Point In Me.m_dtIndicators.Keys
+                        ind = Me.m_dtIndicators(pt)
+                        sValue = info.GetValue(ind)
+                        asData(pt.Y, pt.X, i) = sValue
+                    Next
+
+                    asScaler(i) = info.GetValue(Me.m_indPath)
+                    If (asScaler(i) = 0) Then asScaler(i) = 1.0
+                    astrLabels(i) = info.Name
+                    astrDescriptions(i) = info.Description
                 Next
 
-                asScaler(i) = info.GetValue(Me.m_indPath)
-                If (asScaler(i) = 0) Then asScaler(i) = 1.0
-                astrLabels(i) = info.Name
-                astrDescriptions(i) = info.Description
-            Next
+                Dim iNumPlotsHorz As Integer = 0
+                Dim iNumPlotsVert As Integer = 0
+                Dim originList As New List(Of PointF)
+                Dim rectList As New List(Of Rectangle)
+                Dim mapArgs As New cMapDrawerArgs(cMapDrawerBase.eMapType.RelBiomass, asScaler, 0)
 
-            Dim iNumPlotsHorz As Integer = 0
-            Dim iNumPlotsVert As Integer = 0
-            Dim originList As New List(Of PointF)
-            Dim rectList As New List(Of Rectangle)
-            Dim mapArgs As New cMapDrawerArgs(cMapDrawerBase.eMapType.RelBiomass, asScaler, 0)
+                cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol,
+                                                iNumPlotsHorz, iNumPlotsVert, originList, rectList)
 
-            cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol,
-                                            iNumPlotsHorz, iNumPlotsVert, originList, rectList)
-
-            Using g As Graphics = Graphics.FromImage(Me.m_bmp)
-                Using br As New SolidBrush(Color.White)
-                    g.FillRectangle(br, 0, 0, Me.m_bmp.Width, Me.m_bmp.Height)
+                Using g As Graphics = Graphics.FromImage(Me.m_bmp)
+                    Using br As New SolidBrush(Color.White)
+                        g.FillRectangle(br, 0, 0, Me.m_bmp.Width, Me.m_bmp.Height)
+                    End Using
                 End Using
-            End Using
 
-            For i As Integer = 0 To n - 1
-                Dim drawer As cEcospaceMapDrawer = Me.m_drawers(i)
+                For i As Integer = 0 To n - 1
+                    Dim drawer As cEcospaceMapDrawer = Me.m_drawers(i)
 
-                'init the drawer to the latest values
-                drawer.OriginList = originList
-                drawer.RectList = rectList
+                    'init the drawer to the latest values
+                    drawer.OriginList = originList
+                    drawer.RectList = rectList
 
-                drawer.StanzaDS = Nothing
+                    drawer.StanzaDS = Nothing
 
-                drawer.InCol = iInCol
-                drawer.InRow = iInRow
-                drawer.Month = 0
+                    drawer.InCol = iInCol
+                    drawer.InRow = iInRow
+                    drawer.Month = 0
 
-                drawer.ClearItems()
-                drawer.AddItem(i, i)
+                    drawer.ClearItems()
+                    drawer.AddItem(i, i)
 
-                drawer.Labels = astrLabels
-                drawer.Descriptions = astrDescriptions
-                drawer.Map = asData
-                drawer.Graphics = Graphics.FromImage(Me.m_bmp)
+                    drawer.Labels = astrLabels
+                    drawer.Descriptions = astrDescriptions
+                    drawer.Map = asData
+                    drawer.Graphics = Graphics.FromImage(Me.m_bmp)
 
-                drawer.AllowedToRun = False
-                drawer.SignalState.Reset()
-                ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, mapArgs)
+                    drawer.AllowedToRun = False
+                    drawer.SignalState.Reset()
+                    ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, mapArgs)
 
-            Next
+                Next
 
-            For Each drawer In Me.m_drawers
-                drawer.SignalState.WaitOne()
-            Next
+                For Each drawer In m_drawers
+                    drawer.SignalState.WaitOne()
+                Next
 
+            End If
         End If
-
+        Me.m_picbox.BackgroundImage = Me.m_bmp
 
     End Sub
 
