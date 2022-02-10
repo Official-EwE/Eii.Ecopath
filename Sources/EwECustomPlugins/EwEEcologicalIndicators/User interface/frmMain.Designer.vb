@@ -16,16 +16,17 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-Imports System
+
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmMain
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(disposing As Boolean)
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -41,7 +42,7 @@ Partial Class frmMain
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -50,7 +51,6 @@ Partial Class frmMain
         Me.m_tcOutput = New System.Windows.Forms.TabControl()
         Me.m_tpSettings = New System.Windows.Forms.TabPage()
         Me.m_lblCredits = New System.Windows.Forms.Label()
-        Me.m_plCredits = New System.Windows.Forms.Panel()
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbIRD = New System.Windows.Forms.PictureBox()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
@@ -79,7 +79,7 @@ Partial Class frmMain
         Me.m_tlpEcospace = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
         Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.m_tsEcospace = New cEwEToolstrip()
         Me.m_tsbnEcospaceSaveImage = New System.Windows.Forms.ToolStripButton()
         Me.m_tpMCpath = New System.Windows.Forms.TabPage()
         Me.m_graphMCpath = New ZedGraph.ZedGraphControl()
@@ -92,13 +92,15 @@ Partial Class frmMain
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
+        Me.m_tlpSettings = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plSettingsExport = New System.Windows.Forms.Panel()
+        Me.m_plExecution = New System.Windows.Forms.Panel()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
         Me.m_tcOutput.SuspendLayout()
         Me.m_tpSettings.SuspendLayout()
-        Me.m_plCredits.SuspendLayout()
         Me.m_tlpCredits.SuspendLayout()
         CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -108,11 +110,14 @@ Partial Class frmMain
         Me.m_tpEcospace.SuspendLayout()
         Me.m_tlpEcospace.SuspendLayout()
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.ToolStrip1.SuspendLayout()
+        Me.m_tsEcospace.SuspendLayout()
         Me.m_tpMCpath.SuspendLayout()
         Me.m_tlpHistSettings.SuspendLayout()
         Me.m_tpMCsim.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpSettings.SuspendLayout()
+        Me.m_plSettingsExport.SuspendLayout()
+        Me.m_plExecution.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -154,24 +159,7 @@ Partial Class frmMain
         '
         'm_tpSettings
         '
-        Me.m_tpSettings.Controls.Add(Me.m_lblCredits)
-        Me.m_tpSettings.Controls.Add(Me.m_plCredits)
-        Me.m_tpSettings.Controls.Add(Me.m_btnChangeDefault)
-        Me.m_tpSettings.Controls.Add(Me.m_btnChooseFolder)
-        Me.m_tpSettings.Controls.Add(Me.m_tbxDefaultLocation)
-        Me.m_tpSettings.Controls.Add(Me.m_tbxOutputFolder)
-        Me.m_tpSettings.Controls.Add(Me.m_lblSaveTo)
-        Me.m_tpSettings.Controls.Add(Me.m_rbCustom)
-        Me.m_tpSettings.Controls.Add(Me.m_rbDefault)
-        Me.m_tpSettings.Controls.Add(Me.m_cbAutoSaveCSV)
-        Me.m_tpSettings.Controls.Add(Me.m_cbRunWithMC)
-        Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcospace)
-        Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcosim)
-        Me.m_tpSettings.Controls.Add(Me.m_cbEcospaceAnnualOnly)
-        Me.m_tpSettings.Controls.Add(Me.m_cbPlotAtEnd)
-        Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcopath)
-        Me.m_tpSettings.Controls.Add(Me.m_hdrExport)
-        Me.m_tpSettings.Controls.Add(Me.m_hdrExecution)
+        Me.m_tpSettings.Controls.Add(Me.m_tlpSettings)
         resources.ApplyResources(Me.m_tpSettings, "m_tpSettings")
         Me.m_tpSettings.Name = "m_tpSettings"
         '
@@ -179,13 +167,6 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_lblCredits, "m_lblCredits")
         Me.m_lblCredits.Name = "m_lblCredits"
-        '
-        'm_plCredits
-        '
-        resources.ApplyResources(Me.m_plCredits, "m_plCredits")
-        Me.m_plCredits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_plCredits.Controls.Add(Me.m_tlpCredits)
-        Me.m_plCredits.Name = "m_plCredits"
         '
         'm_tlpCredits
         '
@@ -306,17 +287,17 @@ Partial Class frmMain
         '
         'm_hdrExport
         '
-        resources.ApplyResources(Me.m_hdrExport, "m_hdrExport")
         Me.m_hdrExport.CanCollapseParent = False
         Me.m_hdrExport.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrExport, "m_hdrExport")
         Me.m_hdrExport.IsCollapsed = False
         Me.m_hdrExport.Name = "m_hdrExport"
         '
         'm_hdrExecution
         '
-        resources.ApplyResources(Me.m_hdrExecution, "m_hdrExecution")
         Me.m_hdrExecution.CanCollapseParent = False
         Me.m_hdrExecution.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrExecution, "m_hdrExecution")
         Me.m_hdrExecution.IsCollapsed = False
         Me.m_hdrExecution.Name = "m_hdrExecution"
         '
@@ -342,7 +323,7 @@ Partial Class frmMain
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = True
+        Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
@@ -382,7 +363,7 @@ Partial Class frmMain
         '
         Me.m_tpEcospace.BackColor = System.Drawing.SystemColors.Control
         Me.m_tpEcospace.Controls.Add(Me.m_tlpEcospace)
-        Me.m_tpEcospace.Controls.Add(Me.ToolStrip1)
+        Me.m_tpEcospace.Controls.Add(Me.m_tsEcospace)
         resources.ApplyResources(Me.m_tpEcospace, "m_tpEcospace")
         Me.m_tpEcospace.Name = "m_tpEcospace"
         '
@@ -395,6 +376,7 @@ Partial Class frmMain
         '
         'm_pbEcospaceMap
         '
+        Me.m_pbEcospaceMap.BackColor = System.Drawing.SystemColors.ControlDark
         resources.ApplyResources(Me.m_pbEcospaceMap, "m_pbEcospaceMap")
         Me.m_pbEcospaceMap.Name = "m_pbEcospaceMap"
         Me.m_pbEcospaceMap.TabStop = False
@@ -411,11 +393,11 @@ Partial Class frmMain
         Me.m_legend.Name = "m_legend"
         Me.m_legend.UIContext = Nothing
         '
-        'ToolStrip1
+        'm_tsEcospace
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEcospaceSaveImage})
-        resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-        Me.ToolStrip1.Name = "ToolStrip1"
+        Me.m_tsEcospace.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEcospaceSaveImage})
+        resources.ApplyResources(Me.m_tsEcospace, "m_tsEcospace")
+        Me.m_tsEcospace.Name = "m_tsEcospace"
         '
         'm_tsbnEcospaceSaveImage
         '
@@ -511,6 +493,41 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
+        'm_tlpSettings
+        '
+        resources.ApplyResources(Me.m_tlpSettings, "m_tlpSettings")
+        Me.m_tlpSettings.Controls.Add(Me.m_lblCredits, 0, 4)
+        Me.m_tlpSettings.Controls.Add(Me.m_tlpCredits, 0, 5)
+        Me.m_tlpSettings.Controls.Add(Me.m_hdrExecution, 0, 0)
+        Me.m_tlpSettings.Controls.Add(Me.m_hdrExport, 0, 2)
+        Me.m_tlpSettings.Controls.Add(Me.m_plSettingsExport, 0, 3)
+        Me.m_tlpSettings.Controls.Add(Me.m_plExecution, 0, 1)
+        Me.m_tlpSettings.Name = "m_tlpSettings"
+        '
+        'm_plSettingsExport
+        '
+        Me.m_plSettingsExport.Controls.Add(Me.m_btnChooseFolder)
+        Me.m_plSettingsExport.Controls.Add(Me.m_tbxOutputFolder)
+        Me.m_plSettingsExport.Controls.Add(Me.m_tbxDefaultLocation)
+        Me.m_plSettingsExport.Controls.Add(Me.m_btnChangeDefault)
+        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveCSV)
+        Me.m_plSettingsExport.Controls.Add(Me.m_lblSaveTo)
+        Me.m_plSettingsExport.Controls.Add(Me.m_rbCustom)
+        Me.m_plSettingsExport.Controls.Add(Me.m_rbDefault)
+        resources.ApplyResources(Me.m_plSettingsExport, "m_plSettingsExport")
+        Me.m_plSettingsExport.Name = "m_plSettingsExport"
+        '
+        'm_plExecution
+        '
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcopath)
+        Me.m_plExecution.Controls.Add(Me.m_cbPlotAtEnd)
+        Me.m_plExecution.Controls.Add(Me.m_cbEcospaceAnnualOnly)
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithMC)
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcosim)
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcospace)
+        resources.ApplyResources(Me.m_plExecution, "m_plExecution")
+        Me.m_plExecution.Name = "m_plExecution"
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -529,8 +546,6 @@ Partial Class frmMain
         Me.SplitContainer1.ResumeLayout(False)
         Me.m_tcOutput.ResumeLayout(False)
         Me.m_tpSettings.ResumeLayout(False)
-        Me.m_tpSettings.PerformLayout()
-        Me.m_plCredits.ResumeLayout(False)
         Me.m_tlpCredits.ResumeLayout(False)
         CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
@@ -542,13 +557,19 @@ Partial Class frmMain
         Me.m_tpEcospace.PerformLayout()
         Me.m_tlpEcospace.ResumeLayout(False)
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ToolStrip1.ResumeLayout(False)
-        Me.ToolStrip1.PerformLayout()
+        Me.m_tsEcospace.ResumeLayout(False)
+        Me.m_tsEcospace.PerformLayout()
         Me.m_tpMCpath.ResumeLayout(False)
         Me.m_tlpHistSettings.ResumeLayout(False)
         Me.m_tlpHistSettings.PerformLayout()
         Me.m_tpMCsim.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpSettings.ResumeLayout(False)
+        Me.m_tlpSettings.PerformLayout()
+        Me.m_plSettingsExport.ResumeLayout(False)
+        Me.m_plSettingsExport.PerformLayout()
+        Me.m_plExecution.ResumeLayout(False)
+        Me.m_plExecution.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -575,7 +596,6 @@ Partial Class frmMain
     Private WithEvents m_tlpCredits As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbCSIC As System.Windows.Forms.PictureBox
     Private WithEvents m_pbIRD As System.Windows.Forms.PictureBox
-    Private WithEvents m_plCredits As System.Windows.Forms.Panel
     Private WithEvents m_lblCredits As System.Windows.Forms.Label
     Private WithEvents m_cbRunWithMC As System.Windows.Forms.CheckBox
     Private WithEvents m_tpMCsim As System.Windows.Forms.TabPage
@@ -591,12 +611,15 @@ Partial Class frmMain
     Private WithEvents m_tpMCpath As System.Windows.Forms.TabPage
     Private WithEvents m_graphMCpath As ZedGraph.ZedGraphControl
     Private WithEvents m_cbPlotAtEnd As System.Windows.Forms.CheckBox
-    Private WithEvents m_tlpHistSettings As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpHistSettings As Windows.Forms.TableLayoutPanel
     Private WithEvents m_sliderNoBins As ScientificInterfaceShared.Controls.ucSlider
-    Private WithEvents m_lblHistNoBins As System.Windows.Forms.Label
-    Private WithEvents m_tbxHistNoBins As System.Windows.Forms.TextBox
-    Private WithEvents m_cbEcospaceAnnualOnly As System.Windows.Forms.CheckBox
-    Private WithEvents m_tlpEcospace As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-    Private WithEvents m_tsbnEcospaceSaveImage As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_lblHistNoBins As Windows.Forms.Label
+    Private WithEvents m_tbxHistNoBins As Windows.Forms.TextBox
+    Private WithEvents m_cbEcospaceAnnualOnly As Windows.Forms.CheckBox
+    Private WithEvents m_tlpEcospace As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tsbnEcospaceSaveImage As Windows.Forms.ToolStripButton
+    Private WithEvents m_tlpSettings As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plSettingsExport As Windows.Forms.Panel
+    Private WithEvents m_plExecution As Windows.Forms.Panel
+    Private WithEvents m_tsEcospace As Windows.Forms.ToolStrip
 End Class

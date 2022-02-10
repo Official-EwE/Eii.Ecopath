@@ -56,7 +56,7 @@ Public Class frmMain
 
 #Region " Construction "
 
-    Public Sub New(uic As cUIContext, pluginpoint As cEwEEcologicalIndicatorsPlugin)
+    Public Sub New(ByVal uic As cUIContext, pluginpoint As cEwEEcologicalIndicatorsPlugin)
 
         MyBase.New()
         Me.UIContext = uic
@@ -83,7 +83,7 @@ Public Class frmMain
     ''' the form content.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnLoad(e As System.EventArgs)
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
@@ -190,19 +190,25 @@ Public Class frmMain
         Me.m_cbPlotAtEnd.Checked = My.Settings.PlotAtEnd
         Me.m_sliderNoBins.Value = My.Settings.NunHistBins
 
+        If (My.Settings.SaveToDefault) Then
+            Me.m_rbDefault.Checked = True
+        Else
+            Me.m_rbCustom.Checked = True
+        End If
+        Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
+        Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
+
         Me.Icon = My.Resources.BioDiversityPluginIcon
         Me.m_tsbnEcospaceSaveImage.Image = SharedResources.saveHS
 
         ' Start listening to core run state changes
-        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
-        AddHandler Me.m_settings.OnSettingsChanged, AddressOf Me.OnSettingsChanged
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        AddHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
 
         ' Start listening to Ecopath, Ecosim, Ecospace and external messages (responses are handled in OnCoreMessage)
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
         Me.m_bInUpdate = False
-
-        Me.UpdateControls()
 
     End Sub
 
@@ -211,11 +217,11 @@ Public Class frmMain
     ''' Form is officially closed; preserve what needs preserving and clean up.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Stop listening to core run state changes
-        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
-        RemoveHandler Me.m_settings.OnSettingsChanged, AddressOf Me.OnSettingsChanged
+        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        RemoveHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
 
         ' Cleanup 
         Me.m_grid.Detach()
@@ -251,14 +257,14 @@ Public Class frmMain
         ' is broadcasted via a proper notification message.
         If (msg.Importance = eMessageImportance.Progress) Then Return
 
-        '' Is an external message?
-        'If (msg.Type = eMessageType.GlobalSettingsChanged) Then
-        '    ' #Yes: Update default location because systemwide settings may have changed
-        '    Me.m_bInUpdate = True
-        '    Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
-        '    Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
-        '    Me.m_bInUpdate = False
-        'End If
+        ' Is an external message?
+        If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+            ' #Yes: Update default location because systemwide settings may have changed
+            Me.m_bInUpdate = True
+            Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
+            Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
+            Me.m_bInUpdate = False
+        End If
 
         ' Update controls to reflect any core state changes
         Me.UpdateControls()
@@ -282,9 +288,6 @@ Public Class frmMain
     Protected Overrides Sub UpdateControls()
 
         If (Me.UIContext Is Nothing) Then Return
-        If (Me.m_bInUpdate) Then Return
-
-        Me.m_bInUpdate = True
 
         Dim csm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
         Dim bCanSave As Boolean = False
@@ -296,15 +299,6 @@ Public Class frmMain
         Me.m_cbRunWithEcospace.Checked = Me.m_settings.RunWithEcospace
         Me.m_cbRunWithMC.Checked = Me.m_settings.RunWithMonteCarlo
         Me.m_cbEcospaceAnnualOnly.Checked = Me.m_settings.EcospaceAnnualOnly
-
-        If (My.Settings.SaveToDefault) Then
-            Me.m_rbDefault.Checked = True
-        Else
-            Me.m_rbCustom.Checked = True
-        End If
-        Me.m_cbAutoSaveCSV.Checked = Me.m_plugin.AutoSave
-        Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
-        Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
         Select Case Me.SelectedTabComponent
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Any
@@ -344,22 +338,13 @@ Public Class frmMain
 
         Me.m_tbxHistNoBins.Text = CStr(Me.m_mcgraphPath.NumBins(Nothing))
 
-        For Each ndParent As TreeNode In Me.m_tvIndicators.Nodes
-            For Each ndInd As TreeNode In ndParent.Nodes
-                Dim ind As cIndicatorInfo = DirectCast(ndInd.Tag, cIndicatorInfo)
-                ndInd.Checked = ind.Enabled
-            Next
-        Next
-
-        Me.m_bInUpdate = False
-
     End Sub
 
 #End Region ' Overrides
 
 #Region " Events "
 
-    Private Sub OnTreeNodeSelected(sender As Object, e As System.Windows.Forms.TreeViewEventArgs) _
+    Private Sub OnTreeNodeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvIndicators.AfterSelect
 
         Try
@@ -373,11 +358,8 @@ Public Class frmMain
 
     Private Sub OnTreeNodeCheckChanged(sender As Object, e As TreeViewEventArgs) _
         Handles m_tvIndicators.AfterCheck
-
-        If (Me.m_bInUpdate) Then Return
-
-        Me.m_bTreenodeProcessingPending = True
-        Me.BeginInvoke(New MethodInvoker(AddressOf Me.ProcessTreenodeStates))
+        m_bTreenodeProcessingPending = True
+        BeginInvoke(New MethodInvoker(AddressOf ProcessTreenodeStates))
     End Sub
 
     Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) _
@@ -400,6 +382,7 @@ Public Class frmMain
     Private Sub OnAutoSaveCSVCChanged(sender As Object, e As System.EventArgs) _
         Handles m_cbAutoSaveCSV.CheckedChanged
 
+        ' User toggled AutoSaveCSV checkbox; update settings
         If Me.m_bInUpdate Then Return
         My.Settings.AutoSaveCSV = Me.m_cbAutoSaveCSV.Checked
         My.Settings.Save()
@@ -483,7 +466,7 @@ Public Class frmMain
         Handles m_cbPlotAtEnd.CheckedChanged
 
         If Me.m_bInUpdate Then Return
-        My.Settings.PlotAtEnd = Me.m_cbPlotAtEnd.Checked
+        My.Settings.PlotAtEnd = m_cbPlotAtEnd.Checked
         My.Settings.Save()
 
     End Sub
@@ -499,8 +482,6 @@ Public Class frmMain
 
     Private Sub OnSaveLocationChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_rbDefault.CheckedChanged, m_tbxOutputFolder.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
 
         ' User has changed the content of controls that affect the save location
         ' Update settings accordingly
@@ -626,8 +607,8 @@ Public Class frmMain
     Private m_bTreenodeProcessingPending As Boolean = False
 
     Friend Sub ProcessTreenodeStates()
-        If Not Me.m_bTreenodeProcessingPending Then Return
-        Me.m_bTreenodeProcessingPending = False
+        If Not m_bTreenodeProcessingPending Then Return
+        m_bTreenodeProcessingPending = False
         For Each tnGroup As TreeNode In Me.m_tvIndicators.Nodes
             For Each tnInd As TreeNode In tnGroup.Nodes
                 Dim info As cIndicatorInfo = DirectCast(tnInd.Tag, cIndicatorInfo)
