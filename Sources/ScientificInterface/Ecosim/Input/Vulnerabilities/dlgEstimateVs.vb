@@ -199,7 +199,7 @@ Namespace Ecosim
 
             If (Me.SelectedGroupIndex <= 0) Then Return
 
-            Dim pred As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(Me.SelectedGroupIndex)
+            Dim pred As cEcoPathGroupInput = Me.m_uic.Core.EcopathGroupInputs(Me.SelectedGroupIndex)
             Dim strTitle As String = pred.Name
             Dim strXAxis As String = ""
             Dim strYAxis As String = ""

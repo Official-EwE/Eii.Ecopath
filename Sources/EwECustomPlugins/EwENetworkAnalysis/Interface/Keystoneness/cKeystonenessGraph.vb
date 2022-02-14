@@ -242,7 +242,7 @@ Public Class cKeystonenessGraph
                 End Select
 
                 ' Get actual group
-                group = Me.NetworkManager.Core.EcoPathGroupInputs(iGroup)
+                group = Me.NetworkManager.Core.EcopathGroupInputs(iGroup)
                 label = fmt.ToString(group)
 
                 ' Make things look purdy

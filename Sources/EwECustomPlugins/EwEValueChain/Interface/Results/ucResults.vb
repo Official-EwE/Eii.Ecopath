@@ -402,7 +402,7 @@ Public Class ucResults
             ' Prepare to display Ecopath results
             Me.SetViewMode(eViewModeType.Grid)
             ' Run Ecopath
-            Me.m_data.Core.RunEcoPath()
+            Me.m_data.Core.RunEcopath()
 
         Catch ex As Exception
             cLog.Write(ex, "ValueChain::OnInvokeRunEcopath")
@@ -444,7 +444,7 @@ Public Class ucResults
             Me.m_result.Reset(cModel.eRunTypes.Ecosim)
             ' Prepare view
             Me.SetViewMode(eViewModeType.Graph)
-            Me.m_data.Core.RunEcoSim()
+            Me.m_data.Core.RunEcosim()
 
         Catch ex As Exception
             cLog.Write(ex, "ValueChain::OnInvokeRunEcosim")
@@ -621,7 +621,7 @@ Public Class ucResults
             Case cParameters.eAggregationModeType.ByGroup
                 Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLGROUPS))
                 For i As Integer = 1 To Me.m_data.Core.nGroups
-                    Dim grp As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(i)
+                    Dim grp As cEcoPathGroupInput = Me.m_data.Core.EcopathGroupInputs(i)
                     If grp.IsFished Then
                         Me.m_tscmbItems.Items.Add(New cCoreComboItem(grp))
                     End If

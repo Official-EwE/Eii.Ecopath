@@ -182,7 +182,7 @@ Namespace Ecotracer
                 If (Me.Core.ActiveEcosimScenarioIndex <= 0) Then Return
 
                 Dim pm As cPropertyManager = Me.PropertyManager
-                Dim ecosimModelParams As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
+                Dim ecosimModelParams As cEcoSimModelParameters = Me.Core.EcosimModelParameters()
 
                 Me.m_propEcosimConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
                 AddHandler Me.m_propEcosimConTracing.PropertyChanged, AddressOf Me.OnConTracingChanged

@@ -699,7 +699,7 @@ Public Class frmShapeValue
                 If (cat = eTimeSeriesCategoryType.FleetGroup) Then
                     Me.m_lblPoolCodeSec.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_GROUP)
                     For i As Integer = 1 To Me.Core.nGroups
-                        Me.m_cmbPoolCodeSec.Items.Add(fmt.ToString(Me.Core.EcoPathGroupInputs(i)))
+                        Me.m_cmbPoolCodeSec.Items.Add(fmt.ToString(Me.Core.EcopathGroupInputs(i)))
                     Next
                 End If
 
@@ -717,7 +717,7 @@ Public Class frmShapeValue
 
                 Me.m_lblPoolCode.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_GROUP)
                 For i As Integer = 1 To Me.Core.nGroups
-                    Me.m_cmbPoolCode.Items.Add(fmt.ToString(Me.Core.EcoPathGroupInputs(i)))
+                    Me.m_cmbPoolCode.Items.Add(fmt.ToString(Me.Core.EcopathGroupInputs(i)))
                 Next
 
                 If (Me.m_shape IsNot Nothing) Then

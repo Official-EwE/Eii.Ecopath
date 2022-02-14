@@ -158,7 +158,7 @@ Namespace Ecosim
 
             Dim group As cCoreGroupBase = Nothing
 
-            Me.m_parms = Me.Core.EcoSimModelParameters()
+            Me.m_parms = Me.Core.EcosimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
 
             Me.m_zgh = New cZedGraphHelper()
@@ -385,8 +385,8 @@ Namespace Ecosim
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim groupSimOut As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
-            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim groupSimOut As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
+            Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
 
             Dim pplB As New PointPairList()
             Dim pplConsB As New PointPairList()
@@ -562,7 +562,7 @@ Namespace Ecosim
             For i As Integer = 1 To Me.Core.nLivingGroups
                 If group.IsPred(i) Then
                     Dim ppl As New PointPairList
-                    Dim pred As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                    Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
                     For j As Integer = 1 To Me.Core.nEcosimTimeSteps
                         dXValue = Me.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.Predation(i, j))
@@ -577,7 +577,7 @@ Namespace Ecosim
             For i As Integer = 1 To Me.Core.nLivingGroups
                 If group.IsPrey(i) Then
                     Dim ppl As New PointPairList
-                    Dim prey As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                    Dim prey As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
                     For j As Integer = 1 To Me.Core.nEcosimTimeSteps
                         dXValue = Me.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
@@ -696,8 +696,8 @@ Namespace Ecosim
         Private Sub ShowGroup()
 
             Dim iGroup As Integer = Me.m_lbGroups.SelectedIndex + 1
-            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
-            Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+            Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
+            Dim grpOutput As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
             Dim lAvgPredConsumption As New List(Of Single)
             Dim lAvgPredIndex As New List(Of Integer)
@@ -849,7 +849,7 @@ Namespace Ecosim
         Private Function GetPlotTitle(data As ePlot) As String
 
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim group As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+            Dim group As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
             ' Configure mort pane caption
             If (data = ePlot.Mortality) Then
@@ -868,7 +868,7 @@ Namespace Ecosim
         Private Function GetPlotYAxisLabel(data As ePlot) As String
 
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim group As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+            Dim group As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
             Select Case data
 

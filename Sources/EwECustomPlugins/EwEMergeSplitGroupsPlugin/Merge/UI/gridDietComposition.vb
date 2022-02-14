@@ -72,8 +72,8 @@ Public Class gridDietComposition
         Dim source As cCoreGroupBase = Nothing
         Dim style As eStyleFlags = eStyleFlags.Checked
 
-        If Me.m_data.IndexTarget > 0 Then grp1 = core.EcoPathGroupInputs(Me.m_data.IndexTarget)
-        If Me.m_data.IndexMerge > 0 Then grp2 = core.EcoPathGroupInputs(Me.m_data.IndexMerge)
+        If Me.m_data.IndexTarget > 0 Then grp1 = core.EcopathGroupInputs(Me.m_data.IndexTarget)
+        If Me.m_data.IndexMerge > 0 Then grp2 = core.EcopathGroupInputs(Me.m_data.IndexMerge)
 
         Me.m_iColTarget = -1
         Me.m_iRowTarget = -1
@@ -99,7 +99,7 @@ Public Class gridDietComposition
                 End If
             End If
 
-            source = core.EcoPathGroupInputs(i)
+            source = core.EcopathGroupInputs(i)
             Me.Rows.Insert(iRow)
             Me(iRow, 0) = New cEwERowHeaderCell(CStr(i))
             Me(iRow, 1) = New cEwERowHeaderCell(source.Name)
@@ -182,7 +182,7 @@ Public Class gridDietComposition
                     style = style Or eStyleFlags.Sum
 
                 Else
-                    Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
+                    Dim pred As cEcoPathGroupInput = core.EcopathGroupInputs(iPred)
                     If (iPred = Me.m_data.IndexTarget Or iPred = Me.m_data.IndexMerge) Or
                        (iPrey = Me.m_data.IndexTarget Or iPrey = Me.m_data.IndexMerge) Then
                         val = pred.DietComp(iPrey)

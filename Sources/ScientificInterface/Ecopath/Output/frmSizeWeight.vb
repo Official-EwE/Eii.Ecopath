@@ -122,12 +122,12 @@ Namespace Ecopath.Output
 
         Private Sub AddCurves(pane As GraphPane)
             Dim resultLists As New List(Of PointPairList)
-            Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim grpOutput As cEcopathGroupOutput = Nothing
 
             Me.InitLists(resultLists, 2)
 
             For iGroup As Integer = 1 To Me.UIContext.Core.nLivingGroups
-                grpOutput = Me.UIContext.Core.EcoPathGroupOutputs(iGroup)
+                grpOutput = Me.UIContext.Core.EcopathGroupOutputs(iGroup)
                 resultLists(0).Add(iGroup, grpOutput.BiomassAvgSzWt)
                 resultLists(1).Add(iGroup, grpOutput.BiomassSzWt)
             Next

@@ -1736,11 +1736,11 @@ Public Class cEcosimMonteCarlo
     'End Sub
 
     Private Sub CheckWhoIsCrashed()
-        Dim EndTime As Integer = (Me.m_core.EcoSimModelParameters.NumberYears - 1) * 12
+        Dim EndTime As Integer = (Me.m_core.EcosimModelParameters.NumberYears - 1) * 12
         'Dim sStr As String = "Crashed: "
         For iGrp As Integer = 1 To Me.m_core.nLivingGroups
 
-            If Me.m_esdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, EndTime) / Me.m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
+            If Me.m_esdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, EndTime) / Me.m_core.EcopathGroupOutputs(iGrp).Biomass < 0.01 Then
                 'jb use the core arrays instead of the Ecosim Output objects because the output objects have not been initialized
                 'If m_core.EcoSimGroupOutputs(iGrp).Biomass(EndTime) / m_core.EcoPathGroupOutputs(iGrp).Biomass < 0.01 Then
                 Me.isCrashed(iGrp) = True

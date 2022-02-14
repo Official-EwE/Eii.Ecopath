@@ -108,7 +108,7 @@ Namespace Ecopath.Output
             Dim dPlotX, dPlotY As Double
             Dim sXMax, sYMax As Single
             Dim sXMin, sYMin As Single
-            Dim group As cEcoPathGroupOutput = Nothing
+            Dim group As cEcopathGroupOutput = Nothing
             Dim sSystemPSD(Me.Core.nWeightClasses) As Single
             Dim curve As BarItem = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
@@ -122,7 +122,7 @@ Namespace Ecopath.Output
             For igroup As Integer = 1 To Me.Core.nLivingGroups
                 'No need to check if group is selected. Generate the result list even for the not selected group. It will have zero Y values
                 'If IsGroupSelected(igroup) Then
-                group = Me.Core.EcoPathGroupOutputs(igroup)
+                group = Me.Core.EcopathGroupOutputs(igroup)
                 For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                     ' Calc X
                     sXValue = CSng(psd.FirstWeightClass * 2 ^ (iWtClass - 1))
@@ -151,7 +151,7 @@ Namespace Ecopath.Output
             pane.CurveList.Clear()
 
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                group = Me.Core.EcoPathGroupOutputs(iGroup)
+                group = Me.Core.EcopathGroupOutputs(iGroup)
 
                 Dim clrFore As Color = Color.Black
                 Dim clrBack As Color = Color.Gray
@@ -195,12 +195,12 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindSystemPSD(sSystemPSD() As Single)
-            Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim grpOutput As cEcopathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If Me.m_lbGroups.GroupIndex(iGroup) > -1 Then
-                    grpOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                    grpOutput = Me.Core.EcopathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                     Next

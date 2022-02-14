@@ -193,7 +193,7 @@ Public Class gridDistributionParameters
                 Case frmDistributionParameters.eParameterSet.Ecopath
 
                     Dim data As cEcopathDistributionParamsData = DirectCast(Me.m_data(i), cEcopathDistributionParamsData)
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(data.GroupNo)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(data.GroupNo)
                     Dim sg As cStanzaGroup = Nothing
                     Dim bUse As Boolean = True
 

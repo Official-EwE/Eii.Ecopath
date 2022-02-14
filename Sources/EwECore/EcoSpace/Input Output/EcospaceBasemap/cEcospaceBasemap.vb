@@ -46,7 +46,7 @@ Public Class cEcospaceBasemap
 
         MyBase.New(core)
 
-        Dim data As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim data As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim val As cValue = Nothing
 
         Me.AllowValidation = False
@@ -210,7 +210,7 @@ Public Class cEcospaceBasemap
             ' ----------------
             ' Init layers
             ' ----------------
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim llayers As New List(Of cEcospaceLayer)
 
             ' Depth layer
@@ -566,7 +566,7 @@ Public Class cEcospaceBasemap
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function IsModelledCell(iRow As Integer, iCol As Integer) As Boolean
-        Return Me.m_core.m_EcoSpaceData.Depth(iRow, iCol) > 0
+        Return Me.m_core.m_EcospaceData.Depth(iRow, iCol) > 0
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -916,51 +916,51 @@ Public Class cEcospaceBasemap
 
         Select Case varName
             Case eVarNameFlags.LayerDepth
-                Return Me.m_core.m_EcoSpaceData.DepthInput
+                Return Me.m_core.m_EcospaceData.DepthInput
             Case eVarNameFlags.LayerHabitat
-                Return Me.m_core.m_EcoSpaceData.PHabType
+                Return Me.m_core.m_EcospaceData.PHabType
             Case eVarNameFlags.LayerHabitatCapacity
-                Return Me.m_core.m_EcoSpaceData.HabCap
+                Return Me.m_core.m_EcospaceData.HabCap
             Case eVarNameFlags.LayerHabitatCapacityInput
-                Return Me.m_core.m_EcoSpaceData.HabCapInput
+                Return Me.m_core.m_EcospaceData.HabCapInput
             Case eVarNameFlags.LayerMPA
-                Return Me.m_core.m_EcoSpaceData.MPA
+                Return Me.m_core.m_EcospaceData.MPA
             Case eVarNameFlags.LayerRegion
-                Return Me.m_core.m_EcoSpaceData.Region
+                Return Me.m_core.m_EcospaceData.Region
             Case eVarNameFlags.LayerRelPP
-                Return Me.m_core.m_EcoSpaceData.RelPP
+                Return Me.m_core.m_EcospaceData.RelPP
             Case eVarNameFlags.LayerContaminantRelativeDistribution
-                Return Me.m_core.m_EcoSpaceData.RelCin
+                Return Me.m_core.m_EcospaceData.RelCin
             Case eVarNameFlags.LayerContaminantForcingAbsolute
-                Return Me.m_core.m_EcoSpaceData.Ccell
+                Return Me.m_core.m_EcospaceData.Ccell
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection
-                Return If(iIndex = 1, Me.m_core.m_EcoSpaceData.MonthlyXvel, Me.m_core.m_EcoSpaceData.MonthlyYvel)
+                Return If(iIndex = 1, Me.m_core.m_EcospaceData.MonthlyXvel, Me.m_core.m_EcospaceData.MonthlyYvel)
             Case eVarNameFlags.LayerMigration
-                Return Me.m_core.m_EcoSpaceData.MigMaps
+                Return Me.m_core.m_EcospaceData.MigMaps
             Case eVarNameFlags.LayerWind
-                Return If(iIndex = 1, Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv)
+                Return If(iIndex = 1, Me.m_core.m_EcospaceData.Xv, Me.m_core.m_EcospaceData.Yv)
             Case eVarNameFlags.LayerUpwelling
-                Return Me.m_core.m_EcoSpaceData.MonthlyUpWell
+                Return Me.m_core.m_EcospaceData.MonthlyUpWell
             'Case eVarNameFlags.LayerMLD
             '    Return Me.m_core.m_EcoSpaceData.DepthA
             Case eVarNameFlags.LayerImportance
-                Return Me.m_core.m_EcoSpaceData.ImportanceLayerMap
+                Return Me.m_core.m_EcospaceData.ImportanceLayerMap
             Case eVarNameFlags.LayerDriver
-                Return Me.m_core.m_EcoSpaceData.EnvironmentalLayerMap
+                Return Me.m_core.m_EcospaceData.EnvironmentalLayerMap
             Case eVarNameFlags.LayerPort
-                Return Me.m_core.m_EcoSpaceData.Port
+                Return Me.m_core.m_EcospaceData.Port
             Case eVarNameFlags.LayerSail
-                Return Me.m_core.m_EcoSpaceData.Sail
+                Return Me.m_core.m_EcospaceData.Sail
             Case eVarNameFlags.LayerBiomassForcing
-                Return Me.m_core.m_EcoSpaceData.Bcell
+                Return Me.m_core.m_EcospaceData.Bcell
             Case eVarNameFlags.LayerBiomassRelativeForcing
-                Return Me.m_core.m_EcoSpaceData.Bcell
+                Return Me.m_core.m_EcospaceData.Bcell
             Case eVarNameFlags.LayerExclusion
-                Return Me.m_core.m_EcoSpaceData.Excluded
+                Return Me.m_core.m_EcospaceData.Excluded
             Case eVarNameFlags.LayerIBMAge1Forcing
-                Return Me.m_core.m_EcoSpaceData.Bcell
+                Return Me.m_core.m_EcospaceData.Bcell
 
         End Select
         Return Nothing

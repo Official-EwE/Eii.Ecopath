@@ -63,7 +63,7 @@ Namespace MSY
                                           results As cMSYFResult(), _
                                           optimum As cMSYOptimum) As Boolean
 
-            Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+            Dim target As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iGroup)
             Dim sw As StreamWriter = Nothing
             Dim r As cMSYFResult = Nothing
             Dim strFile As String = ""
@@ -82,7 +82,7 @@ Namespace MSY
                     ' Data header
                     sw.Write("F")
                     For j As Integer = 1 To Me.m_core.nGroups
-                        Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                        Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(j)
                         sw.Write(",{0}", cStringUtils.ToCSVField(grp.Name))
                     Next
                     sw.WriteLine()
@@ -91,7 +91,7 @@ Namespace MSY
                         r = results(i)
                         sw.Write(cStringUtils.FormatSingle(r.FCur))
                         For j As Integer = 1 To Me.m_core.nGroups
-                            Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                            Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(j)
                             sw.Write(",{0}", cStringUtils.FormatSingle(If(k = 0, r.B(j), r.Catch(j))))
                         Next
                         sw.WriteLine()
@@ -123,7 +123,7 @@ Namespace MSY
                                                results As cMSYFResult(),
                                                optimum As cMSYOptimum) As Boolean
 
-            Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+            Dim target As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iGroup)
             Dim strFile As String = ""
             Dim sw As StreamWriter = Nothing
             Dim r As cMSYFResult = Nothing
@@ -190,7 +190,7 @@ Namespace MSY
                     ' Data header
                     sw.Write("F")
                     For j As Integer = 1 To Me.m_core.nGroups
-                        Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                        Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(j)
                         sw.Write(",{0}", cStringUtils.ToCSVField(grp.Name))
                     Next
                     sw.WriteLine()
@@ -199,7 +199,7 @@ Namespace MSY
                         r = results(i)
                         sw.Write(cStringUtils.FormatSingle(r.FCur))
                         For j As Integer = 1 To Me.m_core.nGroups
-                            Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                            Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(j)
                             sw.Write(",{0}", cStringUtils.FormatSingle(If(k = 0, r.B(j), r.Catch(j))))
                         Next
                         sw.WriteLine()
@@ -290,7 +290,7 @@ Namespace MSY
             ' Fmsy found header
             sw.Write("")
             For j As Integer = 1 To Me.m_core.nGroups
-                Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(j)
                 sw.Write(",{0}", cStringUtils.ToCSVField(grp.Name))
             Next
             sw.WriteLine()

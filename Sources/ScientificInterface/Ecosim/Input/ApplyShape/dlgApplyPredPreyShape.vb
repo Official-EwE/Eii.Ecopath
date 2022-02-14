@@ -178,14 +178,14 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case Me.m_editMode
                 Case eEditMode.PredPrey
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.Prey
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelPrey)))
                     Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
                 Case eEditMode.Predator
                     Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.All
                     Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
                     Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)

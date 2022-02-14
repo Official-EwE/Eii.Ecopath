@@ -157,7 +157,7 @@ Namespace Controls
         Public Shadows Function CreateLineItem(iGroup As Integer, _
                                                asValues() As Single) As LineItem
 
-            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
             Return Me.CreateLineItem(group.Name, Me.StyleGuide.GroupColor(Me.Core, group.Index), asValues)
 
         End Function

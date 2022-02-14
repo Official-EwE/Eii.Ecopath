@@ -85,7 +85,7 @@ Namespace Ecopath.Output
 
             ' Create rows for all groups and sum values in each row
             For rowIndex As Integer = 1 To Me.Core.nGroups
-                source = Me.Core.EcoPathGroupInputs(rowIndex)
+                source = Me.Core.EcopathGroupInputs(rowIndex)
                 iRow = Me.AddRow()
                 Me.FillRows(iRow, source)
             Next rowIndex
@@ -166,7 +166,7 @@ Namespace Ecopath.Output
             ' .. multiply group non-market value by calculated broup biomass
             opNonMarketValue = New cBinaryOperation(cBinaryOperation.eOperatorType.Multiply, _
                 Me.PropertyManager.GetProperty(source, eVarNameFlags.NonMarketValue), _
-                Me.PropertyManager.GetProperty(Me.Core.EcoPathGroupOutputs(source.Index), eVarNameFlags.Biomass))
+                Me.PropertyManager.GetProperty(Me.Core.EcopathGroupOutputs(source.Index), eVarNameFlags.Biomass))
             propProdNonMarketValue = Me.Formula(opNonMarketValue)
             propCell = New cPropertyCell(CType(propProdNonMarketValue, cProperty))
             propCell.SuppressZero = True
@@ -210,7 +210,7 @@ Namespace Ecopath.Output
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To Me.Core.nGroups
-                    sourceSec = Me.Core.EcoPathGroupInputs(rowIndex)
+                    sourceSec = Me.Core.EcopathGroupInputs(rowIndex)
                     alProdLandingsMarketPrice.Clear()
                     ' Get the index landing property
                     propLandings = Me.PropertyManager.GetProperty(source, eVarNameFlags.Landings, sourceSec)

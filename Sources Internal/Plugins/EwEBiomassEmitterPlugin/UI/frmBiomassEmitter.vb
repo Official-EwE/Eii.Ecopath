@@ -273,7 +273,7 @@ Public Class frmBiomassEmitter
     Private Sub m_btnTrendFished_Click(sender As Object, e As EventArgs) Handles m_btnTrendFished.Click
         For Each trend As cModelTrend In Me.Data.ModelTrends
             If (trend.CanRun) Then
-                Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(trend.Group)
+                Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(trend.Group)
                 trend.Enable = (trend.NumTrendPointsForRun > 0) And group.IsFished
             End If
         Next

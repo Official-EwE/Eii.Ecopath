@@ -158,7 +158,7 @@ Public Class cPrebalZedGraphHelper
 
         Dim core As cCore = Me.UIContext.Core
         Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-        Dim grp As cEcoPathGroupOutput = Nothing
+        Dim grp As cEcopathGroupOutput = Nothing
 
         ' Update all panes
         For iPane As Integer = 1 To Me.NumPanes
@@ -185,7 +185,7 @@ Public Class cPrebalZedGraphHelper
 
             For i As Integer = 1 To pd.nGroups
 
-                grp = core.EcoPathGroupOutputs(pd.EcopathGroupIndexes(i))
+                grp = core.EcopathGroupOutputs(pd.EcopathGroupIndexes(i))
                 bIsComputed = ((pd.Status(i) And eStatusFlags.ValueComputed) = eStatusFlags.ValueComputed)
 
                 'If (sg.GroupVisible(grp.Index)) Then
@@ -319,14 +319,14 @@ Public Class cPrebalZedGraphHelper
     Private Function OnFormatXAxisLabel(pane As GraphPane, axis As Axis, val As Double, index As Integer) As String
 
         Dim core As cCore = Me.UIContext.Core
-        Dim grp As cEcoPathGroupOutput = Nothing
+        Dim grp As cEcopathGroupOutput = Nothing
         Dim strLabel As String = ""
         Dim iPane As Integer = CInt(pane.Tag)
         Dim pd As cPrebalPlotData = Me.GetDataForPlot(iPane)
         Dim i As Integer = CInt(val)
 
         If (1 <= i And i <= pd.nGroups) Then
-            grp = core.EcoPathGroupOutputs(pd.EcopathGroupIndexes(i))
+            grp = core.EcopathGroupOutputs(pd.EcopathGroupIndexes(i))
 
             If Me.ShowName Then
                 Dim fmt As New cCoreInterfaceFormatter()

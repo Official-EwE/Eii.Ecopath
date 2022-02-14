@@ -176,7 +176,7 @@ Public Class dlgDefineTaxonomy
         ' Connect to result selection changes
         AddHandler Me.m_gridResults.OnResultSelected, AddressOf Me.OnResultSelected
 
-        If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
+        If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcopathGroupInputs(1)
 
         Me.m_pbSearching.Image = SharedResources.ani_loader
 

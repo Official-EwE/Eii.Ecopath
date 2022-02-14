@@ -90,7 +90,7 @@ Namespace Ecospace.Advection
         Public Sub Init(core As cCore, ecospace As cEcoSpace)
 
             Me.m_core = core
-            Me.m_data = core.m_EcoSpaceData
+            Me.m_data = core.m_EcospaceData
             Me.m_ecospace = ecospace
 
         End Sub

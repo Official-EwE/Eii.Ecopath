@@ -221,7 +221,7 @@ Public Class cEcospaceEnviroResponseManager
 
     Friend ReadOnly Property SpaceData() As cEcospaceDataStructures Implements IEnvironmentalResponseManager.SpaceData
         Get
-            Return Me.m_core.m_EcoSpaceData
+            Return Me.m_core.m_EcospaceData
         End Get
     End Property
 

@@ -109,7 +109,7 @@ Namespace Ecosim
             Next
 
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                group = Me.Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcopathGroupInputs(iGroup)
                 ' # Group name row header cells
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)

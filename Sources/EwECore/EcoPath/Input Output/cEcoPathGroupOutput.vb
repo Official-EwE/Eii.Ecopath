@@ -28,7 +28,7 @@ Imports EwEUtils.Utilities
 ''' <remarks>
 ''' This class wraps the outputs from EcoPath for one group into a single object.
 ''' </remarks>
-Public Class cEcoPathGroupOutput
+Public Class cEcopathGroupOutput
     Inherits cCoreGroupBase
 
     Private m_nGroups As Integer

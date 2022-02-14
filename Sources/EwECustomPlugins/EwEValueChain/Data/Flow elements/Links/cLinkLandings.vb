@@ -61,7 +61,7 @@ Public Class cLinkLandings
             Dim lGroups As New List(Of cEcoPathGroupInput)
             Dim core As cCore = cData.GetInstance().Core
             For iGroup As Integer = 1 To core.nGroups
-                lGroups.Add(core.EcoPathGroupInputs(iGroup))
+                lGroups.Add(core.EcopathGroupInputs(iGroup))
             Next
             Return lGroups
         End Function

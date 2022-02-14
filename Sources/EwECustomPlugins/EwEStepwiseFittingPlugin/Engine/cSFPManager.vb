@@ -192,7 +192,7 @@ Public Class cSFPManager
 
         Dim lPP As New List(Of Integer)
         For iGroup As Integer = 1 To Me.Core.nGroups
-            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
             If (grp.IsProducer) Then
                 lPP.Add(iGroup)
             End If

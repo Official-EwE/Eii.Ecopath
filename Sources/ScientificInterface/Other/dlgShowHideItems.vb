@@ -140,7 +140,7 @@ Namespace Ecosim
 
             Me.m_clbGroups.Items.Clear()
             For iGroup As Integer = 1 To core.nGroups
-                Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                Dim group As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
                 Me.m_clbGroups.Items.Add(New cCoreInputOutputControlItem(group), False)
             Next
 
@@ -245,7 +245,7 @@ Namespace Ecosim
             For i As Integer = 0 To Me.m_lPresets.Count - 1
                 pr = Me.m_lPresets(i)
                 For iGroup As Integer = 1 To core.nGroups
-                    Dim grp As cCoreGroupBase = core.EcoPathGroupInputs(iGroup)
+                    Dim grp As cCoreGroupBase = core.EcopathGroupInputs(iGroup)
                     sg.GroupVisible(iGroup, pr.Name) = pr.GroupVisible(iGroup - 1)
                 Next
 
@@ -680,7 +680,7 @@ Namespace Ecosim
         Private Sub SyncPredation(iGroup As Integer)
 
             Dim core As cCore = Me.m_uic.Core
-            Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+            Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
 
             Me.m_clbGroups.SuspendLayout()
             For iGroupTest As Integer = 1 To core.nGroups

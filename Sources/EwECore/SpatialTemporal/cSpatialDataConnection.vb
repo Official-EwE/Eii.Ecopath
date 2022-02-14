@@ -148,7 +148,7 @@ Namespace SpatialData
 
             If (dt < dtStart Or dt > dtEnd) Then Return dt
 
-            Dim nStepsYear As Integer = core.m_EcoSpaceData.nTimeStepsPerYear
+            Dim nStepsYear As Integer = core.m_EcospaceData.nTimeStepsPerYear
             Dim iTime As Integer = core.AbsoluteTimeToEcospaceTimestep(dt)
 
             If dt < Me.Dataset.TimeStart Then

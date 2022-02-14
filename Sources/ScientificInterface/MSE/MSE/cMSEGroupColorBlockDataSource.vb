@@ -59,7 +59,7 @@ Public Class cMSEGroupColorBlockDataSource
     Public ReadOnly Property TotalBlocks() As Integer _
         Implements IPolicyColorBlockDataSource.TotalBlocks
         Get
-            Return Me.m_uic.Core.EcoSimModelParameters.NumberYears
+            Return Me.m_uic.Core.EcosimModelParameters.NumberYears
         End Get
     End Property
 
@@ -116,7 +116,7 @@ Public Class cMSEGroupColorBlockDataSource
         'Populate the m_isExploited(ngroups) array
         Me.PopIsExploited()
 
-        Me.m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
+        Me.m_iTotalBlocks = Me.m_uic.Core.EcosimModelParameters.NumberYears
 
         ReDim Me.m_BlockCells(Me.nRows, Me.TotalBlocks)
         Dim mseData As cMSEGroupInput

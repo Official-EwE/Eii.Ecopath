@@ -117,7 +117,7 @@ Public Class gridTimeSeries
             If (TypeOf ts Is cGroupTimeSeries) Then
                 Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
                 If (gts.GroupIndex >= 1) Then
-                    selDatTypePrim = Me.Core.EcoPathGroupInputs(gts.GroupIndex)
+                    selDatTypePrim = Me.Core.EcopathGroupInputs(gts.GroupIndex)
                 End If
             Else
                 Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
@@ -126,7 +126,7 @@ Public Class gridTimeSeries
                 End If
                 If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
                     If (fts.GroupIndex >= 1) Then
-                        selDatTypeSec = Me.Core.EcoPathGroupInputs(fts.GroupIndex)
+                        selDatTypeSec = Me.Core.EcopathGroupInputs(fts.GroupIndex)
                     End If
                 End If
             End If

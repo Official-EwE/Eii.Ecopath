@@ -750,7 +750,7 @@ Namespace Ecosim
 
         Public ReadOnly Property TotalBlocks() As Integer Implements IPolicyColorBlockDataSource.TotalBlocks
             Get
-                Return Me.m_uic.Core.EcoSimModelParameters.NumberYears
+                Return Me.m_uic.Core.EcosimModelParameters.NumberYears
             End Get
         End Property
 
@@ -764,7 +764,7 @@ Namespace Ecosim
 
         Public Sub Init() Implements IPolicyColorBlockDataSource.Init
 
-            Me.m_iTotalBlocks = Me.m_uic.Core.EcoSimModelParameters.NumberYears
+            Me.m_iTotalBlocks = Me.m_uic.Core.EcosimModelParameters.NumberYears
 
             ReDim Me.m_BlockCells(Me.m_uic.Core.nFleets, Me.m_iTotalBlocks)
             Dim fpFleetInput As cFishingPolicySearchBlock = Nothing

@@ -77,7 +77,7 @@ Public Class Strategy
     ''' -----------------------------------------------------------------------
     Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
         If (iIndex < 1) Or (iIndex > Me.m_core.nGroups) Then Return Nothing
-        Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iIndex)
+        Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iIndex)
         Dim grpName As String = cMSEUtils.FromCSVField(strName)
         If String.Compare(grp.Name, grpName, True) <> 0 Then
             Return Nothing

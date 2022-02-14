@@ -2208,7 +2208,7 @@ Public Class cEIIXMLDataSource
          Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
         Dim drow As DataRow = Nothing
@@ -2324,7 +2324,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadEcospaceMap(dtScenario As DataTable, iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 
@@ -2357,7 +2357,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadEcospaceMonthlyMaps(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtMaps As DataTable = Me.ReadTable("EcospaceScenarioMonth")
         Dim bSucces As Boolean = True
         Dim iMonth As Integer = 0
@@ -2384,7 +2384,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceHabitats(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtHab As DataTable = Me.ReadTable("EcospaceScenarioHabitat")
         Dim strMap As String = ""
         Dim i As Integer = 0
@@ -2421,7 +2421,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceMPAs(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtMPA As DataTable = Me.ReadTable("EcospaceScenarioMPA")
         Dim strMPAMonth As String = ""
         Dim strMap As String = ""
@@ -2464,7 +2464,7 @@ Public Class cEIIXMLDataSource
     Private Function LoadEcospaceGroups(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtGroup As DataTable = Me.ReadTable("EcospaceScenarioGroup")
         Dim bSucces As Boolean = True
         Dim astrSplit As String() = Nothing
@@ -2518,7 +2518,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceGroupHabitats(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtGH As DataTable = Me.ReadTable("EcospaceScenarioGroupHabitat")
         Dim iGroupID As Integer = 0
         Dim iGroup As Integer = -1
@@ -2559,7 +2559,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceGroupMigration(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtGH As DataTable = Me.ReadTable("EcospaceScenarioGroupMigration")
         Dim iGroupID As Integer = 0
         Dim iGroup As Integer = -1
@@ -2600,7 +2600,7 @@ Public Class cEIIXMLDataSource
     Private Function LoadEcospaceFleets(iScenarioID As Integer) As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.EcopathDataStructures
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioFleet")
         Dim strMap As String = ""
         Dim bSucces As Boolean = True
@@ -2641,7 +2641,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceHabitatFishery(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioHabitatFishery")
         Dim iFleet As Integer = 0
         Dim iHabitat As Integer = 0
@@ -2670,7 +2670,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceMPAFishery(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioMPAFishery")
         Dim iFleet As Integer = 0
         Dim iMPA As Integer = 0
@@ -2699,7 +2699,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceWeightLayers(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioWeightLayer")
         Dim bSucces As Boolean = True
         Dim iRow As Integer = 0
@@ -2732,7 +2732,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceDisabledCapacityDrivers(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverDisabled")
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
@@ -2747,7 +2747,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceDriverLayers(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverLayer")
         Dim bSucces As Boolean = True
         Dim iRow As Integer = 0
@@ -2782,7 +2782,7 @@ Public Class cEIIXMLDataSource
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioCapacityDrivers")
         Dim bSucces As Boolean = True
         Dim ShapeType As Integer
@@ -2817,7 +2817,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceDisbledDriverLayers(iScenarioID As Integer) As Boolean
 
-        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverDisabled")
         Dim bSucces As Boolean = True
 
@@ -2840,7 +2840,7 @@ Public Class cEIIXMLDataSource
     End Function
     Private Function LoadEcospaceDataConnections(iScenarioID As Integer) As Boolean
 
-        Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDataConnection")
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()

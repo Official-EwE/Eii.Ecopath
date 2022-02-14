@@ -71,12 +71,12 @@ Public Class cResultsWriter_2DArray_Group_Group
                 If iPred = 0 Then
                     PredName = "AllPred"
                 Else
-                    PredName = Me.m_Core.EcoPathGroupInputs(iPred).Name & "PredNo" & iPred
+                    PredName = Me.m_Core.EcopathGroupInputs(iPred).Name & "PredNo" & iPred
                 End If
                 If iPrey = 0 Then
                     PreyName = "AllPrey"
                 Else
-                    PreyName = Me.m_Core.EcoPathGroupInputs(iPrey).Name & "PreyNo" & iPrey
+                    PreyName = Me.m_Core.EcopathGroupInputs(iPrey).Name & "PreyNo" & iPrey
                 End If
                 strFile = cFileUtils.ToValidFileName(Me.m_ResultsArray.FileNamePrefix & PredName & "__" & PreyName & ".csv", False)
 
@@ -120,12 +120,12 @@ Public Class cResultsWriter_2DArray_Group_Group
                 If iPred = 0 Then
                     PredName = "AllGroups"
                 Else
-                    PredName = Me.m_Core.EcoPathGroupInputs(iPred).Name
+                    PredName = Me.m_Core.EcopathGroupInputs(iPred).Name
                 End If
                 If iPrey = 0 Then
                     PreyName = "AllGroups"
                 Else
-                    PreyName = Me.m_Core.EcoPathGroupInputs(iPrey).Name
+                    PreyName = Me.m_Core.EcopathGroupInputs(iPrey).Name
                 End If
 
                 For iStrategy = 1 To Me.m_ResultsArray.nStrategies

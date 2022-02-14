@@ -120,7 +120,7 @@ Public Class gridDiets
             iRow = Me.AddRow()
             Me.Rows(iRow).Tag = i
 
-            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+            Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
             Me(iRow, eColumnTypes.PredIndex) = New cEwERowHeaderCell(CStr(grp.Index))
             Me(iRow, eColumnTypes.PredName) = New cEwERowHeaderCell(CStr(grp.Name))
             Me(iRow, eColumnTypes.Multiplier) = Me.DataCell(Me.m_data.DietPropMultipliers(i - 1))

@@ -88,7 +88,7 @@ Namespace Ecopath.Input
                 sg = Me.Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.nLifeStages
-                    source = Me.Core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = Me.Core.EcopathGroupInputs(sg.iGroups(iStanza))
                     intStanzaGroupIndex(source.Index) = stanzaGroupIndex
                 Next
             Next
@@ -98,7 +98,7 @@ Namespace Ecopath.Input
 
             'Create rows for all groups
             For rowIndex As Integer = 1 To Me.Core.nGroups
-                source = Me.Core.EcoPathGroupInputs(rowIndex)
+                source = Me.Core.EcopathGroupInputs(rowIndex)
 
                 If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow

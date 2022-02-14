@@ -161,7 +161,7 @@ Namespace Ecopath.Input
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To Me.Core.nGroups
-                    sourceSec = Me.Core.EcoPathGroupInputs(rowIndex)
+                    sourceSec = Me.Core.EcopathGroupInputs(rowIndex)
                     prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.Discards, sourceSec)
                     alSumCol.Add(prop)
                 Next

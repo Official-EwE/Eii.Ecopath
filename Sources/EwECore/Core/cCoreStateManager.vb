@@ -57,7 +57,7 @@ Public Class cCoreStateManager
                 Case eCoreExecutionState.EcopathCompleted
                     If Not sm.HasEcopathLoaded Then Return False
                     If sm.HasEcopathRan Then Return True
-                    Return Me.m_core.RunEcoPath()
+                    Return Me.m_core.RunEcopath()
 
                 Case eCoreExecutionState.EcosimInitialized
                     If Not sm.HasEcosimLoaded Then Return False
@@ -71,7 +71,7 @@ Public Class cCoreStateManager
                 Case eCoreExecutionState.EcosimCompleted
                     If Not sm.HasEcosimLoaded Then Return False
                     If sm.HasEcosimRan Then Return True
-                    Return Me.m_core.RunEcoSim()
+                    Return Me.m_core.RunEcosim()
 
                 Case Else
                     ' Not implemented (yet)

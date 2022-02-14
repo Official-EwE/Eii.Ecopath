@@ -78,7 +78,7 @@ Public Class cMergeGroupsPluginPoint
 
         If Not engine.CanMergeSplitGroups(True) Then Return
 
-        Me.m_uic.Core.RunEcoPath()
+        Me.m_uic.Core.RunEcopath()
 
         Dim dlg As New dlgMergeGroups(Me.m_uic, engine)
         dlg.ShowDialog()

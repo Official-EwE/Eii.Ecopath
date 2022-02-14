@@ -108,7 +108,7 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_params = Me.Core.EcoSimModelParameters()
+            Me.m_params = Me.Core.EcosimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
@@ -126,7 +126,7 @@ Namespace Ecosim
 
             ' Set the axis
             Me.m_graph.GraphPane.XAxis.Scale.Min = Me.Core.EcosimFirstYear
-            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcosimModelParameters.NumberYears + Me.Core.EcosimFirstYear
 
             AddHandler Me.m_zgp.OnCursorPos, AddressOf Me.OnSyncCursor
             AddHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf Me.OnAxisChanged
@@ -217,7 +217,7 @@ Namespace Ecosim
                 If Not Me.IsRunning Then
                     Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                     Me.m_graph.Refresh()
-                    Me.Core.RunEcoSim(AddressOf Me.HandleEcosimTimeStep, True)
+                    Me.Core.RunEcosim(AddressOf Me.HandleEcosimTimeStep, True)
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "form frmRunEcosim.OnRun")
@@ -731,7 +731,7 @@ Namespace Ecosim
             If (Not Me.m_zgp.IsReady) Then Me.m_zgp.Clear() : Return
             If (Not Me.Core.StateMonitor.HasEcosimRan) Then Return
 
-            Dim groupPathOut As cEcoPathGroupOutput = Nothing
+            Dim groupPathOut As cEcopathGroupOutput = Nothing
 
             ' Clear curves out of current run, if applicable
             Me.m_zgp.ResetRun()
@@ -771,7 +771,7 @@ Namespace Ecosim
                     pplData = New PointPairList()
 
                     pplData.Add(Me.Core.EcosimFirstYear, Me.GetStartValue(iGroup))
-                    src = Me.Core.EcoSimGroupOutputs(iGroup)
+                    src = Me.Core.EcosimGroupOutputs(iGroup)
 
                     For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
 
@@ -789,14 +789,14 @@ Namespace Ecosim
                     Next iTimeStep
 
                     ' Add line
-                    lLines.Add(Me.m_zgp.CreateLine(Me.Core.EcoPathGroupInputs(iGroup), pplData))
+                    lLines.Add(Me.m_zgp.CreateLine(Me.Core.EcopathGroupInputs(iGroup), pplData))
 
                 End If
 
             Next iGroupItem
 
             Me.m_graph.GraphPane.XAxis.Scale.Min = Math.Max(Me.Core.EcosimFirstYear, 1)
-            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Max = Me.Core.EcosimModelParameters.NumberYears + Me.Core.EcosimFirstYear
 
             ' Draw timeseries 
             If Me.Core.nTimeSeriesEnabled > 0 Then
@@ -861,7 +861,7 @@ Namespace Ecosim
                     Debug.Assert(TypeOf ts Is cGroupTimeSeries, "Relative Biomass TS should be cGroupTimeSeries object, check for import")
 
                     gts = DirectCast(ts, cGroupTimeSeries)
-                    group = Me.Core.EcoPathGroupInputs(gts.GroupIndex)
+                    group = Me.Core.EcopathGroupInputs(gts.GroupIndex)
                     ppl = New PointPairList()
 
                     'Scaling values for relative and actual observed biomass values (reference data)
@@ -888,7 +888,7 @@ Namespace Ecosim
                     'half delta t 
                     Select Case tsInterval
                         Case eTSDataSetInterval.Annual
-                            ndatapoints = Me.Core.EcoSimModelParameters.NumberYears
+                            ndatapoints = Me.Core.EcosimModelParameters.NumberYears
                             Dt = 1
                             halfDt = 0.5
                         Case eTSDataSetInterval.TimeStep
@@ -932,7 +932,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Function GetStartValue(iGroup As Integer) As Single
 
-            Dim src As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+            Dim src As cEcopathGroupOutput = Me.Core.EcopathGroupOutputs(iGroup)
 
             ' Get data point value
             Select Case Me.m_plotData
@@ -959,7 +959,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Function GetEcosimValue(iGroup As Integer, iTimeStep As Integer) As Single
 
-            Dim src As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+            Dim src As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
             ' Get data point value
             Select Case Me.m_plotData
@@ -1222,7 +1222,7 @@ Namespace Ecosim
 
                 Case eSelectionModeType.Groups
                     For i As Integer = 1 To Me.Core.nGroups
-                        Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                        Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
                         If (group.IsFished) Then
                             Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(group))
                         End If

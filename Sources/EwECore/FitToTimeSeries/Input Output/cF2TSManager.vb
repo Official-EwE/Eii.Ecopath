@@ -820,12 +820,12 @@ Public Class cF2TSManager
         sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         sw.WriteLine()
         For iPrey As Integer = 1 To Me.m_core.nGroups
-            sw.Write("," & cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPrey).Name))
+            sw.Write("," & cStringUtils.ToCSVField(Me.m_core.EcopathGroupInputs(iPrey).Name))
         Next
         sw.WriteLine()
 
         For iPred As Integer = 1 To Me.m_core.nGroups
-            sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPred).Name) & ",")
+            sw.Write(cStringUtils.ToCSVField(Me.m_core.EcopathGroupInputs(iPred).Name) & ",")
             For iPrey As Integer = 1 To Me.m_core.nGroups
                 If Me.isPredPrey(iPred, iPrey) Then
                     sw.Write(vblocks(iPred, iPrey))

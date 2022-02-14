@@ -121,13 +121,13 @@ Public Class cDiets
 
         ' Set proper defaults in-memory
         For iPred As Integer = 1 To Me.m_core.nLivingGroups
-            mean = Me.m_core.EcoPathGroupInputs(iPred).ImpDiet
+            mean = Me.m_core.EcopathGroupInputs(iPred).ImpDiet
             Me.m_meanProportions_imports(iPred - 1) = mean
             'Me.m_meanProportions(iPred - 1, 0) = mean
             'Me.m_interacts(iPred - 1, 0) = IF(mean > 0, 1, 0)
             Me.m_interacts_imports(iPred - 1) = If(mean > 0, 1, 0)
             For iPrey As Integer = 1 To Me.m_core.nGroups
-                mean = Me.m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
+                mean = Me.m_core.EcopathGroupInputs(iPred).DietComp(iPrey)
                 Me.m_meanProportions(iPred - 1, iPrey - 1) = mean
                 Me.m_interacts(iPred - 1, iPrey - 1) = If(mean > 0, 1, 0)
             Next
@@ -181,7 +181,7 @@ Public Class cDiets
             For iPred As Integer = 1 To Me.m_core.nLivingGroups
                 writer.WriteLine("{0},{1},{2}", _
                                  cStringUtils.ToCSVField(iPred), _
-                                 cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPred).Name), _
+                                 cStringUtils.ToCSVField(Me.m_core.EcopathGroupInputs(iPred).Name), _
                                  cStringUtils.ToCSVField(Me.DietPropMultipliers(iPred - 1)))
             Next
         Else

@@ -63,7 +63,7 @@ Namespace Ecopath.Input
 
             ' Detritus column header cells
             For i As Integer = 1 To Me.Core.nDetritusGroups
-                source = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + i)
+                source = Me.Core.EcopathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + i)
                 Me(0, i + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
@@ -115,7 +115,7 @@ Namespace Ecopath.Input
                     iRow = Me.AddRow
                     For iCol As Integer = 1 To Me.Core.nDetritusGroups
 
-                        groupSec = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + iCol)
+                        groupSec = Me.Core.EcopathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + iCol)
 
                         Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                         Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
@@ -157,7 +157,7 @@ Namespace Ecopath.Input
                     hgcStanza.AddChildRow(iRow)
                     For iCol As Integer = 1 To Me.Core.nDetritusGroups
 
-                        groupSec = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + iCol)
+                        groupSec = Me.Core.EcopathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + iCol)
 
                         Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                         Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)

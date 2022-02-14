@@ -556,7 +556,7 @@ Public Class gridDefineGroups
                 ' Is a new group? Flag as changed
                 If Me.IsNew() Then Return True
                 ' Is an existing group. Now check if group order has changed.
-                group = core.EcoPathGroupInputs(Me.StanzaGroup.iGroups(i + 1))
+                group = core.EcopathGroupInputs(Me.StanzaGroup.iGroups(i + 1))
                 If gi.GroupIndex <> group.Index Then Return True
                 ' Check if stanza age has changed
                 If gi.StanzaAge <> Me.StanzaGroup.StartAge(i + 1) Then Return True
@@ -675,7 +675,7 @@ Public Class gridDefineGroups
 
         ' Make snapshot of group configuration
         For iGroup As Integer = 1 To Me.Core.nGroups
-            group = Me.Core.EcoPathGroupInputs(iGroup)
+            group = Me.Core.EcopathGroupInputs(iGroup)
             gi = New cGroupInfo(group)
             Me.m_lgiGroups.Add(gi)
         Next
@@ -686,7 +686,7 @@ Public Class gridDefineGroups
             ' Is complete stanza config?
             If stanza.nLifeStages > 0 Then
                 ' #Yes: add full stanza set-up
-                si = New cStanzaInfo(stanza, Me.Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
+                si = New cStanzaInfo(stanza, Me.Core.EcopathGroupInputs(stanza.iGroups(1)).VBK)
             Else
                 ' #No: add with invalid vBK
                 si = New cStanzaInfo(stanza, -1)
@@ -1753,7 +1753,7 @@ Public Class gridDefineGroups
                 ' Check if this existing group has moved
                 bConfigurationChanged = bConfigurationChanged Or ((iGroup + 1) <> gi.GroupIndex)
                 ' Check if this exisitng group has been modified
-                bGroupsChanged = bGroupsChanged Or gi.IsChanged(Me.Core.EcoPathGroupInputs(gi.GroupIndex))
+                bGroupsChanged = bGroupsChanged Or gi.IsChanged(Me.Core.EcopathGroupInputs(gi.GroupIndex))
             End If
         Next iGroup
 
@@ -1922,7 +1922,7 @@ Public Class gridDefineGroups
                         Dim sg As cStanzaGroup = si.StanzaGroup
                         ' Remove all current groups
                         For iLifestage As Integer = 1 To si.StanzaGroup.nLifeStages
-                            group = Me.Core.EcoPathGroupInputs(sg.iGroups(iLifestage))
+                            group = Me.Core.EcopathGroupInputs(sg.iGroups(iLifestage))
                             If Not Me.Core.RemoveStanzaLifestage(sg.Index, group.DBID) Then
                                 bSuccess = False
                             End If
@@ -1963,7 +1963,7 @@ Public Class gridDefineGroups
 
             Dim dtGroups As New Dictionary(Of Integer, cEcoPathGroupInput)
             For iGroup = 1 To Me.Core.nGroups
-                group = Me.Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcopathGroupInputs(iGroup)
                 dtGroups(group.DBID) = group
             Next
 

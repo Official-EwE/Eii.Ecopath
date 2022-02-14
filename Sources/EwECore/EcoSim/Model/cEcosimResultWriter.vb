@@ -220,7 +220,7 @@ Namespace Ecosim
 
                     Dim data(Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps) As Single
                     For i As Integer = 1 To Me.m_core.nGroups
-                        group = Me.m_core.EcoPathGroupInputs(i)
+                        group = Me.m_core.EcopathGroupInputs(i)
                         For j As Integer = 1 To Me.m_core.nEcosimTimeSteps
                             Select Case resulttype
                                 Case eResultTypes.Biomass
@@ -257,7 +257,7 @@ Namespace Ecosim
 
                     For iGroup As Integer = 1 To Me.m_core.nGroups
 
-                        group = Me.m_core.EcoPathGroupInputs(iGroup)
+                        group = Me.m_core.EcopathGroupInputs(iGroup)
 
                         Dim iNumPred As Integer = 0
                         Dim predNames As New StringBuilder()
@@ -265,7 +265,7 @@ Namespace Ecosim
                         For i As Integer = 1 To Me.m_core.nLivingGroups
                             If group.IsPred(i) Then
                                 iNumPred += 1
-                                predNames.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
+                                predNames.Append(cStringUtils.ToCSVField(Me.m_core.EcosimGroupOutputs(i).Name))
                                 predNames.Append(",")
                             End If
                         Next
@@ -296,7 +296,7 @@ Namespace Ecosim
                     ' For all predators
                     For iGroup As Integer = 1 To Me.m_core.nLivingGroups
 
-                        group = Me.m_core.EcoPathGroupInputs(iGroup)
+                        group = Me.m_core.EcopathGroupInputs(iGroup)
 
                         Dim iNumPrey As Integer = 0
                         Dim preyNames As New StringBuilder
@@ -304,7 +304,7 @@ Namespace Ecosim
                         For i As Integer = 1 To Me.m_core.nGroups
                             If group.IsPrey(i) Then
                                 iNumPrey += 1
-                                preyNames.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
+                                preyNames.Append(cStringUtils.ToCSVField(Me.m_core.EcosimGroupOutputs(i).Name))
                                 preyNames.Append(",")
                             End If
                         Next
@@ -628,7 +628,7 @@ Namespace Ecosim
             For i As Integer = 1 To Me.m_core.nGroups
                 If (i > 1) Then str.Append(","c)
                 str.Append(cStringUtils.ToCSVField(If(Me.ShowGroupNames,
-                                                                    Me.m_core.EcoPathGroupInputs(i).Name, CStr(Me.m_core.EcoPathGroupInputs(i).Index))))
+                                                                    Me.m_core.EcopathGroupInputs(i).Name, CStr(Me.m_core.EcopathGroupInputs(i).Index))))
             Next i
             Return str.ToString()
 

@@ -78,9 +78,9 @@ Public Class dlgSplitGroup
         Dim core As cCore = Me.m_uic.Core
 
         For i As Integer = 1 To core.nGroups
-            Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
+            Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(i)
             If (grp.BiomassAreaInput > 0) Then
-                Me.m_cmbSource.Items.Add(core.EcoPathGroupInputs(i))
+                Me.m_cmbSource.Items.Add(core.EcopathGroupInputs(i))
             End If
         Next
 
@@ -125,7 +125,7 @@ Public Class dlgSplitGroup
         Dim core As cCore = Me.m_uic.Core
 
         If (grp IsNot Nothing) Then
-            Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(grp.Index)
+            Dim grpOut As cEcopathGroupOutput = core.EcopathGroupOutputs(grp.Index)
             Me.m_biomass = grpOut.Biomass
 
             ' Set biomass source type

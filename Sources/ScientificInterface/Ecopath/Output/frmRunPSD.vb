@@ -168,7 +168,7 @@ Namespace Ecopath.Output
             parms.PSDEnabled = True
 
             ' Run Ecopath
-            Me.Core.RunEcoPath()
+            Me.Core.RunEcopath()
 
             'set PSDEnabled back to it's original value 
             'This way if it's False (most likely) then it will not run in a normal Ecopath run
@@ -406,12 +406,12 @@ Namespace Ecopath.Output
         Private Sub FindSystemPSD(sSystemPSD() As Single)
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
-            Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim grpOutput As cEcopathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If parms.GroupIncluded(iGroup) Then
-                    grpOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                    grpOutput = Me.Core.EcopathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                         sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                     Next

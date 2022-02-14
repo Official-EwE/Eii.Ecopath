@@ -69,7 +69,7 @@ Public Class cRunEcospace
     Public Sub Run()
 
         Me.Core.StopEcospace()
-        Me.Core.RunEcoSpace(Nothing, False)
+        Me.Core.RunEcospace(Nothing, False)
 
     End Sub
 

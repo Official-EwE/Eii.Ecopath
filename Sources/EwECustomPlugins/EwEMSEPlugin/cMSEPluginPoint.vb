@@ -414,7 +414,7 @@ Public Class cMSEPluginPoint
     ''' -----------------------------------------------------------------------
     Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
         If (iIndex < 1) Or (iIndex > Me.Core.nGroups) Then Return Nothing
-        Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iIndex)
+        Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iIndex)
         If String.Compare(grp.Name, strName, True) <> 0 Then
             Return Nothing
         End If

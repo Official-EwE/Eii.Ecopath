@@ -352,7 +352,7 @@ Public Class cEcoSpace
     ''' </summary>
     ''' <remarks>
     '''  All messages from EcoSpace to the core are passed via this MessagePublisher. 
-    '''  The core adds a message handler during Ecospace initialization <see cref="cCore.InitEcoSpace"> InitEcospace()</see> 
+    '''  The core adds a message handler during Ecospace initialization <see cref="cCore.InitEcospace"> InitEcospace()</see> 
     ''' </remarks>
     ''' ----------------------------------------------------------------------- 
     Public ReadOnly Property Messages() As New cMessagePublisher

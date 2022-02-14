@@ -118,7 +118,7 @@ Namespace SpatialData
                 'RzeroS = Number of recruits at the ecopath base in one month
                 'ThabArea = total habitat area
                 'SumOverPeriod = total number of recruits over the first year
-                Return Me.m_core.m_Stanza.RzeroS(Me.iScaleLayerIndex) * Me.m_core.m_EcoSpaceData.ThabArea * 12 / SumOverPeriod
+                Return Me.m_core.m_Stanza.RzeroS(Me.iScaleLayerIndex) * Me.m_core.m_EcospaceData.ThabArea * 12 / SumOverPeriod
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'NO SCALER

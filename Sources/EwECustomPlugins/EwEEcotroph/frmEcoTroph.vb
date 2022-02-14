@@ -196,7 +196,7 @@ Public Class frmEcotroph
         End If
 
         'a retester ou alors tester si les données sont dispo
-        EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
+        EcoTroph.cEcotrophPlugin.etCore.RunEcopath()
 
         Me.ETgridinput.BringToFront()
 

@@ -159,7 +159,7 @@ Public Class gridQuotaShares
             Dim data As cQuotaShares.QuotaShare = DirectCast(lstShares(i), cQuotaShares.QuotaShare)
 
             Me(iRow, eColumnTypes.GroupNumber) = New cEwERowHeaderCell(CStr(data.mGroupNo))
-            Me(iRow, eColumnTypes.GroupName) = New cPropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.mGroupNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.GroupName) = New cPropertyRowHeaderCell(pm, core.EcopathGroupInputs(data.mGroupNo), eVarNameFlags.Name)
             ' To Mark: property cells automatically keep track of changing variable values
             Me(iRow, eColumnTypes.FleetNumber) = New cEwERowHeaderCell(CStr(data.mFleetNo))
             Me(iRow, eColumnTypes.FleetName) = New cPropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.mFleetNo), eVarNameFlags.Name)

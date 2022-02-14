@@ -64,7 +64,7 @@ Public Class gridFixedEscapement
             Me.AddRow()
 
             ' Get the group info
-            group = Me.Core.EcoPathGroupInputs(iGroup)
+            group = Me.Core.EcopathGroupInputs(iGroup)
             MSEGrp = Me.Core.MSEManager.GroupInputs(iGroup)
 
             Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))

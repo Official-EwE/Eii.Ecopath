@@ -119,7 +119,7 @@ Public Class gridEditMultiStanza
 
         For iLifeStage As Integer = 1 To Me.m_stanzagroup.nLifeStages
 
-            source = Me.Core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iLifeStage))
+            source = Me.Core.EcopathGroupInputs(Me.m_stanzagroup.iGroups(iLifeStage))
             iRow = Me.AddRow
 
             'Index

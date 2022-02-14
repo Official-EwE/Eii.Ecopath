@@ -110,7 +110,7 @@ Public Class gridBiomassLimits
         For i As Integer = 1 To Me.m_data.Count
             iRow = Me.AddRow()
 
-            Dim igroup As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+            Dim igroup As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
             'Me(iRow, eColumnTypes.GroupIndex) = New EwERowHeaderCell(CStr(igroup.Index))
             'Me(iRow, eColumnTypes.GroupName) = New EwERowHeaderCell(CStr(igroup.Name))
 

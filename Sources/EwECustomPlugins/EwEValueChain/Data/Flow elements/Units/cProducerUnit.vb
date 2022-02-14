@@ -283,10 +283,10 @@ Public Class cProducerUnit
                 Debug.Assert((shp IsNot Nothing), "Error on timestep " & CStr(iTimeStep) & ": fishing rate shape not available")
                 ' Get effort
                 'We run the policy search for 20 extra years for which there is no effort, so use last effort for those years
-                If iTimeStep <= Me.Core.EcoSimModelParameters.NumberYears * 12 Then
+                If iTimeStep <= Me.Core.EcosimModelParameters.NumberYears * 12 Then
                     Me.m_sEffort = shp.ShapeData(iTimeStep)
                 Else
-                    Me.m_sEffort = shp.ShapeData(Me.Core.EcoSimModelParameters.NumberYears * 12)
+                    Me.m_sEffort = shp.ShapeData(Me.Core.EcosimModelParameters.NumberYears * 12)
                 End If
             End If
         End If
@@ -567,7 +567,7 @@ Public Class cProducerUnit
                         sbError.Append(",")
                     End If
                     sbError.Append(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, _
-                                                 fmt.ToString(Me.Core.EcoPathGroupInputs(i)), _
+                                                 fmt.ToString(Me.Core.EcopathGroupInputs(i)), _
                                                  sTotal(i).ToString("R")))
                 End If
             Next

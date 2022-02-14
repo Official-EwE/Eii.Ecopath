@@ -79,7 +79,7 @@ Public Class cSplitGroupPluginPoint
 
         Dim engine As New cEcopathSplitGroup(core)
 
-        Me.m_uic.Core.RunEcoPath()
+        Me.m_uic.Core.RunEcopath()
 
         Dim dlg As New dlgSplitGroup(Me.m_uic, engine)
         dlg.ShowDialog()

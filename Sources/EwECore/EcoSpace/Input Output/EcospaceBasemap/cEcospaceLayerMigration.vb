@@ -67,7 +67,7 @@ Public Class cEcospaceLayerMigration
 #Region " Overrides "
 
     Protected Overrides Function DefaultName() As String
-        Return Me.m_core.EcoPathGroupInputs(Me.Index).Name
+        Return Me.m_core.EcopathGroupInputs(Me.Index).Name
     End Function
 
 #End Region ' Overrides

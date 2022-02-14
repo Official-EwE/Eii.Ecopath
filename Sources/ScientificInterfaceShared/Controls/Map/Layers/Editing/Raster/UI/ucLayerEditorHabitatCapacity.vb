@@ -41,7 +41,7 @@ Namespace Controls.Map.Layers
             Me.m_cmbGroups.Items.Clear()
 
             For iGroup As Integer = 1 To core.nGroups
-                group = core.EcoPathGroupInputs(iGroup)
+                group = core.EcopathGroupInputs(iGroup)
                 Me.m_cmbGroups.Items.Add(group)
             Next iGroup
 

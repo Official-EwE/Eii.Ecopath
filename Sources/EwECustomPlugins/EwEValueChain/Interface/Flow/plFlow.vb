@@ -1137,7 +1137,7 @@ Public Class plFlow
                         ' Create link for every group
                         For iGroup As Integer = 1 To Me.m_data.Core.nGroups
                             If Not bError Then
-                                Dim group As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(iGroup)
+                                Dim group As cEcoPathGroupInput = Me.m_data.Core.EcopathGroupInputs(iGroup)
                                 Dim link As cLinkLandings = Me.m_data.CreateLandingsLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group, bError)
                                 If (link IsNot Nothing) Then
                                     Me.AddLink(link)

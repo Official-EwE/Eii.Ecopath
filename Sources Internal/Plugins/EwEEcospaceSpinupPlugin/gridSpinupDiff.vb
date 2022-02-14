@@ -88,7 +88,7 @@ Public Class gridSpinupDiff
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell("")
                 Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(SharedResources.GENERIC_VALUE_ALLGROUPS)
             Else
-                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
             End If

@@ -216,7 +216,7 @@ Namespace Ecosim
             Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")
             Me.m_cmdLoadTS.AddControl(Me.m_btnTS)
 
-            Me.m_propNYears = New cSingleProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
+            Me.m_propNYears = New cSingleProperty(Me.Core.EcosimModelParameters, eVarNameFlags.EcoSimNYears)
             AddHandler Me.m_propNYears.PropertyChanged, AddressOf Me.OnPropNumYearsChanged
 
             Me.m_lbGroups.Attach(Me.UIContext)
@@ -840,7 +840,7 @@ Namespace Ecosim
                 .Min = Me.Core.EcosimFirstYear
                 .MinGrace = 0
                 .MaxAuto = False
-                .Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
+                .Max = Me.Core.EcosimModelParameters.NumberYears + Me.Core.EcosimFirstYear
                 .MaxGrace = 0
             End With
 
@@ -933,7 +933,7 @@ Namespace Ecosim
                 Next
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                     Dim strGroupName As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name)
                     'Dim strTrialLabel As String = cStringUtils.Localize(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
                     line = Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strGroupName)

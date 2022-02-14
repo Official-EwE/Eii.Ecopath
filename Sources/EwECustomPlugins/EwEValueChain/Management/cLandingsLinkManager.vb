@@ -95,7 +95,7 @@ Public Class cLandingsLinkManager
                     ' Is Ecopath landing missing a link?
                     If (fleet.Landings(iGroup) > 0) And (landings.IndexOf(iGroup) = -1) Then
                         ' Get group
-                        group = Me.m_core.EcoPathGroupInputs(iGroup)
+                        group = Me.m_core.EcopathGroupInputs(iGroup)
                         ' Create link
                         Console.WriteLine("> VC: Fleet {0}, group {1} missing landings link, added", fleet.Name, group.Name)
                         Me.m_data.CreateLandingsLink(prod, unit, group, bDummy)

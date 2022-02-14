@@ -135,7 +135,7 @@ Public Class frmMSEBatchFixedF
         Me.rbCalcTypeValue.Checked = (pars.IterCalcType = eMSEBatchIterCalcTypes.UpperLowerValues)
 
         For igrp As Integer = 1 To Me.UIContext.Core.nGroups
-            Dim grp As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(igrp)
+            Dim grp As cEcoPathGroupInput = Me.UIContext.Core.EcopathGroupInputs(igrp)
             If grp.IsFished Then
                 Me.cbGroups.Items.Add(New cCoreInputOutputControlItem(grp))
             End If

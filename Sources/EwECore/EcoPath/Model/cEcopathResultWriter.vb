@@ -130,7 +130,7 @@ Public Class cEcopathResultWriter
             sw.WriteLine("GroupNo,Group,B,PB,QB,EE,GE,FishMort,PredMort,BioAccum,NetMig,OtherMort,NatMort")
             For i As Integer = 1 To Me.m_data.NumGroups
 
-                Dim grp As cEcoPathGroupOutput = Me.m_core.EcoPathGroupOutputs(i)
+                Dim grp As cEcopathGroupOutput = Me.m_core.EcopathGroupOutputs(i)
 
                 sw.Write(i)
                 sw.Write(",")

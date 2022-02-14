@@ -80,7 +80,7 @@ Namespace Ecosim
                 Me.RefreshContent()
             ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimCapacityResponseInteractionManager) Then
                 For igrp As Integer = 1 To Me.Core.nGroups
-                    Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
+                    Me.UpdateRow(Me.Core.EcosimGroupInputs(igrp))
                 Next
             End If
         End Sub
@@ -109,7 +109,7 @@ Namespace Ecosim
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iGroup As Integer = 1 To Me.Core.nGroups
-                group = Me.Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcopathGroupInputs(iGroup)
                 ' # Group index row header cells
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
@@ -131,7 +131,7 @@ Namespace Ecosim
                         Me(igrp, iDriver + 1).Behaviors.Add(Me.m_bmCell)
                     Next
 
-                    Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
+                    Me.UpdateRow(Me.Core.EcosimGroupInputs(igrp))
 
                 Next
             Catch ex As Exception

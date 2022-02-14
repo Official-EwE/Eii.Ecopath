@@ -159,7 +159,7 @@ Public Class ucSuitabilityPlot
 
         Me.m_lbGroups.Items.Clear()
         For iGroup As Integer = 1 To Me.UIContext.Core.nGroups
-            group = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
+            group = Me.UIContext.Core.EcopathGroupInputs(iGroup)
             If group.IsConsumer Then liGroups.Add(group.Index)
         Next
         Me.m_lbGroups.GroupListTracking = cGroupListBox.eGroupTrackingType.Manual
@@ -173,7 +173,7 @@ Public Class ucSuitabilityPlot
 
         Dim predIn As cEcoPathGroupInput = Me.SelectedPredator()
         Dim predOut As cEcosimGroupOutput = Nothing
-        Dim preyEcopath As cEcoPathGroupOutput = Nothing
+        Dim preyEcopath As cEcopathGroupOutput = Nothing
         Dim preyOut As cEcosimGroupOutput = Nothing
         Dim asX(Me.UIContext.Core.nEcosimTimeSteps - 1) As Double
         Dim asY(Me.UIContext.Core.nEcosimTimeSteps - 1) As Double
@@ -215,9 +215,9 @@ Public Class ucSuitabilityPlot
             Me.m_zgh.ConfigurePane(strTitle, strXAxisTitle, strYAxisTitle, False)
 
             For iPrey As Integer = 1 To Me.UIContext.Core.nGroups
-                preyEcopath = Me.UIContext.Core.EcoPathGroupOutputs(iPrey)
-                predOut = Me.UIContext.Core.EcoSimGroupOutputs(predIn.Index)
-                preyOut = Me.UIContext.Core.EcoSimGroupOutputs(iPrey)
+                preyEcopath = Me.UIContext.Core.EcopathGroupOutputs(iPrey)
+                predOut = Me.UIContext.Core.EcosimGroupOutputs(predIn.Index)
+                preyOut = Me.UIContext.Core.EcosimGroupOutputs(iPrey)
 
                 If (predIn.DietComp(iPrey) > 0.0!) And (preyEcopath.Biomass > 0.0) Then
 

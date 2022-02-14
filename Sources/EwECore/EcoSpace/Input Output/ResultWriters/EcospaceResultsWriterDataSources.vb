@@ -231,7 +231,7 @@ Public Class cCatchResultsDataSource
         For iFleet As Integer = 1 To Me.m_core.nFleets
             fleet = Me.m_core.EcopathFleetInputs(iFleet)
             For iGroup As Integer = 1 To Me.m_core.nGroups
-                group = Me.m_core.EcoPathGroupInputs(iGroup)
+                group = Me.m_core.EcopathGroupInputs(iGroup)
                 If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then
                     'Save the Fleet and group indexes
                     Me.m_lstCatch.Add(New cCatch(fleet, group))
@@ -274,7 +274,7 @@ Public Class cCatchResultsDataSource
 
     Public Overrides ReadOnly Property nWaterCells As Integer
         Get
-            Return Me.m_core.m_EcoSpaceData.nWaterCells
+            Return Me.m_core.m_EcospaceData.nWaterCells
         End Get
     End Property
 
@@ -385,7 +385,7 @@ Public Class cRegionBiomassResultsDataSource
         Me.m_iRegionIndex = OptionalIndex
         Me.m_lstRegions = New List(Of cRegion)
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            Me.m_lstRegions.Add(New cRegion(Me.m_core.EcoPathGroupInputs(iGroup), OptionalIndex))
+            Me.m_lstRegions.Add(New cRegion(Me.m_core.EcopathGroupInputs(iGroup), OptionalIndex))
         Next iGroup
 
     End Sub
@@ -427,7 +427,7 @@ Public Class cRegionBiomassResultsDataSource
 
     Public Overrides ReadOnly Property nWaterCells As Integer
         Get
-            Return Me.m_core.m_EcoSpaceData.nCellsInRegion(Me.m_iRegionIndex)
+            Return Me.m_core.m_EcospaceData.nCellsInRegion(Me.m_iRegionIndex)
         End Get
     End Property
 
@@ -514,7 +514,7 @@ Public Class cRegionCatchResultsDataSource
         For iFleet As Integer = 1 To Me.m_core.nFleets
             fleet = Me.m_core.EcopathFleetInputs(iFleet)
             For iGroup As Integer = 1 To Me.m_core.nGroups
-                group = Me.m_core.EcoPathGroupInputs(iGroup)
+                group = Me.m_core.EcopathGroupInputs(iGroup)
                 If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then
                     'Save the Fleet and group indexes
                     Me.m_lstRegions.Add(New cRegion(fleet, group, Me.m_iRegionIndex))
@@ -562,7 +562,7 @@ Public Class cRegionCatchResultsDataSource
 
     Public Overrides ReadOnly Property nWaterCells As Integer
         Get
-            Return Me.m_core.m_EcoSpaceData.nCellsInRegion(Me.m_iRegionIndex)
+            Return Me.m_core.m_EcospaceData.nCellsInRegion(Me.m_iRegionIndex)
         End Get
     End Property
 

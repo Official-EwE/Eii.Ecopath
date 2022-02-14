@@ -803,7 +803,7 @@ Namespace Controls
                 End If
 
                 If (bIncludeGroup = True) Then
-                    Me.Items.Add(New cGroupItem(Me.m_uic.Core.EcoPathGroupInputs(i)))
+                    Me.Items.Add(New cGroupItem(Me.m_uic.Core.EcopathGroupInputs(i)))
                 End If
             Next
 

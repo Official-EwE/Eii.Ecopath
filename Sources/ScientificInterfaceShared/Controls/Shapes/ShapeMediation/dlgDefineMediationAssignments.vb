@@ -101,7 +101,7 @@ Namespace Controls
             If Not Me.m_bIsLandingsInteractions Then
                 ' Add existing mediations
                 For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
+                    Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcopathGroupInputs(iGroup)
                     Dim fleet As cEcopathFleetInput = Nothing
 
                     For j As Integer = 0 To Me.m_medfn.NumGroups - 1
@@ -131,7 +131,7 @@ Namespace Controls
                     Dim grp As cEcoPathGroupInput = Nothing
                     Dim fleet As cEcopathFleetInput = Nothing
                     If (medGrp.iGroupIndex > 0) Then
-                        grp = Me.m_uic.Core.EcoPathGroupInputs(medGrp.iGroupIndex)
+                        grp = Me.m_uic.Core.EcopathGroupInputs(medGrp.iGroupIndex)
                         fleet = Me.m_uic.Core.EcopathFleetInputs(medGrp.iFleetIndex)
 
                         If grp IsNot Nothing And fleet IsNot Nothing Then
@@ -142,7 +142,7 @@ Namespace Controls
             End If
 
             ' Update available list box
-            Me.UpdateAvailableGroupsAndFleets(Me.m_uic.Core.EcoPathGroupInputs(1))
+            Me.UpdateAvailableGroupsAndFleets(Me.m_uic.Core.EcopathGroupInputs(1))
             Me.UpdateGraph()
 
         End Sub
@@ -319,7 +319,7 @@ Namespace Controls
                 If Not Me.m_bIsLandingsInteractions Then
                     lChildren = New List(Of cCoreInputOutputControlItem)
                     For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                        group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
+                        group = Me.m_uic.Core.EcopathGroupInputs(iGroup)
                         Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
                         lChildren.Add(node)
                         If ReferenceEquals(group, objSelected) Then nodeSelected = node
@@ -342,7 +342,7 @@ Namespace Controls
 
                         For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                             If fleet.Landings(iGroup) > 0 Then
-                                group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
+                                group = Me.m_uic.Core.EcopathGroupInputs(iGroup)
 
                                 Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
                                 If ReferenceEquals(fleet, objSelected) Then nodeSelected = node

@@ -62,7 +62,7 @@ Public Class gridCatchability
         Me(0, 0) = New cEwEColumnHeaderCell(SharedResources.TSDATASETINTERVAL_TIMESTEP)
 
         For columnIndex As Integer = 1 To Me.Core.nGroups
-            source = Me.Core.EcoSimGroupInputs(columnIndex)
+            source = Me.Core.EcosimGroupInputs(columnIndex)
             Me(0, columnIndex) = New cEwEColumnHeaderCell(source.Name)
         Next
 

@@ -360,7 +360,7 @@ Public Class cPedigreeManager
 
         MyBase.ResetStatusFlags(bForceReset)
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            Me.Set_Pedigree_Flags(Me.m_core.EcoPathGroupInputs(iGroup))
+            Me.Set_Pedigree_Flags(Me.m_core.EcopathGroupInputs(iGroup))
         Next
         Return True
 

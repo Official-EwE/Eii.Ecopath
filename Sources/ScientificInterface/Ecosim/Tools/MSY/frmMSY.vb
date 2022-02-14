@@ -377,7 +377,7 @@ Namespace Ecosim
 
             If Me.m_rbGroup.Checked Then
                 For i As Integer = 1 To Me.Core.nGroups
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
                     If (group.IsFished) Then
                         Me.m_cmbTarget.Items.Add(New cCoreInputOutputControlItem(group))
                     End If
@@ -506,7 +506,7 @@ Namespace Ecosim
 
                 Case eMSYFSelectionModeType.Groups
                     strXAxisLabel = SharedResources.HEADER_FISHINGMORTALITY
-                    strTarget = Me.Core.EcoPathGroupInputs(Me.m_results.Selection).Name
+                    strTarget = Me.Core.EcopathGroupInputs(Me.m_results.Selection).Name
 
                 Case eMSYFSelectionModeType.Fleets
                     strXAxisLabel = My.Resources.HEADER_FISHING_EFFORT_MULTIPLIER
@@ -607,7 +607,7 @@ Namespace Ecosim
 
                 For i As Integer = 1 To Me.Core.nGroups
                     ' Get group
-                    grp = Me.Core.EcoPathGroupInputs(i)
+                    grp = Me.Core.EcopathGroupInputs(i)
                     ' Determine if group should be shown
                     If Me.StyleGuide.GroupVisible(grp.Index) Then
 
@@ -645,7 +645,7 @@ Namespace Ecosim
 
                 For i As Integer = 1 To Me.Core.nGroups
                     ' Get group
-                    grp = Me.Core.EcoPathGroupInputs(i)
+                    grp = Me.Core.EcopathGroupInputs(i)
 
                     ' Only plot fished groups
                     If Me.StyleGuide.GroupVisible(grp.Index) And grp.IsFished Then

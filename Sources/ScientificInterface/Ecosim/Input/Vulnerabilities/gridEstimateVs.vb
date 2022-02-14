@@ -118,7 +118,7 @@ Namespace Ecosim
 
             Dim sVul As Single = cCore.NULL_VALUE
             Dim group As cEcoPathGroupInput = Nothing
-            Dim groupSim As cEcoSimGroupInput = Nothing
+            Dim groupSim As cEcosimGroupInput = Nothing
 
             Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
 
@@ -127,7 +127,7 @@ Namespace Ecosim
                 For iGroup As Integer = 1 To Me.Core.nGroups
 
                     ' Get group
-                    group = Me.Core.EcoPathGroupInputs(iGroup)
+                    group = Me.Core.EcopathGroupInputs(iGroup)
 
                     ' Get selected vul, if any
                     sVul = cCore.NULL_VALUE
@@ -142,7 +142,7 @@ Namespace Ecosim
                         For i As Integer = 1 To Me.Core.nGroups
                             'Update vulmult(prey,pred)
                             If group.DietComp(i) > 0 Then
-                                groupSim = Me.Core.EcoSimGroupInputs(i)
+                                groupSim = Me.Core.EcosimGroupInputs(i)
                                 groupSim.VulMult(iGroup) = sVul
                             End If
                         Next
@@ -182,7 +182,7 @@ Namespace Ecosim
 
         Protected Overrides Sub FillData()
 
-            Dim group As cEcoSimGroupInput = Nothing
+            Dim group As cEcosimGroupInput = Nothing
             Dim sPotGrowth As Single = 0.0!
             Dim sFMax As Single = 0.0!
             Dim style As cStyleGuide.eStyleFlags = eStyleFlags.OK
@@ -190,7 +190,7 @@ Namespace Ecosim
 
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
-                group = Me.Core.EcoSimGroupInputs(iGroup)
+                group = Me.Core.EcosimGroupInputs(iGroup)
                 sPotGrowth = cCore.NULL_VALUE ' Col 3 in the EwE5 code
                 sFMax = cCore.NULL_VALUE ' Col 7 in the EwE5 code
 

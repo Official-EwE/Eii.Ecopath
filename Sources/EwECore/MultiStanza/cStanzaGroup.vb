@@ -250,7 +250,7 @@ Public Class cStanzaGroup
                     If (msg Is Nothing) Then Return False
 
                     bOk = False
-                    grp = Me.m_core.EcoPathGroupInputs(Me.iGroups(ist))
+                    grp = Me.m_core.EcopathGroupInputs(Me.iGroups(ist))
                     vs = New cVariableStatus(grp, eStatusFlags.MissingParameter,
                                              cStringUtils.Localize(My.Resources.CoreMessages.STANZA_MORT_MISSING, grp.Name),
                                              eVarNameFlags.StanzaMortaility,

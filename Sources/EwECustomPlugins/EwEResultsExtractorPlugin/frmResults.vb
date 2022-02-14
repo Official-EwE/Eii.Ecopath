@@ -137,7 +137,7 @@ Public Class frmResults
         'Remember that EcoSimGroupOutputs are indexed from 1!!!
         Dim str(Me.Core.nGroups - 1) As String
         For i As Integer = 1 To Me.Core.nGroups
-            str(i - 1) = Me.Core.EcoSimGroupOutputs(i).Name
+            str(i - 1) = Me.Core.EcosimGroupOutputs(i).Name
         Next
         'Create PredPreySelection object
         Me.PredatorPreySelection = New cSelectionData(My.Resources.PRED2_MANYPREY, str)
@@ -496,7 +496,7 @@ Public Class frmResults
         Dim str(Me.Core.nGroups - 1) As String
 
         For i As Integer = 1 To Me.Core.nGroups
-            str(i - 1) = Me.Core.EcoSimGroupOutputs(i).Name
+            str(i - 1) = Me.Core.EcosimGroupOutputs(i).Name
         Next
         Return str
 
@@ -540,7 +540,7 @@ Public Class frmResults
 
         'Find out what the index number is for a given group in m_core.EcosimGroupOutputs
         Dim i As Integer = 1
-        While i <= Me.Core.nGroups And Me.Core.EcoSimGroupOutputs(i).Name <> Group
+        While i <= Me.Core.nGroups And Me.Core.EcosimGroupOutputs(i).Name <> Group
             i += 1
         End While
         If i > Me.Core.nGroups Then
@@ -817,13 +817,13 @@ Public Class frmResults
                 For Year As Integer = 1 To Me.Core.nEcosimYears
                     YearlyBiomass = 0
                     For Month As Integer = 1 To cCore.N_MONTHS
-                        YearlyBiomass += Me.Core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * cCore.N_MONTHS + Month)
+                        YearlyBiomass += Me.Core.EcosimGroupOutputs(EwEIndex).Biomass((Year - 1) * cCore.N_MONTHS + Month)
                     Next
                     ABiomass(ParentIndex + 1, Year) = YearlyBiomass / cCore.N_MONTHS
                 Next
             Else
                 For TimeStep As Integer = 1 To Me.nDataRows
-                    ABiomass(ParentIndex + 1, TimeStep) = Me.Core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep)
+                    ABiomass(ParentIndex + 1, TimeStep) = Me.Core.EcosimGroupOutputs(EwEIndex).Biomass(TimeStep)
                 Next
             End If
 
@@ -867,10 +867,10 @@ Public Class frmResults
             For TimeStep As Integer = 2 To Me.Core.nEcosimTimeSteps
 
                 'Remember that Biomass is changed to difference from initial biomass
-                StartStepBiomass = Me.Core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep - 1) _
-                    - Me.Core.EcoPathGroupOutputs(EwEIndex).Biomass
-                EndStepBiomass = Me.Core.EcoSimGroupOutputs(EwEIndex).Biomass(TimeStep) _
-                    - Me.Core.EcoPathGroupOutputs(EwEIndex).Biomass
+                StartStepBiomass = Me.Core.EcosimGroupOutputs(EwEIndex).Biomass(TimeStep - 1) _
+                    - Me.Core.EcopathGroupOutputs(EwEIndex).Biomass
+                EndStepBiomass = Me.Core.EcosimGroupOutputs(EwEIndex).Biomass(TimeStep) _
+                    - Me.Core.EcopathGroupOutputs(EwEIndex).Biomass
 
                 'Calc. Integ. for step
                 IntegStep += (StartStepBiomass + EndStepBiomass) / (2 * cCore.N_MONTHS) 'Gives units tons*year
@@ -937,9 +937,9 @@ Public Class frmResults
                     For Year As Integer = 1 To Me.Core.nEcosimYears
                         ConsumpCumul = 0
                         For Month As Integer = 1 To cCore.N_MONTHS
-                            ConsumpCumul += Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (Year - 1) * cCore.N_MONTHS + Month) _
-                                * Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * cCore.N_MONTHS + Month) _
-                                * Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * cCore.N_MONTHS + Month)
+                            ConsumpCumul += Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (Year - 1) * cCore.N_MONTHS + Month) _
+                                * Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * cCore.N_MONTHS + Month) _
+                                * Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * cCore.N_MONTHS + Month)
 
 
                         Next
@@ -948,9 +948,9 @@ Public Class frmResults
                 Else
                     For TimeStep As Integer = 1 To Me.nDataRows
                         AConsPerPrey(PreyIndex, TimeStep) =
-                            Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep) _
-                            * Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass(TimeStep) _
-                            * Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass(TimeStep)
+                            Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep) _
+                            * Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).Biomass(TimeStep) _
+                            * Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass(TimeStep)
                     Next
                 End If
 
@@ -995,8 +995,8 @@ Public Class frmResults
                     For Month As Integer = 1 To cCore.N_MONTHS
                         'Retrieve Fishing mortality for parent
                         CumulFishingMortality +=
-                                        Me.Core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * cCore.N_MONTHS + Month) -
-                                        Me.Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
+                                        Me.Core.EcosimGroupOutputs(EwEIndex).FishMort((Year - 1) * cCore.N_MONTHS + Month) -
+                                        Me.Core.EcosimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
                     Next
                     AFishingMortality(ParentIndex, Year) = CumulFishingMortality / cCore.N_MONTHS
                 Next
@@ -1005,8 +1005,8 @@ Public Class frmResults
 
                     'Retrieve Fishing mortality for parent
                     AFishingMortality(ParentIndex, TimeStep) =
-                                    Me.Core.EcoSimGroupOutputs(EwEIndex).FishMort(TimeStep) -
-                                    Me.Core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
+                                    Me.Core.EcosimGroupOutputs(EwEIndex).FishMort(TimeStep) -
+                                    Me.Core.EcosimGroupOutputs(EwEIndex).PredMort(TimeStep)
                 Next
             End If
 
@@ -1049,7 +1049,7 @@ Public Class frmResults
                     For Month As Integer = 1 To cCore.N_MONTHS
                         'Retrieve Predation mortality for parent
                         CumulPredationMortality +=
-                                            Me.Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
+                                            Me.Core.EcosimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
 
                     Next
                     APredationMortality(PredatorIndex, Year) = CumulPredationMortality / cCore.N_MONTHS
@@ -1063,7 +1063,7 @@ Public Class frmResults
                     EwEIndex = Me.GetIndexGroup(Me.ParentOnlySelection.SelectedNames(PredatorIndex))
                     'retrieve mortality for current predator at current timestep
                     APredationMortality(PredatorIndex, TimeStep) =
-                    Me.Core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
+                    Me.Core.EcosimGroupOutputs(EwEIndex).PredMort(TimeStep)
 
                 Next
             Next
@@ -1126,21 +1126,21 @@ Public Class frmResults
                         CumPredMort = 0
                         For nMonth As Integer = 1 To cCore.N_MONTHS
                             Consumption =
-                                Me.Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * cCore.N_MONTHS + nMonth) _
-                                * Me.Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth) _
-                                * Me.Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * cCore.N_MONTHS + nMonth)
-                            CumPredMort += Consumption / Me.Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
+                                Me.Core.EcosimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * cCore.N_MONTHS + nMonth) _
+                                * Me.Core.EcosimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth) _
+                                * Me.Core.EcosimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * cCore.N_MONTHS + nMonth)
+                            CumPredMort += Consumption / Me.Core.EcosimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
                         APredationMortality(ColPointer, nYear + 1) = CumPredMort / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Me.nDataRows
                         Consumption =
-                            Me.Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, TimeStep) _
-                            * Me.Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass(TimeStep) _
-                            * Me.Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass(TimeStep)
+                            Me.Core.EcosimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, TimeStep) _
+                            * Me.Core.EcosimGroupOutputs(EwEIndexPredator).Biomass(TimeStep) _
+                            * Me.Core.EcosimGroupOutputs(EwEIndexPredator).ConsumpBiomass(TimeStep)
 
-                        APredationMortality(ColPointer, TimeStep + 1) = Consumption / Me.Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
+                        APredationMortality(ColPointer, TimeStep + 1) = Consumption / Me.Core.EcosimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                     Next
                 End If
 
@@ -1209,8 +1209,8 @@ Public Class frmResults
                     For nYear As Integer = 1 To Me.Core.nEcosimYears
                         CumulFishingMort = 0
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            FleetCatch = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
-                            Biomass = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
+                            FleetCatch = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
+                            Biomass = Me.Core.EcosimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                             CumulFishingMort += FleetCatch / Biomass
                         Next
                         AFishingMortality(ColPointer, nYear + 1) = CumulFishingMort / cCore.N_MONTHS
@@ -1218,8 +1218,8 @@ Public Class frmResults
                 Else
                     For TimeStep As Integer = 1 To Me.nDataRows
                         'Get Catch Biomass
-                        FleetCatch = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
-                        Biomass = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
+                        FleetCatch = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                        Biomass = Me.Core.EcosimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                         AFishingMortality(ColPointer, TimeStep + 1) = FleetCatch / Biomass
                     Next
                 End If
@@ -1283,7 +1283,7 @@ Public Class frmResults
                 'Calculate initial partialF
                 InitialPartialF = (Me.Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) + _
                                     Me.Core.EcopathFleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
-                                    / Me.Core.EcoPathGroupOutputs(EwEIndexPrey).Biomass
+                                    / Me.Core.EcopathGroupOutputs(EwEIndexPrey).Biomass
 
                 'Calculate efforts
                 AEffort(FleetIndex, 1) = 1
@@ -1291,16 +1291,16 @@ Public Class frmResults
                     For nYear As Integer = 1 To Me.Core.nEcosimYears
                         CumulEffort = 0
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            PartialF = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth) /
-                                        Me.Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
+                            PartialF = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth) /
+                                        Me.Core.EcosimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                             CumulEffort += PartialF
                         Next
                         AEffort(FleetIndex, nYear + 1) = CumulEffort / (cCore.N_MONTHS * InitialPartialF)
                     Next
                 Else
                     For TimeStep As Integer = 1 To Me.nDataRows
-                        PartialF = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep) /
-                                    Me.Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
+                        PartialF = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep) /
+                                    Me.Core.EcosimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                         AEffort(FleetIndex, TimeStep + 1) = PartialF / InitialPartialF
                     Next
                 End If
@@ -1350,13 +1350,13 @@ Public Class frmResults
                 For nYear As Integer = 1 To Me.Core.nEcosimYears
                     CumulCatch = 0
                     For nMonth = 1 To cCore.N_MONTHS
-                        CumulCatch += Me.Core.EcoSimGroupOutputs(EwEIndex).Catch((nYear - 1) * cCore.N_MONTHS + nMonth)
+                        CumulCatch += Me.Core.EcosimGroupOutputs(EwEIndex).Catch((nYear - 1) * cCore.N_MONTHS + nMonth)
                     Next
                     ACatch(ParentIndex, nYear) = CumulCatch / cCore.N_MONTHS
                 Next
             Else
                 For TimeStep As Integer = 1 To Me.nDataRows
-                    ACatch(ParentIndex, TimeStep) = Me.Core.EcoSimGroupOutputs(EwEIndex).Catch(TimeStep)
+                    ACatch(ParentIndex, TimeStep) = Me.Core.EcosimGroupOutputs(EwEIndex).Catch(TimeStep)
                 Next
             End If
 
@@ -1413,13 +1413,13 @@ Public Class frmResults
                     For nYear As Integer = 1 To Me.Core.nEcosimYears
                         CumulCatch = 0
                         For nMonth = 1 To cCore.N_MONTHS
-                            CumulCatch += Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
+                            CumulCatch += Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
                         ACatchByFleet(ColPointer, nYear + 1) = CumulCatch / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
-                        ACatchByFleet(ColPointer, TimeStep + 1) = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                        ACatchByFleet(ColPointer, TimeStep + 1) = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
                     Next
                 End If
 
@@ -1497,13 +1497,13 @@ Public Class frmResults
                 If Me.chkYearly.Checked Then
                     For nYear As Integer = 1 To Me.Core.nEcosimYears
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            ACatchByFleet(ColPointer, nYear - 1) += Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
+                            ACatchByFleet(ColPointer, nYear - 1) += Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
                         ALandingsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropLandings / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
-                        ACatchByFleet(ColPointer, TimeStep - 1) = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                        ACatchByFleet(ColPointer, TimeStep - 1) = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
                         ALandingsByFleet(ColPointer, TimeStep + 1) = ACatchByFleet(ColPointer, TimeStep - 1) * PropLandings
                     Next
                 End If
@@ -1582,13 +1582,13 @@ Public Class frmResults
                 If Me.chkYearly.Checked Then
                     For nYear As Integer = 1 To Me.Core.nEcosimYears
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            ACatchByFleet(ColPointer, nYear - 1) += Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
+                            ACatchByFleet(ColPointer, nYear - 1) += Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
                         ADiscardsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropDiscards / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
-                        ACatchByFleet(ColPointer, TimeStep - 1) = Me.Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
+                        ACatchByFleet(ColPointer, TimeStep - 1) = Me.Core.EcosimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep)
                         ADiscardsByFleet(ColPointer, TimeStep + 1) = ACatchByFleet(ColPointer, TimeStep - 1) * PropDiscards
                     Next
                 End If
@@ -1647,13 +1647,13 @@ Public Class frmResults
                     For nYear As Integer = 1 To Me.Core.nEcosimYears
                         CumulDiet = 0
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            CumulDiet += Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (nYear - 1) * cCore.N_MONTHS + nMonth)
+                            CumulDiet += Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
                         ADietOfPredator(PreyIndex, nYear) = CumulDiet / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Me.nDataRows
-                        ADietOfPredator(PreyIndex, TimeStep) = Me.Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep)
+                        ADietOfPredator(PreyIndex, TimeStep) = Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep)
                     Next
                 End If
 
@@ -1749,16 +1749,16 @@ Public Class frmResults
 
         'Fill out core data
         For Row = 1 To Me.Core.nGroups
-            ABasicEstimates(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            ABasicEstimates(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
-            ABasicEstimates(2, Row) = Me.Core.EcoPathGroupOutputs(Row).TTLX
-            ABasicEstimates(3, Row) = Me.Core.EcoPathGroupOutputs(Row).Area
-            ABasicEstimates(4, Row) = Me.Core.EcoPathGroupOutputs(Row).BiomassArea
-            ABasicEstimates(5, Row) = Me.Core.EcoPathGroupOutputs(Row).Biomass
-            ABasicEstimates(6, Row) = Me.Core.EcoPathGroupOutputs(Row).PBOutput
-            ABasicEstimates(7, Row) = Me.Core.EcoPathGroupOutputs(Row).QBOutput
-            ABasicEstimates(8, Row) = Me.Core.EcoPathGroupOutputs(Row).EEOutput
-            ABasicEstimates(9, Row) = Me.Core.EcoPathGroupOutputs(Row).GEOutput
+            ABasicEstimates(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            ABasicEstimates(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
+            ABasicEstimates(2, Row) = Me.Core.EcopathGroupOutputs(Row).TTLX
+            ABasicEstimates(3, Row) = Me.Core.EcopathGroupOutputs(Row).Area
+            ABasicEstimates(4, Row) = Me.Core.EcopathGroupOutputs(Row).BiomassArea
+            ABasicEstimates(5, Row) = Me.Core.EcopathGroupOutputs(Row).Biomass
+            ABasicEstimates(6, Row) = Me.Core.EcopathGroupOutputs(Row).PBOutput
+            ABasicEstimates(7, Row) = Me.Core.EcopathGroupOutputs(Row).QBOutput
+            ABasicEstimates(8, Row) = Me.Core.EcopathGroupOutputs(Row).EEOutput
+            ABasicEstimates(9, Row) = Me.Core.EcopathGroupOutputs(Row).GEOutput
         Next
 
         'Setup datasheet and send to dataoutputter
@@ -1786,14 +1786,14 @@ Public Class frmResults
 
         'Fill out main data
         For Row = 1 To Me.Core.nGroups
-            AKeyIndices(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            AKeyIndices(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
-            AKeyIndices(2, Row) = Me.Core.EcoPathGroupOutputs(Row).BioAccum
-            AKeyIndices(3, Row) = Me.Core.EcoPathGroupOutputs(Row).BioAccumRatePerYear
-            AKeyIndices(4, Row) = Me.Core.EcoPathGroupOutputs(Row).NetMigration
-            AKeyIndices(5, Row) = Me.Core.EcoPathGroupOutputs(Row).FlowToDet
-            AKeyIndices(6, Row) = Me.Core.EcoPathGroupOutputs(Row).NetEfficiency
-            AKeyIndices(7, Row) = Me.Core.EcoPathGroupOutputs(Row).OmnivoryIndex
+            AKeyIndices(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            AKeyIndices(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
+            AKeyIndices(2, Row) = Me.Core.EcopathGroupOutputs(Row).BioAccum
+            AKeyIndices(3, Row) = Me.Core.EcopathGroupOutputs(Row).BioAccumRatePerYear
+            AKeyIndices(4, Row) = Me.Core.EcopathGroupOutputs(Row).NetMigration
+            AKeyIndices(5, Row) = Me.Core.EcopathGroupOutputs(Row).FlowToDet
+            AKeyIndices(6, Row) = Me.Core.EcopathGroupOutputs(Row).NetEfficiency
+            AKeyIndices(7, Row) = Me.Core.EcopathGroupOutputs(Row).OmnivoryIndex
         Next
 
         'Setup datasheet and send to dataoutputer
@@ -1822,16 +1822,16 @@ Public Class frmResults
         AInitMortCoef(9, 0) = My.Resources.PROP_NAT_MORT
 
         For Row = 1 To Me.Core.nLivingGroups
-            AInitMortCoef(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            AInitMortCoef(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
-            AInitMortCoef(2, Row) = Me.Core.EcoPathGroupOutputs(Row).PBOutput
-            AInitMortCoef(3, Row) = Me.Core.EcoPathGroupOutputs(Row).MortCoFishRate
-            AInitMortCoef(4, Row) = Me.Core.EcoPathGroupOutputs(Row).MortCoPredMort
-            AInitMortCoef(5, Row) = Me.Core.EcoPathGroupOutputs(Row).BioAccumRatePerYear
-            AInitMortCoef(6, Row) = Me.Core.EcoPathGroupOutputs(Row).MortCoNetMig
-            AInitMortCoef(7, Row) = Me.Core.EcoPathGroupOutputs(Row).MortCoOtherMort
-            AInitMortCoef(8, Row) = Me.Core.EcoPathGroupOutputs(Row).FishMortPerTotMort
-            AInitMortCoef(9, Row) = Me.Core.EcoPathGroupOutputs(Row).NatMortPerTotMort
+            AInitMortCoef(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            AInitMortCoef(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
+            AInitMortCoef(2, Row) = Me.Core.EcopathGroupOutputs(Row).PBOutput
+            AInitMortCoef(3, Row) = Me.Core.EcopathGroupOutputs(Row).MortCoFishRate
+            AInitMortCoef(4, Row) = Me.Core.EcopathGroupOutputs(Row).MortCoPredMort
+            AInitMortCoef(5, Row) = Me.Core.EcopathGroupOutputs(Row).BioAccumRatePerYear
+            AInitMortCoef(6, Row) = Me.Core.EcopathGroupOutputs(Row).MortCoNetMig
+            AInitMortCoef(7, Row) = Me.Core.EcopathGroupOutputs(Row).MortCoOtherMort
+            AInitMortCoef(8, Row) = Me.Core.EcopathGroupOutputs(Row).FishMortPerTotMort
+            AInitMortCoef(9, Row) = Me.Core.EcopathGroupOutputs(Row).NatMortPerTotMort
         Next
 
         'setup datasheet and send to data outputter
@@ -1853,7 +1853,7 @@ Public Class frmResults
         AInitPredMort(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         ColPoint = 3
         For x = 1 To Me.Core.nGroups
-            Pred = Me.Core.EcoSimGroupOutputs(x)
+            Pred = Me.Core.EcosimGroupOutputs(x)
             If Pred.PP < 1 Then
                 AInitPredMort(ColPoint - 1, 0) = x
                 PredIndex(ColPoint - 3) = x
@@ -1863,14 +1863,14 @@ Public Class frmResults
 
         'Write row titles
         For y = 1 To Me.Core.nLivingGroups
-            AInitPredMort(0, y) = Me.Core.EcoSimGroupOutputs(y).Index
-            AInitPredMort(1, y) = Me.Core.EcoSimGroupOutputs(y).Name
+            AInitPredMort(0, y) = Me.Core.EcosimGroupOutputs(y).Index
+            AInitPredMort(1, y) = Me.Core.EcosimGroupOutputs(y).Name
         Next
 
         'Fill out consumption values
         For x = 3 To ColPoint - 1
             For y = 1 To Me.Core.nLivingGroups
-                AInitPredMort(x - 1, y) = Me.Core.EcoPathGroupOutputs(y).PredMort(PredIndex(x - 3))
+                AInitPredMort(x - 1, y) = Me.Core.EcopathGroupOutputs(y).PredMort(PredIndex(x - 3))
             Next
         Next
 
@@ -1896,12 +1896,12 @@ Public Class frmResults
 
         'Fill main data
         For y = 1 To Me.Core.nLivingGroups
-            AInitFishingMort(0, y) = Me.Core.EcoPathGroupOutputs(y).Index
-            AInitFishingMort(1, y) = Me.Core.EcoPathGroupOutputs(y).Name
+            AInitFishingMort(0, y) = Me.Core.EcopathGroupOutputs(y).Index
+            AInitFishingMort(1, y) = Me.Core.EcopathGroupOutputs(y).Name
             For x = 1 To Me.Core.nFleets
                 slandings = Me.Core.EcopathFleetInputs(x).Landings(y)
                 sDiscards = Me.Core.EcopathFleetInputs(x).Discards(y)
-                sBiomass = Me.Core.EcoPathGroupOutputs(y).Biomass
+                sBiomass = Me.Core.EcopathGroupOutputs(y).Biomass
                 If sBiomass > 0 Then
                     AInitFishingMort(1 + x, y) = (slandings + sDiscards) / sBiomass
                 Else
@@ -1930,7 +1930,7 @@ Public Class frmResults
         AInitCons(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         ColPoint = 3
         For x = 1 To Me.Core.nGroups
-            Pred = Me.Core.EcoSimGroupOutputs(x)
+            Pred = Me.Core.EcosimGroupOutputs(x)
             If Pred.PP < 1 Or Pred.PP = 2 Then
                 AInitCons(ColPoint - 1, 0) = x
                 PredIndex(ColPoint - 3) = x
@@ -1940,8 +1940,8 @@ Public Class frmResults
 
         'Write row headings
         For y = 1 To Me.Core.nGroups
-            AInitCons(0, y) = Me.Core.EcoSimGroupOutputs(y).Index
-            AInitCons(1, y) = Me.Core.EcoSimGroupOutputs(y).Name
+            AInitCons(0, y) = Me.Core.EcosimGroupOutputs(y).Index
+            AInitCons(1, y) = Me.Core.EcosimGroupOutputs(y).Name
         Next
         'Add Import row
         AInitCons(0, Me.Core.nGroups + 1) = Me.Core.nGroups + 1
@@ -1954,11 +1954,11 @@ Public Class frmResults
         For x = 3 To ColPoint - 1
             TotalConsumption = 0
             For y = 1 To Me.Core.nGroups
-                AInitCons(x - 1, y) = Me.Core.EcoPathGroupOutputs(y).Consumption(PredIndex(x - 3))
-                TotalConsumption += Me.Core.EcoPathGroupOutputs(y).Consumption(PredIndex(x - 3))
+                AInitCons(x - 1, y) = Me.Core.EcopathGroupOutputs(y).Consumption(PredIndex(x - 3))
+                TotalConsumption += Me.Core.EcopathGroupOutputs(y).Consumption(PredIndex(x - 3))
             Next
-            AInitCons(x - 1, Me.Core.nGroups + 1) = Me.Core.EcoPathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
-            TotalConsumption += Me.Core.EcoPathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
+            AInitCons(x - 1, Me.Core.nGroups + 1) = Me.Core.EcopathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
+            TotalConsumption += Me.Core.EcopathGroupOutputs(PredIndex(x - 3)).ImportedConsumption
             AInitCons(x - 1, Me.Core.nGroups + 2) = TotalConsumption
         Next
 
@@ -1984,13 +1984,13 @@ Public Class frmResults
         ARespiration(6, 0) = My.Resources.RESPIRATION_BIOMASS_UNITS
 
         For Row = 1 To Me.Core.nGroups
-            ARespiration(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            ARespiration(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
-            ARespiration(2, Row) = Me.Core.EcoPathGroupOutputs(Row).Respiration
-            ARespiration(3, Row) = Me.Core.EcoPathGroupOutputs(Row).Assimilation
-            ARespiration(4, Row) = Me.Core.EcoPathGroupOutputs(Row).RespAssim
-            ARespiration(5, Row) = Me.Core.EcoPathGroupOutputs(Row).ProdResp
-            ARespiration(6, Row) = Me.Core.EcoPathGroupOutputs(Row).RespBiom
+            ARespiration(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            ARespiration(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
+            ARespiration(2, Row) = Me.Core.EcopathGroupOutputs(Row).Respiration
+            ARespiration(3, Row) = Me.Core.EcopathGroupOutputs(Row).Assimilation
+            ARespiration(4, Row) = Me.Core.EcopathGroupOutputs(Row).RespAssim
+            ARespiration(5, Row) = Me.Core.EcopathGroupOutputs(Row).ProdResp
+            ARespiration(6, Row) = Me.Core.EcopathGroupOutputs(Row).RespBiom
         Next
 
         'Setup datasheet and send to data outputter
@@ -2011,10 +2011,10 @@ Public Class frmResults
 
         'Write body of data
         For Row = 1 To Me.Core.nLivingGroups
-            AOverlapPrey(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            AOverlapPrey(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
+            AOverlapPrey(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            AOverlapPrey(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
             For Col = 1 To Row
-                AOverlapPrey(1 + Col, Row) = Me.Core.EcoPathGroupOutputs(Row).Plap(Col)
+                AOverlapPrey(1 + Col, Row) = Me.Core.EcopathGroupOutputs(Row).Plap(Col)
             Next
         Next
 
@@ -2038,10 +2038,10 @@ Public Class frmResults
 
         'Write body of data
         For Row = 1 To Me.Core.nLivingGroups
-            AOverlapPred(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            AOverlapPred(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
+            AOverlapPred(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            AOverlapPred(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
             For Col = 1 To Row
-                AOverlapPred(1 + Col, Row) = Me.Core.EcoPathGroupOutputs(Row).Hlap(Col)
+                AOverlapPred(1 + Col, Row) = Me.Core.EcopathGroupOutputs(Row).Hlap(Col)
             Next
         Next
 
@@ -2061,20 +2061,20 @@ Public Class frmResults
         AElectivity(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         ColPoint = 1
         For x = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupOutputs(x).PP < 1 Then
-                AElectivity(1 + ColPoint, 0) = Me.Core.EcoPathGroupOutputs(x).Index
+            If Me.Core.EcopathGroupOutputs(x).PP < 1 Then
+                AElectivity(1 + ColPoint, 0) = Me.Core.EcopathGroupOutputs(x).Index
                 ColPoint += 1
             End If
         Next
 
         'Write body of data
         For Row = 1 To Me.Core.nGroups
-            AElectivity(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            AElectivity(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
+            AElectivity(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            AElectivity(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
 
             For Col = 1 To Me.Core.nGroups
-                If Me.Core.EcoPathGroupOutputs(Col).PP < 1 Then
-                    AElectivity(1 + Col, Row) = Me.Core.EcoPathGroupOutputs(Col).Alpha(Row)
+                If Me.Core.EcopathGroupOutputs(Col).PP < 1 Then
+                    AElectivity(1 + Col, Row) = Me.Core.EcopathGroupOutputs(Col).Alpha(Row)
                 End If
             Next
         Next
@@ -2126,8 +2126,8 @@ Public Class frmResults
                 TotalCatchFleet(Col - 1) += Me.Core.EcopathFleetInputs(Col).Landings(xGroup) + Me.Core.EcopathFleetInputs(Col).Discards(xGroup)
             Next
             If TotalCatchGroup > 0 Then
-                AInitFishQuant(0, RowPoint) = Me.Core.EcoPathGroupOutputs(xGroup).Index
-                AInitFishQuant(1, RowPoint) = Me.Core.EcoPathGroupOutputs(xGroup).Name
+                AInitFishQuant(0, RowPoint) = Me.Core.EcopathGroupOutputs(xGroup).Index
+                AInitFishQuant(1, RowPoint) = Me.Core.EcopathGroupOutputs(xGroup).Name
                 For Col = 0 To Me.Core.nFleets - 1
                     AInitFishQuant(2 + Col, RowPoint) = RowVals(Col)
                 Next
@@ -2166,7 +2166,7 @@ Public Class frmResults
                 Quantities = (propLandings + propDiscards)
 
                 'Get trophic level of group and multiply by quanity
-                propTTLX = Me.Core.EcoPathGroupOutputs(GrpIndex).TTLX
+                propTTLX = Me.Core.EcopathGroupOutputs(GrpIndex).TTLX
                 QuantitiesTTLX = Quantities * propTTLX
 
                 'Keep running total of quanities and quantities*TTLX for each column
@@ -2222,8 +2222,8 @@ Public Class frmResults
             y += 1
 
             'Write Group Name
-            AInitFishVals(0, y) = Me.Core.EcoPathGroupOutputs(Row).Index
-            AInitFishVals(1, y) = Me.Core.EcoPathGroupOutputs(Row).Name
+            AInitFishVals(0, y) = Me.Core.EcopathGroupOutputs(Row).Index
+            AInitFishVals(1, y) = Me.Core.EcopathGroupOutputs(Row).Name
 
             'Reset totals(last 3 columns) to zero for start of each row
             MarketValueSum = 0
@@ -2238,8 +2238,8 @@ Public Class frmResults
             Next
 
             'Calculate the sum for all fleets of the Non-market value
-            NonMarketValueSum = Me.Core.EcoPathGroupInputs(Row).NonMarketValue * _
-                Me.Core.EcoPathGroupOutputs(Me.Core.EcoPathGroupInputs(Row).Index).Biomass
+            NonMarketValueSum = Me.Core.EcopathGroupInputs(Row).NonMarketValue * _
+                Me.Core.EcopathGroupOutputs(Me.Core.EcopathGroupInputs(Row).Index).Biomass
             'Calculate the value total value for all fleets
             TotalValueSum = MarketValueSum + NonMarketValueSum
 
@@ -2304,8 +2304,8 @@ Public Class frmResults
         'Write column headings
         ASearchRates(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         For x = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupOutputs(x).PP < 1 Then
-                ASearchRates(ColPointer + 1, 0) = Me.Core.EcoPathGroupOutputs(x).Index
+            If Me.Core.EcopathGroupOutputs(x).PP < 1 Then
+                ASearchRates(ColPointer + 1, 0) = Me.Core.EcopathGroupOutputs(x).Index
                 ColPointer += 1
             End If
         Next
@@ -2313,11 +2313,11 @@ Public Class frmResults
         'Write body of data
         For Row = 1 To Me.Core.nGroups
             ColPointer = 1
-            ASearchRates(0, Row) = Me.Core.EcoPathGroupOutputs(Row).Index
-            ASearchRates(1, Row) = Me.Core.EcoPathGroupOutputs(Row).Name
+            ASearchRates(0, Row) = Me.Core.EcopathGroupOutputs(Row).Index
+            ASearchRates(1, Row) = Me.Core.EcopathGroupOutputs(Row).Name
             For x = 1 To Me.Core.nGroups
-                If Me.Core.EcoPathGroupOutputs(x).PP < 1 Then
-                    ASearchRates(1 + ColPointer, Row) = Me.Core.EcoPathGroupOutputs(Row).SearchRate(x)
+                If Me.Core.EcopathGroupOutputs(x).PP < 1 Then
+                    ASearchRates(1 + ColPointer, Row) = Me.Core.EcopathGroupOutputs(Row).SearchRate(x)
                     ColPointer += 1
                 End If
             Next

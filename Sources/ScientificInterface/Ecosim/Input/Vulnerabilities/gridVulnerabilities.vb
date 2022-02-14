@@ -64,7 +64,7 @@ Namespace Ecosim
             Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To Me.Core.nGroups
-                source = Me.Core.EcoPathGroupInputs(i)
+                source = Me.Core.EcopathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 'Me(i, 0).Behaviors.Add(m_bmRowCol)
@@ -94,11 +94,11 @@ Namespace Ecosim
 
             ' Populate grid data cells
             For iPrey As Integer = 1 To Me.Core.nGroups
-                grpPrey = Me.Core.EcoSimGroupInputs(iPrey)
+                grpPrey = Me.Core.EcosimGroupInputs(iPrey)
                 iCol = 2
                 For iPred As Integer = 1 To Me.Core.nLivingGroups
                     ' JS 16may08: Use ecopath groups for sec indexes
-                    grpPred = Me.Core.EcoPathGroupInputs(iPred)
+                    grpPred = Me.Core.EcopathGroupInputs(iPred)
 
                     If grpPred.PP < 1 Then
 

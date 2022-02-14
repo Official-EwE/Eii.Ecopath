@@ -50,7 +50,7 @@ Friend Class ucGridView
 
             Me.m_tscmbGroup.Items.Add(New cCoreInputOutputControlItem(SharedResources.GENERIC_VALUE_ALL))
             For igroup As Integer = 1 To core.nGroups
-                group = core.EcoPathGroupInputs(igroup)
+                group = core.EcopathGroupInputs(igroup)
                 If (group.IsFished) Then
                     Me.m_tscmbGroup.Items.Add(New cCoreInputOutputControlItem(group))
                 End If

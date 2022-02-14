@@ -139,7 +139,7 @@ Namespace Ecosim
 
             Dim group As cCoreGroupBase = Nothing
 
-            Me.m_parms = Me.Core.EcoSimModelParameters()
+            Me.m_parms = Me.Core.EcosimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
 
             Me.m_zgh = New cZedGraphHelper()
@@ -363,9 +363,9 @@ Namespace Ecosim
 
             For iGroup As Integer = 1 To Me.Core.nGroups
                 If (fleet.Landings(iGroup) > 0 Or fleet.Discards(iGroup) > 0) Then
-                    Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                    Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                     Dim clr As Color = Me.UIContext.StyleGuide.GroupColor(Me.Core, iGroup)
-                    Dim grpOut As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                    Dim grpOut As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
                     Dim pplCatch As New PointPairList()
                     Dim pplLandings As New PointPairList()
@@ -440,7 +440,7 @@ Namespace Ecosim
             ' Show all relevant groups, sorted by sum of catch
             For i As Integer = 1 To Me.UIContext.Core.nGroups
                 If fleet.Discards(i) > 0 Or fleet.Landings(i) > 0 Then
-                    Dim grp As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(i)
+                    Dim grp As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(i)
                     Dim sCatch As Single = 0
                     For j As Integer = 1 To Me.Core.nEcosimTimeSteps
                         sCatch += grp.CatchByFleet(iFleet, j)

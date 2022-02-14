@@ -263,7 +263,7 @@ Public Class dlgBiomassEmitterTimeSeriesBuilder
 
             strName = strName.ToLower()
             For i As Integer = 1 To core.nGroups
-                Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
+                Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(i)
                 If String.Compare(grp.Name, strName, True) = 0 Then
                     Return i
                 End If
@@ -611,7 +611,7 @@ Public Class dlgBiomassEmitterTimeSeriesBuilder
         For iGroup As Integer = 1 To core.nGroups
             Dim data(nCols) As Object
             data(0) = iGroup
-            data(1) = core.EcoPathGroupInputs(iGroup).Name
+            data(1) = core.EcopathGroupInputs(iGroup).Name
             For iEntry As Integer = 0 To m_entries.Count - 1
                 Dim entry As cEntry = m_entries(iEntry)
                 data(iEntry + 2) = entry.HasValues(iGroup)

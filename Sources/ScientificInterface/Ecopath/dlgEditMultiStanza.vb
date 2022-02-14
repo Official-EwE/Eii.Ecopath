@@ -317,7 +317,7 @@ Namespace Ecopath
             Dim source As cEcoPathGroupInput = Nothing
 
             If (stanza.LeadingB > 0) Then
-                source = Me.m_uic.Core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
+                source = Me.m_uic.Core.EcopathGroupInputs(stanza.iGroups(stanza.LeadingB))
             End If
 
             Me.m_fpStanza.Value = stanza.Index
@@ -384,7 +384,7 @@ Namespace Ecopath
 
             Dim bEcosimLoaded As Boolean = Me.m_uic.Core.StateMonitor.HasEcosimLoaded()
             Dim stanza As cStanzaGroup = Me.m_grid.StanzaGroup
-            Dim groupLeading As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(stanza.iGroups(stanza.LeadingB))
+            Dim groupLeading As cEcoPathGroupInput = Me.m_uic.Core.EcopathGroupInputs(stanza.iGroups(stanza.LeadingB))
 
             ' vbK obtained from leading group in stanza config
             groupLeading.VBK = CSng(Me.m_fpK.Value)

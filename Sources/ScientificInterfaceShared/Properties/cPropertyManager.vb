@@ -327,7 +327,7 @@ Namespace Properties
                 If va IsNot Nothing Then
                     Select Case va.CoreCounterType
                         Case eCoreCounterTypes.nGroups, eCoreCounterTypes.nDetritus, eCoreCounterTypes.nLivingGroups
-                            sourceSec = Me.m_core.EcoPathGroupInputs(vs.iArrayIndex)
+                            sourceSec = Me.m_core.EcopathGroupInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nFleets
                             sourceSec = Me.m_core.EcopathFleetInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nHabitats

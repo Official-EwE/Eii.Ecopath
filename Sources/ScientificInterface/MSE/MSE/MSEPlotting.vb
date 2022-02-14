@@ -426,7 +426,7 @@ Friend Class cMSEPlotter
                 Return True
             End If
 
-            Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(GroupIndex)
+            Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcopathGroupInputs(GroupIndex)
             If Me.m_dataType = eMSEPlotData.GroupCatch And grp.IsFished Then
                 'For ePlotData.GroupCatch only fished groups are visible
                 Return True

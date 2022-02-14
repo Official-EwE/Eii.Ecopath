@@ -121,7 +121,7 @@ Public Class frmEcotracerOutput
 
         Me.PlotType = ePlotTypes.CB
 
-        Me.m_propConcSimOn = Me.PropertyManager.GetProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.ConSimOnEcoSim)
+        Me.m_propConcSimOn = Me.PropertyManager.GetProperty(Me.Core.EcosimModelParameters, eVarNameFlags.ConSimOnEcoSim)
         Me.m_propConcSpaceOn = Me.PropertyManager.GetProperty(Me.Core.EcospaceModelParameters, eVarNameFlags.ConSimOnEcoSpace)
         AddHandler Me.m_propConcSimOn.PropertyChanged, AddressOf Me.OnConcPropChanged
         AddHandler Me.m_propConcSpaceOn.PropertyChanged, AddressOf Me.OnConcPropChanged
@@ -224,10 +224,10 @@ Public Class frmEcotracerOutput
             'An Ecosim scenario was loaded when this form was loaded
             'so there is no need to check
             Me.m_bInUpdate = True
-            Me.Core.EcoSimModelParameters.ContaminantTracing = True
+            Me.Core.EcosimModelParameters.ContaminantTracing = True
             Me.m_bInUpdate = False
             Me.StartModelRun()
-            Me.Core.RunEcoSim(AddressOf Me.EcosimCallback, True)
+            Me.Core.RunEcosim(AddressOf Me.EcosimCallback, True)
             ' Restore state
             Me.RefreshGraph()
 
@@ -255,7 +255,7 @@ Public Class frmEcotracerOutput
                 Me.Core.EcospaceModelParameters.ContaminantTracing = True
                 Me.m_bInUpdate = False
                 Me.StartModelRun()
-                Me.Core.RunEcoSpace(AddressOf Me.EcospaceCallback)
+                Me.Core.RunEcospace(AddressOf Me.EcospaceCallback)
                 Me.RefreshGraph()
             End If
 
@@ -410,7 +410,7 @@ Public Class frmEcotracerOutput
 
             'Ecosim
             If (Me.Core.StateMonitor.HasEcosimLoaded) Then
-                If Me.Core.EcoSimModelParameters.ContaminantTracing Then
+                If Me.Core.EcosimModelParameters.ContaminantTracing Then
                     mode = eDisplayModeTypes.Ecosim
                 End If
             End If
@@ -886,7 +886,7 @@ Public Class frmEcotracerOutput
             Dim dPos As Double
 
             If iGroup > 0 Then
-                Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                 strLabel = group.Name
                 clrLine = Me.UIContext.StyleGuide.GroupColor(Me.Core, iGroup)
             End If
@@ -895,7 +895,7 @@ Public Class frmEcotracerOutput
             'so that there does not have to be an "If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then" inside the loop
             If Me.PlotType = ePlotTypes.CB And iGroup > 0 Then
 
-                SimBio = Me.Core.EcoSimGroupOutputs(iGroup)
+                SimBio = Me.Core.EcosimGroupOutputs(iGroup)
 
                 For iTimeStep As Integer = 1 To iCurTimeStep 'Me.Core.nEcosimTimeSteps
                     dPos = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
@@ -933,7 +933,7 @@ Public Class frmEcotracerOutput
                 'in that case use Concentration(group,time)
                 If Me.PlotType = ePlotTypes.CB And iGroup > 0 Then
 
-                    Dim grpbio As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                    Dim grpbio As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
                     For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
                         smax = Math.Max(Me.Core.EcotracerGroupResults.ConBio(iGroup, iTimeStep), smax)
                     Next
@@ -1119,7 +1119,7 @@ Public Class frmEcotracerOutput
 
             ' Build the line label
             If iGroup > 0 Then
-                strFilter = Me.Core.EcoPathGroupInputs(iGroup).Name
+                strFilter = Me.Core.EcopathGroupInputs(iGroup).Name
                 clrLine = Me.StyleGuide.GroupColor(Me.Core, iGroup)
             Else
                 strFilter = SharedResources.HEADER_ENVIRONMENT

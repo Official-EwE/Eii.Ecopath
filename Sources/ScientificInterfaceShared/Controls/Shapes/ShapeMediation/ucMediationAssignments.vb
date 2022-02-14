@@ -411,7 +411,7 @@ Namespace Controls
                 list.Add(i + 1, medGrp.Weight)
 
                 ' Get the group
-                source = Me.m_uic.Core.EcoPathGroupInputs(medGrp.iGroupIndex)
+                source = Me.m_uic.Core.EcopathGroupInputs(medGrp.iGroupIndex)
                 clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
 
                 If (TypeOf medGrp Is cLandingsMediatingGroup) Then
@@ -477,7 +477,7 @@ Namespace Controls
                 Dim iGroup As Integer = cCore.NULL_VALUE
                 Dim medGrp As cMediatingGroup = Me.Data.Groups(i)
 
-                valSource = core.EcoPathGroupOutputs(medGrp.iGroupIndex)
+                valSource = core.EcopathGroupOutputs(medGrp.iGroupIndex)
 
                 ' Is a landings interaction?
                 If (TypeOf medGrp Is cLandingsMediatingGroup) Then

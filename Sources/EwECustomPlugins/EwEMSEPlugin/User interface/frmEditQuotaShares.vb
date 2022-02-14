@@ -106,14 +106,14 @@ Public Class frmEditQuotaShares
 
         Dim strGroupsNotSum1 As String
 
-        strGroupsNotSum1 = Me.m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(0)).Name
+        strGroupsNotSum1 = Me.m_mse.Core.EcopathGroupInputs(Groups_Not_Summing_to_1(0)).Name
 
         If Groups_Not_Summing_to_1.Count > 1 Then
             For i = 2 To Groups_Not_Summing_to_1.Count
                 If i = Groups_Not_Summing_to_1.Count Then
-                    strGroupsNotSum1 &= " and " & Me.m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
+                    strGroupsNotSum1 &= " and " & Me.m_mse.Core.EcopathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
                 Else
-                    strGroupsNotSum1 &= ", " & Me.m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
+                    strGroupsNotSum1 &= ", " & Me.m_mse.Core.EcopathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
                 End If
             Next
         End If

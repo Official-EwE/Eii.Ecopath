@@ -354,7 +354,7 @@ Public MustInherit Class cIndicators
         ' Gather information by group
         For iGroup As Integer = 1 To Me.m_ecopathDS.NumGroups
 
-            group = Me.m_core.EcoPathGroupInputs(iGroup)
+            group = Me.m_core.EcopathGroupInputs(iGroup)
 
             Dim sC As Single = Me.ModelCatch(iGroup)
             Dim sB As Single = Me.ModelBiomass(iGroup)

@@ -63,7 +63,7 @@ Namespace Ecopath.Output
             Next iFleet
 
             For iGroup = 1 To Me.Core.nLivingGroups
-                group = Me.Core.EcoPathGroupOutputs(iGroup)
+                group = Me.Core.EcopathGroupOutputs(iGroup)
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
@@ -74,7 +74,7 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim group As cEcoPathGroupOutput = Nothing
+            Dim group As cEcopathGroupOutput = Nothing
             Dim fleet As cEcopathFleetInput = Nothing
             Dim cell As cEwECell = Nothing
             Dim sLandings As Single = 0.0!
@@ -86,7 +86,7 @@ Namespace Ecopath.Output
                 ' Get fleet
                 fleet = Me.Core.EcopathFleetInputs(iFleet)
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                    group = Me.Core.EcoPathGroupOutputs(iGroup)
+                    group = Me.Core.EcopathGroupOutputs(iGroup)
                     ' Get values 
                     sLandings = fleet.Landings(iGroup)
                     'Only discards the suffer mortality

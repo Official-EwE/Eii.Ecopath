@@ -97,7 +97,7 @@ Namespace Ecopath.Output
 
         Private Sub FillRows(iRow As Integer, iGroup As Integer)
 
-            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
             Dim fleetOut As cEcopathFleetOutput = Nothing
             Dim sVal As Single = 0
             Dim sTot As Single = 0
@@ -108,7 +108,7 @@ Namespace Ecopath.Output
             ' For each fleet (each column) 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 ' Get the fleet object 
-                fleetOut = Me.Core.EcoPathFleetOutputs(iFleet)
+                fleetOut = Me.Core.EcopathFleetOutputs(iFleet)
                 sVal = fleetOut.DiscardMortByGroup(iGroup)
                 Dim cell As New cEwECell(sVal, cStyleGuide.eStyleFlags.ValueComputed Or cStyleGuide.eStyleFlags.NotEditable)
                 cell.SuppressZero = True
@@ -134,7 +134,7 @@ Namespace Ecopath.Output
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 Dim sFleetTot As Single = 0
-                fleetOut = Me.Core.EcoPathFleetOutputs(iFleet)
+                fleetOut = Me.Core.EcopathFleetOutputs(iFleet)
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
                     sFleetTot += fleetOut.DiscardMortByGroup(iGroup)

@@ -556,7 +556,7 @@ Namespace Samples
                 If (bRefresh) Then
                     Me.m_core.LoadEcopathInputs()
                     Me.m_core.LoadEcopathFleetInputs()
-                    Me.m_core.RunEcoPath()
+                    Me.m_core.RunEcopath()
 #If DEBUG Then
                     Me.ValidateSnapshot(s)
 #End If
@@ -972,10 +972,10 @@ Namespace Samples
                     Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_BASELINE, eMessageImportance.Information)
 
                     Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, "Sample_baseline")
-                    Me.m_core.RunEcoPath(bIsBalanced)
+                    Me.m_core.RunEcopath(bIsBalanced)
                     If (bIsBalanced) Then
-                        If (iEcosim > 0) Then Me.m_core.RunEcoSim()
-                        If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
+                        If (iEcosim > 0) Then Me.m_core.RunEcosim()
+                        If (iEcospace > 0) Then Me.m_core.RunEcospace()
                     Else
                         Me.SendProgress(eProgressState.Running, CSng(i / Me.m_iRunLength), My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE)
                         Me.m_bStopRun = True
@@ -992,10 +992,10 @@ Namespace Samples
                         Me.Load(s, False)
 
                         Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, String.Format("Sample_{0:D5}", s.Index))
-                        Me.m_core.RunEcoPath(bIsBalanced)
+                        Me.m_core.RunEcopath(bIsBalanced)
                         If (bIsBalanced) Then
-                            If (iEcosim > 0) Then Me.m_core.RunEcoSim()
-                            If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
+                            If (iEcosim > 0) Then Me.m_core.RunEcosim()
+                            If (iEcospace > 0) Then Me.m_core.RunEcospace()
                         Else
                             Me.LogEvent(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE, s.Index), eMessageImportance.Warning)
                         End If

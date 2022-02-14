@@ -85,7 +85,7 @@ Public Class cNetworkAnalysisEcopathResultWriter
         ' Header line
         For iGroup As Integer = 1 To core.nGroups
             sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(core.EcoPathGroupInputs(iGroup).Name))
+            sb.Append(cStringUtils.ToCSVField(core.EcopathGroupInputs(iGroup).Name))
         Next
         For iFleet As Integer = 1 To core.nFleets
             sb.Append(",")
@@ -95,7 +95,7 @@ Public Class cNetworkAnalysisEcopathResultWriter
 
         For i As Integer = 1 To core.nGroups + core.nFleets
             If i <= core.nGroups Then
-                sb.Append(cStringUtils.ToCSVField(core.EcoPathGroupInputs(i).Name))
+                sb.Append(cStringUtils.ToCSVField(core.EcopathGroupInputs(i).Name))
             Else
                 sb.Append(cStringUtils.ToCSVField(core.EcopathFleetInputs(i - core.nGroups).Name))
             End If
