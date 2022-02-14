@@ -606,14 +606,14 @@ Public Class cEcosimGroupOutput
     <Obsolete("Use cEcopathGroupInput.IsPred() instead")>
     Public ReadOnly Property isPred(iGroup As Integer) As Boolean
         Get
-            Return Me.m_core.EcoPathGroupInputs(Me.Index).IsPred(iGroup)
+            Return Me.m_core.EcopathGroupInputs(Me.Index).IsPred(iGroup)
         End Get
     End Property
 
     <Obsolete("Use cEcopathGroupInput.IsPrey() instead")>
     Public ReadOnly Property isPrey(iGroup As Integer) As Boolean
         Get
-            Return Me.m_core.EcoPathGroupInputs(Me.Index).IsPrey(iGroup)
+            Return Me.m_core.EcopathGroupInputs(Me.Index).IsPrey(iGroup)
         End Get
     End Property
 

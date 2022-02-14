@@ -123,7 +123,7 @@ Public Class cEcospaceRegionAvgResultsWriter
     ''' </summary>
     Protected Overrides Function CreateOutputDir() As Boolean
 
-        If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
+        If Me.m_core.m_EcospaceData.UseCoreOutputDir Then
             Me.m_OutputPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
         Else
             If String.IsNullOrWhiteSpace(Me.EcospaceData.EcospaceAreaOutputDir) Then
@@ -154,15 +154,15 @@ Public Class cEcospaceRegionAvgResultsWriter
         Dim dataSource As cEcospaceResultsWriterDataSourceBase
         Select Case ResultType
             Case eDataSourceTypes.Biomass
-                dataSource = New cBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+                dataSource = New cBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.Catch
-                dataSource = New cCatchResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+                dataSource = New cCatchResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionBiomass
-                dataSource = New cRegionBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+                dataSource = New cRegionBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionCatch
-                dataSource = New cRegionCatchResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+                dataSource = New cRegionCatchResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.MOTotalLoss
-                dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
+                dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
 
         End Select
         dataSource.Init(RegionIndex)
@@ -260,7 +260,7 @@ Public Class cEcospaceRegionAvgResultsWriter
 
     Private Sub WriteData(sw As StreamWriter, dataSource As cEcospaceResultsWriterDataSourceBase, AvgType As eEcospaceResultsAverageType)
         Dim nYrs As Integer = 0
-        Dim spaceData As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim spaceData As cEcospaceDataStructures = Me.m_core.m_EcospaceData
 
         nYrs = Me.m_core.nEcospaceTimeSteps
 
@@ -282,7 +282,7 @@ Public Class cEcospaceRegionAvgResultsWriter
         Dim TSLabel As String, Year As Integer
         Dim nAvg(dataSource.nResults) As Integer
 
-        Year = CInt(Math.Truncate((Me.FirstOutputTimeStep - 1) / Me.m_core.m_EcoSpaceData.nTimeStepsPerYear))
+        Year = CInt(Math.Truncate((Me.FirstOutputTimeStep - 1) / Me.m_core.m_EcospaceData.nTimeStepsPerYear))
 
         'Loop over all the time steps
         'If in Annual mode then sum and average the at the end of the year
@@ -292,7 +292,7 @@ Public Class cEcospaceRegionAvgResultsWriter
                 If AvgType = eEcospaceResultsAverageType.Annual Then
                     value(iRslt) += dataSource.getResult(iRslt, iTime)
                     nAvg(iRslt) += 1
-                    If ((iTime Mod Me.m_core.m_EcoSpaceData.nTimeStepsPerYear) = 0) Then
+                    If ((iTime Mod Me.m_core.m_EcospaceData.nTimeStepsPerYear) = 0) Then
                         'End of the year
                         'Average the results and
                         'Save to file

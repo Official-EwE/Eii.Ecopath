@@ -170,8 +170,8 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub UpdatePlot()
 
-            Dim prey As cEcoPathGroupOutput = Nothing
-            Dim pred As cEcoPathGroupOutput = Nothing
+            Dim prey As cEcopathGroupOutput = Nothing
+            Dim pred As cEcopathGroupOutput = Nothing
             Dim ppl As PointPairList = Nothing
             Dim pane As GraphPane = Nothing
             Dim li As LineItem = Nothing
@@ -190,11 +190,11 @@ Namespace Ecopath.Output
             ' For all predators
             For iPred As Integer = 1 To Me.Core.nGroups
                 ' Get predator
-                pred = Me.Core.EcoPathGroupOutputs(iPred)
+                pred = Me.Core.EcopathGroupOutputs(iPred)
                 ' For all prey
                 For iPrey As Integer = 1 To Me.Core.nGroups
                     ' Get prey
-                    prey = Me.Core.EcoPathGroupOutputs(iPrey)
+                    prey = Me.Core.EcopathGroupOutputs(iPrey)
                     ' Are both predator and prey visible?
                     If Me.StyleGuide.GroupVisible(iPrey) And Me.StyleGuide.GroupVisible(iPred) Then
                         ' #Yes: Is there overlap, and did we not already process this pred/prey combination?

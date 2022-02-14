@@ -74,7 +74,7 @@ Public Class frmDistributionParameters
         Me.Grid = Me.m_grid
 
         For i As Integer = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupInputs(i).IsProducer Then Me.nPPers += 1
+            If Me.Core.EcopathGroupInputs(i).IsProducer Then Me.nPPers += 1
         Next
 
         ' JS: Item indexes should obviously correspond to eParameterSet enum values

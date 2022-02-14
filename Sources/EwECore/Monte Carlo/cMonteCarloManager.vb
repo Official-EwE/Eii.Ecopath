@@ -394,11 +394,11 @@ Public Class cMonteCarloManager
             Me.LoadGroups()
 
             'run ecopath with the new parameters
-            Me.m_core.RunEcoPath()
+            Me.m_core.RunEcopath()
             'initialize ecosim with the new data
             Me.m_core.m_EcoSim.Init(True)
 
-            Me.m_core.RunEcoSim()
+            Me.m_core.RunEcosim()
             Dim ss As Single = Me.m_core.EcosimStats.SS
 
         Catch ex As Exception
@@ -994,7 +994,7 @@ Public Class cMonteCarloManager
 
                 grp.ResetStatusFlags()
 
-                Dim grpPath As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+                Dim grpPath As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iGroup)
 
                 ' B
                 grp.SetStatusFlags(eVarNameFlags.mcB, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
@@ -1090,7 +1090,7 @@ Public Class cMonteCarloManager
                     status = eStatusFlags.OK
             End Select
         Else
-            Dim grpIn As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(grp.Index)
+            Dim grpIn As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(grp.Index)
             Select Case var
                 Case eVarNameFlags.BioAccumInput
                     If (grpIn.BioAccumInput = 0) Then

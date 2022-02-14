@@ -44,7 +44,7 @@ Public Class cGameServerInterface
         Me.m_dctCoreData = New Dictionary(Of EwEUtils.Core.eDataTypes, GetCoreIOObjectDelegate)
         'ecopath
         Me.m_dctCoreListData.Add(eDataTypes.EcoPathGroupInput, Me.m_core.m_EcoPathInputs)
-        Me.m_dctCoreListData.Add(eDataTypes.EcoPathGroupOutput, Me.m_core.m_EcoPathOutputs)
+        Me.m_dctCoreListData.Add(eDataTypes.EcoPathGroupOutput, Me.m_core.m_EcopathOutputs)
 
         Me.m_dctCoreListData.Add(eDataTypes.FleetInput, Me.m_core.m_EcopathFleetsInput)
 

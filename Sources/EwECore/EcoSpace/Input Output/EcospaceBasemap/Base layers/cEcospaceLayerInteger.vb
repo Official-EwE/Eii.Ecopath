@@ -60,7 +60,7 @@ Public Class cEcospaceLayerInteger
                    varName As eVarNameFlags, _
                    Optional iIndex As Integer = cCore.NULL_VALUE)
 
-        MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Integer))
+        MyBase.New(core, core.m_EcospaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Integer))
 
     End Sub
 

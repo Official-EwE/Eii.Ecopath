@@ -62,7 +62,7 @@ Namespace Ecopath.Input
 
             ' Dynamic column header - Detritus groups
             For columnIndex As Integer = 1 To Me.Core.nDetritusGroups
-                source = Me.Core.EcoPathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + columnIndex)
+                source = Me.Core.EcopathGroupInputs(Me.Core.nGroups - Me.Core.nDetritusGroups + columnIndex)
                 Me(0, columnIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
@@ -102,7 +102,7 @@ Namespace Ecopath.Input
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 For columnIndex As Integer = 2 To Me.core.nDetritusGroups + 1
                     ' Get the ecopath input
-                    sourceSec = Me.Core.EcoPathGroupInputs(columnIndex - 1)
+                    sourceSec = Me.Core.EcopathGroupInputs(columnIndex - 1)
                     ' Dynamic indexed Discard fate property 
                     prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DiscardFate, sourceSec)
                     ' Add prop to the arraylist

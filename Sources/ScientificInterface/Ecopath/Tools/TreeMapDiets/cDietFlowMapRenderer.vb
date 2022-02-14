@@ -48,7 +48,7 @@ Public Class cDietFlowMapRenderer
 
         Dim core As cCore = Me.m_uic.Core
         For i As Integer = 1 To core.nLivingGroups
-            Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
+            Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(i)
             If grp.IsConsumer Then Me.m_lPreds.Add(i)
         Next
 
@@ -116,10 +116,10 @@ Public Class cDietFlowMapRenderer
 
             Dim elements As New List(Of cTreeMapRenderer.cTreeMapElement)
             Dim iPred As Integer = lPreds(j)
-            Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
+            Dim pred As cEcoPathGroupInput = core.EcopathGroupInputs(iPred)
 
             For i As Integer = 1 To core.nGroups
-                Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
+                Dim prey As cEcoPathGroupInput = core.EcopathGroupInputs(i)
                 Dim dc As Single = pred.DietComp(i)
                 If dc > 0 Then
                     Dim elm As New cTreeMapRenderer.cTreeMapElement()

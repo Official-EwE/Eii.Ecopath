@@ -93,7 +93,7 @@ Namespace Ecosim
                 sg = core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.nLifeStages
-                    source = core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                    source = core.EcopathGroupInputs(sg.iGroups(iStanza))
                     iStanzaGroup(source.Index) = stanzaGroupIndex
                 Next
             Next
@@ -103,7 +103,7 @@ Namespace Ecosim
 
             'Create rows for all groups
             For groupIndex As Integer = 1 To core.nLivingGroups
-                source = core.EcoSimGroupInputs(groupIndex)
+                source = core.EcosimGroupInputs(groupIndex)
 
                 If iStanzaGroup(source.Index) = -1 Then
                     iRow = Me.AddRow

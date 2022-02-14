@@ -154,7 +154,7 @@ Namespace Ecopath.Output
 
             For iGroup = 1 To Me.core.nLivingGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = Me.core.EcoPathGroupOutputs(iGroup)
+                source = Me.core.EcopathGroupOutputs(iGroup)
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 1) = New cEwERowHeaderCell(source.Name)
 
@@ -178,10 +178,10 @@ Namespace Ecopath.Output
             Dim cell As cPropertyCell = Nothing
 
             For rowIndex As Integer = 1 To Me.core.nLivingGroups
-                source = Me.core.EcoPathGroupOutputs(rowIndex)
+                source = Me.core.EcopathGroupOutputs(rowIndex)
                 Dim columnIndex As Integer = 2
                 For groupIndex As Integer = 1 To Me.core.nLivingGroups
-                    sourceSec = Me.core.EcoPathGroupOutputs(groupIndex)
+                    sourceSec = Me.core.EcopathGroupOutputs(groupIndex)
                     If sourceSec.PP < 1 Then
                         ' Create cell
                         cell = New MortalityGridCell(Me.PropertyManager, source, eVarNameFlags.PredMort, sourceSec)

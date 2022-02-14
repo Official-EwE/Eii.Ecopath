@@ -717,7 +717,7 @@ Public Class cData
     Private Function FindEcopathGroupByID(iDBID As Integer) As cEcoPathGroupInput
         Dim group As cEcoPathGroupInput = Nothing
         For i As Integer = 1 To Me.m_core.nGroups
-            group = Me.m_core.EcoPathGroupInputs(i)
+            group = Me.m_core.EcopathGroupInputs(i)
             If CInt(group.GetVariable(eVarNameFlags.DBID)) = iDBID Then Return group
         Next
         Return Nothing

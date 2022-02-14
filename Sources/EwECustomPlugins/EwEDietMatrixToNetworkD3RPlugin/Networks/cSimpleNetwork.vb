@@ -46,10 +46,10 @@ Public Class cSimpleNetwork
         Dim target As String = "preys"
 
         For iPred As Integer = 1 To Me.Core.nLivingGroups
-            Dim pred As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPred)
+            Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPred)
             For iPrey As Integer = 1 To Me.Core.nGroups
                 If pred.DietComp(iPrey) > 0 Then
-                    Dim prey As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPred)
+                    Dim prey As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPred)
                     If My.Settings.UseSymbolicNames Then
                         lSrc.Add(cStringUtils.ToExcelColumnName(iPred))
                         lTgt.Add(cStringUtils.ToExcelColumnName(iPrey))

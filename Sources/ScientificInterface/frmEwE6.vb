@@ -4788,7 +4788,7 @@ Public Class frmEwE6
                 ' Not successful? abort
                 If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
                 ' Get property to enable tracer for Sim
-                ecosimModelParams = Me.Core.EcoSimModelParameters
+                ecosimModelParams = Me.Core.EcosimModelParameters
                 propSimConTracing = DirectCast(Me.PropertyManager.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
                 ' Try to load tracer
                 Me.CoreController.LoadState(eCoreExecutionState.EcotracerLoaded)

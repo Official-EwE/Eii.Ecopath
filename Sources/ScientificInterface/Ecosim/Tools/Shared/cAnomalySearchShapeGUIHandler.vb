@@ -31,7 +31,7 @@ Public Class cAnomalySearchShapeGUIHandler
         ' Make snapshot of PP group indexes
         Me.m_lProducers = New List(Of Integer)
         For iGroup As Integer = 1 To Me.Core.nGroups
-            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
             If (grp.IsProducer) Then
                 Me.m_lProducers.Add(iGroup)
             End If

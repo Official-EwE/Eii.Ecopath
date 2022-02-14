@@ -525,7 +525,7 @@ Public Class cNetworkManager
             If Me.IsEcosimNetworkRun Then Return True
 
             cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_RUNNING_NETWORKANALYSIS)
-            Me.IsEcosimNetworkRun = Me.Core.RunEcoSim()
+            Me.IsEcosimNetworkRun = Me.Core.RunEcosim()
             cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         Catch ex As Exception

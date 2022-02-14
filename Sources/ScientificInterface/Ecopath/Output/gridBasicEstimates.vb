@@ -84,7 +84,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub FillData()
 
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
-            Dim group As cEcoPathGroupOutput = Nothing
+            Dim group As cEcopathGroupOutput = Nothing
             Dim cell As cEwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
@@ -98,7 +98,7 @@ Namespace Ecopath.Output
             For i As Integer = 0 To groups.Count - 1
 
                 ' Get corresponding Ecopath output group 
-                group = Me.Core.EcoPathGroupOutputs(groups(i).Index)
+                group = Me.Core.EcopathGroupOutputs(groups(i).Index)
 
                 If Not group.IsMultiStanza Then
 

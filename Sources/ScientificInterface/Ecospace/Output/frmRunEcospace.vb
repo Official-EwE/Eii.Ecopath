@@ -548,7 +548,7 @@ Namespace Ecospace
                 End Select
 
                 If bShowItem Then
-                    lVisItems.Add(Me.Core.EcoPathGroupInputs(iGroup))
+                    lVisItems.Add(Me.Core.EcopathGroupInputs(iGroup))
                     iNumVisItems += 1
                 End If
             Next
@@ -959,7 +959,7 @@ Namespace Ecospace
             'Me.IsRunning = True
             Me.m_iTimeStepCur = 0
             Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.Core.StopEcospace))
-            Me.IsRunning = Me.Core.RunEcoSpace(AddressOf Me.OnEcospaceTimeStep)
+            Me.IsRunning = Me.Core.RunEcospace(AddressOf Me.OnEcospaceTimeStep)
 
             ' Hack: make a once-per-run assessment for which time steps to save images
 
@@ -1970,7 +1970,7 @@ Namespace Ecospace
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
 
-                    Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                    Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                     Dim strFileSub As String = Path.Combine(strDir, cFileUtils.ToValidFileName(grp.Name, False) & "_" & Path.GetFileNameWithoutExtension(strFileName) & strExt)
                     Dim bShowGroup As Boolean = False
 

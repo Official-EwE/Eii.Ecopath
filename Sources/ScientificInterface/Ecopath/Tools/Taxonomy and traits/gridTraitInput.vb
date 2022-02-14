@@ -123,7 +123,7 @@ Namespace Ecopath.Input
 
             For iGroup As Integer = 1 To Me.Core.nGroups
 
-                group = Me.Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcopathGroupInputs(iGroup)
                 If group.IsMultiStanza Then
 
                     If Not abStanzaHandled(group.iStanza) Then

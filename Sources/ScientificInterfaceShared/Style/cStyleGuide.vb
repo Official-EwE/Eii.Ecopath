@@ -1162,7 +1162,7 @@ Namespace Style
             Get
                 Dim clr As Color = Color.Transparent
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
-                    Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                    Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
                     clr = cColorUtils.IntToColor(grp.PoolColor)
                 End If
                 If clr.A = 0 Then
@@ -1172,7 +1172,7 @@ Namespace Style
             End Get
             Set(value As Color)
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
-                    Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                    Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
                     ' Optimization
                     If grp.PoolColor = cColorUtils.ColorToInt(value) Then Return
                     ' Apply
@@ -1990,13 +1990,13 @@ Namespace Style
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset Is Nothing) Then Return True
-                Return preset.GroupVisible(Me.m_core.EcoPathGroupInputs(iGroup).DBID)
+                Return preset.GroupVisible(Me.m_core.EcopathGroupInputs(iGroup).DBID)
             End Get
             Set(bVisible As Boolean)
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset IsNot Nothing) Then
-                    preset.GroupVisible(Me.m_core.EcoPathGroupInputs(iGroup).DBID) = bVisible
+                    preset.GroupVisible(Me.m_core.EcopathGroupInputs(iGroup).DBID) = bVisible
                     If preset.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
                 End If
             End Set
@@ -2199,7 +2199,7 @@ Namespace Style
                 ' For all groups:
                 For i As Integer = 1 To core.nGroups
                     ' Get group
-                    grp = core.EcoPathGroupInputs(i)
+                    grp = core.EcopathGroupInputs(i)
                     ' Group not included in final list?
                     If Not bIncluded(i) Then
                         ' #Yes: add group
@@ -2209,7 +2209,7 @@ Namespace Style
                             ' #Yes: Add all related stanza for this group:
                             For j As Integer = i + 1 To core.nGroups
                                 ' Get remaining group
-                                grpTest = core.EcoPathGroupInputs(j)
+                                grpTest = core.EcopathGroupInputs(j)
                                 ' Is of same stanza?
                                 If (grpTest.iStanza = grp.iStanza) Then
                                     ' #Yes: add below current group

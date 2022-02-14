@@ -224,13 +224,13 @@ Public Class cDietCalculator
                 For i = 0 To Me.nGroups
                     If (i <> 0) Then
                         'Normal group diet just update the diets
-                        If Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) <> Diet(iPred, i) Then bNeedsBalancing = True
-                        Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) = Diet(iPred, i)
+                        If Me.m_Core.EcopathGroupInputs(iPred).DietComp(i) <> Diet(iPred, i) Then bNeedsBalancing = True
+                        Me.m_Core.EcopathGroupInputs(iPred).DietComp(i) = Diet(iPred, i)
 
                     Else '(i <> 0)
                         'Imported diet
                         If Diet(iPred, i) <> 0 Then
-                            Me.m_Core.EcoPathGroupInputs(iPred).ImpDiet = Diet(iPred, i)
+                            Me.m_Core.EcopathGroupInputs(iPred).ImpDiet = Diet(iPred, i)
                         End If 'Diet(iPred, i) <> 0
 
                     End If '(i <> 0)

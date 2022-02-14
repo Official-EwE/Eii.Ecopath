@@ -305,7 +305,7 @@ Namespace Ecosim
 
                             If (iGroup > 0) Then
 
-                                Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                                Dim grpOutput As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
                                 For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
 
@@ -343,7 +343,7 @@ Namespace Ecosim
 
                             If (iFleet > 0 And iGroup > 0) Then
 
-                                Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                                Dim grpOutput As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
 
                                 For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
 

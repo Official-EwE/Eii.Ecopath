@@ -52,7 +52,7 @@ Public MustInherit Class cResultsCollector_HCR_F
 
     Public Overrides ReadOnly Property ElementName(iElement As Integer) As String
         Get
-            Return Me.m_MSE.Core.EcoPathGroupInputs(iElement).Name
+            Return Me.m_MSE.Core.EcopathGroupInputs(iElement).Name
         End Get
     End Property
 

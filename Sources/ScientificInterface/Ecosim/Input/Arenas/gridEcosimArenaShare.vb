@@ -89,7 +89,7 @@ Namespace Ecosim
             For col As Integer = 1 To Me.ColumnsCount - 1
                 Dim ar As cEcosimArena = arenas(col - 1)
                 Dim iPred As Integer = ar.Pred
-                Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(iPred)
+                Dim pred As cEcosimGroupInput = Me.Core.EcosimGroupInputs(iPred)
                 Me(0, col) = New cPropertyColumnHeaderCell(Me.PropertyManager, pred, eVarNameFlags.Index)
             Next
 
@@ -106,7 +106,7 @@ Namespace Ecosim
                     Dim ar As cEcosimArena = arenas(row - 1)
                     Me(row, 0).Tag = ar
                     Dim ar2 As cEcosimArena = arenas(col - 1)
-                    Dim pred As cEcoSimGroupInput = Me.Core.EcoSimGroupInputs(ar2.Pred)
+                    Dim pred As cEcosimGroupInput = Me.Core.EcosimGroupInputs(ar2.Pred)
                     Dim prop As cProperty = Me.PropertyManager.GetProperty(ar, eVarNameFlags.EcosimArenaShare, pred)
                     Dim cell As New cPropertyCell(prop)
                     cell.SuppressZero = True

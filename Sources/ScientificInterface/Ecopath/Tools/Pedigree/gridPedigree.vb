@@ -364,7 +364,7 @@ Namespace Ecopath.Tools
             Next iVariable
 
             For iGroup As Integer = 1 To Me.Core.nGroups
-                group = Me.Core.EcoPathGroupInputs(iGroup)
+                group = Me.Core.EcopathGroupInputs(iGroup)
                 Me(iGroup, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                 Me(iGroup, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
             Next iGroup
@@ -394,7 +394,7 @@ Namespace Ecopath.Tools
                 ' For all groups
                 For iGroup As Integer = 1 To Me.Core.nGroups
                     ' Get group
-                    group = Me.Core.EcoPathGroupInputs(iGroup)
+                    group = Me.Core.EcopathGroupInputs(iGroup)
 
                     ' Get property
                     prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)

@@ -27,7 +27,7 @@ Imports EwEUtils.Core
 ''' <remarks>
 ''' This class wraps the inputs to EcoSim for one group into a single object.
 ''' </remarks>
-Public Class cEcoSimGroupInput
+Public Class cEcosimGroupInput
     Inherits cCoreGroupBase
 
     Private m_nGroups As Integer

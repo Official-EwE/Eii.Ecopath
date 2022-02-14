@@ -106,7 +106,7 @@ Namespace Ecospace
 
                 ' Get sources
                 groupEcospace = Me.Core.EcospaceGroupInputs(iGroup)
-                groupEcopath = Me.Core.EcoPathGroupInputs(iGroup)
+                groupEcopath = Me.Core.EcopathGroupInputs(iGroup)
 
                 For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
 

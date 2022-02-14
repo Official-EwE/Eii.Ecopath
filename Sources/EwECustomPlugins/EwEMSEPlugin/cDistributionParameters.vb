@@ -300,7 +300,7 @@ Public Class cEcopathDistributionParams
                             ' Only add with valid group indexes and names
                             Dim bOK As Boolean = False
                             If (param.GroupNo >= 1 And param.GroupNo <= Me.Core.nLivingGroups) Then
-                                If (String.Compare(param.GroupName, Me.Core.EcoPathGroupInputs(param.GroupNo).Name, True) = 0) Then
+                                If (String.Compare(param.GroupName, Me.Core.EcopathGroupInputs(param.GroupNo).Name, True) = 0) Then
                                     params(param.GroupNo) = param
                                     nGroups += 1
                                     bOK = True
@@ -336,32 +336,32 @@ Public Class cEcopathDistributionParams
             If params(igrp) Is Nothing Then
                 MCGroup = MonteCarlo.Groups(igrp)
                 If ParamName = eDistrParamName.B Then
-                    TMean = Me.Core.EcoPathGroupOutputs(igrp).Biomass
+                    TMean = Me.Core.EcopathGroupOutputs(igrp).Biomass
                     TCV = MCGroup.Bcv
                     TLowerBound = MCGroup.BLower
                     TUpperBound = MCGroup.BUpper
                 ElseIf ParamName = eDistrParamName.BA Then
-                    TMean = Me.Core.EcoPathGroupOutputs(igrp).BioAccum
+                    TMean = Me.Core.EcopathGroupOutputs(igrp).BioAccum
                     TCV = MCGroup.BAcv
                     TLowerBound = MCGroup.BALower
                     TUpperBound = MCGroup.BAUpper
                 ElseIf ParamName = eDistrParamName.EE Then
-                    TMean = Me.Core.EcoPathGroupOutputs(igrp).EEOutput
+                    TMean = Me.Core.EcopathGroupOutputs(igrp).EEOutput
                     TCV = MCGroup.EEcv
                     TLowerBound = MCGroup.EELower
                     TUpperBound = MCGroup.EEUpper
                 ElseIf ParamName = eDistrParamName.PB Then
-                    TMean = Me.Core.EcoPathGroupOutputs(igrp).PBOutput
+                    TMean = Me.Core.EcopathGroupOutputs(igrp).PBOutput
                     TCV = MCGroup.PBcv
                     TLowerBound = MCGroup.PBLower
                     TUpperBound = MCGroup.PBUpper
                 ElseIf ParamName = eDistrParamName.QB Then
-                    TMean = Me.Core.EcoPathGroupOutputs(igrp).QBOutput
+                    TMean = Me.Core.EcopathGroupOutputs(igrp).QBOutput
                     TCV = MCGroup.QBcv
                     TLowerBound = MCGroup.QBLower
                     TUpperBound = MCGroup.QBUpper
                 End If
-                params(igrp) = New cEcopathDistributionParamsData(igrp, Me.Core.EcoPathGroupInputs(igrp).Name, TMean, TCV, TLowerBound, TUpperBound)
+                params(igrp) = New cEcopathDistributionParamsData(igrp, Me.Core.EcopathGroupInputs(igrp).Name, TMean, TCV, TLowerBound, TUpperBound)
             End If
         Next
 
@@ -409,15 +409,15 @@ Public Class cEcopathDistributionParams
             End If
 
             If ParameterType = eDistrParamName.B Then
-                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
+                TMean = Me.Core.EcopathGroupInputs(TGroupNumber).BiomassAreaInput
             ElseIf ParameterType = eDistrParamName.BA Then
-                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BioAccumInput
+                TMean = Me.Core.EcopathGroupInputs(TGroupNumber).BioAccumInput
             ElseIf ParameterType = eDistrParamName.QB Then
-                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).QBInput
+                TMean = Me.Core.EcopathGroupInputs(TGroupNumber).QBInput
             ElseIf ParameterType = eDistrParamName.PB Then
-                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).PBInput
+                TMean = Me.Core.EcopathGroupInputs(TGroupNumber).PBInput
             ElseIf ParameterType = eDistrParamName.EE Then
-                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).EEInput
+                TMean = Me.Core.EcopathGroupInputs(TGroupNumber).EEInput
             End If
 
         Catch ex As Exception
@@ -632,7 +632,7 @@ Public Class cEcosimDistributionParams
 
         'Count Primary producers
         For iGrp = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupInputs(iGrp).IsProducer Then
+            If Me.Core.EcopathGroupInputs(iGrp).IsProducer Then
                 nPrimaryProducers += 1
             End If
         Next
@@ -649,17 +649,17 @@ Public Class cEcosimDistributionParams
                             Dim bOK As Boolean = False
                             ' Only add with valid group indexes and names
                             If (param.GroupNo >= 1 And param.GroupNo <= Me.Core.nLivingGroups) Then
-                                If (String.Compare(param.GroupName, Me.Core.EcoPathGroupInputs(param.GroupNo).Name, True) = 0) Then
-                                    If Me.Core.EcoPathGroupInputs(param.GroupNo).IsProducer And param.DistributionType = cMSE.DistributionType.NotSet And _
+                                If (String.Compare(param.GroupName, Me.Core.EcopathGroupInputs(param.GroupNo).Name, True) = 0) Then
+                                    If Me.Core.EcopathGroupInputs(param.GroupNo).IsProducer And param.DistributionType = cMSE.DistributionType.NotSet And _
                                         param.LowerBound = -9999 And param.UpperBound = -9999 Then
                                         'This has been recognised at a primary producer that is correctly parameterised
                                         params(param.GroupNo) = param
                                         bOK = True
-                                    ElseIf Me.Core.EcoPathGroupInputs(param.GroupNo).IsProducer And (Not param.DistributionType = cMSE.DistributionType.NotSet Or _
+                                    ElseIf Me.Core.EcopathGroupInputs(param.GroupNo).IsProducer And (Not param.DistributionType = cMSE.DistributionType.NotSet Or _
                                     param.LowerBound <> -9999 Or param.UpperBound <> -9999) Then
                                         'This is a primary producer that is incorrectly parameterised
                                         bOK = False
-                                    ElseIf Not Me.Core.EcoPathGroupInputs(param.GroupNo).IsProducer Then
+                                    ElseIf Not Me.Core.EcopathGroupInputs(param.GroupNo).IsProducer Then
                                         'This isn't a primary producer
                                         params(param.GroupNo) = param
                                         nGroups += 1
@@ -696,31 +696,31 @@ Public Class cEcosimDistributionParams
         For iGrp = 1 To Me.Core.nLivingGroups
             If (params(iGrp) Is Nothing) Then
                 If ParamName = eDistrParamName.DenDepCatchability Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).DenDepCatchability
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).DenDepCatchability
                 ElseIf ParamName = eDistrParamName.FeedingTimeAdjustRate Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).FeedingTimeAdjustRate
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).FeedingTimeAdjustRate
                 ElseIf ParamName = eDistrParamName.MaxRelFeedingTime Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).MaxRelFeedingTime
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).MaxRelFeedingTime
                 ElseIf ParamName = eDistrParamName.OtherMortFeedingTime Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).OtherMortFeedingTime
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).OtherMortFeedingTime
                 ElseIf ParamName = eDistrParamName.PredEffectFeedingTime Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).PredEffectFeedingTime
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).PredEffectFeedingTime
                 ElseIf ParamName = eDistrParamName.QBMaxxQBio Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).QBMaxQBio
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).QBMaxQBio
                 ElseIf ParamName = eDistrParamName.SwitchingPower Then
-                    TMean = Me.Core.EcoSimGroupInputs(iGrp).SwitchingPower
+                    TMean = Me.Core.EcosimGroupInputs(iGrp).SwitchingPower
                 End If
-                If Me.Core.EcoPathGroupInputs(iGrp).IsProducer Then
-                    params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcoPathGroupInputs(iGrp).Name, cMSE.DistributionType.NotSet, -9999, -9999, -9999)
+                If Me.Core.EcopathGroupInputs(iGrp).IsProducer Then
+                    params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcopathGroupInputs(iGrp).Name, cMSE.DistributionType.NotSet, -9999, -9999, -9999)
                 Else
-                    params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcoPathGroupInputs(iGrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
+                    params(iGrp) = New cEcosimDistributionParamsData(iGrp, Me.Core.EcopathGroupInputs(iGrp).Name, cMSE.DistributionType.Triangular, TMean * (1 - 0.1), TMean * (1 + 0.1), TMean)
                 End If
             End If
         Next
 
         For Each param In params
             If (param IsNot Nothing) Then
-                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(param.GroupNo)
+                Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(param.GroupNo)
                 ' Only allow living non-producers
                 If (grp.IsLiving) Then
                     ParamList.Add(param)

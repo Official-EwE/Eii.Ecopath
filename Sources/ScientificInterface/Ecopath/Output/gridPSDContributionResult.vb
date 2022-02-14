@@ -73,7 +73,7 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim groupOutput As cEcoPathGroupOutput = Nothing
+            Dim groupOutput As cEcopathGroupOutput = Nothing
             Dim iRow As Integer = -1
 
             ' Remove existing rows
@@ -85,7 +85,7 @@ Namespace Ecopath.Output
             ' Create rows for groups and sum values in each row
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If Me.IsGroupSelected(iGroup) Then
-                    groupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                    groupOutput = Me.Core.EcopathGroupOutputs(iGroup)
                     iRow = Me.AddRow()
                     Me.FillRows(iRow, groupOutput)
                 End If
@@ -142,7 +142,7 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New cEwERowHeaderCell(sharedResources.HEADER_SUM)
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If Me.IsGroupSelected(iGroup) Then
-                    source = Me.Core.EcoPathGroupOutputs(iGroup)
+                    source = Me.Core.EcopathGroupOutputs(iGroup)
                     For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                         sValue = CSng(source.GetVariable(eVarNameFlags.PSD, iWtClass))
                         sTotal(iWtClass) = sTotal(iWtClass) + sValue

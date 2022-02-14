@@ -106,7 +106,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Get
                 Dim c As cCore = Me.UIContext.Core
                 If (iIndex <= c.nGroups) Then
-                    Dim grp As cEcoPathGroupOutput = c.EcoPathGroupOutputs(iIndex)
+                    Dim grp As cEcopathGroupOutput = c.EcopathGroupOutputs(iIndex)
                     Select Case Me.m_datatype
                         Case eFDNodeValueType.Biomass
                             Return grp.Biomass
@@ -115,7 +115,7 @@ Namespace Ecopath.Controls.FlowDiagram
                         Case Else
                             Debug.Assert(False)
                     End Select
-                    Return c.EcoPathGroupOutputs(iIndex).Biomass
+                    Return c.EcopathGroupOutputs(iIndex).Biomass
                 End If
                 iIndex -= c.nGroups
                 Dim b As Single = 0
@@ -143,7 +143,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Implements IFlowDiagramData.ItemName
             Get
                 Dim c As cCore = Me.UIContext.Core
-                If (iIndex <= c.nGroups) Then Return c.EcoPathGroupInputs(iIndex).Name
+                If (iIndex <= c.nGroups) Then Return c.EcopathGroupInputs(iIndex).Name
                 iIndex -= c.nGroups
                 Return c.EcopathFleetInputs(iIndex).Name
             End Get
@@ -185,7 +185,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Get
                 Dim c As cCore = Me.UIContext.Core
                 If (iPred <= c.nGroups) And (iPrey <= c.nGroups) Then
-                    Dim group As cEcoPathGroupInput = c.EcoPathGroupInputs(iPred)
+                    Dim group As cEcoPathGroupInput = c.EcopathGroupInputs(iPred)
                     Return group.DietComp(iPrey)
                 End If
                 iPred -= c.nGroups
@@ -204,7 +204,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Implements IFlowDiagramData.TrophicLevel
             Get
                 Dim c As cCore = Me.UIContext.Core
-                If (iIndex <= c.nGroups) Then Return c.EcoPathGroupOutputs(iIndex).TTLX
+                If (iIndex <= c.nGroups) Then Return c.EcopathGroupOutputs(iIndex).TTLX
                 iIndex -= c.nGroups
 
                 Me.UpdateData()
@@ -337,7 +337,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 End If
                 val_all(i) = sValue
 
-                PP_all(c.nFleets + i) = c.EcoPathGroupInputs(i).PP
+                PP_all(c.nFleets + i) = c.EcopathGroupInputs(i).PP
 
             Next i
 

@@ -59,10 +59,10 @@ Public Class frmSelectFleetPrey
                 For i As Integer = 1 To Me.Core.nGroups
                     TotalCatch = 0
                     For p = 0 To Me.Core.nEcosimTimeSteps
-                        TotalCatch += Me.Core.EcoSimGroupOutputs(i).CatchByFleet(FleetIndex, p)
+                        TotalCatch += Me.Core.EcosimGroupOutputs(i).CatchByFleet(FleetIndex, p)
                     Next
                     If TotalCatch > 0 Then
-                        .Add(Me.Core.EcoSimGroupOutputs(i).Name)
+                        .Add(Me.Core.EcosimGroupOutputs(i).Name)
                     End If
                 Next
             End With

@@ -378,7 +378,7 @@ Public Class cImportDietsPlugin
 
     Private Function SetEcopathRunState() As Boolean
         If Not Me.m_core.StateMonitor.HasEcopathRan Then
-            Return Me.m_core.RunEcoPath()
+            Return Me.m_core.RunEcopath()
         End If
         Return True
     End Function

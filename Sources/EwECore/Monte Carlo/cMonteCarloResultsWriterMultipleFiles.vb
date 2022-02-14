@@ -213,7 +213,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             Case eMCParams.Landings, eMCParams.Discards
                 sw.WriteLine("group,fleet,{0}_cv,{0}_lower,{0}_upper", par.ToString.ToLower)
                 For iGroup As Integer = 1 To Me.Core.nGroups
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                     For iFleet As Integer = 1 To Me.Core.nFleets
                         Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
@@ -250,7 +250,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             Case eMCParams.Landings, eMCParams.Discards
                 sw.WriteLine("group,fleet,{0}", par.ToString.ToLower)
                 For iGroup As Integer = 1 To Me.Core.nGroups
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
                     For iFleet As Integer = 1 To Me.Core.nFleets
                         Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
@@ -270,7 +270,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             Case eMCParams.Diets
                 sw.Write("predator")
                 For iPrey As Integer = 1 To Me.Core.nGroups
-                    Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPrey)
+                    Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPrey)
                     sw.Write("," & group.Index)
                 Next
                 sw.WriteLine()
@@ -286,7 +286,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             Case Else
                 sw.WriteLine("group,{0}", par.ToString)
                 For iGroup As Integer = 1 To Me.Core.nGroups
-                    Dim group As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                    Dim group As cEcopathGroupOutput = Me.Core.EcopathGroupOutputs(iGroup)
                     sw.Write("{0}", iGroup)
                     Dim val As Single = 0
                     Select Case par

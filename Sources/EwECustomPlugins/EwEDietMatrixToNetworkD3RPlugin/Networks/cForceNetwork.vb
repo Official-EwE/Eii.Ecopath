@@ -44,7 +44,7 @@ Public Class cForceNetwork
 
     Public Overrides Function GenerateScript() As String
 
-        If Not Me.Core.StateMonitor.HasEcopathRan Then Me.Core.RunEcoPath()
+        If Not Me.Core.StateMonitor.HasEcopathRan Then Me.Core.RunEcopath()
 
         Dim sb As New StringBuilder()
         Dim strLinks As String = "links_df"
@@ -76,7 +76,7 @@ Public Class cForceNetwork
         Dim lDC As New List(Of Single)
 
         For iPred As Integer = 1 To Me.Core.nLivingGroups
-            Dim pred As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPred)
+            Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPred)
             For iPrey As Integer = 1 To Me.Core.nGroups
                 If (pred.DietComp(iPrey)) > 0 Then
                     lSrc.Add(iPred - 1)
@@ -105,7 +105,7 @@ Public Class cForceNetwork
         Dim lSzLog As New List(Of Double)
 
         For iGroup As Integer = 1 To Me.Core.nGroups
-            Dim grp As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+            Dim grp As cEcopathGroupOutput = Me.Core.EcopathGroupOutputs(iGroup)
             If (My.Settings.UseSymbolicNames) Then
                 lNms.Add(cStringUtils.ToExcelColumnName(iGroup))
             Else

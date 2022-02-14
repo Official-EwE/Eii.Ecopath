@@ -87,7 +87,7 @@ Public Class cBiomassLimits
 
     Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
         If (iIndex < 1) Or (iIndex > Me.mCore.nGroups) Then Return Nothing
-        Dim grp As cEcoPathGroupInput = Me.mCore.EcoPathGroupInputs(iIndex)
+        Dim grp As cEcoPathGroupInput = Me.mCore.EcopathGroupInputs(iIndex)
         Dim grpName As String = cMSEUtils.FromCSVField(strName)
         If String.Compare(grp.Name, grpName, True) <> 0 Then
             Return Nothing
@@ -239,9 +239,9 @@ Public Class cBiomassLimits
 
                     If (recs(0).Contains("_"c)) Then
                         ' Work-around for values such as "EcopathGroupInput_#"
-                        tempBiomassLimit.mGroup = Me.mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0).Substring(recs(0).LastIndexOf("_") + 1)))
+                        tempBiomassLimit.mGroup = Me.mCore.EcopathGroupInputs(cStringUtils.ConvertToInteger(recs(0).Substring(recs(0).LastIndexOf("_") + 1)))
                     Else
-                        tempBiomassLimit.mGroup = Me.mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
+                        tempBiomassLimit.mGroup = Me.mCore.EcopathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
                     End If
                     tempBiomassLimit.mLowerLimit = cStringUtils.ConvertToDouble(recs(1))
                     tempBiomassLimit.mUpperLimit = cStringUtils.ConvertToDouble(recs(2))
@@ -341,7 +341,7 @@ Public Class cBiomassLimits
         For i As Integer = 1 To Me.mMSE.Core.nGroups
             'Me.Value(i) = cEffortLimits.NoHCR_F
             Me.lstBiomassLimits.Add(New cBiomassLimit(Me.mMSE.Core))
-            Me.lstBiomassLimits(i - 1).mGroup = Me.mMSE.Core.EcoPathGroupInputs(i)
+            Me.lstBiomassLimits(i - 1).mGroup = Me.mMSE.Core.EcopathGroupInputs(i)
             Me.lstBiomassLimits(i - 1).mLowerLimit = 0
             Me.lstBiomassLimits(i - 1).mUpperLimit = 1000000
         Next

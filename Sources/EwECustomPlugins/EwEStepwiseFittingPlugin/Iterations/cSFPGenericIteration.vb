@@ -112,7 +112,7 @@ Public MustInherit Class cSFPGenericIteration
 
         ' Store vulnerabilities
         For i As Integer = 1 To core.nGroups
-            Dim grp As cEcoSimGroupInput = core.EcoSimGroupInputs(i)
+            Dim grp As cEcosimGroupInput = core.EcosimGroupInputs(i)
             For j As Integer = 1 To core.nGroups
                 Me.m_vulnerabilities(i, j) = grp.VulMult(j)
             Next
@@ -148,7 +148,7 @@ Public MustInherit Class cSFPGenericIteration
 
             ' Restore vulnerabilities
             For i As Integer = 1 To core.nGroups
-                Dim grp As cEcoSimGroupInput = core.EcoSimGroupInputs(i)
+                Dim grp As cEcosimGroupInput = core.EcosimGroupInputs(i)
                 For j As Integer = 1 To core.nGroups
                     grp.VulMult(j) = Me.m_vulnerabilities(i, j)
                 Next
@@ -396,7 +396,7 @@ Public MustInherit Class cSFPGenericIteration
     ''' <returns>True if a run started successfully.</returns>
     ''' -----------------------------------------------------------------------
     Protected Function RunEcosim(core As cCore) As Boolean
-        Return core.RunEcoSim(Nothing, False)
+        Return core.RunEcosim(Nothing, False)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -831,7 +831,7 @@ Public MustInherit Class cSFPGenericIteration
                     If (Me.RunState = ISFPIteration.eRunState.Completed) Then
 
                         For i As Integer = 1 To core.nGroups
-                            grpOutput = core.EcoSimGroupOutputs(i)
+                            grpOutput = core.EcosimGroupOutputs(i)
                             For j As Integer = 1 To core.nEcosimTimeSteps
                                 Select Case ResultType
                                     Case cEcosimResultWriter.eResultTypes.Biomass
@@ -903,7 +903,7 @@ Public MustInherit Class cSFPGenericIteration
         Dim str As New StringBuilder()
 
         For i As Integer = 1 To core.nGroups
-            str.Append(cStringUtils.ToCSVField(core.EcoSimGroupOutputs(i).Name))
+            str.Append(cStringUtils.ToCSVField(core.EcosimGroupOutputs(i).Name))
             If i <> core.nGroups Then str.Append(",")
         Next
 

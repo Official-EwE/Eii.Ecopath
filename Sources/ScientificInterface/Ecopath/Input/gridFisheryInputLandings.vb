@@ -157,7 +157,7 @@ Namespace Ecopath.Input
                 alSumCol.Clear()
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
-                    groupSec = Me.Core.EcoPathGroupInputs(iGroup)
+                    groupSec = Me.Core.EcopathGroupInputs(iGroup)
                     prop = pm.GetProperty(fleet, eVarNameFlags.Landings, groupSec)
                     alSumCol.Add(prop)
                 Next

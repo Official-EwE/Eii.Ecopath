@@ -68,7 +68,7 @@ Namespace Ecosim
 
             Me.m_bInUpdate = True
 
-            Dim parms As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
+            Dim parms As cEcoSimModelParameters = Me.Core.EcosimModelParameters()
             Dim pm As cPropertyManager = Me.PropertyManager
 
             Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumberYears, parms, eVarNameFlags.EcoSimNYears)
@@ -176,7 +176,7 @@ Namespace Ecosim
             If Me.m_bInUpdate Then Return
 
             Try
-                Dim parms As cEcoSimModelParameters = Me.Core.EcoSimModelParameters()
+                Dim parms As cEcoSimModelParameters = Me.Core.EcosimModelParameters()
                 parms.NutForceFunctionNumber = Me.m_cmbNutForcing.SelectedIndex
             Catch ex As Exception
 

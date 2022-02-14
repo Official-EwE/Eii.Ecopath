@@ -113,7 +113,7 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case Me.m_editMode
                 Case eEditMode.Group
-                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, fmt.ToString(Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelGroup)))
                 Case eEditMode.All
                     Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, SharedResources.GENERIC_VALUE_ALL)
                 Case Else

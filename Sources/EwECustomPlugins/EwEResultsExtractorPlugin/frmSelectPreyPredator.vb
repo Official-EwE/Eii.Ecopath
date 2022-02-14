@@ -46,15 +46,15 @@ Public Class frmSelectPreyPredator
 
             ' Find the index number to refer to selected predator
             PreyIndex = 1
-            Do While Me.Core.EcoSimGroupOutputs(PreyIndex).Name IsNot Prey
+            Do While Me.Core.EcosimGroupOutputs(PreyIndex).Name IsNot Prey
                 PreyIndex += 1
             Loop
 
             'Check which functional groups are prey to given predator and add to prey chklist
             With Me.chklstAttached.Items
                 For i As Integer = 1 To Me.Core.nGroups
-                    If Me.Core.EcoPathGroupInputs(i).IsPrey(PreyIndex) Then
-                        .Add(Me.Core.EcoSimGroupOutputs(i).Name)
+                    If Me.Core.EcopathGroupInputs(i).IsPrey(PreyIndex) Then
+                        .Add(Me.Core.EcosimGroupOutputs(i).Name)
                     End If
                 Next
             End With

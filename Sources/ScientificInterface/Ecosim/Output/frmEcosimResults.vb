@@ -75,9 +75,9 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             'summary
-            Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumStart, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumStart)
-            Me.m_fpEndSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumEnd, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumEnd)
-            Me.m_fpNumSteps = New cPropertyFormatProvider(Me.UIContext, Me.udNumTimeSteps, Me.Core.EcoSimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
+            Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumStart, Me.Core.EcosimModelParameters, eVarNameFlags.EcosimSumStart)
+            Me.m_fpEndSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumEnd, Me.Core.EcosimModelParameters, eVarNameFlags.EcosimSumEnd)
+            Me.m_fpNumSteps = New cPropertyFormatProvider(Me.UIContext, Me.udNumTimeSteps, Me.Core.EcosimModelParameters, eVarNameFlags.EcosimSumNTimeSteps)
 
             Me.m_cmbFleets.Items.Clear()
             For i As Integer = 0 To Me.Core.nFleets 'includes the 'combined fleets' object

@@ -1927,7 +1927,7 @@ Namespace MSE
             If iDataset > -1 Then DS = Me.m_core.TimeSeriesDataset(iDataset)
 
             'this is required to set the base effort values :
-            Me.m_core.EcoSimModelParameters.NumberYears = NumberOfYears + extraYears
+            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
             Me.SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
@@ -1979,8 +1979,8 @@ Namespace MSE
 
                         'UpdateTimeSeries() will reset the NumberYears to the number of years in the timeseries
                         'make sure this did not make NumberYears smaller
-                        If Me.m_core.EcoSimModelParameters.NumberYears < NumberOfYears + extraYears Then
-                            Me.m_core.EcoSimModelParameters.NumberYears = Me.m_core.EcoSimModelParameters.NumberYears + extraYears
+                        If Me.m_core.EcosimModelParameters.NumberYears < NumberOfYears + extraYears Then
+                            Me.m_core.EcosimModelParameters.NumberYears = Me.m_core.EcosimModelParameters.NumberYears + extraYears
                         End If
 
                         'when projecting the time series, the forcing functions shuld be set to the average over the ecosim run, not to 1
@@ -2191,7 +2191,7 @@ Namespace MSE
                 Next
 
                 'reset the number of years that Ecosim will run
-                Me.m_core.EcoSimModelParameters.NumberYears = NumberOfYears
+                Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears
 
                 If Me.m_core.PluginManager IsNot Nothing Then
                     Me.m_pluginManager.MSYEffortCompleted(MSYeffort, MSYF)
@@ -2232,7 +2232,7 @@ Namespace MSE
             'Dim GroupEffort() As Single
 
             'this is required to set the base effort values :
-            Me.m_core.EcoSimModelParameters.NumberYears = NumberOfYears + extraYears
+            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
             Me.SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
@@ -2273,8 +2273,8 @@ Namespace MSE
 
                         Dim NumberOfSteps As Integer = 0
 
-                        If Me.m_core.EcoSimModelParameters.NumberYears < NumberOfYears + extraYears Then
-                            Me.m_core.EcoSimModelParameters.NumberYears = NumberOfYears + extraYears
+                        If Me.m_core.EcosimModelParameters.NumberYears < NumberOfYears + extraYears Then
+                            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
                         End If
 
                         System.Console.WriteLine()
@@ -2282,7 +2282,7 @@ Namespace MSE
                         Dim CheckTangent As Boolean = False
                         Dim LastLowerF As Double = 0
 
-                        Dim StoreF(12 * Me.m_core.EcoSimModelParameters.NumberYears) As Single
+                        Dim StoreF(12 * Me.m_core.EcosimModelParameters.NumberYears) As Single
                         Me.SetFishingMortalityOverTime(iGrp, StoreF, False)
 
                         Do While Done = False
@@ -2394,7 +2394,7 @@ Namespace MSE
                 'done plugin
 
                 'reset the number of years that Ecosim will run
-                Me.m_core.EcoSimModelParameters.NumberYears = NumberOfYears
+                Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears
 
                 If Me.m_core.PluginManager IsNot Nothing Then
                     Me.m_pluginManager.MSYEffortCompleted(MSYEffort, MSYF)

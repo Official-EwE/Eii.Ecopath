@@ -158,19 +158,19 @@ Namespace Ecopath.Output
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
             Dim resultLists As New List(Of PointPairList)
             Dim sXValue As Single = 0
-            Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim grpOutput As cEcopathGroupOutput = Nothing
             Dim sSystemPSD(Me.Core.nWeightClasses) As Single
             Dim iSelectedGrpNum As Integer = 1
 
             'Find the selected group number based on the selected index
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                If Me.Core.EcoPathGroupOutputs(iGroup).Name = Me.m_lbGroups.Items(Me.m_lbGroups.SelectedIndex).ToString() Then
+                If Me.Core.EcopathGroupOutputs(iGroup).Name = Me.m_lbGroups.Items(Me.m_lbGroups.SelectedIndex).ToString() Then
                     iSelectedGrpNum = iGroup
                     Exit For
                 End If
             Next
 
-            grpOutput = Me.Core.EcoPathGroupOutputs(iSelectedGrpNum)
+            grpOutput = Me.Core.EcopathGroupOutputs(iSelectedGrpNum)
             Select Case parms.MortalityType
                 Case ePSDMortalityTypes.GroupZ
                     Me.InitLists(resultLists, 4)
@@ -269,11 +269,11 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub FindSystemPSD(sSystemPSD() As Single)
-            Dim grpOutput As cEcoPathGroupOutput = Nothing
+            Dim grpOutput As cEcopathGroupOutput = Nothing
 
             'Find the system PSD by summing the group PSD
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                grpOutput = Me.Core.EcoPathGroupOutputs(iGroup)
+                grpOutput = Me.Core.EcopathGroupOutputs(iGroup)
                 For iWtClass As Integer = 1 To Me.Core.nWeightClasses
                     sSystemPSD(iWtClass) = sSystemPSD(iWtClass) + grpOutput.PSD(iWtClass)
                 Next

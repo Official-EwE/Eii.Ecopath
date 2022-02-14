@@ -131,7 +131,7 @@ Public Class gridRiskResults
                 lstData1 = mse.BiomassStats
                 lstData2 = mse.GroupCatchStats
                 For i As Integer = 1 To Me.UIContext.Core.nGroups
-                    lSources.Add(Me.UIContext.Core.EcoPathGroupInputs(i))
+                    lSources.Add(Me.UIContext.Core.EcopathGroupInputs(i))
                 Next
             ElseIf Me.m_type = eGridType.Fleet Then
                 lstData1 = mse.FleetStats

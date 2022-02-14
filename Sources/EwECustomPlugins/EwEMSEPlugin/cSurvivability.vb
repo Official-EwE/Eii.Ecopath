@@ -438,7 +438,7 @@ Public Class cSurvivability
                                  cStringUtils.ToCSVField(entry.FleetNo) & "," &
                                  cStringUtils.ToCSVField(Me.mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.GroupNo) & "," &
-                                 cStringUtils.ToCSVField(Me.mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
+                                 cStringUtils.ToCSVField(Me.mcore.EcopathGroupInputs(entry.GroupNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.Survivability))
             Next
 
@@ -626,7 +626,7 @@ Public Class cSurvivability
                             writer.WriteLine(cStringUtils.ToCSVField(iFleet) & "," &
                                      cStringUtils.ToCSVField(Me.mcore.EcopathFleetInputs(iFleet).Name) & "," &
                                      cStringUtils.ToCSVField(iGroup) & "," &
-                                     cStringUtils.ToCSVField(Me.mcore.EcoPathGroupInputs(iGroup).Name) & "," &
+                                     cStringUtils.ToCSVField(Me.mcore.EcopathGroupInputs(iGroup).Name) & "," &
                                      cStringUtils.ToCSVField(DefaultAlpha) & "," &
                                      cStringUtils.ToCSVField(DefaultBeta))
                         End If
@@ -637,7 +637,7 @@ Public Class cSurvivability
                     writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," &
                                      cStringUtils.ToCSVField(Me.mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
                                      cStringUtils.ToCSVField(entry.GroupNo) & "," &
-                                     cStringUtils.ToCSVField(Me.mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
+                                     cStringUtils.ToCSVField(Me.mcore.EcopathGroupInputs(entry.GroupNo).Name) & "," &
                                      cStringUtils.ToCSVField(entry.Alpha) & "," &
                                      cStringUtils.ToCSVField(entry.Beta))
                 Next

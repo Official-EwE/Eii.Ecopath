@@ -231,7 +231,7 @@ Public Class cMPAOptManager
         Try
 
             'populate the current row col
-            Me.m_curRowCol.Init(Me.m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
+            Me.m_curRowCol.Init(Me.m_MPASearch.MPAOptData, Me.m_core.m_EcospaceData)
 
             If Me.m_bConnected Then
                 Me.m_syncObject.BeginInvoke(Me.m_SeedCellComputedCallback, Nothing)
@@ -250,7 +250,7 @@ Public Class cMPAOptManager
         Try
 
             If RunState = eRunStates.NewBestResultFound Then
-                Me.m_curRowCol.Init(Me.m_MPASearch.MPAOptData, Me.m_core.m_EcoSpaceData)
+                Me.m_curRowCol.Init(Me.m_MPASearch.MPAOptData, Me.m_core.m_EcospaceData)
             End If
 
             If RunState = eRunStates.Completed Then
@@ -326,7 +326,7 @@ Public Class cMPAOptManager
             For i As Integer = 1 To Me.m_core.nMPAs
                 ReDim map(Me.m_core.EcospaceBasemap.InRow + 1, Me.m_core.EcospaceBasemap.InCol + 1)
                 Me.m_orgMPAConfig(i) = map
-                Array.Copy(Me.m_core.m_EcoSpaceData.MPA(i), Me.m_orgMPAConfig(i), Me.m_core.m_EcoSpaceData.MPA(i).Length)
+                Array.Copy(Me.m_core.m_EcospaceData.MPA(i), Me.m_orgMPAConfig(i), Me.m_core.m_EcospaceData.MPA(i).Length)
             Next
 
             Me.m_core.m_SearchData.SearchMode = eSearchModes.SpatialOpt
@@ -412,8 +412,8 @@ Public Class cMPAOptManager
 
         Try
 
-            Dim nR As Integer = Me.m_core.m_EcoSpaceData.InRow
-            Dim nC As Integer = Me.m_core.m_EcoSpaceData.InCol
+            Dim nR As Integer = Me.m_core.m_EcospaceData.InRow
+            Dim nC As Integer = Me.m_core.m_EcospaceData.InCol
             ReDim map(nR, nC)
 
             'get a list of maps where the percentage of cells closed is what the user asked for

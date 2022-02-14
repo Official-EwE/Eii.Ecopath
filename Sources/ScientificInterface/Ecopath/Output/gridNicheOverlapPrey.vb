@@ -62,7 +62,7 @@ Namespace Ecopath.Output
             ' For every living groups
             For i As Integer = 1 To Me.Core.nLivingGroups
                 'Get group output
-                source = Me.Core.EcoPathGroupOutputs(i)
+                source = Me.Core.EcopathGroupOutputs(i)
                 ' Define column header cell
                 Me.Columns.Insert(columnIndex)
                 Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
@@ -83,10 +83,10 @@ Namespace Ecopath.Output
             Dim prop As cProperty = Nothing
 
             For columnIndex As Integer = 2 To Me.core.nLivingGroups + 1
-                source = Me.core.EcoPathGroupOutputs(columnIndex - 1)
+                source = Me.core.EcopathGroupOutputs(columnIndex - 1)
                 For rowIndex As Integer = 1 To Me.core.nLivingGroups
                     ' Get the group output
-                    sourceSec = Me.core.EcoPathGroupOutputs(rowIndex)
+                    sourceSec = Me.core.EcopathGroupOutputs(rowIndex)
 
                     If columnIndex <= rowIndex + 1 Then
                         If source.PP() <= 1 Then

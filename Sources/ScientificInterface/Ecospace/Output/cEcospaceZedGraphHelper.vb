@@ -111,7 +111,7 @@ Namespace Ecospace
 
             Me.m_pane.CurveList.Clear()
             For iGroup As Integer = 1 To nGroups
-                li = Me.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), New PointPairList())
+                li = Me.CreateLineItem(Me.Core.EcopathGroupInputs(iGroup), New PointPairList())
                 Me.m_pane.CurveList.Add(li)
             Next
 

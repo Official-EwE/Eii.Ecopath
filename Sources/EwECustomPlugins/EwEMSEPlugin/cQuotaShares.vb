@@ -386,7 +386,7 @@ Public Class cQuotaShares
 
             For Each entry As QuotaShare In Me.m_lstQuotaShares
                 writer.WriteLine(cStringUtils.ToCSVField(entry.mGroupNo) & "," &
-                                 cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," &
+                                 cStringUtils.ToCSVField(Me.m_core.EcopathGroupInputs(entry.mGroupNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mFleetNo) & "," &
                                  cStringUtils.ToCSVField(Me.m_core.EcopathFleetInputs(entry.mFleetNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mShare))

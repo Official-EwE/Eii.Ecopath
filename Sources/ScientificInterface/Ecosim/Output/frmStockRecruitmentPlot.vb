@@ -231,7 +231,7 @@ Namespace Ecosim
                     For i As Integer = 0 To Me.m_SRResults.Count - 1
                         Me.m_SRResults(i).Data.Clear()
                     Next
-                    Me.Core.RunEcoSim(AddressOf Me.TimeStepFromEcoSim_handler)
+                    Me.Core.RunEcosim(AddressOf Me.TimeStepFromEcoSim_handler)
                 Else
                     Me.Core.StopEcoSim()
                 End If
@@ -404,12 +404,12 @@ Namespace Ecosim
 
                     ' Add subnodes for life stages
                     iGroupLast = stanza.iGroups(stanza.nLifeStages)
-                    groupEnd = Me.Core.EcoPathGroupInputs(iGroupLast)
+                    groupEnd = Me.Core.EcopathGroupInputs(iGroupLast)
 
                     For j As Integer = 1 To stanza.nLifeStages - 1
 
                         iGroup = stanza.iGroups(j)
-                        groupStart = Me.Core.EcoPathGroupInputs(iGroup)
+                        groupStart = Me.Core.EcopathGroupInputs(iGroup)
 
                         srl = New cSRLine(stanza, groupStart, groupEnd)
                         srl.IsDefault = (j = 1)
@@ -443,7 +443,7 @@ Namespace Ecosim
             For i As Integer = 1 To results.nStanza
                 stanza = Me.Core.StanzaGroups(i - 1)
                 For j As Integer = 1 To stanza.nLifeStages - 1
-                    group = Me.Core.EcoPathGroupInputs(stanza.iGroups(j))
+                    group = Me.Core.EcopathGroupInputs(stanza.iGroups(j))
                     If results.hasSRData(i, j) Then
                         tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
                         For k As Integer = 0 To Me.m_SRResults.Count - 1

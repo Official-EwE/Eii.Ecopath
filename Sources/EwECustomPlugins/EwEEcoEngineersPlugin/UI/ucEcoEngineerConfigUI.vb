@@ -121,7 +121,7 @@ Public Class ucEcoEngineerConfigUI
 
         ' Fill group list, and create a rule for each group to the UI has something to work with
         For i As Integer = 1 To Me.UIContext.Core.nGroups
-            Me.m_clbGroups.Items.Add(Me.UIContext.Core.EcoPathGroupInputs(i).Name)
+            Me.m_clbGroups.Items.Add(Me.UIContext.Core.EcopathGroupInputs(i).Name)
             Me.m_rules(i) = New cComplexityRule()
             Me.m_rules(i).Group = i
         Next

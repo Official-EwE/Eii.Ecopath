@@ -105,7 +105,7 @@ Public Class cModel
                     ' Set effort
                     Me.SetFishingEffort(data, iFleet, sEffort)
                     ' Run Ecosim for X years
-                    data.Core.RunEcoSim()
+                    data.Core.RunEcosim()
                     ' Store values for the last time step
                     results.StoreSnapshot(sEffort, data.Core.nEcosimTimeSteps)
 
@@ -432,7 +432,7 @@ Public Class cModel
         For iGroup As Integer = 1 To data.Core.nGroups
 
             ' Get group
-            grpRun = data.Core.EcoPathGroupInputs(iGroup)
+            grpRun = data.Core.EcopathGroupInputs(iGroup)
 
             ' Prepare data for a time step
             data.InitTimeStep()
@@ -547,7 +547,7 @@ Public Class cModel
 
                 Case cParameters.eAggregationModeType.ByGroup
                     For iGroup As Integer = 1 To data.Core.nGroups
-                        Dim grp As cEcoPathGroupInput = data.Core.EcoPathGroupInputs(iGroup)
+                        Dim grp As cEcoPathGroupInput = data.Core.EcopathGroupInputs(iGroup)
                         If grp.IsFished Then
                             w.WriteResults(agg, iGroup, grp.Name)
                         End If

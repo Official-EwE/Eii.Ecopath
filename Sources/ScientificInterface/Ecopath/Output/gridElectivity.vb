@@ -156,7 +156,7 @@ Namespace Ecopath.Output
 
             For i As Integer = 1 To Me.core.nGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = Me.core.EcoPathGroupOutputs(i)
+                source = Me.core.EcopathGroupOutputs(i)
                 ' Group index header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
@@ -182,12 +182,12 @@ Namespace Ecopath.Output
             ' For each column
             For groupIndex As Integer = 1 To Me.core.nGroups
                 ' Get the group
-                source = Me.core.EcoPathGroupOutputs(groupIndex)
+                source = Me.core.EcopathGroupOutputs(groupIndex)
                 If source.PP < 1 Then
                     ' For each row
                     For rowIndex As Integer = 1 To Me.core.nGroups
                         ' Get index group
-                        sourceSec = Me.core.EcoPathGroupOutputs(rowIndex)
+                        sourceSec = Me.core.EcopathGroupOutputs(rowIndex)
                         ' Create cell
                         cell = New ElectivityGridCell(Me.PropertyManager, source, eVarNameFlags.Alpha, sourceSec)
                         ' Cells suppress zeroes to increase legibility of the grid

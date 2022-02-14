@@ -102,7 +102,7 @@ Namespace Ecopath.Output
         Private Sub FillRows(iRow As Integer, iGroup As Integer)
 
             Dim cell As cEwECell = Nothing
-            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
             Dim sGroupTotal As Single = 0
 
             Me(iRow, 0) = New cEwERowHeaderCell(CStr(iGroup))
@@ -111,7 +111,7 @@ Namespace Ecopath.Output
             ' For each fleet (each column) 
             For iFleet As Integer = 1 To Me.Core.nFleets
 
-                Dim fleet As cEcopathFleetOutput = Me.Core.EcoPathFleetOutputs(iFleet)
+                Dim fleet As cEcopathFleetOutput = Me.Core.EcopathFleetOutputs(iFleet)
                 Dim sLanding As Single = fleet.LandingsByGroup(iGroup)
                 Dim sDeadDiscards As Single = fleet.DiscardMortByGroup(iGroup)
 
@@ -137,7 +137,7 @@ Namespace Ecopath.Output
             For iFleet As Integer = 1 To Me.Core.nFleets
 
                 Dim sFleetTot As Single = 0
-                Dim fleet As cEcopathFleetOutput = Me.Core.EcoPathFleetOutputs(iFleet)
+                Dim fleet As cEcopathFleetOutput = Me.Core.EcopathFleetOutputs(iFleet)
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
                     sFleetTot += fleet.LandingsByGroup(iGroup) + fleet.DiscardMortByGroup(iGroup)
@@ -199,8 +199,8 @@ Namespace Ecopath.Output
                 alSumQuantityTTLXCol.Clear()
 
                 For rowIndex As Integer = 1 To Me.Core.nGroups
-                    sourceGrpIntputSec = Me.Core.EcoPathGroupInputs(rowIndex)
-                    sourceGrpOutput = Me.Core.EcoPathGroupOutputs(rowIndex)
+                    sourceGrpIntputSec = Me.Core.EcopathGroupInputs(rowIndex)
+                    sourceGrpOutput = Me.Core.EcopathGroupOutputs(rowIndex)
                     alSumLandingsDiscards.Clear()
                     alProdQuantityTTLX.Clear()
                     ' Get the index landing property

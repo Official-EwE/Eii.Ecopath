@@ -141,7 +141,7 @@ Public Class cComplexityDataset
         Dim nRows As Integer = bm.InRow
         Dim nCols As Integer = bm.InCol
         Dim data(nRows, nCols) As Single
-        Dim ds As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim ds As cEcospaceDataStructures = Me.m_core.m_EcospaceData
 
         ' Perform the conversion
         For iRow As Integer = 1 To nRows
@@ -223,7 +223,7 @@ Public Class cComplexityDataset
             xnRule = doc.CreateElement("Rule")
 
             xaRule = doc.CreateAttribute("GroupDBID")
-            xaRule.InnerText = CStr(Me.m_core.EcoPathGroupInputs(r.Group).DBID)
+            xaRule.InnerText = CStr(Me.m_core.EcopathGroupInputs(r.Group).DBID)
             xnRule.Attributes.Append(xaRule)
 
             ' Store name as a URL encoded string to avoid quote character confusion
@@ -286,7 +286,7 @@ Public Class cComplexityDataset
                         Dim r As New cComplexityRule()
                         Dim dbid As Integer = CInt(xn.Attributes("GroupDBID").InnerText)
                         For i As Integer = 1 To Me.m_core.nGroups
-                            If Me.m_core.EcoPathGroupInputs(i).DBID = dbid Then
+                            If Me.m_core.EcopathGroupInputs(i).DBID = dbid Then
                                 r.Group = i
                             End If
                         Next

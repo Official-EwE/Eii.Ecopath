@@ -466,7 +466,7 @@ Namespace WebServices.Ecobase
             Me.Color = ecopathDS.GroupColor(iGroup)
             Me.vbK = ecopathDS.vbK(iGroup)
 
-            Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(iGroup)
+            Dim grpOut As cEcopathGroupOutput = core.EcopathGroupOutputs(iGroup)
             Me.TL = grpOut.TTLX
             Me.OmnivoryIndex = grpOut.OmnivoryIndex
             Me.BaBi = grpOut.BioAccumRatePerYear

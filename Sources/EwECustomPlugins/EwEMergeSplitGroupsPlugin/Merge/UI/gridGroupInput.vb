@@ -200,16 +200,16 @@ Public Class gridGroupInput
         End Select
 
         If (Me.m_data.IndexTarget > 0) Then
-            Me.UpdateCell(iRow, eColumnTypes.Agg1In, Me.Core.EcoPathGroupInputs(Me.m_data.IndexTarget), varIn)
-            Me.UpdateCell(iRow, eColumnTypes.Agg1Out, Me.Core.EcoPathGroupOutputs(Me.m_data.IndexTarget), varOut)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1In, Me.Core.EcopathGroupInputs(Me.m_data.IndexTarget), varIn)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1Out, Me.Core.EcopathGroupOutputs(Me.m_data.IndexTarget), varOut)
         Else
             Me.UpdateCell(iRow, eColumnTypes.Agg1In, 0, eStyleFlags.Null)
             Me.UpdateCell(iRow, eColumnTypes.Agg1Out, 0, eStyleFlags.Null)
         End If
 
         If (Me.m_data.IndexMerge > 0) Then
-            Me.UpdateCell(iRow, eColumnTypes.Agg2In, Me.Core.EcoPathGroupInputs(Me.m_data.IndexMerge), varIn)
-            Me.UpdateCell(iRow, eColumnTypes.Agg2Out, Me.Core.EcoPathGroupOutputs(Me.m_data.IndexMerge), varOut)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2In, Me.Core.EcopathGroupInputs(Me.m_data.IndexMerge), varIn)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2Out, Me.Core.EcopathGroupOutputs(Me.m_data.IndexMerge), varOut)
         Else
             Me.UpdateCell(iRow, eColumnTypes.Agg2In, 0, eStyleFlags.Null)
             Me.UpdateCell(iRow, eColumnTypes.Agg2Out, 0, eStyleFlags.Null)

@@ -38,17 +38,17 @@ Public Class cPrebalModel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class for sorting <see cref="cEcoPathGroupOutput">groups</see> by 
-    ''' <see cref="cEcoPathGroupOutput.TTLX">Trophic Level</see>.
+    ''' Helper class for sorting <see cref="cEcopathGroupOutput">groups</see> by 
+    ''' <see cref="cEcopathGroupOutput.TTLX">Trophic Level</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Class cGroupTLComparer
-        Implements IComparer(Of cEcoPathGroupOutput)
+        Implements IComparer(Of cEcopathGroupOutput)
 
         Public Property Descending As Boolean = True
 
-        Public Function Compare(x As cEcoPathGroupOutput, y As cEcoPathGroupOutput) As Integer _
-            Implements IComparer(Of cEcoPathGroupOutput).Compare
+        Public Function Compare(x As cEcopathGroupOutput, y As cEcopathGroupOutput) As Integer _
+            Implements IComparer(Of cEcopathGroupOutput).Compare
 
             If (x Is Nothing) Or (y Is Nothing) Then Return 1
 
@@ -149,14 +149,14 @@ Public Class cPrebalModel
     Private Sub DoUpdate()
 
         Dim comp As New cGroupTLComparer()
-        Dim grp As cEcoPathGroupOutput = Nothing
-        Dim lgrps As New List(Of cEcoPathGroupOutput)
+        Dim grp As cEcopathGroupOutput = Nothing
+        Dim lgrps As New List(Of cEcopathGroupOutput)
         Dim nConsumers As Integer = 0
         Dim iConsumer As Integer = 1
 
         ' Get all living groups
         For i As Integer = 1 To Me.m_core.nGroups
-            grp = Me.m_core.EcoPathGroupOutputs(i)
+            grp = Me.m_core.EcopathGroupOutputs(i)
             If (grp.IsLiving) Then
                 lgrps.Add(grp)
                 If (grp.IsConsumer) Then nConsumers += 1

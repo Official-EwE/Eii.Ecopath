@@ -169,7 +169,7 @@ Namespace Ecospace.Advection
                 Me.m_comp.RunCompletedCallback = AddressOf Me.OnAdvectionCalcsCompletedHandler
 
                 'get the data from the core
-                Me.m_data = Me.m_core.m_EcoSpaceData
+                Me.m_data = Me.m_core.m_EcospaceData
                 Me.m_parameters = New cAdvectionParameters(Me.m_core, -1)
 
                 Return True

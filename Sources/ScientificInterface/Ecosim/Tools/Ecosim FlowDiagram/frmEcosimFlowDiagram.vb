@@ -163,7 +163,7 @@ Namespace Ecosim
             Me.m_slider.Minimum = 1
             Me.m_slider.Maximum = Me.Core.nEcosimTimeSteps
 
-            Me.m_noofTimeSlicesPerYear = Me.Core.EcoSimModelParameters.NumberSummaryTimeSteps
+            Me.m_noofTimeSlicesPerYear = Me.Core.EcosimModelParameters.NumberSummaryTimeSteps
 
             'Check if the Loaded Model has timeseries Datasets
             Dim firstMonth As Integer = 2
@@ -335,7 +335,7 @@ Namespace Ecosim
 
                             If (Me.m_data.LinkValue(Me.m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
 
-                                Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(Me.m_iHighlightedNode)
+                                Dim cons As Single = Me.Core.EcopathGroupOutputs(j).Consumption(Me.m_iHighlightedNode)
                                 Dim gpnm As String = Me.m_data.ItemName(j)
 
                                 Me.m_mdataGridView.Columns.Add("column", "header")
@@ -347,7 +347,7 @@ Namespace Ecosim
 
                             ElseIf (Me.m_data.LinkValue(j, Me.m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
 
-                                Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(Me.m_iHighlightedNode).Consumption(j)
+                                Dim cons1 As Single = Me.Core.EcopathGroupOutputs(Me.m_iHighlightedNode).Consumption(j)
                                 Dim gpnm1 As String = Me.m_data.ItemName(j)
 
                                 Me.m_mdataGridView.Columns.Add("column", "header")
@@ -459,8 +459,8 @@ Namespace Ecosim
                     For innerloop As Integer = 1 To Me.m_noofColumns
                         'Check to make sure to stay within nGroups
                         If groupIndex <= Me.Core.nGroups Then
-                            Dim gpnm As String = Me.Core.EcoPathGroupInputs(groupIndex).Name
-                            Dim bmss As Single = Me.Core.EcoSimGroupOutputs(groupIndex).Biomass(Me.CurrentTimestep)
+                            Dim gpnm As String = Me.Core.EcopathGroupInputs(groupIndex).Name
+                            Dim bmss As Single = Me.Core.EcosimGroupOutputs(groupIndex).Biomass(Me.CurrentTimestep)
                             Me.m_dr0(innerloop - 1) = gpnm
                             Me.m_dr1(innerloop - 1) = bmss
                             'incrementing the groupIndex outside forloop to keep track of next value
@@ -852,7 +852,7 @@ Namespace Ecosim
                     For innerloop As Integer = 1 To Me.m_noofColumns
                         'Check to see if the GroupIndex is within nGroups count
                         If groupIndex <= Me.Core.nGroups Then
-                            Dim biomss As Single = Me.Core.EcoSimGroupOutputs(groupIndex).Biomass(Me.CurrentTimestep)
+                            Dim biomss As Single = Me.Core.EcosimGroupOutputs(groupIndex).Biomass(Me.CurrentTimestep)
                             editDataRow(innerloop - 1) = biomss
                             'Moving onto the next group to get name and Biomass value
                             groupIndex += 1

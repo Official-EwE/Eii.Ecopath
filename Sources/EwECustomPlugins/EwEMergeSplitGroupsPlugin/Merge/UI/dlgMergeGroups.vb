@@ -70,7 +70,7 @@ Public Class dlgMergeGroups
         Dim core As cCore = Me.m_uic.Core
 
         For i As Integer = 1 To core.nGroups
-            Me.m_cmbTarget.Items.Add(core.EcoPathGroupInputs(i))
+            Me.m_cmbTarget.Items.Add(core.EcopathGroupInputs(i))
         Next
 
         Me.m_bInUpdate = False
@@ -111,11 +111,11 @@ Public Class dlgMergeGroups
 
         Me.m_cmbMerge.Items.Clear()
         For i As Integer = 0 To grps.Count - 1
-            Me.m_cmbMerge.Items.Add(Me.m_uic.Core.EcoPathGroupInputs(grps(i)))
+            Me.m_cmbMerge.Items.Add(Me.m_uic.Core.EcopathGroupInputs(grps(i)))
         Next
 
         If (iTarget > 0) Then
-            Me.m_tbxNewName.Text = Me.m_uic.Core.EcoPathGroupInputs(iTarget).Name
+            Me.m_tbxNewName.Text = Me.m_uic.Core.EcopathGroupInputs(iTarget).Name
         End If
 
         Me.UpdatePreview(True)

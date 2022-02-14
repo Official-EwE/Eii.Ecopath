@@ -266,7 +266,7 @@ Public Class frmCEFASRecruitment
 
             'Calculate the recruitment as a vector with x-values.
             'the Ecopath biomass is the reference biomass:
-            data.EcopathBiomass = Me.Core.EcoPathGroupOutputs(iGrp).Biomass
+            data.EcopathBiomass = Me.Core.EcopathGroupOutputs(iGrp).Biomass
             'Now we can calculate the biomass where the recruitment is half of the maximum
             'with a default of 0.2 it means that the half of max recruitments is at 20% of the Ecopath biomass
             data.HalfRecruitmentBiomass = data.EcopathBiomass * Me.Group.RHalfB0Ratio

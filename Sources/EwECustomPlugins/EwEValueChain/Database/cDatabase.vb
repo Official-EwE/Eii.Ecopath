@@ -147,7 +147,7 @@ Public Class cDatabase
                     l.Source.RemoveLink(l)
                     Try
                         For iGroup As Integer = 1 To data.Core.nGroups
-                            Dim ll As cLinkLandings = data.CreateLandingsLink(DirectCast(l.Source, cProducerUnit), l.Target, data.Core.EcoPathGroupInputs(iGroup), bError)
+                            Dim ll As cLinkLandings = data.CreateLandingsLink(DirectCast(l.Source, cProducerUnit), l.Target, data.Core.EcopathGroupInputs(iGroup), bError)
                             If (ll IsNot Nothing) Then
                                 ll.BiomassRatio = l.BiomassRatio
                                 ll.ValueRatio = l.ValueRatio

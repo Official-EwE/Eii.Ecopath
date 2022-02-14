@@ -633,7 +633,7 @@ Public Class gridDefineTaxonomy
 
         For iGroup As Integer = 1 To Me.Core.nGroups
 
-            grp = Me.Core.EcoPathGroupInputs(iGroup)
+            grp = Me.Core.EcopathGroupInputs(iGroup)
             If grp.IsMultiStanza Then
 
                 If Not abStanzaHandled(grp.iStanza) Then

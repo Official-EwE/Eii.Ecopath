@@ -59,7 +59,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides Sub Initialize()
             MyBase.Initialize()
-            Me.m_spaceData = Me.m_core.m_EcoSpaceData
+            Me.m_spaceData = Me.m_core.m_EcospaceData
         End Sub
 
 

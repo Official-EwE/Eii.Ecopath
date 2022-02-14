@@ -268,7 +268,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
                     If shape.Index = data.ResponseIndexForGroup(igrp) Then
                         'Yes this shape is set for this group
                         'add a group node
-                        Dim grp As cEcoSimGroupInput = Me.m_uic.Core.EcoSimGroupInputs(igrp)
+                        Dim grp As cEcosimGroupInput = Me.m_uic.Core.EcosimGroupInputs(igrp)
 
                         Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.ToString(grp))
                         ndgrp.Tag = grp

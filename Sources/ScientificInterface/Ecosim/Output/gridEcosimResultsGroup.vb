@@ -94,7 +94,7 @@ Namespace Ecosim
             Me.m_iNumVisibleGroups = 0
             For iGroup As Integer = 1 To Me.core.nGroups
                 If Me.StyleGuide.GroupVisible(iGroup) Then
-                    lName.Add(Me.Core.EcoSimGroupOutputs(iGroup).Name)
+                    lName.Add(Me.Core.EcosimGroupOutputs(iGroup).Name)
                     Me.m_iNumVisibleGroups += 1
                 End If
             Next
@@ -120,7 +120,7 @@ Namespace Ecosim
                 If sg.GroupVisible(iGroup) Then
 
                     iRow += 1
-                    source = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+                    source = Me.UIContext.Core.EcosimGroupOutputs(iGroup)
 
                     'clear all fleet cells
                     For icell As Integer = 5 To 10

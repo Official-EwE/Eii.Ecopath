@@ -412,7 +412,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nHabitats() As Integer
         Get
-            Return m_EcoSpaceData.NoHabitats
+            Return m_EcospaceData.NoHabitats
         End Get
     End Property
 
@@ -424,7 +424,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nRegions() As Integer
         Get
-            Return m_EcoSpaceData.nRegions
+            Return m_EcospaceData.nRegions
         End Get
     End Property
 
@@ -433,7 +433,7 @@ Public Class cCore
     ''' </summary>
     Public ReadOnly Property nMPAs() As Integer
         Get
-            Return m_EcoSpaceData.MPAno
+            Return m_EcospaceData.MPAno
         End Get
     End Property
 
@@ -445,7 +445,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nImportanceLayers() As Integer
         Get
-            Return Me.m_EcoSpaceData.nImportanceLayers
+            Return Me.m_EcospaceData.nImportanceLayers
         End Get
     End Property
 
@@ -457,7 +457,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nEnvironmentalDriverLayers() As Integer
         Get
-            Return Me.m_EcoSpaceData.nEnvironmentalDriverLayers
+            Return Me.m_EcospaceData.nEnvironmentalDriverLayers
         End Get
     End Property
 
@@ -469,7 +469,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nEcospaceYears() As Integer
         Get
-            Return CInt(m_EcoSpaceData.TotalTime)
+            Return CInt(m_EcospaceData.TotalTime)
         End Get
     End Property
 
@@ -481,7 +481,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nEcospaceTimeSteps() As Integer
         Get
-            Return m_EcoSpaceData.nTimeSteps
+            Return m_EcospaceData.nTimeSteps
         End Get
     End Property
 
@@ -644,8 +644,8 @@ Public Class cCore
         ' Create core data structures
         Me.m_EcoPathData = New cEcopathDataStructures(Me.Messages)
         Me.m_EcoSimData = New cEcosimDatastructures
-        Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
-        Me.m_SpatialData = New cSpatialDataStructures(Me.m_EcoPathData, Me.m_EcoSpaceData)
+        Me.m_EcospaceData = New cEcospaceDataStructures(Me.Messages)
+        Me.m_SpatialData = New cSpatialDataStructures(Me.m_EcoPathData, Me.m_EcospaceData)
         Me.m_Stanza = New cStanzaDatastructures(Me.Messages)
         Me.m_tracerData = New cContaminantTracerDataStructures()
         Me.m_TSData = New cTimeSeriesDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
@@ -1262,7 +1262,7 @@ Public Class cCore
         Dim bsuccess As Boolean
         bsuccess = InitEcopath()
         bsuccess = bsuccess And InitEcoSim()
-        bsuccess = bsuccess And InitEcoSpace()
+        bsuccess = bsuccess And InitEcospace()
         bsuccess = bsuccess And Me.InitPSD()
 
         m_SampleManager = New cEcopathSampleManager(Me)
@@ -1310,7 +1310,7 @@ Public Class cCore
     Private Function InitEcopath() As Boolean
 
         Try
-            Dim mh As New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj)
+            Dim mh As New cMessageHandler(AddressOf Me.EcopathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj)
 #If DEBUG Then
             mh.Name = "cCore::Ecopath"
 #End If
@@ -2800,15 +2800,15 @@ Public Class cCore
                 Dim man As cSpatialDataConnectionManager = Me.SpatialDataConnectionManager
 
                 fields("EcospaceScenario") = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
-                fields("MapRows") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow)
-                fields("MapCols") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol)
-                fields("MapCellLength") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength)
+                fields("MapRows") = cStringUtils.FormatNumber(Me.m_EcospaceData.InRow)
+                fields("MapCols") = cStringUtils.FormatNumber(Me.m_EcospaceData.InCol)
+                fields("MapCellLength") = cStringUtils.FormatNumber(Me.m_EcospaceData.CellLength)
                 fields("MapCellSize") = cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize())
-                fields("MapLatitude") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1)
-                fields("MapLongitude") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1)
+                fields("MapLatitude") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lat1)
+                fields("MapLongitude") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lon1)
                 fields("NoActiveCells") = cStringUtils.FormatNumber(ld.NumActiveCells)
-                fields("EcoSpaceTimeStepLength") = cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep)
-                fields("CoordinateSystemWKT)") = Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")
+                fields("EcoSpaceTimeStepLength") = cStringUtils.FormatNumber(Me.m_EcospaceData.TimeStep)
+                fields("CoordinateSystemWKT)") = Me.m_EcospaceData.ProjectionString.Replace("""", "'")
 
                 ' Gather spat temp connections
                 Try
@@ -3476,7 +3476,7 @@ Public Class cCore
     Friend m_EcoPathData As cEcopathDataStructures = Nothing 'Parameters read for data source for EcoPath
 
     Friend m_EcoPathInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupInput, 1)
-    Friend m_EcoPathOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupOutput, 1)
+    Friend m_EcopathOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupOutput, 1)
     Friend m_EcopathFleetsInput As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
     Friend m_EcopathFleetsOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
     Friend m_EcopathTaxon As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.Taxon, 1)
@@ -3615,7 +3615,7 @@ Public Class cCore
                 Me.m_tracerData.RedimByNGroups(Me.nGroups)
 
                 'build input and output objects
-                bsuccess = bsuccess And InitEcoPathGroups()
+                bsuccess = bsuccess And InitEcopathGroups()
 
                 'build the Stanza Groups for the interface
                 bsuccess = bsuccess And InitStanzas()
@@ -3690,7 +3690,7 @@ Public Class cCore
         'Core initialized plugin point
         If (Me.PluginManager IsNot Nothing) Then
             Me.PluginManager.CoreInitialized(m_EcoPath, m_EcoSim, m_Ecospace)
-            Me.PluginManager.CoreDataInitialized(m_EcoPathData, m_Stanza, m_TaxonData, m_SampleData, m_PSDData, m_EcoSimData, m_TSData, m_SearchData, m_EcoSpaceData)
+            Me.PluginManager.CoreDataInitialized(m_EcoPathData, m_Stanza, m_TaxonData, m_SampleData, m_PSDData, m_EcoSimData, m_TSData, m_SearchData, m_EcospaceData)
         End If
 
         m_publisher.sendAllMessages()
@@ -3863,7 +3863,7 @@ Public Class cCore
             Me.m_Stanza.Clear()
             Me.m_TaxonData.Clear()
             Me.m_EcoSimData.Clear()
-            Me.m_EcoSpaceData.Clear()
+            Me.m_EcospaceData.Clear()
             Me.m_tracerData.Clear()
             Me.m_TSData.Clear()
 
@@ -3874,7 +3874,7 @@ Public Class cCore
 
             ' Clear the contents of core IO object lists
             Me.ClearIOList(Me.m_EcoPathInputs)
-            Me.ClearIOList(Me.m_EcoPathOutputs)
+            Me.ClearIOList(Me.m_EcopathOutputs)
             Me.ClearIOList(Me.m_EcopathFleetsInput)
             Me.ClearIOList(m_EcopathFleetsOutputs)
             Me.ClearIOList(Me.m_stanzaGroups)
@@ -3892,7 +3892,7 @@ Public Class cCore
             Me.m_EcoPathData.NumEcosimScenarios = 0
 
             Me.ClearIOList(Me.m_EcoSimScenarios)
-            Me.ClearIOList(Me.m_EcoSpaceScenarios)
+            Me.ClearIOList(Me.m_EcospaceScenarios)
             Me.ClearIOList(Me.m_EcotracerScenarios)
 
             'ToDo: add SendEcopathClosedMessage()
@@ -3983,7 +3983,7 @@ Public Class cCore
     '''      prvtGetSetEcoPathInputs.Biomass = 2
     ''' next i 
     ''' </remarks>
-    Public ReadOnly Property EcoPathGroupInputs(iGroup As Integer) As cEcoPathGroupInput
+    Public ReadOnly Property EcopathGroupInputs(iGroup As Integer) As cEcoPathGroupInput
         Get
             ' JS 06Jul07: list takes care of group index / item index offset
             Return DirectCast(m_EcoPathInputs(iGroup), cEcoPathGroupInput)
@@ -3991,7 +3991,7 @@ Public Class cCore
 
     End Property
 
-    Private Function InitEcoPathGroups() As Boolean
+    Private Function InitEcopathGroups() As Boolean
         Dim bsuccess As Boolean = True
 
         ' JS 27aug07: disabled list events to avoid confusion about possible list interfaces
@@ -4001,14 +4001,14 @@ Public Class cCore
         Try
 
             m_EcoPathInputs.Clear()
-            m_EcoPathOutputs.Clear()
+            m_EcopathOutputs.Clear()
 
             'populate the list of Inputs and Outputs (cEcoPathGroupInputs and cEcoPathGroupOutput)
             For i As Integer = 1 To nGroups
                 'creates an instance of both the input and output objects and adds it to the list
                 'the Input and Output objects have only been created they are not Loaded with the Ecopath data at this time
                 m_EcoPathInputs.Add(New cEcoPathGroupInput(Me, m_EcoPathData.GroupDBID(i), i))
-                m_EcoPathOutputs.Add(New cEcoPathGroupOutput(Me, m_EcoPathData.GroupDBID(i)))
+                m_EcopathOutputs.Add(New cEcopathGroupOutput(Me, m_EcoPathData.GroupDBID(i)))
             Next
 
         Catch ex As Exception
@@ -4152,7 +4152,7 @@ Public Class cCore
         Dim iGroup As Integer = Array.IndexOf(m_EcoPathData.GroupDBID, iDBID)
         'jb List of inputs is indexed from zero iGroup is the array index which is indexed from one 
         'so subtract one from the array index to get the correct index in the list
-        Dim Input As cEcoPathGroupInput = Me.EcoPathGroupInputs(iGroup)
+        Dim Input As cEcoPathGroupInput = Me.EcopathGroupInputs(iGroup)
         Dim bSucces As Boolean = True
 
         Try
@@ -4247,11 +4247,11 @@ Public Class cCore
     ''' Model.RunEcopath()
     ''' Model.EcoPathGroupOutputs(1)'will get the output (estimated parameters)of the EcoPath model for group 1
     ''' </remarks>
-    Public ReadOnly Property EcoPathGroupOutputs(iGroup As Integer) As cEcoPathGroupOutput
+    Public ReadOnly Property EcopathGroupOutputs(iGroup As Integer) As cEcopathGroupOutput
 
         Get
             ' The list takes care of group index / item index differences
-            Return DirectCast(m_EcoPathOutputs(iGroup), cEcoPathGroupOutput)
+            Return DirectCast(m_EcopathOutputs(iGroup), cEcopathGroupOutput)
         End Get
 
     End Property
@@ -4260,7 +4260,7 @@ Public Class cCore
     ''' Clear all status flags on Ecopath group outputs
     ''' </summary>
     Private Sub ResetEcopathGroupOutputs()
-        For Each group As cEcoPathGroupOutput In Me.m_EcoPathOutputs
+        For Each group As cEcopathGroupOutput In Me.m_EcopathOutputs
             group.ResetStatusFlags(True)
         Next
     End Sub
@@ -4285,7 +4285,7 @@ Public Class cCore
 
         Try
 
-            For Each output As cEcoPathGroupOutput In m_EcoPathOutputs
+            For Each output As cEcopathGroupOutput In m_EcopathOutputs
                 'convert the DBID into an iGroup
                 iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, output.DBID)
 
@@ -4970,7 +4970,7 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property EcoPathFleetOutputs(iFleet As Integer) As cEcopathFleetOutput
+    Public ReadOnly Property EcopathFleetOutputs(iFleet As Integer) As cEcopathFleetOutput
 
         Get
             ' The list takes care of group index / item index differences
@@ -5284,9 +5284,9 @@ Public Class cCore
     ''' True if the EcoPath model ran successfully, or False if an error occurred.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoPath() As Boolean
+    Public Function RunEcopath() As Boolean
         Dim bDummyFlag As Boolean
-        Return RunEcoPath(bDummyFlag)
+        Return RunEcopath(bDummyFlag)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -5300,7 +5300,7 @@ Public Class cCore
     ''' True if the EcoPath model ran successfully, or False if an error occurred.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoPath(ByRef isModelBalanced As Boolean) As Boolean
+    Public Function RunEcopath(ByRef isModelBalanced As Boolean) As Boolean
 
         Dim msg As cMessage
         Dim bSuccessEcopath As Boolean = False
@@ -5463,7 +5463,7 @@ Public Class cCore
 
                     Case eDataTypes.EcoPathGroupInput
 
-                        Dim inputGrp As cEcoPathGroupInput = Me.EcoPathGroupInputs(var.Index)
+                        Dim inputGrp As cEcoPathGroupInput = Me.EcopathGroupInputs(var.Index)
                         Dim val As cValue = inputGrp.ValueDescriptor(var.VarName)
 
                         If val.IsArray Then
@@ -5499,7 +5499,7 @@ Public Class cCore
 
                     Case eDataTypes.EcoPathGroupOutput
 
-                        Dim outputGrp As cEcoPathGroupOutput = Me.EcoPathGroupOutputs(var.Index)
+                        Dim outputGrp As cEcopathGroupOutput = Me.EcopathGroupOutputs(var.Index)
                         Dim tmpstatus As eStatusFlags = outputGrp.GetStatus(var.VarName)
                         tmpstatus = tmpstatus Or var.Status
 
@@ -5565,7 +5565,7 @@ Public Class cCore
     ''' Take a messages that originated in EcoPath 
     ''' and run whatever processing has to happen to pass the message out to the Observers 
     '''  </remarks>
-    Private Sub EcoPathMessage_Handler(ByRef message As cMessage)
+    Private Sub EcopathMessage_Handler(ByRef message As cMessage)
 
         Try
 
@@ -5638,7 +5638,7 @@ Public Class cCore
 
 #Region " Status flags updating "
 
-    Friend Function Set_PP_Flags(obj As cEcoSimGroupInput, Optional bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_PP_Flags(obj As cEcosimGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         Dim sPP As Single = obj.PP
 
@@ -6071,7 +6071,7 @@ Public Class cCore
 
             ' Get the leading group for this stanza config
 
-            groupLeading = Me.EcoPathGroupInputs(sg.iGroups(sg.LeadingB))
+            groupLeading = Me.EcopathGroupInputs(sg.iGroups(sg.LeadingB))
             bIsLeadingGroup = ReferenceEquals(groupLeading, group)
 
             ' Is leading stanza?
@@ -6223,7 +6223,7 @@ Public Class cCore
             If bIsStanza Then
                 bIsFished = Me.StanzaGroups(t.iStanza - 1).IsFished
             Else
-                bIsFished = Me.EcoPathGroupInputs(t.iGroup).IsFished
+                bIsFished = Me.EcopathGroupInputs(t.iGroup).IsFished
             End If
 
             If bIshigherOrganism Then
@@ -6355,7 +6355,7 @@ Public Class cCore
                  eDataTypes.EcospaceGroup, eDataTypes.EcotracerGroupInput
 
                 ' Cascase group name to all relevant core IO objects
-                objCascade = Me.EcoPathGroupInputs(obj.Index)
+                objCascade = Me.EcopathGroupInputs(obj.Index)
                 If Not ReferenceEquals(objCascade, obj) Then
                     bAllowValidationOrg = objCascade.AllowValidation
                     objCascade.AllowValidation = False
@@ -6365,7 +6365,7 @@ Public Class cCore
                     msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.Name))
                 End If
 
-                objCascade = Me.EcoPathGroupOutputs(obj.Index)
+                objCascade = Me.EcopathGroupOutputs(obj.Index)
                 If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                     bAllowValidationOrg = objCascade.AllowValidation
                     objCascade.AllowValidation = False
@@ -6376,7 +6376,7 @@ Public Class cCore
                 End If
 
                 If Me.m_StateMonitor.HasEcosimLoaded() Then
-                    objCascade = Me.EcoSimGroupInputs(obj.Index)
+                    objCascade = Me.EcosimGroupInputs(obj.Index)
                     If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
@@ -6471,7 +6471,7 @@ Public Class cCore
         Debug.Assert(obj.DataType = eDataTypes.EcoPathGroupInput)
 
         If Me.m_StateMonitor.HasEcosimLoaded() Then
-            objCascade = Me.EcoSimGroupInputs(obj.Index)
+            objCascade = Me.EcosimGroupInputs(obj.Index)
             If objCascade IsNot Nothing Then
                 bAllowValidationOrg = objCascade.AllowValidation
                 objCascade.AllowValidation = True
@@ -6481,7 +6481,7 @@ Public Class cCore
                 msg.AddVariable(GetAffectedVariableStatus(objCascade, eVarNameFlags.PP))
             End If
 
-            objCascade = Me.EcoSimGroupOutputs(obj.Index)
+            objCascade = Me.EcosimGroupOutputs(obj.Index)
             If objCascade IsNot Nothing Then
                 bAllowValidationOrg = objCascade.AllowValidation
                 objCascade.PP = sPP
@@ -6522,7 +6522,7 @@ Public Class cCore
         If (iStanza < 0) Then Return
 
         For iGroup As Integer = 1 To Me.nGroups
-            groupCascade = Me.EcoPathGroupInputs(iGroup)
+            groupCascade = Me.EcopathGroupInputs(iGroup)
 
             Debug.Assert(Me.getStanzaIndexForGroup(iGroup) = groupCascade.iStanza)
 
@@ -6545,7 +6545,7 @@ Public Class cCore
         Dim group As cEcoPathGroupInput = Nothing
 
         For iGroup As Integer = 1 To Me.nGroups
-            group = Me.EcoPathGroupInputs(iGroup)
+            group = Me.EcopathGroupInputs(iGroup)
             If (group.IsMultiStanza) Then
                 Me.Set_Tcatch_Flags(group, True)
             End If
@@ -6574,7 +6574,7 @@ Public Class cCore
         Dim vs As cVariableStatus = Nothing
 
         For iGroup As Integer = 1 To Me.nGroups
-            group = Me.EcoPathGroupInputs(iGroup)
+            group = Me.EcopathGroupInputs(iGroup)
 
             bIsFished = False
             For iFleet As Integer = 1 To Me.nFleets
@@ -6604,7 +6604,7 @@ Public Class cCore
             bIsFished = False
             For iIndex As Integer = 1 To stanza.nLifeStages
                 Dim iGroup As Integer = stanza.iGroups(iIndex)
-                group = Me.EcoPathGroupInputs(iGroup)
+                group = Me.EcopathGroupInputs(iGroup)
                 If group.IsFished Then
                     bIsFished = True
                     Exit For
@@ -6644,7 +6644,7 @@ Public Class cCore
 
         For iGroup As Integer = 1 To Me.nGroups
 
-            groupCascade = Me.EcoPathGroupInputs(iGroup)
+            groupCascade = Me.EcopathGroupInputs(iGroup)
             Debug.Assert(Me.getStanzaIndexForGroup(iGroup) = groupCascade.iStanza)
 
             If (iGroup <> group.Index) And (Me.getStanzaIndexForGroup(iGroup) = iStanza) And groupCascade.IsFished Then
@@ -6952,7 +6952,7 @@ Public Class cCore
             manager = New cLandingsMediationShapeManager(m_EcoSimData, Me, eDataTypes.PriceMediation)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cEnviroResponseShapeManager(m_EcoSimData, Me.m_EcoSpaceData, Me, eDataTypes.CapacityMediation)
+            manager = New cEnviroResponseShapeManager(m_EcoSimData, Me.m_EcospaceData, Me, eDataTypes.CapacityMediation)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             Me.m_MediatedInteractionManager = New cMediatedInteractionManager(m_EcoPathData, m_EcoSimData, Me)
@@ -7145,7 +7145,7 @@ Public Class cCore
 
             If Me.m_StateMonitor.HasEcopathRan() = False Then
                 'EcoPath will handle it's own messages if it fails
-                If Not RunEcoPath() Then
+                If Not RunEcopath() Then
                     'Debug.Assert(False, Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
                     cLog.Write(Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
                     Me.SendEcosimLoadStateMessage(strScenarioName, My.Resources.CoreMessages.ECOPATH_RUN_ERROR)
@@ -7180,7 +7180,7 @@ Public Class cCore
 
             InitEcosimGroups()
             InitEcosimFleetInput()
-            initEcoSimModelParameters()
+            InitEcosimModelParameters()
 
             'rebuild all the shapes in the shape managers
             For Each manager As cBaseShapeManager In m_ShapeManagers.Values
@@ -7512,7 +7512,7 @@ Public Class cCore
         'populate the list of cEcoSimGroupInfo objects that the user will interact with 
         'to change group related parameters from the interface see getEcoSimGroupInfo(iGroup)
         For i As Integer = 1 To nGroups
-            m_EcoSimGroups.Add(New cEcoSimGroupInput(Me, m_EcoSimData.GroupDBID(i)))
+            m_EcoSimGroups.Add(New cEcosimGroupInput(Me, m_EcoSimData.GroupDBID(i)))
         Next i
 
         'now load the Ecosim data into the objects created above
@@ -7524,7 +7524,7 @@ Public Class cCore
         Dim iGroup As Integer
         Dim iPred As Integer
 
-        For Each group As cEcoSimGroupInput In m_EcoSimGroups
+        For Each group As cEcosimGroupInput In m_EcoSimGroups
 
             'convert the Database ID into an iGroup
             iGroup = Array.IndexOf(m_EcoSimData.GroupDBID, group.DBID)
@@ -7581,10 +7581,10 @@ Public Class cCore
     End Function
 
     ''' <summary>
-    ''' Get a <see cref="cEcoSimGroupInput">Ecosim input group</see> for a given group index.
+    ''' Get a <see cref="cEcosimGroupInput">Ecosim input group</see> for a given group index.
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the group for.</param>
-    Public ReadOnly Property EcoSimGroupInputs(iGroup As Integer) As cEcoSimGroupInput
+    Public ReadOnly Property EcosimGroupInputs(iGroup As Integer) As cEcosimGroupInput
         Get
             'test that EcoSim has been initialized
             If Not m_bEcoSimIsInit Then
@@ -7593,7 +7593,7 @@ Public Class cCore
                 Return Nothing
             End If
             ' JS 06Jul07: list will take care of scenario index/item index offset
-            Return DirectCast(m_EcoSimGroups(iGroup), cEcoSimGroupInput)
+            Return DirectCast(m_EcoSimGroups(iGroup), cEcosimGroupInput)
         End Get
     End Property
 
@@ -7601,7 +7601,7 @@ Public Class cCore
     ''' Get a <see cref="cEcoSimGroupOutput">Ecosim output group</see> for a given group index.
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the group for.</param>
-    Public ReadOnly Property EcoSimGroupOutputs(iGroup As Integer) As cEcosimGroupOutput
+    Public ReadOnly Property EcosimGroupOutputs(iGroup As Integer) As cEcosimGroupOutput
         Get
 
             Try
@@ -8021,7 +8021,7 @@ Public Class cCore
     Friend Function UpdateEcoSimGroup(iDBID As Integer) As Boolean
 
         Dim iGroup As Integer = Array.IndexOf(m_EcoSimData.GroupDBID, iDBID)
-        Dim group As cEcoSimGroupInput = Me.EcoSimGroupInputs(iGroup)
+        Dim group As cEcosimGroupInput = Me.EcosimGroupInputs(iGroup)
 
         Try
             m_EcoSimData.QmQo(iGroup) = group.DenDepCatchability
@@ -8193,9 +8193,9 @@ Public Class cCore
 
             Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
 
-            Me.m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
+            Me.m_EcospaceData.TotalTime = m_EcoSimData.NumYears
             'changed the run length for ecospace reset the summary periods to defaults
-            Me.m_EcoSpaceData.setDefaultSummaryPeriod()
+            Me.m_EcospaceData.setDefaultSummaryPeriod()
 
             If Me.m_FitToTimeSeriesData.LastYear = 1 Then Me.m_FitToTimeSeriesData.LastYear = Integer.MaxValue
             Me.m_FitToTimeSeriesData.LastYear = Math.Max(1, Math.Min(Me.m_FitToTimeSeriesData.LastYear, m_EcoSimData.NumYears))
@@ -8217,7 +8217,7 @@ Public Class cCore
             Me.m_ShapeManagers(eDataTypes.EggProd).Load()
 
             'Parameters
-            Me.LoadEcoSimModelParameters()
+            Me.LoadEcosimModelParameters()
 
             Me.m_publisher.AddMessage(New cMessage("Ecosim number of years has changed.", eMessageType.EcosimNYearsChanged,
                                                      eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
@@ -8400,7 +8400,7 @@ Public Class cCore
     ''' <param name="bMultiThreaded">Multi-threaded run flag. Please use with care.</param>
     ''' <returns>True if a run started successfully.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoSim(Optional TimeStepDelegate As Ecosim.EcoSimTimeStepDelegate = Nothing,
+    Public Function RunEcosim(Optional TimeStepDelegate As Ecosim.EcoSimTimeStepDelegate = Nothing,
                               Optional bMultiThreaded As Boolean = False) As Boolean
         Dim msg As cMessage
 
@@ -8421,7 +8421,7 @@ Public Class cCore
             'Ecopath has been modified by a user
             'We need to re-run it to make sure all the inputs to Ecosim are up to date with the new data
             'this could cause problem if Ecopath has a problem
-            If Not RunEcoPath() Then
+            If Not RunEcopath() Then
 
                 cLog.Write(Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
 
@@ -8449,7 +8449,7 @@ Public Class cCore
             'now we need to load any changes to the ecosim data that was made by init
             'into the objects used by the interface
             LoadEcosimGroups()
-            LoadEcoSimModelParameters()
+            LoadEcosimModelParameters()
             LoadStanzas()
             'Ecopath should have sent out its own message 
             'so we should only need to send a message for Ecosim
@@ -8505,7 +8505,7 @@ Public Class cCore
 
             LoadEcosimOutputs()
             LoadEcosimStats()
-            loadEcoTracerResults()
+            loadEcotracerResults()
 
             If m_EcoSimData.PredictSimEffort Or Me.m_StateMonitor.RequiresEcosimFullInit Then
                 'if effort was predicted then reload the shapes
@@ -8629,7 +8629,7 @@ Public Class cCore
     ''' Get the <see cref="cEcoSimModelParameters">Ecosim model parameters</see> for
     ''' the currently loaded Ecosim scenario.
     ''' </summary>
-    Public ReadOnly Property EcoSimModelParameters() As cEcoSimModelParameters
+    Public ReadOnly Property EcosimModelParameters() As cEcoSimModelParameters
         Get
             If Not m_bEcoSimIsInit Then
                 Debug.Assert(False, "EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
@@ -8647,11 +8647,11 @@ Public Class cCore
     ''' </summary>
     ''' <returns>True if successfull</returns>
     ''' <remarks></remarks>
-    Private Function initEcoSimModelParameters() As Boolean
+    Private Function InitEcosimModelParameters() As Boolean
 
         m_EcoSimRun = New cEcoSimModelParameters(Me)
 
-        Return LoadEcoSimModelParameters()
+        Return LoadEcosimModelParameters()
 
     End Function
 
@@ -8660,7 +8660,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns>True if no error encountered.</returns>
     ''' <remarks>This can be used if a new scenario is loaded to populate the existing EcoSim parameter object (m_EcoSimRun) with the new scenario data. </remarks>
-    Private Function LoadEcoSimModelParameters() As Boolean
+    Private Function LoadEcosimModelParameters() As Boolean
 
         Try
             m_EcoSimRun.AllowValidation = False
@@ -8890,9 +8890,9 @@ Public Class cCore
     Public Function SetVToDefault(Optional sDefaultValue As Single = 2.0F) As Boolean
 
         Try
-            Dim groupSim As cEcoSimGroupInput = Nothing
+            Dim groupSim As cEcosimGroupInput = Nothing
             For iPrey As Integer = 1 To Me.nGroups
-                groupSim = Me.EcoSimGroupInputs(iPrey)
+                groupSim = Me.EcosimGroupInputs(iPrey)
                 For iPred As Integer = 1 To Me.nGroups
                     groupSim.VulMult(iPred) = sDefaultValue
                 Next iPred
@@ -8946,12 +8946,12 @@ Public Class cCore
     Private Function HasNonDefaultVulnerabilty(Optional sValue As Single = 2.0!) As Boolean
 
         Dim groupPath As cEcoPathGroupInput = Nothing
-        Dim groupSim As cEcoSimGroupInput = Nothing
+        Dim groupSim As cEcosimGroupInput = Nothing
 
         For iPred As Integer = 1 To Me.nLivingGroups
             For iPrey As Integer = 1 To Me.nGroups
-                groupPath = Me.EcoPathGroupInputs(iPred)
-                groupSim = Me.EcoSimGroupInputs(iPred)
+                groupPath = Me.EcopathGroupInputs(iPred)
+                groupSim = Me.EcosimGroupInputs(iPred)
                 If groupPath.DietComp(iPrey) > 0 Then
                     If (Math.Abs(groupSim.VulMult(iPrey)) - Math.Abs(sValue)) > 0.01 Then Return True
                 End If
@@ -9017,10 +9017,10 @@ Public Class cCore
 #Region " Variables "
 
     Friend m_Ecospace As cEcoSpace
-    Public m_EcoSpaceData As cEcospaceDataStructures
-    Private m_EcoSpaceGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceGroup, 1)
-    Private m_EcoSpaceFleets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceFleet, 1)
-    Private m_EcoSpaceScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSpaceScenario, 1)
+    Public m_EcospaceData As cEcospaceDataStructures
+    Private m_EcospaceGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceGroup, 1)
+    Private m_EcospaceFleets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceFleet, 1)
+    Private m_EcospaceScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSpaceScenario, 1)
     Friend m_EcospaceHabitats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceHabitat, 0)
     Friend m_EcospaceRegions As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceLayerRegion, 1)
     Friend m_EcospaceMPAs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceMPA, 1)
@@ -9071,7 +9071,7 @@ Public Class cCore
         End Get
     End Property
 
-    Private Function InitEcoSpace() As Boolean
+    Private Function InitEcospace() As Boolean
 
         m_Ecospace = New cEcoSpace()
 
@@ -9082,30 +9082,30 @@ Public Class cCore
         m_Ecospace.TimeSeriesData = Me.m_TSData
 
         'data need to initialize
-        m_EcoSpaceData.StanzaGroups = Me.m_Stanza
-        m_EcoSpaceData.EcoPathData = Me.m_EcoPathData
+        m_EcospaceData.StanzaGroups = Me.m_Stanza
+        m_EcospaceData.EcoPathData = Me.m_EcoPathData
         m_AdvectionManager = New cAdvectionManager
 
         m_spatialdataconnectionManager = New SpatialData.cSpatialDataConnectionManager()
         m_spatialdataconnectionManager.Init(Me, Me.m_SpatialData)
         m_spatialOperationLog = New cSpatialOperationLog(Me)
 
-        Me.m_EcospaceTimeSeriesManager = New EcospaceTimeSeries.cEcospaceTimeSeriesManager(Me, m_EcoSpaceData)
+        Me.m_EcospaceTimeSeriesManager = New EcospaceTimeSeries.cEcospaceTimeSeriesManager(Me, m_EcospaceData)
 
         'counters needed 
         'this could change to get the counter from the above data structures
-        m_EcoSpaceData.NGroups = Me.nGroups
-        m_EcoSpaceData.nFleets = Me.nFleets
-        m_EcoSpaceData.nLiving = Me.nLivingGroups
+        m_EcospaceData.NGroups = Me.nGroups
+        m_EcospaceData.nFleets = Me.nFleets
+        m_EcospaceData.nLiving = Me.nLivingGroups
 
-        m_EcoSpaceData.DefaultBasemapDimensions()
+        m_EcospaceData.DefaultBasemapDimensions()
 
         ' m_EcoSpaceData.ReDimFleets()
-        m_EcoSpaceData.SetDefaults()
+        m_EcospaceData.SetDefaults()
 
-        m_EcoSpaceData.RedimMigratoryVariables()
+        m_EcospaceData.RedimMigratoryVariables()
 
-        m_Ecospace.EcoSpaceData = Me.m_EcoSpaceData
+        m_Ecospace.EcoSpaceData = Me.m_EcospaceData
         m_Ecospace.StanzaData = Me.m_Stanza
         m_Ecospace.EcoPathData = Me.m_EcoPathData
         m_Ecospace.EcoSim = Me.m_EcoSim
@@ -9123,7 +9123,7 @@ Public Class cCore
         m_Ecospace.InitToDefaults()
 
         m_mapInteractionManager = New cEcospaceEnviroResponseManager(Me)
-        m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
+        m_mapInteractionManager.Init(Me.m_EcospaceData, Me.m_EcoSimData.CapEnvResData)
 
 
         'jb Moved to InitEcosim
@@ -9142,7 +9142,7 @@ Public Class cCore
         'Me.m_EcoSim.EcosimMortalityResponseManager = m_EcosimMortalityResponseManager
 
         m_mapMortalityManager = New cEcospaceMortalityResponseManager(Me)
-        m_mapMortalityManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
+        m_mapMortalityManager.Init(Me.m_EcospaceData, Me.m_EcoSimData.CapEnvResData)
 
 
         'm_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
@@ -9256,7 +9256,7 @@ Public Class cCore
     Public Function EcospaceTimestepToAbsoluteTime(iTime As Integer) As DateTime
 
         ' Translate ecospace time step to year and month
-        Dim sTimeStepYearFraction As Single = CSng((iTime - 1) * Me.m_EcoSpaceData.TimeStep)
+        Dim sTimeStepYearFraction As Single = CSng((iTime - 1) * Me.m_EcospaceData.TimeStep)
         Dim iTimeStepYear As Integer = CInt(Math.Floor(sTimeStepYearFraction))
         Dim iTimeStepMonth As Integer = CInt(((sTimeStepYearFraction - iTimeStepYear) * cCore.N_MONTHS))
 
@@ -9284,7 +9284,7 @@ Public Class cCore
 
         Dim dtStart As New Date(Math.Max(Me.EcosimFirstYear, 1), 1, 1)
         Dim sTime As Single = (dt.Year - dtStart.Year) + CSng((dt.Month - dtStart.Month) / cCore.N_MONTHS)
-        Return CInt(sTime / Me.m_EcoSpaceData.TimeStep) + 1 ' Timesteps are one-based!
+        Return CInt(sTime / Me.m_EcospaceData.TimeStep) + 1 ' Timesteps are one-based!
 
     End Function
 
@@ -9317,7 +9317,7 @@ Public Class cCore
     ''' If RunOnThread = False then True when the run has completed. False otherwise.
     '''  </returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing, Optional RunOnThread As Boolean = True) As Boolean
+    Public Function RunEcospace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing, Optional RunOnThread As Boolean = True) As Boolean
         Dim breturn As Boolean
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
@@ -9455,7 +9455,7 @@ Public Class cCore
 
             If Succeeded Then
                 LoadEcospaceResults()
-                loadEcoTracerResults()
+                loadEcotracerResults()
             End If
 
             Try
@@ -9486,7 +9486,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcospaceCompleted(Me.m_tracerData.EcoSpaceConSimOn)
             Me.m_publisher.sendAllMessages()
 
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcospaceData)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
@@ -9539,7 +9539,7 @@ Public Class cCore
                                                                     eMessageReplyStyle.YES_NO, , eMessageReply.YES)
 
                 For Each igrp In FailedGroups
-                    Dim avgCap As Single = Me.m_EcoSpaceData.TotHabCap(igrp) / Me.m_EcoSpaceData.nWaterCells * 100
+                    Dim avgCap As Single = Me.m_EcospaceData.TotHabCap(igrp) / Me.m_EcospaceData.nWaterCells * 100
 
                     strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), avgCap)
                     vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg,
@@ -9612,7 +9612,7 @@ Public Class cCore
         If (Me.m_spatialdataconnectionManager.NumConnectedAdapters = 0) Then Return True
 
         ' Allow a bit of room for rounding errors
-        If (Math.Round(1 / Me.m_EcoSpaceData.TimeStep, 3) > cCore.N_MONTHS) Then
+        If (Math.Round(1 / Me.m_EcospaceData.TimeStep, 3) > cCore.N_MONTHS) Then
             Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_TOOMANYTIMESTEPS,
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
             fmsg.ReplyStyle = eMessageReplyStyle.YES_NO
@@ -9682,37 +9682,37 @@ Public Class cCore
     Private Sub onEcospaceTimeStep(iTime As Integer)
         Try
 
-            m_spaceresults.InSpinUp = Me.m_EcoSpaceData.bInSpinUp
-            If Me.m_EcoSpaceData.bInSpinUp Then
+            m_spaceresults.InSpinUp = Me.m_EcospaceData.bInSpinUp
+            If Me.m_EcospaceData.bInSpinUp Then
                 m_spaceresults.RunProgress = CSng(Me.m_Ecospace.iSpinUp / Me.m_Ecospace.nSpinUp)
             Else
-                m_spaceresults.RunProgress = CSng(Me.m_EcoSpaceData.TimeNow * Me.m_EcoSpaceData.nTimeStepsPerYear / Me.m_EcoSpaceData.nTimeSteps)
+                m_spaceresults.RunProgress = CSng(Me.m_EcospaceData.TimeNow * Me.m_EcospaceData.nTimeStepsPerYear / Me.m_EcospaceData.nTimeSteps)
             End If
 
-            If Not Me.m_EcoSpaceData.bInSpinUp Then
+            If Not Me.m_EcospaceData.bInSpinUp Then
 
                 m_spaceresults.iTimeStep = iTime
-                m_spaceresults.TimeStepinYears = CSng(m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep)
+                m_spaceresults.TimeStepinYears = CSng(m_EcospaceData.TimeNow + m_EcospaceData.TimeStep)
 
                 m_spaceresults.ComputeSumEffortMap()
 
                 'the group time-step data was populated by Ecospace
                 For igrp As Integer = 1 To nGroups
-                    m_spaceresults.Biomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
-                    m_spaceresults.RelativeBiomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
+                    m_spaceresults.Biomass(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
+                    m_spaceresults.RelativeBiomass(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
 
                     'Make these relative to base values
-                    m_spaceresults.FishingMort(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, iTime) / Me.m_EcoSpaceData.BaseFishMort(igrp)
-                    m_spaceresults.ConsumptRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, iTime) / Me.m_EcoSpaceData.BaseConsump(igrp)
-                    m_spaceresults.PredMortRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, iTime) / Me.m_EcoSpaceData.BasePredMort(igrp)
-                    m_spaceresults.Catch(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / Me.m_EcoSpaceData.BaseCatch(igrp)
+                    m_spaceresults.FishingMort(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, iTime) / Me.m_EcospaceData.BaseFishMort(igrp)
+                    m_spaceresults.ConsumptRate(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, iTime) / Me.m_EcospaceData.BaseConsump(igrp)
+                    m_spaceresults.PredMortRate(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, iTime) / Me.m_EcospaceData.BasePredMort(igrp)
+                    m_spaceresults.Catch(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / Me.m_EcospaceData.BaseCatch(igrp)
 
                     If m_Ecospace.ContaiminantTracerData.EcoSpaceConSimOn Then
                         m_spaceresults.ConcMax(igrp) = m_Ecospace.ContaiminantTracerData.ConcMax(igrp)
                     End If
 
                     For irgn As Integer = 1 To nRegions
-                        m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
+                        m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcospaceData.ResultsRegionGroup(irgn, igrp, iTime)
                     Next
                 Next igrp
 
@@ -9720,7 +9720,7 @@ Public Class cCore
 
                 'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
                 'Default is to save every time step
-                If (iTime Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcoSpaceData.SaveAnnual = False) Then
+                If (iTime Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcospaceData.SaveAnnual = False) Then
                     Me.SaveEcospaceResults(Me.m_spaceresults)
                 End If
             End If
@@ -9742,10 +9742,10 @@ Public Class cCore
     Private Sub SaveEcospaceENA(SpaceResults As cEcospaceTimestep)
         Try
 
-            If Me.m_EcoSpaceData.bENA Then
+            If Me.m_EcospaceData.bENA Then
 
                 Dim SCORFileWriter As New cSCORFileWriter(Me.m_EcoPathData)
-                For Each enaData As cENACellData In Me.m_EcoSpaceData.dctENACells.Values
+                For Each enaData As cENACellData In Me.m_EcospaceData.dctENACells.Values
                     'System.Console.WriteLine(enaData.Key)
                     SCORFileWriter.Write(enaData.toFileName(Me), enaData.ENARData)
                 Next enaData
@@ -9792,8 +9792,8 @@ Public Class cCore
             Dim iPredIndex As Integer = SpaceResults.iPredIndex(iLink)
 
             'get prey and pred names(just for display)
-            Dim PreyName As String = Core.EcoPathGroupInputs(iPreyIndex).Name
-            Dim PredName As String = Core.EcoPathGroupInputs(iPredIndex).Name
+            Dim PreyName As String = Core.EcopathGroupInputs(iPreyIndex).Name
+            Dim PredName As String = Core.EcopathGroupInputs(iPredIndex).Name
 
             'loop over the map rows/cols and dump mortality values
             For iRow As Integer = 1 To Core.GetCoreCounter(eCoreCounterTypes.nRows)
@@ -9829,22 +9829,22 @@ Public Class cCore
     Private Sub UpdateEcospaceForcingByEcosim()
         Try
 
-            Me.m_TSData.SetBiomassForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
-            Me.m_TSData.SetDiscardForcing(Me.m_EcoSpaceData.IsEcosimDiscardForcingGroup)
+            Me.m_TSData.SetBiomassForcing(Me.m_EcospaceData.IsEcosimBioForcingGroup)
+            Me.m_TSData.SetDiscardForcing(Me.m_EcospaceData.IsEcosimDiscardForcingGroup)
 
             If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return
 
-            If Not Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded Then
-                Me.m_EcoSpaceData.UseEcosimBiomassForcing = False
-                Me.m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimBiomassForcing
+            If Not Me.m_EcospaceData.isEcosimBiomassForcingLoaded Then
+                Me.m_EcospaceData.UseEcosimBiomassForcing = False
+                Me.m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcospaceData.UseEcosimBiomassForcing
             End If
-            Me.m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
+            Me.m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcospaceData.isEcosimBiomassForcingLoaded
 
-            If Not Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded Then
-                Me.m_EcoSpaceData.UseEcosimDiscardForcing = False
-                Me.m_EcospaceModelParams.UseEcosimDiscardForcing = Me.m_EcoSpaceData.UseEcosimDiscardForcing
+            If Not Me.m_EcospaceData.isEcosimDiscardForcingLoaded Then
+                Me.m_EcospaceData.UseEcosimDiscardForcing = False
+                Me.m_EcospaceModelParams.UseEcosimDiscardForcing = Me.m_EcospaceData.UseEcosimDiscardForcing
             End If
-            Me.m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded
+            Me.m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcospaceData.isEcosimDiscardForcingLoaded
 
             Me.m_publisher.SendMessage(New cMessage("Ecospace forcing from Ecosim", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
 
@@ -9885,7 +9885,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceScenarios(iScenario As Integer) As cEcospaceScenario
         Get
             ' JS 06Jul07: list will handle scenario index / item index offsets
-            Return DirectCast(Me.m_EcoSpaceScenarios(iScenario), cEcospaceScenario)
+            Return DirectCast(Me.m_EcospaceScenarios(iScenario), cEcospaceScenario)
         End Get
     End Property
 
@@ -9933,7 +9933,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceGroupInputs(iGroup As Integer) As cEcospaceGroupInput
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
-            Return DirectCast(Me.m_EcoSpaceGroups.Item(iGroup), cEcospaceGroupInput)
+            Return DirectCast(Me.m_EcospaceGroups.Item(iGroup), cEcospaceGroupInput)
         End Get
     End Property
 
@@ -9946,7 +9946,7 @@ Public Class cCore
     Public ReadOnly Property EcospaceFleetInputs(iFleet As Integer) As cEcospaceFleetInput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
-            Return DirectCast(Me.m_EcoSpaceFleets.Item(iFleet), cEcospaceFleetInput)
+            Return DirectCast(Me.m_EcospaceFleets.Item(iFleet), cEcospaceFleetInput)
         End Get
     End Property
 
@@ -10052,9 +10052,9 @@ Public Class cCore
 #Region " Scenarios "
 
     Private Function InitEcospaceScenarios() As Boolean
-        Me.m_EcoSpaceScenarios.Clear()
+        Me.m_EcospaceScenarios.Clear()
         For i As Integer = 1 To Me.m_EcoPathData.EcospaceScenarioDBID.Length - 1
-            Me.m_EcoSpaceScenarios.Add(Me.privateEcospaceScenario(i))
+            Me.m_EcospaceScenarios.Add(Me.privateEcospaceScenario(i))
         Next
         Return True
     End Function
@@ -10198,7 +10198,7 @@ Public Class cCore
             ds.BeginTransaction()
 
             ' Clear duplicates
-            Me.RemoveEcospaceScenario(Me.FindObjectByName(Me.m_EcoSpaceScenarios, strName))
+            Me.RemoveEcospaceScenario(Me.FindObjectByName(Me.m_EcospaceScenarios, strName))
 
             ' Append
             If (ds.AppendEcospaceScenario(strName, strDescription,
@@ -10239,7 +10239,7 @@ Public Class cCore
     ''' <summary>
     ''' Load an <see cref="cEcoSpaceScenario">Ecospace scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
-    ''' <param name="iScenario">Index of the <see cref="cEcoSpaceScenario">Scenario</see> in the <see cref="m_EcoSpaceScenarios">Scenario list</see>.</param>
+    ''' <param name="iScenario">Index of the <see cref="cEcoSpaceScenario">Scenario</see> in the <see cref="m_EcospaceScenarios">Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
     Public Function LoadEcospaceScenario(iScenario As Integer) As Boolean
 
@@ -10284,21 +10284,21 @@ Public Class cCore
             Me.m_Ecospace.UpdateDepthMap()
             Me.m_Ecospace.CalcHabitatArea()
 
-            Me.m_TSData.SetBiomassForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
-            Me.m_TSData.SetDiscardForcing(Me.m_EcoSpaceData.IsEcosimDiscardForcingGroup)
+            Me.m_TSData.SetBiomassForcing(Me.m_EcospaceData.IsEcosimBioForcingGroup)
+            Me.m_TSData.SetDiscardForcing(Me.m_EcospaceData.IsEcosimDiscardForcingGroup)
 
             ' JB 12dec10: Space can not run longer than Sim
-            If m_EcoSpaceData.TotalTime > m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
+            If m_EcospaceData.TotalTime > m_EcoSimData.NumYears Then m_EcospaceData.TotalTime = m_EcoSimData.NumYears
 
             m_Ecospace.SearchData = m_SearchData
 
             'all the input maps have changed if a new scenario is loaded
-            Me.m_EcoSpaceData.isCapacityChanged = True
-            Me.m_EcoSpaceData.setHabCapGroupIsChanged(True)
+            Me.m_EcospaceData.isCapacityChanged = True
+            Me.m_EcospaceData.setHabCapGroupIsChanged(True)
 
 
             'hardwire some capacity maps for debugging
-            Me.m_EcoSpaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
+            Me.m_EcospaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
             Debug.Print("Ecospace Shapemanager Init")
             Dim EnvRespManager As cEnviroResponseShapeManager = DirectCast(Me.m_ShapeManagers.Item(eDataTypes.CapacityMediation), cEnviroResponseShapeManager)
             EnvRespManager.Init()
@@ -10306,14 +10306,14 @@ Public Class cCore
 
             'sets the summary peroids to first and last year
             'at this time this data is not saved in the database
-            m_EcoSpaceData.setDefaultSummaryPeriod()
+            m_EcospaceData.setDefaultSummaryPeriod()
 
             'This flag tells Ecospace to use the fishing rates set by Ecosim
             'in EwE5 it is set in the Ecosim database reading routine 
             'if it is set to false Ecospace will set all the FishGearRates() to one
-            m_EcoSpaceData.IsFishRateSet = True
+            m_EcospaceData.IsFishRateSet = True
 
-            m_EcoSpaceData.SetDefaultThreads()
+            m_EcospaceData.SetDefaultThreads()
             m_Ecospace.redimForRun()
 
             ' JS30oct09: Spatial Equilibrium is ONLY required when starting an Ecospace run
@@ -10359,7 +10359,7 @@ Public Class cCore
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
                 Me.PluginManager.EcospaceLoadScenario(ds)
-                Me.PluginManager.EcospaceInitialized(Me.m_EcoSpaceData)
+                Me.PluginManager.EcospaceInitialized(Me.m_EcospaceData)
             End If
 
             ' Update core state
@@ -10393,9 +10393,9 @@ Public Class cCore
             'Me.m_EcoSpaceScenarios.Clear()
             'Me.m_EcoPathData.NumEcospaceScenarios = 0
 
-            Me.m_EcoSpaceFleets.Clear()
+            Me.m_EcospaceFleets.Clear()
             Me.m_EcospaceFleetOutputs.Clear()
-            Me.m_EcoSpaceGroups.Clear()
+            Me.m_EcospaceGroups.Clear()
             Me.m_EcospaceGroupOuputs.Clear()
 
             Me.m_EcospaceHabitats.Clear()
@@ -10497,7 +10497,7 @@ Public Class cCore
                                            strDescription As String) As Boolean
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
-        Dim esd As cEcospaceDataStructures = Me.m_EcoSpaceData
+        Dim esd As cEcospaceDataStructures = Me.m_EcospaceData
         Dim ds As IEcospaceDatasource = Nothing
         Dim iScenarioID As Integer = 0
         Dim bSucces As Boolean = False
@@ -10511,7 +10511,7 @@ Public Class cCore
         If (iScenarioID <= 0) Then Return bSucces
 
         ' Clear duplicates
-        Me.RemoveEcospaceScenario(Me.FindObjectByName(Me.m_EcoSpaceScenarios, strName))
+        Me.RemoveEcospaceScenario(Me.FindObjectByName(Me.m_EcospaceScenarios, strName))
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
         ' Save ok?
@@ -10559,7 +10559,7 @@ Public Class cCore
     ''' <summary>
     ''' Remove a <see cref="cEcoSpaceScenario">Ecospace Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
-    ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcoSpaceScenarios">Ecospace Scenario list</see>.</param>
+    ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcospaceScenarios">Ecospace Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcospaceScenario(iScenario As Integer) As Boolean
@@ -10663,67 +10663,67 @@ Public Class cCore
 
             If m_EcospaceModelParams Is Nothing Then Return False
             m_EcospaceModelParams.AllowValidation = False
-            m_EcospaceModelParams.PredictEffort = m_EcoSpaceData.PredictEffort
-            m_EcospaceModelParams.NumberOfTimeStepsPerYear = CSng(1.0 / m_EcoSpaceData.TimeStep)
+            m_EcospaceModelParams.PredictEffort = m_EcospaceData.PredictEffort
+            m_EcospaceModelParams.NumberOfTimeStepsPerYear = CSng(1.0 / m_EcospaceData.TimeStep)
 
-            m_EcospaceModelParams.AdjustSpace = m_EcoSpaceData.AdjustSpace
+            m_EcospaceModelParams.AdjustSpace = m_EcospaceData.AdjustSpace
 
-            m_EcospaceModelParams.StartSummaryTime = CInt(m_EcoSpaceData.SumStart(0))
-            m_EcospaceModelParams.EndSummaryTime = CInt(m_EcoSpaceData.SumStart(1))
-            m_EcospaceModelParams.NumberSummaryTimeSteps = m_EcoSpaceData.NumStep
-            m_EcospaceModelParams.nRegions = m_EcoSpaceData.nRegions
+            m_EcospaceModelParams.StartSummaryTime = CInt(m_EcospaceData.SumStart(0))
+            m_EcospaceModelParams.EndSummaryTime = CInt(m_EcospaceData.SumStart(1))
+            m_EcospaceModelParams.NumberSummaryTimeSteps = m_EcospaceData.NumStep
+            m_EcospaceModelParams.nRegions = m_EcospaceData.nRegions
 
             'Grid threads
-            m_EcospaceModelParams.nGridSolverThreads = m_EcoSpaceData.nGridSolverThreads
+            m_EcospaceModelParams.nGridSolverThreads = m_EcospaceData.nGridSolverThreads
 
             'Group Threads
-            m_EcospaceModelParams.nSpaceThreads = m_EcoSpaceData.nSpaceSolverThreads
+            m_EcospaceModelParams.nSpaceThreads = m_EcospaceData.nSpaceSolverThreads
 
             'Effort dist threads
-            m_EcospaceModelParams.nEffortDistThreads = m_EcoSpaceData.nEffortDistThreads
+            m_EcospaceModelParams.nEffortDistThreads = m_EcospaceData.nEffortDistThreads
 
-            m_EcospaceModelParams.IFDPower = m_EcoSpaceData.IFDPower
-            m_EcospaceModelParams.UseIBM = m_EcoSpaceData.UseIBM
-            m_EcospaceModelParams.UseNewMultiStanza = m_EcoSpaceData.NewMultiStanza
-            m_EcospaceModelParams.TotalTime = CInt(m_EcoSpaceData.TotalTime)
+            m_EcospaceModelParams.IFDPower = m_EcospaceData.IFDPower
+            m_EcospaceModelParams.UseIBM = m_EcospaceData.UseIBM
+            m_EcospaceModelParams.UseNewMultiStanza = m_EcospaceData.NewMultiStanza
+            m_EcospaceModelParams.TotalTime = CInt(m_EcospaceData.TotalTime)
 
-            m_EcospaceModelParams.Tolerance = m_EcoSpaceData.Tol
-            m_EcospaceModelParams.SOR = m_EcoSpaceData.W
-            m_EcospaceModelParams.MaxNumberOfIterations = m_EcoSpaceData.maxIter
-            m_EcospaceModelParams.UseExact = m_EcoSpaceData.UseExact
+            m_EcospaceModelParams.Tolerance = m_EcospaceData.Tol
+            m_EcospaceModelParams.SOR = m_EcospaceData.W
+            m_EcospaceModelParams.MaxNumberOfIterations = m_EcospaceData.maxIter
+            m_EcospaceModelParams.UseExact = m_EcospaceData.UseExact
 
-            m_EcospaceModelParams.UseAnnualOuput = m_EcoSpaceData.SaveAnnual
-            m_EcospaceModelParams.UseCoreOutputDirectory = m_EcoSpaceData.UseCoreOutputDir
+            m_EcospaceModelParams.UseAnnualOuput = m_EcospaceData.SaveAnnual
+            m_EcospaceModelParams.UseCoreOutputDirectory = m_EcospaceData.UseCoreOutputDir
 
-            m_EcospaceModelParams.IBMMovePacketOnStanza = m_EcoSpaceData.MovePacketsAtStanzaEntry
+            m_EcospaceModelParams.IBMMovePacketOnStanza = m_EcospaceData.MovePacketsAtStanzaEntry
 
             'm_EcospaceModelParams.CapacityCalculationType = m_EcoSpaceData.CapCalType
 
             m_EcospaceModelParams.PacketsMultiplier = Me.m_Stanza.NPacketsMultiplier
 
-            m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcoSpaceData.bUseEffortDistThreshold
-            m_EcospaceModelParams.EffortDistThreshold = Me.m_EcoSpaceData.EffortDistThreshold
+            m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcospaceData.bUseEffortDistThreshold
+            m_EcospaceModelParams.EffortDistThreshold = Me.m_EcospaceData.EffortDistThreshold
 
-            m_EcospaceModelParams.UseLocalMemory = Me.m_EcoSpaceData.bUseLocalMemory
-            m_EcospaceModelParams.AllowHabCapGradientCorrections = Me.m_EcoSpaceData.AllowHabCapGradientCorrections
-            m_EcospaceModelParams.MinForagingCapacity = Me.m_EcoSpaceData.MinHabCap
+            m_EcospaceModelParams.UseLocalMemory = Me.m_EcospaceData.bUseLocalMemory
+            m_EcospaceModelParams.AllowHabCapGradientCorrections = Me.m_EcospaceData.AllowHabCapGradientCorrections
+            m_EcospaceModelParams.MinForagingCapacity = Me.m_EcospaceData.MinHabCap
 
-            m_EcospaceModelParams.SpinupEnabled = Me.m_EcoSpaceData.UseSpinUp
-            m_EcospaceModelParams.SpinupYears = Me.m_EcoSpaceData.SpinUpYears
+            m_EcospaceModelParams.SpinupEnabled = Me.m_EcospaceData.UseSpinUp
+            m_EcospaceModelParams.SpinupYears = Me.m_EcospaceData.SpinUpYears
 
-            m_EcospaceModelParams.EcospaceAreaOutputDir = Me.m_EcoSpaceData.EcospaceAreaOutputDir
-            m_EcospaceModelParams.EcospaceMapOutputDir = Me.m_EcoSpaceData.EcospaceMapOutputDir
+            m_EcospaceModelParams.EcospaceAreaOutputDir = Me.m_EcospaceData.EcospaceAreaOutputDir
+            m_EcospaceModelParams.EcospaceMapOutputDir = Me.m_EcospaceData.EcospaceMapOutputDir
 
-            m_EcospaceModelParams.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
+            m_EcospaceModelParams.FirstOutputTimeStep = Me.m_EcospaceData.FirstOutputTimeStep
 
-            m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimBiomassForcing
-            m_EcospaceModelParams.UseEcosimDiscardForcing = Me.m_EcoSpaceData.UseEcosimDiscardForcing
+            m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcospaceData.UseEcosimBiomassForcing
+            m_EcospaceModelParams.UseEcosimDiscardForcing = Me.m_EcospaceData.UseEcosimDiscardForcing
 
-            m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
-            m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded
+            m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcospaceData.isEcosimBiomassForcingLoaded
+            m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcospaceData.isEcosimDiscardForcingLoaded
 
-            m_EcospaceModelParams.SaveThreadingLog = m_EcoSpaceData.bSaveThreadingLog
-            m_EcospaceModelParams.nIBMMovementThreads = m_EcoSpaceData.nIBMMovementSolverThreads
+            m_EcospaceModelParams.SaveThreadingLog = m_EcospaceData.bSaveThreadingLog
+            m_EcospaceModelParams.nIBMMovementThreads = m_EcospaceData.nIBMMovementSolverThreads
 
             Me.LoadEcospaceResultsWriters()
 
@@ -10742,59 +10742,59 @@ Public Class cCore
 
         If m_EcospaceModelParams Is Nothing Then Return False
 
-        m_EcoSpaceData.PredictEffort = m_EcospaceModelParams.PredictEffort
+        m_EcospaceData.PredictEffort = m_EcospaceModelParams.PredictEffort
 
-        m_EcoSpaceData.TimeStep = CDbl(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear)
+        m_EcospaceData.TimeStep = CDbl(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear)
 
-        m_EcoSpaceData.SumStart(0) = m_EcospaceModelParams.StartSummaryTime
-        m_EcoSpaceData.SumStart(1) = m_EcospaceModelParams.EndSummaryTime
-        m_EcoSpaceData.NumStep = m_EcospaceModelParams.NumberSummaryTimeSteps
-        m_EcoSpaceData.AdjustSpace = m_EcospaceModelParams.AdjustSpace
-        m_EcoSpaceData.nRegions = m_EcospaceModelParams.nRegions
+        m_EcospaceData.SumStart(0) = m_EcospaceModelParams.StartSummaryTime
+        m_EcospaceData.SumStart(1) = m_EcospaceModelParams.EndSummaryTime
+        m_EcospaceData.NumStep = m_EcospaceModelParams.NumberSummaryTimeSteps
+        m_EcospaceData.AdjustSpace = m_EcospaceModelParams.AdjustSpace
+        m_EcospaceData.nRegions = m_EcospaceModelParams.nRegions
 
-        m_EcoSpaceData.nGridSolverThreads = m_EcospaceModelParams.nGridSolverThreads
-        m_EcoSpaceData.nEffortDistThreads = m_EcospaceModelParams.nEffortDistThreads
-        m_EcoSpaceData.nSpaceSolverThreads = m_EcospaceModelParams.nSpaceThreads
+        m_EcospaceData.nGridSolverThreads = m_EcospaceModelParams.nGridSolverThreads
+        m_EcospaceData.nEffortDistThreads = m_EcospaceModelParams.nEffortDistThreads
+        m_EcospaceData.nSpaceSolverThreads = m_EcospaceModelParams.nSpaceThreads
 
-        m_EcoSpaceData.nIBMMovementSolverThreads = m_EcospaceModelParams.nIBMMovementThreads
+        m_EcospaceData.nIBMMovementSolverThreads = m_EcospaceModelParams.nIBMMovementThreads
 
-        m_EcoSpaceData.IFDPower = m_EcospaceModelParams.IFDPower
-        m_EcoSpaceData.UseIBM = m_EcospaceModelParams.UseIBM
-        m_EcoSpaceData.NewMultiStanza = m_EcospaceModelParams.UseNewMultiStanza
-        m_EcoSpaceData.TotalTime = m_EcospaceModelParams.TotalTime
+        m_EcospaceData.IFDPower = m_EcospaceModelParams.IFDPower
+        m_EcospaceData.UseIBM = m_EcospaceModelParams.UseIBM
+        m_EcospaceData.NewMultiStanza = m_EcospaceModelParams.UseNewMultiStanza
+        m_EcospaceData.TotalTime = m_EcospaceModelParams.TotalTime
 
-        m_EcoSpaceData.Tol = m_EcospaceModelParams.Tolerance
-        m_EcoSpaceData.W = m_EcospaceModelParams.SOR
-        m_EcoSpaceData.maxIter = m_EcospaceModelParams.MaxNumberOfIterations
-        m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
+        m_EcospaceData.Tol = m_EcospaceModelParams.Tolerance
+        m_EcospaceData.W = m_EcospaceModelParams.SOR
+        m_EcospaceData.maxIter = m_EcospaceModelParams.MaxNumberOfIterations
+        m_EcospaceData.UseExact = m_EcospaceModelParams.UseExact
 
-        m_EcoSpaceData.SaveAnnual = m_EcospaceModelParams.UseAnnualOuput
-        m_EcoSpaceData.UseCoreOutputDir = m_EcospaceModelParams.UseCoreOutputDirectory
+        m_EcospaceData.SaveAnnual = m_EcospaceModelParams.UseAnnualOuput
+        m_EcospaceData.UseCoreOutputDir = m_EcospaceModelParams.UseCoreOutputDirectory
 
-        m_EcoSpaceData.MovePacketsAtStanzaEntry = m_EcospaceModelParams.IBMMovePacketOnStanza
+        m_EcospaceData.MovePacketsAtStanzaEntry = m_EcospaceModelParams.IBMMovePacketOnStanza
 
         m_Stanza.NPacketsMultiplier = m_EcospaceModelParams.PacketsMultiplier
 
         m_tracerData.EcoSpaceConSimOn = m_EcospaceModelParams.ContaminantTracing
-        m_EcoSpaceData.UseSpinUp = m_EcospaceModelParams.SpinupEnabled
-        m_EcoSpaceData.SpinUpYears = m_EcospaceModelParams.SpinupYears
+        m_EcospaceData.UseSpinUp = m_EcospaceModelParams.SpinupEnabled
+        m_EcospaceData.SpinUpYears = m_EcospaceModelParams.SpinupYears
 
-        m_EcoSpaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
-        m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
+        m_EcospaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
+        m_EcospaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
 
-        m_EcoSpaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
-        m_EcoSpaceData.AllowHabCapGradientCorrections = m_EcospaceModelParams.AllowHabCapGradientCorrections
-        m_EcoSpaceData.MinHabCap = m_EcospaceModelParams.MinForagingCapacity
+        m_EcospaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
+        m_EcospaceData.AllowHabCapGradientCorrections = m_EcospaceModelParams.AllowHabCapGradientCorrections
+        m_EcospaceData.MinHabCap = m_EcospaceModelParams.MinForagingCapacity
 
-        m_EcoSpaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
-        m_EcoSpaceData.EcospaceMapOutputDir = m_EcospaceModelParams.EcospaceMapOutputDir
+        m_EcospaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
+        m_EcospaceData.EcospaceMapOutputDir = m_EcospaceModelParams.EcospaceMapOutputDir
 
-        m_EcoSpaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
+        m_EcospaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
 
-        m_EcoSpaceData.UseEcosimBiomassForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
-        m_EcoSpaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
+        m_EcospaceData.UseEcosimBiomassForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
+        m_EcospaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
 
-        m_EcoSpaceData.bSaveThreadingLog = m_EcospaceModelParams.SaveThreadingLog
+        m_EcospaceData.bSaveThreadingLog = m_EcospaceModelParams.SaveThreadingLog
 
         Return True
 
@@ -10875,15 +10875,15 @@ Public Class cCore
 
             With m_EcospaceBasemap
                 .AllowValidation = False
-                .InCol = m_EcoSpaceData.InCol
-                .InRow = m_EcoSpaceData.InRow
-                .CellLength = m_EcoSpaceData.CellLength
-                .Latitude = m_EcoSpaceData.Lat1 'UDH_UL
-                .Longitude = m_EcoSpaceData.Lon1
-                .AssumeSquareCells = m_EcoSpaceData.AssumeSquareCells
-                .ProjectionString = m_EcoSpaceData.ProjectionString
+                .InCol = m_EcospaceData.InCol
+                .InRow = m_EcospaceData.InRow
+                .CellLength = m_EcospaceData.CellLength
+                .Latitude = m_EcospaceData.Lat1 'UDH_UL
+                .Longitude = m_EcospaceData.Lon1
+                .AssumeSquareCells = m_EcospaceData.AssumeSquareCells
+                .ProjectionString = m_EcospaceData.ProjectionString
 
-                .nCells = m_EcoSpaceData.ThabArea
+                .nCells = m_EcospaceData.ThabArea
                 .ResetStatusFlags()
                 .AllowValidation = True
             End With
@@ -10905,7 +10905,7 @@ Public Class cCore
 
         Dim dest As cEcospaceLayerDepth = Me.m_EcospaceBasemap.LayerDepth
         dest.AllowValidation = False
-        dest.IsCapacityEnabled = Not Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(0)
+        dest.IsCapacityEnabled = Not Me.m_EcospaceData.EnvironmentalLayerCapacityDisabled(0)
         dest.AllowValidation = True
 
     End Sub
@@ -10913,13 +10913,13 @@ Public Class cCore
     Private Sub LoadEcospaceImportanceLayers()
 
         Dim dest As cEcospaceLayerImportance = Nothing
-        For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
+        For i As Integer = 1 To Me.m_EcospaceData.nImportanceLayers
             dest = Me.m_EcospaceBasemap.LayerImportance(i)
             dest.AllowValidation = False
             dest.Index = i
-            dest.Weight = Me.m_EcoSpaceData.ImportanceLayerWeight(i)
-            dest.Name = Me.m_EcoSpaceData.ImportanceLayerName(i)
-            dest.Description = Me.m_EcoSpaceData.ImportanceLayerDescription(i)
+            dest.Weight = Me.m_EcospaceData.ImportanceLayerWeight(i)
+            dest.Name = Me.m_EcospaceData.ImportanceLayerName(i)
+            dest.Description = Me.m_EcospaceData.ImportanceLayerDescription(i)
             dest.AllowValidation = True
         Next i
 
@@ -10928,14 +10928,14 @@ Public Class cCore
     Private Sub LoadEcospaceDriverLayers()
 
         Dim dest As cEcospaceLayerDriver = Nothing
-        For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalDriverLayers
+        For i As Integer = 1 To Me.m_EcospaceData.nEnvironmentalDriverLayers
             dest = Me.m_EcospaceBasemap.LayerDriver(i)
             dest.AllowValidation = False
             dest.Index = i
-            dest.Name = Me.m_EcoSpaceData.EnvironmentalLayerName(i)
-            dest.Description = Me.m_EcoSpaceData.EnvironmentalLayerDescription(i)
-            dest.Units = Me.m_EcoSpaceData.EnvironmentalLayerUnits(i)
-            dest.IsCapacityEnabled = Not Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(i)
+            dest.Name = Me.m_EcospaceData.EnvironmentalLayerName(i)
+            dest.Description = Me.m_EcospaceData.EnvironmentalLayerDescription(i)
+            dest.Units = Me.m_EcospaceData.EnvironmentalLayerUnits(i)
+            dest.IsCapacityEnabled = Not Me.m_EcospaceData.EnvironmentalLayerCapacityDisabled(i)
             dest.AllowValidation = True
         Next i
 
@@ -10958,11 +10958,11 @@ Public Class cCore
             'Me.m_EcoSpaceData.Inrow = m_EcospaceBasemap.InRow
             'Me.m_EcoSpaceData.InCol = m_EcospaceBasemap.InCol
 
-            Me.m_EcoSpaceData.CellLength = m_EcospaceBasemap.CellLength
-            Me.m_EcoSpaceData.AssumeSquareCells = Me.m_EcospaceBasemap.AssumeSquareCells
-            Me.m_EcoSpaceData.ProjectionString = Me.m_EcospaceBasemap.ProjectionString
-            Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
-            Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude
+            Me.m_EcospaceData.CellLength = m_EcospaceBasemap.CellLength
+            Me.m_EcospaceData.AssumeSquareCells = Me.m_EcospaceBasemap.AssumeSquareCells
+            Me.m_EcospaceData.ProjectionString = Me.m_EcospaceBasemap.ProjectionString
+            Me.m_EcospaceData.Lat1 = m_EcospaceBasemap.Latitude
+            Me.m_EcospaceData.Lon1 = m_EcospaceBasemap.Longitude
 
             Me.UpdateEcospaceDepthLayer()
             Me.UpdateEcospaceImportanceLayers()
@@ -10976,18 +10976,18 @@ Public Class cCore
     End Function
 
     Private Sub UpdateEcospaceDepthLayer()
-        Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(0) = Not Me.m_EcospaceBasemap.LayerDepth.IsCapacityEnabled
+        Me.m_EcospaceData.EnvironmentalLayerCapacityDisabled(0) = Not Me.m_EcospaceBasemap.LayerDepth.IsCapacityEnabled
     End Sub
 
     Private Sub UpdateEcospaceImportanceLayers()
 
         Dim src As cEcospaceLayerImportance = Nothing
 
-        For i As Integer = 1 To Me.m_EcoSpaceData.nImportanceLayers
+        For i As Integer = 1 To Me.m_EcospaceData.nImportanceLayers
             src = Me.m_EcospaceBasemap.LayerImportance(i)
-            Me.m_EcoSpaceData.ImportanceLayerName(i) = src.Name
-            Me.m_EcoSpaceData.ImportanceLayerDescription(i) = src.Description
-            Me.m_EcoSpaceData.ImportanceLayerWeight(i) = src.Weight
+            Me.m_EcospaceData.ImportanceLayerName(i) = src.Name
+            Me.m_EcospaceData.ImportanceLayerDescription(i) = src.Description
+            Me.m_EcospaceData.ImportanceLayerWeight(i) = src.Weight
         Next i
     End Sub
 
@@ -10995,12 +10995,12 @@ Public Class cCore
 
         Dim src As cEcospaceLayerDriver = Nothing
 
-        For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalDriverLayers
+        For i As Integer = 1 To Me.m_EcospaceData.nEnvironmentalDriverLayers
             src = Me.m_EcospaceBasemap.LayerDriver(i)
-            Me.m_EcoSpaceData.EnvironmentalLayerName(i) = src.Name
-            Me.m_EcoSpaceData.EnvironmentalLayerDescription(i) = src.Description
-            Me.m_EcoSpaceData.EnvironmentalLayerUnits(i) = src.Units
-            Me.m_EcoSpaceData.EnvironmentalLayerCapacityDisabled(i) = Not src.IsCapacityEnabled
+            Me.m_EcospaceData.EnvironmentalLayerName(i) = src.Name
+            Me.m_EcospaceData.EnvironmentalLayerDescription(i) = src.Description
+            Me.m_EcospaceData.EnvironmentalLayerUnits(i) = src.Units
+            Me.m_EcospaceData.EnvironmentalLayerCapacityDisabled(i) = Not src.IsCapacityEnabled
         Next i
 
     End Sub
@@ -11021,15 +11021,15 @@ Public Class cCore
 
         Try
 
-            m_EcoSpaceGroups.Clear()
+            m_EcospaceGroups.Clear()
 
             'populate the list of cEcoSimGroupInfo objects that the user will interact with 
             'to change group related parameters from the interface see getEcoSimGroupInfo(iGroup)
             For i As Integer = 1 To nGroups
                 ' Create group
-                grp = New cEcospaceGroupInput(Me, Me.m_EcoSpaceData.GroupDBID(i))
+                grp = New cEcospaceGroupInput(Me, Me.m_EcospaceData.GroupDBID(i))
                 ' Add to list
-                m_EcoSpaceGroups.Add(grp)
+                m_EcospaceGroups.Add(grp)
             Next i
 
             ' Load the Ecospace data into the objects created above
@@ -11056,10 +11056,10 @@ Public Class cCore
 
         Try
 
-            For Each grp As cEcospaceGroupInput In Me.m_EcoSpaceGroups
+            For Each grp As cEcospaceGroupInput In Me.m_EcospaceGroups
 
                 'convert the Database ID into an iGroup
-                iGroup = Array.IndexOf(m_EcoSpaceData.GroupDBID, grp.DBID)
+                iGroup = Array.IndexOf(m_EcospaceData.GroupDBID, grp.DBID)
                 grp.Index = iGroup
 
                 Debug.Assert(iGroup > 0 And iGroup <= Me.nGroups, "LoadEcospaceGroups() failed to find iGroup for Ecospace DBID.")
@@ -11072,21 +11072,21 @@ Public Class cCore
 
                 grp.Name = m_EcoPathData.GroupName(iGroup)
                 'Mvel
-                grp.SetVariable(eVarNameFlags.MVel, m_EcoSpaceData.Mvel(iGroup))
+                grp.SetVariable(eVarNameFlags.MVel, m_EcospaceData.Mvel(iGroup))
 
-                grp.RelMoveBad = m_EcoSpaceData.RelMoveBad(iGroup)
-                grp.RelVulBad = m_EcoSpaceData.RelVulBad(iGroup)
-                grp.KMoveFitness = m_EcoSpaceData.Kmovefit(iGroup)
-                grp.IsMigratory = m_EcoSpaceData.IsMigratory(iGroup)
-                grp.IsAdvected = m_EcoSpaceData.IsAdvected(iGroup)
-                grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
+                grp.RelMoveBad = m_EcospaceData.RelMoveBad(iGroup)
+                grp.RelVulBad = m_EcospaceData.RelVulBad(iGroup)
+                grp.KMoveFitness = m_EcospaceData.Kmovefit(iGroup)
+                grp.IsMigratory = m_EcospaceData.IsMigratory(iGroup)
+                grp.IsAdvected = m_EcospaceData.IsAdvected(iGroup)
+                grp.BarrierAvoidanceWeight = m_EcospaceData.barrierAvoidanceWeight(iGroup)
                 grp.PP = m_EcoPathData.PP(iGroup)
-                grp.CapacityCalculationType = m_EcoSpaceData.CapCalType(iGroup)
+                grp.CapacityCalculationType = m_EcospaceData.CapCalType(iGroup)
 
-                grp.InMigrationAreaMovement = m_EcoSpaceData.InMigAreaMovement(iGroup)
+                grp.InMigrationAreaMovement = m_EcospaceData.InMigAreaMovement(iGroup)
 
                 For i = 0 To nHabitats - 1
-                    grp.PreferredHabitat(i) = m_EcoSpaceData.PrefHab(iGroup, i)
+                    grp.PreferredHabitat(i) = m_EcospaceData.PrefHab(iGroup, i)
                 Next
 
                 grp.ResetStatusFlags()
@@ -11111,25 +11111,25 @@ Public Class cCore
         Try
 
             ' Convert the Database ID into an iGroup
-            iGroup = Array.IndexOf(m_EcoSpaceData.GroupDBID, iDBID)
+            iGroup = Array.IndexOf(m_EcospaceData.GroupDBID, iDBID)
             ' Get the group
             grp = Me.EcospaceGroupInputs(iGroup)
 
             ' Suck it empty
-            m_EcoSpaceData.Mvel(iGroup) = grp.MVel
+            m_EcospaceData.Mvel(iGroup) = grp.MVel
 
-            m_EcoSpaceData.RelMoveBad(iGroup) = grp.RelMoveBad
-            m_EcoSpaceData.RelVulBad(iGroup) = grp.RelVulBad
-            m_EcoSpaceData.Kmovefit(iGroup) = grp.KMoveFitness
-            m_EcoSpaceData.IsAdvected(iGroup) = grp.IsAdvected
-            m_EcoSpaceData.IsMigratory(iGroup) = grp.IsMigratory
-            m_EcoSpaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
-            m_EcoSpaceData.CapCalType(iGroup) = grp.CapacityCalculationType
+            m_EcospaceData.RelMoveBad(iGroup) = grp.RelMoveBad
+            m_EcospaceData.RelVulBad(iGroup) = grp.RelVulBad
+            m_EcospaceData.Kmovefit(iGroup) = grp.KMoveFitness
+            m_EcospaceData.IsAdvected(iGroup) = grp.IsAdvected
+            m_EcospaceData.IsMigratory(iGroup) = grp.IsMigratory
+            m_EcospaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
+            m_EcospaceData.CapCalType(iGroup) = grp.CapacityCalculationType
 
-            m_EcoSpaceData.InMigAreaMovement(iGroup) = grp.InMigrationAreaMovement
+            m_EcospaceData.InMigAreaMovement(iGroup) = grp.InMigrationAreaMovement
 
             For i = 0 To nHabitats - 1
-                m_EcoSpaceData.PrefHab(iGroup, i) = grp.PreferredHabitat(i)
+                m_EcospaceData.PrefHab(iGroup, i) = grp.PreferredHabitat(i)
             Next
 
         Catch ex As Exception
@@ -11148,23 +11148,23 @@ Public Class cCore
             m_EcospaceGroupOuputs.Clear()
 
             For igrp As Integer = 1 To nGroups
-                m_EcospaceGroupOuputs.Add(New cEcospaceGroupOutput(Me, Me.m_EcoSpaceData, igrp))
+                m_EcospaceGroupOuputs.Add(New cEcospaceGroupOutput(Me, Me.m_EcospaceData, igrp))
             Next
 
             'this includes zero index 'Combined Fleets' 
             For iflt As Integer = 0 To nFleets 'this includes the 'Combined Fleets' 
-                Me.m_EcospaceFleetOutputs.Add(New cEcospaceFleetOutput(Me, Me.m_EcoSpaceData, iflt))
+                Me.m_EcospaceFleetOutputs.Add(New cEcospaceFleetOutput(Me, Me.m_EcospaceData, iflt))
             Next
 
             'This will include the zero indexed region 
             'the zero index holds the data not include in one of the other regions (OR)
             'It is NOT like the Fleets where the zero index in the combined values (AND)
             For iRgn As Integer = 0 To nRegions
-                Me.m_EcospaceRegionSummaries.Add(New cEcospaceRegionOutput(Me, Me.m_EcoSpaceData, iRgn))
+                Me.m_EcospaceRegionSummaries.Add(New cEcospaceRegionOutput(Me, Me.m_EcospaceData, iRgn))
             Next
 
             'load a new results object for the new scenario
-            m_spaceresults = New cEcospaceTimestep(Me, Me.m_EcoSimData, Me.m_EcoSpaceData, Me.m_Stanza)
+            m_spaceresults = New cEcospaceTimestep(Me, Me.m_EcoSimData, Me.m_EcospaceData, Me.m_Stanza)
 
 
             'in the other InitEcospacexxxx the data is loaded during the init
@@ -11214,20 +11214,20 @@ Public Class cCore
                     flt.Name = My.Resources.CoreDefaults.CORE_DEFAULT_COMBINEDFLEETS
                 End If
 
-                m_EcoSpaceData.getSumCatchFleet(flt.Index, stVal, endVal)
+                m_EcospaceData.getSumCatchFleet(flt.Index, stVal, endVal)
                 flt.CatchStart = stVal
                 flt.CatchEnd = endVal
 
-                m_EcoSpaceData.getSumCostFleet(Me.m_EcoPathData.cost, flt.Index, stVal, endVal)
+                m_EcospaceData.getSumCostFleet(Me.m_EcoPathData.cost, flt.Index, stVal, endVal)
                 flt.CostStart = stVal
                 flt.CostEnd = endVal
 
-                m_EcoSpaceData.getSumValueFleet(flt.Index, stVal, endVal)
+                m_EcospaceData.getSumValueFleet(flt.Index, stVal, endVal)
                 flt.ValueStart = stVal
                 flt.ValueEnd = endVal
 
 
-                m_EcoSpaceData.getSumEffortES(flt.Index, stVal)
+                m_EcospaceData.getSumEffortES(flt.Index, stVal)
                 flt.EffortES = stVal
 
             Next flt
@@ -11245,19 +11245,19 @@ Public Class cCore
                 End If
 
                 'average the data over the number of cells in the region for output
-                Dim nCellsInRegion As Integer = m_EcoSpaceData.nCellsInRegion(rgn.Index)
+                Dim nCellsInRegion As Integer = m_EcospaceData.nCellsInRegion(rgn.Index)
                 If nCellsInRegion = 0 Then nCellsInRegion = 1
 
                 For igrp = 1 To nGroups
 
                     Dim sbio As Single, ebio As Single
-                    m_EcoSpaceData.getSumBiomByRegion(rgn.Index, igrp, sbio, ebio)
+                    m_EcospaceData.getSumBiomByRegion(rgn.Index, igrp, sbio, ebio)
                     rgn.BiomassStart(igrp) = sbio
                     rgn.BiomassEnd(igrp) = ebio
 
                     For iflt = 0 To nFleets
                         Dim sCatch As Single, eCatch As Single
-                        m_EcoSpaceData.getSumCatchRegionGearGroup(rgn.Index, iflt, igrp, sCatch, eCatch)
+                        m_EcospaceData.getSumCatchRegionGearGroup(rgn.Index, iflt, igrp, sCatch, eCatch)
                         '  Debug.Assert(sCatch = 0)
                         rgn.CatchFleetGroupStart(iflt, igrp) = sCatch
                         rgn.CatchFleetGroupEnd(iflt, igrp) = eCatch
@@ -11275,15 +11275,15 @@ Public Class cCore
                 grp.Name = m_EcoPathData.GroupName(grp.Index)
                 grp.PP = m_EcoPathData.PP(grp.Index)
 
-                m_EcoSpaceData.getSumBiom(grp.Index, stVal, endVal)
+                m_EcospaceData.getSumBiom(grp.Index, stVal, endVal)
                 grp.BiomassStart = stVal
                 grp.BiomassEnd = endVal
                 For iflt = 0 To nFleets
-                    m_EcoSpaceData.getSumCatchFleetGroup(iflt, grp.Index, stVal, endVal)
+                    m_EcospaceData.getSumCatchFleetGroup(iflt, grp.Index, stVal, endVal)
                     grp.CatchStart(iflt) = stVal
                     grp.CatchEnd(iflt) = endVal
 
-                    m_EcoSpaceData.getSumValueFleetGroup(iflt, grp.Index, stVal, endVal)
+                    m_EcospaceData.getSumValueFleetGroup(iflt, grp.Index, stVal, endVal)
                     grp.ValueStart(iflt) = stVal
                     grp.ValueEnd(iflt) = endVal
                 Next iflt
@@ -11320,7 +11320,7 @@ Public Class cCore
             'to change habitat related parameters from the interface
             For i As Integer = 0 To nHabitats - 1
                 ' Create habitat
-                objHab = New cEcospaceHabitat(Me, Me.m_EcoSpaceData.HabitatDBID(i))
+                objHab = New cEcospaceHabitat(Me, Me.m_EcospaceData.HabitatDBID(i))
                 ' Set index
                 objHab.Index = i
                 ' Add to list
@@ -11348,7 +11348,7 @@ Public Class cCore
                 ' Get index
                 iHab = objHab.Index
                 ' Validate
-                Debug.Assert(iHab = Array.IndexOf(m_EcoSpaceData.HabitatDBID, objHab.DBID), "LoadEcospaceHabitats() detected Index inconsistency")
+                Debug.Assert(iHab = Array.IndexOf(m_EcospaceData.HabitatDBID, objHab.DBID), "LoadEcospaceHabitats() detected Index inconsistency")
 
                 'this will call the cCore.getCounter() with the counter type
                 'and only resize the arrays if getCounter() is different from the existing size
@@ -11356,8 +11356,8 @@ Public Class cCore
 
                 objHab.AllowValidation = False
 
-                objHab.Name = m_EcoSpaceData.HabitatText(iHab)
-                objHab.HabAreaProportion = m_EcoSpaceData.HabAreaProportion(iHab)
+                objHab.Name = m_EcospaceData.HabitatText(iHab)
+                objHab.HabAreaProportion = m_EcospaceData.HabAreaProportion(iHab)
 
                 objHab.AllowValidation = True
 
@@ -11380,7 +11380,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Private Function UpdateEcospaceHabitat(iDBID As Integer) As Boolean
         Dim objHab As cEcospaceHabitat = Nothing
-        Dim iHabitat As Integer = Array.IndexOf(Me.m_EcoSpaceData.HabitatDBID, iDBID)
+        Dim iHabitat As Integer = Array.IndexOf(Me.m_EcospaceData.HabitatDBID, iDBID)
 
         ' Sanity check
         Debug.Assert(iHabitat > 0)
@@ -11390,8 +11390,8 @@ Public Class cCore
             ' Get the object
             objHab = DirectCast(Me.m_EcospaceHabitats(iHabitat), cEcospaceHabitat)
 
-            m_EcoSpaceData.HabitatText(iHabitat) = objHab.Name
-            m_EcoSpaceData.HabAreaProportion(iHabitat) = objHab.HabAreaProportion
+            m_EcospaceData.HabitatText(iHabitat) = objHab.Name
+            m_EcospaceData.HabAreaProportion(iHabitat) = objHab.HabAreaProportion
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".LoadEcospaceHabitats() Error: " & ex.Message)
@@ -11522,7 +11522,7 @@ Public Class cCore
             'to change MPA related parameters from the interface
             For i As Integer = 1 To Me.nMPAs
                 ' Create MPA
-                objMPA = New cEcospaceMPA(Me, Me.m_EcoSpaceData.MPADBID(i))
+                objMPA = New cEcospaceMPA(Me, Me.m_EcospaceData.MPADBID(i))
                 ' Add to list
                 m_EcospaceMPAs.Add(objMPA)
             Next i
@@ -11544,7 +11544,7 @@ Public Class cCore
             For Each objMPA As cEcospaceMPA In Me.m_EcospaceMPAs
 
                 'convert the Database ID into an iGroup
-                iMPA = Array.IndexOf(m_EcoSpaceData.MPADBID, objMPA.DBID)
+                iMPA = Array.IndexOf(m_EcospaceData.MPADBID, objMPA.DBID)
                 objMPA.Index = iMPA
                 Debug.Assert(iMPA > 0 And iMPA <= Me.nMPAs, "LoadEcospaceMPAs() failed to find iMPA for Ecospace DBID.")
 
@@ -11554,9 +11554,9 @@ Public Class cCore
 
                 objMPA.AllowValidation = False
 
-                objMPA.Name = m_EcoSpaceData.MPAname(iMPA)
+                objMPA.Name = m_EcospaceData.MPAname(iMPA)
                 For iMonth As Integer = 1 To N_MONTHS
-                    objMPA.MPAMonth(iMonth) = m_EcoSpaceData.MPAmonth(iMonth, iMPA)
+                    objMPA.MPAMonth(iMonth) = m_EcospaceData.MPAmonth(iMonth, iMPA)
                 Next iMonth
 
                 objMPA.AllowValidation = True
@@ -11575,13 +11575,13 @@ Public Class cCore
 
         Try
             ' convert the Database ID into an index
-            iMPA = Array.IndexOf(m_EcoSpaceData.MPADBID, iDBID)
+            iMPA = Array.IndexOf(m_EcospaceData.MPADBID, iDBID)
             ' get the object
             objMPA = Me.EcospaceMPAs(iMPA)
 
-            m_EcoSpaceData.MPAname(iMPA) = objMPA.Name
+            m_EcospaceData.MPAname(iMPA) = objMPA.Name
             For iMonth As Integer = 1 To N_MONTHS
-                m_EcoSpaceData.MPAmonth(iMonth, iMPA) = objMPA.MPAMonth(iMonth)
+                m_EcospaceData.MPAmonth(iMonth, iMPA) = objMPA.MPAMonth(iMonth)
             Next iMonth
 
         Catch ex As Exception
@@ -11705,15 +11705,15 @@ Public Class cCore
         Try
             Dim objFleet As cEcospaceFleetInput
 
-            m_EcoSpaceFleets.Clear()
+            m_EcospaceFleets.Clear()
 
             'populate the list of cEcospaceHabitat objects that the user will interact with 
             'to change habitat related parameters from the interface
             For i As Integer = 1 To nFleets
                 ' Create fleet
-                objFleet = New cEcospaceFleetInput(Me, Me.m_EcoSpaceData.FleetDBID(i))
+                objFleet = New cEcospaceFleetInput(Me, Me.m_EcospaceData.FleetDBID(i))
                 ' Add to list
-                m_EcoSpaceFleets.Add(objFleet)
+                m_EcospaceFleets.Add(objFleet)
             Next i
 
             ' Load the Ecospace data into the objects created above
@@ -11731,10 +11731,10 @@ Public Class cCore
 
         Try
 
-            For Each fleet As cEcospaceFleetInput In Me.m_EcoSpaceFleets
+            For Each fleet As cEcospaceFleetInput In Me.m_EcospaceFleets
 
                 'convert the Database ID into an iGroup
-                iFleet = Array.IndexOf(m_EcoSpaceData.FleetDBID, fleet.DBID)
+                iFleet = Array.IndexOf(m_EcospaceData.FleetDBID, fleet.DBID)
                 fleet.Index = iFleet
                 Debug.Assert(iFleet >= 0 And iFleet <= Me.nFleets, cStringUtils.Localize("LoadEcospaceFleets() failed to find iFleet for Ecospace DBID {0}.", fleet.DBID))
 
@@ -11748,14 +11748,14 @@ Public Class cCore
 
                 ' JS 04feb08: in sync with EwE5, this value is now read into space.EffPower
                 'fleet.EffectivePower = m_EcoPathData.Epower(iFleet)
-                fleet.EffectivePower = m_EcoSpaceData.EffPower(iFleet)
-                fleet.TotalEffMultiplier = m_EcoSpaceData.SEmult(iFleet)
+                fleet.EffectivePower = m_EcospaceData.EffPower(iFleet)
+                fleet.TotalEffMultiplier = m_EcospaceData.SEmult(iFleet)
 
                 For iHabitat As Integer = 0 To Me.nHabitats
-                    fleet.HabitatFishery(iHabitat) = m_EcoSpaceData.GearHab(iFleet, iHabitat)
+                    fleet.HabitatFishery(iHabitat) = m_EcospaceData.GearHab(iFleet, iHabitat)
                 Next
                 For iMPA As Integer = 0 To Me.nMPAs
-                    fleet.MPAFishery(iMPA) = m_EcoSpaceData.MPAfishery(iFleet, iMPA)
+                    fleet.MPAFishery(iMPA) = m_EcospaceData.MPAfishery(iFleet, iMPA)
                 Next
 
                 fleet.ResetStatusFlags()
@@ -11778,21 +11778,21 @@ Public Class cCore
         Try
 
             ' Convert the Database ID into an index
-            iFleet = Array.IndexOf(m_EcoSpaceData.FleetDBID, iDBID)
+            iFleet = Array.IndexOf(m_EcospaceData.FleetDBID, iDBID)
             ' Get the object
             fleet = Me.EcospaceFleetInputs(iFleet)
 
             m_EcoPathData.FleetName(iFleet) = fleet.Name
             ' JS 04feb08: in sync with EwE5, this value is now read into space.EffPower
             'm_EcoPathData.Epower(iFleet) = fleet.EffectivePower
-            m_EcoSpaceData.EffPower(iFleet) = fleet.EffectivePower
-            m_EcoSpaceData.SEmult(iFleet) = fleet.TotalEffMultiplier
+            m_EcospaceData.EffPower(iFleet) = fleet.EffectivePower
+            m_EcospaceData.SEmult(iFleet) = fleet.TotalEffMultiplier
 
             For iHabitat As Integer = 0 To Me.nHabitats
-                m_EcoSpaceData.GearHab(iFleet, iHabitat) = fleet.HabitatFishery(iHabitat)
+                m_EcospaceData.GearHab(iFleet, iHabitat) = fleet.HabitatFishery(iHabitat)
             Next
             For iMPA As Integer = 0 To Me.nMPAs
-                m_EcoSpaceData.MPAfishery(iFleet, iMPA) = fleet.MPAFishery(iMPA)
+                m_EcospaceData.MPAfishery(iFleet, iMPA) = fleet.MPAFishery(iMPA)
             Next
 
         Catch ex As Exception
@@ -11984,7 +11984,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.MoveEcospaceDriverLayer(Me.m_EcoSpaceData.EnvironmentalLayerDBID(iLayer), iIndex) Then
+        If ds.MoveEcospaceDriverLayer(Me.m_EcospaceData.EnvironmentalLayerDBID(iLayer), iIndex) Then
 
             Me.DataAddedOrRemovedMessage("Ecospace driver layer order has changed.", eCoreComponentType.EcoPath, eDataTypes.EcospaceLayerDriver)
             bSucces = True
@@ -12035,9 +12035,9 @@ Public Class cCore
             Dim iMin As Integer = If(iGroup <= 0, 1, Math.Min(1, Math.Max(Me.nLivingGroups, iGroup)))
             Dim iMax As Integer = If(iGroup <= 0, Me.nLivingGroups, Math.Min(1, Math.Max(Me.nLivingGroups, iGroup)))
             For iGroup = iMin To iMax
-                Me.m_EcoSpaceData.isGroupHabCapChanged(iGroup) = True
+                Me.m_EcospaceData.isGroupHabCapChanged(iGroup) = True
             Next
-            Me.m_EcoSpaceData.isCapacityChanged = True
+            Me.m_EcospaceData.isCapacityChanged = True
             Me.m_Ecospace.SetHabCap()
             Me.onChanged(Me.EcospaceBasemap.LayerHabitatCapacity(1))
         Catch ex As Exception
@@ -12198,7 +12198,7 @@ Public Class cCore
             End If
 
             Dim i As Integer
-            Dim orgVBK As Single = Me.EcoPathGroupInputs(stanza.iGroups(1)).VBK
+            Dim orgVBK As Single = Me.EcopathGroupInputs(stanza.iGroups(1)).VBK
             Dim iHatchCode As Integer = stanza.HatchCode
             Dim bFixedFecundity As Boolean = stanza.FixedFecundity
 
@@ -13224,7 +13224,7 @@ Public Class cCore
     End Function
 
 
-    Private Sub loadEcoTracerResults()
+    Private Sub loadEcotracerResults()
 
         Try
 
@@ -13782,8 +13782,8 @@ Public Class cCore
                 'greater than zero 
                 'less than the last time step
                 'greater than start summary period
-                If value > 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And
-                                value > m_EcoSpaceData.SumStart(0) Then
+                If value > 0 And value + CSng(m_EcospaceData.TimeStep * m_EcospaceData.NumStep) <= m_EcospaceData.TotalTime And
+                                value > m_EcospaceData.SumStart(0) Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
@@ -13800,8 +13800,8 @@ Public Class cCore
                 'greater than or equal to zero 
                 'less than the last time step
                 'less than end summary period
-                If value >= 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And
-                                value < m_EcoSpaceData.SumStart(1) Then
+                If value >= 0 And value + CSng(m_EcospaceData.TimeStep * m_EcospaceData.NumStep) <= m_EcospaceData.TotalTime And
+                                value < m_EcospaceData.SumStart(1) Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
@@ -13819,7 +13819,7 @@ Public Class cCore
 
                 'greater than zero
                 'end of the last summary period is still in bounds
-                If value > 0 And m_EcoSpaceData.SumStart(1) + CSng(value * m_EcoSpaceData.TimeStep) <= m_EcoSpaceData.TotalTime Then
+                If value > 0 And m_EcospaceData.SumStart(1) + CSng(value * m_EcospaceData.TimeStep) <= m_EcospaceData.TotalTime Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
@@ -13840,7 +13840,7 @@ Public Class cCore
                 'Last year of the MPA Optimization Search
                 Dim value As Integer = CInt(ValueObject.Value)
 
-                If value > 0 And value <= m_EcoSpaceData.TotalTime And value >= Me.m_MPAOptData.EcoSpaceStartYear + Me.m_MPAOptData.MinRunLength Then
+                If value > 0 And value <= m_EcospaceData.TotalTime And value >= Me.m_MPAOptData.EcoSpaceStartYear + Me.m_MPAOptData.MinRunLength Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
@@ -13856,7 +13856,7 @@ Public Class cCore
                 'First year of the MPA Optimization Search
                 Dim value As Integer = CInt(ValueObject.Value)
 
-                If value > 0 And value < m_EcoSpaceData.TotalTime And value + Me.m_MPAOptData.MinRunLength <= Me.m_MPAOptData.EcoSpaceEndYear Then
+                If value > 0 And value < m_EcospaceData.TotalTime And value + Me.m_MPAOptData.MinRunLength <= Me.m_MPAOptData.EcoSpaceEndYear Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
@@ -14051,8 +14051,8 @@ Public Class cCore
                 End Select
 
             Case eDataTypes.EcoSimGroupInput
-                Debug.Assert(TypeOf obj Is cEcoSimGroupInput)
-                Dim esi As cEcoSimGroupInput = DirectCast(obj, cEcoSimGroupInput)
+                Debug.Assert(TypeOf obj Is cEcosimGroupInput)
+                Dim esi As cEcosimGroupInput = DirectCast(obj, cEcosimGroupInput)
 
                 Select Case value.varName
                     Case eVarNameFlags.MaxRelPB
@@ -14179,7 +14179,7 @@ Public Class cCore
                         setEcosimRunLength(CInt(value.Value))
 
                         'change the summary periods to fit the new run length
-                        Me.m_EcoSpaceData.setDefaultSummaryPeriod()
+                        Me.m_EcospaceData.setDefaultSummaryPeriod()
 
                         'load the new data into the parameters object
                         Me.LoadEcospaceModelParameters()
@@ -14189,7 +14189,7 @@ Public Class cCore
                     Case eVarNameFlags.ConSimOnEcoSpace
                         'toggle contaminant tracing OFF in ecosim
                         If CBool(value.Value) = True Then
-                            Me.EcoSimModelParameters.ContaminantTracing = False
+                            Me.EcosimModelParameters.ContaminantTracing = False
 
                             If Me.EcospaceModelParameters.NumberOfTimeStepsPerYear <> 12 Then
                                 'Ecospace must have monthly timestep for Contaminant tracing
@@ -14482,7 +14482,7 @@ Public Class cCore
                         'user has changed the number of ecospace time steps per year
                         'resize the output data Ecospace will take care of itself
 
-                        Me.m_EcoSpaceData.setDefaultSummaryPeriod()
+                        Me.m_EcospaceData.setDefaultSummaryPeriod()
 
                         ' ToDo_JS: Test if core counter has been updated prior to calling this!
                         For Each objOutput As cEcospaceGroupOutput In m_EcospaceGroupOuputs
@@ -14544,7 +14544,7 @@ Public Class cCore
                         msg.AddVariable(GetAffectedVariableStatus(obj, eVarNameFlags.InMigAreaMoveWeight))
                         Me.m_publisher.AddMessage(msg)
 
-                        Me.m_EcoSpaceData.RedimMigrationMaps(bClearExisting:=False)
+                        Me.m_EcospaceData.RedimMigrationMaps(bClearExisting:=False)
 
                 End Select
 
@@ -14581,7 +14581,7 @@ Public Class cCore
             Case eDataTypes.EcospaceBasemap
 
                 If value.varName = eVarNameFlags.Latitude Then
-                    Me.m_EcoSpaceData.CalculateCellWidth()
+                    Me.m_EcospaceData.CalculateCellWidth()
                 End If
 
             Case eDataTypes.EcosimFleetInput
@@ -14803,7 +14803,7 @@ Public Class cCore
                     If (obj.DataType = eDataTypes.EcospaceLayerExclusion) Then
                         Me.m_Ecospace.UpdateDepthMap()
                         Me.m_Ecospace.CalcHabitatArea()
-                        Me.EcospaceBasemap.nCells = Me.m_EcoSpaceData.ThabArea
+                        Me.EcospaceBasemap.nCells = Me.m_EcospaceData.ThabArea
                         For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers
                             l.Invalidate()
                         Next

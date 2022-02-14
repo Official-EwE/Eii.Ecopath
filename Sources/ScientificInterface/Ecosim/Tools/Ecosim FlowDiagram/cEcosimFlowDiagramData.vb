@@ -102,7 +102,7 @@ Namespace Ecosim
         Public ReadOnly Property Value(iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
-                Return Me.m_core.EcoSimGroupOutputs(iIndex).Biomass(Me.TimeStep)
+                Return Me.m_core.EcosimGroupOutputs(iIndex).Biomass(Me.TimeStep)
             End Get
         End Property
 
@@ -122,7 +122,7 @@ Namespace Ecosim
         Public ReadOnly Property ItemName(iIndex As Integer) As String _
                 Implements IFlowDiagramData.ItemName
             Get
-                Return Me.m_core.EcoPathGroupInputs(iIndex).Name
+                Return Me.m_core.EcopathGroupInputs(iIndex).Name
             End Get
         End Property
 
@@ -153,7 +153,7 @@ Namespace Ecosim
                Implements IFlowDiagramData.LinkValue
             Get
                 ' ToDo: obtain this from Ecosim
-                Dim group As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iPred)
+                Dim group As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iPred)
                 Return group.DietComp(iPrey)
             End Get
         End Property
@@ -164,7 +164,7 @@ Namespace Ecosim
         Public ReadOnly Property TrophicLevel(iIndex As Integer) As Single _
                 Implements IFlowDiagramData.TrophicLevel
             Get
-                Return Me.m_core.EcoPathGroupOutputs(iIndex).TTLX
+                Return Me.m_core.EcopathGroupOutputs(iIndex).TTLX
             End Get
         End Property
 

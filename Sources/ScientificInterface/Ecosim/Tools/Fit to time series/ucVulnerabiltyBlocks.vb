@@ -566,8 +566,8 @@ Namespace Ecosim
             Me.m_ptLast.X = ptPredPrey.X
             Me.m_ptLast.Y = ptPredPrey.Y
 
-            If ptPredPrey.X > 0 Then strPred = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.X, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.X).Name)
-            If ptPredPrey.Y > 0 Then strPrey = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.Y, Me.m_uic.Core.EcoPathGroupInputs(ptPredPrey.Y).Name)
+            If ptPredPrey.X > 0 Then strPred = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.X, Me.m_uic.Core.EcopathGroupInputs(ptPredPrey.X).Name)
+            If ptPredPrey.Y > 0 Then strPrey = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, ptPredPrey.Y, Me.m_uic.Core.EcopathGroupInputs(ptPredPrey.Y).Name)
 
             ' Format tooltip
             If (ptPredPrey.X <> 0) Or (ptPredPrey.Y <> 0) Then

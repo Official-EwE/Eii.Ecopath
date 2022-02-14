@@ -66,7 +66,7 @@ Namespace Ecopath.Input
             Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To Me.Core.nGroups
-                source = Me.Core.EcoPathGroupInputs(i)
+                source = Me.Core.EcopathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
@@ -118,7 +118,7 @@ Namespace Ecopath.Input
             ' For each column
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 ' Get the group
-                source = Me.Core.EcoPathGroupInputs(iGroup)
+                source = Me.Core.EcopathGroupInputs(iGroup)
 
                 If source.PP < 1 Then
 
@@ -128,7 +128,7 @@ Namespace Ecopath.Input
                     ' For each row
                     For iRow As Integer = 1 To Me.Core.nGroups
                         ' Get index group
-                        sourceSec = Me.Core.EcoPathGroupInputs(iRow)
+                        sourceSec = Me.Core.EcopathGroupInputs(iRow)
 
                         ' Get the indexed dietcomp property
                         prop = pm.GetProperty(source, eVarNameFlags.DietComp, sourceSec)

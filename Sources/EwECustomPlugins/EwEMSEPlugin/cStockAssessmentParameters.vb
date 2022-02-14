@@ -128,7 +128,7 @@ Public Class cStockAssessmentParameters
 
     Public ReadOnly Property isFished As Boolean
         Get
-            Return Me.m_Assessment.Core.EcoPathGroupInputs(Me.iGroupIndex).IsFished
+            Return Me.m_Assessment.Core.EcopathGroupInputs(Me.iGroupIndex).IsFished
         End Get
     End Property
 

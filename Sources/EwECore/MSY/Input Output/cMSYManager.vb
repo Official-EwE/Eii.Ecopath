@@ -649,10 +649,10 @@ Namespace MSY
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Run Ecosim
-                Me.m_Core.EcoSimModelParameters.NumberYears = Me.m_msyData.nYearsPerTrial
+                Me.m_Core.EcosimModelParameters.NumberYears = Me.m_msyData.nYearsPerTrial
                 Dim ntimesteps As Integer = Me.m_Core.nEcosimTimeSteps
                 Me.m_Core.m_EcoSimData.bTimestepOutput = True
-                Me.m_Core.RunEcoSim()
+                Me.m_Core.RunEcosim()
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Dump out the comparison

@@ -90,7 +90,7 @@ Public Class cPredatorPreySelection
     Public Function GetIndexPredatorForEcoSim() As Integer
         Dim PredIndexEcosim As Integer = 1
 
-        While Me.m_core.EcoSimGroupOutputs(PredIndexEcosim).Name <> Me.m_Predator
+        While Me.m_core.EcosimGroupOutputs(PredIndexEcosim).Name <> Me.m_Predator
             PredIndexEcosim += 1
         End While
         Return PredIndexEcosim
@@ -100,7 +100,7 @@ Public Class cPredatorPreySelection
     Public Function GetIndexPreyForEcoSim(i As Integer) As Integer
         Dim PreyIndexEcosim As Integer = 1
 
-        While Me.m_core.EcoSimGroupOutputs(PreyIndexEcosim).Name <> Me.m_Prey(i)
+        While Me.m_core.EcosimGroupOutputs(PreyIndexEcosim).Name <> Me.m_Prey(i)
             PreyIndexEcosim += 1
         End While
         Return PreyIndexEcosim

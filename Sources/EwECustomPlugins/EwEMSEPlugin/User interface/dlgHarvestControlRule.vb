@@ -90,8 +90,8 @@ Public Class dlgHarvestControlRule
         End If
 
         For igrp As Integer = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupInputs(igrp).IsFished Then
-                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(igrp)
+            If Me.Core.EcopathGroupInputs(igrp).IsFished Then
+                Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbBiomassGroups.Items.Add(grp)
                 If (ReferenceEquals(grp, Me.m_HCR.GroupB)) Then
                     Me.m_cmbBiomassGroups.SelectedIndex = i
@@ -100,8 +100,8 @@ Public Class dlgHarvestControlRule
         Next
 
         For igrp As Integer = 1 To Me.Core.nGroups
-            If Me.Core.EcoPathGroupInputs(igrp).IsFished Then
-                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(igrp)
+            If Me.Core.EcopathGroupInputs(igrp).IsFished Then
+                Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbFMortGroups.Items.Add(grp)
                 If (ReferenceEquals(grp, Me.m_HCR.GroupF)) Then
                     Me.m_cmbFMortGroups.SelectedIndex = i
@@ -202,14 +202,14 @@ Public Class dlgHarvestControlRule
 
     Private Sub UpdateHCR()
 
-        Dim grpOut As cEcoPathGroupOutput = Nothing
+        Dim grpOut As cEcopathGroupOutput = Nothing
         Dim sVal As Single = 0
 
         ' Group Biomass
         Me.m_HCR.GroupB = DirectCast(Me.m_cmbBiomassGroups.SelectedItem, cEcoPathGroupInput)
 
         If (Me.m_HCR.GroupB IsNot Nothing) Then
-            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HCR.GroupB.Index)
+            grpOut = Me.Core.EcopathGroupOutputs(Me.m_HCR.GroupB.Index)
             sVal = grpOut.Biomass
         Else
             sVal = 0
@@ -221,7 +221,7 @@ Public Class dlgHarvestControlRule
         ' Fishing Mort
         Me.m_HCR.GroupF = DirectCast(Me.m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)
         If (Me.m_HCR.GroupF IsNot Nothing) Then
-            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HCR.GroupF.Index)
+            grpOut = Me.Core.EcopathGroupOutputs(Me.m_HCR.GroupF.Index)
             Me.m_HCR.MaxF = grpOut.MortCoFishRate
         Else
             Me.m_HCR.MaxF = 0

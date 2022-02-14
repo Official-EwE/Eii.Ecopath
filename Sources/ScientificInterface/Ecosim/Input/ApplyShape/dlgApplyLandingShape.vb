@@ -87,7 +87,7 @@ Namespace Ecosim
                 Me.m_iSelFleet = iFleet
 
                 ' Remember target names
-                Me.m_strSelGroup = Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup).Name
+                Me.m_strSelGroup = Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelGroup).Name
                 Me.m_strSelFleet = Me.m_uic.Core.EcopathFleetInputs(Me.m_iSelFleet).Name
 
                 Me.m_lInteractions.Add(Me.m_InteractionManager.LandingInteraction(Me.m_iSelFleet, Me.m_iSelGroup))
@@ -115,7 +115,7 @@ Namespace Ecosim
 
                 Case eEditMode.Group
                     Me.m_iSelGroup = iTarget
-                    Me.m_strSelGroup = Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup).Name
+                    Me.m_strSelGroup = Me.m_uic.Core.EcopathGroupInputs(Me.m_iSelGroup).Name
 
                     For i As Integer = 1 To Me.m_nGroups
                         If Me.m_InteractionManager.isLandings(i, Me.m_iSelGroup) Then

@@ -604,7 +604,7 @@ Friend Class cEngine
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
                     m_log.Add("Running Ecosim scenario " & scenario.Name & ":")
                     'Me.m_core.EcoSimModelParameters.ContaminantTracing = True
-                    Me.m_core.RunEcoSim(Nothing, False)
+                    Me.m_core.RunEcosim(Nothing, False)
                     m_log.Add("- Done")
                 End If
 

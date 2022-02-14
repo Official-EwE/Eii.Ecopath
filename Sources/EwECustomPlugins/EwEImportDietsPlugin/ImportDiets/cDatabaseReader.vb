@@ -83,7 +83,7 @@ Public Class cDatabaseReader
 
         If (core.LoadModel(ds)) Then
 
-            If core.RunEcoPath(bBalanced) Then
+            If core.RunEcopath(bBalanced) Then
                 If bBalanced Then
                     bReturnCore = True
                 Else

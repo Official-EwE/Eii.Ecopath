@@ -118,7 +118,7 @@ Public Class dlgSelectEnvironmentalResponse
         Dim strGroup As String
         Select Case selection
             Case eEnvironmentalResponseSelectionType.DriverGroup
-                strGroup = uic.Core.EcoPathGroupInputs(iSelGroup).Name
+                strGroup = uic.Core.EcopathGroupInputs(iSelGroup).Name
             Case Else
                 strGroup = SharedResources.GENERIC_VALUE_ALLGROUPS
         End Select

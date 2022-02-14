@@ -69,7 +69,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
         ' First save timestep now picked up by writers at initialization
         ' This value does not need to be set externally anymore
-        Me.m_FirstStep = Me.m_core.m_EcoSpaceData.FirstOutputTimeStep
+        Me.m_FirstStep = Me.m_core.m_EcospaceData.FirstOutputTimeStep
 
     End Sub
 
@@ -119,7 +119,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     Protected Overridable Function CreateOutputDir() As Boolean
 
-        If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
+        If Me.m_core.m_EcospaceData.UseCoreOutputDir Then
             ' Write to "Ecospace output dir\ext\"
             Dim iStr As String = Me.FileExtension()
             iStr = cStringUtils.ReplaceAll(iStr, ".", "")
@@ -283,7 +283,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     Protected ReadOnly Property EcospaceData() As cEcospaceDataStructures
         Get
-            Return Me.m_core.m_EcoSpaceData
+            Return Me.m_core.m_EcospaceData
         End Get
     End Property
 

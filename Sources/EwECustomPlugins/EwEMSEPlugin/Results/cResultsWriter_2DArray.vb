@@ -72,7 +72,7 @@ Public Class cResultsWriter_2DArray
                 If iGrp = 0 Then
                     GroupName = "AllGroups"
                 Else
-                    GroupName = Me.m_Core.EcoPathGroupInputs(iGrp).Name & "_GroupNo" & iGrp
+                    GroupName = Me.m_Core.EcopathGroupInputs(iGrp).Name & "_GroupNo" & iGrp
                 End If
                 If iFleet = 0 Then
                     FleetName = "_AllFleets"
@@ -121,7 +121,7 @@ Public Class cResultsWriter_2DArray
                 If iGrp = 0 Then
                     GroupName = "AllGroups"
                 Else
-                    GroupName = Me.m_Core.EcoPathGroupInputs(iGrp).Name
+                    GroupName = Me.m_Core.EcopathGroupInputs(iGrp).Name
                 End If
                 If iFleet = 0 Then
                     FleetName = "AllFleets"
