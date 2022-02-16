@@ -528,24 +528,24 @@ Public Class cEwENetworkAnalysisPlugin
 #Region " AutoRun "
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
-        Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim}
+        Return New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim}
     End Function
 
     Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
         Get
             Select Case type
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     Return Me.m_manager.RunWithEcopath
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.Ecosim
                     Return Me.m_manager.RunWithEcosim
             End Select
             Return False
         End Get
         Set(value As Boolean)
             Select Case type
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     Me.m_manager.RunWithEcopath = value
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.Ecosim
                     Me.m_manager.RunWithEcosim = value
             End Select
         End Set

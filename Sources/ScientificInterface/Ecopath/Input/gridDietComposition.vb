@@ -181,13 +181,13 @@ Namespace Ecopath.Input
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
-                Return eCoreComponentType.EcoPath
+                Return eCoreComponentType.Ecopath
             End Get
         End Property
 
         Public Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
             ' Repopulate grid when ecopath group PP values have changed
-            If (msg.Source = eCoreComponentType.EcoPath) And _
+            If (msg.Source = eCoreComponentType.Ecopath) And _
                (msg.DataType = eDataTypes.EcoPathGroupInput) And _
                (msg.Type = eMessageType.DataValidation) Then
                 If msg.HasVariable(eVarNameFlags.PP) Then

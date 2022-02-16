@@ -60,7 +60,7 @@ Public Class frmMSEBatchFixedF
 
         Me.UpdateControls()
 
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.EcoSim}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.Ecosim}
 
 
     End Sub

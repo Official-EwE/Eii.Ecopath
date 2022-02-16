@@ -177,7 +177,7 @@ Public Class cValueChainPlugin
                     Me.m_syncobj = New SynchronizationContext()
                 End If
                 Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnEcopathMessage,
-                                                     eCoreComponentType.EcoPath,
+                                                     eCoreComponentType.Ecopath,
                                                      eMessageType.DataValidation,
                                                      Me.m_syncobj)
 #If DEBUG Then
@@ -763,9 +763,9 @@ Public Class cValueChainPlugin
             Dim parms As cParameters = Me.m_data.Parameters
             If (parms Is Nothing) Then Return False
             Select Case type
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     Return parms.RunWithEcopath
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.Ecosim
                     Return parms.RunWithEcosim
                 Case eCoreComponentType.FishingPolicySearch
                     Return parms.RunWithSearches
@@ -775,9 +775,9 @@ Public Class cValueChainPlugin
         Set(value As Boolean)
             Dim parms As cParameters = Me.m_data.Parameters
             Select Case type
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     parms.RunWithEcopath = value
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.Ecosim
                     parms.RunWithEcosim = value
                 Case eCoreComponentType.FishingPolicySearch
                     parms.RunWithSearches = value
@@ -786,7 +786,7 @@ Public Class cValueChainPlugin
     End Property
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
-        Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.FishingPolicySearch}
+        Return New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.FishingPolicySearch}
     End Function
 
 #End Region ' AutoRun

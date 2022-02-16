@@ -50,7 +50,7 @@ Public Class cStanzaGroup
         Me.Index = iStanza
         Me.m_core = core
         Me.m_dataType = eDataTypes.Stanza
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
 
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 

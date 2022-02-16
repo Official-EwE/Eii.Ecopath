@@ -521,7 +521,7 @@ Namespace SpatialData
 
         Public ReadOnly Property CoreComponent As EwEUtils.Core.eCoreComponentType Implements ICoreInterface.CoreComponent
             Get
-                Return eCoreComponentType.EcoSpace
+                Return eCoreComponentType.Ecospace
             End Get
         End Property
 

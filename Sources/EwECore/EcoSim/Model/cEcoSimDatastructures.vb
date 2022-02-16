@@ -258,7 +258,7 @@ Public Class cEcosimDatastructures
     ''' </summary>
     ''' <remarks>
     ''' Consumption(iPrey,iPred) 
-    ''' computed in <see cref="Ecosim.cEcoSimModel.CalcEatenOfBy">Ecosim.CalcEatenOfBy</see>
+    ''' computed in <see cref="Ecosim.cEcosimModel.CalcEatenOfBy">Ecosim.CalcEatenOfBy</see>
     ''' </remarks>
     Public Consumption(,) As Single
 
@@ -335,10 +335,10 @@ Public Class cEcosimDatastructures
     Public QBoutside() As Single
 
     ''' <summary>
-    ''' Base rate of Detritus accumulation ([accumulated detritus biomass]/[biomass t=0]) calculated in <see cref="EwECore.Ecosim.cEcoSimModel.SimDetritusMT">SimDetritusMT</see>.
+    ''' Base rate of Detritus accumulation ([accumulated detritus biomass]/[biomass t=0]) calculated in <see cref="EwECore.Ecosim.cEcosimModel.SimDetritusMT">SimDetritusMT</see>.
     ''' </summary>
     ''' <remarks>
-    ''' Calculated during the initialization of Ecosim by <see cref="EwECore.Ecosim.cEcoSimModel.Init">Init()</see> and <see cref="EwECore.Ecosim.cEcoSimModel.SetTimeSteps">SetTimeSteps()</see>. 
+    ''' Calculated during the initialization of Ecosim by <see cref="EwECore.Ecosim.cEcosimModel.Init">Init()</see> and <see cref="EwECore.Ecosim.cEcosimModel.SetTimeSteps">SetTimeSteps()</see>. 
     ''' Used by both Ecosim and Ecospace. When Ecospace initializes it calls Ecosim.Init() this sets DetritusOut() to the base Ecosim values. 
     ''' This avoids any issues with setting the initial biomass or threading races. 
     ''' </remarks>

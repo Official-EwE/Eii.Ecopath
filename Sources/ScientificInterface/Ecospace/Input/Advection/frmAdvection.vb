@@ -95,7 +95,7 @@ Namespace Ecospace.Advection
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
 
             ' Config EwEForm
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace}
 
             Me.m_fpUpwellingThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_txtUpwelling, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingThreshold)
             Me.m_fpPPMult = New cPropertyFormatProvider(Me.UIContext, Me.m_txtPPMult, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingPPMultiplier)
@@ -262,7 +262,7 @@ Namespace Ecospace.Advection
 
             If bBadFlow Or bInterrupted Then
                 Dim msg As New cMessage(My.Resources.ADVECTION_FAILED, eMessageType.ErrorEncountered,
-                                        eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                                        eCoreComponentType.Ecospace, eMessageImportance.Warning)
                 Me.Core.Messages.SendMessage(msg)
             End If
 

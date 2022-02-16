@@ -79,7 +79,7 @@ Namespace Ecospace
             Me.m_plResultsGrid.Controls.Add(Me.m_GridGroup)
             Me.m_plResultsGrid.Controls.Add(Me.m_GridRegion)
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace}
 
             Me.FillFilterCombos()
             Me.UpdateControls()

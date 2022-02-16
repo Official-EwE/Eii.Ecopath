@@ -872,7 +872,7 @@ Public Class cEcopathDataStructures
         If (bRespOK = False) Then
             If (bQuiet = False) Then
                 strMsg = My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING
-                Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning))
+                Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Warning))
             Else
                 Console.WriteLine(My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING)
             End If
@@ -1184,7 +1184,7 @@ Public Class cEcopathDataStructures
             If bGSWarning Then
                 Dim strmsg As String = My.Resources.CoreMessages.ECOPATH_GS_WARNING
                 Me.m_messages.AddMessage(New cMessage(strmsg, eMessageType.ErrorEncountered,
-                                                eCoreComponentType.EcoPath, eMessageImportance.Warning))
+                                                eCoreComponentType.Ecopath, eMessageImportance.Warning))
             End If
         Catch ex As Exception
 

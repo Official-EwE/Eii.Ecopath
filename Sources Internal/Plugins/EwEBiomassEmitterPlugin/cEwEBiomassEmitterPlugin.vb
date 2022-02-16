@@ -120,7 +120,7 @@ Public Class cEwEBiomassEmitterPlugin
 #Region " AutoRun "
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
-        Return New eCoreComponentType() {eCoreComponentType.EcoSpace}
+        Return New eCoreComponentType() {eCoreComponentType.Ecospace}
     End Function
 
     Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun

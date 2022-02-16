@@ -190,7 +190,7 @@ Namespace Ecosim
             If (m_SyncObj Is Nothing) Then m_SyncObj = New System.Threading.SynchronizationContext()
 
             ' Start listening for core messages
-            Me.m_mhEcosim = New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, m_SyncObj)
+            Me.m_mhEcosim = New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.Ecosim, eMessageType.Any, m_SyncObj)
 #If DEBUG Then
             Me.m_mhEcosim.Name = "frmStockRecruitment.Ecosim"
 #End If

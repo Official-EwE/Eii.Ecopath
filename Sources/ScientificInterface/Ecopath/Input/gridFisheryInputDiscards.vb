@@ -212,7 +212,7 @@ Namespace Ecopath.Input
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
-                Return eCoreComponentType.EcoPath
+                Return eCoreComponentType.Ecopath
             End Get
         End Property
 

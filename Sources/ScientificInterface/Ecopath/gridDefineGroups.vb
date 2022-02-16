@@ -1615,7 +1615,7 @@ Public Class gridDefineGroups
                     If gi.StanzaAge <> 0 Then
                         gi.StanzaAge = 0
                         strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED, si.Name)
-                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                         Me.UpdateStanzaColumns()
                     End If
@@ -1623,12 +1623,12 @@ Public Class gridDefineGroups
                     ' Cannot have two groups of the same age within a stanza
                     If gi.StanzaAge = giPrev.StanzaAge Then
                         strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGESAME, giPrev.Name, gi.Name, si.Name)
-                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                         Return False
                     ElseIf (Math.Abs(gi.StanzaAge - giPrev.StanzaAge) < 2) Then
                         strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGESDIFF, si.Name)
-                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                         Return False
                     End If
@@ -1685,7 +1685,7 @@ Public Class gridDefineGroups
         ' 1. Must be at least 1 detritus group found
         If nDetritus < 1 Then
             ' Display warning that requires user action
-            Dim msg As New cMessage(My.Resources.ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            Dim msg As New cMessage(My.Resources.ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS, eMessageType.Any, eCoreComponentType.Ecopath, eMessageImportance.Warning)
             Me.UIContext.Core.Messages.SendMessage(msg)
             Return False
         End If
@@ -1693,7 +1693,7 @@ Public Class gridDefineGroups
         ' 2. All detritus groups must be at the end of the list
         If Not bAllDetritusAtEnd Then
             ' Ask user feedback whether detritus order may be corrected
-            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND, eCoreComponentType.Ecopath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.UIContext.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply <> eMessageReply.YES) Then Return False
             ' Fix it
@@ -1764,7 +1764,7 @@ Public Class gridDefineGroups
             If (Not gi.IsNew()) Then
 
                 strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT, gi.Name)
-                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Ecopath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                 Select Case fmsg.Reply
@@ -1953,7 +1953,7 @@ Public Class gridDefineGroups
         End If
 
         If Not bSuccess Then
-            Dim msg As New cMessage(sb.ToString, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Critical)
+            Dim msg As New cMessage(sb.ToString, eMessageType.Any, eCoreComponentType.Ecopath, eMessageImportance.Critical)
             Me.UIContext.Core.Messages.SendMessage(msg)
         End If
 

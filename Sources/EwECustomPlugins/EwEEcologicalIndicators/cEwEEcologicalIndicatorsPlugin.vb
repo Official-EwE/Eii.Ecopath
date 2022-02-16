@@ -1378,24 +1378,24 @@ Public Class cEwEEcologicalIndicatorsPlugin
 #Region " AutoRun "
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
-        Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.EcoSimMonteCarlo}
+        Return New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.EcoSimMonteCarlo}
     End Function
 
     Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
         Get
             Select Case type
-                Case eCoreComponentType.EcoPath : Return Me.m_settings.RunWithEcopath
-                Case eCoreComponentType.EcoSim : Return Me.m_settings.RunWithEcosim
-                Case eCoreComponentType.EcoSpace : Return Me.m_settings.RunWithEcospace
+                Case eCoreComponentType.Ecopath : Return Me.m_settings.RunWithEcopath
+                Case eCoreComponentType.Ecosim : Return Me.m_settings.RunWithEcosim
+                Case eCoreComponentType.Ecospace : Return Me.m_settings.RunWithEcospace
                 Case eCoreComponentType.EcoSimMonteCarlo : Return Me.m_settings.RunWithMonteCarlo
             End Select
             Return False
         End Get
         Set(value As Boolean)
             Select Case type
-                Case eCoreComponentType.EcoPath : Me.m_settings.RunWithEcopath = value
-                Case eCoreComponentType.EcoSim : Me.m_settings.RunWithEcosim = value
-                Case eCoreComponentType.EcoSpace : Me.m_settings.RunWithEcospace = value
+                Case eCoreComponentType.Ecopath : Me.m_settings.RunWithEcopath = value
+                Case eCoreComponentType.Ecosim : Me.m_settings.RunWithEcosim = value
+                Case eCoreComponentType.Ecospace : Me.m_settings.RunWithEcospace = value
                 Case eCoreComponentType.EcoSimMonteCarlo : Me.m_settings.RunWithMonteCarlo = value
             End Select
             My.Settings.Save()

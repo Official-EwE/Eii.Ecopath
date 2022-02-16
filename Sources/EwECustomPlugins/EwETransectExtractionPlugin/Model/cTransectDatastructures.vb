@@ -59,7 +59,7 @@ Public Class cTransectDatastructures
 
     Protected Sub New(core As cCore)
         MyBase.New(core)
-        Me.m_coreComponent = eCoreComponentType.EcoSpace
+        Me.m_coreComponent = eCoreComponentType.Ecospace
     End Sub
 
 #End Region ' Singleton

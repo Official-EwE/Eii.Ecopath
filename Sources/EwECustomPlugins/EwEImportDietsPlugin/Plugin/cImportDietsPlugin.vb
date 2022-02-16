@@ -57,8 +57,8 @@ Public Class cImportDietsPlugin
     ''' <summary>The core that this plug-in can use</summary>
     Private m_core As cCore
 
-    Private m_EcoPath As cEcoPathModel
-    Private m_EcoSim As cEcoSimModel
+    Private m_EcoPath As cEcopathModel
+    Private m_EcoSim As cEcosimModel
     Private m_EcoSpace As cEcoSpace
     Private m_EcoPathData As cEcopathDataStructures
     Private m_EcoSimData As cEcosimDatastructures
@@ -108,8 +108,8 @@ Public Class cImportDietsPlugin
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
-            Me.m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            Me.m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            Me.m_EcoPath = TryCast(EcopathAsObject, cEcopathModel)
+            Me.m_EcoSim = TryCast(EcoSimAsObject, cEcosimModel)
             Me.m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
             Debug.Assert((Me.m_EcoPath IsNot Nothing) And (Me.m_EcoSim IsNot Nothing) And (Me.m_EcoSpace IsNot Nothing),

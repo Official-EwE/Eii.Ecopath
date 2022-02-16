@@ -34,7 +34,7 @@ Public Class cEcosimArena
         Dim val As cValue = Nothing
 
         Me.m_dataType = eDataTypes.EcosimArenaShare
-        Me.m_coreComponent = eCoreComponentType.EcoSim
+        Me.m_coreComponent = eCoreComponentType.Ecosim
 
         Me.AllowValidation = False
 

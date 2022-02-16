@@ -88,7 +88,7 @@ Namespace Ecospace.Basemap
             ' Initialize layers from core data
             Me.LoadCoreValuesToBasemap()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace}
 
             Me.m_plEditor.Visible = False
 
@@ -332,7 +332,7 @@ Namespace Ecospace.Basemap
 
             If Me.IsDisposed Then Return
 
-            If (msg.Source = eCoreComponentType.EcoSpace) Then
+            If (msg.Source = eCoreComponentType.Ecospace) Then
                 ' Refresh basemap on ANY data added or removed message from Ecospace
                 If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                     ' Redraw it all

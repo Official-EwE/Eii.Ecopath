@@ -126,7 +126,7 @@ Namespace Ecopath.Tools
 
             If bLevelsMissing And (cmd IsNot Nothing) Then
                 Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DEFINE_PEDIGREE, _
-                                                 eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                                                 eCoreComponentType.Ecopath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 fmsg.Reply = eMessageReply.YES
                 fmsg.Suppressable = True
                 Me.Core.Messages.SendMessage(fmsg)
@@ -170,7 +170,7 @@ Namespace Ecopath.Tools
         Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
-            If (msg.Source = eCoreComponentType.EcoPath) Then
+            If (msg.Source = eCoreComponentType.Ecopath) Then
                 ' #Levels added?
                 If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                     ' #Yes: repopulate controls reflecting pedigree levels, just in case

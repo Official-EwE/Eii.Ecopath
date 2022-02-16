@@ -206,7 +206,7 @@ Public Class cEIIDataSource
     Public Function LoadModel() As Boolean _
         Implements IEcopathDataSource.LoadModel
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim i As Integer
 
         If Me.LoadEcopath() Then
@@ -249,7 +249,7 @@ Public Class cEIIDataSource
 
         'read the contents of the eii file into an EcopathParameters object
         'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
         Dim pvar As Single
         Dim i As Integer

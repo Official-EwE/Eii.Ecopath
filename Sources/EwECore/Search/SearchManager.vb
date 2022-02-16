@@ -87,7 +87,7 @@ Namespace SearchObjectives
                 Dim search As cSearchDatastructures = Me.m_core.m_SearchData
 
                 'sets BGoalValue() as a function of PB from last ecopath run
-                search.setDefaultBGoal(Me.m_core.m_EcoPathData.PB)
+                search.setDefaultBGoal(Me.m_core.m_EcopathData.PB)
                 'discount factor, FLimit, Default F rates
                 search.setDefaultOptimizationValues()
 
@@ -98,7 +98,7 @@ Namespace SearchObjectives
                 Dim grp As cSearchObjectiveGroupInput
                 For igrp As Integer = 1 To Me.m_core.nGroups
                     'use the database ID for the Ecopath Groups
-                    grp = New cSearchObjectiveGroupInput(Me.m_core, Me.m_core.m_EcoPathData.GroupDBID(igrp))
+                    grp = New cSearchObjectiveGroupInput(Me.m_core, Me.m_core.m_EcopathData.GroupDBID(igrp))
                     Me.m_lstGroups.Add(grp)
                 Next
 
@@ -107,7 +107,7 @@ Namespace SearchObjectives
                 Dim flt As cSearchObjectiveFleetInput
                 For iflt As Integer = 1 To Me.m_core.nFleets
                     'use the database ID for the Fleets
-                    flt = New cSearchObjectiveFleetInput(Me.m_core, Me.m_core.m_EcoPathData.FleetDBID(iflt))
+                    flt = New cSearchObjectiveFleetInput(Me.m_core, Me.m_core.m_EcopathData.FleetDBID(iflt))
                     Me.m_lstFleets.Add(flt)
                 Next
 
@@ -161,9 +161,9 @@ Namespace SearchObjectives
 
                 For Each grp As cSearchObjectiveGroupInput In Me.m_lstGroups
                     grp.AllowValidation = False
-                    igrp = Array.IndexOf(Me.m_core.m_EcoPathData.GroupDBID, grp.DBID)
+                    igrp = Array.IndexOf(Me.m_core.m_EcopathData.GroupDBID, grp.DBID)
                     grp.Index = igrp
-                    grp.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
+                    grp.Name = Me.m_core.m_EcopathData.GroupName(igrp)
 
                     grp.MandRelBiom = coreData.MGoalValue(grp.Index)
                     grp.StrucRelWeight = coreData.BGoalValue(grp.Index)
@@ -176,11 +176,11 @@ Namespace SearchObjectives
                 For Each flt As cSearchObjectiveFleetInput In Me.m_lstFleets
                     flt.AllowValidation = False
 
-                    iflt = Array.IndexOf(Me.m_core.m_EcoPathData.FleetDBID, flt.DBID)
+                    iflt = Array.IndexOf(Me.m_core.m_EcopathData.FleetDBID, flt.DBID)
                     flt.Index = iflt
 
                     flt.Resize()
-                    flt.Name = Me.m_core.m_EcoPathData.FleetName(iflt)
+                    flt.Name = Me.m_core.m_EcopathData.FleetName(iflt)
                     'pop variables.....
 
                     flt.JobCatchValue = coreData.Jobs(flt.Index)

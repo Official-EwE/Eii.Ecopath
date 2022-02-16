@@ -848,7 +848,7 @@ Imports EwEUtils.Core
 
                 strPrompt = cStringUtils.Localize(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
 
-                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Ecopath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                 Select Case fmsg.Reply

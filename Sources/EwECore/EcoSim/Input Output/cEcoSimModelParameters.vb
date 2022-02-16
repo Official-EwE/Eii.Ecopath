@@ -44,7 +44,7 @@ Public Class cEcoSimModelParameters
         Try
             'no data validation at this time
             Me.AllowValidation = False
-            Me.m_coreComponent = eCoreComponentType.EcoSim
+            Me.m_coreComponent = eCoreComponentType.Ecosim
             Me.m_dataType = eDataTypes.EcoSimModelParameter
 
             Dim val As cValue

@@ -31,7 +31,7 @@ Public Class cEcosimStats
 
         Me.DBID = cCore.NULL_VALUE
         Me.m_dataType = eDataTypes.EcoSimStatistics
-        Me.m_coreComponent = eCoreComponentType.EcoSim
+        Me.m_coreComponent = eCoreComponentType.Ecosim
 
         Try
 

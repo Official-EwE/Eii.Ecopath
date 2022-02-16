@@ -51,7 +51,7 @@ Public Class cSpaceSolver
     Public m_SimData As cEcosimDatastructures
     Public m_PathData As cEcopathDataStructures
     Public m_Stanza As cStanzaDatastructures
-    Public m_Ecosim As Ecosim.cEcoSimModel
+    Public m_Ecosim As Ecosim.cEcosimModel
     Public m_TracerData As cContaminantTracerDataStructures
 
     Public Search As cSearchDatastructures

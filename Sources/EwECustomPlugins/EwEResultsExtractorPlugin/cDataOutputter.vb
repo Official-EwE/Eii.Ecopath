@@ -329,13 +329,13 @@ Public Class cDataOutputer
 
     Private Sub PrepareExportMessage()
         Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE, Me.PPath), _
-                                        eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                                        eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
         Me.mMsg.Hyperlink = Me.PPath
     End Sub
 
     Private Sub LogException(strError As String)
         Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError), _
-                               eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                               eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
     End Sub
 
     ''' <summary>
@@ -353,11 +353,11 @@ Public Class cDataOutputer
             Case eOutputTypes.CSV
                 vs = New cVariableStatus(status, _
                                          cStringUtils.Localize(My.Resources.GENERIC_SAVE_CSV, strName, strFile), _
-                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
+                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecosim, 0)
             Case eOutputTypes.Excel
                 vs = New cVariableStatus(status, _
                                          cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEL, strName, strFile), _
-                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
+                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecosim, 0)
         End Select
         Me.mMsg.AddVariable(vs)
     End Sub

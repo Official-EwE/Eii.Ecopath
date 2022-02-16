@@ -111,48 +111,48 @@ Public Class cEcopathGroupOutput
             'Set the Status Flags to ValueComputed for input/output pairs 
             'if the modeled value is different than the input value.
             'The original data structure is needed to perform this.
-            If (Not cNumberUtils.Approximates(Me.m_core.m_EcoPathData.EE(Me.Index), Me.m_core.m_EcoPathData.EEinput(Me.Index), 0.0001)) And
-               (Me.m_core.m_EcoPathData.EE(Me.Index) <> (1 - Me.m_core.m_EcoPathData.OtherMortinput(Me.Index))) Then
+            If (Not cNumberUtils.Approximates(Me.m_core.m_EcopathData.EE(Me.Index), Me.m_core.m_EcopathData.EEinput(Me.Index), 0.0001)) And
+               (Me.m_core.m_EcopathData.EE(Me.Index) <> (1 - Me.m_core.m_EcopathData.OtherMortinput(Me.Index))) Then
                 Me.SetStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.EEOutput, Me.m_core.m_EcoPathData.EE(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            Me.SetNullFlag(eVarNameFlags.EEOutput, Me.m_core.m_EcopathData.EE(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
-            If Me.m_core.m_EcoPathData.PB(Me.Index) <> Me.m_core.m_EcoPathData.PBinput(Me.Index) Then
+            If Me.m_core.m_EcopathData.PB(Me.Index) <> Me.m_core.m_EcopathData.PBinput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.PBOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.PBOutput, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.PBOutput, Me.m_core.m_EcoPathData.PB(Me.Index))
+            Me.SetNullFlag(eVarNameFlags.PBOutput, Me.m_core.m_EcopathData.PB(Me.Index))
 
-            If Me.m_core.m_EcoPathData.QB(Me.Index) <> Me.m_core.m_EcoPathData.QBinput(Me.Index) Then
+            If Me.m_core.m_EcopathData.QB(Me.Index) <> Me.m_core.m_EcopathData.QBinput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.QBOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.QBOutput, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.QBOutput, Me.m_core.m_EcoPathData.QB(Me.Index))
+            Me.SetNullFlag(eVarNameFlags.QBOutput, Me.m_core.m_EcopathData.QB(Me.Index))
 
-            If Me.m_core.m_EcoPathData.GE(Me.Index) <> Me.m_core.m_EcoPathData.GEinput(Me.Index) Then
+            If Me.m_core.m_EcopathData.GE(Me.Index) <> Me.m_core.m_EcopathData.GEinput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.GEOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.GEOutput, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.GEOutput, Me.m_core.m_EcoPathData.GE(Me.Index))
+            Me.SetNullFlag(eVarNameFlags.GEOutput, Me.m_core.m_EcopathData.GE(Me.Index))
 
-            If Me.m_core.m_EcoPathData.B(Me.Index) <> Me.m_core.m_EcoPathData.Binput(Me.Index) Then
+            If Me.m_core.m_EcopathData.B(Me.Index) <> Me.m_core.m_EcopathData.Binput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.Biomass, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.Biomass, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.Biomass, Me.m_core.m_EcoPathData.B(Me.Index))
+            Me.SetNullFlag(eVarNameFlags.Biomass, Me.m_core.m_EcopathData.B(Me.Index))
 
-            If Me.m_core.m_EcoPathData.BH(Me.Index) <> Me.m_core.m_EcoPathData.BHinput(Me.Index) Then
+            If Me.m_core.m_EcopathData.BH(Me.Index) <> Me.m_core.m_EcopathData.BHinput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.BiomassAreaOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.BiomassAreaOutput, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.BiomassAreaOutput, Me.m_core.m_EcoPathData.BH(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
+            Me.SetNullFlag(eVarNameFlags.BiomassAreaOutput, Me.m_core.m_EcopathData.BH(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
 
             'Joeh
             'A in LW
@@ -212,12 +212,12 @@ Public Class cEcopathGroupOutput
             Me.SetNullFlag(eVarNameFlags.TmaxOutput, Me.m_core.m_PSDData.Tmax(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
             'End Joeh
 
-            If Me.m_core.m_EcoPathData.BA(Me.Index) <> Me.m_core.m_EcoPathData.BAInput(Me.Index) Then
+            If Me.m_core.m_EcopathData.BA(Me.Index) <> Me.m_core.m_EcopathData.BAInput(Me.Index) Then
                 Me.SetStatusFlags(eVarNameFlags.BioAccumOutput, eStatusFlags.ValueComputed)
             Else
                 Me.ClearStatusFlags(eVarNameFlags.BioAccumOutput, eStatusFlags.ValueComputed)
             End If
-            Me.SetNullFlag(eVarNameFlags.BioAccumOutput, Me.m_core.m_EcoPathData.BA(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonZero)
+            Me.SetNullFlag(eVarNameFlags.BioAccumOutput, Me.m_core.m_EcopathData.BA(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonZero)
 
             'test for NULL values in other variables
             Me.SetNullFlag(eVarNameFlags.BioAccumRatePerYear, Me.BioAccumRatePerYear, cCore.NULL_VALUE, eNullTestTypes.NonZero)

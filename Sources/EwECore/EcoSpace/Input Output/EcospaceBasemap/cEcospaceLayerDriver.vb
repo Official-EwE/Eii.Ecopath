@@ -48,7 +48,7 @@ Public Class cEcospaceLayerDriver
 
         Try
             Me.m_dataType = eDataTypes.EcospaceLayerDriver
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
             Me.DBID = core.m_EcospaceData.EnvironmentalLayerDBID(iIndex)
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)

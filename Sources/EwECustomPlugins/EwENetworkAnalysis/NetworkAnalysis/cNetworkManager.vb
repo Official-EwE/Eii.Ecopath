@@ -325,7 +325,7 @@ Public Class cNetworkManager
                 cLog.Write(ex)
                 Dim msg As String = cStringUtils.UnravelException(ex)
                 ' ToDo: globalize this
-                Me.Core.Messages.SendMessage(New cMessage("Network Analysis run PPR error: " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
+                Me.Core.Messages.SendMessage(New cMessage("Network Analysis run PPR error: " & msg, eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Critical))
                 bSuccess = False
             End Try
         Else

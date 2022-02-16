@@ -47,7 +47,7 @@ Public Class cResultsHolder
     Private DataQ() As Single
     Private logdiff(,) As Single
     Private sumSS() As Single
-    Private mEcosimModel As Ecosim.cEcoSimModel = Nothing
+    Private mEcosimModel As Ecosim.cEcosimModel = Nothing
 
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get

@@ -61,7 +61,7 @@ Friend Class cMSECSVOutputWriter
         Dim buff As New StringBuilder()
         Dim strm As StreamWriter = Nothing
         Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim strFile As String
 
         Try
@@ -220,7 +220,7 @@ Friend Class cMSECSVOutputWriter
         If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
         Try
-            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             If Not cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then Exit Sub
 

@@ -39,7 +39,7 @@ Public Class cTaxon
 
         Me.AllowValidation = False
 
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
         Me.m_dataType = eDataTypes.Taxon
         Me.DBID = DBID
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)

@@ -100,19 +100,19 @@ Public Class dlgSelectEnvironmentalResponse
         If (TypeOf driverManager Is cEcosimEnviroResponseManager) Then
             Me.Modeltype = eCoreComponentType.EcosimCapacityResponseInteractionManager
             strTarget = My.Resources.GENERIC_ENVRESPONSE_CAPACITY
-            modelTypeString = eCoreComponentType.EcoSim.ToString
+            modelTypeString = eCoreComponentType.Ecosim.ToString
         ElseIf (TypeOf driverManager Is cEcosimMortalityResponseManager) Then
             Me.Modeltype = eCoreComponentType.EcosimMortalityResponseInteractionManager
             strTarget = My.Resources.GENERIC_ENVRESPONSE_MORTALITY
-            modelTypeString = eCoreComponentType.EcoSim.ToString
+            modelTypeString = eCoreComponentType.Ecosim.ToString
         ElseIf (TypeOf driverManager Is cEcospaceEnviroResponseManager) Then
             Me.Modeltype = eCoreComponentType.EcospaceCapacityResponseInteractionManager
             strTarget = My.Resources.GENERIC_ENVRESPONSE_CAPACITY
-            modelTypeString = eCoreComponentType.EcoSpace.ToString
+            modelTypeString = eCoreComponentType.Ecospace.ToString
         ElseIf (TypeOf driverManager Is cEcospaceMortalityResponseManager) Then
             Me.Modeltype = eCoreComponentType.EcospaceMortalityResponseInteractionManager
             strTarget = My.Resources.GENERIC_ENVRESPONSE_MORTALITY
-            modelTypeString = eCoreComponentType.EcoSpace.ToString
+            modelTypeString = eCoreComponentType.Ecospace.ToString
         End If
 
         Dim strGroup As String

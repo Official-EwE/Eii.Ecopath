@@ -208,14 +208,14 @@ Public Class frmImport
             writer.Close()
 
             msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SAVE_SUCCESS, strFile), _
-                               eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                               eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
             msg.Hyperlink = IO.Path.GetDirectoryName(strFile)
 
             Me.VisitURL(strFile)
 
         Catch ex As Exception
             msg = New cMessage(String.Format(My.Resources.STATUS_EXAMPLE_SAVE_FAILED, strFile), _
-                               eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                               eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Critical)
         End Try
         Me.m_uic.Core.Messages.SendMessage(msg)
     End Sub

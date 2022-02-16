@@ -34,7 +34,7 @@ Public Class cEcosimFleetInput
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Me.m_dataType = eDataTypes.EcosimFleetInput
-        Me.m_coreComponent = eCoreComponentType.EcoSim
+        Me.m_coreComponent = eCoreComponentType.Ecosim
 
         Me.AllowValidation = False
 

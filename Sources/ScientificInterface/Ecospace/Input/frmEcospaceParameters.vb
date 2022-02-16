@@ -149,7 +149,7 @@ Namespace Ecospace
 
             Me.UpdateScenarioFormatProviders()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
 
         End Sub
 
@@ -432,7 +432,7 @@ Namespace Ecospace
                 Me.UpdateControls()
             End If
 
-            If msg.Source = eCoreComponentType.EcoSpace And msg.Type = eMessageType.DataModified Then
+            If msg.Source = eCoreComponentType.Ecospace And msg.Type = eMessageType.DataModified Then
                 Me.UpdateControls()
             End If
 

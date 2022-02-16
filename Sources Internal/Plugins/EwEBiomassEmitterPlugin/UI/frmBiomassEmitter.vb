@@ -104,7 +104,7 @@ Public Class frmBiomassEmitter
         Me.UpdateControls()
 
         ' -- Tell EwE what messages to send our way --
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace}
 
     End Sub
 

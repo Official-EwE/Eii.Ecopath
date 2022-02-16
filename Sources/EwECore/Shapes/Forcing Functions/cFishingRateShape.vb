@@ -141,7 +141,7 @@ Public Class cFishingRateShape
                     'don't change the fishing mortality if there is fishing mortality timeseries loaded for this group
                     'JB 21-Feb-2011 Changed so Effort can be edited when F time series is loaded
                     If Not isCombinedFleets Then
-                        Dim EcopathCatch As Single = Me.m_manager.Core.m_EcoPathData.Landing(Me.m_iEcoSimIndex, igrp) + Me.m_manager.Core.m_EcoPathData.Discard(Me.m_iEcoSimIndex, igrp)
+                        Dim EcopathCatch As Single = Me.m_manager.Core.m_EcopathData.Landing(Me.m_iEcoSimIndex, igrp) + Me.m_manager.Core.m_EcopathData.Discard(Me.m_iEcoSimIndex, igrp)
                         If EcopathCatch > 0 Then
 
                             'this fleet exploits this group update the F

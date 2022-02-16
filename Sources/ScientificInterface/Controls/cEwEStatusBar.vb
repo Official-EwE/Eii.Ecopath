@@ -85,7 +85,7 @@ Public Class cEwEStatusBar
         AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
         AddHandler Me.m_selmon.OnSelectionChanged, AddressOf Me.OnSelectionChanged
 
-        Me.m_mhSpatConfig = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+        Me.m_mhSpatConfig = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecospace, eMessageType.DataModified, Me.m_uic.SyncObject)
         Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpatConfig)
 #If DEBUG Then
         Me.m_mhSpatConfig.Name = "cEwEStatusBar:Ecospace"

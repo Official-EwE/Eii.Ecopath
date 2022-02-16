@@ -129,7 +129,7 @@ Namespace Controls.Map
 
                 ' ToDo: globalize this
                 Dim msg As New cMessage(String.Format("Map image has been saved to {0}, legend to {1}", strFileName, strFilenameLegend),
-                                        eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                        eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFileName)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             Catch ex As Exception

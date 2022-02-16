@@ -306,10 +306,10 @@ Public Class cEcospaceMapWrapper
             Dim msg As cMessage = Nothing
             Try
                 Me.m_bmp.Save(fn)
-                msg = New cMessage(cStringUtils.Localize("Image saved to {0}", fn), eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                msg = New cMessage(cStringUtils.Localize("Image saved to {0}", fn), eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetFileName(fn)
             Catch ex As Exception
-                msg = New cMessage(cStringUtils.Localize("Image failed to save to {0}. {1}", fn, ex.Message), eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                msg = New cMessage(cStringUtils.Localize("Image failed to save to {0}. {1}", fn, ex.Message), eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Critical)
                 msg.Hyperlink = Path.GetFileName(fn)
             End Try
             Me.m_uic.Core.Messages.SendMessage(msg)

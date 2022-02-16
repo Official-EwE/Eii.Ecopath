@@ -52,14 +52,14 @@ Namespace DataSources
 #Region " Internal definitions "
 
         ''' <summary>Core components stored with Ecopath.</summary>
-        Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath, eCoreComponentType.EcopathSample}
+        Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.Ecopath, eCoreComponentType.EcopathSample}
         ''' <summary>Core components stored with Ecosim.</summary>
-        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries,
-                                                                     eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo,
+        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.Ecosim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries,
+                                                                     eCoreComponentType.EcosimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo,
                                                                      eCoreComponentType.MediatedInteractionManager, eCoreComponentType.FishingPolicySearch,
                                                                      eCoreComponentType.MSE, eCoreComponentType.SearchObjective, eCoreComponentType.EcosimCapacityResponseInteractionManager}
         ''' <summary>Core components stored with Ecospace.</summary>
-        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization, eCoreComponentType.EcospaceCapacityResponseInteractionManager, eCoreComponentType.EcospaceMortalityResponseInteractionManager}
+        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.Ecospace, eCoreComponentType.MPAOptimization, eCoreComponentType.EcospaceCapacityResponseInteractionManager, eCoreComponentType.EcospaceMortalityResponseInteractionManager}
         ''' <summary>Core components stored with Ecotracer.</summary>
         Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
 
@@ -624,7 +624,7 @@ Namespace DataSources
         Public Function LoadModel() As Boolean _
              Implements IEcopathDataSource.LoadModel
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim bSucces As Boolean = True
 
             ' Clear changed admin
@@ -707,7 +707,7 @@ Namespace DataSources
         Private Function LoadModelInfo() As Boolean
 
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathModel")
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim sVal1 As Single = 0.0!
             Dim sVal2 As Single = 0.0!
@@ -775,7 +775,7 @@ Namespace DataSources
         Private Function SaveModelInfo() As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -858,7 +858,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function LoadEcosimScenarioDefinitions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimScenario ORDER BY ScenarioID ASC")
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
@@ -901,7 +901,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function SaveEcosimScenarioDefinitions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -949,7 +949,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function LoadEcospaceScenarioDefinitions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcospaceScenario ORDER BY ScenarioID ASC")
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
@@ -991,7 +991,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function SaveEcospaceScenarioDefinitions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -1039,7 +1039,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function LoadEcotracerScenarioDefinitions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcotracerScenario ORDER BY ScenarioID ASC")
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
@@ -1081,7 +1081,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function SaveEcotracerScenarioDefinitions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -1130,7 +1130,7 @@ Namespace DataSources
         Private Function LoadPedigreeLevels() As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Pedigree ORDER BY Sequence ASC")
             Dim iLevel As Integer = 1
             Dim bSucces As Boolean = True
@@ -1202,7 +1202,7 @@ Namespace DataSources
         Private Function LoadPedigreeAssignments() As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupPedigree")
             Dim iGroup As Integer
             Dim iVariable As Integer
@@ -1248,7 +1248,7 @@ Namespace DataSources
         Public Function SavePedigreeLevels() As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -1290,7 +1290,7 @@ Namespace DataSources
         Public Function SavePedigreeAssignments() As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iGroup As Integer = 0
@@ -1342,7 +1342,7 @@ Namespace DataSources
                                          ByRef iPedigreeLevelID As Integer) As Boolean _
                 Implements IEcopathDataSource.AddPedigreeLevel
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -1479,7 +1479,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Function SaveParticleSizeDistribution() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -1541,7 +1541,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function LoadStanza() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim rdStanza As IDataReader = Nothing
@@ -1677,7 +1677,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function SaveStanza() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -1973,7 +1973,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcopathGroups() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
 
             ' Init data structure
@@ -2074,7 +2074,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function SaveEcopathGroups() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -2180,7 +2180,7 @@ Namespace DataSources
                                  ByRef iGroupID As Integer) As Boolean _
                 Implements IEcopathDataSource.AddGroup
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -2246,7 +2246,7 @@ Namespace DataSources
 
         Private Function AddCatchDataForGroup(iGroupID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim iFleetID As Integer = 0
             Dim bSucces As Boolean = True
 
@@ -2375,7 +2375,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcopathDietComp() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Nothing
             Dim iPred As Integer = 0
             Dim iPrey As Integer = 0
@@ -2441,7 +2441,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function SaveEcopathDietComp() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim idPred As Integer = 0
@@ -2506,7 +2506,7 @@ Namespace DataSources
         ''' <returns>True if catch was found.</returns>
         ''' -------------------------------------------------------------------
         Private Function IsFishing() As Boolean
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim bIsFishing As Boolean = False
             Dim iGroup As Integer = 1
 
@@ -2539,7 +2539,7 @@ Namespace DataSources
         End Function
 
         Private Function AddDiscardFate(iGroupID As Integer, iFleetID As Integer) As Boolean
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, iGroupID)
@@ -2578,7 +2578,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcopathFleetInfo() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim bSucces As Boolean = True
 
             ecopathDS.NoGearData = Not Me.IsFishing()
@@ -2606,7 +2606,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcopathFleets() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Nothing
             Dim iFleet As Integer = 1
             Dim bSucces As Boolean = True
@@ -2638,7 +2638,7 @@ Namespace DataSources
 
         Private Function LoadEcopathCatch() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Nothing
             Dim iFleet As Integer = 0
             Dim iGroup As Integer = 0
@@ -2680,7 +2680,7 @@ Namespace DataSources
 
         Private Function LoadEcopathDiscardFate() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Nothing
             Dim iFleet As Integer = 0
             Dim iGroup As Integer = 0
@@ -2743,7 +2743,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function SaveEcopathFleets() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -2790,7 +2790,7 @@ Namespace DataSources
 
         Private Function SaveCatch() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iFleet As Integer = 0
@@ -2838,7 +2838,7 @@ Namespace DataSources
 
         Private Function SaveDiscardFate() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iFleet As Integer = 0
@@ -2891,7 +2891,7 @@ Namespace DataSources
                                  ByRef iFleetID As Integer) As Boolean _
                 Implements IEcopathDataSource.AddFleet
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -2930,7 +2930,7 @@ Namespace DataSources
 
         Private Function AddCatchDataForFleet(iFleetID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim iGroupID As Integer = 0
             Dim bSucces As Boolean = True
 
@@ -3175,7 +3175,7 @@ Namespace DataSources
         Private Function LoadEcopathTaxon() As Boolean
 
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             taxonDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathTaxon"))
@@ -3242,7 +3242,7 @@ Namespace DataSources
         Private Function LoadEcopathGroupTaxon() As Boolean
 
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupTaxon")
             Dim iTaxon As Integer = 1
             Dim iGroup As Integer = 1
@@ -3274,7 +3274,7 @@ Namespace DataSources
         Private Function LoadEcopathStanzaTaxon() As Boolean
 
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathStanzaTaxon")
             Dim iTaxon As Integer = 1
@@ -3317,7 +3317,7 @@ Namespace DataSources
         Private Function SaveEcopathTaxon() As Boolean
 
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nTaxonSaved As Integer = 0
@@ -3389,7 +3389,7 @@ Namespace DataSources
         Private Function SaveEcopathGroupTaxon() As Boolean
 
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -3423,7 +3423,7 @@ Namespace DataSources
         Private Function SaveEcopathStanzaTaxon() As Boolean
 
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -3576,7 +3576,7 @@ Namespace DataSources
         Public Function RemoveTaxon(iTaxonID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveTaxon
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim bSucces As Boolean = True
 
             Try
@@ -3609,7 +3609,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Function IsEcosimModified() As Boolean Implements DataSources.IEcosimDatasource.IsEcosimModified
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             ' Hmm, maybe the data source should have a better way to 'remember' whether a sim scenario has been loaded.
             If Not Me.IsConnected() Then Return False
@@ -3624,7 +3624,7 @@ Namespace DataSources
 
         Private Function LoadEcosimModel() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimModel")
             Dim bSuccess As Boolean = True
@@ -3647,7 +3647,7 @@ Namespace DataSources
 
         Private Function SaveEcosimModel() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -3687,7 +3687,7 @@ Namespace DataSources
         Friend Function LoadEcosimScenario(iScenarioID As Integer) As Boolean _
                 Implements IEcosimDatasource.LoadEcosimScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
@@ -3795,7 +3795,7 @@ Namespace DataSources
         Friend Function SaveEcosimScenario(iScenarioID As Integer) As Boolean _
                 Implements IEcosimDatasource.SaveEcosimScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
             If Not Me.SaveEcosimModel() Then Return False
@@ -3869,7 +3869,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcosimVulnerabilities(idm)
             bSucces = bSucces And Me.SaveEcosimArenas(idm)
 
-            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.EcoSim}) Then
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.Ecosim}) Then
                 bSucces = bSucces And Me.SaveShapes(idm)
                 bSucces = bSucces And Me.SaveShapeAssignments(idm)
             End If
@@ -3918,7 +3918,7 @@ Namespace DataSources
                 strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean _
                 Implements IEcosimDatasource.AppendEcosimScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -4311,7 +4311,7 @@ Namespace DataSources
 
         Private Function LoadEcosimGroups(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
@@ -4420,7 +4420,7 @@ Namespace DataSources
 
         Private Function LoadEcosimVulnerabilities(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim reader As IDataReader = Nothing
             Dim iPredator As Integer = 0
@@ -4455,7 +4455,7 @@ Namespace DataSources
 
         Private Function LoadEcosimArenas(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim reader As IDataReader = Nothing
             Dim iPred As Integer = 0
@@ -4521,7 +4521,7 @@ Namespace DataSources
 
         Private Function LoadEcosimFleets(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
@@ -4648,7 +4648,7 @@ Namespace DataSources
 
         Private Function LoadEcosimQuota(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
@@ -4689,7 +4689,7 @@ Namespace DataSources
 
         Private Function SaveEcosimGroups(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -4816,7 +4816,7 @@ Namespace DataSources
 
         Private Function SaveEcosimGroupYear(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -4860,7 +4860,7 @@ Namespace DataSources
 
         Private Function SaveEcosimVulnerabilities(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -4900,7 +4900,7 @@ Namespace DataSources
 
         Private Function SaveEcosimArenas(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = 0
             Dim bSucces As Boolean = True
@@ -4945,7 +4945,7 @@ Namespace DataSources
 
         Private Function SaveEcosimFleets(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -5054,7 +5054,7 @@ Namespace DataSources
 
         Private Function SaveEcosimFleetYear(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -5101,7 +5101,7 @@ Namespace DataSources
 
         Private Function SaveEcosimQuota(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -5152,7 +5152,7 @@ Namespace DataSources
 
         Private Function LoadShapes(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim PredPreyMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.BioMedData
             Dim LandingsMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.PriceMedData
@@ -5405,7 +5405,7 @@ Namespace DataSources
 
         Private Function LoadPredPreyInteractions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
@@ -5478,7 +5478,7 @@ Namespace DataSources
 
         Private Function LoadLandingInteractions() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
@@ -5533,7 +5533,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function LoadMediationWeights() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim medData As cMediationDataStructures = Nothing
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
@@ -5611,7 +5611,7 @@ Namespace DataSources
 
         Private Function LoadStanzaShapeAssignments() As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim reader As IDataReader = Nothing
@@ -5739,7 +5739,7 @@ Namespace DataSources
 
         Private Function SaveShapes(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -6056,7 +6056,7 @@ Namespace DataSources
 
         Private Function SavePredPreyInteractions(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim medData As cMediationDataStructures = ecosimDS.BioMedData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
@@ -6114,7 +6114,7 @@ Namespace DataSources
 
         Private Function SaveLandingsInteractions(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim medData As cMediationDataStructures = ecosimDS.PriceMedData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
@@ -6166,7 +6166,7 @@ Namespace DataSources
 
         Private Function SaveMediationWeights(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim medData As cMediationDataStructures = Nothing
             Dim iScenarioID As Integer = 0
@@ -6419,7 +6419,7 @@ Namespace DataSources
             If Me.AppendShapeImpl(strShapeName, shapeType, iShapeID, asData, functionType, params) Then
                 ' #Yes: reload
                 'jb the number of shapes has changed in the database so we need to reload all the shape data in memory
-                Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+                Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
                 Return Me.LoadShapes(ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             End If
 
@@ -6446,7 +6446,7 @@ Namespace DataSources
                                          functionType As Long,
                                          params As Single()) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim writerID As cEwEDatabase.cEwEDbWriter = Me.m_db.GetWriter("EcoSimShape")
@@ -6547,7 +6547,7 @@ Namespace DataSources
         Friend Function RemoveShape(iShapeID As Integer) As Boolean _
                 Implements IEcosimDatasource.RemoveShape
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim bSucces As Boolean = True
 
@@ -6804,7 +6804,7 @@ Namespace DataSources
         Private Function AddGroupTimeSeries(ts As cTimeSeriesImport, iTimeSeriesID As Integer) As Boolean
 
             Dim writerGroup As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
@@ -6841,7 +6841,7 @@ Namespace DataSources
         Private Function AddFleetTimeSeries(ts As cTimeSeriesImport, iTimeSeriesID As Integer) As Boolean
 
             Dim writerFleet As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
@@ -6889,7 +6889,7 @@ Namespace DataSources
         Public Function LoadTimeSeriesDataset(iDataset As Integer) As Boolean _
                   Implements DataSources.IEcosimDatasource.LoadTimeSeriesDataset
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
             Dim strSQL As String = ""
@@ -7012,7 +7012,7 @@ Namespace DataSources
 
         Private Function SaveTimeSeries(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim writerGroups As cEwEDatabase.cEwEDbWriter = Nothing
@@ -7146,7 +7146,7 @@ Namespace DataSources
                                          ByRef iShapeID As Integer) As Boolean _
             Implements IEcosimDatasource.AppendTimeSeries
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim writerSub As cEwEDatabase.cEwEDbWriter = Nothing
@@ -7248,7 +7248,7 @@ Namespace DataSources
         Private Function LoadEcosimCapacityDrivers() As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
@@ -7285,7 +7285,7 @@ Namespace DataSources
 
         Private Function SaveEcosimCapacityDrivers(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim medDS As cMediationDataStructures = Me.m_core.CapacityMapInteractionManager.MediationData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
@@ -7340,7 +7340,7 @@ Namespace DataSources
 
         Private Function LoadEcosimMSE(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
             Dim bSucces As Boolean = True
@@ -7373,7 +7373,7 @@ Namespace DataSources
 
         Private Function SaveEcosimMSE(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -7420,7 +7420,7 @@ Namespace DataSources
 
         Private Function LoadEcosimCatchabilities(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim reader As IDataReader = Nothing
             Dim iFleetID, iFleet As Integer
@@ -7464,7 +7464,7 @@ Namespace DataSources
 
         Private Function SaveEcosimCatchabilities(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
@@ -7536,7 +7536,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Function IsEcospaceModified() As Boolean Implements DataSources.IEcospaceDatasource.IsEcospaceModified
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             ' Hmm, maybe the data source should have a better way to 'remember' whether a space scenario has been loaded.
             If Not Me.IsConnected() Then Return False
@@ -7555,7 +7555,7 @@ Namespace DataSources
         Public Function LoadEcospaceScenario(iScenarioID As Integer) As Boolean _
                 Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
@@ -7708,7 +7708,7 @@ Namespace DataSources
         Friend Function SaveEcospaceScenario(iScenarioID As Integer) As Boolean _
                 Implements DataSources.IEcospaceDatasource.SaveEcospaceScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
 
             ' Abort if there is no active scenario
@@ -7768,7 +7768,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function SaveEcospaceScenario(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -7876,7 +7876,7 @@ Namespace DataSources
                  Implements DataSources.IEcospaceDatasource.AppendEcospaceScenario
 
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iIDtmp As Integer = 0
@@ -8010,7 +8010,7 @@ Namespace DataSources
         Public Function ResizeEcospaceBasemap(InRow As Integer, InCol As Integer) As Boolean _
                  Implements IEcospaceDatasource.ResizeEcospaceBasemap
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim dt As DataTable = Nothing
@@ -8128,7 +8128,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function SaveEcospaceMap(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
@@ -8187,7 +8187,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function SaveEcospaceMonthlyMaps(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim iScenarioID As Integer = 0
@@ -8295,7 +8295,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceHabitats(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioIDSrc As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim iScenarioIDDest As Integer = 0
@@ -8372,7 +8372,7 @@ Namespace DataSources
                                            ByRef iDBID As Integer) As Boolean _
                 Implements DataSources.IEcospaceDatasource.AddEcospaceHabitat
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             If (ecopathDS.ActiveEcospaceScenario = -1) Then Return False
 
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
@@ -8427,7 +8427,7 @@ Namespace DataSources
         Public Function RemoveHabitat(iHabitatID As Integer) As Boolean _
                 Implements DataSources.IEcospaceDatasource.RemoveEcospaceHabitat
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim bSucces As Boolean = True
@@ -8476,7 +8476,7 @@ Namespace DataSources
 
         Private Function LoadEcospaceGroups(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
@@ -8632,7 +8632,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceGroups(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -8716,7 +8716,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceGroupHabitats(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -8765,7 +8765,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceGroupMigration(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -8862,7 +8862,7 @@ Namespace DataSources
         Private Function AddEcospaceGroup(iEcopathGroupID As Integer, iScenarioID As Integer,
                                           bIsDetritus As Boolean, ByRef iGroupID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim iGroup As Integer = 0
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -9049,7 +9049,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceFleets(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -9133,7 +9133,7 @@ Namespace DataSources
         End Function
 
         Private Function SaveEcospaceHabitatFishery(idm As cIDMappings) As Boolean
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -9176,7 +9176,7 @@ Namespace DataSources
         End Function
 
         Private Function SaveEcospaceMPAFishery(idm As cIDMappings) As Boolean
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -9375,7 +9375,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceMPAs(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -9467,7 +9467,7 @@ Namespace DataSources
                                           ByRef iDBID As Integer) As Boolean _
                 Implements DataSources.IEcospaceDatasource.AddEcospaceMPA
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 
@@ -9533,7 +9533,7 @@ Namespace DataSources
         Public Function RemoveEcospaceMPA(iMPAID As Integer) As Boolean _
                  Implements DataSources.IEcospaceDatasource.RemoveEcospaceMPA
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim bSucces As Boolean = True
@@ -9621,7 +9621,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceWeightLayers(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioIDSrc As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim iScenarioIDdest As Integer = 0
@@ -9707,7 +9707,7 @@ Namespace DataSources
                                                       ByRef iLayerID As Integer) As Boolean _
                 Implements DataSources.IEcospaceDatasource.AppendEcospaceImportanceLayer
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 
@@ -9766,7 +9766,7 @@ Namespace DataSources
         Public Function RemoveEcospaceImportanceLayer(iLayerID As Integer) As Boolean _
                 Implements IEcospaceDatasource.RemoveEcospaceImportanceLayer
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim bSucces As Boolean = True
@@ -9825,7 +9825,7 @@ Namespace DataSources
         Private Function LoadEcospaceCapacityDrivers(iScenarioID As Integer) As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
@@ -9939,7 +9939,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceCapacityMaps(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioIDSrc As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim iScenarioIDdest As Integer = 0
@@ -10008,7 +10008,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceCapacityDrivers(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim medDS As cMediationDataStructures = Me.m_core.CapacityMapInteractionManager.MediationData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
@@ -10057,7 +10057,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceDisbledDriverLayers(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -10104,7 +10104,7 @@ Namespace DataSources
         Public Function AddEcospaceDriverLayer(strName As String, strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean _
             Implements IEcospaceDatasource.AddEcospaceDriverLayer
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -10134,7 +10134,7 @@ Namespace DataSources
         Public Function RemoveEcospaceDriverLayer(iDBID As Integer) As Boolean _
             Implements IEcospaceDatasource.RemoveEcospaceDriverLayer
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -10235,7 +10235,7 @@ Namespace DataSources
 
         Private Function SaveEcospaceDataConnections(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
@@ -10385,7 +10385,7 @@ Namespace DataSources
         Public Function IsEcotracerModified() As Boolean _
                  Implements DataSources.IEcotracerDatasource.IsEcotracerModified
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             ' Hmm, maybe the data source should have a better way to 'remember' whether a tracer scenario has been loaded.
             If Not Me.IsConnected() Then Return False
@@ -10411,7 +10411,7 @@ Namespace DataSources
         Public Function LoadEcotracerScenario(iScenarioID As Integer) As Boolean _
             Implements DataSources.IEcotracerDatasource.LoadEcotracerScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
             Dim iConForceNumber As Integer = 0
@@ -10463,7 +10463,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcotracerGroups(iScenarioID As Integer) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
@@ -10514,7 +10514,7 @@ Namespace DataSources
         Public Function SaveEcotracerScenario(iScenarioID As Integer) As Boolean _
              Implements DataSources.IEcotracerDatasource.SaveEcotracerScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
             Dim iActiveScenarioID As Integer = ecopathDS.EcotracerScenarioDBID(ecopathDS.ActiveEcotracerScenario)
             Dim idm As cIDMappings = Nothing
@@ -10558,7 +10558,7 @@ Namespace DataSources
 
         Private Function SaveEcotracerScenario(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -10603,7 +10603,7 @@ Namespace DataSources
 
         Private Function SaveEcotracerGroups(idm As cIDMappings) As Boolean
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
@@ -10671,7 +10671,7 @@ Namespace DataSources
         Public Function AppendEcotracerScenario(strScenarioName As String, strDescription As String, strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean _
                  Implements DataSources.IEcotracerDatasource.AppendEcotracerScenario
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
@@ -11095,7 +11095,7 @@ Namespace DataSources
                 dt(s.DBID) = s
             Next
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupSample")
             Dim bSucces As Boolean = True
 
@@ -11133,7 +11133,7 @@ Namespace DataSources
                 dt(s.DBID) = s
             Next
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathDietCompSample")
             Dim bSucces As Boolean = True
 
@@ -11167,7 +11167,7 @@ Namespace DataSources
                 dt(sample.DBID) = sample
             Next
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupCatchSample")
             Dim bSucces As Boolean = True
 
@@ -11237,7 +11237,7 @@ Namespace DataSources
         Public Function AddSample(sample As Samples.cEcopathSample) As Boolean _
             Implements IEcopathSampleDataSource.AddSample
 
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenario As Integer = 0

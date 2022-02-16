@@ -62,7 +62,7 @@ Public Class cEcospaceXYZTResultsWriter
             Me.WriteFleetFileHeaders(eVarNameFlags.EcospaceMapEffort)
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message),
-                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning))
         End Try
     End Sub
 
@@ -83,7 +83,7 @@ Public Class cEcospaceXYZTResultsWriter
             End If
 
             For Each varname As eVarNameFlags In vars
-                For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+                For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
                     If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                         'Handle file exceptions on a per file basis
@@ -100,7 +100,7 @@ Public Class cEcospaceXYZTResultsWriter
                         Catch ex As IOException
                             cLog.Write(ex)
                             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
-                                                   eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                                                   eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Warning)
                             Me.m_core.Messages.SendMessage(msg)
                         End Try
 
@@ -113,7 +113,7 @@ Public Class cEcospaceXYZTResultsWriter
         End Try
 
         ' Space effort
-        For iFlt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
+        For iFlt As Integer = 1 To Me.m_core.m_EcopathData.NumFleet
             strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapEffort, iFlt, Me.FileExtension())
             Try
                 strm = New StreamWriter(strFile, True)
@@ -126,7 +126,7 @@ Public Class cEcospaceXYZTResultsWriter
             Catch ex As IOException
                 cLog.Write(ex)
                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
-                                       eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                                       eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Warning)
                 Me.m_core.Messages.SendMessage(msg)
             End Try
         Next
@@ -138,7 +138,7 @@ Public Class cEcospaceXYZTResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
         Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS, Me.m_OutputPath),
-                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
         msg.Hyperlink = Me.m_OutputPath
         Me.m_core.Messages.SendMessage(msg)
@@ -253,7 +253,7 @@ Public Class cEcospaceXYZTResultsWriter
         Dim strm As StreamWriter
         Dim strFN As String
 
-        For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+        For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
             strFN = Me.GetGroupFileName(varname, igrp, "csv")
             'Create a new file when writting the header
             'this overwrites the data in the current directory
@@ -278,7 +278,7 @@ Public Class cEcospaceXYZTResultsWriter
         Dim strm As StreamWriter
         Dim strFN As String
 
-        For iflt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
+        For iflt As Integer = 1 To Me.m_core.m_EcopathData.NumFleet
             strFN = Me.GetFleetFileName(varname, iflt, "csv")
             'Create a new file when writting the header
             'this overwrites the data in the current directory

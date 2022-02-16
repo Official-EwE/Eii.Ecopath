@@ -381,7 +381,7 @@ Public Class cEcoSpace
 
     Public Property StanzaData() As cStanzaDatastructures
 
-    Public Property EcoSim() As Ecosim.cEcoSimModel
+    Public Property EcoSim() As Ecosim.cEcosimModel
 
     Public Property ContaiminantTracerData() As cContaminantTracerDataStructures
 
@@ -533,7 +533,7 @@ Public Class cEcoSpace
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             Me.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message),
-                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
+                                                eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical, eDataTypes.NotSet))
             bsuccess = False
         End Try
 
@@ -569,7 +569,7 @@ Public Class cEcoSpace
                 If Me.m_SpaceThread.ThreadState = ThreadState.Running Then
                     'Yes Ecospace is already running so boot out of here
                     Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUNNING, eMessageType.ErrorEncountered,
-                            eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
+                            eCoreComponentType.Ecospace, eMessageImportance.Critical, eDataTypes.NotSet))
                     Return False
                 End If
 
@@ -591,7 +591,7 @@ Public Class cEcoSpace
             started = False
             Debug.Assert(False, ex.Message)
             Me.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message),
-                                               eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
+                                               eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical, eDataTypes.NotSet))
         End Try
 
         Me.Messages.sendAllMessages()
@@ -1333,7 +1333,7 @@ Public Class cEcoSpace
         Catch ex As Exception
             '  Debug.Assert(False, ex.StackTrace)
             cLog.Write(ex, "cEcospace.SetSpatialTempData()")
-            Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+            Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
         End Try
     End Sub
 
@@ -1357,7 +1357,7 @@ Public Class cEcoSpace
         Catch ex As Exception
             '  Debug.Assert(False, ex.StackTrace)
             cLog.Write(ex, "cEcospace.SetSpatialTempData()")
-            Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+            Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
         End Try
 
 
@@ -3032,7 +3032,7 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             message = New cMessage(ex.Message,
-                                   eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                                   eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical)
         End Try
 
         If message IsNot Nothing Then
@@ -3488,10 +3488,10 @@ Public Class cEcoSpace
             Return totPP / Me.EcoSpaceData.nWaterCells
         Else
             If (Me.EcoSpaceData.nWaterCells = 0) Then
-                Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MAP_INVALID_NOWATERCELLS, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MAP_INVALID_NOWATERCELLS, eMessageType.DataValidation, eCoreComponentType.Ecospace, eMessageImportance.Warning))
             End If
             If (totPP = 0) Then
-                Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MAP_INVALID_NOPP, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MAP_INVALID_NOPP, eMessageType.DataValidation, eCoreComponentType.Ecospace, eMessageImportance.Warning))
             End If
             Return 1
         End If
@@ -7183,7 +7183,7 @@ exitline:
         Catch ex As Exception
             cLog.Write(ex)
             Me.Messages.SendMessage(New cMessage(cStringUtils.Localize("IBM Failed to initialize and will not run correctly." + cStringUtils.vbCrLf + ex.Message, ex.Message),
-                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
         End Try
 
@@ -8102,7 +8102,7 @@ exitline:
 
         Catch ex As Exception
             Me.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_HABCAP_COMPUTE_ERROR, ex.Message),
-                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning))
         End Try
 
         Return False

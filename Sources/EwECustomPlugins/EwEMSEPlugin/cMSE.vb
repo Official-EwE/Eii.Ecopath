@@ -77,10 +77,10 @@ Public Class cMSE
     Private m_CoreMSEData As MSE.cMSEDataStructures
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-    Private m_ecosim As EwECore.Ecosim.cEcoSimModel
+    Private m_ecosim As EwECore.Ecosim.cEcosimModel
     Private _simdata As cEcosimDatastructures
     Private _pathdata As cEcopathDataStructures
-    Private m_ecopath As Ecopath.cEcoPathModel
+    Private m_ecopath As Ecopath.cEcopathModel
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Public OriginalNTimesteps As Integer
@@ -433,7 +433,7 @@ Public Class cMSE
         Me.InvalidateConfigurationState()
     End Sub
 
-    Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcoPathModel, Ecosim As Ecosim.cEcoSimModel)
+    Public Sub onCoreInitialized(EwECore As cCore, Ecopath As Ecopath.cEcopathModel, Ecosim As Ecosim.cEcosimModel)
 
         Me.m_core = EwECore
         Me.m_ecopath = Ecopath
@@ -4461,7 +4461,7 @@ Public Class cMSE
         End If
 
         ' Refresh upon ecosim scenario load
-        If (msg.Type = eMessageType.DataAddedOrRemoved And msg.Source = eCoreComponentType.EcoSim) Then
+        If (msg.Type = eMessageType.DataAddedOrRemoved And msg.Source = eCoreComponentType.Ecosim) Then
             bRefresh = True
         End If
 

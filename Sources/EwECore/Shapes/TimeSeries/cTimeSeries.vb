@@ -208,7 +208,7 @@ Public MustInherit Class cTimeSeries
     End Function
 
     Public Function IsDriver() As Boolean
-        Return Me.m_core.m_EcoSim.IsDatTypeDriver(Me.m_timeSeriesType)
+        Return Me.m_core.m_Ecosim.IsDatTypeDriver(Me.m_timeSeriesType)
     End Function
 
     Public Function IsRelative() As Boolean

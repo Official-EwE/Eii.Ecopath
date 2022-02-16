@@ -31,7 +31,7 @@ Public Class cEcosimOutput
 
         Me.DBID = cCore.NULL_VALUE
         Me.m_dataType = eDataTypes.EcosimOutput
-        Me.m_coreComponent = eCoreComponentType.EcoSim
+        Me.m_coreComponent = eCoreComponentType.Ecosim
 
     End Sub
 
@@ -100,7 +100,7 @@ Public Class cEcosimOutput
 
     Public ReadOnly Property DiversityIndex(iTimeStep As Integer) As Single
         Get
-            Select Case Me.m_core.m_EcoPathData.DiversityIndexType
+            Select Case Me.m_core.m_EcopathData.DiversityIndexType
                 Case eDiversityIndexType.Shannon
                     Return Me.ShannonDiversity(iTimeStep)
                 Case eDiversityIndexType.KemptonsQ
@@ -114,7 +114,7 @@ Public Class cEcosimOutput
 
     Public ReadOnly Property DiversityIndexStatus(iTimeStep As Integer) As eStatusFlags
         Get
-            Select Case Me.m_core.m_EcoPathData.DiversityIndexType
+            Select Case Me.m_core.m_EcopathData.DiversityIndexType
                 Case eDiversityIndexType.Shannon
                     Return Me.ShannonDiversityStatus(iTimeStep)
                 Case eDiversityIndexType.KemptonsQ

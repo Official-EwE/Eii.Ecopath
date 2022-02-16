@@ -145,7 +145,7 @@ Public MustInherit Class cEcospaceLayer
         Try
             Me.DBID = iDBID
             Me.m_dataType = eDataTypes.NotSet
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
             Me.m_metadata = meta
             Me.m_typeValue = typeValue
 

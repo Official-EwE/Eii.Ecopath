@@ -69,10 +69,10 @@ Public Class cF2TSManager
         Dim val As cValue = Nothing
 
         Me.AllowValidation = False
-        Me.m_coreComponent = eCoreComponentType.EcoSimFitToTimeSeries
+        Me.m_coreComponent = eCoreComponentType.EcosimFitToTimeSeries
         Me.m_dataType = eDataTypes.FitToTimeSeries
 
-        Me.m_EPData = core.m_EcoPathData
+        Me.m_EPData = core.m_EcopathData
         Me.m_ESData = core.m_EcoSimData
 
         Me.m_searchObjective = core.SearchObjective
@@ -137,7 +137,7 @@ Public Class cF2TSManager
         Me.AllowValidation = True
 
         ' Create and configure model
-        Me.m_model = New cF2TSModel(Me.m_core, Me.m_core.m_EcoSim, Me.m_EPData, Me.m_ESData)
+        Me.m_model = New cF2TSModel(Me.m_core, Me.m_core.m_Ecosim, Me.m_EPData, Me.m_ESData)
         Me.m_model.Init(AddressOf Me.RunStartedCallback, AddressOf Me.RunStepCallback, AddressOf Me.RunStoppedCallback,
                         AddressOf Me.AddMessageCallback, AddressOf Me.RunModelCallBack, AddressOf Me.SendMessageCallback)
 
@@ -502,7 +502,7 @@ Public Class cF2TSManager
 
         If Not bCanRun Then
             ' ToDo: globalize this
-            Me.m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+            Me.m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
         End If
 
         Return bCanRun
@@ -548,7 +548,7 @@ Public Class cF2TSManager
 
         'jb this should never happen but if it does we better tell the interface why this could not be run
         Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_NO_TS,
-                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
 
         Return False
     End Function
@@ -636,7 +636,7 @@ Public Class cF2TSManager
             cLog.Write(ex)
             ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered,
-                                    eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+                                    eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
             '    Me.ReleaseWait()
         End Try
@@ -691,7 +691,7 @@ Public Class cF2TSManager
             cLog.Write(ex)
             ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered,
-                                    eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+                                    eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
             '    Me.ReleaseWait()
         End Try
@@ -743,7 +743,7 @@ Public Class cF2TSManager
             bSucces = False
             Me.m_core.m_FitToTimeSeriesData.RunSilent = False
             Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
-                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+                                                eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             cLog.Write(ex)
 
             Me.ReleaseWait()
@@ -992,7 +992,7 @@ Public Class cF2TSManager
         Catch ex As Exception
             cLog.Write(ex)
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
-                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
         End Try
 
     End Sub

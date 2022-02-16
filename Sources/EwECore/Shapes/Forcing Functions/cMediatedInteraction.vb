@@ -270,7 +270,7 @@ Public MustInherit Class cMediatedInteraction
     <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
-            Return eCoreComponentType.EcoSim
+            Return eCoreComponentType.Ecosim
         End Get
     End Property
 

@@ -116,7 +116,7 @@ Namespace Ecosim
 
                 AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreExecutionStateEvent
 
-                Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
+                Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.Ecopath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
                 Me.UpdateMaxSplinePoints()
                 Me.ReloadControls()
 
@@ -195,7 +195,7 @@ Namespace Ecosim
         Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
             Select Case msg.Source
 
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     ' Hmm, this can be quite disastrous. Consider what to do here!
                     If ((msg.Type = eMessageType.DataAddedOrRemoved) And (msg.DataType = eDataTypes.EcoPathGroupInput)) Then
                         ' Make the vul control update itself

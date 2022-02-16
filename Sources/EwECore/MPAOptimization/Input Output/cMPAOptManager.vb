@@ -292,7 +292,7 @@ Public Class cMPAOptManager
 
             If Me.IsRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MPAOPT_RUNNING,
-                                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace,
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.Ecospace,
                                                             eMessageImportance.Critical))
                 Return False
             End If
@@ -338,7 +338,7 @@ Public Class cMPAOptManager
             cLog.Write(ex)
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message),
-                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace,
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.Ecospace,
                                                         eMessageImportance.Critical))
             Me.ReleaseWait()
             Return False
@@ -544,7 +544,7 @@ Public Class cMPAOptManager
 
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
-            Return eCoreComponentType.EcoSpace
+            Return eCoreComponentType.Ecospace
         End Get
     End Property
 

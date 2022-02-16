@@ -115,7 +115,7 @@ Public Class cEcopathModelFromEcosim
 
     Public Function InitRun(strOutputPath As String) As Boolean
 
-        Me.m_msgStatus = New cMessage(My.Resources.CoreMessages.MODELFROMSIM_GENERATED, eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+        Me.m_msgStatus = New cMessage(My.Resources.CoreMessages.MODELFROMSIM_GENERATED, eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
         Me.m_msgStatus.Hyperlink = strOutputPath
 
         Return True
@@ -182,13 +182,13 @@ Public Class cEcopathModelFromEcosim
 
     Private Sub RecordAverages(itime As Integer)
 
-        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim taxonSrc As cTaxonDataStructures = Me.m_core.m_TaxonData
         Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Dim sArea As Single = Me.m_core.EwEModel.Area
-        Dim simBB() As Single = Me.m_core.m_EcoSim.BB
+        Dim simBB() As Single = Me.m_core.m_Ecosim.BB
 
         ' Capture group data
         For iGroup As Integer = 1 To Me.m_core.nGroups
@@ -318,7 +318,7 @@ Public Class cEcopathModelFromEcosim
     Private Function CreateItems(coreNew As cCore) As Boolean
 
         Dim bSuccess As Boolean = True
-        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim taxonSrc As cTaxonDataStructures = Me.m_core.m_TaxonData
 
@@ -416,8 +416,8 @@ Public Class cEcopathModelFromEcosim
 
         Debug.Assert(iTime >= cCore.N_MONTHS, Me.ToString & ".PopulateItems(...) iTime must fall after the first year.")
 
-        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
+        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcopathData
+        Dim pathDest As cEcopathDataStructures = coreNew.m_EcopathData
         Dim GroupDBIDs(coreNew.nGroups) As Integer
         Dim FleetDBIDs(coreNew.nFleets + 1) As Integer
 
@@ -449,7 +449,7 @@ Public Class cEcopathModelFromEcosim
         Me.SetStartEndTimesteps(iTime, BACalculation, nNumYearsAverage, iStartIndex, nBAtimesteps)
 
         ' Dirty destination core
-        coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
+        coreNew.DataSource.SetChanged(eCoreComponentType.Ecopath)
         coreNew.StateMonitor.UpdateDataState(coreNew.DataSource)
 
         ' Preserve new database IDs prior to copying Ecopath data over
@@ -489,7 +489,7 @@ Public Class cEcopathModelFromEcosim
             Select Case BACalculation
 
                 Case eBACalcTypes.FromEcosimYearsAverage
-                    Dim simBB() As Single = Me.m_core.m_EcoSim.BB
+                    Dim simBB() As Single = Me.m_core.m_Ecosim.BB
                     BiomassAtT = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iStartIndex)
                     pathDest.BAInput(iGroup) = (simBB(iGroup) - BiomassAtT) / nNumYearsAverage
                     pathDest.BaBi(iGroup) = 0
@@ -517,7 +517,7 @@ Public Class cEcopathModelFromEcosim
                     'BA is the Annual Accumulation of B 
                     'So get the annual average accumulation (B(t)-B(0))/ number of years
                     'Attributes the annual average change in Biomass to BiomassAccumulation
-                    Dim simBB() As Single = Me.m_core.m_EcoSim.BB
+                    Dim simBB() As Single = Me.m_core.m_Ecosim.BB
                     pathDest.BAInput(iGroup) = (simBB(iGroup) - pathSrc.B(iGroup)) / nYears
                     pathDest.BaBi(iGroup) = 0
 
@@ -592,14 +592,14 @@ Public Class cEcopathModelFromEcosim
         If (iStartIndex < 1) Then
             Dim vs As cVariableStatus
             vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_STARTYEAR_ADJ,
-                                     eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
+                                     eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.Ecosim, -1)
             Me.m_msgStatus.AddVariable(vs)
             iStartIndex = 1
         End If
 
         If ((iStartIndex + nBAtimesteps - 1) > iTime) Then
             Dim vs As cVariableStatus
-            vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_ENDYEAR_ADJ, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
+            vs = New cVariableStatus(eStatusFlags.FailedValidation, My.Resources.CoreMessages.MODELFRIMSIM_BA_ENDYEAR_ADJ, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.Ecosim, -1)
             Me.m_msgStatus.AddVariable(vs)
             nBAtimesteps = iTime - iStartIndex + 1
         End If

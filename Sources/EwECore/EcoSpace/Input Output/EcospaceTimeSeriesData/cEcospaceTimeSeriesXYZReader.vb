@@ -135,7 +135,7 @@ Namespace EcospaceTimeSeries
             Next
             If msg.Length > 0 Then
                 Me.m_Manager.Core.Messages.AddMessage(New cMessage(msg.ToString, eMessageType.DataValidation,
-                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Information))
+                                                                   eCoreComponentType.Ecospace, eMessageImportance.Information))
             End If
         End Sub
 

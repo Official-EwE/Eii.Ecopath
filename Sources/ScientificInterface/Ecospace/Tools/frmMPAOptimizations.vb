@@ -224,7 +224,7 @@ Namespace Ecospace
             Me.m_fpMPA = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMPA, MPAOpt, eVarNameFlags.iMPAOptToUse)
             Me.m_fpRegions = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseRegions, MPAOpt, eVarNameFlags.MPAOptUseRegions)
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace, eCoreComponentType.Core}
 
             Me.m_plEditor.Visible = False
 
@@ -551,7 +551,7 @@ Namespace Ecospace
 
             Select Case msg.Source
 
-                Case eCoreComponentType.EcoSpace
+                Case eCoreComponentType.Ecospace
                     If (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Stopping) Then
                         Return
                     End If

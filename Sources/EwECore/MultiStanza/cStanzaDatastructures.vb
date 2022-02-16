@@ -350,7 +350,7 @@ Public Class cStanzaDatastructures
     Public Sub OnPostInitialization()
 
         Dim msg As New cMessage(My.Resources.CoreMessages.STANZA_LEADING_ADJUSTED, eMessageType.DataModified,
-                                EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                                EwEUtils.Core.eCoreComponentType.Ecopath, eMessageImportance.Warning)
         Dim vs As cVariableStatus = Nothing
         Dim i As Integer = 0
 
@@ -363,7 +363,7 @@ Public Class cStanzaDatastructures
                 Me.BaseStanza(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter,
                                          cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGB_ADJUSTED, Me.StanzaName(iStanza)),
-                                         EwEUtils.Core.eVarNameFlags.LeadingBiomass, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
+                                         EwEUtils.Core.eVarNameFlags.LeadingBiomass, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.Ecopath, iStanza)
                 msg.AddVariable(vs)
             End If
 
@@ -373,7 +373,7 @@ Public Class cStanzaDatastructures
                 Me.BaseStanzaCB(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter,
                                          cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGCB_ADJUSTED, Me.StanzaName(iStanza)),
-                                         EwEUtils.Core.eVarNameFlags.LeadingCB, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
+                                         EwEUtils.Core.eVarNameFlags.LeadingCB, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.Ecopath, iStanza)
                 msg.AddVariable(vs)
             End If
 

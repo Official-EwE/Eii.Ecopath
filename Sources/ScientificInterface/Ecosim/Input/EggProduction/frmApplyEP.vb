@@ -56,7 +56,7 @@ Namespace Ecosim
             ' Init the form to the current data
             Me.InitForm()
             ' Hook up to baseclass refresh
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.ShapesManager}
 
         End Sub
 
@@ -240,7 +240,7 @@ Namespace Ecosim
             End If
 
             ' * Refresh on Ecopath stanza additions or removals
-            If ((msg.Source = eCoreComponentType.EcoPath) And (msg.DataType = eDataTypes.Stanza)) Then
+            If ((msg.Source = eCoreComponentType.Ecopath) And (msg.DataType = eDataTypes.Stanza)) Then
                 bRefreshForm = (msg.Type = eMessageType.DataAddedOrRemoved)
             End If
 

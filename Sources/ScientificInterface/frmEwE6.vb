@@ -832,8 +832,8 @@ Public Class frmEwE6
         ' Configure state monitor
         Me.Core.StateMonitor.SyncObject = Me
         Me.m_mhProgress = New cMessageHandler(AddressOf Me.OnProgressMessage, eCoreComponentType.External, eMessageType.Progress, Me.SyncObject)
-        Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
-        Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecosim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
+        Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecospace, eMessageType.DataAddedOrRemoved, Me.SyncObject)
         Me.m_mhEcotracer = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecotracer, eMessageType.DataAddedOrRemoved, Me.SyncObject)
         Me.m_mhTimeseries = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.TimeSeries, eMessageType.DataAddedOrRemoved, Me.SyncObject)
 
@@ -2394,7 +2394,7 @@ Public Class frmEwE6
             DirectCast(Me.Panel(cPANEL_STATUS), frmStatusPanel).Reset()
 
             ' Clear the properties cache
-            Me.UIContext.PropertyManager.Clear(eCoreComponentType.EcoPath)
+            Me.UIContext.PropertyManager.Clear(eCoreComponentType.Ecopath)
 
             ' Clean up UI bits
             Me.UpdateModelControls()
@@ -4548,11 +4548,11 @@ Public Class frmEwE6
                             Dim msg As cMessage = Nothing
                             If (bSuccess) Then
                                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, sfd.FileName),
-                                                   eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                                   eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
                                 msg.Hyperlink = Path.GetDirectoryName(sfd.FileName)
                             Else
                                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, sfd.FileName),
-                                                   eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                                                   eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Critical)
                             End If
 
                             Me.Core.Messages.SendMessage(msg)

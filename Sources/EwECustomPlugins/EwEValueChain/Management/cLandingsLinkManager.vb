@@ -38,7 +38,7 @@ Public Class cLandingsLinkManager
 
     Public Sub OnEcopathMessage(msg As cMessage)
 
-        If (msg.Source <> EwEUtils.Core.eCoreComponentType.EcoPath) Then Return
+        If (msg.Source <> EwEUtils.Core.eCoreComponentType.Ecopath) Then Return
         If (msg.DataType <> EwEUtils.Core.eDataTypes.FleetInput) Then Return
         If (Not msg.HasVariable(eVarNameFlags.Landings)) Then Return
 

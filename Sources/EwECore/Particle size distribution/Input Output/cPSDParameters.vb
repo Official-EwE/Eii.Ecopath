@@ -33,7 +33,7 @@ Public Class cPSDParameters
     Public Sub New(core As cCore)
         MyBase.New(core)
 
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
         Me.m_dataType = eDataTypes.ParticleSizeDistribution
 
         Try

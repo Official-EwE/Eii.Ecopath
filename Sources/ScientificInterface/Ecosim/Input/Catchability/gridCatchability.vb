@@ -41,7 +41,7 @@ Public Class gridCatchability
 
     Public Overrides ReadOnly Property CoreComponents As eCoreComponentType()
         Get
-            Return New eCoreComponentType() {eCoreComponentType.EcoSim}
+            Return New eCoreComponentType() {eCoreComponentType.Ecosim}
         End Get
     End Property
 
@@ -169,7 +169,7 @@ Public Class gridCatchability
 
     Public Overrides Sub OnCoreMessage(ByRef msg As cMessage)
         MyBase.OnCoreMessage(msg)
-        If (msg.Source = eCoreComponentType.EcoSim And msg.DataType = eDataTypes.EcosimFleetInput) Then
+        If (msg.Source = eCoreComponentType.Ecosim And msg.DataType = eDataTypes.EcosimFleetInput) Then
             Me.BeginInvoke(New MethodInvoker(AddressOf UpdateContent))
         End If
     End Sub

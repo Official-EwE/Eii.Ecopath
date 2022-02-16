@@ -103,7 +103,7 @@ Public Class cEcosimGroupInput
             Me.m_nGroups = core.nGroups
 
             Me.m_dataType = eDataTypes.EcoSimGroupInput
-            Me.m_coreComponent = eCoreComponentType.EcoSim
+            Me.m_coreComponent = eCoreComponentType.Ecosim
             Me.AllowValidation = False
             Me.DBID = DBID
 

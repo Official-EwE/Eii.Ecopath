@@ -123,7 +123,7 @@ Namespace Ecospace
 
             Me.m_tsbnOnlyShowConnectedLayers.Checked = Me.m_gridApply.OnlyShowConnected
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace, eCoreComponentType.Core}
 
         End Sub
 

@@ -407,12 +407,12 @@ Public Class cCoreStateMonitor
                      eCoreComponentType.SearchObjective
                 ' NOP
 
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     Me.SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
                     bHandled = True
 
-                Case eCoreComponentType.EcoSim,
-                     eCoreComponentType.EcoSimFitToTimeSeries,
+                Case eCoreComponentType.Ecosim,
+                     eCoreComponentType.EcosimFitToTimeSeries,
                      eCoreComponentType.EcoSimMonteCarlo,
                      eCoreComponentType.FishingPolicySearch,
                      eCoreComponentType.ShapesManager,
@@ -420,7 +420,7 @@ Public Class cCoreStateMonitor
                     Me.SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
                     bHandled = True
 
-                Case eCoreComponentType.EcoSpace,
+                Case eCoreComponentType.Ecospace,
                      eCoreComponentType.MPAOptimization
                     Me.SetEcospaceLoaded(Me.HasEcospaceLoaded(), tsSendUpdate, False)
                     bHandled = True
@@ -1135,7 +1135,7 @@ Public Class cCoreStateMonitor
     Private m_bRequiresEcosimFullInit As Boolean = False
 
     Friend Sub RegisterModification(component As eCoreComponentType)
-        If component = eCoreComponentType.EcoPath Then Me.m_bRequiresEcosimFullInit = True
+        If component = eCoreComponentType.Ecopath Then Me.m_bRequiresEcosimFullInit = True
     End Sub
 
     Friend Function RequiresEcosimFullInit() As Boolean

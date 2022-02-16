@@ -72,7 +72,7 @@ Namespace Ecotracer
 
             Me.UpdateControls()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim, eCoreComponentType.Ecospace}
 
 
         End Sub
@@ -139,10 +139,10 @@ Namespace Ecotracer
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
-            If msg.Source = eCoreComponentType.EcoSim Then
+            If msg.Source = eCoreComponentType.Ecosim Then
                 Me.ConnectToEcosim(Me.Core.ActiveEcosimScenarioIndex > 0)
             End If
-            If msg.Source = eCoreComponentType.EcoSpace Then
+            If msg.Source = eCoreComponentType.Ecospace Then
                 Me.ConnectToEcospace(Me.Core.ActiveEcospaceScenarioIndex > 0)
             End If
         End Sub

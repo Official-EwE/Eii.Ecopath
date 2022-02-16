@@ -64,7 +64,7 @@ Public Class cEcospaceASCMapContaminants
         Dim grpName As String
 
         If iGrp > 0 Then
-            grpName = Me.m_core.m_EcoPathData.GroupName(iGrp)
+            grpName = Me.m_core.m_EcopathData.GroupName(iGrp)
         Else
             grpName = "Environment"
         End If

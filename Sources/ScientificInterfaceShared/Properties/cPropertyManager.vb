@@ -122,19 +122,19 @@ Namespace Properties
         Public Sub Clear(msgSource As eCoreComponentType)
 
             Select Case msgSource
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     Me.Clear(Me.m_htGeneric)
                     Me.Clear(Me.m_htEcopath)
                     Me.Clear(Me.m_htEcosim)
                     Me.Clear(Me.m_htEcospace)
                     Me.Clear(Me.m_htEcotracer)
 
-                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE
+                Case eCoreComponentType.Ecosim, eCoreComponentType.MSE
                     Me.Clear(Me.m_htEcosim)
                     Me.Clear(Me.m_htEcospace)
                     Me.Clear(Me.m_htEcotracer)
 
-                Case eCoreComponentType.EcoSpace
+                Case eCoreComponentType.Ecospace
                     Me.Clear(Me.m_htEcospace)
                     Me.Clear(Me.m_htEcotracer)
 
@@ -237,9 +237,9 @@ Namespace Properties
             Dim key As New cValueID(src, varname, srcSec)
             strID = key.ToString()
             Select Case src.CoreComponent
-                Case eCoreComponentType.EcoPath : ht = Me.m_htEcopath
-                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE : ht = Me.m_htEcosim
-                Case eCoreComponentType.EcoSpace : ht = Me.m_htEcospace
+                Case eCoreComponentType.Ecopath : ht = Me.m_htEcopath
+                Case eCoreComponentType.Ecosim, eCoreComponentType.MSE : ht = Me.m_htEcosim
+                Case eCoreComponentType.Ecospace : ht = Me.m_htEcospace
                 Case eCoreComponentType.Ecotracer : ht = Me.m_htEcotracer
                 Case Else : ht = Me.m_htGeneric
             End Select
@@ -421,7 +421,7 @@ Namespace Properties
             Next
 
             Select Case msgSource
-                Case eCoreComponentType.EcoPath
+                Case eCoreComponentType.Ecopath
                     For Each prop As cProperty In Me.m_htEcopath.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -439,7 +439,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eCoreComponentType.EcoSim, eCoreComponentType.MSE, eCoreComponentType.EcoSimMonteCarlo
+                Case eCoreComponentType.Ecosim, eCoreComponentType.MSE, eCoreComponentType.EcoSimMonteCarlo
                     For Each prop As cProperty In Me.m_htEcosim.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -453,7 +453,7 @@ Namespace Properties
                         prop.Refresh()
                     Next
 
-                Case eCoreComponentType.EcoSpace
+                Case eCoreComponentType.Ecospace
                     For Each prop As cProperty In Me.m_htEcospace.Values
                         ' Refresh yourself
                         prop.Refresh()
@@ -479,13 +479,13 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Private Sub SetMessageHandlers()
 
-            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj))
-            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj))
-            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecopath, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecosim, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecospace, eMessageType.Any, Me.m_SyncObj))
             Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.Ecotracer, eMessageType.Any, Me.m_SyncObj))
             Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.MSE, eMessageType.Any, Me.m_SyncObj))
             Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.FishingPolicySearch, eMessageType.Any, Me.m_SyncObj))
-            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
+            Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcosimFitToTimeSeries, eMessageType.Any, Me.m_SyncObj))
             Me.m_lMessageHandlers.Add(New cMessageHandler(AddressOf Me.AllMessagesHandler, eCoreComponentType.EcoSimMonteCarlo, eMessageType.Any, Me.m_SyncObj))
 
             For Each mh As cMessageHandler In Me.m_lMessageHandlers

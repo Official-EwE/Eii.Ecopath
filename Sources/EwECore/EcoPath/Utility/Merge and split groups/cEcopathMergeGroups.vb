@@ -62,7 +62,7 @@ Namespace Ecopath
         Public Sub New(core As cCore)
             Me.m_core = core
             Me.m_data = New cEcopathMergeGroupsDatastructures()
-            Me.m_data.Init(core.m_EcoPathData, core.m_Stanza)
+            Me.m_data.Init(core.m_EcopathData, core.m_Stanza)
         End Sub
 
 #End Region ' Construction
@@ -111,7 +111,7 @@ Namespace Ecopath
         Public Function CompatibleGroups(iGroup As Integer) As Integer()
 
             Dim groups As New List(Of Integer)
-            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             If (1 <= iGroup And iGroup <= Me.m_core.nGroups) Then
                 If ecopathds.StanzaGroup(iGroup) Then
@@ -163,7 +163,7 @@ Namespace Ecopath
         ''' -----------------------------------------------------------------------
         Public Function GroupName(agg1 As Integer, agg2 As Integer) As String
 
-            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             If (agg1 < 1) Or (agg2 < 1) Then Return ""
             If (agg1 > ecopathds.NumGroups) Or (agg2 > ecopathds.NumGroups) Then Return ""
@@ -183,7 +183,7 @@ Namespace Ecopath
         Public Function Calculate(agg1 As Integer, agg2 As Integer, strName As String,
                               estimate As eEstimate, bCalcEstimate As Boolean) As Boolean
 
-            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim taxonds As cTaxonDataStructures = Me.m_core.m_TaxonData
 
@@ -290,7 +290,7 @@ Namespace Ecopath
             End Select
 
             ' Stanza
-            If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
+            If Me.m_core.m_EcopathData.StanzaGroup(agg1) Then
 
                 Dim iStanza As Integer = -1
                 Dim iLifestage1 As Integer = -1
@@ -357,7 +357,7 @@ Namespace Ecopath
             ' Sanity checks
             If Not Me.m_data.IsValid Then Return False
 
-            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim taxonds As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim agg1 As Integer = Me.m_data.IndexTarget
@@ -407,7 +407,7 @@ Namespace Ecopath
             Next
 
             ' Stanza
-            If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
+            If Me.m_core.m_EcopathData.StanzaGroup(agg1) Then
                 stanzads.Age1(Me.m_data.iStanza, Me.m_data.iLifeStage) = Me.m_data.Age1(Me.m_data.iStanza, Me.m_data.iLifeStage)
                 stanzads.Stanza_Z(Me.m_data.iStanza, Me.m_data.iLifeStage) = Me.m_data.StanzaZ(Me.m_data.iStanza, Me.m_data.iLifeStage)
             End If
@@ -423,7 +423,7 @@ Namespace Ecopath
             Me.MergeRemarks(eDataTypes.EcoPathGroupInput, ecopathds.GroupDBID(Me.m_data.IndexTarget), ecopathds.GroupDBID(Me.m_data.IndexMerge))
             Me.MergeRemarks(eDataTypes.EcoPathGroupOutput, ecopathds.GroupDBID(Me.m_data.IndexTarget), ecopathds.GroupDBID(Me.m_data.IndexMerge))
 
-            Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
+            Me.m_core.DataSource.SetChanged(eCoreComponentType.Ecopath)
             Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
 
             ' Compact bit: save changes and prepare for group removal in a batch lock.
@@ -464,7 +464,7 @@ Namespace Ecopath
         Private Sub MergeTaxa()
 
             Dim taxonds As cTaxonDataStructures = Me.m_core.m_TaxonData
-            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             ' Taxon biomasses
             Dim dtB As New Dictionary(Of Integer, Single)

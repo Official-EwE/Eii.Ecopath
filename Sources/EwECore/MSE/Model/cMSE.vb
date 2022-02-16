@@ -136,7 +136,7 @@ Namespace MSE
 
         Private m_core As cCore
         Private m_data As cMSEDataStructures
-        Private m_Ecosim As Ecosim.cEcoSimModel
+        Private m_Ecosim As Ecosim.cEcosimModel
         Private m_Search As cSearchDatastructures
         Private m_esData As cEcosimDatastructures
         Private m_epdata As cEcopathDataStructures
@@ -246,7 +246,7 @@ Namespace MSE
             Me.m_core = theCore
         End Sub
 
-        Public Sub Init(MSEData As cMSEDataStructures, Ecosim As Ecosim.cEcoSimModel, SearchData As cSearchDatastructures, EcopathData As cEcopathDataStructures, RefData As cTimeSeriesDataStructures, PluginManager As cPluginManager)
+        Public Sub Init(MSEData As cMSEDataStructures, Ecosim As Ecosim.cEcosimModel, SearchData As cSearchDatastructures, EcopathData As cEcopathDataStructures, RefData As cTimeSeriesDataStructures, PluginManager As cPluginManager)
 
             Me.m_data = MSEData
             Me.m_Ecosim = Ecosim
@@ -380,7 +380,7 @@ Namespace MSE
                 'GstockPred could have been altered by an interface
                 For igrp = 1 To Me.m_epdata.NumLiving
                     'BaB is correct for Stanza groups because Ecopath.BA() gets updated with Stanza.BaBsplit()
-                    BaB = Me.m_core.m_EcoPathData.BA(igrp) / Me.m_core.m_EcoPathData.B(igrp)
+                    BaB = Me.m_core.m_EcopathData.BA(igrp) / Me.m_core.m_EcopathData.B(igrp)
                     'gstockpred=exp(bab)-rstockratio, rather than 1-rstockratio.  Check to insure gstockpred>0
 
                     'Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
@@ -866,7 +866,7 @@ Namespace MSE
                 Dim Pless As Single = Me.m_data.BioStats.PercentageBelow(i, Me.m_data.BioBounds(i).Lower)
                 Dim Pgreater As Single = Me.m_data.BioStats.PercentageAbove(i, Me.m_data.BioBounds(i).Upper)
                 ' Debug.Assert(Pless + Pgreater <= 100, "MSE Probability calculation!!!!")
-                System.Console.WriteLine("Group = " & Me.m_core.m_EcoPathData.GroupName(i) & ", less = " & Pless.ToString & ", greater = " & Pgreater.ToString)
+                System.Console.WriteLine("Group = " & Me.m_core.m_EcopathData.GroupName(i) & ", less = " & Pless.ToString & ", greater = " & Pgreater.ToString)
             Next
 
 
@@ -2944,7 +2944,7 @@ Namespace MSE
 
                 'get the directory to dump the data to
                 Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "Tradeoff\"
-                Dim mName As String = Me.m_core.m_EcoPathData.ModelName
+                Dim mName As String = Me.m_core.m_EcopathData.ModelName
 
                 strm = New StreamWriter(Me.BuildCSVFilename("FleetTradeOff_", mName), False)
                 buff = New StringBuilder()

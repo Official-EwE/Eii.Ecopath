@@ -95,7 +95,7 @@ Public Class cPSDModel
 
                 ' #Yes: generate - or append to - message
                 If (msg Is Nothing) Then
-                    msg = New cMessage(My.Resources.CoreMessages.PSD_MISSING_INPUT, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                    msg = New cMessage(My.Resources.CoreMessages.PSD_MISSING_INPUT, eMessageType.TooManyMissingParameters, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                     msg.Suppressable = False
                 End If
                 bMissing = True
@@ -103,14 +103,14 @@ Public Class cPSDModel
                 ' JS: add variable status to report missing L or W 
                 If (Me.m_psd.WinfInput(i) < 0 And Me.m_psd.LooInput(i) < 0) Then
                     str = cStringUtils.Localize(My.Resources.CoreMessages.PSD_REQ_LW, Me.m_Data.GroupName(i))
-                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
+                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.Ecopath, i)
                     msg.AddVariable(vs)
                 End If
 
                 ' JS: add variable status to report missing K in VGBF
                 If (Me.m_Data.vbK(i) <= 0) Then
                     str = cStringUtils.Localize(My.Resources.CoreMessages.PSD_REQ_K_VBGF, Me.m_Data.GroupName(i))
-                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
+                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.Ecopath, i)
                     msg.AddVariable(vs)
                 End If
 
@@ -401,7 +401,7 @@ Public Class cPSDModel
             bSuccess = True
         Else
             If (msg Is Nothing) Then
-                msg = New cMessage(My.Resources.CoreMessages.PSD_ERROR_WEIGHTCLASSES, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                msg = New cMessage(My.Resources.CoreMessages.PSD_ERROR_WEIGHTCLASSES, eMessageType.Any, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                 msg.Suppressable = False
             End If
         End If

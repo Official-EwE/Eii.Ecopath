@@ -258,9 +258,9 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                             Dim val As Single = 0.0
                             Select Case par
                                 Case eMCParams.Landings
-                                    val = Me.Core.m_EcoPathData.Landing(iFleet, iGroup)
+                                    val = Me.Core.m_EcopathData.Landing(iFleet, iGroup)
                                 Case eMCParams.Discards
-                                    val = Me.Core.m_EcoPathData.Discard(iFleet, iGroup)
+                                    val = Me.Core.m_EcopathData.Discard(iFleet, iGroup)
                             End Select
                             sw.Write(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                         End If
@@ -277,7 +277,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 For iPred As Integer = 1 To Me.Core.nGroups
                     sw.Write("{0}", iPred)
                     For iPrey As Integer = 1 To Me.Core.nGroups
-                        Dim val As Single = Me.Core.m_EcoPathData.DC(iPred, iPrey)
+                        Dim val As Single = Me.Core.m_EcopathData.DC(iPred, iPrey)
                         sw.Write(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                     Next
                     sw.WriteLine()
@@ -290,12 +290,12 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                     sw.Write("{0}", iGroup)
                     Dim val As Single = 0
                     Select Case par
-                        Case eMCParams.Biomass : val = Me.Core.m_EcoPathData.B(iGroup)
-                        Case eMCParams.BA : val = Me.Core.m_EcoPathData.BA(iGroup)
-                        Case eMCParams.BaBi : val = Me.Core.m_EcoPathData.BaBi(iGroup)
-                        Case eMCParams.PB : val = Me.Core.m_EcoPathData.PB(iGroup)
-                        Case eMCParams.QB : val = Me.Core.m_EcoPathData.QB(iGroup)
-                        Case eMCParams.EE : val = Me.Core.m_EcoPathData.EE(iGroup)
+                        Case eMCParams.Biomass : val = Me.Core.m_EcopathData.B(iGroup)
+                        Case eMCParams.BA : val = Me.Core.m_EcopathData.BA(iGroup)
+                        Case eMCParams.BaBi : val = Me.Core.m_EcopathData.BaBi(iGroup)
+                        Case eMCParams.PB : val = Me.Core.m_EcopathData.PB(iGroup)
+                        Case eMCParams.QB : val = Me.Core.m_EcopathData.QB(iGroup)
+                        Case eMCParams.EE : val = Me.Core.m_EcopathData.EE(iGroup)
                         Case Else
                             Debug.Assert(False, "Yo! Variable not supported yet!")
                     End Select

@@ -46,7 +46,7 @@ Public Class cEcospaceLayerImportance
 
         Try
             Me.m_dataType = eDataTypes.EcospaceLayerImportance
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 

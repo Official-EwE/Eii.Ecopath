@@ -44,7 +44,7 @@ Public Class cFishingMortalityShapeManger
             ' Fishing rate shapes are no longer loaded from the DB
             Me.m_SimData.FishRateNoDBID(iGroup) = Me.m_core.m_EcoSimData.GroupDBID(iGroup)
 
-            shape = New cFishingMortShape(Me.m_SimData, Me, Me.m_SimData.FishRateNoDBID(iGroup), Me.m_core.m_EcoPathData.GroupName(iGroup))
+            shape = New cFishingMortShape(Me.m_SimData, Me, Me.m_SimData.FishRateNoDBID(iGroup), Me.m_core.m_EcopathData.GroupName(iGroup))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
             shape.ID = Me.m_shapes.Count

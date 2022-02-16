@@ -86,7 +86,7 @@ Namespace Ecosim
             AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf Me.OnPredictEffortChanged
 
             ' Listen to shapes data added or removed messages
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.Ecosim}
 
             Me.UpdateEnvForcingControls()
             Me.RebuildScenarioFormatProviders()
@@ -192,7 +192,7 @@ Namespace Ecosim
                 Me.UpdateEnvForcingControls()
             End If
 
-            If msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.DataAddedOrRemoved Then
+            If msg.Source = eCoreComponentType.Ecosim And msg.Type = eMessageType.DataAddedOrRemoved Then
                 Me.RebuildScenarioFormatProviders()
             End If
         End Sub

@@ -81,7 +81,7 @@ Namespace Ecosim
             Me.CalcPlotParams()
             Me.SetPlotTypes()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim}
 
         End Sub
 
@@ -563,7 +563,7 @@ Namespace Ecosim
             Dim nSteps As Integer = CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
 
             msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath),
-                               eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                               eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Information)
 
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
 
@@ -590,7 +590,7 @@ Namespace Ecosim
                     Catch ex As Exception
                         ' Notify user
                         msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message),
-                                eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                                eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Critical)
                         bSucces = False
                     End Try
                 End If
@@ -731,7 +731,7 @@ Namespace Ecosim
 
                     Catch ex As Exception
                         msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message),
-                                           eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                                           eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Critical)
                         bSucces = False
                     Finally
                         sw.Close()

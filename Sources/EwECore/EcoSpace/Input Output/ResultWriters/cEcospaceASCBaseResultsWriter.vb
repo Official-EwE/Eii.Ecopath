@@ -53,7 +53,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
             End If
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message),
-                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning))
         End Try
     End Sub
 
@@ -101,7 +101,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
                             Catch ex As IOException
                                 cLog.Write(ex)
                                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
-                                                       eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                                                       eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Warning)
                                 Me.m_core.Messages.SendMessage(msg)
                             End Try
                         End If 'cFileUtils.IsDirectoryAvailable()
@@ -117,7 +117,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
 
 
     Protected Overridable Function NMaps() As Integer
-        Return Me.m_core.m_EcoPathData.NumLiving
+        Return Me.m_core.m_EcopathData.NumLiving
     End Function
 
     Protected Overridable Function GetFileName(varname As eVarNameFlags,
@@ -133,7 +133,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
         Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_ASCII_SUCCESS, Me.m_OutputPath),
-                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
         msg.Hyperlink = Me.m_OutputPath
         Me.m_core.Messages.SendMessage(msg)

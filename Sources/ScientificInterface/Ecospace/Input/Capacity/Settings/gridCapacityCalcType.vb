@@ -73,7 +73,7 @@ Namespace Ecospace
 
                 If (MyBase.UIContext IsNot Nothing) Then
                     ' Set handler to listen to layer changes
-                    Me.m_mhLayers = New cMessageHandler(AddressOf Me.MessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.UIContext.SyncObject)
+                    Me.m_mhLayers = New cMessageHandler(AddressOf Me.MessageHandler, eCoreComponentType.Ecospace, eMessageType.DataModified, Me.UIContext.SyncObject)
 #If DEBUG Then
                     Me.m_mhLayers.Name = "gridCapacityCalcType::Ecospace"
 #End If

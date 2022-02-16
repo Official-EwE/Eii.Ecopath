@@ -222,7 +222,7 @@ Public Class cEIIXMLDataSource
     Public Function LoadModel() As Boolean _
         Implements IEcopathDataSource.LoadModel
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
 
         Dim strEwEVersion As String
         Dim sDBVersion As Single
@@ -292,7 +292,7 @@ Public Class cEIIXMLDataSource
     Private Function LoadModelInfo() As Boolean
 
         Dim dt As DataTable = Me.ReadTable("EcopathModel")
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim sVal1 As Single = 0.0!
         Dim sVal2 As Single = 0.0!
@@ -360,7 +360,7 @@ Public Class cEIIXMLDataSource
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathGroups() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
         Dim dt As DataTable = Me.ReadTable("EcopathGroup")
         Dim iGroup As Integer = 1
@@ -455,7 +455,7 @@ Public Class cEIIXMLDataSource
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathDietComp() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dt As DataTable = Me.ReadTable("EcopathDietComp")
         Dim iPred As Integer = 0
         Dim iPrey As Integer = 0
@@ -505,7 +505,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadStanza() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim dtStanza As DataTable = Nothing
@@ -659,7 +659,7 @@ Public Class cEIIXMLDataSource
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathFleets() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dtFleets As DataTable = Me.ReadTable("EcopathFleet")
         Dim iFleet As Integer = 1
         Dim bSucces As Boolean = True
@@ -696,7 +696,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcopathCatch() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dtCatch As DataTable = Me.ReadTable("EcopathCatch")
         Dim iFleet As Integer = 0
         Dim iGroup As Integer = 0
@@ -734,7 +734,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcopathDiscardFate() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dt As DataTable = Me.ReadTable("EcopathDiscardFate")
         Dim iFleet As Integer = 0
         Dim iGroup As Integer = 0
@@ -811,7 +811,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadPedigreeLevels() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
 
         ' Init data structure
         ecopathDS.NumPedigreeLevels = 0
@@ -858,7 +858,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadEcosimScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dt As DataTable = Me.ReadTable("EcosimScenario")
         Dim iScenario As Integer = 1
         Dim bSucces As Boolean = True
@@ -901,7 +901,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadEcospaceScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenario")
         Dim iScenario As Integer = 1
         Dim bSucces As Boolean = True
@@ -941,7 +941,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadEcotracerScenarioDefinitions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
 
         ecopathDS.NumEcotracerScenarios = 0
         ecopathDS.RedimEcotracerScenarios()
@@ -1013,7 +1013,7 @@ Public Class cEIIXMLDataSource
     Friend Function LoadEcosimScenario(iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.LoadEcosimScenario
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim dt As DataTable = Me.ReadTable("EcosimScenario")
@@ -1078,7 +1078,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimModel() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim dt As DataTable = Me.ReadTable("EcosimModel")
         Dim bSuccess As Boolean = True
@@ -1100,7 +1100,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimGroups() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioGroup")
@@ -1174,7 +1174,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimGroupYear() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioGroupYear")
@@ -1206,7 +1206,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimVulnerabilities() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioForcingMatrix")
         Dim iPredator As Integer = 0
@@ -1234,7 +1234,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimArenas() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioArena")
         Dim reader As IDataReader = Nothing
@@ -1291,7 +1291,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimFleets() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioFleet")
@@ -1363,7 +1363,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimFleetYear() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioFleetYear")
@@ -1396,7 +1396,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimQuota() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioQuota")
@@ -1432,7 +1432,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadShapes() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim PredPreyMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.BioMedData
         Dim LandingsMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.PriceMedData
@@ -1683,7 +1683,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadPredPreyInteractions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioPredPreyShape")
         Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
@@ -1753,7 +1753,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadLandingInteractions() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioLandingsShape")
         Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
@@ -1805,7 +1805,7 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadMediationWeights() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim medData As cMediationDataStructures = Nothing
         Dim dt As DataTable = Nothing
@@ -1879,7 +1879,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadStanzaShapeAssignments() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim dt As DataTable = Me.ReadTable("EcosimStanzaShape")
@@ -1969,7 +1969,7 @@ Public Class cEIIXMLDataSource
     Public Function LoadTimeSeriesDataset(iDataset As Integer) As Boolean _
          Implements DataSources.IEcosimDatasource.LoadTimeSeriesDataset
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
         Dim strSQL As String = ""
@@ -2086,7 +2086,7 @@ Public Class cEIIXMLDataSource
     Private Function LoadEcosimCapacityDrivers() As Boolean
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
         Dim dt As DataTable = Me.ReadTable("EcosimScenarioCapacityDrivers")
@@ -2120,7 +2120,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimMSE() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
         Dim bSucces As Boolean = True
         Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
@@ -2148,7 +2148,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcosimCatchabilities() As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim reader As IDataReader = Nothing
         Dim iFleetID, iFleet As Integer
@@ -2207,7 +2207,7 @@ Public Class cEIIXMLDataSource
     Public Function LoadEcospaceScenario(iScenarioID As Integer) As Boolean _
          Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
@@ -2463,7 +2463,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceGroups(iScenarioID As Integer) As Boolean
 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dtGroup As DataTable = Me.ReadTable("EcospaceScenarioGroup")
         Dim bSucces As Boolean = True
@@ -2781,7 +2781,7 @@ Public Class cEIIXMLDataSource
     Private Function LoadCapacityDrivers(iScenarioID As Integer) As Boolean
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioCapacityDrivers")
         Dim bSucces As Boolean = True
@@ -3642,7 +3642,7 @@ Public Class cEIIXMLDataSource
     ''' <returns>True if catch was found.</returns>
     ''' -------------------------------------------------------------------
     Private Function IsFishing() As Boolean
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim bIsFishing As Boolean = False
         Dim iGroup As Integer = 1
 

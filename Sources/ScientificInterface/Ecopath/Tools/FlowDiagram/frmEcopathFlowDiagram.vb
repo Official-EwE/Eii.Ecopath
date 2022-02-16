@@ -119,7 +119,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
             Me.m_pgFlowDiagram.SelectedObject = Me.m_tree
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecopath}
             Me.UpdateControls()
 
             AddHandler Me.m_tree.OnChanged, AddressOf Me.OnTreeChanged
@@ -159,7 +159,7 @@ Namespace Ecopath.Controls.FlowDiagram
             MyBase.OnCoreMessage(msg)
 
             ' Refresh the diagram data when ecopath data has changed
-            If (msg.Source = eCoreComponentType.EcoPath) And
+            If (msg.Source = eCoreComponentType.Ecopath) And
                (msg.Type = eMessageType.DataModified) Then
                 Me.m_data.Refresh()
                 Me.m_pbFlowDiagram.Invalidate()
