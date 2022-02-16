@@ -742,17 +742,17 @@ Public Class cMessageHistory
                 ' No children
                 Return New eCoreComponentType() {eCoreComponentType.Ecotracer}
 
-            Case eCoreComponentType.EcoSpace
-                Return New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer}
+            Case eCoreComponentType.Ecospace
+                Return New eCoreComponentType() {eCoreComponentType.Ecospace, eCoreComponentType.Ecotracer}
 
-            Case eCoreComponentType.EcoSim
-                Return New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer}
+            Case eCoreComponentType.Ecosim
+                Return New eCoreComponentType() {eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.Ecotracer}
 
-            Case eCoreComponentType.EcoPath
-                Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer}
+            Case eCoreComponentType.Ecopath
+                Return New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.Ecotracer}
 
             Case eCoreComponentType.Core
-                Return New eCoreComponentType() {eCoreComponentType.Core, eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer}
+                Return New eCoreComponentType() {eCoreComponentType.Core, eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.Ecotracer}
 
         End Select
         Return New eCoreComponentType() {source}

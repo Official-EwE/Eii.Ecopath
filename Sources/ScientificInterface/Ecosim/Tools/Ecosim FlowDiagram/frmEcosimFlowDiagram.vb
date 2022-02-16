@@ -152,7 +152,7 @@ Namespace Ecosim
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
             Me.m_pgFlowDiagram.SelectedObject = Me.m_tree
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecopath}
             Me.UpdateControls()
 
             AddHandler Me.m_tree.OnChanged, AddressOf Me.OnTreeChanged
@@ -217,7 +217,7 @@ Namespace Ecosim
             MyBase.OnCoreMessage(msg)
 
             ' Refresh the diagram data when ecopath data has changed
-            If (msg.Source = eCoreComponentType.EcoPath) And
+            If (msg.Source = eCoreComponentType.Ecopath) And
                (msg.Type = eMessageType.DataModified) Then
                 Me.m_data.Refresh()
                 Me.m_pbFlowDiagram.Invalidate()
@@ -743,7 +743,7 @@ Namespace Ecosim
             Dim bSuccess As Boolean = True
 
             ' JS 03Mar15: Changed to a single message with variable statuses
-            Dim msgResult As New cMessage("", eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+            Dim msgResult As New cMessage("", eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
 
             cmdfs.Invoke(Me.FileName, SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
             If cmdfs.Result = DialogResult.OK Then
@@ -794,7 +794,7 @@ Namespace Ecosim
                         bmp.Save(Path.Combine(strPath, Path.ChangeExtension(strDestFileName, strExt)), fmt)
 
                         Dim strSuccess As String = String.Format(My.Resources.ECOSIM_FD_SAVE_SUCCESS_DETAIL, currTimeStep)
-                        Dim vs As New cVariableStatus(eStatusFlags.OK, strSuccess, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
+                        Dim vs As New cVariableStatus(eStatusFlags.OK, strSuccess, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecosim, 0)
                         msgResult.AddVariable(vs)
 
                     Catch ex As Exception
@@ -803,7 +803,7 @@ Namespace Ecosim
                         bSuccess = False
 
                         Dim strError As String = String.Format(My.Resources.ECOSIM_FD_SAVE_FAILURE_DETAIL, currTimeStep, ex.Message)
-                        Dim vs As New cVariableStatus(eStatusFlags.ErrorEncountered, strError, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
+                        Dim vs As New cVariableStatus(eStatusFlags.ErrorEncountered, strError, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecosim, 0)
                         msgResult.AddVariable(vs)
 
                     End Try

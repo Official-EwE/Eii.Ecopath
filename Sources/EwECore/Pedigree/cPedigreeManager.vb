@@ -56,7 +56,7 @@ Public Class cPedigreeManager
         Dim meta As cVariableMetaData = Nothing
 
         Me.m_dataType = eDataTypes.PedigreeManager
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
         Me.m_varName = varName
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
@@ -163,7 +163,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Public Function UpdatePedigreeLevels() As Boolean
 
-        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim level As cPedigreeLevel = Nothing
 
         Me.m_bInUpdate = True
@@ -211,7 +211,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Friend Function UpdatePedigree() As Boolean
 
-        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)
         Dim iIndex As Integer = 0
         Dim iLevel As Integer = 0
@@ -252,7 +252,7 @@ Public Class cPedigreeManager
     Friend Sub Init()
 
         Dim level As cPedigreeLevel = Nothing
-        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcopathData
 
         Me.m_levels.Clear()
         Me.m_dictID.Clear()
@@ -291,7 +291,7 @@ Public Class cPedigreeManager
 
         Try
             Dim level As cPedigreeLevel = Nothing
-            Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim data As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             For iLevel As Integer = 1 To Me.NumLevels
 
@@ -327,7 +327,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Friend Function LoadPedigree() As Boolean
 
-        Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim data As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)
         Dim iLevel As Integer = 0
         Dim iIndex As Integer = 0
@@ -374,7 +374,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Friend Sub Set_Pedigree_Flags(group As cEcoPathGroupInput)
 
-        Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
 
         ' Borrow status flags from groups
         Me.AllowValidation = False

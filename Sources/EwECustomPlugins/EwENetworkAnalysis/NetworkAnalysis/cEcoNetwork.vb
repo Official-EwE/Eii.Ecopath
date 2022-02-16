@@ -445,7 +445,7 @@ Public Class cEcoNetwork
 
             If Me.m_timedOut Then
                 Me.SendMessage(New cMessage("Sorry Network Analysis timed out after " + (TimeOutMilSecs / 60 / 1000).ToString + " minutes. Results will not be displayed.",
-                                            eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning))
+                                            eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.Ecopath, eMessageImportance.Warning))
             End If
 
             Me.m_AbortTimer.Close()

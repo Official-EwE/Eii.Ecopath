@@ -594,7 +594,7 @@ Public Class cEcospaceTimestep
 
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
-            Return eCoreComponentType.EcoSpace
+            Return eCoreComponentType.Ecospace
         End Get
     End Property
 

@@ -34,7 +34,7 @@ Public Class cEcospaceFleetInput
         Try
 
             Me.m_dataType = eDataTypes.EcospaceFleet
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
             Me.DBID = iDBID
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)

@@ -45,7 +45,7 @@ Public Class cFishingEffortShapeManger
         Me.m_shapes.Clear()
         For iFleet = 1 To Me.m_SimData.nGear ' number of fishing fleets
 
-            shape = New cFishingRateShape(Me.m_SimData, Me, Me.m_SimData.FishRateGearDBID(iFleet), Me.m_core.m_EcoPathData.FleetName(iFleet))
+            shape = New cFishingRateShape(Me.m_SimData, Me, Me.m_SimData.FishRateGearDBID(iFleet), Me.m_core.m_EcopathData.FleetName(iFleet))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
             shape.ID = Me.m_shapes.Count

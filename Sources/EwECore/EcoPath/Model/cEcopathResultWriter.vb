@@ -50,7 +50,7 @@ Public Class cEcopathResultWriter
     ''' -----------------------------------------------------------------------
     Public Sub New(core As cCore)
         Me.m_core = core
-        Me.m_data = core.m_EcoPathData
+        Me.m_data = core.m_EcopathData
     End Sub
 
 #End Region ' Constructor
@@ -69,7 +69,7 @@ Public Class cEcopathResultWriter
         ' Try to make sure that the output path is there
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING),
-                               eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                               eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
@@ -81,7 +81,7 @@ Public Class cEcopathResultWriter
         Dim strFile As String = Path.Combine(strPath, "basic_estimates.csv")
         If Not Me.WriteResults(strFile) Then
             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strFile),
-                               eMessageType.DataExport, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Warning)
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
@@ -89,7 +89,7 @@ Public Class cEcopathResultWriter
             End If
         Else
             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_SUCCESS, strFile),
-                               eMessageType.DataExport, eCoreComponentType.EcoPath, eMessageImportance.Information)
+                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Information)
             ' Provide hyperlink to the directory with the files
             msg.Hyperlink = strPath
             If (Not bQuiet) Then

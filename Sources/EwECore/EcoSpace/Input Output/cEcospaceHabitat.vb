@@ -31,7 +31,7 @@ Public Class cEcospaceHabitat
 
         Me.DBID = DBID
         Me.m_dataType = eDataTypes.EcospaceHabitat
-        Me.m_coreComponent = eCoreComponentType.EcoSpace
+        Me.m_coreComponent = eCoreComponentType.Ecospace
 
         Dim val As cValue
 

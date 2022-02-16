@@ -41,7 +41,7 @@ Namespace Ecospace.Advection
             Me.AllowValidation = False
             Me.DBID = DBID
             Me.m_dataType = eDataTypes.EcospaceAdvectionParameters
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
             Me.AllowValidation = False
 
             'default OK status used for setVariable

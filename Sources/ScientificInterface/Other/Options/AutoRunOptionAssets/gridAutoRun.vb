@@ -72,22 +72,22 @@ Public Class gridAutoRun
         Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
         Me(0, eColumnTypes.Plugin) = New cEwEColumnHeaderCell(SharedResources.HEADER_PLUGIN)
         Me(0, eColumnTypes.Ecopath) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOPATH) With {
-            .Tag = eCoreComponentType.EcoPath
+            .Tag = eCoreComponentType.Ecopath
         }
         Me(0, eColumnTypes.Ecosim) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSIM) With {
-            .Tag = eCoreComponentType.EcoSim
+            .Tag = eCoreComponentType.Ecosim
         }
         Me(0, eColumnTypes.MonteCarlo) = New cEwEColumnHeaderCell(SharedResources.HEADER_MONTECARLO) With {
             .Tag = eCoreComponentType.EcoSimMonteCarlo
         }
         Me(0, eColumnTypes.Ecospace) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSPACE) With {
-            .Tag = eCoreComponentType.EcoSpace
+            .Tag = eCoreComponentType.Ecospace
         }
 
-        Me.m_IsComponentLoaded(eCoreComponentType.EcoPath) = sm.HasEcopathLoaded
-        Me.m_IsComponentLoaded(eCoreComponentType.EcoSim) = sm.HasEcosimLoaded
+        Me.m_IsComponentLoaded(eCoreComponentType.Ecopath) = sm.HasEcopathLoaded
+        Me.m_IsComponentLoaded(eCoreComponentType.Ecosim) = sm.HasEcosimLoaded
         Me.m_IsComponentLoaded(eCoreComponentType.EcoSimMonteCarlo) = sm.HasEcosimLoaded
-        Me.m_IsComponentLoaded(eCoreComponentType.EcoSpace) = sm.HasEcospaceLoaded
+        Me.m_IsComponentLoaded(eCoreComponentType.Ecospace) = sm.HasEcospaceLoaded
 
     End Sub
 

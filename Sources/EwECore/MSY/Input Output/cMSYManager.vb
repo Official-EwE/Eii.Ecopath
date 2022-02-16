@@ -69,12 +69,12 @@ Namespace MSY
 
             Debug.Assert(theCore IsNot Nothing, Me.ToString & ".New() Invalid core object!")
             Debug.Assert(MSYData IsNot Nothing, Me.ToString & ".New() Invalid MSY Data object!")
-            Debug.Assert(theCore.m_EcoSim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")
+            Debug.Assert(theCore.m_Ecosim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")
 
             Me.m_Core = theCore
             Me.m_msyData = MSYData
 
-            Me.m_MSY = New cMSY(Me.m_Core.m_EcoSim, Me.m_msyData, Me.m_Core.m_EcoPathData, Me.m_Core.m_EcoSimData)
+            Me.m_MSY = New cMSY(Me.m_Core.m_Ecosim, Me.m_msyData, Me.m_Core.m_EcopathData, Me.m_Core.m_EcoSimData)
             Me.m_parameters = New cMSYParameters(Me.m_Core, Me.m_msyData)
 
         End Sub
@@ -246,7 +246,7 @@ Namespace MSY
                             results.ValueAtFMSY(i) = Me.m_MSY.ValueAtFmsy(i)
 
                             'get the base value of catch and F from the Core
-                            results.CMSYBase(i) = Me.m_Core.m_EcoPathData.fCatch(i)
+                            results.CMSYBase(i) = Me.m_Core.m_EcopathData.fCatch(i)
                             results.FBase(i) = Me.m_Core.m_EcoSimData.Fish1(i)
 
                             results.Value(i) = Me.m_MSY.VmsySS(i)
@@ -268,7 +268,7 @@ Namespace MSY
             Catch ex As Exception
                 cLog.Write(ex, "cMSYManager::RunFMSY")
                 System.Console.WriteLine(Me.ToString & ".RunFMSY() Exception: " & ex.Message)
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_ERROR_RUN_FMSY, ex.Message), eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_ERROR_RUN_FMSY, ex.Message), eMessageType.Any, eCoreComponentType.Ecosim, eMessageImportance.Critical)
                 Me.SendMessage(msg)
             End Try
 
@@ -631,7 +631,7 @@ Namespace MSY
                     Fs(iyr) = FishMortForTest
                 Next
 
-                tsName = "MSY_F_Test_" & Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet)
+                tsName = "MSY_F_Test_" & Me.m_Core.m_EcopathData.GroupName(Me.m_msyData.iSelGroupFleet)
                 If Me.m_Core.AddTimeSeries(tsName, Me.m_msyData.iSelGroupFleet, 0, eTimeSeriesType.FishingMortality, 1.0, Fs, tsID) Then
 
                     Me.m_Core.LoadTimeSeries(Me.m_Core.ActiveTimeSeriesDatasetIndex, True)
@@ -658,7 +658,7 @@ Namespace MSY
                 'Dump out the comparison
                 Dim ssError As Single
                 System.Console.WriteLine("---------------MSY Ecosim unit test output---------------------")
-                System.Console.WriteLine("Selected Group, " + Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet))
+                System.Console.WriteLine("Selected Group, " + Me.m_Core.m_EcopathData.GroupName(Me.m_msyData.iSelGroupFleet))
                 System.Console.WriteLine("Test F, " + FishMortForTest.ToString)
 
                 System.Console.WriteLine("Group Name,F ,MSY/Ecosim , MSY Biomass, Ecosim Biomass")
@@ -669,7 +669,7 @@ Namespace MSY
                     ssError += CSng((msyB - simB) ^ 2.0)
                     Dim msyError As Single = msyB / simB
                     Dim F As Single = Me.m_Core.m_EcoSimData.FishTime(igrp)
-                    System.Console.WriteLine(Me.m_Core.m_EcoPathData.GroupName(igrp) + ", " + F.ToString + _
+                    System.Console.WriteLine(Me.m_Core.m_EcopathData.GroupName(igrp) + ", " + F.ToString + _
                                              ", " + msyError.ToString + ", " + msyB.ToString + ", " + simB.ToString)
                 Next
 

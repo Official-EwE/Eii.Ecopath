@@ -58,8 +58,8 @@ Public Class cMSEPluginPoint
     Private m_frm As frmMSE = Nothing
     Private m_core As cCore = Nothing
     Private m_uic As cUIContext = Nothing
-    Private m_ecosim As EwECore.Ecosim.cEcoSimModel = Nothing
-    Private m_ecopath As Ecopath.cEcoPathModel
+    Private m_ecosim As EwECore.Ecosim.cEcosimModel = Nothing
+    Private m_ecopath As Ecopath.cEcopathModel
     Private m_simdata As cEcosimDatastructures
     Private m_pathdata As cEcopathDataStructures
     Private m_coreMSEData As EwECore.MSE.cMSEDataStructures
@@ -178,16 +178,16 @@ Public Class cMSEPluginPoint
         ' UIC required
         If Not Me.CanRun Then Return
 
-        Me.m_ecopath = CType(objEcoPath, Ecopath.cEcoPathModel)
-        Me.m_ecosim = CType(objEcoSim, Ecosim.cEcoSimModel)
+        Me.m_ecopath = CType(objEcoPath, Ecopath.cEcopathModel)
+        Me.m_ecosim = CType(objEcoSim, Ecosim.cEcosimModel)
 
         Debug.Assert(Me.m_uic IsNot Nothing)
 
         Me.MSE.onCoreInitialized(Me.m_core, Me.m_ecopath, Me.m_ecosim)
 
         ' Set message handlers
-        Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
-        Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
+        Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecopath, eMessageType.Any, Me.m_uic.SyncObject)
+        Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecosim, eMessageType.DataAddedOrRemoved, Me.m_uic.SyncObject)
         Me.m_mhSettings = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Core, eMessageType.GlobalSettingsChanged, Me.m_uic.SyncObject)
 
 #If DEBUG Then
@@ -498,12 +498,12 @@ Public Class cMSEPluginPoint
             bRefresh = True
         End If
 
-        If (msg.Source = eCoreComponentType.EcoPath) Then
+        If (msg.Source = eCoreComponentType.Ecopath) Then
             bRefresh = (msg.Type = eMessageType.DataModified Or msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataValidation)
         End If
 
         ' Refresh upon ecosim scenario load
-        If (msg.Type = eMessageType.DataAddedOrRemoved And msg.Source = eCoreComponentType.EcoSim) Then
+        If (msg.Type = eMessageType.DataAddedOrRemoved And msg.Source = eCoreComponentType.Ecosim) Then
             bRefresh = True
         End If
 

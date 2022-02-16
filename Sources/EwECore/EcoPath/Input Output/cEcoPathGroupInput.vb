@@ -42,7 +42,7 @@ Public Class cEcoPathGroupInput
     Private Sub ClearCurrentStatus()
 
         Me.m_ValidationStatus.Status = eStatusFlags.OK
-        Me.m_ValidationStatus.Source = eCoreComponentType.EcoPath
+        Me.m_ValidationStatus.Source = eCoreComponentType.Ecopath
         Me.m_ValidationStatus.Message = ""
         Me.m_ValidationStatus.VarName = eVarNameFlags.NotSet
         Me.m_ValidationStatus.Index = Me.Index
@@ -61,7 +61,7 @@ Public Class cEcoPathGroupInput
         Dim val As cValue = Nothing
 
         Me.m_dataType = eDataTypes.EcoPathGroupInput
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
         Me.Index = iIndex
 
         Me.AllowValidation = False

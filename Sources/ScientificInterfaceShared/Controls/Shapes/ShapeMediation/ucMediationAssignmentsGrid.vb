@@ -100,7 +100,7 @@ Namespace Controls
                 Dim t As Type = obj.GetType
                 For i As Integer = 1 To Me.RowsCount - 1
                     If Not t.Equals(Me.RowItemPrim(i).GetType) Then
-                        Dim msg As New cMessage(My.Resources.PROMPT_MEDIATION_CANNOTMIX, eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                        Dim msg As New cMessage(My.Resources.PROMPT_MEDIATION_CANNOTMIX, eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecosim, eMessageImportance.Warning)
                         Me.Core.Messages.SendMessage(msg)
                         Return False
                     End If

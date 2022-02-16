@@ -193,7 +193,7 @@ Public Class cModelFromEcosimPluginPoint
     End Property
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
-        Return New eCoreComponentType() {eCoreComponentType.EcoSim}
+        Return New eCoreComponentType() {eCoreComponentType.Ecosim}
     End Function
 
 #End Region ' Auto-run

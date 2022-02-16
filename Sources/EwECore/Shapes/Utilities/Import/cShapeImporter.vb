@@ -71,7 +71,7 @@ Namespace Shapes.Utility
                 Try
                     Dim strMessage As String = cStringUtils.Localize(My.Resources.CoreMessages.SHAPE_IMPORT_SUCCESS, man.DataType)
 
-                    msgStatus = New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                    msgStatus = New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.Ecosim, eMessageImportance.Information)
                     Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
                     For Each def As cShapeImportData.cFunctionDefinition In defs
                         Dim ff As cForcingFunction = man.CreateNewShape(def.Name, def.ShapeFunction.Shape(nPoints), def.ShapeFunction.ShapeFunctionType, def.ShapeParameters)
@@ -91,7 +91,7 @@ Namespace Shapes.Utility
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSuccess)
             Else
                 msgStatus = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SHAPE_IMPORT_FAILED, man.DataType), _
-                                         eMessageType.DataImport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                                         eMessageType.DataImport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                 bSuccess = False
             End If
 

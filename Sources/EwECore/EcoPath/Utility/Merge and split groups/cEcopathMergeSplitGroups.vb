@@ -79,7 +79,7 @@ Namespace Ecopath
         ''' <param name="bSuccess"></param>
         ''' -----------------------------------------------------------------------
         Protected Sub SendMessage(strMessage As String, bSuccess As Boolean)
-            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.EcoPath,
+            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.Ecopath,
                                 If(bSuccess, eMessageImportance.Information, eMessageImportance.Critical))
             Me.m_core.Messages.SendMessage(msg)
         End Sub

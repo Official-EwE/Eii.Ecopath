@@ -255,7 +255,7 @@ Namespace MSEBatchManager
                 tfm.AllowValidation = False
 
                 tfm.Index = igrp
-                tfm.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
+                tfm.Name = Me.m_core.m_EcopathData.GroupName(igrp)
 
                 tfm.BLim = Me.m_MSEdata.Blim(igrp)
                 tfm.BLimLower = Me.m_BatchData.BlimLower(igrp)
@@ -287,7 +287,7 @@ Namespace MSEBatchManager
                 FixedF.AllowValidation = False
 
                 FixedF.Index = igrp
-                FixedF.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
+                FixedF.Name = Me.m_core.m_EcopathData.GroupName(igrp)
 
                 FixedF.FixedMort = Me.m_MSEdata.FixedF(igrp)
                 FixedF.FLower = Me.m_BatchData.FixedFLower(igrp)
@@ -307,7 +307,7 @@ Namespace MSEBatchManager
                 TAC.AllowValidation = False
 
                 TAC.Index = igrp
-                TAC.Name = Me.m_core.m_EcoPathData.GroupName(igrp)
+                TAC.Name = Me.m_core.m_EcopathData.GroupName(igrp)
 
                 TAC.TAC = Me.m_MSEdata.TAC(igrp)
                 TAC.TACLower = Me.m_BatchData.TACLower(igrp)

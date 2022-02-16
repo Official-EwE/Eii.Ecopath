@@ -47,7 +47,7 @@ Namespace Ecopath
         ''' -----------------------------------------------------------------------
         Public Function CanSplitGroups(iGroup As Integer, strName As String) As Boolean
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             Return (Me.CanMergeSplitGroups(False) = True) And
                (-1 = Array.IndexOf(epdata.GroupName, strName.Trim())) And
@@ -76,7 +76,7 @@ Namespace Ecopath
                 Return False
             End If
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim txdata As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim bSuccess As Boolean = True
 
@@ -97,7 +97,7 @@ Namespace Ecopath
                     txdata.TaxonTarget(taxon.Index) = iTgtNew
                 Next
 
-                Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
+                Me.m_core.DataSource.SetChanged(eCoreComponentType.Ecopath)
                 Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
                 Me.m_core.SaveChanges(True)
 
@@ -130,7 +130,7 @@ Namespace Ecopath
                 Return False
             End If
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim bSuccess As Boolean = True
 
             Dim iSrcNew As Integer = 0
@@ -164,7 +164,7 @@ Namespace Ecopath
 
         Private Function SplitAndCopy(iSrc As Integer, strNameSplit As String, ByRef iSrcNew As Integer, ByRef iTgtNew As Integer) As Boolean
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim psdata As cPSDDatastructures = Me.m_core.m_PSDData
 
             Dim iDBIDsrc As Integer = epdata.GroupDBID(iSrc)

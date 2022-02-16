@@ -133,7 +133,7 @@ Namespace Ecospace
             If (nReg < iMaxReg) Then
                 ' ToDo: globalize this
                 Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to regions if you continue.", _
-                                                 EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, _
+                                                 EwEUtils.Core.eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question, _
                                                  eMessageReplyStyle.OK_CANCEL, EwEUtils.Core.eDataTypes.NotSet, eMessageReply.CANCEL)
                 fmsg.Suppressable = True
                 Me.m_uic.Core.Messages.SendMessage(fmsg)

@@ -2176,10 +2176,10 @@ Public Class cEcospaceDataStructures
         Catch exmem As OutOfMemoryException
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & exmem.Message)
             message = New cMessage(My.Resources.CoreMessages.ECOSPACE_OUT_OF_MEMORY,
-                                   eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                                   eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Critical)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults(): " & ex.Message)
-            message = New cMessage(ex.Message, eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+            message = New cMessage(ex.Message, eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Critical)
         End Try
 
         If message IsNot Nothing Then

@@ -90,7 +90,7 @@ Namespace Ecosim
 
             Dim man As cEcosimArenaManager = Me.Core.EcosimArenaManager
             Dim fmsg As New cFeedbackMessage("This will reset all shared arenas. Are you sure that you want to do this?",
-                                             eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                                             eCoreComponentType.Ecosim, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.YES) Then
                 man.ResetArenas(0)

@@ -386,7 +386,7 @@ Public Class cMonteCarloManager
 
             '#Hack: Tell the core that Ecopath inputs have changed
             '       cCore.OnChanged(me) does not support the granularity to invalidate Ecopath data in response to only this event
-            Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
+            Me.m_core.DataSource.SetChanged(eCoreComponentType.Ecopath)
 
             'tell the core to reload groups from modified Ecopath inputs
             Me.m_core.onChanged(Me, eMessageType.DataModified)
@@ -396,7 +396,7 @@ Public Class cMonteCarloManager
             'run ecopath with the new parameters
             Me.m_core.RunEcopath()
             'initialize ecosim with the new data
-            Me.m_core.m_EcoSim.Init(True)
+            Me.m_core.m_Ecosim.Init(True)
 
             Me.m_core.RunEcosim()
             Dim ss As Single = Me.m_core.EcosimStats.SS
@@ -405,7 +405,7 @@ Public Class cMonteCarloManager
             Debug.Assert(False)
             cLog.Write(ex)
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message),
-                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+                                                     eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Critical))
         End Try
 
     End Sub
@@ -899,7 +899,7 @@ Public Class cMonteCarloManager
     Friend Sub LoadGroups()
 
         Try
-            Dim m_epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim m_epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim m_esdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim iGroup As Integer = 0
 
@@ -1059,7 +1059,7 @@ Public Class cMonteCarloManager
             Debug.Assert(False, ex.StackTrace)
         End Try
 
-        Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
+        Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance))
 
     End Sub
 
@@ -1132,7 +1132,7 @@ Public Class cMonteCarloManager
             Me.m_groups = New List(Of cMonteCarloGroup)
 
             For igrp As Integer = 1 To Me.m_core.nGroups
-                Me.m_groups.Add(New cMonteCarloGroup(Me.m_core, Me.m_core.m_EcoPathData.GroupDBID(igrp)))
+                Me.m_groups.Add(New cMonteCarloGroup(Me.m_core, Me.m_core.m_EcopathData.GroupDBID(igrp)))
             Next
 
         Catch ex As Exception
@@ -1153,7 +1153,7 @@ Public Class cMonteCarloManager
 
             For Each MCGroup As cMonteCarloGroup In Me.m_groups
                 'convert the Database ID into an iGroup
-                MCGroup.Index = Array.IndexOf(Me.m_core.m_EcoPathData.GroupDBID, MCGroup.DBID)
+                MCGroup.Index = Array.IndexOf(Me.m_core.m_EcopathData.GroupDBID, MCGroup.DBID)
                 MCGroup.Resize()
 
                 Me.m_mc.Pmean(eMCParams.Biomass, MCGroup.Index) = MCGroup.B

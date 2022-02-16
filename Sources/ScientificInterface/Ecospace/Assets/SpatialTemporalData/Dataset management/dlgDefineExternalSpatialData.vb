@@ -354,7 +354,7 @@ Namespace Ecospace.Controls
 
             ' ToDo: globalize this
             Dim fmsg As New cFeedbackMessage("This operation cannot be undone. Are you sure?", _
-                                             eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                                             eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             fmsg.Reply = eMessageReply.NO
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.NO) Then Return False

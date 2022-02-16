@@ -293,7 +293,7 @@ Namespace Ecospace.Advection
             If Me.IsRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING,
                                                             eMessageType.ErrorEncountered,
-                                                            eCoreComponentType.EcoSpace,
+                                                            eCoreComponentType.Ecospace,
                                                             eMessageImportance.Warning,
                                                             eDataTypes.EcospaceAdvectionManager))
                 Return False
@@ -306,7 +306,7 @@ Namespace Ecospace.Advection
                 cLog.Write(ex)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
-                                                         eCoreComponentType.EcoSpace,
+                                                         eCoreComponentType.Ecospace,
                                                          eMessageImportance.Critical,
                                                          eDataTypes.EcospaceAdvectionManager))
 
@@ -335,7 +335,7 @@ Namespace Ecospace.Advection
             If Me.IsRunning Then
                 Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING,
                                                             eMessageType.ErrorEncountered,
-                                                            eCoreComponentType.EcoSpace,
+                                                            eCoreComponentType.Ecospace,
                                                             eMessageImportance.Warning,
                                                             eDataTypes.EcospaceAdvectionManager))
                 Return False
@@ -351,7 +351,7 @@ Namespace Ecospace.Advection
                 cLog.Write(ex)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
-                                                         eCoreComponentType.EcoSpace,
+                                                         eCoreComponentType.Ecospace,
                                                          eMessageImportance.Critical,
                                                          eDataTypes.EcospaceAdvectionManager))
 
@@ -559,7 +559,7 @@ Namespace Ecospace.Advection
         Public ReadOnly Property CoreComponent() As eCoreComponentType _
             Implements ICoreInterface.CoreComponent
             Get
-                Return eCoreComponentType.EcoSpace
+                Return eCoreComponentType.Ecospace
             End Get
         End Property
 

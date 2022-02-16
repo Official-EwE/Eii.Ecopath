@@ -206,7 +206,7 @@ Public Class frmMain
         AddHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
 
         ' Start listening to Ecopath, Ecosim, Ecospace and external messages (responses are handled in OnCoreMessage)
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Core}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.Core}
 
         Me.m_bInUpdate = False
 

@@ -50,7 +50,7 @@ Public Class cIBMSolver
     Public m_Data As cEcospaceDataStructures
     Public m_ESData As cEcosimDatastructures
     Public m_Stanza As cStanzaDatastructures
-    Public m_Ecosim As Ecosim.cEcoSimModel
+    Public m_Ecosim As Ecosim.cEcosimModel
 
     Public Bcw(,,) As Single
     Public C(,,) As Single

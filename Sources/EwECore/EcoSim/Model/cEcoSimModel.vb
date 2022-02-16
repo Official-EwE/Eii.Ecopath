@@ -67,7 +67,7 @@ Namespace Ecosim
     ''' <summary>
     ''' Class to encapsulate EcoSim Model
     ''' </summary>
-    Public Class cEcoSimModel
+    Public Class cEcosimModel
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'ToDo Forced F Time Series changed
@@ -464,7 +464,7 @@ Namespace Ecosim
             Try
                 Me.RunModelValue(Me.m_Data.NumYears, Me.m_search.Frates, Me.m_search.nBlocks)
             Catch ex As Exception
-                Me.Messages.AddMessage(New cMessage(ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+                Me.Messages.AddMessage(New cMessage(ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Critical))
             End Try
 
 
@@ -667,7 +667,7 @@ Namespace Ecosim
         ''' <summary>
         ''' Init Propdiscardtime(fleets,groups) and PropLandedTime(fleets, groups) to Ecopath landing and discards
         ''' </summary>
-        ''' <remarks>This must be call before <see cref="EwECore.Ecosim.cEcoSimModel.Init">Ecosim.Init(Boolean)</see> 
+        ''' <remarks>This must be call before <see cref="EwECore.Ecosim.cEcosimModel.Init">Ecosim.Init(Boolean)</see> 
         ''' so Propdiscardtime() and PropLandedTime() can be used to init <see cref="cEcosimDatastructures.FishRateNo">FishRateNo()</see> (fishing mortality)</remarks>
         Private Sub InitPropLanded()
             For iflt As Integer = 1 To Me.m_Data.nGear
@@ -946,7 +946,7 @@ Namespace Ecosim
                     'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
                     Me.setDenDepCatchMult(Me.BB)
 
-                    Me.m_Data.setRelQToT(itime)
+                    Me.m_Data.SetRelQToT(itime)
 
                     If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimBeginTimeStep(Me.BB, Me.m_Data, itime)
 
@@ -1129,7 +1129,7 @@ Namespace Ecosim
         ''' <param name="biomass">Biomass of current time step</param>
         ''' <param name="Fgear">Effort set by searches</param>
         ''' <param name="QYear">Catchability increase for year</param>
-        ''' <remarks>Uses <see cref="cEcoSimModel.CalcLandings"> CalcCatch to compute catch.</see></remarks>
+        ''' <remarks>Uses <see cref="cEcosimModel.CalcLandings"> CalcCatch to compute catch.</see></remarks>
         Private Sub CalcCatchForSearch(ByVal iTime As Integer, ByVal iYear As Integer, ByVal iMonth As Integer, ByVal biomass() As Single, ByVal Fgear() As Single, ByVal QYear() As Single)
             Dim iflt As Integer
             Dim LandingsForValue(,) As Single
@@ -1209,7 +1209,7 @@ Namespace Ecosim
         ''' <param name="Qrate">Catchability rate</param>
         ''' <param name="QYear">Catchability multiplier used for increase in catchability over time (QYear())</param>
         ''' <returns>Landings</returns>
-        ''' <remarks>Qmult() must be set via <see cref="cEcoSimModel.setDenDepCatchMult">setDenDepCatchMult</see> before calling CalcCatch(). </remarks>
+        ''' <remarks>Qmult() must be set via <see cref="cEcosimModel.setDenDepCatchMult">setDenDepCatchMult</see> before calling CalcCatch(). </remarks>
         Public Function CalcLandings(ByVal iGrp As Integer, ByVal iFlt As Integer,
                                     ByVal B As Single, ByVal Effort As Single, ByVal Qrate As Single,
                                      ByVal QYear As Single) As Single
@@ -1634,7 +1634,7 @@ Namespace Ecosim
                 ElseIf Me.m_Data.NoIntegrate(i) = 0 Then
                     Me.yt(i) = (1 - Me.m_Data.SorWt) * Me.biomeq(i) + Me.m_Data.SorWt * B(i)
                     If Me.yt(i) < 0 Then
-                        Me.m_publisher.SendMessage(New cMessage("Error in Runge Kutta.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+                        Me.m_publisher.SendMessage(New cMessage("Error in Runge Kutta.", eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Critical))
                         Debug.Assert(False, "yt(i) < 0 for i=" & i.ToString & ", t=" & t.ToString)
                         Me.AbortRun = True
                         Exit Sub
@@ -2064,7 +2064,7 @@ Namespace Ecosim
 
                 cLog.Write(ex)
                 Me.m_publisher.AddMessage(New cMessage("Ecosim Run() Error: " & ex.Message, eMessageType.ErrorEncountered,
-                                        eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.NotSet))
+                                        eCoreComponentType.Ecosim, eMessageImportance.Critical, eDataTypes.NotSet))
                 bsuccess = False
             End Try
 
@@ -2420,17 +2420,17 @@ Namespace Ecosim
 
             If (Me.m_EPData Is Nothing) Then
                 Return New cMessage("Ecosim cannot run. Internal eror: Ecopath data is not initialized",
-                                    eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                                    eMessageType.Any, eCoreComponentType.Ecosim, eMessageImportance.Critical)
             End If
 
             If (Me.m_Data Is Nothing) Then
                 Return New cMessage("Ecosim cannot run. Internal eror:  Ecosim data is not initialized",
-                                    eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                                    eMessageType.Any, eCoreComponentType.Ecosim, eMessageImportance.Critical)
             End If
 
             If (Me.m_search Is Nothing) Then
                 Return New cMessage("Ecosim cannot run. Internal eror: Search data is not initialized",
-                                    eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                                    eMessageType.Any, eCoreComponentType.Ecosim, eMessageImportance.Critical)
             End If
 
             'next check to make sure PeatArena(arena,k) accounts for all i,j consumption rates
@@ -2443,14 +2443,14 @@ Namespace Ecosim
             Next
 
             ' Validate arena use
-            Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Question)
+            Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, eCoreComponentType.Ecosim, eMessageType.Any, eMessageImportance.Question)
             For i As Integer = 1 To Me.nGroups
                 For j As Integer = 1 To Me.nGroups
                     If Me.m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
                             Dim vs As New cVariableStatus(eStatusFlags.MissingParameter,
                                                           cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION_DETAIL, Me.m_EPData.GroupName(i), Me.m_EPData.GroupName(j), Tcon(i, j)),
-                                                          eVarNameFlags.EcosimArenaShare, eDataTypes.EcosimArenaShare, eCoreComponentType.EcoSim, i, j)
+                                                          eVarNameFlags.EcosimArenaShare, eDataTypes.EcosimArenaShare, eCoreComponentType.Ecosim, i, j)
                             msg.AddVariable(vs, True)
                             'assign remaining consumption by j of i to the i,j arena
                             Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, j), j) = Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
@@ -2465,7 +2465,7 @@ Namespace Ecosim
             End If
 
             If (Me.m_Data.inlinks < Me.m_Data.Narena) Then
-                Return New cMessage("Arena feeding proportions not set properly", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                Return New cMessage("Arena feeding proportions not set properly", eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning)
             End If
 
             Return Nothing
@@ -3521,14 +3521,14 @@ Namespace Ecosim
 
                     ' Create base message
                     If (msg Is Nothing) Then
-                        msg = New cMessage(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                        msg = New cMessage(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                         Me.m_publisher.AddMessage(msg)
                     End If
 
                     ' Add detail
                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered,
                                              cStringUtils.Localize(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, medData.MediationTitles(i)),
-                                             eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, i)
+                                             eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.Ecosim, i)
                     msg.AddVariable(vs)
                     ' Flag med fn as unusable
                     medData.MedIsUsed(i) = False
@@ -3598,14 +3598,14 @@ Namespace Ecosim
 
                         ' Create base message
                         If (msg Is Nothing) Then
-                            msg = New cMessage(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                            msg = New cMessage(My.Resources.CoreMessages.MEDIATION_ZERO_BASE, eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                             Me.m_publisher.AddMessage(msg)
                         End If
 
                         ' Add detail
                         vs = New cVariableStatus(eStatusFlags.ErrorEncountered,
                                                  cStringUtils.Localize(My.Resources.CoreMessages.MEDIATION_ZERO_BASE_DETAIL, PriceMedData.MediationTitles(iShp)),
-                                                 eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.EcoSim, iShp)
+                                                 eVarNameFlags.MedFunctNumber, eDataTypes.Mediation, eCoreComponentType.Ecosim, iShp)
                         msg.AddVariable(vs)
                         ' Flag med fn as unusable
                         PriceMedData.MedIsUsed(iShp) = False
@@ -4166,7 +4166,7 @@ Namespace Ecosim
                     '  MsgBox("Enter K of VBGF") : Exit Sub
                     Me.m_publisher.SendMessage(
                             New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_KinVGBF_MISSING, Me.m_stanza.StanzaName(isp)),
-                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
+                            eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning))
                     Return False
                 End If
 
@@ -4242,7 +4242,7 @@ Namespace Ecosim
                 ' Debug.Assert(SumB > 0, "CalculateStanzaParameters SumB = 0")
                 If SumB <= 0 Then
                     Dim msg As String = "Biomass for one of your stanza groups < 0, Please check"
-                    Me.m_publisher.SendMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.Stanza))
+                    Me.m_publisher.SendMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Critical, eDataTypes.Stanza))
                     Return False
                 End If
 
@@ -5027,7 +5027,7 @@ Namespace Ecosim
 
             'Check SimDetritus to make sure it uses discards correctly
 
-            Me.m_Data.setRelQToT(t)
+            Me.m_Data.SetRelQToT(t)
 
             'fishing mortality at the current effort
             For i = 1 To Me.m_Data.nGroups
@@ -5154,7 +5154,7 @@ Namespace Ecosim
                     If Me.m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
                             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, Me.m_EPData.GroupName(i), Me.m_EPData.GroupName(j)),
-                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                             Me.m_publisher.AddMessage(msg)
                             'assign remaining consumption by j of i to the i,j arena
                             Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, j), j) = Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
@@ -5178,7 +5178,7 @@ Namespace Ecosim
             If Me.m_Data.inlinks < Me.m_Data.Narena Then
                 ' ToDo: globalize this
                 Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly",
-                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
+                                            eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning))
                 ' ToDo: Handle this properly
                 Stop
             End If
@@ -5445,7 +5445,7 @@ Namespace Ecosim
         End Sub
 
 
-        Public Sub copyTo(ByRef d As cEcoSimModel)
+        Public Sub copyTo(ByRef d As cEcosimModel)
             Try
                 d.m_ConTracer = Me.m_ConTracer
                 d.TracerData = Me.TracerData

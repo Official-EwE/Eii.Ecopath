@@ -236,7 +236,7 @@ Namespace Ecosim
             Me.m_qeLandings.Attach(Me.m_gridLandings, Me.UIContext, Me.m_tsLandings, False)
             Me.m_qeDiscards.Attach(Me.m_gridDiscards, Me.UIContext, Me.m_tsDiscards, False)
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
 
             For Each var As eMCParams In Me.m_mcmanager.SupportedVariables
                 Dim bIsEnabled As Boolean = Me.m_mcmanager.Enable(var)

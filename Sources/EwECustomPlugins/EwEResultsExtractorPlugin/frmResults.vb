@@ -83,7 +83,7 @@ Public Class frmResults
     Private mLogDiff(,) As Single
     Private mTimeSeries As cTimeSeriesDataStructures
     Private mDataStructure As cEcosimDatastructures
-    Private mEcosimModel As Ecosim.cEcoSimModel
+    Private mEcosimModel As Ecosim.cEcosimModel
 
 
 #End Region
@@ -115,7 +115,7 @@ Public Class frmResults
 
 #End Region
 
-    Public Sub StartForm(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form, ByRef log2diff(,) As Single, ByRef TimeSeries As cTimeSeriesDataStructures, EcosimModel As Ecosim.cEcoSimModel)
+    Public Sub StartForm(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form, ByRef log2diff(,) As Single, ByRef TimeSeries As cTimeSeriesDataStructures, EcosimModel As Ecosim.cEcosimModel)
 
         Dim GroupNames As String() = Me.GetAllGroupNamesArray()
         Dim FleetNames As String() = Me.GetAllFleetNamesArray()
@@ -209,7 +209,7 @@ Public Class frmResults
         Try
             Me.SaveResults()
         Catch ex As Exception
-            Dim msg As New cMessage(My.Resources.PROMPT_INPUTS, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            Dim msg As New cMessage(My.Resources.PROMPT_INPUTS, eMessageType.TooManyMissingParameters, eCoreComponentType.Ecosim, eMessageImportance.Warning)
             Me.Core.Messages.SendMessage(msg)
         End Try
     End Sub

@@ -116,7 +116,7 @@ Namespace Ecosim
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.Ecosim}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
 
@@ -245,7 +245,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub SendErrorMessage(theMessage As String)
-            Me.Core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
+            Me.Core.Messages.SendMessage(New cMessage(theMessage, eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
         End Sub
 
 #End Region ' Internals
@@ -437,7 +437,7 @@ Namespace Ecosim
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
-                        eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
+                        eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Information))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -452,7 +452,7 @@ Namespace Ecosim
                 Me.m_gridSystemObjectives.RemoveDataRows()
 
                 Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
-                        eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information))
+                        eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Information))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -511,7 +511,7 @@ Namespace Ecosim
             Select Case msg.Source
                 Case eCoreComponentType.TimeSeries
                     Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.Ecosim
                     If (msg.Type = eMessageType.EcosimNYearsChanged) Then
                         ' HACK! Solves #1263
                         Me.m_blockData.Init()

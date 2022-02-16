@@ -132,7 +132,7 @@ Namespace Ecosim
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
             Get
-                Return eCoreComponentType.EcoSim
+                Return eCoreComponentType.Ecosim
             End Get
         End Property
 

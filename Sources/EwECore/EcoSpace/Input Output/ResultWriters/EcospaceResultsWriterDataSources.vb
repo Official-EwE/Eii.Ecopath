@@ -134,7 +134,7 @@ Public Class cBiomassResultsDataSource
     End Property
 
     Public Overrides Function FieldName(OneBasedIndex As Integer) As String
-        Return Me.m_core.m_EcoPathData.GroupName(OneBasedIndex)
+        Return Me.m_core.m_EcopathData.GroupName(OneBasedIndex)
     End Function
 
     Public Overrides ReadOnly Property FilenameIdentifier As String

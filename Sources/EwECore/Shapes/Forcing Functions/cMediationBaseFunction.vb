@@ -50,7 +50,7 @@ Public MustInherit Class cMediationBaseFunction
         Try
 
             'Me.m_datatype = DataType
-            Me.m_coreComponent = eCoreComponentType.EcoSim
+            Me.m_coreComponent = eCoreComponentType.Ecosim
             Me.m_medData = data
             Me.m_timeresolution = eTSDataSetInterval.TimeStep
 

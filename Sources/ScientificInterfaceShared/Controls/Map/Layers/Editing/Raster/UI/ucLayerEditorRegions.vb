@@ -40,7 +40,7 @@ Namespace Controls.Map.Layers
 
             Me.UpdateContent(Me.Editor)
 
-            Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageType.DataValidation, Me.UIContext.SyncObject)
+            Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.Ecospace, EwEUtils.Core.eMessageType.DataValidation, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
             Me.m_mhSpace.Name = "ucLayerEditorRegions"

@@ -215,11 +215,11 @@ Namespace Ecospace.Basemap
 
             If (bSuccess) Then
                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile),
-                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFile)
             Else
                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile),
-                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Critical)
             End If
 
             Me.m_uic.Core.Messages.SendMessage(msg)

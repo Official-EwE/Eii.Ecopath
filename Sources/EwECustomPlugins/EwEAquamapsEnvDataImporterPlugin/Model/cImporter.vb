@@ -60,7 +60,7 @@ Public Class cImporter
     Public Function Import(species As String(), drivers As String()) As Boolean
 
         Dim bSuccess As Boolean = False
-        Dim msg As New cMessage(My.Resources.PROMPT_IMPORT_GENERIC, eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+        Dim msg As New cMessage(My.Resources.PROMPT_IMPORT_GENERIC, eMessageType.DataImport, eCoreComponentType.Ecospace, eMessageImportance.Information)
         Dim vs As cVariableStatus = Nothing
 
         If Not Me.m_core.SaveChanges(False) Then Return bSuccess

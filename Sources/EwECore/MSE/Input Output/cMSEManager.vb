@@ -104,7 +104,7 @@ Namespace MSE
             Me.m_MSECallback = OnMSE
             Me.m_MSYCallback = OnMSY
             'MSE does not listen to the Ecosim timesteps
-            Me.m_core.m_EcoSim.TimeStepDelegate = Nothing
+            Me.m_core.m_Ecosim.TimeStepDelegate = Nothing
             Me.m_bConnected = True
 
         End Sub
@@ -559,7 +559,7 @@ Namespace MSE
             Me.m_core.LoadEcosimGroups()
             Me.Load()
             'tell the interface that data has changed
-            Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
+            Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
             'reference levels where set to Blim and Bbase
             Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
             Me.m_core.Messages.sendAllMessages()
@@ -591,7 +591,7 @@ Namespace MSE
             'this may have to change when the input/output object are created
             Me.m_MSEdata.Init(theCore)
 
-            Me.m_MSE.Init(Me.m_MSEdata, Me.m_core.m_EcoSim, Me.m_core.m_SearchData, Me.m_core.m_EcoPathData, Me.m_core.m_TSData, Me.m_core.PluginManager)
+            Me.m_MSE.Init(Me.m_MSEdata, Me.m_core.m_Ecosim, Me.m_core.m_SearchData, Me.m_core.m_EcopathData, Me.m_core.m_TSData, Me.m_core.PluginManager)
 
             'Initialize the Batch manager
             Me.m_Batch.Init(Me.m_core, Me.m_MSE)
@@ -606,14 +606,14 @@ Namespace MSE
 
             'set the MSE model in Ecosim
             'Ecosim calls MSE.AssessFs() if the Search is turned On
-            Me.m_core.m_EcoSim.InitMSE(Me.m_MSE)
+            Me.m_core.m_Ecosim.InitMSE(Me.m_MSE)
 
             Me.m_TotFleetValue = New cMSEStats(Me.m_core, Me.m_MSEdata.ValueFleetStats, eDataTypes.MSEValueTotalStats, Me.m_VarToStat, -9999, 1)
 
             'build the Input and Output objects
             Me.m_lstGroupInputs.Clear()
             For igrp As Integer = 1 To Me.m_core.nLivingGroups
-                Me.m_lstGroupInputs.Add(New cMSEGroupInput(Me.m_core, Me.m_core.m_EcoPathData.GroupDBID(igrp)))
+                Me.m_lstGroupInputs.Add(New cMSEGroupInput(Me.m_core, Me.m_core.m_EcopathData.GroupDBID(igrp)))
             Next
 
             Me.m_lstEcopathFleetInputs.Clear()
@@ -621,10 +621,10 @@ Namespace MSE
             Me.m_lstEffortStats.Clear()
             Me.m_lstFleetStats.Clear()
             For iflt As Integer = 1 To Me.m_core.nFleets
-                Me.m_lstEcopathFleetInputs.Add(New cMSEFleetInput(Me.m_core, Me.m_core.m_EcoPathData.FleetDBID(iflt)))
-                Me.m_lstFleetOutputs.Add(New cMSEFleetOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
-                Me.m_lstEffortStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.EffortStats, eDataTypes.MSEEffortStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
-                Me.m_lstFleetStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchFleetStats, eDataTypes.MSECatchByFleetStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
+                Me.m_lstEcopathFleetInputs.Add(New cMSEFleetInput(Me.m_core, Me.m_core.m_EcopathData.FleetDBID(iflt)))
+                Me.m_lstFleetOutputs.Add(New cMSEFleetOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
+                Me.m_lstEffortStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.EffortStats, eDataTypes.MSEEffortStats, Me.m_VarToStat, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
+                Me.m_lstFleetStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchFleetStats, eDataTypes.MSECatchByFleetStats, Me.m_VarToStat, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
             Next
 
             Me.m_lstGroupOutputs.Clear()
@@ -635,13 +635,13 @@ Namespace MSE
 
             For igrp As Integer = 1 To Me.m_core.nLivingGroups
                 'BioEst
-                Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+                Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
 
-                Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
-                Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
-                Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+                Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
+                Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
+                Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
 
-                Me.m_lstFStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FLPDualValue, eDataTypes.MSEFStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+                Me.m_lstFStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FLPDualValue, eDataTypes.MSEFStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
                 ' Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FActualStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
             Next
 
@@ -670,7 +670,7 @@ Namespace MSE
 
         Private Function loadInputs() As Boolean
 
-            Dim coreData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim coreData As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim iGroup As Integer, iFleet As Integer
 
             Try
@@ -684,7 +684,7 @@ Namespace MSE
                     iGroup = Array.IndexOf(coreData.GroupDBID, mseGrp.DBID)
 
                     mseGrp.Index = iGroup
-                    mseGrp.Name = Me.m_core.m_EcoPathData.GroupName(iGroup)
+                    mseGrp.Name = Me.m_core.m_EcopathData.GroupName(iGroup)
 
                     mseGrp.UpperRisk = Me.m_MSEdata.BioRiskValue(iGroup, 1)
                     mseGrp.LowerRisk = Me.m_MSEdata.BioRiskValue(iGroup, 0)
@@ -724,44 +724,44 @@ Namespace MSE
                     mseOutput.AllowValidation = False 'no validation of outputs
                     mseOutput.Resize()
                     mseOutput.Index = Array.IndexOf(coreData.GroupDBID, mseOutput.DBID)
-                    mseOutput.Name = Me.m_core.m_EcoPathData.GroupName(mseOutput.Index)
+                    mseOutput.Name = Me.m_core.m_EcopathData.GroupName(mseOutput.Index)
                 Next
 
                 'Stat objects 
                 For Each stat As cMSEStats In Me.m_lstBiomassStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
-                    stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)
+                    stat.Name = Me.m_core.m_EcopathData.GroupName(stat.Index)
                 Next
 
                 For Each stat As cMSEStats In Me.m_lstBioEstStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
-                    stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)
+                    stat.Name = Me.m_core.m_EcopathData.GroupName(stat.Index)
                 Next
 
                 For Each stat As cMSEStats In Me.m_lstGroupCatchStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
-                    stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)
+                    stat.Name = Me.m_core.m_EcopathData.GroupName(stat.Index)
                 Next
 
                 For Each stat As cMSEStats In Me.m_lstFleetStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.FleetDBID, stat.DBID)
-                    stat.Name = Me.m_core.m_EcoPathData.FleetName(stat.Index)
+                    stat.Name = Me.m_core.m_EcopathData.FleetName(stat.Index)
                 Next
 
                 For Each stat As cMSEStats In Me.m_lstEffortStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.FleetDBID, stat.DBID)
-                    stat.Name = Me.m_core.m_EcoPathData.FleetName(stat.Index)
+                    stat.Name = Me.m_core.m_EcopathData.FleetName(stat.Index)
                 Next
 
                 For Each stat As cMSEStats In Me.m_lstFStats
                     stat.AllowValidation = False 'no validation of outputs
                     stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
-                    stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)
+                    stat.Name = Me.m_core.m_EcopathData.GroupName(stat.Index)
                 Next
 
 
@@ -773,7 +773,7 @@ Namespace MSE
                     iFleet = Array.IndexOf(coreData.FleetDBID, mseFlt.DBID)
 
                     mseFlt.Index = iFleet
-                    mseFlt.Name = Me.m_core.m_EcoPathData.FleetName(iFleet)
+                    mseFlt.Name = Me.m_core.m_EcopathData.FleetName(iFleet)
                     mseFlt.QIncrease = Me.m_MSEdata.Qgrow(iFleet)
                     mseFlt.MSYEvaluateFleet = Me.m_MSEdata.MSYEvaluateFleet(iFleet)
 
@@ -1092,7 +1092,7 @@ Namespace MSE
                 'Me.m_MSEdata.BioBounds(iGroup).Lower = Me.m_MSEdata.Blim(iGroup)
                 'Me.m_MSEdata.BioBounds(iGroup).Upper = Me.m_MSEdata.Bbase(iGroup)
                 'Set default to percentage of Ecopath base
-                Dim b As Single = Me.m_core.m_EcoPathData.B(iGroup)
+                Dim b As Single = Me.m_core.m_EcopathData.B(iGroup)
                 Me.m_MSEdata.BioBounds(iGroup).Lower = b * refLevelPercent
                 Me.m_MSEdata.BioBounds(iGroup).Upper = b / refLevelPercent
             Next iGroup
@@ -1322,7 +1322,7 @@ Namespace MSE
 
         Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
             Get
-                Return eCoreComponentType.EcoSpace
+                Return eCoreComponentType.Ecospace
             End Get
         End Property
 

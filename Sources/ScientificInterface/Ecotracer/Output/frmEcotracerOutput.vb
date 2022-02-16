@@ -128,7 +128,7 @@ Public Class frmEcotracerOutput
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreStateChanged
 
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace}
 
     End Sub
 
@@ -150,8 +150,8 @@ Public Class frmEcotracerOutput
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
         ' JS10Apr10: this probably needs to be refined to ONLY include run completed states
-        If (msg.Source = eCoreComponentType.EcoSim) Or
-           (msg.Source = eCoreComponentType.EcoSpace) Then
+        If (msg.Source = eCoreComponentType.Ecosim) Or
+           (msg.Source = eCoreComponentType.Ecospace) Then
             'let the interface update to all core states
             Me.RefreshData()
         End If

@@ -119,7 +119,7 @@ Namespace MSY
 
 #Region " Private variables "
 
-        Private m_Ecosim As cEcoSimModel
+        Private m_Ecosim As cEcosimModel
         Private m_msyData As cMSYDataStructures
         Private m_simData As cEcosimDatastructures
         Private m_pathData As cEcopathDataStructures
@@ -162,12 +162,12 @@ Namespace MSY
         ''' <summary>
         ''' Create a new instance of the MSY model.
         ''' </summary>
-        ''' <param name="Ecosim"><see cref="cEcoSimModel">Ecosim model</see> to use.</param>
+        ''' <param name="Ecosim"><see cref="cEcosimModel">Ecosim model</see> to use.</param>
         ''' <param name="MsyData"><see cref="cMSYDataStructures">MSY data structures</see> to use.</param>
         ''' <param name="EcopathData"><see cref="cEcopathDataStructures">Ecopath data structures</see> to use.</param>
         ''' <param name="EcosimData"><see cref="cEcosimDatastructures">Ecosim data structures</see> to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(Ecosim As cEcoSimModel, MsyData As cMSYDataStructures, _
+        Public Sub New(Ecosim As cEcosimModel, MsyData As cMSYDataStructures, _
                        EcopathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
 
             Debug.Assert(Ecosim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")

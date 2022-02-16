@@ -1255,7 +1255,7 @@ Public Class gridDefineTaxonomy
         ' Assess Taxons to remove
         If (Me.m_lTaxonInfoRemoved.Count > 0) Then
 
-            Dim fmsg As New cFeedbackMessage(My.Resources.TAXON_DELETE_CONFIRMATION, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(My.Resources.TAXON_DELETE_CONFIRMATION, eCoreComponentType.Ecopath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.UIContext.Core.Messages.SendMessage(fmsg)
 
             Select Case fmsg.Reply

@@ -75,7 +75,7 @@ Namespace FitToTimeSeries
 
         'core data
         Private m_core As cCore = Nothing
-        Private m_ecosim As cEcoSimModel = Nothing
+        Private m_ecosim As cEcosimModel = Nothing
         Private m_epdata As cEcopathDataStructures
         Private m_esdata As cEcosimDatastructures
         Private m_tsData As cTimeSeriesDataStructures
@@ -149,7 +149,7 @@ Namespace FitToTimeSeries
 #Region "Construction and Initialization"
 
         Friend Sub New(core As cCore, _
-                            ByRef EcoSim As EwECore.Ecosim.cEcoSimModel, _
+                            ByRef EcoSim As EwECore.Ecosim.cEcosimModel, _
                             ByRef EcoPathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
             Me.m_core = core
             Me.m_ecosim = EcoSim
@@ -238,7 +238,7 @@ Namespace FitToTimeSeries
             Dim Smax As Single, SSBase As Single, sss As Single
 
             Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim ecosim As cEcoSimModel = Me.m_core.m_EcoSim
+            Dim ecosim As cEcosimModel = Me.m_core.m_Ecosim
 
             ReDim Ssen(esData.inlinks)
 
@@ -295,14 +295,14 @@ Namespace FitToTimeSeries
 
                 Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ABORTED, _
                                         eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSimFitToTimeSeries, _
+                                        eCoreComponentType.EcosimFitToTimeSeries, _
                                         eMessageImportance.Critical))
 
             Catch ex As Exception
 
                 Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSimFitToTimeSeries, _
+                                        eCoreComponentType.EcosimFitToTimeSeries, _
                                         eMessageImportance.Critical))
 
             End Try
@@ -336,9 +336,9 @@ Namespace FitToTimeSeries
                 Exit Sub
             End If
 
-            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim ecosim As cEcoSimModel = Me.m_core.m_EcoSim
+            Dim ecosim As cEcosimModel = Me.m_core.m_Ecosim
 
             Dim nGroups As Integer = Me.m_core.nGroups
             Dim nLiving As Integer = Me.m_core.nLivingGroups
@@ -412,7 +412,7 @@ Namespace FitToTimeSeries
                 ' Woops
                 Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSimFitToTimeSeries, _
+                                        eCoreComponentType.EcosimFitToTimeSeries, _
                                         eMessageImportance.Critical))
 
             End Try
@@ -436,7 +436,7 @@ Namespace FitToTimeSeries
 
                 Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_SENSITIVITY_SETBLOCKS, _
                                         eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSimFitToTimeSeries, _
+                                        eCoreComponentType.EcosimFitToTimeSeries, _
                                         eMessageImportance.Warning))
 
                 Exit Sub
@@ -541,7 +541,7 @@ Namespace FitToTimeSeries
             Catch ex As Exception
                 Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
                                         eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSimFitToTimeSeries, _
+                                        eCoreComponentType.EcosimFitToTimeSeries, _
                                         eMessageImportance.Critical))
 
             End Try
@@ -651,7 +651,7 @@ Namespace FitToTimeSeries
 
                 'make sure ecosim does not call the interface 
                 'setting bTimestepOutput = False should have had the same effect
-                Me.m_core.m_EcoSim.TimeStepDelegate = Nothing
+                Me.m_core.m_Ecosim.TimeStepDelegate = Nothing
 
                 ' Set V to default before initialization of Ecosim so it uses the new V's
                 If Me.m_data.UseDefaultV Then
@@ -859,7 +859,7 @@ Namespace FitToTimeSeries
 
                     Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_INTERACTIONS, _
                                             eMessageType.ErrorEncountered, _
-                                            eCoreComponentType.EcoSimFitToTimeSeries, _
+                                            eCoreComponentType.EcosimFitToTimeSeries, _
                                             eMessageImportance.Warning))
                     Exit Sub
                 End If
@@ -898,7 +898,7 @@ Namespace FitToTimeSeries
 
                 If Me.StopIndex > 0 Then
                     fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_ITERATIONS, _
-                                                 eCoreComponentType.EcoSimFitToTimeSeries, _
+                                                 eCoreComponentType.EcosimFitToTimeSeries, _
                                                  eMessageType.Any, _
                                                  eMessageImportance.Information, _
                                                  eMessageReplyStyle.YES_NO)
@@ -943,7 +943,7 @@ Namespace FitToTimeSeries
                 Me.searchIterationStep()
 
                 fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED, _
-                                                 eCoreComponentType.EcoSimFitToTimeSeries, _
+                                                 eCoreComponentType.EcosimFitToTimeSeries, _
                                                  eMessageType.Any, _
                                                  eMessageImportance.Information, _
                                                  eMessageReplyStyle.YES_NO)
@@ -988,7 +988,7 @@ Namespace FitToTimeSeries
 
                 Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
                                         eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSimFitToTimeSeries, _
+                                        eCoreComponentType.EcosimFitToTimeSeries, _
                                         eMessageImportance.Warning))
             End Try
 

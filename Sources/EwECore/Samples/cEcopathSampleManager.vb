@@ -75,7 +75,7 @@ Namespace Samples
 
             Public Function ModelHash() As String
 
-                Dim ecopatDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+                Dim ecopatDS As cEcopathDataStructures = Me.m_core.m_EcopathData
                 Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
                 Dim sb As New StringBuilder()
 
@@ -661,7 +661,7 @@ Namespace Samples
             If (Me.m_core Is Nothing) Then Return Nothing
             If (bMustBalance And Not Me.m_core.IsModelBalanced()) Then Return Nothing
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim s As New cEcopathSample(Me.m_core, -1, Me.m_data.nSamples + 1)
 
             s.Source = Me.MachineName
@@ -786,8 +786,8 @@ Namespace Samples
             If (Me.m_core Is Nothing) Then Return False
             If (Not Me.m_core.StateMonitor.HasEcopathLoaded) Then Return False
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecopath As cEcoPathModel = Me.m_core.m_EcoPath
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
+            Dim ecopath As cEcopathModel = Me.m_core.m_Ecopath
 
             ' Write sample parameters to Ecopath.
             ' Note that a sample may contain output data (from Monte Carlo), or input data (from local backup)
@@ -844,7 +844,7 @@ Namespace Samples
                 Next
             Next
 
-            Me.m_core.m_EcoPath.DetritusCalculations()
+            Me.m_core.m_Ecopath.DetritusCalculations()
             Me.m_data.m_loaded = s
 
             Return True

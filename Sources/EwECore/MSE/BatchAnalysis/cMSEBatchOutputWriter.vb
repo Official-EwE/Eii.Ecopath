@@ -129,7 +129,7 @@ Namespace MSEBatchManager
                 If Me.m_BatchData.isOuputSaved(iOut) Then
 
                     header = New StringBuilder()
-                    Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+                    Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
                     header.AppendLine("")
                     header.AppendLine("Forcing_Name,Forcing_Index")
                     header.AppendLine(quote & Me.m_BatchData.ForcingNames(iForcing) & quote & "," & Me.m_BatchData.ForcingIndexes(iForcing).ToString)
@@ -174,7 +174,7 @@ Namespace MSEBatchManager
             Dim buff As StringBuilder
             Dim strm() As StreamWriter
             Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim istrm As Integer
             Dim quote As String = """"
             Try
@@ -400,7 +400,7 @@ Namespace MSEBatchManager
         End Function
 
         Private Function isGroupControlled(iGroup As Integer) As Boolean
-            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
             For iflt As Integer = 1 To Me.m_MSEdata.nFleets
                 If epData.Landing(iflt, iGroup) > 0 And Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NoControls Then
                     'Landing and Controlled
@@ -460,7 +460,7 @@ Namespace MSEBatchManager
 
                     For igrp As Integer = 1 To Me.m_MSEdata.NGroups
                         Try
-                            Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.m_core.m_EcoPathData.GroupName(igrp), Me.getModelName)
+                            Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.m_core.m_EcopathData.GroupName(igrp), Me.getModelName)
                             'delete 
                             File.Delete(outfileName)
                         Catch ex As Exception
@@ -510,7 +510,7 @@ Namespace MSEBatchManager
 
 
                         header = New StringBuilder()
-                        Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+                        Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
                         header.AppendLine("")
                         'header.AppendLine("MSE Run parameters")
                         'header.AppendLine("Primary production forcing")
@@ -529,7 +529,7 @@ Namespace MSEBatchManager
                         header.AppendLine(Me.getRunTypeHeader())
                         For i As Integer = 1 To Me.m_MSEdata.NGroups
                             'only if there is catch of some sort
-                            If Me.m_core.m_EcoPathData.fCatch(i) > 0 Then
+                            If Me.m_core.m_EcopathData.fCatch(i) > 0 Then
                                 header.AppendLine(Me.getRunTypeValue(i))
                             End If
                         Next
@@ -558,7 +558,7 @@ Namespace MSEBatchManager
             Dim buff As StringBuilder
             Dim strm() As StreamWriter
             Dim esData As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim istrm As Integer
             Try
 
@@ -617,7 +617,7 @@ Namespace MSEBatchManager
                 'only save outputs where isOuputSaved() = True
                 If Me.m_BatchData.isOuputSaved(iOut) Then
                     For igrp As Integer = 1 To Me.m_MSEdata.NGroups
-                        Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.m_core.m_EcoPathData.GroupName(igrp), Me.getModelName)
+                        Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.m_core.m_EcopathData.GroupName(igrp), Me.getModelName)
                         lstStreams.Add(New StreamWriter(outfileName, True))
                     Next
 
@@ -727,11 +727,11 @@ Namespace MSEBatchManager
 
             Select Case Me.m_BatchData.RunType
                 Case eMSEBatchRunTypes.FixedF
-                    ouputStr = Me.m_core.m_EcoPathData.GroupName(iGroup) & ", " & Me.m_MSEdata.FixedF(iGroup).ToString
+                    ouputStr = Me.m_core.m_EcopathData.GroupName(iGroup) & ", " & Me.m_MSEdata.FixedF(iGroup).ToString
                 Case eMSEBatchRunTypes.TAC
-                    ouputStr = Me.m_core.m_EcoPathData.GroupName(iGroup) & ", " & Me.m_MSEdata.TAC(iGroup).ToString
+                    ouputStr = Me.m_core.m_EcopathData.GroupName(iGroup) & ", " & Me.m_MSEdata.TAC(iGroup).ToString
                 Case eMSEBatchRunTypes.TFM
-                    ouputStr = Me.m_core.m_EcoPathData.GroupName(iGroup) & ", " & Me.m_MSEdata.Blim(iGroup).ToString & ", " & Me.m_MSEdata.Bbase(iGroup).ToString & ", " & Me.m_MSEdata.Fopt(iGroup).ToString
+                    ouputStr = Me.m_core.m_EcopathData.GroupName(iGroup) & ", " & Me.m_MSEdata.Blim(iGroup).ToString & ", " & Me.m_MSEdata.Bbase(iGroup).ToString & ", " & Me.m_MSEdata.Fopt(iGroup).ToString
             End Select
 
             Debug.Assert(ouputStr IsNot String.Empty, Me.ToString & " Invalid run type.")

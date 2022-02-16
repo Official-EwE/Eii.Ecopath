@@ -138,7 +138,7 @@ Namespace Ecosim
             ' Try to make sure that the output path is there
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
                 msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING),
-                                   eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                                   eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
                 If (Not bQuiet) Then
                     Me.m_core.Messages.SendMessage(msg)
                 Else
@@ -155,7 +155,7 @@ Namespace Ecosim
 
                         If Not bSucces Then
                             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString),
-                                               eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                                               eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                             If (Not bQuiet) Then
                                 Me.m_core.Messages.SendMessage(msg)
                             Else
@@ -172,7 +172,7 @@ Namespace Ecosim
 
             If bSucces Then
                 msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath),
-                                   eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                                   eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
                 ' Provide hyperlink to the directory with the files
                 msg.Hyperlink = strPath
                 If (Not bQuiet) Then

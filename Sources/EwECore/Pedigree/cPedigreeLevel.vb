@@ -52,7 +52,7 @@ Public Class cPedigreeLevel
 
         Me.m_manager = manager
         Me.m_dataType = eDataTypes.PedigreeLevel
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Me.AllowValidation = False

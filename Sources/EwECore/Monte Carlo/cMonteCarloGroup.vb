@@ -30,7 +30,7 @@ Public Class cMonteCarloGroup
         MyBase.New(core)
 
         Me.m_dataType = eDataTypes.MonteCarlo
-        Me.m_coreComponent = eCoreComponentType.EcoSim
+        Me.m_coreComponent = eCoreComponentType.Ecosim
         Me.AllowValidation = False
         Me.DBID = DBID
 

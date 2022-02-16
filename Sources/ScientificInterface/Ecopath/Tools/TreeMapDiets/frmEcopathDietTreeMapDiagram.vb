@@ -134,7 +134,7 @@ Public Class frmEcopathDietTreeMapDiagram
         MyBase.OnCoreMessage(msg)
 
         ' Refresh the diagram data when ecopath data has changed
-        If (msg.Source = eCoreComponentType.EcoPath) And
+        If (msg.Source = eCoreComponentType.Ecopath) And
                (msg.Type = eMessageType.DataModified) Then
             Me.m_pbDiagram.Invalidate()
         End If

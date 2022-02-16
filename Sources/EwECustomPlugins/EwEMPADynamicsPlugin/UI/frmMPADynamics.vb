@@ -95,14 +95,14 @@ Public Class frmMPADynamics
         Me.m_tsbnShowFleets.Checked = My.Settings.ShowFleets
         Me.m_tscmbFleets.SelectedIndex = 0
         Me.UpdateGrid()
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace}
 
     End Sub
 
     Public Overrides Sub OnCoreMessage(msg As cMessage)
         MyBase.OnCoreMessage(msg)
 
-        If (msg.Source = eCoreComponentType.EcoSpace And msg.Type = eMessageType.DataValidation) Then
+        If (msg.Source = eCoreComponentType.Ecospace And msg.Type = eMessageType.DataValidation) Then
             If (msg.DataType = eDataTypes.EcospaceMPA Or msg.DataType = eDataTypes.EcospaceFleet) Then
                 Me.InvalidateGrid()
             End If

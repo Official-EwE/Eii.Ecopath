@@ -52,7 +52,7 @@ Public Class frmApplyShapeBase
         ' Hook up to core messages
         ' * Shapes manager to refresh lists of avialable FFs
         ' * Ecopath to refresh lists of available groups
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoPath, eCoreComponentType.MediatedInteractionManager}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.Ecopath, eCoreComponentType.MediatedInteractionManager}
 
     End Sub
 

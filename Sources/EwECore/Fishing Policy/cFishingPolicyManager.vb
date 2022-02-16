@@ -138,7 +138,7 @@ Namespace FishingPolicy
                 Dim flt As cFishingPolicySearchBlock
                 For iflt As Integer = 1 To Me.m_core.nFleets
                     'use the database ID for the Fleets
-                    flt = New cFishingPolicySearchBlock(Me.m_core, Me.m_core.m_EcoPathData.FleetDBID(iflt))
+                    flt = New cFishingPolicySearchBlock(Me.m_core, Me.m_core.m_EcopathData.FleetDBID(iflt))
                     Me.m_lstFleets.Add(flt)
                 Next
 
@@ -183,11 +183,11 @@ Namespace FishingPolicy
                 For Each flt As cFishingPolicySearchBlock In Me.m_lstFleets
                     flt.AllowValidation = False
 
-                    iflt = Array.IndexOf(Me.m_core.m_EcoPathData.FleetDBID, flt.DBID)
+                    iflt = Array.IndexOf(Me.m_core.m_EcopathData.FleetDBID, flt.DBID)
                     flt.Index = iflt
 
                     flt.Resize()
-                    flt.Name = Me.m_core.m_EcoPathData.FleetName(iflt)
+                    flt.Name = Me.m_core.m_EcopathData.FleetName(iflt)
 
                     For it As Integer = 1 To Me.m_core.nEcosimYears
                         flt.SearchBlocks(it) = coreData.FblockCode(iflt, it)
@@ -592,7 +592,7 @@ Namespace FishingPolicy
 
         Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
             Get
-                Return eCoreComponentType.EcoSim
+                Return eCoreComponentType.Ecosim
             End Get
         End Property
 

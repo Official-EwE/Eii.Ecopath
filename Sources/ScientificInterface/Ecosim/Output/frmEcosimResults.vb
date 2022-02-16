@@ -89,7 +89,7 @@ Namespace Ecosim
             Me.m_rbGear.Checked = True
             Me.UpdateControls()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim}
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)

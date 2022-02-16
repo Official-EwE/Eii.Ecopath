@@ -62,7 +62,7 @@ Public Class cCoreStateManager
                 Case eCoreExecutionState.EcosimInitialized
                     If Not sm.HasEcosimLoaded Then Return False
                     If sm.HasEcosimInitialized Then Return True
-                    If Me.m_core.m_EcoSim.Init(False) Then
+                    If Me.m_core.m_Ecosim.Init(False) Then
                         sm.SetEcoSimInitialized()
                         Return True
                     End If
@@ -105,7 +105,7 @@ Public Class cCoreStateManager
             End If
 
             'this will copy diet comp into Ecosim SimDC()
-            Me.m_core.m_EcoSim.RemoveImportFromEcosim()
+            Me.m_core.m_Ecosim.RemoveImportFromEcosim()
 
         Catch ex As Exception
             cLog.Write(ex)

@@ -39,7 +39,7 @@ Public Class cEcospaceModelParameters
             Me.DBID = DBID
 
             Me.m_dataType = eDataTypes.EcospaceModelParameter
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
             Me.AllowValidation = False
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)

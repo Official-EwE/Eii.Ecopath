@@ -148,7 +148,7 @@ Public Class cMessageStateHandler
         Dim c As cMessageStateCache = Nothing
 
         Select Case source
-            Case eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Ecotracer
+            Case eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.Ecotracer
                 ' NOP
             Case Else
                 source = eCoreComponentType.Core

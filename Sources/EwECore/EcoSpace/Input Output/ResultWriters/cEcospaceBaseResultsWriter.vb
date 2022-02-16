@@ -182,7 +182,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim strTimestep As String = ""
             'Ok Use the default filename
-            Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
+            Dim grpName As String = Me.m_core.m_EcopathData.GroupName(iGrp)
 
             ' Is there a time step in the file name?
             If (iModelTimeStep > 0) Then
@@ -248,7 +248,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Else
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
+            Dim fltName As String = Me.m_core.m_EcopathData.FleetName(iFlt)
             Dim strTimestep As String = ""
 
             ' Is there a time step in the file name?
@@ -272,7 +272,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     Protected ReadOnly Property EcopathData() As cEcopathDataStructures
         Get
-            Return Me.m_core.m_EcoPathData
+            Return Me.m_core.m_EcopathData
         End Get
     End Property
 

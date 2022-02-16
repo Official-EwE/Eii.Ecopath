@@ -386,11 +386,11 @@
     <Compile Include="DataSource\IEwEDataSource.vb" />
     <Compile Include="EcoPath\Model\cEcopathDataStructures.vb" />
     <Compile Include="EcoPath\Input Output\cEcopathGroupOutput.vb" />
-    <Compile Include="EcoPath\Model\cEcoPathModel.vb" />
+    <Compile Include="EcoPath\Model\cEcopathModel.vb" />
     <Compile Include="EcoPath\Input Output\cEcopathFleetInput.vb" />
-    <Compile Include="EcoSim\Model\cEcoSimDatastructures.vb" />
+    <Compile Include="EcoSim\Model\cEcosimDatastructures.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupInput.vb" />
-    <Compile Include="EcoSim\Model\cEcoSimModel.vb" />
+    <Compile Include="EcoSim\Model\cEcosimModel.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimModelParameters.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimResults.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimScenario.vb" />
@@ -597,7 +597,7 @@
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
-    <Compile Include="EcoPath\Input Output\cEcoPathStats.vb" />
+    <Compile Include="EcoPath\Input Output\cEcopathStats.vb" />
     <Compile Include="Taxon\cTaxon.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimOutput.vb" />

@@ -37,7 +37,7 @@ Namespace Ecosim
 
         Public Sub New()
             Me.InitializeComponent()
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim}
             Me.TabText = Me.Text
             Me.Grid = Me.m_grdCatchability
         End Sub

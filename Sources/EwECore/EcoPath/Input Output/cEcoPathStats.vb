@@ -21,7 +21,7 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-Public Class cEcoPathStats
+Public Class cEcopathStats
     Inherits cCoreInputOutputBase
 
     Sub New(core As cCore, iDBID As Integer)
@@ -31,7 +31,7 @@ Public Class cEcoPathStats
 
         Me.DBID = iDBID
         Me.m_dataType = eDataTypes.EcoPathStatistics
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
 
         Try
 

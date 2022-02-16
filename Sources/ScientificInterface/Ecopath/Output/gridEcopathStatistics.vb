@@ -68,7 +68,7 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FillData()
 
-            Dim source As cEcoPathStats = Me.Core.EcopathStats
+            Dim source As cEcopathStats = Me.Core.EcopathStats
 
             Me.AddRow(SharedResources.HEADER_SUM_CONSUMPTION, source, eVarNameFlags.EcopathStatsTotalConsumption)
             Me.AddRow(SharedResources.HEADER_SUM_EXPORTS, source, eVarNameFlags.EcopathStatsTotalExports)
@@ -110,7 +110,7 @@ Namespace Ecopath.Output
             MyBase.FinishStyle()
         End Sub
 
-        Private Overloads Sub AddRow(strHeader As String, source As cEcoPathStats, vnf As eVarNameFlags)
+        Private Overloads Sub AddRow(strHeader As String, source As cEcopathStats, vnf As eVarNameFlags)
             Dim iRow As Integer = Me.AddRow()
             Dim md As cVariableMetaData = source.GetVariableMetadata(vnf)
 

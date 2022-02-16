@@ -43,7 +43,7 @@ Public Class cEwEModel
         Try
 
             Me.m_dataType = eDataTypes.EwEModel
-            Me.m_coreComponent = eCoreComponentType.EcoPath
+            Me.m_coreComponent = eCoreComponentType.Ecopath
 
             'default OK status used for setVariable
             'see comment setVariable(...)

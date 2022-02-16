@@ -103,7 +103,7 @@ Public Class cEcosimArenaManager
 
     Friend Sub Update()
 
-        Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Dim ii As Integer = 0
@@ -186,7 +186,7 @@ Public Class cEcosimArenaManager
 
     Public ReadOnly Property Arenas(prey As Integer) As cEcosimArena()
         Get
-            Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim pathdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim lArenas As New List(Of cEcosimArena)
             For Each arena As cEcosimArena In Me.m_arenas
                 If (arena IsNot Nothing) Then

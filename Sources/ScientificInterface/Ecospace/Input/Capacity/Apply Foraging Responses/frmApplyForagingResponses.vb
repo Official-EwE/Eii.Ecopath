@@ -48,7 +48,7 @@ Namespace Ecospace
 
             ' Hook up to core messages
             ' For this form only
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcospaceCapacityResponseInteractionManager, eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcospaceCapacityResponseInteractionManager, eCoreComponentType.Ecospace}
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditInputMaps")
             If (cmd IsNot Nothing) Then
@@ -77,7 +77,7 @@ Namespace Ecospace
 
             If (msg.Source = eCoreComponentType.EcospaceCapacityResponseInteractionManager) Then
                 Me.Grid.UpdateContent()
-            ElseIf (msg.Source = eCoreComponentType.EcoSpace And msg.DataType = eDataTypes.EcospaceLayerDriver) Then
+            ElseIf (msg.Source = eCoreComponentType.Ecospace And msg.DataType = eDataTypes.EcospaceLayerDriver) Then
                 Me.Grid.UpdateContent()
             End If
 

@@ -395,7 +395,7 @@ Namespace Ecospace
             Me.m_rbConsumpGraph.Tag = ePlotTypes.ConsumpRateGraph
             Me.m_rbCatchGraph.Tag = ePlotTypes.CatchGraph
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim, eCoreComponentType.Ecospace}
 
         End Sub
 

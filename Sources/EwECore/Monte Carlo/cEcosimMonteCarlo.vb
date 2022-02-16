@@ -136,8 +136,8 @@ Public Class cEcosimMonteCarlo
     Public Property DietSamplingMethod As eMCDietSamplingMethod = eMCDietSamplingMethod.Dirichlets
 
     Private m_core As cCore
-    Private m_ecopath As cEcoPathModel
-    Private m_ecosim As cEcoSimModel
+    Private m_ecopath As cEcopathModel
+    Private m_ecosim As cEcosimModel
     Private m_epdata As cEcopathDataStructures
     Private m_esdata As cEcosimDatastructures
     Private m_tsdata As cTimeSeriesDataStructures
@@ -229,9 +229,9 @@ Public Class cEcosimMonteCarlo
 
         Me.m_core = theCore
 
-        Me.m_ecopath = Me.m_core.m_EcoPath
-        Me.m_ecosim = Me.m_core.m_EcoSim
-        Me.m_epdata = Me.m_core.m_EcoPathData
+        Me.m_ecopath = Me.m_core.m_Ecopath
+        Me.m_ecosim = Me.m_core.m_Ecosim
+        Me.m_epdata = Me.m_core.m_EcopathData
         Me.m_esdata = Me.m_core.m_EcoSimData
         Me.m_tsdata = Me.m_core.m_TSData
         'data from Ecosim

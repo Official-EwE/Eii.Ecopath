@@ -89,7 +89,7 @@ Namespace SpatialData
             MyBase.New(core)
 
             Me.m_dataType = eDataTypes.EcospaceSpatialDataSource
-            Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreComponent = eCoreComponentType.Ecospace
             Me.m_coreCounter = cc
             Me.m_varName = varName
             Me.AllowSaveIntermediateResults = False

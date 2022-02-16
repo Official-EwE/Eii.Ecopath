@@ -72,7 +72,7 @@ Namespace Controls
 
             Me.m_mhShapes = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.ShapesManager, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhShapes)
-            Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.UIContext.SyncObject)
+            Me.m_mhEcosim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecosim, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             Me.DisplayFullXAxis = Me.m_bShowAll
@@ -383,7 +383,7 @@ Namespace Controls
                         Me.Refresh()
                     Catch ex As Exception
                     End Try
-                ElseIf msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.EcosimNYearsChanged Then
+                ElseIf msg.Source = eCoreComponentType.Ecosim And msg.Type = eMessageType.EcosimNYearsChanged Then
                     Try
                         Me.SketchPad.NumDataPoints = Me.NumDataYears
                         Me.DisplayFullXAxis = Me.m_bShowAll

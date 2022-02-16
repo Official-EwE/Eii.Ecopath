@@ -2899,11 +2899,11 @@ Namespace Core
         ''' <summary>The message source is not specified</summary>
         NotSet
         ''' <summary>The message originated from the Ecopath module of EwE</summary>
-        EcoPath
+        Ecopath
         ''' <summary>The message originated from the Ecosim module of EwE</summary>
-        EcoSim
+        Ecosim
         ''' <summary>The message originated from the Ecospace module of EwE</summary>
-        EcoSpace
+        Ecospace
         ''' <summary>The message originated from the Forcing shapes manager(s) in EwE</summary>
         ShapesManager
         ''' <summary>The message originated from a datasource</summary>
@@ -2915,7 +2915,7 @@ Namespace Core
         ''' <summary>The message originated from the Monte Carlo routines in Ecosim</summary>
         EcoSimMonteCarlo
         ''' <summary>The message originated from the Fit to Time Series routines in Ecosim</summary>
-        EcoSimFitToTimeSeries
+        EcosimFitToTimeSeries
         ''' <summary>The message originated from a change in loaded Time Series</summary>
         TimeSeries
         ''' <summary>The message originated from the pred/prey interaction</summary>

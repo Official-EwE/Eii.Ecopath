@@ -161,7 +161,7 @@ Namespace Controls.Map.Layers
 
             MyBase.New(uic, renderer)
 
-            Me.m_mh = New cMessageHandler(AddressOf Me.EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
+            Me.m_mh = New cMessageHandler(AddressOf Me.EcospaceMessageHandler, eCoreComponentType.Ecospace, eMessageType.Any, Me.m_uic.SyncObject)
 #If DEBUG Then
             Me.m_mh.Name = "UI::cRasterLayer " & Me.m_varName.ToString
 #End If

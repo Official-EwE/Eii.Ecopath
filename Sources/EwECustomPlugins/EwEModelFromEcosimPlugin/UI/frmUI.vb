@@ -113,7 +113,7 @@ Friend Class frmUI
         Me.m_bReady = True
 
         ' Initialize UI state
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.TimeSeries}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim, eCoreComponentType.TimeSeries}
         Me.UpdateControls()
 
         AddHandler My.Settings.PropertyChanged, AddressOf Me.OnSettingsChanged
@@ -138,7 +138,7 @@ Friend Class frmUI
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
-        If (msg.Source = EwEUtils.Core.eCoreComponentType.EcoSim) And
+        If (msg.Source = EwEUtils.Core.eCoreComponentType.Ecosim) And
            (msg.Type = eMessageType.EcosimNYearsChanged Or msg.Type = eMessageType.DataAddedOrRemoved) Then
             Me.UpdateEcosimRunTime()
         End If

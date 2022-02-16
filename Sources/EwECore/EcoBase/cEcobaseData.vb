@@ -239,7 +239,7 @@ Namespace WebServices.Ecobase
 
         Public Sub New(core As cCore)
 
-            Dim ecopathDS As cEcopathDataStructures = core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = core.m_EcopathData
             Dim taxonDS As cTaxonDataStructures = core.m_TaxonData
 
             Me.Name = ecopathDS.ModelName
@@ -424,7 +424,7 @@ Namespace WebServices.Ecobase
             Debug.Assert(core.StateMonitor.HasEcopathRan)
             Debug.Assert(iGroup <= core.nGroups)
 
-            Dim ecopathDS As cEcopathDataStructures = core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = core.m_EcopathData
             Dim taxonDS As cTaxonDataStructures = core.m_TaxonData
 
             Me.Index = iGroup
@@ -619,7 +619,7 @@ Namespace WebServices.Ecobase
 
         Public Sub New(core As cCore, iFleet As Integer)
 
-            Dim ecopathDS As cEcopathDataStructures = core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = core.m_EcopathData
 
             Me.Index = iFleet
             Me.Name = ecopathDS.FleetName(iFleet)
@@ -986,7 +986,7 @@ Namespace WebServices.Ecobase
 
         Public Sub New(core As cCore, iLevel As Integer)
 
-            Dim ecopathDS As cEcopathDataStructures = core.m_EcoPathData
+            Dim ecopathDS As cEcopathDataStructures = core.m_EcopathData
 
             Me.Index = iLevel
             Me.Name = ecopathDS.PedigreeLevelName(iLevel)
@@ -1381,7 +1381,7 @@ Namespace WebServices.Ecobase
                 Me.Stanzas.Add(New cStanzaData(core, iStanza))
             Next
 
-            For iPedigree As Integer = 1 To core.m_EcoPathData.NumPedigreeLevels
+            For iPedigree As Integer = 1 To core.m_EcopathData.NumPedigreeLevels
                 Me.PedigreeLevels.Add(New cPedigreeData(core, iPedigree))
             Next
 

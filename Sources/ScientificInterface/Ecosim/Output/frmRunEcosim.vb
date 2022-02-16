@@ -111,7 +111,7 @@ Namespace Ecosim
             Me.m_params = Me.Core.EcosimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.ShapesManager, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
 
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
@@ -174,7 +174,7 @@ Namespace Ecosim
 
             Select Case msg.Source
 
-                Case eCoreComponentType.EcoSim
+                Case eCoreComponentType.Ecosim
                     Me.HandleEcosimMessage(msg)
 
                 Case eCoreComponentType.ShapesManager

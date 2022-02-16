@@ -36,7 +36,7 @@ Public Class cEcopathFleetInput
         'stop the data validation for now
         'ToDo_jb add data validation for Fleets
         Me.AllowValidation = False
-        Me.m_coreComponent = eCoreComponentType.EcoPath
+        Me.m_coreComponent = eCoreComponentType.Ecopath
         Me.m_dataType = eDataTypes.FleetInput
 
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)

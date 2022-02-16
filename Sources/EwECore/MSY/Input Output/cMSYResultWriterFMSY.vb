@@ -58,7 +58,7 @@ Namespace MSY
 
             If (result Is Nothing) Then Return False
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim strFile As String = ""
             Dim sw As StreamWriter = Nothing
             Dim bSuccess As Boolean = True

@@ -141,11 +141,11 @@ Namespace Ecospace.Controls
 
                 ' Config
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.m_mhPath = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_mhPath = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecopath, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhPath)
-                    Me.m_mhSim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_mhSim = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecosim, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSim)
-                    Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecospace, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
                     Me.m_mhPath.Name = "ucSpatialTimeSeriesToolbox::m_mhPath"

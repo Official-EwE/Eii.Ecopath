@@ -124,7 +124,7 @@ Namespace FishingPolicy
 #Region "Private Core variables"
 
         Private m_core As cCore
-        Private m_ecosim As cEcoSimModel
+        Private m_ecosim As cEcosimModel
         Private m_searchData As cSearchDatastructures
         Private m_pluginManager As cPluginManager
 
@@ -143,7 +143,7 @@ Namespace FishingPolicy
             Try
 
                 Me.m_core = theCore
-                Me.m_ecosim = Me.m_core.m_EcoSim
+                Me.m_ecosim = Me.m_core.m_Ecosim
                 Me.m_searchData = Me.m_core.m_SearchData
 
                 Me.m_pluginManager = Me.m_core.PluginManager
@@ -201,7 +201,7 @@ Namespace FishingPolicy
 
                 Me.m_searchData = Me.m_core.m_SearchData
                 Me.m_searchData.SearchMode = eSearchModes.FishingPolicy 'make sure the search is turned on this will also set some default values based on the flag
-                Me.m_searchData.initForRun(Me.m_core.m_EcoPathData, Me.m_core.m_EcoSimData)
+                Me.m_searchData.initForRun(Me.m_core.m_EcopathData, Me.m_core.m_EcoSimData)
 
                 Me.TotalTime = Me.m_core.nEcosimYears
                 Me.m_searchData.redimForRun()
@@ -359,7 +359,7 @@ Namespace FishingPolicy
 
             Try
 
-                Me.addMessage(New cMessage(strMessage, msgType, eCoreComponentType.EcoSim, msgImportance))
+                Me.addMessage(New cMessage(strMessage, msgType, eCoreComponentType.Ecosim, msgImportance))
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -519,9 +519,9 @@ Namespace FishingPolicy
                         'EwE5 message
                         'MsgBox("Cost exceeds income for fleet " + m_core.m_EcoPathData.FleetName(iflt) + " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", vbOKOnly, "Ecosim policy search")
 
-                        Me.addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + Me.m_core.m_EcoPathData.FleetName(iflt) + _
+                        Me.addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + Me.m_core.m_EcopathData.FleetName(iflt) + _
                                         " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", _
-                                        eCoreComponentType.EcoSim, eMessageType.Any, eMessageImportance.Critical))
+                                        eCoreComponentType.Ecosim, eMessageType.Any, eMessageImportance.Critical))
                         Exit For
                     End If  'Villy: Carl had introduced the clause above, omitting the calculation of basevalues
                 Next
@@ -1512,7 +1512,7 @@ endline:    ' '
             Dim i As Integer, j As Integer, K As Integer, SpGaintoJ As Single
             Dim gro As Double, SumGro As Double
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
 
             'exit if search is not over gear types
             If n <> Me.m_searchData.NumFleets Then
