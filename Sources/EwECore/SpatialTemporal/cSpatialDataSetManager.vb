@@ -716,7 +716,7 @@ Namespace SpatialData
         End Sub
 
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
-            Me.m_indexer.StopRun(WaitTimeInMillSec)
+            Return Me.m_indexer.StopRun(WaitTimeInMillSec)
         End Function
 
 #End Region ' Events
