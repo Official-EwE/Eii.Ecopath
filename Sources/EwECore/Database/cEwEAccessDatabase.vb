@@ -83,10 +83,10 @@ Namespace Database
         ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Create(strDatabase As String, _
-                strModelName As String, _
-                Optional bOverwrite As Boolean = False, _
-                Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, _
+        Public Overrides Function Create(strDatabase As String,
+                strModelName As String,
+                Optional bOverwrite As Boolean = False,
+                Optional format As eDataSourceTypes = eDataSourceTypes.NotSet,
                 Optional strAuthor As String = "") As eDatasourceAccessType
 
             Dim strSource As String = ""
@@ -157,9 +157,9 @@ Namespace Database
         ''' <param name="bOverwrite">States whether any model in the way will be obliterated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SaveAs(strDatabaseTo As String, _
-                strModelName As String, _
-                Optional bOverwrite As Boolean = False, _
+        Public Overrides Function SaveAs(strDatabaseTo As String,
+                strModelName As String,
+                Optional bOverwrite As Boolean = False,
                 Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
             Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
@@ -216,8 +216,8 @@ Namespace Database
         ''' to 'NotSet' to auto-detect the database type.</param>
         ''' <returns>True if connected successfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Open(strDatabase As String, _
-                                       Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+        Public Overrides Function Open(strDatabase As String,
+                                       Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet,
                                        Optional bReadOnly As Boolean = False) As eDatasourceAccessType
 
             ' Preconditions
@@ -466,7 +466,7 @@ Namespace Database
         ''' cannot be <see cref="IsConnected">connected</see> when compacting.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Compact(strFileFrom As String, _
+        Public Overrides Function Compact(strFileFrom As String,
                                           strFileTo As String) As eDatasourceAccessType
 
             '  If read-only: report only status and abort
