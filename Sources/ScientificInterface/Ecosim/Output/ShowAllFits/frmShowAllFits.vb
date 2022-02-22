@@ -83,6 +83,8 @@ Namespace Ecosim
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim}
 
+            Me.m_lblWTF.Visible = (Me.Core.ActiveTimeSeriesDatasetIndex <= 0)
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)

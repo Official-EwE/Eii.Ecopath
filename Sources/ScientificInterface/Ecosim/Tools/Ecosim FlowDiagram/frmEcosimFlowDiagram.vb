@@ -607,7 +607,7 @@ Namespace Ecosim
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
                     ifData = New cXMLSettings()
-                    ifData.LoadFromFile(cmdFO.FileName)
+                    ifData.Create(cmdFO.FileName)
                     Me.m_doodler.Load(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message),
@@ -630,7 +630,7 @@ Namespace Ecosim
             If cmdFS.Result = System.Windows.Forms.DialogResult.OK Then
                 Try
                     ifData = New cXMLSettings()
-                    ifData.LoadFromFile(cmdFS.FileName)
+                    ifData.Create(cmdFS.FileName)
                     Me.m_doodler.Save(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),

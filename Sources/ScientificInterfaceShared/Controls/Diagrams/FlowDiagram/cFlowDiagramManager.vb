@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.Math
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
@@ -41,7 +39,6 @@ Namespace Controls
 #Region " Private vars "
 
         Private m_iHighlight As Integer = 0
-        Private m_bIsMouseDown As Boolean = False
         Private m_tree As IFlowDiagramRenderer = Nothing
         Private m_data As IFlowDiagramData = Nothing
 

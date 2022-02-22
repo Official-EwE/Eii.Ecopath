@@ -72,23 +72,26 @@ Namespace SystemUtilities
         ''' </summary>
         ''' <param name="strFileName">Name of the file to open. A ".xml" extension
         ''' is assumed if none is provide.</param>
+        ''' <param name="bOverwrite">If true, this will not load the target file, 
+        ''' but will overwrite it instead 
+        ''' if it exists. If set to false, any existing file will be loaded.</param>
         ''' -------------------------------------------------------------------
-        Public Sub LoadFromFile(strFileName As String)
+        Public Sub Create(strFileName As String, Optional bOverwrite As Boolean = False)
 
             ' Add extension to file name if missing
             If String.IsNullOrWhiteSpace(Path.GetExtension(strFileName)) Then
                 strFileName = Path.ChangeExtension(strFileName, ".xml")
             End If
 
-
             If (File.Exists(strFileName)) Then
                 Try
                     Me.EnsureHasDoc()
                     Me.m_doc.Load(strFileName)
-                    Me.m_strFileName = strFileName
                 Catch ex As Exception
                 End Try
             End If
+            Me.m_strFileName = strFileName
+
         End Sub
 
         Public Sub Load(strXML As String)

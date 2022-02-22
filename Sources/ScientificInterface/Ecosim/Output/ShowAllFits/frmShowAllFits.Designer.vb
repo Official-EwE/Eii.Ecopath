@@ -83,6 +83,7 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument()
+            Me.m_lblWTF = New System.Windows.Forms.Label()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -113,6 +114,7 @@ Namespace Ecosim
             'm_scMain.Panel2
             '
             resources.ApplyResources(Me.m_scMain.Panel2, "m_scMain.Panel2")
+            Me.m_scMain.Panel2.Controls.Add(Me.m_lblWTF)
             Me.m_scMain.Panel2.Controls.Add(Me.m_pbPlots)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
             '
@@ -393,10 +395,17 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
+            'm_lblWTF
+            '
+            resources.ApplyResources(Me.m_lblWTF, "m_lblWTF")
+            Me.m_lblWTF.BackColor = System.Drawing.Color.White
+            Me.m_lblWTF.Name = "m_lblWTF"
+            '
             'frmShowAllFits
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.BlinkIcon = CType(resources.GetObject("$this.BlinkIcon"), System.Drawing.Icon)
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmShowAllFits"
             Me.ShowIcon = False
@@ -463,6 +472,7 @@ Namespace Ecosim
         Private WithEvents m_chkShowLandings As CheckBox
         Private WithEvents m_chkShowDiscards As CheckBox
         Private WithEvents m_plFormatting As Panel
+        Friend WithEvents m_lblWTF As Label
     End Class
 
 End Namespace
