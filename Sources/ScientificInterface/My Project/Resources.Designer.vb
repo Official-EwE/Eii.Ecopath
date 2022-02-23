@@ -224,6 +224,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Select plots... ({0} of {1}).
+        '''</summary>
+        Public ReadOnly Property CAPTION_SELECT_PLOTS() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_SELECT_PLOTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Size/Weight.
         '''</summary>
         Public ReadOnly Property CAPTION_SIZEWT() As String
