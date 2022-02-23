@@ -310,7 +310,8 @@ Namespace Ecosim
         Protected Sub ConfigurePlots(Optional bFormOpen As Boolean = True)
 
             Dim iPane As Integer = 1
-            Dim iMaxPanes As Integer = [Enum].GetValues(GetType(ePlot)).Length - 1
+            Dim iMaxPanes As Integer = 0
+            Dim iNumPanes As Integer = 0
 
             ' Determine where panes will be placed
             For Each plot As ePlot In [Enum].GetValues(GetType(ePlot))
@@ -334,8 +335,13 @@ Namespace Ecosim
                 Dim strTitle As String = Me.GetPlotTitle(data)
                 Dim strYAaxisLabel As String = Me.GetPlotYAxisLabel(data)
                 Dim dAxisMax As Double = Me.GetPlotAxisMax(data)
-                Me.ConfigurePane(data, strTitle, strYAaxisLabel, dAxisMax)
+                If Me.ConfigurePane(data, strTitle, strYAaxisLabel, dAxisMax) Then
+                    iNumPanes += 1
+                End If
+                iMaxPanes += 1
             Next
+
+            Me.m_btnChoosePlots.Text = cStringUtils.Localize(My.Resources.CAPTION_SELECT_PLOTS, iNumPanes, iMaxPanes)
 
         End Sub
 
@@ -343,10 +349,11 @@ Namespace Ecosim
         ''' <summary>
         ''' Configure a plot on the main graph
         ''' </summary>
+        ''' <returns>True if the plot is visble, false otherwise.</returns>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(plot As ePlot, strTitle As String, strYAxisLabel As String, Optional dYAxisMax As Double = 0)
+        Private Function ConfigurePane(plot As ePlot, strTitle As String, strYAxisLabel As String, Optional dYAxisMax As Double = 0) As Boolean
 
-            If Not Me.m_plotVisible(plot) Then Return
+            If Not Me.m_plotVisible(plot) Then Return False
             ' Sanity check
             Debug.Assert(Me.m_plotPanel(plot) > 0)
             ' Configure pane
@@ -356,8 +363,9 @@ Namespace Ecosim
                        CDbl(Me.Core.EcosimFirstYear + (Me.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
                        strYAxisLabel, 0, dYAxisMax,
                        False, LegendPos.TopCenter, Me.m_plotPanel(plot))
+            Return True
 
-        End Sub
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -773,15 +781,15 @@ Namespace Ecosim
         ''' Populate a fleet list box with Ecopath fleets.
         ''' </summary>
         ''' <param name="l">Listbox to add items to.</param>
-        ''' <param name="aiFleetIndex">Array of fleet index values.</param>
+        ''' <param name="fleetindices">Array of fleet index values.</param>
         ''' -------------------------------------------------------------------
         Private Sub PopulateFleetListBox(l As cFleetListBox,
-                                         aiFleetIndex() As Integer,
-                                         asValues() As Single)
+                                         fleetindices() As Integer,
+                                         fleetweights() As Single)
 
-            l.Populate(aiFleetIndex)
-            For i As Integer = 0 To aiFleetIndex.Count - 1
-                l.SortValue(i) = asValues(i)
+            l.Populate(fleetindices)
+            For i As Integer = 0 To fleetindices.Count - 1
+                l.SortValue(i) = fleetweights(i)
             Next
             l.SortType = cFleetListBox.eSortType.ValueDesc
             l.Refresh()

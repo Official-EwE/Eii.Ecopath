@@ -48,17 +48,17 @@ Namespace Ecosim
             Me.m_lbPrey = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_btnChoosePlots = New System.Windows.Forms.ToolStripButton()
             Me.m_plGroups = New System.Windows.Forms.Panel()
-            Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plFleets = New System.Windows.Forms.Panel()
             Me.m_lbFleets = New ScientificInterfaceShared.Controls.cFleetListBox()
-            Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plPredators = New System.Windows.Forms.Panel()
-            Me.m_hdrPredators = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plPrey = New System.Windows.Forms.Panel()
-            Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbSaveVisibleOnly = New System.Windows.Forms.CheckBox()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -77,13 +77,13 @@ Namespace Ecosim
             Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
+            Me.m_graph.ScrollGrace = 0R
+            Me.m_graph.ScrollMaxX = 0R
+            Me.m_graph.ScrollMaxY = 0R
+            Me.m_graph.ScrollMaxY2 = 0R
+            Me.m_graph.ScrollMinX = 0R
+            Me.m_graph.ScrollMinY = 0R
+            Me.m_graph.ScrollMinY2 = 0R
             '
             'm_lbGroups
             '
@@ -92,6 +92,7 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
+            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAsHidden
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
             Me.m_lbGroups.IsAllGroupsItemSelected = False
             Me.m_lbGroups.Name = "m_lbGroups"
@@ -99,6 +100,7 @@ Namespace Ecosim
             Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.ShowAllGroupsItem = False
             Me.m_lbGroups.SortThreshold = -9999.0!
+            Me.m_lbGroups.VisibleGroups = Nothing
             '
             'm_btnSaveData
             '
@@ -110,8 +112,8 @@ Namespace Ecosim
             '
             Me.m_lbPredators.AllGroupsItemColor = System.Drawing.Color.Transparent
             Me.m_lbPredators.AllGroupsItemText = "(All)"
-            resources.ApplyResources(Me.m_lbPredators, "m_lbPredators")
             Me.m_lbPredators.BackColor = System.Drawing.SystemColors.Window
+            resources.ApplyResources(Me.m_lbPredators, "m_lbPredators")
             Me.m_lbPredators.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbPredators.FormattingEnabled = True
             Me.m_lbPredators.IsAllGroupsItemSelected = False
@@ -121,13 +123,14 @@ Namespace Ecosim
             Me.m_lbPredators.ShowAllGroupsItem = False
             Me.m_lbPredators.SortThreshold = -9999.0!
             Me.m_lbPredators.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueDesc
+            Me.m_lbPredators.VisibleGroups = Nothing
             '
             'm_lbPrey
             '
             Me.m_lbPrey.AllGroupsItemColor = System.Drawing.Color.Transparent
             Me.m_lbPrey.AllGroupsItemText = "(All)"
-            resources.ApplyResources(Me.m_lbPrey, "m_lbPrey")
             Me.m_lbPrey.BackColor = System.Drawing.SystemColors.Window
+            resources.ApplyResources(Me.m_lbPrey, "m_lbPrey")
             Me.m_lbPrey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbPrey.FormattingEnabled = True
             Me.m_lbPrey.IsAllGroupsItemSelected = False
@@ -137,6 +140,7 @@ Namespace Ecosim
             Me.m_lbPrey.ShowAllGroupsItem = False
             Me.m_lbPrey.SortThreshold = -9999.0!
             Me.m_lbPrey.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueDesc
+            Me.m_lbPrey.VisibleGroups = Nothing
             '
             'm_scMain
             '
@@ -154,14 +158,50 @@ Namespace Ecosim
             'm_tlpMain
             '
             resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
+            Me.m_tlpMain.Controls.Add(Me.m_hdrPrey, 0, 5)
+            Me.m_tlpMain.Controls.Add(Me.m_hdrFleets, 0, 7)
+            Me.m_tlpMain.Controls.Add(Me.m_hdrPredators, 0, 3)
+            Me.m_tlpMain.Controls.Add(Me.m_hdrGroup, 0, 1)
             Me.m_tlpMain.Controls.Add(Me.m_tsMain, 0, 0)
-            Me.m_tlpMain.Controls.Add(Me.m_btnSaveData, 0, 5)
-            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 1)
-            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 4)
-            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 2)
-            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 3)
-            Me.m_tlpMain.Controls.Add(Me.m_cbSaveVisibleOnly, 0, 6)
+            Me.m_tlpMain.Controls.Add(Me.m_btnSaveData, 0, 9)
+            Me.m_tlpMain.Controls.Add(Me.m_plGroups, 0, 2)
+            Me.m_tlpMain.Controls.Add(Me.m_plFleets, 0, 8)
+            Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 4)
+            Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 6)
+            Me.m_tlpMain.Controls.Add(Me.m_cbSaveVisibleOnly, 0, 10)
             Me.m_tlpMain.Name = "m_tlpMain"
+            '
+            'm_hdrPrey
+            '
+            Me.m_hdrPrey.CanCollapseParent = False
+            Me.m_hdrPrey.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrPrey, "m_hdrPrey")
+            Me.m_hdrPrey.IsCollapsed = False
+            Me.m_hdrPrey.Name = "m_hdrPrey"
+            '
+            'm_hdrFleets
+            '
+            Me.m_hdrFleets.CanCollapseParent = False
+            Me.m_hdrFleets.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrFleets, "m_hdrFleets")
+            Me.m_hdrFleets.IsCollapsed = False
+            Me.m_hdrFleets.Name = "m_hdrFleets"
+            '
+            'm_hdrPredators
+            '
+            Me.m_hdrPredators.CanCollapseParent = False
+            Me.m_hdrPredators.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrPredators, "m_hdrPredators")
+            Me.m_hdrPredators.IsCollapsed = False
+            Me.m_hdrPredators.Name = "m_hdrPredators"
+            '
+            'm_hdrGroup
+            '
+            Me.m_hdrGroup.CanCollapseParent = False
+            Me.m_hdrGroup.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrGroup, "m_hdrGroup")
+            Me.m_hdrGroup.IsCollapsed = False
+            Me.m_hdrGroup.Name = "m_hdrGroup"
             '
             'm_tsMain
             '
@@ -180,23 +220,13 @@ Namespace Ecosim
             '
             'm_plGroups
             '
-            Me.m_plGroups.Controls.Add(Me.m_hdrGroup)
             Me.m_plGroups.Controls.Add(Me.m_lbGroups)
             resources.ApplyResources(Me.m_plGroups, "m_plGroups")
             Me.m_plGroups.Name = "m_plGroups"
             '
-            'm_hdrGroup
-            '
-            resources.ApplyResources(Me.m_hdrGroup, "m_hdrGroup")
-            Me.m_hdrGroup.CanCollapseParent = False
-            Me.m_hdrGroup.CollapsedParentHeight = 0
-            Me.m_hdrGroup.IsCollapsed = False
-            Me.m_hdrGroup.Name = "m_hdrGroup"
-            '
             'm_plFleets
             '
             Me.m_plFleets.Controls.Add(Me.m_lbFleets)
-            Me.m_plFleets.Controls.Add(Me.m_hdrFleets)
             resources.ApplyResources(Me.m_plFleets, "m_plFleets")
             Me.m_plFleets.Name = "m_plFleets"
             '
@@ -212,43 +242,17 @@ Namespace Ecosim
             Me.m_lbFleets.SortThreshold = -9999.0!
             Me.m_lbFleets.SortType = ScientificInterfaceShared.Controls.cFleetListBox.eSortType.ValueDesc
             '
-            'm_hdrFleets
-            '
-            resources.ApplyResources(Me.m_hdrFleets, "m_hdrFleets")
-            Me.m_hdrFleets.CanCollapseParent = False
-            Me.m_hdrFleets.CollapsedParentHeight = 0
-            Me.m_hdrFleets.IsCollapsed = False
-            Me.m_hdrFleets.Name = "m_hdrFleets"
-            '
             'm_plPredators
             '
-            Me.m_plPredators.Controls.Add(Me.m_hdrPredators)
             Me.m_plPredators.Controls.Add(Me.m_lbPredators)
             resources.ApplyResources(Me.m_plPredators, "m_plPredators")
             Me.m_plPredators.Name = "m_plPredators"
             '
-            'm_hdrPredators
-            '
-            resources.ApplyResources(Me.m_hdrPredators, "m_hdrPredators")
-            Me.m_hdrPredators.CanCollapseParent = False
-            Me.m_hdrPredators.CollapsedParentHeight = 0
-            Me.m_hdrPredators.IsCollapsed = False
-            Me.m_hdrPredators.Name = "m_hdrPredators"
-            '
             'm_plPrey
             '
-            Me.m_plPrey.Controls.Add(Me.m_hdrPrey)
             Me.m_plPrey.Controls.Add(Me.m_lbPrey)
             resources.ApplyResources(Me.m_plPrey, "m_plPrey")
             Me.m_plPrey.Name = "m_plPrey"
-            '
-            'm_hdrPrey
-            '
-            resources.ApplyResources(Me.m_hdrPrey, "m_hdrPrey")
-            Me.m_hdrPrey.CanCollapseParent = False
-            Me.m_hdrPrey.CollapsedParentHeight = 0
-            Me.m_hdrPrey.IsCollapsed = False
-            Me.m_hdrPrey.Name = "m_hdrPrey"
             '
             'm_cbSaveVisibleOnly
             '
@@ -260,6 +264,7 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.BlinkIcon = CType(resources.GetObject("$this.BlinkIcon"), System.Drawing.Icon)
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmEcosimOutputGroupPlots"
             Me.ShowIcon = False

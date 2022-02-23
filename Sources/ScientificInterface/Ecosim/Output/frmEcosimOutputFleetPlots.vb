@@ -275,7 +275,8 @@ Namespace Ecosim
         Protected Sub ConfigurePlots(Optional bFormOpen As Boolean = True)
 
             Dim iPane As Integer = 1
-            Dim iMaxPanes As Integer = [Enum].GetValues(GetType(ePlot)).Length - 1
+            Dim iMaxPanes As Integer = 0
+            Dim iNumPanes As Integer = 0
 
             ' Determine where panes will be placed
             For Each plot As ePlot In [Enum].GetValues(GetType(ePlot))
@@ -296,8 +297,13 @@ Namespace Ecosim
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph, iPane - 1)
 
             For Each data As ePlot In [Enum].GetValues(GetType(ePlot))
-                Me.ConfigurePane(data, Me.GetPlotTitle(data), Me.GetPlotYAxisLabel(data))
+                If Me.ConfigurePane(data, Me.GetPlotTitle(data), Me.GetPlotYAxisLabel(data)) Then
+                    iNumPanes += 1
+                End If
+                iMaxPanes += 1
             Next
+
+            Me.m_btnChoosePlots.Text = cStringUtils.Localize(My.Resources.CAPTION_SELECT_PLOTS, iNumPanes, iMaxPanes)
 
         End Sub
 
@@ -305,10 +311,11 @@ Namespace Ecosim
         ''' <summary>
         ''' Configure a plot on the main graph
         ''' </summary>
+        ''' <returns>True if the pane is visible, false otherwise</returns>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(plot As ePlot, strTitle As String, strYAxisLabel As String)
+        Private Function ConfigurePane(plot As ePlot, strTitle As String, strYAxisLabel As String) As Boolean
 
-            If Not Me.m_plotVisible(plot) Then Return
+            If Not Me.m_plotVisible(plot) Then Return False
             ' Sanity check
             Debug.Assert(Me.m_plotPanel(plot) > 0)
             ' Configure pane
@@ -318,8 +325,8 @@ Namespace Ecosim
                        Me.Core.EcosimFirstYear + (Me.Core.nEcosimTimeSteps / cCore.N_MONTHS),
                        strYAxisLabel, 0, 0,
                        False, LegendPos.TopCenter, Me.m_plotPanel(plot))
-
-        End Sub
+            Return True
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
