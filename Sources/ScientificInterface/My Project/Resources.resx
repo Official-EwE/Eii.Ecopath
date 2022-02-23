@@ -2222,4 +2222,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="String1" xml:space="preserve">
     <value />
   </data>
+  <data name="CAPTION_SELECT_PLOTS" xml:space="preserve">
+    <value>Select plots... ({0} of {1})</value>
+    <comment>{0}=number of selected plots, {1}=total available plots</comment>
+  </data>
 </root>
