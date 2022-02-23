@@ -712,6 +712,8 @@ Namespace Core
 
         MultiStanzaAge0Numbers
 
+        MultiStanzaAgeStructure
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''
