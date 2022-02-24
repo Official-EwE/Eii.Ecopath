@@ -70,6 +70,10 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
     Private Sub SaveAgeStructure()
         Try
 
+            If Not Me.EcospaceData.UseIBM Then
+                Return
+            End If
+
             Me.InitOutputTypes()
             Me.InitBaseFiles()
 
@@ -84,7 +88,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
 
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
     End Sub
@@ -129,10 +133,6 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
 
                     If Me.m_StanzaData.Npacket(isp, ii, ipkt) > 0 Then
-
-                        ''save values in both the 0 region (total map) and the region specific  
-                        'RegionValues(isp)(0)(ii) += Me.m_StanzaData.Npacket(isp, iage, ipkt)
-                        'RegionValues(isp)(iRgn)(ii) += Me.m_StanzaData.Npacket(isp, iage, ipkt)
 
                         RegionValues(isp)(0)(ii) += InputData.InputValues(isp, iage, ipkt)
                         RegionValues(isp)(iRgn)(ii) += InputData.InputValues(isp, iage, ipkt)
@@ -194,40 +194,43 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
             Me.m_bInitialized = False
             For isp As Integer = 1 To Me.m_StanzaData.Nsplit
 
+                For irgn As Integer = 0 To EcospaceData.nRegions
 
-                Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, InputData.DataTypeName))
-                WriteRunInfo(strm)
+                    Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, irgn, InputData.DataTypeName))
+                    WriteRunInfo(strm)
 
-                Dim sbAges As Text.StringBuilder = New Text.StringBuilder
+                    Dim sbAges As Text.StringBuilder = New Text.StringBuilder
 
-                For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                    Dim iEco As Integer = Me.m_StanzaData.EcopathCode(isp, Me.m_StanzaData.StanzaNo(isp, iage))
-                    sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
-                Next iage
-                Dim header As String = "Timestep, Region" + sbAges.ToString
+                    For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
+                        Dim iEco As Integer = Me.m_StanzaData.EcopathCode(isp, Me.m_StanzaData.StanzaNo(isp, iage))
+                        sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
+                    Next iage
+                    Dim header As String = "Timestep, Region" + sbAges.ToString
 
 
-                strm.WriteLine("Max Age," + CStr(Me.m_StanzaData.MaxAgeSpecies(isp)))
-                strm.WriteLine(header)
+                    strm.WriteLine("Max Age," + CStr(Me.m_StanzaData.MaxAgeSpecies(isp)))
+                    strm.WriteLine(header)
 
-                Dim SimAges As Text.StringBuilder = New Text.StringBuilder
-                SimAges.Append("0,Ecosim Base Values")
-                For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                    'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
-                    SimAges.Append("," + CStr(InputData.SimBaseLineData(isp, iage)))
-                Next iage
+                    Dim SimAges As Text.StringBuilder = New Text.StringBuilder
+                    SimAges.Append("0,Ecosim Base Values")
+                    For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
+                        'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
+                        SimAges.Append("," + CStr(InputData.SimBaseLineData(isp, iage)))
+                    Next iage
 
-                strm.WriteLine(SimAges)
+                    strm.WriteLine(SimAges)
 
-                strm.Close()
-
+                    strm.Close()
+                Next irgn
 
             Next isp
 
             Me.m_bInitialized = True
 
         Catch ex As Exception
-
+            Dim msg As cMessage = New cMessage("Error creating IBM Age Structure file " + ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning)
+            Me.m_core.Messages.AddMessage(msg)
+            cLog.Write(ex)
         End Try
 
 
@@ -240,11 +243,11 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
         For isp As Integer = 1 To Me.m_StanzaData.Nsplit
             Try
 
-                Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, InputDataType.DataTypeName), True)
                 Dim sbAges As Text.StringBuilder = New Text.StringBuilder
 
                 For irgn As Integer = 0 To Me.EcospaceData.nRegions
 
+                    Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, irgn, InputDataType.DataTypeName), True)
 
                     'Does this group row col contain data
                     If Values(isp)(irgn) IsNot Nothing Then
@@ -261,12 +264,14 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                         'may not need to do this as it will go out of scope
                         sb = Nothing
                     End If
+
+                    strm.Close()
                 Next irgn
 
-                strm.Close()
+
 
             Catch ex As Exception
-                Debug.Assert(False, ex.Message)
+                cLog.Write(ex)
             End Try
 
         Next isp
@@ -274,10 +279,15 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
     End Sub
 
 
-    Private Function getRegionFileName(isp As Integer, DataType As String) As String
+    Private Function getRegionFileName(isp As Integer, iRegion As Integer, DataType As String) As String
 
-        Dim fnTemplate As String = "{0}_{1}_Regions_AgeStructure.csv"
-        Return Path.Combine(MyBase.OutputDirectory, String.Format(fnTemplate, Me.m_StanzaData.StanzaName(isp), DataType))
+        Dim region As String = CStr(iRegion)
+        If iRegion = 0 Then
+            region = "All"
+        End If
+
+        Dim fnTemplate As String = "AgeStructure_{0}_Region_{1}_{2}.csv"
+        Return Path.Combine(MyBase.OutputDirectory, String.Format(fnTemplate, Me.m_StanzaData.StanzaName(isp), region, DataType))
 
     End Function
 
@@ -302,15 +312,11 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
-        'If Not m_bInitialized Then
-        '    Return
-        'End If
-
         Try
             m_iTime = DirectCast(SpaceTimeStepResults, cEcospaceTimestep).iTimeStep
             SaveAgeStructure()
         Catch ex As Exception
-
+            cLog.Write(ex)
         End Try
 
     End Sub
