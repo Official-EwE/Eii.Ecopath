@@ -110,7 +110,6 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
             n(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
 
             For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
-
                 For ii As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
 
                     'iage = ii
@@ -123,7 +122,6 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                     irow = CInt(Math.Truncate(Me.m_StanzaData.iPacket(isp, iage, ipkt)))
                     icol = CInt(Math.Truncate(Me.m_StanzaData.jPacket(isp, iage, ipkt)))
 
-
                     Dim iRgn As Integer = Me.EcospaceData.Region(irow, icol)
                     'Only allocate memory for age arrays if there is some packets in this region
                     If RegionValues(isp)(iRgn) Is Nothing Then
@@ -131,20 +129,22 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                         n(isp)(iRgn) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
                     End If
 
-
                     If Me.m_StanzaData.Npacket(isp, ii, ipkt) > 0 Then
 
-                        RegionValues(isp)(0)(ii) += InputData.InputValues(isp, iage, ipkt)
+                        'this will double count values and n where there are no regions defined
+                        'or the packet is in a zero region
+                        'that won't matter once the values have been averaged
                         RegionValues(isp)(iRgn)(ii) += InputData.InputValues(isp, iage, ipkt)
-
-                        'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
-                        n(isp)(0)(iage) += 1
                         n(isp)(iRgn)(iage) += 1
+
+                        'zero region will be the total area 
+                        RegionValues(isp)(0)(ii) += InputData.InputValues(isp, iage, ipkt)
+                        n(isp)(0)(iage) += 1
+
                     End If
                 Next ii
 
             Next ipkt
-
         Next isp
 
 
