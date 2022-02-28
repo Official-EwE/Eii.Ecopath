@@ -54,7 +54,7 @@ Namespace DataSources
 
         Function SaveEcopathSamples() As Boolean
 
-        Function AddSample(sample As cEcopathSample) As Boolean
+        Function AddSample(sample As cEcopathSample, ByRef iDBID As Integer) As Boolean
 
         Function RemoveSample(sample As cEcopathSample) As Boolean
 

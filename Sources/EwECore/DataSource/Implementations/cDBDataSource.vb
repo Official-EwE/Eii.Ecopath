@@ -11234,7 +11234,7 @@ Namespace DataSources
 
 #Region " Modify "
 
-        Public Function AddSample(sample As Samples.cEcopathSample) As Boolean _
+        Public Function AddSample(sample As Samples.cEcopathSample, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathSampleDataSource.AddSample
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
@@ -11243,27 +11243,33 @@ Namespace DataSources
             Dim iScenario As Integer = 0
             Dim bSucces As Boolean = True
 
-            sample.DBID = CInt(Me.m_db.GetValue("SELECT MAX(SampleID) FROM EcopathSample", 0)) + 1
-            writer = Me.m_db.GetWriter("EcopathSample")
+            iDBID = CInt(Me.m_db.GetValue("SELECT MAX(SampleID) FROM EcopathSample", 0)) + 1
+
+            Dim pk As String = Me.m_db.GetPkKeyName("EcopathSample")
+            Console.WriteLine("&&& About to add sample {0}; pk={1}", iDBID, pk)
             Try
+                writer = Me.m_db.GetWriter("EcopathSample")
+
                 drow = writer.NewRow()
-                drow("SampleID") = sample.DBID
+                drow("SampleID") = iDBID
                 drow("Hash") = sample.Hash
                 drow("Source") = sample.Source
                 drow("Rating") = sample.Rating
-                drow("SS") = cCore.NULL_VALUE
+                drow("SS") = sample.SS
                 drow("Generated") = cDateUtils.DateToJulian(sample.Generated)
+
                 writer.AddRow(drow)
+                Me.m_db.ReleaseWriter(writer, bSucces)
             Catch ex As Exception
                 bSucces = False
             End Try
-            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            Return bSucces
 
             writer = Me.m_db.GetWriter("EcopathGroupSample")
             Try
                 For iGroup As Integer = 1 To ecopathDS.NumGroups
                     drow = writer.NewRow()
-                    drow("SampleID") = sample.DBID
+                    drow("SampleID") = iDBID
                     drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                     drow("Biomass") = sample.B(iGroup)
                     drow("ProdBiom") = sample.PB(iGroup)
@@ -11289,7 +11295,7 @@ Namespace DataSources
                     For iPrey As Integer = 1 To ecopathDS.NumGroups
                         If (sample.DC(iPred, iPrey) > 0) Then
                             drow = writer.NewRow()
-                            drow("SampleID") = sample.DBID
+                            drow("SampleID") = iDBID
                             drow("PredID") = ecopathDS.GroupDBID(iPred)
                             drow("PreyID") = ecopathDS.GroupDBID(iPrey)
                             drow("Diet") = sample.DC(iPred, iPrey)
@@ -11308,7 +11314,7 @@ Namespace DataSources
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
                         If ((sample.Landing(iFleet, iGroup) + sample.Discard(iFleet, iGroup)) > 0) Then
                             drow = writer.NewRow()
-                            drow("SampleID") = sample.DBID
+                            drow("SampleID") = iDBID
                             drow("FleetID") = ecopathDS.FleetDBID(iFleet)
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                             drow("Landing") = sample.Landing(iFleet, iGroup)

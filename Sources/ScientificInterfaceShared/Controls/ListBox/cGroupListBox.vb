@@ -82,7 +82,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Enumerated type, indicates how groups are displayed according to
-        ''' <see cref="cStyleGuide.GroupVisible">group visibility</see> settings.
+        ''' <see cref="cStyleGuide.GroupVisible(Integer, String)">group visibility</see> settings.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Enum eGroupDisplayStyleTypes As Integer
