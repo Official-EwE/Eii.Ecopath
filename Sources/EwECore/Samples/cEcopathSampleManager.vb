@@ -325,6 +325,7 @@ Namespace Samples
         Public Function Record(strBaseHash As String, mc As cEcosimMonteCarlo) As cEcopathSample
 
             Dim s As cEcopathSample = Me.MakeSnapshot(True, mc)
+            Dim bSuccess As Boolean = False
 
             If (s IsNot Nothing) Then
 
@@ -335,11 +336,18 @@ Namespace Samples
                 Dim test As IEwEDataSource = Me.m_core.DataSource
                 If (Not TypeOf test Is IEcopathSampleDataSource) Then Return Nothing
                 Dim ds As IEcopathSampleDataSource = DirectCast(test, IEcopathSampleDataSource)
-                s.AllowValidation = False
-                ds.AddSample(s)
-                s.AllowValidation = True
 
-                Me.m_core.Messages.SendMessage(New cMessage("Samples have been added", eMessageType.DataAddedOrRemoved, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
+                ds.BeginTransaction()
+                s.AllowValidation = False
+                bSuccess = ds.AddSample(s, s.DBID)
+                s.AllowValidation = True
+                ds.EndTransaction(bSuccess)
+
+                If (bSuccess) Then
+                    Me.m_core.Messages.SendMessage(New cMessage("Sample has been added", eMessageType.DataAddedOrRemoved, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
+                Else
+                    Me.m_core.Messages.SendMessage(New cMessage("Samples was not added", eMessageType.ErrorEncountered, eCoreComponentType.EcopathSample, eMessageImportance.Critical))
+                End If
             End If
 
             Return s
@@ -898,6 +906,7 @@ Namespace Samples
             Dim hash As New Dictionary(Of String, cEcopathSample)
             Dim s As cEcopathSample = Nothing
             Dim n As Integer = 0
+            Dim id As Integer = 0
             Dim bSuccess As Boolean = True
 
             ds.BeginTransaction()
@@ -911,10 +920,11 @@ Namespace Samples
                 s = data.Sample(i)
                 If Not hash.ContainsKey(s.Hash) Then
 
-                    If ds.AddSample(s) Then
+                    If ds.AddSample(s, id) Then
                         Me.m_data.m_samples.Add(s)
                         s.AllowValidation = False
                         s.Index = Me.m_data.nSamples
+                        s.DBID = id
                         s.AllowValidation = True
                         n += 1
                     Else

@@ -28,13 +28,13 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.24:</para>
+''' <para>Database update 6.60.0.26:</para>
 ''' <para>
-''' Fixed potential ecosampler storage problem
+''' Fixed potential ecosampler storage problem. Renamed from 6.60.0.24.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_60_00_24
+Friend Class cDBUpdate6_60_00_26
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -42,7 +42,7 @@ Friend Class cDBUpdate6_60_00_24
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.600024!
+            Return 6.600026!
         End Get
     End Property
 
@@ -51,18 +51,19 @@ Friend Class cDBUpdate6_60_00_24
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Fixed potential ecosampler saving problem"
+            Return "Fixed potential ecosampler saving problem - reprise"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' This update is pretty sad. In some cases we found Access database fields 
-    ''' with AllowZeroLength = False flags set. This flag cannot be toggled through
-    ''' SQL, and requires recreating the field. That happens below. Eeek.
+    ''' At some pont, the on-board EwE database templates received an erroneous
+    ''' index on a value column. This update removes the index if it exists.
     ''' </summary>
     ''' <param name="db"></param>
-    ''' <returns></returns>
+    ''' <returns>Always true</returns>
+    ''' <remarks>This update is re-issued because the index error returned in the
+    ''' on-board database templates, thus re-instating the error. Good lord.</remarks>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
