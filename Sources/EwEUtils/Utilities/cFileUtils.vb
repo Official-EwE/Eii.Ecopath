@@ -27,6 +27,7 @@ Imports System.IO
 Imports System.Linq
 Imports System.Security.AccessControl
 Imports System.Text
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -50,7 +51,7 @@ Namespace Utilities
         ''' preserved. If False, an path information is stripped off.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToValidFileName(strText As String, bProtectPath As Boolean) As String
+        Public Shared Function ToValidFileName(ByVal strText As String, ByVal bProtectPath As Boolean) As String
 
             Dim strPath As String = ""
             Dim strFile As String = ""
@@ -114,7 +115,7 @@ Namespace Utilities
         ''' <param name="strText">Text to convert into a file extension.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToValidFileExt(strText As String, strDefault As String) As String
+        Public Shared Function ToValidFileExt(ByVal strText As String, strDefault As String) As String
 
             If (String.IsNullOrWhiteSpace(strText)) Then strText = strDefault
             If (String.IsNullOrWhiteSpace(strText)) Then Return ""
@@ -133,9 +134,9 @@ Namespace Utilities
         ''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
         ''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindFile(strFile As String,
-                                        strPath As String,
-                                        Optional bRecursive As Boolean = False) As String
+        Public Shared Function FindFile(ByVal strFile As String,
+                                        ByVal strPath As String,
+                                        Optional ByVal bRecursive As Boolean = False) As String
 
             Dim strFullPath As String = Path.Combine(strPath, strFile)
             Dim fsec As FileSecurity = Nothing
@@ -194,50 +195,19 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Cleans up a file filter. If no pipe characters ('|') characters are
-        ''' found in the provided filter, the call is forwarded to <see cref="CleanupExtensions(String, Boolean, Char, Boolean)"/>.
+        ''' Cleans up a string of separated file extensions, eliminating duplicates
+        ''' and optionally sorting them.
         ''' </summary>
-        ''' <param name="strFilter">The <paramref name="cSeparator"/>-separated string of extensions to clean.</param>
+        ''' <param name="strExt">The <paramref name="cSeparator"/>-separated string of extensions to clean.</param>
         ''' <param name="bIgnoreCase">Flag, indicating whether upper/lower case should be ignored.</param>
         ''' <param name="cSeparator">The character that separates extentions.</param>
-        ''' <returns>A cleaned-up list of file extensions</returns>
+        ''' <returns>A merged </returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function CleanupFileFilter(strFilter As String,
-                                                 Optional bIgnoreCase As Boolean = True,
-                                                 Optional cSeparator As Char = ";"c,
-                                                 Optional bSort As Boolean = True) As String
+        Public Shared Function CleanupExtensions(ByVal strExt As String,
+                                                 Optional ByVal bIgnoreCase As Boolean = True,
+                                                 Optional ByVal cSeparator As Char = ";"c,
+                                                 Optional ByVal bSort As Boolean = True) As String
 
-            If (strFilter.Contains("|"c)) Then
-                Dim sb As New StringBuilder()
-                Dim bits() As String = strFilter.Split("|"c)
-                For i As Integer = 0 To bits.Length - 1 Step 2
-                    If (i > 0) Then sb.Append("|")
-                    sb.Append(bits(i))
-                    sb.Append("|")
-                    sb.Append(CleanupExtensions(bits(i + 1), bIgnoreCase, cSeparator, bSort))
-                Next
-                Return sb.ToString()
-            Else
-                Return CleanupExtensions(strFilter, bIgnoreCase, cSeparator, bSort)
-            End If
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Cleans up a semi-colon separated list of file extension, removing 
-        ''' duplicate file filters, and optionally sorting them.
-        ''' </summary>
-        ''' <param name="strFilter">The <paramref name="cSeparator"/>-separated 
-        ''' string of extensions to clean.</param>
-        ''' <param name="bIgnoreCase">Flag, indicating whether upper/lower case should be ignored.</param>
-        ''' <param name="cSeparator">The character that separates extentions.</param>
-        ''' <returns>A cleaned-up list of file extensions</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function CleanupExtensions(strExt As String,
-                                                  Optional bIgnoreCase As Boolean = True,
-                                                  Optional cSeparator As Char = ";"c,
-                                                  Optional bSort As Boolean = True) As String
             Dim sb As New StringBuilder()
             Dim lstrBits As New List(Of String)
             Dim lstrFinal As New List(Of String)
@@ -268,6 +238,7 @@ Namespace Utilities
             Return sb.ToString
 
         End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Create a backup copy of a file.
@@ -284,9 +255,9 @@ Namespace Utilities
         ''' created that looks like '[original name].[original ext].[short date]'.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function CreateBackup(strSrc As String,
+        Public Shared Function CreateBackup(ByVal strSrc As String,
                                             ByRef strDest As String,
-                                            Optional attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
+                                            Optional ByVal attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
 
             If String.IsNullOrWhiteSpace(strDest) Then
                 strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
@@ -324,7 +295,8 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Create a random file in the %TEMP% folder, and return the path to the file.
+        ''' Create a random file in the application cache folder, and return the 
+        ''' path to the file.
         ''' <seealso cref="PurgeTempFile"/>
         ''' <seealso cref="PurgeTempFiles"/>
         ''' </summary>
@@ -336,12 +308,11 @@ Namespace Utilities
         ''' when your application shuts down.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function MakeTempFile(Optional strExt As String = "") As String
+        Public Shared Function MakeTempFile(Optional ByVal strExt As String = "") As String
 
             ' TODO: Check if file is writeable!!!
-
             Dim strFileName As String = Path.GetRandomFileName() & strExt
-            Dim strPath As String = Path.Combine(System.IO.Path.GetTempPath(), "EwE")
+            Dim strPath As String = Path.Combine(cSystemUtils.ApplicationSettingsPath, "Cache\Temp")
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
                 strPath = System.IO.Path.GetTempPath()
             End If
@@ -375,7 +346,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="strTempFile"></param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub PurgeTempFile(strTempFile As String)
+        Public Shared Sub PurgeTempFile(ByVal strTempFile As String)
             Try
                 If File.Exists(strTempFile) Then File.Delete(strTempFile)
                 cFileUtils.g_tempfiles.Remove(strTempFile)
@@ -428,8 +399,8 @@ Namespace Utilities
         ''' should be created if it does not exist yet.</param>
         ''' <returns>True if the directory is available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsDirectoryAvailable(strDirectory As String,
-                                                    Optional bCreate As Boolean = False) As Boolean
+        Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String,
+                                                    Optional ByVal bCreate As Boolean = False) As Boolean
 
             ' Test if already exists as a file
             If File.Exists(strDirectory) Then Return False
@@ -455,7 +426,7 @@ Namespace Utilities
         ''' <param name="strDirectory">The directory to check.</param>
         ''' <returns>True if the indicated directory does not have any files in it/</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsDirectoryEmpty(strDirectory As String) As Boolean
+        Public Shared Function IsDirectoryEmpty(ByVal strDirectory As String) As Boolean
             Return Not Directory.EnumerateFileSystemEntries(strDirectory).Any()
         End Function
 
@@ -467,7 +438,7 @@ Namespace Utilities
         ''' <param name="strAbs">The absolute path to translate.</param>
         ''' <returns>A path relative to <paramref name="strRoot"/></returns>
         ''' -----------------------------------------------------------------------
-        Shared Function RelativePath(strRoot As String, strAbs As String) As String
+        Shared Function RelativePath(ByVal strRoot As String, ByVal strAbs As String) As String
 
             Dim astrRoot As String() = NormalizePath(strRoot).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
             Dim astrAbs As String() = NormalizePath(strAbs).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar)
@@ -605,7 +576,7 @@ Namespace Utilities
         ''' After http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function NormalizePath(strPath As String) As String
+        Public Shared Function NormalizePath(ByVal strPath As String) As String
 
             ' Sanity checks
             If (String.IsNullOrWhiteSpace(strPath)) Then Return String.Empty
@@ -631,8 +602,8 @@ Namespace Utilities
         ''' http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Shadows Function Equals(strPath1 As String,
-                                              strPath2 As String,
+        Public Shared Shadows Function Equals(ByVal strPath1 As String,
+                                              ByVal strPath2 As String,
                                               Optional bIgnoreCase As Boolean = True) As Boolean
             Return String.Compare(NormalizePath(strPath1), NormalizePath(strPath2), bIgnoreCase) = 0
         End Function
@@ -663,6 +634,21 @@ Namespace Utilities
             Return Nothing
 
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Appends some text to a file name.
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function AddToName(filename As String, addition As String, Optional newext As String = "") As String
+
+            If String.IsNullOrWhiteSpace(newext) Then newext = Path.GetExtension(filename)
+            Dim fld As String = Path.GetDirectoryName(filename)
+            Dim name As String = Path.ChangeExtension(cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(filename) & addition, False), newext)
+            Return Path.Combine(fld, name)
+
+        End Function
+
     End Class
 
 End Namespace
