@@ -41,7 +41,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
     Private Class cInputDataTypes
         Public ReadOnly Property DataTypeName As String
-        Public ReadOnly Property Scalar As Single
+        Public ReadOnly Property NumberAtAgeScalar As Single
 
         'StanzaData.Npacket(isp, iage, ipkt)
         'or
@@ -53,7 +53,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
         Sub New(Inputs(,,) As Single, EcosimBaseLineData(,) As Single, TypeName As String, ValueScalar As Single)
             InputValues = Inputs
             DataTypeName = TypeName
-            Scalar = ValueScalar
+            NumberAtAgeScalar = ValueScalar
             SimBaseLineData = EcosimBaseLineData
         End Sub
 
@@ -109,15 +109,14 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
             n(isp) = New Single(Me.EcospaceData.nRegions)() {}
             n(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
 
-            For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
-                For ii As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
+            For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp) ' - 1
 
-                    'iage = ii
-                    iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - Me.m_StanzaData.AgeIndex1(isp)
-                    If ii >= Me.m_StanzaData.AgeIndex1(isp) Then
-                        iage = ii - Me.m_StanzaData.AgeIndex1(isp)
-                    End If
+                iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - Me.m_StanzaData.AgeIndex1(isp)
+                If ii >= Me.m_StanzaData.AgeIndex1(isp) Then
+                    iage = ii - Me.m_StanzaData.AgeIndex1(isp)
+                End If
 
+                For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
                     Dim irow As Integer, icol As Integer
                     irow = CInt(Math.Truncate(Me.m_StanzaData.iPacket(isp, iage, ipkt)))
                     icol = CInt(Math.Truncate(Me.m_StanzaData.jPacket(isp, iage, ipkt)))
@@ -142,12 +141,9 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                         n(isp)(0)(iage) += 1
 
                     End If
-                Next ii
-
-            Next ipkt
+                Next ipkt
+            Next ii
         Next isp
-
-
 
         For isp As Integer = 1 To Me.m_StanzaData.Nsplit
 
@@ -160,7 +156,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                         'Me.StanzaData.Npacket(isp, ia, ip) = Me.StanzaData.NageS(isp, ia) / Me.StanzaData.Npackets * Me.EcoSpaceData.ThabArea
                         'Me.StanzaData.Wpacket(isp, ia, ip) = Me.StanzaData.WageS(isp, ia) + 0.0000000001
                         If n(isp)(irgn)(ii) > 0 Then
-                            RegionValues(isp)(irgn)(ii) = RegionValues(isp)(irgn)(ii) / n(isp)(irgn)(ii) * InputData.Scalar 'Me.m_StanzaData.Npackets / Me.EcospaceData.ThabArea
+                            RegionValues(isp)(irgn)(ii) = RegionValues(isp)(irgn)(ii) / n(isp)(irgn)(ii) * InputData.NumberAtAgeScalar
                         End If
 
                     Next ii
