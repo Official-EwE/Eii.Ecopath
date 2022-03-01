@@ -97,15 +97,12 @@ Namespace SpatialData
                 Me.m_core.m_Stanza.IBMForcedCells(iSt)(iRow, iCol) = CSng(sValueAtT)
 
             Catch ex As Exception
-
                 Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"
                 cLog.Write(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sValueAtT))
 
                 Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sValueAtT, ex.Message),
                                                            eStatusFlags.MissingParameter)
                 Return False
-
-
             End Try
 
             Return True
