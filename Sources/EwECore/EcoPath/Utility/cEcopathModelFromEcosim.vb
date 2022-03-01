@@ -113,6 +113,7 @@ Public Class cEcopathModelFromEcosim
         SetToZero
     End Enum
 
+
     Public Function InitRun(strOutputPath As String) As Boolean
 
         Me.m_msgStatus = New cMessage(My.Resources.CoreMessages.MODELFROMSIM_GENERATED, eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)

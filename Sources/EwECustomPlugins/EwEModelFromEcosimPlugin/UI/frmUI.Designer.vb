@@ -45,7 +45,6 @@ Partial Class frmUI
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUI))
         Me.m_cbEnable = New System.Windows.Forms.CheckBox()
-        Me.m_grid = New EwEModelFromEcosimPlugin.gridUI()
         Me.m_lblPath = New System.Windows.Forms.Label()
         Me.m_tbxOutputPath = New System.Windows.Forms.TextBox()
         Me.m_btnChoose = New System.Windows.Forms.Button()
@@ -57,6 +56,8 @@ Partial Class frmUI
         Me.m_lblDWP = New System.Windows.Forms.Label()
         Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tabOutput = New System.Windows.Forms.TabPage()
+        Me.m_rdbtMonthlySnap = New System.Windows.Forms.RadioButton()
+        Me.m_rdbtAnnualAvg = New System.Windows.Forms.RadioButton()
         Me.m_cmbFormat = New System.Windows.Forms.ComboBox()
         Me.m_lblFormat = New System.Windows.Forms.Label()
         Me.m_tabBA = New System.Windows.Forms.TabPage()
@@ -64,6 +65,7 @@ Partial Class frmUI
         Me.m_tslQuickSelect = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsbnAll = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnNone = New System.Windows.Forms.ToolStripButton()
+        Me.m_grid = New EwEModelFromEcosimPlugin.gridUI()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcMain.SuspendLayout()
         Me.m_tabOutput.SuspendLayout()
@@ -76,37 +78,6 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_cbEnable, "m_cbEnable")
         Me.m_cbEnable.Name = "m_cbEnable"
         Me.m_cbEnable.UseVisualStyleBackColor = True
-        '
-        'm_grid
-        '
-        Me.m_grid.AllowBlockSelect = False
-        resources.ApplyResources(Me.m_grid, "m_grid")
-        Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = True
-        Me.m_grid.AutoStretchRowsToFitHeight = False
-        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
-        Me.m_grid.CustomSort = False
-        Me.m_grid.Data = Nothing
-        Me.m_grid.DataName = "EcopathModelsFromEcosim"
-        Me.m_grid.FixedColumnWidths = False
-        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_grid.GridToolTipActive = False
-        Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.IsOutputGrid = True
-        Me.m_grid.Name = "m_grid"
-        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TrackPropertySelection = False
-        Me.m_grid.UIContext = Nothing
         '
         'm_lblPath
         '
@@ -170,6 +141,8 @@ Partial Class frmUI
         '
         'm_tabOutput
         '
+        Me.m_tabOutput.Controls.Add(Me.m_rdbtMonthlySnap)
+        Me.m_tabOutput.Controls.Add(Me.m_rdbtAnnualAvg)
         Me.m_tabOutput.Controls.Add(Me.m_cmbFormat)
         Me.m_tabOutput.Controls.Add(Me.m_cbEnable)
         Me.m_tabOutput.Controls.Add(Me.m_lblFormat)
@@ -179,6 +152,22 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_tabOutput, "m_tabOutput")
         Me.m_tabOutput.Name = "m_tabOutput"
         Me.m_tabOutput.UseVisualStyleBackColor = True
+        '
+        'm_rdbtMonthlySnap
+        '
+        resources.ApplyResources(Me.m_rdbtMonthlySnap, "m_rdbtMonthlySnap")
+        Me.m_rdbtMonthlySnap.Name = "m_rdbtMonthlySnap"
+        Me.m_rdbtMonthlySnap.Tag = "1"
+        Me.m_rdbtMonthlySnap.UseVisualStyleBackColor = True
+        '
+        'm_rdbtAnnualAvg
+        '
+        resources.ApplyResources(Me.m_rdbtAnnualAvg, "m_rdbtAnnualAvg")
+        Me.m_rdbtAnnualAvg.Checked = True
+        Me.m_rdbtAnnualAvg.Name = "m_rdbtAnnualAvg"
+        Me.m_rdbtAnnualAvg.TabStop = True
+        Me.m_rdbtAnnualAvg.Tag = "0"
+        Me.m_rdbtAnnualAvg.UseVisualStyleBackColor = True
         '
         'm_cmbFormat
         '
@@ -208,6 +197,7 @@ Partial Class frmUI
         '
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.ImageScalingSize = New System.Drawing.Size(28, 28)
         Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslQuickSelect, Me.m_tsbnAll, Me.m_tsbnNone})
         Me.m_ts.Name = "m_ts"
         Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -229,6 +219,37 @@ Partial Class frmUI
         Me.m_tsbnNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnNone, "m_tsbnNone")
         Me.m_tsbnNone.Name = "m_tsbnNone"
+        '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+        Me.m_grid.CustomSort = False
+        Me.m_grid.Data = Nothing
+        Me.m_grid.DataName = "EcopathModelsFromEcosim"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.GridToolTipActive = False
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = True
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.TrackPropertySelection = False
+        Me.m_grid.UIContext = Nothing
         '
         'frmUI
         '
@@ -271,4 +292,6 @@ Partial Class frmUI
     Private WithEvents m_tsbnAll As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnNone As System.Windows.Forms.ToolStripButton
     Friend WithEvents m_tslQuickSelect As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents m_rdbtMonthlySnap As Windows.Forms.RadioButton
+    Friend WithEvents m_rdbtAnnualAvg As Windows.Forms.RadioButton
 End Class
