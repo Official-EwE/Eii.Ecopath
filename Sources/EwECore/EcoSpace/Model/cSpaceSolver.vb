@@ -498,6 +498,7 @@ Public Class cSpaceSolver
                     If Me.m_Data.PredictEffort Then
                         'F set by cEcospace.PredictEffortDistributionThreaded()
                         Me.FishTime(iGrp) = Me.m_Data.Ftot(iGrp, i, j)
+                        'Debug.Assert(Single.IsNaN(Me.FishTime(iGrp)) = False)
                         '****Following lines set fishrategear for Simdetritus
                         For Me.ig = 1 To Me.m_Data.nFleets
                             Me.FishRateGear(Me.ig, 0) = Me.m_Data.EffortSpace(Me.ig, i, j)
@@ -974,6 +975,7 @@ Public Class cSpaceSolver
 
                     Me.pbb(i) = 2 * EatEff(i) * Me.NutFree / (Me.NutFree + Me.m_SimData.NutFreeBase(i)) * Pmult * Me.m_SimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
                     Me.loss(i) = Me.Eatenof(i) + (Me.m_SimData.mo(i) * moMult * (1 - Me.m_SimData.MoPred(i) + Me.m_SimData.MoPred(i) * Me.Ftime(i)) + Me.m_PathData.Emig(i) + Me.FishTime(i)) * Biomass(i)
+                    'Debug.Assert(Single.IsNaN(Me.loss(i)) = False)
 
                     Me.SaveMOLoss(i, Biomass(i), moMult, iRow, iCol)
 

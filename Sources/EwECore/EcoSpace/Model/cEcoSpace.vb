@@ -821,7 +821,7 @@ Public Class cEcoSpace
                 'setTimeStepCounters() also deals with the SpinUp period
                 Me.setTimeStepCounters(Me.itt, Me.its)
 
-                Me.EcoSimData.setRelQToT(Me.its, False)
+                Me.EcoSimData.SetRelQToT(Me.its, False)
 
                 If Me.itt > Me.nEcospaceTimeSteps Then
                     'We have exceeded the number of time step bump out of the time loop.
@@ -971,7 +971,7 @@ Public Class cEcoSpace
                 For ip = 1 To Me.EcoSpaceData.nvartot
                     For i = 1 To Me.EcoSpaceData.InRow
                         For j = 1 To Me.EcoSpaceData.InCol
-                            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
+                            'Debug.Assert(Not Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)))
                             If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
                                 Me.EcoSpaceData.Bcell(i, j, ip) = 1.0E-30
                             End If
@@ -988,6 +988,7 @@ Public Class cEcoSpace
                     Me.UpdateMultiStanza()
 
                 ElseIf Me.EcoSpaceData.UseIBM Then
+                    'SaveAgeStructure()
                     'IBM model
                     Me.runIBMSolverThreads()
 
@@ -1683,6 +1684,8 @@ Public Class cEcoSpace
                 Next isp
             Next solver
 
+            'SaveAgeStructure()
+
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
@@ -1691,6 +1694,201 @@ Public Class cEcoSpace
 
 
     End Sub
+
+    Private Sub SaveAgeStructure()
+        Try
+            Dim Values()(,)() As Single
+
+            Values = ComputeAgeStructureByCell()
+            SaveAgeStructureToFile(Values)
+
+            Values = Nothing
+
+        Catch ex As Exception
+
+        End Try
+
+
+    End Sub
+
+
+
+    Private Function ComputeAgeStructureByCell() As Single()(,)()
+
+        Dim Values(Me.StanzaData.Nsplit)(,)() As Single
+        Dim n(Me.StanzaData.Nsplit)(,)() As Single 'n(ngroups)(row,col)(age)
+        Dim iage As Integer
+
+        For isp As Integer = 1 To Me.StanzaData.Nsplit
+            If Values(isp) Is Nothing Then
+                Values(isp) = New Single(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)() {}
+                n(isp) = New Single(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)() {}
+            End If
+
+            For ipkt As Integer = 1 To Me.StanzaData.Npackets
+
+                'This needs to use ageIndex1 as the location of the first age one index
+                'For iage As Integer = Me.StanzaData.Age1(isp, ist) To Me.StanzaData.Age2(isp, ist)
+                For ii As Integer = 0 To Me.StanzaData.MaxAgeSpecies(isp)
+
+                    iage = Me.StanzaData.AgeIndex1(isp) + ii : If iage > Me.StanzaData.MaxAgeSpecies(isp) Then iage = iage - Me.StanzaData.MaxAgeSpecies(isp) - 1
+
+                    Dim irow As Integer, icol As Integer
+                    irow = Math.Truncate(Me.StanzaData.iPacket(isp, iage, ipkt))
+                    icol = Math.Truncate(Me.StanzaData.jPacket(isp, iage, ipkt))
+
+                    If Values(isp)(irow, icol) Is Nothing Then
+                        Values(isp)(irow, icol) = New Single(Me.StanzaData.MaxAgeSpecies(isp)) {}
+                        n(isp)(irow, icol) = New Single(Me.StanzaData.MaxAgeSpecies(isp)) {}
+                    End If
+
+                    If Me.StanzaData.Npacket(isp, iage, ipkt) > 0 Then
+                        Values(isp)(irow, icol)(ii) += Me.StanzaData.Npacket(isp, iage, ipkt)
+                        n(isp)(irow, icol)(ii) += 1
+                    End If
+                Next ii
+
+            Next ipkt
+
+        Next isp
+
+
+        For isp As Integer = 1 To Me.StanzaData.Nsplit
+
+            For ir As Integer = 1 To Me.EcoSpaceData.InRow
+                For ic As Integer = 1 To Me.EcoSpaceData.InCol
+                    If Values(isp)(ir, ic) IsNot Nothing Then
+                        For ii As Integer = 0 To Me.StanzaData.MaxAgeSpecies(isp)
+
+                            'iage = Me.StanzaData.AgeIndex1(isp) + ii : If iage > Me.StanzaData.MaxAgeSpecies(isp) Then iage = iage - Me.StanzaData.MaxAgeSpecies(isp) - 1
+
+                            If n(isp)(ir, ic)(iage) > 0 Then
+                                Values(isp)(ir, ic)(ii) = Values(isp)(ir, ic)(ii) / n(isp)(ir, ic)(ii) * Me.StanzaData.Npackets / EcoSpaceData.ThabArea
+                            End If
+
+                        Next ii
+                    End If 'Weight(ieco)(ir, ic) IsNot Nothing
+
+                Next ic
+            Next ir
+        Next isp
+
+        Return Values
+
+    End Function
+
+    Private Sub SaveAgeStructureToFile(Values()(,)() As Single)
+
+        Dim fnTemplate As String = "Z:\Projects\EwE\Databases\Dave Chagaris\Output Age Structure\{0}_AgeStructure_{1}.csv"
+        'Dim iage As Integer
+        For isp As Integer = 1 To Me.StanzaData.Nsplit
+
+            Dim filename As String = String.Format(fnTemplate, Me.StanzaData.StanzaName(isp), CStr(Me.itt))
+            Dim strm As IO.StreamWriter = New IO.StreamWriter(filename)
+
+            Dim sbAges As Text.StringBuilder = New Text.StringBuilder
+
+            For iage As Integer = 0 To Me.StanzaData.MaxAgeSpecies(isp)
+                Dim iEco As Integer = Me.StanzaData.EcopathCode(isp, Me.StanzaData.StanzaNo(isp, iage))
+                sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcoPathData.GroupName(iEco)) + "_" + CStr(iage))
+            Next iage
+            Dim header As String = "Stanza_Index, Multi_Name, Column, Row" + sbAges.ToString
+
+
+            strm.WriteLine("Max Age," + CStr(Me.StanzaData.MaxAgeSpecies(isp)))
+            strm.WriteLine(header)
+
+            For irow As Integer = 1 To Me.EcoSpaceData.InRow
+                For icol As Integer = 1 To Me.EcoSpaceData.InCol
+
+                    'Does this group row col contain data
+                    If Values(isp)(irow, icol) IsNot Nothing Then
+                        'Yes it contains data write it out to file
+                        Dim sb As Text.StringBuilder = New Text.StringBuilder
+
+                        sb.Append(CStr(isp) + "," + Me.StanzaData.StanzaName(isp) + "," + CStr(icol) + "," + CStr(irow))
+                        For ii As Integer = 0 To Me.StanzaData.MaxAgeSpecies(isp)
+                            'iage = Me.StanzaData.AgeIndex1(isp) + ii : If iage > Me.StanzaData.MaxAgeSpecies(isp) Then iage = iage - Me.StanzaData.MaxAgeSpecies(isp) - 1
+                            sb.Append("," + CStr(Values(isp)(irow, icol)(ii)))
+                        Next ii
+
+                        strm.WriteLine(sb.ToString)
+                    End If
+                Next icol
+            Next irow
+
+            strm.Close()
+        Next isp
+
+    End Sub
+
+
+    'Private Function ComputeAgeStructureByCell_ByGroup() As Single()(,)()
+    '    Dim weight(Me.EcoSpaceData.NGroups)(,)() As Single
+    '    Dim n(Me.EcoSpaceData.NGroups)(,)() As Single 'n(ngroups)(row,col)(age)
+
+    '    For isp As Integer = 1 To Me.StanzaData.Nsplit
+    '        For ist As Integer = 1 To Me.StanzaData.Nstanza(isp)
+    '            Dim ieco As Integer = Me.StanzaData.EcopathCode(isp, ist)
+
+    '            If weight(ieco) Is Nothing Then
+    '                weight(ieco) = New Single(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)() {}
+    '                n(ieco) = New Single(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)() {}
+    '            End If
+
+    '            For ipkt As Integer = 1 To Me.StanzaData.Npackets
+
+    '                Dim irow As Integer, icol As Integer
+    '                irow = Me.StanzaData.iPacket(isp, ist, ipkt)
+    '                icol = Me.StanzaData.jPacket(isp, ist, ipkt)
+
+    '                If weight(ieco)(irow, icol) Is Nothing Then
+    '                    weight(ieco)(irow, icol) = New Single(Me.StanzaData.MaxAgeSpecies(isp)) {}
+    '                    n(ieco)(irow, icol) = New Single(Me.StanzaData.MaxAgeSpecies(isp)) {}
+    '                End If
+
+    '                'This needs to use ageIndex1 as the location of the first age one index
+    '                'For iage As Integer = Me.StanzaData.Age1(isp, ist) To Me.StanzaData.Age2(isp, ist)
+    '                For iage As Integer = 0 To Me.StanzaData.MaxAgeSpecies(isp)
+    '                    If Me.StanzaData.Npacket(isp, iage, ipkt) > 0 Then
+    '                        weight(ieco)(irow, icol)(iage) += Me.StanzaData.Wpacket(isp, iage, ipkt)
+    '                        n(ieco)(irow, icol)(iage) += 1
+    '                    End If
+    '                Next iage
+
+    '            Next ipkt
+
+    '        Next ist
+    '    Next isp
+
+
+    '    For isp As Integer = 1 To Me.StanzaData.Nsplit
+    '        For ist As Integer = 1 To Me.StanzaData.Nstanza(isp)
+    '            Dim ieco As Integer = Me.StanzaData.EcopathCode(isp, ist)
+
+    '            For ir As Integer = 1 To Me.EcoSpaceData.InRow
+    '                For ic As Integer = 1 To Me.EcoSpaceData.InCol
+    '                    If weight(ieco)(ir, ic) IsNot Nothing Then
+    '                        For iage As Integer = 0 To Me.StanzaData.MaxAgeSpecies(isp)
+
+    '                            If n(ieco)(ir, ic)(iage) > 0 Then
+    '                                weight(ieco)(ir, ic)(iage) = weight(ieco)(ir, ic)(iage) / n(ieco)(ir, ic)(iage)
+    '                            End If
+
+    '                        Next iage
+    '                    End If 'Weight(ieco)(ir, ic) IsNot Nothing
+
+    '                Next ic
+    '            Next ir
+    '        Next ist
+    '    Next isp
+
+    '    Return weight
+
+    'End Function
+
+
+
 
     Private Sub runGridSolverThreads()
         Dim solver As cGridSolver
@@ -2297,7 +2495,7 @@ Public Class cEcoSpace
 
 
 
-            Me.EcoSimData.setRelQToT(1, False)
+            Me.EcoSimData.SetRelQToT(1, False)
 
             '*******************
             'readAdvectFile()
@@ -2399,9 +2597,14 @@ Public Class cEcoSpace
                 'CJW modified Mrate calculation next line 2/2003 for migratory species
                 If Me.EcoSpaceData.IsMigratory(ip) = False Then
                     Me.EcoSpaceData.Mrate(ip) = Me.EcoSpaceData.Mvel(ip) / (3.14159 * Me.EcoSpaceData.CellLength)
+                    Me.EcoSpaceData.IBMMigMovRatio(ip) = 1.0
                 Else
 
                     Me.EcoSpaceData.Mrate(ip) = Me.EcoSpaceData.Mvel(ip) / Math.Sqrt(Me.EcoSpaceData.CellLength)
+                    'IBM Movement ratio outside preferred migration area
+                    'used to scale number of moves in cIBMSolver.MovePackets()
+                    Me.EcoSpaceData.IBMMigMovRatio(ip) = (3.14159 * Me.EcoSpaceData.CellLength) / Math.Sqrt(Me.EcoSpaceData.CellLength)
+
                     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     'HACK for debugging migration movement. Set movement to base rates
                     'Debug.Assert(False, "MRate() for migrating groups not set correctly.")
@@ -3113,13 +3316,6 @@ Public Class cEcoSpace
             Me.PbSpace(i) = Me.EcoSimData.pbbiomass(i)
         Next
 
-        'For ii = 1 To m_ESData.inlinks
-        '    i = m_ESData.ilink(ii)
-        '    j = m_ESData.jlink(ii)
-        '    m_Data.Aspace(ii) = m_Ecosim.A(i, j)
-        '    m_Data.Vspace(ii) = m_ESData.vulrate(i, j)
-        'Next
-
         For ii = 1 To Me.EcoSimData.inlinks
             i = Me.EcoSimData.ilink(ii) : j = Me.EcoSimData.jlink(ii) ' : ia = ArenaLink(ii)
             Me.EcoSpaceData.Aspace(ii) = Me.EcoSimData.Alink(ii)
@@ -3151,8 +3347,9 @@ Public Class cEcoSpace
             For ist = 1 To Me.StanzaData.Nstanza(isp)
                 ieco = Me.StanzaData.EcopathCode(isp, ist)
                 i = i + 1
-                Me.Tstanza(i) = (Me.StanzaData.Age2(isp, ist) - Me.StanzaData.Age1(isp, ist)) / 12.0#
+                Me.Tstanza(i) = (Me.StanzaData.Age2(isp, ist) - Me.StanzaData.Age1(isp, ist) + 1) / 12.0#
                 Sn = St * Math.Exp(-Me.Tstanza(i) * Me.FlowoutRate(ieco))
+                Debug.Assert(Me.Tstanza(i) > 0.0)
 
                 If ist < Me.StanzaData.Nstanza(isp) Then
                     Me.RecSplit(i) = St - Sn
@@ -3173,8 +3370,6 @@ Public Class cEcoSpace
                 Next ic
             Next ir
         Next igrp
-
-
 
     End Sub
 
@@ -4332,7 +4527,7 @@ exitline:
                                 '3-Feb-2014 Villy changed this to use Me.m_Data.EffZones(i, j) which is the index of the zone not the effort in the zone???
                                 'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * Me.m_Data.EffZones(i, j) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
                                 Me.EcoSpaceData.EffortSpace(iFlt, i, j) = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.EcoSpaceData.EffZones(i, j))
-                                '  Debug.Assert(Not Single.IsNaN(m_Data.EffortSpace(iFlt, i, j)))
+                                'Debug.Assert(Not Single.IsNaN(EcoSpaceData.EffortSpace(iFlt, i, j)))
                                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                 'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
                                 'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
@@ -4925,6 +5120,9 @@ exitline:
                             'Fishing Mort Rate in a cell by group
                             Dim f As Single = Me.EcoSimData.relQ(iflt, igrp) * (Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.Propdiscardtime(iflt, igrp))
                             Me.EcoSpaceData.Ftot(igrp, irow, jcol) += Me.EcoSpaceData.EffortSpace(iflt, irow, jcol) * f / Me.EcoSpaceData.PAreaFished(iflt)(irow, jcol)
+
+                            'Debug.Assert(Single.IsNaN(Me.EcoSpaceData.Ftot(igrp, irow, jcol)) = False)
+
                         Next igrp
                     End If ' m_Data.Depth(i, j) > 0
 
@@ -5608,9 +5806,9 @@ exitline:
                     'End If
                     Return Me.EcoSpaceData.InMigAreaMovement(ip)
                 ElseIf grad > 1 Then
-                        Return 1 + Me.EcoSpaceData.InMigAreaMovement(ip)
-                    Else
-                        Return 1 - Me.EcoSpaceData.InMigAreaMovement(ip)
+                    Return 1 + Me.EcoSpaceData.InMigAreaMovement(ip)
+                Else
+                    Return 1 - Me.EcoSpaceData.InMigAreaMovement(ip)
                 End If
 
             End If
@@ -7049,14 +7247,11 @@ exitline:
                     Me.Tbiom = Me.EcoSpaceData.ThabArea * Me.Blocal(ieco)  'B has been updated in spacesplitupdate at this point
                     Me.Tpred = Me.EcoSpaceData.ThabArea * Me.EcoSimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
 
-                    'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                    'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
                     For i = 1 To Me.EcoSpaceData.InRow
                         For j = 1 To Me.EcoSpaceData.InCol
                             If Me.EcoSpaceData.Depth(i, j) > 0 Then
                                 Me.Wcell = Me.EcoSpaceData.IFDweight(i, j, ieco) / Me.TotIFDweight(ieco)
                                 Me.EcoSpaceData.Bcell(i, j, ieco) = Me.Tbiom * Me.Wcell
-                                ' Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ieco)))
                                 tbio(ieco) = tbio(ieco) + Me.EcoSpaceData.Bcell(i, j, ieco)
                                 Me.EcoSpaceData.PredCell(i, j, ieco) = Me.Tpred * Me.Wcell
                             End If
@@ -7138,7 +7333,9 @@ exitline:
                 If Me.StanzaData.BaseEggsStanza(isp) > 0 Then
                     Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) = Me.StanzaData.RscaleSplit(isp) * Me.EcoSimData.tval(Me.StanzaData.EggProdShapeSplit(isp)) * Me.StanzaData.RzeroS(isp) * Me.EcoSimData.tval(Me.StanzaData.HatchCode(isp))
                 End If
-                If Me.StanzaData.HatchCode(isp) = 0 Then Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) = Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) * (Me.StanzaData.EggsStanza(isp) / Me.StanzaData.BaseEggsStanza(isp)) ^ Me.StanzaData.RecPowerSplit(isp)
+                If Me.StanzaData.HatchCode(isp) = 0 Then
+                    Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) = Me.StanzaData.NageS(isp, Me.StanzaData.Age1(isp, 1)) * (Me.StanzaData.EggsStanza(isp) / Me.StanzaData.BaseEggsStanza(isp)) ^ Me.StanzaData.RecPowerSplit(isp)
+                End If
                 Me.StanzaData.WageS(isp, Me.StanzaData.Age1(isp, 1)) = 0
             End If
         Next isp
