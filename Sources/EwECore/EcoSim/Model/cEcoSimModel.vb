@@ -2307,16 +2307,6 @@ Namespace Ecosim
 
                     End If
 
-                    'Else
-                    '    'FishTime(igrp) <= 0
-                    '    'no fishing on this group
-                    '    For iflt = 1 To m_Data.nGear
-                    '        m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = 0
-                    '        m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) = 0
-                    '    Next
-
-                    'End If '  m_Data.FishTime(igrp) > 0
-
                     'Average weight is only for multi stanza groups it will be -9999 for all other groups
                     Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, igrp, iTime) = cCore.NULL_VALUE
                     Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, igrp, iTime) = Me.SimGEtemp(igrp)
@@ -2698,7 +2688,6 @@ Namespace Ecosim
                 If Me.m_Data.NoIntegrate(i) = 0 Then Me.m_Data.NoIntegrate(i) = i
 
                 rrate = Math.Abs(Me.m_Data.loss(i)) / Me.m_Data.StartBiomass(i)
-                ' Debug.Assert(i <> 42)
                 If rrate > 24 And Me.m_Data.NoIntegrate(i) = i Then
                     'if the rate of loss [total biomass loss]/[ecopath biomass]is greater then 24(?) then turn off the numeric integration 
                     Me.m_Data.NoIntegrate(i) = 0
@@ -3267,7 +3256,11 @@ Namespace Ecosim
 
             ' Debug.Assert((i = 5 And j = 10) = False)
 
-            If Me.SimQB(j) > 0 Then Me.m_Data.Htime(j) = CSng(Me.m_Data.pred(j) / (Me.m_Data.CmCo(j) * Me.m_Data.StartBiomass(j) * Me.SimQB(j))) Else Me.m_Data.Htime(j) = 0
+            If Me.SimQB(j) > 0 Then
+                Me.m_Data.Htime(j) = CSng(Me.m_Data.pred(j) / (Me.m_Data.CmCo(j) * Me.m_Data.StartBiomass(j) * Me.SimQB(j)))
+            Else
+                Me.m_Data.Htime(j) = 0
+            End If
             Dzero = Me.m_Data.CmCo(j) / (Me.m_Data.CmCo(j) - 1)
             Me.A(i, j) = 0.0#
             If Me.m_Data.StartBiomass(i) > 0 Then
@@ -3286,7 +3279,6 @@ Namespace Ecosim
                     Case 2 'prey avail limited 'And pred(j) > 10 ^ -10
 
                         If Me.m_Data.Consumption(i, j) > 0 Then
-                            '  Debug.Assert(j <> 12)
                             Denv = (Me.m_Data.StartBiomass(i) * Me.m_Data.pred(j) * Me.m_Data.vulrate(i, j) - Me.m_Data.Consumption(i, j) * Me.m_Data.pred(j))
                             If Denv < 1.0E-20 Then Denv = 1.0E-20
                             Me.A(i, j) = Dzero * 2 * Me.m_Data.Consumption(i, j) * Me.m_Data.vulrate(i, j) / Denv
@@ -3310,11 +3302,15 @@ Namespace Ecosim
             For i = 1 To Me.nGroups
                 'If i > N And biomass(i) = 0 Then biomass(i) = 1
                 If Biomass(i) < 1.0E-20 Then Biomass(i) = 1.0E-20 '0.00000001
-                If Me.m_Data.NoIntegrate(i) >= 0 Then Me.m_Data.pred(i) = Biomass(i)
+                If Me.m_Data.NoIntegrate(i) >= 0 Then
+                    Me.m_Data.pred(i) = Biomass(i)
+                End If
             Next
 
             For i = 1 To Me.nGroups
-                If Me.ResetPred(i) Then Me.m_Data.pred(i) = Biomass(i) * Me.PredPerBiomass(i)
+                If Me.ResetPred(i) Then
+                    Me.m_Data.pred(i) = Biomass(i) * Me.PredPerBiomass(i)
+                End If
             Next
 
         End Sub
