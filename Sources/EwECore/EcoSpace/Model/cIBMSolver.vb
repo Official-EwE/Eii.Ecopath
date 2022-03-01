@@ -218,11 +218,6 @@ Public Class cIBMSolver
                     Dmove = Me.m_Stanza.IBMdistmove(isp, ia)
                     dAllow = Dmove + 0.0001
                     i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
-                    If Me.m_Data.IsMigratory(ieco) Then
-                        If Me.m_Data.MigMaps(ieco, Me.m_Data.MonthNow)(i, j) > cEcoSpace.MIN_MIG_PROB Then
-                            Mrat = Me.m_Data.Mvel(ieco) / (3.14159 * Me.m_Data.CellLength)
-                        End If
-                    End If
 
                     If Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0 Then
                         Nmoves = Me.m_Stanza.IBMMovesPerMonth(ieco) '* relmove
@@ -232,6 +227,7 @@ Public Class cIBMSolver
                         'jb non linear movement speed
                         'Nmoves = m_Stanza.IBMMovesPerMonth(ieco) * Math.Log(m_Data.HabCap(ieco)(i, j), 0.1) ^ m_Data.RelMoveBad(ieco)
                     End If
+
                     'Debug.Assert(ieco <> 1)
 
                     ' JS 15Dec21: packet movement is ignoring advection speed
@@ -242,19 +238,35 @@ Public Class cIBMSolver
                     '             the calculation when the vector velocity is added to the species base movement distance/year
                     If Me.m_Data.IsAdvected(ieco) Then
                         ' Increase local DMove (not IBMDistMove) with advection velocity vector
-                        Dim dvel As Single = Math.Sqrt((Me.m_Data.Xvel(i, j) ^ 2) + (Me.m_Data.Yvel(i, j) ^ 2)) * AdScale
+                        Dim AdvectDist As Single = Math.Sqrt((Me.m_Data.Xvel(i, j) ^ 2) + (Me.m_Data.Yvel(i, j) ^ 2)) * AdScale
                         'Add distance moved from advection (in km/y) to the base dispersal rate
                         'and calculate the new cell specific Nmoves from that
-                        Nmoves = (Me.m_Data.Mvel(ieco) + dvel) / (12 * Me.m_Data.CellLength) * 2.0
+                        Nmoves = (Me.m_Data.Mvel(ieco) + AdvectDist) / (12 * Me.m_Data.CellLength) * 2.0
                         'this still needs to be modified to check DMove is not < 0.5
                         'if it is it needs to be set to the correct distance to move
                         'See InitPackets()
 
                     End If
 
+                    If Me.m_Data.IsMigratory(ieco) Then
+                        If Me.m_Data.MigMaps(ieco, Me.m_Data.MonthNow)(i, j) > cEcoSpace.MIN_MIG_PROB Then
+                            'inside a preferred migration area
+                            'use the base movement rate
+                            'Nmoves was calculated on the base dispersal rate so it will be correct
+                            Mrat = Me.m_Data.Mvel(ieco) / (3.14159 * Me.m_Data.CellLength)
+                        Else
+                            'outside preferred migration area
+                            'increase the number of moves to match the movement rate set by dispersal rates in cEcospace.initSpatialEquilibrium()
+                            Nmoves *= Me.m_Data.IBMMigMovRatio(ieco) ' Me.m_Data.Mrate(ieco) / (Me.m_Data.Mvel(ieco) / (3.14159 * Me.m_Data.CellLength))
+                        End If
+                    End If
+
+
                     For imm = 1 To Nmoves
 
                         ' Q: should nmoves be adapted in this loop if an advected packet traverses cells with a different advection velocity?
+                        'Nope to complicated. Treat movement the same way we treat growth, relative to the cell at the start of the time step.
+                        'We can't really do that kind of detail at a monthly time step.
 
                         i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
                         aa = Me.Bcw(i + 1, j, ieco) 'south move
@@ -281,7 +293,7 @@ Public Class cIBMSolver
                                     dd = Mrat
                                 End If
                             End If
-                        Else
+                        Else 'Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0
                             Dmove = Me.m_Stanza.IBMdistmove(isp, ia)
                             Nmoves = Me.m_Stanza.IBMMovesPerMonth(ieco) * Me.m_Data.RelMoveBad(ieco)
                         End If
@@ -322,12 +334,7 @@ Public Class cIBMSolver
             Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Stanza.jPacket(isp, ia, ip) - Dmove
         End If
 
-        ''Bounds Checking
-        'If m_Stanza.iPacket(isp, ia, ip) < 1 Then m_Stanza.iPacket(isp, ia, ip) = 1
-        'If m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
-        'If m_Stanza.jPacket(isp, ia, ip) < 1 Then m_Stanza.jPacket(isp, ia, ip) = 1
-        'If m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
-
+        'Bounds check the new position before it gets used
         If Me.m_Stanza.iPacket(isp, ia, ip) < 1 Then Me.m_Stanza.iPacket(isp, ia, ip) = 1
         If Me.m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + CELL_BOUNDS
         If Me.m_Stanza.jPacket(isp, ia, ip) < 1 Then Me.m_Stanza.jPacket(isp, ia, ip) = 1
@@ -488,16 +495,6 @@ Public Class cIBMSolver
                         If j < Me.m_Data.InCol + 1 Then Exit For 'have found the packet position, exit i loop as well
                     Next
 
-                    'Debug.Assert(m_Stanza.jPacket(isp, ia1, ip) <= 6.0)
-
-                    'bounds check the nursery cells
-                    'If m_Stanza.iPacket(isp, ia1, ip) < 1 Then m_Stanza.iPacket(isp, ia1, ip) = 1.5
-                    'If m_Stanza.iPacket(isp, ia1, ip) > m_Data.InRow Then m_Stanza.iPacket(isp, ia1, ip) = m_Data.InRow + 0.5F
-
-                    'If m_Stanza.jPacket(isp, ia1, ip) < 1 Then m_Stanza.jPacket(isp, ia1, ip) = 1.5
-                    'If m_Stanza.jPacket(isp, ia1, ip) > m_Data.InCol Then m_Stanza.jPacket(isp, ia1, ip) = m_Data.InCol + 0.5F
-                    'Debug.Assert(m_Stanza.jPacket(isp, ia1, ip) <= 6.0)
-
                     If Me.m_Stanza.iPacket(isp, ia1, ip) < 1 Then Me.m_Stanza.iPacket(isp, ia1, ip) = 1
                     If Me.m_Stanza.iPacket(isp, ia1, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, ia1, ip) = Me.m_Data.InRow + CELL_BOUNDS
 
@@ -558,13 +555,6 @@ Public Class cIBMSolver
 
                     If Me.m_Stanza.jPacket(isp, ia1, ip) < 1 Then Me.m_Stanza.jPacket(isp, ia1, ip) = 1
                     If Me.m_Stanza.jPacket(isp, ia1, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, ia1, ip) = Me.m_Data.InCol + CELL_BOUNDS
-
-                    'If m_Stanza.iPacket(isp, ia1, ip) < 1 Then m_Stanza.iPacket(isp, ia1, ip) = 1
-                    'If m_Stanza.iPacket(isp, ia1, ip) > m_Data.InRow Then m_Stanza.iPacket(isp, ia1, ip) = m_Data.InRow
-
-                    'If m_Stanza.jPacket(isp, ia1, ip) < 1 Then m_Stanza.jPacket(isp, ia1, ip) = 1
-                    'If m_Stanza.jPacket(isp, ia1, ip) > m_Data.InCol Then m_Stanza.jPacket(isp, ia1, ip) = m_Data.InCol
-
 
                 Next ip
             End If ' m_Stanza.EggAtSpawn(isp)
@@ -633,7 +623,7 @@ Public Class cIBMSolver
 
 
     Private Function ForceNurseryCells(isp As Integer) As Single
-        'Set all the cells with age 0 forcing values to Nursery Cells 
+        'Set all the forced cells with age 0 forcing values to Nursery Cells 
         'These Nursery Cells will later be used to populate the location of the packets (iPacket() and jPacket())
         'and the age 0 forcing number in nPackets() 
         Dim ForcedCells(,) As Single = Me.m_Stanza.IBMForcedCells(isp)
@@ -643,6 +633,7 @@ Public Class cIBMSolver
             For icol As Integer = 1 To Me.m_Data.InCol
 
                 If ForcedCells(irow, icol) > 0 And Me.m_Data.Depth(irow, icol) > 0 Then
+                    'this cell is forced 
                     Nused += 1
                     Me.m_Stanza.iNursery(isp, Nused) = irow
                     Me.m_Stanza.jNursery(isp, Nused) = icol
@@ -664,7 +655,7 @@ Public Class cIBMSolver
 
     End Function
 
-    Sub UpDateBcellIBM(ip As Integer)
+    Sub UpDateBcellIBM(ipkt As Integer)
         'recalculates Bcell and predcell for multistanza groups when using IBM model
         'this goes through every packet and adds it's biomass to Bcell in its i,j position
         Dim ia As Integer, iaa As Integer, isp As Integer, ist As Integer
@@ -680,18 +671,18 @@ Public Class cIBMSolver
                     ist = Me.m_Stanza.StanzaNo(isp, ia)
                     ieco = Me.m_Stanza.EcopathCode(isp, ist)
 
-                    If Me.m_Stanza.iPacket(isp, iaa, ip) < 1 Then Me.m_Stanza.iPacket(isp, iaa, ip) = 1
-                    If Me.m_Stanza.iPacket(isp, iaa, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, iaa, ip) = Me.m_Data.InRow + CELL_BOUNDS
+                    If Me.m_Stanza.iPacket(isp, iaa, ipkt) < 1 Then Me.m_Stanza.iPacket(isp, iaa, ipkt) = 1
+                    If Me.m_Stanza.iPacket(isp, iaa, ipkt) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, iaa, ipkt) = Me.m_Data.InRow + CELL_BOUNDS
 
-                    If Me.m_Stanza.jPacket(isp, iaa, ip) < 1 Then Me.m_Stanza.jPacket(isp, iaa, ip) = 1
-                    If Me.m_Stanza.jPacket(isp, iaa, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, iaa, ip) = Me.m_Data.InCol + CELL_BOUNDS
+                    If Me.m_Stanza.jPacket(isp, iaa, ipkt) < 1 Then Me.m_Stanza.jPacket(isp, iaa, ipkt) = 1
+                    If Me.m_Stanza.jPacket(isp, iaa, ipkt) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, iaa, ipkt) = Me.m_Data.InCol + CELL_BOUNDS
 
-                    i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip))
-                    j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
+                    i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ipkt))
+                    j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ipkt))
 
                     'do the updating
-                    Me.BcellThread(i, j, ieco) = Me.BcellThread(i, j, ieco) + Me.m_Stanza.Npacket(isp, iaa, ip) * Me.m_Stanza.Wpacket(isp, iaa, ip)
-                    Me.PredCellThread(i, j, ieco) = Me.PredCellThread(i, j, ieco) + Me.m_Stanza.Npacket(isp, iaa, ip) * Me.m_Stanza.WWa(isp, ia)
+                    Me.BcellThread(i, j, ieco) = Me.BcellThread(i, j, ieco) + Me.m_Stanza.Npacket(isp, iaa, ipkt) * Me.m_Stanza.Wpacket(isp, iaa, ipkt)
+                    Me.PredCellThread(i, j, ieco) = Me.PredCellThread(i, j, ieco) + Me.m_Stanza.Npacket(isp, iaa, ipkt) * Me.m_Stanza.WWa(isp, ia)
                 Next
 
             Next
