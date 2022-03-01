@@ -207,6 +207,7 @@ Public Class cEcospaceDataStructures
     Public MPABiomass() As Single
     ''' <summary>Movement rate?!</summary>
     Public Mrate() As Single
+    Public IBMMigMovRatio() As Single
     ''' <summary>Base dispersal rate as entered by the user</summary>
     Public Mvel() As Single
     Public RelMoveBad() As Single
@@ -1368,6 +1369,8 @@ Public Class cEcospaceDataStructures
             ReDim Me.IsAdvected(Me.NGroups)
             ReDim Me.TotHabCap(Me.NGroups)
             ReDim Me.MaxHabCap(Me.NGroups)
+
+            ReDim Me.IBMMigMovRatio(Me.NGroups)
 
             ReDim Me.InMigAreaMovement(Me.NGroups)
 
