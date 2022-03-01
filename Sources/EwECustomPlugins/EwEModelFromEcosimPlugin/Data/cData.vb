@@ -28,6 +28,10 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 Friend Class cData
+    Public Enum eModelAggregationTypes
+        Annual = 0
+        Monthly = 1
+    End Enum
 
 #Region " Private helper classes "
 
@@ -83,6 +87,8 @@ Friend Class cData
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Enabled() As Boolean = False
+
+    Public Property AggregationType As eModelAggregationTypes = eModelAggregationTypes.Annual
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -178,7 +184,7 @@ Friend Class cData
             'If Not String.IsNullOrWhiteSpace(Me.CustomOutputPath) Then
             '    Return Me.CustomOutputPath
             'End If
-            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), _
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim),
                                 cFileUtils.ToValidFileName(My.Resources.DISPLAYNAME, False))
         End Get
     End Property
@@ -223,10 +229,11 @@ Friend Class cData
     Private ReadOnly Property DefaultModelName(iYear As Integer) As String
         Get
             If (iYear < 1 Or iYear > Me.NumYears) Then Return ""
-            Return cFileUtils.ToValidFileName(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
+            Return cFileUtils.ToValidFileName(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE,
                                                             Me.EwEModelName, Me.YearLabel(iYear)), False)
         End Get
     End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

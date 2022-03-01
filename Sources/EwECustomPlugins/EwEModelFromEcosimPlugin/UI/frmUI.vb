@@ -299,6 +299,12 @@ Friend Class frmUI
             Me.m_data.WPower = w
         End If
 
+        If Me.m_rdbtAnnualAvg.Checked Then
+            Me.m_data.AggregationType = cData.eModelAggregationTypes.Annual
+        ElseIf Me.m_rdbtMonthlySnap.Checked Then
+            Me.m_data.AggregationType = cData.eModelAggregationTypes.Monthly
+        End If
+
         Me.UpdateControls()
 
     End Sub
@@ -314,6 +320,13 @@ Friend Class frmUI
             Case cEcopathModelFromEcosim.eBACalcTypes.FromEcosimYearsWeightedAverage
                 bReqWPower = True
                 bReqNYears = True
+        End Select
+
+        Select Case Me.m_data.AggregationType
+            Case cData.eModelAggregationTypes.Annual
+                Me.m_rdbtAnnualAvg.Checked = True
+            Case cData.eModelAggregationTypes.Monthly
+                Me.m_rdbtMonthlySnap.Checked = True
         End Select
 
         Me.m_cbEnable.Checked = Me.m_data.Enabled
@@ -338,6 +351,19 @@ Friend Class frmUI
         Me.m_grid.RefreshContent()
 
     End Sub
+
+    Private Sub On_AggregationType_CheckedChanged(sender As Object, e As EventArgs) Handles m_rdbtAnnualAvg.CheckedChanged, m_rdbtMonthlySnap.CheckedChanged
+
+        Dim rb As RadioButton = DirectCast(sender, RadioButton)
+        If rb.Tag Is Nothing Then Return
+
+        If rb.Checked = True Then
+            Me.m_data.AggregationType = DirectCast(Integer.Parse(CStr(rb.Tag)), cData.eModelAggregationTypes)
+        End If
+
+    End Sub
+
+
 
 #End Region ' Internals
 

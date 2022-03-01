@@ -820,7 +820,8 @@ Public Class cEcosimDatastructures
         Me.NutPBmax = 1.5
 
         ReDim Me.Emig(Me.nGroups)
-        ReDim Me.QmQo(Me.nGroups), Me.Htime(Me.nGroups) ', Hden(nGroups)
+        ReDim Me.QmQo(Me.nGroups)
+        ReDim Me.Htime(Me.nGroups)
         ReDim Me.CmCo(Me.nGroups)
 
         ReDim Me.Qmain(Me.nGroups)
