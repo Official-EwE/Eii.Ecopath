@@ -82,7 +82,7 @@ Public Class cPedigreeLevel
 
         'PoolColor
         meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(core, New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(core, New Integer, eVarNameFlags.Color, eStatusFlags.Null, eValueTypes.Int, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         Me.m_values.Add(val.varName, val)
 
         'Estimated flag
@@ -163,10 +163,10 @@ Public Class cPedigreeLevel
     ''' -----------------------------------------------------------------------
     Public Property PoolColor() As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
+            Return CInt(Me.GetVariable(eVarNameFlags.Color))
         End Get
         Set(value As Integer)
-            Me.SetVariable(eVarNameFlags.PoolColor, value)
+            Me.SetVariable(eVarNameFlags.Color, value)
         End Set
     End Property
 

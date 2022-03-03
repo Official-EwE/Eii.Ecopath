@@ -311,32 +311,31 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelDBID = CInt(row("ModelID"))
                 ecopathDS.ModelName = CStr(row("Name"))
                 ecopathDS.ModelDescription = CStr(row("Description"))
-                ecopathDS.ModelAuthor = CStr(Me.ReadSafe(row, "Author", ""))
-                ecopathDS.ModelContact = CStr(Me.ReadSafe(row, "Contact", ""))
-                ecopathDS.ModelArea = CSng(Me.ReadSafe(row, "Area", 1.0))
+                ecopathDS.ModelAuthor = Me.ReadSafe(row, "Author", "")
+                ecopathDS.ModelContact = Me.ReadSafe(row, "Contact", "")
+                ecopathDS.ModelArea = Me.ReadSafe(row, "Area", 1.0!)
                 ecopathDS.ModelNumDigits = CInt(row("NumDigits"))
                 ecopathDS.ModelGroupDigits = (CInt(Me.ReadSafe(row, "GroupDigits", False)) <> 0)
-                ecopathDS.ModelUnitCurrency = DirectCast(CInt(Me.ReadSafe(row, "UnitCurrency", eUnitCurrencyType.WetWeight)), eUnitCurrencyType)
-                ecopathDS.ModelUnitCurrencyCustom = CStr(Me.ReadSafe(row, "UnitCurrencyCustom", ""))
-                ecopathDS.ModelUnitTime = DirectCast(CInt(Me.ReadSafe(row, "UnitTime", eUnitTimeType.Year)), eUnitTimeType)
-                ecopathDS.ModelUnitTimeCustom = CStr(Me.ReadSafe(row, "UnitTimeCustom", ""))
-                ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(row, "UnitMonetary", "EUR"), String)
-                ecopathDS.FirstYear = CInt(Me.ReadSafe(row, "FirstYear", 0))
-                ecopathDS.NumYears = CInt(Me.ReadSafe(row, "NumYears", 1))
-                ecopathDS.ModelCountry = CStr(Me.ReadSafe(row, "Country", ""))
-                ecopathDS.ModelEcosystemType = CStr(Me.ReadSafe(row, "EcosystemType", ""))
-                ecopathDS.ModelEcobaseCode = CStr(Me.ReadSafe(row, "CodeEcobase", ""))
-                ecopathDS.ModelPublicationDOI = CStr(Me.ReadSafe(row, "PublicationDOI", ""))
-                ecopathDS.ModelPublicationURI = CStr(Me.ReadSafe(row, "PublicationURI", ""))
-                ecopathDS.ModelPublicationRef = CStr(Me.ReadSafe(row, "PublicationRef", ""))
+                ecopathDS.ModelUnitCurrency = Me.ReadSafe(row, "UnitCurrency", eUnitCurrencyType.WetWeight)
+                ecopathDS.ModelUnitCurrencyCustom = Me.ReadSafe(row, "UnitCurrencyCustom", "")
+                ecopathDS.ModelUnitTime = Me.ReadSafe(row, "UnitTime", eUnitTimeType.Year)
+                ecopathDS.ModelUnitTimeCustom = Me.ReadSafe(row, "UnitTimeCustom", "")
+                ecopathDS.ModelUnitMonetary = Me.ReadSafe(row, "UnitMonetary", "EUR")
+                ecopathDS.FirstYear = Me.ReadSafe(row, "FirstYear", 0)
+                ecopathDS.NumYears = Me.ReadSafe(row, "NumYears", 1)
+                ecopathDS.ModelCountry = Me.ReadSafe(row, "Country", "")
+                ecopathDS.ModelEcosystemType = Me.ReadSafe(row, "EcosystemType", "")
+                ecopathDS.ModelEcobaseCode = Me.ReadSafe(row, "CodeEcobase", "")
+                ecopathDS.ModelPublicationDOI = Me.ReadSafe(row, "PublicationDOI", "")
+                ecopathDS.ModelPublicationURI = Me.ReadSafe(row, "PublicationURI", "")
+                ecopathDS.ModelPublicationRef = Me.ReadSafe(row, "PublicationRef", "")
 
-                Dim sLat1 As Single = CSng(Me.ReadSafe(row, "MaxLat", cCore.NULL_VALUE))
-                Dim sLat2 As Single = CSng(Me.ReadSafe(row, "MinLat", cCore.NULL_VALUE))
+                Dim sLat1 As Single = Me.ReadSafe(row, "MaxLat", cCore.NULL_VALUE)
+                Dim sLat2 As Single = Me.ReadSafe(row, "MinLat", cCore.NULL_VALUE)
                 ecopathDS.ModelNorth = Math.Max(sLat1, sLat2)
                 ecopathDS.ModelSouth = Math.Min(sLat1, sLat2)
-
-                ecopathDS.ModelWest = CSng(Me.ReadSafe(row, "MinLon", cCore.NULL_VALUE))
-                ecopathDS.ModelEast = CSng(Me.ReadSafe(row, "MaxLon", cCore.NULL_VALUE))
+                ecopathDS.ModelWest = Me.ReadSafe(row, "MinLon", cCore.NULL_VALUE)
+                ecopathDS.ModelEast = Me.ReadSafe(row, "MaxLon", cCore.NULL_VALUE)
 
                 ecopathDS.ModelLastSaved = CDbl(Me.ReadSafe(row, "LastSaved", 0))
 
@@ -403,10 +402,10 @@ Public Class cEIIXMLDataSource
                 ecopathDS.Resp(iGroup) = CSng(row("Respiration"))
                 ecopathDS.Immig(iGroup) = CSng(row("Immigration"))
                 ecopathDS.Emigration(iGroup) = CSng(row("Emigration"))
-                ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(row, "EmigRate", 0.0!))
+                ecopathDS.Emig(iGroup) = Me.ReadSafe(row, "EmigRate", 0.0!)
 
                 ' PSD
-                ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(row, "VBK", -1))
+                ecopathDS.vbK(iGroup) = Me.ReadSafe(row, "VBK", -1.0!)
                 psdDS.AinLWInput(iGroup) = CSng(row("AinLW"))
                 psdDS.BinLWInput(iGroup) = CSng(row("BinLW"))
                 psdDS.LooInput(iGroup) = CSng(row("Loo"))
@@ -417,14 +416,14 @@ Public Class cEIIXMLDataSource
 
                 'variables with input output pairs
                 ecopathDS.EEinput(iGroup) = CSng(row("EcoEfficiency"))
-                ecopathDS.OtherMortinput(iGroup) = CSng(Me.ReadSafe(row, "OtherMort", cCore.NULL_VALUE))
+                ecopathDS.OtherMortinput(iGroup) = Me.ReadSafe(row, "OtherMort", cCore.NULL_VALUE)
                 ecopathDS.PBinput(iGroup) = CSng(row("ProdBiom"))
                 ecopathDS.QBinput(iGroup) = CSng(row("ConsBiom"))
                 ecopathDS.GEinput(iGroup) = CSng(row("ProdCons"))
                 ecopathDS.Binput(iGroup) = CSng(row("Biomass"))
                 ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
-                'ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(Me.ReadSafe(row, "PoolColor", "0")), Globalization.NumberStyles.HexNumber)
+                'ecopathDS.GroupColor(iGroup) = Integer.Parse(Me.ReadSafe(row, "PoolColor", "0"), Globalization.NumberStyles.HexNumber)
 
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
@@ -575,15 +574,15 @@ Public Class cEIIXMLDataSource
                 stanzaDS.WmatWinf(iStanza) = CSng(row("WMatWinf"))
                 ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
                 stanzaDS.FixedFecundity(iStanza) = Me.ParseBoolean(CStr(row("FixedFecundity")))
-                stanzaDS.EggAtSpawn(iStanza) = Me.ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", True)))
+                stanzaDS.EggAtSpawn(iStanza) = Me.ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", "1")))
 
                 ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                 ' JS 23nov10: Hah, three and a half years later these values are stored again
-                stanzaDS.BaseStanza(iStanza) = CInt(Me.ReadSafe(row, "LeadingLifeStage", cCore.NULL_VALUE))
+                stanzaDS.BaseStanza(iStanza) = Me.ReadSafe(row, "LeadingLifeStage", cCore.NULL_VALUE)
                 stanzaDS.BaseStanza(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanza(iStanza)))
 
                 ' JS 14jun12: Leading CB separated from leading B
-                stanzaDS.BaseStanzaCB(iStanza) = CInt(Me.ReadSafe(row, "LeadingCB", stanzaDS.BaseStanza(iStanza)))
+                stanzaDS.BaseStanzaCB(iStanza) = Me.ReadSafe(row, "LeadingCB", stanzaDS.BaseStanza(iStanza))
                 stanzaDS.BaseStanzaCB(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanzaCB(iStanza)))
 
             Catch ex As Exception
@@ -611,7 +610,7 @@ Public Class cEIIXMLDataSource
                     stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rowStage("Mortality"))
                     stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                     stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
-                    stanzaDS.SpawnProp(iStanza, iLifeStage) = CSng(Me.ReadSafe(rowStage, "SpawnProp", 1.0))
+                    stanzaDS.SpawnProp(iStanza, iLifeStage) = Me.ReadSafe(rowStage, "SpawnProp", 1.0!)
 
                 Catch ex As Exception
                     Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
@@ -675,10 +674,11 @@ Public Class cEIIXMLDataSource
 
                 ecopathDS.FleetDBID(iFleet) = CInt(drow("FleetID"))
                 ecopathDS.FleetName(iFleet) = CStr(drow("FleetName"))
+                ecopathDS.NominalEffort(iFleet) = Me.ReadSafe(drow, "NominalEffort", 1.0!)
                 ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(drow("FixedCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(drow("SailingCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(drow("variableCost"))
-                'ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(drow("PoolColor")), Globalization.NumberStyles.HexNumber)
+                ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(drow("PoolColor")), Globalization.NumberStyles.HexNumber)
                 iFleet += 1
 
             Next
@@ -713,7 +713,7 @@ Public Class cEIIXMLDataSource
                     ecopathDS.Landing(iFleet, iGroup) = CSng(drow("Landing"))
                     ecopathDS.Discard(iFleet, iGroup) = CSng(drow("discards"))
                     ecopathDS.Market(iFleet, iGroup) = CSng(drow("price"))
-                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "DiscardMortality", 0.0!))
+                    ecopathDS.PropDiscardMort(iFleet, iGroup) = Me.ReadSafe(drow, "DiscardMortality", 0.0!)
                 Else
                     Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                     bSucces = False
@@ -777,8 +777,8 @@ Public Class cEIIXMLDataSource
             For Each drow As DataRow In dt.Rows
 
                 strValueID = CStr(drow("ValueID"))
-                strRemark = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "Remark", "")))
-                strVisualStyle = CStr(Me.ReadSafe(drow, "VisualStyle", ""))
+                strRemark = Web.HttpUtility.UrlDecode(Me.ReadSafe(drow, "Remark", ""))
+                strVisualStyle = Me.ReadSafe(drow, "VisualStyle", "")
 
                 ad = Me.m_core.AuxillaryData(strValueID)
                 ad.AllowValidation = False
@@ -786,7 +786,7 @@ Public Class cEIIXMLDataSource
                 ad.DBID = CInt(drow("DBID"))
                 ad.Remark = strRemark
                 ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
-                ad.Settings.Load(CStr(Me.ReadSafe(drow, "Settings", "")))
+                ad.Settings.Load(Me.ReadSafe(drow, "Settings", ""))
 
                 ad.AllowValidation = True
 
@@ -874,9 +874,9 @@ Public Class cEIIXMLDataSource
                 ecopathDS.EcosimScenarioDBID(iScenario) = CInt(drow("ScenarioID"))
                 ecopathDS.EcosimScenarioName(iScenario) = CStr(drow("ScenarioName"))
                 ecopathDS.EcosimScenarioDescription(iScenario) = CStr(drow("Description"))
-                ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.ReadSafe(drow, "Author", ""))
-                ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.ReadSafe(drow, "Contact", ""))
-                ecopathDS.EcosimScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(drow, "LastSaved", 0))
+                ecopathDS.EcosimScenarioAuthor(iScenario) = Me.ReadSafe(drow, "Author", "")
+                ecopathDS.EcosimScenarioContact(iScenario) = Me.ReadSafe(drow, "Contact", "")
+                ecopathDS.EcosimScenarioLastSaved(iScenario) = Me.ReadSafe(drow, "LastSaved", 0!)
                 iScenario += 1
             Next
         Catch ex As Exception
@@ -917,9 +917,9 @@ Public Class cEIIXMLDataSource
                 ecopathDS.EcospaceScenarioDBID(iScenario) = CInt(drow("ScenarioID"))
                 ecopathDS.EcospaceScenarioName(iScenario) = CStr(drow("ScenarioName"))
                 ecopathDS.EcospaceScenarioDescription(iScenario) = CStr(drow("Description"))
-                ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.ReadSafe(drow, "Author", ""))
-                ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.ReadSafe(drow, "Contact", ""))
-                ecopathDS.EcospaceScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(drow, "LastSaved", 0))
+                ecopathDS.EcospaceScenarioAuthor(iScenario) = Me.ReadSafe(drow, "Author", "")
+                ecopathDS.EcospaceScenarioContact(iScenario) = Me.ReadSafe(drow, "Contact", "")
+                ecopathDS.EcospaceScenarioLastSaved(iScenario) = Me.ReadSafe(drow, "LastSaved", 0!)
                 iScenario += 1
             Next
         Catch ex As Exception
@@ -977,9 +977,9 @@ Public Class cEIIXMLDataSource
             For Each drow As DataRow In dt.Rows
                 tsDS.iDatasetDBID(iDataset) = CInt(drow("DatasetID"))
                 tsDS.strDatasetNames(iDataset) = CStr(drow("DatasetName"))
-                tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(drow, "Description", ""))
-                tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(drow, "Author", ""))
-                tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(drow, "Contact", ""))
+                tsDS.strDatasetDescription(iDataset) = Me.ReadSafe(drow, "Description", "")
+                tsDS.strDatasetAuthor(iDataset) = Me.ReadSafe(drow, "Author", "")
+                tsDS.strDatasetContact(iDataset) = Me.ReadSafe(drow, "Contact", "")
                 tsDS.nDatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
                 tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
 
@@ -1044,7 +1044,7 @@ Public Class cEIIXMLDataSource
                 ecosimDS.NutBaseFreeProp = CSng(drow("NutBaseFreeProp"))
                 ecosimDS.NutPBmax = CSng(drow("NutPBmax"))
                 ecosimDS.UseVarPQ = False
-                ecosimDS.ForagingTimeLowerLimit = CSng(Me.ReadSafe(drow, "ForagingTimeLowerLimit", 0.01))
+                ecosimDS.ForagingTimeLowerLimit = Me.ReadSafe(drow, "ForagingTimeLowerLimit", 0.01!)
 
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
@@ -1085,7 +1085,7 @@ Public Class cEIIXMLDataSource
 
         For Each drow As DataRow In dt.Rows
             Try
-                ecosimDS.ForcePoints = CInt(Me.ReadSafe(drow, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
+                ecosimDS.ForcePoints = Me.ReadSafe(drow, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS)
             Catch ex As Exception
                 bSuccess = False
             End Try
@@ -1134,29 +1134,29 @@ Public Class cEIIXMLDataSource
                 ecosimDS.SwitchPower(iGroup) = CSng(drow("SwitchPower"))
                 ecosimDS.GroupFishRateNoDBID(iGroup) = CInt(drow("FishMortShapeID"))
 
-                ecosimDS.PaddP(iGroup) = CSng(Me.ReadSafe(drow, "AdditivePredMort", 1.0!))
+                ecosimDS.PaddP(iGroup) = Me.ReadSafe(drow, "AdditivePredMort", 1.0!)
 
-                mseDS.Blim(iGroup) = CSng(Me.ReadSafe(drow, "Blim", mseDS.Blim(iGroup), cCore.NULL_VALUE))
-                mseDS.Bbase(iGroup) = CSng(Me.ReadSafe(drow, "Bbase", mseDS.Bbase(iGroup), cCore.NULL_VALUE))
-                mseDS.Fopt(iGroup) = CSng(Me.ReadSafe(drow, "Fopt", mseDS.Fopt(iGroup), cCore.NULL_VALUE))
-                mseDS.FixedEscapement(iGroup) = CSng(Me.ReadSafe(drow, "FixedEscapement", 0.0!, cCore.NULL_VALUE))
-                mseDS.FixedF(iGroup) = CSng(Me.ReadSafe(drow, "FixedF", 0.0!, cCore.NULL_VALUE))
+                mseDS.Blim(iGroup) = Me.ReadSafe(drow, "Blim", mseDS.Blim(iGroup), cCore.NULL_VALUE)
+                mseDS.Bbase(iGroup) = Me.ReadSafe(drow, "Bbase", mseDS.Bbase(iGroup), cCore.NULL_VALUE)
+                mseDS.Fopt(iGroup) = Me.ReadSafe(drow, "Fopt", mseDS.Fopt(iGroup), cCore.NULL_VALUE)
+                mseDS.FixedEscapement(iGroup) = Me.ReadSafe(drow, "FixedEscapement", 0.0!, cCore.NULL_VALUE)
+                mseDS.FixedF(iGroup) = Me.ReadSafe(drow, "FixedF", 0.0!, cCore.NULL_VALUE)
 
-                mseDS.CVbiomEst(iGroup) = CSng(Me.ReadSafe(drow, "BiomassCV", mseDS.CVbiomEst(iGroup), cCore.NULL_VALUE))
-                mseDS.BioRiskValue(iGroup, 0) = CSng(Me.ReadSafe(drow, "LowerRisk", mseDS.BioRiskValue(iGroup, 0), cCore.NULL_VALUE))
-                mseDS.BioRiskValue(iGroup, 1) = CSng(Me.ReadSafe(drow, "UpperRisk", mseDS.BioRiskValue(iGroup, 1), cCore.NULL_VALUE))
+                mseDS.CVbiomEst(iGroup) = Me.ReadSafe(drow, "BiomassCV", mseDS.CVbiomEst(iGroup), cCore.NULL_VALUE)
+                mseDS.BioRiskValue(iGroup, 0) = Me.ReadSafe(drow, "LowerRisk", mseDS.BioRiskValue(iGroup, 0), cCore.NULL_VALUE)
+                mseDS.BioRiskValue(iGroup, 1) = Me.ReadSafe(drow, "UpperRisk", mseDS.BioRiskValue(iGroup, 1), cCore.NULL_VALUE)
 
                 mseDS.DefaultBioBounds(iGroup)
-                mseDS.BioBounds(iGroup).Lower = CSng(Me.ReadSafe(drow, "BiomassRefLower", mseDS.BioBounds(iGroup).Lower, cCore.NULL_VALUE))
-                mseDS.BioBounds(iGroup).Upper = CSng(Me.ReadSafe(drow, "BiomassRefUpper", mseDS.BioBounds(iGroup).Upper, cCore.NULL_VALUE))
+                mseDS.BioBounds(iGroup).Lower = Me.ReadSafe(drow, "BiomassRefLower", mseDS.BioBounds(iGroup).Lower, cCore.NULL_VALUE)
+                mseDS.BioBounds(iGroup).Upper = Me.ReadSafe(drow, "BiomassRefUpper", mseDS.BioBounds(iGroup).Upper, cCore.NULL_VALUE)
 
                 mseDS.DefaultCatchBoundsGroup(iGroup)
-                mseDS.CatchGroupBounds(iGroup).Lower = CSng(Me.ReadSafe(drow, "CatchRefLower", mseDS.CatchGroupBounds(iGroup).Lower, cCore.NULL_VALUE))
-                mseDS.CatchGroupBounds(iGroup).Upper = CSng(Me.ReadSafe(drow, "CatchRefUpper", mseDS.CatchGroupBounds(iGroup).Upper, cCore.NULL_VALUE))
+                mseDS.CatchGroupBounds(iGroup).Lower = Me.ReadSafe(drow, "CatchRefLower", mseDS.CatchGroupBounds(iGroup).Lower, cCore.NULL_VALUE)
+                mseDS.CatchGroupBounds(iGroup).Upper = Me.ReadSafe(drow, "CatchRefUpper", mseDS.CatchGroupBounds(iGroup).Upper, cCore.NULL_VALUE)
 
-                mseDS.RstockRatio(iGroup) = CSng(Me.ReadSafe(drow, "RStockRatio", mseDS.RstockRatio(iGroup), cCore.NULL_VALUE))
-                mseDS.RHalfB0Ratio(iGroup) = CSng(Me.ReadSafe(drow, "RHalfB0Ratio", mseDS.RHalfB0Ratio(iGroup), cCore.NULL_VALUE))
-                mseDS.cvRec(iGroup) = CSng(Me.ReadSafe(drow, "RecruitmentCV", mseDS.cvRec(iGroup), cCore.NULL_VALUE))
+                mseDS.RstockRatio(iGroup) = Me.ReadSafe(drow, "RStockRatio", mseDS.RstockRatio(iGroup), cCore.NULL_VALUE)
+                mseDS.RHalfB0Ratio(iGroup) = Me.ReadSafe(drow, "RHalfB0Ratio", mseDS.RHalfB0Ratio(iGroup), cCore.NULL_VALUE)
+                mseDS.cvRec(iGroup) = Me.ReadSafe(drow, "RecruitmentCV", mseDS.cvRec(iGroup), cCore.NULL_VALUE)
 
                 ' Me.LoadFishMortShape(CInt(drow("FishMortShapeID")), iGroup)
 
@@ -1328,22 +1328,22 @@ Public Class cEIIXMLDataSource
 
             Try
                 ecosimDS.FleetDBID(iFleet) = CInt(drow("FleetID"))
-                ecosimDS.Epower(iFleet) = CSng(Me.ReadSafe(drow, "Epower", 3))
-                ecosimDS.PcapBase(iFleet) = CSng(Me.ReadSafe(drow, "PCapBase", 0.5))
-                ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(drow, "CapDepreciate", 0.06))
-                ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.ReadSafe(drow, "CapBaseGrowth", 0.2))
-                ecosimDS.EffortConversionFactor(iFleet) = CSng(Me.ReadSafe(drow, "EffortConversionFactor", 1.0!))
+                ecosimDS.Epower(iFleet) = Me.ReadSafe(drow, "Epower", 3.0!)
+                ecosimDS.PcapBase(iFleet) = Me.ReadSafe(drow, "PCapBase", 0.5!)
+                ecosimDS.CapDepreciate(iFleet) = Me.ReadSafe(drow, "CapDepreciate", 0.06!)
+                ecosimDS.CapBaseGrowth(iFleet) = Me.ReadSafe(drow, "CapBaseGrowth", 0.2!)
+                ecosimDS.EffortConversionFactor(iFleet) = Me.ReadSafe(drow, "EffortConversionFactor", 1.0!)
 
-                mseDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(drow, "MaxEffort", cCore.NULL_VALUE))
+                mseDS.MaxEffort(iFleet) = Me.ReadSafe(drow, "MaxEffort", cCore.NULL_VALUE)
                 mseDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(drow, "QuotaType", 0)), eQuotaTypes)
-                mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(drow, "CV", mseDS.CVFest(iFleet)))
-                mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(drow, "QIncrease", mseDS.Qgrow(iFleet)))
+                mseDS.CVFest(iFleet) = Me.ReadSafe(drow, "CV", mseDS.CVFest(iFleet))
+                mseDS.Qgrow(iFleet) = Me.ReadSafe(drow, "QIncrease", mseDS.Qgrow(iFleet))
 
                 mseDS.DefaultCatchBoundsFleet(iFleet)
-                mseDS.CatchFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(drow, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower))
-                mseDS.CatchFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(drow, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper))
-                mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(drow, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
-                mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(drow, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
+                mseDS.CatchFleetBounds(iFleet).Lower = Me.ReadSafe(drow, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower)
+                mseDS.CatchFleetBounds(iFleet).Upper = Me.ReadSafe(drow, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper)
+                mseDS.EffortFleetBounds(iFleet).Lower = Me.ReadSafe(drow, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower)
+                mseDS.EffortFleetBounds(iFleet).Upper = Me.ReadSafe(drow, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper)
 
             Catch ex As Exception
                 bSucces = False
@@ -1417,8 +1417,8 @@ Public Class cEIIXMLDataSource
                 iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
 
                 If (iFleet > 0) And (iGroup > 0) Then
-                    mseDS.Quotashare(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "QuotaShare", mseDS.Quotashare(iFleet, iGroup)))
-                    mseDS.Fweight(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "FWeight", 1.0))
+                    mseDS.Quotashare(iFleet, iGroup) = Me.ReadSafe(drow, "QuotaShare", mseDS.Quotashare(iFleet, iGroup))
+                    mseDS.Fweight(iFleet, iGroup) = Me.ReadSafe(drow, "FWeight", 1.0!)
                 End If
 
             Catch ex As Exception
@@ -1562,7 +1562,7 @@ Public Class cEIIXMLDataSource
             drow = dt.DefaultView.ToTable.Rows(0)
 
             shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
-            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
+            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(Me.ReadSafe(drow, "FunctionParams", ""))
 
             ' Read z-scale
             Dim sLast As Single = 1
@@ -1607,7 +1607,7 @@ Public Class cEIIXMLDataSource
         Try
 
             shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
-            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
+            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(Me.ReadSafe(drow, "FunctionParams", ""))
 
             ' Read z-scale
             Dim sLast As Single = 1.0!
@@ -1653,10 +1653,10 @@ Public Class cEIIXMLDataSource
             Dim drow As DataRow = dtMed.DefaultView.ToTable.Rows(0)
 
             shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
-            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
+            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(Me.ReadSafe(drow, "FunctionParams", ""))
 
             ' Read z-scale
-            astrZScale = Me.SplitNumberString(CStr(Me.ReadSafe(drow, "Zscale", "")))
+            astrZScale = Me.SplitNumberString(Me.ReadSafe(drow, "Zscale", ""))
             ' Write points
             For ipt As Integer = 1 To Math.Min(medData.NMedPoints, astrZScale.Length)
                 medData.Medpoints(ipt, iMediationShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
@@ -1668,9 +1668,9 @@ Public Class cEIIXMLDataSource
             medData.MediationShapeParams(iMediationShape) = shapeParms
             medData.MediationDBIDs(iMediationShape) = iShapeID
             medData.MediationTitles(iMediationShape) = CStr(drow("Title"))
-            medData.IMedBase(iMediationShape) = CInt(Me.ReadSafe(drow, "IMedBase", 1200 / 3))
-            medData.XAxisMin(iMediationShape) = CSng(Me.ReadSafe(drow, "XAxisMin", 0))
-            medData.XAxisMax(iMediationShape) = CSng(Me.ReadSafe(drow, "XAxisMax", 1))
+            medData.IMedBase(iMediationShape) = Me.ReadSafe(drow, "IMedBase", CInt(1200 / 3))
+            medData.XAxisMin(iMediationShape) = Me.ReadSafe(drow, "XAxisMin", 0!)
+            medData.XAxisMax(iMediationShape) = Me.ReadSafe(drow, "XAxisMax", 1.0!)
 
         Catch ex As Exception
             Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
@@ -1940,7 +1940,7 @@ Public Class cEIIXMLDataSource
         For Each drow As DataRow In dtFishRate.DefaultView.ToTable.Rows
             Try
                 ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(drow("Title"))
-                strMemo = CStr(Me.ReadSafe(drow, "zScale", ""))
+                strMemo = Me.ReadSafe(drow, "zScale", "")
                 astrMemoBits = strMemo.Trim.Split(CChar(" "))
                 For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
                     ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
@@ -2026,7 +2026,7 @@ Public Class cEIIXMLDataSource
                 tsDS.strName(iSeries) = CStr(drow("DatName"))
                 tsDS.TimeSeriesType(iSeries) = DirectCast(CInt(drow("DatType")), eTimeSeriesType)
                 tsDS.sWeight(iSeries) = CSng(drow("WtType"))
-                tsDS.sCV(iSeries) = CSng(Me.ReadSafe(drow, "CV", 0.0!))
+                tsDS.sCV(iSeries) = Me.ReadSafe(drow, "CV", 0.0!)
 
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
@@ -2131,11 +2131,11 @@ Public Class cEIIXMLDataSource
         For iRow As Integer = 0 To rows.Count - 1
             Dim drow As DataRow = rows(iRow)
             Try
-                mseDS.AssessMethod = DirectCast(Me.ReadSafe(drow, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
-                mseDS.AssessPower = CSng(Me.ReadSafe(drow, "AssessPower", 1))
-                mseDS.NTrials = CInt(Me.ReadSafe(drow, "NTrials", 10))
-                mseDS.MSYStartTimeIndex = CInt(Me.ReadSafe(drow, "StartIndex", 2))
-                mseDS.MSEMaxEffort = CSng(Me.ReadSafe(drow, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT))
+                mseDS.AssessMethod = Me.ReadSafe(drow, "AssessMethod", eAssessmentMethods.CatchEstmBio)
+                mseDS.AssessPower = Me.ReadSafe(drow, "AssessPower", 1.0!)
+                mseDS.NTrials = Me.ReadSafe(drow, "NTrials", 10)
+                mseDS.MSYStartTimeIndex = Me.ReadSafe(drow, "StartIndex", 2)
+                mseDS.MSEMaxEffort = Me.ReadSafe(drow, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT)
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
                 bSucces = False
@@ -2172,7 +2172,7 @@ Public Class cEIIXMLDataSource
                 iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
 
                 If (iFleet > 0 And iGroup > 0) Then
-                    zScale = CStr(Me.ReadSafe(drow, "zScale", ""))
+                    zScale = Me.ReadSafe(drow, "zScale", "")
                     ' Store points
                     If Not String.IsNullOrWhiteSpace(zScale) Then
                         ' #Yes: split and process
@@ -2183,7 +2183,7 @@ Public Class cEIIXMLDataSource
 
                         If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0 Then
                             If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
-                                Me.m_core.setDefaultCatchabilities(iFleet, iGroup)
+                                Me.m_core.SetDefaultCatchabilities(iFleet, iGroup)
                             End If 'ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE
                         End If 'ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0
                     End If ' Not String.IsNullOrWhiteSpace(zScale)
@@ -2242,12 +2242,12 @@ Public Class cEIIXMLDataSource
             ecospaceDS.InRow = CInt(drow("Inrow"))
             ecospaceDS.InCol = CInt(drow("Incol"))
             ecospaceDS.CellLength = CSng(drow("CellLength"))
-            ecospaceDS.Lat1 = CSng(Me.ReadSafe(drow, "MinLat", 0))
-            ecospaceDS.Lon1 = CSng(Me.ReadSafe(drow, "MinLon", 0))
-            ecospaceDS.TimeStep = CSng(Me.ReadSafe(drow, "TimeStep", 0))
+            ecospaceDS.Lat1 = Me.ReadSafe(drow, "MinLat", 0!)
+            ecospaceDS.Lon1 = Me.ReadSafe(drow, "MinLon", 0!)
+            ecospaceDS.TimeStep = Me.ReadSafe(drow, "TimeStep", 0!)
             ecospaceDS.PredictEffort = (CInt(Me.ReadSafe(drow, "PredictEffort", True)) <> 0)
             ecospaceDS.AssumeSquareCells = (CInt(Me.ReadSafe(drow, "AssumeSquareCells", True)) <> 0)
-            ecospaceDS.ProjectionString = CStr(Me.ReadSafe(drow, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
+            ecospaceDS.ProjectionString = Me.ReadSafe(drow, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM)
 
             ' JS 05apr08: pragmatic fix to prevent mayhem
             If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -2260,7 +2260,7 @@ Public Class cEIIXMLDataSource
             ecospaceDS.nRegions = CInt(Me.ReadSafe(drow, "NumRegions", 0))
             ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
             ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)
-            ecospaceDS.Tol = CSng(Me.ReadSafe(drow, "Tolerance", 0.01!))
+            ecospaceDS.Tol = Me.ReadSafe(drow, "Tolerance", 0.01!)
             ecospaceDS.UseSpinUp = CBool(Me.ReadSafe(drow, "UseSpinup", False))
             ecospaceDS.SpinUpYears = CInt(Me.ReadSafe(drow, "SpinupYears", 10))
 
@@ -2333,13 +2333,13 @@ Public Class cEIIXMLDataSource
         Try
             drow = dtScenario.DefaultView.ToTable.Rows(0)
 
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthMap", "")), ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "FlowMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "DepthMap", ""), ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "RelPPMap", ""), ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "RelCinMap", ""), ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "FlowMap", ""), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "DepthAMap", ""), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "RegionMap", ""), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "ExclusionMap", ""), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
 
         Catch ex As Exception
             bSucces = False
@@ -2368,11 +2368,11 @@ Public Class cEIIXMLDataSource
         For Each drow As DataRow In dtMaps.DefaultView.ToTable.Rows
             iMonth = CInt(Me.ReadSafe(drow, "MonthID", 0))
             If (1 <= iMonth And iMonth <= cCore.N_MONTHS) Then
-                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "WindXVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Xv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "WindYVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "AdvectionXVelMap", "")), ecospaceDS.MonthlyXvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "AdvectionYVelMap", "")), ecospaceDS.MonthlyYvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "UpwellingMap", "")), ecospaceDS.MonthlyUpWell(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "WindXVelMap", ""), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Xv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "WindYVelMap", ""), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "AdvectionXVelMap", ""), ecospaceDS.MonthlyXvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "AdvectionYVelMap", ""), ecospaceDS.MonthlyYvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "UpwellingMap", ""), ecospaceDS.MonthlyUpWell(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
             End If
         Next
 
@@ -2402,7 +2402,7 @@ Public Class cEIIXMLDataSource
             Try
                 ecospaceDS.HabitatDBID(i) = CInt(drow("HabitatID"))
                 ecospaceDS.HabitatText(i) = CStr(drow("HabitatName"))
-                strMap = CStr(Me.ReadSafe(drow, "HabitatMap", ""))
+                strMap = Me.ReadSafe(drow, "HabitatMap", "")
                 ' Read only water cells with values for this habitat index
 
                 cStringUtils.StringToArray(strMap, ecospaceDS.PHabType(i), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
@@ -2446,7 +2446,7 @@ Public Class cEIIXMLDataSource
                     ' EcospaceDS.MPAmonth: False if closed, True if open
                     ecospaceDS.MPAmonth(iMonth + 1, iMPA) = (strMPAMonth.Substring(iMonth, 1) = "1")
                 Next iMonth
-                strMap = CStr(Me.ReadSafe(drow, "MPAMap", ""))
+                strMap = Me.ReadSafe(drow, "MPAMap", "")
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, True)
                 iMPA += 1
 
@@ -2493,13 +2493,13 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.Mvel(iGroup) = CSng(drow("Mvel"))
                 ecospaceDS.RelMoveBad(iGroup) = CSng(drow("RelMoveBad"))
                 ecospaceDS.RelVulBad(iGroup) = CSng(drow("RelVulBad"))
-                ecospaceDS.Kmovefit(iGroup) = CSng(Me.ReadSafe(drow, "KMoveFit", 0))
+                ecospaceDS.Kmovefit(iGroup) = Me.ReadSafe(drow, "KMoveFit", 0!)
                 ecospaceDS.IsAdvected(iGroup) = (CInt(drow("IsAdvected")) <> 0)
                 ecospaceDS.IsMigratory(iGroup) = (CInt(drow("IsMigratory")) <> 0)
-                ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
+                ecospaceDS.barrierAvoidanceWeight(iGroup) = Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup))
                 ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
 
-                strMap = CStr(Me.ReadSafe(drow, "CapacityMap", ""))
+                strMap = Me.ReadSafe(drow, "CapacityMap", "")
                 cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
             Catch ex As Exception
@@ -2536,7 +2536,7 @@ Public Class cEIIXMLDataSource
                 iHabitatID = CInt(drow("HabitatID"))
                 iHabitat = Array.IndexOf(ecospaceDS.HabitatDBID, iHabitatID)
 
-                sPreference = CSng(Me.ReadSafe(drow, "Preference", 1.0))
+                sPreference = Me.ReadSafe(drow, "Preference", 1.0!)
                 ' Sanity check
                 If (iGroup = -1) Or (iHabitat = -1) Then
                     If (iGroup = -1) Then Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
@@ -2576,15 +2576,15 @@ Public Class cEIIXMLDataSource
                 iGroupID = CInt(drow("GroupID"))
                 iGroup = Array.IndexOf(ecospaceDS.GroupDBID, iGroupID)
                 iMonth = CInt(drow("MonthID"))
-                'sConcentration = CSng(Me.ReadSafe(drow, "Concentration", 1.0))
+                'sConcentration = Me.ReadSafe(drow, "Concentration", 1.0))
                 ' Sanity check
                 If (iGroup = -1) Then
                     Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
                 Else
-                    strMap = CStr(Me.ReadSafe(drow, "Map", ""))
+                    strMap = Me.ReadSafe(drow, "Map", "")
                     cStringUtils.StringToArray(strMap, ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                     '' Read monthly concentration value
-                    'ecospaceDS.MigConc(iGroup, iMonth) = CSng(Me.ReadSafe(drow, "Concentration", 1.0))
+                    'ecospaceDS.MigConc(iGroup, iMonth) = Me.ReadSafe(drow, "Concentration", 1.0))
                 End If
 
             Catch ex As Exception
@@ -2616,11 +2616,11 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EffPower(iFleet) = CSng(drow("EffPower"))
 
                 ' Read port map for a given fleet and land cells only
-                strMap = CStr(Me.ReadSafe(drow, "PortMap", ""))
+                strMap = Me.ReadSafe(drow, "PortMap", "")
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.Port(iFleet), ecospaceDS.InRow, ecospaceDS.InCol)
 
                 ' Read sailing cost map for a given fleet and water cells only
-                strMap = CStr(Me.ReadSafe(drow, "SailCostMap", ""))
+                strMap = Me.ReadSafe(drow, "SailCostMap", "")
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.Sail(iFleet), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 iFleet += 1
 
@@ -2716,7 +2716,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.ImportanceLayerDescription(iLayer) = CStr(drow("Description"))
                 ecospaceDS.ImportanceLayerWeight(iLayer) = CSng(drow("Weight"))
 
-                Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
+                Dim strMap As String = Me.ReadSafe(drow, "LayerMap", "")
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.ImportanceLayerMap(iLayer),
                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
@@ -2762,9 +2762,9 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerDBID(iLayer) = CInt(drow("LayerID"))
                 ecospaceDS.EnvironmentalLayerName(iLayer) = CStr(drow("LayerName"))
                 ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(drow("LayerDescription"))
-                ecospaceDS.EnvironmentalLayerUnits(iLayer) = CStr(Me.ReadSafe(drow, "LayerUnits", ""))
+                ecospaceDS.EnvironmentalLayerUnits(iLayer) = Me.ReadSafe(drow, "LayerUnits", "")
 
-                Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
+                Dim strMap As String = Me.ReadSafe(drow, "LayerMap", "")
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer),
                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
@@ -2873,11 +2873,11 @@ Public Class cEIIXMLDataSource
 
                     If (iConn > 0) Then
                         Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
-                        item.DatasetGUID = CStr(Me.ReadSafe(drow, "DatasetGUID", ""))
-                        item.DatasetTypeName = CStr(Me.ReadSafe(drow, "DatasetTypeName", ""))
-                        item.ConverterTypeName = CStr(Me.ReadSafe(drow, "ConverterTypeName", ""))
-                        item.ConverterConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "ConverterCfg", "")))
-                        item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
+                        item.DatasetGUID = Me.ReadSafe(drow, "DatasetGUID", "")
+                        item.DatasetTypeName = Me.ReadSafe(drow, "DatasetTypeName", "")
+                        item.ConverterTypeName = Me.ReadSafe(drow, "ConverterTypeName", "")
+                        item.ConverterConfig = Web.HttpUtility.UrlDecode(Me.ReadSafe(drow, "ConverterCfg", ""))
+                        item.Scale = Me.ReadSafe(drow, "Scale", 1.0!)
                         item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
                         item.StartYear = CInt(Me.ReadSafe(drow, "StartYear", 0))
                         item.EndYear = CInt(Me.ReadSafe(drow, "EndYear", 0))
@@ -3713,18 +3713,28 @@ Public Class cEIIXMLDataSource
     ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
     ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadSafe(row As DataRow,
-                             strField As String,
-                             Optional objValueDefault As Object = Nothing,
-                             Optional objValueIgnore As Object = CSng(-9999)) As Object
+    Public Function ReadSafe(Of T)(row As DataRow,
+                                   strField As String,
+                                   objValueDefault As T,
+                                   Optional objValueIgnore As T = Nothing) As T
 
-        Dim objResult As Object = Nothing
+        Dim objResult As T = Nothing
 
         If (row Is Nothing) Then Return objValueDefault
 
         Try
             If row.Table.Columns.Contains(strField) Then
-                objResult = row(strField)
+                Dim type As Type = GetType(T)
+                Dim val As Object = row(strField)
+
+                If Not Convert.IsDBNull(val) Then
+                    If type.IsEnum Then
+                        val = CInt(val)
+                        objResult = DirectCast(val, T)
+                    Else
+                        objResult = DirectCast(Convert.ChangeType(val, GetType(T)), T)
+                    End If
+                End If
             End If
         Catch ex As IndexOutOfRangeException
             ' Ugh
@@ -3737,28 +3747,26 @@ Public Class cEIIXMLDataSource
 
         If (objResult Is Nothing) Then
             objResult = objValueDefault
-        ElseIf (objValueIgnore IsNot Nothing) _
-            And Not (Convert.IsDBNull(objResult)) _
-            And Not (Convert.IsDBNull(objValueIgnore)) Then
+        ElseIf (objValueIgnore IsNot Nothing) And Not (Convert.IsDBNull(objResult)) And Not (Convert.IsDBNull(objValueIgnore)) Then
 
             ' Compare ignore values
             If TypeOf objResult Is String Then
                 Try
-                    If (String.Compare(CStr(objResult), Convert.ToString(objValueIgnore), True) = 0) Then
+                    If (String.Compare(Convert.ToString(objResult), Convert.ToString(objValueIgnore), True) = 0) Then
                         objResult = objValueDefault
                     End If
                 Catch ex As Exception
                 End Try
             ElseIf TypeOf objResult Is Boolean Then
                 Try
-                    If (CBool(objResult) = Convert.ToBoolean(objValueIgnore)) Then
+                    If (Convert.ToBoolean(objResult) = Convert.ToBoolean(objValueIgnore)) Then
                         objResult = objValueDefault
                     End If
                 Catch ex As Exception
                 End Try
             Else
                 Try
-                    If (CSng(objResult) = Convert.ToSingle(objValueIgnore)) Then
+                    If (Convert.ToSingle(objResult) = Convert.ToSingle(objValueIgnore)) Then
                         objResult = objValueDefault
                     End If
                 Catch ex As Exception

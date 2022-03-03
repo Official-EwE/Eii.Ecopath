@@ -157,6 +157,7 @@ Namespace Style
         Public Shared ReadOnly Property Velocity As String = "[cm]/[sec]"
         Public Shared ReadOnly Property Number As String = "[number]"
         Public Shared ReadOnly Property Year As String = "[year]"
+        Public Shared ReadOnly Property FishingEffort As String = "[kilowattdays]/[time]"
 
     End Class
 

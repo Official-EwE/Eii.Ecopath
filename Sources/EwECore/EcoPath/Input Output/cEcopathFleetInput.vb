@@ -60,8 +60,13 @@ Public Class cEcopathFleetInput
         val = New cValue(core, New Single, eVarNameFlags.SailCost, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
 
+        'Nominal effort
+        val = New cValue(core, New Single, eVarNameFlags.NominalEffort, eStatusFlags.Null, eValueTypes.Sng)
+        val.AffectsRunState = False
+        Me.m_values.Add(val.varName, val)
+
         'PoolColor
-        val = New cValue(core, New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(core, New Integer, eVarNameFlags.Color, eStatusFlags.Null, eValueTypes.Int)
         val.AffectsRunState = False
         Me.m_values.Add(val.varName, val)
 
@@ -128,6 +133,15 @@ Public Class cEcopathFleetInput
         End Set
     End Property
 
+    Public Property NominalEffort() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.NominalEffort))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.NominalEffort, value)
+        End Set
+    End Property
+
     Public Property Landings(iGroup As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.Landings, iGroup))
@@ -148,10 +162,10 @@ Public Class cEcopathFleetInput
 
     Public Property PoolColor() As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
+            Return CInt(Me.GetVariable(eVarNameFlags.Color))
         End Get
         Set(value As Integer)
-            Me.SetVariable(eVarNameFlags.PoolColor, value)
+            Me.SetVariable(eVarNameFlags.Color, value)
         End Set
     End Property
 
@@ -190,7 +204,6 @@ Public Class cEcopathFleetInput
         End Set
 
     End Property
-
 
     Public Property Discards(iGroup As Integer) As Single
 
@@ -236,6 +249,15 @@ Public Class cEcopathFleetInput
     End Property
 
 #End Region
+
+    Public Property NominalEffortStatus As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.NominalEffort)
+        End Get
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.NominalEffort, value)
+        End Set
+    End Property
 
     Public Property CPUECostStatus() As eStatusFlags
         Get

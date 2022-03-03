@@ -586,8 +586,12 @@ Namespace WebServices.Ecobase
         Public Property Index As Integer = 0
 
         ''' <summary>Name of a fleet.</summary>
-        <XmlElement("fleet_name")> _
+        <XmlElement("fleet_name")>
         Public Property Name() As String
+
+        ''' <summary>Nominal effort of a fleet.</summary>
+        <XmlElement("fleet_nominal_effort")>
+        Public Property NominalEffort() As Single
 
         <XmlElement("fleet_color")> _
         Public Property Color() As Integer
@@ -623,6 +627,7 @@ Namespace WebServices.Ecobase
 
             Me.Index = iFleet
             Me.Name = ecopathDS.FleetName(iFleet)
+            Me.NominalEffort = ecopathDS.NominalEffort(iFleet)
             Me.Color = ecopathDS.FleetColor(iFleet)
             Me.FixedCost = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
             Me.SailCost = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
