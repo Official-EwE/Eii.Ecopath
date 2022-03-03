@@ -146,20 +146,9 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Try
-
-            'Cast the datasource 
-            Dim ModelDataBase As EwECore.DataSources.cDBDataSource
-            ModelDataBase = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
-
-            System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
-
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".LoadModel() Exception " + ex.Message)
-        End Try
-
+        'JS: this fails on non-db datasources such as the cEIIXMLDatasource
+        'Dim ModelDataBase As EwECore.DataSources.cDBDataSource = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
         Return True
-
     End Function
 
     ''' <summary>
@@ -168,8 +157,6 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        System.Console.WriteLine(Me.ToString + ".SaveModel()")
-
         Return True
     End Function
 
