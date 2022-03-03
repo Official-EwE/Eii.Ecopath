@@ -2617,6 +2617,7 @@ Namespace DataSources
 
                     ecopathDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
                     ecopathDS.FleetName(iFleet) = CStr(reader("FleetName"))
+                    ecopathDS.NominalEffort(iFleet) = CSng(Me.m_db.ReadSafe(reader, "NominalEffort", 1.0!))
                     ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(reader("FixedCost"))
                     ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(reader("SailingCost"))
                     ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(reader("variableCost"))
@@ -2770,6 +2771,7 @@ Namespace DataSources
                     drow("Sequence") = iFleet
                     If bAddNewRow Then drow("FleetID") = ecopathDS.FleetDBID(iFleet)
                     drow("FleetName") = ecopathDS.FleetName(iFleet)
+                    drow("NominalEffort") = ecopathDS.NominalEffort(iFleet)
                     drow("FixedCost") = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
                     drow("SailingCost") = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
                     drow("variableCost") = ecopathDS.CostPct(iFleet, eCostIndex.CUPE)

@@ -180,11 +180,13 @@ Namespace Core
         ImportedConsumption
         ''' <summary>Predation mortality</summary>
         PredMort
-        ''' <summary>To document</summary>
+        ''' <summary>Fisheries landings</summary>
         Landings
-        ''' <summary>To document</summary>
+        ''' <summary>Fisheries discards</summary>
         Discards
-        ''' <summary>To document</summary>
+        ''' <summary>Fisheries nominal effort</summary>
+        NominalEffort
+        ''' <summary>Fisheries value of catches at landing</summary>
         OffVesselPrice
         ''' <summary>To document</summary>
         NonMarketValue
@@ -404,7 +406,7 @@ Namespace Core
         ''' <summary>To document</summary>
         Plap
         ''' <summary>Colour value to represent an exposed core I/O object</summary>
-        PoolColor
+        Color
         ''' <summary>To document</summary>
         Alpha ' Borrowed from EwE5 EcoRanger
         ''' <summary>Recruitment power</summary>

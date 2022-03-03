@@ -1372,31 +1372,31 @@
     <value>EcospaceSSGroup</value>
   </data>
   <data name="VARIABLE_ECOSPACESUMMARYTIMEEND" xml:space="preserve">
-    <value>EcospaceSummaryTimeEnd</value>
+    <value>Summary time end</value>
   </data>
   <data name="VARIABLE_ECOSPACESUMMARYTIMESTART" xml:space="preserve">
-    <value>EcospaceSummaryTimeStart</value>
+    <value>Summary time start</value>
   </data>
   <data name="VARIABLE_ECOSPACEUSEANNUALOUTPUT" xml:space="preserve">
-    <value>EcospaceUseAnnualOutput</value>
+    <value>Use annual output</value>
   </data>
   <data name="VARIABLE_ECOSPACEUSECOREOUTPUTDIR" xml:space="preserve">
     <value>EcospaceUseCoreOutputDir</value>
   </data>
   <data name="VARIABLE_ECOSPACEUSEECOSIMBIOMASSFORCING" xml:space="preserve">
-    <value>EcospaceUseEcosimBiomassForcing</value>
+    <value>Use Ecosim biomass forcing</value>
   </data>
   <data name="VARIABLE_ECOSPACEUSELOCALMEMORY" xml:space="preserve">
-    <value>EcospaceUseLocalMemory</value>
+    <value>Use local memory</value>
   </data>
   <data name="VARIABLE_ECOSYSTEMTYPE" xml:space="preserve">
-    <value>EcosystemType</value>
+    <value>Ecosystem type</value>
   </data>
   <data name="VARIABLE_EFFECTIVEPOWER" xml:space="preserve">
     <value>EffectivePower</value>
   </data>
   <data name="VARIABLE_EFFORTDISTTHRESHOLD" xml:space="preserve">
-    <value>EffortDistThreshold</value>
+    <value>Effort Distr. Threshold||Effort distribution threshold</value>
   </data>
   <data name="VARIABLE_EGGATSPAWN" xml:space="preserve">
     <value>EggAtSpawn</value>
@@ -1414,10 +1414,10 @@
     <value>Estimated</value>
   </data>
   <data name="VARIABLE_F2TSANOMALYSEARCH" xml:space="preserve">
-    <value>F2TSAnomalySearch</value>
+    <value>Use anomaly search</value>
   </data>
   <data name="VARIABLE_F2TSAPPLIEDWEIGHTS" xml:space="preserve">
-    <value>F2TSAppliedWeights</value>
+    <value>Applied time series weights</value>
   </data>
   <data name="VARIABLE_F2TSCATCHANOMALY" xml:space="preserve">
     <value>F2TSCatchAnomaly</value>
@@ -1426,31 +1426,31 @@
     <value>F2TSCatchAnomalySearchShapeNumber</value>
   </data>
   <data name="VARIABLE_F2TSFIRSTYEAR" xml:space="preserve">
-    <value>F2TSFirstYear</value>
+    <value>Fit to time series first year</value>
   </data>
   <data name="VARIABLE_F2TSLASTYEAR" xml:space="preserve">
-    <value>F2TSLastYear</value>
+    <value>Fit to time series last year</value>
   </data>
   <data name="VARIABLE_F2TSNAICDATA" xml:space="preserve">
-    <value>F2TSNAICData</value>
+    <value>No. of AIC data points</value>
   </data>
   <data name="VARIABLE_F2TSNUMSPLINEPOINTS" xml:space="preserve">
-    <value>F2TSNumSplinePoints</value>
+    <value>No. of spline points</value>
   </data>
   <data name="VARIABLE_F2TSPPVARIANCE" xml:space="preserve">
-    <value>F2TSPPVariance</value>
+    <value>PP variance</value>
   </data>
   <data name="VARIABLE_F2TSUSEDEFAULTV" xml:space="preserve">
-    <value>F2TSUseDefaultV</value>
+    <value>Use defaul vulnerabilities</value>
   </data>
   <data name="VARIABLE_F2TSVULNERABILITYSEARCH" xml:space="preserve">
-    <value>F2TSVulnerabilitySearch</value>
+    <value>Use vulnerability search</value>
   </data>
   <data name="VARIABLE_F2TSVULNERABILITYVARIANCE" xml:space="preserve">
-    <value>F2TSVulnerabilityVariance</value>
+    <value>Vulnerability variance</value>
   </data>
   <data name="VARIABLE_FEEDINGTIMEADJRATE" xml:space="preserve">
-    <value>FeedingTimeAdjRate</value>
+    <value>Feeding time adjustment rate</value>
   </data>
   <data name="VARIABLE_FIB" xml:space="preserve">
     <value>FIB</value>
@@ -2875,5 +2875,11 @@
   </data>
   <data name="PARAM_LOGISTIC_XMIN" xml:space="preserve">
     <value>X min</value>
+  </data>
+  <data name="UNIT_KILOWATTDAYS" xml:space="preserve">
+    <value>kW days</value>
+  </data>
+  <data name="VARIABLE_NOMINALEFFORT" xml:space="preserve">
+    <value>Nom. Eff.||Nominal effort</value>
   </data>
 </root>

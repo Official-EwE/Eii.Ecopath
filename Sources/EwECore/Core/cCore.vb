@@ -4834,6 +4834,7 @@ Public Class cCore
             Debug.Assert(iFleet > 0 And iFleet <= m_EcopathData.NumFleet, "Failed to find Fleet index for database ID " & fleet.DBID)
 
             Me.m_EcopathData.FleetName(iFleet) = fleet.Name
+            Me.m_EcopathData.NominalEffort(iFleet) = fleet.NominalEffort
             Me.m_EcopathData.CostPct(iFleet, eCostIndex.Fixed) = fleet.FixedCost
             Me.m_EcopathData.CostPct(iFleet, eCostIndex.CUPE) = fleet.CPUECost
             Me.m_EcopathData.CostPct(iFleet, eCostIndex.Sail) = fleet.SailCost
@@ -4879,6 +4880,7 @@ Public Class cCore
 
                 fleet.DBID = m_EcopathData.FleetDBID(iFleet)
                 fleet.Name = m_EcopathData.FleetName(iFleet)
+                fleet.NominalEffort = m_EcopathData.NominalEffort(iFleet)
                 fleet.FixedCost = m_EcopathData.CostPct(iFleet, eCostIndex.Fixed)
                 fleet.CPUECost = m_EcopathData.CostPct(iFleet, eCostIndex.CUPE)
                 fleet.SailCost = m_EcopathData.CostPct(iFleet, eCostIndex.Sail)

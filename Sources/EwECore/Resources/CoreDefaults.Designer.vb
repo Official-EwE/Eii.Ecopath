@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreDefaults
@@ -1024,6 +1024,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property UNIT_KILOMETER() As String
             Get
                 Return ResourceManager.GetString("UNIT_KILOMETER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to kW days.
+        '''</summary>
+        Public Shared ReadOnly Property UNIT_KILOWATTDAYS() As String
+            Get
+                Return ResourceManager.GetString("UNIT_KILOWATTDAYS", resourceCulture)
             End Get
         End Property
         
@@ -3260,7 +3269,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceSummaryTimeEnd.
+        '''  Looks up a localized string similar to Summary time end.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACESUMMARYTIMEEND() As String
             Get
@@ -3269,7 +3278,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceSummaryTimeStart.
+        '''  Looks up a localized string similar to Summary time start.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACESUMMARYTIMESTART() As String
             Get
@@ -3278,7 +3287,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceUseAnnualOutput.
+        '''  Looks up a localized string similar to Use annual output.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEUSEANNUALOUTPUT() As String
             Get
@@ -3296,7 +3305,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceUseEcosimBiomassForcing.
+        '''  Looks up a localized string similar to Use Ecosim biomass forcing.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEUSEECOSIMBIOMASSFORCING() As String
             Get
@@ -3305,7 +3314,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceUseLocalMemory.
+        '''  Looks up a localized string similar to Use local memory.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEUSELOCALMEMORY() As String
             Get
@@ -3314,7 +3323,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcosystemType.
+        '''  Looks up a localized string similar to Ecosystem type.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSYSTEMTYPE() As String
             Get
@@ -3350,7 +3359,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EffortDistThreshold.
+        '''  Looks up a localized string similar to Effort Distr. Threshold||Effort distribution threshold.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_EFFORTDISTTHRESHOLD() As String
             Get
@@ -3440,7 +3449,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSAnomalySearch.
+        '''  Looks up a localized string similar to Use anomaly search.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSANOMALYSEARCH() As String
             Get
@@ -3449,7 +3458,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSAppliedWeights.
+        '''  Looks up a localized string similar to Applied time series weights.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSAPPLIEDWEIGHTS() As String
             Get
@@ -3476,7 +3485,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSFirstYear.
+        '''  Looks up a localized string similar to Fit to time series first year.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSFIRSTYEAR() As String
             Get
@@ -3485,7 +3494,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSLastYear.
+        '''  Looks up a localized string similar to Fit to time series last year.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSLASTYEAR() As String
             Get
@@ -3494,7 +3503,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSNAICData.
+        '''  Looks up a localized string similar to No. of AIC data points.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSNAICDATA() As String
             Get
@@ -3503,7 +3512,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSNumSplinePoints.
+        '''  Looks up a localized string similar to No. of spline points.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSNUMSPLINEPOINTS() As String
             Get
@@ -3512,7 +3521,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSPPVariance.
+        '''  Looks up a localized string similar to PP variance.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSPPVARIANCE() As String
             Get
@@ -3521,7 +3530,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSUseDefaultV.
+        '''  Looks up a localized string similar to Use defaul vulnerabilities.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSUSEDEFAULTV() As String
             Get
@@ -3530,7 +3539,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSVulnerabilitySearch.
+        '''  Looks up a localized string similar to Use vulnerability search.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSVULNERABILITYSEARCH() As String
             Get
@@ -3539,7 +3548,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F2TSVulnerabilityVariance.
+        '''  Looks up a localized string similar to Vulnerability variance.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_F2TSVULNERABILITYVARIANCE() As String
             Get
@@ -3566,7 +3575,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FeedingTimeAdjRate.
+        '''  Looks up a localized string similar to Feeding time adjustment rate.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_FEEDINGTIMEADJRATE() As String
             Get
@@ -6874,6 +6883,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_NGRIDSOLVERTHREADS() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_NGRIDSOLVERTHREADS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Nom. Eff.||Nominal effort.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NOMINALEFFORT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NOMINALEFFORT", resourceCulture)
             End Get
         End Property
         

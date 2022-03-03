@@ -868,6 +868,7 @@ Namespace Database
                     drow("Sequence") = iFleet
                     drow("FleetID") = iFleet
                     drow("FleetName") = Me.m_data.FleetName(iFleet)
+                    drow("NominalEffort") = 0
                     drow("FixedCost") = Me.m_data.CostPct(iFleet, eCostIndex.Fixed)
                     drow("SailingCost") = Me.m_data.CostPct(iFleet, eCostIndex.Sail)
                     drow("variableCost") = Me.m_data.CostPct(iFleet, eCostIndex.CUPE)

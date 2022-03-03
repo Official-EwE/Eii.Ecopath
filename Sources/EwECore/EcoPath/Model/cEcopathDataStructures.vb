@@ -259,20 +259,22 @@ Public Class cEcopathDataStructures
     Public StanzaGroup() As Boolean 'Dim: numgroups, True if this is a group with stanza's
 
     'fishing variables
+    ''' <summary>Names of fleets.</summary>
+    Public FleetName() As String
+    ''' <summary>Database IDs per fleet.</summary>
+    Friend FleetDBID() As Integer
     Public NoGearData As Boolean
     ''' <summary> cost(nFleets,3) '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost </summary>
     Public cost(,) As Single
+    ''' <summary>Actual, real-world effort represented by the fleet</summary>
+    Public NominalEffort() As Single
     Public CostPct(,) As Single
-
     ''' <summary>Discarded biomass by fleet group </summary>
     ''' <remarks>Includes survival!</remarks>
     Public Discard(,) As Single
     ''' <summary>Fate of discards (by fleet, #detritus)</summary>
     Public DiscardFate(,) As Single
-    ''' <summary>Names of fleets.</summary>
-    Public FleetName() As String
-    ''' <summary>Database IDs per fleet.</summary>
-    Friend FleetDBID() As Integer
+
 
     ''' <summary>Landinged biomass (by fleet,group)</summary>
     Public Landing(,) As Single
@@ -558,6 +560,7 @@ Public Class cEcopathDataStructures
         ReDim Me.CostPct(Me.NumFleet, 3)       '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost
         ReDim Me.FleetName(Me.NumFleet + 1)
         ReDim Me.FleetDBID(Me.NumFleet + 1)
+        ReDim Me.NominalEffort(Me.NumFleet)
         'Next in Catch
         ReDim Me.Landing(Me.NumFleet, Me.NumGroups)
         ReDim Me.Discard(Me.NumFleet, Me.NumGroups)
@@ -1304,7 +1307,7 @@ Public Class cEcopathDataStructures
             dest.Discard = Me.Discard.Clone
             dest.DiscardFate = Me.DiscardFate.Clone
             Me.FleetName.CopyTo(dest.FleetName, 0)
-            'FleetDBID.CopyTo(dest.FleetDBID, 0) ' Do NOT copy DBIDs
+            dest.NominalEffort = Me.NominalEffort.Clone
             dest.Landing = Me.Landing.Clone
             dest.Market = Me.Market.Clone
             dest.PropDiscard = Me.PropDiscard.Clone

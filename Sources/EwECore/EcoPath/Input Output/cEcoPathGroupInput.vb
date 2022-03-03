@@ -127,7 +127,7 @@ Public Class cEcoPathGroupInput
         val = New cValue(core, New Single, eVarNameFlags.ImpDiet, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
         ' PoolColor
-        val = New cValue(core, New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(core, New Integer, eVarNameFlags.Color, eStatusFlags.Null, eValueTypes.Int)
         val.AffectsRunState = False
         Me.m_values.Add(val.varName, val)
         ' NonMarketValue
@@ -569,10 +569,10 @@ Public Class cEcoPathGroupInput
 
     Public Property PoolColor() As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.PoolColor))
+            Return CInt(Me.GetVariable(eVarNameFlags.Color))
         End Get
         Set(value As Integer)
-            Me.SetVariable(eVarNameFlags.PoolColor, value)
+            Me.SetVariable(eVarNameFlags.Color, value)
         End Set
     End Property
 

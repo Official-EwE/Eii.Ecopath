@@ -78,7 +78,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.Description) = New cVariableMetaData(253)
         Me.Metadata(eVarNameFlags.Author) = New cVariableMetaData(250)
         Me.Metadata(eVarNameFlags.Contact) = New cVariableMetaData(250)
-        Me.Metadata(eVarNameFlags.PoolColor) = New cVariableMetaData(-4294967295, 4294967295, ge, le)
+        Me.Metadata(eVarNameFlags.Color) = New cVariableMetaData(-4294967295, 4294967295, ge, le)
         Me.Metadata(eVarNameFlags.LastSaved) = New cVariableMetaData(0, Double.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.LastUpdated) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.North) = New cVariableMetaData(Single.MinValue, Single.MaxValue, ge, le, 0, cUnits.Mapping)
@@ -194,14 +194,15 @@ Public Class cVariableMetaData
 
         ' -- Ecopath fleets  --
         ' in 
-        Me.Metadata(eVarNameFlags.FixedCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, , cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.CPUECost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, , cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.SailCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, , cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(0, Single.MaxValue, ge, lt, , cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.Landings) = New cVariableMetaData(0, Single.MaxValue, ge, lt,, cUnits.CurrencyOverTime)
-        Me.Metadata(eVarNameFlags.Discards) = New cVariableMetaData(0, Single.MaxValue, ge, lt,, cUnits.CurrencyOverTime)
-        Me.Metadata(eVarNameFlags.DiscardFate) = New cVariableMetaData(0, Single.MaxValue, ge, lt) ' Unit?
-        Me.Metadata(eVarNameFlags.DiscardMortality) = New cVariableMetaData(0, 1, ge, le) ' Unit?
+        Me.Metadata(eVarNameFlags.FixedCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.CPUECost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.SailCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.NominalEffort) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.FishingEffort)
+        Me.Metadata(eVarNameFlags.Landings) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
+        Me.Metadata(eVarNameFlags.Discards) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
+        Me.Metadata(eVarNameFlags.DiscardFate) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0) ' Unit?
+        Me.Metadata(eVarNameFlags.DiscardMortality) = New cVariableMetaData(0, 1, ge, le, 1) ' Unit?
 
         ' out
 
