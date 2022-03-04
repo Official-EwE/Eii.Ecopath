@@ -264,8 +264,6 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                     strm.Close()
                 Next irgn
 
-
-
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
