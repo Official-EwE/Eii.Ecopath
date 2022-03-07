@@ -125,7 +125,12 @@ Namespace Core
                 FindDocumentEnd()
 
             Catch ex As Exception
-                Console.WriteLine("CLog.Open() Exception: " + ex.Message)
+                'jb 7-Mar-2022 Removed the console warning for distrubuted runs with the console
+                'because when running multiple instances at the same time 
+                'this will flood the console with messages when trying to open the generic non-model specific log file
+                'This needs some kind of global write lock 
+                'Global Named Mutex
+                'Console.WriteLine("CLog.Open() Exception: " + ex.Message)
                 Return False
             End Try
 
