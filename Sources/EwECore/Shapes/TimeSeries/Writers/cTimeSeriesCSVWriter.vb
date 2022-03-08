@@ -72,19 +72,22 @@ Public Class cTimeSeriesCSVWriter
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property DefaultFileName() As String
         Get
-            If (Me.m_core.ActiveTimeSeriesDatasetIndex = -1) Then Return ""
-            ' Get dataset
-            Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
-            ' Is dataset available?
-            If (ds Is Nothing) Then Return ""
-            ' 
-            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults), cFileUtils.ToValidFileName(ds.Name, True)) & ".csv"
+            Dim name As String = "time series template"
+
+            If (Me.m_core.ActiveTimeSeriesDatasetIndex > 0) Then
+                ' Get dataset
+                Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
+                ' Is dataset available?
+                If (ds Is Nothing) Then name = ds.Name
+            End If
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults), cFileUtils.ToValidFileName(name, True)) & ".csv"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Writes the current loaded time series dataset to a CSV file.
+    ''' Writes the current loaded time series dataset to a CSV file. If there is
+    ''' no time series loaded, this will write a dummy file with example content.
     ''' </summary>
     ''' <param name="strFileName">Name of the file to save to.</param>
     ''' <param name="strDelimiter">String delimiting character to use when 
@@ -93,8 +96,8 @@ Public Class cTimeSeriesCSVWriter
     ''' interpreting floating point values in the text.</param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Write(strFileName As String, _
-                                      strDelimiter As String, _
+    Public Overridable Function Write(strFileName As String,
+                                      strDelimiter As String,
                                       strDecimalSeparator As String) As Boolean
 
         Dim ds As cTimeSeriesDataset = Nothing
@@ -103,7 +106,9 @@ Public Class cTimeSeriesCSVWriter
         Dim bSucces As Boolean = True
 
         ' Anything to export?
-        If (Me.m_core.ActiveTimeSeriesDatasetIndex = -1) Then Return False
+        If (Me.m_core.ActiveTimeSeriesDatasetIndex = -1) Then
+            Return Me.WriteDummy(strFileName, strDelimiter, strDecimalSeparator)
+        End If
 
         ' Get dataset
         ds = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
@@ -196,7 +201,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.Close()
 
                 ' Create success message
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, ds.Name, strFileName), _
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, ds.Name, strFileName),
                                    eMessageType.DataExport, eCoreComponentType.TimeSeries, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFileName)
 
@@ -205,9 +210,9 @@ Public Class cTimeSeriesCSVWriter
         Catch ex As Exception
 
             ' Create error message
-            msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_FAILED, ds.Name, strFileName, ex.Message), _
-                               eMessageType.DataExport, _
-                               eCoreComponentType.TimeSeries, _
+            msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_FAILED, ds.Name, strFileName, ex.Message),
+                               eMessageType.DataExport,
+                               eCoreComponentType.TimeSeries,
                                eMessageImportance.Critical)
             bSucces = False
 
@@ -228,6 +233,133 @@ Public Class cTimeSeriesCSVWriter
 
 #Region " Internals "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Writes the current loaded time series dataset to a CSV file. If there is
+    ''' no time series loaded, this will write a dummy file with example content.
+    ''' </summary>
+    ''' <param name="strFileName">Name of the file to save to.</param>
+    ''' <returns>True when successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Function WriteDummy(strFileName As String, strDelimiter As String, strDecimalSeparator As String) As Boolean
+
+        Dim msg As cMessage = Nothing
+        Dim bSucces As Boolean = True
+
+        Dim tstypes As New List(Of eTimeSeriesType)
+        tstypes.AddRange(DirectCast([Enum].GetValues(GetType(eTimeSeriesType)), eTimeSeriesType()))
+        tstypes.Remove(eTimeSeriesType.NotSet)
+        tstypes.Sort()
+
+        Dim nTsT As Integer = tstypes.Count
+        Dim rnd As New Random()
+
+        ' Create path, if neccessary
+        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName), True) Then Return False
+
+        Try
+            Using sw As StreamWriter = New StreamWriter(strFileName, False)
+
+                ' Titles
+                sw.Write("Title")
+                For iTS As Integer = 1 To nTsT
+                    sw.Write(strDelimiter)
+                    sw.Write("""name {0}""", iTS)
+                Next
+                sw.WriteLine()
+
+                ' Weights
+                sw.Write("Weight")
+                For iTS As Integer = 1 To nTsT
+                    sw.Write(strDelimiter)
+                    sw.Write(cStringUtils.FormatSingle(CSng(Math.Round(rnd.NextDouble(), 1)), strDecimalSeparator), iTS)
+                Next
+                sw.WriteLine()
+
+                ' Pool code 1
+                sw.Write("Pool code")
+                For iTS As Integer = 1 To nTsT
+                    Dim t As eTimeSeriesType = tstypes(iTS - 1)
+                    sw.Write(strDelimiter)
+                    Select Case cTimeSeriesFactory.TimeSeriesCategory(t)
+                        Case eTimeSeriesCategoryType.Group
+                            sw.Write("group no")
+                        Case eTimeSeriesCategoryType.Fleet, eTimeSeriesCategoryType.FleetGroup, eTimeSeriesCategoryType.Forcing
+                            sw.Write("fleet no")
+                        Case Else
+                            sw.Write("")
+                    End Select
+                Next
+                sw.WriteLine()
+
+                ' Pool code 2
+                sw.Write("Pool code 2")
+                For iTS As Integer = 1 To nTsT
+                    Dim t As eTimeSeriesType = tstypes(iTS - 1)
+                    sw.Write(strDelimiter)
+                    Select Case cTimeSeriesFactory.TimeSeriesCategory(t)
+                        Case eTimeSeriesCategoryType.FleetGroup
+                            sw.Write("group no")
+                        Case Else
+                            sw.Write("")
+                    End Select
+                Next
+                sw.WriteLine()
+
+                ' Type
+                sw.Write("Type")
+                For iTS As Integer = 1 To nTsT
+                    Dim t As eTimeSeriesType = tstypes(iTS - 1)
+                    sw.Write(strDelimiter)
+                    sw.Write("{0} or {1}", CInt(t), t.ToString())
+                Next
+                sw.WriteLine()
+
+
+                ' Years
+                For iYear As Integer = 1 To 5
+                    sw.Write("YYYY or YYYY-MM")
+                    For iTS As Integer = 1 To nTsT
+                        sw.Write(strDelimiter)
+                        If (iYear < 5) Then
+                            sw.Write(If(rnd.NextDouble < 0.1, "", cStringUtils.FormatSingle(CSng(rnd.NextDouble() * 100), strDecimalSeparator)))
+                        Else
+                            sw.Write("..")
+                        End If
+                    Next
+                    sw.WriteLine()
+                Next
+
+                sw.Close()
+
+                ' Create success message
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, "dummy", strFileName),
+                                   eMessageType.DataExport, eCoreComponentType.TimeSeries, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFileName)
+
+            End Using
+
+        Catch ex As Exception
+
+            ' Create error message
+            msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_FAILED, "dummy", strFileName, ex.Message),
+                               eMessageType.DataExport,
+                               eCoreComponentType.TimeSeries,
+                               eMessageImportance.Critical)
+            bSucces = False
+
+        End Try
+
+        ' Has a message to send?
+        If (msg IsNot Nothing) Then
+            ' #Yes: send it
+            Me.m_core.Messages.SendMessage(msg, False)
+        End If
+
+        ' Report succes
+        Return bSucces
+
+    End Function
 
 #End Region ' Internals
 

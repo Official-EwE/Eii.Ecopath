@@ -205,7 +205,8 @@ Namespace Controls
                 Case cShapeGUIHandler.eShapeCommandTypes.Import,
                      cShapeGUIHandler.eShapeCommandTypes.Load,
                      cShapeGUIHandler.eShapeCommandTypes.FilterList,
-                     eShapeCommandTypes.FilterName
+                    cShapeGUIHandler.eShapeCommandTypes.Export,
+                    eShapeCommandTypes.FilterName
                     Return True
 
                 Case cShapeGUIHandler.eShapeCommandTypes.SetWeight
@@ -215,8 +216,7 @@ Namespace Controls
                     End If
                     Return False
 
-                Case cShapeGUIHandler.eShapeCommandTypes.Weight,
-                     cShapeGUIHandler.eShapeCommandTypes.Export
+                Case cShapeGUIHandler.eShapeCommandTypes.Weight
                     Return Me.Core.HasTimeSeries
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Duplicate,
