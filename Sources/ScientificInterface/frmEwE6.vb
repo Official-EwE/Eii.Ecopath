@@ -3946,7 +3946,8 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub m_cmdExportTimeSeries_OnUpdate(cmd As cCommand) _
         Handles m_cmdExportTimeSeries.OnUpdate
-        cmd.Enabled = (Me.Core.ActiveTimeSeriesDatasetIndex >= 1)
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded()
     End Sub
 
     ''' <summary>
