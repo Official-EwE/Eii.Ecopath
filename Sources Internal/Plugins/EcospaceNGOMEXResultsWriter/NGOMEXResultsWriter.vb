@@ -85,7 +85,7 @@ Public Class NGOMEXResultsWriter
         _lstGroups = New List(Of Integer) From {13, 16, 18, 27, 46, 53, 55, 57, 63, 65, 35}
         _lstTimesteps = New List(Of Integer)
 
-        Dim years() As Integer = New Integer(1) {17, 34}
+        Dim years() As Integer = New Integer(1) {25, 35}
 
         'Convert the years to Ecospace Timesteps
         For Each year As Integer In years
