@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System.ComponentModel
+Imports System.Drawing.Drawing2D
 Imports System.Text
 Imports EwECore.Style
 Imports EwEUtils.Core
@@ -63,12 +64,7 @@ Namespace Controls
             ''' <param name="clrLine">Node line colour.</param>
             ''' <param name="clrFill">Node fill colour.</param>
             '''--------------------------------------------------------------------
-            Public Sub DrawNode(g As Graphics, _
-                                ptf As PointF, _
-                                nodetype As eFDNodeTypes, _
-                                iSize As Integer, _
-                                clrLine As Color, _
-                                clrFill As Color)
+            Public Sub DrawNode(g As Graphics, ptf As PointF, nodetype As eFDNodeTypes, iSize As Integer, clrLine As Color, clrFill As Color)
 
                 Using br As New SolidBrush(clrFill)
                     Using p As New Pen(clrLine)
@@ -97,11 +93,7 @@ Namespace Controls
             ''' <param name="clrFont"></param>
             ''' <param name="strText">Formatted label text to draw.</param>
             '''--------------------------------------------------------------------
-            Public Sub DrawLabel(g As Graphics, _
-                                 ptf As PointF, _
-                                 font As Font, _
-                                 clrFont As Color, _
-                                 strText As String)
+            Public Sub DrawLabel(g As Graphics, ptf As PointF, font As Font, clrFont As Color, strText As String)
 
                 Using br As New SolidBrush(clrFont)
                     g.DrawString(strText, font, br, ptf, cTreeFlowDiagramRenderer.g_fmt)
@@ -109,10 +101,7 @@ Namespace Controls
 
             End Sub
 
-            Friend Function CalcLabelSize(g As Graphics, _
-                                          font As Font, _
-                                          strText As String, _
-                                          fmt As StringFormat) As SizeF
+            Friend Function CalcLabelSize(g As Graphics, font As Font, strText As String, fmt As StringFormat) As SizeF
                 Return g.MeasureString(strText, font, 6000, fmt)
             End Function
 
@@ -127,14 +116,18 @@ Namespace Controls
 
 #Region " Rendering "
 
-            Public Sub DrawConnection(g As Graphics, _
-                                      ptFrom As PointF, _
-                                      ptTo As PointF, _
-                                      clrLine As Color, _
-                                      sWidth As Single, _
-                                      connectiontype As eFDConnectionType)
+            Public Sub DrawConnection(g As Graphics, ptFrom As PointF, ptTo As PointF,
+                                      clrFrom As Color, clrTo As Color, sWidth As Single, connectiontype As eFDConnectionType)
 
-                Dim pn As New Pen(clrLine, sWidth)
+                Dim br As LinearGradientBrush = Nothing
+                Dim pn As Pen = Nothing
+
+                If (clrFrom <> clrTo) And (ptFrom <> ptTo) Then
+                    br = New LinearGradientBrush(ptFrom, ptTo, clrFrom, clrTo)
+                    pn = New Pen(br, sWidth)
+                Else
+                    pn = New Pen(clrFrom, sWidth)
+                End If
 
                 Select Case connectiontype
 
@@ -152,6 +145,7 @@ Namespace Controls
                 End Select
 
                 pn.Dispose()
+                If (br IsNot Nothing) Then br.Dispose()
 
             End Sub
 
@@ -368,14 +362,11 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawConnection(g As Graphics,
-                                  rc As Rectangle,
-                                  iPred As Integer,
-                                  iPrey As Integer,
-                                  highlight As IFlowDiagramRenderer.eFDHighlightType) _
+        Friend Sub DrawConnection(g As Graphics, rc As Rectangle, iPred As Integer, iPrey As Integer, highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawConnection
 
-            Dim clrLine As Color = Me.m_clrLine
+            Dim clrFrom As Color = Me.m_clrLine
+            Dim clrTo As Color = Me.m_clrLine
             Dim sDiet As Single = Me.m_data.LinkValue(iPred, iPrey)
             Dim sDietMax As Single = Me.m_data.LinkValueMax
             Dim sLineWidth As Single = 0.5!
@@ -387,20 +378,24 @@ Namespace Controls
                 Case IFlowDiagramRenderer.eFDHighlightType.None
                     Select Case Me.m_colorusagetype
                         Case eFDColorUsageTypes.Flow
-                            clrLine = Me.ColorRamp.GetColor(sDiet, sDietMax)
+                            clrFrom = Me.ColorRamp.GetColor(sDiet, sDietMax)
+                            clrTo = clrFrom
                         Case Else
                             ' Normal
                     End Select
 
                 Case IFlowDiagramRenderer.eFDHighlightType.GrayedOut
-                    clrLine = cColorUtils.GetVariant(clrLine, 0.75)
+                    clrFrom = cColorUtils.GetVariant(clrFrom, 0.75)
+                    clrTo = clrFrom
 
                 Case IFlowDiagramRenderer.eFDHighlightType.LinkIn
-                    clrLine = Me.InLinkColor
+                    clrFrom = Me.InLinkColor
+                    clrTo = Me.OutLinkColor
                     sLineWidth = Me.CustomLineWidth * sLineWidth
 
                 Case IFlowDiagramRenderer.eFDHighlightType.LinkOut
-                    clrLine = Me.OutLinkColor
+                    clrFrom = Me.OutLinkColor
+                    clrTo = Me.InLinkColor
                     sLineWidth = Me.CustomLineWidth * sLineWidth
 
                 Case IFlowDiagramRenderer.eFDHighlightType.Invisible
@@ -410,12 +405,8 @@ Namespace Controls
 
             sLineWidth *= Me.CalcLineWidth(sDiet, sDietMax)
 
-            Me.m_connectors.DrawConnection(g,
-                                        Me.NodeLocation(iPred, rc),
-                                        Me.NodeLocation(iPrey, rc),
-                                        clrLine,
-                                        sLineWidth,
-                                        Me.LineConnectionType)
+            Me.m_connectors.DrawConnection(g, Me.NodeLocation(iPred, rc), Me.NodeLocation(iPrey, rc),
+                                           clrFrom, clrTo, sLineWidth, Me.LineConnectionType)
         End Sub
 
         Friend Sub DrawLegend(g As Graphics, ptTopLeft As Point) _
@@ -466,7 +457,7 @@ Namespace Controls
                         Next
                         lgd.Title = My.Resources.HEADER_COMPARTMENT
                     Case eFDColorUsageTypes.Flow
-                        lgd.Title = My.Resources.HEADER_LINK
+                        lgd.Title = My.Resources.HEADER_FLOWSTRENGTH
                         lgd.AddGradient("", cStringUtils.FormatNumber(Me.m_data.LinkValueMin), cStringUtils.FormatNumber(Me.m_data.LinkValueMax))
                 End Select
                 lgd.Draw(g, ptTopLeft)

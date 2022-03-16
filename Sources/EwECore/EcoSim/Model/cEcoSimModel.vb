@@ -4444,8 +4444,7 @@ Namespace Ecosim
             ' Datasource may have missed entries for newly created diet links
             If (Not Me.m_Data.ValidateSharedArenas()) Then
                 Dim msg As cMessage = New cMessage("Shared arenas have been reset", eMessageType.DataModified, eCoreComponentType.Core, eMessageImportance.Warning)
-                'the message publisher is declared with the new operator so it already exists 
-                m_publisher.AddMessage(msg)
+                Me.m_publisher.SendMessage(msg)
             End If
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")

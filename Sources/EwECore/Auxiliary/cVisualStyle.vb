@@ -61,7 +61,7 @@ Namespace Auxiliary
         Private m_sFontSize As Single = 8.0!
         Private m_fontstyle As FontStyle = FontStyle.Regular
         ''' <summary>To identify stock gradients</summary>
-        Private m_gradientID As Integer = 0
+        Private m_gradientID As Integer = cCore.NULL_VALUE
         Private m_gradientColors As Color() = Nothing
         Private m_gradientBreaks As Double() = Nothing
         Private m_gradientName As String = ""

@@ -74,7 +74,9 @@ Namespace Controls.Map.Layers
 
             Select Case DirectCast(iSymbol, eSymbolTypes)
                 Case eSymbolTypes.None
-                    cColorRampIndicator.DrawColorRamp(g, Me.ColorRamp, rc, False)
+                    Dim rmp As cColorRamp = Me.ColorRamp
+                    If rmp Is Nothing Then rmp = Me.UIContext.StyleGuide.DefaultColorRamp
+                    cColorRampIndicator.DrawColorRamp(g, rmp, rc, False)
                 Case eSymbolTypes.Null
                     Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Percent25, Color.Gray, Color.Transparent)
                         g.FillRectangle(br, rc)
