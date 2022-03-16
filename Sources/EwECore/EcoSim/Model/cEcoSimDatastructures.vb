@@ -692,11 +692,12 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Validate and patch up shared arena use.
     ''' </summary>
+    ''' <returns>True if arenas were valid; false if corrections were needed.</returns>
     ''' <remarks>
     ''' This stage is needed to ensure that shared arenas, as read by a datasource,
     ''' are in sync with the consumption links in Ecosim.
     ''' </remarks>
-    Public Sub ValidateSharedArenas()
+    Public Function ValidateSharedArenas() As Boolean
 
         ' Indices of ilinksset that refer to an invalid i, j or k
         Dim iPred, iPrey, iPredShared, nPending As Integer
@@ -730,8 +731,44 @@ Public Class cEcosimDatastructures
 
         'Debug.WriteLine("ShArenas: ValidateSharedArenas {0} links miss defaults, {1} links are gone", nComps, lInvalidLinks.Count)
 
-        ' Need to resize arena links?
+        ' Are loaded arenas out of sync with diets?
         If (nPending > 0 Or lInvalidLinks.Count > 0) Then
+
+#If 1 Then
+            '#Set shared arenas back to default
+
+            ' Resize
+            Me.NlinksSet = Me.inlinks
+            Me.RedimArenaLinks()
+
+            Dim n As Integer = 1
+            For iPrey = 1 To Me.nGroups
+                For iPred = 1 To Me.nGroups
+                    ' Is this a diet link that does not yet have an arena link?
+                    If (Me.Consumption(iPrey, iPred) > 0.0F) Then
+                        ' #Yes: add a default
+                        Me.IlinkSet(n) = iPrey
+                        Me.JlinkSet(n) = iPred
+                        Me.KlinkSet(n) = iPred
+                        Dim iArenaTo As Integer = Me.ArenaNo(iPrey, iPred)
+                        Me.PeatArena(iArenaTo, iPred) = 1
+
+                        ' Next
+                        n += 1
+
+                        ' Not necessary, but useful for accounting and debugging:
+                        ' - Flag as done
+                        pending(iPrey, iPred) = False
+                        nPending -= 1
+
+                    End If
+                Next iPred
+            Next iPrey
+
+            Return False
+
+#Else
+            'Try to merge loaded arenas with new diet layout
             ' Make backup of current link data as set by the datasource. We'll reuse the useful bits
             Dim iLinksOld As Integer = Me.NlinksSet
             Dim ilinkcopy As Integer() = Me.IlinkSet
@@ -786,14 +823,16 @@ Public Class cEcosimDatastructures
                 Next iPred
             Next iPrey
 
-            ' Are you done, Donald? (hey, how about MEGA: Make Ecosystems Great Again?)
             Debug.Assert(nPending = 0)
 
             'Debug.WriteLine("ShArenas: ValidateSharedArenas resized to {0} ", NlinksSet)
+            Return False
+#End If
 
         End If
+        Return True
 
-    End Sub
+    End Function
 
     Private Sub RedimVariabs2()
 
