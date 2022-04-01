@@ -381,6 +381,7 @@ Namespace Ecosim
             End Try
         End Function
 
+
         Public Function IsDatTypeDriver(DatType As eTimeSeriesType) As Boolean
             Select Case DatType
                 Case eTimeSeriesType.BiomassRel,
@@ -5030,9 +5031,7 @@ Namespace Ecosim
 
             'fishing mortality at the current effort
             For i = 1 To Me.m_Data.nGroups
-                ' Debug.Assert(i <> 17)
                 If ((Me.m_RefData.ForcedFs(i, t) < 0) And PredEffort) Then
-                    'If (m_Data.FisForced(i) = False Or PredEffort) Then
 
                     Ft = 0
                     For ig = 1 To Me.m_Data.nGear
@@ -5040,7 +5039,6 @@ Namespace Ecosim
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         'Debug.Assert(m_Data.relQ(ig, i) = 0)
-                        ' Ft = Ft + QYear(ig) * m_Data.relQt(ig, i, t) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                         Ft = Ft + QYear(ig) * Me.m_Data.relQ(ig, i) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                         'Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
