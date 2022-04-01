@@ -99,15 +99,34 @@ Namespace SpatialData
                                                   dNullValue As Double) As Boolean
 
             Try
+
+                'jb 13-Mar-2022 tweaked logic to rescale if there is a new conn.Scale value
+                'This means a new dataset has been loaded
+                'but only preserve the original PPScale value
+                Dim breset As Boolean = False
+                Dim bpreserve As Boolean = False
+                If Me.m_spaceData.PPScale <> (1 / conn.Scale) Then
+                    breset = True
+                End If
+                If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
+                    breset = True
+                    bpreserve = True
+                End If
+
                 'If this is the first time step?
                 'Get the base line PP Scalar
-                If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
-                    Me.m_sPreservedScale = Me.m_spaceData.PPScale
+                'jb 13-Mar-2022 check above
+                'If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
+                If breset Then
+                    If bpreserve Then
+                        Me.m_sPreservedScale = Me.m_spaceData.PPScale
+                    End If
                     'In Ecospace PP is scaled as  [PP = RelPP(i, j) / PPScale] 
                     'PPScale is the mean over the base line map [Total PP] / [n water cells]
                     'DataScale() in the spatial temporal is calculate as [n water cells]/[total]
                     Me.m_spaceData.PPScale = (1 / conn.Scale)
                 End If
+
             Catch ex As Exception
                 System.Console.WriteLine("Exception: " & Me.ToString & ".Adapt() " & ex.Message)
                 Return False
