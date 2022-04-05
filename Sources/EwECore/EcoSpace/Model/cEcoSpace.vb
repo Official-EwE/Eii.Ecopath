@@ -1312,9 +1312,26 @@ Public Class cEcoSpace
     End Sub
 
     Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
+
+        Dim ReadMutex As Threading.Mutex
+
         Try
 
             Me.EcoSpaceData.MOLayerChanged.Clear()
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb 31-Mar-2022 For Parallel Processing
+            'When running multiple cores on the same computer at the same time
+            'Different processes reading the same files from disk can cause funky behaviour. 
+            'Model that should run the same sometimes give different results
+            Dim btimedout As Boolean
+            ReadMutex = New Threading.Mutex(False, "EwEReadSpatialData")
+            btimedout = ReadMutex.WaitOne(10000)
+            Debug.Assert(btimedout, "SPF timed out waiting for global Read Mutex")
+
+            'For debugging global mutex
+            'Threading.Thread.Sleep(10000)
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             ' Apply Ecospace datasources
             ' * This will need to become much more sophisticated
@@ -1334,7 +1351,14 @@ Public Class cEcoSpace
             '  Debug.Assert(False, ex.StackTrace)
             cLog.Write(ex, "cEcospace.SetSpatialTempData()")
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
+
+        Finally
+            'Make sure the Mutex gets released
+            ReadMutex.ReleaseMutex()
+            ReadMutex.Close()
+
         End Try
+
     End Sub
 
 
