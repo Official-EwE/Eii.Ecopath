@@ -174,7 +174,9 @@ Public Class cIBMSolver
         'IBM model routine to move packets over spatial grid using orientation information from the ecospace instantaneous movement arrays
         'uses moves per month (IBMMovesPerMonth) and distance per move (IBMDistMove) calculated from ecospace stanza information in InitPackets
         Dim ist As Integer, ieco As Integer, ia As Integer, iaa As Integer, imm As Integer
-        Dim i As Integer, j As Integer, Dmove As Single, Nmoves As Integer, isp As Integer
+        Dim i As Integer
+        Dim j As Integer
+        Dim Dmove As Single, Nmoves As Integer, isp As Integer
         Dim Mrat As Single, Ipos As Single, Jpos As Single
         Dim aa As Single, bb As Single, cc As Single, dd As Single
         Dim dAllow As Single
@@ -267,38 +269,66 @@ Public Class cIBMSolver
                         ' Q: should nmoves be adapted in this loop if an advected packet traverses cells with a different advection velocity?
                         'Nope to complicated. Treat movement the same way we treat growth, relative to the cell at the start of the time step.
                         'We can't really do that kind of detail at a monthly time step.
+                        Try
 
-                        i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
-                        aa = Me.Bcw(i + 1, j, ieco) 'south move
-                        bb = Me.C(i - 1, j, ieco) 'north move
-                        cc = Me.d(i, j, ieco) 'east move
-                        dd = Me.e(i, j, ieco) 'west move
-
-                        If Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0 Then
-                            'jb 22-Dec-2021 remove cap on number of moves because advection vectors set Nmoves to local values for this cell
-                            'If imm > Me.m_Stanza.IBMMovesPerMonth(ieco) Then Exit For
-                            If Me.m_Data.IsMigratory(ieco) = False Then
-                                'this changes movement if it's inside the box s.t. it can't get out in one move
-                                Ipos = Me.m_Stanza.iPacket(isp, iaa, ip) - i : Jpos = Me.m_Stanza.jPacket(isp, iaa, ip) - j
-                                If Ipos < 1.0 - dAllow Then
-                                    aa = Mrat
-                                End If
-                                If Ipos > dAllow Then
-                                    bb = Mrat
-                                End If
-                                If Jpos < 1.0 - dAllow Then
-                                    cc = Mrat
-                                End If
-                                If Jpos > dAllow Then
-                                    dd = Mrat
-                                End If
+                            i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
+                            If i <= Me.m_Data.InRow Then
+                                aa = Me.Bcw(i + 1, j, ieco)  'south move
+                            Else
+                                aa = 0.0
                             End If
-                        Else 'Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0
-                            Dmove = Me.m_Stanza.IBMdistmove(isp, ia)
-                            Nmoves = Me.m_Stanza.IBMMovesPerMonth(ieco) * Me.m_Data.RelMoveBad(ieco)
-                        End If
+                            If i >= 1 Then
+                                bb = Me.C(i - 1, j, ieco) 'north move
+                            Else
+                                bb = 0.0
+                            End If
 
-                        Me.MoveThePacket(isp, ieco, iaa, ip, Dmove, aa, bb, cc, dd)
+                            cc = Me.d(i, j, ieco) 'east move
+                            dd = Me.e(i, j, ieco) 'west move
+
+                            If Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0 Then
+                                'jb 22-Dec-2021 remove cap on number of moves because advection vectors set Nmoves to local values for this cell
+                                'If imm > Me.m_Stanza.IBMMovesPerMonth(ieco) Then Exit For
+                                If Me.m_Data.IsMigratory(ieco) = False Then
+                                    'this changes movement if it's inside the box s.t. it can't get out in one move
+                                    Ipos = Me.m_Stanza.iPacket(isp, iaa, ip) - i : Jpos = Me.m_Stanza.jPacket(isp, iaa, ip) - j
+                                    If Ipos < 1.0 - dAllow Then
+                                        aa = Mrat
+                                    End If
+                                    If Ipos > dAllow Then
+                                        bb = Mrat
+                                    End If
+                                    If Jpos < 1.0 - dAllow Then
+                                        cc = Mrat
+                                    End If
+                                    If Jpos > dAllow Then
+                                        dd = Mrat
+                                    End If
+                                End If
+                            Else 'Me.m_Data.HabCap(ieco)(i, j) > 0.1 And Me.m_Data.Depth(i, j) > 0
+                                'In either low foraging capacity cell or on land 
+                                Dmove = Me.m_Stanza.IBMdistmove(isp, ia)
+                                Nmoves = Me.m_Stanza.IBMMovesPerMonth(ieco) * Me.m_Data.RelMoveBad(ieco)
+
+                                If Me.m_Data.Depth(i, j) <= 0 Then
+                                    'In a land cell
+                                    'Increase the distance moved
+                                    Dmove = Me.m_Stanza.IBMdistmove(isp, ia) * Me.m_Data.RelMoveBad(ieco)
+                                    'Direction preference may not have been set
+                                    'this will create a random walk to get out of the land cell
+                                    aa = Mrat : bb = Mrat : cc = Mrat : dd = Mrat
+                                End If
+
+
+                            End If
+
+                            Debug.Assert((aa + bb + cc + dd) > 0, "Opps!")
+                            Me.MoveThePacket(isp, ieco, iaa, ip, Dmove, aa, bb, cc, dd)
+
+                        Catch ex As Exception
+                            Debug.Assert(False, ex.Message)
+                        End Try
+
 
                         ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         ''for debugging 
@@ -318,27 +348,45 @@ Public Class cIBMSolver
     End Sub
 
     Sub MoveThePacket(isp As Integer, ieco As Integer, ia As Integer, ip As Integer, Dmove As Single, aa As Single, bb As Single, cc As Single, dd As Single)
+        Dim bMove As Boolean = True
+        Dim n As Integer
 
         bb = bb + aa '+ 0.0000000001
         cc = cc + bb '+ 0.0000000001
         dd = dd + cc '+ 0.0000000001
-        Dim randMove As Single = Me.m_rand.NextDouble * dd
-        'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
-        If randMove < aa Then 'move south
-            Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Stanza.iPacket(isp, ia, ip) + Dmove
-        ElseIf randMove < bb Then 'move north
-            Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Stanza.iPacket(isp, ia, ip) - Dmove
-        ElseIf randMove < cc Then 'move east
-            Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Stanza.jPacket(isp, ia, ip) + Dmove
-        Else 'move west
-            Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Stanza.jPacket(isp, ia, ip) - Dmove
-        End If
 
-        'Bounds check the new position before it gets used
-        If Me.m_Stanza.iPacket(isp, ia, ip) < 1 Then Me.m_Stanza.iPacket(isp, ia, ip) = 1
-        If Me.m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + CELL_BOUNDS
-        If Me.m_Stanza.jPacket(isp, ia, ip) < 1 Then Me.m_Stanza.jPacket(isp, ia, ip) = 1
-        If Me.m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + CELL_BOUNDS
+        Do While bMove
+            Dim randMove As Single = Me.m_rand.NextDouble * dd
+            'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
+            If randMove < aa Then 'move south
+                Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Stanza.iPacket(isp, ia, ip) + Dmove
+            ElseIf randMove < bb Then 'move north
+                Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Stanza.iPacket(isp, ia, ip) - Dmove
+            ElseIf randMove < cc Then 'move east
+                Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Stanza.jPacket(isp, ia, ip) + Dmove
+            Else 'move west
+                Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Stanza.jPacket(isp, ia, ip) - Dmove
+            End If
+
+            'Bounds check the new position before it gets used
+            If Me.m_Stanza.iPacket(isp, ia, ip) < 1 Then Me.m_Stanza.iPacket(isp, ia, ip) = 1
+            If Me.m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + CELL_BOUNDS
+            If Me.m_Stanza.jPacket(isp, ia, ip) < 1 Then Me.m_Stanza.jPacket(isp, ia, ip) = 1
+            If Me.m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + CELL_BOUNDS
+
+            'Debug.Assert(Me.m_Data.Depth(Me.m_Stanza.iPacket(isp, ia, ip), Me.m_Stanza.jPacket(isp, ia, ip)) > 0.0, "opps I'm on land!")
+
+            'did we land on a water cell
+            If ((Me.m_Data.Depth(Math.Truncate(Me.m_Stanza.iPacket(isp, ia, ip)), Math.Truncate(Me.m_Stanza.jPacket(isp, ia, ip))) > 0.0)) Or (n > 10) Then
+                'Either in a water cell or 
+                bMove = False
+            Else
+                bMove = True
+                Dmove *= Me.m_Data.RelMoveBad(ieco)
+                n += 1
+                Debug.WriteLine(n.ToString + ", " + m_Stanza.iPacket(isp, ia, ip).ToString + ", " + m_Stanza.jPacket(isp, ia, ip).ToString + ", " + isp.ToString + ", " + ip.ToString)
+            End If
+        Loop
 
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -392,8 +440,14 @@ Public Class cIBMSolver
             Be = 0 'initialize variable to accumulate total egg production by the species for this time step
             For iaa = 0 To Me.m_Stanza.MaxAgeSpecies(isp)
                 'set age dependnt on age of fish in first index position for this time step
-                ia = Me.m_Stanza.AgeIndex1(isp) + iaa : If ia > Me.m_Stanza.MaxAgeSpecies(isp) Then ia = ia - Me.m_Stanza.MaxAgeSpecies(isp) - 1
-                If ia = Me.m_Stanza.MaxAgeSpecies(isp) Then ia1 = iaa 'save array element to be overwritten with new recruits
+                ia = Me.m_Stanza.AgeIndex1(isp) + iaa
+                If ia > Me.m_Stanza.MaxAgeSpecies(isp) Then
+                    ia = ia - Me.m_Stanza.MaxAgeSpecies(isp) - 1
+                End If
+                If ia = Me.m_Stanza.MaxAgeSpecies(isp) Then
+                    ia1 = iaa 'save array element to be overwritten with new recruits
+                End If
+
                 ist = Me.m_Stanza.StanzaNo(isp, ia)
                 ieco = Me.m_Stanza.EcopathCode(isp, ist)
                 'Debug.Assert(ieco <> 1)

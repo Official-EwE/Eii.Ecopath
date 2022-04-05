@@ -111,10 +111,15 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
             For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp) ' - 1
 
-                iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - Me.m_StanzaData.AgeIndex1(isp)
-                If ii >= Me.m_StanzaData.AgeIndex1(isp) Then
-                    iage = ii - Me.m_StanzaData.AgeIndex1(isp)
+                iage = ii
+                'iage = Me.m_StanzaData.AgeIndex1(isp) + ii
+                If iage > Me.m_StanzaData.MaxAgeSpecies(isp) Then
+                    iage = iage - Me.m_StanzaData.MaxAgeSpecies(isp) - 1
                 End If
+                'iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - Me.m_StanzaData.AgeIndex1(isp)
+                'If ii >= Me.m_StanzaData.AgeIndex1(isp) Then
+                '    iage = ii - Me.m_StanzaData.AgeIndex1(isp)
+                'End If
 
                 For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
                     Dim irow As Integer, icol As Integer
@@ -133,8 +138,8 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                         'this will double count values and n where there are no regions defined
                         'or the packet is in a zero region
                         'that won't matter once the values have been averaged
-                        RegionValues(isp)(iRgn)(ii) += InputData.InputValues(isp, iage, ipkt)
-                        n(isp)(iRgn)(iage) += 1
+                        'RegionValues(isp)(iRgn)(ii) += InputData.InputValues(isp, iage, ipkt)
+                        'n(isp)(iRgn)(iage) += 1
 
                         'zero region will be the total area 
                         RegionValues(isp)(0)(ii) += InputData.InputValues(isp, iage, ipkt)

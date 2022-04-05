@@ -82,15 +82,15 @@ Public Class NGOMEXResultsWriter
             _bIntialized = True
         End If
 
-        _lstGroups = New List(Of Integer) From {13, 16, 18, 27, 46, 53, 55, 57, 63, 65, 35}
+        _lstGroups = New List(Of Integer) From {13, 16, 19, 27, 46, 53, 55, 57, 65, 35}
         _lstTimesteps = New List(Of Integer)
-
-        Dim years() As Integer = New Integer(1) {25, 35}
+        Dim stYear As Integer = 2000
+        Dim years() As Integer = New Integer(2) {2001, 2025, 2035}
 
         'Convert the years to Ecospace Timesteps
         For Each year As Integer In years
             For i As Integer = 1 To 12
-                _lstTimesteps.Add((year - 1) * 12 + i)
+                _lstTimesteps.Add((year - stYear) * 12 + i)
             Next
         Next
 
@@ -99,8 +99,8 @@ Public Class NGOMEXResultsWriter
         ' (adults)
         '16
         'Sea Trouts(18 +)
-        '18
-        'Red Snapper(6 - 24)
+        '19
+        'Red Snapper(24+)
         '27
         'Red Drum(18 - 36)
         '46
@@ -111,8 +111,6 @@ Public Class NGOMEXResultsWriter
         'Brown Shrimp(adults)
         '57
         'White Shrimp(adults)
-        '63
-        'Zooplankton
         '65
         'Phytoplankton
         '35
@@ -147,36 +145,52 @@ Public Class NGOMEXResultsWriter
                 Return
             End If
 
-            For Each igrp As Integer In _lstGroups
+            Dim lstMapTypes As New List(Of eVarNameFlags)({eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch})
+            For Each varname In lstMapTypes
 
-                System.Console.WriteLine("NGOMEX Ecospace results group = " + igrp.ToString + ", t = " + tsData.iTimeStep.ToString)
+                WriteFile(varname, tsData)
 
-                'GetFileName() groups by default, can overridden by derived classes.
-                strFile = Me.GetFileName(eVarNameFlags.EcospaceMapBiomass, igrp, Me.FileExtension(), tsData.iTimeStep)
-                ' Create directory any time; user may have deleted it during a run
-                If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
-                    'Handle file exceptions on a per file basis
-                    'this way only the offending file will be skipped
-                    'all other files will be written 
+            Next
 
-                    Try
-                        strm = New StreamWriter(strFile, False)
-                        If (strm IsNot Nothing) Then
-                            Me.SaveASCFile(strm, tsData, igrp, eVarNameFlags.EcospaceMapBiomass)
-                            strm.Flush()
-                            strm.Close()
-                            strm = Nothing
-                        End If
-                    Catch ex As IOException
-                        cLog.Write(ex)
-                    End Try
-                End If 'cFileUtils.IsDirectoryAvailable()
-            Next igrp
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)
         End Try
 
+    End Sub
+
+
+    Private Sub WriteFile(varname As eVarNameFlags, tsData As cEcospaceTimestep)
+
+        Dim strm As StreamWriter = Nothing
+        Dim strFile As String = ""
+
+
+        For Each igrp As Integer In _lstGroups
+
+            System.Console.WriteLine("NGOMEX Ecospace results group = " + igrp.ToString + ", t = " + tsData.iTimeStep.ToString)
+
+            'GetFileName() groups by default, can overridden by derived classes.
+            strFile = Me.GetFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
+            ' Create directory any time; user may have deleted it during a run
+            If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
+                'Handle file exceptions on a per file basis
+                'this way only the offending file will be skipped
+                'all other files will be written 
+
+                Try
+                    strm = New StreamWriter(strFile, False)
+                    If (strm IsNot Nothing) Then
+                        Me.SaveASCFile(strm, tsData, igrp, varname)
+                        strm.Flush()
+                        strm.Close()
+                        strm = Nothing
+                    End If
+                Catch ex As IOException
+                    cLog.Write(ex)
+                End Try
+            End If 'cFileUtils.IsDirectoryAvailable()
+        Next igrp
     End Sub
 
 End Class
