@@ -268,10 +268,10 @@ Public Class cF2TSManager
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
         Dim count As Integer = 0
 
-        For iTS As Integer = 1 To tsDS.NdatType
-            If (tsDS.UseForAIC(tsDS.DatType(iTS))) Then
-                For iPt As Integer = 0 To tsDS.nDatPoints
-                    If tsDS.DatVal(iPt, iTS) > 0 Then count += 1
+        For iTS As Integer = 1 To tsDS.AppliedNdatType
+            If (tsDS.UseForAIC(tsDS.AppliedDatType(iTS))) Then
+                For iPt As Integer = 0 To tsDS.AppliedDatPoints
+                    If tsDS.AppliedDatVal(iPt, iTS) > 0 Then count += 1
                 Next
             End If
         Next
@@ -542,7 +542,7 @@ Public Class cF2TSManager
 
     Private Function isRefDataLoaded() As Boolean
 
-        If Me.m_core.m_TSData.NdatType > 0 Then
+        If Me.m_core.m_TSData.AppliedNdatType > 0 Then
             Return True
         End If
 

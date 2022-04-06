@@ -329,9 +329,9 @@ Public Class cEcospaceImportExportASCIIData
                 Me.m_dYLLpos = dYLLpos
 
             Else
-                Dim sz As Single = Me.m_bm.CellSize
-                bSuccess = (nCols = Me.m_bm.InCol) And
-                           (nRows = Me.m_bm.InRow)
+                'Dim sz As Single = Me.m_bm.CellSize
+                'bSuccess = (nCols = Me.m_bm.InCol) And
+                '           (nRows = Me.m_bm.InRow)
                 'bSuccess = bSuccess and cNumberUtils.Approximates(dXLLpos, Me.m_bm.PosBottomRight.X, sz / 100) And
                 '           cNumberUtils.Approximates(dYLLpos, Me.m_bm.PosBottomRight.Y, sz / 100) And
                 '           cNumberUtils.Approximates(dCellSize, Me.m_bm.CellSize, sz / 100) And

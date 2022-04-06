@@ -673,7 +673,7 @@ Public Class cEcosimMonteCarlo
         Dim bForcedCatches(Me.m_epdata.NumGroups) As Boolean
         For its As Integer = 1 To Me.m_tsdata.nTimeSeries
             If Me.m_tsdata.TimeSeriesType(its) = eTimeSeriesType.CatchesForcing Then
-                bForcedCatches(Me.m_tsdata.iPool(its)) = True
+                bForcedCatches(Me.m_tsdata.TimeSeriesPool(its)) = True
             End If
         Next
 
@@ -882,7 +882,7 @@ Public Class cEcosimMonteCarlo
 
     Private Function isTimeSeriesLoaded() As Boolean
         'Number of applied time series
-        Return Me.m_tsdata.NdatType > 0
+        Return Me.m_tsdata.AppliedNdatType > 0
     End Function
 
     ''' <summary>

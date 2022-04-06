@@ -145,36 +145,36 @@ Public Class cResultsHolder
         iYear = Int((iTime + 7) / 12) - 1
 
         'Check whether data exists for this year
-        For i = 1 To Me.mTimeSeries.nDatPoints
-            If Me.mTimeSeries.DatYear(i) - Me.mTimeSeries.DatYear(1) = iYear Then iDyear = i : Exit For
+        For i = 1 To Me.mTimeSeries.AppliedDatPoints
+            If Me.mTimeSeries.AppliedDatYear(i) - Me.mTimeSeries.AppliedDatYear(1) = iYear Then iDyear = i : Exit For
         Next
 
         If iDyear <> 0 Then
 
-            For j = 1 To Me.mTimeSeries.NdatType
+            For j = 1 To Me.mTimeSeries.AppliedNdatType
 
-                If Me.mTimeSeries.DatVal(iDyear, j) > 0 And _
-                                (Me.mTimeSeries.DatType(j) = eTimeSeriesType.BiomassRel Or _
-                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.BiomassAbs Or _
-                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.TotalMortality Or _
-                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.AverageWeight Or _
-                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.Catches Or _
-                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.CatchesRel Or _
-                                 Me.mTimeSeries.DatType(j) = eTimeSeriesType.CatchesForcing) Then
+                If Me.mTimeSeries.AppliedDatVal(iDyear, j) > 0 And _
+                                (Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.BiomassRel Or _
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.BiomassAbs Or _
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.TotalMortality Or _
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.AverageWeight Or _
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.Catches Or _
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.CatchesRel Or _
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.CatchesForcing) Then
 
-                    Select Case Me.mTimeSeries.DatType(j)
+                    Select Case Me.mTimeSeries.AppliedDatType(j)
 
                         '0,1    
                         Case eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassRel
-                            Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / BiomassAtTimestep(Me.mTimeSeries.DatPool(j))))
+                            Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.AppliedDatVal(iDyear, j) / BiomassAtTimestep(Me.mTimeSeries.AppliedDatPool(j))))
 
                         Case eTimeSeriesType.TotalMortality
-                            zest = DataStructure.loss(Me.mTimeSeries.DatPool(j)) / BiomassAtTimestep(Me.mTimeSeries.DatPool(j))
-                            Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / zest))
+                            zest = DataStructure.loss(Me.mTimeSeries.AppliedDatPool(j)) / BiomassAtTimestep(Me.mTimeSeries.AppliedDatPool(j))
+                            Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.AppliedDatVal(iDyear, j) / zest))
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel
-                            If DataStructure.FishTime(Me.mTimeSeries.DatPool(j)) > 0 Then
-                                Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / (BiomassAtTimestep(Me.mTimeSeries.DatPool(j)) * DataStructure.FishTime(Me.mTimeSeries.DatPool(j)))))
+                            If DataStructure.FishTime(Me.mTimeSeries.AppliedDatPool(j)) > 0 Then
+                                Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.AppliedDatVal(iDyear, j) / (BiomassAtTimestep(Me.mTimeSeries.AppliedDatPool(j)) * DataStructure.FishTime(Me.mTimeSeries.AppliedDatPool(j)))))
                             End If
 
                         Case eTimeSeriesType.AverageWeight
@@ -183,10 +183,10 @@ Public Class cResultsHolder
                             'and is treated as a relative index
                             If DataStructure.ResultsOverTime IsNot Nothing Then
                                 Dim iti As Integer = iDyear * 12 - 7
-                                Dim iGroup As Integer = Me.mTimeSeries.DatPool(j)
-                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, Me.mTimeSeries.DatPool(j), iti)
+                                Dim iGroup As Integer = Me.mTimeSeries.AppliedDatPool(j)
+                                zest = DataStructure.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, Me.mTimeSeries.AppliedDatPool(j), iti)
                                 If zest > 0 Then
-                                    Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.DatVal(iDyear, j) / zest))
+                                    Me.ZStat(j, iDyear) = CSng(Math.Log(Me.mTimeSeries.AppliedDatVal(iDyear, j) / zest))
                                 End If
                             End If
 
@@ -205,13 +205,13 @@ Public Class cResultsHolder
 
         Me.mDataStructure = EcosimDatastructures
 
-        For i = 1 To Me.mTimeSeries.nDatPoints
-            iYear = Me.mTimeSeries.DatYear(i) - Me.mTimeSeries.DatYear(1)
-            For j = 1 To Me.mTimeSeries.NdatType
-                If Me.mTimeSeries.DatVal(i, j) = 0 Then
+        For i = 1 To Me.mTimeSeries.AppliedDatPoints
+            iYear = Me.mTimeSeries.AppliedDatYear(i) - Me.mTimeSeries.AppliedDatYear(1)
+            For j = 1 To Me.mTimeSeries.AppliedNdatType
+                If Me.mTimeSeries.AppliedDatVal(i, j) = 0 Then
                     Me.logdiff(j, i) = 0
                 Else
-                    Me.logdiff(j, i) = Me.ZStat(j, i) - Me.mTimeSeries.DatQ(j)
+                    Me.logdiff(j, i) = Me.ZStat(j, i) - Me.mTimeSeries.AppliedDatQ(j)
                 End If
             Next
         Next
@@ -221,9 +221,9 @@ Public Class cResultsHolder
 
 
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
-        ReDim Me.ZStat(Me.mTimeSeries.NdatType, Me.mTimeSeries.nDatPoints)
-        ReDim Me.logdiff(Me.mTimeSeries.NdatType, Me.mTimeSeries.nDatPoints)
-        ReDim Me.sumSS(Me.mTimeSeries.NdatType)
+        ReDim Me.ZStat(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)
+        ReDim Me.logdiff(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)
+        ReDim Me.sumSS(Me.mTimeSeries.AppliedNdatType)
     End Sub
 
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized

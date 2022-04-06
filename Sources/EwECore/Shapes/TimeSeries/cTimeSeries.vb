@@ -226,7 +226,8 @@ Public MustInherit Class cTimeSeries
         Return Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or
                Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Or
                Me.m_timeSeriesType = eTimeSeriesType.Landings Or
-               Me.m_timeSeriesType = eTimeSeriesType.Discards
+               Me.m_timeSeriesType = eTimeSeriesType.Discards Or
+               Me.m_timeSeriesType = eTimeSeriesType.Catchabilities
     End Function
 
     ''' -----------------------------------------------------------------------

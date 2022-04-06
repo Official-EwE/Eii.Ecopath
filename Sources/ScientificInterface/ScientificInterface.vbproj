@@ -135,7 +135,7 @@
     <Reference Include="EPPlus">
       <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=AMD64">
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\EwECore\Includes\EwELicense.dll</HintPath>
     </Reference>
@@ -157,7 +157,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-    <Reference Include="TreeksLicensingLibrary2, Version=2.1.6973.5242, Culture=neutral, PublicKeyToken=61021f367f304cc6, processorArchitecture=MSIL">
+    <Reference Include="TreeksLicensingLibrary2, Version=2.1.7916.36068, Culture=neutral, PublicKeyToken=fd08324525b51374, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\EwECore\Includes\TreeksLicensingLibrary2.dll</HintPath>
     </Reference>
@@ -250,15 +250,6 @@
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyGroupShape.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\Catchability\frmCatchability.Designer.vb">
-      <DependentUpon>frmCatchability.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\Catchability\frmCatchability.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\Catchability\gridCatchability.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
@@ -1079,9 +1070,6 @@
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\dlgApplyGroupShape.resx">
       <DependentUpon>dlgApplyGroupShape.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\Catchability\frmCatchability.resx">
-      <DependentUpon>frmCatchability.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
       <DependentUpon>frmApplyEP.vb</DependentUpon>

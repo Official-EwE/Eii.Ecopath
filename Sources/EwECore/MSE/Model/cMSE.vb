@@ -1291,7 +1291,7 @@ Namespace MSE
 
                     'Forced Mortality (Z)
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality PoolForceZ(group, 0) = 0 is No forcng
-                    If iyear <= Me.m_refData.nDatPoints Then
+                    If iyear <= Me.m_refData.AppliedDatPoints Then
                         Me.m_refData.PoolForceZ(igrp, 0) = CSng(if(Me.m_refData.PoolForceZ(igrp, iForced) > 0, Me.m_refData.PoolForceZ(igrp, iForced), 0))
                     End If
 

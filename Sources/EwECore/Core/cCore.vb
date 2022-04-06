@@ -558,7 +558,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nTimeSeriesEnabled() As Integer
         Get
-            Return m_TSData.NdatType
+            Return m_TSData.AppliedNdatType
         End Get
     End Property
 
@@ -1536,13 +1536,13 @@ Public Class cCore
             Me.m_timeSeriesDatasets.Clear()
 
             For iDS As Integer = 1 To Me.m_TSData.nDatasets
-                tsd = New cTimeSeriesDataset(Me, Me.m_TSData.nDatasetNumTimeSeries(iDS))
+                tsd = New cTimeSeriesDataset(Me, Me.m_TSData.DatasetNumTimeSeries(iDS))
                 tsd.AllowValidation = False
-                tsd.DBID = Me.m_TSData.iDatasetDBID(iDS)
+                tsd.DBID = Me.m_TSData.DatasetDBID(iDS)
                 tsd.Index = iDS
-                tsd.Name = Me.m_TSData.strDatasetNames(iDS)
-                tsd.FirstYear = Me.m_TSData.nDatasetFirstYear(iDS)
-                tsd.NumPoints = Me.m_TSData.nDatasetNumPoints(iDS)
+                tsd.Name = Me.m_TSData.DatasetName(iDS)
+                tsd.FirstYear = Me.m_TSData.DatasetFirstYear(iDS)
+                tsd.NumPoints = Me.m_TSData.DatasetNumPoints(iDS)
                 tsd.TimeSeriesInterval = Me.m_TSData.DataSetIntervals(iDS)
                 tsd.AllowValidation = True
 
@@ -1576,7 +1576,7 @@ Public Class cCore
 
         ' Create time series
         For iSeries As Integer = 1 To Me.nTimeSeries
-            ts = cTimeSeriesFactory.CreateTimeSeries(Me.m_TSData.TimeSeriesType(iSeries), Me, Me.m_TSData.iTimeSeriesDBID(iSeries))
+            ts = cTimeSeriesFactory.CreateTimeSeries(Me.m_TSData.TimeSeriesType(iSeries), Me, Me.m_TSData.TimeSeriesDBID(iSeries))
             ts.Index = iSeries
             Select Case ts.DataType
                 Case eDataTypes.GroupTimeSeries
@@ -1610,34 +1610,34 @@ Public Class cCore
         Try
             If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
                 tsd = Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex)
-                iNumYears = Me.m_TSData.nDatasetNumPoints(Me.ActiveTimeSeriesDatasetIndex)
+                iNumYears = Me.m_TSData.DatasetNumPoints(Me.ActiveTimeSeriesDatasetIndex)
             End If
 
             For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
 
                 ts.LockUpdates()
 
-                ts.Name = Me.m_TSData.strName(ts.Index)
+                ts.Name = Me.m_TSData.TimeSeriesName(ts.Index)
                 ts.Index = ts.Index
-                ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
+                ts.DBID = Me.m_TSData.TimeSeriesDBID(ts.Index)
                 ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
-                ts.GroupIndex = Me.m_TSData.iPool(ts.Index)
-                ts.WtType = Me.m_TSData.sWeight(ts.Index)
-                ts.CV = Me.m_TSData.sCV(ts.Index)
+                ts.GroupIndex = Me.m_TSData.TimeSeriesPool(ts.Index)
+                ts.WtType = Me.m_TSData.TimeSeriesWeight(ts.Index)
+                ts.CV = Me.m_TSData.TimeSeriesCV(ts.Index)
 
-                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
-                ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
-                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
-                ts.Interval = Me.m_TSData.DataSetInterval
+                ts.DataSS = Me.m_TSData.TimeSeriesSSPredErr(ts.Index)
+                ts.DataQ = Me.m_TSData.TimeSeriesDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.TimeSeriesEDatQ(ts.Index)
+                ts.Interval = Me.m_TSData.AppliedDataSetInterval
 
                 ts.ResizeData(iNumYears)
                 For iYear As Integer = 1 To iNumYears
-                    ts.DatVal(iYear) = Me.m_TSData.sValues(iYear, ts.Index)
+                    ts.DatVal(iYear) = Me.m_TSData.TimeSeriesValues(iYear, ts.Index)
                 Next iYear
 
                 Me.ValidateTimeSeries(ts)
 
-                ts.Enabled = Me.m_TSData.bEnable(ts.Index)
+                ts.Enabled = Me.m_TSData.TimeSeriesEnabled(ts.Index)
                 ts.UnlockUpdates(False)
 
                 tsd.Add(ts)
@@ -1647,29 +1647,29 @@ Public Class cCore
 
                 ts.LockUpdates()
 
-                ts.Name = Me.m_TSData.strName(ts.Index)
+                ts.Name = Me.m_TSData.TimeSeriesName(ts.Index)
                 ts.Index = ts.Index
-                ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
+                ts.DBID = Me.m_TSData.TimeSeriesDBID(ts.Index)
                 ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
-                ts.FleetIndex = Me.m_TSData.iPool(ts.Index)
-                ts.GroupIndex = Me.m_TSData.iPoolSec(ts.Index)
-                ts.WtType = Me.m_TSData.sWeight(ts.Index)
-                ts.CV = Me.m_TSData.sCV(ts.Index)
+                ts.FleetIndex = Me.m_TSData.TimeSeriesPool(ts.Index)
+                ts.GroupIndex = Me.m_TSData.TimeSeriesPoolSec(ts.Index)
+                ts.WtType = Me.m_TSData.TimeSeriesWeight(ts.Index)
+                ts.CV = Me.m_TSData.TimeSeriesCV(ts.Index)
 
                 'DatSS and DatQ are not part of m_TSData yet
-                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
-                ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
-                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
-                ts.Interval = Me.m_TSData.DataSetInterval
+                ts.DataSS = Me.m_TSData.TimeSeriesSSPredErr(ts.Index)
+                ts.DataQ = Me.m_TSData.TimeSeriesDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.TimeSeriesEDatQ(ts.Index)
+                ts.Interval = Me.m_TSData.AppliedDataSetInterval
 
                 ts.ResizeData(iNumYears)
                 For iYear As Integer = 1 To iNumYears
-                    ts.DatVal(iYear) = Me.m_TSData.sValues(iYear, ts.Index)
+                    ts.DatVal(iYear) = Me.m_TSData.TimeSeriesValues(iYear, ts.Index)
                 Next iYear
 
                 Me.ValidateTimeSeries(ts)
 
-                ts.Enabled = Me.m_TSData.bEnable(ts.Index)
+                ts.Enabled = Me.m_TSData.TimeSeriesEnabled(ts.Index)
                 ts.UnlockUpdates(False)
 
                 tsd.Add(ts)
@@ -1701,10 +1701,10 @@ Public Class cCore
 
                 ts.LockUpdates()
 
-                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
-                ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
-                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
-                ts.Interval = Me.m_TSData.DataSetInterval
+                ts.DataSS = Me.m_TSData.TimeSeriesSSPredErr(ts.Index)
+                ts.DataQ = Me.m_TSData.TimeSeriesDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.TimeSeriesEDatQ(ts.Index)
+                ts.Interval = Me.m_TSData.AppliedDataSetInterval
 
                 ts.UnlockUpdates(False)
 
@@ -1714,9 +1714,9 @@ Public Class cCore
 
                 ts.LockUpdates()
 
-                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
-                ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
-                ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
+                ts.DataSS = Me.m_TSData.TimeSeriesSSPredErr(ts.Index)
+                ts.DataQ = Me.m_TSData.TimeSeriesDatQ(ts.Index)
+                ts.eDataQ = Me.m_TSData.TimeSeriesEDatQ(ts.Index)
 
                 ts.UnlockUpdates(False)
 
@@ -1757,10 +1757,10 @@ Public Class cCore
                 ' Validate whether TS will remain in its category (group)
                 Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
-                Me.m_TSData.strName(ts.Index) = ts.Name
-                Me.m_TSData.iPool(ts.Index) = ts.GroupIndex
-                Me.m_TSData.sWeight(ts.Index) = ts.WtType
-                Me.m_TSData.sCV(ts.Index) = ts.CV
+                Me.m_TSData.TimeSeriesName(ts.Index) = ts.Name
+                Me.m_TSData.TimeSeriesPool(ts.Index) = ts.GroupIndex
+                Me.m_TSData.TimeSeriesWeight(ts.Index) = ts.WtType
+                Me.m_TSData.TimeSeriesCV(ts.Index) = ts.CV
 
                 'DatSS and DatQ are computed so they are not updated from the interface
                 'Me.m_TSData.datass(ts.Index) = ts.DataQ
@@ -1768,10 +1768,10 @@ Public Class cCore
 
                 ' Update core DatVal
                 For iYear As Integer = 1 To ts.nPoints
-                    Me.m_TSData.sValues(iYear, ts.Index) = ts.DatVal(iYear)
+                    Me.m_TSData.TimeSeriesValues(iYear, ts.Index) = ts.DatVal(iYear)
                 Next iYear
 
-                Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+                Me.m_TSData.TimeSeriesEnabled(ts.Index) = ts.Enabled
                 cc = ts.CoreComponent
                 Me.ValidateTimeSeries(ts)
 
@@ -1799,11 +1799,11 @@ Public Class cCore
                 Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet Or
                              cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
-                Me.m_TSData.strName(ts.Index) = ts.Name
-                Me.m_TSData.iPool(ts.Index) = ts.FleetIndex
-                Me.m_TSData.iPoolSec(ts.Index) = ts.GroupIndex
-                Me.m_TSData.sWeight(ts.Index) = ts.WtType
-                Me.m_TSData.sCV(ts.Index) = ts.CV
+                Me.m_TSData.TimeSeriesName(ts.Index) = ts.Name
+                Me.m_TSData.TimeSeriesPool(ts.Index) = ts.FleetIndex
+                Me.m_TSData.TimeSeriesPoolSec(ts.Index) = ts.GroupIndex
+                Me.m_TSData.TimeSeriesWeight(ts.Index) = ts.WtType
+                Me.m_TSData.TimeSeriesCV(ts.Index) = ts.CV
 
                 'DatSS and DatQ are computed so they are not updated from the interface
                 'Me.m_TSData.datass(ts.Index) = ts.DataQ
@@ -1811,10 +1811,10 @@ Public Class cCore
 
                 ' Update core DatVal
                 For iYear As Integer = 1 To ts.nPoints
-                    Me.m_TSData.sValues(iYear, ts.Index) = ts.DatVal(iYear)
+                    Me.m_TSData.TimeSeriesValues(iYear, ts.Index) = ts.DatVal(iYear)
                 Next iYear
 
-                Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+                Me.m_TSData.TimeSeriesEnabled(ts.Index) = ts.Enabled
                 cc = ts.CoreComponent
                 Me.ValidateTimeSeries(ts)
 
@@ -1852,7 +1852,7 @@ Public Class cCore
                 status = eStatusFlags.ErrorEncountered
                 strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, fts.FleetIndex)
             End If
-            If (fts.TimeSeriesType = eTimeSeriesType.DiscardMortality Or fts.TimeSeriesType = eTimeSeriesType.DiscardProportion) And
+            If (fts.TimeSeriesType = eTimeSeriesType.DiscardMortality Or fts.TimeSeriesType = eTimeSeriesType.DiscardProportion Or fts.TimeSeriesType = eTimeSeriesType.Catchabilities) And
                (fts.GroupIndex <= 0 Or fts.GroupIndex > nGroups) Then
                 status = eStatusFlags.ErrorEncountered
                 strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, fts.GroupIndex)
@@ -2074,29 +2074,29 @@ Public Class cCore
 
         ' Update enable flags and weights
         For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
-            bChanged = bChanged Or (Me.m_TSData.bEnable(ts.Index) <> ts.Enabled)
-            Me.m_TSData.bEnable(ts.Index) = ts.Enabled
-            bChanged = bChanged Or (Me.m_TSData.sWeight(ts.Index) <> ts.WtType) Or (Me.m_TSData.sCV(ts.Index) <> ts.CV)
-            Me.m_TSData.sWeight(ts.Index) = ts.WtType
-            Me.m_TSData.sCV(ts.Index) = ts.CV
+            bChanged = bChanged Or (Me.m_TSData.TimeSeriesEnabled(ts.Index) <> ts.Enabled)
+            Me.m_TSData.TimeSeriesEnabled(ts.Index) = ts.Enabled
+            bChanged = bChanged Or (Me.m_TSData.TimeSeriesWeight(ts.Index) <> ts.WtType) Or (Me.m_TSData.TimeSeriesCV(ts.Index) <> ts.CV)
+            Me.m_TSData.TimeSeriesWeight(ts.Index) = ts.WtType
+            Me.m_TSData.TimeSeriesCV(ts.Index) = ts.CV
         Next
         For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
-            bChanged = bChanged Or (Me.m_TSData.bEnable(ts.Index) <> ts.Enabled)
-            Me.m_TSData.bEnable(ts.Index) = ts.Enabled
-            bChanged = bChanged Or (Me.m_TSData.sWeight(ts.Index) <> ts.WtType) Or (Me.m_TSData.sCV(ts.Index) <> ts.CV)
-            Me.m_TSData.sWeight(ts.Index) = ts.WtType
-            Me.m_TSData.sCV(ts.Index) = ts.CV
+            bChanged = bChanged Or (Me.m_TSData.TimeSeriesEnabled(ts.Index) <> ts.Enabled)
+            Me.m_TSData.TimeSeriesEnabled(ts.Index) = ts.Enabled
+            bChanged = bChanged Or (Me.m_TSData.TimeSeriesWeight(ts.Index) <> ts.WtType) Or (Me.m_TSData.TimeSeriesCV(ts.Index) <> ts.CV)
+            Me.m_TSData.TimeSeriesWeight(ts.Index) = ts.WtType
+            Me.m_TSData.TimeSeriesCV(ts.Index) = ts.CV
         Next
 
         For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
             'build a list of all disabled Effort timeseries that need to be reset to default (one)
             If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
-                If Me.m_TSData.bEnable(ts.Index) = True And ts.Enabled = False Then
+                If Me.m_TSData.TimeSeriesEnabled(ts.Index) = True And ts.Enabled = False Then
                     'Timeseries is being disabled so keep the index to reset effort from
                     lstEffortToReset.Add(ts.DatPool)
                 End If
             End If
-            Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+            Me.m_TSData.TimeSeriesEnabled(ts.Index) = ts.Enabled
         Next
 
         ' Load enabled TS
@@ -2163,7 +2163,7 @@ Public Class cCore
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function HasAppliedTimeSeries() As Boolean
-        Return (Me.m_TSData.NdatType > 0)
+        Return (Me.m_TSData.AppliedNdatType > 0)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2295,7 +2295,7 @@ Public Class cCore
 
                 Me.InitAndLoadEcosimTimeSeriesDatasets()
                 Me.DataAddedOrRemovedMessage("Number of time series datasets has changed.", eCoreComponentType.TimeSeries, eDataTypes.TimeSeriesDataset)
-                iDataset = Array.IndexOf(Me.m_TSData.iDatasetDBID, iDatasetID)
+                iDataset = Array.IndexOf(Me.m_TSData.DatasetDBID, iDatasetID)
                 'If Me.LoadTimeSeries(iDataset, False) Then
                 '    ' Update enabled TS
                 '    Me.m_TSData.loadEnabled()
@@ -6699,18 +6699,6 @@ Public Class cCore
 
 #End Region ' Variables
 
-    Public Sub SetDefaultCatchabilities()
-        Me.m_EcoSimData.SetDefaultCatchabilities(Me.m_EcopathData.Landing, Me.m_EcopathData.Discard, Me.m_EcopathData.B)
-        Me.LoadEcosimFleetInputs()
-        Me.m_publisher.SendMessage(New cMessage("Ecosim groups have changed.", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcosimFleetInput))
-    End Sub
-
-    Public Sub SetDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
-        Me.m_EcoSimData.SetDefaultCatchabilities(Me.m_EcopathData.Landing, Me.m_EcopathData.Discard, Me.m_EcopathData.B, iFlt, iGrp)
-        Me.LoadEcosimFleetInputs()
-        Me.m_publisher.SendMessage(New cMessage("Ecosim groups have changed.", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcosimFleetInput))
-    End Sub
-
     ''' <summary>
     ''' Start biomass of each group
     ''' </summary>
@@ -7177,7 +7165,7 @@ Public Class cCore
 
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
-
+            m_EcoSimData.SetDefaultCatchabilities(Me.m_EcopathData.Landing, Me.m_EcopathData.Discard, Me.m_EcopathData.B)
             m_Ecosim.Init(True)
 
             InitEcosimGroups()
@@ -14418,11 +14406,11 @@ Public Class cCore
                             Me.m_publisher.AddMessage(qsMsg)
                         End If
 
-                        Dim iflt As Integer = value.Index
-                        Dim igrp As Integer = obj.ValidationStatus.iArrayIndex
-                        If Me.m_StateMonitor.HasEcosimLoaded Then
-                            Me.SetDefaultCatchabilities(iflt, igrp)
-                        End If
+                        'Dim iflt As Integer = value.Index
+                        'Dim igrp As Integer = obj.ValidationStatus.iArrayIndex
+                        'If Me.m_StateMonitor.HasEcosimLoaded Then
+                        '    Me.SetDefaultCatchabilities(iflt, igrp)
+                        'End If
 
                     Case eVarNameFlags.OffVesselPrice
                         Me.Set_OffVesselValue_Flags(flt, True)

@@ -2488,7 +2488,6 @@ Namespace Core
 
         EcoPathFleetOutput = 117
 
-        FleetGroupCatchability = 118
         EcospaceLayerHabitatCapacityInput = 119
         EcospaceLayerOtherMort = 120
         EcospaceLayerOtherMortInput = 121

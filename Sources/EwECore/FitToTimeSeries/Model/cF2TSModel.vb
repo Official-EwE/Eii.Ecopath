@@ -332,7 +332,7 @@ Namespace FitToTimeSeries
             Dim Smax As Single, SSBase As Single, sss As Single
             Dim ipred As Integer, iprey As Integer
 
-            If Me.m_core.m_TSData.NdatType = 0 Then
+            If Me.m_core.m_TSData.AppliedNdatType = 0 Then
                 Exit Sub
             End If
 
@@ -520,7 +520,7 @@ Namespace FitToTimeSeries
 
             Try
 
-                If Me.m_core.m_TSData.NdatType = 0 Then
+                If Me.m_core.m_TSData.AppliedNdatType = 0 Then
                     'no time series data loaded
                     Exit Sub
                 End If
