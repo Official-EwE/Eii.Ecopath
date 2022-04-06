@@ -2920,8 +2920,6 @@ Namespace DataSources
             bSucces = bSucces And Me.AddCatchDataForFleet(iFleetID)
             ' Create ecosim fleet forcing bits
 
-            ' bSucces = bSucces And Me.AddCatchabilityFleet(iFleetID)
-
             ' Create fleet objects though
             bSucces = bSucces And Me.AddEcosimFleetToAllScenarios(iFleetID)
             bSucces = bSucces And Me.AddEcospaceFleetToAllScenarios(iFleetID)
@@ -3031,16 +3029,16 @@ Namespace DataSources
             If reader IsNot Nothing Then
                 Try
                     While reader.Read()
-                        tsDS.iDatasetDBID(iDataset) = CInt(reader("DatasetID"))
-                        tsDS.strDatasetNames(iDataset) = CStr(reader("DatasetName"))
-                        tsDS.strDatasetDescription(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Description", ""))
-                        tsDS.strDatasetAuthor(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
-                        tsDS.strDatasetContact(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
-                        tsDS.nDatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
-                        tsDS.nDatasetNumPoints(iDataset) = CInt(reader("NumPoints"))
+                        tsDS.DatasetDBID(iDataset) = CInt(reader("DatasetID"))
+                        tsDS.DatasetName(iDataset) = CStr(reader("DatasetName"))
+                        tsDS.DatasetDescription(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Description", ""))
+                        tsDS.DatasetAuthor(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Author", ""))
+                        tsDS.DatasetContact(iDataset) = CStr(Me.m_db.ReadSafe(reader, "Contact", ""))
+                        tsDS.DatasetFirstYear(iDataset) = CInt(reader("FirstYear"))
+                        tsDS.DatasetNumPoints(iDataset) = CInt(reader("NumPoints"))
                         tsDS.DataSetIntervals(iDataset) = CType(CInt(Me.m_db.ReadSafe(reader, "DataInterval", eTSDataSetInterval.Annual)), eTSDataSetInterval)
 
-                        tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
+                        tsDS.DatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
                         iDataset += 1
                     End While
                 Catch ex As Exception
@@ -3137,7 +3135,7 @@ Namespace DataSources
         Public Function RemoveTimeSeriesDataset(iDataset As Integer) As Boolean _
                 Implements DataSources.IEcosimDatasource.RemoveTimeSeriesDataset
             Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
-            Return Me.RemoveTimeSeriesDatasetID(tsDS.iDatasetDBID(iDataset))
+            Return Me.RemoveTimeSeriesDatasetID(tsDS.DatasetDBID(iDataset))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -3734,8 +3732,6 @@ Namespace DataSources
 
             mseDS.redimTime()
 
-            ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
-
             ' Set active scenario
             ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
 
@@ -3745,7 +3741,6 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcosimArenas(iScenarioID)
             bSucces = bSucces And Me.LoadShapes(iScenarioID)
             bSucces = bSucces And Me.LoadEcosimMSE(iScenarioID)
-            bSucces = bSucces And Me.LoadEcosimCatchabilities(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             Me.ClearChanged(s_EcosimComponents)
@@ -3885,7 +3880,6 @@ Namespace DataSources
 
             ' ToDo: only save these when modified or duplicating
             bSucces = bSucces And Me.SaveEcosimCapacityDrivers(idm)
-            bSucces = bSucces And Me.SaveEcosimCatchabilities(idm)
 
             If bSucces Then
                 ' Commit save
@@ -3991,7 +3985,6 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete actual scenario
@@ -4272,7 +4265,6 @@ Namespace DataSources
 
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesFleet WHERE (FleetID={0})", iEcopathFleetID))
-            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE FleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
 
             Return bSucces
@@ -4293,7 +4285,6 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE PredID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE PreyID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE PredSharedID={0}", iGroupID))
@@ -5225,9 +5216,6 @@ Namespace DataSources
 
                         Case eDataTypes.FishMort
                             ' Shape type loaded from LoadEcosimGroups(); do not handle here
-
-                        Case eDataTypes.FleetGroupCatchability
-                            ' Shape type loaded elsewhere
 
                         Case Else
                             Debug.Assert(False, String.Format("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
@@ -6578,10 +6566,6 @@ Namespace DataSources
                 ' Delete Ecosim pred/prey interactions
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
 
-                ' Delete catchability shapes
-                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE (ShapeID={0})", iShapeID))
-                Me.m_db.Execute(String.Format("DELETE FROM EcosimShapeCatchability WHERE (ShapeID={0})", iShapeID))
-
                 ' Destroy the given shape
                 Me.m_db.Execute(String.Format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
                 ' Reload shapes data
@@ -6772,7 +6756,7 @@ Namespace DataSources
             drow("DatType") = ts.TimeSeriesType
             drow("WtType") = ts.WtType
             drow("CV") = ts.CV
-            drow("DatasetID") = tsds.iDatasetDBID(iDataset)
+            drow("DatasetID") = tsds.DatasetDBID(iDataset)
 
             ' Concoct time series memo
             For iYear As Integer = 0 To ts.nPoints - 1
@@ -6905,8 +6889,8 @@ Namespace DataSources
 
             tsDS.ClearTimeSeries()
             tsDS.ActiveDatasetIndex = iDataset
-            tsDS.nMaxYears = tsDS.nDatasetNumPoints(iDataset)
-            tsDS.DataSetInterval = tsDS.DataSetIntervals(iDataset)
+            tsDS.nMaxYears = tsDS.DatasetNumPoints(iDataset)
+            tsDS.AppliedDataSetInterval = tsDS.DataSetIntervals(iDataset)
 
             ' JS 20oct07: data source should NOT do this; is responsibility of core logic
             tsDS.nGroups = ecopathDS.NumGroups
@@ -6919,7 +6903,7 @@ Namespace DataSources
             If (iDataset > 0) Then
 
                 Try
-                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
+                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.DatasetDBID(iDataset))))
                 Catch ex As Exception
                     tsDS.nTimeSeries = 0
                 End Try
@@ -6931,16 +6915,16 @@ Namespace DataSources
 
             If tsDS.nTimeSeries = 0 Then Return bSucces
 
-            strSQL = String.Format("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.iDatasetDBID(iDataset))
+            strSQL = String.Format("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.DatasetDBID(iDataset))
             reader = Me.m_db.GetReader(strSQL)
             Try
                 While reader.Read()
 
-                    tsDS.iTimeSeriesDBID(iSeries) = CInt(reader("TimeSeriesID"))
-                    tsDS.strName(iSeries) = CStr(reader("DatName"))
+                    tsDS.TimeSeriesDBID(iSeries) = CInt(reader("TimeSeriesID"))
+                    tsDS.TimeSeriesName(iSeries) = CStr(reader("DatName"))
                     tsDS.TimeSeriesType(iSeries) = DirectCast(CInt(reader("DatType")), eTimeSeriesType)
-                    tsDS.sWeight(iSeries) = CSng(reader("WtType"))
-                    tsDS.sCV(iSeries) = CSng(Me.m_db.ReadSafe(reader, "CV", 0.0!))
+                    tsDS.TimeSeriesWeight(iSeries) = CSng(reader("WtType"))
+                    tsDS.TimeSeriesCV(iSeries) = CSng(Me.m_db.ReadSafe(reader, "CV", 0.0!))
 
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
@@ -6955,7 +6939,7 @@ Namespace DataSources
                             End Try
                             Me.m_db.ReleaseReader(readerSub)
                             readerSub = Nothing
-                            tsDS.iPool(iSeries) = iIndex
+                            tsDS.TimeSeriesPool(iSeries) = iIndex
 
                         Case eTimeSeriesCategoryType.Fleet,
                              eTimeSeriesCategoryType.FleetGroup
@@ -6972,8 +6956,8 @@ Namespace DataSources
                             End Try
                             Me.m_db.ReleaseReader(readerSub)
                             readerSub = Nothing
-                            tsDS.iPool(iSeries) = iIndex
-                            tsDS.iPoolSec(iSeries) = iIndexSec
+                            tsDS.TimeSeriesPool(iSeries) = iIndex
+                            tsDS.TimeSeriesPoolSec(iSeries) = iIndexSec
 
                         Case eTimeSeriesCategoryType.Forcing
                             Debug.Assert(False, String.Format("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
@@ -6988,9 +6972,9 @@ Namespace DataSources
 
                     astrTimeValues = CStr(reader("TimeValues")).Split(CChar(" "))
 
-                    For iPoint = 1 To Math.Min(tsDS.nDatasetNumPoints(iDataset), astrTimeValues.Length)
+                    For iPoint = 1 To Math.Min(tsDS.DatasetNumPoints(iDataset), astrTimeValues.Length)
                         Try
-                            tsDS.sValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
+                            tsDS.TimeSeriesValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
                         Catch ex As Exception
                             ' Woops
                         End Try
@@ -7042,20 +7026,20 @@ Namespace DataSources
 
                 For iTS As Integer = 1 To tsDS.nTimeSeries
 
-                    drow = dt.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
-                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find time series {0}", tsDS.iTimeSeriesDBID(iTS)))
+                    drow = dt.Rows.Find(tsDS.TimeSeriesDBID(iTS))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find time series {0}", tsDS.TimeSeriesDBID(iTS)))
 
                     drow.BeginEdit()
-                    drow("DatName") = tsDS.strName(iTS)
+                    drow("DatName") = tsDS.TimeSeriesName(iTS)
                     drow("DatType") = tsDS.TimeSeriesType(iTS)
-                    drow("WtType") = tsDS.sWeight(iTS)
-                    drow("CV") = tsDS.sCV(iTS)
+                    drow("WtType") = tsDS.TimeSeriesWeight(iTS)
+                    drow("CV") = tsDS.TimeSeriesCV(iTS)
 
                     ' Concoct time series memo
                     sbValues.Length = 0
-                    For iPoint As Integer = 1 To tsDS.nDatasetNumPoints(tsDS.ActiveDatasetIndex)
+                    For iPoint As Integer = 1 To tsDS.DatasetNumPoints(tsDS.ActiveDatasetIndex)
                         If (iPoint > 1) Then sbValues.Append(" ")
-                        sbValues.Append(cStringUtils.FormatSingle(tsDS.sValues(iPoint, iTS)))
+                        sbValues.Append(cStringUtils.FormatSingle(tsDS.TimeSeriesValues(iPoint, iTS)))
                     Next
                     drow("TimeValues") = sbValues.ToString()
 
@@ -7066,20 +7050,20 @@ Namespace DataSources
                         Case eTimeSeriesCategoryType.Fleet,
                              eTimeSeriesCategoryType.FleetGroup
 
-                            drow = dtFleets.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
+                            drow = dtFleets.Rows.Find(tsDS.TimeSeriesDBID(iTS))
                             bHasRow = (drow Is Nothing = False)
 
-                            If bHasRow Then drow.BeginEdit() Else drow = writerFleets.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
+                            If bHasRow Then drow.BeginEdit() Else drow = writerFleets.NewRow() : drow("TimeSeriesID") = tsDS.TimeSeriesDBID(iTS)
 
-                            If (tsDS.iPool(iTS) > 0) Then
-                                iPoolID = ecopathDS.FleetDBID(tsDS.iPool(iTS))
+                            If (tsDS.TimeSeriesPool(iTS) > 0) Then
+                                iPoolID = ecopathDS.FleetDBID(tsDS.TimeSeriesPool(iTS))
                             Else
                                 iPoolID = 0
                             End If
                             drow("FleetID") = iPoolID
 
-                            If (tsDS.iPoolSec(iTS) > 0) Then
-                                iPoolID = ecopathDS.GroupDBID(tsDS.iPoolSec(iTS))
+                            If (tsDS.TimeSeriesPoolSec(iTS) > 0) Then
+                                iPoolID = ecopathDS.GroupDBID(tsDS.TimeSeriesPoolSec(iTS))
                             Else
                                 iPoolID = 0
                             End If
@@ -7089,13 +7073,13 @@ Namespace DataSources
 
                         Case eTimeSeriesCategoryType.Group
 
-                            drow = dtGroups.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
+                            drow = dtGroups.Rows.Find(tsDS.TimeSeriesDBID(iTS))
                             bHasRow = (drow Is Nothing = False)
 
-                            If bHasRow Then drow.BeginEdit() Else drow = writerGroups.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
+                            If bHasRow Then drow.BeginEdit() Else drow = writerGroups.NewRow() : drow("TimeSeriesID") = tsDS.TimeSeriesDBID(iTS)
 
-                            If (tsDS.iPool(iTS) > 0) Then
-                                iPoolID = ecopathDS.GroupDBID(tsDS.iPool(iTS))
+                            If (tsDS.TimeSeriesPool(iTS) > 0) Then
+                                iPoolID = ecopathDS.GroupDBID(tsDS.TimeSeriesPool(iTS))
                             Else
                                 iPoolID = 0
                             End If
@@ -7171,7 +7155,7 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcosimTimeSeries")
                 drow = writer.NewRow()
                 drow("TimeSeriesID") = iShapeID
-                drow("DatasetID") = tsDS.iDatasetDBID(tsDS.ActiveDatasetIndex)
+                drow("DatasetID") = tsDS.DatasetDBID(tsDS.ActiveDatasetIndex)
                 drow("DatName") = strName
                 drow("DatType") = timeSeriesType
                 drow("Sequence") = iPosition
@@ -7417,112 +7401,6 @@ Namespace DataSources
 #End Region ' Save
 
 #End Region ' MSE
-
-#Region " Catchabilities "
-
-        Private Function LoadEcosimCatchabilities(iScenarioID As Integer) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim reader As IDataReader = Nothing
-            Dim iFleetID, iFleet As Integer
-            Dim iGroupID, iGroup As Integer
-            Dim zScale As String = ""
-            Dim astrMemoBits() As String
-            Dim bSucces As Boolean = True
-
-            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioFleetGroupCatchability WHERE (ScenarioID={0})", iScenarioID))
-            While reader.Read
-                iFleetID = CInt(Me.m_db.ReadSafe(reader, "FleetID", -1))
-                iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
-
-                iGroupID = CInt(Me.m_db.ReadSafe(reader, "GroupID", -1))
-                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
-
-                If (iFleet > 0 And iGroup > 0) Then
-                    zScale = CStr(Me.m_db.ReadSafe(reader, "zScale", ""))
-                    ' Store points
-                    If Not String.IsNullOrWhiteSpace(zScale) Then
-                        ' #Yes: split and process
-                        astrMemoBits = zScale.Trim.Split(CChar(" "))
-                        For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
-                            ecosimDS.relQt(iFleet, iGroup, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
-                        Next
-
-                        If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0 Then
-                            If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
-                                ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
-                            End If 'ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE
-                        End If 'ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0
-                    End If ' Not String.IsNullOrWhiteSpace(zScale)
-                End If '(iFleet > 0 And iGroup > 0)
-
-            End While
-            Me.m_db.ReleaseReader(reader)
-
-            Return bSucces
-
-        End Function
-
-        Private Function SaveEcosimCatchabilities(idm As cIDMappings) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
-
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim dt As DataTable = Nothing
-            Dim sbZScale As StringBuilder
-            Dim drow As DataRow = Nothing
-            Dim bSucces As Boolean = True
-
-            Me.m_db.Execute("DELETE * FROM EcosimScenarioFleetGroupCatchability WHERE ScenarioID=" & iScenarioID)
-
-            writer = Me.m_db.GetWriter("EcosimScenarioFleetGroupCatchability")
-            dt = writer.GetDataTable()
-            Try
-                For iFleet As Integer = 1 To ecopathDS.NumFleet
-                    For iGroup As Integer = 1 To ecopathDS.NumGroups
-
-                        If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup) > 0) Then
-
-                            drow = writer.NewRow()
-
-                            drow("ScenarioID") = iScenarioID
-                            ' Generic fleet DBID mapped to Ecopath fleet ID, see SaveEcosimFleets
-                            drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
-                            ' Ecosim fleet ID mapped to Ecopath fleet ID, see SaveEcosimGroups
-                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
-
-                            'This fleet/group has catch but the catchabilities have not been set
-                            'Set the default catchability before saving
-                            If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
-                                ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
-                            End If
-
-                            sbZScale = New StringBuilder()
-                            ' Todo: Check upper limit
-                            For ipt As Integer = 1 To ecosimDS.NTimes
-                                If (ipt > 1) Then sbZScale.Append(" ")
-                                sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.relQt(iFleet, iGroup, ipt)))
-                            Next
-                            drow("Zscale") = sbZScale.ToString()
-
-                            writer.AddRow(drow)
-
-                        End If
-                    Next
-                Next
-
-            Catch ex As Exception
-                bSucces = False
-            End Try
-            Me.m_db.ReleaseWriter(writer, True)
-            Return bSucces
-
-        End Function
-
-#End Region ' Catchabilities
 
 #End Region ' EcoSim
 

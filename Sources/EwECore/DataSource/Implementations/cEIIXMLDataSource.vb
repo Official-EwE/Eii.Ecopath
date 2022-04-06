@@ -975,16 +975,16 @@ Public Class cEIIXMLDataSource
 
         Try
             For Each drow As DataRow In dt.Rows
-                tsDS.iDatasetDBID(iDataset) = CInt(drow("DatasetID"))
-                tsDS.strDatasetNames(iDataset) = CStr(drow("DatasetName"))
-                tsDS.strDatasetDescription(iDataset) = Me.ReadSafe(drow, "Description", "")
-                tsDS.strDatasetAuthor(iDataset) = Me.ReadSafe(drow, "Author", "")
-                tsDS.strDatasetContact(iDataset) = Me.ReadSafe(drow, "Contact", "")
-                tsDS.nDatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
-                tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
+                tsDS.DatasetDBID(iDataset) = CInt(drow("DatasetID"))
+                tsDS.DatasetName(iDataset) = CStr(drow("DatasetName"))
+                tsDS.DatasetDescription(iDataset) = Me.ReadSafe(drow, "Description", "")
+                tsDS.DatasetAuthor(iDataset) = Me.ReadSafe(drow, "Author", "")
+                tsDS.DatasetContact(iDataset) = Me.ReadSafe(drow, "Contact", "")
+                tsDS.DatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
+                tsDS.DatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
 
                 'tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumYears"))
-                tsDS.nDatasetNumPoints(iDataset) = CInt(drow("NumPoints"))
+                tsDS.DatasetNumPoints(iDataset) = CInt(drow("NumPoints"))
                 tsDS.DataSetIntervals(iDataset) = CType(CInt(drow("DataInterval")), eTSDataSetInterval)
 
                 iDataset += 1
@@ -1056,7 +1056,6 @@ Public Class cEIIXMLDataSource
         'jb added to redim time variables in ecosim data structures
         ecosimDS.RedimTime()
         mseDS.redimTime()
-        ecosimDS.SetDefaultCatchabilities(ecopathDS.Landing, ecopathDS.Discard, ecopathDS.B)
 
         ' Set active scenario
         ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
@@ -1067,7 +1066,6 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadEcosimArenas()
         bSucces = bSucces And Me.LoadShapes()
         bSucces = bSucces And Me.LoadEcosimMSE()
-        bSucces = bSucces And Me.LoadEcosimCatchabilities()
         'bSucces = bSucces And Me.LoadAuxillaryData()
 
         Me.ClearChanged()
@@ -1506,9 +1504,6 @@ Public Class cEIIXMLDataSource
 
                     Case eDataTypes.FishMort
                         ' Shape type loaded from LoadEcosimGroups(); do not handle here
-
-                    Case eDataTypes.FleetGroupCatchability
-                        ' Shape type loaded elsewhere
 
                     Case Else
                         Debug.Assert(False, cStringUtils.Localize("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
@@ -1974,7 +1969,7 @@ Public Class cEIIXMLDataSource
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
         Dim strSQL As String = ""
         Dim astrTimeValues() As String
-        Dim iDatasetID As Integer = tsDS.iDatasetDBID(iDataset)
+        Dim iDatasetID As Integer = tsDS.DatasetDBID(iDataset)
         Dim iTimeSeriesID As Integer = 0
         Dim iSeries As Integer = 1
         Dim iIndex As Integer = 0
@@ -1992,8 +1987,8 @@ Public Class cEIIXMLDataSource
 
         tsDS.ClearTimeSeries()
         tsDS.ActiveDatasetIndex = iDataset
-        tsDS.nMaxYears = tsDS.nDatasetNumPoints(iDataset)
-        tsDS.DataSetInterval = tsDS.DataSetIntervals(iDataset)
+        tsDS.nMaxYears = tsDS.DatasetNumPoints(iDataset)
+        tsDS.AppliedDataSetInterval = tsDS.DataSetIntervals(iDataset)
 
         ' JS 20oct07: data source should NOT do this; is responsibility of core logic
         tsDS.nGroups = ecopathDS.NumGroups
@@ -2022,11 +2017,11 @@ Public Class cEIIXMLDataSource
                 Dim drow As DataRow = rows(iRow)
                 Dim iTSID As Integer = CInt(drow("TimeSeriesID"))
 
-                tsDS.iTimeSeriesDBID(iSeries) = iTSID
-                tsDS.strName(iSeries) = CStr(drow("DatName"))
+                tsDS.TimeSeriesDBID(iSeries) = iTSID
+                tsDS.TimeSeriesName(iSeries) = CStr(drow("DatName"))
                 tsDS.TimeSeriesType(iSeries) = DirectCast(CInt(drow("DatType")), eTimeSeriesType)
-                tsDS.sWeight(iSeries) = CSng(drow("WtType"))
-                tsDS.sCV(iSeries) = Me.ReadSafe(drow, "CV", 0.0!)
+                tsDS.TimeSeriesWeight(iSeries) = CSng(drow("WtType"))
+                tsDS.TimeSeriesCV(iSeries) = Me.ReadSafe(drow, "CV", 0.0!)
 
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
@@ -2060,14 +2055,14 @@ Public Class cEIIXMLDataSource
 
                 End Select
 
-                tsDS.iPool(iSeries) = iIndex
-                tsDS.iPoolSec(iSeries) = Math.Max(0, iIndexSec)
+                tsDS.TimeSeriesPool(iSeries) = iIndex
+                tsDS.TimeSeriesPoolSec(iSeries) = Math.Max(0, iIndexSec)
 
                 astrTimeValues = CStr(drow("TimeValues")).Split(CChar(" "))
 
-                For iPoint = 1 To Math.Min(tsDS.nDatasetNumPoints(iDataset), astrTimeValues.Length)
+                For iPoint = 1 To Math.Min(tsDS.DatasetNumPoints(iDataset), astrTimeValues.Length)
                     Try
-                        tsDS.sValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
+                        tsDS.TimeSeriesValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
                     Catch ex As Exception
                         ' Woops
                     End Try
@@ -2145,60 +2140,6 @@ Public Class cEIIXMLDataSource
 
         Return bSucces
     End Function
-
-    Private Function LoadEcosimCatchabilities() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim reader As IDataReader = Nothing
-        Dim iFleetID, iFleet As Integer
-        Dim iGroupID, iGroup As Integer
-        Dim zScale As String = ""
-        Dim astrMemoBits() As String
-        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
-        Dim dt As DataTable = Me.ReadTable("EcosimScenarioFleetGroupCatchability")
-        Dim bSucces As Boolean = True
-
-        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
-        Dim rows As DataRowCollection = dt.DefaultView.ToTable.Rows()
-        For iRow As Integer = 0 To rows.Count - 1
-            Dim drow As DataRow = rows(iRow)
-            Try
-
-                iFleetID = CInt(Me.ReadSafe(drow, "FleetID", -1))
-                iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
-
-                iGroupID = CInt(Me.ReadSafe(drow, "GroupID", -1))
-                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
-
-                If (iFleet > 0 And iGroup > 0) Then
-                    zScale = Me.ReadSafe(drow, "zScale", "")
-                    ' Store points
-                    If Not String.IsNullOrWhiteSpace(zScale) Then
-                        ' #Yes: split and process
-                        astrMemoBits = zScale.Trim.Split(CChar(" "))
-                        For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
-                            ecosimDS.relQt(iFleet, iGroup, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
-                        Next
-
-                        If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0 Then
-                            If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
-                                Me.m_core.SetDefaultCatchabilities(iFleet, iGroup)
-                            End If 'ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE
-                        End If 'ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0
-                    End If ' Not String.IsNullOrWhiteSpace(zScale)
-                End If '(iFleet > 0 And iGroup > 0)
-
-            Catch ex As Exception
-
-            End Try
-        Next
-        dt.Clear()
-
-        Return bSucces
-
-    End Function
-
 
 #End Region ' Ecosim
 

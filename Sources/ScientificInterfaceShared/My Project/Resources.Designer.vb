@@ -8869,6 +8869,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Catchabilities (forcing).
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_CATCHABILITIES() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_CATCHABILITIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Catches (reference).
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESABS() As String

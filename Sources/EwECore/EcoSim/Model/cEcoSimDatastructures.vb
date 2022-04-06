@@ -1297,55 +1297,6 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-
-    '''' <summary>
-    '''' Redimension all variables by NMedPoints and/or MediationShapes
-    '''' </summary>
-    '''' <remarks>Call this any time the number of MediationShapes has changed. This will clear out any data that was in memory.
-    ''''  Core.CoreForcingFunctionUpdater() will update all EcoSim Forcing and Mediation function data with the data held currently in memory by the Shape Managers.</remarks>
-    'Public Sub ReDimMediation()
-    '    Dim i, j As Integer
-    '    'following is for Mediation:
-    '    NMedPoints = 1200
-    '    ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
-    '    '            I tested Ecosim without mediation shapes and both core and GUI behave well
-    '    'If MediationShapes <= 0 Then MediationShapes = 9
-    '    ReDim Medpoints(NMedPoints, MediationShapes)
-    '    ReDim MedWeights(nGroups + nGear, MediationShapes)
-    '    ReDim NMedXused(MediationShapes)
-    '    ReDim IMedUsed(nGroups + nGear, MediationShapes)
-    '    ReDim MedXbase(MediationShapes)
-    '    ReDim MedYbase(MediationShapes)
-    '    ReDim MedIsUsed(MediationShapes)
-    '    ReDim MedVal(MediationShapes)
-    '    ReDim IMedBase(MediationShapes)
-
-    '    'jb added
-    '    ReDim MediationTitles(MediationShapes)
-    '    ReDim MediationShapeParams(MediationShapes)
-    '    ReDim MediationDBIDs(MediationShapes)
-
-    '    'jb this is now handled by MedShapeParams() above
-    '    'If ForcingShapes > MediationShapes Then
-    '    '    ReDim Preserve Shapes(5, ForcingShapes)
-    '    'Else
-    '    '    ReDim Preserve Shapes(5, MediationShapes)
-    '    'End If
-
-    '    'ToDo: Sort out XBaseLine()what is it used for
-    '    'ReDim XBaseLine(MediationShapes)
-    '    For i = 0 To MediationShapes
-    '        IMedBase(i) = NMedPoints \ 3
-    '        For j = 0 To NMedPoints
-    '            Medpoints(j, i) = 0.5
-    '        Next
-    '    Next
-
-    'End Sub
-
-
-
-
     ''' <summary>
     ''' Hardwire some default values
     ''' </summary>

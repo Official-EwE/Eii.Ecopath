@@ -41,6 +41,7 @@ Namespace Controls.Map.Layers
 
         Private m_bHasError As Boolean = False
         Private m_bHasNull As Boolean = False
+        Private m_ramp As cColorRamp = Nothing
 
         Private Enum eSymbolTypes As Integer
             None = 0
@@ -55,7 +56,16 @@ Namespace Controls.Map.Layers
         End Sub
 
         Protected Property Font As Font
+
         Protected Property ColorRamp As cColorRamp
+            Get
+                If (Me.m_ramp Is Nothing) Then Return Me.UIContext.StyleGuide.DefaultColorRamp
+                Return Me.m_ramp
+            End Get
+            Set(value As cColorRamp)
+                Me.m_ramp = value
+            End Set
+        End Property
         Protected Property ForeBrush As Brush
 
         ''' -------------------------------------------------------------------

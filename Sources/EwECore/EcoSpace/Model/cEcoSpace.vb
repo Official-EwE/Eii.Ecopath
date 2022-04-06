@@ -6805,15 +6805,15 @@ exitline:
         Dim SpSumZ2() As Single
 
 
-        ReDim Erpred(Me.m_refdata.NdatType * Me.m_refdata.nDatPoints)
+        ReDim Erpred(Me.m_refdata.AppliedNdatType * Me.m_refdata.AppliedDatPoints)
         '  ReDim ErTrace(m_refdata.NdatType * m_refdata.NdatYear)
         'ReDim SpTraceObs(SpDat)
         'ReDim SpTraceZ(SpDat)
         'ReDim SpTraceZ2(SpDat)
 
-        ReDim SpNObs(Me.m_refdata.NdatType)
-        ReDim SpSumZ(Me.m_refdata.NdatType)
-        ReDim SpSumZ2(Me.m_refdata.NdatType)
+        ReDim SpNObs(Me.m_refdata.AppliedNdatType)
+        ReDim SpSumZ(Me.m_refdata.AppliedNdatType)
+        ReDim SpSumZ2(Me.m_refdata.AppliedNdatType)
 
         'ReDim SpeDatq(SpDat)
         'Dim m_refdata.Iobs As Long

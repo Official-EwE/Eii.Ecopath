@@ -68,7 +68,8 @@ Public Class cTimeSeriesFactory
             Case eTimeSeriesType.DiscardMortality,
                  eTimeSeriesType.DiscardProportion,
                  eTimeSeriesType.Landings,
-                 eTimeSeriesType.Discards
+                 eTimeSeriesType.Discards,
+                 eTimeSeriesType.Catchabilities
                 Return eTimeSeriesCategoryType.FleetGroup
 
             Case Else
@@ -78,6 +79,7 @@ Public Class cTimeSeriesFactory
 
         ' Add this for good manners.
         Return eTimeSeriesCategoryType.NotSet
+
     End Function
 
     ''' -----------------------------------------------------------------------

@@ -122,7 +122,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=AMD64">
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\EwELicense.dll</HintPath>
     </Reference>
@@ -194,6 +194,7 @@
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_09.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_08.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_26.vb" />
+    <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_11.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_10.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_09.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_08.vb" />
@@ -700,6 +701,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\EPPlus.dll" />
+    <Content Include="Includes\EwELicense.dll" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\LPSolve\win64\lpsolve55.dll">
