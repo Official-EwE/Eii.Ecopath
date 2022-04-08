@@ -135,19 +135,18 @@ Public Class cTimeSeriesDataStructures
     Public AppliedeDatQ() As Single
 
     Public PoolForceBB(,) As Single
+    ''' <summary>Forced fishing mortalities. By Group,Time</summary>
     Public PoolForceZ(,) As Single
+    ''' <summary>Forced catch. By Group,Time</summary>
     Public PoolForceCatch(,) As Single
     Public ForcedFs(,) As Single
 
-    ''' <summary>
-    ''' Proportion of total catch that is discarded. By Fleet,Group,Time
-    ''' </summary>
+    ''' <summary>Proportion of total catch that is discarded. By Fleet,Group,Time</summary>
     Public PoolForceDiscardProp(,,) As Single
-
-    ''' <summary>
-    ''' Proportion of discards that incur mortality. By Fleet,Group,Time
-    ''' </summary>
+    ''' <summary>Proportion of discards that incur mortality. By Fleet,Group,Time</summary>
     Public PoolForceDiscardMort(,,) As Single
+    ''' <summary>Proportion of discards that incur mortality. By Fleet,Group,Time</summary>
+    Public PoolForceCatchabilities(,,) As Single
 
     ''' <summary>
     ''' Index to the current year/datatype
@@ -239,6 +238,7 @@ Public Class cTimeSeriesDataStructures
 
         Array.Clear(Me.PoolForceDiscardMort, 0, Me.PoolForceDiscardMort.Length)
         Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
+        Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
 
         Me.InitForcedDiscards()
 
@@ -278,6 +278,7 @@ Public Class cTimeSeriesDataStructures
 
         Erase Me.PoolForceDiscardProp
         Erase Me.PoolForceDiscardMort
+        Erase Me.PoolForceCatchabilities
 
     End Sub
 
@@ -492,6 +493,7 @@ Public Class cTimeSeriesDataStructures
 
                 ReDim Me.PoolForceDiscardMort(Me.nFleets, Me.nGroups, npoints)
                 ReDim Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
+                ReDim Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
 
                 Me.InitForcedDiscards()
                 Return
@@ -507,6 +509,7 @@ Public Class cTimeSeriesDataStructures
 
                 ReDim Preserve Me.PoolForceDiscardMort(Me.nFleets, Me.nGroups, npoints)
                 ReDim Preserve Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
+                ReDim Preserve Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
 
                 ReDim Preserve Me.ForcedFs(Me.nGroups, RunLengthYears * cCore.N_MONTHS)
 
@@ -537,6 +540,7 @@ Public Class cTimeSeriesDataStructures
                         For ipt As Integer = n + 1 To npoints
                             Me.PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
+                            Me.PoolForceCatchabilities(iflt, igrp, ipt) = cCore.NULL_VALUE
                         Next
 
                     Next
@@ -725,10 +729,10 @@ Public Class cTimeSeriesDataStructures
         Dim iDType As Integer
         Dim K As Integer
         Dim Tim As Integer
-        Dim ig As Integer
-        'Dim ip As Integer
-        Dim HoldIobs As Integer
-        HoldIobs = Me.Iobs
+        Dim iGrp As Integer
+        Dim iFlt As Integer
+        Dim HoldIobs As Integer = Me.Iobs
+
         Me.Iobs = 0
 
         'clear out the FishForced flag
@@ -740,22 +744,29 @@ Public Class cTimeSeriesDataStructures
 
             For iDatPt = 1 To Me.AppliedDatPoints
                 For iDType = 1 To Me.AppliedNdatType
+
+                    Dim value As Single = Me.AppliedDatVal(iDatPt, iDType)
+
                     Select Case Me.AppliedDatType(iDType)
 
                         Case eTimeSeriesType.BiomassRel
-
-                            If Me.AppliedDatVal(iDatPt, iDType) > 0 Then Me.Iobs = Me.Iobs + 1
-                            'PoolForceBB(DatPool(j), i) = 0
+                            iGrp = Me.AppliedDatPool(iDType)
+                            If (iGrp > 0 And iGrp < nGroups) Then
+                                If value > 0 Then Me.Iobs = Me.Iobs + 1
+                            End If
 
                         Case eTimeSeriesType.BiomassAbs
-
-                            If Me.AppliedDatVal(iDatPt, iDType) > 0 Then Me.Iobs = Me.Iobs + 1
-                            Me.PoolForceBB(Me.AppliedDatPool(iDType), iDatPt) = 0
+                            iGrp = Me.AppliedDatPool(iDType)
+                            If (iGrp > 0 And iGrp < nGroups) Then
+                                If value > 0 Then Me.Iobs = Me.Iobs + 1
+                                Me.PoolForceBB(iGrp, iDatPt) = 0
+                            End If
 
                         Case eTimeSeriesType.BiomassForcing 'pool biomass forcing
-
-                            Me.PoolForceBB(Me.AppliedDatPool(iDType), iDatPt) = Me.AppliedDatVal(iDatPt, iDType)
-
+                            iGrp = Me.AppliedDatPool(iDType)
+                            If (iGrp > 0 And iGrp < nGroups) Then
+                                Me.PoolForceBB(iGrp, iDatPt) = value
+                            End If
 
                         Case eTimeSeriesType.TimeForcing 'time forcing data
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -776,67 +787,58 @@ Public Class cTimeSeriesDataStructures
                             '    Next
                             'End If
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        Case eTimeSeriesType.FishingEffort 'effort data by gear type
 
-                            If Me.AppliedDatPool(iDType) > 0 And Me.AppliedDatPool(iDType) <= Me.nFleets Then
+                        Case eTimeSeriesType.FishingEffort 'effort data by gear type
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If iFlt > 0 And iFlt <= Me.nFleets Then
                                 If Me.AppliedDataSetInterval = eTSDataSetInterval.Annual Then
                                     For K = 1 To 12
                                         Tim = 12 * (Me.AppliedDatYear(iDatPt) - Me.AppliedDatYear(1)) + K    ': If Tim > 1200 Then Tim = 1200
-                                        ig = Me.AppliedDatPool(iDType)
-                                        Me.m_SimData.FishRateGear(ig, Tim) = Me.AppliedDatVal(iDatPt, iDType)
+                                        Me.m_SimData.FishRateGear(iFlt, Tim) = value
                                     Next
                                 ElseIf Me.AppliedDataSetInterval = eTSDataSetInterval.TimeStep Then
-
-                                    Me.m_SimData.FishRateGear(Me.AppliedDatPool(iDType), iDatPt) = Me.AppliedDatVal(iDatPt, iDType)
-
+                                    Me.m_SimData.FishRateGear(iFlt, iDatPt) = value
                                 End If
                             End If
 
-                        Case eTimeSeriesType.FishingMortality 'F by pool
-
-                            If Me.AppliedDatPool(iDType) >= 0 And Me.AppliedDatPool(iDType) <= Me.nGroups Then
+                        Case eTimeSeriesType.FishingMortality 'F by group
+                            iGrp = Me.AppliedDatPool(iDType)
+                            If (iGrp > 0 And iGrp <= nGroups) Then
                                 Me.m_SimData.FisForced(Me.AppliedDatPool(iDType)) = True
-
                                 If Me.AppliedDataSetInterval = eTSDataSetInterval.Annual Then
                                     For K = 1 To 12
                                         Tim = 12 * (Me.AppliedDatYear(iDatPt) - Me.AppliedDatYear(1)) + K
-
-                                        Me.ForcedFs(Me.AppliedDatPool(iDType), Tim) = Me.AppliedDatVal(iDatPt, iDType)
-
-                                        Me.m_SimData.FishRateNo(Me.AppliedDatPool(iDType), Tim) = Me.AppliedDatVal(iDatPt, iDType)
-                                        If Me.m_SimData.FishRateMax(Me.AppliedDatPool(iDType)) < Me.m_SimData.FishRateNo(Me.AppliedDatPool(iDType), Tim) Then
-                                            Me.m_SimData.FishRateMax(Me.AppliedDatPool(iDType)) = CSng(Me.m_SimData.FishRateNo(Me.AppliedDatPool(iDType), Tim) * 1.01)
+                                        Me.ForcedFs(iGrp, Tim) = value
+                                        Me.m_SimData.FishRateNo(iGrp, Tim) = value
+                                        If Me.m_SimData.FishRateMax(iGrp) < Me.m_SimData.FishRateNo(iGrp, Tim) Then
+                                            Me.m_SimData.FishRateMax(iGrp) = CSng(Me.m_SimData.FishRateNo(iGrp, Tim) * 1.01)
                                         End If
                                     Next
-
                                 ElseIf Me.AppliedDataSetInterval = eTSDataSetInterval.TimeStep Then
-
-                                    Me.ForcedFs(Me.AppliedDatPool(iDType), iDatPt) = Me.AppliedDatVal(iDatPt, iDType)
-
-                                    Me.m_SimData.FishRateNo(Me.AppliedDatPool(iDType), iDatPt) = Me.AppliedDatVal(iDatPt, iDType)
-                                    If Me.m_SimData.FishRateMax(Me.AppliedDatPool(iDType)) < Me.m_SimData.FishRateNo(Me.AppliedDatPool(iDType), iDatPt) Then
-                                        Me.m_SimData.FishRateMax(Me.AppliedDatPool(iDType)) = CSng(Me.m_SimData.FishRateNo(Me.AppliedDatPool(iDType), iDatPt) * 1.01)
+                                    Me.ForcedFs(iGrp, iDatPt) = value
+                                    Me.m_SimData.FishRateNo(iGrp, iDatPt) = value
+                                    If Me.m_SimData.FishRateMax(iGrp) < Me.m_SimData.FishRateNo(iGrp, iDatPt) Then
+                                        Me.m_SimData.FishRateMax(iGrp) = CSng(Me.m_SimData.FishRateNo(iGrp, iDatPt) * 1.01)
                                     End If
-
                                 End If
-
                             End If
 
-                        Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by pool
-
-                            If Math.Abs(Me.AppliedDatVal(iDatPt, iDType)) > 0 Then Me.Iobs = Me.Iobs + 1 'now also with forced Z
-                            If Me.AppliedDatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
-                                Me.PoolForceZ(Me.AppliedDatPool(iDType), iDatPt) = Me.AppliedDatVal(iDatPt, iDType)
-
-                            Else
-                                Me.PoolForceZ(Me.AppliedDatPool(iDType), iDatPt) = 0
+                        Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by group
+                            iGrp = Me.AppliedDatPool(iDType)
+                            If (iGrp > 0 And iGrp <= nGroups) Then
+                                If Math.Abs(Me.AppliedDatVal(iDatPt, iDType)) > 0 Then Me.Iobs = Me.Iobs + 1 'now also with forced Z
+                                If Me.AppliedDatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
+                                    Me.PoolForceZ(iGrp, iDatPt) = value
+                                Else
+                                    Me.PoolForceZ(iGrp, iDatPt) = 0
+                                End If
                             End If
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel  'Catches, -6 is forced
 
                             If Math.Abs(Me.AppliedDatVal(iDatPt, iDType)) > 0 Then Me.Iobs = Me.Iobs + 1 '....Added by SM for Catch Fitting.
                             If Me.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Then
-                                Me.PoolForceCatch(Me.AppliedDatPool(iDType), iDatPt) = Me.AppliedDatVal(iDatPt, iDType)
+                                Me.PoolForceCatch(Me.AppliedDatPool(iDType), iDatPt) = value
                             Else
                                 Me.PoolForceCatch(Me.AppliedDatPool(iDType), iDatPt) = 0
                             End If
@@ -847,28 +849,41 @@ Public Class cTimeSeriesDataStructures
                             If Me.AppliedDatVal(iDatPt, iDType) > 0 Then Me.Iobs = Me.Iobs + 1
 
                         Case eTimeSeriesType.DiscardMortality
-
-                            Dim value As Single = Me.AppliedDatVal(iDatPt, iDType)
-                            If value > 1.0 Then
-                                value = 1.0
-                                bDisFailedValidation = True
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                ' JS 08Apr22: no monthly replication of annual TS values here?
+                                If value > 1.0 Then
+                                    value = 1.0
+                                    bDisFailedValidation = True
+                                End If
+                                Me.PoolForceDiscardMort(iFlt, iGrp, iDatPt) = value
                             End If
-                            Me.PoolForceDiscardMort(Me.AppliedDatPool(iDType), Me.AppliedDatPoolSec(iDType), iDatPt) = value
 
                         Case eTimeSeriesType.DiscardProportion
-
-                            Dim value As Single = Me.AppliedDatVal(iDatPt, iDType)
-                            If value > 1.0 Then
-                                value = 1.0
-                                bDisFailedValidation = True
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                If value > 1.0 Then
+                                    value = 1.0
+                                    bDisFailedValidation = True
+                                End If
+                                Me.PoolForceDiscardProp(iFlt, iGrp, iDatPt) = value
                             End If
-                            Me.PoolForceDiscardProp(Me.AppliedDatPool(iDType), Me.AppliedDatPoolSec(iDType), iDatPt) = value
 
                         Case eTimeSeriesType.Discards, eTimeSeriesType.Landings
-                            Me.Iobs = Me.Iobs + 1
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                Me.Iobs = Me.Iobs + 1
+                            End If
 
                         Case eTimeSeriesType.Catchabilities
-                            Throw New NotImplementedException("Catchabilities!")
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                Me.PoolForceCatchabilities(iFlt, iGrp, iDatPt) = value
+                            End If
 
                     End Select
                     '      End If 'If IsDatShown(j) = True Then

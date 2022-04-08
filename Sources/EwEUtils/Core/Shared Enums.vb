@@ -1928,8 +1928,6 @@ Namespace Core
         ''' <summary>Ecosim SOR Weight for groups with fast production.</summary>
         EcosimSORWt
 
-        ''' <summary>Ecosim base catchability at time.</summary>
-        RelQt
         EcosimArenaShare
 
         LayerOtherMortLoss
