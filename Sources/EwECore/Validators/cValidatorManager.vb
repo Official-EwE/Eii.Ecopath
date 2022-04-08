@@ -96,7 +96,6 @@ Public Class cValidatorManager
         Me.m_validators.Add(eVarNameFlags.NumPtsMovAvg, validator)
 
         validator = New cValidatorCore(theCore)
-        Me.m_validators.Add(eVarNameFlags.RelQt, validator)
 
         Me.m_validators.Add(eVarNameFlags.VariableName, New cValidatorEnum(GetType(eVarNameFlags)))
 

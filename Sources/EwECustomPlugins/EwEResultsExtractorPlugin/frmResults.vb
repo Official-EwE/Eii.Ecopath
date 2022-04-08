@@ -2343,7 +2343,7 @@ Public Class frmResults
 
         'Setup headings for each row
         For y = 1 To YDim
-            AResiduals(0, y) = Me.mTimeSeries.strName(y) & "(" & My.Resources.TYPE & Me.mTimeSeries.DatType(y) & ")"
+            AResiduals(0, y) = Me.mTimeSeries.TimeSeriesName(y) & "(" & My.Resources.TYPE & Me.mTimeSeries.AppliedDatType(y) & ")"
         Next
         AResiduals(XDim, 0) = My.Resources.SS
 
@@ -2365,17 +2365,17 @@ Public Class frmResults
 
     Private Sub CreateSS()
         Dim SS As New cDataSheet
-        Dim ASS(1, Me.mTimeSeries.NdatType + 1) As Object
+        Dim ASS(1, Me.mTimeSeries.AppliedNdatType + 1) As Object
         Dim rowindex As Integer = 0
 
         ASS(0, 0) = My.Resources.TOTALSS
         ASS(1, 0) = Me.mDataStructure.SS
 
         For idat = 1 To Me.mTimeSeries.nTimeSeries
-            If Me.mTimeSeries.bEnable(idat) Then
+            If Me.mTimeSeries.TimeSeriesEnabled(idat) Then
                 rowindex += 1
-                ASS(0, rowindex) = Me.mTimeSeries.strName(idat)
-                ASS(1, rowindex) = Me.mTimeSeries.DatSS(rowindex)
+                ASS(0, rowindex) = Me.mTimeSeries.TimeSeriesName(idat)
+                ASS(1, rowindex) = Me.mTimeSeries.AppliedDatSS(rowindex)
             End If
 
         Next

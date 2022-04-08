@@ -62,18 +62,6 @@ Public Class cEcosimFleetInput
         val = New cValue(core, New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
 
-
-        val = New cValueArrayTripleIndex(core, eValueTypes.SingleArray, eVarNameFlags.RelQt, eStatusFlags.Null,
-                                         eCoreCounterTypes.nGroups, eCoreCounterTypes.nEcosimTimeSteps, Me.Index, eDataTypes.EcosimFleetInput)
-        Me.m_values.Add(val.varName, val)
-
-
-
-        ''arrayed values
-        ''RelQ at T
-        'val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.RelQ, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        'm_values.Add(val.varName, val)
-
         Me.AllowValidation = True
 
     End Sub
@@ -156,29 +144,9 @@ Public Class cEcosimFleetInput
         End Set
     End Property
 
-
-    Public Property RelQt(iGroup As Integer, iTimestep As Integer) As Single
-        Get
-            Return CSng(Me.GetVariable(eVarNameFlags.RelQt, iGroup, iTimestep))
-        End Get
-        Set(value As Single)
-            Me.SetVariable(eVarNameFlags.RelQt, value, iGroup, iTimestep)
-        End Set
-    End Property
-
 #End Region ' Variable via dot '.' operator
 
 #Region " Status via dot '.' operator "
-
-    Public Property RelQtStatus(iGroup As Integer, iTimestep As Integer) As eStatusFlags
-        Get
-            Return Me.GetStatus(eVarNameFlags.RelQt, iGroup, iTimestep)
-        End Get
-        Set(value As eStatusFlags)
-            Me.SetStatus(eVarNameFlags.RelQt, value, iGroup, iTimestep)
-        End Set
-    End Property
-
 
     Public Property CapBaseGrowthStatus() As eStatusFlags
 

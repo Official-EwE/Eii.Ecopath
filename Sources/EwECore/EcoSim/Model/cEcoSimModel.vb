@@ -1009,6 +1009,7 @@ Namespace Ecosim
                     Me.setForcedBiomass(itt, iyr)
 
                     Me.setForcedDiscards(itt, iyr, QYear)
+                    Me.setForcedCatchabilities(itt, iyr, QYear)
 
                     Me.clearMonthlyStanzaVars()
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
@@ -1466,6 +1467,27 @@ Namespace Ecosim
 
         End Sub
 
+
+        Private Sub setForcedCatchabilities(ByVal iModelTimeStep As Integer, iYear As Integer, QYear() As Single)
+
+            Dim bForced As Boolean = False
+            Dim iForcedTime As Integer = Me.m_RefData.toForcingTimeStep(iModelTimeStep, iYear)
+
+            For igrp As Integer = 1 To Me.m_Data.nGroups
+                For iflt As Integer = 1 To Me.m_Data.nGear
+
+                    If Me.m_RefData.PoolForceCatchabilities(iflt, igrp, iForcedTime) >= 0.0 Then
+                        Me.m_Data.relQt(iflt, igrp, iModelTimeStep) = Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime)
+                        bForced = True
+                    End If
+                Next iflt
+            Next igrp
+
+            If bForced Then
+                Me.SetFtimeFromGear(iModelTimeStep, QYear, False)
+            End If
+
+        End Sub
 
         Private Sub setEffortFromPlugin(ByVal QYear() As Single, ByVal iTime As Integer, ByVal iYear As Integer)
             Dim bModified As Boolean

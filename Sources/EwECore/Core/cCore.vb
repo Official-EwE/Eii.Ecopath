@@ -8055,15 +8055,23 @@ Public Class cCore
             Me.m_EcoSimData.CapDepreciate(iFleet) = fleet.CapDepreciateRate
             Me.m_EcoSimData.EffortConversionFactor(iFleet) = fleet.EffortConversionFactor
 
+            ' JS 06Apr22: Move to Catchabilities time series logic
+            'For igrp As Integer = 1 To nGroups
+            '    If (Me.m_EcopathData.Landing(iFleet, igrp) + Me.m_EcopathData.Discard(iFleet, igrp)) > 0 Then
 
-            For igrp As Integer = 1 To nGroups
-                If (Me.m_EcopathData.Landing(iFleet, igrp) + Me.m_EcopathData.Discard(iFleet, igrp)) > 0 Then
-
-                    For it As Integer = 1 To nEcosimTimeSteps
-                        Me.m_EcoSimData.relQt(iFleet, igrp, it) = fleet.RelQt(igrp, it)
-                    Next
-                End If
-            Next
+            '        For it As Integer = 1 To nEcosimTimeSteps
+            '            Me.m_EcoSimData.relQt(iFleet, igrp, it) = fleet.RelQt(igrp, it)
+            '        Next
+            '    End If
+            'Next
+            'Dim arrayValue As cValueArrayTripleIndex = DirectCast(value, cValueArrayTripleIndex)
+            'Dim QYear() As Single = New Single(Me.nFleets) {}
+            'For i As Integer = 1 To Me.m_EcopathData.NumFleet
+            '    QYear(i) = 1
+            'Next
+            ''For it As Integer = 1 To Me.nEcosimTimeSteps
+            'Me.m_Ecosim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
+            'Next
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
@@ -8094,12 +8102,6 @@ Public Class cCore
                 fleet.CapBaseGrowth = m_EcoSimData.CapBaseGrowth(iFleet)
 
                 fleet.EffortConversionFactor = m_EcoSimData.EffortConversionFactor(iFleet)
-
-                For igrp As Integer = 1 To nGroups
-                    For it As Integer = 1 To nEcosimTimeSteps
-                        fleet.RelQt(igrp, it) = Me.m_EcoSimData.relQt(iFleet, igrp, it)
-                    Next
-                Next
 
                 fleet.ResetStatusFlags()
                 fleet.AllowValidation = True
@@ -13875,23 +13877,6 @@ Public Class cCore
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                 End If
 
-
-            Case eVarNameFlags.RelQt
-                Dim iflt As Integer = ValueObject.Index
-                If iflt > 0 Then
-                    'Is this fleet exploited
-                    If (Me.m_EcopathData.Landing(iflt, iSecondaryIndex) + Me.m_EcopathData.Discard(iflt, iSecondaryIndex)) > 0 Then
-                        'Yep set the status flag to OK
-                        ValueObject.ValidationStatus = eStatusFlags.OK
-                        ValueObject.Status(iSecondaryIndex, iThirdIndex) = eStatusFlags.OK
-                    Else
-                        'Nope this fleet is not editable
-                        ValueObject.ValidationStatus = eStatusFlags.Null
-                        ValueObject.Status(iSecondaryIndex, iThirdIndex) = eStatusFlags.NotEditable
-                    End If
-                End If
-
-
         End Select
 
         Return True
@@ -14573,26 +14558,6 @@ Public Class cCore
                 If value.varName = eVarNameFlags.Latitude Then
                     Me.m_EcospaceData.CalculateCellWidth()
                 End If
-
-            Case eDataTypes.EcosimFleetInput
-
-                If value.varName = eVarNameFlags.RelQt Then
-                    Try
-                        Dim arrayValue As cValueArrayTripleIndex = DirectCast(value, cValueArrayTripleIndex)
-                        Dim QYear() As Single = New Single(Me.nFleets) {}
-                        For i As Integer = 1 To Me.m_EcopathData.NumFleet
-                            QYear(i) = 1
-                        Next
-                        'For it As Integer = 1 To Me.nEcosimTimeSteps
-                        Me.m_Ecosim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
-                        'Next
-
-                    Catch ex As Exception
-
-                    End Try
-                End If
-
-
 
         End Select
 
