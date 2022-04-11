@@ -54,9 +54,6 @@ Public Class cEcosimEnviroResponseManager
 
     Private Sub LoadFromCoreData(manager As cForcingFunctionShapeManager)
 
-        If Me.m_EnviroInputData Is Nothing Then
-            Me.m_EnviroInputData = New List(Of IEnviroInputData)
-        End If
         Me.m_EnviroInputData.Clear()
 
         'populate the list of IEnviroInputData objects that the user will interact with 
