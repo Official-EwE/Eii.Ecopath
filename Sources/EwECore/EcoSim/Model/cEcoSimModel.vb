@@ -948,7 +948,7 @@ Namespace Ecosim
                     'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
                     Me.setDenDepCatchMult(Me.BB)
 
-                    Me.m_Data.SetRelQToT(itime)
+                    Me.m_Data.SetRelQToT(itime, True)
 
                     If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimBeginTimeStep(Me.BB, Me.m_Data, itime)
 
