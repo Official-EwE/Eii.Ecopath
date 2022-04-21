@@ -403,6 +403,7 @@ Public Class cGenericDataReader
 
 #Region " Utilities "
 
+    <CLSCompliant(False)>
     Public Shared Function Value(Of T As IConvertible)(val As Object, valDefault As T) As T
         If Convert.IsDBNull(val) Then Return valDefault
         Return CType(Convert.ChangeType(val, GetType(T)), T)
