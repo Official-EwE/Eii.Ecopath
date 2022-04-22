@@ -5050,7 +5050,7 @@ Namespace Ecosim
 
             'Check SimDetritus to make sure it uses discards correctly
 
-            Me.m_Data.SetRelQToT(t)
+            Me.m_Data.SetRelQToT(t, True)
 
             'fishing mortality at the current effort
             For i = 1 To Me.m_Data.nGroups
