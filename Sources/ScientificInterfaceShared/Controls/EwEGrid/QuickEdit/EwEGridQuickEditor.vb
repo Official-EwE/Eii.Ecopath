@@ -96,64 +96,69 @@ Namespace Controls.EwEGrid
 
             If Me.m_bAttached Then Me.Detach()
 
-            ' Store ref to grid
-            Me.m_grid = grid
-            ' Store ref to UIC
-            Me.m_uic = uic
-            Me.m_ts = ts
+            Try
 
-            AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+                ' Store ref to grid
+                Me.m_grid = grid
+                ' Store ref to UIC
+                Me.m_uic = uic
+                Me.m_ts = ts
 
-            ' Hide grip
-            Me.m_ts.GripStyle = ToolStripGripStyle.Hidden
+                AddHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
-            Me.m_sep = New ToolStripSeparator()
+                ' Hide grip
+                Me.m_ts.GripStyle = ToolStripGripStyle.Hidden
 
-            ' Create quick edit control
-            Me.SetEditControl(eControlType.TextBox)
+                Me.m_sep = New ToolStripSeparator()
 
-            ' Create quick edit set button
-            Me.m_btnSet = New ToolStripButton(My.Resources.GENERIC_LABEL_APPLY)
-            Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_APPLYVALUE
-            AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+                ' Create quick edit control
+                Me.SetEditControl(eControlType.TextBox)
 
-            ' Create import button (input grids only)
-            If Not bIsOutputGrid Then
-                Me.m_btnImport = New ToolStripButton(My.Resources.ImportHS)
-                Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
-                AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
-            End If
+                ' Create quick edit set button
+                Me.m_btnSet = New ToolStripButton(My.Resources.GENERIC_LABEL_APPLY)
+                Me.m_btnSet.ToolTipText = My.Resources.TOOLTIP_GRID_APPLYVALUE
+                AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
 
-            ' Create export button
-            Me.m_btnExport = New ToolStripButton(My.Resources.ExportHS)
-            Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
-            AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
+                ' Create import button (input grids only)
+                If Not bIsOutputGrid Then
+                    Me.m_btnImport = New ToolStripButton(My.Resources.ImportHS)
+                    Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
+                    AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
+                End If
 
-            ' Add items to the toolstrip
-            Dim align As ToolStripItemAlignment = If(cSystemUtils.IsRightToLeft, ToolStripItemAlignment.Left, ToolStripItemAlignment.Right)
+                ' Create export button
+                Me.m_btnExport = New ToolStripButton(My.Resources.ExportHS)
+                Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
+                AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
 
-            Me.m_btnExport.Alignment = align
-            Me.m_ts.Items.Add(Me.m_btnExport)
+                ' Add items to the toolstrip
+                Dim align As ToolStripItemAlignment = If(cSystemUtils.IsRightToLeft, ToolStripItemAlignment.Left, ToolStripItemAlignment.Right)
 
-            If (Me.m_btnImport IsNot Nothing) Then
-                Me.m_btnImport.Alignment = align
-                Me.m_ts.Items.Add(Me.m_btnImport)
-            End If
+                Me.m_btnExport.Alignment = align
+                Me.m_ts.Items.Add(Me.m_btnExport)
 
-            Me.m_sep.Alignment = align
-            Me.m_ts.Items.Add(Me.m_sep)
+                If (Me.m_btnImport IsNot Nothing) Then
+                    Me.m_btnImport.Alignment = align
+                    Me.m_ts.Items.Add(Me.m_btnImport)
+                End If
 
-            Me.m_btnSet.Alignment = align
-            Me.m_ts.Items.Add(Me.m_btnSet)
+                Me.m_sep.Alignment = align
+                Me.m_ts.Items.Add(Me.m_sep)
 
-            Me.m_ctrlValue.Alignment = align
-            Me.m_ctrlValue.Overflow = ToolStripItemOverflow.Always
-            Me.m_ts.Items.Add(Me.m_ctrlValue)
+                Me.m_btnSet.Alignment = align
+                Me.m_ts.Items.Add(Me.m_btnSet)
 
-            Me.m_iValuePos = Me.m_ts.Items.IndexOf(Me.m_ctrlValue)
+                Me.m_ctrlValue.Alignment = align
+                Me.m_ctrlValue.Overflow = ToolStripItemOverflow.Always
+                Me.m_ts.Items.Add(Me.m_ctrlValue)
 
-            ' Set attached flag
-            Me.m_bAttached = True
+                Me.m_iValuePos = Me.m_ts.Items.IndexOf(Me.m_ctrlValue)
+
+                ' Set attached flag
+                Me.m_bAttached = True
+            Catch ex As Exception
+
+            End Try
 
             ' Set initial state
             Me.IsOutputGrid = bIsOutputGrid
@@ -173,30 +178,36 @@ Namespace Controls.EwEGrid
 
             If Not m_bAttached Then Return
 
-            Me.m_ts.Items.Remove(Me.m_ctrlValue)
+            Try
 
-            If Me.m_btnImport IsNot Nothing Then
-                RemoveHandler Me.m_btnImport.Click, AddressOf OnImportGrid
-                Me.m_btnImport.Dispose()
-                Me.m_btnImport = Nothing
-            End If
+                Me.m_ts.Items.Remove(Me.m_ctrlValue)
 
-            RemoveHandler Me.m_btnExport.Click, AddressOf OnExportGrid
-            Me.m_btnExport.Dispose()
-            Me.m_btnExport = Nothing
+                If Me.m_btnImport IsNot Nothing Then
+                    RemoveHandler Me.m_btnImport.Click, AddressOf OnImportGrid
+                    Me.m_btnImport.Dispose()
+                    Me.m_btnImport = Nothing
+                End If
 
-            Me.SetEditControl(eControlType.NotSet)
+                RemoveHandler Me.m_btnExport.Click, AddressOf OnExportGrid
+                Me.m_btnExport.Dispose()
+                Me.m_btnExport = Nothing
 
-            RemoveHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
-            Me.m_btnSet.Dispose()
-            Me.m_btnSet = Nothing
+                Me.SetEditControl(eControlType.NotSet)
 
-            RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
-            Me.m_grid = Nothing
+                RemoveHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
+                Me.m_btnSet.Dispose()
+                Me.m_btnSet = Nothing
 
-            Me.m_ts = Nothing
+                RemoveHandler Me.m_grid.OnSelectionChanged, AddressOf OnGridSelectionChanged
+                Me.m_grid = Nothing
 
-            Me.m_bAttached = False
+                Me.m_ts = Nothing
+
+                Me.m_bAttached = False
+
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
