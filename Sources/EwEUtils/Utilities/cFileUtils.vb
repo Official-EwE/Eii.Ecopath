@@ -649,6 +649,51 @@ Namespace Utilities
 
         End Function
 
+        Private Enum eCaseSensitive As Integer
+            NotDetermined = 0
+            CaseSensitive = 1
+            NotCaseSensitive = 2
+        End Enum
+
+        Private Shared s_casesensitive As eCaseSensitive = eCaseSensitive.NotDetermined
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the current OS is (most likely) case sensitive
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsOSCaseSensitive() As Boolean
+
+            If (s_casesensitive = eCaseSensitive.NotDetermined) Then
+                '    If RuntimeInformation.IsOSPlatform(OSPlatform.Windows) Or RuntimeInformation.IsOSPlatform(OSPlatform.OSX) Then
+                '        Return False
+                '    ElseIf RuntimeInformation.IsOSPlatform(OSPlatform.Linux) Then
+                '        Return True
+                '    ElseIf Environment.OSVersion.Platform = PlatformID.Unix Then
+                '        Return True
+                '    Else
+                '        Return False
+                'End If
+
+                Dim t As String = Path.GetTempPath()
+                If Not Directory.Exists(t) Then t = Environment.CurrentDirectory
+
+                If (Directory.Exists(t.ToLower) And Directory.Exists(t.ToUpper)) Then
+                    s_casesensitive = eCaseSensitive.NotCaseSensitive
+                Else
+                    s_casesensitive = eCaseSensitive.CaseSensitive
+                End If
+            End If
+
+            Debug.Assert(s_casesensitive <> eCaseSensitive.NotDetermined)
+            Return (s_casesensitive = eCaseSensitive.CaseSensitive)
+
+        End Function
+
     End Class
 
 End Namespace
