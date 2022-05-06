@@ -689,7 +689,6 @@ Namespace Utilities
                 End If
             End If
 
-            Debug.Assert(s_casesensitive <> eCaseSensitive.NotDetermined)
             Return (s_casesensitive = eCaseSensitive.CaseSensitive)
 
         End Function
