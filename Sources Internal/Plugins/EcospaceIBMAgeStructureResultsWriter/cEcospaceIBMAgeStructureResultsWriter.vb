@@ -39,21 +39,28 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
     Private m_lstDataTypes As List(Of cInputDataTypes)
 
+    Friend Enum eCalcType
+        weight
+        number
+    End Enum
+
     Private Class cInputDataTypes
         Public ReadOnly Property DataTypeName As String
-        Public ReadOnly Property NumberAtAgeScalar As Single
 
         'StanzaData.Npacket(isp, iage, ipkt)
         'or
         'StanzaData.Wpacket(isp, iage, ipkt)
+        Public ReadOnly Property CalcType As eCalcType
+
+
         Public InputValues(,,) As Single
 
         Public SimBaseLineData(,) As Single
 
-        Sub New(Inputs(,,) As Single, EcosimBaseLineData(,) As Single, TypeName As String, ValueScalar As Single)
+        Sub New(Inputs(,,) As Single, EcosimBaseLineData(,) As Single, TypeName As String, WeightOrNumber As eCalcType)
             InputValues = Inputs
             DataTypeName = TypeName
-            NumberAtAgeScalar = ValueScalar
+            CalcType = WeightOrNumber
             SimBaseLineData = EcosimBaseLineData
         End Sub
 
@@ -96,30 +103,21 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
     Private Function ComputeAgeStructureByRegion(InputData As cInputDataTypes) As Single()()()
 
-        Dim n(Me.m_StanzaData.Nsplit)()() As Single 'n(ngroups)(row,col)(age)
+        'Dim n(Me.m_StanzaData.Nsplit)()() As Single 'n(ngroups)(row,col)(age)
         Dim RegionValues(Me.m_StanzaData.Nsplit)()() As Single
 
-        Dim iage As Integer
+        'Dim iage As Integer
 
         For isp As Integer = 1 To Me.m_StanzaData.Nsplit
             'Allocate memory for the 0 region for both values and n
             RegionValues(isp) = New Single(Me.EcospaceData.nRegions)() {}
             RegionValues(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
 
-            n(isp) = New Single(Me.EcospaceData.nRegions)() {}
-            n(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
+            'n(isp) = New Single(Me.EcospaceData.nRegions)() {}
+            'n(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
 
-            For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp) ' - 1
+            For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
 
-                iage = ii
-                'iage = Me.m_StanzaData.AgeIndex1(isp) + ii
-                If iage > Me.m_StanzaData.MaxAgeSpecies(isp) Then
-                    iage = iage - Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                End If
-                'iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - Me.m_StanzaData.AgeIndex1(isp)
-                'If ii >= Me.m_StanzaData.AgeIndex1(isp) Then
-                '    iage = ii - Me.m_StanzaData.AgeIndex1(isp)
-                'End If
 
                 For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
                     Dim irow As Integer, icol As Integer
@@ -130,45 +128,33 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                     'Only allocate memory for age arrays if there is some packets in this region
                     If RegionValues(isp)(iRgn) Is Nothing Then
                         RegionValues(isp)(iRgn) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
-                        n(isp)(iRgn) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
                     End If
 
-                    If Me.m_StanzaData.Npacket(isp, ii, ipkt) > 0 Then
-
-                        'this will double count values and n where there are no regions defined
-                        'or the packet is in a zero region
-                        'that won't matter once the values have been averaged
-                        'RegionValues(isp)(iRgn)(ii) += InputData.InputValues(isp, iage, ipkt)
-                        'n(isp)(iRgn)(iage) += 1
-
-                        'zero region will be the total area 
-                        RegionValues(isp)(0)(ii) += InputData.InputValues(isp, iage, ipkt)
-                        n(isp)(0)(iage) += 1
-
+                    Dim value As Single
+                    If InputData.CalcType = eCalcType.weight Then
+                        value = InputData.InputValues(isp, iage, ipkt)
+                    ElseIf InputData.CalcType = eCalcType.number Then
+                        value = InputData.InputValues(isp, iage, ipkt) * Me.m_StanzaData.Npackets / Me.EcospaceData.ThabArea
                     End If
+
+                    If iRgn > 0 Then
+                        RegionValues(isp)(iRgn)(iage) += value
+                    End If
+
+                    RegionValues(isp)(0)(iage) += value
+
                 Next ipkt
-            Next ii
+
+                For iiRgn As Integer = 0 To Me.EcospaceData.nRegions
+                    'make sure this region has been allocated
+                    If RegionValues(isp)(iiRgn) IsNot Nothing Then
+                        RegionValues(isp)(iiRgn)(iage) /= Me.m_StanzaData.Npackets
+                    End If
+                Next iiRgn
+
+            Next iage
         Next isp
 
-        For isp As Integer = 1 To Me.m_StanzaData.Nsplit
-
-            For irgn As Integer = 0 To EcospaceData.nRegions
-
-                If RegionValues(isp) IsNot Nothing Then
-                    For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
-
-                        'packet initialization in Ecospace
-                        'Me.StanzaData.Npacket(isp, ia, ip) = Me.StanzaData.NageS(isp, ia) / Me.StanzaData.Npackets * Me.EcoSpaceData.ThabArea
-                        'Me.StanzaData.Wpacket(isp, ia, ip) = Me.StanzaData.WageS(isp, ia) + 0.0000000001
-                        If n(isp)(irgn)(ii) > 0 Then
-                            RegionValues(isp)(irgn)(ii) = RegionValues(isp)(irgn)(ii) / n(isp)(irgn)(ii) * InputData.NumberAtAgeScalar
-                        End If
-
-                    Next ii
-                End If 'Weight(ieco)(ir, ic) IsNot Nothing
-
-            Next irgn
-        Next isp
         Return RegionValues
 
     End Function
@@ -202,7 +188,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
                     Dim sbAges As Text.StringBuilder = New Text.StringBuilder
 
-                    For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
+                    For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
                         Dim iEco As Integer = Me.m_StanzaData.EcopathCode(isp, Me.m_StanzaData.StanzaNo(isp, iage))
                         sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
                     Next iage
@@ -214,7 +200,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
                     Dim SimAges As Text.StringBuilder = New Text.StringBuilder
                     SimAges.Append("0,Ecosim Base Values")
-                    For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
+                    For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
                         'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
                         SimAges.Append("," + CStr(InputData.SimBaseLineData(isp, iage)))
                     Next iage
@@ -229,7 +215,9 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
             Me.m_bInitialized = True
 
         Catch ex As Exception
-            Dim msg As cMessage = New cMessage("Error creating IBM Age Structure file " + ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning)
+            Dim msg As cMessage = New cMessage("Error creating IBM Age Structure file " + ex.Message,
+                                               eMessageType.ErrorEncountered, eCoreComponentType.Ecospace,
+                                               eMessageImportance.Warning)
             Me.m_core.Messages.AddMessage(msg)
             cLog.Write(ex)
         End Try
@@ -240,14 +228,13 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
 
     Private Sub SaveRegionAgeStructureToFile(Values()()() As Single, InputDataType As cInputDataTypes)
-
+        Dim iage As Integer
         For isp As Integer = 1 To Me.m_StanzaData.Nsplit
             Try
 
                 Dim sbAges As Text.StringBuilder = New Text.StringBuilder
 
                 For irgn As Integer = 0 To Me.EcospaceData.nRegions
-
                     Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, irgn, InputDataType.DataTypeName), True)
 
                     'Does this group row col contain data
@@ -256,10 +243,15 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
                         Dim sb As Text.StringBuilder = New Text.StringBuilder
 
                         sb.Append(CStr(Me.m_iTime) + "," + CStr(irgn))
-                        For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                            'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
+                        For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
+
+                            iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - (Me.m_StanzaData.AgeIndex1(isp) - 1)
+                            If iage > Me.m_StanzaData.MaxAgeSpecies(isp) Then
+                                iage = ii - (Me.m_StanzaData.AgeIndex1(isp))
+                            End If
+
                             sb.Append("," + CStr(Values(isp)(irgn)(iage)))
-                        Next iage
+                        Next ii
 
                         strm.WriteLine(sb.ToString)
                         'may not need to do this as it will go out of scope
@@ -295,10 +287,10 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
         m_lstDataTypes = New List(Of cInputDataTypes)
 
-        Dim weight As New cInputDataTypes(Me.m_StanzaData.Wpacket, Me.m_StanzaData.WageS, "Weight", 1.0)
+        Dim weight As New cInputDataTypes(Me.m_StanzaData.Wpacket, Me.m_StanzaData.WageS, "Weight", eCalcType.weight)
         m_lstDataTypes.Add(weight)
 
-        Dim Number As New cInputDataTypes(Me.m_StanzaData.Npacket, Me.m_StanzaData.NageS, "Number", Me.m_StanzaData.Npackets / Me.EcospaceData.ThabArea)
+        Dim Number As New cInputDataTypes(Me.m_StanzaData.Npacket, Me.m_StanzaData.NageS, "Number", eCalcType.number)
         m_lstDataTypes.Add(Number)
 
     End Sub

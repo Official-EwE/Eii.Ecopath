@@ -165,7 +165,6 @@ Public Class NGOMEXResultsWriter
         Dim strm As StreamWriter = Nothing
         Dim strFile As String = ""
 
-
         For Each igrp As Integer In _lstGroups
 
             System.Console.WriteLine("NGOMEX Ecospace results group = " + igrp.ToString + ", t = " + tsData.iTimeStep.ToString)

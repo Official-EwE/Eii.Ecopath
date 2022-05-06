@@ -7159,6 +7159,7 @@ Public Class cCore
                 Return False
             End If
 
+
             Me.m_SearchData.RedimToSimScenario(Me.nEcosimYears)
 
             '  Me.m_EcoSimData.Debug_InitEcosimResponse()
@@ -7188,6 +7189,8 @@ Public Class cCore
 
             InitEcosimTimeSeries()
             LoadEcosimTimeSeries()
+
+            'CheckEcosimCatchability()
 
             ' Reload stanzas
             Me.LoadStanzas()
@@ -8072,6 +8075,7 @@ Public Class cCore
             ''For it As Integer = 1 To Me.nEcosimTimeSteps
             'Me.m_Ecosim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
             'Next
+
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
@@ -9644,6 +9648,35 @@ Public Class cCore
         Return True
 
     End Function
+
+
+    'Private Sub CheckEcosimCatchability()
+
+    '    Dim bUpdate As Boolean = False
+    '    For iflt As Integer = 1 To Me.nFleets
+    '        For igrp As Integer = 1 To Me.nGroups
+    '            Dim baseRelQ As Single = CSng((m_EcopathData.Landing(iflt, igrp) + m_EcopathData.Discard(iflt, igrp)) / (m_EcopathData.B(igrp) + 1.0E-20))
+    '            If baseRelQ > 0 Then
+
+    '                For it As Integer = 1 To Me.nEcosimTimeSteps
+    '                    'If baseRelQ <> Me.m_EcoSimData.relQt(iflt, igrp, it) Then
+    '                    If Math.Abs(baseRelQ - Me.m_EcoSimData.relQt(iflt, igrp, it)) > 0.0001 Then
+    '                        Dim msg As String = "Ecosim Catchability does not match the default catchabilities. Would you like to reset this to default values?"
+    '                        Dim msgFB As New cFeedbackMessage(msg, eCoreComponentType.Ecosim, eMessageType.ErrorEncountered, eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
+    '                        Me.Messages.SendMessage(msgFB)
+    '                        If msgFB.Reply = eMessageReply.YES Then
+    '                            Me.SetDefaultCatchabilities()
+    '                        End If
+    '                        'Done just stop the search
+    '                        Return
+    '                    End If
+    '                Next it
+
+    '            End If 'If baseRelQ > 0 Then
+    '        Next igrp
+    '    Next iflt
+
+    'End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
