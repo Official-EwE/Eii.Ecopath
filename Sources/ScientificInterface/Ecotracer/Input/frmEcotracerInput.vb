@@ -106,18 +106,20 @@ Namespace Ecotracer
 
             Dim ecotracerModelParams As cEcotracerModelParameters = Me.Core.EcotracerModelParameters()
             Dim ffm As cForcingFunctionShapeManager = Me.Core.ForcingShapeManager()
-            Dim sel As Integer = 0
+            Dim iSel As Integer = 0
 
             Me.m_cmbEnvInflowFF.Items.Clear()
-            Me.m_cmbEnvInflowFF.Items.Add(SharedResources.GENERIC_VALUE_NONE)
+            iSel = Me.m_cmbEnvInflowFF.Items.Add(SharedResources.GENERIC_VALUE_NONE) ' Just to be correct
             For iFF As Integer = 0 To ffm.Count - 1
                 Dim ff As cForcingFunction = ffm(iFF)
-                Me.m_cmbEnvInflowFF.Items.Add(ff)
+                Dim iItem As Integer = Me.m_cmbEnvInflowFF.Items.Add(ff)
+                If (ff.Index = ecotracerModelParams.ConForceNumber) Then iSel = iItem
             Next
-            Me.m_cmbEnvInflowFF.SelectedIndex = ecotracerModelParams.ConForceNumber
+            Me.m_cmbEnvInflowFF.SelectedIndex = iSel
+
         End Sub
 
-        Private Sub m_btSelectFile_Click(sender As Object, e As EventArgs) Handles m_btSelectFile.Click
+        Private Sub OnFileSelected(sender As Object, e As EventArgs) Handles m_btSelectFile.Click
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
@@ -131,21 +133,28 @@ Namespace Ecotracer
             End If
         End Sub
 
-        Private Sub m_btClearFile_Click(sender As Object, e As EventArgs) Handles m_btClearFile.Click
+        Private Sub OnClearFile(sender As Object, e As EventArgs) Handles m_btClearFile.Click
             Me.Core.EcospaceTimeSeriesManager.Clear()
             Me.m_lbConcentrationFile.Text = ""
         End Sub
 
-        Private Sub m_cmbEnvInflowFF_Format(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbEnvInflowFF.Format
+        Private Sub OnFormatFF(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbEnvInflowFF.Format
             If (TypeOf e.ListItem Is cForcingFunction) Then
                 Dim fmt As New cShapeDataFormatter()
                 e.Value = fmt.ToString(e.ListItem)
             End If
         End Sub
 
-        Private Sub m_cmbEnvInflowFF_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_cmbEnvInflowFF.SelectedIndexChanged
+        Private Sub OnEnvFFSelected(sender As Object, e As EventArgs) Handles m_cmbEnvInflowFF.SelectedIndexChanged
+
             Dim ecotracerModelParams As cEcotracerModelParameters = Me.Core.EcotracerModelParameters()
-            ecotracerModelParams.ConForceNumber = Me.m_cmbEnvInflowFF.SelectedIndex
+            Dim iFF As Integer = 0
+
+            If (TypeOf Me.m_cmbEnvInflowFF.SelectedItem Is cForcingFunction) Then
+                iFF = DirectCast(Me.m_cmbEnvInflowFF.SelectedItem, cForcingFunction).Index
+            End If
+            ecotracerModelParams.ConForceNumber = iFF
+
         End Sub
 
 #End Region ' Internals
