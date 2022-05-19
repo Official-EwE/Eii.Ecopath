@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 
 ; Optional features
 #define RobertsBank 0
@@ -37,7 +37,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17868
+  VersionInfoVersion=6.7.0.17884
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
