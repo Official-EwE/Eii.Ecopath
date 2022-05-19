@@ -39,8 +39,8 @@ Public Class cComplexityDataset
 #Region " Construction "
 
     Public Sub New()
-        Me.CustomName = "EcoEngineer driver"
-        Me.CustomDescription = "An engine that calculates a habitat complexity map from various ecosystem engineer biomasses."
+        Me.CustomName = My.Resources.DRIVER_NAME
+        Me.CustomDescription = My.Resources.DRIVER_DESCRIPTION
     End Sub
 
     Public Sub Initialize(core As Object) _
@@ -54,19 +54,19 @@ Public Class cComplexityDataset
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return ""
+            Return "Jeroen Steenbeek"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return ""
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return ""
+            Return Me.CustomDescription
         End Get
     End Property
 
@@ -83,7 +83,7 @@ Public Class cComplexityDataset
     Public ReadOnly Property Name2 As String _
         Implements IPlugin.DisplayName
         Get
-            Return "EcoEngineer data set"
+            Return My.Resources.DRIVER_NAME
         End Get
     End Property
 
@@ -194,7 +194,7 @@ Public Class cComplexityDataset
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Write content to XML.
+    ''' Write dataset configuration to XML.
     ''' </summary>
     ''' <param name="doc">The doc to generate nodes for.</param>
     ''' <returns>
@@ -252,7 +252,7 @@ Public Class cComplexityDataset
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Read content from XML.
+    ''' Read dataset configuration from XML.
     ''' </summary>
     ''' <param name="doc">The doc to read nodes from.</param>
     ''' <param name="node">The configuration node that contains the content
