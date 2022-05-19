@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -67,6 +67,24 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("CIB", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An engine that calculates a habitat complexity map from various ecosystem engineer biomasses..
+        '''</summary>
+        Friend ReadOnly Property DRIVER_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("DRIVER_DESCRIPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EcoEngineer driver.
+        '''</summary>
+        Friend ReadOnly Property DRIVER_NAME() As String
+            Get
+                Return ResourceManager.GetString("DRIVER_NAME", resourceCulture)
             End Get
         End Property
         
@@ -153,6 +171,15 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("plymouth", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EcoEngineer complexity raster.
+        '''</summary>
+        Friend ReadOnly Property RASTER_NAME() As String
+            Get
+                Return ResourceManager.GetString("RASTER_NAME", resourceCulture)
             End Get
         End Property
         

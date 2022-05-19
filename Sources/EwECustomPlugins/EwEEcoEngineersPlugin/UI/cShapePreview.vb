@@ -24,6 +24,9 @@ Public Class cShapePreview
         MyBase.New(25000)
     End Sub
 
+    ''' <summary>
+    ''' Overridden to prevent interactions with the core.
+    ''' </summary>
     Public Overrides Function Update() As Boolean
         Return True
     End Function

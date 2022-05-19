@@ -136,7 +136,7 @@ Public Class cSpatialRaster
     ''' <returns>A string representation of this class.</returns>
     ''' -------------------------------------------------------------------
     Public Overrides Function ToString() As String
-        Return "EcoEngineer complexity raster"
+        Return My.Resources.RASTER_NAME
     End Function
 
     ''' -------------------------------------------------------------------
