@@ -25,7 +25,7 @@ Imports EwEUtils
 ''' <summary>
 ''' Class to handle the data that makes up the shape of a forcing or mediation shape
 ''' </summary>
-''' <remarks>This is used be all the Forcing or Mediation shapes</remarks>
+''' <remarks>This is used for all the Forcing or Mediation shapes</remarks>
 Public MustInherit Class cShapeData
     Implements ICoreInterface
     Implements IDisposable

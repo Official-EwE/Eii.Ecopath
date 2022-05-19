@@ -256,6 +256,7 @@ Namespace Ecotracer
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.BlinkIcon = CType(resources.GetObject("$this.BlinkIcon"), System.Drawing.Icon)
             Me.Controls.Add(Me.m_tlpAll)
             Me.Name = "frmEcotracerInput"
             Me.TabText = ""
