@@ -77,5 +77,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("CCONC_DATASET_NAME", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer concentration dataset.
+        '''</summary>
+        Friend ReadOnly Property CCONC_DATASET_TYPE() As String
+            Get
+                Return ResourceManager.GetString("CCONC_DATASET_TYPE", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

@@ -43,7 +43,7 @@ Partial Class ucConfigureCConcDriver
         Me.m_lblGroup.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lblGroup.Location = New System.Drawing.Point(3, 0)
         Me.m_lblGroup.Name = "m_lblGroup"
-        Me.m_lblGroup.Size = New System.Drawing.Size(39, 26)
+        Me.m_lblGroup.Size = New System.Drawing.Size(39, 27)
         Me.m_lblGroup.TabIndex = 0
         Me.m_lblGroup.Text = "&Group:"
         Me.m_lblGroup.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -59,14 +59,15 @@ Partial Class ucConfigureCConcDriver
         Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpControls.Name = "m_tlpControls"
         Me.m_tlpControls.RowCount = 2
+        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48.0!))
         Me.m_tlpControls.Size = New System.Drawing.Size(171, 74)
         Me.m_tlpControls.TabIndex = 1
         '
         'm_cmbGroups
         '
         Me.m_cmbGroups.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_cmbGroups.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbGroups.FormattingEnabled = True
         Me.m_cmbGroups.Location = New System.Drawing.Point(48, 3)
         Me.m_cmbGroups.Name = "m_cmbGroups"

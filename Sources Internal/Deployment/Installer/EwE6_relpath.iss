@@ -149,6 +149,7 @@ Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\
 Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
 Source: "{#DefRoot}{#DefSrc}\EwEEcoengineersPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecoengineers
 Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecoengineers
+Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecotracer
 
 ; - PRO FEATURES --
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
@@ -326,6 +327,7 @@ Name: "plugin\analysis\ecotroph"; Description: "EcoTroph"; Types: custom full
 Name: "plugin\analysis\na"; Description: "Network Analysis"; Types: compact custom full
 Name: "plugin\analysis\prebal"; Description: "Pre-balance diagnostics"; Types: full custom
 Name: "plugin\analysis\ecoengineers"; Description: "Eco-engineer dynamics"; Types: full
+Name: "plugin\analysis\ecotracer"; Description: "Ecotracer impacts"; Types: full
 Name: "plugin\analysis\valuechain"; Description: "Value chain"; Types: full
 Name: "plugin\input"; Description: "Data retrieval"; Types: full custom
 Name: "plugin\input\worms"; Description: "WoRMS taxonomy search"; Types: full
