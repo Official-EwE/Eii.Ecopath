@@ -125,4 +125,7 @@
     <value>Concentration {0}</value>
     <comment>{0} = group name</comment>
   </data>
+  <data name="CCONC_DATASET_TYPE" xml:space="preserve">
+    <value>Ecotracer concentration dataset</value>
+  </data>
 </root>

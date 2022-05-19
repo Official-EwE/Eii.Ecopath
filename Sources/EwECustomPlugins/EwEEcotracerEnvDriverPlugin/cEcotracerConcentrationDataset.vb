@@ -37,7 +37,7 @@ Public Class cEcotracerConcentrationDataset
 #Region " Construction "
 
     Public Sub New()
-        ' NOP
+        Me.CustomName = My.Resources.CCONC_DATASET_TYPE
     End Sub
 
     Public Sub Initialize(core As Object) _
