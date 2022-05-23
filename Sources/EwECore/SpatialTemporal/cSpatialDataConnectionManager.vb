@@ -163,7 +163,8 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            Me.NotifyCore(eMessageType.DataAddedOrRemoved)
+            ' JS 230522: are you insane!?
+            'Me.NotifyCore(eMessageType.DataModified)
 
         End Sub
 
@@ -171,9 +172,9 @@ Namespace SpatialData
         ''' Apply spatial configration details to the underlying spatial data structures.
         ''' </summary>
         ''' <param name="adt">The adapter to update. If left empty, all adapters will be updated.</param>
-        Public Sub Update(Optional adt As cSpatialDataAdapter = Nothing, Optional ForceUpdate As Boolean = False)
+        Public Sub Update(Optional adt As cSpatialDataAdapter = Nothing)
 
-            ' ToDo: only send out notifications if data has changed (or update is forced)
+            ' ToDo: only send out notifications if data has changed
 
             'If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
 
@@ -220,9 +221,7 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            If (ForceUpdate Or True) Then
-                Me.NotifyCore(eMessageType.DataAddedOrRemoved)
-            End If
+            Me.NotifyCore(eMessageType.DataModified)
 
         End Sub
 
