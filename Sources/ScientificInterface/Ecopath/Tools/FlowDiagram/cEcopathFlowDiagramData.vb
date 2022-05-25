@@ -115,7 +115,7 @@ Namespace Ecopath.Controls.FlowDiagram
                         Case Else
                             Debug.Assert(False)
                     End Select
-                    Return c.EcopathGroupOutputs(iIndex).Biomass
+                    Return 0
                 End If
                 iIndex -= c.nGroups
                 Dim b As Single = 0
@@ -207,7 +207,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 If (iIndex <= c.nGroups) Then Return c.EcopathGroupOutputs(iIndex).TTLX
                 iIndex -= c.nGroups
 
-                Me.UpdateData()
+                Me.RecalcFleetStats()
                 Return Me.m_fleetTTLX(iIndex)
             End Get
         End Property
@@ -218,7 +218,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public ReadOnly Property ValueMax() As Single _
                 Implements IFlowDiagramData.ValueMax
             Get
-                Me.UpdateData()
+                Me.RecalcFleetStats()
                 Return Me.m_sValueMax
             End Get
         End Property
@@ -229,7 +229,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public ReadOnly Property ValueMin() As Single _
                Implements IFlowDiagramData.ValueMin
             Get
-                Me.UpdateData()
+                Me.RecalcFleetStats()
                 Return Me.m_sValueMin
             End Get
         End Property
@@ -240,7 +240,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public ReadOnly Property LinkValueMin() As Single _
                  Implements IFlowDiagramData.LinkValueMin
             Get
-                Me.UpdateData()
+                Me.RecalcFleetStats()
                 Return Me.m_sDietMin
             End Get
         End Property
@@ -251,7 +251,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Public ReadOnly Property LinkValueMax() As Single _
                   Implements IFlowDiagramData.LinkValueMax
             Get
-                Me.UpdateData()
+                Me.RecalcFleetStats()
                 Return Me.m_sDietMax
             End Get
         End Property
@@ -296,7 +296,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Internals "
 
-        Private Sub UpdateData()
+        Private Sub RecalcFleetStats()
 
             If Not Me.m_bInvalid Then Return
             If (Me.UIContext Is Nothing) Then Return

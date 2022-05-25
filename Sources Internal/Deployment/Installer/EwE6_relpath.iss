@@ -16,18 +16,17 @@
 #define enaR 0
 
 #if Compile64Bit == 0
-  #define MyAppName "Ecopath with Ecosim"
   #define MyAppVersion "6.7.0 α 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppName "Ecopath with Ecosim"
   #define MyAppVersion "6.7.0 α 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
+; Standard stuff
+#define MyAppName "Ecopath with Ecosim"
 #define MyAppExeName "ewe6.exe"
 #define MyAppPublisher "Ecopath International Initiative"
-
 #define DefRoot "..\..\..\"
 #define DefDB "Database"
 
