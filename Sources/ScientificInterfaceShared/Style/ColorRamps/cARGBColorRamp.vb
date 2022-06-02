@@ -80,11 +80,6 @@ Namespace Style
 
             MyBase.New(iSystemID, iSystemID > 0)
 
-            ' Validate input
-            If (colors Is Nothing) Then Throw New Exception("Missing required parameter aColors")
-            If (breaks Is Nothing) Then Throw New Exception("Missing required parameter adPositions")
-            If (colors.Length <> breaks.Length) Then Throw New Exception("Number of colors and positions do not match")
-
             Me.GradientColors = colors
             Me.GradientBreaks = breaks
 
