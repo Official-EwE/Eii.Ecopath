@@ -110,7 +110,6 @@ Namespace Controls
 
                 Dim iSel As Integer = -1
                 Me.m_cmbGradient.Items.Clear()
-
                 Me.m_cmbGradient.Items.AddRange(Me.UIContext.StyleGuide.ColorRamps)
 
                 ' Set selection
@@ -131,7 +130,11 @@ Namespace Controls
 
                 If (iSel = -1) Then
                     If (value IsNot Nothing) Then
-                        iSel = Me.m_cmbGradient.Items.Add(New cARGBColorRamp("Custom", value.ColorRampColors, value.ColorRampBreaks))
+                        If (value.ColorRampID > 0) Then
+                            iSel = Me.m_cmbGradient.Items.Add(New cARGBColorRamp("Custom", value.ColorRampColors, value.ColorRampBreaks))
+                        Else
+                            iSel = 0
+                        End If
                     End If
                 End If
                 Me.m_cmbGradient.SelectedIndex = iSel
