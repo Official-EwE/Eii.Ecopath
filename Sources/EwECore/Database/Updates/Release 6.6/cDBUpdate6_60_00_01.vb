@@ -53,7 +53,8 @@ Friend Class cDBUpdate6_60_00_01
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return db.Execute("ALTER TABLE EcopathGroupSample ADD COLUMN BiomAccRate SINGLE")
+        db.Execute("ALTER TABLE EcopathGroupSample ADD COLUMN BiomAccRate SINGLE")
+        Return True
     End Function
 
 End Class
