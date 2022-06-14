@@ -452,15 +452,11 @@ Namespace Ecosim
 
             Me.Core.CheckResetDefaultVulnerabilities()
 
-            For iTS As Integer = 1 To Me.Core.nTimeSeries - 1
+            For iTS As Integer = 1 To Me.Core.nTimeSeries
                 ts = Me.Core.EcosimTimeSeries(iTS)
-                If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) Then
+                If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) And (ts.WtType > 0) Then
                     gts = DirectCast(ts, cGroupTimeSeries)
-                    If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
-                       (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
-                       (gts.TimeSeriesType = eTimeSeriesType.CatchesRel) Or _
-                       (gts.TimeSeriesType = eTimeSeriesType.Catches) Then
-
+                    If gts.IsReference Then
                         abUseBlock(gts.GroupIndex) = True
                         nBlocks += 1
                     End If
@@ -468,8 +464,7 @@ Namespace Ecosim
             Next
 
             ' Bump up the number of blocks if neccessary
-            Me.m_vulnerabilityBlockCodeSelector.NumBlocks = _
-                Math.Max(Me.m_vulnerabilityBlockCodeSelector.NumBlocks, nBlocks)
+            Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Math.Max(Me.m_vulnerabilityBlockCodeSelector.NumBlocks, nBlocks)
 
             iBlock = 1
             For i As Integer = 1 To Me.Core.nGroups
