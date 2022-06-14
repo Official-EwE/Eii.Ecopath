@@ -2034,14 +2034,23 @@ Public Class cEIIXMLDataSource
                             End Try
                         Next
 
-                    Case eTimeSeriesCategoryType.Fleet,
-                         eTimeSeriesCategoryType.FleetGroup
+                    Case eTimeSeriesCategoryType.Fleet
+                        For Each drowSub As DataRow In dtFlt.Select("TimeSeriesID=" & iTSID)
+                            Try
+                                iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(drowSub("FleetID")))
+                            Catch ex As Exception
+                                iIndex = -1
+                            End Try
+                        Next
+
+                    Case eTimeSeriesCategoryType.FleetGroup
                         For Each drowSub As DataRow In dtFlt.Select("TimeSeriesID=" & iTSID)
                             Try
                                 iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(drowSub("FleetID")))
                                 iIndexSec = Array.IndexOf(ecopathDS.GroupDBID, CInt(drowSub("GroupID")))
                             Catch ex As Exception
                                 iIndex = -1
+                                iIndexSec = -1
                             End Try
                         Next
 
