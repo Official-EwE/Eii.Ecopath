@@ -357,33 +357,34 @@ Public Class cSFPManager
 
     Private Sub HandleIterationUpdate(cnt As cSFPContainer, iteration As ISFPIteration, bDone As Boolean)
 
-        SyncLock Me.m_queue
-            ' Process iteration
-            If (iteration IsNot Nothing) Then
+        ' Process iteration
+        If (iteration IsNot Nothing) Then
 
-                Debug.WriteLine(cnt.ToString & ": " & iteration.Name & " = " & iteration.RunState.ToString() & " on " & cnt.Model)
+            Debug.WriteLine(cnt.ToString & ": " & iteration.Name & " = " & iteration.RunState.ToString() & " on " & cnt.Model)
 
-                If (iteration.RunState = ISFPIteration.eRunState.Completed And bDone) Then
+            If (iteration.RunState = ISFPIteration.eRunState.Completed And bDone) Then
 
-                    Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
+                Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
 
-                    For Each msg As String In iteration.RunStateMessages
-                        Me.AppendStatus(Me.m_statusmsg, msg, If(iteration.RunState = ISFPIteration.eRunState.Completed, eStatusFlags.OK, eStatusFlags.ErrorEncountered))
-                    Next
-                    ' Determine the best fitting iteration
-                    Me.DetermineBestFit()
+                For Each msg As String In iteration.RunStateMessages
+                    Me.AppendStatus(Me.m_statusmsg, msg, If(iteration.RunState = ISFPIteration.eRunState.Completed, eStatusFlags.OK, eStatusFlags.ErrorEncountered))
+                Next
+                ' Determine the best fitting iteration
+                Me.DetermineBestFit()
 
-                    Me.m_iQueueDone += 1
+                Me.m_iQueueDone += 1
 
-                    cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, My.Resources.DISPLAYNAME),
-                                                              (Me.m_iQueueDone + 0.5!) / Me.m_iQueueLength)
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, My.Resources.DISPLAYNAME),
+                                                          (Me.m_iQueueDone + 0.5!) / Me.m_iQueueLength)
 
-                End If
-                Me.SendIterationUpdated(iteration)
             End If
+            Me.SendIterationUpdated(iteration)
+        End If
 
-            ' Container done?
-            If (Not cnt.IsRunning) Then
+
+        ' Container done?
+        If (Not cnt.IsRunning) Then
+            SyncLock Me.m_queue
                 ' More to run?
                 If (Me.m_queue.Count > 0) Then
                     ' #Yes: order next run
@@ -397,8 +398,8 @@ Public Class cSFPManager
                         Me.TerminateContainerRun()
                     End If
                 End If
-            End If
-        End SyncLock
+            End SyncLock
+        End If
 
     End Sub
 

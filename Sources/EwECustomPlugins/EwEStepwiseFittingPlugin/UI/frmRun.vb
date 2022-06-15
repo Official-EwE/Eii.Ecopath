@@ -177,6 +177,8 @@ Public Class frmRun
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
+        If Me.m_bKeepResults Then Return
+
         Try
             Select Case msg.Source
                 Case eCoreComponentType.MediatedInteractionManager
@@ -661,6 +663,8 @@ Public Class frmRun
 
     End Sub
 
+    Private m_bKeepResults As Boolean = False
+
     ''' <summary>
     ''' Load selected interation into the EwE user interface
     ''' </summary>
@@ -670,7 +674,9 @@ Public Class frmRun
         Try
             Dim iteration As ISFPIteration = Me.SelectedIteration
             If (iteration IsNot Nothing) Then
+                Me.m_bKeepResults = True
                 iteration.Apply(Me.Core)
+                Me.m_bKeepResults = False
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
