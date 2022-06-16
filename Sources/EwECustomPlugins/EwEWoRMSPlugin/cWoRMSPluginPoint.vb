@@ -88,7 +88,7 @@ Public Class cWoRMSPluginPoint
 
     Friend Function InitClient() As AphiaNameServicePortTypeClient
 
-        Dim binding = New ServiceModel.BasicHttpBinding()
+        Dim binding = New ServiceModel.BasicHttpsBinding()
         binding.Name = "AphiaNameServiceBinding"
         binding.CloseTimeout = TimeSpan.FromSeconds(Me.ConnectionTimeOut)
         binding.OpenTimeout = TimeSpan.FromSeconds(Me.ConnectionTimeOut)
@@ -101,7 +101,7 @@ Public Class cWoRMSPluginPoint
         binding.MaxBufferSize = 524288
         binding.MaxReceivedMessageSize = 524288
         binding.MessageEncoding = ServiceModel.WSMessageEncoding.Text
-        binding.TextEncoding = System.Text.Encoding.UTF8
+        binding.TextEncoding = System.Text.Encoding.Unicode
         binding.TransferMode = ServiceModel.TransferMode.Buffered
         binding.UseDefaultWebProxy = True
 
@@ -111,13 +111,13 @@ Public Class cWoRMSPluginPoint
         binding.ReaderQuotas.MaxBytesPerRead = 4096
         binding.ReaderQuotas.MaxNameTableCharCount = 16384
 
-        binding.Security.Mode = ServiceModel.BasicHttpSecurityMode.None
+        binding.Security.Mode = ServiceModel.BasicHttpsSecurityMode.Transport
         binding.Security.Transport.ClientCredentialType = ServiceModel.HttpClientCredentialType.None
         binding.Security.Transport.ProxyCredentialType = ServiceModel.HttpProxyCredentialType.None
         binding.Security.Transport.Realm = ""
         binding.Security.Message.ClientCredentialType = ServiceModel.BasicHttpMessageCredentialType.UserName
         binding.Security.Message.AlgorithmSuite = ServiceModel.Security.SecurityAlgorithmSuite.Default
-        Dim endpointStr = "http://www.marinespecies.org/aphia.php?p=soap"
+        Dim endpointStr = "https://www.marinespecies.org/aphia.php?p=soap&wsdl=1"
         Dim endpoint = New ServiceModel.EndpointAddress(endpointStr)
 
         Return New AphiaNameServicePortTypeClient(binding, endpoint)
