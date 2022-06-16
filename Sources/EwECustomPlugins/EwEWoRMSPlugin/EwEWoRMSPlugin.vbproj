@@ -185,11 +185,26 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Service References\WoRMSWebService\aphia.wsdl" />
+    <None Include="Service References\WoRMSWebService\aphia1.wsdl" />
+    <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.AphiaRank.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.Attribute.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.AttributeKey.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.AttributeValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.Classification.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.Distribution.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\WoRMSWebService\EwEWoRMSPlugin.WoRMSWebService.Source.datasource">
