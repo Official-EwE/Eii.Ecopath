@@ -26,6 +26,7 @@ Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
 #End Region
@@ -416,6 +417,9 @@ Public Class cEcospaceSpinupPlugin
 
 #If USE_LICENSE_LIB Then
         Try
+            If Not Me.m_core.License.IsLicensed Then
+                Me.PromptForLicense()
+            End If
             If Not Me.m_core.License.IsLicensed Then Return Nothing
         Catch ex As Exception
             cLog.Write(ex, "cEcospaceSpinUpPlugin.GetMainForm")
@@ -498,6 +502,20 @@ Public Class cEcospaceSpinupPlugin
     End Property
 
 #End Region
+
+#Region " License "
+
+    Friend Sub PromptForLicense()
+        If (Me.m_uic Is Nothing) Then Return
+        Try
+            Dim cmd As cEnterLicenseCommand = CType(Me.m_uic.CommandHandler.GetCommand(cEnterLicenseCommand.cCOMMAND_NAME), cEnterLicenseCommand)
+            If (cmd IsNot Nothing) Then cmd.Invoke()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+#End Region ' License
 
 End Class
 
