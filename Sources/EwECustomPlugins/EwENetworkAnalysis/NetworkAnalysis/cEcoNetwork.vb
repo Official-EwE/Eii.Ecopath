@@ -1987,35 +1987,11 @@ sinverr:
                     Next
                 Next i
 
-                'Next to interaction between fleets
-                'For i = 1 To m_epdata.NumGroups
-                '    For j = 1 To m_epdata.NumFleet
-                'There is no direct interaction (unless one fisher steals from another :-)
-                '  MTI(m_epdata.NumGroups+i, m_epdata.NumGroups+j) = -(m_epdata.dcC(j, i) - FC(m_epdata.NumGroups + j, i))
-                '  MTI(m_epdata.NumGroups + j, m_epdata.NumGroups+i) = -(0 - FC(m_epdata.NumGroups+i, m_epdata.NumGroups + j))
-                '    Next
-                'Next
-
                 'Add 1 to diagonal for fleets -- just like for living groups above
                 For j = 1 To m_epdata.NumFleet
                     MTI(m_epdata.NumGroups + j, m_epdata.NumGroups + j) = 1 + MTI(m_epdata.NumGroups + j, m_epdata.NumGroups + j)
                 Next
             End If
-
-            'Set impact of detritus on detritus to zero
-            'For i = N + 1 To m_epdata.NumGroups
-            '    For j = N + 1 To m_epdata.NumGroups
-            '        MTI(i, j) = 0
-            '    Next
-            'Next
-            'With above activated matrix cannot be inverted/VC Jan 97
-
-
-            'For i = 1 To m_epdata.NumGroups + m_epdata.NumFleet
-            '    For j = 1 To m_epdata.NumGroups + m_epdata.NumFleet
-            '        If MTI(i, j) > 0 Then MsgBox Cstr$(i) + "  " + Cstr$(j) + "  " + Cstr$(MTI(i, j))
-            '    Next
-            'Next
 
             ErrCode = MatInvS(MTI)
             If ErrCode% <> 0 Then
@@ -2043,7 +2019,6 @@ RETURNED:
 
             'The Mixed Tropic Impact Matrix has now been calculated"
             CheckForBenificialPredation()
-
 EndOfImp:
 
         Catch ex As Exception
