@@ -32,20 +32,6 @@ Public Class cEcopathGroupOutput
     Inherits cCoreGroupBase
 
     Private m_nGroups As Integer
-    Private m_pathData As cEcopathDataStructures
-    Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
-
-    ' m_Area = 'A()
-    ' m_Biomass = 'B()
-    ' m_BiomassArea = 'BH()  Biomass/Area in t/km2 
-    ' m_BioAccum = 'BA()  Biomass Accumulation 
-    ' m_PB = ' PB() Production/Biomass
-    ' m_QB = 'QB() consumption/biomass
-    ' m_EE =
-    ' m_GE = GE() 'Production/Consumption
-    ' m_GS =  GS()'Unassimilated food
-    ' m_DetImport = 
-    ' m_predmort() = 
 
 #Region "Functionality specific to this class"
 
@@ -111,6 +97,9 @@ Public Class cEcopathGroupOutput
             'Set the Status Flags to ValueComputed for input/output pairs 
             'if the modeled value is different than the input value.
             'The original data structure is needed to perform this.
+
+            ' JS 2022-06-30: This should really be set by the core, as the I/O objects should not have any knowledge about data structures.
+
             If (Not cNumberUtils.Approximates(Me.m_core.m_EcopathData.EE(Me.Index), Me.m_core.m_EcopathData.EEinput(Me.Index), 0.0001)) And
                (Me.m_core.m_EcopathData.EE(Me.Index) <> (1 - Me.m_core.m_EcopathData.OtherMortinput(Me.Index))) Then
                 Me.SetStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
@@ -217,6 +206,13 @@ Public Class cEcopathGroupOutput
             Else
                 Me.ClearStatusFlags(eVarNameFlags.BioAccumOutput, eStatusFlags.ValueComputed)
             End If
+
+            If Me.m_core.m_EcopathData.BaBi(Me.Index) <> (Me.m_core.m_EcopathData.B(Me.Index) / Me.m_core.m_EcopathData.B(Me.Index)) Then
+                Me.SetStatusFlags(eVarNameFlags.BioAccumRatePerYear, eStatusFlags.ValueComputed)
+            Else
+                Me.ClearStatusFlags(eVarNameFlags.BioAccumRatePerYear, eStatusFlags.ValueComputed)
+            End If
+
             Me.SetNullFlag(eVarNameFlags.BioAccumOutput, Me.m_core.m_EcopathData.BA(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonZero)
 
             'test for NULL values in other variables
