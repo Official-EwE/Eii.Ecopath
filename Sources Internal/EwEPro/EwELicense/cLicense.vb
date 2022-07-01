@@ -45,7 +45,7 @@ Public Class cLicense
 
     Public ReadOnly Property IsRegistered() As Boolean
         Get
-            Return (Me.License IsNot Nothing)
+            Return (Me.m_engine.IsLicenseValid)
         End Get
     End Property
 
