@@ -7330,7 +7330,7 @@ exitline:
         ReDim Me.StanzaData.Zcell(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)  'this variable used to store spatial field of total mortality rates for survival updates
 
 
-        checkStanzaBiomass()
+        'checkStanzaBiomass()
         'Dim ages As cAgeStructSave = New cAgeStructSave(Me.EcoSpaceData, Me.StanzaData, Me.EcoPathData)
         'ages.SaveAgeStructure()
 
