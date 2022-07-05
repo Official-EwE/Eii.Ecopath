@@ -39,8 +39,16 @@ Public Class cLicense
 
     Private m_engine As TLLInterface = Nothing
 
+    ' A bit of smartness to prevent excessive license checking
+    Private m_bValidCached As Boolean = False
+    Private m_dtLastChecked As Date = Date.MinValue
+
     Public Sub New()
         Me.Init()
+    End Sub
+
+    Public Sub Refesh()
+        Me.m_dtLastChecked = Date.MinValue
     End Sub
 
     Public ReadOnly Property IsRegistered() As Boolean
@@ -65,14 +73,19 @@ Public Class cLicense
     End Function
 
     Public Function IsLicensed() As Boolean
-        Try
-            If (Me.m_engine.OnlineRevocationCheck()) Then
-                Me.m_engine.AsyncSilentReactivation()
-            End If
-        Catch ex As Exception
-            Return False
-        End Try
-        Return Me.m_engine.IsLicenseValid()
+
+        If (Date.Now - Me.m_dtLastChecked).TotalHours > 1 Then
+            Try
+                Me.m_bValidCached = False
+                If (Me.m_engine.OnlineRevocationCheck()) Then
+                    Me.m_engine.AsyncSilentReactivation()
+                End If
+            Catch ex As Exception
+                ' Whoah
+            End Try
+            Me.m_bValidCached = Me.m_engine.IsLicenseValid()
+        End If
+        Return Me.m_bValidCached
     End Function
 
     Public Function Expiry() As Date
