@@ -1702,7 +1702,7 @@ Public Class frmEwE6
     Private Sub UpdateRegistrationControls()
 
         Try
-            If Me.Core.License.IsLicensed Then
+            If Me.Core.License.IsRegistered Then
                 Dim diff As Integer = Me.Core.License.Expiry.Subtract(Date.Now).Days
                 If diff > 21 Then
                     Me.m_tsbnLicense.Image = SharedResources.license_ok

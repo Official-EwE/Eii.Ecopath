@@ -232,11 +232,11 @@ Module EwE6ApplicationFramework
         Try
             If (lic IsNot Nothing) Then
                 If (lic.IsRegistered) Then
-                    If (lic.IsLicensed) Then
-                        Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
-                    Else
-                        Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
-                    End If
+                    'If (lic.IsLicensed) Then
+                    Return cStringUtils.Localize(My.Resources.REGISTRATION_ACTIVE, lic.Owner, lic.Expiry.ToShortDateString())
+                    'Else
+                    '    Return cStringUtils.Localize(My.Resources.REGISTRATION_EXPIRED, lic.Owner)
+                    'End If
                 End If
             End If
         Catch ex2 As ObjectDisposedException
