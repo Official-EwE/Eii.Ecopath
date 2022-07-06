@@ -633,7 +633,7 @@ Public Class cDotSpatialUtils
         Try
             Dim lic As EwELicense.cLicense = core.License
             Try
-                bValid = lic.IsLicensed()
+                bValid = lic.IsRegistered()
             Catch ex As Exception
                 cLog.Write(ex, "cDotSpatialUtils.IsLicensed")
             End Try

@@ -417,10 +417,10 @@ Public Class cEcospaceSpinupPlugin
 
 #If USE_LICENSE_LIB Then
         Try
-            If Not Me.m_core.License.IsLicensed Then
+            If Not Me.m_core.License.IsRegistered Then
                 Me.PromptForLicense()
             End If
-            If Not Me.m_core.License.IsLicensed Then Return Nothing
+            If Not Me.m_core.License.IsRegistered Then Return Nothing
         Catch ex As Exception
             cLog.Write(ex, "cEcospaceSpinUpPlugin.GetMainForm")
             Return Nothing
