@@ -14,7 +14,7 @@ Option Explicit On
 
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
- Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0"),  _
+ Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0"),  _
  Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
 Partial Friend NotInheritable Class Settings
     Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -63,21 +63,6 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("LastSelectedDirectory") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
-        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
-        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property MdbRecentlyUsedList() As Global.System.Collections.ArrayList
-        Get
-            Return CType(Me("MdbRecentlyUsedList"),Global.System.Collections.ArrayList)
-        End Get
-        Set
-            Me("MdbRecentlyUsedList") = value
         End Set
     End Property
     
@@ -783,20 +768,6 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
-        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
-        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>")>  _
-    Public Property SpatialTempConfigurations() As Global.System.Collections.ArrayList
-        Get
-            Return CType(Me("SpatialTempConfigurations"),Global.System.Collections.ArrayList)
-        End Get
-        Set
-            Me("SpatialTempConfigurations") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
     Public Property ShowSplash() As Boolean
         Get
@@ -1088,6 +1059,107 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("ColorRampsBinary") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsd=""http://www.w3"& _ 
+        ".org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
+        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>"),  _
+     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
+    Public Property MdbRecentlyUsedList() As Global.System.Collections.ArrayList
+        Get
+            Return CType(Me("MdbRecentlyUsedList"),Global.System.Collections.ArrayList)
+        End Get
+        Set
+            Me("MdbRecentlyUsedList") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property SelectionLinkThroughFishing() As String
+        Get
+            Return CType(Me("SelectionLinkThroughFishing"),String)
+        End Get
+        Set
+            Me("SelectionLinkThroughFishing") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsd=""http://www.w3"& _ 
+        ".org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
+        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>")>  _
+    Public Property SpatialTempConfigurations() As Global.System.Collections.ArrayList
+        Get
+            Return CType(Me("SpatialTempConfigurations"),Global.System.Collections.ArrayList)
+        End Get
+        Set
+            Me("SpatialTempConfigurations") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property UseExternalBrowser() As String
+        Get
+            Return CType(Me("UseExternalBrowser"),String)
+        End Get
+        Set
+            Me("UseExternalBrowser") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property SelectionLinkThroughPredation() As String
+        Get
+            Return CType(Me("SelectionLinkThroughPredation"),String)
+        End Get
+        Set
+            Me("SelectionLinkThroughPredation") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("1999-01-01")>  _
+    Public Property EcobaseEULAAccepted() As String
+        Get
+            Return CType(Me("EcobaseEULAAccepted"),String)
+        End Get
+        Set
+            Me("EcobaseEULAAccepted") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property ColorRampDefaultEwE() As String
+        Get
+            Return CType(Me("ColorRampDefaultEwE"),String)
+        End Get
+        Set
+            Me("ColorRampDefaultEwE") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property ColorRampDefaultFleet() As String
+        Get
+            Return CType(Me("ColorRampDefaultFleet"),String)
+        End Get
+        Set
+            Me("ColorRampDefaultFleet") = value
         End Set
     End Property
 End Class
