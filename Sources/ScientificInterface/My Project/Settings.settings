@@ -5,12 +5,6 @@
     <Setting Name="LastSelectedDirectory" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">My.Computer.FileSystem.SpecialDirectories.MyDocuments</Value>
     </Setting>
-    <Setting Name="MdbRecentlyUsedList" Roaming="true" Type="System.Collections.ArrayList" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfAnyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;anyType /&gt;
-&lt;/ArrayOfAnyType&gt;</Value>
-    </Setting>
     <Setting Name="SettingLoaded" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -182,12 +176,6 @@
     <Setting Name="MapShowExcludedCells" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SpatialTempConfigurations" Type="System.Collections.ArrayList" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ArrayOfAnyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;anyType /&gt;
-&lt;/ArrayOfAnyType&gt;</Value>
-    </Setting>
     <Setting Name="ShowSplash" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -261,6 +249,36 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ColorRampsBinary" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MdbRecentlyUsedList" Roaming="true" Type="System.Collections.ArrayList" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfAnyType xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;anyType /&gt;
+&lt;/ArrayOfAnyType&gt;</Value>
+    </Setting>
+    <Setting Name="SelectionLinkThroughFishing" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SpatialTempConfigurations" Type="System.Collections.ArrayList" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfAnyType xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;anyType /&gt;
+&lt;/ArrayOfAnyType&gt;</Value>
+    </Setting>
+    <Setting Name="UseExternalBrowser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SelectionLinkThroughPredation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EcobaseEULAAccepted" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1999-01-01</Value>
+    </Setting>
+    <Setting Name="ColorRampDefaultEwE" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ColorRampDefaultFleet" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
