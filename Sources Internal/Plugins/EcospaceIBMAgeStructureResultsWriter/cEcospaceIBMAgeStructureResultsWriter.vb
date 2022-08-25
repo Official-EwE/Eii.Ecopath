@@ -51,8 +51,6 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
         'or
         'StanzaData.Wpacket(isp, iage, ipkt)
         Public ReadOnly Property CalcType As eCalcType
-
-
         Public InputValues(,,) As Single
 
         Public SimBaseLineData(,) As Single
@@ -86,7 +84,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
             For Each InputDataType As cInputDataTypes In Me.m_lstDataTypes
 
-                'By Region
+                'By species, region, ageclass
                 Dim values()()() As Single
                 values = ComputeAgeStructureByRegion(InputDataType)
                 SaveRegionAgeStructureToFile(values, InputDataType)
@@ -103,21 +101,64 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
 
     Private Function ComputeAgeStructureByRegion(InputData As cInputDataTypes) As Single()()()
 
-        'Dim n(Me.m_StanzaData.Nsplit)()() As Single 'n(ngroups)(row,col)(age)
         Dim RegionValues(Me.m_StanzaData.Nsplit)()() As Single
+        For isp As Integer = 1 To Me.m_StanzaData.Nsplit
+            'Allocate memory for the all the regions
+            RegionValues(isp) = New Single(Me.EcospaceData.nRegions)() {}
+            'Now all the age classes for all the regions
+            For iRgn As Integer = 0 To Me.EcospaceData.nRegions
+                RegionValues(isp)(iRgn) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
+            Next iRgn
 
-        'Dim iage As Integer
+            For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
+
+                For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
+                    Dim irow As Integer, icol As Integer
+                    irow = CInt(Math.Truncate(Me.m_StanzaData.iPacket(isp, iage, ipkt)))
+                    icol = CInt(Math.Truncate(Me.m_StanzaData.jPacket(isp, iage, ipkt)))
+
+                    Dim iRgn As Integer = Me.EcospaceData.Region(irow, icol)
+
+                    Dim value As Single
+                    If InputData.CalcType = eCalcType.weight Then
+                        value = InputData.InputValues(isp, iage, ipkt)
+                    ElseIf InputData.CalcType = eCalcType.number Then
+                        value = InputData.InputValues(isp, iage, ipkt) * Me.m_StanzaData.Npackets / Me.EcospaceData.ThabArea
+                    End If
+
+                    If iRgn > 0 Then
+                        RegionValues(isp)(iRgn)(iage) += value
+                    End If
+
+                    RegionValues(isp)(0)(iage) += value
+
+                Next ipkt
+
+                For iiRgn As Integer = 0 To Me.EcospaceData.nRegions
+                    'make sure this region has been allocated
+                    If RegionValues(isp)(iiRgn) IsNot Nothing Then
+                        RegionValues(isp)(iiRgn)(iage) /= Me.m_StanzaData.Npackets
+                    End If
+                Next iiRgn
+
+            Next iage
+        Next isp
+
+        Return RegionValues
+
+    End Function
+
+
+    Private Function ComputeAgeStructureByRegion_LowMemory(InputData As cInputDataTypes) As Single()()()
+
+        Dim RegionValues(Me.m_StanzaData.Nsplit)()() As Single
 
         For isp As Integer = 1 To Me.m_StanzaData.Nsplit
             'Allocate memory for the 0 region for both values and n
             RegionValues(isp) = New Single(Me.EcospaceData.nRegions)() {}
             RegionValues(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
 
-            'n(isp) = New Single(Me.EcospaceData.nRegions)() {}
-            'n(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
-
             For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
-
 
                 For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
                     Dim irow As Integer, icol As Integer
@@ -158,6 +199,7 @@ Public Class cEcospaceIBMAgeStructureResultsWriter
         Return RegionValues
 
     End Function
+
 
 
     Protected Overrides Function FileExtension() As String
