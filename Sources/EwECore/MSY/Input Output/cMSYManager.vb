@@ -105,7 +105,13 @@ Namespace MSY
 
                 If Me.m_Core.ActiveTimeSeriesDatasetIndex > 0 Then
                     Dim tsds As cTimeSeriesDataset = Me.m_Core.TimeSeriesDataset(Me.m_Core.ActiveTimeSeriesDatasetIndex)
-                    For Each ts As cTimeSeries In tsds
+                    For Each ts As cTimeSeries In Me.m_Core.EcosimGroupTimeseries
+                        If ts.Enabled Then
+                            bEnabledTS = True
+                            Exit For
+                        End If
+                    Next
+                    For Each ts As cTimeSeries In Me.m_Core.EcosimFleetTimeseries
                         If ts.Enabled Then
                             bEnabledTS = True
                             Exit For
@@ -575,6 +581,7 @@ Namespace MSY
 
 #End Region ' .Net Framework stuff 
 
+#If 0 Then
 #Region " Unit tests "
 
         Public Sub RunMSYEcosimUnitTest()
@@ -637,8 +644,8 @@ Namespace MSY
                     Me.m_Core.LoadTimeSeries(Me.m_Core.ActiveTimeSeriesDatasetIndex, True)
                     dsTS = Me.m_Core.TimeSeriesDataset(dsID)
 
-                    For its As Integer = 0 To Me.m_Core.nTimeSeries - 1
-                        dsTS.Item(its).Enabled = False
+                    For Each ts As cTimeSeries In Me.m_Core.EcosimGroupTimeseries
+                        ts.Enabled = False
                     Next
 
                     ActiveTS = dsTS.Item(Me.m_Core.nTimeSeries - 1)
@@ -691,6 +698,7 @@ Namespace MSY
         End Sub
 
 #End Region ' Unit tests
+#End If
 
     End Class
 

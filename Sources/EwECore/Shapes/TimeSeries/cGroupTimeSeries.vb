@@ -42,6 +42,10 @@ Public Class cGroupTimeSeries
         Me.m_datatype = eDataTypes.GroupTimeSeries
     End Sub
 
+    Public Overrides Function IsValid() As Boolean
+        Return (Me.GroupIndexStatus And eStatusFlags.ErrorEncountered) = 0
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the index of the Group this time series applies to.
@@ -55,6 +59,15 @@ Public Class cGroupTimeSeries
         Set(iGroup As Integer)
             Me.DatPool = iGroup
         End Set
+    End Property
+
+    Public ReadOnly Property GroupIndexStatus() As eStatusFlags
+        Get
+            If (Me.DatPool < 1 Or Me.DatPool > Me.m_core.nGroups) Then
+                Return eStatusFlags.ErrorEncountered
+            End If
+            Return eStatusFlags.OK
+        End Get
     End Property
 
 End Class

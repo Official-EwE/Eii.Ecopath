@@ -1640,7 +1640,6 @@ Public Class cCore
                 ts.Enabled = Me.m_TSData.TimeSeriesEnabled(ts.Index)
                 ts.UnlockUpdates(False)
 
-                tsd.Add(ts)
             Next
 
             For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
@@ -1672,7 +1671,6 @@ Public Class cCore
                 ts.Enabled = Me.m_TSData.TimeSeriesEnabled(ts.Index)
                 ts.UnlockUpdates(False)
 
-                tsd.Add(ts)
             Next
 
         Catch ex As Exception
@@ -1720,7 +1718,6 @@ Public Class cCore
 
                 ts.UnlockUpdates(False)
 
-                tsd.Add(ts)
             Next
 
         Catch ex As Exception
@@ -1840,22 +1837,22 @@ Public Class cCore
 
         If TypeOf ts Is cGroupTimeSeries Then
             Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
-            If (gts.GroupIndex <= 0 Or gts.GroupIndex > nGroups) Then
-                status = eStatusFlags.ErrorEncountered
+            status = gts.GroupIndexStatus
+            If (status = eStatusFlags.ErrorEncountered) Then
                 strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, gts.GroupIndex)
             End If
         End If
 
         If TypeOf ts Is cFleetTimeSeries Then
             Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
-            If (fts.FleetIndex <= 0 Or fts.FleetIndex > nFleets) Then
-                status = eStatusFlags.ErrorEncountered
+            status = fts.FleetIndexStatus
+            If (status = eStatusFlags.ErrorEncountered) Then
                 strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, fts.FleetIndex)
-            End If
-            If (fts.TimeSeriesType = eTimeSeriesType.DiscardMortality Or fts.TimeSeriesType = eTimeSeriesType.DiscardProportion Or fts.TimeSeriesType = eTimeSeriesType.Catchabilities) And
-               (fts.GroupIndex <= 0 Or fts.GroupIndex > nGroups) Then
-                status = eStatusFlags.ErrorEncountered
-                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, fts.GroupIndex)
+            Else
+                status = fts.GroupIndexStatus
+                If (status = eStatusFlags.ErrorEncountered) Then
+                    strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, fts.GroupIndex)
+                End If
             End If
         End If
 
@@ -1863,7 +1860,7 @@ Public Class cCore
         ts.ValidationMessage = strStatus
 
     End Sub
-
+	
 #End Region ' Validation
 
 #Region " Public interfaces "
@@ -2054,6 +2051,14 @@ Public Class cCore
         Next
         Debug.Assert(False, "Index out of range")
         Return Nothing
+    End Function
+
+    Public Function EcosimGroupTimeseries() As cTimeSeries()
+        Return Me.m_timeSeriesGroup.ToArray
+    End Function
+
+    Public Function EcosimFleetTimeseries() As cTimeSeries()
+        Return Me.m_timeSeriesFleet.ToArray
     End Function
 
     ''' -----------------------------------------------------------------------

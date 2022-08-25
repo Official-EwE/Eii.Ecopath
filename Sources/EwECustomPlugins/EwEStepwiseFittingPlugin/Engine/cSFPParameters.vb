@@ -299,30 +299,30 @@ Public Class cSFPParameters
     ''' -----------------------------------------------------------------------
     Private Function GetRelevantTimeSeries() As cTimeSeries()
 
-        Dim dataset As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.TimeSeriesDataset)
+        Dim lTS As New List(Of cTimeSeries)
+        lTS.AddRange(Me.Core.EcosimGroupTimeseries)
+        lTS.AddRange(Me.Core.EcosimFleetTimeseries)
+
         Dim l As New List(Of cTimeSeries)
-        If (dataset IsNot Nothing) Then
-            For i As Integer = 1 To dataset.nTimeSeries
-                Dim ts As cTimeSeries = dataset.TimeSeries(i)
-                If (ts.Enabled And ts.WtType > 0) Then
-                    Select Case ts.TimeSeriesType
-                        Case eTimeSeriesType.BiomassRel,
+        For Each ts As cTimeSeries In lTS
+            If (ts.Enabled And ts.WtType > 0) Then
+                Select Case ts.TimeSeriesType
+                    Case eTimeSeriesType.BiomassRel,
                              eTimeSeriesType.TotalMortality,
                              eTimeSeriesType.Catches,
                              eTimeSeriesType.CatchesRel,
                              eTimeSeriesType.AverageWeight,
                              eTimeSeriesType.Discards,
                              eTimeSeriesType.Landings
-                            l.Add(ts)
+                        l.Add(ts)
 
-                        Case eTimeSeriesType.BiomassAbs
-                            If Me.EnableAbsoluteBiomassTimeSeries Then
-                                l.Add(ts)
-                            End If
-                    End Select
-                End If
-            Next
-        End If
+                    Case eTimeSeriesType.BiomassAbs
+                        If Me.EnableAbsoluteBiomassTimeSeries Then
+                            l.Add(ts)
+                        End If
+                End Select
+            End If
+        Next
         Return l.ToArray()
 
     End Function

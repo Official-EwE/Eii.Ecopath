@@ -24,10 +24,11 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-<CLSCompliant(False)> _
+<CLSCompliant(False)>
 Public Class gridWeightTS
     Inherits cEwEGrid
 
@@ -37,6 +38,8 @@ Public Class gridWeightTS
         Enabled
         Weight
         CV
+        Target1
+        Target2
     End Enum
 
     Public Sub New()
@@ -96,6 +99,8 @@ Public Class gridWeightTS
         Me(0, eColumnTypes.Enabled) = New cEwEColumnHeaderCell(SharedResources.HEADER_ENABLE)
         Me(0, eColumnTypes.Weight) = New cEwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
         Me(0, eColumnTypes.CV) = New cEwEColumnHeaderCell(SharedResources.HEADER_CV)
+        Me(0, eColumnTypes.Target1) = New cEwEColumnHeaderCell(SharedResources.HEADER_TARGET)
+        Me(0, eColumnTypes.Target2) = New cEwEColumnHeaderCell(SharedResources.HEADER_TARGET_SECOND)
 
     End Sub
 
@@ -116,9 +121,9 @@ Public Class gridWeightTS
             If ds.IsLoaded() Then
 
                 ' #Yes: For all timeseries in the dataset
-                For iTS As Integer = 0 To ds.Count - 1
+                For iTS As Integer = 1 To ds.nTimeSeries
                     ' Get TS
-                    ts = ds.Item(iTS)
+                    ts = ds.TimeSeries(iTS)
                     ' #Yes: create new ts item
                     Me.AddTimeSeriesRow(ts)
                 Next iTS
@@ -160,6 +165,33 @@ Public Class gridWeightTS
         cell.Behaviors.Add(Me.EwEEditHandler)
         DirectCast(cell, cEwECell).SuppressZero = True
         Me(iRow, eColumnTypes.CV) = cell
+
+        If (TypeOf ts Is cGroupTimeSeries) Then
+            Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
+
+            style = cStyleGuide.eStyleFlags.NotEditable
+            If ((gts.GroupIndexStatus And eStatusFlags.ErrorEncountered) > 0) Then style = style Or cStyleGuide.eStyleFlags.ErrorEncountered
+            Me(iRow, eColumnTypes.Target1) = New cEwECell(cStringUtils.Localize(SharedResources.DEFAULT_NEWGROUP_NUM, gts.GroupIndex), style)
+
+            Me(iRow, eColumnTypes.Target2) = New cEwECell("", cStyleGuide.eStyleFlags.NotEditable)
+
+        ElseIf (TypeOf ts Is cFleetTimeSeries) Then
+            Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
+
+            style = cStyleGuide.eStyleFlags.NotEditable
+            If ((fts.FleetIndexStatus And eStatusFlags.ErrorEncountered) > 0) Then style = style Or cStyleGuide.eStyleFlags.ErrorEncountered
+            Me(iRow, eColumnTypes.Target1) = New cEwECell(cStringUtils.Localize(SharedResources.DEFAULT_NEWFLEET_NUM, fts.FleetIndex), style)
+
+            Dim test As eStatusFlags = fts.GroupIndexStatus
+            If ((test And eStatusFlags.Null) = eStatusFlags.Null) Then
+                Me(iRow, eColumnTypes.Target2) = New cEwECell("", cStyleGuide.eStyleFlags.NotEditable)
+            ElseIf ((test And eStatusFlags.ErrorEncountered) > 0) Then
+                style = style Or cStyleGuide.eStyleFlags.ErrorEncountered
+                Me(iRow, eColumnTypes.Target2) = New cEwECell(cStringUtils.Localize(SharedResources.DEFAULT_NEWGROUP_NUM, fts.GroupIndex), style)
+            End If
+        Else
+            Debug.Assert(False, "Unknown class of TS encountered")
+        End If
 
         'If Not ts.IsReference Then
         Me.UpdateRow(iRow)

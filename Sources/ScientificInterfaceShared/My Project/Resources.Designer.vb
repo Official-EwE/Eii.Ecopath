@@ -6856,6 +6856,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to 2nd target.
+        '''</summary>
+        Public ReadOnly Property HEADER_TARGET_SECOND() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TARGET_SECOND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Target fishing mortality.
         '''</summary>
         Public ReadOnly Property HEADER_TFM() As String

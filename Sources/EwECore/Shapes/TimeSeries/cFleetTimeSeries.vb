@@ -72,4 +72,29 @@ Public Class cFleetTimeSeries
         End Set
     End Property
 
+    Public Overrides Function IsValid() As Boolean
+        Return ((Me.FleetIndexStatus Or Me.GroupIndexStatus) And eStatusFlags.ErrorEncountered) = 0
+    End Function
+
+    Public ReadOnly Property FleetIndexStatus() As eStatusFlags
+        Get
+            If (Me.DatPool < 1 Or Me.DatPool > Me.m_core.nFleets) Then
+                Return eStatusFlags.ErrorEncountered
+            End If
+            Return eStatusFlags.OK
+        End Get
+    End Property
+
+    Public ReadOnly Property GroupIndexStatus() As eStatusFlags
+        Get
+            If Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Then
+                If (Me.DatPoolSec < 1 Or Me.DatPoolSec > Me.m_core.nGroups) Then
+                    Return eStatusFlags.ErrorEncountered
+                End If
+                Return eStatusFlags.OK
+            End If
+            Return eStatusFlags.Null
+        End Get
+    End Property
+
 End Class

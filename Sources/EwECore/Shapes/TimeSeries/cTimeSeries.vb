@@ -208,7 +208,7 @@ Public MustInherit Class cTimeSeries
     End Function
 
     Public Function IsDriver() As Boolean
-        Return Me.m_core.m_Ecosim.IsDatTypeDriver(Me.m_timeSeriesType)
+        Return Me.m_core.m_EcoSim.IsDatTypeDriver(Me.m_timeSeriesType)
     End Function
 
     Public Function IsRelative() As Boolean
@@ -221,13 +221,14 @@ Public MustInherit Class cTimeSeries
         Return Not Me.IsRelative()
     End Function
 
+    Public MustOverride Function IsValid() As Boolean
+
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
     Public Function SupportsNull() As Boolean
         Return Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or
                Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Or
                Me.m_timeSeriesType = eTimeSeriesType.Landings Or
-               Me.m_timeSeriesType = eTimeSeriesType.Discards Or
-               Me.m_timeSeriesType = eTimeSeriesType.Catchabilities
+               Me.m_timeSeriesType = eTimeSeriesType.Discards
     End Function
 
     ''' -----------------------------------------------------------------------

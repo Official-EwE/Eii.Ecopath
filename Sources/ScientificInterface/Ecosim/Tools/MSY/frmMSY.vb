@@ -271,6 +271,7 @@ Namespace Ecosim
 
         End Sub
 
+#If 0 Then
         Private Sub OnRunUnitTest(sender As System.Object, e As System.EventArgs) Handles m_btnTest.Click
             Try
                 Me.m_parms.FSelectionMode = eMSYFSelectionModeType.Groups
@@ -283,6 +284,7 @@ Namespace Ecosim
                 cLog.Write(ex, "frmMSY::OnRunUnitTest")
             End Try
         End Sub
+#End If
 
         Private Sub OnRunFindFMSY(sender As System.Object, e As System.EventArgs) Handles m_btnRunFMSY.Click
             Try
