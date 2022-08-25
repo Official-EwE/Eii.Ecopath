@@ -1961,7 +1961,7 @@ Namespace MSE
                         Dim TSdisabled As cTimeSeries = Nothing
                         Dim NumberOfSteps As Integer = 0
                         If iDataset > -1 Then
-                            For Each ts As cTimeSeries In DS
+                            For Each ts As cTimeSeries In Me.m_core.EcosimGroupTimeseries
                                 'jb changed to FishingMortality it's forced FishingMortality that prevents the effort from being set...I think...
                                 'If ts.TimeSeriesType = eTimeSeriesType.FishingEffort Then
                                 If ts.TimeSeriesType = eTimeSeriesType.FishingMortality Then

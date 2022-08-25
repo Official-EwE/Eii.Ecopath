@@ -24,7 +24,7 @@ Partial Class dlgManageTimeSeries
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -80,33 +80,37 @@ Partial Class dlgManageTimeSeries
         Me.m_tpWeights = New System.Windows.Forms.TabPage()
         Me.m_tlpWeights = New System.Windows.Forms.TableLayoutPanel()
         Me.m_gridWeights = New ScientificInterface.gridWeightTS()
-        Me.m_tlpWeightControls = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_btnApplyCheckNone = New System.Windows.Forms.Button()
+        Me.m_plWeights = New System.Windows.Forms.Panel()
         Me.m_btnApplyCheckAll = New System.Windows.Forms.Button()
+        Me.m_btnApplyCheckNone = New System.Windows.Forms.Button()
         Me.m_tpLoad = New System.Windows.Forms.TabPage()
-        Me.m_tlpLoad = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tlpLoadTS = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_cbLoadEnableOnLoad = New System.Windows.Forms.CheckBox()
         Me.m_lvLoadDatasets = New System.Windows.Forms.ListView()
         Me.m_colLoadDataset = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colLoaded = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_clInterval = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.m_cbLoadEnableOnLoad = New System.Windows.Forms.CheckBox()
         Me.m_tcMain = New System.Windows.Forms.TabControl()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plClickyBits = New System.Windows.Forms.Panel()
         Me.m_tpDelete.SuspendLayout()
         Me.m_tpImport.SuspendLayout()
         CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpWeights.SuspendLayout()
         Me.m_tlpWeights.SuspendLayout()
-        Me.m_tlpWeightControls.SuspendLayout()
+        Me.m_plWeights.SuspendLayout()
         Me.m_tpLoad.SuspendLayout()
-        Me.m_tlpLoad.SuspendLayout()
+        Me.m_tlpLoadTS.SuspendLayout()
         Me.m_tcMain.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.m_plClickyBits.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnOk
         '
-        Me.m_btnOk.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnOk.Location = New System.Drawing.Point(329, 612)
+        Me.m_btnOk.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnOk.Location = New System.Drawing.Point(325, 0)
         Me.m_btnOk.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
         Me.m_btnOk.Name = "m_btnOk"
         Me.m_btnOk.Size = New System.Drawing.Size(87, 23)
@@ -115,9 +119,9 @@ Partial Class dlgManageTimeSeries
         '
         'm_btnCancel
         '
-        Me.m_btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Location = New System.Drawing.Point(422, 612)
+        Me.m_btnCancel.Location = New System.Drawing.Point(418, 0)
         Me.m_btnCancel.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.Size = New System.Drawing.Size(87, 23)
@@ -131,8 +135,7 @@ Partial Class dlgManageTimeSeries
         Me.m_ilTabImages.Images.SetKeyName(0, "openHS.png")
         Me.m_ilTabImages.Images.SetKeyName(1, "CheckBoxHS.png")
         Me.m_ilTabImages.Images.SetKeyName(2, "NewDocumentHS.png")
-        Me.m_ilTabImages.Images.SetKeyName(3, "saveHS.png")
-        Me.m_ilTabImages.Images.SetKeyName(4, "DeleteHS.png")
+        Me.m_ilTabImages.Images.SetKeyName(3, "DeleteHS.png")
         '
         'lbSettings
         '
@@ -147,7 +150,7 @@ Partial Class dlgManageTimeSeries
         'm_tpDelete
         '
         Me.m_tpDelete.Controls.Add(Me.m_lvDeleteDatasets)
-        Me.m_tpDelete.ImageIndex = 4
+        Me.m_tpDelete.ImageIndex = 3
         Me.m_tpDelete.Location = New System.Drawing.Point(4, 26)
         Me.m_tpDelete.Name = "m_tpDelete"
         Me.m_tpDelete.Size = New System.Drawing.Size(499, 570)
@@ -225,9 +228,9 @@ Partial Class dlgManageTimeSeries
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_cmbImportInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbImportInterval.FormattingEnabled = True
-        Me.m_cmbImportInterval.Location = New System.Drawing.Point(74, 94)
+        Me.m_cmbImportInterval.Location = New System.Drawing.Point(77, 94)
         Me.m_cmbImportInterval.Name = "m_cmbImportInterval"
-        Me.m_cmbImportInterval.Size = New System.Drawing.Size(341, 21)
+        Me.m_cmbImportInterval.Size = New System.Drawing.Size(342, 21)
         Me.m_cmbImportInterval.TabIndex = 10
         '
         'm_lblImportInterval
@@ -249,7 +252,7 @@ Partial Class dlgManageTimeSeries
         Me.m_cbImportEnableOnImport.Location = New System.Drawing.Point(4, 550)
         Me.m_cbImportEnableOnImport.Name = "m_cbImportEnableOnImport"
         Me.m_cbImportEnableOnImport.Size = New System.Drawing.Size(172, 17)
-        Me.m_cbImportEnableOnImport.TabIndex = 23
+        Me.m_cbImportEnableOnImport.TabIndex = 22
         Me.m_cbImportEnableOnImport.Text = "&Enable Time Series after import"
         Me.m_cbImportEnableOnImport.UseVisualStyleBackColor = True
         '
@@ -278,12 +281,14 @@ Partial Class dlgManageTimeSeries
         Me.m_hdrTarget.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_hdrTarget.CanCollapseParent = False
+        Me.m_hdrTarget.CausesValidation = False
         Me.m_hdrTarget.CollapsedParentHeight = 0
         Me.m_hdrTarget.IsCollapsed = False
-        Me.m_hdrTarget.Location = New System.Drawing.Point(3, 398)
+        Me.m_hdrTarget.Location = New System.Drawing.Point(0, 398)
+        Me.m_hdrTarget.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrTarget.Name = "m_hdrTarget"
-        Me.m_hdrTarget.Size = New System.Drawing.Size(493, 18)
-        Me.m_hdrTarget.TabIndex = 14
+        Me.m_hdrTarget.Size = New System.Drawing.Size(496, 18)
+        Me.m_hdrTarget.TabIndex = 13
         Me.m_hdrTarget.Text = "Target"
         Me.m_hdrTarget.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -292,9 +297,11 @@ Partial Class dlgManageTimeSeries
         Me.m_hdrPreview.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_hdrPreview.CanCollapseParent = False
+        Me.m_hdrPreview.CausesValidation = False
         Me.m_hdrPreview.CollapsedParentHeight = 0
         Me.m_hdrPreview.IsCollapsed = False
         Me.m_hdrPreview.Location = New System.Drawing.Point(0, 122)
+        Me.m_hdrPreview.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrPreview.Name = "m_hdrPreview"
         Me.m_hdrPreview.Size = New System.Drawing.Size(499, 18)
         Me.m_hdrPreview.TabIndex = 11
@@ -303,12 +310,13 @@ Partial Class dlgManageTimeSeries
         '
         'm_hdrSource
         '
-        Me.m_hdrSource.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_hdrSource.CanCollapseParent = False
+        Me.m_hdrSource.CausesValidation = False
         Me.m_hdrSource.CollapsedParentHeight = 0
+        Me.m_hdrSource.Dock = System.Windows.Forms.DockStyle.Top
         Me.m_hdrSource.IsCollapsed = False
         Me.m_hdrSource.Location = New System.Drawing.Point(0, 0)
+        Me.m_hdrSource.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrSource.Name = "m_hdrSource"
         Me.m_hdrSource.Size = New System.Drawing.Size(499, 18)
         Me.m_hdrSource.TabIndex = 0
@@ -323,7 +331,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tbImportSeparator.Character = Global.Microsoft.VisualBasic.ChrW(46)
         Me.m_tbImportSeparator.CharacterMask = ""
         Me.m_tbImportSeparator.CharCode = 46
-        Me.m_tbImportSeparator.Location = New System.Drawing.Point(325, 68)
+        Me.m_tbImportSeparator.Location = New System.Drawing.Point(329, 68)
         Me.m_tbImportSeparator.MaskInclusive = False
         Me.m_tbImportSeparator.Multiline = True
         Me.m_tbImportSeparator.Name = "m_tbImportSeparator"
@@ -339,7 +347,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tbImportDelimiter.Character = Global.Microsoft.VisualBasic.ChrW(44)
         Me.m_tbImportDelimiter.CharacterMask = ""
         Me.m_tbImportDelimiter.CharCode = 44
-        Me.m_tbImportDelimiter.Location = New System.Drawing.Point(74, 68)
+        Me.m_tbImportDelimiter.Location = New System.Drawing.Point(77, 68)
         Me.m_tbImportDelimiter.MaskInclusive = False
         Me.m_tbImportDelimiter.MaxLength = 10
         Me.m_tbImportDelimiter.Multiline = True
@@ -353,37 +361,37 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_tbImportAuthor.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbImportAuthor.Location = New System.Drawing.Point(72, 524)
+        Me.m_tbImportAuthor.Location = New System.Drawing.Point(77, 524)
         Me.m_tbImportAuthor.Name = "m_tbImportAuthor"
-        Me.m_tbImportAuthor.Size = New System.Drawing.Size(424, 20)
-        Me.m_tbImportAuthor.TabIndex = 22
+        Me.m_tbImportAuthor.Size = New System.Drawing.Size(419, 20)
+        Me.m_tbImportAuthor.TabIndex = 21
         '
         'm_tbImportContact
         '
         Me.m_tbImportContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbImportContact.Location = New System.Drawing.Point(72, 446)
+        Me.m_tbImportContact.Location = New System.Drawing.Point(77, 446)
         Me.m_tbImportContact.Multiline = True
         Me.m_tbImportContact.Name = "m_tbImportContact"
-        Me.m_tbImportContact.Size = New System.Drawing.Size(424, 46)
-        Me.m_tbImportContact.TabIndex = 18
+        Me.m_tbImportContact.Size = New System.Drawing.Size(419, 46)
+        Me.m_tbImportContact.TabIndex = 17
         '
         'm_tbImportDescription
         '
         Me.m_tbImportDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbImportDescription.Location = New System.Drawing.Point(72, 498)
+        Me.m_tbImportDescription.Location = New System.Drawing.Point(77, 498)
         Me.m_tbImportDescription.Name = "m_tbImportDescription"
-        Me.m_tbImportDescription.Size = New System.Drawing.Size(424, 20)
-        Me.m_tbImportDescription.TabIndex = 20
+        Me.m_tbImportDescription.Size = New System.Drawing.Size(419, 20)
+        Me.m_tbImportDescription.TabIndex = 19
         '
         'm_tbImportFileName
         '
         Me.m_tbImportFileName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbImportFileName.Location = New System.Drawing.Point(75, 21)
+        Me.m_tbImportFileName.Location = New System.Drawing.Point(77, 21)
         Me.m_tbImportFileName.Name = "m_tbImportFileName"
-        Me.m_tbImportFileName.Size = New System.Drawing.Size(340, 20)
+        Me.m_tbImportFileName.Size = New System.Drawing.Size(342, 20)
         Me.m_tbImportFileName.TabIndex = 2
         '
         'm_lblImportContact
@@ -394,7 +402,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lblImportContact.Location = New System.Drawing.Point(3, 527)
         Me.m_lblImportContact.Name = "m_lblImportContact"
         Me.m_lblImportContact.Size = New System.Drawing.Size(47, 13)
-        Me.m_lblImportContact.TabIndex = 21
+        Me.m_lblImportContact.TabIndex = 20
         Me.m_lblImportContact.Text = "Con&tact:"
         '
         'm_lblImportAuthor
@@ -405,7 +413,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lblImportAuthor.Location = New System.Drawing.Point(3, 501)
         Me.m_lblImportAuthor.Name = "m_lblImportAuthor"
         Me.m_lblImportAuthor.Size = New System.Drawing.Size(41, 13)
-        Me.m_lblImportAuthor.TabIndex = 19
+        Me.m_lblImportAuthor.TabIndex = 18
         Me.m_lblImportAuthor.Text = "A&uthor:"
         '
         'm_lblImportDescription
@@ -416,7 +424,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lblImportDescription.Location = New System.Drawing.Point(3, 449)
         Me.m_lblImportDescription.Name = "m_lblImportDescription"
         Me.m_lblImportDescription.Size = New System.Drawing.Size(63, 13)
-        Me.m_lblImportDescription.TabIndex = 17
+        Me.m_lblImportDescription.TabIndex = 16
         Me.m_lblImportDescription.Text = "Desc&ription:"
         '
         'm_cmbImportDataset
@@ -424,10 +432,10 @@ Partial Class dlgManageTimeSeries
         Me.m_cmbImportDataset.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_cmbImportDataset.FormattingEnabled = True
-        Me.m_cmbImportDataset.Location = New System.Drawing.Point(72, 419)
+        Me.m_cmbImportDataset.Location = New System.Drawing.Point(77, 419)
         Me.m_cmbImportDataset.Name = "m_cmbImportDataset"
-        Me.m_cmbImportDataset.Size = New System.Drawing.Size(424, 21)
-        Me.m_cmbImportDataset.TabIndex = 16
+        Me.m_cmbImportDataset.Size = New System.Drawing.Size(419, 21)
+        Me.m_cmbImportDataset.TabIndex = 15
         '
         'm_lblImportDataset
         '
@@ -437,14 +445,14 @@ Partial Class dlgManageTimeSeries
         Me.m_lblImportDataset.Location = New System.Drawing.Point(3, 422)
         Me.m_lblImportDataset.Name = "m_lblImportDataset"
         Me.m_lblImportDataset.Size = New System.Drawing.Size(47, 13)
-        Me.m_lblImportDataset.TabIndex = 15
+        Me.m_lblImportDataset.TabIndex = 14
         Me.m_lblImportDataset.Text = "D&ataset:"
         '
         'm_lblImportDecimalSeparator
         '
         Me.m_lblImportDecimalSeparator.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_lblImportDecimalSeparator.AutoSize = True
-        Me.m_lblImportDecimalSeparator.Location = New System.Drawing.Point(224, 71)
+        Me.m_lblImportDecimalSeparator.Location = New System.Drawing.Point(228, 71)
         Me.m_lblImportDecimalSeparator.Name = "m_lblImportDecimalSeparator"
         Me.m_lblImportDecimalSeparator.Size = New System.Drawing.Size(95, 13)
         Me.m_lblImportDecimalSeparator.TabIndex = 7
@@ -475,9 +483,9 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_btnImportBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnImportBrowse.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnImportBrowse.Location = New System.Drawing.Point(421, 19)
+        Me.m_btnImportBrowse.Location = New System.Drawing.Point(425, 19)
         Me.m_btnImportBrowse.Name = "m_btnImportBrowse"
-        Me.m_btnImportBrowse.Size = New System.Drawing.Size(75, 23)
+        Me.m_btnImportBrowse.Size = New System.Drawing.Size(71, 23)
         Me.m_btnImportBrowse.TabIndex = 3
         Me.m_btnImportBrowse.Text = "&Browse..."
         Me.m_btnImportBrowse.UseVisualStyleBackColor = True
@@ -511,9 +519,9 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_tlpWeights.ColumnCount = 2
         Me.m_tlpWeights.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpWeights.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100.0!))
+        Me.m_tlpWeights.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.m_tlpWeights.Controls.Add(Me.m_gridWeights, 0, 0)
-        Me.m_tlpWeights.Controls.Add(Me.m_tlpWeightControls, 1, 0)
+        Me.m_tlpWeights.Controls.Add(Me.m_plWeights, 1, 0)
         Me.m_tlpWeights.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpWeights.Location = New System.Drawing.Point(0, 3)
         Me.m_tlpWeights.Margin = New System.Windows.Forms.Padding(0)
@@ -528,6 +536,7 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.AllowBlockSelect = True
         Me.m_gridWeights.AutoSizeMinHeight = 10
         Me.m_gridWeights.AutoSizeMinWidth = 10
+        Me.m_gridWeights.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_gridWeights.AutoStretchColumnsToFitWidth = True
         Me.m_gridWeights.AutoStretchRowsToFitHeight = False
         Me.m_gridWeights.BackColor = System.Drawing.Color.White
@@ -543,9 +552,10 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.GridToolTipActive = True
         Me.m_gridWeights.IsLayoutSuspended = False
         Me.m_gridWeights.IsOutputGrid = True
-        Me.m_gridWeights.Location = New System.Drawing.Point(3, 3)
+        Me.m_gridWeights.Location = New System.Drawing.Point(0, 0)
+        Me.m_gridWeights.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
         Me.m_gridWeights.Name = "m_gridWeights"
-        Me.m_gridWeights.Size = New System.Drawing.Size(393, 558)
+        Me.m_gridWeights.Size = New System.Drawing.Size(419, 564)
         Me.m_gridWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -558,76 +568,85 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.TabIndex = 0
         Me.m_gridWeights.UIContext = Nothing
         '
-        'm_tlpWeightControls
+        'm_plWeights
         '
-        Me.m_tlpWeightControls.ColumnCount = 1
-        Me.m_tlpWeightControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpWeightControls.Controls.Add(Me.m_btnApplyCheckNone, 0, 0)
-        Me.m_tlpWeightControls.Controls.Add(Me.m_btnApplyCheckAll, 0, 1)
-        Me.m_tlpWeightControls.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tlpWeightControls.Location = New System.Drawing.Point(399, 0)
-        Me.m_tlpWeightControls.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_tlpWeightControls.Name = "m_tlpWeightControls"
-        Me.m_tlpWeightControls.RowCount = 3
-        Me.m_tlpWeightControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpWeightControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpWeightControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpWeightControls.Size = New System.Drawing.Size(100, 564)
-        Me.m_tlpWeightControls.TabIndex = 1
-        '
-        'm_btnApplyCheckNone
-        '
-        Me.m_btnApplyCheckNone.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_btnApplyCheckNone.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnApplyCheckNone.Location = New System.Drawing.Point(3, 3)
-        Me.m_btnApplyCheckNone.Name = "m_btnApplyCheckNone"
-        Me.m_btnApplyCheckNone.Size = New System.Drawing.Size(94, 23)
-        Me.m_btnApplyCheckNone.TabIndex = 2
-        Me.m_btnApplyCheckNone.Text = "None"
-        Me.m_btnApplyCheckNone.UseVisualStyleBackColor = True
+        Me.m_plWeights.Controls.Add(Me.m_btnApplyCheckAll)
+        Me.m_plWeights.Controls.Add(Me.m_btnApplyCheckNone)
+        Me.m_plWeights.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_plWeights.Location = New System.Drawing.Point(425, 0)
+        Me.m_plWeights.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
+        Me.m_plWeights.Name = "m_plWeights"
+        Me.m_plWeights.Size = New System.Drawing.Size(74, 564)
+        Me.m_plWeights.TabIndex = 1
         '
         'm_btnApplyCheckAll
         '
-        Me.m_btnApplyCheckAll.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_btnApplyCheckAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnApplyCheckAll.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnApplyCheckAll.Location = New System.Drawing.Point(3, 32)
+        Me.m_btnApplyCheckAll.Location = New System.Drawing.Point(3, 0)
         Me.m_btnApplyCheckAll.Name = "m_btnApplyCheckAll"
-        Me.m_btnApplyCheckAll.Size = New System.Drawing.Size(94, 23)
+        Me.m_btnApplyCheckAll.Size = New System.Drawing.Size(67, 23)
         Me.m_btnApplyCheckAll.TabIndex = 1
         Me.m_btnApplyCheckAll.Text = "All"
         Me.m_btnApplyCheckAll.UseVisualStyleBackColor = True
         '
+        'm_btnApplyCheckNone
+        '
+        Me.m_btnApplyCheckNone.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnApplyCheckNone.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.m_btnApplyCheckNone.Location = New System.Drawing.Point(3, 29)
+        Me.m_btnApplyCheckNone.Name = "m_btnApplyCheckNone"
+        Me.m_btnApplyCheckNone.Size = New System.Drawing.Size(67, 23)
+        Me.m_btnApplyCheckNone.TabIndex = 2
+        Me.m_btnApplyCheckNone.Text = "None"
+        Me.m_btnApplyCheckNone.UseVisualStyleBackColor = True
+        '
         'm_tpLoad
         '
-        Me.m_tpLoad.Controls.Add(Me.m_tlpLoad)
+        Me.m_tpLoad.Controls.Add(Me.m_tlpLoadTS)
         Me.m_tpLoad.ImageIndex = 0
         Me.m_tpLoad.Location = New System.Drawing.Point(4, 26)
         Me.m_tpLoad.Name = "m_tpLoad"
         Me.m_tpLoad.Padding = New System.Windows.Forms.Padding(3)
-        Me.m_tpLoad.Size = New System.Drawing.Size(499, 570)
+        Me.m_tpLoad.Size = New System.Drawing.Size(497, 577)
         Me.m_tpLoad.TabIndex = 0
         Me.m_tpLoad.Text = "Load"
         Me.m_tpLoad.UseVisualStyleBackColor = True
         '
-        'm_tlpLoad
+        'm_tlpLoadTS
         '
-        Me.m_tlpLoad.ColumnCount = 1
-        Me.m_tlpLoad.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpLoad.Controls.Add(Me.m_lvLoadDatasets, 0, 0)
-        Me.m_tlpLoad.Controls.Add(Me.m_cbLoadEnableOnLoad, 0, 1)
-        Me.m_tlpLoad.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tlpLoad.Location = New System.Drawing.Point(3, 3)
-        Me.m_tlpLoad.Name = "m_tlpLoad"
-        Me.m_tlpLoad.RowCount = 2
-        Me.m_tlpLoad.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpLoad.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpLoad.Size = New System.Drawing.Size(493, 564)
-        Me.m_tlpLoad.TabIndex = 2
+        Me.m_tlpLoadTS.ColumnCount = 1
+        Me.m_tlpLoadTS.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpLoadTS.Controls.Add(Me.m_cbLoadEnableOnLoad, 0, 1)
+        Me.m_tlpLoadTS.Controls.Add(Me.m_lvLoadDatasets, 0, 0)
+        Me.m_tlpLoadTS.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tlpLoadTS.Location = New System.Drawing.Point(3, 3)
+        Me.m_tlpLoadTS.Name = "m_tlpLoadTS"
+        Me.m_tlpLoadTS.RowCount = 2
+        Me.m_tlpLoadTS.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.m_tlpLoadTS.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.m_tlpLoadTS.Size = New System.Drawing.Size(491, 571)
+        Me.m_tlpLoadTS.TabIndex = 2
+        '
+        'm_cbLoadEnableOnLoad
+        '
+        Me.m_cbLoadEnableOnLoad.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.m_cbLoadEnableOnLoad.AutoSize = True
+        Me.m_cbLoadEnableOnLoad.Checked = True
+        Me.m_cbLoadEnableOnLoad.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.m_cbLoadEnableOnLoad.Location = New System.Drawing.Point(3, 551)
+        Me.m_cbLoadEnableOnLoad.Name = "m_cbLoadEnableOnLoad"
+        Me.m_cbLoadEnableOnLoad.Size = New System.Drawing.Size(181, 17)
+        Me.m_cbLoadEnableOnLoad.TabIndex = 1
+        Me.m_cbLoadEnableOnLoad.Text = "&Enable Time Series when loaded"
+        Me.m_cbLoadEnableOnLoad.UseVisualStyleBackColor = True
         '
         'm_lvLoadDatasets
         '
+        Me.m_lvLoadDatasets.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_lvLoadDatasets.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.m_colLoadDataset, Me.m_colLoaded, Me.m_clInterval, Me.m_colDescription})
-        Me.m_lvLoadDatasets.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lvLoadDatasets.FullRowSelect = True
         Me.m_lvLoadDatasets.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.m_lvLoadDatasets.HideSelection = False
@@ -636,7 +655,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lvLoadDatasets.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lvLoadDatasets.MultiSelect = False
         Me.m_lvLoadDatasets.Name = "m_lvLoadDatasets"
-        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(493, 541)
+        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(491, 548)
         Me.m_lvLoadDatasets.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.m_lvLoadDatasets.TabIndex = 0
         Me.m_lvLoadDatasets.UseCompatibleStateImageBehavior = False
@@ -662,50 +681,63 @@ Partial Class dlgManageTimeSeries
         Me.m_colDescription.Text = "Number of Time Series"
         Me.m_colDescription.Width = 300
         '
-        'm_cbLoadEnableOnLoad
-        '
-        Me.m_cbLoadEnableOnLoad.AutoSize = True
-        Me.m_cbLoadEnableOnLoad.Checked = True
-        Me.m_cbLoadEnableOnLoad.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.m_cbLoadEnableOnLoad.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_cbLoadEnableOnLoad.Location = New System.Drawing.Point(3, 544)
-        Me.m_cbLoadEnableOnLoad.Name = "m_cbLoadEnableOnLoad"
-        Me.m_cbLoadEnableOnLoad.Size = New System.Drawing.Size(487, 17)
-        Me.m_cbLoadEnableOnLoad.TabIndex = 1
-        Me.m_cbLoadEnableOnLoad.Text = "&Enable Time Series when loaded"
-        Me.m_cbLoadEnableOnLoad.UseVisualStyleBackColor = True
-        '
         'm_tcMain
         '
-        Me.m_tcMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tcMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
         Me.m_tcMain.Controls.Add(Me.m_tpLoad)
         Me.m_tcMain.Controls.Add(Me.m_tpWeights)
         Me.m_tcMain.Controls.Add(Me.m_tpImport)
         Me.m_tcMain.Controls.Add(Me.m_tpDelete)
+        Me.m_tcMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tcMain.ImageList = Me.m_ilTabImages
-        Me.m_tcMain.Location = New System.Drawing.Point(9, 9)
+        Me.m_tcMain.Location = New System.Drawing.Point(10, 10)
         Me.m_tcMain.Margin = New System.Windows.Forms.Padding(0)
         Me.m_tcMain.Name = "m_tcMain"
         Me.m_tcMain.SelectedIndex = 0
-        Me.m_tcMain.Size = New System.Drawing.Size(507, 600)
+        Me.m_tcMain.Size = New System.Drawing.Size(505, 607)
         Me.m_tcMain.TabIndex = 0
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.ColumnCount = 3
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
+        Me.TableLayoutPanel1.Controls.Add(Me.m_plClickyBits, 1, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_tcMain, 1, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 4
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(525, 650)
+        Me.TableLayoutPanel1.TabIndex = 3
+        '
+        'm_plClickyBits
+        '
+        Me.m_plClickyBits.Controls.Add(Me.m_btnOk)
+        Me.m_plClickyBits.Controls.Add(Me.m_btnCancel)
+        Me.m_plClickyBits.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_plClickyBits.Location = New System.Drawing.Point(10, 617)
+        Me.m_plClickyBits.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_plClickyBits.Name = "m_plClickyBits"
+        Me.m_plClickyBits.Size = New System.Drawing.Size(505, 23)
+        Me.m_plClickyBits.TabIndex = 4
         '
         'dlgManageTimeSeries
         '
         Me.AcceptButton = Me.m_btnOk
         Me.AllowDrop = True
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.m_btnCancel
         Me.ClientSize = New System.Drawing.Size(525, 650)
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_btnOk)
-        Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_tcMain)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.MinimumSize = New System.Drawing.Size(533, 500)
@@ -721,11 +753,13 @@ Partial Class dlgManageTimeSeries
         CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpWeights.ResumeLayout(False)
         Me.m_tlpWeights.ResumeLayout(False)
-        Me.m_tlpWeightControls.ResumeLayout(False)
+        Me.m_plWeights.ResumeLayout(False)
         Me.m_tpLoad.ResumeLayout(False)
-        Me.m_tlpLoad.ResumeLayout(False)
-        Me.m_tlpLoad.PerformLayout()
+        Me.m_tlpLoadTS.ResumeLayout(False)
+        Me.m_tlpLoadTS.PerformLayout()
         Me.m_tcMain.ResumeLayout(False)
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.m_plClickyBits.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -775,7 +809,9 @@ Partial Class dlgManageTimeSeries
     Private WithEvents m_cmbImportInterval As System.Windows.Forms.ComboBox
     Private WithEvents m_lblImportInterval As System.Windows.Forms.Label
     Private WithEvents m_clInterval As System.Windows.Forms.ColumnHeader
-    Private WithEvents m_tlpLoad As TableLayoutPanel
-    Friend WithEvents m_tlpWeights As TableLayoutPanel
-    Private WithEvents m_tlpWeightControls As TableLayoutPanel
+    Private WithEvents m_tlpLoadTS As TableLayoutPanel
+    Private WithEvents m_tlpWeights As TableLayoutPanel
+    Private WithEvents m_plWeights As Panel
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Private WithEvents m_plClickyBits As Panel
 End Class

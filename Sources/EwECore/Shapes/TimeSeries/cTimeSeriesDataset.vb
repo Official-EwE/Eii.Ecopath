@@ -27,10 +27,7 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Class cTimeSeriesDataset
     Inherits cCoreInputOutputBase
-    Implements IList(Of cTimeSeries)
 
-    Private m_lTimeSeries As New List(Of cTimeSeries)
-    Private m_nTimeSeries As Integer = 0
     Private m_iNumTimeSeries As Integer = 0
 
 #Region " Constructor "
@@ -135,15 +132,16 @@ Public Class cTimeSeriesDataset
     ''' <remarks>
     ''' <para>This value is read from the database and provides an estimate of the number of
     ''' time series for this dataset PRIOR TO when the time series are loaded.</para>
-    ''' <para>As soon as the dataset is loaded, the method <see cref="Count">Count</see>
-    ''' will give the actual number of time series attached to this dataset.</para>
+    ''' <para>As soon as the dataset is loaded, the method will give the actual number of 
+    ''' time series loaded in the core.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property nTimeSeries() As Integer
         Get
             ' Return the cached number of time series if no series have been loaded yet
-            If (Me.Count = 0) Then Return Me.m_iNumTimeSeries
-            Return Me.Count
+            Dim iTot As Integer = Me.m_core.EcosimGroupTimeseries.Count + Me.m_core.EcosimFleetTimeseries.Count
+            If (iTot = 0) Then Return Me.m_iNumTimeSeries
+            Return iTot
         End Get
     End Property
 
@@ -252,11 +250,19 @@ Public Class cTimeSeriesDataset
     Public Function IsEnabled() As TriState
 
         Dim iEnableCount As Integer = 0
-        For Each ts As cTimeSeries In Me.m_lTimeSeries
-            If ts.Enabled Then iEnableCount += 1
+        Dim iTot As Integer = Me.nTimeSeries
+        For Each ts As cTimeSeries In Me.m_core.EcosimGroupTimeseries
+            If (ts IsNot Nothing) Then
+                If ts.Enabled Then iEnableCount += 1
+            End If
+        Next
+        For Each ts As cTimeSeries In Me.m_core.EcosimFleetTimeseries
+            If (ts IsNot Nothing) Then
+                If ts.Enabled Then iEnableCount += 1
+            End If
         Next
         If iEnableCount = 0 Then Return TriState.False
-        If iEnableCount = Me.m_lTimeSeries.Count Then Return TriState.True
+        If iEnableCount = iTot Then Return TriState.True
         Return TriState.UseDefault
 
     End Function
@@ -272,93 +278,5 @@ Public Class cTimeSeriesDataset
     End Function
 
 #End Region ' Public interfaces
-
-#Region " List interfaces "
-
-    Friend Sub Add(item As cTimeSeries) Implements System.Collections.Generic.ICollection(Of cTimeSeries).Add
-        Me.m_lTimeSeries.Add(item)
-    End Sub
-
-    Friend Overloads Sub Clear() Implements System.Collections.Generic.ICollection(Of cTimeSeries).Clear
-         MyBase.Clear()
-        Me.m_lTimeSeries.Clear()
-    End Sub
-
-    Public Function Contains(item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Contains
-        Return Me.m_lTimeSeries.Contains(item)
-    End Function
-
-    Public Sub CopyTo(array() As cTimeSeries, arrayIndex As Integer) Implements System.Collections.Generic.ICollection(Of cTimeSeries).CopyTo
-        Me.m_lTimeSeries.CopyTo(array, arrayIndex)
-    End Sub
-
-    Public ReadOnly Property Count() As Integer Implements System.Collections.Generic.ICollection(Of cTimeSeries).Count
-        Get
-            Return Me.m_lTimeSeries.Count
-        End Get
-    End Property
-
-    Public ReadOnly Property IsReadOnly() As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).IsReadOnly
-        Get
-            Return True
-        End Get
-    End Property
-
-    Private Function Remove(item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Remove
-        ' Nope
-        Debug.Assert(False, "Deliberately not implemented; datasets can only be populated from the core")
-    End Function
-
-    Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of cTimeSeries) Implements System.Collections.Generic.IEnumerable(Of cTimeSeries).GetEnumerator
-        Return Me.m_lTimeSeries.GetEnumerator()
-    End Function
-
-    Friend Function GetEnumerator1() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
-        Return Me.m_lTimeSeries.GetEnumerator()
-    End Function
-
-    Public Function IndexOf(item As cTimeSeries) As Integer Implements System.Collections.Generic.IList(Of cTimeSeries).IndexOf
-        Return Me.m_lTimeSeries.IndexOf(item)
-    End Function
-
-    Friend Sub Insert(index As Integer, item As cTimeSeries) Implements System.Collections.Generic.IList(Of cTimeSeries).Insert
-        ' Nope
-    End Sub
-
-    ''' <summary>
-    ''' Get a time series from the dataset.
-    ''' </summary>
-    ''' <param name="index">Zero-based index of the time series to access.</param>
-    Default Public Property Item(index As Integer) As cTimeSeries Implements System.Collections.Generic.IList(Of cTimeSeries).Item
-        Get
-            Return Me.m_lTimeSeries.Item(index)
-        End Get
-        Friend Set(value As cTimeSeries)
-            ' Nope
-            Debug.Assert(False, "Deliberately not implemented; datasets can only be populated from the core")
-        End Set
-    End Property
-
-    Private Sub RemoveAt(index As Integer) Implements System.Collections.Generic.IList(Of cTimeSeries).RemoveAt
-        ' Nope
-        Debug.Assert(False, "Deliberately not implemented; datasets can only be populated from the core")
-    End Sub
-
-#End Region ' List interfaces
-
-#Region " Obsolete "
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="nTimeSeries"/>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("Use nTimeSeries instead")> _
-    Public ReadOnly Property NumTimeSeries() As Integer
-        Get
-            If Me.Count = 0 Then Return Me.m_iNumTimeSeries
-            Return Me.Count
-        End Get
-    End Property
-
-#End Region ' Obsolete
 
 End Class

@@ -3190,4 +3190,7 @@
   <data name="TS_TYPE_CATCHABILITIES" xml:space="preserve">
     <value>Catchabilities (forcing)</value>
   </data>
+  <data name="HEADER_TARGET_SECOND" xml:space="preserve">
+    <value>2nd target</value>
+  </data>
 </root>

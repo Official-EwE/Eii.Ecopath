@@ -1098,7 +1098,7 @@ Public Class cCoreInputOutputList(Of T)
     ''' -----------------------------------------------------------------------
     Public Overridable Sub CopyTo(aItems() As T, iIndex As Integer) _
             Implements System.Collections.Generic.ICollection(Of T).CopyTo
-        Me.m_list.CopyTo(aItems, iIndex - Me.m_iItemOffset)
+        Me.m_list.CopyTo(aItems, iIndex)
     End Sub
 
     ''' -----------------------------------------------------------------------

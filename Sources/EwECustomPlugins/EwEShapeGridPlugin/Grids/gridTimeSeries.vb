@@ -88,7 +88,7 @@ Public Class gridTimeSeries
         Me(eRowType.Thumbnail, 0) = New cEwERowHeaderCell(SharedResources.HEADER_IMAGE)
         Me(eRowType.Name, 0) = New cEwERowHeaderCell(SharedResources.HEADER_NAME)
         Me(eRowType.PoolPrimary, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TARGET)
-        Me(eRowType.PoolSecundary, 0) = New cEwERowHeaderCell(My.Resources.HEADER_TARGET_SECOND)
+        Me(eRowType.PoolSecundary, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TARGET_SECOND)
         Me(eRowType.Type, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TYPE)
         Me(eRowType.Weight, 0) = New cEwERowHeaderCell(SharedResources.HEADER_WEIGHT)
         Me(eRowType.Interval, 0) = New cEwERowHeaderCell(My.Resources.HEADER_INTERVAL)
@@ -188,7 +188,10 @@ Public Class gridTimeSeries
     Public Overrides ReadOnly Property Manager() As IEnumerable
         Get
             If Me.Core.ActiveTimeSeriesDatasetIndex <= 0 Then Return Nothing
-            Return Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
+            Dim lts As New List(Of cTimeSeries)
+            lts.AddRange(Me.Core.EcosimGroupTimeseries)
+            lts.AddRange(Me.Core.EcosimFleetTimeseries)
+            Return lts.ToArray
         End Get
     End Property
 

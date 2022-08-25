@@ -61,4 +61,9 @@ Public Class cTimeSeriesImport
         Return True
     End Function
 
+    Public Overrides Function IsValid() As Boolean
+        ' Of course
+        Return True
+    End Function
+
 End Class
