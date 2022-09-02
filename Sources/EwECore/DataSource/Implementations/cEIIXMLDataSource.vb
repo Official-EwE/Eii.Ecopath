@@ -2692,6 +2692,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
             End If
         Next
+		return True
 
     End Function
 
