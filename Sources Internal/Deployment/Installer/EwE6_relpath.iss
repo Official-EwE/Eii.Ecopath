@@ -54,9 +54,9 @@ SetupIconFile=Ecopath_install.ico
 UninstallDisplayIcon={app}\{#MyAppName}
 AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
-AppPublisherURL=http://ecopathinternational.org
+AppPublisherURL=https://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
-MinVersion=0,6.0sp2
+MinVersion=0,6.1
 DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
 AlwaysShowGroupOnReadyPage=True
@@ -77,6 +77,10 @@ OutputBaseFilename=ewe_{#MyAppVersion}
   ; since it's capable of running 32-bit code too).
 #endif
 UsePreviousAppDir=False
+ChangesAssociations=True
+TimeStampsInUTC=True
+VersionInfoCompany={#MyAppPublisher}
+VersionInfoCopyright=(c) {#MyAppPublisher}
 
 [Dirs]
 Name: "{app}\Includes\LPSolve\"
@@ -379,7 +383,6 @@ Name: "desktopicon"; Description: "Add desktop icon"
 Name: "quicklaunchicon"; Description: "Add quick launch icon"
 Name: "associatefiles"; Description: "Open EwE models and web links in this version by default"; GroupDescription: "File associations"
 
-[Icons]
 Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 Name: "{group}\{#MyAppName} {#MyAppVersion}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename:  "{app}\{#MyAppExeName}"; 
@@ -388,6 +391,7 @@ Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwEMultiSimPlugin.pdf"; W
 Name: "{group}\Links\Ecopath website"; Filename: "http://www.ecopath.org"
 Name: "{group}\Links\Ecopath on Facebook"; Filename: "http://www.facebook.com/eweconsortium"
 Name: "{group}\Links\User support"; Filename: "http://www.ecopath.org/support"
+Name: "{group}\{cm:UninstallProgram, {#MyAppName}}"; Filename: "{uninstallexe}"
 
 [ThirdParty]
 UseRelativePaths=True
@@ -545,3 +549,5 @@ Root: "HKCR"; Subkey: "ewe-ecobase\Shell\Open\Command\"; ValueType: string; Valu
 ; Inno setup automatically redirects to wow6432node where needed
 Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
 Root: "HKCR"; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
+; Misc settings
+Root: "HKCU"; Subkey: "Control Panel\Desktop\AutoEndTasks"; ValueType: string; ValueData: "0"
