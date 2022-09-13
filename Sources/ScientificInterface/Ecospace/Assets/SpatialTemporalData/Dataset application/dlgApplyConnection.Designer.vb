@@ -33,6 +33,7 @@ Namespace Ecospace.Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyConnection))
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnection = New System.Windows.Forms.Panel()
+            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
             Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
@@ -53,16 +54,15 @@ Namespace Ecospace.Controls
             Me.m_plExperimental = New System.Windows.Forms.Panel()
             Me.m_tlExperimentalFeatures = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plStartYear = New System.Windows.Forms.Panel()
-            Me.m_tbxYearStart = New System.Windows.Forms.TextBox()
             Me.m_lblStart = New System.Windows.Forms.Label()
             Me.m_rbStartWithData = New System.Windows.Forms.RadioButton()
             Me.m_rbStartYear = New System.Windows.Forms.RadioButton()
             Me.m_hdrExperimental = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plEndYear = New System.Windows.Forms.Panel()
-            Me.m_tbxYearEnd = New System.Windows.Forms.TextBox()
             Me.m_lblEnd = New System.Windows.Forms.Label()
             Me.m_rbEndWithData = New System.Windows.Forms.RadioButton()
             Me.m_rbEndYear = New System.Windows.Forms.RadioButton()
+            Me.m_lblStartEndInfo = New System.Windows.Forms.Label()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tslFilter = New System.Windows.Forms.ToolStripLabel()
@@ -74,12 +74,12 @@ Namespace Ecospace.Controls
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_plAvailable = New System.Windows.Forms.Panel()
+            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
-            Me.m_lblStartEndInfo = New System.Windows.Forms.Label()
-            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
-            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
+            Me.m_dpStart = New System.Windows.Forms.DateTimePicker()
+            Me.m_dpEnd = New System.Windows.Forms.DateTimePicker()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -114,6 +114,39 @@ Namespace Ecospace.Controls
             Me.m_plConnection.Controls.Add(Me.m_hdrSource)
             resources.ApplyResources(Me.m_plConnection, "m_plConnection")
             Me.m_plConnection.Name = "m_plConnection"
+            '
+            'm_gridConnections
+            '
+            Me.m_gridConnections.AllowBlockSelect = False
+            Me.m_gridConnections.AutoSizeMinHeight = 10
+            Me.m_gridConnections.AutoSizeMinWidth = 10
+            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
+            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
+            Me.m_gridConnections.BackColor = System.Drawing.Color.White
+            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridConnections.CustomSort = False
+            Me.m_gridConnections.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
+            Me.m_gridConnections.FixedColumnWidths = False
+            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridConnections.GridToolTipActive = True
+            Me.m_gridConnections.IsLayoutSuspended = False
+            Me.m_gridConnections.IsOutputGrid = True
+            Me.m_gridConnections.Name = "m_gridConnections"
+            Me.m_gridConnections.SelectedConnection = Nothing
+            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridConnections.UIContext = Nothing
             '
             'm_hdrSource
             '
@@ -247,17 +280,12 @@ Namespace Ecospace.Controls
             '
             'm_plStartYear
             '
-            Me.m_plStartYear.Controls.Add(Me.m_tbxYearStart)
+            Me.m_plStartYear.Controls.Add(Me.m_dpStart)
             Me.m_plStartYear.Controls.Add(Me.m_lblStart)
             Me.m_plStartYear.Controls.Add(Me.m_rbStartWithData)
             Me.m_plStartYear.Controls.Add(Me.m_rbStartYear)
             resources.ApplyResources(Me.m_plStartYear, "m_plStartYear")
             Me.m_plStartYear.Name = "m_plStartYear"
-            '
-            'm_tbxYearStart
-            '
-            resources.ApplyResources(Me.m_tbxYearStart, "m_tbxYearStart")
-            Me.m_tbxYearStart.Name = "m_tbxYearStart"
             '
             'm_lblStart
             '
@@ -288,17 +316,12 @@ Namespace Ecospace.Controls
             '
             'm_plEndYear
             '
-            Me.m_plEndYear.Controls.Add(Me.m_tbxYearEnd)
+            Me.m_plEndYear.Controls.Add(Me.m_dpEnd)
             Me.m_plEndYear.Controls.Add(Me.m_lblEnd)
             Me.m_plEndYear.Controls.Add(Me.m_rbEndWithData)
             Me.m_plEndYear.Controls.Add(Me.m_rbEndYear)
             resources.ApplyResources(Me.m_plEndYear, "m_plEndYear")
             Me.m_plEndYear.Name = "m_plEndYear"
-            '
-            'm_tbxYearEnd
-            '
-            resources.ApplyResources(Me.m_tbxYearEnd, "m_tbxYearEnd")
-            Me.m_tbxYearEnd.Name = "m_tbxYearEnd"
             '
             'm_lblEnd
             '
@@ -318,6 +341,11 @@ Namespace Ecospace.Controls
             Me.m_rbEndYear.Name = "m_rbEndYear"
             Me.m_rbEndYear.TabStop = True
             Me.m_rbEndYear.UseVisualStyleBackColor = True
+            '
+            'm_lblStartEndInfo
+            '
+            resources.ApplyResources(Me.m_lblStartEndInfo, "m_lblStartEndInfo")
+            Me.m_lblStartEndInfo.Name = "m_lblStartEndInfo"
             '
             'm_hdrConnections
             '
@@ -398,6 +426,18 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_plAvailable, "m_plAvailable")
             Me.m_plAvailable.Name = "m_plAvailable"
             '
+            'm_lbSourceDatasets
+            '
+            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
+            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbSourceDatasets.FormattingEnabled = True
+            Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = False
+            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
+            Me.m_lbSourceDatasets.Sorted = True
+            Me.m_lbSourceDatasets.TextFilter = ""
+            Me.m_lbSourceDatasets.UIContext = Nothing
+            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
+            '
             'm_btnRemove
             '
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
@@ -416,55 +456,17 @@ Namespace Ecospace.Controls
             Me.m_cbEnabled.Name = "m_cbEnabled"
             Me.m_cbEnabled.UseVisualStyleBackColor = True
             '
-            'm_lblStartEndInfo
+            'm_dpStart
             '
-            resources.ApplyResources(Me.m_lblStartEndInfo, "m_lblStartEndInfo")
-            Me.m_lblStartEndInfo.Name = "m_lblStartEndInfo"
+            resources.ApplyResources(Me.m_dpStart, "m_dpStart")
+            Me.m_dpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+            Me.m_dpStart.Name = "m_dpStart"
             '
-            'm_lbSourceDatasets
+            'm_dpEnd
             '
-            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
-            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_lbSourceDatasets.FormattingEnabled = True
-            Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = False
-            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
-            Me.m_lbSourceDatasets.Sorted = True
-            Me.m_lbSourceDatasets.TextFilter = ""
-            Me.m_lbSourceDatasets.UIContext = Nothing
-            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
-            '
-            'm_gridConnections
-            '
-            Me.m_gridConnections.AllowBlockSelect = False
-            Me.m_gridConnections.AutoSizeMinHeight = 10
-            Me.m_gridConnections.AutoSizeMinWidth = 10
-            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
-            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
-            Me.m_gridConnections.BackColor = System.Drawing.Color.White
-            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridConnections.CustomSort = False
-            Me.m_gridConnections.DataName = "grid content"
-            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
-            Me.m_gridConnections.FixedColumnWidths = False
-            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridConnections.GridToolTipActive = True
-            Me.m_gridConnections.IsLayoutSuspended = False
-            Me.m_gridConnections.IsOutputGrid = True
-            Me.m_gridConnections.Name = "m_gridConnections"
-            Me.m_gridConnections.SelectedConnection = Nothing
-            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridConnections.UIContext = Nothing
+            resources.ApplyResources(Me.m_dpEnd, "m_dpEnd")
+            Me.m_dpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+            Me.m_dpEnd.Name = "m_dpEnd"
             '
             'dlgApplyConnection
             '
@@ -551,9 +553,9 @@ Namespace Ecospace.Controls
         Private WithEvents m_lblEnd As Label
         Private WithEvents m_rbEndWithData As RadioButton
         Private WithEvents m_rbEndYear As RadioButton
-        Private WithEvents m_tbxYearStart As TextBox
-        Private WithEvents m_tbxYearEnd As TextBox
         Private WithEvents m_lblStartEndInfo As Label
+        Private WithEvents m_dpStart As DateTimePicker
+        Private WithEvents m_dpEnd As DateTimePicker
     End Class
 
 End Namespace

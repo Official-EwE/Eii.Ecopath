@@ -139,7 +139,7 @@
     <value>m_gridConnections</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -172,7 +172,7 @@
     <value>m_hdrSource</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -631,7 +631,7 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>m_plDataset</value>
@@ -669,25 +669,28 @@
   <data name="m_tlExperimentalFeatures.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_tbxYearStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 2</value>
+  <data name="m_dpStart.CustomFormat" xml:space="preserve">
+    <value>yyyy/MM/dd</value>
   </data>
-  <data name="m_tbxYearStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 20</value>
+  <data name="m_dpStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>236, 1</value>
   </data>
-  <data name="m_tbxYearStart.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="m_dpStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 20</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearStart.Name" xml:space="preserve">
-    <value>m_tbxYearStart</value>
+  <data name="m_dpStart.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_dpStart.Name" xml:space="preserve">
+    <value>m_dpStart</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearStart.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_dpStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_dpStart.Parent" xml:space="preserve">
     <value>m_plStartYear</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearStart.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_dpStart.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_lblStart.AutoSize" type="System.Boolean, mscorlib">
@@ -700,13 +703,13 @@
     <value>3, 5</value>
   </data>
   <data name="m_lblStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 13</value>
+    <value>32, 13</value>
   </data>
   <data name="m_lblStart.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_lblStart.Text" xml:space="preserve">
-    <value>&amp;First year:</value>
+    <value>&amp;Start:</value>
   </data>
   <data name="&gt;&gt;m_lblStart.Name" xml:space="preserve">
     <value>m_lblStart</value>
@@ -760,13 +763,13 @@
     <value>169, 3</value>
   </data>
   <data name="m_rbStartYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 17</value>
+    <value>61, 17</value>
   </data>
   <data name="m_rbStartYear.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_rbStartYear.Text" xml:space="preserve">
-    <value>at year:</value>
+    <value>at date:</value>
   </data>
   <data name="&gt;&gt;m_rbStartYear.Name" xml:space="preserve">
     <value>m_rbStartYear</value>
@@ -832,7 +835,7 @@
     <value>m_hdrExperimental</value>
   </data>
   <data name="&gt;&gt;m_hdrExperimental.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExperimental.Parent" xml:space="preserve">
     <value>m_tlExperimentalFeatures</value>
@@ -840,25 +843,28 @@
   <data name="&gt;&gt;m_hdrExperimental.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_tbxYearEnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 2</value>
+  <data name="m_dpEnd.CustomFormat" xml:space="preserve">
+    <value>yyyy/MM/dd</value>
   </data>
-  <data name="m_tbxYearEnd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 20</value>
+  <data name="m_dpEnd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>236, 1</value>
   </data>
-  <data name="m_tbxYearEnd.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="m_dpEnd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 20</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearEnd.Name" xml:space="preserve">
-    <value>m_tbxYearEnd</value>
+  <data name="m_dpEnd.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearEnd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_dpEnd.Name" xml:space="preserve">
+    <value>m_dpEnd</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearEnd.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_dpEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_dpEnd.Parent" xml:space="preserve">
     <value>m_plEndYear</value>
   </data>
-  <data name="&gt;&gt;m_tbxYearEnd.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_dpEnd.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_lblEnd.AutoSize" type="System.Boolean, mscorlib">
@@ -871,13 +877,13 @@
     <value>3, 5</value>
   </data>
   <data name="m_lblEnd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
+    <value>29, 13</value>
   </data>
   <data name="m_lblEnd.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_lblEnd.Text" xml:space="preserve">
-    <value>Last year:</value>
+    <value>End:</value>
   </data>
   <data name="&gt;&gt;m_lblEnd.Name" xml:space="preserve">
     <value>m_lblEnd</value>
@@ -931,13 +937,13 @@
     <value>169, 3</value>
   </data>
   <data name="m_rbEndYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 17</value>
+    <value>61, 17</value>
   </data>
   <data name="m_rbEndYear.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_rbEndYear.Text" xml:space="preserve">
-    <value>until year:</value>
+    <value>at date:</value>
   </data>
   <data name="&gt;&gt;m_rbEndYear.Name" xml:space="preserve">
     <value>m_rbEndYear</value>
@@ -1132,7 +1138,7 @@
     <value>m_hdrConnections</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -1246,7 +1252,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1315,7 +1321,7 @@
     <value>m_lbSourceDatasets</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.7.0.17649, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -1529,9 +1535,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>824, 561</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>External spatial temporal data connected to '{0}'</value>

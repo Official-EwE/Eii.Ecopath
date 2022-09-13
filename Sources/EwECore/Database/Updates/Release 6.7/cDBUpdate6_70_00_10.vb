@@ -28,10 +28,9 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.70.0.09:</para>
+''' <para>Database update 6.70.0.10:</para>
 ''' <para>
-''' Fixed potential ecosampler storage problem - reissued, because the on-board
-''' database templates had the issue again.
+''' Added fleet nominal effort.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------

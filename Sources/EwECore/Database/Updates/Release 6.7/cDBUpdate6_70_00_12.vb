@@ -28,13 +28,13 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.70.0.11:</para>
+''' <para>Database update 6.70.0.12:</para>
 ''' <para>
-''' Catchabilities now driven through time series.
+''' External data can now start and end at a specific date, not at a year.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_70_00_11
+Friend Class cDBUpdate6_70_00_12
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -42,7 +42,7 @@ Friend Class cDBUpdate6_70_00_11
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.700011!
+            Return 6.700012!
         End Get
     End Property
 
@@ -51,7 +51,7 @@ Friend Class cDBUpdate6_70_00_11
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Catchabilities now driven through time series"
+            Return "External data can now start and end at a specific date, not at a year"
         End Get
     End Property
 
@@ -66,14 +66,10 @@ Friend Class cDBUpdate6_70_00_11
     ''' on-board database templates, thus re-instating the error. Good lord.</remarks>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-
-        Try
-            db.Execute("DROP TABLE EcosimScenarioFleetGroupCatchability")
-        Catch ex As Exception
-            ' Caught because of bad update numbering earlier
-        End Try
-        Return True
-
+        Return db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD COLUMN CustomDateStart TEXT(10)") And
+               db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD COLUMN CustomDateEnd TEXT(10)") And
+               db.Execute("ALTER TABLE EcospaceScenarioDataConnection DROP COLUMN StartYear") And
+               db.Execute("ALTER TABLE EcospaceScenarioDataConnection DROP COLUMN EndYear")
     End Function
 
 End Class

@@ -153,10 +153,10 @@ Namespace SpatialData
                                 conn.Converter = Me.m_datasetManager.CreateConverter(cfg)
                                 conn.Scale = cfg.Scale
                                 conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
-                                conn.CustomStartYear = cfg.StartYear
-                                conn.UseDefaultStartYear = (cfg.StartYear <= 0)
-                                conn.CustomEndYear = cfg.EndYear
-                                conn.UseDefaultEndYear = (cfg.EndYear <= 0)
+                                conn.CustomDateStart = cfg.CustomDateStart
+                                conn.UseDefaultDateStart = (cfg.CustomDateStart = Date.MaxValue)
+                                conn.CustomDateEnd = cfg.CustomDateEnd
+                                conn.UseDefaultYearEnd = (cfg.CustomDateEnd = Date.MinValue)
                             End If
                         End If
                     Next j
@@ -212,8 +212,8 @@ Namespace SpatialData
                             Me.m_datasetManager.UpdateConverter(conn.Converter, cfg)
                             cfg.Scale = conn.Scale
                             cfg.ScaleType = CByte(conn.ScaleType)
-                            cfg.StartYear = If(conn.UseDefaultStartYear, 0, conn.CustomStartYear)
-                            cfg.EndYear = If(conn.UseDefaultEndYear, 0, conn.CustomEndYear)
+                            cfg.CustomDateStart = conn.CustomDateStart
+                            cfg.CustomDateEnd = conn.CustomDateEnd
                         Else
                             cfg.Clear()
                         End If

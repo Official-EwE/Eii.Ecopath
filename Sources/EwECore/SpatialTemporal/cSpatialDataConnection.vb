@@ -45,25 +45,25 @@ Namespace SpatialData
         Public Property ScaleType As eScaleType = eScaleType.Relative
 
         ''' <summary></summary>
-        Public Property UseDefaultStartYear As Boolean = True
+        Public Property UseDefaultDateStart As Boolean = True
 
         ''' <summary>
-        ''' Custom start year for bringing in external data.
+        ''' Custom start date for bringing in external data.
         ''' If set before the first year of dataset data, the spatial temporal 
         ''' framework will repeat the FIRST YEAR of external data until the
         ''' actual external data is encountered.
         ''' </summary>
-        Public Property CustomStartYear As Integer
+        Public Property CustomDateStart As DateTime
 
         ''' <summary></summary>
-        Public Property UseDefaultEndYear As Boolean = True
+        Public Property UseDefaultYearEnd As Boolean = True
 
         ''' <summary>
-        ''' Custom end year for bringing in external data.
+        ''' Custom end date for bringing in external data.
         ''' If set past the last year of dataset data, the spatial temporal 
         ''' framework will keep repeating the LAST YEAR of external data.
         ''' </summary>
-        Public Property CustomEndYear As Integer
+        Public Property CustomDateEnd As DateTime
 
         ''' <summary></summary>
         Public Property Adapter As cSpatialDataAdapter = Nothing
@@ -102,15 +102,15 @@ Namespace SpatialData
         ''' Helper method to resolve the start year of external data, based on dataset 
         ''' configuration and optional choices.
         ''' </summary>
-        ''' <seealso cref="CustomStartYear"/>
-        ''' <seealso cref="UseDefaultStartYear"/>
+        ''' <seealso cref="CustomDateStart"/>
+        ''' <seealso cref="UseDefaultDateStart"/>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property TimeStart As DateTime
             Get
                 If (Me.Dataset Is Nothing) Then Return Nothing
-                If (Me.UseDefaultStartYear) Then Return Me.Dataset.TimeStart
-                Return New Date(Math.Max(1, Me.CustomStartYear), 1, 1)
+                If (Me.UseDefaultDateStart) Then Return Me.Dataset.TimeStart
+                Return Me.CustomDateStart
             End Get
         End Property
 
@@ -119,15 +119,15 @@ Namespace SpatialData
         ''' Helper method to resolve the end year of external data, based on dataset 
         ''' configuration and optional choices.
         ''' </summary>
-        ''' <seealso cref="CustomStartYear"/>
-        ''' <seealso cref="UseDefaultStartYear"/>
+        ''' <seealso cref="CustomDateStart"/>
+        ''' <seealso cref="UseDefaultDateStart"/>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property TimeEnd As DateTime
             Get
                 If (Me.Dataset Is Nothing) Then Return Nothing
-                If (Me.UseDefaultEndYear) Then Return Me.Dataset.TimeEnd
-                Return New Date(Math.Max(1, Me.CustomEndYear), 1, 1)
+                If (Me.UseDefaultYearEnd) Then Return Me.Dataset.TimeEnd
+                Return Me.CustomDateEnd
             End Get
         End Property
 
