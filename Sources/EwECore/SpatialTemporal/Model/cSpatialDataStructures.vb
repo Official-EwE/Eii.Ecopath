@@ -105,14 +105,18 @@ Namespace SpatialData
             ''' <summary></summary>
             Public Property ScaleType As Byte = 0
 
-            Public Property StartYear As Integer = 0
-            Public Property EndYear As Integer = 0
+            Public Property CustomDateStart As DateTime = Date.MaxValue
+            Public Property CustomDateEnd As DateTime = Date.MinValue
+
             Friend Sub Clear()
                 Me.DatasetGUID = ""
                 Me.DatasetTypeName = ""
                 Me.ConverterTypeName = ""
                 Me.ConverterConfig = ""
                 Me.Scale = 1
+                Me.ScaleType = 0
+                Me.CustomDateStart = Date.MaxValue
+                Me.CustomDateEnd = Date.MinValue
             End Sub
 
         End Class

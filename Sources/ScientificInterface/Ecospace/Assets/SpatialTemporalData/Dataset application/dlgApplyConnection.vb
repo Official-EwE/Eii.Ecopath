@@ -69,8 +69,6 @@ Namespace Ecospace.Controls
         Private m_bIsScaling As Boolean = False
 
         Private m_fpScale As cEwEFormatProvider = Nothing
-        Private m_fpStartYear As cEwEFormatProvider = Nothing
-        Private m_fpEndYear As cEwEFormatProvider = Nothing
 
 #End Region ' Private variables
 
@@ -174,9 +172,6 @@ Namespace Ecospace.Controls
 
             Me.m_cbEnabled.Checked = Me.m_adt.IsEnabled(Me.m_iLayer)
 
-            Me.m_fpStartYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxYearStart, GetType(Integer))
-            Me.m_fpEndYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxYearEnd, GetType(Integer))
-
             ' Start listening to grid events
             AddHandler Me.m_gridConnections.OnSelectionChanged, AddressOf Me.OnSelectDS
 
@@ -208,8 +203,6 @@ Namespace Ecospace.Controls
                 RemoveHandler Me.m_fpScale.OnValueChanged, AddressOf Me.OnScaleChanged
             End If
             Me.m_fpScale.Release()
-            Me.m_fpStartYear.Release()
-            Me.m_fpEndYear.Release()
 
             RemoveHandler Me.m_gridConnections.OnSelectionChanged, AddressOf Me.OnSelectDS
             Me.UIContext = Nothing
@@ -565,11 +558,11 @@ Namespace Ecospace.Controls
 
 #Region " Dating "
 
-        Private Sub OnEnterCustomStartYear(sender As Object, e As EventArgs) Handles m_tbxYearStart.Enter
+        Private Sub OnEnterCustomStartYear(sender As Object, e As EventArgs)
             Me.m_rbStartYear.Checked = True
         End Sub
 
-        Private Sub OnEnterCustomRnfYear(sender As Object, e As EventArgs) Handles m_tbxYearEnd.Enter
+        Private Sub OnEnterCustomRnfYear(sender As Object, e As EventArgs)
             Me.m_rbEndYear.Checked = True
         End Sub
 
@@ -592,11 +585,19 @@ Namespace Ecospace.Controls
                         Me.m_fpScale.Enabled = True
                     End If
 
-                    conn.UseDefaultStartYear = Me.m_rbStartWithData.Checked
-                    conn.CustomStartYear = CInt(Me.m_fpStartYear.Value)
+                    conn.UseDefaultDateStart = Me.m_rbStartWithData.Checked
+                    If conn.UseDefaultDateStart Then
+                        conn.CustomDateStart = Me.m_dpStart.Value
+                    Else
+                        conn.CustomDateStart = Date.MaxValue
+                    End If
 
-                    conn.UseDefaultEndYear = Me.m_rbEndWithData.Checked
-                    conn.CustomEndYear = CInt(Me.m_fpEndYear.Value)
+                    conn.UseDefaultYearEnd = Me.m_rbEndWithData.Checked
+                    If conn.UseDefaultYearEnd Then
+                        conn.CustomDateEnd = Me.m_dpEnd.Value
+                    Else
+                        conn.CustomDateEnd = Date.MinValue
+                    End If
 
                     Me.LayerChanged()
                 Catch ex As Exception
@@ -911,13 +912,25 @@ Namespace Ecospace.Controls
             Dim bInUpdate As Boolean = Me.m_bInUpdate
             Me.m_bInUpdate = True
 
-            Me.m_rbStartWithData.Checked = conn.UseDefaultStartYear
-            Me.m_rbStartYear.Checked = Not conn.UseDefaultStartYear
-            Me.m_fpStartYear.Value = conn.CustomStartYear
+            Me.m_rbStartWithData.Checked = conn.UseDefaultDateStart
+            Me.m_rbStartYear.Checked = Not conn.UseDefaultDateStart
+            If Not conn.UseDefaultDateStart Then
+                Try
+                    Me.m_dpStart.Value = conn.CustomDateStart
+                Catch ex As Exception
 
-            Me.m_rbEndWithData.Checked = conn.UseDefaultEndYear
-            Me.m_rbEndYear.Checked = Not conn.UseDefaultEndYear
-            Me.m_fpEndYear.Value = conn.CustomEndYear
+                End Try
+            End If
+
+            Me.m_rbEndWithData.Checked = conn.UseDefaultYearEnd
+            Me.m_rbEndYear.Checked = Not conn.UseDefaultYearEnd
+            If Not conn.UseDefaultYearEnd Then
+                Try
+                    Me.m_dpEnd.Value = conn.CustomDateEnd
+                Catch ex As Exception
+
+                End Try
+            End If
 
             Me.m_bInUpdate = bInUpdate
 

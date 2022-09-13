@@ -2789,6 +2789,7 @@ Public Class cEIIXMLDataSource
         Return bSucces
 
     End Function
+
     Private Function LoadEcospaceDataConnections(iScenarioID As Integer) As Boolean
 
         Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
@@ -2823,15 +2824,16 @@ Public Class cEIIXMLDataSource
                     Next
 
                     If (iConn > 0) Then
+
                         Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
                         item.DatasetGUID = Me.ReadSafe(drow, "DatasetGUID", "")
                         item.DatasetTypeName = Me.ReadSafe(drow, "DatasetTypeName", "")
                         item.ConverterTypeName = Me.ReadSafe(drow, "ConverterTypeName", "")
                         item.ConverterConfig = Web.HttpUtility.UrlDecode(Me.ReadSafe(drow, "ConverterCfg", ""))
                         item.Scale = Me.ReadSafe(drow, "Scale", 1.0!)
-                        item.ScaleType = CType(Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
-                        item.StartYear = CInt(Me.ReadSafe(drow, "StartYear", 0))
-                        item.EndYear = CInt(Me.ReadSafe(drow, "EndYear", 0))
+                        item.ScaleType = Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative)
+                        item.CustomDateStart = Date.Parse(CStr(Me.ReadSafe(drow, "CustomDateStart", Date.MaxValue.ToString("yyyy/MM/dd"))))
+                        item.CustomDateEnd = Date.Parse(CStr(Me.ReadSafe(drow, "CustomDateEnd", Date.MinValue.ToString("yyyy/MM/dd"))))
 
                     End If
                 End If
