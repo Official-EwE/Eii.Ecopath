@@ -921,7 +921,7 @@ Namespace Ecospace.Controls
 
         Private Sub Populate(mtb As MaskedTextBox, d As Date)
             mtb.Mask = Me.m_strMTBMask
-            If (cDateUtils.DateEquals(d, Date.MaxValue) Or cDateUtils.DateEquals(d, Date.MinValue() Then
+            If (cDateUtils.DateEquals(d, Date.MaxValue) Or cDateUtils.DateEquals(d, Date.MinValue)) Then
                 mtb.Text = ""
             Else
                 mtb.Text = d.ToString(Me.m_strDateMask)
