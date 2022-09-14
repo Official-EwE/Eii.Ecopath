@@ -20,6 +20,8 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
+Imports System.Globalization
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
@@ -35,6 +37,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ' ToDo: Populate dataset details panel
 ' ToDo: Respond to configuration / name changes
 ' ToDo: Enable varname hierarchy in TreeView
+
+' ToDo: change date picker for masked text box
 
 Namespace Ecospace.Controls
 
@@ -69,6 +73,8 @@ Namespace Ecospace.Controls
         Private m_bIsScaling As Boolean = False
 
         Private m_fpScale As cEwEFormatProvider = Nothing
+        Private m_strDateMask As String = ""
+        Private m_strMTBMask As String = ""
 
 #End Region ' Private variables
 
@@ -82,7 +88,7 @@ Namespace Ecospace.Controls
         ''' <param name="layer"></param>
         ''' <param name="conn"></param>
         ''' <remarks></remarks>
-        Public Sub New(uic As cUIContext, adt As cSpatialDataAdapter, layer As cEcospaceLayer, _
+        Public Sub New(uic As cUIContext, adt As cSpatialDataAdapter, layer As cEcospaceLayer,
                        Optional conn As cSpatialDataConnection = Nothing)
 
             Me.InitializeComponent()
@@ -102,6 +108,9 @@ Namespace Ecospace.Controls
                     Me.m_gridConnections.AddConnection(conn2, ReferenceEquals(conn2, conn))
                 Next
             End If
+
+            Me.m_strDateMask = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern
+            Me.m_strMTBMask = m_strDateMask.Replace("y", "0").Replace("M", "0").Replace("d", "0")
 
         End Sub
 
@@ -156,6 +165,8 @@ Namespace Ecospace.Controls
             Me.m_tslFilter.Image = SharedResources.FilterHS
             Me.m_tsbnCaseSensitive.Image = SharedResources.CaseSensitive
             Me.m_tsbnShowIncompatibleConnections.Image = SharedResources.Warning
+            Me.m_lblFormat.Text = Me.m_strDateMask
+
             ' Kick!
             Me.RefreshDatasetList()
 
@@ -185,7 +196,7 @@ Namespace Ecospace.Controls
             Me.UpdateDatasetPanel()
             Me.UpdateConversionPanel()
             Me.UpdateScalingPanel()
-            Me.UpdateExperimentalPanel()
+            Me.UpdateTimeRangePanel()
             Me.UpdateControls()
 
         End Sub
@@ -585,19 +596,8 @@ Namespace Ecospace.Controls
                         Me.m_fpScale.Enabled = True
                     End If
 
-                    conn.UseDefaultDateStart = Me.m_rbStartWithData.Checked
-                    If conn.UseDefaultDateStart Then
-                        conn.CustomDateStart = Me.m_dpStart.Value
-                    Else
-                        conn.CustomDateStart = Date.MaxValue
-                    End If
-
-                    conn.UseDefaultYearEnd = Me.m_rbEndWithData.Checked
-                    If conn.UseDefaultYearEnd Then
-                        conn.CustomDateEnd = Me.m_dpEnd.Value
-                    Else
-                        conn.CustomDateEnd = Date.MinValue
-                    End If
+                    conn.CustomDateStart = Me.Parse(Me.m_mtbDateStart, Date.MaxValue)
+                    conn.CustomDateEnd = Me.Parse(Me.m_mtbDateEnd, Date.MinValue)
 
                     Me.LayerChanged()
                 Catch ex As Exception
@@ -723,7 +723,7 @@ Namespace Ecospace.Controls
                     Me.m_lblCompatibility.Text = fmt.Summary(comp)
 
                     Select Case comp.Compatibility
-                        Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed, _
+                        Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed,
                              cDatasetCompatilibity.eCompatibilityTypes.NotSet
                             Me.m_pbCompat.Image = SharedResources.Question
                         Case cDatasetCompatilibity.eCompatibilityTypes.Errors
@@ -819,7 +819,7 @@ Namespace Ecospace.Controls
                 Me.UpdateDatasetPanel()
                 Me.UpdateConversionPanel()
                 Me.UpdateScalingPanel()
-                Me.UpdateExperimentalPanel()
+                Me.UpdateTimeRangePanel()
                 Me.UpdateControls()
 
             End Set
@@ -897,14 +897,9 @@ Namespace Ecospace.Controls
 
 #End Region ' Scalar data adapter
 
-#Region " Experimental features "
+#Region " Time range panel "
 
-        Private Sub UpdateExperimentalPanel()
-
-            '#If Not DEBUG Then
-            '            Me.m_plExperimental.Visible = False
-            '            Return
-            '#End If
+        Private Sub UpdateTimeRangePanel()
 
             Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
             If (conn Is Nothing) Then Return
@@ -914,29 +909,32 @@ Namespace Ecospace.Controls
 
             Me.m_rbStartWithData.Checked = conn.UseDefaultDateStart
             Me.m_rbStartYear.Checked = Not conn.UseDefaultDateStart
-            If Not conn.UseDefaultDateStart Then
-                Try
-                    Me.m_dpStart.Value = conn.CustomDateStart
-                Catch ex As Exception
+            Me.Populate(Me.m_mtbDateStart, conn.CustomDateStart)
 
-                End Try
-            End If
-
-            Me.m_rbEndWithData.Checked = conn.UseDefaultYearEnd
-            Me.m_rbEndYear.Checked = Not conn.UseDefaultYearEnd
-            If Not conn.UseDefaultYearEnd Then
-                Try
-                    Me.m_dpEnd.Value = conn.CustomDateEnd
-                Catch ex As Exception
-
-                End Try
-            End If
+            Me.m_rbEndWithData.Checked = conn.UseDefaultDateEnd
+            Me.m_rbEndYear.Checked = Not conn.UseDefaultDateEnd
+            Me.Populate(Me.m_mtbDateEnd, conn.CustomDateEnd)
 
             Me.m_bInUpdate = bInUpdate
 
         End Sub
 
-#End Region ' Experimental features
+        Private Sub Populate(mtb As MaskedTextBox, d As Date)
+            mtb.Mask = Me.m_strMTBMask
+            If (cDateUtils.DateEquals(d, Date.MaxValue) Or cDateUtils.DateEquals(d, Date.MinValue() Then
+                mtb.Text = ""
+            Else
+                mtb.Text = d.ToString(Me.m_strDateMask)
+            End If
+        End Sub
+
+        Private Function Parse(mtb As MaskedTextBox, defdate As Date) As Date
+            Dim t As String = mtb.Text
+            Date.TryParse(t, defdate)
+            Return defdate
+        End Function
+
+#End Region ' Time range panel
 
 #End Region ' Internals
 

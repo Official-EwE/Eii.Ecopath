@@ -154,9 +154,7 @@ Namespace SpatialData
                                 conn.Scale = cfg.Scale
                                 conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
                                 conn.CustomDateStart = cfg.CustomDateStart
-                                conn.UseDefaultDateStart = (cfg.CustomDateStart = Date.MaxValue)
                                 conn.CustomDateEnd = cfg.CustomDateEnd
-                                conn.UseDefaultYearEnd = (cfg.CustomDateEnd = Date.MinValue)
                             End If
                         End If
                     Next j
@@ -212,8 +210,8 @@ Namespace SpatialData
                             Me.m_datasetManager.UpdateConverter(conn.Converter, cfg)
                             cfg.Scale = conn.Scale
                             cfg.ScaleType = CByte(conn.ScaleType)
-                            cfg.CustomDateStart = conn.CustomDateStart
-                            cfg.CustomDateEnd = conn.CustomDateEnd
+                            cfg.CustomDateStart = If(conn.UseDefaultDateStart, Date.MaxValue, conn.CustomDateStart)
+                            cfg.CustomDateEnd = If(conn.UseDefaultDateEnd, Date.MinValue, conn.CustomDateEnd)
                         Else
                             cfg.Clear()
                         End If

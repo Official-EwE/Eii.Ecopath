@@ -666,32 +666,62 @@
   <data name="&gt;&gt;m_plDataset.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_tlExperimentalFeatures.ColumnCount" type="System.Int32, mscorlib">
+  <data name="m_tlTimeRangePanel.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_dpStart.CustomFormat" xml:space="preserve">
-    <value>yyyy/MM/dd</value>
+  <data name="m_mtbDateStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>236, 2</value>
   </data>
-  <data name="m_dpStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>236, 1</value>
+  <data name="m_mtbDateStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
   </data>
-  <data name="m_dpStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 20</value>
+  <data name="m_mtbDateStart.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="m_dpStart.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;m_mtbDateStart.Name" xml:space="preserve">
+    <value>m_mtbDateStart</value>
   </data>
-  <data name="&gt;&gt;m_dpStart.Name" xml:space="preserve">
-    <value>m_dpStart</value>
+  <data name="&gt;&gt;m_mtbDateStart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_dpStart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_dpStart.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_mtbDateStart.Parent" xml:space="preserve">
     <value>m_plStartYear</value>
   </data>
-  <data name="&gt;&gt;m_dpStart.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_mtbDateStart.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_lblFormat.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblFormat.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Italic</value>
+  </data>
+  <data name="m_lblFormat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblFormat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>342, 5</value>
+  </data>
+  <data name="m_lblFormat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 13</value>
+  </data>
+  <data name="m_lblFormat.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lblFormat.Text" xml:space="preserve">
+    <value>yyyy/mm/dd</value>
+  </data>
+  <data name="&gt;&gt;m_lblFormat.Name" xml:space="preserve">
+    <value>m_lblFormat</value>
+  </data>
+  <data name="&gt;&gt;m_lblFormat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblFormat.Parent" xml:space="preserve">
+    <value>m_plStartYear</value>
+  </data>
+  <data name="&gt;&gt;m_lblFormat.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_lblStart.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -721,7 +751,7 @@
     <value>m_plStartYear</value>
   </data>
   <data name="&gt;&gt;m_lblStart.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbStartWithData.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -751,7 +781,7 @@
     <value>m_plStartYear</value>
   </data>
   <data name="&gt;&gt;m_rbStartWithData.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_rbStartYear.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -781,7 +811,7 @@
     <value>m_plStartYear</value>
   </data>
   <data name="&gt;&gt;m_rbStartYear.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_plStartYear.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -805,66 +835,63 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_plStartYear.Parent" xml:space="preserve">
-    <value>m_tlExperimentalFeatures</value>
+    <value>m_tlTimeRangePanel</value>
   </data>
   <data name="&gt;&gt;m_plStartYear.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_hdrExperimental.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_hdrTimeRange.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_hdrExperimental.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrTimeRange.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_hdrExperimental.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrTimeRange.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
   </data>
-  <data name="m_hdrExperimental.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrTimeRange.Size" type="System.Drawing.Size, System.Drawing">
     <value>550, 18</value>
   </data>
-  <data name="m_hdrExperimental.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrTimeRange.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_hdrExperimental.Text" xml:space="preserve">
-    <value>Experimental features *)</value>
+  <data name="m_hdrTimeRange.Text" xml:space="preserve">
+    <value>Applied date range</value>
   </data>
-  <data name="m_hdrExperimental.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrTimeRange.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrExperimental.Name" xml:space="preserve">
-    <value>m_hdrExperimental</value>
+  <data name="&gt;&gt;m_hdrTimeRange.Name" xml:space="preserve">
+    <value>m_hdrTimeRange</value>
   </data>
-  <data name="&gt;&gt;m_hdrExperimental.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrTimeRange.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_hdrExperimental.Parent" xml:space="preserve">
-    <value>m_tlExperimentalFeatures</value>
+  <data name="&gt;&gt;m_hdrTimeRange.Parent" xml:space="preserve">
+    <value>m_tlTimeRangePanel</value>
   </data>
-  <data name="&gt;&gt;m_hdrExperimental.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrTimeRange.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_dpEnd.CustomFormat" xml:space="preserve">
-    <value>yyyy/MM/dd</value>
+  <data name="m_mtbDateEnd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>236, 2</value>
   </data>
-  <data name="m_dpEnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>236, 1</value>
+  <data name="m_mtbDateEnd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
   </data>
-  <data name="m_dpEnd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 20</value>
+  <data name="m_mtbDateEnd.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="m_dpEnd.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;m_mtbDateEnd.Name" xml:space="preserve">
+    <value>m_mtbDateEnd</value>
   </data>
-  <data name="&gt;&gt;m_dpEnd.Name" xml:space="preserve">
-    <value>m_dpEnd</value>
+  <data name="&gt;&gt;m_mtbDateEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_dpEnd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_dpEnd.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_mtbDateEnd.Parent" xml:space="preserve">
     <value>m_plEndYear</value>
   </data>
-  <data name="&gt;&gt;m_dpEnd.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_mtbDateEnd.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_lblEnd.AutoSize" type="System.Boolean, mscorlib">
@@ -979,79 +1006,43 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_plEndYear.Parent" xml:space="preserve">
-    <value>m_tlExperimentalFeatures</value>
+    <value>m_tlTimeRangePanel</value>
   </data>
   <data name="&gt;&gt;m_plEndYear.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblStartEndInfo.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblStartEndInfo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_tlTimeRangePanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lblStartEndInfo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblStartEndInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 66</value>
-  </data>
-  <data name="m_lblStartEndInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>550, 32</value>
-  </data>
-  <data name="m_lblStartEndInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_lblStartEndInfo.Text" xml:space="preserve">
-    <value>*) Use start and end years to truncate external data run times, to start repeating the first year earlier, or to keep repeating the last year</value>
-  </data>
-  <data name="m_lblStartEndInfo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartEndInfo.Name" xml:space="preserve">
-    <value>m_lblStartEndInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartEndInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartEndInfo.Parent" xml:space="preserve">
-    <value>m_tlExperimentalFeatures</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartEndInfo.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_tlExperimentalFeatures.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tlExperimentalFeatures.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tlTimeRangePanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_tlExperimentalFeatures.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_tlTimeRangePanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_tlExperimentalFeatures.RowCount" type="System.Int32, mscorlib">
+  <data name="m_tlTimeRangePanel.RowCount" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_tlExperimentalFeatures.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tlTimeRangePanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>556, 98</value>
   </data>
-  <data name="m_tlExperimentalFeatures.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tlTimeRangePanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tlExperimentalFeatures.Name" xml:space="preserve">
-    <value>m_tlExperimentalFeatures</value>
+  <data name="&gt;&gt;m_tlTimeRangePanel.Name" xml:space="preserve">
+    <value>m_tlTimeRangePanel</value>
   </data>
-  <data name="&gt;&gt;m_tlExperimentalFeatures.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tlTimeRangePanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tlExperimentalFeatures.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlTimeRangePanel.Parent" xml:space="preserve">
     <value>m_plExperimental</value>
   </data>
-  <data name="&gt;&gt;m_tlExperimentalFeatures.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlTimeRangePanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_tlExperimentalFeatures.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plStartYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrExperimental" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEndYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStartEndInfo" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="m_tlTimeRangePanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plStartYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrTimeRange" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEndYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_plExperimental.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1112,153 +1103,6 @@
   </data>
   <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plConnection" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plScalarAdapter" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plConversion" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plDataset" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plExperimental" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_hdrConnections.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="m_hdrConnections.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrConnections.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_hdrConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 18</value>
-  </data>
-  <data name="m_hdrConnections.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_hdrConnections.Text" xml:space="preserve">
-    <value>Available connections</value>
-  </data>
-  <data name="m_hdrConnections.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConnections.Name" xml:space="preserve">
-    <value>m_hdrConnections</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConnections.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConnections.Parent" xml:space="preserve">
-    <value>m_plAvailable</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConnections.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="m_tslFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>10, 22</value>
-  </data>
-  <data name="m_tslFilter.Text" xml:space="preserve">
-    <value>:</value>
-  </data>
-  <data name="m_tstbFilter.MaxLength" type="System.Int32, mscorlib">
-    <value>50</value>
-  </data>
-  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 25</value>
-  </data>
-  <data name="m_tsbnCaseSensitive.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsbnCaseSensitive.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnCaseSensitive.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="m_tsbnCaseSensitive.ToolTipText" xml:space="preserve">
-    <value>Name filter is case-sensitive</value>
-  </data>
-  <data name="m_tsbnShowIncompatibleConnections.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsbnShowIncompatibleConnections.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnShowIncompatibleConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="m_tsbnShowIncompatibleConnections.Text" xml:space="preserve">
-    <value>Show incompatible connections</value>
-  </data>
-  <data name="m_tsbnShowIncompatibleConnections.ToolTipText" xml:space="preserve">
-    <value>Show all connections, also for incompatible variables</value>
-  </data>
-  <data name="m_sep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="m_tsbnDefineConnections.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsbnDefineConnections.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnDefineConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 22</value>
-  </data>
-  <data name="m_tsbnDefineConnections.Text" xml:space="preserve">
-    <value>Define connections...</value>
-  </data>
-  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>824, 25</value>
-  </data>
-  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1416,6 +1260,39 @@
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_hdrConnections.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_hdrConnections.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrConnections.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_hdrConnections.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 18</value>
+  </data>
+  <data name="m_hdrConnections.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_hdrConnections.Text" xml:space="preserve">
+    <value>Available connections</value>
+  </data>
+  <data name="m_hdrConnections.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConnections.Name" xml:space="preserve">
+    <value>m_hdrConnections</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConnections.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConnections.Parent" xml:space="preserve">
+    <value>m_plAvailable</value>
+  </data>
+  <data name="&gt;&gt;m_hdrConnections.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="m_plAvailable.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1520,6 +1397,123 @@
   </data>
   <data name="&gt;&gt;m_cbEnabled.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="m_tslFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>10, 22</value>
+  </data>
+  <data name="m_tslFilter.Text" xml:space="preserve">
+    <value>:</value>
+  </data>
+  <data name="m_tstbFilter.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="m_tstbFilter.MaxLength" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_tsbnCaseSensitive.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnCaseSensitive.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnCaseSensitive.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsbnCaseSensitive.ToolTipText" xml:space="preserve">
+    <value>Name filter is case-sensitive</value>
+  </data>
+  <data name="m_tsbnShowIncompatibleConnections.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnShowIncompatibleConnections.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnShowIncompatibleConnections.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsbnShowIncompatibleConnections.Text" xml:space="preserve">
+    <value>Show incompatible connections</value>
+  </data>
+  <data name="m_tsbnShowIncompatibleConnections.ToolTipText" xml:space="preserve">
+    <value>Show all connections, also for incompatible variables</value>
+  </data>
+  <data name="m_sep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="m_tsbnDefineConnections.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnDefineConnections.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnDefineConnections.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 22</value>
+  </data>
+  <data name="m_tsbnDefineConnections.Text" xml:space="preserve">
+    <value>Define connections...</value>
+  </data>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>824, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17922, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

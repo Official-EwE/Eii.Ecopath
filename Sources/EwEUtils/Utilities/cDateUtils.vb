@@ -212,6 +212,19 @@ Namespace Utilities
                 s_starttime = value
             End Set
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether two dates fall within the same day, ignoring the time component.
+        ''' </summary>
+        ''' <param name="d1"></param>
+        ''' <param name="d2"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function DateEquals(d1 As DateTime, d2 As DateTime) As Boolean
+            Return (d1.Date = d2.Date)
+        End Function
+
     End Class
 
 End Namespace

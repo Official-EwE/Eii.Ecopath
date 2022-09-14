@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore.SpatialData.cSpatialScalarDataAdapterBase
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -45,7 +46,11 @@ Namespace SpatialData
         Public Property ScaleType As eScaleType = eScaleType.Relative
 
         ''' <summary></summary>
-        Public Property UseDefaultDateStart As Boolean = True
+        Public ReadOnly Property UseDefaultDateStart As Boolean
+            Get
+                Return cDateUtils.DateEquals(Me.CustomDateStart, Date.MaxValue)
+            End Get
+        End Property
 
         ''' <summary>
         ''' Custom start date for bringing in external data.
@@ -53,17 +58,21 @@ Namespace SpatialData
         ''' framework will repeat the FIRST YEAR of external data until the
         ''' actual external data is encountered.
         ''' </summary>
-        Public Property CustomDateStart As DateTime
+        Public Property CustomDateStart As DateTime = Date.MaxValue
 
         ''' <summary></summary>
-        Public Property UseDefaultYearEnd As Boolean = True
+        Public ReadOnly Property UseDefaultDateEnd As Boolean
+            Get
+                Return cDateUtils.DateEquals(Me.CustomDateEnd, Date.MinValue)
+            End Get
+        End Property
 
         ''' <summary>
         ''' Custom end date for bringing in external data.
         ''' If set past the last year of dataset data, the spatial temporal 
         ''' framework will keep repeating the LAST YEAR of external data.
         ''' </summary>
-        Public Property CustomDateEnd As DateTime
+        Public Property CustomDateEnd As DateTime = Date.MinValue
 
         ''' <summary></summary>
         Public Property Adapter As cSpatialDataAdapter = Nothing
@@ -126,7 +135,7 @@ Namespace SpatialData
         Public ReadOnly Property TimeEnd As DateTime
             Get
                 If (Me.Dataset Is Nothing) Then Return Nothing
-                If (Me.UseDefaultYearEnd) Then Return Me.Dataset.TimeEnd
+                If (Me.UseDefaultDateEnd) Then Return Me.Dataset.TimeEnd
                 Return Me.CustomDateEnd
             End Get
         End Property
