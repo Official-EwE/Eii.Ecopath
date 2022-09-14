@@ -137,7 +137,8 @@ Namespace Ecospace.Controls
                     Me.m_lbSourceDatasets.UIContext = Nothing
                     Me.m_gridConnections.UIContext = Nothing
 
-                    Me.m_manSets.Save()
+                    ' This should not be necessary!!!!
+                    ' Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_manConn = Nothing
                 End If
@@ -599,6 +600,10 @@ Namespace Ecospace.Controls
                     conn.CustomDateStart = Me.Parse(Me.m_mtbDateStart, Date.MaxValue)
                     conn.CustomDateEnd = Me.Parse(Me.m_mtbDateEnd, Date.MinValue)
 
+                    ' Sanity check
+                    Debug.Assert(conn.UseDefaultDateStart = Me.m_rbStartWithData.Checked)
+                    Debug.Assert(conn.UseDefaultDateEnd = Me.m_rbEndWithData.Checked)
+
                     Me.LayerChanged()
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
@@ -930,7 +935,8 @@ Namespace Ecospace.Controls
 
         Private Function Parse(mtb As MaskedTextBox, defdate As Date) As Date
             Dim t As String = mtb.Text
-            Date.TryParse(t, defdate)
+            Dim parsed As Date
+            If Date.TryParse(t, parsed) Then Return parsed
             Return defdate
         End Function
 
