@@ -33,8 +33,6 @@ Namespace Ecospace.Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyConnection))
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnection = New System.Windows.Forms.Panel()
-            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
-            Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
             Me.m_lblScaling = New System.Windows.Forms.Label()
@@ -50,20 +48,30 @@ Namespace Ecospace.Controls
             Me.m_lblCompatibility = New System.Windows.Forms.Label()
             Me.m_lblDatasetInfo = New System.Windows.Forms.Label()
             Me.m_btnConfigDS = New System.Windows.Forms.Button()
-            Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plExperimental = New System.Windows.Forms.Panel()
-            Me.m_tlExperimentalFeatures = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tlTimeRangePanel = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plStartYear = New System.Windows.Forms.Panel()
             Me.m_lblStart = New System.Windows.Forms.Label()
             Me.m_rbStartWithData = New System.Windows.Forms.RadioButton()
             Me.m_rbStartYear = New System.Windows.Forms.RadioButton()
-            Me.m_hdrExperimental = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plEndYear = New System.Windows.Forms.Panel()
             Me.m_lblEnd = New System.Windows.Forms.Label()
             Me.m_rbEndWithData = New System.Windows.Forms.RadioButton()
             Me.m_rbEndYear = New System.Windows.Forms.RadioButton()
-            Me.m_lblStartEndInfo = New System.Windows.Forms.Label()
+            Me.m_btnOK = New System.Windows.Forms.Button()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_plAvailable = New System.Windows.Forms.Panel()
+            Me.m_btnRemove = New System.Windows.Forms.Button()
+            Me.m_btnAdd = New System.Windows.Forms.Button()
+            Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
+            Me.m_lblFormat = New System.Windows.Forms.Label()
+            Me.m_mtbDateEnd = New System.Windows.Forms.MaskedTextBox()
+            Me.m_mtbDateStart = New System.Windows.Forms.MaskedTextBox()
+            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
+            Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tslFilter = New System.Windows.Forms.ToolStripLabel()
             Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
@@ -71,15 +79,7 @@ Namespace Ecospace.Controls
             Me.m_tsbnShowIncompatibleConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_sep = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
-            Me.m_btnOK = New System.Windows.Forms.Button()
-            Me.m_scMain = New System.Windows.Forms.SplitContainer()
-            Me.m_plAvailable = New System.Windows.Forms.Panel()
-            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
-            Me.m_btnRemove = New System.Windows.Forms.Button()
-            Me.m_btnAdd = New System.Windows.Forms.Button()
-            Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
-            Me.m_dpStart = New System.Windows.Forms.DateTimePicker()
-            Me.m_dpEnd = New System.Windows.Forms.DateTimePicker()
+            Me.m_hdrTimeRange = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -87,15 +87,15 @@ Namespace Ecospace.Controls
             Me.m_plDataset.SuspendLayout()
             CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plExperimental.SuspendLayout()
-            Me.m_tlExperimentalFeatures.SuspendLayout()
+            Me.m_tlTimeRangePanel.SuspendLayout()
             Me.m_plStartYear.SuspendLayout()
             Me.m_plEndYear.SuspendLayout()
-            Me.m_tsMain.SuspendLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_plAvailable.SuspendLayout()
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tlpContent
@@ -114,47 +114,6 @@ Namespace Ecospace.Controls
             Me.m_plConnection.Controls.Add(Me.m_hdrSource)
             resources.ApplyResources(Me.m_plConnection, "m_plConnection")
             Me.m_plConnection.Name = "m_plConnection"
-            '
-            'm_gridConnections
-            '
-            Me.m_gridConnections.AllowBlockSelect = False
-            Me.m_gridConnections.AutoSizeMinHeight = 10
-            Me.m_gridConnections.AutoSizeMinWidth = 10
-            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
-            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
-            Me.m_gridConnections.BackColor = System.Drawing.Color.White
-            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridConnections.CustomSort = False
-            Me.m_gridConnections.DataName = "grid content"
-            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
-            Me.m_gridConnections.FixedColumnWidths = False
-            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridConnections.GridToolTipActive = True
-            Me.m_gridConnections.IsLayoutSuspended = False
-            Me.m_gridConnections.IsOutputGrid = True
-            Me.m_gridConnections.Name = "m_gridConnections"
-            Me.m_gridConnections.SelectedConnection = Nothing
-            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridConnections.UIContext = Nothing
-            '
-            'm_hdrSource
-            '
-            Me.m_hdrSource.CanCollapseParent = False
-            Me.m_hdrSource.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrSource, "m_hdrSource")
-            Me.m_hdrSource.IsCollapsed = False
-            Me.m_hdrSource.Name = "m_hdrSource"
             '
             'm_plScalarAdapter
             '
@@ -255,32 +214,24 @@ Namespace Ecospace.Controls
             Me.m_btnConfigDS.Name = "m_btnConfigDS"
             Me.m_btnConfigDS.UseVisualStyleBackColor = True
             '
-            'm_hdrConfig
-            '
-            resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
-            Me.m_hdrConfig.CanCollapseParent = False
-            Me.m_hdrConfig.CollapsedParentHeight = 0
-            Me.m_hdrConfig.IsCollapsed = False
-            Me.m_hdrConfig.Name = "m_hdrConfig"
-            '
             'm_plExperimental
             '
-            Me.m_plExperimental.Controls.Add(Me.m_tlExperimentalFeatures)
+            Me.m_plExperimental.Controls.Add(Me.m_tlTimeRangePanel)
             resources.ApplyResources(Me.m_plExperimental, "m_plExperimental")
             Me.m_plExperimental.Name = "m_plExperimental"
             '
-            'm_tlExperimentalFeatures
+            'm_tlTimeRangePanel
             '
-            resources.ApplyResources(Me.m_tlExperimentalFeatures, "m_tlExperimentalFeatures")
-            Me.m_tlExperimentalFeatures.Controls.Add(Me.m_plStartYear, 0, 1)
-            Me.m_tlExperimentalFeatures.Controls.Add(Me.m_hdrExperimental, 0, 0)
-            Me.m_tlExperimentalFeatures.Controls.Add(Me.m_plEndYear, 0, 2)
-            Me.m_tlExperimentalFeatures.Controls.Add(Me.m_lblStartEndInfo, 0, 3)
-            Me.m_tlExperimentalFeatures.Name = "m_tlExperimentalFeatures"
+            resources.ApplyResources(Me.m_tlTimeRangePanel, "m_tlTimeRangePanel")
+            Me.m_tlTimeRangePanel.Controls.Add(Me.m_plStartYear, 0, 1)
+            Me.m_tlTimeRangePanel.Controls.Add(Me.m_hdrTimeRange, 0, 0)
+            Me.m_tlTimeRangePanel.Controls.Add(Me.m_plEndYear, 0, 2)
+            Me.m_tlTimeRangePanel.Name = "m_tlTimeRangePanel"
             '
             'm_plStartYear
             '
-            Me.m_plStartYear.Controls.Add(Me.m_dpStart)
+            Me.m_plStartYear.Controls.Add(Me.m_mtbDateStart)
+            Me.m_plStartYear.Controls.Add(Me.m_lblFormat)
             Me.m_plStartYear.Controls.Add(Me.m_lblStart)
             Me.m_plStartYear.Controls.Add(Me.m_rbStartWithData)
             Me.m_plStartYear.Controls.Add(Me.m_rbStartYear)
@@ -306,17 +257,9 @@ Namespace Ecospace.Controls
             Me.m_rbStartYear.TabStop = True
             Me.m_rbStartYear.UseVisualStyleBackColor = True
             '
-            'm_hdrExperimental
-            '
-            Me.m_hdrExperimental.CanCollapseParent = False
-            Me.m_hdrExperimental.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrExperimental, "m_hdrExperimental")
-            Me.m_hdrExperimental.IsCollapsed = False
-            Me.m_hdrExperimental.Name = "m_hdrExperimental"
-            '
             'm_plEndYear
             '
-            Me.m_plEndYear.Controls.Add(Me.m_dpEnd)
+            Me.m_plEndYear.Controls.Add(Me.m_mtbDateEnd)
             Me.m_plEndYear.Controls.Add(Me.m_lblEnd)
             Me.m_plEndYear.Controls.Add(Me.m_rbEndWithData)
             Me.m_plEndYear.Controls.Add(Me.m_rbEndYear)
@@ -342,10 +285,78 @@ Namespace Ecospace.Controls
             Me.m_rbEndYear.TabStop = True
             Me.m_rbEndYear.UseVisualStyleBackColor = True
             '
-            'm_lblStartEndInfo
+            'm_btnOK
             '
-            resources.ApplyResources(Me.m_lblStartEndInfo, "m_lblStartEndInfo")
-            Me.m_lblStartEndInfo.Name = "m_lblStartEndInfo"
+            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+            Me.m_btnOK.Name = "m_btnOK"
+            Me.m_btnOK.UseVisualStyleBackColor = True
+            '
+            'm_scMain
+            '
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
+            Me.m_scMain.Name = "m_scMain"
+            '
+            'm_scMain.Panel1
+            '
+            Me.m_scMain.Panel1.Controls.Add(Me.m_plAvailable)
+            '
+            'm_scMain.Panel2
+            '
+            Me.m_scMain.Panel2.Controls.Add(Me.m_tlpContent)
+            '
+            'm_plAvailable
+            '
+            Me.m_plAvailable.Controls.Add(Me.m_lbSourceDatasets)
+            Me.m_plAvailable.Controls.Add(Me.m_btnRemove)
+            Me.m_plAvailable.Controls.Add(Me.m_btnAdd)
+            Me.m_plAvailable.Controls.Add(Me.m_hdrConnections)
+            resources.ApplyResources(Me.m_plAvailable, "m_plAvailable")
+            Me.m_plAvailable.Name = "m_plAvailable"
+            '
+            'm_btnRemove
+            '
+            resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
+            Me.m_btnRemove.Name = "m_btnRemove"
+            Me.m_btnRemove.UseVisualStyleBackColor = True
+            '
+            'm_btnAdd
+            '
+            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+            Me.m_btnAdd.Name = "m_btnAdd"
+            Me.m_btnAdd.UseVisualStyleBackColor = True
+            '
+            'm_cbEnabled
+            '
+            resources.ApplyResources(Me.m_cbEnabled, "m_cbEnabled")
+            Me.m_cbEnabled.Name = "m_cbEnabled"
+            Me.m_cbEnabled.UseVisualStyleBackColor = True
+            '
+            'm_lblFormat
+            '
+            resources.ApplyResources(Me.m_lblFormat, "m_lblFormat")
+            Me.m_lblFormat.Name = "m_lblFormat"
+            '
+            'm_mtbDateEnd
+            '
+            resources.ApplyResources(Me.m_mtbDateEnd, "m_mtbDateEnd")
+            Me.m_mtbDateEnd.Name = "m_mtbDateEnd"
+            '
+            'm_mtbDateStart
+            '
+            resources.ApplyResources(Me.m_mtbDateStart, "m_mtbDateStart")
+            Me.m_mtbDateStart.Name = "m_mtbDateStart"
+            '
+            'm_lbSourceDatasets
+            '
+            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
+            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbSourceDatasets.FormattingEnabled = True
+            Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = False
+            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
+            Me.m_lbSourceDatasets.Sorted = True
+            Me.m_lbSourceDatasets.TextFilter = ""
+            Me.m_lbSourceDatasets.UIContext = Nothing
+            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
             '
             'm_hdrConnections
             '
@@ -354,6 +365,55 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_hdrConnections, "m_hdrConnections")
             Me.m_hdrConnections.IsCollapsed = False
             Me.m_hdrConnections.Name = "m_hdrConnections"
+            '
+            'm_gridConnections
+            '
+            Me.m_gridConnections.AllowBlockSelect = False
+            Me.m_gridConnections.AutoSizeMinHeight = 10
+            Me.m_gridConnections.AutoSizeMinWidth = 10
+            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
+            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
+            Me.m_gridConnections.BackColor = System.Drawing.Color.White
+            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridConnections.CustomSort = False
+            Me.m_gridConnections.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
+            Me.m_gridConnections.FixedColumnWidths = False
+            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridConnections.GridToolTipActive = True
+            Me.m_gridConnections.IsLayoutSuspended = False
+            Me.m_gridConnections.IsOutputGrid = True
+            Me.m_gridConnections.Name = "m_gridConnections"
+            Me.m_gridConnections.SelectedConnection = Nothing
+            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridConnections.UIContext = Nothing
+            '
+            'm_hdrSource
+            '
+            Me.m_hdrSource.CanCollapseParent = False
+            Me.m_hdrSource.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrSource, "m_hdrSource")
+            Me.m_hdrSource.IsCollapsed = False
+            Me.m_hdrSource.Name = "m_hdrSource"
+            '
+            'm_hdrConfig
+            '
+            resources.ApplyResources(Me.m_hdrConfig, "m_hdrConfig")
+            Me.m_hdrConfig.CanCollapseParent = False
+            Me.m_hdrConfig.CollapsedParentHeight = 0
+            Me.m_hdrConfig.IsCollapsed = False
+            Me.m_hdrConfig.Name = "m_hdrConfig"
             '
             'm_tsMain
             '
@@ -398,75 +458,13 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_tsbnDefineConnections, "m_tsbnDefineConnections")
             Me.m_tsbnDefineConnections.Name = "m_tsbnDefineConnections"
             '
-            'm_btnOK
+            'm_hdrTimeRange
             '
-            resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-            Me.m_btnOK.Name = "m_btnOK"
-            Me.m_btnOK.UseVisualStyleBackColor = True
-            '
-            'm_scMain
-            '
-            resources.ApplyResources(Me.m_scMain, "m_scMain")
-            Me.m_scMain.Name = "m_scMain"
-            '
-            'm_scMain.Panel1
-            '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_plAvailable)
-            '
-            'm_scMain.Panel2
-            '
-            Me.m_scMain.Panel2.Controls.Add(Me.m_tlpContent)
-            '
-            'm_plAvailable
-            '
-            Me.m_plAvailable.Controls.Add(Me.m_lbSourceDatasets)
-            Me.m_plAvailable.Controls.Add(Me.m_btnRemove)
-            Me.m_plAvailable.Controls.Add(Me.m_btnAdd)
-            Me.m_plAvailable.Controls.Add(Me.m_hdrConnections)
-            resources.ApplyResources(Me.m_plAvailable, "m_plAvailable")
-            Me.m_plAvailable.Name = "m_plAvailable"
-            '
-            'm_lbSourceDatasets
-            '
-            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
-            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_lbSourceDatasets.FormattingEnabled = True
-            Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = False
-            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
-            Me.m_lbSourceDatasets.Sorted = True
-            Me.m_lbSourceDatasets.TextFilter = ""
-            Me.m_lbSourceDatasets.UIContext = Nothing
-            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
-            '
-            'm_btnRemove
-            '
-            resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
-            Me.m_btnRemove.Name = "m_btnRemove"
-            Me.m_btnRemove.UseVisualStyleBackColor = True
-            '
-            'm_btnAdd
-            '
-            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-            Me.m_btnAdd.Name = "m_btnAdd"
-            Me.m_btnAdd.UseVisualStyleBackColor = True
-            '
-            'm_cbEnabled
-            '
-            resources.ApplyResources(Me.m_cbEnabled, "m_cbEnabled")
-            Me.m_cbEnabled.Name = "m_cbEnabled"
-            Me.m_cbEnabled.UseVisualStyleBackColor = True
-            '
-            'm_dpStart
-            '
-            resources.ApplyResources(Me.m_dpStart, "m_dpStart")
-            Me.m_dpStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-            Me.m_dpStart.Name = "m_dpStart"
-            '
-            'm_dpEnd
-            '
-            resources.ApplyResources(Me.m_dpEnd, "m_dpEnd")
-            Me.m_dpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-            Me.m_dpEnd.Name = "m_dpEnd"
+            Me.m_hdrTimeRange.CanCollapseParent = False
+            Me.m_hdrTimeRange.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrTimeRange, "m_hdrTimeRange")
+            Me.m_hdrTimeRange.IsCollapsed = False
+            Me.m_hdrTimeRange.Name = "m_hdrTimeRange"
             '
             'dlgApplyConnection
             '
@@ -490,19 +488,18 @@ Namespace Ecospace.Controls
             Me.m_plDataset.ResumeLayout(False)
             CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plExperimental.ResumeLayout(False)
-            Me.m_tlExperimentalFeatures.ResumeLayout(False)
-            Me.m_tlExperimentalFeatures.PerformLayout()
+            Me.m_tlTimeRangePanel.ResumeLayout(False)
             Me.m_plStartYear.ResumeLayout(False)
             Me.m_plStartYear.PerformLayout()
             Me.m_plEndYear.ResumeLayout(False)
             Me.m_plEndYear.PerformLayout()
-            Me.m_tsMain.ResumeLayout(False)
-            Me.m_tsMain.PerformLayout()
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.m_plAvailable.ResumeLayout(False)
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -543,8 +540,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_tslFilter As ToolStripLabel
         Private WithEvents m_plExperimental As Panel
         Private WithEvents m_sep As ToolStripSeparator
-        Private WithEvents m_hdrExperimental As cEwEHeaderLabel
-        Private WithEvents m_tlExperimentalFeatures As TableLayoutPanel
+        Private WithEvents m_tlTimeRangePanel As TableLayoutPanel
         Private WithEvents m_plStartYear As Panel
         Private WithEvents m_lblStart As Label
         Private WithEvents m_rbStartWithData As RadioButton
@@ -553,9 +549,10 @@ Namespace Ecospace.Controls
         Private WithEvents m_lblEnd As Label
         Private WithEvents m_rbEndWithData As RadioButton
         Private WithEvents m_rbEndYear As RadioButton
-        Private WithEvents m_lblStartEndInfo As Label
-        Private WithEvents m_dpStart As DateTimePicker
-        Private WithEvents m_dpEnd As DateTimePicker
+        Private WithEvents m_lblFormat As Label
+        Private WithEvents m_mtbDateStart As MaskedTextBox
+        Private WithEvents m_mtbDateEnd As MaskedTextBox
+        Private WithEvents m_hdrTimeRange As cEwEHeaderLabel
     End Class
 
 End Namespace

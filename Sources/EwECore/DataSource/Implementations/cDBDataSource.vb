@@ -7944,6 +7944,7 @@ Namespace DataSources
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "Q10DriverMap", "")), ecospaceDS.Temperature, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                 End While
 
@@ -8033,6 +8034,7 @@ Namespace DataSources
                 drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("ExclusionMap") = cStringUtils.ArrayToString(ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
+                drow("Q10DriverMap") = cStringUtils.ArrayToString(ecospaceDS.Temperature, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow.EndEdit()
 
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
@@ -9751,26 +9753,28 @@ Namespace DataSources
             Dim readerLayer As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
-                While readerLayer.Read()
-                    Dim iLayerID As Integer = CInt(readerLayer("LayerID"))
-                    Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
-                    Dim ShapeType As Integer = CInt(Me.m_db.ReadSafe(readerLayer, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
+            readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
+            If (readerLayer IsNot Nothing) Then
+                Try
+                    While readerLayer.Read()
+                        Dim iLayerID As Integer = CInt(readerLayer("LayerID"))
+                        Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
+                        Dim ShapeType As Integer = CInt(Me.m_db.ReadSafe(readerLayer, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
 
-                    If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
-                        ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
-                    ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
-                        ' Use case does not exist yet. But it may in the near future
-                    End If 'If ShapeType = 
+                        If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
+                            ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
+                        ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
+                            ' Use case does not exist yet. But it may in the near future
+                        End If 'If ShapeType = 
 
-                End While
-            Catch ex As Exception
-                bSucces = False
-            Finally
-                Me.m_db.ReleaseReader(readerLayer)
-                readerLayer = Nothing
-            End Try
+                    End While
+                Catch ex As Exception
+                    bSucces = False
+                Finally
+                    Me.m_db.ReleaseReader(readerLayer)
+                    readerLayer = Nothing
+                End Try
+            End If
 
             Return bSucces
 
@@ -10076,6 +10080,7 @@ Namespace DataSources
                     Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
                     Dim iLayer As Integer = Array.IndexOf(Me.getLayerIDs(var), iLayerID)
                     Dim iConn As Integer = -1
+                    Dim iYear As Integer = 0
 
                     ' May link to unknown layer
                     If (iLayer > 0) Then
@@ -10197,8 +10202,8 @@ Namespace DataSources
                                     drow("ConverterCfg") = cfg.ConverterConfig
                                     drow("Scale") = cfg.Scale
                                     drow("ScaleType") = cfg.ScaleType
-                                    drow("StartYear") = cfg.CustomDateStart.ToString("yyyy/MM/dd")
-                                    drow("EndYear") = cfg.CustomDateEnd.ToString("yyyy/MM/dd")
+                                    drow("CustomDateStart") = cfg.CustomDateStart.ToString("yyyy/MM/dd")
+                                    drow("CustomDateEnd") = cfg.CustomDateEnd.ToString("yyyy/MM/dd")
                                     writer.AddRow(drow)
 
                                     iSequence += 1

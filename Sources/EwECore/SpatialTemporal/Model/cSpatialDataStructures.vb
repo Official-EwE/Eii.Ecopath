@@ -92,21 +92,26 @@ Namespace SpatialData
         ''' Class for maintaining the details for a given spatial data connection.
         ''' </summary>
         Friend Class cAdapaterConfiguration
-            ''' <summary>GUID to locally defined dataset.</summary>
-            Public Property DatasetGUID As String = ""
-            ''' <summary>Typename to instantiate dataset.</summary>
-            Public Property DatasetTypeName As String = ""
-            ''' <summary>Typename to instantiate converter.</summary>
-            Public Property ConverterTypeName As String = ""
-            ''' <summary>Configuration to set up converter.</summary>
-            Public Property ConverterConfig As String = ""
-            ''' <summary>Data scale, if any.</summary>
-            Public Property Scale As Single = 1.0!
-            ''' <summary></summary>
-            Public Property ScaleType As Byte = 0
 
-            Public Property CustomDateStart As DateTime = Date.MaxValue
-            Public Property CustomDateEnd As DateTime = Date.MinValue
+            ''' <summary>GUID to locally defined dataset.</summary>
+            Public Property DatasetGUID As String
+            ''' <summary>Typename to instantiate dataset.</summary>
+            Public Property DatasetTypeName As String
+            ''' <summary>Typename to instantiate converter.</summary>
+            Public Property ConverterTypeName As String
+            ''' <summary>Configuration to set up converter.</summary>
+            Public Property ConverterConfig As String
+            ''' <summary>Data scale, if any.</summary>
+            Public Property Scale As Single
+            ''' <summary></summary>
+            Public Property ScaleType As Byte
+
+            Public Property CustomDateStart As DateTime
+            Public Property CustomDateEnd As DateTime
+
+            Public Sub New()
+                Me.Clear()
+            End Sub
 
             Friend Sub Clear()
                 Me.DatasetGUID = ""
