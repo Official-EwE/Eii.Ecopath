@@ -7944,7 +7944,6 @@ Namespace DataSources
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
-                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "Q10DriverMap", "")), ecospaceDS.Temperature, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                 End While
 
@@ -8034,7 +8033,6 @@ Namespace DataSources
                 drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("ExclusionMap") = cStringUtils.ArrayToString(ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
-                drow("Q10DriverMap") = cStringUtils.ArrayToString(ecospaceDS.Temperature, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow.EndEdit()
 
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
