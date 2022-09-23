@@ -36,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.17922
+  VersionInfoVersion=6.7.0.18006
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -383,6 +383,7 @@ Name: "desktopicon"; Description: "Add desktop icon"
 Name: "quicklaunchicon"; Description: "Add quick launch icon"
 Name: "associatefiles"; Description: "Open EwE models and web links in this version by default"; GroupDescription: "File associations"
 
+[Icons]
 Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
 Name: "{group}\{#MyAppName} {#MyAppVersion}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename:  "{app}\{#MyAppExeName}"; 
@@ -391,7 +392,6 @@ Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwEMultiSimPlugin.pdf"; W
 Name: "{group}\Links\Ecopath website"; Filename: "http://www.ecopath.org"
 Name: "{group}\Links\Ecopath on Facebook"; Filename: "http://www.facebook.com/eweconsortium"
 Name: "{group}\Links\User support"; Filename: "http://www.ecopath.org/support"
-Name: "{group}\{cm:UninstallProgram, {#MyAppName}}"; Filename: "{uninstallexe}"
 
 [ThirdParty]
 UseRelativePaths=True
