@@ -1311,10 +1311,11 @@ Public Class cEcoSpace
 
     End Sub
 
-    Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
+   Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
 
         Dim ReadMutex As Threading.Mutex
-
+        Dim btimedout As Boolean = false
+ 
         Try
 
             Me.EcoSpaceData.MOLayerChanged.Clear()
@@ -1324,10 +1325,13 @@ Public Class cEcoSpace
             'When running multiple cores on the same computer at the same time
             'Different processes reading the same files from disk can cause funky behaviour. 
             'Model that should run the same sometimes give different results
-            Dim btimedout As Boolean
             ReadMutex = New Threading.Mutex(False, "EwEReadSpatialData")
-            btimedout = ReadMutex.WaitOne(10000)
+            btimedout = ReadMutex.WaitOne(60000) ' JS increased time-out
             Debug.Assert(btimedout, "SPF timed out waiting for global Read Mutex")
+
+            If (btimedout) Then
+                cLog.Write("WARNING!! cEcospace.SetSpatialTempData mutex timed out, model results may be funky past time step " & iTimeStepCounter)
+            End If
 
             'For debugging global mutex
             'Threading.Thread.Sleep(10000)
@@ -1353,14 +1357,13 @@ Public Class cEcoSpace
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
         Finally
-            'Make sure the Mutex gets released
-            ReadMutex.ReleaseMutex()
+              'Make sure the Mutex gets released
+            ' JS 23Sept22: only release if not timed out, otherwise the mutex keeps failing with consequences for future spat temp data
+            If Not btimedout Then ReadMutex.ReleaseMutex()
             ReadMutex.Close()
-
         End Try
 
     End Sub
-
 
     Private Sub RestoreForcedBiomass()
 
