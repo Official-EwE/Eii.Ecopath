@@ -66,10 +66,11 @@ Friend Class cDBUpdate6_70_00_12
     ''' on-board database templates, thus re-instating the error. Good lord.</remarks>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
+        db.Execute("ALTER TABLE EcospaceScenarioDataConnection DROP COLUMN StartYear")
+        db.Execute("ALTER TABLE EcospaceScenarioDataConnection DROP COLUMN EndYear")
+
         Return db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD COLUMN CustomDateStart TEXT(10)") And
-               db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD COLUMN CustomDateEnd TEXT(10)") And
-               db.Execute("ALTER TABLE EcospaceScenarioDataConnection DROP COLUMN StartYear") And
-               db.Execute("ALTER TABLE EcospaceScenarioDataConnection DROP COLUMN EndYear")
+               db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD COLUMN CustomDateEnd TEXT(10)")
     End Function
 
 End Class
