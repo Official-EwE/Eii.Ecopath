@@ -29,8 +29,8 @@ Imports EwEUtils.SystemUtilities
 
 
 Public Class cEcospaceLPSolver
-    Private m_EcospaceData As cEcospaceDataStructures
-    Private m_core As cCore
+    Private ReadOnly m_EcopathData As cEcopathDataStructures
+    Private ReadOnly m_EcospaceData As cEcospaceDataStructures
 
     Public Sub New(EcospaceData As cEcospaceDataStructures)
         Me.m_EcospaceData = EcospaceData
@@ -44,6 +44,8 @@ Public Class cEcospaceLPSolver
         Dim i As Integer
         Dim j As Integer
         Dim k As Integer
+        Dim l As Integer = 0
+        Dim m As Integer
         Dim cellCount As Integer = 0
         Dim waterCells(m_EcospaceData.InRow * m_EcospaceData.InCol) As Boolean
 
@@ -72,11 +74,10 @@ Public Class cEcospaceLPSolver
         Dim rowNo(m_EcospaceData.nFleets * cellCount) As Integer
         Dim colNo(m_EcospaceData.nFleets * cellCount) As Integer
         Dim fltNo(m_EcospaceData.nFleets * cellCount) As Integer
-        Dim l As Integer = 0
         For i = 1 To m_EcospaceData.InRow
             For j = 1 To m_EcospaceData.InCol
-                If (m_EcospaceData.Depth(i, j) <> 0 Then
-                    For k = 1 To Me.m_nFleets
+                If (m_EcospaceData.Depth(i, j) <> 0) Then
+                    For k = 1 To m_EcospaceData.nFleets
                         l += 1
                         rowNo(l) = i
                         colNo(l) = j
@@ -86,14 +87,16 @@ Public Class cEcospaceLPSolver
                         'V_k =∑_g▒〖P_(f,g)×B_(g,i,j)×q_(f,g) 〗
                         'V(k) = sum over groups g Of {price(f,g)*B(g,i,j)*q(f,g)} For the kth list element's fleet f
                         'where q(f, g) Is the fishing rate on group g per unit effort by fleet f (basic ecosim parameter matrix qfish?).  
-                        For (m = 1 To m_EcospaceData.nLiving)
+                        For m = 1 To m_EcospaceData.nLiving
                             'Net value per unit effort: calculate it from the Ecopath baseline, where effort of 1
                             'with a given B gives a certain catch for each fleet by group,
-                            value(l) = value(l) + Price(k, m) * EcospaceB(i, j, m) * Ecopath.Catch(k, m) / Ecopath.biomass(m)
+                            value(l) = value(l) + effort(l) * m_EcospaceData.Bcell(i, j, m) *
+                                m_EcopathData.Landing(k, m) + m_EcopathData.Discard(k, m) / m_EcopathData.B(m) * _   'partial F for this fleet 
+                                m_EcopathData.Market(k, m)
                         Next
-                        'mabye subtract cost of fishing from value
+                        'maybe subtract cost of fishing from value
                         If value(l) > 0 Then
-                            value(l) = value(l) - m_EcospaceData.Sail(i, j, k)
+                            ' value(l) = value(l) - m_EcospaceData.Sail(i, j, k)
                             ' Check the units for sail cost, above assumes it's in $
                             'will negative values of value() work in LP optim ?  Otherwise,
                             'If value(l) < 0 Then value(l) = 0
