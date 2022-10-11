@@ -61,33 +61,24 @@ Public Class cTimeSeriesCSVWriter
 
 #Region " Writing "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get a default CSV file name for the current loaded dataset, if any.
-    ''' </summary>
-    ''' <returns>A file name for the current loaded dataset in the current
-    ''' core <see cref="cCore.OutputPath">output path</see>, or an empty string
-    ''' if no time series are loaded.
-    ''' </returns>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DefaultFileName() As String
-        Get
-            Dim name As String = "time series template"
+    Public Function WriteTimeseries() As Boolean
 
-            If (Me.m_core.ActiveTimeSeriesDatasetIndex > 0) Then
-                ' Get dataset
-                Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
-                ' Is dataset available?
-                If (ds Is Nothing) Then name = ds.Name
+        Dim pout As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
+        Dim name As String = ""
+        If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
+            Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
+            If (ds Is Nothing) Then
+                name = Path.ChangeExtension(cFileUtils.ToValidFileName(ds.Name, False), ".csv")
+                Me.Write(Path.Combine(pout, name), ","c, "."c)
             End If
-            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults), cFileUtils.ToValidFileName(name, True)) & ".csv"
-        End Get
-    End Property
+        End If
+        Return Me.WriteTemplate(Path.Combine(pout, "time series template.csv"), ","c, "."c)
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Writes the current loaded time series dataset to a CSV file. If there is
-    ''' no time series loaded, this will write a dummy file with example content.
+    ''' Writes the current loaded time series dataset to a CSV file.
     ''' </summary>
     ''' <param name="strFileName">Name of the file to save to.</param>
     ''' <param name="strDelimiter">String delimiting character to use when 
@@ -106,9 +97,7 @@ Public Class cTimeSeriesCSVWriter
         Dim bSucces As Boolean = True
 
         ' Anything to export?
-        If (Me.m_core.ActiveTimeSeriesDatasetIndex = -1) Then
-            Return Me.WriteDummy(strFileName, strDelimiter, strDecimalSeparator)
-        End If
+        If (Me.m_core.ActiveTimeSeriesDatasetIndex = -1) Then Return False
 
         ' Get dataset
         ds = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
@@ -146,11 +135,9 @@ Public Class cTimeSeriesCSVWriter
 
                     sw.Write(strDelimiter)
                     If TypeOf ts Is cGroupTimeSeries Then
-                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cGroupTimeSeries).GroupIndex,
-                                                           strDecimalSeparator, ""))
+                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cGroupTimeSeries).GroupIndex, strDecimalSeparator, ""))
                     ElseIf TypeOf ts Is cFleetTimeSeries Then
-                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).FleetIndex,
-                                                           strDecimalSeparator, ""))
+                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).FleetIndex, strDecimalSeparator, ""))
                     Else
                         ' Should never happen, unless a new type of time series is defined.
                         Debug.Assert(False)
@@ -168,8 +155,7 @@ Public Class cTimeSeriesCSVWriter
                     If TypeOf ts Is cGroupTimeSeries Then
                         sw.Write(0)
                     ElseIf TypeOf ts Is cFleetTimeSeries Then
-                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).GroupIndex,
-                                                           strDecimalSeparator, ""))
+                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).GroupIndex, strDecimalSeparator, ""))
                     Else
                         ' Should never happen, unless a new type of time series is defined.
                         Debug.Assert(False)
@@ -229,10 +215,6 @@ Public Class cTimeSeriesCSVWriter
 
     End Function
 
-#End Region ' Writing
-
-#Region " Internals "
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Writes the current loaded time series dataset to a CSV file. If there is
@@ -241,7 +223,7 @@ Public Class cTimeSeriesCSVWriter
     ''' <param name="strFileName">Name of the file to save to.</param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Protected Function WriteDummy(strFileName As String, strDelimiter As String, strDecimalSeparator As String) As Boolean
+    Public Function WriteTemplate(strFileName As String, strDelimiter As String, strDecimalSeparator As String) As Boolean
 
         Dim msg As cMessage = Nothing
         Dim bSucces As Boolean = True
@@ -272,7 +254,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Weight")
                 For iTS As Integer = 1 To nTsT
                     sw.Write(strDelimiter)
-                    sw.Write(cStringUtils.FormatSingle(CSng(Math.Round(rnd.NextDouble(), 1)), strDecimalSeparator), iTS)
+                    sw.Write("[0,1]")
                 Next
                 sw.WriteLine()
 
@@ -333,7 +315,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.Close()
 
                 ' Create success message
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, "dummy", strFileName),
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, "template", strFileName),
                                    eMessageType.DataExport, eCoreComponentType.TimeSeries, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFileName)
 
@@ -342,7 +324,7 @@ Public Class cTimeSeriesCSVWriter
         Catch ex As Exception
 
             ' Create error message
-            msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_FAILED, "dummy", strFileName, ex.Message),
+            msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_FAILED, "template", strFileName, ex.Message),
                                eMessageType.DataExport,
                                eCoreComponentType.TimeSeries,
                                eMessageImportance.Critical)
@@ -361,6 +343,6 @@ Public Class cTimeSeriesCSVWriter
 
     End Function
 
-#End Region ' Internals
+#End Region ' Writing
 
 End Class

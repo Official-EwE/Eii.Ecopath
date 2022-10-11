@@ -82,10 +82,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEEcotracerEnvDriverPlugin", "EwECustomPlugins\EwEEcotracerEnvDriverPlugin\EwEEcotracerEnvDriverPlugin.vbproj", "{6536C62F-3EE0-48F6-83C7-FADB5F6AE6AA}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
