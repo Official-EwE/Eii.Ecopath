@@ -48,7 +48,7 @@ Public Class cEcospaceLPSolver
         Dim l As Integer = 0
         Dim m As Integer
         Dim cellCount As Integer = 0
-        Dim waterCells(m_EcospaceData.InRow * m_EcospaceData.InCol) As Boolean
+        Dim modelledCells(m_EcospaceData.InRow * m_EcospaceData.InCol) As Boolean
 
         Dim iNo(m_EcospaceData.InRow) As Double
         Dim jNo(m_EcospaceData.InCol) As Double
@@ -57,10 +57,10 @@ Public Class cEcospaceLPSolver
             For j = 1 To m_EcospaceData.InCol
                 k = k + 1
                 If (m_EcospaceData.Depth(i, j) <> 0) Then
-                    waterCells(k) = True
+                    modelledCells(k) = True
                     cellCount += 1
                 Else
-                    waterCells(k) = False
+                    modelledCells(k) = False
                 End If
             Next
         Next
