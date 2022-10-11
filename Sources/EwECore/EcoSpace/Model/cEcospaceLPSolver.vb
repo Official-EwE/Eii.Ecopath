@@ -56,7 +56,7 @@ Public Class cEcospaceLPSolver
         For i = 1 To m_EcospaceData.InRow
             For j = 1 To m_EcospaceData.InCol
                 k = k + 1
-                If (m_EcospaceData.Depth(i, j) <> 0 Then
+                If (m_EcospaceData.Depth(i, j) <> 0) Then
                     waterCells(k) = True
                     cellCount += 1
                 Else
