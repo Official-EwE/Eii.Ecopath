@@ -131,15 +131,16 @@ Public Class gridRun
 
         Me.RowsCount = 1
 
-        Dim iRow As Integer = 0
         Dim iterations As ISFPIteration() = Me.m_manager.Iterations
         Dim iteration As ISFPIteration = Nothing
         Dim cell As cEwECellBase = Nothing
 
+        Me.Rows.InsertRange(1, iterations.Length)
+
         For i As Integer = 0 To iterations.Length - 1
 
             iteration = iterations(i)
-            iRow = Me.AddRow()
+            Dim iRow = i + 1
 
             Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
             Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(iteration.Name)
