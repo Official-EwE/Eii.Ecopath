@@ -586,7 +586,7 @@ Public MustInherit Class cMPAOptBaseClass
     ''' <summary>
     ''' Store the best row and col for this search interation
     ''' </summary>
-    ''' <remarks>Right now this is writting the results file and memory</remarks>
+    ''' <remarks>Right now this is writing the results file and memory</remarks>
     Protected Sub StoreObjectiveFunctionResults(writer As StreamWriter)
 
         Try

@@ -206,7 +206,7 @@ Namespace SpatialData
 
 
         ''' <summary>
-        ''' Restores forced data to forced state, overwritting the predicted values. 
+        ''' Restores forced data to forced state, overwriting the predicted values. 
         ''' Cells in the external data that are cCore.NULL_VALUE will not be restored.
         ''' This allows for forcing of partial areas while leaving the other cells to be predicted by Ecospace.
         ''' </summary>

@@ -170,7 +170,7 @@ Public Class cSpaceSolver
     Private NutFree As Single
     Private MedVal() As Single
 
-
+    ''' <summary>Consumption (prey, pred)</summary>
     Private Consumpt(,) As Single
 
     'Contaminant tracing used locally
@@ -1029,6 +1029,7 @@ Public Class cSpaceSolver
             Throw New ApplicationException(Me.ToString & ".derivtRed() Error: " & ex.Message)
         End Try
     End Sub
+
     '***********************
     'THIS FUNCTION IS COPIED FROM cEcoSimModel.vb
     'Changes here will NOT copy over to there

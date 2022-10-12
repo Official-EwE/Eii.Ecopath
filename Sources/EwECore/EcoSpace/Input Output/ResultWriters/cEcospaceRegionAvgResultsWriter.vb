@@ -33,7 +33,7 @@ Imports EwEUtils.Utilities
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
 ''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
 ''' to write Ecospace area averaged results to csv files. This class provides 
-''' the framework for writting the file. The actual data is supplied by an implementation 
+''' the framework for writing the file. The actual data is supplied by an implementation 
 ''' of <see cref="cEcospaceResultsWriterDataSourceBase">cEcospaceResultsWriterDataSourceBase</see> 
 ''' that supplies the data in a generic format.
 ''' </summary>
@@ -55,6 +55,7 @@ Public Class cEcospaceRegionAvgResultsWriter
         RegionBiomass
         RegionCatch
         MOTotalLoss
+        RegionConsumption
     End Enum
 
 #End Region ' Private classes
@@ -110,6 +111,15 @@ Public Class cEcospaceRegionAvgResultsWriter
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.DisplayName"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property DisplayName As String
+        Get
+            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_REGAVG
+        End Get
+    End Property
+
 #End Region ' Public access
 
 #Region " Internals "
@@ -163,14 +173,14 @@ Public Class cEcospaceRegionAvgResultsWriter
                 dataSource = New cRegionCatchResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.MOTotalLoss
                 dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
-
+            Case eDataSourceTypes.RegionConsumption
+                dataSource = New cRegionConsuptionResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
         End Select
         dataSource.Init(RegionIndex)
         Return dataSource
     End Function
 
-#Region " Write Results  "
-
+#Region " Write Results "
 
     Private Function initDataSources() As List(Of cEcospaceResultsWriterDataSourceBase)
         Dim lstDataSources As New List(Of cEcospaceResultsWriterDataSourceBase)
@@ -182,6 +192,7 @@ Public Class cEcospaceRegionAvgResultsWriter
         For irgn As Integer = 1 To Me.m_core.nRegions
             lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
             lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionCatch, irgn))
+            lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionConsumption, irgn))
         Next
         Return lstDataSources
     End Function
@@ -203,7 +214,7 @@ Public Class cEcospaceRegionAvgResultsWriter
 
             For Each AvgType As eEcospaceResultsAverageType In eAvgs
 
-                strFile = Me.getFileName(AvgType, ds)
+                strFile = Me.GetFileName(AvgType, ds)
 
                 Try
 
@@ -234,8 +245,7 @@ Public Class cEcospaceRegionAvgResultsWriter
 
     End Sub
 
-
-    Private Function getFileName(AverageType As eEcospaceResultsAverageType, ds As cEcospaceResultsWriterDataSourceBase) As String
+    Private Function GetFileName(AverageType As eEcospaceResultsAverageType, ds As cEcospaceResultsWriterDataSourceBase) As String
         Dim fn As String
 
         'get the file name from a plugin
@@ -290,7 +300,7 @@ Public Class cEcospaceRegionAvgResultsWriter
             For iRslt As Integer = 1 To dataSource.nResults
 
                 If AvgType = eEcospaceResultsAverageType.Annual Then
-                    value(iRslt) += dataSource.getResult(iRslt, iTime)
+                    value(iRslt) += dataSource.GetResult(iRslt, iTime)
                     nAvg(iRslt) += 1
                     If ((iTime Mod Me.m_core.m_EcospaceData.nTimeStepsPerYear) = 0) Then
                         'End of the year
@@ -302,7 +312,7 @@ Public Class cEcospaceRegionAvgResultsWriter
                     End If
                 Else
                     'Save every time step
-                    value(iRslt) = dataSource.getResult(iRslt, iTime)
+                    value(iRslt) = dataSource.GetResult(iRslt, iTime)
                     bSave = True
                 End If
 
@@ -332,14 +342,8 @@ Public Class cEcospaceRegionAvgResultsWriter
 
     End Sub
 
+#End Region ' Write Results
+
 #End Region ' Internals
-
-#End Region
-
-    Public Overrides ReadOnly Property DisplayName As String
-        Get
-            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_REGAVG
-        End Get
-    End Property
 
 End Class

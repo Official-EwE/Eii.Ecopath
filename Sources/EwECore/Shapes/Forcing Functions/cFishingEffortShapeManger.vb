@@ -92,7 +92,7 @@ Public Class cFishingEffortShapeManger
                 'have each shape will update the underlying EcoSim data
                 For Each shape As cForcingFunction In Me
                     'Don't update the All Fleets Shape because this will overwrite all the other shapes
-                    'This fixes a bug in the MultiSim Plugin when driving Effort for a specific shape the All Fleets shape was overwritting the driven shape(s)
+                    'This fixes a bug in the MultiSim Plugin when driving Effort for a specific shape the All Fleets shape was overwriting the driven shape(s)
                     'see EwEMultiSimPlugin.cEngine.CommitShape()
                     If shape.Index <= Me.m_SimData.nGear Then
                         If Not shape.Update() Then

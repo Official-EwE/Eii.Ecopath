@@ -33,6 +33,14 @@ Public Class cEcopathDataStructures
 
 #End Region ' Private data
 
+    Public Sub New(CoreMessagePublisher As cMessagePublisher)
+        Me.m_messages = CoreMessagePublisher
+
+        'No External coupling of Ecospace by default
+        Me.isEcospaceModelCoupled = False
+
+    End Sub
+
 #Region " Public Variables "
 
     Public bInitialized As Boolean = False
@@ -43,13 +51,13 @@ Public Class cEcopathDataStructures
     Public ModelArea As Single = 0
     Public ModelNumDigits As Integer = 0
     Public ModelGroupDigits As Boolean = False
-    Public ModelUnitTime As eUnitTimeType = 0
+    Public ModelUnitTime As eUnitTimeType = eUnitTimeType.Year
     Public ModelUnitTimeCustom As String = ""
     ''' <summary>Index of current selected currency units.</summary>
     Public ModelUnitCurrency As Integer = eUnitCurrencyType.WetWeight
     Public ModelUnitCurrencyCustom As String = ""
     Public ModelUnitMonetary As String = ""
-    Public ModelUnitArea As eUnitAreaType = 0
+    Public ModelUnitArea As eUnitAreaType = eUnitAreaType.Km2
     Public ModelUnitAreaCustom As String = ""
     Public ModelAuthor As String = ""
     Public ModelContact As String = ""
@@ -1355,14 +1363,6 @@ Public Class cEcopathDataStructures
         Catch ex2 As Exception
             Debug.Assert(False, ex2.Message)
         End Try
-
-    End Sub
-
-    Public Sub New(CoreMessagePublisher As cMessagePublisher)
-        Me.m_messages = CoreMessagePublisher
-
-        'No External coupling of Ecospace by default
-        Me.isEcospaceModelCoupled = False
 
     End Sub
 
