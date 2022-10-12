@@ -24,6 +24,7 @@ Imports EwECore.Core
 Imports EwECore.SpatialData
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -396,8 +397,7 @@ Public MustInherit Class cEcospaceLayer
     End Function
 
     Protected Overridable Function DefaultName() As String
-        ' ToDO: globalize this
-        Return "Layer " & Me.Index
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_LAYER, Me.Index)
     End Function
 
 #End Region ' Overrides

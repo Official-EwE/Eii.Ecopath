@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreMessages
@@ -968,6 +968,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Your model has changed and is not compatible anymore with {0} samples. Do you want to save your changes and lose those samples?.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_INCOMPATIPLE_PROMPT() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_INCOMPATIPLE_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Failed to save spatial optimization results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property ECOSEED_RESULTS_SAVE_FAILED() As String
@@ -1247,6 +1256,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace average results failed to save to {0}. {1}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_SAVED_AVERAGES_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_SAVED_AVERAGES_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace average results saved to {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_SAVED_AVERAGES_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_SAVED_AVERAGES_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace failed to save result maps. {0}.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_SAVEMAP_FAILED() As String
@@ -1427,6 +1454,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Unable to locate {0} at index {1}.
+        '''</summary>
+        Public Shared ReadOnly Property ERROR_VARIABLE_OUT_OF_RANGE() As String
+            Get
+                Return ResourceManager.GetString("ERROR_VARIABLE_OUT_OF_RANGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Exporting dataset {0}.
         '''</summary>
         Public Shared ReadOnly Property EXPORT_PROGRESS_DATASET() As String
@@ -1490,6 +1526,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fit to time series cannot run; some parameters have not been set correctly.
+        '''</summary>
+        Public Shared ReadOnly Property F2TS_PRERUN_CHECK_MISSING_PARAMETERS() As String
+            Get
+                Return ResourceManager.GetString("F2TS_PRERUN_CHECK_MISSING_PARAMETERS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fit to Time Series estimates have converged. Do you want to do more iterations?.
         '''</summary>
         Public Shared ReadOnly Property F2TS_PROMPT_CONVERGED() As String
@@ -1504,6 +1549,42 @@ Namespace My.Resources
         Public Shared ReadOnly Property F2TS_PROMPT_ITERATIONS() As String
             Get
                 Return ResourceManager.GetString("F2TS_PROMPT_ITERATIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fit to timeseries, sensitvity to predator search encountered an error. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property F2TS_SENS_PRED_ERROR() As String
+            Get
+                Return ResourceManager.GetString("F2TS_SENS_PRED_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fit to timeseries, sensitvity to predator prey search encountered an error. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property F2TS_SENS_PREDPREY_ERROR() As String
+            Get
+                Return ResourceManager.GetString("F2TS_SENS_PREDPREY_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fit to time series sensitivity CSV file could not be saved to {0}. {1}.
+        '''</summary>
+        Public Shared ReadOnly Property F2TS_SENSITIVITY_CSV_SAVE_ERROR() As String
+            Get
+                Return ResourceManager.GetString("F2TS_SENSITIVITY_CSV_SAVE_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fit to time series sensitivity CSV file saved to {0}.
+        '''</summary>
+        Public Shared ReadOnly Property F2TS_SENSITIVITY_CSV_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("F2TS_SENSITIVITY_CSV_SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
         
@@ -1549,6 +1630,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property FORCING_DATA_CHANGED() As String
             Get
                 Return ResourceManager.GetString("FORCING_DATA_CHANGED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing Policy Search encountered an error. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property FPS_RUN_ERROR() As String
+            Get
+                Return ResourceManager.GetString("FPS_RUN_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing Policy Search run completed.
+        '''</summary>
+        Public Shared ReadOnly Property FPS_RUN_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("FPS_RUN_SUCCESS", resourceCulture)
             End Get
         End Property
         
@@ -2291,7 +2390,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Optimization error: {0}.
+        '''  Looks up a localized string similar to MPA optimization encountered an error. {0}.
         '''</summary>
         Public Shared ReadOnly Property MPAOPT_ERROR() As String
             Get
@@ -2300,7 +2399,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to No seed cells selected nor MPAs set. Optimzation may yield unknown results. Would you like to continue?.
+        '''  Looks up a localized string similar to No seed cells selected nor MPAs set. MPA optimzation may yield unreliable results. Would you like to continue?.
         '''</summary>
         Public Shared ReadOnly Property MPAOPT_NODATA_RESUME() As String
             Get
@@ -2309,11 +2408,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Optimization is already running. Only one evaluation can be run at a time..
+        '''  Looks up a localized string similar to MPA optimization search results saved to {0}.
         '''</summary>
-        Public Shared ReadOnly Property MPAOPT_RUNNING() As String
+        Public Shared ReadOnly Property MPAOPT_SAVE_SUCCESS() As String
             Get
-                Return ResourceManager.GetString("MPAOPT_RUNNING", resourceCulture)
+                Return ResourceManager.GetString("MPAOPT_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to One or more regions contain less than 5 cells. MPA randome search will not run.
+        '''</summary>
+        Public Shared ReadOnly Property MPARND_PRERUN_CHECK_REGIONSIZE() As String
+            Get
+                Return ResourceManager.GetString("MPARND_PRERUN_CHECK_REGIONSIZE", resourceCulture)
             End Get
         End Property
         
@@ -2345,6 +2453,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Management Strategy Evaluation encountered an error calculatung FMSY. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property MSE_RUN_CALC_FMSY_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MSE_RUN_CALC_FMSY_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Management Strategy Evaluation encountered an error calculatung MSY. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property MSE_RUN_CALC_MSY_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MSE_RUN_CALC_MSY_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Management Strategy Evaluation encountered an error. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property MSE_RUN_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MSE_RUN_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Effort for fleet(s) &apos;{0}&apos; may need to increased for the quota regulations to have an effect..
         '''</summary>
         Public Shared ReadOnly Property MSE_VALIDATION_EFFORT() As String
@@ -2372,24 +2507,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to An error occurred while running MSY. {0}.
-        '''</summary>
-        Public Shared ReadOnly Property MSY_ERROR_RUN() As String
-            Get
-                Return ResourceManager.GetString("MSY_ERROR_RUN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to An error occurred while running FMSY. {0}.
-        '''</summary>
-        Public Shared ReadOnly Property MSY_ERROR_RUN_FMSY() As String
-            Get
-                Return ResourceManager.GetString("MSY_ERROR_RUN_FMSY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Failed to save MSY results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property MSY_RESULTS_SAVE_FAILED() As String
@@ -2404,6 +2521,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property MSY_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("MSY_RESULTS_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An error occurred while running MSY. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property MSY_RUN_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MSY_RUN_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An error occurred while running FMSY. {0}.
+        '''</summary>
+        Public Shared ReadOnly Property MSY_RUN_FMSY_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MSY_RUN_FMSY_ERROR", resourceCulture)
             End Get
         End Property
         

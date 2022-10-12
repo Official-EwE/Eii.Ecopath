@@ -132,9 +132,7 @@ Namespace Database
 
             Me.m_iNumSteps = 7
 
-            ' ToDo: globalize this
-
-            Me.LogProgress("Loading eii file...")
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_STARTED)
             If Me.LoadEII() Then
                 bSucces = Me.Save()
             End If

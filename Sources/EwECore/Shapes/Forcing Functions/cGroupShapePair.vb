@@ -67,7 +67,8 @@ Public Class cGroupShapePair
                 End If
                 Me.Update()
             Else
-                Me.m_manager.validationFailedMessage()
+                Debug.Assert(False)
+                cLog.Write("Index out of bounds on egg shapes")
             End If
         End Set
 

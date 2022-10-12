@@ -60,8 +60,6 @@ Friend Class cDBUpdate6_60_00_07
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        ' ToDo: globalize this method
-
         ' Abort if no possible issues
         If (CInt(db.Execute("SELECT COUNT(*) FROM EcospaceScenarioMPAFishery")) = 0) Then Return True
 

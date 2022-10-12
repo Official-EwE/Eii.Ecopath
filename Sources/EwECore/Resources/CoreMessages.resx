@@ -953,14 +953,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=database update number, {1}=reason</comment>
   </data>
   <data name="MPAOPT_ERROR" xml:space="preserve">
-    <value>Optimization error: {0}</value>
+    <value>MPA optimization encountered an error. {0}</value>
     <comment>{0}=error</comment>
   </data>
   <data name="MPAOPT_NODATA_RESUME" xml:space="preserve">
-    <value>No seed cells selected nor MPAs set. Optimzation may yield unknown results. Would you like to continue?</value>
-  </data>
-  <data name="MPAOPT_RUNNING" xml:space="preserve">
-    <value>Optimization is already running. Only one evaluation can be run at a time.</value>
+    <value>No seed cells selected nor MPAs set. MPA optimzation may yield unreliable results. Would you like to continue?</value>
   </data>
   <data name="ECOPATH_PREDMORT_CANN" xml:space="preserve">
     <value>Your data are not consistent. In algorithm 4 your estimate of: P/Bi * EEi - Q/Bi * DCii is negative for group '{0}', i.e. 'cannibalism' exceeds the predation mortality. Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs? Note: your input data will not be changed.</value>
@@ -1082,11 +1079,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="MSY_WARNING_TIMESERIES" xml:space="preserve">
     <value>MSY will not produce reliably results when there are time series loaded. It is advised to unload time series before running the MSY. Do you want to continue the MSY run?</value>
   </data>
-  <data name="MSY_ERROR_RUN" xml:space="preserve">
+  <data name="MSY_RUN_ERROR" xml:space="preserve">
     <value>An error occurred while running MSY. {0}</value>
     <comment>{0}=error message</comment>
   </data>
-  <data name="MSY_ERROR_RUN_FMSY" xml:space="preserve">
+  <data name="MSY_RUN_FMSY_ERROR" xml:space="preserve">
     <value>An error occurred while running FMSY. {0}</value>
     <comment>{0}=error message</comment>
   </data>
@@ -1432,5 +1429,66 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="VARIABLE_VALIDATION_RSTANZA" xml:space="preserve">
     <value>The target stanza has driven recruitment. Unable to set variable {0}</value>
+  </data>
+  <data name="ECOSAMPLER_INCOMPATIPLE_PROMPT" xml:space="preserve">
+    <value>Your model has changed and is not compatible anymore with {0} samples. Do you want to save your changes and lose those samples?</value>
+    <comment>{0}=sample count</comment>
+  </data>
+  <data name="ECOSPACE_SAVED_AVERAGES_ERROR" xml:space="preserve">
+    <value>Ecospace average results failed to save to {0}. {1}</value>
+    <comment>{0}=location, {1}=error message</comment>
+  </data>
+  <data name="ECOSPACE_SAVED_AVERAGES_SUCCESS" xml:space="preserve">
+    <value>Ecospace average results saved to {0}</value>
+    <comment>{0}=location</comment>
+  </data>
+  <data name="F2TS_SENSITIVITY_CSV_SAVE_ERROR" xml:space="preserve">
+    <value>Fit to time series sensitivity CSV file could not be saved to {0}. {1}</value>
+    <comment>{0}=location, {1}=error message</comment>
+  </data>
+  <data name="F2TS_SENSITIVITY_CSV_SAVE_SUCCESS" xml:space="preserve">
+    <value>Fit to time series sensitivity CSV file saved to {0}</value>
+    <comment>{0}=location</comment>
+  </data>
+  <data name="ERROR_VARIABLE_OUT_OF_RANGE" xml:space="preserve">
+    <value>Unable to locate {0} at index {1}</value>
+    <comment>{0}=varname, {1}</comment>
+  </data>
+  <data name="F2TS_PRERUN_CHECK_MISSING_PARAMETERS" xml:space="preserve">
+    <value>Fit to time series cannot run; some parameters have not been set correctly</value>
+  </data>
+  <data name="F2TS_SENS_PREDPREY_ERROR" xml:space="preserve">
+    <value>Fit to timeseries, sensitvity to predator prey search encountered an error. {0}</value>
+    <comment>{0}=error</comment>
+  </data>
+  <data name="F2TS_SENS_PRED_ERROR" xml:space="preserve">
+    <value>Fit to timeseries, sensitvity to predator search encountered an error. {0}</value>
+    <comment>{0}=error</comment>
+  </data>
+  <data name="FPS_RUN_ERROR" xml:space="preserve">
+    <value>Fishing Policy Search encountered an error. {0}</value>
+    <comment>{0}=error</comment>
+  </data>
+  <data name="FPS_RUN_SUCCESS" xml:space="preserve">
+    <value>Fishing Policy Search run completed</value>
+  </data>
+  <data name="MPAOPT_SAVE_SUCCESS" xml:space="preserve">
+    <value>MPA optimization search results saved to {0}</value>
+    <comment>{0}=location</comment>
+  </data>
+  <data name="MPARND_PRERUN_CHECK_REGIONSIZE" xml:space="preserve">
+    <value>One or more regions contain less than 5 cells. MPA randome search will not run</value>
+  </data>
+  <data name="MSE_RUN_CALC_FMSY_ERROR" xml:space="preserve">
+    <value>Management Strategy Evaluation encountered an error calculatung FMSY. {0}</value>
+    <comment>{0}=error</comment>
+  </data>
+  <data name="MSE_RUN_CALC_MSY_ERROR" xml:space="preserve">
+    <value>Management Strategy Evaluation encountered an error calculatung MSY. {0}</value>
+    <comment>{0}=error</comment>
+  </data>
+  <data name="MSE_RUN_ERROR" xml:space="preserve">
+    <value>Management Strategy Evaluation encountered an error. {0}</value>
+    <comment>{0}=error</comment>
   </data>
 </root>

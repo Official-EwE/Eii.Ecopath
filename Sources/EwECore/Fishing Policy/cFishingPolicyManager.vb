@@ -22,7 +22,7 @@ Imports EwECore.Ecosim
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
-
+Imports EwEUtils.Utilities
 
 Namespace FishingPolicy
 
@@ -64,7 +64,7 @@ Namespace FishingPolicy
         ''' <param name="ProgressCallBack">Callback reports progress of the search</param>
         ''' <param name="SearchCompletedCallBack">Calback all search runs have completed.</param>
         ''' <remarks></remarks>
-        Public Sub Connect(RunStartedCallBack As RunStartedDelegate, RunCompletedBack As RunCompletedDelegate, _
+        Public Sub Connect(RunStartedCallBack As RunStartedDelegate, RunCompletedBack As RunCompletedDelegate,
                             ProgressCallBack As ProgressDelegate, SearchCompletedCallBack As SearchCompletedDelegate)
 
             Me.m_StartRunDelegate = RunStartedCallBack
@@ -533,22 +533,15 @@ Namespace FishingPolicy
 
         Public Function Run(SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
+            ' This should not happen
+            If Me.IsRunning Then Return False
+
             Me.m_syncObject = SyncObject
             Dim FPSthread As Thread
             Dim search As cSearchDatastructures = Me.m_core.m_SearchData
-            Dim bsuccess As Boolean
+            Dim bsuccess As Boolean = True
 
             Try
-
-                If Me.IsRunning Then
-                    ' ToDo: globalize this
-                    Me.m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
-                                                eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.MonteCarlo))
-                    Return False
-                End If
-
-                bsuccess = True
-
                 Me.SetWait()
 
                 search.SearchMode = eSearchModes.FishingPolicy
@@ -563,9 +556,8 @@ Namespace FishingPolicy
                 'unblock the thread before doing anything incase something has called Wait()
 
                 search.SearchMode = eSearchModes.NotInSearch
-                ' ToDo: globalize this
-                Me.m_core.Messages.SendMessage(New cMessage("Error running the Fishing Policy Search.", eMessageType.ErrorEncountered, _
-                                            eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.FPS_RUN_ERROR, ex.Message),
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
 
                 'if an error has been thrown make sure the SearchCompletedCallBack delegate is called
                 'this way an interface can responded 
