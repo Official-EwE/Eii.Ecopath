@@ -6147,9 +6147,15 @@ exitline:
 
                     Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, igrp, Me.itt) += solver.ResultsByGroup(eSpaceResultsGroups.OtherMortalityLoss, igrp)
 
+                    For iprey As Integer = 1 To Me.EcoSpaceData.NGroups
+                        For irgn As Integer = 0 To Me.EcoSpaceData.nRegions
+                            Me.EcoSpaceData.ResultsRegionConsumptionPredPrey(irgn, igrp, iprey, Me.itt) += solver.ResultsConsumptionRegionPredPrey(irgn, igrp, iprey)
+                        Next irgn
+                    Next iprey
+
                 Next igrp
 
-                For iflt As Integer = 0 To Me.EcoSpaceData.nFleets
+                    For iflt As Integer = 0 To Me.EcoSpaceData.nFleets
                     Me.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, Me.itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
                     Me.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, Me.itt) += solver.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt)
                     Me.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, Me.itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)

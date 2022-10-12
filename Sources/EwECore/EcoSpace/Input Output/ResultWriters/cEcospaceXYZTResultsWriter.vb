@@ -255,7 +255,7 @@ Public Class cEcospaceXYZTResultsWriter
 
         For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
             strFN = Me.GetGroupFileName(varname, igrp, "csv")
-            'Create a new file when writting the header
+            'Create a new file when writing the header
             'this overwrites the data in the current directory
             strm = New StreamWriter(strFN)
             If Me.m_core.SaveWithFileHeader Then
@@ -280,7 +280,7 @@ Public Class cEcospaceXYZTResultsWriter
 
         For iflt As Integer = 1 To Me.m_core.m_EcopathData.NumFleet
             strFN = Me.GetFleetFileName(varname, iflt, "csv")
-            'Create a new file when writting the header
+            'Create a new file when writing the header
             'this overwrites the data in the current directory
             strm = New StreamWriter(strFN)
             If Me.m_core.SaveWithFileHeader Then

@@ -76,7 +76,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
             For Each varname As eVarNameFlags In Me.vars
 
                 'NMaps(Number of maps) = NLiving by default but can be Overriden by derived class
-                For iGrp As Integer = 0 To Me.NMaps
+                For iGrp As Integer = 0 To Me.NumMaps
 
                     'SelectedGroups() MUST be set in implementation class. Currently in .Init() via cEcospaceBaseResultsWriter.setAllGroupsSelected(), setCatchSelected()...
                     'Or(potentially) via the UI's Group Selections
@@ -116,7 +116,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     End Sub
 
 
-    Protected Overridable Function NMaps() As Integer
+    Protected Overridable Function NumMaps() As Integer
         Return Me.m_core.m_EcopathData.NumLiving
     End Function
 

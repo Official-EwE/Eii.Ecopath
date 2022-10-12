@@ -712,7 +712,7 @@ Public Class cEcospaceDataStructures
     ''' True Ecospace will populate the <see cref="cEcospaceDataStructures.TL">TrophicLevel</see> map in cEcospaceDataStructures.TL. 
     ''' </summary>
     ''' <remarks>This incurs significant overhead so it is Off(False) by default. At this time is can only be turned ON(True) via code.</remarks>
-    Public bCalTrophicLevel As Boolean
+    Public bCalTrophicLevel As Boolean = False
 
     ''' <summary>
     ''' Number of fishing effort zones (LME's, EEZ...)
@@ -742,8 +742,6 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public UseSpinUp As Boolean
 
-    Private m_bInSpinup As Boolean = False
-
     ''' <summary>
     ''' List of MO layer indexs that have changed.
     ''' This will be updated(set to changed) when a layer is loaded by the spatial temporal framework
@@ -758,24 +756,16 @@ Public Class cEcospaceDataStructures
     Public bSaveRelNutFile As Boolean
 
     ''' <summary>Are we in a Spin-Up period?</summary>   
-    Public Property bInSpinUp As Boolean
-        Get
-            Return Me.m_bInSpinup
-        End Get
-        Friend Set(value As Boolean)
-            Me.m_bInSpinup = value
-        End Set
-    End Property
+    Public Property bInSpinUp As Boolean = False
 
-    Public UseSpinUpPlot As Boolean
+    Public Property UseSpinUpPlot As Boolean
 
-    Public UseSpinUpBase As Boolean
+    Public Property UseSpinUpBase As Boolean
 
     ''' <summary>
     ''' Number of years to run the Spin-Up for
     ''' </summary>
-    ''' <remarks></remarks>
-    Public SpinUpYears As Single
+    Public Property SpinUpYears As Single
 
     ''' <summary>
     ''' Ecospace base biomass before the Spin-Up period. Gathered at the end of the first timestep.
@@ -815,7 +805,6 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public EcospaceAreaOutputDir As String
 
-
     ''' <summary>
     ''' First model time step to being writing Ecospace output files
     ''' </summary>
@@ -828,7 +817,6 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks></remarks>
     Public MigMaps(,)(,) As Single
-
 
     ''' <summary>
     ''' Is the Ecosim biomass time series forcing enabled for this group
@@ -1058,9 +1046,10 @@ Public Class cEcospaceDataStructures
             Me.ResultsByGroup = Nothing ', N_RESULTS_GROUPS, m_ngroups, NumberOfTimeSteps)
             Me.ResultsByFleet = Nothing ', N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
             Me.ResultsByFleetGroup = Nothing ', N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
-
             Me.ResultsRegionGroup = Nothing ', NoRegions, NGroups, NumberOfTimeSteps)
             Me.ResultsCatchRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            Me.ResultsRegionConsumptionPredPrey = Nothing
+
             Me.MPred = Nothing
             Me.EffortSpace = Nothing
             Me.PredCell = Nothing
@@ -2170,6 +2159,7 @@ Public Class cEcospaceDataStructures
             Me.allocate(Me.ResultsByGroup, [Enum].GetValues(GetType(eSpaceResultsGroups)).Length, Me.NGroups, NumberOfTimeSteps)
             Me.allocate(Me.ResultsByFleet, [Enum].GetValues(GetType(eSpaceResultsFleets)).Length, Me.nFleets, NumberOfTimeSteps)
             Me.allocate(Me.ResultsByFleetGroup, [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, Me.nFleets, Me.NGroups, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsRegionConsumptionPredPrey, Me.nRegions, Me.NGroups, Me.NGroups, NumberOfTimeSteps)
 
             Me.allocate(Me.ResultsRegionGroup, Me.nRegions, Me.NGroups, NumberOfTimeSteps)
             Me.allocate(Me.ResultsRegionGroupYear, Me.nRegions, Me.NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))

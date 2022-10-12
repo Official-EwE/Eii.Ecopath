@@ -217,7 +217,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Next igrp
     End Sub
 
-    Protected Sub setAllFleetsSelected()
+    Protected Sub SetAllFleetsSelected()
         Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
         For iflt As Integer = 1 To Me.EcopathData.NumFleet
             Me.m_selGroups(iflt) = True

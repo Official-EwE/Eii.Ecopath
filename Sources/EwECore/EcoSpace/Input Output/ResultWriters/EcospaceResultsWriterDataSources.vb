@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -19,11 +20,11 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports EwECore.Style
 
 #End Region ' Imports
 
-#Region "Must inherit Base class"
+#Region " Must inherit Base class "
 
 ''' <summary>
 ''' Base class for data source objects used by the <see cref="cEcospaceRegionAvgResultsWriter">cEcospaceAvgModelAreaResultsWriter</see>
@@ -78,13 +79,12 @@ Public MustInherit Class cEcospaceResultsWriterDataSourceBase
     ''' </summary>
     ''' <param name="OneBasedIndex">One based index of the result to return</param>
     ''' <param name="TimeIndex">One based time step of the result</param>
-    MustOverride Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+    MustOverride Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
 
     ''' <summary>
     ''' Name of the result field. This can be a group name, fleet name, or a combo of both
     ''' </summary>
     MustOverride Function FieldName(OneBasedIndex As Integer) As String
-
 
     ''' <summary>
     ''' Four character abbreviation of Variable and Area
@@ -103,11 +103,11 @@ Public MustInherit Class cEcospaceResultsWriterDataSourceBase
 
 End Class
 
-#End Region
+#End Region ' Must inherit Base class
 
-#Region "Total modeled area"
+#Region " Total modeled area "
 
-#Region "Biomass over model area"
+#Region " Biomass over model area "
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for biomass averaged over the total modeled area.
@@ -119,7 +119,7 @@ Public Class cBiomassResultsDataSource
         MyBase.New(Core, EcospaceData)
     End Sub
 
-    Public Overrides Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+    Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
         Return Me.m_spaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.Biomass, OneBasedIndex, TimeIndex)
     End Function
 
@@ -145,13 +145,17 @@ Public Class cBiomassResultsDataSource
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            Return "Average biomass across modeled area"
+            ' ToDo: localize this
+            Dim u As New cUnits(Me.m_core)
+            Return "Average biomass across modeled area (" & u.ToString(cUnits.CurrencyOverArea) & ")"
         End Get
     End Property
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Return "Modeled area km2"
+            ' ToDo: localize this
+            Dim u As New cUnits(Me.m_core)
+            Return "Modeled area (" & u.ToString(cUnits.Area) & ")"
         End Get
     End Property
 
@@ -173,9 +177,9 @@ Public Class cBiomassResultsDataSource
     End Property
 End Class
 
-#End Region
+#End Region ' Biomass over model area
 
-#Region "Catch over modeled area"
+#Region " Catch over modeled area "
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for catch averaged over the total modeled area.
@@ -209,18 +213,17 @@ Public Class cCatchResultsDataSource
         MyBase.New(Core, EcospaceData)
     End Sub
 
-    Public Overrides Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+    Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
         Try
             Dim catchOb As cCatch = Me.m_lstCatch.Item(OneBasedIndex - 1)
             Return Me.m_spaceData.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, catchOb.FleetIndex, catchOb.GroupIndex, TimeIndex)
         Catch ex As Exception
-            Debug.Assert(False, "Exception writting Ecospace results. " + ex.Message)
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
 
         Return 0.0
 
     End Function
-
 
     Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
 
@@ -251,11 +254,10 @@ Public Class cCatchResultsDataSource
 
         Try
             Dim catchOb As cCatch = Me.m_lstCatch.Item(OneBasedIndex - 1)
-            Return catchOb.FleetName + " | " + catchOb.GroupName
+            Return catchOb.FleetName + "|" + catchOb.GroupName
         Catch ex As Exception
-            Debug.Assert(False, "Exception writting Ecospace results. " + ex.Message)
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
-
         Return ""
     End Function
 
@@ -268,7 +270,9 @@ Public Class cCatchResultsDataSource
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            Return "Catch by Fleet of a Group"
+            ' ToDo: localize this
+            Dim u As New cUnits(Me.m_core)
+            Return "Catch by Fleet x Group (" & u.ToString(cUnits.Currency) & ")"
         End Get
     End Property
 
@@ -280,7 +284,9 @@ Public Class cCatchResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Return "Modeled area km2"
+            ' ToDo: localize this, use units!
+            Dim u As New cUnits(Me.m_core)
+            Return "Modeled area (" & u.ToString(cUnits.Area) & ")"
         End Get
     End Property
 
@@ -296,9 +302,9 @@ Public Class cCatchResultsDataSource
     End Property
 End Class
 
-#End Region
+#End Region ' Catch over modeled area
 
-#End Region
+#End Region ' Total modeled area
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for biomass averaged over the total modeled area.
@@ -309,18 +315,20 @@ Public Class cMOTotalResultsDataSource
         MyBase.New(Core, EcospaceData)
     End Sub
 
-    Public Overrides Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+    Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
         Return Me.m_spaceData.ResultsByGroup(EwECore.eSpaceResultsGroups.OtherMortalityLoss, OneBasedIndex, TimeIndex)
     End Function
 
     Public Overrides ReadOnly Property FilenameIdentifier As String
         Get
+            ' ToDo: localize this
             Return "OtherMortalityLoss"
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
+            ' ToDo: localize this (and spell correctly)
             Return "Average Other Mortlatiy biomass across modeled area"
         End Get
     End Property
@@ -331,15 +339,13 @@ Public Class cMOTotalResultsDataSource
 
 End Class
 
+#Region " By Region "
 
-#Region "By Region"
-
-#Region "Biomass by region"
+#Region " Biomass by region "
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged biomass by region.
 ''' </summary>
-''' <remarks></remarks>
 Public Class cRegionBiomassResultsDataSource
     Inherits cEcospaceResultsWriterDataSourceBase
 
@@ -367,27 +373,23 @@ Public Class cRegionBiomassResultsDataSource
         MyBase.New(Core, EcospaceData)
     End Sub
 
-    Public Overrides Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+    Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
         Try
             Dim RegionOb As cRegion = Me.m_lstRegions.Item(OneBasedIndex - 1)
             Return Me.m_spaceData.ResultsRegionGroup(RegionOb.iRegionIndex, RegionOb.GroupIndex, TimeIndex)
         Catch ex As Exception
-            Debug.Assert(False, "Exception writting Ecospace results. " + ex.Message)
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
 
         Return 0.0
-
     End Function
 
-
     Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
-
         Me.m_iRegionIndex = OptionalIndex
         Me.m_lstRegions = New List(Of cRegion)
         For iGroup As Integer = 1 To Me.m_core.nGroups
             Me.m_lstRegions.Add(New cRegion(Me.m_core.EcopathGroupInputs(iGroup), OptionalIndex))
         Next iGroup
-
     End Sub
 
     Public Overrides ReadOnly Property nResults As Integer
@@ -397,13 +399,11 @@ Public Class cRegionBiomassResultsDataSource
     End Property
 
     Public Overrides Function FieldName(OneBasedIndex As Integer) As String
-
         Try
             Return Me.m_lstRegions.Item(OneBasedIndex - 1).GroupName
         Catch ex As Exception
-            Debug.Assert(False, "Exception writting Ecospace results. " + ex.Message)
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
-
         Return ""
     End Function
 
@@ -415,13 +415,17 @@ Public Class cRegionBiomassResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Return "Region " + Me.m_iRegionIndex.ToString + " area km2"
+            ' ToDo: localize this 
+            Dim u As New cUnits(Me.m_core)
+            Return "Region " + Me.m_iRegionIndex.ToString + " area (" & u.ToString(cUnits.Area) & ")"
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            Return "Average biomass by region"
+            ' ToDo: localize this 
+            Dim u As New cUnits(Me.m_core)
+            Return "Average biomass by region (" & u.ToString(cUnits.CurrencyOverArea) & ")"
         End Get
     End Property
 
@@ -450,10 +454,9 @@ Public Class cRegionBiomassResultsDataSource
     End Property
 End Class
 
-#End Region
+#End Region ' Biomass by region
 
-#Region "Catch by region"
-
+#Region " Catch by region "
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged catch by region.
@@ -490,12 +493,12 @@ Public Class cRegionCatchResultsDataSource
         MyBase.New(Core, EcospaceData)
     End Sub
 
-    Public Overrides Function getResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+    Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
         Try
             Dim RegionOb As cRegion = Me.m_lstRegions.Item(OneBasedIndex - 1)
             Return Me.m_spaceData.ResultsCatchRegionGearGroup(RegionOb.RegionIndex, RegionOb.FleetIndex, RegionOb.GroupIndex, TimeIndex)
         Catch ex As Exception
-            Debug.Assert(False, "Exception writting Ecospace results. " + ex.Message)
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
 
         Return 0.0
@@ -534,9 +537,9 @@ Public Class cRegionCatchResultsDataSource
 
         Try
             Dim region As cRegion = Me.m_lstRegions.Item(OneBasedIndex - 1)
-            Return region.FleetName + " | " + region.GroupName
+            Return region.FleetName + "|" + region.GroupName
         Catch ex As Exception
-            Debug.Assert(False, "Exception writting Ecospace results. " + ex.Message)
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
 
         Return ""
@@ -550,13 +553,17 @@ Public Class cRegionCatchResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Return "Region " + Me.m_iRegionIndex.ToString + " area km2"
+            ' ToDo: localize this, use units!
+            Dim u As New cUnits(Me.m_core)
+            Return "Region " + Me.m_iRegionIndex.ToString + " area (" & u.ToString(cUnits.Area) & ")"
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            Return "Average catch in region by fleet and group"
+            ' ToDo: localize this 
+            Dim u As New cUnits(Me.m_core)
+            Return "Average catch in region by fleet and group (" & u.ToString(cUnits.CurrencyOverArea) & ")"
         End Get
     End Property
 
@@ -578,7 +585,6 @@ Public Class cRegionCatchResultsDataSource
         Return ReturnStr
     End Function
 
-
     Public Overrides ReadOnly Property AreaIndex As Integer
         Get
             Return Me.m_iRegionIndex
@@ -587,9 +593,135 @@ Public Class cRegionCatchResultsDataSource
 
 End Class
 
-#End Region
+#End Region ' Catch by region
 
-#End Region
+#Region " Consumption by region "
+
+
+''' <summary>
+''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged biomass by region.
+''' </summary>
+Public Class cRegionConsuptionResultsDataSource
+    Inherits cEcospaceResultsWriterDataSourceBase
+
+    ''' <summary>
+    ''' Local helper class for remembering bits of a landing record.
+    ''' </summary>
+    Private Class cRegion
+
+        Public Sub New(pred As cCoreGroupBase, prey As cCoreGroupBase, RegionIndex As Integer)
+            Me.PredName = pred.Name
+            Me.PredIndex = pred.Index
+            Me.PreyName = prey.Name
+            Me.PreyIndex = prey.Index
+            Me.iRegionIndex = RegionIndex
+        End Sub
+
+        Public Property PredName As String = ""
+        Public Property PredIndex As Integer
+        Public Property PreyName As String = ""
+        Public Property PreyIndex As Integer
+        Public Property iRegionIndex As Integer
+
+    End Class
+
+    Private m_lstRegions As List(Of cRegion)
+    Private m_iRegionIndex As Integer
+
+    Sub New(Core As cCore, EcospaceData As cEcospaceDataStructures)
+        MyBase.New(Core, EcospaceData)
+    End Sub
+
+    Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
+        Try
+            Dim r As cRegion = Me.m_lstRegions.Item(OneBasedIndex - 1)
+            Return Me.m_spaceData.ResultsRegionConsumptionPredPrey(r.iRegionIndex, r.PredIndex, r.PreyIndex, TimeIndex)
+        Catch ex As Exception
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
+        End Try
+
+        Return 0.0
+    End Function
+
+    Public Overrides Sub Init(Optional iRegion As Integer = 0)
+        Me.m_iRegionIndex = iRegion
+        Me.m_lstRegions = New List(Of cRegion)
+        For iPred As Integer = 1 To Me.m_core.nGroups
+            Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iPred)
+            For iPrey As Integer = 1 To Me.m_core.nGroups
+                If grp.DietComp(iPrey) > 0 Then
+                    Me.m_lstRegions.Add(New cRegion(Me.m_core.EcopathGroupInputs(iPred), Me.m_core.EcopathGroupInputs(iPrey), iRegion))
+                End If
+            Next iPrey
+        Next iPred
+    End Sub
+
+    Public Overrides ReadOnly Property nResults As Integer
+        Get
+            Return Me.m_lstRegions.Count
+        End Get
+    End Property
+
+    Public Overrides Function FieldName(OneBasedIndex As Integer) As String
+        Try
+            Dim region As cRegion = Me.m_lstRegions.Item(OneBasedIndex - 1)
+            Return region.PredName + "|" + region.PreyName
+        Catch ex As Exception
+            Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
+        End Try
+        Return ""
+    End Function
+
+    Public Overrides ReadOnly Property FilenameIdentifier As String
+        Get
+            Return "Region_" + Me.m_iRegionIndex.ToString + "_Consumption"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property AreaDescriptor As String
+        Get
+            ' ToDo: localize this, use units!
+            Dim u As New cUnits(Me.m_core)
+            Return "Region " + Me.m_iRegionIndex.ToString + " area (" & u.ToString(cUnits.Area) & ")"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property DataDescriptor As String
+        Get
+            ' ToDo: localize this, use units!
+            Dim u As New cUnits(Me.m_core)
+            Return "Average consumption by region (" & u.ToString(cUnits.CurrencyOverArea) & ")"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property nWaterCells As Integer
+        Get
+            Return Me.m_core.m_EcospaceData.nCellsInRegion(Me.m_iRegionIndex)
+        End Get
+    End Property
+
+    Public Overrides Function FileNameAbbreviation() As String
+        'Consumption for region
+        Dim ReturnStr As String
+        Dim RegStr As String = Me.m_iRegionIndex.ToString
+        If RegStr.Length = 1 Then
+            RegStr = "0" + RegStr
+        End If
+        ReturnStr = "CoR" + RegStr
+        'Debug.Assert(ReturnStr.Length = 4, "WOW " + Me.ToString + ".FileNameAbbreviation() not the correct length for ICM abbreviation.")
+        Return ReturnStr
+    End Function
+
+    Public Overrides ReadOnly Property AreaIndex As Integer
+        Get
+            Return Me.m_iRegionIndex
+        End Get
+    End Property
+End Class
+
+#End Region ' Consumption by region
+
+#End Region ' By Region
 
 
 

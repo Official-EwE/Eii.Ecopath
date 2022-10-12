@@ -84,52 +84,58 @@ Namespace Style
             Dim model As cEwEModel = Me.m_core.EwEModel
             If (model Is Nothing) Then Return ""
 
+            Dim result As String = ""
+
             Try
                 ' Check for predefined user setting
-                Select Case str.ToLower
+                Select Case "[" & str & "]"
 
-                    Case "currency"
+                    Case cUnits.Biomass, cUnits.Currency
                         Dim fmt As New cCurrencyUnitFormatter(model.UnitCurrencyCustomText)
-                        Return fmt.ToString(model.UnitCurrency)
+                        result = fmt.ToString(model.UnitCurrency)
 
-                    Case "monetary"
-                        Return model.UnitMonetary
+                    Case cUnits.Monetary
+                        result = model.UnitMonetary
 
-                    Case "time"
+                    Case cUnits.Time
                         Dim fmt As New cTimeUnitFormatter(model.UnitTimeCustomText)
-                        Return fmt.ToString(model.UnitTime)
+                        result = fmt.ToString(model.UnitTime)
 
-                    Case "area"
+                    Case cUnits.Area
                         Dim fmt As New cAreaUnitFormatter(model.UnitAreaCustomText)
-                        Return fmt.ToString(model.UnitArea)
+                        result = fmt.ToString(model.UnitArea)
 
-                    Case "location"
+                    Case cUnits.Mapping
                         ' ToDo: make dynamic, make respond to AssumeSquareCells setting
                         Dim fmt As New cMapUnitFormatter()
-                        Return fmt.ToString(eUnitMapRefType.dd)
+                        result = fmt.ToString(eUnitMapRefType.dd)
 
-                    Case "depth"
+                    Case cUnits.Depth
                         Dim fmt As New cMapUnitFormatter()
-                        Return fmt.ToString(eUnitMapRefType.m)
+                        result = fmt.ToString(eUnitMapRefType.m)
 
-                    Case "true"
-                        Return True.ToString()
+                    Case cUnits.True
+                        result = True.ToString()
 
-                    Case "false"
-                        Return False.ToString()
+                    Case cUnits.False
+                        result = False.ToString()
 
-                    Case "year"
-                        Return My.Resources.CoreDefaults.UNIT_TIME_YEAR
+                    Case cUnits.Year
+                        result = My.Resources.CoreDefaults.UNIT_TIME_YEAR
 
                 End Select
 
                 Dim strResource As String = cResourceUtils.LoadString("UNIT_" & str.ToUpper(), My.Resources.CoreDefaults.ResourceManager)
-                If (Not String.IsNullOrWhiteSpace(strResource)) Then Return strResource
+                If (Not String.IsNullOrWhiteSpace(strResource)) Then result = strResource
 
             Catch ex As Exception
                 Debug.Assert(False)
             End Try
-            Return str
+
+            ' Unit undefined
+            If String.IsNullOrWhiteSpace(result) Then Return "?"
+
+            Return result
 
         End Function
 
@@ -152,6 +158,8 @@ Namespace Style
         Public Shared ReadOnly Property ProportionOverTime As String = "[proportion]/[time]"
         Public Shared ReadOnly Property Mapping As String = "[location]"
         Public Shared ReadOnly Property Depth As String = "[depth]"
+        Public Shared ReadOnly Property [True] As String = "[true]"
+        Public Shared ReadOnly Property [False] As String = "[false]"
         Public Shared ReadOnly Property TrueFalse As String = "[true]/[false]"
         Public Shared ReadOnly Property PresenceAbsence As String = "[presence]/[absence]"
         Public Shared ReadOnly Property Velocity As String = "[cm]/[sec]"
