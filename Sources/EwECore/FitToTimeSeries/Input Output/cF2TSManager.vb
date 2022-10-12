@@ -501,8 +501,8 @@ Public Class cF2TSManager
         End Try
 
         If Not bCanRun Then
-            ' ToDo: globalize this
-            Me.m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
+            Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_PRERUN_CHECK_MISSING_PARAMETERS,
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
         End If
 
         Return bCanRun
@@ -634,9 +634,8 @@ Public Class cF2TSManager
         Catch ex As Exception
 
             cLog.Write(ex)
-            ' ToDo: globalize this
-            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered,
-                                    eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+            Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_SENS_PREDPREY_ERROR, ex.Message),
+                                                eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
             '    Me.ReleaseWait()
         End Try
@@ -689,9 +688,8 @@ Public Class cF2TSManager
         Catch ex As Exception
 
             cLog.Write(ex)
-            ' ToDo: globalize this
-            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered,
-                                    eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+            Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_SENS_PRED_ERROR, ex.Message),
+                                                eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
             '    Me.ReleaseWait()
         End Try
@@ -799,8 +797,6 @@ Public Class cF2TSManager
     ''' -------------------------------------------------------------------
     Public Function SaveToCSV(strFilename As String) As Boolean
 
-        ' ToDo: localize this
-
         If (Me.HasRunSens = False) Then Return False
 
         Dim vblocks(,) As Integer = Me.VulnerabilityBlocks
@@ -810,8 +806,7 @@ Public Class cF2TSManager
         Try
             sw = New StreamWriter(strFilename, False)
         Catch ex As Exception
-            ' ToDo: globalize this
-            msg = New cMessage(cStringUtils.Localize("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message),
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_SENSITIVITY_CSV_SAVE_ERROR, strFilename, ex.Message),
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             Me.m_core.Messages.SendMessage(msg)
             Return False
@@ -838,8 +833,7 @@ Public Class cF2TSManager
         sw.Flush()
         sw.Close()
 
-        ' ToDo: globalize this
-        msg = New cMessage(cStringUtils.Localize("Saved sensitivity CSV file {0}.", strFilename),
+        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_SENSITIVITY_CSV_SAVE_SUCCESS, strFilename),
                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strFilename)
         Me.m_core.Messages.SendMessage(msg)

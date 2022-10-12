@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports System.IO
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 ' ToDo: significantly improve sampling performance:
@@ -123,14 +124,12 @@ Public Class cMPARandomSearch
             Me.CellCount = Me.m_watercells.Count
 
             If (Me.CellCount = 0) Then
-                ' ToDo: globalize this
-                Me.WriteError("There are no water cells. MPA optimization will not run")
+                cLog.Write("Cannot start MPA Opt without modelled cells")
                 Return False
             End If
 
             'If ((100 * nProtected / Me.CellCount) > Me.m_data.MaxArea) Then
             '    ' Reject a run if there are no cells left to close, e.g., if the max percentage protection
-            '    ' ToDo: globalize this
             '    Me.WriteError(cStringUtils.Localize("The area is already protected by {0}%. MPA optimization will not run", (100 * nProtected / Me.CellCount)))
             '    Return False
             'End If
@@ -138,8 +137,7 @@ Public Class cMPARandomSearch
             If (Me.m_data.bUseRegions) Then
                 For i As Integer = 1 To Me.m_SpaceData.nRegions
                     If (Me.m_regionSize(i) < 5) Then
-                        ' ToDo: globalize this
-                        Me.WriteError(cStringUtils.Localize("One or more regions contain less than 5 cells. MPA optimization will not run", (100 * nProtected / Me.CellCount)))
+                        Me.WriteError(My.Resources.CoreMessages.MPARND_PRERUN_CHECK_REGIONSIZE)
                         Return False
                     End If
                 Next
@@ -401,33 +399,33 @@ Public Class cMPARandomSearch
                 Loop
 
                 If (iThisCell > 0) Then
-                        Dim GetRow As Integer = (iThisCell - 1) \ Me.m_SpaceData.InCol + 1
-                        Dim GetCol As Integer = (iThisCell - 1) Mod Me.m_SpaceData.InCol + 1
+                    Dim GetRow As Integer = (iThisCell - 1) \ Me.m_SpaceData.InCol + 1
+                    Dim GetCol As Integer = (iThisCell - 1) Mod Me.m_SpaceData.InCol + 1
 
-                        'now we know which cell to close
-                        'check that the cell hasn't been made into an mpa already
-                        Debug.Assert(Me.m_SpaceData.Depth(GetRow, GetCol) > 0)
+                    'now we know which cell to close
+                    'check that the cell hasn't been made into an mpa already
+                    Debug.Assert(Me.m_SpaceData.Depth(GetRow, GetCol) > 0)
 
-                        If (Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
+                    If (Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
 
                         Me.m_SpaceData.MPA(Me.m_data.iMPAtoUse)(GetRow, GetCol) = 1
                         Me.m_data.AddCell(GetRow, GetCol, Me.m_data.iMPAtoUse)
                         Me.IsMPA(GetRow, GetCol) = True
 
                         If (Me.m_data.bUseRegions) Then
-                                Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
-                                Me.m_regionSet(reg) += 1
-                            End If
-                            used.Add(iThisCell)
-                            GetOut = 0
-                            bDone = (used.Count >= NumberMPA)
-                        Else
-                            GetOut += 1
+                            Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
+                            Me.m_regionSet(reg) += 1
                         End If
+                        used.Add(iThisCell)
+                        GetOut = 0
+                        bDone = (used.Count >= NumberMPA)
                     Else
                         GetOut += 1
                     End If
-                Loop
+                Else
+                    GetOut += 1
+                End If
+            Loop
 
         Catch ex As Exception
             Me.WriteError(ex)

@@ -24,6 +24,7 @@ Imports EwECore.Core
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -609,14 +610,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerImportance(index As Integer) As cEcospaceLayerImportance
         Get
-            Try
-                Return DirectCast(Me.m_layers(eVarNameFlags.LayerImportance)(index - 1), cEcospaceLayerImportance)
-            Catch ex As Exception
-                cLog.Write(Me.ToString & ".New(..) Unable to access importance layer of index:" & index & ". Error: " & ex.Message)
-                ' ToDo: globalize this
-                Me.m_core.Messages.AddMessage(New cMessage("Unable to access importance layer with index" & index, eMessageType.DataValidation, eCoreComponentType.Ecospace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
-                Return Nothing
-            End Try
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerImportance)(index - 1), cEcospaceLayerImportance)
         End Get
     End Property
 
@@ -628,14 +622,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerDriver(index As Integer) As cEcospaceLayerDriver
         Get
-            Try
-                Return DirectCast(Me.m_layers(eVarNameFlags.LayerDriver)(index - 1), cEcospaceLayerDriver)
-            Catch ex As Exception
-                cLog.Write(Me.ToString & ".New(..) Unable to access driver layer of index:" & index & ". Error: " & ex.Message)
-                ' ToDo: globalize this
-                Me.m_core.Messages.AddMessage(New cMessage("Unable to access driver layer of index " & index, eMessageType.DataValidation, eCoreComponentType.Ecospace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
-                Return Nothing
-            End Try
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerDriver)(index - 1), cEcospaceLayerDriver)
         End Get
     End Property
 

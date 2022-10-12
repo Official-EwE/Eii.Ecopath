@@ -148,12 +148,6 @@
     <value>Fishing rate shape {0}</value>
     <comment>{0} sequential number</comment>
   </data>
-  <data name="CORE_DEFAULT_FLEET" xml:space="preserve">
-    <value>Fleet1</value>
-  </data>
-  <data name="CORE_DEFAULT_GROUP" xml:space="preserve">
-    <value>Group1</value>
-  </data>
   <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
     <value>Habitat {0}</value>
     <comment>{0} sequential number</comment>
@@ -2881,5 +2875,49 @@
   </data>
   <data name="VARIABLE_NOMINALEFFORT" xml:space="preserve">
     <value>Nom. Eff.||Nominal effort</value>
+  </data>
+  <data name="CORE_DEFAULT_SAMPLE" xml:space="preserve">
+    <value>Sample {0}</value>
+  </data>
+  <data name="ECOSPACE_AREA_UNIT" xml:space="preserve">
+    <value>Total area ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
+  <data name="ECOSPACE_AVG_B_UNIT" xml:space="preserve">
+    <value>Average biomass by group ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
+  <data name="ECOSPACE_AVG_CATCH_UNIT" xml:space="preserve">
+    <value>Average catch by fleet, group ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
+  <data name="ECOSPACE_REGAVG_B_UNIT" xml:space="preserve">
+    <value>Average regional biomass by group ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
+  <data name="ECOSPACE_REGAVG_CATCH_UNIT" xml:space="preserve">
+    <value>Average regional catch by fleet, group ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
+  <data name="ECOSPACE_REGAVG_CONS_UNIT" xml:space="preserve">
+    <value>Average regional consumption by pred, prey ({0})</value>
+    <comment>{0}=unit</comment>
+  </data>
+  <data name="ECOSPACE_REGAVG_DATA_M0" xml:space="preserve">
+    <value>Average Other Mortality across modeled area</value>
+  </data>
+  <data name="ECOSPACE_REGION_AREA_UNIT" xml:space="preserve">
+    <value>Region {0} area ({1})</value>
+    <comment>{0}=region, {1}=area units</comment>
+  </data>
+  <data name="CORE_DEFAULT_LAYER" xml:space="preserve">
+    <value>Layer {0}</value>
+    <comment>{0}=layer index</comment>
+  </data>
+  <data name="PARAM_END" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="PARAM_START" xml:space="preserve">
+    <value>Start</value>
   </data>
 </root>

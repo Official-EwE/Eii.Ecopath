@@ -84,13 +84,6 @@ Public Class cEggProductionShapeManager
         End Get
     End Property
 
-    Friend Sub validationFailedMessage()
-        ' ToDo: globalize this
-        Me.m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation,
-                                    eCoreComponentType.ShapesManager, eMessageImportance.Information, eDataTypes.EggProd))
-    End Sub
-
-
     ''' <summary>
     ''' Tell the core that data has been changed
     ''' </summary>

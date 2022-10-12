@@ -61,10 +61,9 @@ Public Class cLinearShapeFunction
 
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
-            ' ToDo: globalize this
             Select Case iParam
-                Case 1 : Return "Start"
-                Case 2 : Return "End"
+                Case 1 : Return My.Resources.CoreDefaults.PARAM_START
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_END
             End Select
             Return MyBase.ParamName(iParam)
         End Get

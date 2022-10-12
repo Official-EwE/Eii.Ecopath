@@ -173,24 +173,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fleet1.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_FLEET() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_FLEET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Group1.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_GROUP() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_GROUP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Habitat {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_HABITAT() As String
@@ -214,6 +196,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property CORE_DEFAULT_IMPORTANCE() As String
             Get
                 Return ResourceManager.GetString("CORE_DEFAULT_IMPORTANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Layer {0}.
+        '''</summary>
+        Public Shared ReadOnly Property CORE_DEFAULT_LAYER() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_LAYER", resourceCulture)
             End Get
         End Property
         
@@ -268,6 +259,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property CORE_DEFAULT_REGION() As String
             Get
                 Return ResourceManager.GetString("CORE_DEFAULT_REGION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sample {0}.
+        '''</summary>
+        Public Shared ReadOnly Property CORE_DEFAULT_SAMPLE() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_SAMPLE", resourceCulture)
             End Get
         End Property
         
@@ -358,6 +358,78 @@ Namespace My.Resources
         Public Shared ReadOnly Property ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY() As String
             Get
                 Return ResourceManager.GetString("ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total area ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_AREA_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_AREA_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average biomass by group ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_AVG_B_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_AVG_B_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average catch by fleet, group ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_AVG_CATCH_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_AVG_CATCH_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average regional biomass by group ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_B_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_B_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average regional catch by fleet, group ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_CATCH_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_CATCH_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average regional consumption by pred, prey ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_CONS_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_CONS_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average Other Mortality across modeled area.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_DATA_M0() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_DATA_M0", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Region {0} area ({1}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGION_AREA_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGION_AREA_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -475,6 +547,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property PARAM_BETA() As String
             Get
                 Return ResourceManager.GetString("PARAM_BETA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to End.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_END() As String
+            Get
+                Return ResourceManager.GetString("PARAM_END", resourceCulture)
             End Get
         End Property
         
@@ -664,6 +745,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property PARAM_SIGMOID_XOPT() As String
             Get
                 Return ResourceManager.GetString("PARAM_SIGMOID_XOPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Start.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_START() As String
+            Get
+                Return ResourceManager.GetString("PARAM_START", resourceCulture)
             End Get
         End Property
         

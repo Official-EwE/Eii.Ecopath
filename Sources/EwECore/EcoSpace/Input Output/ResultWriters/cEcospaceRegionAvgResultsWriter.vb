@@ -95,15 +95,13 @@ Public Class cEcospaceRegionAvgResultsWriter
             ' Write it all
             Me.WriteResult()
 
-            ' ToDo: globalize this method
-
             ' Notify user
-            msg = New cMessage("Ecospace average results have been saved to '" & Me.OutputDirectory & "'",
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVED_AVERAGES_SUCCESS, Me.OutputDirectory),
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Me.OutputDirectory
         Catch ex As Exception
             ' Notify user of error
-            msg = New cMessage("Ecospace average results could not be saved to '" & Me.OutputDirectory & "'. " & ex.Message,
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVED_AVERAGES_ERROR, Me.OutputDirectory, ex.Message),
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
         End Try
         ' Done

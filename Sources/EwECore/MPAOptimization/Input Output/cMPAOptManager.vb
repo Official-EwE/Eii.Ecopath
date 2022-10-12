@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Diagnostics.Contracts
 Imports EwECore.EcoSeed
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
@@ -287,15 +288,11 @@ Public Class cMPAOptManager
 
     Public Function Run() As Boolean
 
+        ' Get real
+        If Me.IsRunning Then Return False
+
         Try
             Me.m_MPASearch.Connect(AddressOf Me.OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
-
-            If Me.IsRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MPAOPT_RUNNING,
-                                                            eMessageType.ErrorEncountered, eCoreComponentType.Ecospace,
-                                                            eMessageImportance.Critical))
-                Return False
-            End If
 
             ' Test if no seed cells nor MPA
             If Not Me.m_MPASearch.OKtoRun Then

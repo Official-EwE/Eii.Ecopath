@@ -24,6 +24,7 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Extensions
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -66,8 +67,7 @@ Namespace Samples
             Me.Index = iIndex
             Me.DBID = DBID
 
-            ' ToDo: globalize this
-            Me.Name = "Sample " & iIndex
+            Me.Name = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_SAMPLE, iIndex)
 
             'Rating
             val = New cValue(core, New Integer, eVarNameFlags.SampleRating, eStatusFlags.Null, eValueTypes.Int)

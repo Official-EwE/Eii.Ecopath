@@ -646,9 +646,7 @@ Public MustInherit Class cMPAOptBaseClass
         'writer.WriteLine("Row, Column, MPAIndex")
         'writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
 
-        ' ToDo: globalize this
-        ' ToDo: send at end of autosave, include result
-        Dim msg As New cMessage(String.Format("MPA search output saved to '{0}", Path.Combine(Me.m_strOutputPath, Me.m_OutputFilename)), _
+        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MPAOPT_SAVE_SUCCESS, Path.Combine(Me.m_strOutputPath, Me.m_OutputFilename)),
                                 eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Me.m_strOutputPath
         Me.SendMessage(msg)

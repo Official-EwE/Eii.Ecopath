@@ -5196,8 +5196,7 @@ Namespace Ecosim
             Next
 
             If Me.m_Data.inlinks < Me.m_Data.Narena Then
-                ' ToDo: globalize this
-                Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly",
+                Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSIM_ERROR_FEEDARENA,
                                             eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning))
                 ' ToDo: Handle this properly
                 Stop

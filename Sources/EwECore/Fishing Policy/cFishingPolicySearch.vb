@@ -177,7 +177,7 @@ Namespace FishingPolicy
                 Me.runSearch()
             Catch ex As Exception
                 'add a message to the manager
-                Me.addMessage(ex.Message)
+                Me.AddMessage(ex.Message)
             End Try
 
             If Me.SearchCompletedCallBack IsNot Nothing Then
@@ -355,7 +355,7 @@ Namespace FishingPolicy
 #Region "Message handling"
 
 
-        Private Sub addMessage(strMessage As String, Optional msgType As eMessageType = eMessageType.ErrorEncountered, Optional msgImportance As eMessageImportance = eMessageImportance.Critical)
+        Private Sub AddMessage(strMessage As String, Optional msgType As eMessageType = eMessageType.ErrorEncountered, Optional msgImportance As eMessageImportance = eMessageImportance.Critical)
 
             Try
 
@@ -519,8 +519,8 @@ Namespace FishingPolicy
                         'EwE5 message
                         'MsgBox("Cost exceeds income for fleet " + m_core.m_EcoPathData.FleetName(iflt) + " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", vbOKOnly, "Ecosim policy search")
 
-                        Me.addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + Me.m_core.m_EcopathData.FleetName(iflt) + _
-                                        " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts", _
+                        Me.addMessage(New cFeedbackMessage("Cost exceeds income for fleet " + Me.m_core.m_EcopathData.FleetName(iflt) +
+                                        " so initial fishing efforts violate earnings > cost constraint; restarting with Ecopath base efforts",
                                         eCoreComponentType.Ecosim, eMessageType.Any, eMessageImportance.Critical))
                         Exit For
                     End If  'Villy: Carl had introduced the clause above, omitting the calculation of basevalues
@@ -644,7 +644,7 @@ Namespace FishingPolicy
 
         End Sub
 
-        Sub flet(F As Double, X() As Double, n As Integer, G() As Double, H() As Double, dfn As Double, Xm() As Double, _
+        Sub flet(F As Double, X() As Double, n As Integer, G() As Double, H() As Double, dfn As Double, Xm() As Double,
                      hh As Double, eps As Double, mode As Integer, maxfn As Integer, iprint As Integer, W() As Double, iexit As Integer)
             '      subroutine flet(f,x,n,g,h,dfn,xm,hh,eps,
             '     *                 mode,maxfn,iprint,w,iexit,func,*)
@@ -1002,10 +1002,10 @@ pte:        ' continue
             If Me.PrintOn And Me.MaxRuns = 1 Then
                 'If Alpha > 1E-20 Then frmOptF.Res.Print "maximum number of evaluations exceeded " Else frmOptF.Res.Print "can't find improving step"
                 If Alpha > 1.0E-20 Then
-                    Me.addMessage("maximum number of evaluations exceeded ")
+                    Me.AddMessage("maximum number of evaluations exceeded ")
                     ' MsgBox("maximum number of evaluations exceeded ")
                 Else
-                    Me.addMessage("can't find improving step")
+                    Me.AddMessage("can't find improving step")
                     ' MsgBox("can't find improving step")
                 End If
             End If
@@ -1017,7 +1017,7 @@ pte:        ' continue
 94:         '   continue
             If (iexit = 2) Then
                 If Me.PrintOn And Me.MaxRuns = 1 Then
-                    Me.addMessage("fletch grad transpose times delta x greater than or equal zero --- eps set too small?")
+                    Me.AddMessage("fletch grad transpose times delta x greater than or equal zero --- eps set too small?")
                     '    MsgBox("fletch grad transpose times delta x greater than or equal zero --- eps set too small?")
                 End If
                 'If PrintOn = True Then frmOptF.Res.Print "fletch  grad transpose times delta x greater than or"
@@ -1025,7 +1025,7 @@ pte:        ' continue
             End If
             If (iprint = 0) Then
                 Debug.Assert(False, "Exiting flet().")
-                Me.addMessage("Exiting optimization.")
+                Me.AddMessage("Exiting optimization.")
                 Return
             End If
 
@@ -1043,8 +1043,7 @@ pte:        ' continue
 
             Me.printstats(Xtime, itn, Me.ifn, F, n, X, G)
 
-            ' ToDo: globalize this
-            Me.addMessage("Optimization done", eMessageType.Any, eMessageImportance.Information)
+            Me.AddMessage(My.Resources.CoreMessages.FPS_RUN_SUCCESS, eMessageType.Any, eMessageImportance.Information)
             ' MsgBox("Optimization done", vbOKOnly, "EwE: optimum fishing strategy")
             GoTo endline
 
@@ -1086,7 +1085,7 @@ pte:        ' continue
             llog = 0
             GoTo 7003
 Ptc:        If Me.PrintOn = True Then
-                Me.addMessage("fletch hessian not positive definate")
+                Me.AddMessage("fletch hessian not positive definate")
                 'MsgBox("fletch hessian not positive definate")
             End If
 
@@ -1130,10 +1129,10 @@ endline:    ' '
                 If Me.EcoValueBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Ecological) = CSng(Me.m_searchData.ecovalue / Me.EcoValueBase)
                 If Me.BioDivBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(Me.m_searchData.DiversityIndex / Me.BioDivBase)
 
-                returnvalue = Me.VlocalPenalty - Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_searchData.totval / Me.TotValBase - _
-                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Employ / Me.EmployBase - _
-                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_searchData.manvalue / Me.ManValueBase - _
-                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_searchData.ecovalue / Me.EcoValueBase - _
+                returnvalue = Me.VlocalPenalty - Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_searchData.totval / Me.TotValBase -
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Employ / Me.EmployBase -
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_searchData.manvalue / Me.ManValueBase -
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_searchData.ecovalue / Me.EcoValueBase -
                         Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_searchData.DiversityIndex / Me.BioDivBase
 
                 If Me.m_searchData.MinimizeEffortChange Then
@@ -1154,8 +1153,8 @@ endline:    ' '
                     Else
                         LogUtil = Math.Log(0.5) + 1 / 0.5 * (Me.CritValue(1) + 1 - 0.5) - 1 / 0.25 * (Me.CritValue(1) + 1 - 0.5) ^ 2
                     End If
-                    returnvalue = -Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * LogUtil + _
-                                   Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Ecodistance - _
+                    returnvalue = -Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * LogUtil +
+                                   Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Ecodistance -
                                    Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ExistValue
                 End If
 
@@ -1177,7 +1176,7 @@ endline:    ' '
                     'SearchFailed will force the search to stop
                     returnvalue = 1.0E+20
                     Me.SearchFailed = True
-                    Me.addMessage("Fishing Policy Search Error: Invalid optimization value for " + enumNames, eMessageType.ErrorEncountered)
+                    Me.AddMessage("Fishing Policy Search Error: Invalid optimization value for " + enumNames, eMessageType.ErrorEncountered)
                 End If
 
                 Return returnvalue
@@ -1190,7 +1189,7 @@ endline:    ' '
 
                 cLog.Write("Fishing Policy Search Aborted due to Error.")
                 cLog.Write(ex)
-                Me.addMessage("Fishing Policy Search Error: " & ex.Message, eMessageType.ErrorEncountered)
+                Me.AddMessage("Fishing Policy Search Error: " & ex.Message, eMessageType.ErrorEncountered)
 
             End Try
 
@@ -1271,7 +1270,7 @@ endline:    ' '
             Next its
             ift = Me.ifn
             'frmOptF.Res.Print "too many iterations in DFPMIN"
-            Me.addMessage("too many iterations in DFPMIN")
+            Me.AddMessage("too many iterations in DFPMIN")
             '  MsgBox("too many iterations in DFPMIN")
         End Sub
 
@@ -1479,7 +1478,7 @@ endline:    ' '
                 End If
             Next iter
             'If iter > Itmax Then frmOptF.Res.Print "Brent exceed maximum iterations.": End
-            If iter > Itmax Then Me.addMessage("Brent exceed maximum iterations.") : Exit Function 'End
+            If iter > Itmax Then Me.AddMessage("Brent exceed maximum iterations.") : Exit Function 'End
             Xmin = X
             BRENT = Fx
         End Function

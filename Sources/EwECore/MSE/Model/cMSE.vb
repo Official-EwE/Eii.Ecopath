@@ -724,8 +724,8 @@ Namespace MSE
                 bSuccess = False
                 cLog.Write(ex)
                 Debug.Assert(False, "MSE Exception: " & ex.Message)
-                ' ToDo: globalize this
-                Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSE. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_ERROR, ex.Message),
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
             Me.PostMessage(eMSERunStates.RunCompleted)
@@ -2202,8 +2202,8 @@ Namespace MSE
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False, Me.ToString & ".RunMSYSearch() Exception: " & ex.Message)
-                ' ToDo: globalize this
-                Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSY. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_CALC_MSY_ERROR, ex.Message),
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
 
@@ -2405,8 +2405,8 @@ Namespace MSE
             Catch ex As Exception
                 cLog.Write(ex)
                 Debug.Assert(False, Me.ToString & ".RunMSYSearchUsingFishingMortalityInsteadOfEffort() Exception: " & ex.Message)
-                ' ToDo: globalize this
-                Me.m_core.Messages.SendMessage(New cMessage("Error while calculating MSYF. " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_CALC_FMSY_ERROR, ex.Message),
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
 

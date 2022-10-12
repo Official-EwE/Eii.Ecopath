@@ -505,8 +505,6 @@ Namespace Samples
         ''' -------------------------------------------------------------------
         Public Function CanSaveModel() As Boolean
 
-            ' ToDo: globalize this method
-
             ' Build list of current samples that do not hash to the current model
             Dim lSamples As New List(Of cEcopathSample)
             Dim strModelHash As String = Me.ModelHash
@@ -518,7 +516,7 @@ Namespace Samples
             ' Are there outdated samples?
             If (lSamples.Count > 0) Then
                 ' Ask user what to do
-                Dim fmsg As New cFeedbackMessage(cStringUtils.Localize("Your model has changed and is not compatible anymore with {0} sampled models. Do you want to save your changes and lose those samples?", lSamples.Count),
+                Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_INCOMPATIPLE_PROMPT, lSamples.Count),
                                                  eCoreComponentType.EcopathSample, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 fmsg.Reply = eMessageReply.YES
                 Me.m_core.Messages.SendMessage(fmsg)

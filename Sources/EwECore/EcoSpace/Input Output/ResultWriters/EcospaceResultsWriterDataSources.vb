@@ -21,6 +21,7 @@
 #Region " Imports "
 
 Imports EwECore.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -145,17 +146,15 @@ Public Class cBiomassResultsDataSource
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            ' ToDo: localize this
             Dim u As New cUnits(Me.m_core)
-            Return "Average biomass across modeled area (" & u.ToString(cUnits.CurrencyOverArea) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AVG_B_UNIT, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            ' ToDo: localize this
             Dim u As New cUnits(Me.m_core)
-            Return "Modeled area (" & u.ToString(cUnits.Area) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AREA_UNIT, u.ToString(cUnits.Area))
         End Get
     End Property
 
@@ -267,12 +266,10 @@ Public Class cCatchResultsDataSource
         End Get
     End Property
 
-
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            ' ToDo: localize this
             Dim u As New cUnits(Me.m_core)
-            Return "Catch by Fleet x Group (" & u.ToString(cUnits.Currency) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AVG_CATCH_UNIT, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
@@ -284,9 +281,8 @@ Public Class cCatchResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            ' ToDo: localize this, use units!
             Dim u As New cUnits(Me.m_core)
-            Return "Modeled area (" & u.ToString(cUnits.Area) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AREA_UNIT, u.ToString(cUnits.Area))
         End Get
     End Property
 
@@ -321,15 +317,13 @@ Public Class cMOTotalResultsDataSource
 
     Public Overrides ReadOnly Property FilenameIdentifier As String
         Get
-            ' ToDo: localize this
             Return "OtherMortalityLoss"
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            ' ToDo: localize this (and spell correctly)
-            Return "Average Other Mortlatiy biomass across modeled area"
+            Return My.Resources.CoreDefaults.ECOSPACE_REGAVG_DATA_M0
         End Get
     End Property
 
@@ -415,17 +409,15 @@ Public Class cRegionBiomassResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            ' ToDo: localize this 
             Dim u As New cUnits(Me.m_core)
-            Return "Region " + Me.m_iRegionIndex.ToString + " area (" & u.ToString(cUnits.Area) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_iRegionIndex, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            ' ToDo: localize this 
             Dim u As New cUnits(Me.m_core)
-            Return "Average biomass by region (" & u.ToString(cUnits.CurrencyOverArea) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_B_UNIT, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
@@ -553,17 +545,15 @@ Public Class cRegionCatchResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            ' ToDo: localize this, use units!
             Dim u As New cUnits(Me.m_core)
-            Return "Region " + Me.m_iRegionIndex.ToString + " area (" & u.ToString(cUnits.Area) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_iRegionIndex, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            ' ToDo: localize this 
             Dim u As New cUnits(Me.m_core)
-            Return "Average catch in region by fleet and group (" & u.ToString(cUnits.CurrencyOverArea) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_CATCH_UNIT, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
@@ -680,17 +670,15 @@ Public Class cRegionConsuptionResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            ' ToDo: localize this, use units!
             Dim u As New cUnits(Me.m_core)
-            Return "Region " + Me.m_iRegionIndex.ToString + " area (" & u.ToString(cUnits.Area) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_iRegionIndex, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
-            ' ToDo: localize this, use units!
             Dim u As New cUnits(Me.m_core)
-            Return "Average consumption by region (" & u.ToString(cUnits.CurrencyOverArea) & ")"
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_CONS_UNIT, u.ToString(cUnits.CurrencyOverArea))
         End Get
     End Property
 
