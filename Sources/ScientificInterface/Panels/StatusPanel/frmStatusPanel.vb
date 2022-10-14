@@ -103,12 +103,16 @@ Public Class frmStatusPanel
         RemoveHandler Me.m_hist.OnHistoryItemAdded, AddressOf Me.OnHistoryItemAdded
         RemoveHandler Me.m_hist.OnHistoryRefreshed, AddressOf Me.OnHistoryRefreshed
 
-        Me.m_uic = Nothing
-        Me.m_tvStatus.ImageList = Nothing
-        Me.m_il.Dispose()
-        Me.Icon.Destroy()
-
         MyBase.OnFormClosed(e)
+
+        Try
+            Me.m_uic = Nothing
+            Me.m_tvStatus.ImageList = Nothing
+            Me.m_il.Dispose()
+            Me.Icon.Destroy()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -296,7 +300,7 @@ Public Class frmStatusPanel
         End Try
         Me.m_tvStatus.EndUpdate()
 
-        Me.Pulse(item.Importance, 5)
+        'Me.Pulse(item.Importance, 5)
     End Sub
 
     ''' -------------------------------------------------------------------
