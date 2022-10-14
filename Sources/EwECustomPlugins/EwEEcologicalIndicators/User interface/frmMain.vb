@@ -327,8 +327,11 @@ Public Class frmMain
         Me.m_cbRunWithMC.Enabled = Not bIsRunning
         Me.m_btnChangeDefault.Enabled = Not bIsRunning
         Me.m_btnChooseFolder.Enabled = Not bIsRunning
+        Me.m_cbEcospaceAnnualOnly.Enabled = Not bIsRunning
+        Me.m_cbPlotAtEnd.Enabled = Not bIsRunning
         Me.m_rbCustom.Enabled = Not bIsRunning
         Me.m_rbDefault.Enabled = Not bIsRunning
+        Me.m_tbxOutputFolder.Enabled = Not bIsRunning
 
         Me.m_tpEcopath.ImageIndex = If(Me.m_settings.RunWithEcopath, 1, 0)
         Me.m_tpEcosim.ImageIndex = If(Me.m_settings.RunWithEcosim, 1, 0)
