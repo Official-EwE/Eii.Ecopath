@@ -445,7 +445,6 @@ Partial Class frmRun
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.BlinkIcon = CType(resources.GetObject("$this.BlinkIcon"), System.Drawing.Icon)
         Me.Controls.Add(Me.m_tlpContent)
         Me.Name = "frmRun"
         Me.ShowIcon = False

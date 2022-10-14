@@ -96,10 +96,14 @@ Public Class frmRemarkPanel
             Me.m_mon.Detach()
             Me.m_uic = Nothing
 
-            Me.Icon.Destroy()
         End If
         MyBase.OnFormClosed(e)
 
+        Try
+            Me.Icon.Destroy()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Overrides Function PanelType() As frmEwEDockContent.ePanelType

@@ -404,8 +404,6 @@ Public Class frmNavigationPanel
 
         RemoveHandler Me.m_uic.Core.StateMonitor.CoreExecutionStateEvent, AddressOf Me.OnCoreEcecutionStateChanged
 
-        Me.Icon.Dispose()
-
         Me.m_nodecontroller.Detach()
         Me.m_nodecontroller = Nothing
 
@@ -416,6 +414,12 @@ Public Class frmNavigationPanel
         Me.m_uic = Nothing
 
         MyBase.OnFormClosed(e)
+
+        Try
+            Me.Icon.Dispose()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Public Overrides Function PanelType() As frmEwEDockContent.ePanelType

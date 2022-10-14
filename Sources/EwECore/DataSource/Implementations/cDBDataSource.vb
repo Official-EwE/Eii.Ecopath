@@ -3174,6 +3174,8 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Private Function LoadEcopathTaxon() As Boolean
 
+            ' ToDo: filter out taxon records that have neither group nor stanza. This occasionally happens
+
             Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
