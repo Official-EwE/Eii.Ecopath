@@ -40,6 +40,16 @@ Namespace Forms
     Public Class frmEwEDockContent
         Inherits DockContent
 
+#Region " Private variables "
+
+        Private m_icoOrg As Icon = Nothing
+        Private m_icoPulse As Icon = Nothing
+        Private m_timerPulse As Timer = Nothing
+        Private m_iNumPulses As Integer = 0
+        Private m_importancePulse As eMessageImportance = eMessageImportance.Maintenance
+
+#End Region ' Private variables
+
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -48,8 +58,32 @@ Namespace Forms
         End Sub
 
         Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
+            Me.StopPulsing()
             MyBase.OnClosing(e)
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="Form.Icon"/>
+        ''' <remarks>
+        ''' Overridden to update visuals.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shadows Property Icon As Icon
+            Get
+                Return MyBase.Icon
+            End Get
+            Set(value As Icon)
+                If (Me.IsDisposed) Then Return
+                Try
+                    MyBase.Icon = value
+                    If (Me.Pane IsNot Nothing) Then
+                        Me.BeginInvoke(New MethodInvoker(AddressOf Me.Pane.UpdateTabs))
+                    End If
+                Catch ex As Exception
+
+                End Try
+            End Set
+        End Property
 
 #End Region ' Overrides
 
@@ -121,7 +155,138 @@ Namespace Forms
 
 #End Region ' Public access
 
-#Region " Privates "
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pulse a given bitmap into the icon area of the dock panel for a given 
+        ''' number of times.
+        ''' </summary>
+        ''' <param name="bmp">The bitmap to pulse. Please use a small (16x16) bitmap ;).</param>
+        ''' <param name="iNumPulses">The number of pulses to show.</param>
+        ''' -------------------------------------------------------------------
+        Protected Sub Pulse(bmp As Bitmap, iNumPulses As Integer)
+
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows) And (bmp IsNot Nothing)
+
+            If (Not bPulse) Then
+                Me.StopPulsing()
+            Else
+                If (Me.m_timerPulse Is Nothing) Then
+
+                    Me.m_icoOrg = Me.Icon
+
+                    Me.m_timerPulse = New Timer()
+                    Me.m_timerPulse.Interval = 500
+                    Me.m_timerPulse.Start()
+
+                    AddHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+                End If
+
+                Me.m_iNumPulses = iNumPulses * 2
+                Me.UpdatePulseIcon(bmp)
+            End If
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pulse a given message importance in the icon area of the dock panel
+        ''' for a given number of times. If a pulse is already active, the most
+        ''' severe message importance state is preserved while pulsing.
+        ''' </summary>
+        ''' <param name="importance">The <see cref="eMessageImportance">importance</see>
+        ''' for which to show the icon.</param>
+        ''' <param name="iNumPulses">The number of pulses to show.</param>
+        ''' -------------------------------------------------------------------
+        Protected Sub Pulse(importance As eMessageImportance, iNumPulses As Integer)
+
+            Dim bPulse As Boolean = (iNumPulses > 0) And (Me.IsHiding) And (cSystemUtils.IsWindows)
+
+            ' Only pulse on relevant messages
+            Select Case importance
+                Case eMessageImportance.Critical, eMessageImportance.Information, eMessageImportance.Question, eMessageImportance.Warning
+                    bPulse = bPulse And True
+                Case Else
+                    bPulse = False
+            End Select
+
+            If (bPulse) Then
+                Me.m_importancePulse = CType(Math.Max(Me.m_importancePulse, importance), eMessageImportance)
+            Else
+                Me.m_importancePulse = 0
+            End If
+
+            Me.Pulse(cStyleGuide.GetImage(Me.m_importancePulse), iNumPulses)
+
+        End Sub
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Pulse timer callback.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnPulseIcon(serder As Object, args As EventArgs)
+
+            Me.m_iNumPulses -= 1
+            If Me.m_iNumPulses Mod 2 = 1 Then
+                Me.Icon = Me.m_icoPulse
+            Else
+                Me.Icon = Me.m_icoOrg
+            End If
+
+            If Me.m_iNumPulses <= 0 Then
+                Me.StopPulsing()
+            End If
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Cancel current pulse plan.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub StopPulsing()
+
+            If (Me.m_icoOrg Is Nothing) Then Return
+            If (Me.m_timerPulse Is Nothing) Then Return
+
+            ' Stop timer
+            RemoveHandler Me.m_timerPulse.Tick, AddressOf OnPulseIcon
+            Me.m_timerPulse.Stop()
+            Me.m_timerPulse.Dispose()
+            Me.m_timerPulse = Nothing
+
+            ' Restore icon
+            Me.Icon = Me.m_icoOrg
+            Me.m_icoOrg = Nothing
+
+            ' Dispose current pulsing icon
+            Me.m_importancePulse = 0
+            Me.UpdatePulseIcon(Nothing)
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Manage the current pulse icon and associated GDI+ resources.
+        ''' </summary>
+        ''' <param name="bmp">The bitmap for which to create a new pulse icon.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub UpdatePulseIcon(bmp As Bitmap)
+
+            ' Update pulse icon
+            If (Me.m_icoPulse IsNot Nothing) Then
+                Me.m_icoPulse.Destroy()
+                Me.m_icoPulse = Nothing
+            End If
+
+            If (bmp IsNot Nothing) Then
+                Me.m_icoPulse = Icon.FromHandle(bmp.GetHicon)
+            End If
+
+        End Sub
 
         Private Function TranslateDockState(state As DockState, bHide As Boolean) As DockState
             Select Case state
