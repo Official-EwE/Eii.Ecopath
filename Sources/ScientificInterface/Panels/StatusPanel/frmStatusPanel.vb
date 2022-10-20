@@ -299,8 +299,8 @@ Public Class frmStatusPanel
             ' Owww my GAWD!
         End Try
         Me.m_tvStatus.EndUpdate()
+        Me.Pulse(item.Importance, 5)
 
-        'Me.Pulse(item.Importance, 5)
     End Sub
 
     ''' -------------------------------------------------------------------
