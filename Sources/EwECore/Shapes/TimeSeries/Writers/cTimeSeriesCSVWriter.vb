@@ -254,7 +254,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Weight")
                 For iTS As Integer = 1 To nTsT
                     sw.Write(strDelimiter)
-                    sw.Write("[0,1]")
+                    sw.Write("""0 to 1""")
                 Next
                 sw.WriteLine()
 
