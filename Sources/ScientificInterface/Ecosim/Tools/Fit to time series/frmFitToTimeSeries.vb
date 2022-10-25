@@ -44,7 +44,6 @@ Namespace Ecosim
         Private m_shapeHandler As cAnomalySearchShapeGUIHandler = Nothing
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
-        Private m_shapeSelected As cShapeData = Nothing
         Private m_bInUpdate As Boolean = False
 
         Private m_fpNoAICPts As cEwEFormatProvider = Nothing
@@ -222,10 +221,7 @@ Namespace Ecosim
 
         Private Sub OnCoreExecutionStateEvent(csm As cCoreStateMonitor)
             Try
-                ' Form may be closing because the core is shutting down. Nasty
-                If Not Me.IsDisposed Then
-                    Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
-                End If
+                Me.UpdateControls()
             Catch ex As Exception
                 cLog.Write(ex, "frmFitToTimeSeries.OnCoreExecutionStateEvent")
             End Try
@@ -384,7 +380,6 @@ Namespace Ecosim
                 Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
                 Me.UpdateMaxSplinePoints()
             End If
-
             Me.UpdateControls()
 
         End Sub
@@ -399,27 +394,7 @@ Namespace Ecosim
 
         Private Sub OnShapeSelectionChanged(ashapes As EwECore.cShapeData()) _
             Handles m_shapeToolBox.OnSelectionChanged
-
-            If Me.UIContext Is Nothing Then Return
-
-            Dim iMax As Integer = Me.Core.nEcosimYears
-
-            ' Initialize Component will cause this event to be triggered when the form is
-            ' not up and running yet. Here's a sanity check:
-            If (Me.m_shapeHandler Is Nothing) Then Return
-
-            Dim shape As cShapeData = Me.m_shapeHandler.SelectedShape
-
-            ' Reset year range when new shape selected
-            If (Not ReferenceEquals(Me.m_shapeSelected, shape)) Then
-
-                ' Remember newly selected shape
-                Me.m_shapeSelected = shape
-
-            End If
-
             Me.UpdateControls()
-
         End Sub
 
         Private Sub m_sketchPad_OnYearRangeChanged(sender As ucAnomalySearchSketchPad) Handles m_sketchPad.OnYearRangeChanged
