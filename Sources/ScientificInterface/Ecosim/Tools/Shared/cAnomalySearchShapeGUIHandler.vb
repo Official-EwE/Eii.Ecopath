@@ -23,19 +23,8 @@ Imports EwEUtils.Core
 Public Class cAnomalySearchShapeGUIHandler
     Inherits cForcingShapeGUIHandler
 
-    Private m_lProducers As List(Of Integer)
-
     Public Sub New(uic As cUIContext)
         MyBase.New(uic)
-
-        ' Make snapshot of PP group indexes
-        Me.m_lProducers = New List(Of Integer)
-        For iGroup As Integer = 1 To Me.Core.nGroups
-            Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
-            If (grp.IsProducer) Then
-                Me.m_lProducers.Add(iGroup)
-            End If
-        Next
     End Sub
 
     ''' ---------------------------------------------------------------
@@ -45,8 +34,7 @@ Public Class cAnomalySearchShapeGUIHandler
     ''' <param name="stb"></param>
     ''' <param name="sp"></param>
     ''' ---------------------------------------------------------------
-    Public Shadows Sub Attach(stb As ucShapeToolbox, _
-                              sp As ucSketchPad)
+    Public Shadows Sub Attach(stb As ucShapeToolbox, sp As ucSketchPad)
         MyBase.Attach(stb, Nothing, sp, Nothing)
     End Sub
 
@@ -68,19 +56,22 @@ Public Class cAnomalySearchShapeGUIHandler
         Dim shpTest As cForcingFunction = Nothing
         Dim interact As cPredPreyInteraction = Nothing
         Dim ft As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
+        Dim core As cCore = Me.UIContext.Core
 
-        For Each iGroup As Integer In Me.m_lProducers
-            interact = interactions.PredPreyInteraction(iGroup, iGroup)
-            If (interact IsNot Nothing) Then
-                For i As Integer = 1 To interact.nAppliedShapes
-                    If (interact.getShape(i, shpTest, ft)) Then
-                        If ReferenceEquals(shape, shpTest) Then
-                            Return True
+        For iG1 As Integer = 1 To core.nLivingGroups
+            For iG2 As Integer = 1 To core.nLivingGroups
+                interact = interactions.PredPreyInteraction(iG1, iG2)
+                If (interact IsNot Nothing) Then
+                    For i As Integer = 1 To interact.nAppliedShapes
+                        If (interact.getShape(i, shpTest, ft)) Then
+                            If ReferenceEquals(shape, shpTest) Then
+                                Return True
+                            End If
                         End If
-                    End If
-                Next
-            End If
-        Next
+                    Next
+                End If
+            Next iG2
+        Next iG1
         Return False
 
     End Function

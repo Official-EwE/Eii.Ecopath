@@ -434,11 +434,6 @@ Namespace Forms
             ' Just in case
             Me.EndPrint()
 
-            If (Me.Icon IsNot Nothing) Then
-                Me.Icon.Dispose()
-                Me.Icon = Nothing
-            End If
-
             MyBase.OnFormClosing(e)
 
             ' Prevent active run forms from closing.
@@ -479,6 +474,22 @@ Namespace Forms
             Me.DrawToBitmap(bmp, Me.ClientRectangle)
             Return bmp
         End Function
+
+        Private m_bLazyUpdatePending As Boolean = False
+
+        Protected Sub LazyUpdateControls()
+            'If (Me.IsDisposed) Then Return
+            'If (Me.m_bLazyUpdatePending) Then Return
+            'Me.BeginInvoke(New MethodInvoker(AddressOf DoLazyUpdateControls))
+            'Me.m_bLazyUpdatePending = True
+            Me.DoLazyUpdateControls()
+        End Sub
+
+        Private Sub DoLazyUpdateControls()
+            Me.m_bLazyUpdatePending = False
+            If (Me.IsDisposed) Then Return
+            Me.UpdateControls()
+        End Sub
 
 #End Region ' Overrides
 
